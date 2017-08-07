@@ -1,15 +1,15 @@
 {
-  "compilerOptions": {
-    "noImplicitAny": false,
-    "noEmitOnError": true,
-    "removeComments": false,
-    "sourceMap": true,
-    "target": "es5",
-    "jsx": "react",
-    "lib": [ "dom", "es5" ,"es6"]
-  },
-  "exclude": [
-    "node_modules",
-    "wwwroot"
-  ]
+	"compilerOptions": {
+		"noImplicitAny": false,
+		"noEmitOnError": true,
+		"removeComments": false,
+		"sourceMap": true,
+		"target": "es5",
+		"jsx": "react",
+		"lib": [ "dom", "es5", "es6" ]
+	},
+	"exclude": [
+		"node_modules",
+		"wwwroot"
+	]
 }

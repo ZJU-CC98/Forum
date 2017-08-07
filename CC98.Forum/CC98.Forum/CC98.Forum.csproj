@@ -2,7 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Components\App.tsx" />
+    <None Remove="Main.tsx" />
+    <None Remove="States\AppState.tsx" />
+    <None Remove="webpack.config.ts" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="11.0.0" />
@@ -11,5 +19,16 @@
     <PackageReference Include="Microsoft.AspNetCore.Rewrite" Version="1.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.2" />
   </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="Components\App.tsx" />
+    <TypeScriptCompile Include="Main.tsx" />
+    <TypeScriptCompile Include="States\AppState.tsx" />
+    <TypeScriptCompile Include="webpack.config.ts" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="node &quot;$(ProjectDir)node_modules\webpack\bin\webpack.js&quot;" />
+  </Target>
 
 </Project>

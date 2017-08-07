@@ -1,27 +1,31 @@
 {
-  "version": "1.0.0",
-  "name": "asp.net",
-  "private": true,
-  "dependencies": {
-    "react": "15.6.1",
-    "react-dom": "15.6.1",
-    "jquery": "3.2.1",
-    "signalr": "2.2.2",
-    "react-router": "4.1.2",
-    "react-router-dom": "4.1.2",
-    "redux": "3.7.2" 
-  },
-  "devDependencies": {
-    "webpack": "3.4.1",
-    "awesome-typescript-loader": "3.2.2",
-    "typescript": "2.4.2",
-    "@types/react": "15.6.0",
-    "@types/react-dom": "15.5.1",
-    "@types/react-router": "4.0.14",
-    "@types/react-router-dom": "4.0.7",
-    "@types/jquery": "3.2.11",
-    "@types/signalr": "2.2.34" 
-   
+	"version": "1.0.0",
+	"name": "cc98-forum",
+	"private": true,
+	"dependencies": {
+		"react": "15.6.1",
+		"react-dom": "15.6.1",
+		"jquery": "3.2.1",
+		"signalr": "2.2.2",
+		"react-router": "4.1.2",
+		"react-router-dom": "4.1.2",
+		"redux": "3.7.2",
+		"react-redux": ""
+	},
+	"devDependencies": {
+		"webpack": "3.4.1",
+		"unminified-webpack-plugin": "1.2.0",
+		"transfer-webpack-plugin": "",
+		"awesome-typescript-loader": "3.2.2",
+		"typescript": "2.4.2",
+		"@types/node": "8.0.19",
+		"@types/webpack": "3.0.5",
+		"@types/react": "15.6.0",
+		"@types/react-dom": "15.5.1",
+		"@types/react-router": "4.0.14",
+		"@types/react-router-dom": "4.0.7",
+		"@types/jquery": "3.2.11",
+		"@types/signalr": "2.2.34"
 
-  }
+	}
 }
