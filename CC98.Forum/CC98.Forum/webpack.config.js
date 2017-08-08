@@ -5,36 +5,42 @@ var path = require("path");
 var UnminifiedWebpackPlugin = require("unminified-webpack-plugin");
 var CopyWebpackPlugin = require("copy-webpack-plugin");
 var CleanWebpackPlugin = require("clean-webpack-plugin");
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var config = {
     module: {
         rules: [
-            { test: /\.tsx?$/, use: 'awesome-typescript-loader' }
+            { test: /\.tsx?$/, use: 'awesome-typescript-loader' },
+            {
+                test: /\.scss$/,
+                use: ExtractTextPlugin.extract({ use: [{ loader: 'css-loader', options: { minimize: true } }, 'sass-loader'] })
+            }
         ]
     },
     resolve: {
         extensions: ['.js', '.jsx', '.ts', '.tsx']
     },
-    entry: ['./Main.tsx'],
+    entry: ['./Main.tsx', './Site.scss'],
     devtool: 'source-map',
     output: {
-        path: path.resolve(__dirname, 'wwwroot/scripts'),
-        filename: 'main.min.js'
+        path: path.resolve(__dirname, 'wwwroot'),
+        filename: 'scripts/main.min.js'
     },
     externals: ['jquery', 'signalr', 'react', 'react-dom', 'react-router', 'react-router-dom', 'redux', 'react-redux'],
     plugins: [
         new webpack.optimize.UglifyJsPlugin(),
         new UnminifiedWebpackPlugin(),
-        new CleanWebpackPlugin(['wwwroot/scripts']),
+        new CleanWebpackPlugin(['wwwroot/scripts', 'wwwroot/content']),
         new CopyWebpackPlugin([
-            { from: 'node_modules/jquery/dist', to: 'lib/jquery' },
-            { from: 'node_modules/signalr', to: 'lib/signalr' },
-            { from: 'node_modules/react/dist', to: 'lib/react' },
-            { from: 'node_modules/react-dom/dist', to: 'lib/react-dom' },
-            { from: 'node_modules/react-router/umd', to: 'lib/react-router' },
-            { from: 'node_modules/react-router-dom/umd', to: 'lib/react-router-dom' },
-            { from: 'node_modules/redux/dist', to: 'lib/redux' },
-            { from: 'node_modules/react-redux/dist', to: 'lib/react-redux' }
-        ])
+            { from: 'node_modules/jquery/dist', to: 'scripts/lib/jquery' },
+            { from: 'node_modules/signalr', to: 'scripts/lib/signalr' },
+            { from: 'node_modules/react/dist', to: 'scripts/lib/react' },
+            { from: 'node_modules/react-dom/dist', to: 'scripts/lib/react-dom' },
+            { from: 'node_modules/react-router/umd', to: 'scripts/lib/react-router' },
+            { from: 'node_modules/react-router-dom/umd', to: 'scripts/lib/react-router-dom' },
+            { from: 'node_modules/redux/dist', to: 'scripts/lib/redux' },
+            { from: 'node_modules/react-redux/dist', to: 'scripts/lib/react-redux' }
+        ]),
+        new ExtractTextPlugin('content/site.min.css')
     ]
 };
 exports.default = config;

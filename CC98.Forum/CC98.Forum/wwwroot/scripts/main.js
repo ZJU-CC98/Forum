@@ -73,7 +73,8 @@ module.exports = react;
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(2);
+__webpack_require__(2);
+module.exports = __webpack_require__(5);
 
 
 /***/ }),
@@ -126,6 +127,12 @@ var App = (function (_super) {
 }(React.Component));
 exports.App = App;
 //# sourceMappingURL=App.js.map
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);
