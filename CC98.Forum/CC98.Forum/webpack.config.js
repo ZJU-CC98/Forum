@@ -17,16 +17,15 @@ var config = {
     entry: ['./Main.tsx'],
     devtool: 'source-map',
     output: {
-        path: path.resolve(__dirname, 'wwwroot'),
+        path: path.resolve(__dirname, 'wwwroot/scripts'),
         filename: 'main.min.js'
     },
     externals: ['jquery', 'signalr', 'react', 'react-dom', 'react-router', 'react-router-dom', 'redux', 'react-redux'],
     plugins: [
         new webpack.optimize.UglifyJsPlugin(),
         new UnminifiedWebpackPlugin(),
-        new CleanWebpackPlugin(['wwwroot/*']),
+        new CleanWebpackPlugin(['wwwroot/scripts']),
         new CopyWebpackPlugin([
-            { from: 'index.html', to: 'index.html' },
             { from: 'node_modules/jquery/dist', to: 'lib/jquery' },
             { from: 'node_modules/signalr', to: 'lib/signalr' },
             { from: 'node_modules/react/dist', to: 'lib/react' },

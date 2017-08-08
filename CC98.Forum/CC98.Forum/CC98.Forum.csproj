@@ -33,10 +33,6 @@
     <TypeScriptCompile Include="webpack.config.ts" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="node &quot;$(ProjectDir)node_modules\webpack\bin\webpack.js&quot;" />
   </Target>

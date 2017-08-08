@@ -19,16 +19,15 @@ const config: webpack.Configuration = {
 	entry: ['./Main.tsx'],
 	devtool: 'source-map',
 	output: {
-		path: path.resolve(__dirname, 'wwwroot'),
+		path: path.resolve(__dirname, 'wwwroot/scripts'),
 		filename: 'main.min.js'
 	},
 	externals: ['jquery', 'signalr', 'react', 'react-dom', 'react-router', 'react-router-dom', 'redux', 'react-redux'],
 	plugins: [
 		new webpack.optimize.UglifyJsPlugin(), // 简化 JS
 		new UnminifiedWebpackPlugin(), // 提供调试用 JS 完整版
-		new CleanWebpackPlugin(['wwwroot/*']), // 发布之前清理 wwwroot
+		new CleanWebpackPlugin(['wwwroot/scripts']), // 发布之前清理 wwwroot
 		new CopyWebpackPlugin([// 将 node 库复制到发布目录
-			{ from: 'index.html', to: 'index.html' }, // 复制 index.html
 			{ from: 'node_modules/jquery/dist', to: 'lib/jquery' },
 			{ from: 'node_modules/signalr', to: 'lib/signalr' },
 			{ from: 'node_modules/react/dist', to: 'lib/react' },
