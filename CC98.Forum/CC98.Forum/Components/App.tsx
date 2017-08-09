@@ -6,5 +6,9 @@ import { AppState } from '../States/AppState';
  */
 export class App extends React.Component<{}, AppState> {
 
+	render() {
+		return <div></div>;
+	}
+
 }
 

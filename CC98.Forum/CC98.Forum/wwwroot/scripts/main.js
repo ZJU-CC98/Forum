@@ -67,7 +67,7 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-module.exports = react;
+module.exports = React;
 
 /***/ }),
 /* 1 */
@@ -95,7 +95,7 @@ ReactDOM.render(React.createElement(App_1.App, null), document.getElementById('r
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = react-dom;
+module.exports = ReactDOM;
 
 /***/ }),
 /* 4 */
@@ -123,6 +123,9 @@ var App = (function (_super) {
     function App() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    App.prototype.render = function () {
+        return React.createElement("div", null);
+    };
     return App;
 }(React.Component));
 exports.App = App;

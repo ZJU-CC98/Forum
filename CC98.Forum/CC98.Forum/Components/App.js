@@ -19,6 +19,9 @@ var App = (function (_super) {
     function App() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    App.prototype.render = function () {
+        return React.createElement("div", null);
+    };
     return App;
 }(React.Component));
 exports.App = App;

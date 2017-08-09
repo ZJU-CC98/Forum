@@ -25,7 +25,16 @@ var config = {
         path: path.resolve(__dirname, 'wwwroot'),
         filename: 'scripts/main.min.js'
     },
-    externals: ['jquery', 'signalr', 'react', 'react-dom', 'react-router', 'react-router-dom', 'redux', 'react-redux'],
+    externals: {
+        'react': 'React',
+        'react-dom': 'ReactDOM',
+        'react-router': 'ReactRouter',
+        'react-router-dom': 'ReactRouterDOM',
+        'redux': 'Redux',
+        'react-redux': 'ReactRedux',
+        'jquery': '$',
+        'signalr': '$.connection'
+    },
     plugins: [
         new webpack.optimize.UglifyJsPlugin(),
         new UnminifiedWebpackPlugin(),
