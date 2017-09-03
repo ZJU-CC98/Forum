@@ -19,22 +19,22 @@ export class MyMessage extends React.Component<{}, AppState> {
             <Router>
                 <div className='mymessage-content'>
                     <div className='mymessage-nav'>
-                        <div id='myresponse'><NavLink to='/responselogin'>回复我的</NavLink></div>
-                        <div id='myattme'><NavLink to='/attme'>@我的</NavLink></div>
-                        <div id='mylikes'><NavLink to='/likes'>收到的赞</NavLink></div>
-                        <div id='mysystem'><NavLink to='/systemlogin'>系统通知</NavLink></div>
-                        <div id='mymessage'><NavLink to='/login'>我的私信</NavLink></div>
+                        <div id='myresponse'><NavLink to='/messagebox/responselogin'>回复我的</NavLink></div>
+                        <div id='myattme'><NavLink to='/messagebox/attme'>@我的</NavLink></div>
+                        <div id='mylikes'><NavLink to='/messagebox/likes'>收到的赞</NavLink></div>
+                        <div id='mysystem'><NavLink to='/messagebox/systemlogin'>系统通知</NavLink></div>
+                        <div id='mymessage'><NavLink to='/messagebox/login'>我的私信</NavLink></div>
                     </div>
-                    <Route path='/response' component={MymessageResponse} />
-                    <Route path='/attme' component={Attme} />
-                    <Route path='/likes' component={Likes} />
-                    <Route path='/systemlogin' component={Systemlogin} />
-                    <Route path='/responselogin' component={Responselogin} />
-                    <Route path='/system' component={MymessageSystem} />
-                    <Route path='/login' component={login} />
-                    <Route path="/message" component={MymessageMessage} />
+                    <Route path='/messagebox/response' component={MymessageResponse} />
+                    <Route path='/messagebox/attme' component={Attme} />
+                    <Route path='/messagebox/likes' component={Likes} />
+                    <Route path='/messagebox/systemlogin' component={Systemlogin} />
+                    <Route path='/messagebox/responselogin' component={Responselogin} />
+                    <Route path='/messagebox/system' component={MymessageSystem} />
+                    <Route exact path='/messagebox/login' component={login} />
+                    <Route path="/messagebox/message" component={MymessageMessage} />
                 </div>
-            </Router>
+                </Router>
         </div>
         );
     }

@@ -5078,7 +5078,7 @@ function sendRequest() {
     //申请到的appID
     var appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
     //申请后的回调地址
-    var c = 'http://localhost:4746/message';
+    var c = 'http://localhost:58187/messagebox/message';
     var redirectURI = encodeURI(c);
     //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
     var path = 'https://login.cc98.org/OAuth/Authorize?';
@@ -5090,9 +5090,9 @@ function sendRequest() {
 exports.sendRequest = sendRequest;
 function systemRequest() {
     //申请到的appID
-    var appId = 'cdb14fec-f701-4697-91e8-f8c572226cfd';
+    var appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
     //申请后的回调地址
-    var c = 'http://localhost:4746/system';
+    var c = 'http://localhost:58187/messagebox/system';
     var redirectURI = encodeURI(c);
     //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
     var path = 'https://login.cc98.org/OAuth/Authorize?';
@@ -5104,9 +5104,9 @@ function systemRequest() {
 exports.systemRequest = systemRequest;
 function responseRequest() {
     //申请到的appID
-    var appId = '71156d5d-511b-433a-9e83-304c38909bac';
+    var appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
     //申请后的回调地址
-    var c = 'http://localhost:4746/response';
+    var c = 'http://localhost:58187/messagebox/response';
     var redirectURI = encodeURI(c);
     //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
     var path = 'https://login.cc98.org/OAuth/Authorize?';
@@ -19756,23 +19756,23 @@ var MyMessage = (function (_super) {
                 React.createElement("div", { className: 'mymessage-content' },
                     React.createElement("div", { className: 'mymessage-nav' },
                         React.createElement("div", { id: 'myresponse' },
-                            React.createElement(react_router_dom_1.NavLink, { to: '/responselogin' }, "\u56DE\u590D\u6211\u7684")),
+                            React.createElement(react_router_dom_1.NavLink, { to: '/messagebox/responselogin' }, "\u56DE\u590D\u6211\u7684")),
                         React.createElement("div", { id: 'myattme' },
-                            React.createElement(react_router_dom_1.NavLink, { to: '/attme' }, "@\u6211\u7684")),
+                            React.createElement(react_router_dom_1.NavLink, { to: '/messagebox/attme' }, "@\u6211\u7684")),
                         React.createElement("div", { id: 'mylikes' },
-                            React.createElement(react_router_dom_1.NavLink, { to: '/likes' }, "\u6536\u5230\u7684\u8D5E")),
+                            React.createElement(react_router_dom_1.NavLink, { to: '/messagebox/likes' }, "\u6536\u5230\u7684\u8D5E")),
                         React.createElement("div", { id: 'mysystem' },
-                            React.createElement(react_router_dom_1.NavLink, { to: '/systemlogin' }, "\u7CFB\u7EDF\u901A\u77E5")),
+                            React.createElement(react_router_dom_1.NavLink, { to: '/messagebox/systemlogin' }, "\u7CFB\u7EDF\u901A\u77E5")),
                         React.createElement("div", { id: 'mymessage' },
-                            React.createElement(react_router_dom_1.NavLink, { to: '/login' }, "\u6211\u7684\u79C1\u4FE1"))),
-                    React.createElement(react_router_dom_1.Route, { path: '/response', component: MymessageResponse_1.MymessageResponse }),
-                    React.createElement(react_router_dom_1.Route, { path: '/attme', component: Attme }),
-                    React.createElement(react_router_dom_1.Route, { path: '/likes', component: Likes }),
-                    React.createElement(react_router_dom_1.Route, { path: '/systemlogin', component: Systemlogin }),
-                    React.createElement(react_router_dom_1.Route, { path: '/responselogin', component: Responselogin }),
-                    React.createElement(react_router_dom_1.Route, { path: '/system', component: MymessageSystem_1.MymessageSystem }),
-                    React.createElement(react_router_dom_1.Route, { path: '/login', component: login }),
-                    React.createElement(react_router_dom_1.Route, { path: "/message", component: MymessageMessage_1.MymessageMessage })))));
+                            React.createElement(react_router_dom_1.NavLink, { to: '/messagebox/login' }, "\u6211\u7684\u79C1\u4FE1"))),
+                    React.createElement(react_router_dom_1.Route, { path: '/messagebox/response', component: MymessageResponse_1.MymessageResponse }),
+                    React.createElement(react_router_dom_1.Route, { path: '/messagebox/attme', component: Attme }),
+                    React.createElement(react_router_dom_1.Route, { path: '/messagebox/likes', component: Likes }),
+                    React.createElement(react_router_dom_1.Route, { path: '/messagebox/systemlogin', component: Systemlogin }),
+                    React.createElement(react_router_dom_1.Route, { path: '/messagebox/responselogin', component: Responselogin }),
+                    React.createElement(react_router_dom_1.Route, { path: '/messagebox/system', component: MymessageSystem_1.MymessageSystem }),
+                    React.createElement(react_router_dom_1.Route, { exact: true, path: '/messagebox/login', component: login }),
+                    React.createElement(react_router_dom_1.Route, { path: "/messagebox/message", component: MymessageMessage_1.MymessageMessage })))));
     };
     return MyMessage;
 }(React.Component));
