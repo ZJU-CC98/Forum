@@ -7,7 +7,8 @@ import {
     Route,
     Link
 } from 'react-router-dom';
-
+import * as $ from 'jquery'; 
+import { FocusPost } from './Props/FocusPost';
 
 
 /*export async function getData() {
@@ -169,4 +170,96 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
 
 
     return post;
+}
+export function sendRequest() {
+    //申请到的appID
+    let appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
+    //申请后的回调地址
+    let c = 'http://localhost:4746/message';
+    let redirectURI = encodeURI(c);
+    //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
+    let path = 'https://login.cc98.org/OAuth/Authorize?'
+    let queryParams = ['client_id=' + appId, 'response_type=token', 'scope=all', 'redirect_uri=' + redirectURI];
+    let query = queryParams.join('&');
+    let url = path + query;
+    return url;
+}
+
+export function systemRequest() {
+    //申请到的appID
+    let appId = 'cdb14fec-f701-4697-91e8-f8c572226cfd';
+    //申请后的回调地址
+    let c = 'http://localhost:4746/system';
+    let redirectURI = encodeURI(c);
+    //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
+    let path = 'https://login.cc98.org/OAuth/Authorize?'
+    let queryParams = ['client_id=' + appId, 'response_type=token', 'scope=all', 'redirect_uri=' + redirectURI];
+    let query = queryParams.join('&');
+    let url = path + query;
+    return url;
+}
+
+export function responseRequest() {
+    //申请到的appID
+    let appId = '71156d5d-511b-433a-9e83-304c38909bac';
+    //申请后的回调地址
+    let c = 'http://localhost:4746/response';
+    let redirectURI = encodeURI(c);
+    //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
+    let path = 'https://login.cc98.org/OAuth/Authorize?'
+    let queryParams = ['client_id=' + appId, 'response_type=token', 'scope=all', 'redirect_uri=' + redirectURI];
+    let query = queryParams.join('&');
+    let url = path + query;
+    return url;
+}
+export function changeNav(id) {
+    $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
+    $(id).addClass('mymessage-nav-focus');
+}
+/**
+ * 获取全站新帖
+ * @param curPage
+ */
+export async function getAllNewPost(curPage: number) {
+    /**
+     * 一次性可以获取20个主题
+     */
+    let startPage: number = (curPage - 1) * 20 + 1;
+    let endPage: number = curPage * 20;
+    /**
+     * 通过api获取到主题之后转成json格式，但此时没有作者头像的图片地址和版面名称
+     */
+    let newTopics0 = await fetch('https://api.cc98.org/Topic/New', { headers: { Range: `bytes=${startPage}-${endPage}` } });
+    let newTopics1 = await newTopics0.json();
+    for (let i in newTopics1) {
+        /**
+        *根据作者名字获取作者头像的图片地址
+        */
+        if (newTopics1[i].authorName == null) {
+            newTopics1[i].authorName = '匿名';
+            newTopics1[i].portraitUrl = 'https://www.cc98.org/pic/anonymous.gif';
+        }
+        else {
+            let userInfo0 = await fetch(`https://api.cc98.org/User/${newTopics1[i].authorId}`);
+            let userInfo1 = await userInfo0.json();
+            newTopics1[i].portraitUrl = userInfo1.portraitUrl;
+        }
+        /**
+         * 根据版面id获取版面名称
+         */
+        let boardInfo0 = await fetch(`https://api.cc98.org/Board/${newTopics1[i].boardId}`);
+        let boardInfo1 = await boardInfo0.json();
+        newTopics1[i].boardName = boardInfo1.name;
+        /**
+        *这些数据是伪造的
+        */
+        newTopics1[i].likeCount = 6;
+        newTopics1[i].dislikeCount = 3;
+        newTopics1[i].fanCount = 28;
+    }
+    /**
+     * 将补充完善的数据赋值给newTopics，以便后续进行可视化
+     */
+    let newTopics: FocusPost[] = newTopics1;
+    return newTopics;
 }

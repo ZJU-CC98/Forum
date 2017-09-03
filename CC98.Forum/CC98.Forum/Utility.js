@@ -38,6 +38,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var State = require("./States/AppState");
 var React = require("react");
 var List_1 = require("./Components/List");
+var $ = require("jquery");
 /*export async function getData() {
     let hottopics: State.TopicTitleAndContentState[] = [];
     var response = await fetch('http://api.cc98.org/Topic/Hot');
@@ -288,4 +289,114 @@ function getCurUserTopicContent(topicid, curPage, userName) {
     });
 }
 exports.getCurUserTopicContent = getCurUserTopicContent;
+function sendRequest() {
+    //申请到的appID
+    var appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
+    //申请后的回调地址
+    var c = 'http://localhost:4746/message';
+    var redirectURI = encodeURI(c);
+    //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
+    var path = 'https://login.cc98.org/OAuth/Authorize?';
+    var queryParams = ['client_id=' + appId, 'response_type=token', 'scope=all', 'redirect_uri=' + redirectURI];
+    var query = queryParams.join('&');
+    var url = path + query;
+    return url;
+}
+exports.sendRequest = sendRequest;
+function systemRequest() {
+    //申请到的appID
+    var appId = 'cdb14fec-f701-4697-91e8-f8c572226cfd';
+    //申请后的回调地址
+    var c = 'http://localhost:4746/system';
+    var redirectURI = encodeURI(c);
+    //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
+    var path = 'https://login.cc98.org/OAuth/Authorize?';
+    var queryParams = ['client_id=' + appId, 'response_type=token', 'scope=all', 'redirect_uri=' + redirectURI];
+    var query = queryParams.join('&');
+    var url = path + query;
+    return url;
+}
+exports.systemRequest = systemRequest;
+function responseRequest() {
+    //申请到的appID
+    var appId = '71156d5d-511b-433a-9e83-304c38909bac';
+    //申请后的回调地址
+    var c = 'http://localhost:4746/response';
+    var redirectURI = encodeURI(c);
+    //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
+    var path = 'https://login.cc98.org/OAuth/Authorize?';
+    var queryParams = ['client_id=' + appId, 'response_type=token', 'scope=all', 'redirect_uri=' + redirectURI];
+    var query = queryParams.join('&');
+    var url = path + query;
+    return url;
+}
+exports.responseRequest = responseRequest;
+function changeNav(id) {
+    $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
+    $(id).addClass('mymessage-nav-focus');
+}
+exports.changeNav = changeNav;
+/**
+ * 获取全站新帖
+ * @param curPage
+ */
+function getAllNewPost(curPage) {
+    return __awaiter(this, void 0, void 0, function () {
+        var startPage, endPage, newTopics0, newTopics1, _a, _b, _i, i, userInfo0, userInfo1, boardInfo0, boardInfo1, newTopics;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
+                case 0:
+                    startPage = (curPage - 1) * 20 + 1;
+                    endPage = curPage * 20;
+                    return [4 /*yield*/, fetch('https://api.cc98.org/Topic/New', { headers: { Range: "bytes=" + startPage + "-" + endPage } })];
+                case 1:
+                    newTopics0 = _c.sent();
+                    return [4 /*yield*/, newTopics0.json()];
+                case 2:
+                    newTopics1 = _c.sent();
+                    _a = [];
+                    for (_b in newTopics1)
+                        _a.push(_b);
+                    _i = 0;
+                    _c.label = 3;
+                case 3:
+                    if (!(_i < _a.length)) return [3 /*break*/, 11];
+                    i = _a[_i];
+                    if (!(newTopics1[i].authorName == null)) return [3 /*break*/, 4];
+                    newTopics1[i].authorName = '匿名';
+                    newTopics1[i].portraitUrl = 'https://www.cc98.org/pic/anonymous.gif';
+                    return [3 /*break*/, 7];
+                case 4: return [4 /*yield*/, fetch("https://api.cc98.org/User/" + newTopics1[i].authorId)];
+                case 5:
+                    userInfo0 = _c.sent();
+                    return [4 /*yield*/, userInfo0.json()];
+                case 6:
+                    userInfo1 = _c.sent();
+                    newTopics1[i].portraitUrl = userInfo1.portraitUrl;
+                    _c.label = 7;
+                case 7: return [4 /*yield*/, fetch("https://api.cc98.org/Board/" + newTopics1[i].boardId)];
+                case 8:
+                    boardInfo0 = _c.sent();
+                    return [4 /*yield*/, boardInfo0.json()];
+                case 9:
+                    boardInfo1 = _c.sent();
+                    newTopics1[i].boardName = boardInfo1.name;
+                    /**
+                    *这些数据是伪造的
+                    */
+                    newTopics1[i].likeCount = 6;
+                    newTopics1[i].dislikeCount = 3;
+                    newTopics1[i].fanCount = 28;
+                    _c.label = 10;
+                case 10:
+                    _i++;
+                    return [3 /*break*/, 3];
+                case 11:
+                    newTopics = newTopics1;
+                    return [2 /*return*/, newTopics];
+            }
+        });
+    });
+}
+exports.getAllNewPost = getAllNewPost;
 //# sourceMappingURL=Utility.js.map

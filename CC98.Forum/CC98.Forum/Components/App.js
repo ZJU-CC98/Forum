@@ -17,6 +17,8 @@ var List_1 = require("./List");
 var CurUserPost_1 = require("./CurUserPost");
 var BoardList_1 = require("./BoardList");
 var UserCenter_1 = require("./UserCenter");
+var MyMessage_1 = require("./MyMessage");
+var AllNewPost_1 = require("./AllNewPost");
 var RouteComponent = (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -45,12 +47,18 @@ var App = (function (_super) {
                         React.createElement("a", { href: "https://login.cc98.org/OAuth/Authorize?scope=getuserinfo*&response_type=token&client_id=9428333a-a0e3-486b-b375-7904f1bceba9&redirect_uri=http%3A%2F%2Flocalhost%3A" + location.port + "%2Fusercenter" }, " \u767B\u9646")),
                     React.createElement("li", null,
                         React.createElement(react_router_dom_1.Link, { to: "/usercenter" }, "\u4E2A\u4EBA\u4E2D\u5FC3")),
+                    React.createElement("li", null,
+                        React.createElement(react_router_dom_1.Link, { to: "/messagebox" }, "\u4FE1\u7BB1")),
+                    React.createElement("li", null,
+                        React.createElement(react_router_dom_1.Link, { to: "newtopics" })),
                     React.createElement("hr", null),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/:page?", component: post_1.Post }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/user/:userName/:page?", component: CurUserPost_1.CurUserPost }),
                     React.createElement(react_router_dom_1.Route, { path: "/list/:boardid/:page?", component: List_1.List }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/boardlist", component: BoardList_1.BoardList }),
-                    React.createElement(react_router_dom_1.Route, { path: "/usercenter", component: UserCenter_1.UserCenter }))));
+                    React.createElement(react_router_dom_1.Route, { path: "/usercenter", component: UserCenter_1.UserCenter }),
+                    React.createElement(react_router_dom_1.Route, { path: "/messagebox", component: MyMessage_1.MyMessage }),
+                    React.createElement(react_router_dom_1.Route, { path: "newtopics", component: AllNewPost_1.AllNewPost }))));
     };
     return App;
 }(React.Component));
