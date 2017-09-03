@@ -1,0 +1,58 @@
+{
+  "_from": "es6-promise-polyfill@1.2.0",
+  "_id": "es6-promise-polyfill@1.2.0",
+  "_inBundle": false,
+  "_integrity": "sha1-84kl8jyz4+jObNqP93T867sJDN4=",
+  "_location": "/es6-promise-polyfill",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "es6-promise-polyfill@1.2.0",
+    "name": "es6-promise-polyfill",
+    "escapedName": "es6-promise-polyfill",
+    "rawSpec": "1.2.0",
+    "saveSpec": null,
+    "fetchSpec": "1.2.0"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/es6-promise-polyfill/-/es6-promise-polyfill-1.2.0.tgz",
+  "_shasum": "f38925f23cb3e3e8ce6cda8ff774fcebbb090cde",
+  "_spec": "es6-promise-polyfill@1.2.0",
+  "_where": "C:\\Users\\dong\\source\\repos\\Forum\\CC98.Forum\\CC98.Forum",
+  "author": {
+    "name": "Roman Dvornov",
+    "email": "rdvornov@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/lahmatiy/es6-promise-polyfill/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {},
+  "deprecated": false,
+  "description": "Polyfill for ES6 Promise",
+  "devDependencies": {
+    "promises-aplus-tests": "*"
+  },
+  "homepage": "https://github.com/lahmatiy/es6-promise-polyfill#readme",
+  "keywords": [
+    "es6",
+    "es2015",
+    "polyfill",
+    "promise",
+    "promises"
+  ],
+  "license": "MIT",
+  "main": "promise.js",
+  "name": "es6-promise-polyfill",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lahmatiy/es6-promise-polyfill.git"
+  },
+  "scripts": {
+    "test": "promises-aplus-tests test/test-adapter"
+  },
+  "version": "1.2.0"
+}

@@ -4,10 +4,14 @@
 	<meta charset="utf-8" />
 	<title></title>
 	<link rel="stylesheet" href="/content/site.min.css" />
+    <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
+    
+
 </head>
 <body>
-	<div id="root"></div>
 
+	<div id="root" ></div>
+    <script src="/scripts/lib/es6-promise-polyfill/promise.js"></script>
 	<script>
 		function loadFallbackScript(condition, url) {
 			condition || document.write('\u003Cscript src=\u0022' + url + '\u0022\u003E\u003C/script\u003E');
@@ -54,7 +58,7 @@
 			crossorigin="anonymous"></script>
 	<script>loadFallbackScript(window && window.ReactRedux, '/scripts/lib/react-redux/react-redux.min.js');</script>
 
-	<script src="scripts/main.min.js"></script>
+	<script src="/scripts/main.js"></script>
 
 
 </body>

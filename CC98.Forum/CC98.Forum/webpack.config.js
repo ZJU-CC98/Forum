@@ -33,7 +33,7 @@ var config = {
         'redux': 'Redux',
         'react-redux': 'ReactRedux',
         'jquery': '$',
-        'signalr': '$.connection'
+        'signalr': '$.connection',
     },
     plugins: [
         new webpack.optimize.UglifyJsPlugin(),
@@ -47,7 +47,10 @@ var config = {
             { from: 'node_modules/react-router/umd', to: 'scripts/lib/react-router' },
             { from: 'node_modules/react-router-dom/umd', to: 'scripts/lib/react-router-dom' },
             { from: 'node_modules/redux/dist', to: 'scripts/lib/redux' },
-            { from: 'node_modules/react-redux/dist', to: 'scripts/lib/react-redux' }
+            { from: 'node_modules/react-redux/dist', to: 'scripts/lib/react-redux' },
+            { from: 'node_modules/moment', to: 'scripts/lib/moment' },
+            { from: 'node_modules/bootstrap/dist', to: 'scripts/lib/bootstrap' },
+            { from: 'node_modules/es6-promise-polyfill', to: 'scripts/lib/es6-promise-polyfill' }
         ]),
         new ExtractTextPlugin('content/site.min.css')
     ]

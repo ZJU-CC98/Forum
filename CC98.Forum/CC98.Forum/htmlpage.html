@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>HTML+CSS结构鼠标点击折叠展开折叠式菜单_懒人建站</title>
+    <meta content="懒人图库" name="keywords" />
+    <meta name="keywords" content="国外网页设计欣赏,CSS导航菜单,FLSH焦点图,网页特效" />
+    <meta name="description" content="懒人建站为您提供-JS广告代码，CSS导航菜单，FLSH焦点图片代码，国外网页设计欣赏与模板和CSS技巧
+
+。" />
+    <style type="text/css">
+        dl, dt, dd, h5, p {
+            padding: 0px;
+            margin: 0px;
+            font-size: 10pt;
+        }
+
+        dl {
+            width: 80%;
+            height: auto;
+            display: block;
+            overflow: hidden;
+            margin: 0 auto;
+            font-size: 10pt;
+            line-height: 160%;
+        }
+
+        dt, dt a {
+            width: 100%;
+            height: auto;
+            display: block;
+            font-weight: bold;
+            color: #333;
+            font-size: 10.5pt;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+            dt a:hover {
+                text-decoration: underline;
+                color: #FF0000;
+            }
+
+        dd, p {
+            text-indent: 2em;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+var number=5; //定义条目数
+
+function LMYC() {
+var lbmc;
+    for (i=1;i<=number;i++) {
+        lbmc = eval('LM' + i);
+        lbmc.style.display = 'none';
+    }
+}
+
+function ShowFLT(i) {
+    lbmc = eval('LM' + i);
+    if (lbmc.style.display == 'none') {
+        LMYC();
+        lbmc.style.display = '';
+    }
+    else {
+        lbmc.style.display = 'none';
+    }
+}
+    </script>
+    <dl>
+        <dt onClick=javascript:ShowFLT(1) href="javascript:void(null)"><a href="javascript:;">如何检索</a></dt>
+        <dd id=LM1 style="DISPLAY: none">
+            <h5><a href="http://51xuediannao.com/HTML+CSS"> HTML+CSS模板_懒人建站</a></h5>
+            <p>
+                我们为您提供-HTML+CSS模板，JS代码，网页图标，网页欣赏模板，SEO优化和各种建站技巧；
+            </p>
+        </dd>
+        <dt onClick=javascript:ShowFLT(2) href="javascript:void(null)"><a href="javascript:;">如何添加计划</a></dt>
+        <dd id=LM2 style="DISPLAY: none">
+            <h5>月度计划的操作</h5>
+            <p>单击添加计划按钮或工具栏上的添加按钮，弹出添加计划窗体，选择要添加计划的分类，年度、月份后单击确定按钮。</p>
+        </dd>
+        <dt onClick=javascript:ShowFLT(3) href="javascript:void(null)"><a href="javascript:;">如何添加明细</a></dt>
+        <dd id=LM3 style="DISPLAY: none">
+            <h5>1、月度计划的操作</h5>
+            <p>
+                在添加完计划，或者单击添加明细按钮后会弹出物资选择窗体，在弹出的物资选择窗体中，选择查选条件后单击查询按钮，会将物资编码库
+
+                中的物资信息查询出来，单击物资信息前的勾选框，可将该物资信息添加到已选择物资信息中，若要去掉该物资信息则同样单击物资信息前面
+
+                的勾选框即可。在物资选择窗体中可以将服务器物资编码库同步本地数据库物资编码表。
+            </p>
+        </dd>
+        <dt onClick=javascript:ShowFLT(4) href="javascript:void(null)"><a href="javascript:;">如何删除</a></dt>
+        <dd id=LM4 style="DISPLAY: none">
+            <p>
+                首先指定年度、月份、计划分类，单击检索按钮检索出某年某月的计划信息，在物资信息前有个复选框，可以通过勾选或全选，选中要删除
+
+                的物资信息，然后单击删除按钮或工具栏上的删除按钮即可。
+            </p>
+        </dd>
+        <dt onClick=javascript:ShowFLT(5) href="javascript:void(null)"><a href="javascript:;">如何保存</a></dt>
+        <dd id=LM5 style="DISPLAY: none">
+            <p>
+                首先指定年度、月份、计划分类，单击检索按钮检索出某年某月的计划信息，然后在该计划的物资明细列表中直接修改物资信息，如数量、
+
+                单价等信息，修改完成后单击保存按钮或者工具栏上的保存按钮即可实现计划的修改。
+            </p>
+        </dd>
+    </dl>
+</body>
+</html>
+<script type="text/javascript">
+var __aObj=document.getElementsByTagName("a");
+var __length=__aObj.length;
+for(var i=0;i<__length;i++){
+	__aObj[i].onfocus=function(){this.blur();}
+}
+</script>
