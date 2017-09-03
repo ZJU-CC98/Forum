@@ -36,7 +36,7 @@ export class App extends React.Component<{}, AppState> {
                 <li><a href={`https://login.cc98.org/OAuth/Authorize?scope=getuserinfo*&response_type=token&client_id=9428333a-a0e3-486b-b375-7904f1bceba9&redirect_uri=http%3A%2F%2Flocalhost%3A${location.port}%2Fusercenter`} > 登陆</a></li>
                 <li><Link to="/usercenter">个人中心</Link></li>
                 <li><Link to="/messagebox">信箱</Link></li>
-                <li><Link to="newtopics">新帖</Link></li>
+                <li><Link to="newtopics">新帖 </Link></li>
                  <hr />
                  <Route exact path="/topic/:topicid/:page?" component={Post} />
                  <Route exact path="/topic/:topicid/user/:userName/:page?" component={CurUserPost} />
@@ -44,7 +44,7 @@ export class App extends React.Component<{}, AppState> {
                  <Route exact path="/boardlist" component={BoardList} />
                  <Route path="/usercenter" component={UserCenter} />
                  <Route path="/messagebox" component={MyMessage} />
-                 <Route path="newtopics" component={AllNewPost} />
+                 <Route path="/newtopics" component={AllNewPost} />
 			</div>
 		</Router></div>;
 	}

@@ -7,8 +7,9 @@ import { FocusPost } from '../Props/FocusPost';
  * 我关注的某个版面的单个主题
  */
 export class FocusPostComponent extends React.Component<FocusPost> {
-
+   
     render() {
+ var topicUrl = `/topic/${this.props.id}`;
         return (<div className='focus-post'>
                     <img className='focus-post-portraitUrl' src={this.props.portraitUrl}></img>
                     <div className='focus-post-info1'>
@@ -17,7 +18,7 @@ export class FocusPostComponent extends React.Component<FocusPost> {
                             <div className='focus-post-redText'>{this.props.fanCount}</div>
                             <div className='focus-post-blackText'>粉丝</div>
                         </div>
-                        <div className='focus-post-title'>{this.props.title}</div>
+                        <div className='focus-post-title'><a href={topicUrl}>{this.props.title}</a></div>
                     </div>
                     <div className='focus-post-info2'>
                         <div className='focus-post-board'>{this.props.boardName} / {this.props.createTime}</div>
