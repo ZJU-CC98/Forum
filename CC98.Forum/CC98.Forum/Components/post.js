@@ -214,7 +214,8 @@ var Replier = (function (_super) {
         return React.createElement("div", { className: "replyRoot" },
             React.createElement("div", { className: "row", style: { width: "1140px", display: "flex", marginBottom: "10px" } },
                 React.createElement("div", { id: "authorImg" },
-                    React.createElement("img", { src: this.props.userImgUrl })),
+                    React.createElement("a", { href: url },
+                        React.createElement("img", { src: this.props.userImgUrl }))),
                 React.createElement("div", { className: "column", id: "rpymes" },
                     React.createElement("div", { className: "row", id: "replierMes" },
                         React.createElement("div", { style: { marginLeft: "10px" } },
@@ -294,7 +295,8 @@ var AuthorMessage = (function (_super) {
         var url = "/user/" + this.props.authorId;
         return React.createElement("div", { className: "row", id: "authormes" },
             React.createElement("div", { id: "authorImg" },
-                React.createElement("img", { src: this.props.authorImgUrl })),
+                React.createElement("a", { href: url },
+                    React.createElement("img", { src: this.props.authorImgUrl }))),
             React.createElement("div", { className: "column" },
                 React.createElement("div", { className: "row authorFans", style: { justifyContent: "space-between" } },
                     React.createElement("div", { id: "authorName" },
@@ -339,8 +341,8 @@ var TopicTitle = (function (_super) {
         }
         else if (isTop == true && isNotice == true) {
             return React.createElement("div", { id: "title1", className: "row", style: { justifyContent: "flex-start" } },
-                React.createElement("div", { className: "titleProp", style: { width: "70px" } }, "\u3010\u7F6E\u9876\u3011"),
-                React.createElement("div", { style: { width: "70px" }, className: "titleProp" }, "\u3010\u516C\u544A\u3011"),
+                React.createElement("div", { className: "titleProp", style: { width: "70px", height: "30px", whiteSpace: "nowrap" } }, "\u3010\u7F6E\u9876\u3011"),
+                React.createElement("div", { style: { width: "70px", height: "30px", whiteSpace: "nowrap" }, className: "titleProp" }, "\u3010\u516C\u544A\u3011"),
                 React.createElement("div", { id: "essayTitle" }, title));
         }
         else {

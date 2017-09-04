@@ -31,7 +31,7 @@ export class List extends RouteComponent<{}, { page: number, totalPage: number, 
         super(props, context);
 
         // 默认页码
-        this.state = { page: 1, totalPage: 1, boardid: 1 };
+        this.state = { page: 1, totalPage: 1, boardid: this.match.params.boardid };
     }
     async getTotalListPage(boardid) {
         var totalTopicCountResponse = await fetch(`http://api.cc98.org/Board/${boardid}`);
@@ -68,7 +68,7 @@ export class List extends RouteComponent<{}, { page: number, totalPage: number, 
     }
     render() {
         return <div id="listRoot">
-            <ListHead boardid={this.state.boardid} />
+            <ListHead key={this.state.page} boardid={this.state.boardid} />
             <ListNotice />
             <ListButtonAndPager page={this.state.page} totalPage={this.state.totalPage} boardid={this.state.boardid} />
             <ListTag />
@@ -76,7 +76,7 @@ export class List extends RouteComponent<{}, { page: number, totalPage: number, 
         </div>;
     }
 }
-export class ListHead extends RouteComponent<{boardid}, State.ListHeadState, {}> {
+export class ListHead extends RouteComponent<{ boardid }, State.ListHeadState, {}> {
     constructor(props, content) {
         super(props, content);
         this.state = {
@@ -85,11 +85,11 @@ export class ListHead extends RouteComponent<{boardid}, State.ListHeadState, {}>
             todayTopics: 210,
             totalTopics: 12000,
             adsUrl: '/images/ads.jpg',
-            listManager: 'Dearkano',
+            listManager: [],
             isAnomynous: false,
             isEncrypted: false,
             isHidden: false,
-            isLocked:false
+            isLocked: false
         }
     }
     async componentDidMount() {
@@ -98,15 +98,28 @@ export class ListHead extends RouteComponent<{boardid}, State.ListHeadState, {}>
         let managerJson = await managersResponse.json();
         this.setState({ listName: managerJson.name, todayTopics: managerJson.todayPostCount, totalTopics: managerJson.totalTopicCount, listManager: managerJson.masters })
     }
+    async componentWillRecieveProps(newProps) {
+
+        let url = `http://api.cc98.org/Board/${newProps.boardid}`;
+        let managersResponse = await fetch(url);
+        let managerJson = await managersResponse.json();
+        this.setState({ listName: managerJson.name, todayTopics: managerJson.todayPostCount, totalTopics: managerJson.totalTopicCount, listManager: managerJson.masters })
+    }
+     generateMasters(item) {
+         let name = item.toString();
+         let userName = encodeURIComponent( item.toString());
+         let webUrl = `/user/name/${userName}`;
+         return <div style={{ marginRight:"10px" }}><a href={webUrl}>{name}</a></div>;
+    }
     render() {
         return <div className="column" style={{ width: '1140px', }}>
             <div className="row" style={{ flexDirection: 'row', justifyContent: 'space-between', width: '1140px' }}>
                 <div style={{ flexgrow: '1', flexDirection: 'row', display: 'flex' }}>
                     <div id="ListImg" ><img src={this.state.imgUrl}></img></div>
                     <div className="column" style={{ marginTop: '20px', marginLeft: '10px' }}>
-  
-                        <div style={{ marginTop: '10px' }}><span>今日主题</span><span>{this.state.todayTopics}</span></div>
-                        <div style={{ marginTop: '10px' }}><span>总主题</span><span>{this.state.totalTopics}</span></div>
+
+                        <div className="row" style={{ marginTop: '10px' }}><div>今日主题</div><div style={{ marginLeft: "10px" }}>{this.state.todayTopics}</div></div>
+                        <div className="row" style={{ marginTop: '10px' }}><div>总主题</div><div style={{ marginLeft: "20px" }}>{this.state.totalTopics}</div></div>
                     </div>
                 </div>
                 <div className="column" style={{ flexgrow: '0' }}>
@@ -115,9 +128,10 @@ export class ListHead extends RouteComponent<{boardid}, State.ListHeadState, {}>
                 </div>
             </div>
             <div className="row" style={{ marginTop: '5px' }}>
-                <span>版主 : </span><span style={{ marginLeft: '5px' }}>{this.state.listManager}</span>
+                <span>版主 : </span><div className="row" style={{ marginLeft: '5px' }}>{this.state.listManager.map(this.generateMasters)}</div>
             </div>
         </div>;
+
     }
 }
 export class ListNotice extends RouteComponent<{}, State.ListNoticeState, {}> {
@@ -264,11 +278,9 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
 
     render() {
 
-        console.log('rendering list content');
-
         return <div className="listContent ">
             <div className="row" style={{ justifyContent: 'space-between', }}>
-                <div className="row" style={{ height: '40px', marginTop: "5px" }}>
+                <div className="row" style={{ height: '40px', marginTop: "5px", alignItems: "center" }}>
                     <button className="listContentTag">全部</button>
                     <button className="listContentTag">精华</button>
                     <button className="listContentTag">最热</button>

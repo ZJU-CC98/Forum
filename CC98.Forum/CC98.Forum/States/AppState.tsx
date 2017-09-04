@@ -119,7 +119,7 @@ export class ListHeadState {
 	todayTopics: number;
 	totalTopics: number;
 	adsUrl: string;
-	listManager: string;
+	listManager;
     isHidden: boolean;
     isEncrypted: boolean;
     isAnomynous: boolean;

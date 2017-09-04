@@ -22,12 +22,10 @@ export class BoardID extends React.Component<{}, { board: Board[], view1, view2,
     async componentDidMount() {
         let response = await fetch("http://api.cc98.org/Board/Root");
         let data = await response.json();
-        console.log(data);
         let board: Board[] = [];
         for (var i = 0; i < 20; i++) {
             board[i] = new Board(data[i].name, data[i].todayPostCount, data[i].totalPostCount, data[i].id, data[i].masters);
         }
-        console.log(board);
         this.setState({
             board: board,
         })

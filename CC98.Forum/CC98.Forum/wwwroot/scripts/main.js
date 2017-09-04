@@ -5348,7 +5348,7 @@ var List = (function (_super) {
     function List(props, context) {
         var _this = _super.call(this, props, context) || this;
         // 默认页码
-        _this.state = { page: 1, totalPage: 1, boardid: 1 };
+        _this.state = { page: 1, totalPage: 1, boardid: _this.match.params.boardid };
         return _this;
     }
     List.prototype.getTotalListPage = function (boardid) {
@@ -5418,7 +5418,7 @@ var List = (function (_super) {
     };
     List.prototype.render = function () {
         return React.createElement("div", { id: "listRoot" },
-            React.createElement(ListHead, { boardid: this.state.boardid }),
+            React.createElement(ListHead, { key: this.state.page, boardid: this.state.boardid }),
             React.createElement(ListNotice, null),
             React.createElement(ListButtonAndPager, { page: this.state.page, totalPage: this.state.totalPage, boardid: this.state.boardid }),
             React.createElement(ListTag, null),
@@ -5437,7 +5437,7 @@ var ListHead = (function (_super) {
             todayTopics: 210,
             totalTopics: 12000,
             adsUrl: '/images/ads.jpg',
-            listManager: 'Dearkano',
+            listManager: [],
             isAnomynous: false,
             isEncrypted: false,
             isHidden: false,
@@ -5458,11 +5458,42 @@ var ListHead = (function (_super) {
                         return [4 /*yield*/, managersResponse.json()];
                     case 2:
                         managerJson = _a.sent();
+                        console.log("didmount");
+                        console.log(managerJson.masters);
                         this.setState({ listName: managerJson.name, todayTopics: managerJson.todayPostCount, totalTopics: managerJson.totalTopicCount, listManager: managerJson.masters });
                         return [2 /*return*/];
                 }
             });
         });
+    };
+    ListHead.prototype.componentWillRecieveProps = function (newProps) {
+        return __awaiter(this, void 0, void 0, function () {
+            var url, managersResponse, managerJson;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        url = "http://api.cc98.org/Board/" + newProps.boardid;
+                        return [4 /*yield*/, fetch(url)];
+                    case 1:
+                        managersResponse = _a.sent();
+                        return [4 /*yield*/, managersResponse.json()];
+                    case 2:
+                        managerJson = _a.sent();
+                        console.log("will");
+                        console.log(managerJson.masters);
+                        this.setState({ listName: managerJson.name, todayTopics: managerJson.todayPostCount, totalTopics: managerJson.totalTopicCount, listManager: managerJson.masters });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ListHead.prototype.generateMasters = function (item) {
+        console.log("item=" + item);
+        var name = item.toString();
+        var userName = encodeURIComponent(item.toString());
+        var webUrl = "/user/name/" + userName;
+        return React.createElement("div", { style: { marginRight: "10px" } },
+            React.createElement("a", { href: webUrl }, name));
     };
     ListHead.prototype.render = function () {
         return React.createElement("div", { className: "column", style: { width: '1140px', } },
@@ -5471,12 +5502,12 @@ var ListHead = (function (_super) {
                     React.createElement("div", { id: "ListImg" },
                         React.createElement("img", { src: this.state.imgUrl })),
                     React.createElement("div", { className: "column", style: { marginTop: '20px', marginLeft: '10px' } },
-                        React.createElement("div", { style: { marginTop: '10px' } },
-                            React.createElement("span", null, "\u4ECA\u65E5\u4E3B\u9898"),
-                            React.createElement("span", null, this.state.todayTopics)),
-                        React.createElement("div", { style: { marginTop: '10px' } },
-                            React.createElement("span", null, "\u603B\u4E3B\u9898"),
-                            React.createElement("span", null, this.state.totalTopics)))),
+                        React.createElement("div", { className: "row", style: { marginTop: '10px' } },
+                            React.createElement("div", null, "\u4ECA\u65E5\u4E3B\u9898"),
+                            React.createElement("div", { style: { marginLeft: "10px" } }, this.state.todayTopics)),
+                        React.createElement("div", { className: "row", style: { marginTop: '10px' } },
+                            React.createElement("div", null, "\u603B\u4E3B\u9898"),
+                            React.createElement("div", { style: { marginLeft: "20px" } }, this.state.totalTopics)))),
                 React.createElement("div", { className: "column", style: { flexgrow: '0' } },
                     React.createElement("div", { id: "like" },
                         React.createElement("button", { style: { border: 'none', color: '#F5FAFC' } }, "\u2730"),
@@ -5485,7 +5516,7 @@ var ListHead = (function (_super) {
                         React.createElement("img", { src: this.state.adsUrl, style: { width: '250px', height: '60px' } })))),
             React.createElement("div", { className: "row", style: { marginTop: '5px' } },
                 React.createElement("span", null, "\u7248\u4E3B : "),
-                React.createElement("span", { style: { marginLeft: '5px' } }, this.state.listManager)));
+                React.createElement("div", { className: "row", style: { marginLeft: '5px' } }, this.state.listManager.map(this.generateMasters))));
     };
     return ListHead;
 }(RouteComponent));
@@ -5676,7 +5707,7 @@ var ListContent = (function (_super) {
         console.log('rendering list content');
         return React.createElement("div", { className: "listContent " },
             React.createElement("div", { className: "row", style: { justifyContent: 'space-between', } },
-                React.createElement("div", { className: "row", style: { height: '40px', marginTop: "5px" } },
+                React.createElement("div", { className: "row", style: { height: '40px', marginTop: "5px", alignItems: "center" } },
                     React.createElement("button", { className: "listContentTag" }, "\u5168\u90E8"),
                     React.createElement("button", { className: "listContentTag" }, "\u7CBE\u534E"),
                     React.createElement("button", { className: "listContentTag" }, "\u6700\u70ED")),
@@ -17181,7 +17212,8 @@ var Replier = (function (_super) {
         return React.createElement("div", { className: "replyRoot" },
             React.createElement("div", { className: "row", style: { width: "1140px", display: "flex", marginBottom: "10px" } },
                 React.createElement("div", { id: "authorImg" },
-                    React.createElement("img", { src: this.props.userImgUrl })),
+                    React.createElement("a", { href: url },
+                        React.createElement("img", { src: this.props.userImgUrl }))),
                 React.createElement("div", { className: "column", id: "rpymes" },
                     React.createElement("div", { className: "row", id: "replierMes" },
                         React.createElement("div", { style: { marginLeft: "10px" } },
@@ -17261,7 +17293,8 @@ var AuthorMessage = (function (_super) {
         var url = "/user/" + this.props.authorId;
         return React.createElement("div", { className: "row", id: "authormes" },
             React.createElement("div", { id: "authorImg" },
-                React.createElement("img", { src: this.props.authorImgUrl })),
+                React.createElement("a", { href: url },
+                    React.createElement("img", { src: this.props.authorImgUrl }))),
             React.createElement("div", { className: "column" },
                 React.createElement("div", { className: "row authorFans", style: { justifyContent: "space-between" } },
                     React.createElement("div", { id: "authorName" },
@@ -17306,8 +17339,8 @@ var TopicTitle = (function (_super) {
         }
         else if (isTop == true && isNotice == true) {
             return React.createElement("div", { id: "title1", className: "row", style: { justifyContent: "flex-start" } },
-                React.createElement("div", { className: "titleProp", style: { width: "70px" } }, "\u3010\u7F6E\u9876\u3011"),
-                React.createElement("div", { style: { width: "70px" }, className: "titleProp" }, "\u3010\u516C\u544A\u3011"),
+                React.createElement("div", { className: "titleProp", style: { width: "70px", height: "30px", whiteSpace: "nowrap" } }, "\u3010\u7F6E\u9876\u3011"),
+                React.createElement("div", { style: { width: "70px", height: "30px", whiteSpace: "nowrap" }, className: "titleProp" }, "\u3010\u516C\u544A\u3011"),
                 React.createElement("div", { id: "essayTitle" }, title));
         }
         else {
