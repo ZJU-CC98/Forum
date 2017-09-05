@@ -317,7 +317,7 @@ var BoardList = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     BoardList.prototype.render = function () {
-        return React.createElement("div", { className: "boardList" },
+        return React.createElement("div", { className: "boardList", style: { marginTop: "40px" } },
             React.createElement(BoardID, null));
     };
     return BoardList;

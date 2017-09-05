@@ -137,7 +137,7 @@ var List = (function (_super) {
         });
     };
     List.prototype.render = function () {
-        return React.createElement("div", { id: "listRoot" },
+        return React.createElement("div", { id: "listRoot", style: { marginTop: "40px" } },
             React.createElement(ListHead, { key: this.state.page, boardid: this.state.boardid }),
             React.createElement(ListNotice, null),
             React.createElement(ListButtonAndPager, { page: this.state.page, totalPage: this.state.totalPage, boardid: this.state.boardid }),

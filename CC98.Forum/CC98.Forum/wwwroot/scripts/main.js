@@ -5417,7 +5417,7 @@ var List = (function (_super) {
         });
     };
     List.prototype.render = function () {
-        return React.createElement("div", { id: "listRoot" },
+        return React.createElement("div", { id: "listRoot", style: { marginTop: "40px" } },
             React.createElement(ListHead, { key: this.state.page, boardid: this.state.boardid }),
             React.createElement(ListNotice, null),
             React.createElement(ListButtonAndPager, { page: this.state.page, totalPage: this.state.totalPage, boardid: this.state.boardid }),
@@ -5458,8 +5458,6 @@ var ListHead = (function (_super) {
                         return [4 /*yield*/, managersResponse.json()];
                     case 2:
                         managerJson = _a.sent();
-                        console.log("didmount");
-                        console.log(managerJson.masters);
                         this.setState({ listName: managerJson.name, todayTopics: managerJson.todayPostCount, totalTopics: managerJson.totalTopicCount, listManager: managerJson.masters });
                         return [2 /*return*/];
                 }
@@ -5479,8 +5477,6 @@ var ListHead = (function (_super) {
                         return [4 /*yield*/, managersResponse.json()];
                     case 2:
                         managerJson = _a.sent();
-                        console.log("will");
-                        console.log(managerJson.masters);
                         this.setState({ listName: managerJson.name, todayTopics: managerJson.todayPostCount, totalTopics: managerJson.totalTopicCount, listManager: managerJson.masters });
                         return [2 /*return*/];
                 }
@@ -5488,7 +5484,6 @@ var ListHead = (function (_super) {
         });
     };
     ListHead.prototype.generateMasters = function (item) {
-        console.log("item=" + item);
         var name = item.toString();
         var userName = encodeURIComponent(item.toString());
         var webUrl = "/user/name/" + userName;
@@ -5704,7 +5699,6 @@ var ListContent = (function (_super) {
         });
     };
     ListContent.prototype.render = function () {
-        console.log('rendering list content');
         return React.createElement("div", { className: "listContent " },
             React.createElement("div", { className: "row", style: { justifyContent: 'space-between', } },
                 React.createElement("div", { className: "row", style: { height: '40px', marginTop: "5px", alignItems: "center" } },
@@ -16896,7 +16890,7 @@ exports.UserCenterMyFollowingsUser = UserCenterMyFollowingsUser;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(125);
-module.exports = __webpack_require__(164);
+module.exports = __webpack_require__(165);
 
 
 /***/ }),
@@ -16945,6 +16939,7 @@ var BoardList_1 = __webpack_require__(133);
 var UserCenter_1 = __webpack_require__(134);
 var MyMessage_1 = __webpack_require__(150);
 var AllNewPost_1 = __webpack_require__(161);
+var Header_1 = __webpack_require__(164);
 var RouteComponent = (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -16955,6 +16950,14 @@ var RouteComponent = (function (_super) {
     return RouteComponent;
 }(React.Component));
 exports.RouteComponent = RouteComponent;
+/* <h1>Ashida Mana~</h1>
+                <li><Link to="/topic/4723305">moe</Link></li>
+                <li><Link to="/boardlist">meow</Link></li>
+                <li><a href={`https://login.cc98.org/OAuth/Authorize?scope=getuserinfo*&response_type=token&client_id=9428333a-a0e3-486b-b375-7904f1bceba9&redirect_uri=http%3A%2F%2Flocalhost%3A${location.port}%2Fusercenter`} > 登陆</a></li>
+                <li><Link to="/usercenter">个人中心</Link></li>
+                <li><Link to="/messagebox">信箱</Link></li>
+                <li><Link to="newtopics">新帖 </Link></li>
+                 <hr />*/
 var App = (function (_super) {
     __extends(App, _super);
     function App() {
@@ -16964,20 +16967,7 @@ var App = (function (_super) {
         return React.createElement("div", null,
             React.createElement(react_router_dom_1.BrowserRouter, null,
                 React.createElement("div", { style: { backgroundColor: '#F5FAFD', justifyContent: "center", display: "flex", flexDirection: "column" } },
-                    React.createElement("h1", null, "Ashida Mana~"),
-                    React.createElement("li", null,
-                        React.createElement(react_router_dom_1.Link, { to: "/topic/4723305" }, "moe")),
-                    React.createElement("li", null,
-                        React.createElement(react_router_dom_1.Link, { to: "/boardlist" }, "meow")),
-                    React.createElement("li", null,
-                        React.createElement("a", { href: "https://login.cc98.org/OAuth/Authorize?scope=getuserinfo*&response_type=token&client_id=9428333a-a0e3-486b-b375-7904f1bceba9&redirect_uri=http%3A%2F%2Flocalhost%3A" + location.port + "%2Fusercenter" }, " \u767B\u9646")),
-                    React.createElement("li", null,
-                        React.createElement(react_router_dom_1.Link, { to: "/usercenter" }, "\u4E2A\u4EBA\u4E2D\u5FC3")),
-                    React.createElement("li", null,
-                        React.createElement(react_router_dom_1.Link, { to: "/messagebox" }, "\u4FE1\u7BB1")),
-                    React.createElement("li", null,
-                        React.createElement(react_router_dom_1.Link, { to: "newtopics" }, "\u65B0\u5E16 ")),
-                    React.createElement("hr", null),
+                    React.createElement(Header_1.Header, null),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/:page?", component: post_1.Post }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/user/:userName/:page?", component: CurUserPost_1.CurUserPost }),
                     React.createElement(react_router_dom_1.Route, { path: "/list/:boardid/:page?", component: List_1.List }),
@@ -17144,7 +17134,7 @@ var Post = (function (_super) {
         if (this.state.page == 1) {
             topic = React.createElement(PostTopic, { imgUrl: "/images/ads.jpg", page: this.state.page, topicid: this.state.topicid });
         }
-        return React.createElement("div", { className: "center", style: { overflowX: "scroll", minWidth: "1140px" } },
+        return React.createElement("div", { className: "center", style: { overflowX: "scroll", minWidth: "1140px", marginTop: "40px" } },
             React.createElement(TopicPager, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
             topic,
             React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: Reply }));
@@ -18596,12 +18586,10 @@ var BoardID = (function (_super) {
                         return [4 /*yield*/, response.json()];
                     case 2:
                         data = _a.sent();
-                        console.log(data);
                         board = [];
                         for (i = 0; i < 20; i++) {
                             board[i] = new AppState_1.Board(data[i].name, data[i].todayPostCount, data[i].totalPostCount, data[i].id, data[i].masters);
                         }
-                        console.log(board);
                         this.setState({
                             board: board,
                         });
@@ -18846,7 +18834,7 @@ var BoardList = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     BoardList.prototype.render = function () {
-        return React.createElement("div", { className: "boardList" },
+        return React.createElement("div", { className: "boardList", style: { marginTop: "40px" } },
             React.createElement(BoardID, null));
     };
     return BoardList;
@@ -21250,7 +21238,7 @@ var AllNewPost = (function (_super) {
      * 全站新帖列表
      */
     AllNewPost.prototype.render = function () {
-        return (React.createElement("div", { className: 'focus' },
+        return (React.createElement("div", { className: 'focus', style: { marginTop: "40px" } },
             React.createElement("div", { className: 'focus-allNewPost' },
                 React.createElement("i", { className: 'fa fa-home', "aria-hidden": 'true' }),
                 "\u9996\u9875/\u5168\u7AD9\u65B0\u5E16"),
@@ -21556,6 +21544,178 @@ exports.FocusPostComponent = FocusPostComponent;
 
 /***/ }),
 /* 164 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(1);
+/*
+<div className="root">
+            <div className="headerBackground">
+                <img src="/images/headerBackground.jpg"></img>
+            </div>
+        </div>
+*/
+var Header = (function (_super) {
+    __extends(Header, _super);
+    function Header() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Header.prototype.render = function () {
+        return React.createElement("div", { className: "header" },
+            React.createElement("div", { className: "topBar" },
+                React.createElement("div", { className: "topBarRow" },
+                    React.createElement("div", { className: "row" },
+                        React.createElement("div", null,
+                            React.createElement("img", { src: "images/矢量智能对象.ico" })),
+                        React.createElement("div", { style: { margin: '5px 0 0 5px' } },
+                            React.createElement("img", { src: "images/CC98.ico" }))),
+                    React.createElement("div", { className: "row" },
+                        React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } }, "\u9996\u9875"),
+                        React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } }, "\u5173\u6CE8"),
+                        React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
+                            React.createElement("a", { href: "/newTopics", style: { color: "#fff" } }, "\u65B0\u5E16")),
+                        React.createElement("div", { className: "topBarText", style: { margin: '0 0 0 10px' } },
+                            React.createElement("a", { href: "/boardList", style: { color: "#fff" } }, "\u7248\u9762"))))),
+            React.createElement("div", { className: "headerContent" },
+                React.createElement("div", { className: "headerRow" },
+                    React.createElement("div", { className: "linkBar" },
+                        React.createElement("div", { className: "row", style: { margin: '0 10px 0 10px' } },
+                            React.createElement("div", { style: { margin: '3px 10px 0 0' } },
+                                React.createElement("img", { src: "images/网盘.ico", width: "15", height: "15" })),
+                            React.createElement("div", null,
+                                React.createElement("a", { href: "", className: "linkText" }, "\u7F51\u76D8"))),
+                        React.createElement("div", { className: "row", style: { margin: '0 10px 0 10px' } },
+                            React.createElement("div", { style: { margin: '3px 10px 0 0' } },
+                                React.createElement("img", { src: "images/游戏.ico", width: "15", height: "15" })),
+                            React.createElement("div", null,
+                                React.createElement("a", { href: "", className: "linkText" }, "\u6E38\u620F"))),
+                        React.createElement("div", { className: "row", style: { margin: '0 10px 0 10px' } },
+                            React.createElement("div", { style: { margin: '3px 10px 0 0' } },
+                                React.createElement("img", { src: "images/勋章.ico", width: "15", height: "15" })),
+                            React.createElement("div", null,
+                                React.createElement("a", { href: "", className: "linkText" }, "\u52CB\u7AE0"))),
+                        React.createElement("div", { className: "row", style: { margin: '0 10px 0 10px' } },
+                            React.createElement("div", { style: { margin: '3px 10px 0 0' } },
+                                React.createElement("img", { src: "images/抽卡.ico", width: "15", height: "15" })),
+                            React.createElement("div", null,
+                                React.createElement("a", { href: "", className: "linkText" }, "\u62BD\u5361"))),
+                        React.createElement("div", { className: "row", style: { margin: '0 10px 0 10px' } },
+                            React.createElement("div", { style: { margin: '3px 10px 0 0' } },
+                                React.createElement("img", { src: "images/竞猜.ico", width: "15", height: "15" })),
+                            React.createElement("div", null,
+                                React.createElement("a", { href: "", className: "linkText" }, "\u7ADE\u731C"))),
+                        React.createElement("div", { className: "row", style: { margin: '0 10px 0 10px' } },
+                            React.createElement("div", { style: { margin: '3px 10px 0 0' } },
+                                React.createElement("img", { src: "images/NexusHD.jpg", width: "15", height: "15" })),
+                            React.createElement("div", null,
+                                React.createElement("a", { href: "", className: "linkText" }, "NexusHD")))),
+                    React.createElement("form", { name: "search", action: "", method: "get" },
+                        React.createElement("div", { className: "searchBar" },
+                            React.createElement("div", null,
+                                React.createElement("select", { name: "options" },
+                                    React.createElement("option", { value: "board" }, "\u7248\u9762"),
+                                    React.createElement("option", { value: "theme" }, "\u4E3B\u9898"),
+                                    React.createElement("option", { value: "user" }, "\u7528\u6237"))),
+                            React.createElement("div", null,
+                                React.createElement("input", { name: "searchText", type: "text", placeholder: "猜猜能搜到什么...", style: { border: '0', height: '30px', width: '260px', margin: '0 3px 0 3px' } })),
+                            React.createElement("div", null,
+                                React.createElement("input", { type: "image", name: "searchButton", height: "15", width: "15", src: "images/fangdajing.ico", style: { margin: '3px 10px 0 0' } })))))));
+    };
+    return Header;
+}(React.Component));
+exports.Header = Header;
+/*
+
+<img src="/images/headerBackground.jpg"></img>
+            <div id="backgroundimg"> <img src="images/模板图片.jpg" /> </div>
+            <div className="shadow"> </div>
+            <div className="beijingtiao"> </div>
+            <div id="logo"><img src="images/矢量智能对象.ico" /></div>
+            <div id="cc98"><img src="images/CC98论坛.ico" /></div>
+
+            <div id="search">
+                <div id="option">
+                    <div id="theme">主题</div>
+                    <div id="down"></div>
+                </div>
+                <div style={{ left: '50px', top: '0px', position: 'absolute' }}>
+                    <input id="searchbar" type="text" placeholder="猜猜能搜到什么..."></input>
+                </div>
+                <button id="searchbutton">
+                    <img src="images/fangdajing.ico" width="15" height="15" />
+                </button>
+            </div>
+
+            <div id="BBScolumn">
+                <div style={{ position: 'absolute', left: '12px', top: '10px' }}>
+                    <img src="images/网盘.ico" width="15" height="15" />
+                </div>
+                <div style={{ position: 'absolute', left: '37px', top: '8px' }}>
+                    <a href="" className="ziti1">网盘</a>
+                </div>
+                <div style={{ position: 'absolute', left: '84px', top: '10px' }}>
+                    <img src="images/游戏.ico" width="15" height="15" />
+                </div>
+                <div style={{ position: 'absolute', left: '109px', top: '8px' }}>
+                    <a href="http://www.cc98.org/game.asp" className="ziti1">游戏</a>
+                </div>
+                <div style={{ position: 'absolute', left: '156px', top: '10px' }}>
+                    <img src="images/勋章.ico" width="15" height="15" />
+                </div>
+                <div style={{ position: 'absolute', left: '181px', top: '8px' }}>
+                    <a href="http://v2.cc98.org/app/medalmanager.aspx" className="ziti1">勋章中心</a>
+                </div>
+                <div style={{ position: 'absolute', left: '253px', top: '10px' }}>
+                    <img src="images/卡片.ico" width="15" height="15" />
+                </div>
+                <div style={{ position: 'absolute', left: '278px', top: '8px' }}>
+                    <a href="http://card.cc98.org/" className="ziti1">抽卡</a>
+                </div>
+                <div style={{ position: 'absolute', left: '325px', top: '10px' }}>
+                    <img src="images/猜猜.ico" width="15" height="15" />
+                </div>
+                <div style={{ position: 'absolute', left: '350px', top: '8px' }}>
+                    <a href="http://gaming.cc98.org/Game" className="ziti1">竞猜</a>
+                </div>
+                <div style={{ position: 'absolute', left: '397px', top: '10px' }}>
+                    <img src="images/直播.ico" width="15" height="15" />
+                </div>
+                <div style={{ position: 'absolute', left: '422px', top: '8px' }}>
+                    <a href="http://live.cc98.org/" className="ziti1">直播</a>
+                </div>
+                <div style={{ position: 'absolute', left: '469px', top: '10px' }}>
+                    <img src="images/应用.ico" width="15" height="15" />
+                </div>
+                <div style={{ position: 'absolute', left: '494px', top: '8px' }}>
+                    <a href="" className="ziti1">应用</a>
+                </div>
+            </div>
+
+            <div className="banquantiao"></div>
+            <div id="banquanwenzi">
+
+                <p>Copyright © 2003-2017 CC98 Network Association. Email: contact@cc98.org</p></div>
+
+        </div>
+    }
+}
+*/ 
+//# sourceMappingURL=Header.js.map
+
+/***/ }),
+/* 165 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -191,7 +191,7 @@ export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>
 }
 export class BoardList extends React.Component<{}, AppState> {
     render() {
-        return <div className="boardList">
+        return <div className="boardList" style={{ marginTop:"40px" }}>
             <BoardID />
         </div>
     }

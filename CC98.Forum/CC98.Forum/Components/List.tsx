@@ -67,7 +67,7 @@ export class List extends RouteComponent<{}, { page: number, totalPage: number, 
         this.setState({ page: page, totalPage: totalPage, boardid: boardid });
     }
     render() {
-        return <div id="listRoot">
+        return <div id="listRoot" style={{ marginTop:"40px" }}>
             <ListHead key={this.state.page} boardid={this.state.boardid} />
             <ListNotice />
             <ListButtonAndPager page={this.state.page} totalPage={this.state.totalPage} boardid={this.state.boardid} />

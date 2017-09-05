@@ -64,7 +64,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         if (this.state.page == 1) {
             topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} />;
         }
-            return <div className="center" style={{ overflowX: "scroll", minWidth: "1140px" }} >
+        return <div className="center" style={{ overflowX: "scroll", minWidth: "1140px", marginTop:"40px" }} >
                 <TopicPager page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
                 {topic}
                 <Route path="/topic/:topicid/:page?" component={Reply} />
