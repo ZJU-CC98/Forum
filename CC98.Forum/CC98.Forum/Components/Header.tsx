@@ -18,7 +18,7 @@ export class Header extends React.Component<{}, AppState> {
         return <div className="header">
             <div className="topBar">
                 <div className="topBarRow">
-                    <div className="row"><div><img src="images/矢量智能对象.ico" /></div><div style={{ margin: '5px 0 0 5px' }}><img src="images/CC98.ico" /></div></div>
+                    <div className="row"><div><img src="/images/矢量智能对象.ico" /></div><div style={{ margin: '5px 0 0 5px' }}><img src="images/CC98.ico" /></div></div>
                     <div className="row">
                         <div className="topBarText" style={{ margin: '0 10px 0 10px' }}>首页</div>
                         <div className="topBarText" style={{ margin: '0 10px 0 10px' }}>关注</div>
@@ -31,27 +31,27 @@ export class Header extends React.Component<{}, AppState> {
                 <div className="headerRow">
                     <div className="linkBar">
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="images/网盘.ico" width="15" height="15" /></div>
+                            <div style={{ margin: '3px 10px 0 0' }}><img src="/images/网盘.ico" width="15" height="15" /></div>
                             <div><a href="" className="linkText">网盘</a></div>
                         </div>
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="images/游戏.ico" width="15" height="15" /></div>
+                            <div style={{ margin: '3px 10px 0 0' }}><img src="/images/游戏.ico" width="15" height="15" /></div>
                             <div><a href="" className="linkText">游戏</a></div>
                         </div>
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="images/勋章.ico" width="15" height="15" /></div>
+                            <div style={{ margin: '3px 10px 0 0' }}><img src="/images/勋章.ico" width="15" height="15" /></div>
                             <div><a href="" className="linkText">勋章</a></div>
                         </div>
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="images/抽卡.ico" width="15" height="15" /></div>
+                            <div style={{ margin: '3px 10px 0 0' }}><img src="/images/抽卡.ico" width="15" height="15" /></div>
                             <div><a href="" className="linkText">抽卡</a></div>
                         </div>
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="images/gamble.ico" width="15" height="15" /></div>
+                            <div style={{ margin: '3px 10px 0 0' }}><img src="/images/gamble.ico" width="15" height="15" /></div>
                             <div><a href="" className="linkText">竞猜</a></div>
                         </div>
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="images/NexusHD.jpg" width="15" height="15" /></div>
+                            <div style={{ margin: '3px 10px 0 0' }}><img src="/images/NexusHD.jpg" width="15" height="15" /></div>
                             <div><a href="" className="linkText">NexusHD</a></div>
                         </div>
                     </div>
