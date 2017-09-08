@@ -18,7 +18,7 @@ export class Header extends React.Component<{}, AppState> {
         return <div className="header">
             <div className="topBar">
                 <div className="topBarRow">
-                    <div className="row"><div><img src="/images/矢量智能对象.ico" /></div><div style={{ margin: '5px 0 0 5px' }}><img src="images/CC98.ico" /></div></div>
+                    <div className="row"><div><img src="/images/矢量智能对象.ico" /></div><div style={{ margin: '5px 0 0 5px' }}><img src="/images/CC98.ico" /></div></div>
                     <div className="row">
                         <div className="topBarText" style={{ margin: '0 10px 0 10px' }}>首页</div>
                         <div className="topBarText" style={{ margin: '0 10px 0 10px' }}>关注</div>
