@@ -7,14 +7,15 @@ import {
 	Route,
 	Link
 } from 'react-router-dom';
-import { Post } from './post'
-import { List } from './List'
-import { CurUserPost } from './CurUserPost'
-import { Head } from './Head'
-import { BoardList } from './BoardList'
-import { UserCenter } from './UserCenter'
-import { MyMessage } from './MyMessage'
-import { AllNewPost } from './AllNewPost'
+import { Post } from './post';
+import { List } from './List';
+import { CurUserPost } from './CurUserPost';
+import { Head } from './Head';
+import { BoardList } from './BoardList';
+import { UserCenter } from './UserCenter';
+import { MyMessage } from './MyMessage';
+import { AllNewPost } from './AllNewPost';
+import { User } from './User';
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
 	match: match<TMatch>;
@@ -43,6 +44,7 @@ export class App extends React.Component<{}, AppState> {
                  <Route path="/list/:boardid/:page?" component={List} />
                  <Route exact path="/boardlist" component={BoardList} />
                  <Route path="/usercenter" component={UserCenter} />
+                 <Route path="/user" component={User} />
                  <Route path="/messagebox" component={MyMessage} />
                  <Route path="newtopics" component={AllNewPost} />
 			</div>

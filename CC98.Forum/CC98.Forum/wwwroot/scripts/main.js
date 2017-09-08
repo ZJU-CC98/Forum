@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 124);
+/******/ 	return __webpack_require__(__webpack_require__.s = 127);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1896,7 +1896,7 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            __webpack_require__(131)("./" + name);
+            __webpack_require__(134)("./" + name);
             // because defineLocale currently also sets the global locale, we
             // want to undo that for lazy loaded locales
             getSetGlobalLocale(oldLocale);
@@ -4531,7 +4531,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(133)(module)))
 
 /***/ }),
 /* 1 */
@@ -4823,7 +4823,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var State = __webpack_require__(3);
 var React = __webpack_require__(1);
 var List_1 = __webpack_require__(7);
-var $ = __webpack_require__(129);
+var $ = __webpack_require__(132);
 /*export async function getData() {
     let hottopics: State.TopicTitleAndContentState[] = [];
     var response = await fetch('http://api.cc98.org/Topic/Hot');
@@ -16838,6 +16838,155 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
+/**
+ * 用户中心主页个人资料组件
+ */
+var UserCenterExactProfile = (function (_super) {
+    __extends(UserCenterExactProfile, _super);
+    function UserCenterExactProfile() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserCenterExactProfile.prototype.render = function () {
+        return (React.createElement("div", { className: "user-profile" },
+            React.createElement("button", { type: 'button' }, "\u79C1\u4FE1"),
+            React.createElement("div", { id: 'userId' },
+                React.createElement("p", null, this.props.userInfo.name)),
+            React.createElement("div", { id: 'userGenderAndBirthday' },
+                React.createElement("p", null,
+                    "\u6027\u522B  ",
+                    (this.props.userInfo.gender === 0) ? '男' : '女',
+                    " "),
+                this.props.userInfo.birthday === null ? '' : React.createElement("p", null,
+                    "\u751F\u65E5  ",
+                    this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T')))),
+            this.props.userInfo.personalDescription ?
+                React.createElement("div", { className: 'user-description' },
+                    React.createElement("p", null, "\u4E2A\u4EBA\u8BF4\u660E"),
+                    React.createElement("img", { src: this.props.userInfo.photourl }),
+                    React.createElement("p", null, this.props.userInfo.personalDescription)) : null,
+            this.props.userInfo.signatureCode ?
+                React.createElement("div", { className: 'user-description' },
+                    React.createElement("p", null, "\u4E2A\u6027\u7B7E\u540D"),
+                    React.createElement("p", null, this.props.userInfo.signatureCode)) : null));
+    };
+    return UserCenterExactProfile;
+}(React.Component));
+exports.UserCenterExactProfile = UserCenterExactProfile;
+//# sourceMappingURL=UserCenterExactProfile.js.map
+
+/***/ }),
+/* 124 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(1);
+var react_router_dom_1 = __webpack_require__(2);
+var UserCenterExactActivitiesPosts_1 = __webpack_require__(141);
+var UserCenterExactActivitiesReplies_1 = __webpack_require__(142);
+/**
+ * 用户中心主页近期动态组件
+ */
+var UserCenterExactActivities = (function (_super) {
+    __extends(UserCenterExactActivities, _super);
+    function UserCenterExactActivities() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserCenterExactActivities.prototype.render = function () {
+        return (React.createElement("div", { className: "user-activities" },
+            React.createElement("p", null, "\u8FD1\u671F\u52A8\u6001"),
+            React.createElement(react_router_dom_1.BrowserRouter, null,
+                React.createElement("div", null,
+                    React.createElement(CustomLink, { to: "" + location.pathname, label: '主题', activeOnlyWhenExact: true }),
+                    " | ",
+                    React.createElement(CustomLink, { to: location.pathname + "/replies", label: '回复', activeOnlyWhenExact: false }),
+                    React.createElement(react_router_dom_1.Route, { exact: true, path: "" + location.pathname, component: UserCenterExactActivitiesPosts_1.UserCenterExactActivitiesPosts }),
+                    React.createElement(react_router_dom_1.Route, { path: location.pathname + "/replies", component: UserCenterExactActivitiesReplies_1.UserCenterExactActivitiesReplies })))));
+    };
+    return UserCenterExactActivities;
+}(React.Component));
+exports.UserCenterExactActivities = UserCenterExactActivities;
+var CustomLink = function (_a) {
+    var label = _a.label, to = _a.to, activeOnlyWhenExact = _a.activeOnlyWhenExact;
+    return (React.createElement(react_router_dom_1.Route, { path: to, exact: activeOnlyWhenExact, children: function (_a) {
+            var match = _a.match;
+            return (React.createElement(react_router_dom_1.Link, { className: match ? 'user-activities-active' : '', to: to }, label));
+        } }));
+};
+//# sourceMappingURL=UserCenterExactActivities.js.map
+
+/***/ }),
+/* 125 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(1);
+//用户中心主页用户头像与徽章组件
+var UserCenterExactAvatar = (function (_super) {
+    __extends(UserCenterExactAvatar, _super);
+    function UserCenterExactAvatar() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserCenterExactAvatar.prototype.render = function () {
+        return (React.createElement("div", { className: 'user-avatar' },
+            React.createElement("img", { className: 'user-avatar-img', src: this.props.userAvatarImgURL }),
+            React.createElement("div", { className: 'user-badge' })));
+    };
+    return UserCenterExactAvatar;
+}(React.Component));
+exports.UserCenterExactAvatar = UserCenterExactAvatar;
+//# sourceMappingURL=UserCenterExactAvatar.js.map
+
+/***/ }),
+/* 126 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(1);
 //用户中心我的关注&我的粉丝用户通用组件
 var UserCenterMyFollowingsUser = (function (_super) {
     __extends(UserCenterMyFollowingsUser, _super);
@@ -16861,35 +17010,35 @@ exports.UserCenterMyFollowingsUser = UserCenterMyFollowingsUser;
 //# sourceMappingURL=UserCenterMyFollowingsUser.js.map
 
 /***/ }),
-/* 124 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(125);
-module.exports = __webpack_require__(164);
+__webpack_require__(128);
+module.exports = __webpack_require__(167);
 
 
 /***/ }),
-/* 125 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var ReactDOM = __webpack_require__(126);
-var App_1 = __webpack_require__(127);
+var ReactDOM = __webpack_require__(129);
+var App_1 = __webpack_require__(130);
 // 显示应用程序核心内容
 ReactDOM.render(React.createElement(App_1.App, null), document.getElementById('root'));
 
 
 /***/ }),
-/* 126 */
+/* 129 */
 /***/ (function(module, exports) {
 
 module.exports = ReactDOM;
 
 /***/ }),
-/* 127 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16907,13 +17056,14 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
-var post_1 = __webpack_require__(128);
+var post_1 = __webpack_require__(131);
 var List_1 = __webpack_require__(7);
-var CurUserPost_1 = __webpack_require__(132);
-var BoardList_1 = __webpack_require__(133);
-var UserCenter_1 = __webpack_require__(134);
+var CurUserPost_1 = __webpack_require__(135);
+var BoardList_1 = __webpack_require__(136);
+var UserCenter_1 = __webpack_require__(137);
 var MyMessage_1 = __webpack_require__(150);
 var AllNewPost_1 = __webpack_require__(161);
+var User_1 = __webpack_require__(164);
 var RouteComponent = (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -16945,13 +17095,14 @@ var App = (function (_super) {
                     React.createElement("li", null,
                         React.createElement(react_router_dom_1.Link, { to: "/messagebox" }, "\u4FE1\u7BB1")),
                     React.createElement("li", null,
-                        React.createElement(react_router_dom_1.Link, { to: "newtopics" })),
+                        React.createElement(react_router_dom_1.Link, { to: "newtopics" }, "\u65B0\u5E16")),
                     React.createElement("hr", null),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/:page?", component: post_1.Post }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/user/:userName/:page?", component: CurUserPost_1.CurUserPost }),
                     React.createElement(react_router_dom_1.Route, { path: "/list/:boardid/:page?", component: List_1.List }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/boardlist", component: BoardList_1.BoardList }),
                     React.createElement(react_router_dom_1.Route, { path: "/usercenter", component: UserCenter_1.UserCenter }),
+                    React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }),
                     React.createElement(react_router_dom_1.Route, { path: "/messagebox", component: MyMessage_1.MyMessage }),
                     React.createElement(react_router_dom_1.Route, { path: "newtopics", component: AllNewPost_1.AllNewPost }))));
     };
@@ -16961,7 +17112,7 @@ exports.App = App;
 //# sourceMappingURL=App.js.map
 
 /***/ }),
-/* 128 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17590,13 +17741,13 @@ exports.PageModel = PageModel;
 //# sourceMappingURL=post.js.map
 
 /***/ }),
-/* 129 */
+/* 132 */
 /***/ (function(module, exports) {
 
 module.exports = $;
 
 /***/ }),
-/* 130 */
+/* 133 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -17624,7 +17775,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 131 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -17873,10 +18024,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 131;
+webpackContext.id = 134;
 
 /***/ }),
-/* 132 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18488,7 +18639,7 @@ exports.PageModel = PageModel;
 //# sourceMappingURL=CurUserPost.js.map
 
 /***/ }),
-/* 133 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18822,7 +18973,7 @@ exports.BoardList = BoardList;
 //# sourceMappingURL=BoardList.js.map
 
 /***/ }),
-/* 134 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18843,8 +18994,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterNavigation_1 = __webpack_require__(135);
-var UserCenterRouter_1 = __webpack_require__(136);
+var UserCenterNavigation_1 = __webpack_require__(138);
+var UserCenterRouter_1 = __webpack_require__(139);
 /**
  * 用户中心页面
  */
@@ -18868,7 +19019,7 @@ exports.UserCenter = UserCenter;
 //# sourceMappingURL=UserCenter.js.map
 
 /***/ }),
-/* 135 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18900,7 +19051,7 @@ var UserCenterNavigation = (function (_super) {
     UserCenterNavigation.prototype.render = function () {
         return (React.createElement("div", { className: 'user-center-navigation' },
             React.createElement("ul", null,
-                React.createElement(CustomLink, { to: '/usercenter/', label: '主页', activeOnlyWhenExact: true, myClassName: 'fa-home' }),
+                React.createElement(CustomLink, { to: '/usercenter', label: '主页', activeOnlyWhenExact: true, myClassName: 'fa-home' }),
                 React.createElement("hr", null),
                 React.createElement(CustomLink, { to: '/usercenter/myposts', label: '我的主题', myClassName: 'fa-pencil-square-o' }),
                 React.createElement("hr", null),
@@ -18927,7 +19078,7 @@ var CustomLink = function (_a) {
 //# sourceMappingURL=UserCenterNavigation.js.map
 
 /***/ }),
-/* 136 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18948,7 +19099,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterExact_1 = __webpack_require__(137);
+var UserCenterExact_1 = __webpack_require__(140);
 var UserCenterMyFollowings_1 = __webpack_require__(143);
 var UserCenterMyFans_1 = __webpack_require__(144);
 var UserCenterMyPosts_1 = __webpack_require__(145);
@@ -18975,7 +19126,7 @@ exports.UserCenterRouter = UserCenterRouter;
 //# sourceMappingURL=UserCenterRouter.js.map
 
 /***/ }),
-/* 137 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19030,9 +19181,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var UserCenterExactProfile_1 = __webpack_require__(138);
-var UserCenterExactActivities_1 = __webpack_require__(139);
-var UserCenterExactAvatar_1 = __webpack_require__(142);
+var UserCenterExactProfile_1 = __webpack_require__(123);
+var UserCenterExactActivities_1 = __webpack_require__(124);
+var UserCenterExactAvatar_1 = __webpack_require__(125);
 /**
  * 用户中心主页
  */
@@ -19047,7 +19198,8 @@ var UserCenterExact = (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log(location.hash);
+                        console.log(location);
+                        console.log(location.hash !== '' && location.hash.indexOf('access_token') !== -1);
                         if (location.hash !== '' && location.hash.indexOf('access_token') !== -1) {
                             hash_1 = {};
                             location.hash.slice(1).split('&').map(function (item) { return item.split('='); }).forEach(function (item) {
@@ -19065,11 +19217,13 @@ var UserCenterExact = (function (_super) {
                         return [4 /*yield*/, response.json()];
                     case 2:
                         data = _a.sent();
-                        console.log(data);
+                        console.log(response);
                         this.setState({
                             userInfo: data,
-                            userAvatarImgURL: data.portraitUrl
+                            userAvatarImgURL: data.portraitUrl,
+                            responseState: response.status
                         });
+                        console.log(this.state);
                         return [2 /*return*/];
                 }
             });
@@ -19077,11 +19231,14 @@ var UserCenterExact = (function (_super) {
     };
     UserCenterExact.prototype.render = function () {
         var element;
-        if (this.state !== null) {
+        if (this.state !== null && this.state.responseState === 200) {
             element = (React.createElement("div", { className: 'user-center-exact' },
                 React.createElement(UserCenterExactAvatar_1.UserCenterExactAvatar, { userAvatarImgURL: this.state.userAvatarImgURL }),
                 React.createElement(UserCenterExactProfile_1.UserCenterExactProfile, { userInfo: this.state.userInfo }),
                 React.createElement(UserCenterExactActivities_1.UserCenterExactActivities, null)));
+        }
+        else if (this.state !== null && this.state.responseState === 401) {
+            element = React.createElement("p", null, "\u8BF7\u91CD\u65B0\u767B\u9646");
         }
         else {
             element = React.createElement("p", null, "\u52A0\u8F7D\u4E2D");
@@ -19094,119 +19251,7 @@ exports.UserCenterExact = UserCenterExact;
 //# sourceMappingURL=UserCenterExact.js.map
 
 /***/ }),
-/* 138 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(1);
-/**
- * 用户中心主页个人资料组件
- */
-var UserCenterExactProfile = (function (_super) {
-    __extends(UserCenterExactProfile, _super);
-    function UserCenterExactProfile() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    UserCenterExactProfile.prototype.render = function () {
-        return (React.createElement("div", { className: "user-profile" },
-            React.createElement("button", { type: 'button' }, "\u79C1\u4FE1"),
-            React.createElement("div", { id: 'userId' },
-                React.createElement("p", null, this.props.userInfo.name)),
-            React.createElement("div", { id: 'userGenderAndBirthday' },
-                React.createElement("p", null,
-                    "\u6027\u522B  ",
-                    (this.props.userInfo.gender === 0) ? '男' : '女',
-                    " "),
-                this.props.userInfo.birthday === null ? '' : React.createElement("p", null,
-                    "\u751F\u65E5  ",
-                    this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T')))),
-            this.props.userInfo.personalDescription ?
-                React.createElement("div", { className: 'user-description' },
-                    React.createElement("p", null, "\u4E2A\u4EBA\u8BF4\u660E"),
-                    React.createElement("img", { src: this.props.userInfo.photourl }),
-                    React.createElement("p", null, this.props.userInfo.personalDescription)) : null,
-            this.props.userInfo.signatureCode ?
-                React.createElement("div", { className: 'user-description' },
-                    React.createElement("p", null, "\u4E2A\u6027\u7B7E\u540D"),
-                    React.createElement("p", null, this.props.userInfo.signatureCode)) : null));
-    };
-    return UserCenterExactProfile;
-}(React.Component));
-exports.UserCenterExactProfile = UserCenterExactProfile;
-//# sourceMappingURL=UserCenterExactProfile.js.map
-
-/***/ }),
-/* 139 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(1);
-var react_router_dom_1 = __webpack_require__(2);
-var UserCenterExactActivitiesPosts_1 = __webpack_require__(140);
-var UserCenterExactActivitiesReplies_1 = __webpack_require__(141);
-/**
- * 用户中心主页近期动态组件
- */
-var UserCenterExactActivities = (function (_super) {
-    __extends(UserCenterExactActivities, _super);
-    function UserCenterExactActivities() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    UserCenterExactActivities.prototype.render = function () {
-        return (React.createElement("div", { className: "user-activities" },
-            React.createElement("p", null, "\u8FD1\u671F\u52A8\u6001"),
-            React.createElement(react_router_dom_1.BrowserRouter, null,
-                React.createElement("div", null,
-                    React.createElement(CustomLink, { to: '/usercenter/', label: '主题', activeOnlyWhenExact: true }),
-                    " | ",
-                    React.createElement(CustomLink, { to: '/usercenter/replies', label: '回复', activeOnlyWhenExact: false }),
-                    React.createElement(react_router_dom_1.Route, { exact: true, path: '/usercenter/', component: UserCenterExactActivitiesPosts_1.UserCenterExactActivitiesPosts }),
-                    React.createElement(react_router_dom_1.Route, { path: '/usercenter/replies', component: UserCenterExactActivitiesReplies_1.UserCenterExactActivitiesReplies })))));
-    };
-    return UserCenterExactActivities;
-}(React.Component));
-exports.UserCenterExactActivities = UserCenterExactActivities;
-var CustomLink = function (_a) {
-    var label = _a.label, to = _a.to, activeOnlyWhenExact = _a.activeOnlyWhenExact;
-    return (React.createElement(react_router_dom_1.Route, { path: to, exact: activeOnlyWhenExact, children: function (_a) {
-            var match = _a.match;
-            return (React.createElement(react_router_dom_1.Link, { className: match ? 'user-activities-active' : '', to: to }, label));
-        } }));
-};
-//# sourceMappingURL=UserCenterExactActivities.js.map
-
-/***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19260,7 +19305,7 @@ userRecentPost.title = '这是帖子标题';
 //# sourceMappingURL=UserCenterExactActivitiesPosts.js.map
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19314,43 +19359,6 @@ userRecentPost.title = '这是帖子标题';
 //# sourceMappingURL=UserCenterExactActivitiesReplies.js.map
 
 /***/ }),
-/* 142 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(1);
-//用户中心主页用户头像与徽章组件
-var UserCenterExactAvatar = (function (_super) {
-    __extends(UserCenterExactAvatar, _super);
-    function UserCenterExactAvatar() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    UserCenterExactAvatar.prototype.render = function () {
-        return (React.createElement("div", { className: 'user-avatar' },
-            React.createElement("img", { className: 'user-avatar-img', src: this.props.userAvatarImgURL }),
-            React.createElement("div", { className: 'user-badge' })));
-    };
-    return UserCenterExactAvatar;
-}(React.Component));
-exports.UserCenterExactAvatar = UserCenterExactAvatar;
-//# sourceMappingURL=UserCenterExactAvatar.js.map
-
-/***/ }),
 /* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -19372,7 +19380,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var AppState_1 = __webpack_require__(3);
-var UserCenterMyFollowingsUser_1 = __webpack_require__(123);
+var UserCenterMyFollowingsUser_1 = __webpack_require__(126);
 //用户中心我的关注组件
 var UserCenterMyFollowings = (function (_super) {
     __extends(UserCenterMyFollowings, _super);
@@ -19426,7 +19434,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var AppState_1 = __webpack_require__(3);
-var UserCenterMyFollowingsUser_1 = __webpack_require__(123);
+var UserCenterMyFollowingsUser_1 = __webpack_require__(126);
 //用户中心我的粉丝组件
 var UserCenterMyFans = (function (_super) {
     __extends(UserCenterMyFans, _super);
@@ -21521,6 +21529,217 @@ exports.FocusPostComponent = FocusPostComponent;
 
 /***/ }),
 /* 164 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(1);
+var react_router_dom_1 = __webpack_require__(2);
+var UserNavigation_1 = __webpack_require__(165);
+var UserRouter_1 = __webpack_require__(166);
+var User = (function (_super) {
+    __extends(User, _super);
+    function User() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    User.prototype.render = function () {
+        return (React.createElement("div", { className: 'user-center' },
+            React.createElement("div", { className: 'user-center-head' },
+                React.createElement("p", null, "\u7528\u6237\u8BE6\u60C5")),
+            React.createElement(react_router_dom_1.BrowserRouter, null,
+                React.createElement("div", { className: 'user-center-body' },
+                    React.createElement(UserNavigation_1.UserNavigation, null),
+                    React.createElement(UserRouter_1.UserRouter, null)))));
+    };
+    return User;
+}(React.Component));
+exports.User = User;
+//# sourceMappingURL=User.js.map
+
+/***/ }),
+/* 165 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(1);
+var react_router_dom_1 = __webpack_require__(2);
+var UserNavigation = (function (_super) {
+    __extends(UserNavigation, _super);
+    function UserNavigation() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserNavigation.prototype.render = function () {
+        return (React.createElement("div", { className: 'user-center-navigation' },
+            React.createElement("ul", null,
+                React.createElement(CustomLink, { to: "" + location.pathname, label: '主页', activeOnlyWhenExact: true, myClassName: 'fa-home' }))));
+    };
+    return UserNavigation;
+}(React.Component));
+exports.UserNavigation = UserNavigation;
+var CustomLink = function (_a) {
+    var label = _a.label, to = _a.to, _b = _a.activeOnlyWhenExact, activeOnlyWhenExact = _b === void 0 ? false : _b, myClassName = _a.myClassName;
+    return (React.createElement(react_router_dom_1.Route, { path: to, exact: activeOnlyWhenExact, children: function (_a) {
+            var match = _a.match;
+            return (React.createElement("li", { className: match ? "user-center-navigation-active" : "" },
+                React.createElement(react_router_dom_1.Link, { className: "" + myClassName, to: to },
+                    React.createElement("p", null, label))));
+        } }));
+};
+//# sourceMappingURL=UserNavigation.js.map
+
+/***/ }),
+/* 166 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(1);
+var react_router_dom_1 = __webpack_require__(2);
+var UserCenterExactProfile_1 = __webpack_require__(123);
+var UserCenterExactActivities_1 = __webpack_require__(124);
+var UserCenterExactAvatar_1 = __webpack_require__(125);
+var UserRouter = (function (_super) {
+    __extends(UserRouter, _super);
+    function UserRouter() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserRouter.prototype.render = function () {
+        return (React.createElement("div", { className: 'user-center-router' },
+            React.createElement(react_router_dom_1.Route, { path: '/user/', component: UserExact })));
+    };
+    return UserRouter;
+}(React.Component));
+exports.UserRouter = UserRouter;
+var UserExact = (function (_super) {
+    __extends(UserExact, _super);
+    function UserExact() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserExact.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!location.pathname.split('/')[2]) {
+                            return [2 /*return*/, 0];
+                        }
+                        if (!(location.pathname.split('/')[2] === 'name')) return [3 /*break*/, 2];
+                        return [4 /*yield*/, fetch("https://api.cc98.org/User/Name/" + location.pathname.split('/')[3])];
+                    case 1:
+                        response = _a.sent();
+                        return [3 /*break*/, 4];
+                    case 2: return [4 /*yield*/, fetch("https://api.cc98.org/User/" + location.pathname.split('/')[2])];
+                    case 3:
+                        response = _a.sent();
+                        _a.label = 4;
+                    case 4: return [4 /*yield*/, response.json()];
+                    case 5:
+                        data = _a.sent();
+                        this.setState({
+                            userInfo: data,
+                            userAvatarImgURL: data.portraitUrl,
+                            responseState: response.status
+                        });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    UserExact.prototype.render = function () {
+        var element;
+        if (this.state !== null && this.state.responseState === 200) {
+            element = (React.createElement("div", { className: 'user-center-exact' },
+                React.createElement(UserCenterExactAvatar_1.UserCenterExactAvatar, { userAvatarImgURL: this.state.userAvatarImgURL }),
+                React.createElement(UserCenterExactProfile_1.UserCenterExactProfile, { userInfo: this.state.userInfo }),
+                React.createElement(UserCenterExactActivities_1.UserCenterExactActivities, null)));
+        }
+        else {
+            element = React.createElement("p", null, "\u52A0\u8F7D\u4E2D");
+        }
+        return element;
+    };
+    return UserExact;
+}(React.Component));
+//# sourceMappingURL=UserRouter.js.map
+
+/***/ }),
+/* 167 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

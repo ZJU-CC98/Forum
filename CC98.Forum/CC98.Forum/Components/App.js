@@ -19,6 +19,7 @@ var BoardList_1 = require("./BoardList");
 var UserCenter_1 = require("./UserCenter");
 var MyMessage_1 = require("./MyMessage");
 var AllNewPost_1 = require("./AllNewPost");
+var User_1 = require("./User");
 var RouteComponent = (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -50,13 +51,14 @@ var App = (function (_super) {
                     React.createElement("li", null,
                         React.createElement(react_router_dom_1.Link, { to: "/messagebox" }, "\u4FE1\u7BB1")),
                     React.createElement("li", null,
-                        React.createElement(react_router_dom_1.Link, { to: "newtopics" })),
+                        React.createElement(react_router_dom_1.Link, { to: "newtopics" }, "\u65B0\u5E16")),
                     React.createElement("hr", null),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/:page?", component: post_1.Post }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/user/:userName/:page?", component: CurUserPost_1.CurUserPost }),
                     React.createElement(react_router_dom_1.Route, { path: "/list/:boardid/:page?", component: List_1.List }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/boardlist", component: BoardList_1.BoardList }),
                     React.createElement(react_router_dom_1.Route, { path: "/usercenter", component: UserCenter_1.UserCenter }),
+                    React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }),
                     React.createElement(react_router_dom_1.Route, { path: "/messagebox", component: MyMessage_1.MyMessage }),
                     React.createElement(react_router_dom_1.Route, { path: "newtopics", component: AllNewPost_1.AllNewPost }))));
     };

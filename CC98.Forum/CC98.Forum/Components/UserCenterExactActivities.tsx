@@ -20,9 +20,9 @@ export class UserCenterExactActivities extends React.Component {
                 <p>近期动态</p>
                 <Router>
                     <div>
-                        <CustomLink to='/usercenter/' label='主题' activeOnlyWhenExact={true} /> | <CustomLink to='/usercenter/replies' label='回复' activeOnlyWhenExact={false} />
-                        <Route exact path='/usercenter/' component={UserCenterExactActivitiesPosts} />
-                        <Route path='/usercenter/replies' component={UserCenterExactActivitiesReplies} />
+                        <CustomLink to={`${location.pathname}`} label='主题' activeOnlyWhenExact={true} /> | <CustomLink to={`${location.pathname}/replies`} label='回复' activeOnlyWhenExact={false} />
+                        <Route exact path={`${location.pathname}`} component={UserCenterExactActivitiesPosts} />
+                        <Route path={`${location.pathname}/replies`} component={UserCenterExactActivitiesReplies} />
                     </div>
                 </Router>
             </div>

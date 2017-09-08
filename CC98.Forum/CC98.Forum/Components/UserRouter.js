@@ -49,55 +49,59 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
+var react_router_dom_1 = require("react-router-dom");
 var UserCenterExactProfile_1 = require("./UserCenterExactProfile");
 var UserCenterExactActivities_1 = require("./UserCenterExactActivities");
 var UserCenterExactAvatar_1 = require("./UserCenterExactAvatar");
-/**
- * 用户中心主页
- */
-var UserCenterExact = (function (_super) {
-    __extends(UserCenterExact, _super);
-    function UserCenterExact() {
+var UserRouter = (function (_super) {
+    __extends(UserRouter, _super);
+    function UserRouter() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    UserCenterExact.prototype.componentDidMount = function () {
+    UserRouter.prototype.render = function () {
+        return (React.createElement("div", { className: 'user-center-router' },
+            React.createElement(react_router_dom_1.Route, { path: '/user/', component: UserExact })));
+    };
+    return UserRouter;
+}(React.Component));
+exports.UserRouter = UserRouter;
+var UserExact = (function (_super) {
+    __extends(UserExact, _super);
+    function UserExact() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserExact.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var hash_1, response, data;
+            var response, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log(location);
-                        console.log(location.hash !== '' && location.hash.indexOf('access_token') !== -1);
-                        if (location.hash !== '' && location.hash.indexOf('access_token') !== -1) {
-                            hash_1 = {};
-                            location.hash.slice(1).split('&').map(function (item) { return item.split('='); }).forEach(function (item) {
-                                hash_1[item[0]] = item[1];
-                            });
-                            window.localStorage.token = hash_1['access_token'];
+                        if (!location.pathname.split('/')[2]) {
+                            return [2 /*return*/, 0];
                         }
-                        return [4 /*yield*/, fetch('https://api.cc98.org/Me/', {
-                                headers: {
-                                    'Authorization': 'bearer' + ' ' + window.localStorage.token
-                                }
-                            })];
+                        if (!(location.pathname.split('/')[2] === 'name')) return [3 /*break*/, 2];
+                        return [4 /*yield*/, fetch("https://api.cc98.org/User/Name/" + location.pathname.split('/')[3])];
                     case 1:
                         response = _a.sent();
-                        return [4 /*yield*/, response.json()];
-                    case 2:
+                        return [3 /*break*/, 4];
+                    case 2: return [4 /*yield*/, fetch("https://api.cc98.org/User/" + location.pathname.split('/')[2])];
+                    case 3:
+                        response = _a.sent();
+                        _a.label = 4;
+                    case 4: return [4 /*yield*/, response.json()];
+                    case 5:
                         data = _a.sent();
-                        console.log(response);
                         this.setState({
                             userInfo: data,
                             userAvatarImgURL: data.portraitUrl,
                             responseState: response.status
                         });
-                        console.log(this.state);
                         return [2 /*return*/];
                 }
             });
         });
     };
-    UserCenterExact.prototype.render = function () {
+    UserExact.prototype.render = function () {
         var element;
         if (this.state !== null && this.state.responseState === 200) {
             element = (React.createElement("div", { className: 'user-center-exact' },
@@ -105,15 +109,11 @@ var UserCenterExact = (function (_super) {
                 React.createElement(UserCenterExactProfile_1.UserCenterExactProfile, { userInfo: this.state.userInfo }),
                 React.createElement(UserCenterExactActivities_1.UserCenterExactActivities, null)));
         }
-        else if (this.state !== null && this.state.responseState === 401) {
-            element = React.createElement("p", null, "\u8BF7\u91CD\u65B0\u767B\u9646");
-        }
         else {
             element = React.createElement("p", null, "\u52A0\u8F7D\u4E2D");
         }
         return element;
     };
-    return UserCenterExact;
+    return UserExact;
 }(React.Component));
-exports.UserCenterExact = UserCenterExact;
-//# sourceMappingURL=UserCenterExact.js.map
+//# sourceMappingURL=UserRouter.js.map

@@ -26,7 +26,7 @@ var UserCenterNavigation = (function (_super) {
     UserCenterNavigation.prototype.render = function () {
         return (React.createElement("div", { className: 'user-center-navigation' },
             React.createElement("ul", null,
-                React.createElement(CustomLink, { to: '/usercenter/', label: '主页', activeOnlyWhenExact: true, myClassName: 'fa-home' }),
+                React.createElement(CustomLink, { to: '/usercenter', label: '主页', activeOnlyWhenExact: true, myClassName: 'fa-home' }),
                 React.createElement("hr", null),
                 React.createElement(CustomLink, { to: '/usercenter/myposts', label: '我的主题', myClassName: 'fa-pencil-square-o' }),
                 React.createElement("hr", null),

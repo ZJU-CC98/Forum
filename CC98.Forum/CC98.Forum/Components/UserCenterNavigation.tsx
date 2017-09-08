@@ -17,7 +17,7 @@ export class UserCenterNavigation extends React.Component {
     render() {
         return (<div className='user-center-navigation'>
             <ul>
-                <CustomLink to='/usercenter/' label='主页' activeOnlyWhenExact={true} myClassName='fa-home' />
+                <CustomLink to='/usercenter' label='主页' activeOnlyWhenExact={true} myClassName='fa-home' />
                 <hr />
                 <CustomLink to='/usercenter/myposts' label='我的主题' myClassName='fa-pencil-square-o'/>
                 <hr />
