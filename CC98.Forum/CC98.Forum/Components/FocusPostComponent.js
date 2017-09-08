@@ -23,6 +23,7 @@ var FocusPostComponent = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     FocusPostComponent.prototype.render = function () {
+        var topicUrl = "/topic/" + this.props.id;
         return (React.createElement("div", { className: 'focus-post' },
             React.createElement("img", { className: 'focus-post-portraitUrl', src: this.props.portraitUrl }),
             React.createElement("div", { className: 'focus-post-info1' },
@@ -30,7 +31,8 @@ var FocusPostComponent = (function (_super) {
                     React.createElement("div", { className: 'focus-post-blackText' }, this.props.authorName),
                     React.createElement("div", { className: 'focus-post-redText' }, this.props.fanCount),
                     React.createElement("div", { className: 'focus-post-blackText' }, "\u7C89\u4E1D")),
-                React.createElement("div", { className: 'focus-post-title' }, this.props.title)),
+                React.createElement("div", { className: 'focus-post-title' },
+                    React.createElement("a", { href: topicUrl }, this.props.title))),
             React.createElement("div", { className: 'focus-post-info2' },
                 React.createElement("div", { className: 'focus-post-board' },
                     this.props.boardName,

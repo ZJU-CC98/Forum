@@ -64,7 +64,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         if (this.state.page == 1) {
             topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} />;
         }
-            return <div className="center" style={{ overflowX: "scroll", minWidth: "1140px" }} >
+        return <div className="center" style={{ overflowX: "scroll", minWidth: "1140px", marginTop:"40px" }} >
                 <TopicPager page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
                 {topic}
                 <Route path="/topic/:topicid/:page?" component={Reply} />
@@ -127,7 +127,7 @@ export class Replier extends RouteComponent<{ userId,topicid,userName, replyTime
         let curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userName}`;
         return <div className="replyRoot">
             <div className="row" style={{ width: "1140px", display: "flex", marginBottom: "10px" }}>
-                <div id="authorImg" ><img src={this.props.userImgUrl}></img></div>
+                <div id="authorImg" ><a href={url}><img src={this.props.userImgUrl}></img></a></div>
                 <div className="column" id="rpymes">
                     <div className="row" id="replierMes">
                         <div style={{ marginLeft: "10px" }}><span>{this.props.floor}L</span></div>
@@ -188,7 +188,7 @@ export class AuthorMessage extends RouteComponent<{ AuthorName,authorId ,authorI
         let url = `/user/${this.props.authorId}`;
         return <div className="row" id="authormes">
 
-            <div id="authorImg" ><img src={this.props.authorImgUrl}></img></div>
+            <div id="authorImg" ><a href={url}><img src={this.props.authorImgUrl}></img></a></div>
             <div className="column">
                 <div className="row authorFans" style={{ justifyContent: "space-between" }}>
                     <div id="authorName"><p><a href={url}>{this.props.AuthorName}</a></p></div>
@@ -230,8 +230,8 @@ export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.
             </div>;
         } else if (isTop == true && isNotice == true) {
             return <div id="title1" className="row" style={{ justifyContent: "flex-start" }}>
-                <div className="titleProp" style={{ width: "70px" }}>【置顶】</div>
-                <div style={{ width: "70px" }} className="titleProp">【公告】</div>
+                <div className="titleProp" style={{ width: "70px", height: "30px", whiteSpace: "nowrap" }}>【置顶】</div>
+                <div style={{ width: "70px" ,height:"30px",whiteSpace:"nowrap"}} className="titleProp">【公告】</div>
                 <div id="essayTitle">{title}</div>
             </div>;
         } else {

@@ -69,12 +69,10 @@ var BoardID = (function (_super) {
                         return [4 /*yield*/, response.json()];
                     case 2:
                         data = _a.sent();
-                        console.log(data);
                         board = [];
                         for (i = 0; i < 20; i++) {
                             board[i] = new AppState_1.Board(data[i].name, data[i].todayPostCount, data[i].totalPostCount, data[i].id, data[i].masters);
                         }
-                        console.log(board);
                         this.setState({
                             board: board,
                         });
@@ -319,7 +317,7 @@ var BoardList = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     BoardList.prototype.render = function () {
-        return React.createElement("div", { className: "boardList" },
+        return React.createElement("div", { className: "boardList", style: { marginTop: "40px" } },
             React.createElement(BoardID, null));
     };
     return BoardList;

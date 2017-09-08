@@ -135,7 +135,7 @@ $color-black: rgb(32,32,32);
     margin-left: 8px;
     border-radius: 5px;
     background: red;
-    border: 1px solid #EE4000;
+    border: 1px solid #B22222;
     color: #fff;
 }
 
@@ -439,11 +439,11 @@ $color-black: rgb(32,32,32);
     align-items: flex-end;
 }
 
-#reply:nth-child(2n+1) .rpyClr{
+#reply:nth-child(2n+1) .rpyClr a{
        color: #2576A8;
 }
 
-#reply:nth-child(2n) .rpyClr{
+#reply:nth-child(2n) .rpyClr a{
         color: #EE0000;
 }
 
@@ -1922,4 +1922,283 @@ body {
         font-size: 14px;
         color: gray;
     }
+}
+.focus {
+    display: flex;
+    flex-direction: column;
+    width: 1140px;
+    min-height: 780px;
+
+    margin: {
+        top: 240px;
+        bottom: 60px;
+    }
+}
+
+.focus-title {
+    width: 88px;
+    height: 14px;
+    margin-top: 20px;
+    font-size: 14px;
+    color: $color-thinBlack;
+    padding: 0px 1px 6px;
+}
+
+.focus-board-area {
+    display: flex;
+    margin-top: 20px;
+    min-height: 30px;
+
+    .focus-board {
+        width: 56px;
+        height: 14px;
+
+        border: {
+            style: solid;
+            width: 1px;
+            color: $color-board;
+            radius: 2px;
+        }
+
+        font-size: 14px;
+        color: $color-board;
+        padding: 4px 11px 10px;
+        margin-right: 20px;
+    }
+}
+
+.focus-post-area {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+
+    .focus-post-topicArea {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .focus-post-loading {
+        margin-top: 20px;
+        text-align: center;
+
+        img {
+            width: 200px;
+            height: 18px;
+        }
+    }
+
+    .focus-post-loaddone {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 16px;
+        color: $color-black;
+    }
+}
+
+
+.focus-post {
+    display: flex;
+    min-height: 98px;
+    border: 1px solid $color-border;
+    background-color: $color-post;
+    margin-top: 20px;
+    overflow: hidden;
+}
+
+.focus-post-portraitUrl {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    padding: 19px;
+    border-radius: 50%;
+}
+
+.focus-post-info1 {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    .focus-post-authorInfo {
+        display: flex;
+        height: 12px;
+        margin: 30px 0px 0px 2px;
+        font-size: 12px;
+    }
+
+    .focus-post-title {
+        height: 12px;
+        margin: 14px 0px 30px 2px;
+        font-size: 12px;
+        color: $color-black;
+    }
+}
+
+.focus-post-info2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 12px;
+    color: $color-thinBlack;
+
+    .focus-post-board {
+        margin: 30px 18px 0px;
+    }
+
+    .focus-post-response {
+        display: flex;
+        justify-content: flex-end;
+        margin: 14px 18px 30px;
+        min-width: 240px;
+
+        div {
+            flex-basis: 54px;
+            display: inline-flex;
+            justify-content: flex-end;
+            align-items: baseline;
+
+            i {
+                font-size: 14px;
+                flex-basis: 20px;
+            }
+        }
+    }
+}
+
+
+.focus-post-blackText {
+    color: $color-thinBlack;
+    min-height: 12px;
+    flex-basis: 90px;
+}
+
+.focus-post-redText {
+    color: $color-red;
+    flex-basis: 26px;
+    min-height: 12px;
+}
+
+
+.focus-allNewPost {
+    color: $color-thinBlack;
+    min-height: 12px;
+    margin-top: 20px;
+    font-size: 12px;
+    display: flex;
+    align-items: baseline;
+
+    i {
+        flex-basis: 18px;
+        font-size: 14px;
+    }
+}
+
+.displaynone {
+    display: none;
+}
+//-------------------------以下是头部的样式！ ----------------------------------------
+.header {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    justify-content: center;
+    background: url(/images/headerBackground.jpg) no-repeat center;
+    justify-content: center;
+}
+
+.topBar {
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+    width: 100%;
+    opacity: 0.5;
+    justify-content: center;
+    background-color: rgba(80,80,80,0.6); //仅背景条半透明
+}
+
+.topBarRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 1140px;
+    align-items: center;
+}
+
+.topBarText {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(252,252,252);
+    margin-top: 12px;
+}
+
+.headerContent {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    height: 190px;
+    justify-content: center;
+}
+
+.headerRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 1140px;
+    align-items: center;
+    margin-top: 134px;
+    width: 1140px;
+}
+
+.linkBar {
+    display: flex;
+    flex-direction: row;
+    height: 36px;
+    background-color: rgb(252,252,252);
+    border-radius: 5px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 2px;
+    box-sizing: border-box;
+    align-items: center;
+}
+
+.linkText {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(70,70,70);
+    margin-top: 12px;
+}
+
+.searchBar {
+    display: flex;
+    flex-direction: row;
+    height: 32px;
+    background-color: rgb(252,252,252);
+    border-radius: 5px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 2px;
+    align-items: center;
+    //box-sizing: border-box;
+}
+
+select {
+    //-moz-appearance: none; //firefox
+    //-webkit-appearance: none; //清除默认的select选择框样式
+    border: solid 0 rgb(233,233,233);
+    height: 32px;
+    margin: 0 3px 0 3px;
+    background-color: rgb(252,252,252);
+}
+
+option { //这里好像没有卵用
+    //-moz-appearance: none; //firefox
+    //-webkit-appearance: none; //清除默认的select选择框样式
+    border: solid 2px rgb(233,233,233);
+}
+
+input {
+    background-color: rgb(252,252,252);
 }

@@ -293,7 +293,7 @@ function sendRequest() {
     //申请到的appID
     var appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
     //申请后的回调地址
-    var c = 'http://localhost:4746/message';
+    var c = 'http://localhost:58187/messagebox/message';
     var redirectURI = encodeURI(c);
     //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
     var path = 'https://login.cc98.org/OAuth/Authorize?';
@@ -305,9 +305,9 @@ function sendRequest() {
 exports.sendRequest = sendRequest;
 function systemRequest() {
     //申请到的appID
-    var appId = 'cdb14fec-f701-4697-91e8-f8c572226cfd';
+    var appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
     //申请后的回调地址
-    var c = 'http://localhost:4746/system';
+    var c = 'http://localhost:58187/messagebox/system';
     var redirectURI = encodeURI(c);
     //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
     var path = 'https://login.cc98.org/OAuth/Authorize?';
@@ -319,9 +319,9 @@ function systemRequest() {
 exports.systemRequest = systemRequest;
 function responseRequest() {
     //申请到的appID
-    var appId = '71156d5d-511b-433a-9e83-304c38909bac';
+    var appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
     //申请后的回调地址
-    var c = 'http://localhost:4746/response';
+    var c = 'http://localhost:58187/messagebox/response';
     var redirectURI = encodeURI(c);
     //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
     var path = 'https://login.cc98.org/OAuth/Authorize?';

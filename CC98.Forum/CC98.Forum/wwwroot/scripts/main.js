@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 127);
+/******/ 	return __webpack_require__(__webpack_require__.s = 124);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1896,7 +1896,7 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            __webpack_require__(134)("./" + name);
+            __webpack_require__(131)("./" + name);
             // because defineLocale currently also sets the global locale, we
             // want to undo that for lazy loaded locales
             getSetGlobalLocale(oldLocale);
@@ -4531,7 +4531,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(133)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130)(module)))
 
 /***/ }),
 /* 1 */
@@ -4823,7 +4823,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var State = __webpack_require__(3);
 var React = __webpack_require__(1);
 var List_1 = __webpack_require__(7);
-var $ = __webpack_require__(132);
+var $ = __webpack_require__(129);
 /*export async function getData() {
     let hottopics: State.TopicTitleAndContentState[] = [];
     var response = await fetch('http://api.cc98.org/Topic/Hot');
@@ -5078,7 +5078,7 @@ function sendRequest() {
     //申请到的appID
     var appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
     //申请后的回调地址
-    var c = 'http://localhost:4746/message';
+    var c = 'http://localhost:58187/messagebox/message';
     var redirectURI = encodeURI(c);
     //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
     var path = 'https://login.cc98.org/OAuth/Authorize?';
@@ -5090,9 +5090,9 @@ function sendRequest() {
 exports.sendRequest = sendRequest;
 function systemRequest() {
     //申请到的appID
-    var appId = 'cdb14fec-f701-4697-91e8-f8c572226cfd';
+    var appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
     //申请后的回调地址
-    var c = 'http://localhost:4746/system';
+    var c = 'http://localhost:58187/messagebox/system';
     var redirectURI = encodeURI(c);
     //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
     var path = 'https://login.cc98.org/OAuth/Authorize?';
@@ -5104,9 +5104,9 @@ function systemRequest() {
 exports.systemRequest = systemRequest;
 function responseRequest() {
     //申请到的appID
-    var appId = '71156d5d-511b-433a-9e83-304c38909bac';
+    var appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
     //申请后的回调地址
-    var c = 'http://localhost:4746/response';
+    var c = 'http://localhost:58187/messagebox/response';
     var redirectURI = encodeURI(c);
     //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
     var path = 'https://login.cc98.org/OAuth/Authorize?';
@@ -5348,7 +5348,7 @@ var List = (function (_super) {
     function List(props, context) {
         var _this = _super.call(this, props, context) || this;
         // 默认页码
-        _this.state = { page: 1, totalPage: 1, boardid: 1 };
+        _this.state = { page: 1, totalPage: 1, boardid: _this.match.params.boardid };
         return _this;
     }
     List.prototype.getTotalListPage = function (boardid) {
@@ -5417,8 +5417,8 @@ var List = (function (_super) {
         });
     };
     List.prototype.render = function () {
-        return React.createElement("div", { id: "listRoot" },
-            React.createElement(ListHead, { boardid: this.state.boardid }),
+        return React.createElement("div", { id: "listRoot", style: { marginTop: "40px" } },
+            React.createElement(ListHead, { key: this.state.page, boardid: this.state.boardid }),
             React.createElement(ListNotice, null),
             React.createElement(ListButtonAndPager, { page: this.state.page, totalPage: this.state.totalPage, boardid: this.state.boardid }),
             React.createElement(ListTag, null),
@@ -5437,7 +5437,7 @@ var ListHead = (function (_super) {
             todayTopics: 210,
             totalTopics: 12000,
             adsUrl: '/images/ads.jpg',
-            listManager: 'Dearkano',
+            listManager: [],
             isAnomynous: false,
             isEncrypted: false,
             isHidden: false,
@@ -5464,6 +5464,32 @@ var ListHead = (function (_super) {
             });
         });
     };
+    ListHead.prototype.componentWillRecieveProps = function (newProps) {
+        return __awaiter(this, void 0, void 0, function () {
+            var url, managersResponse, managerJson;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        url = "http://api.cc98.org/Board/" + newProps.boardid;
+                        return [4 /*yield*/, fetch(url)];
+                    case 1:
+                        managersResponse = _a.sent();
+                        return [4 /*yield*/, managersResponse.json()];
+                    case 2:
+                        managerJson = _a.sent();
+                        this.setState({ listName: managerJson.name, todayTopics: managerJson.todayPostCount, totalTopics: managerJson.totalTopicCount, listManager: managerJson.masters });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ListHead.prototype.generateMasters = function (item) {
+        var name = item.toString();
+        var userName = encodeURIComponent(item.toString());
+        var webUrl = "/user/name/" + userName;
+        return React.createElement("div", { style: { marginRight: "10px" } },
+            React.createElement("a", { href: webUrl }, name));
+    };
     ListHead.prototype.render = function () {
         return React.createElement("div", { className: "column", style: { width: '1140px', } },
             React.createElement("div", { className: "row", style: { flexDirection: 'row', justifyContent: 'space-between', width: '1140px' } },
@@ -5471,12 +5497,12 @@ var ListHead = (function (_super) {
                     React.createElement("div", { id: "ListImg" },
                         React.createElement("img", { src: this.state.imgUrl })),
                     React.createElement("div", { className: "column", style: { marginTop: '20px', marginLeft: '10px' } },
-                        React.createElement("div", { style: { marginTop: '10px' } },
-                            React.createElement("span", null, "\u4ECA\u65E5\u4E3B\u9898"),
-                            React.createElement("span", null, this.state.todayTopics)),
-                        React.createElement("div", { style: { marginTop: '10px' } },
-                            React.createElement("span", null, "\u603B\u4E3B\u9898"),
-                            React.createElement("span", null, this.state.totalTopics)))),
+                        React.createElement("div", { className: "row", style: { marginTop: '10px' } },
+                            React.createElement("div", null, "\u4ECA\u65E5\u4E3B\u9898"),
+                            React.createElement("div", { style: { marginLeft: "10px" } }, this.state.todayTopics)),
+                        React.createElement("div", { className: "row", style: { marginTop: '10px' } },
+                            React.createElement("div", null, "\u603B\u4E3B\u9898"),
+                            React.createElement("div", { style: { marginLeft: "20px" } }, this.state.totalTopics)))),
                 React.createElement("div", { className: "column", style: { flexgrow: '0' } },
                     React.createElement("div", { id: "like" },
                         React.createElement("button", { style: { border: 'none', color: '#F5FAFC' } }, "\u2730"),
@@ -5485,7 +5511,7 @@ var ListHead = (function (_super) {
                         React.createElement("img", { src: this.state.adsUrl, style: { width: '250px', height: '60px' } })))),
             React.createElement("div", { className: "row", style: { marginTop: '5px' } },
                 React.createElement("span", null, "\u7248\u4E3B : "),
-                React.createElement("span", { style: { marginLeft: '5px' } }, this.state.listManager)));
+                React.createElement("div", { className: "row", style: { marginLeft: '5px' } }, this.state.listManager.map(this.generateMasters))));
     };
     return ListHead;
 }(RouteComponent));
@@ -5673,10 +5699,9 @@ var ListContent = (function (_super) {
         });
     };
     ListContent.prototype.render = function () {
-        console.log('rendering list content');
         return React.createElement("div", { className: "listContent " },
             React.createElement("div", { className: "row", style: { justifyContent: 'space-between', } },
-                React.createElement("div", { className: "row", style: { height: '40px', marginTop: "5px" } },
+                React.createElement("div", { className: "row", style: { height: '40px', marginTop: "5px", alignItems: "center" } },
                     React.createElement("button", { className: "listContentTag" }, "\u5168\u90E8"),
                     React.createElement("button", { className: "listContentTag" }, "\u7CBE\u534E"),
                     React.createElement("button", { className: "listContentTag" }, "\u6700\u70ED")),
@@ -16838,155 +16863,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-/**
- * 用户中心主页个人资料组件
- */
-var UserCenterExactProfile = (function (_super) {
-    __extends(UserCenterExactProfile, _super);
-    function UserCenterExactProfile() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    UserCenterExactProfile.prototype.render = function () {
-        return (React.createElement("div", { className: "user-profile" },
-            React.createElement("button", { type: 'button' }, "\u79C1\u4FE1"),
-            React.createElement("div", { id: 'userId' },
-                React.createElement("p", null, this.props.userInfo.name)),
-            React.createElement("div", { id: 'userGenderAndBirthday' },
-                React.createElement("p", null,
-                    "\u6027\u522B  ",
-                    (this.props.userInfo.gender === 0) ? '男' : '女',
-                    " "),
-                this.props.userInfo.birthday === null ? '' : React.createElement("p", null,
-                    "\u751F\u65E5  ",
-                    this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T')))),
-            this.props.userInfo.personalDescription ?
-                React.createElement("div", { className: 'user-description' },
-                    React.createElement("p", null, "\u4E2A\u4EBA\u8BF4\u660E"),
-                    React.createElement("img", { src: this.props.userInfo.photourl }),
-                    React.createElement("p", null, this.props.userInfo.personalDescription)) : null,
-            this.props.userInfo.signatureCode ?
-                React.createElement("div", { className: 'user-description' },
-                    React.createElement("p", null, "\u4E2A\u6027\u7B7E\u540D"),
-                    React.createElement("p", null, this.props.userInfo.signatureCode)) : null));
-    };
-    return UserCenterExactProfile;
-}(React.Component));
-exports.UserCenterExactProfile = UserCenterExactProfile;
-//# sourceMappingURL=UserCenterExactProfile.js.map
-
-/***/ }),
-/* 124 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(1);
-var react_router_dom_1 = __webpack_require__(2);
-var UserCenterExactActivitiesPosts_1 = __webpack_require__(141);
-var UserCenterExactActivitiesReplies_1 = __webpack_require__(142);
-/**
- * 用户中心主页近期动态组件
- */
-var UserCenterExactActivities = (function (_super) {
-    __extends(UserCenterExactActivities, _super);
-    function UserCenterExactActivities() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    UserCenterExactActivities.prototype.render = function () {
-        return (React.createElement("div", { className: "user-activities" },
-            React.createElement("p", null, "\u8FD1\u671F\u52A8\u6001"),
-            React.createElement(react_router_dom_1.BrowserRouter, null,
-                React.createElement("div", null,
-                    React.createElement(CustomLink, { to: "" + location.pathname, label: '主题', activeOnlyWhenExact: true }),
-                    " | ",
-                    React.createElement(CustomLink, { to: location.pathname + "/replies", label: '回复', activeOnlyWhenExact: false }),
-                    React.createElement(react_router_dom_1.Route, { exact: true, path: "" + location.pathname, component: UserCenterExactActivitiesPosts_1.UserCenterExactActivitiesPosts }),
-                    React.createElement(react_router_dom_1.Route, { path: location.pathname + "/replies", component: UserCenterExactActivitiesReplies_1.UserCenterExactActivitiesReplies })))));
-    };
-    return UserCenterExactActivities;
-}(React.Component));
-exports.UserCenterExactActivities = UserCenterExactActivities;
-var CustomLink = function (_a) {
-    var label = _a.label, to = _a.to, activeOnlyWhenExact = _a.activeOnlyWhenExact;
-    return (React.createElement(react_router_dom_1.Route, { path: to, exact: activeOnlyWhenExact, children: function (_a) {
-            var match = _a.match;
-            return (React.createElement(react_router_dom_1.Link, { className: match ? 'user-activities-active' : '', to: to }, label));
-        } }));
-};
-//# sourceMappingURL=UserCenterExactActivities.js.map
-
-/***/ }),
-/* 125 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(1);
-//用户中心主页用户头像与徽章组件
-var UserCenterExactAvatar = (function (_super) {
-    __extends(UserCenterExactAvatar, _super);
-    function UserCenterExactAvatar() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    UserCenterExactAvatar.prototype.render = function () {
-        return (React.createElement("div", { className: 'user-avatar' },
-            React.createElement("img", { className: 'user-avatar-img', src: this.props.userAvatarImgURL }),
-            React.createElement("div", { className: 'user-badge' })));
-    };
-    return UserCenterExactAvatar;
-}(React.Component));
-exports.UserCenterExactAvatar = UserCenterExactAvatar;
-//# sourceMappingURL=UserCenterExactAvatar.js.map
-
-/***/ }),
-/* 126 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(1);
 //用户中心我的关注&我的粉丝用户通用组件
 var UserCenterMyFollowingsUser = (function (_super) {
     __extends(UserCenterMyFollowingsUser, _super);
@@ -17010,35 +16886,35 @@ exports.UserCenterMyFollowingsUser = UserCenterMyFollowingsUser;
 //# sourceMappingURL=UserCenterMyFollowingsUser.js.map
 
 /***/ }),
-/* 127 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(128);
-module.exports = __webpack_require__(167);
+__webpack_require__(125);
+module.exports = __webpack_require__(165);
 
 
 /***/ }),
-/* 128 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var ReactDOM = __webpack_require__(129);
-var App_1 = __webpack_require__(130);
+var ReactDOM = __webpack_require__(126);
+var App_1 = __webpack_require__(127);
 // 显示应用程序核心内容
 ReactDOM.render(React.createElement(App_1.App, null), document.getElementById('root'));
 
 
 /***/ }),
-/* 129 */
+/* 126 */
 /***/ (function(module, exports) {
 
 module.exports = ReactDOM;
 
 /***/ }),
-/* 130 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17056,14 +16932,14 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
-var post_1 = __webpack_require__(131);
+var post_1 = __webpack_require__(128);
 var List_1 = __webpack_require__(7);
-var CurUserPost_1 = __webpack_require__(135);
-var BoardList_1 = __webpack_require__(136);
-var UserCenter_1 = __webpack_require__(137);
+var CurUserPost_1 = __webpack_require__(132);
+var BoardList_1 = __webpack_require__(133);
+var UserCenter_1 = __webpack_require__(134);
 var MyMessage_1 = __webpack_require__(150);
 var AllNewPost_1 = __webpack_require__(161);
-var User_1 = __webpack_require__(164);
+var Header_1 = __webpack_require__(164);
 var RouteComponent = (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -17074,6 +16950,14 @@ var RouteComponent = (function (_super) {
     return RouteComponent;
 }(React.Component));
 exports.RouteComponent = RouteComponent;
+/* <h1>Ashida Mana~</h1>
+                <li><Link to="/topic/4723305">moe</Link></li>
+                <li><Link to="/boardlist">meow</Link></li>
+                <li><a href={`https://login.cc98.org/OAuth/Authorize?scope=getuserinfo*&response_type=token&client_id=9428333a-a0e3-486b-b375-7904f1bceba9&redirect_uri=http%3A%2F%2Flocalhost%3A${location.port}%2Fusercenter`} > 登陆</a></li>
+                <li><Link to="/usercenter">个人中心</Link></li>
+                <li><Link to="/messagebox">信箱</Link></li>
+                <li><Link to="newtopics">新帖 </Link></li>
+                 <hr />*/
 var App = (function (_super) {
     __extends(App, _super);
     function App() {
@@ -17083,28 +16967,14 @@ var App = (function (_super) {
         return React.createElement("div", null,
             React.createElement(react_router_dom_1.BrowserRouter, null,
                 React.createElement("div", { style: { backgroundColor: '#F5FAFD', justifyContent: "center", display: "flex", flexDirection: "column" } },
-                    React.createElement("h1", null, "Ashida Mana~"),
-                    React.createElement("li", null,
-                        React.createElement(react_router_dom_1.Link, { to: "/topic/4723305" }, "moe")),
-                    React.createElement("li", null,
-                        React.createElement(react_router_dom_1.Link, { to: "/boardlist" }, "meow")),
-                    React.createElement("li", null,
-                        React.createElement("a", { href: "https://login.cc98.org/OAuth/Authorize?scope=getuserinfo*&response_type=token&client_id=9428333a-a0e3-486b-b375-7904f1bceba9&redirect_uri=http%3A%2F%2Flocalhost%3A" + location.port + "%2Fusercenter" }, " \u767B\u9646")),
-                    React.createElement("li", null,
-                        React.createElement(react_router_dom_1.Link, { to: "/usercenter" }, "\u4E2A\u4EBA\u4E2D\u5FC3")),
-                    React.createElement("li", null,
-                        React.createElement(react_router_dom_1.Link, { to: "/messagebox" }, "\u4FE1\u7BB1")),
-                    React.createElement("li", null,
-                        React.createElement(react_router_dom_1.Link, { to: "newtopics" }, "\u65B0\u5E16")),
-                    React.createElement("hr", null),
+                    React.createElement(Header_1.Header, null),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/:page?", component: post_1.Post }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/user/:userName/:page?", component: CurUserPost_1.CurUserPost }),
                     React.createElement(react_router_dom_1.Route, { path: "/list/:boardid/:page?", component: List_1.List }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/boardlist", component: BoardList_1.BoardList }),
                     React.createElement(react_router_dom_1.Route, { path: "/usercenter", component: UserCenter_1.UserCenter }),
-                    React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }),
                     React.createElement(react_router_dom_1.Route, { path: "/messagebox", component: MyMessage_1.MyMessage }),
-                    React.createElement(react_router_dom_1.Route, { path: "newtopics", component: AllNewPost_1.AllNewPost }))));
+                    React.createElement(react_router_dom_1.Route, { path: "/newtopics", component: AllNewPost_1.AllNewPost }))));
     };
     return App;
 }(React.Component));
@@ -17112,7 +16982,7 @@ exports.App = App;
 //# sourceMappingURL=App.js.map
 
 /***/ }),
-/* 131 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17264,7 +17134,7 @@ var Post = (function (_super) {
         if (this.state.page == 1) {
             topic = React.createElement(PostTopic, { imgUrl: "/images/ads.jpg", page: this.state.page, topicid: this.state.topicid });
         }
-        return React.createElement("div", { className: "center", style: { overflowX: "scroll", minWidth: "1140px" } },
+        return React.createElement("div", { className: "center", style: { overflowX: "scroll", minWidth: "1140px", marginTop: "40px" } },
             React.createElement(TopicPager, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
             topic,
             React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: Reply }));
@@ -17332,7 +17202,8 @@ var Replier = (function (_super) {
         return React.createElement("div", { className: "replyRoot" },
             React.createElement("div", { className: "row", style: { width: "1140px", display: "flex", marginBottom: "10px" } },
                 React.createElement("div", { id: "authorImg" },
-                    React.createElement("img", { src: this.props.userImgUrl })),
+                    React.createElement("a", { href: url },
+                        React.createElement("img", { src: this.props.userImgUrl }))),
                 React.createElement("div", { className: "column", id: "rpymes" },
                     React.createElement("div", { className: "row", id: "replierMes" },
                         React.createElement("div", { style: { marginLeft: "10px" } },
@@ -17412,7 +17283,8 @@ var AuthorMessage = (function (_super) {
         var url = "/user/" + this.props.authorId;
         return React.createElement("div", { className: "row", id: "authormes" },
             React.createElement("div", { id: "authorImg" },
-                React.createElement("img", { src: this.props.authorImgUrl })),
+                React.createElement("a", { href: url },
+                    React.createElement("img", { src: this.props.authorImgUrl }))),
             React.createElement("div", { className: "column" },
                 React.createElement("div", { className: "row authorFans", style: { justifyContent: "space-between" } },
                     React.createElement("div", { id: "authorName" },
@@ -17457,8 +17329,8 @@ var TopicTitle = (function (_super) {
         }
         else if (isTop == true && isNotice == true) {
             return React.createElement("div", { id: "title1", className: "row", style: { justifyContent: "flex-start" } },
-                React.createElement("div", { className: "titleProp", style: { width: "70px" } }, "\u3010\u7F6E\u9876\u3011"),
-                React.createElement("div", { style: { width: "70px" }, className: "titleProp" }, "\u3010\u516C\u544A\u3011"),
+                React.createElement("div", { className: "titleProp", style: { width: "70px", height: "30px", whiteSpace: "nowrap" } }, "\u3010\u7F6E\u9876\u3011"),
+                React.createElement("div", { style: { width: "70px", height: "30px", whiteSpace: "nowrap" }, className: "titleProp" }, "\u3010\u516C\u544A\u3011"),
                 React.createElement("div", { id: "essayTitle" }, title));
         }
         else {
@@ -17741,13 +17613,13 @@ exports.PageModel = PageModel;
 //# sourceMappingURL=post.js.map
 
 /***/ }),
-/* 132 */
+/* 129 */
 /***/ (function(module, exports) {
 
 module.exports = $;
 
 /***/ }),
-/* 133 */
+/* 130 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -17775,7 +17647,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 134 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -18024,10 +17896,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 134;
+webpackContext.id = 131;
 
 /***/ }),
-/* 135 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18639,7 +18511,7 @@ exports.PageModel = PageModel;
 //# sourceMappingURL=CurUserPost.js.map
 
 /***/ }),
-/* 136 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18714,12 +18586,10 @@ var BoardID = (function (_super) {
                         return [4 /*yield*/, response.json()];
                     case 2:
                         data = _a.sent();
-                        console.log(data);
                         board = [];
                         for (i = 0; i < 20; i++) {
                             board[i] = new AppState_1.Board(data[i].name, data[i].todayPostCount, data[i].totalPostCount, data[i].id, data[i].masters);
                         }
-                        console.log(board);
                         this.setState({
                             board: board,
                         });
@@ -18964,7 +18834,7 @@ var BoardList = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     BoardList.prototype.render = function () {
-        return React.createElement("div", { className: "boardList" },
+        return React.createElement("div", { className: "boardList", style: { marginTop: "40px" } },
             React.createElement(BoardID, null));
     };
     return BoardList;
@@ -18973,7 +18843,7 @@ exports.BoardList = BoardList;
 //# sourceMappingURL=BoardList.js.map
 
 /***/ }),
-/* 137 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18994,8 +18864,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterNavigation_1 = __webpack_require__(138);
-var UserCenterRouter_1 = __webpack_require__(139);
+var UserCenterNavigation_1 = __webpack_require__(135);
+var UserCenterRouter_1 = __webpack_require__(136);
 /**
  * 用户中心页面
  */
@@ -19019,7 +18889,7 @@ exports.UserCenter = UserCenter;
 //# sourceMappingURL=UserCenter.js.map
 
 /***/ }),
-/* 138 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19051,7 +18921,7 @@ var UserCenterNavigation = (function (_super) {
     UserCenterNavigation.prototype.render = function () {
         return (React.createElement("div", { className: 'user-center-navigation' },
             React.createElement("ul", null,
-                React.createElement(CustomLink, { to: '/usercenter', label: '主页', activeOnlyWhenExact: true, myClassName: 'fa-home' }),
+                React.createElement(CustomLink, { to: '/usercenter/', label: '主页', activeOnlyWhenExact: true, myClassName: 'fa-home' }),
                 React.createElement("hr", null),
                 React.createElement(CustomLink, { to: '/usercenter/myposts', label: '我的主题', myClassName: 'fa-pencil-square-o' }),
                 React.createElement("hr", null),
@@ -19078,7 +18948,7 @@ var CustomLink = function (_a) {
 //# sourceMappingURL=UserCenterNavigation.js.map
 
 /***/ }),
-/* 139 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19099,7 +18969,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterExact_1 = __webpack_require__(140);
+var UserCenterExact_1 = __webpack_require__(137);
 var UserCenterMyFollowings_1 = __webpack_require__(143);
 var UserCenterMyFans_1 = __webpack_require__(144);
 var UserCenterMyPosts_1 = __webpack_require__(145);
@@ -19126,7 +18996,7 @@ exports.UserCenterRouter = UserCenterRouter;
 //# sourceMappingURL=UserCenterRouter.js.map
 
 /***/ }),
-/* 140 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19181,9 +19051,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var UserCenterExactProfile_1 = __webpack_require__(123);
-var UserCenterExactActivities_1 = __webpack_require__(124);
-var UserCenterExactAvatar_1 = __webpack_require__(125);
+var UserCenterExactProfile_1 = __webpack_require__(138);
+var UserCenterExactActivities_1 = __webpack_require__(139);
+var UserCenterExactAvatar_1 = __webpack_require__(142);
 /**
  * 用户中心主页
  */
@@ -19198,8 +19068,7 @@ var UserCenterExact = (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log(location);
-                        console.log(location.hash !== '' && location.hash.indexOf('access_token') !== -1);
+                        console.log(location.hash);
                         if (location.hash !== '' && location.hash.indexOf('access_token') !== -1) {
                             hash_1 = {};
                             location.hash.slice(1).split('&').map(function (item) { return item.split('='); }).forEach(function (item) {
@@ -19217,13 +19086,11 @@ var UserCenterExact = (function (_super) {
                         return [4 /*yield*/, response.json()];
                     case 2:
                         data = _a.sent();
-                        console.log(response);
+                        console.log(data);
                         this.setState({
                             userInfo: data,
-                            userAvatarImgURL: data.portraitUrl,
-                            responseState: response.status
+                            userAvatarImgURL: data.portraitUrl
                         });
-                        console.log(this.state);
                         return [2 /*return*/];
                 }
             });
@@ -19231,14 +19098,11 @@ var UserCenterExact = (function (_super) {
     };
     UserCenterExact.prototype.render = function () {
         var element;
-        if (this.state !== null && this.state.responseState === 200) {
+        if (this.state !== null) {
             element = (React.createElement("div", { className: 'user-center-exact' },
                 React.createElement(UserCenterExactAvatar_1.UserCenterExactAvatar, { userAvatarImgURL: this.state.userAvatarImgURL }),
                 React.createElement(UserCenterExactProfile_1.UserCenterExactProfile, { userInfo: this.state.userInfo }),
                 React.createElement(UserCenterExactActivities_1.UserCenterExactActivities, null)));
-        }
-        else if (this.state !== null && this.state.responseState === 401) {
-            element = React.createElement("p", null, "\u8BF7\u91CD\u65B0\u767B\u9646");
         }
         else {
             element = React.createElement("p", null, "\u52A0\u8F7D\u4E2D");
@@ -19251,7 +19115,119 @@ exports.UserCenterExact = UserCenterExact;
 //# sourceMappingURL=UserCenterExact.js.map
 
 /***/ }),
-/* 141 */
+/* 138 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(1);
+/**
+ * 用户中心主页个人资料组件
+ */
+var UserCenterExactProfile = (function (_super) {
+    __extends(UserCenterExactProfile, _super);
+    function UserCenterExactProfile() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserCenterExactProfile.prototype.render = function () {
+        return (React.createElement("div", { className: "user-profile" },
+            React.createElement("button", { type: 'button' }, "\u79C1\u4FE1"),
+            React.createElement("div", { id: 'userId' },
+                React.createElement("p", null, this.props.userInfo.name)),
+            React.createElement("div", { id: 'userGenderAndBirthday' },
+                React.createElement("p", null,
+                    "\u6027\u522B  ",
+                    (this.props.userInfo.gender === 0) ? '男' : '女',
+                    " "),
+                this.props.userInfo.birthday === null ? '' : React.createElement("p", null,
+                    "\u751F\u65E5  ",
+                    this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T')))),
+            this.props.userInfo.personalDescription ?
+                React.createElement("div", { className: 'user-description' },
+                    React.createElement("p", null, "\u4E2A\u4EBA\u8BF4\u660E"),
+                    React.createElement("img", { src: this.props.userInfo.photourl }),
+                    React.createElement("p", null, this.props.userInfo.personalDescription)) : null,
+            this.props.userInfo.signatureCode ?
+                React.createElement("div", { className: 'user-description' },
+                    React.createElement("p", null, "\u4E2A\u6027\u7B7E\u540D"),
+                    React.createElement("p", null, this.props.userInfo.signatureCode)) : null));
+    };
+    return UserCenterExactProfile;
+}(React.Component));
+exports.UserCenterExactProfile = UserCenterExactProfile;
+//# sourceMappingURL=UserCenterExactProfile.js.map
+
+/***/ }),
+/* 139 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(1);
+var react_router_dom_1 = __webpack_require__(2);
+var UserCenterExactActivitiesPosts_1 = __webpack_require__(140);
+var UserCenterExactActivitiesReplies_1 = __webpack_require__(141);
+/**
+ * 用户中心主页近期动态组件
+ */
+var UserCenterExactActivities = (function (_super) {
+    __extends(UserCenterExactActivities, _super);
+    function UserCenterExactActivities() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserCenterExactActivities.prototype.render = function () {
+        return (React.createElement("div", { className: "user-activities" },
+            React.createElement("p", null, "\u8FD1\u671F\u52A8\u6001"),
+            React.createElement(react_router_dom_1.BrowserRouter, null,
+                React.createElement("div", null,
+                    React.createElement(CustomLink, { to: '/usercenter/', label: '主题', activeOnlyWhenExact: true }),
+                    " | ",
+                    React.createElement(CustomLink, { to: '/usercenter/replies', label: '回复', activeOnlyWhenExact: false }),
+                    React.createElement(react_router_dom_1.Route, { exact: true, path: '/usercenter/', component: UserCenterExactActivitiesPosts_1.UserCenterExactActivitiesPosts }),
+                    React.createElement(react_router_dom_1.Route, { path: '/usercenter/replies', component: UserCenterExactActivitiesReplies_1.UserCenterExactActivitiesReplies })))));
+    };
+    return UserCenterExactActivities;
+}(React.Component));
+exports.UserCenterExactActivities = UserCenterExactActivities;
+var CustomLink = function (_a) {
+    var label = _a.label, to = _a.to, activeOnlyWhenExact = _a.activeOnlyWhenExact;
+    return (React.createElement(react_router_dom_1.Route, { path: to, exact: activeOnlyWhenExact, children: function (_a) {
+            var match = _a.match;
+            return (React.createElement(react_router_dom_1.Link, { className: match ? 'user-activities-active' : '', to: to }, label));
+        } }));
+};
+//# sourceMappingURL=UserCenterExactActivities.js.map
+
+/***/ }),
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19305,7 +19281,7 @@ userRecentPost.title = '这是帖子标题';
 //# sourceMappingURL=UserCenterExactActivitiesPosts.js.map
 
 /***/ }),
-/* 142 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19359,6 +19335,43 @@ userRecentPost.title = '这是帖子标题';
 //# sourceMappingURL=UserCenterExactActivitiesReplies.js.map
 
 /***/ }),
+/* 142 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(1);
+//用户中心主页用户头像与徽章组件
+var UserCenterExactAvatar = (function (_super) {
+    __extends(UserCenterExactAvatar, _super);
+    function UserCenterExactAvatar() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserCenterExactAvatar.prototype.render = function () {
+        return (React.createElement("div", { className: 'user-avatar' },
+            React.createElement("img", { className: 'user-avatar-img', src: this.props.userAvatarImgURL }),
+            React.createElement("div", { className: 'user-badge' })));
+    };
+    return UserCenterExactAvatar;
+}(React.Component));
+exports.UserCenterExactAvatar = UserCenterExactAvatar;
+//# sourceMappingURL=UserCenterExactAvatar.js.map
+
+/***/ }),
 /* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -19380,7 +19393,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var AppState_1 = __webpack_require__(3);
-var UserCenterMyFollowingsUser_1 = __webpack_require__(126);
+var UserCenterMyFollowingsUser_1 = __webpack_require__(123);
 //用户中心我的关注组件
 var UserCenterMyFollowings = (function (_super) {
     __extends(UserCenterMyFollowings, _super);
@@ -19434,7 +19447,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var AppState_1 = __webpack_require__(3);
-var UserCenterMyFollowingsUser_1 = __webpack_require__(126);
+var UserCenterMyFollowingsUser_1 = __webpack_require__(123);
 //用户中心我的粉丝组件
 var UserCenterMyFans = (function (_super) {
     __extends(UserCenterMyFans, _super);
@@ -19764,23 +19777,23 @@ var MyMessage = (function (_super) {
                 React.createElement("div", { className: 'mymessage-content' },
                     React.createElement("div", { className: 'mymessage-nav' },
                         React.createElement("div", { id: 'myresponse' },
-                            React.createElement(react_router_dom_1.NavLink, { to: '/responselogin' }, "\u56DE\u590D\u6211\u7684")),
+                            React.createElement(react_router_dom_1.NavLink, { to: '/messagebox/responselogin' }, "\u56DE\u590D\u6211\u7684")),
                         React.createElement("div", { id: 'myattme' },
-                            React.createElement(react_router_dom_1.NavLink, { to: '/attme' }, "@\u6211\u7684")),
+                            React.createElement(react_router_dom_1.NavLink, { to: '/messagebox/attme' }, "@\u6211\u7684")),
                         React.createElement("div", { id: 'mylikes' },
-                            React.createElement(react_router_dom_1.NavLink, { to: '/likes' }, "\u6536\u5230\u7684\u8D5E")),
+                            React.createElement(react_router_dom_1.NavLink, { to: '/messagebox/likes' }, "\u6536\u5230\u7684\u8D5E")),
                         React.createElement("div", { id: 'mysystem' },
-                            React.createElement(react_router_dom_1.NavLink, { to: '/systemlogin' }, "\u7CFB\u7EDF\u901A\u77E5")),
+                            React.createElement(react_router_dom_1.NavLink, { to: '/messagebox/systemlogin' }, "\u7CFB\u7EDF\u901A\u77E5")),
                         React.createElement("div", { id: 'mymessage' },
-                            React.createElement(react_router_dom_1.NavLink, { to: '/login' }, "\u6211\u7684\u79C1\u4FE1"))),
-                    React.createElement(react_router_dom_1.Route, { path: '/response', component: MymessageResponse_1.MymessageResponse }),
-                    React.createElement(react_router_dom_1.Route, { path: '/attme', component: Attme }),
-                    React.createElement(react_router_dom_1.Route, { path: '/likes', component: Likes }),
-                    React.createElement(react_router_dom_1.Route, { path: '/systemlogin', component: Systemlogin }),
-                    React.createElement(react_router_dom_1.Route, { path: '/responselogin', component: Responselogin }),
-                    React.createElement(react_router_dom_1.Route, { path: '/system', component: MymessageSystem_1.MymessageSystem }),
-                    React.createElement(react_router_dom_1.Route, { path: '/login', component: login }),
-                    React.createElement(react_router_dom_1.Route, { path: "/message", component: MymessageMessage_1.MymessageMessage })))));
+                            React.createElement(react_router_dom_1.NavLink, { to: '/messagebox/login' }, "\u6211\u7684\u79C1\u4FE1"))),
+                    React.createElement(react_router_dom_1.Route, { path: '/messagebox/response', component: MymessageResponse_1.MymessageResponse }),
+                    React.createElement(react_router_dom_1.Route, { path: '/messagebox/attme', component: Attme }),
+                    React.createElement(react_router_dom_1.Route, { path: '/messagebox/likes', component: Likes }),
+                    React.createElement(react_router_dom_1.Route, { path: '/messagebox/systemlogin', component: Systemlogin }),
+                    React.createElement(react_router_dom_1.Route, { path: '/messagebox/responselogin', component: Responselogin }),
+                    React.createElement(react_router_dom_1.Route, { path: '/messagebox/system', component: MymessageSystem_1.MymessageSystem }),
+                    React.createElement(react_router_dom_1.Route, { exact: true, path: '/messagebox/login', component: login }),
+                    React.createElement(react_router_dom_1.Route, { path: "/messagebox/message", component: MymessageMessage_1.MymessageMessage })))));
     };
     return MyMessage;
 }(React.Component));
@@ -21225,7 +21238,7 @@ var AllNewPost = (function (_super) {
      * 全站新帖列表
      */
     AllNewPost.prototype.render = function () {
-        return (React.createElement("div", { className: 'focus' },
+        return (React.createElement("div", { className: 'focus', style: { marginTop: "40px" } },
             React.createElement("div", { className: 'focus-allNewPost' },
                 React.createElement("i", { className: 'fa fa-home', "aria-hidden": 'true' }),
                 "\u9996\u9875/\u5168\u7AD9\u65B0\u5E16"),
@@ -21495,6 +21508,7 @@ var FocusPostComponent = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     FocusPostComponent.prototype.render = function () {
+        var topicUrl = "/topic/" + this.props.id;
         return (React.createElement("div", { className: 'focus-post' },
             React.createElement("img", { className: 'focus-post-portraitUrl', src: this.props.portraitUrl }),
             React.createElement("div", { className: 'focus-post-info1' },
@@ -21502,7 +21516,8 @@ var FocusPostComponent = (function (_super) {
                     React.createElement("div", { className: 'focus-post-blackText' }, this.props.authorName),
                     React.createElement("div", { className: 'focus-post-redText' }, this.props.fanCount),
                     React.createElement("div", { className: 'focus-post-blackText' }, "\u7C89\u4E1D")),
-                React.createElement("div", { className: 'focus-post-title' }, this.props.title)),
+                React.createElement("div", { className: 'focus-post-title' },
+                    React.createElement("a", { href: topicUrl }, this.props.title))),
             React.createElement("div", { className: 'focus-post-info2' },
                 React.createElement("div", { className: 'focus-post-board' },
                     this.props.boardName,
@@ -21533,9 +21548,6 @@ exports.FocusPostComponent = FocusPostComponent;
 
 "use strict";
 
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -21548,198 +21560,162 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var react_router_dom_1 = __webpack_require__(2);
-var UserNavigation_1 = __webpack_require__(165);
-var UserRouter_1 = __webpack_require__(166);
-var User = (function (_super) {
-    __extends(User, _super);
-    function User() {
+/*
+<div className="root">
+            <div className="headerBackground">
+                <img src="/images/headerBackground.jpg"></img>
+            </div>
+        </div>
+*/
+var Header = (function (_super) {
+    __extends(Header, _super);
+    function Header() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    User.prototype.render = function () {
-        return (React.createElement("div", { className: 'user-center' },
-            React.createElement("div", { className: 'user-center-head' },
-                React.createElement("p", null, "\u7528\u6237\u8BE6\u60C5")),
-            React.createElement(react_router_dom_1.BrowserRouter, null,
-                React.createElement("div", { className: 'user-center-body' },
-                    React.createElement(UserNavigation_1.UserNavigation, null),
-                    React.createElement(UserRouter_1.UserRouter, null)))));
+    Header.prototype.render = function () {
+        return React.createElement("div", { className: "header" },
+            React.createElement("div", { className: "topBar" },
+                React.createElement("div", { className: "topBarRow" },
+                    React.createElement("div", { className: "row" },
+                        React.createElement("div", null,
+                            React.createElement("img", { src: "images/矢量智能对象.ico" })),
+                        React.createElement("div", { style: { margin: '5px 0 0 5px' } },
+                            React.createElement("img", { src: "images/CC98.ico" }))),
+                    React.createElement("div", { className: "row" },
+                        React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } }, "\u9996\u9875"),
+                        React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } }, "\u5173\u6CE8"),
+                        React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
+                            React.createElement("a", { href: "/newTopics", style: { color: "#fff" } }, "\u65B0\u5E16")),
+                        React.createElement("div", { className: "topBarText", style: { margin: '0 0 0 10px' } },
+                            React.createElement("a", { href: "/boardList", style: { color: "#fff" } }, "\u7248\u9762"))))),
+            React.createElement("div", { className: "headerContent" },
+                React.createElement("div", { className: "headerRow" },
+                    React.createElement("div", { className: "linkBar" },
+                        React.createElement("div", { className: "row", style: { margin: '0 10px 0 10px' } },
+                            React.createElement("div", { style: { margin: '3px 10px 0 0' } },
+                                React.createElement("img", { src: "images/网盘.ico", width: "15", height: "15" })),
+                            React.createElement("div", null,
+                                React.createElement("a", { href: "", className: "linkText" }, "\u7F51\u76D8"))),
+                        React.createElement("div", { className: "row", style: { margin: '0 10px 0 10px' } },
+                            React.createElement("div", { style: { margin: '3px 10px 0 0' } },
+                                React.createElement("img", { src: "images/游戏.ico", width: "15", height: "15" })),
+                            React.createElement("div", null,
+                                React.createElement("a", { href: "", className: "linkText" }, "\u6E38\u620F"))),
+                        React.createElement("div", { className: "row", style: { margin: '0 10px 0 10px' } },
+                            React.createElement("div", { style: { margin: '3px 10px 0 0' } },
+                                React.createElement("img", { src: "images/勋章.ico", width: "15", height: "15" })),
+                            React.createElement("div", null,
+                                React.createElement("a", { href: "", className: "linkText" }, "\u52CB\u7AE0"))),
+                        React.createElement("div", { className: "row", style: { margin: '0 10px 0 10px' } },
+                            React.createElement("div", { style: { margin: '3px 10px 0 0' } },
+                                React.createElement("img", { src: "images/抽卡.ico", width: "15", height: "15" })),
+                            React.createElement("div", null,
+                                React.createElement("a", { href: "", className: "linkText" }, "\u62BD\u5361"))),
+                        React.createElement("div", { className: "row", style: { margin: '0 10px 0 10px' } },
+                            React.createElement("div", { style: { margin: '3px 10px 0 0' } },
+                                React.createElement("img", { src: "images/竞猜.ico", width: "15", height: "15" })),
+                            React.createElement("div", null,
+                                React.createElement("a", { href: "", className: "linkText" }, "\u7ADE\u731C"))),
+                        React.createElement("div", { className: "row", style: { margin: '0 10px 0 10px' } },
+                            React.createElement("div", { style: { margin: '3px 10px 0 0' } },
+                                React.createElement("img", { src: "images/NexusHD.jpg", width: "15", height: "15" })),
+                            React.createElement("div", null,
+                                React.createElement("a", { href: "", className: "linkText" }, "NexusHD")))),
+                    React.createElement("form", { name: "search", action: "", method: "get" },
+                        React.createElement("div", { className: "searchBar" },
+                            React.createElement("div", null,
+                                React.createElement("select", { name: "options" },
+                                    React.createElement("option", { value: "board" }, "\u7248\u9762"),
+                                    React.createElement("option", { value: "theme" }, "\u4E3B\u9898"),
+                                    React.createElement("option", { value: "user" }, "\u7528\u6237"))),
+                            React.createElement("div", null,
+                                React.createElement("input", { name: "searchText", type: "text", placeholder: "猜猜能搜到什么...", style: { border: '0', height: '30px', width: '260px', margin: '0 3px 0 3px' } })),
+                            React.createElement("div", null,
+                                React.createElement("input", { type: "image", name: "searchButton", height: "15", width: "15", src: "images/fangdajing.ico", style: { margin: '3px 10px 0 0' } })))))));
     };
-    return User;
+    return Header;
 }(React.Component));
-exports.User = User;
-//# sourceMappingURL=User.js.map
+exports.Header = Header;
+/*
+
+<img src="/images/headerBackground.jpg"></img>
+            <div id="backgroundimg"> <img src="images/模板图片.jpg" /> </div>
+            <div className="shadow"> </div>
+            <div className="beijingtiao"> </div>
+            <div id="logo"><img src="images/矢量智能对象.ico" /></div>
+            <div id="cc98"><img src="images/CC98论坛.ico" /></div>
+
+            <div id="search">
+                <div id="option">
+                    <div id="theme">主题</div>
+                    <div id="down"></div>
+                </div>
+                <div style={{ left: '50px', top: '0px', position: 'absolute' }}>
+                    <input id="searchbar" type="text" placeholder="猜猜能搜到什么..."></input>
+                </div>
+                <button id="searchbutton">
+                    <img src="images/fangdajing.ico" width="15" height="15" />
+                </button>
+            </div>
+
+            <div id="BBScolumn">
+                <div style={{ position: 'absolute', left: '12px', top: '10px' }}>
+                    <img src="images/网盘.ico" width="15" height="15" />
+                </div>
+                <div style={{ position: 'absolute', left: '37px', top: '8px' }}>
+                    <a href="" className="ziti1">网盘</a>
+                </div>
+                <div style={{ position: 'absolute', left: '84px', top: '10px' }}>
+                    <img src="images/游戏.ico" width="15" height="15" />
+                </div>
+                <div style={{ position: 'absolute', left: '109px', top: '8px' }}>
+                    <a href="http://www.cc98.org/game.asp" className="ziti1">游戏</a>
+                </div>
+                <div style={{ position: 'absolute', left: '156px', top: '10px' }}>
+                    <img src="images/勋章.ico" width="15" height="15" />
+                </div>
+                <div style={{ position: 'absolute', left: '181px', top: '8px' }}>
+                    <a href="http://v2.cc98.org/app/medalmanager.aspx" className="ziti1">勋章中心</a>
+                </div>
+                <div style={{ position: 'absolute', left: '253px', top: '10px' }}>
+                    <img src="images/卡片.ico" width="15" height="15" />
+                </div>
+                <div style={{ position: 'absolute', left: '278px', top: '8px' }}>
+                    <a href="http://card.cc98.org/" className="ziti1">抽卡</a>
+                </div>
+                <div style={{ position: 'absolute', left: '325px', top: '10px' }}>
+                    <img src="images/猜猜.ico" width="15" height="15" />
+                </div>
+                <div style={{ position: 'absolute', left: '350px', top: '8px' }}>
+                    <a href="http://gaming.cc98.org/Game" className="ziti1">竞猜</a>
+                </div>
+                <div style={{ position: 'absolute', left: '397px', top: '10px' }}>
+                    <img src="images/直播.ico" width="15" height="15" />
+                </div>
+                <div style={{ position: 'absolute', left: '422px', top: '8px' }}>
+                    <a href="http://live.cc98.org/" className="ziti1">直播</a>
+                </div>
+                <div style={{ position: 'absolute', left: '469px', top: '10px' }}>
+                    <img src="images/应用.ico" width="15" height="15" />
+                </div>
+                <div style={{ position: 'absolute', left: '494px', top: '8px' }}>
+                    <a href="" className="ziti1">应用</a>
+                </div>
+            </div>
+
+            <div className="banquantiao"></div>
+            <div id="banquanwenzi">
+
+                <p>Copyright © 2003-2017 CC98 Network Association. Email: contact@cc98.org</p></div>
+
+        </div>
+    }
+}
+*/ 
+//# sourceMappingURL=Header.js.map
 
 /***/ }),
 /* 165 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(1);
-var react_router_dom_1 = __webpack_require__(2);
-var UserNavigation = (function (_super) {
-    __extends(UserNavigation, _super);
-    function UserNavigation() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    UserNavigation.prototype.render = function () {
-        return (React.createElement("div", { className: 'user-center-navigation' },
-            React.createElement("ul", null,
-                React.createElement(CustomLink, { to: "" + location.pathname, label: '主页', activeOnlyWhenExact: true, myClassName: 'fa-home' }))));
-    };
-    return UserNavigation;
-}(React.Component));
-exports.UserNavigation = UserNavigation;
-var CustomLink = function (_a) {
-    var label = _a.label, to = _a.to, _b = _a.activeOnlyWhenExact, activeOnlyWhenExact = _b === void 0 ? false : _b, myClassName = _a.myClassName;
-    return (React.createElement(react_router_dom_1.Route, { path: to, exact: activeOnlyWhenExact, children: function (_a) {
-            var match = _a.match;
-            return (React.createElement("li", { className: match ? "user-center-navigation-active" : "" },
-                React.createElement(react_router_dom_1.Link, { className: "" + myClassName, to: to },
-                    React.createElement("p", null, label))));
-        } }));
-};
-//# sourceMappingURL=UserNavigation.js.map
-
-/***/ }),
-/* 166 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(1);
-var react_router_dom_1 = __webpack_require__(2);
-var UserCenterExactProfile_1 = __webpack_require__(123);
-var UserCenterExactActivities_1 = __webpack_require__(124);
-var UserCenterExactAvatar_1 = __webpack_require__(125);
-var UserRouter = (function (_super) {
-    __extends(UserRouter, _super);
-    function UserRouter() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    UserRouter.prototype.render = function () {
-        return (React.createElement("div", { className: 'user-center-router' },
-            React.createElement(react_router_dom_1.Route, { path: '/user/', component: UserExact })));
-    };
-    return UserRouter;
-}(React.Component));
-exports.UserRouter = UserRouter;
-var UserExact = (function (_super) {
-    __extends(UserExact, _super);
-    function UserExact() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    UserExact.prototype.componentDidMount = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var response, data;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!location.pathname.split('/')[2]) {
-                            return [2 /*return*/, 0];
-                        }
-                        if (!(location.pathname.split('/')[2] === 'name')) return [3 /*break*/, 2];
-                        return [4 /*yield*/, fetch("https://api.cc98.org/User/Name/" + location.pathname.split('/')[3])];
-                    case 1:
-                        response = _a.sent();
-                        return [3 /*break*/, 4];
-                    case 2: return [4 /*yield*/, fetch("https://api.cc98.org/User/" + location.pathname.split('/')[2])];
-                    case 3:
-                        response = _a.sent();
-                        _a.label = 4;
-                    case 4: return [4 /*yield*/, response.json()];
-                    case 5:
-                        data = _a.sent();
-                        this.setState({
-                            userInfo: data,
-                            userAvatarImgURL: data.portraitUrl,
-                            responseState: response.status
-                        });
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    UserExact.prototype.render = function () {
-        var element;
-        if (this.state !== null && this.state.responseState === 200) {
-            element = (React.createElement("div", { className: 'user-center-exact' },
-                React.createElement(UserCenterExactAvatar_1.UserCenterExactAvatar, { userAvatarImgURL: this.state.userAvatarImgURL }),
-                React.createElement(UserCenterExactProfile_1.UserCenterExactProfile, { userInfo: this.state.userInfo }),
-                React.createElement(UserCenterExactActivities_1.UserCenterExactActivities, null)));
-        }
-        else {
-            element = React.createElement("p", null, "\u52A0\u8F7D\u4E2D");
-        }
-        return element;
-    };
-    return UserExact;
-}(React.Component));
-//# sourceMappingURL=UserRouter.js.map
-
-/***/ }),
-/* 167 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
