@@ -5184,6 +5184,32 @@ function getAllNewPost(curPage) {
     });
 }
 exports.getAllNewPost = getAllNewPost;
+function setStorage(key, value) {
+    var v = value;
+    if (typeof v == 'object') {
+        v = JSON.stringify(v);
+        v = 'obj-' + v;
+    }
+    else {
+        v = 'str-' + v;
+    }
+    sessionStorage.setItem(key, v);
+}
+exports.setStorage = setStorage;
+function getStorage(key) {
+    var v = sessionStorage.getItem(key);
+    if (!v) {
+        return;
+    }
+    if (v.indexOf('obj-') === 0) {
+        v = v.slice(4);
+        return JSON.parse(v);
+    }
+    else if (v.indexOf('str-') === 0) {
+        return v.slice(4);
+    }
+}
+exports.getStorage = getStorage;
 //# sourceMappingURL=Utility.js.map
 
 /***/ }),
@@ -17196,6 +17222,11 @@ var Replier = (function (_super) {
         };
         return _this;
     }
+    Replier.prototype.ShowUserMessage = function () {
+        //return <UserMessageBox userName="dearkano" userFans="2333" />;
+        var x = document.getElementById("userInformation");
+        x.innerHTML = "<div> asfasfs</div>";
+    };
     Replier.prototype.render = function () {
         var url = "/user/" + this.props.userId;
         var curUserPostUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userName;
@@ -17203,7 +17234,8 @@ var Replier = (function (_super) {
             React.createElement("div", { className: "row", style: { width: "1140px", display: "flex", marginBottom: "10px" } },
                 React.createElement("div", { id: "authorImg" },
                     React.createElement("a", { href: url },
-                        React.createElement("img", { src: this.props.userImgUrl }))),
+                        React.createElement("img", { onMouseOver: this.ShowUserMessage, src: this.props.userImgUrl }))),
+                React.createElement("div", { id: "userInformation" }),
                 React.createElement("div", { className: "column", id: "rpymes" },
                     React.createElement("div", { className: "row", id: "replierMes" },
                         React.createElement("div", { style: { marginLeft: "10px" } },
@@ -17610,6 +17642,17 @@ var PageModel = (function (_super) {
     return PageModel;
 }(React.Component));
 exports.PageModel = PageModel;
+var UserMessageBox = (function (_super) {
+    __extends(UserMessageBox, _super);
+    function UserMessageBox() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserMessageBox.prototype.render = function () {
+        return React.createElement("div", { id: "userMessageBox" }, this.props.userName);
+    };
+    return UserMessageBox;
+}(React.Component));
+exports.UserMessageBox = UserMessageBox;
 //# sourceMappingURL=post.js.map
 
 /***/ }),
@@ -18564,6 +18607,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var AppState_1 = __webpack_require__(3);
+var Utility = __webpack_require__(4);
 //链接到的地址是  /list/boardid
 var BoardID = (function (_super) {
     __extends(BoardID, _super);
@@ -18575,21 +18619,43 @@ var BoardID = (function (_super) {
         };
         return _this;
     }
+    /*
+       let board: Board[] = [];
+            let response = await fetch("http://api.cc98.org/Board/Root");
+            let data = await response.json();
+            for (var i = 0; i < 20; i++) {
+                board[i] = new Board(data[i].name, data[i].todayPostCount, data[i].totalPostCount, data[i].id, data[i].masters);
+            }
+    */
     BoardID.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var response, data, board, i;
+            var boardNameList, board, response, data, i, i;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, fetch("http://api.cc98.org/Board/Root")];
+                    case 0:
+                        boardNameList = [];
+                        board = [];
+                        if (!!Utility.getStorage('board_2')) return [3 /*break*/, 3];
+                        return [4 /*yield*/, fetch("http://api.cc98.org/Board/Root")];
                     case 1:
                         response = _a.sent();
                         return [4 /*yield*/, response.json()];
                     case 2:
                         data = _a.sent();
-                        board = [];
                         for (i = 0; i < 20; i++) {
                             board[i] = new AppState_1.Board(data[i].name, data[i].todayPostCount, data[i].totalPostCount, data[i].id, data[i].masters);
+                            Utility.setStorage('board_' + data[i].id.toString(), board[i]);
+                            boardNameList[i] = 'board_' + data[i].id.toString();
                         }
+                        Utility.setStorage('boardList', boardNameList);
+                        return [3 /*break*/, 4];
+                    case 3:
+                        for (i = 0; i < 20; i++) {
+                            boardNameList = Utility.getStorage('boardList');
+                            board[i] = Utility.getStorage(boardNameList[i]);
+                        }
+                        _a.label = 4;
+                    case 4:
                         this.setState({
                             board: board,
                         });
@@ -21238,7 +21304,7 @@ var AllNewPost = (function (_super) {
      * 全站新帖列表
      */
     AllNewPost.prototype.render = function () {
-        return (React.createElement("div", { className: 'focus', style: { marginTop: "40px" } },
+        return (React.createElement("div", { className: 'focus' },
             React.createElement("div", { className: 'focus-allNewPost' },
                 React.createElement("i", { className: 'fa fa-home', "aria-hidden": 'true' }),
                 "\u9996\u9875/\u5168\u7AD9\u65B0\u5E16"),
@@ -21595,32 +21661,32 @@ var Header = (function (_super) {
                             React.createElement("div", { style: { margin: '3px 10px 0 0' } },
                                 React.createElement("img", { src: "images/网盘.ico", width: "15", height: "15" })),
                             React.createElement("div", null,
-                                React.createElement("a", { href: "", className: "linkText" }, "\u7F51\u76D8"))),
+                                React.createElement("a", { href: "http://share.cc98.org/", className: "linkText" }, "\u7F51\u76D8"))),
                         React.createElement("div", { className: "row", style: { margin: '0 10px 0 10px' } },
                             React.createElement("div", { style: { margin: '3px 10px 0 0' } },
                                 React.createElement("img", { src: "images/游戏.ico", width: "15", height: "15" })),
                             React.createElement("div", null,
-                                React.createElement("a", { href: "", className: "linkText" }, "\u6E38\u620F"))),
+                                React.createElement("a", { href: "http://www.cc98.org/game.asp", className: "linkText" }, "\u6E38\u620F"))),
                         React.createElement("div", { className: "row", style: { margin: '0 10px 0 10px' } },
                             React.createElement("div", { style: { margin: '3px 10px 0 0' } },
                                 React.createElement("img", { src: "images/勋章.ico", width: "15", height: "15" })),
                             React.createElement("div", null,
-                                React.createElement("a", { href: "", className: "linkText" }, "\u52CB\u7AE0"))),
+                                React.createElement("a", { href: "http://v2.cc98.org/app/medalmanager.aspx", className: "linkText" }, "\u52CB\u7AE0"))),
                         React.createElement("div", { className: "row", style: { margin: '0 10px 0 10px' } },
                             React.createElement("div", { style: { margin: '3px 10px 0 0' } },
                                 React.createElement("img", { src: "images/抽卡.ico", width: "15", height: "15" })),
                             React.createElement("div", null,
-                                React.createElement("a", { href: "", className: "linkText" }, "\u62BD\u5361"))),
+                                React.createElement("a", { href: "http://card.cc98.org/", className: "linkText" }, "\u62BD\u5361"))),
                         React.createElement("div", { className: "row", style: { margin: '0 10px 0 10px' } },
                             React.createElement("div", { style: { margin: '3px 10px 0 0' } },
-                                React.createElement("img", { src: "images/竞猜.ico", width: "15", height: "15" })),
+                                React.createElement("img", { src: "images/gamble.ico", width: "15", height: "15" })),
                             React.createElement("div", null,
-                                React.createElement("a", { href: "", className: "linkText" }, "\u7ADE\u731C"))),
+                                React.createElement("a", { href: "http://gaming.cc98.org", className: "linkText" }, "\u7ADE\u731C"))),
                         React.createElement("div", { className: "row", style: { margin: '0 10px 0 10px' } },
                             React.createElement("div", { style: { margin: '3px 10px 0 0' } },
                                 React.createElement("img", { src: "images/NexusHD.jpg", width: "15", height: "15" })),
                             React.createElement("div", null,
-                                React.createElement("a", { href: "", className: "linkText" }, "NexusHD")))),
+                                React.createElement("a", { href: "http://www.nexushd.org", className: "linkText" }, "NexusHD")))),
                     React.createElement("form", { name: "search", action: "", method: "get" },
                         React.createElement("div", { className: "searchBar" },
                             React.createElement("div", null,

@@ -2202,3 +2202,10 @@ option { //这里好像没有卵用
 input {
     background-color: rgb(252,252,252);
 }
+// 以下是简要用户信息样式
+#userMessageBox{
+    display:flex;
+    flex-direction:column;
+    width:350px;
+    height:180px;
+}

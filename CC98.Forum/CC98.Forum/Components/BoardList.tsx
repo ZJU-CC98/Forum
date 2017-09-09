@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { AppState } from '../States/AppState';
 import { BoardState } from '../States/AppState';
 import { Board } from '../States/AppState';
+import * as Utility from '../Utility';
 import {
     BrowserRouter as Router,
     Route,
@@ -19,13 +20,33 @@ export class BoardID extends React.Component<{}, { board: Board[], view1, view2,
             view1: false, view2: false, view3: false, view4: false,
         }
     }
+    /*
+       let board: Board[] = [];
+            let response = await fetch("http://api.cc98.org/Board/Root");
+            let data = await response.json();
+            for (var i = 0; i < 20; i++) {
+                board[i] = new Board(data[i].name, data[i].todayPostCount, data[i].totalPostCount, data[i].id, data[i].masters);
+            }
+    */
     async componentDidMount() {
-        let response = await fetch("http://api.cc98.org/Board/Root");
-        let data = await response.json();
+        var boardNameList=[];
         let board: Board[] = [];
-        for (var i = 0; i < 20; i++) {
-            board[i] = new Board(data[i].name, data[i].todayPostCount, data[i].totalPostCount, data[i].id, data[i].masters);
+        if (!Utility.getStorage('board_2')) {
+            let response = await fetch("http://api.cc98.org/Board/Root");
+            let data = await response.json();
+            for (var i = 0; i < 20; i++) {
+                board[i] = new Board(data[i].name, data[i].todayPostCount, data[i].totalPostCount, data[i].id, data[i].masters);
+                Utility.setStorage('board_' + data[i].id.toString(), board[i]);
+                boardNameList[i] = 'board_' + data[i].id.toString();
+            }
+            Utility.setStorage('boardList', boardNameList);
+        } else {
+            for (var i = 0; i < 20; i++) {
+                boardNameList = Utility.getStorage('boardList');
+                board[i] = Utility.getStorage(boardNameList[i]);
+            }
         }
+      
         this.setState({
             board: board,
         })
@@ -49,14 +70,14 @@ export class BoardID extends React.Component<{}, { board: Board[], view1, view2,
         } else if (boards.id == 29) {
             if (this.state.view2 == true) {
                 return <div className="column"><div className="column" style={{ border: "2px solid #e9e9e9" }}>
-                    <div className="row" style={{ marginTop: "15px", marginBottom: "15px" }}><div className="areaName" >{boards.name}<button className="hideBoard"onClick={this.view2.bind(this)}>-</button></div>
+                    <div className="row" style={{ marginTop: "15px", marginBottom: "15px" }}><div className="areaName" >{boards.name}<button className="hideBoard" onClick={this.view2.bind(this)}>-</button></div>
                         <div className="areaName">主管：{boards.masters}</div></div>
                     <ChildBoard boardid={boards.id} />
 
                 </div><div style={{ height: "30px", backgroundColor: "#F5FAFD" }}></div></div>;
             } else {
                 return <div className="column"><div className="column" style={{ border: "2px solid #e9e9e9" }}>
-                    <div className="row" style={{ marginTop: "15px", marginBottom: "15px" }}><div className="areaName" >{boards.name}<button className="viewBoard"onClick={this.view2.bind(this)}>+</button></div>
+                    <div className="row" style={{ marginTop: "15px", marginBottom: "15px" }}><div className="areaName" >{boards.name}<button className="viewBoard" onClick={this.view2.bind(this)}>+</button></div>
                         <div className="areaName">主管：{boards.masters}</div></div>
                 </div><div style={{ height: "30px", backgroundColor: "#F5FAFD" }}></div></div>;
             }
@@ -64,7 +85,7 @@ export class BoardID extends React.Component<{}, { board: Board[], view1, view2,
         } else if (boards.id == 35) {
             if (this.state.view3 == true) {
                 return <div className="column"><div className="column" style={{ border: "2px solid #e9e9e9" }}>
-                    <div className="row" style={{ marginTop: "15px", marginBottom: "15px" }}><div className="areaName" >{boards.name}<button className="hideBoard"onClick={this.view3.bind(this)}>-</button></div>
+                    <div className="row" style={{ marginTop: "15px", marginBottom: "15px" }}><div className="areaName" >{boards.name}<button className="hideBoard" onClick={this.view3.bind(this)}>-</button></div>
                         <div className="areaName">主管：{boards.masters}</div></div>
                     <ChildBoard boardid={boards.id} />
 
@@ -72,7 +93,7 @@ export class BoardID extends React.Component<{}, { board: Board[], view1, view2,
             } else {
 
                 return <div className="column"><div className="column" style={{ border: "2px solid #e9e9e9" }}>
-                    <div className="row" style={{ marginTop: "15px", marginBottom: "15px" }}><div className="areaName" >{boards.name}<button className="viewBoard"onClick={this.view3.bind(this)}>+</button></div>
+                    <div className="row" style={{ marginTop: "15px", marginBottom: "15px" }}><div className="areaName" >{boards.name}<button className="viewBoard" onClick={this.view3.bind(this)}>+</button></div>
                         <div className="areaName">主管：{boards.masters}</div></div>
                 </div><div style={{ height: "30px", backgroundColor: "#F5FAFD" }}></div></div>;
             }
@@ -87,7 +108,7 @@ export class BoardID extends React.Component<{}, { board: Board[], view1, view2,
                 </div><div style={{ height: "30px", backgroundColor: "#F5FAFD" }}></div></div>;
             } else {
                 return <div className="column"><div className="column" style={{ border: "2px solid #e9e9e9" }}>
-                    <div className="row" style={{ marginTop: "15px", marginBottom: "15px" }}><div className="areaName" >{boards.name}<button className="viewBoard"onClick={this.view4.bind(this)}>+</button></div>
+                    <div className="row" style={{ marginTop: "15px", marginBottom: "15px" }}><div className="areaName" >{boards.name}<button className="viewBoard" onClick={this.view4.bind(this)}>+</button></div>
                         <div className="areaName">主管：{boards.masters}</div></div>
                 </div><div style={{ height: "30px", backgroundColor: "#F5FAFD" }}></div></div>;
             }
@@ -120,7 +141,7 @@ export class BoardID extends React.Component<{}, { board: Board[], view1, view2,
         if (this.state.view2 == false) {
             this.setState({ view2: true });
         } else {
-            this.setState({ view2: false});
+            this.setState({ view2: false });
         }
     }
     view3() {
@@ -191,7 +212,7 @@ export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>
 }
 export class BoardList extends React.Component<{}, AppState> {
     render() {
-        return <div className="boardList" style={{ marginTop:"40px" }}>
+        return <div className="boardList" style={{ marginTop: "40px" }}>
             <BoardID />
         </div>
     }

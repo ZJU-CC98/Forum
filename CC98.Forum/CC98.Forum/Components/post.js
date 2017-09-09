@@ -208,6 +208,11 @@ var Replier = (function (_super) {
         };
         return _this;
     }
+    Replier.prototype.ShowUserMessage = function () {
+        //return <UserMessageBox userName="dearkano" userFans="2333" />;
+        var x = document.getElementById("userInformation");
+        x.innerHTML = "<div> asfasfs</div>";
+    };
     Replier.prototype.render = function () {
         var url = "/user/" + this.props.userId;
         var curUserPostUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userName;
@@ -215,7 +220,8 @@ var Replier = (function (_super) {
             React.createElement("div", { className: "row", style: { width: "1140px", display: "flex", marginBottom: "10px" } },
                 React.createElement("div", { id: "authorImg" },
                     React.createElement("a", { href: url },
-                        React.createElement("img", { src: this.props.userImgUrl }))),
+                        React.createElement("img", { onMouseOver: this.ShowUserMessage, src: this.props.userImgUrl }))),
+                React.createElement("div", { id: "userInformation" }),
                 React.createElement("div", { className: "column", id: "rpymes" },
                     React.createElement("div", { className: "row", id: "replierMes" },
                         React.createElement("div", { style: { marginLeft: "10px" } },
@@ -622,4 +628,15 @@ var PageModel = (function (_super) {
     return PageModel;
 }(React.Component));
 exports.PageModel = PageModel;
+var UserMessageBox = (function (_super) {
+    __extends(UserMessageBox, _super);
+    function UserMessageBox() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserMessageBox.prototype.render = function () {
+        return React.createElement("div", { id: "userMessageBox" }, this.props.userName);
+    };
+    return UserMessageBox;
+}(React.Component));
+exports.UserMessageBox = UserMessageBox;
 //# sourceMappingURL=post.js.map

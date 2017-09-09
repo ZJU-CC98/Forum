@@ -121,13 +121,17 @@ export class Replier extends RouteComponent<{ userId,topicid,userName, replyTime
             level: 2,
         }
     }
-
+    ShowUserMessage() {
+        //return <UserMessageBox userName="dearkano" userFans="2333" />;
+        var x = document.getElementById("userInformation");
+        x.innerHTML = "<div> asfasfs</div>";
+    }
     render() {
         let url = `/user/${this.props.userId}`;
         let curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userName}`;
         return <div className="replyRoot">
             <div className="row" style={{ width: "1140px", display: "flex", marginBottom: "10px" }}>
-                <div id="authorImg" ><a href={url}><img src={this.props.userImgUrl}></img></a></div>
+                <div id="authorImg" ><a href={url}><img onMouseOver={this.ShowUserMessage} src={this.props.userImgUrl}></img></a></div><div id="userInformation"></div>
                 <div className="column" id="rpymes">
                     <div className="row" id="replierMes">
                         <div style={{ marginLeft: "10px" }}><span>{this.props.floor}L</span></div>
@@ -426,5 +430,10 @@ export class PageModel extends React.Component<{ pageNumber, topicid, curPage, t
             return <li className="page-item"><Link className="page-link" to={pageUrl}>{end}</Link></li>
                 ;
         }
+    }
+}
+export class UserMessageBox extends React.Component<{userName,userFans}, {}>{
+    render() {
+        return <div id="userMessageBox">{this.props.userName}</div>;
     }
 }

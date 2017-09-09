@@ -47,6 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var AppState_1 = require("../States/AppState");
+var Utility = require("../Utility");
 //链接到的地址是  /list/boardid
 var BoardID = (function (_super) {
     __extends(BoardID, _super);
@@ -58,21 +59,43 @@ var BoardID = (function (_super) {
         };
         return _this;
     }
+    /*
+       let board: Board[] = [];
+            let response = await fetch("http://api.cc98.org/Board/Root");
+            let data = await response.json();
+            for (var i = 0; i < 20; i++) {
+                board[i] = new Board(data[i].name, data[i].todayPostCount, data[i].totalPostCount, data[i].id, data[i].masters);
+            }
+    */
     BoardID.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var response, data, board, i;
+            var boardNameList, board, response, data, i, i;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, fetch("http://api.cc98.org/Board/Root")];
+                    case 0:
+                        boardNameList = [];
+                        board = [];
+                        if (!!Utility.getStorage('board_2')) return [3 /*break*/, 3];
+                        return [4 /*yield*/, fetch("http://api.cc98.org/Board/Root")];
                     case 1:
                         response = _a.sent();
                         return [4 /*yield*/, response.json()];
                     case 2:
                         data = _a.sent();
-                        board = [];
                         for (i = 0; i < 20; i++) {
                             board[i] = new AppState_1.Board(data[i].name, data[i].todayPostCount, data[i].totalPostCount, data[i].id, data[i].masters);
+                            Utility.setStorage('board_' + data[i].id.toString(), board[i]);
+                            boardNameList[i] = 'board_' + data[i].id.toString();
                         }
+                        Utility.setStorage('boardList', boardNameList);
+                        return [3 /*break*/, 4];
+                    case 3:
+                        for (i = 0; i < 20; i++) {
+                            boardNameList = Utility.getStorage('boardList');
+                            board[i] = Utility.getStorage(boardNameList[i]);
+                        }
+                        _a.label = 4;
+                    case 4:
                         this.setState({
                             board: board,
                         });

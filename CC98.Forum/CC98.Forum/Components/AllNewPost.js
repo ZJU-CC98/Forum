@@ -27,7 +27,7 @@ var AllNewPost = (function (_super) {
      * 全站新帖列表
      */
     AllNewPost.prototype.render = function () {
-        return (React.createElement("div", { className: 'focus', style: { marginTop: "40px" } },
+        return (React.createElement("div", { className: 'focus' },
             React.createElement("div", { className: 'focus-allNewPost' },
                 React.createElement("i", { className: 'fa fa-home', "aria-hidden": 'true' }),
                 "\u9996\u9875/\u5168\u7AD9\u65B0\u5E16"),

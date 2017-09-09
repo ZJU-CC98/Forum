@@ -32,27 +32,27 @@ export class Header extends React.Component<{}, AppState> {
                     <div className="linkBar">
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
                             <div style={{ margin: '3px 10px 0 0' }}><img src="images/网盘.ico" width="15" height="15" /></div>
-                            <div><a href="" className="linkText">网盘</a></div>
+                            <div><a href="http://share.cc98.org/" className="linkText">网盘</a></div>
                         </div>
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
                             <div style={{ margin: '3px 10px 0 0' }}><img src="images/游戏.ico" width="15" height="15" /></div>
-                            <div><a href="" className="linkText">游戏</a></div>
+                            <div><a href="http://www.cc98.org/game.asp" className="linkText">游戏</a></div>
                         </div>
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
                             <div style={{ margin: '3px 10px 0 0' }}><img src="images/勋章.ico" width="15" height="15" /></div>
-                            <div><a href="" className="linkText">勋章</a></div>
+                            <div><a href="http://v2.cc98.org/app/medalmanager.aspx" className="linkText">勋章</a></div>
                         </div>
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
                             <div style={{ margin: '3px 10px 0 0' }}><img src="images/抽卡.ico" width="15" height="15" /></div>
-                            <div><a href="" className="linkText">抽卡</a></div>
+                            <div><a href="http://card.cc98.org/" className="linkText">抽卡</a></div>
                         </div>
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
                             <div style={{ margin: '3px 10px 0 0' }}><img src="images/gamble.ico" width="15" height="15" /></div>
-                            <div><a href="" className="linkText">竞猜</a></div>
+                            <div><a href="http://gaming.cc98.org" className="linkText">竞猜</a></div>
                         </div>
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
                             <div style={{ margin: '3px 10px 0 0' }}><img src="images/NexusHD.jpg" width="15" height="15" /></div>
-                            <div><a href="" className="linkText">NexusHD</a></div>
+                            <div><a href="http://www.nexushd.org" className="linkText">NexusHD</a></div>
                         </div>
                     </div>
 

@@ -399,4 +399,30 @@ function getAllNewPost(curPage) {
     });
 }
 exports.getAllNewPost = getAllNewPost;
+function setStorage(key, value) {
+    var v = value;
+    if (typeof v == 'object') {
+        v = JSON.stringify(v);
+        v = 'obj-' + v;
+    }
+    else {
+        v = 'str-' + v;
+    }
+    sessionStorage.setItem(key, v);
+}
+exports.setStorage = setStorage;
+function getStorage(key) {
+    var v = sessionStorage.getItem(key);
+    if (!v) {
+        return;
+    }
+    if (v.indexOf('obj-') === 0) {
+        v = v.slice(4);
+        return JSON.parse(v);
+    }
+    else if (v.indexOf('str-') === 0) {
+        return v.slice(4);
+    }
+}
+exports.getStorage = getStorage;
 //# sourceMappingURL=Utility.js.map
