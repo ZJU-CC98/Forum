@@ -30,11 +30,11 @@ var UserCenterExactActivities = (function (_super) {
             React.createElement("p", null, "\u8FD1\u671F\u52A8\u6001"),
             React.createElement(react_router_dom_1.BrowserRouter, null,
                 React.createElement("div", null,
-                    React.createElement(CustomLink, { to: '/usercenter/', label: '主题', activeOnlyWhenExact: true }),
+                    React.createElement(CustomLink, { to: "" + location.pathname, label: '主题', activeOnlyWhenExact: true }),
                     " | ",
-                    React.createElement(CustomLink, { to: '/usercenter/replies', label: '回复', activeOnlyWhenExact: false }),
-                    React.createElement(react_router_dom_1.Route, { exact: true, path: '/usercenter/', component: UserCenterExactActivitiesPosts_1.UserCenterExactActivitiesPosts }),
-                    React.createElement(react_router_dom_1.Route, { path: '/usercenter/replies', component: UserCenterExactActivitiesReplies_1.UserCenterExactActivitiesReplies })))));
+                    React.createElement(CustomLink, { to: location.pathname + "/replies", label: '回复', activeOnlyWhenExact: false }),
+                    React.createElement(react_router_dom_1.Route, { exact: true, path: "" + location.pathname, component: UserCenterExactActivitiesPosts_1.UserCenterExactActivitiesPosts }),
+                    React.createElement(react_router_dom_1.Route, { path: location.pathname + "/replies", component: UserCenterExactActivitiesReplies_1.UserCenterExactActivitiesReplies })))));
     };
     return UserCenterExactActivities;
 }(React.Component));

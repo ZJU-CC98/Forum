@@ -3,40 +3,40 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
+import {
+    Route
+} from 'react-router-dom';
 import { UserInfo } from '../States/AppState';
 import { UserCenterExactProfile } from './UserCenterExactProfile';
 import { UserCenterExactActivities } from './UserCenterExactActivities';
 import { UserCenterExactAvatar } from './UserCenterExactAvatar'
 
-/**
- * 用户中心主页
- */
-export class UserCenterExact extends React.Component<null, UserCenterExactState> {
+export class UserRouter extends React.Component {
+    render() {
+        return (<div className='user-center-router'>
+            <Route path='/user/' component={UserExact} />
+        </div>);
+    }
+}
+
+class UserExact extends React.Component<null, UserCenterExactState> {
 
     async componentDidMount() {
-        console.log(location);
-        console.log(location.hash !== '' && location.hash.indexOf('access_token') !== -1);
-        if (location.hash !== '' && location.hash.indexOf('access_token') !== -1) {
-            let hash: myType = {};
-            location.hash.slice(1).split('&').map((item) => item.split('=')).forEach((item) => {
-                hash[item[0]] = item[1];
-            });
-            window.localStorage.token = hash['access_token'];
+        let response;
+        if (!location.pathname.split('/')[2]) {
+            return 0;
+        } 
+        if(location.pathname.split('/')[2] === 'name') {
+            response = await fetch(`https://api.cc98.org/User/Name/${location.pathname.split('/')[3]}`);
+        } else {
+            response = await fetch(`https://api.cc98.org/User/${location.pathname.split('/')[2]}`);
         }
-
-        let response = await fetch('https://api.cc98.org/Me/', {
-            headers: {
-                'Authorization': 'bearer' + ' ' + window.localStorage.token
-            }
-        });
         let data = await response.json();
-        console.log(response);
         this.setState({
             userInfo: data,
             userAvatarImgURL: data.portraitUrl,
             responseState: response.status
         });
-        console.log(this.state);
     }
 
     render() {
@@ -47,8 +47,6 @@ export class UserCenterExact extends React.Component<null, UserCenterExactState>
                 <UserCenterExactProfile userInfo={this.state.userInfo} />
                 <UserCenterExactActivities />
             </div>);
-        } else if (this.state !== null && this.state.responseState === 401) {
-            element = <p>请重新登陆</p>;
         } else {
             element = <p>加载中</p>;
         }
