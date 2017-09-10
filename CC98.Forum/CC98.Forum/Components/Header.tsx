@@ -18,12 +18,21 @@ export class Header extends React.Component<{}, AppState> {
         return <div className="header">
             <div className="topBar">
                 <div className="topBarRow">
-                    <div className="row"><div><img src="images/矢量智能对象.ico" /></div><div style={{ margin: '5px 0 0 5px' }}><img src="images/CC98.ico" /></div></div>
-                    <div className="row">
-                        <div className="topBarText" style={{ margin: '0 10px 0 10px' }}>首页</div>
-                        <div className="topBarText" style={{ margin: '0 10px 0 10px' }}>关注</div>
-                        <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/newTopics" style={{ color:"#fff" }}>新帖</a></div>
-                        <div className="topBarText" style={{ margin: '0 0 0 10px' }}><a href="/boardList" style={{ color: "#fff" }}>版面</a></div>
+                    <div className="row"><div style={{ margin: '10px 0 0 0' }}><a  href="/"><img src="images/矢量智能对象.ico" /></a></div><div style={{ margin: '15px 0 0 5px' }}><a href="/"><img  src="/images/CC98.ico" /></a></div></div>
+                    <div id="dropdown">
+                        <div className="box">
+                            <div className="userImg"><img src="/images/userImg.png"></img></div>
+                            <div className="select">userName</div>
+                            <div className="topBarText" style={{ margin: '0 10px 0 10px' }}>消息</div>
+                            <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/" style={{ color:"#fff" }}>首页</a></div>
+                            <div className="topBarText" style={{ margin: '0 10px 0 10px' }}>关注</div>
+                            <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/newTopics" style={{ color:"#fff" }}>新帖</a></div>
+                            <div className="topBarText" style={{ margin: '0 0 0 10px' }}><a href="/boardList" style={{ color: "#fff" }}>版面</a></div>
+                        </div>
+                        <ul className="sub">
+                            <li>个人中心</li>
+                            <li>设置</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -31,38 +40,46 @@ export class Header extends React.Component<{}, AppState> {
                 <div className="headerRow">
                     <div className="linkBar">
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="images/网盘.ico" width="15" height="15" /></div>
+                            <div style={{ margin: '3px 10px 0 0' }}><img src="/images/网盘.ico" width="15" height="15" /></div>
                             <div><a href="http://share.cc98.org/" className="linkText">网盘</a></div>
                         </div>
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="images/游戏.ico" width="15" height="15" /></div>
+                            <div style={{ margin: '3px 10px 0 0' }}><img src="/images/游戏.ico" width="15" height="15" /></div>
                             <div><a href="http://www.cc98.org/game.asp" className="linkText">游戏</a></div>
                         </div>
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="images/勋章.ico" width="15" height="15" /></div>
+                            <div style={{ margin: '3px 10px 0 0' }}><img src="/images/勋章.ico" width="15" height="15" /></div>
                             <div><a href="http://v2.cc98.org/app/medalmanager.aspx" className="linkText">勋章</a></div>
                         </div>
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="images/抽卡.ico" width="15" height="15" /></div>
+                            <div style={{ margin: '3px 10px 0 0' }}><img src="/images/抽卡.ico" width="15" height="15" /></div>
                             <div><a href="http://card.cc98.org/" className="linkText">抽卡</a></div>
                         </div>
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="images/gamble.ico" width="15" height="15" /></div>
+                            <div style={{ margin: '3px 10px 0 0' }}><img src="/images/gamble.ico" width="15" height="15" /></div>
                             <div><a href="http://gaming.cc98.org" className="linkText">竞猜</a></div>
                         </div>
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="images/NexusHD.jpg" width="15" height="15" /></div>
+                            <div style={{ margin: '3px 10px 0 0' }}><img src="/images/NexusHD.jpg" width="15" height="15" /></div>
                             <div><a href="http://www.nexushd.org" className="linkText">NexusHD</a></div>
                         </div>
                     </div>
 
-                    <form name="search" action="" method="get">
-                        <div className="searchBar">
-                            <div><select name="options"><option value="board">版面</option><option value="theme">主题</option><option value="user">用户</option></select></div>
-                            <div><input name="searchText" type="text" placeholder="猜猜能搜到什么..." style={{ border: '0', height: '30px', width:'260px', margin: '0 3px 0 3px'}} /></div>
-                            <div><input type="image" name="searchButton" height="15" width="15" src="images/fangdajing.ico" style={{ margin: '3px 10px 0 0' }}/></div>
+                    <div id="search">
+                        <div className="box">
+                            <form>
+                                <div className="select">主题</div>
+                                <div className="downArrow"><img src="images/downArrow.png" width="12" height="12" /></div>
+                                <input name="searchText" type="text" placeholder="猜猜能搜到什么..." />
+                                <div className="fangdajing"><img src="images/fangdajing.ico" width="15" height="15" /></div>
+                            </form>
                         </div>
-                    </form>
+                        <ul className="sub">
+                            <li>版面</li>
+                            <li>主题</li>
+                            <li>用户</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

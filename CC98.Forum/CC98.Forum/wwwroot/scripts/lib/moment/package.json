@@ -1,36 +1,49 @@
 {
+  "_args": [
+    [
+      "moment@2.18.1",
+      "C:\\Users\\Mana\\Desktop\\Forum-dev\\CC98.Forum\\CC98.Forum"
+    ]
+  ],
   "_from": "moment@2.18.1",
   "_id": "moment@2.18.1",
-  "_inBundle": false,
-  "_integrity": "sha1-w2GT3Tzhwu7SrbfIAtu8d6gbHA8=",
+  "_inCache": true,
   "_location": "/moment",
+  "_nodeVersion": "6.7.0",
+  "_npmOperationalInternal": {
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/moment-2.18.1.tgz_1490137132553_0.33630239870399237"
+  },
+  "_npmUser": {
+    "email": "iskren.chernev@gmail.com",
+    "name": "ichernev"
+  },
+  "_npmVersion": "3.10.3",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
-    "registry": true,
-    "raw": "moment@2.18.1",
     "name": "moment",
-    "escapedName": "moment",
+    "raw": "moment@2.18.1",
     "rawSpec": "2.18.1",
-    "saveSpec": null,
-    "fetchSpec": "2.18.1"
+    "scope": null,
+    "spec": "2.18.1",
+    "type": "version"
   },
   "_requiredBy": [
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/moment/-/moment-2.18.1.tgz",
   "_shasum": "c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f",
+  "_shrinkwrap": null,
   "_spec": "moment@2.18.1",
-  "_where": "C:\\Users\\dong\\source\\repos\\Forum\\CC98.Forum\\CC98.Forum",
+  "_where": "C:\\Users\\Mana\\Desktop\\Forum-dev\\CC98.Forum\\CC98.Forum",
   "author": {
-    "name": "Iskren Ivov Chernev",
     "email": "iskren.chernev@gmail.com",
+    "name": "Iskren Ivov Chernev",
     "url": "https://github.com/ichernev"
   },
   "bugs": {
     "url": "https://github.com/moment/moment/issues"
   },
-  "bundleDependencies": false,
   "contributors": [
     {
       "name": "Tim Wood",
@@ -57,7 +70,7 @@
       "url": "https://github.com/oire"
     }
   ],
-  "deprecated": false,
+  "dependencies": {},
   "description": "Parse, validate, manipulate, and display dates",
   "devDependencies": {
     "benchmark": "latest",
@@ -92,40 +105,65 @@
     "typescript": "^1.8.10",
     "uglify-js": "latest"
   },
+  "directories": {},
+  "dist": {
+    "shasum": "c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f",
+    "tarball": "https://registry.npmjs.org/moment/-/moment-2.18.1.tgz"
+  },
   "dojoBuild": "package.js",
   "ender": "./ender.js",
   "engines": {
     "node": "*"
   },
   "homepage": "http://momentjs.com",
+  "installable": true,
   "jsnext:main": "./src/moment.js",
   "jspm": {
+    "buildConfig": {
+      "uglify": true
+    },
     "files": [
-      "moment.js",
+      "locale",
       "moment.d.ts",
-      "locale"
+      "moment.js"
     ],
     "map": {
       "moment": "./moment"
-    },
-    "buildConfig": {
-      "uglify": true
     }
   },
   "keywords": [
-    "moment",
     "date",
-    "time",
-    "parse",
+    "ender",
     "format",
-    "validate",
     "i18n",
     "l10n",
-    "ender"
+    "moment",
+    "parse",
+    "time",
+    "validate"
   ],
   "license": "MIT",
   "main": "./moment.js",
+  "maintainers": [
+    {
+      "name": "ichernev",
+      "email": "iskren.chernev@gmail.com"
+    },
+    {
+      "name": "maggiepint",
+      "email": "maggiepint@gmail.com"
+    },
+    {
+      "name": "mj1856",
+      "email": "mj1856@hotmail.com"
+    },
+    {
+      "name": "timrwood",
+      "email": "washwithcare@gmail.com"
+    }
+  ],
   "name": "moment",
+  "optionalDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/moment/moment.git"

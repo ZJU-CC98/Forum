@@ -211,7 +211,6 @@ var Replier = (function (_super) {
     Replier.prototype.ShowUserMessage = function () {
         //return <UserMessageBox userName="dearkano" userFans="2333" />;
         var x = document.getElementById("userInformation");
-        x.innerHTML = "<div> asfasfs</div>";
     };
     Replier.prototype.render = function () {
         var url = "/user/" + this.props.userId;

@@ -1931,7 +1931,7 @@ body {
     min-height: 780px;
 
     margin: {
-        top: 240px;
+        top: 20px;
         bottom: 60px;
     }
 }
@@ -2101,12 +2101,12 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
-    min-width: 1140px;
-    margin: 0px;
+    margin: 0 0 20px 0;
     padding: 0px;
     justify-content: center;
     background: url(/images/headerBackground.jpg) no-repeat center;
     justify-content: center;
+    z-index: 2;
 }
 
 .topBar {
@@ -2115,6 +2115,7 @@ body {
     height: 50px;
     width: 100%;
     opacity: 0.5;
+
     justify-content: center;
     background-color: rgba(80,80,80,0.6); //仅背景条半透明
 }
@@ -2124,14 +2125,6 @@ body {
     flex-direction: row;
     justify-content: space-between;
     width: 1140px;
-    align-items: center;
-}
-
-.topBarText {
-    font-size: 12px;
-    font-family: 微软雅黑;
-    color: rgb(252,252,252);
-    margin-top: 12px;
 }
 
 .headerContent {
@@ -2148,9 +2141,7 @@ body {
     flex-direction: row;
     justify-content: space-between;
     width: 1140px;
-    align-items: center;
     margin-top: 134px;
-    width: 1140px;
 }
 
 .linkBar {
@@ -2173,41 +2164,503 @@ body {
     margin-top: 12px;
 }
 
-.searchBar {
+//以下是头部中顶部条下拉菜单的样式~
+
+#dropdown ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#dropdown .box {
     display: flex;
     flex-direction: row;
-    height: 32px;
-    background-color: rgb(252,252,252);
+    align-items: center;
+}
+
+#dropdown .userImg img {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    margin: 0 0 0 0;
+}
+
+#dropdown .select {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 94px;
+    height: 50px;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(255,255,255);
+    cursor: pointer;
+}
+
+#dropdown .topBarText {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(252,252,252);
+    margin-top: 12px;
+}
+
+#dropdown .sub {
+    width: 94px;
+    display: none;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(255,255,255);
+    background-color: rgba(80,80,80,0.6);
+    margin-left: 30px;
+}
+
+#dropdown .sub li {
+    height: 25px;
+    cursor: pointer;
+    text-align: center;
+}
+
+#dropdown .sub li.hover {
+    background: rgb(233,233,233);
+}
+//以下是头部中搜索条的样式
+#search ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#search .box, #search .select, #search input, #search a, #search .sub {
+    background: rgb(255,255,255);
+}
+
+#search .box {
+    display: flex;
+    flex-direction: row;
+    height: 36px;
+    width: 340px;
     border-radius: 5px;
     border-style: solid;
     border-color: rgb(233,233,233);
     border-width: 2px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+#search form {
+    display: flex;
+    flex-direction: row;
     align-items: center;
-    //box-sizing: border-box;
 }
 
-select {
-    //-moz-appearance: none; //firefox
-    //-webkit-appearance: none; //清除默认的select选择框样式
-    border: solid 0 rgb(233,233,233);
+#search .select {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    justify-content: center;
+    align-items: center;
+    margin-left: 2px;
+}
+
+#search .downArrow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     height: 32px;
-    margin: 0 3px 0 3px;
-    background-color: rgb(252,252,252);
+    border-right: 2px solid rgb(233,233,233);
+    padding-right: 2px;
 }
 
-option { //这里好像没有卵用
-    //-moz-appearance: none; //firefox
-    //-webkit-appearance: none; //清除默认的select选择框样式
-    border: solid 2px rgb(233,233,233);
+#search input {
+    display: flex;
+    border: 0;
+    width: 260px;
+    height: 30px;
+    font-size: 14px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    outline: none;
+    padding-left: 2px;
 }
 
-input {
-    background-color: rgb(252,252,252);
+#search .fangdajing {
+    width: 20px;
+    padding: 2px 0 0 3px;
 }
-// 以下是简要用户信息样式
-#userMessageBox{
-    display:flex;
-    flex-direction:column;
-    width:350px;
-    height:180px;
+
+#search .sub {
+    width: 50px;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 2px;
+    box-sizing: border-box;
+    display: none;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+}
+
+#search .sub li {
+    height: 25px;
+    cursor: pointer;
+    padding-left: 5px;
+}
+
+#search .sub li.hover {
+    background: rgb(233,233,233);
+}
+//以下这段是推荐阅读的样式~~
+.recommended1 {
+    display: flex;
+    flex-direction: column;
+    height: 126px;
+    width: 860px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 1px;
+    box-sizing: border-box;
+    background-color: rgb(252,252,252);
+    border-radius: 20px 0;
+    margin-bottom: 30px;
+    padding: 25px 0 0 20px;
+}
+
+.content1 {
+    display: none;
+}
+
+.content2, .content3, .content4, .content5 {
+    display: none;
+}
+
+.recommended1Img {
+    margin-right: 10px;
+}
+
+.recommended1Img img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+.recommended1Title {
+    margin-top: 3px;
+    font-size: 14px;
+    font-family: 微软雅黑;
+    color: rgb(32,32,32);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recommended1Abstract {
+    margin-top: 12px;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(160,160,160);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.buttonRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 18px;
+}
+
+.recommended1Button {
+    width: 10px;
+    height: 10px;
+    border-style: solid;
+    border-color: rgb(160,160,160);
+    border-width: 1px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    margin: 0 5px 0 5px;
+}
+
+#hover {
+    width: 10px;
+    height: 10px;
+    border-style: solid;
+    border-color: rgb(160,160,160);
+    border-width: 1px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    margin: 0 5px 0 5px;
+    background-color: rgb(53,177,255);
+}
+//推荐阅读到此为止~
+
+.list1 {
+    display: flex;
+    flex-direction: column;
+    height: 344px;
+    width: 415px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 1px;
+    box-sizing: border-box;
+    background-color: rgb(252,252,252);
+    border-radius: 20px 0;
+    margin-bottom: 30px;
+    margin-right: 30px;
+}
+
+.list2 {
+    display: flex;
+    flex-direction: column;
+    height: 344px;
+    width: 415px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 1px;
+    box-sizing: border-box;
+    background-color: rgb(252,252,252);
+    border-radius: 20px 0;
+    margin-bottom: 30px;
+}
+
+.recommended2 {
+    display: flex;
+    flex-direction: column;
+    height: 346px;
+    width: 250px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 1px;
+    box-sizing: border-box;
+    background-color: rgb(252,252,252);
+    margin-bottom: 30px
+}
+
+.ad {
+    display: flex;
+    height: 60px;
+    width: 250px;
+    margin-bottom: 30px;
+}
+
+.ad img {
+    width: 250px;
+    height: 60px;
+}
+
+.news {
+    display: flex;
+    flex-direction: column;
+    height: 347px;
+    width: 250px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 1px;
+    box-sizing: border-box;
+    background-color: rgb(252,252,252);
+    margin-bottom: 30px;
+}
+
+.boardRecommended {
+    display: flex;
+    flex-direction: column;
+}
+
+.blueBar1 {
+    background-color: rgb(53,177,255);
+    border-radius: 20px 0 0 0;
+    height: 40px;
+    width: 858px;
+    padding: 10px 10px 0 20px;
+    box-sizing: border-box;
+}
+
+.blueBar2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: rgb(53,177,255);
+    border-radius: 20px 0 0 0;
+    height: 40px;
+    width: 413px;
+    padding: 10px 10px 0 20px;
+    box-sizing: border-box;
+}
+
+.listName {
+    font-size: 14px;
+    font-family: 微软雅黑;
+    color: rgb(252,252,252)
+}
+
+.more {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(252,252,252);
+    margin-top: 1px;
+}
+
+.announcementContent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 5px 0 0 10px;
+}
+
+.announcementDate {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    margin-top: 12px;
+    margin-right: 12px;
+}
+
+.announcementText {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    margin-top: 12px;
+    margin-right: 16px;
+}
+
+.announcementLink1 {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(254,36,51);
+    margin-top: 12px;
+}
+
+.announcementLink2 {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(13,59,255);
+    margin-top: 12px;
+    margin-right: 12px;
+}
+
+.listContent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 4px 0 0 0;
+}
+
+.listRow {
+    display: flex;
+    width: 415px;
+    white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
+    overflow: hidden; //不显示超过对象尺寸的内容
+    //text-overflow: ellipsis; //当文本对象溢出时显示...
+}
+
+.boardName {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(255,136,56);
+    margin: 6px 6px 5px 8px;
+}
+
+.topicTitle {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(70,70,70);
+    margin-top: 6px;
+    margin-bottom: 5px;
+    width: 300px;
+    white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
+    overflow: hidden; //不显示超过对象尺寸的内容
+    text-overflow: ellipsis; //当文本对象溢出时显示...
+}
+
+.dashedBorder {
+    height: 40px;
+    width: 248px;
+    border-bottom-style: dashed;
+    border-color: rgb(233,233,233);
+    border-width: 1px;
+    box-sizing: border-box;
+    background-color: rgb(252,252,252);
+    padding: 10px 0 0 9px;
+}
+
+.heading {
+    font-size: 14px;
+    font-family: 微软雅黑;
+    color: rgb(70,70,70)
+}
+
+.recommended2Img img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin: 7px 12px 0 10px;
+}
+
+.recommended2Title {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(32,32,32);
+    margin-top: 18px;
+}
+
+.newsContent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 0 0 28px;
+}
+
+.newsText {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(70,70,70);
+    margin-top: 11px;
+}
+
+.blueBackdrop {
+    height: 88px;
+    width: 250px;
+    background-color: rgb(0,157,255);
+    margin-top: 20px;
+}
+.mainPage {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    min-width: 1140px;
+    z-index: 0;
+}
+
+.leftPart {
+    display: flex;
+    flex-direction: column;
+    margin-right: 30px;
+}
+
+.rightPart {
+    display: flex;
+    flex-direction: column;
+}
+
+.announcement {
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    width: 860px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 1px;
+    box-sizing: border-box;
+    background-color: rgb(252,252,252);
+    border-radius: 20px 0;
+    margin-bottom: 30px;
+}
+body {
+    margin: 0;
+    padding: 0;
 }

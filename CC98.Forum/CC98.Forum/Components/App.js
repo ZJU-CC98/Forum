@@ -20,6 +20,7 @@ var UserCenter_1 = require("./UserCenter");
 var MyMessage_1 = require("./MyMessage");
 var AllNewPost_1 = require("./AllNewPost");
 var Header_1 = require("./Header");
+var MainPage_1 = require("./MainPage");
 var RouteComponent = (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -48,6 +49,7 @@ var App = (function (_super) {
             React.createElement(react_router_dom_1.BrowserRouter, null,
                 React.createElement("div", { style: { backgroundColor: '#F5FAFD', justifyContent: "center", display: "flex", flexDirection: "column" } },
                     React.createElement(Header_1.Header, null),
+                    React.createElement(react_router_dom_1.Route, { exact: true, path: '/', component: MainPage_1.MainPage }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/:page?", component: post_1.Post }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/user/:userName/:page?", component: CurUserPost_1.CurUserPost }),
                     React.createElement(react_router_dom_1.Route, { path: "/list/:boardid/:page?", component: List_1.List }),

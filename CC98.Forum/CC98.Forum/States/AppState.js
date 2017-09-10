@@ -86,6 +86,12 @@ var ReplierState = (function () {
     return ReplierState;
 }());
 exports.ReplierState = ReplierState;
+var HotTopicState = (function () {
+    function HotTopicState() {
+    }
+    return HotTopicState;
+}());
+exports.HotTopicState = HotTopicState;
 var ListHeadState = (function () {
     function ListHeadState() {
     }

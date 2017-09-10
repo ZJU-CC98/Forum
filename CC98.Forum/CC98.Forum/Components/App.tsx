@@ -15,6 +15,7 @@ import { UserCenter } from './UserCenter'
 import { MyMessage } from './MyMessage'
 import { AllNewPost } from './AllNewPost'
 import { Header } from './Header'
+import { MainPage } from './MainPage'
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
 	match: match<TMatch>;
@@ -36,8 +37,8 @@ export class App extends React.Component<{}, AppState> {
 	render() {
         return <div><Router>
             <div style={{ backgroundColor: '#F5FAFD', justifyContent: "center", display: "flex", flexDirection:"column" }}>
-                  <Header />
-               
+                <Header />
+                <Route exact path='/' component={MainPage}></Route>
                  <Route exact path="/topic/:topicid/:page?" component={Post} />
                  <Route exact path="/topic/:topicid/user/:userName/:page?" component={CurUserPost} />
                  <Route path="/list/:boardid/:page?" component={List} />

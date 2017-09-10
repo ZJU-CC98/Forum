@@ -124,7 +124,7 @@ export class Replier extends RouteComponent<{ userId,topicid,userName, replyTime
     ShowUserMessage() {
         //return <UserMessageBox userName="dearkano" userFans="2333" />;
         var x = document.getElementById("userInformation");
-        x.innerHTML = "<div> asfasfs</div>";
+       
     }
     render() {
         let url = `/user/${this.props.userId}`;

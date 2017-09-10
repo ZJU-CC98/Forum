@@ -9,6 +9,131 @@
 
 </head>
 <body>
+    <script>
+        window.onload = function () {
+            var SelectA = document.getElementsByClassName("select")[0];
+            var SubA = document.getElementsByTagName("ul")[0];
+            var LiA = SubA.getElementsByTagName("li");
+            var i = 0;
+
+            SelectA.onclick = function (event) {
+                var styleA = SubA.style;
+                styleA.display = styleA.display == "block" ? "none" : "block";
+                //阻止事件冒泡
+                (event || window.event).cancelBubble = true
+            };
+
+            for (i = 0; i < LiA.length; i++) {
+                //鼠标划过
+                LiA[i].onmouseover = function () {
+                    this.className = "hover"
+                };
+                //鼠标离开
+                LiA[i].onmouseout = function () {
+                    this.className = "";
+                };
+            }
+
+            var SelectB = document.getElementsByClassName("select")[1];
+            var DownArrowB = document.getElementsByClassName("downArrow")[0];
+            var SubB = document.getElementsByTagName("ul")[1];
+            var LiB = SubB.getElementsByTagName("li");
+            var k = 0;
+
+            SelectB.onclick = function (event) {
+                var styleB = SubB.style;
+                styleB.display = styleB.display === "block" ? "none" : "block";
+                //阻止事件冒泡
+                (event || window.event).cancelBubble = true;
+            };
+
+            DownArrowB.onclick = function (event) {
+                var styleB = SubB.style;
+                styleB.display = styleB.display === "block" ? "none" : "block";
+                //阻止事件冒泡
+                (event || window.event).cancelBubble = true;
+            };
+
+            for (k = 0; k < LiB.length; k++) {
+                //鼠标划过
+                LiB[k].onmouseover = function () {
+                    this.className = "hover";
+                };
+                //鼠标离开
+                LiB[k].onmouseout = function () {
+                    this.className = "";
+                };
+                //鼠标点击
+                LiB[k].onclick = function () {
+                    SelectB.innerHTML = this.innerHTML;
+                };
+            }
+
+            document.onclick = function () {
+                SubA.style.display = "none";
+                SubB.style.display = "none";
+
+            };
+
+
+
+            var button = document.getElementsByClassName("recommended1Button");
+            var content = document.getElementsByClassName("content");
+
+            var randomNum = Math.floor(Math.random() * 5);
+            content[randomNum].style.display = "flex";
+            button[randomNum].id = "hover";
+
+            button[0].onmouseover = function (event) {
+                for (var j = 0; j < 5; j++) {
+                    content[j].style.display = "none";
+                }
+                document.getElementById("hover").id = "";
+                content[0].style.display = "flex";
+                button[0].id = "hover";
+            }
+
+            button[1].onmouseover = function (event) {
+                for (var j = 0; j < 5; j++) {
+                    content[j].style.display = "none";
+                }
+                document.getElementById("hover").id = "";
+                content[1].style.display = "flex";
+                button[1].id = "hover";
+
+            }
+
+            button[2].onmouseover = function (event) {
+                for (var j = 0; j < 5; j++) {
+                    content[j].style.display = "none";
+                }
+                document.getElementById("hover").id = "";
+                content[2].style.display = "flex";
+                button[2].id = "hover";
+
+            }
+
+            button[3].onmouseover = function (event) {
+                for (var j = 0; j < 5; j++) {
+                    content[j].style.display = "none";
+                }
+                document.getElementById("hover").id = "";
+                content[3].style.display = "flex";
+                button[3].id = "hover";
+
+            }
+
+            button[4].onmouseover = function (event) {
+                for (var j = 0; j < 5; j++) {
+                    content[j].style.display = "none";
+                }
+                document.getElementById("hover").id = "";
+                content[4].style.display = "flex";
+                button[4].id = "hover";
+
+            }
+        };
+    </script>
 
 	<div id="root" ></div>
     <script src="/scripts/lib/es6-promise-polyfill/promise.js"></script>

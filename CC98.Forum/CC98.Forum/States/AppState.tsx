@@ -1,4 +1,4 @@
-﻿
+﻿import { HotTopic} from '../Components/HotTopic'
 /**
  * 表示应用程序的状态。
  */
@@ -112,6 +112,9 @@ export class ReplierState {
 	replyTime: string;
 	imgUrl: string;
 	timeImgUrl: string;
+}
+export class HotTopicState {
+    hotTopicState: HotTopic[];
 }
 export class ListHeadState {
 	imgUrl: string;
