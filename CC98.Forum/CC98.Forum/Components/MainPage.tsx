@@ -75,7 +75,7 @@ export class HotTopicComponent extends React.Component<{}, HotTopicState> {
         var response = await fetch('http://api.cc98.org/Topic/Hot');
         var data = await response.json();
         for (let i = 0; i < 10; i++) {
-            hotTopics[i] = new HotTopic(data[i].title, data[i].boardName)
+            hotTopics[i] = new HotTopic(data[i].title, data[i].boardName,data[i].id,data[i].boardId)
         }
         return hotTopics;
     }
@@ -89,8 +89,10 @@ export class HotTopicComponent extends React.Component<{}, HotTopicState> {
 
 
     convertHotTopic(item: HotTopic) {
+let boardUrl=`/list/${item.boardid}`;
+let topicUrl=`/topic/${item.id}`;
         return <div className="listRow">
-            <div className="boardName" > [{item.boardName}]</div><div className="topicTitle">{item.title}</div>
+            <div className="boardName" > <a href={boardUrl}>[{item.boardName}]</a></div><div className="topicTitle"><a href={topicUrl}>{item.title}</a></div>
         </div>
     }
 
@@ -130,7 +132,7 @@ export class MainPage extends React.Component<{}, AppState> {
                             <div className="listName">热门话题</div>
                             <div className="more">更多</div>
                         </div>
-                        <div className="listContent">
+                        <div className="listContent1">
                             <HotTopicComponent />
                         </div>
                     </div>
@@ -139,7 +141,7 @@ export class MainPage extends React.Component<{}, AppState> {
                             <div className="listName">校园活动</div>
                             <div className="more">更多</div>
                         </div>
-                        <div className="listContent">
+                        <div className="listContent1">
                             <div className="row"> <div className="boardName">[提示]</div><div className="topicTitle">★-----------------------------★</div></div>
                             <div className="row"> <div className="boardName">[提示]</div><div className="topicTitle">首页除了十大之外的部分还没施工好哦</div></div>
                             <div className="row"> <div className="boardName">[提示]</div><div className="topicTitle">其他部分的内容都是乱填哒</div></div>

@@ -21931,7 +21931,7 @@ var HotTopicComponent = (function (_super) {
                     case 2:
                         data = _a.sent();
                         for (i = 0; i < 10; i++) {
-                            hotTopics[i] = new HotTopic_1.HotTopic(data[i].title, data[i].boardName);
+                            hotTopics[i] = new HotTopic_1.HotTopic(data[i].title, data[i].boardName, data[i].id, data[i].boardId);
                         }
                         return [2 /*return*/, hotTopics];
                 }
@@ -21955,12 +21955,17 @@ var HotTopicComponent = (function (_super) {
         });
     };
     HotTopicComponent.prototype.convertHotTopic = function (item) {
+        var boardUrl = "/list/" + item.boardid;
+        var topicUrl = "/topic/" + item.id;
         return React.createElement("div", { className: "listRow" },
             React.createElement("div", { className: "boardName" },
-                " [",
-                item.boardName,
-                "]"),
-            React.createElement("div", { className: "topicTitle" }, item.title));
+                " ",
+                React.createElement("a", { href: boardUrl },
+                    "[",
+                    item.boardName,
+                    "]")),
+            React.createElement("div", { className: "topicTitle" },
+                React.createElement("a", { href: topicUrl }, item.title)));
     };
     HotTopicComponent.prototype.render = function () {
         return React.createElement("div", null, this.state.hotTopicState.map(this.convertHotTopic));
@@ -22007,13 +22012,13 @@ var MainPage = (function (_super) {
                         React.createElement("div", { className: "blueBar2" },
                             React.createElement("div", { className: "listName" }, "\u70ED\u95E8\u8BDD\u9898"),
                             React.createElement("div", { className: "more" }, "\u66F4\u591A")),
-                        React.createElement("div", { className: "listContent" },
+                        React.createElement("div", { className: "listContent1" },
                             React.createElement(HotTopicComponent, null))),
                     React.createElement("div", { className: "list2" },
                         React.createElement("div", { className: "blueBar2" },
                             React.createElement("div", { className: "listName" }, "\u6821\u56ED\u6D3B\u52A8"),
                             React.createElement("div", { className: "more" }, "\u66F4\u591A")),
-                        React.createElement("div", { className: "listContent" },
+                        React.createElement("div", { className: "listContent1" },
                             React.createElement("div", { className: "row" },
                                 " ",
                                 React.createElement("div", { className: "boardName" }, "[\u63D0\u793A]"),
@@ -22148,9 +22153,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 var HotTopic = (function () {
     //构造方法
-    function HotTopic(title, boardName) {
+    function HotTopic(title, boardName, id, boardid) {
         this.title = title;
         this.boardName = boardName;
+        this.id = id;
+        this.boardid = boardid;
     }
     return HotTopic;
 }());

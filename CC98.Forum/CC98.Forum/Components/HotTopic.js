@@ -5,9 +5,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 var HotTopic = (function () {
     //构造方法
-    function HotTopic(title, boardName) {
+    function HotTopic(title, boardName, id, boardid) {
         this.title = title;
         this.boardName = boardName;
+        this.id = id;
+        this.boardid = boardid;
     }
     return HotTopic;
 }());
