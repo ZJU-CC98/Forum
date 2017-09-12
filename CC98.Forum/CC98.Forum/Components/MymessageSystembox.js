@@ -14,9 +14,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = require("react");
-var MymessageSystembox = (function (_super) {
-    __extends(MymessageSystembox, _super);
-    function MymessageSystembox() {
+var MyMessageSystembox = (function (_super) {
+    __extends(MyMessageSystembox, _super);
+    function MyMessageSystembox() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     /*
@@ -24,13 +24,13 @@ var MymessageSystembox = (function (_super) {
         document.getElementById(String(this.props.id)).innerHTML = '修改后的内容';//UBBCode(this.props.cotent,'')
     }
     */
-    MymessageSystembox.prototype.render = function () {
+    MyMessageSystembox.prototype.render = function () {
         return (React.createElement("div", { className: 'mymessage-system-box' },
             React.createElement("div", { className: 'mymessage-system-box-title' }, this.props.title),
             React.createElement("div", { className: 'mymessage-system-box-date' }, this.props.sendTime),
             React.createElement("div", { className: "mymessage-system-box-content" }, this.props.content)));
     };
-    return MymessageSystembox;
+    return MyMessageSystembox;
 }(React.Component));
-exports.MymessageSystembox = MymessageSystembox;
-//# sourceMappingURL=MymessageSystembox.js.map
+exports.MyMessageSystembox = MyMessageSystembox;
+//# sourceMappingURL=MyMessageSystembox.js.map

@@ -6,10 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
 *私信聊天时显示的单个用户信息
 */
-var MymessagePersonProps = (function () {
-    function MymessagePersonProps() {
+var MyMessagePersonProps = (function () {
+    function MyMessagePersonProps() {
     }
-    return MymessagePersonProps;
+    return MyMessagePersonProps;
 }());
-exports.MymessagePersonProps = MymessagePersonProps;
-//# sourceMappingURL=MymessagePersonProps.js.map
+exports.MyMessagePersonProps = MyMessagePersonProps;
+//# sourceMappingURL=MyMessagePersonProps.js.map

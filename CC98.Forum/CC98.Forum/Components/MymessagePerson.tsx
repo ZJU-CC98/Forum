@@ -2,9 +2,9 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
-import { MymessagePersonProps } from '../Props/MymessagePersonProps';
+import { MyMessagePersonProps } from '../Props/MyMessagePersonProps';
 
-export class MymessagePerson extends React.Component<MymessagePersonProps> {
+export class MyMessagePerson extends React.Component<MyMessagePersonProps> {
     
     render() {
         return (<div className='mymessage-message-person'>

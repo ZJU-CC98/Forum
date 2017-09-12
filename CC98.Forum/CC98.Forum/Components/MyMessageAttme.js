@@ -49,23 +49,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = require("react");
-var MyMessageSystembox_1 = require("./MyMessageSystembox");
+var MyMessageResponsebox_1 = require("./MyMessageResponsebox");
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
-var MyMessageSystem = (function (_super) {
-    __extends(MyMessageSystem, _super);
-    function MyMessageSystem(props) {
+var MyMessageAttme = (function (_super) {
+    __extends(MyMessageAttme, _super);
+    function MyMessageAttme(props) {
         var _this = _super.call(this, props) || this;
-        _this.coverMessageSystem = function (item) {
-            return React.createElement(MyMessageSystembox_1.MyMessageSystembox, { id: item.id, senderName: item.senderName, receiverName: item.receiverName, title: item.title, content: item.content, isRead: item.isRead, sendTime: item.sendTime, chatPortraitUrl: item.chatPortraitUrl, myPortraitUrl: item.myPortraitUrl });
+        _this.coverMessageResponse = function (item) {
+            return React.createElement(MyMessageResponsebox_1.MyMessageResponsebox, { id: item.id, senderName: item.senderName, receiverName: item.receiverName, title: item.title, content: item.content, isRead: item.isRead, sendTime: item.sendTime, chatPortraitUrl: item.chatPortraitUrl, myPortraitUrl: item.myPortraitUrl });
         };
         _this.state = {
             data: [],
         };
         return _this;
     }
-    MyMessageSystem.prototype.componentWillMount = function () {
+    MyMessageAttme.prototype.componentWillMount = function () {
         return __awaiter(this, void 0, void 0, function () {
             var token, accessToken, people, data, startPage, response, i, _a, _b, _i, i, response, person;
             return __generator(this, function (_c) {
@@ -95,7 +95,8 @@ var MyMessageSystem = (function (_super) {
                         data = _c.sent();
                         //从最近50条消息中获取回复信息，并存储在people中
                         for (i in data) {
-                            if (data[i].title == '系统消息' || (!data[i].senderName)) {
+                            //系统消息统统筛掉
+                            if (data[i].title == '@提示') {
                                 people.push({ id: data[i].id, senderName: data[i].senderName, receiverName: data[i].receiverName, title: data[i].title, content: data[i].content, isRead: data[i].isRead, sendTime: data[i].sendTime, chatPortraitUrl: '', myPortraitUrl: '' });
                             }
                         }
@@ -130,15 +131,15 @@ var MyMessageSystem = (function (_super) {
             });
         });
     };
-    MyMessageSystem.prototype.render = function () {
+    MyMessageAttme.prototype.render = function () {
         //给我的回复添加选中样式
         $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
-        $('#system').addClass('mymessage-nav-focus');
-        return React.createElement("div", { className: 'mymessage-system' }, this.state.data.map(this.coverMessageSystem));
+        $('#attme').addClass('mymessage-nav-focus');
+        return React.createElement("div", { className: 'mymessage-response' }, this.state.data.map(this.coverMessageResponse));
     };
-    return MyMessageSystem;
+    return MyMessageAttme;
 }(React.Component));
-exports.MyMessageSystem = MyMessageSystem;
+exports.MyMessageAttme = MyMessageAttme;
 //查找数组arr中是否存在元素的名字为obj
 function contains(arr, obj) {
     var i = arr.length;
@@ -149,4 +150,4 @@ function contains(arr, obj) {
     }
     return false;
 }
-//# sourceMappingURL=MyMessageSystem.js.map
+//# sourceMappingURL=MyMessageAttme.js.map

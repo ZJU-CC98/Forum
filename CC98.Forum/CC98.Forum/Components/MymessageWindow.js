@@ -49,20 +49,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = require("react");
-var MymessageSender_1 = require("./MymessageSender");
-var MymessageReceiver_1 = require("./MymessageReceiver");
-var MymessageWindow = (function (_super) {
-    __extends(MymessageWindow, _super);
-    function MymessageWindow(props) {
+var MyMessageSender_1 = require("./MyMessageSender");
+var MyMessageReceiver_1 = require("./MyMessageReceiver");
+var MyMessageWindow = (function (_super) {
+    __extends(MyMessageWindow, _super);
+    function MyMessageWindow(props) {
         var _this = _super.call(this, props) || this;
-        _this.coverMymessageProps = function (item) {
+        _this.coverMyMessageProps = function (item) {
             if (item.title == '回复提示' || item.title == '@提示' || item.title == '转账通知' || item.title == '系统消息' || item.title == "\u7528\u6237\uFF1A" + _this.props.myName + " \u5728\u5E16\u5B50\u4E2D\u56DE\u590D\u4E86\u4F60") {
             }
             else if (item.senderName == _this.props.chatName) {
-                return React.createElement(MymessageReceiver_1.MymessageReceiver, { id: item.id, senderName: item.senderName, receiverName: item.receiverName, title: item.title, content: item.content, isRead: item.isRead, sendTime: item.sendTime, chatPortraitUrl: item.chatPortraitUrl, myPortraitUrl: item.myPortraitUrl });
+                return React.createElement(MyMessageReceiver_1.MyMessageReceiver, { id: item.id, senderName: item.senderName, receiverName: item.receiverName, title: item.title, content: item.content, isRead: item.isRead, sendTime: item.sendTime, chatPortraitUrl: item.chatPortraitUrl, myPortraitUrl: item.myPortraitUrl });
             }
             else {
-                return React.createElement(MymessageSender_1.MymessageSender, { id: item.id, senderName: item.senderName, receiverName: item.receiverName, title: item.title, content: item.content, isRead: item.isRead, sendTime: item.sendTime, chatPortraitUrl: item.chatPortraitUrl, myPortraitUrl: item.myPortraitUrl });
+                return React.createElement(MyMessageSender_1.MyMessageSender, { id: item.id, senderName: item.senderName, receiverName: item.receiverName, title: item.title, content: item.content, isRead: item.isRead, sendTime: item.sendTime, chatPortraitUrl: item.chatPortraitUrl, myPortraitUrl: item.myPortraitUrl });
             }
         };
         _this.postMessage = function () {
@@ -88,7 +88,7 @@ var MymessageWindow = (function (_super) {
         _this.getMessageData = _this.getMessageData.bind(_this);
         return _this;
     }
-    MymessageWindow.prototype.componentDidMount = function () {
+    MyMessageWindow.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 this.getMessageData(this.props);
@@ -96,7 +96,7 @@ var MymessageWindow = (function (_super) {
             });
         });
     };
-    MymessageWindow.prototype.componentWillReceiveProps = function (nextProps) {
+    MyMessageWindow.prototype.componentWillReceiveProps = function (nextProps) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 this.getMessageData(nextProps);
@@ -104,7 +104,7 @@ var MymessageWindow = (function (_super) {
             });
         });
     };
-    MymessageWindow.prototype.getMessageData = function (item) {
+    MyMessageWindow.prototype.getMessageData = function (item) {
         return __awaiter(this, void 0, void 0, function () {
             var data, startPage, response, nowData, i, i;
             return __generator(this, function (_a) {
@@ -149,7 +149,7 @@ var MymessageWindow = (function (_super) {
             });
         });
     };
-    MymessageWindow.prototype.render = function () {
+    MyMessageWindow.prototype.render = function () {
         console.log('开始render');
         return (React.createElement("div", { className: 'mymessage-message-window' },
             React.createElement("div", { className: 'mymessage-message-wHeader' },
@@ -160,14 +160,14 @@ var MymessageWindow = (function (_super) {
                     " \u7684\u79C1\u4FE1"),
                 React.createElement("div", { className: 'mymessage-message-wReport' },
                     React.createElement("button", { onClick: this.report }, "\u4E3E\u62A5"))),
-            React.createElement("div", { className: 'mymessage-message-wContent' }, this.state.data.map(this.coverMymessageProps)),
+            React.createElement("div", { className: 'mymessage-message-wContent' }, this.state.data.map(this.coverMyMessageProps)),
             React.createElement("div", { className: 'mymessage-message-wPost' },
                 React.createElement("textarea", { className: 'mymessage-message-wPostArea', id: 'myMessageContent' }),
                 React.createElement("button", { className: 'mymessage-message-wPostBtn', onClick: this.postMessage }, "\u56DE\u590D"))));
     };
-    return MymessageWindow;
+    return MyMessageWindow;
 }(React.Component));
-exports.MymessageWindow = MymessageWindow;
+exports.MyMessageWindow = MyMessageWindow;
 function sortArr(arr) {
     var s = -1;
     var e = -1;
@@ -192,4 +192,4 @@ function reverseArr(arr, s, e) {
     }
     var _a;
 }
-//# sourceMappingURL=MymessageWindow.js.map
+//# sourceMappingURL=MyMessageWindow.js.map

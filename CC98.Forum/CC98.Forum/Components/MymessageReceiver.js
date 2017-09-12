@@ -14,9 +14,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = require("react");
-var MymessageReceiver = (function (_super) {
-    __extends(MymessageReceiver, _super);
-    function MymessageReceiver() {
+var MyMessageReceiver = (function (_super) {
+    __extends(MyMessageReceiver, _super);
+    function MyMessageReceiver() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     /*
@@ -24,7 +24,7 @@ var MymessageReceiver = (function (_super) {
         document.getElementById(String(this.props.id)).innerHTML = '修改后的内容';//UBBCode(this.props.cotent,'')
     }
     */
-    MymessageReceiver.prototype.render = function () {
+    MyMessageReceiver.prototype.render = function () {
         return (React.createElement("div", { className: 'mymessage-message-wc' },
             React.createElement("div", { className: 'mymessage-message-wcTime' }, this.props.sendTime),
             React.createElement("div", { className: 'mymessage-message-wcReceiver' },
@@ -38,7 +38,7 @@ var MymessageReceiver = (function (_super) {
                 React.createElement("div", { className: 'mymessage-message-wcRead1' },
                     React.createElement("div", { className: 'mymessage-message-wcRead2' }, this.props.isRead ? '已读' : '未读')))));
     };
-    return MymessageReceiver;
+    return MyMessageReceiver;
 }(React.Component));
-exports.MymessageReceiver = MymessageReceiver;
-//# sourceMappingURL=MymessageReceiver.js.map
+exports.MyMessageReceiver = MyMessageReceiver;
+//# sourceMappingURL=MyMessageReceiver.js.map

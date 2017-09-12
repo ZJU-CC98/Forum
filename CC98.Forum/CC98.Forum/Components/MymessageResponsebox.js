@@ -14,9 +14,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = require("react");
-var MymessageResponsebox = (function (_super) {
-    __extends(MymessageResponsebox, _super);
-    function MymessageResponsebox() {
+var MyMessageResponsebox = (function (_super) {
+    __extends(MyMessageResponsebox, _super);
+    function MyMessageResponsebox() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     /*
@@ -24,17 +24,18 @@ var MymessageResponsebox = (function (_super) {
         document.getElementById(String(this.props.id)).innerHTML = '修改后的内容';//UBBCode(this.props.cotent,'')
     }
     */
-    MymessageResponsebox.prototype.render = function () {
+    MyMessageResponsebox.prototype.render = function () {
         return (React.createElement("div", { className: 'mymessage-response-box' },
             React.createElement("div", { className: 'mymessage-response-box-left' },
                 React.createElement("img", { className: 'mymessage-response-img', src: this.props.chatPortraitUrl })),
             React.createElement("div", { className: 'mymessage-response-box-middle' },
+                React.createElement("div", { className: 'mymessage-response-box-middle-name' }, this.props.senderName),
                 React.createElement("div", { className: 'mymessage-response-box-middle-title' }, this.props.title),
                 React.createElement("div", { className: 'mymessage-response-box-middle-date' }, this.props.sendTime),
                 React.createElement("div", { className: "mymessage-response-box-middle-content" }, this.props.content)),
             React.createElement("div", { className: 'mymessage-response-box-right' }, "\u67E5\u770B")));
     };
-    return MymessageResponsebox;
+    return MyMessageResponsebox;
 }(React.Component));
-exports.MymessageResponsebox = MymessageResponsebox;
-//# sourceMappingURL=MymessageResponsebox.js.map
+exports.MyMessageResponsebox = MyMessageResponsebox;
+//# sourceMappingURL=MyMessageResponsebox.js.map

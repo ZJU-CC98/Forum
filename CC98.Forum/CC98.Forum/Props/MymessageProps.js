@@ -6,10 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * 一条站短消息
  */
-var MymessageProps = (function () {
-    function MymessageProps() {
+var MyMessageProps = (function () {
+    function MyMessageProps() {
     }
-    return MymessageProps;
+    return MyMessageProps;
 }());
-exports.MymessageProps = MymessageProps;
-//# sourceMappingURL=MymessageProps.js.map
+exports.MyMessageProps = MyMessageProps;
+//# sourceMappingURL=MyMessageProps.js.map

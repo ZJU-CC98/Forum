@@ -49,133 +49,97 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = require("react");
-var MymessagePerson_1 = require("./MymessagePerson");
-var MymessageResponsewindow_1 = require("./MymessageResponsewindow");
+var MyMessageResponsebox_1 = require("./MyMessageResponsebox");
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
-var MymessageResponse = (function (_super) {
-    __extends(MymessageResponse, _super);
-    function MymessageResponse(props) {
+var MyMessageResponse = (function (_super) {
+    __extends(MyMessageResponse, _super);
+    function MyMessageResponse(props) {
         var _this = _super.call(this, props) || this;
-        //对this.stata.data进行批量化转化为JSX的函数，每个JSX可点击改变state里聊天对象的信息
-        _this.coverMessagePerson = function (item) {
-            var changeChatName = function () {
-                _this.setState({ chatName: item.name, chatPortraitUrl: item.portraitUrl });
-                //给选中的聊天对象添加选中效果
-                $('.mymessage-message-pList > div').removeClass('mymessage-message-pFocus');
-                $("#" + item.name).addClass('mymessage-message-pFocus');
-            };
-            return React.createElement("div", { onClick: changeChatName, id: "" + item.name },
-                React.createElement(MymessagePerson_1.MymessagePerson, { name: item.name, portraitUrl: item.portraitUrl, title: item.title, content: item.content }));
+        _this.coverMessageResponse = function (item) {
+            return React.createElement(MyMessageResponsebox_1.MyMessageResponsebox, { id: item.id, senderName: item.senderName, receiverName: item.receiverName, title: item.title, content: item.content, isRead: item.isRead, sendTime: item.sendTime, chatPortraitUrl: item.chatPortraitUrl, myPortraitUrl: item.myPortraitUrl });
         };
         _this.state = {
             data: [],
-            chatName: '系统',
-            chatPortraitUrl: 'http://file.cc98.org/uploadface/40994.gif',
-            myName: '系统',
-            myPortraitUrl: 'http://file.cc98.org/uploadface/40994.gif',
-            token: 'testAccessToken'
         };
         return _this;
-        //如果没有设置默认的state，render第一次渲染的时候state为空，MymessageWindow组件会报错
     }
-    MymessageResponse.prototype.componentWillMount = function () {
+    MyMessageResponse.prototype.componentWillMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var personNumber, accessToken, response1, myInfo, people, startPage, response2, data, i, _a, _b, _i, i, response, person;
+            var token, accessToken, people, data, startPage, response, i, _a, _b, _i, i, response, person;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        personNumber = 40;
-                        accessToken = location.href.match(/access_token=(\S+)&token_type/)[1];
-                        return [4 /*yield*/, fetch('https://api.cc98.org/me', {
-                                headers: {
-                                    Authorization: "Bearer " + accessToken
-                                }
-                            })];
-                    case 1:
-                        response1 = _c.sent();
-                        return [4 /*yield*/, response1.json()];
-                    case 2:
-                        myInfo = _c.sent();
+                        token = location.href.match(/access_token=(\S+)/);
+                        if (token) {
+                            accessToken = token[1];
+                        }
+                        ;
                         people = [];
+                        data = [];
                         startPage = -49;
-                        _c.label = 3;
-                    case 3:
+                        _c.label = 1;
+                    case 1:
                         startPage += 49;
-                        return [4 /*yield*/, fetch('https://api.cc98.org/Message?filter=both', {
+                        return [4 /*yield*/, fetch('https://api.cc98.org/Message?filter=receive', {
                                 headers: {
                                     Range: "bytes=" + startPage + "-" + (startPage + 49),
                                     Authorization: "Bearer " + accessToken
                                 }
                             })];
-                    case 4:
-                        response2 = _c.sent();
-                        return [4 /*yield*/, response2.json()];
-                    case 5:
+                    case 2:
+                        response = _c.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 3:
                         data = _c.sent();
-                        //从最近50条收发短信中获取最多n位联系人，并存储在people中
+                        //从最近50条消息中获取回复信息，并存储在people中
                         for (i in data) {
                             //系统消息统统筛掉
-                            if (data[i].title == '回复提示' || data[i].title == '@提示' || data[i].title == '转账通知' || data[i].title == '系统消息' || data[i].title == "\u7528\u6237\uFF1A" + myInfo.name + " \u5728\u5E16\u5B50\u4E2D\u56DE\u590D\u4E86\u4F60") {
-                            }
-                            else if (data[i].senderName == myInfo.name) {
-                                if (!contains(people, data[i].receiverName)) {
-                                    people.push({ name: data[i].receiverName, portraitUrl: '', title: data[i].title, content: data[i].content });
-                                }
-                            }
-                            else if (data[i].senderName) {
-                                if (!contains(people, data[i].senderName)) {
-                                    people.push({ name: data[i].senderName, portraitUrl: '', title: data[i].title, content: data[i].content });
-                                }
-                            }
-                            if (people.length >= personNumber) {
-                                break;
+                            if (data[i].title == '回复提示') {
+                                people.push({ id: data[i].id, senderName: data[i].senderName, receiverName: data[i].receiverName, title: data[i].title, content: data[i].content, isRead: data[i].isRead, sendTime: data[i].sendTime, chatPortraitUrl: '', myPortraitUrl: '' });
                             }
                         }
-                        _c.label = 6;
-                    case 6:
-                        if (people.length < personNumber) return [3 /*break*/, 3];
-                        _c.label = 7;
-                    case 7:
+                        _c.label = 4;
+                    case 4:
+                        if (data.length % 50 == 0) return [3 /*break*/, 1];
+                        _c.label = 5;
+                    case 5:
                         _a = [];
                         for (_b in people)
                             _a.push(_b);
                         _i = 0;
-                        _c.label = 8;
-                    case 8:
-                        if (!(_i < _a.length)) return [3 /*break*/, 12];
+                        _c.label = 6;
+                    case 6:
+                        if (!(_i < _a.length)) return [3 /*break*/, 10];
                         i = _a[_i];
-                        return [4 /*yield*/, fetch("https://api.cc98.org/User/Name/" + people[i].name)];
-                    case 9:
+                        return [4 /*yield*/, fetch("https://api.cc98.org/User/Name/" + people[i].senderName)];
+                    case 7:
                         response = _c.sent();
                         return [4 /*yield*/, response.json()];
-                    case 10:
+                    case 8:
                         person = _c.sent();
-                        people[i].portraitUrl = person.portraitUrl;
-                        _c.label = 11;
-                    case 11:
+                        people[i].chatPortraitUrl = person.portraitUrl;
+                        _c.label = 9;
+                    case 9:
                         _i++;
-                        return [3 /*break*/, 8];
-                    case 12:
-                        this.setState({ data: people, chatName: people[0].name, chatPortraitUrl: people[0].portraitUrl, myName: myInfo.name, myPortraitUrl: myInfo.portraitUrl, token: accessToken });
-                        //默认选中第一个联系人
-                        $("#" + people[0].name).addClass('mymessage-message-pFocus');
+                        return [3 /*break*/, 6];
+                    case 10:
+                        this.setState({ data: people });
                         return [2 /*return*/];
                 }
             });
         });
     };
-    MymessageResponse.prototype.render = function () {
-        //给我的私信添加选中样式
-        $('.myresponse-nav > div').removeClass('myresponse-nav-focus');
-        $('#myresponse').addClass('myresponsenav-focus');
-        return (React.createElement("div", { className: 'mymessage-response' },
-            React.createElement(MymessageResponsewindow_1.MymessageResponsewindow, { chatName: this.state.chatName, chatPortraitUrl: this.state.chatPortraitUrl, myName: this.state.myName, myPortraitUrl: this.state.myPortraitUrl, token: this.state.token })));
+    MyMessageResponse.prototype.render = function () {
+        //给我的回复添加选中样式
+        $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
+        $('#response').addClass('mymessage-nav-focus');
+        return React.createElement("div", { className: 'mymessage-response' }, this.state.data.map(this.coverMessageResponse));
     };
-    return MymessageResponse;
+    return MyMessageResponse;
 }(React.Component));
-exports.MymessageResponse = MymessageResponse;
+exports.MyMessageResponse = MyMessageResponse;
 //查找数组arr中是否存在元素的名字为obj
 function contains(arr, obj) {
     var i = arr.length;
@@ -186,4 +150,4 @@ function contains(arr, obj) {
     }
     return false;
 }
-//# sourceMappingURL=MymessageResponse.js.map
+//# sourceMappingURL=MyMessageResponse.js.map

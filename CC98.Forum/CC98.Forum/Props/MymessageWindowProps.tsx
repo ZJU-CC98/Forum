@@ -5,7 +5,7 @@
 /**
  * 聊天窗口的状态信息，我和对方的用户名及头像
  */
-export class MymessageWindowProps {
+export class MyMessageWindowProps {
     chatName: string;
     chatPortraitUrl: string;
     myName: string;

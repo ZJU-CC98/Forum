@@ -5,12 +5,14 @@ import * as React from 'react';
 import { MyMessageMessageState } from '../States/MyMessageMessageState';
 import { MyMessageResponseState } from '../States/MyMessageResponseState';
 import { MyMessageProps } from '../Props/MyMessageProps';
-import { MyMessageSystembox } from './MyMessageSystembox';
+import { MyMessageResponsebox } from './MyMessageResponsebox';
+import { MyMessagePerson } from './MyMessagePerson';
+import { MyMessageWindow } from './MyMessageWindow';
 
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
-export class MyMessageSystem extends React.Component<{}, MyMessageResponseState> {
+export class MyMessageAttme extends React.Component<{}, MyMessageResponseState> {
 
     constructor(props) {
         super(props);
@@ -43,7 +45,8 @@ export class MyMessageSystem extends React.Component<{}, MyMessageResponseState>
             data = await response.json();
             //从最近50条消息中获取回复信息，并存储在people中
             for (let i in data) {
-                if (data[i].title == '系统消息' || (!data[i].senderName)) {
+                //系统消息统统筛掉
+                if (data[i].title == '@提示') {
                     people.push({ id: data[i].id, senderName: data[i].senderName, receiverName: data[i].receiverName, title: data[i].title, content: data[i].content, isRead: data[i].isRead, sendTime: data[i].sendTime, chatPortraitUrl: '', myPortraitUrl: '' });
                 }
             }
@@ -59,15 +62,15 @@ export class MyMessageSystem extends React.Component<{}, MyMessageResponseState>
         this.setState({ data: people });
     }
 
-    coverMessageSystem = (item: MyMessageProps) => {
-        return <MyMessageSystembox id={item.id} senderName={item.senderName} receiverName={item.receiverName} title={item.title} content={item.content} isRead={item.isRead} sendTime={item.sendTime} chatPortraitUrl={item.chatPortraitUrl} myPortraitUrl={item.myPortraitUrl} />
+    coverMessageResponse = (item: MyMessageProps) => {
+        return <MyMessageResponsebox id={item.id} senderName={item.senderName} receiverName={item.receiverName} title={item.title} content={item.content} isRead={item.isRead} sendTime={item.sendTime} chatPortraitUrl={item.chatPortraitUrl} myPortraitUrl={item.myPortraitUrl} />
     }
 
     render() {
         //给我的回复添加选中样式
         $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
-        $('#system').addClass('mymessage-nav-focus');
-        return <div className='mymessage-system'>{this.state.data.map(this.coverMessageSystem)}</div>;
+        $('#attme').addClass('mymessage-nav-focus');
+        return <div className='mymessage-response'>{this.state.data.map(this.coverMessageResponse)}</div>;
     }
 }
 

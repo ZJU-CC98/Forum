@@ -49,14 +49,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = require("react");
-var MymessagePerson_1 = require("./MymessagePerson");
-var MymessageWindow_1 = require("./MymessageWindow");
+var MyMessagePerson_1 = require("./MyMessagePerson");
+var MyMessageWindow_1 = require("./MyMessageWindow");
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
-var MymessageMessage = (function (_super) {
-    __extends(MymessageMessage, _super);
-    function MymessageMessage(props) {
+var MyMessageMessage = (function (_super) {
+    __extends(MyMessageMessage, _super);
+    function MyMessageMessage(props) {
         var _this = _super.call(this, props) || this;
         //对this.stata.data进行批量化转化为JSX的函数，每个JSX可点击改变state里聊天对象的信息
         _this.coverMessagePerson = function (item) {
@@ -67,7 +67,7 @@ var MymessageMessage = (function (_super) {
                 $("#" + item.name).addClass('mymessage-message-pFocus');
             };
             return React.createElement("div", { onClick: changeChatName, id: "" + item.name },
-                React.createElement(MymessagePerson_1.MymessagePerson, { name: item.name, portraitUrl: item.portraitUrl, title: item.title, content: item.content }));
+                React.createElement(MyMessagePerson_1.MyMessagePerson, { name: item.name, portraitUrl: item.portraitUrl, title: item.title, content: item.content }));
         };
         _this.state = {
             data: [],
@@ -78,16 +78,20 @@ var MymessageMessage = (function (_super) {
             token: 'testAccessToken'
         };
         return _this;
-        //如果没有设置默认的state，render第一次渲染的时候state为空，MymessageWindow组件会报错
+        //如果没有设置默认的state，render第一次渲染的时候state为空，MyMessageWindow组件会报错
     }
-    MymessageMessage.prototype.componentWillMount = function () {
+    MyMessageMessage.prototype.componentWillMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var personNumber, accessToken, response1, myInfo, people, startPage, response2, data, i, _a, _b, _i, i, response, person;
+            var personNumber, token, accessToken, response1, myInfo, people, startPage, response2, data, i, _a, _b, _i, i, response, person;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
                         personNumber = 40;
-                        accessToken = location.href.match(/access_token=(\S+)&token_type/)[1];
+                        token = location.href.match(/access_token=(\S+)/);
+                        if (token) {
+                            accessToken = token[1];
+                        }
+                        ;
                         return [4 /*yield*/, fetch('https://api.cc98.org/me', {
                                 headers: {
                                     Authorization: "Bearer " + accessToken
@@ -166,19 +170,19 @@ var MymessageMessage = (function (_super) {
             });
         });
     };
-    MymessageMessage.prototype.render = function () {
+    MyMessageMessage.prototype.render = function () {
         //给我的私信添加选中样式
         $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
-        $('#mymessage').addClass('mymessage-nav-focus');
+        $('#message').addClass('mymessage-nav-focus');
         return (React.createElement("div", { className: 'mymessage-message' },
             React.createElement("div", { className: 'mymessage-message-people' },
                 React.createElement("div", { className: 'mymessage-message-pTitle' }, "\u8FD1\u671F\u79C1\u4FE1"),
                 React.createElement("div", { className: 'mymessage-message-pList' }, this.state.data.map(this.coverMessagePerson))),
-            React.createElement(MymessageWindow_1.MymessageWindow, { chatName: this.state.chatName, chatPortraitUrl: this.state.chatPortraitUrl, myName: this.state.myName, myPortraitUrl: this.state.myPortraitUrl, token: this.state.token })));
+            React.createElement(MyMessageWindow_1.MyMessageWindow, { chatName: this.state.chatName, chatPortraitUrl: this.state.chatPortraitUrl, myName: this.state.myName, myPortraitUrl: this.state.myPortraitUrl, token: this.state.token })));
     };
-    return MymessageMessage;
+    return MyMessageMessage;
 }(React.Component));
-exports.MymessageMessage = MymessageMessage;
+exports.MyMessageMessage = MyMessageMessage;
 //查找数组arr中是否存在元素的名字为obj
 function contains(arr, obj) {
     var i = arr.length;
@@ -189,4 +193,4 @@ function contains(arr, obj) {
     }
     return false;
 }
-//# sourceMappingURL=MymessageMessage.js.map
+//# sourceMappingURL=MyMessageMessage.js.map

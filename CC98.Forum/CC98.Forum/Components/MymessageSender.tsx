@@ -2,8 +2,8 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
-import { MymessageProps } from '../Props/MymessageProps';
-export class MymessageSender extends React.Component<MymessageProps> {
+import { MyMessageProps } from '../Props/MyMessageProps';
+export class MyMessageSender extends React.Component<MyMessageProps> {
     render() {
         return (<div className='mymessage-message-wc'>
                     <div className='mymessage-message-wcTime'>{this.props.sendTime}</div>

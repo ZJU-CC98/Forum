@@ -3,10 +3,10 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 Object.defineProperty(exports, "__esModule", { value: true });
-var MymessageWindowState = (function () {
-    function MymessageWindowState() {
+var MyMessageWindowState = (function () {
+    function MyMessageWindowState() {
     }
-    return MymessageWindowState;
+    return MyMessageWindowState;
 }());
-exports.MymessageWindowState = MymessageWindowState;
-//# sourceMappingURL=MymessageWindowState.js.map
+exports.MyMessageWindowState = MyMessageWindowState;
+//# sourceMappingURL=MyMessageWindowState.js.map

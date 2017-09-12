@@ -1,79 +1,77 @@
 ﻿import * as React from 'react';
-import * as Utility from '../Utility'
 import { AppState } from '../States/AppState';
-import { MymessageMessage } from './MymessageMessage';
-import { MymessageSystem } from './MymessageSystem';
-import { MymessageResponse } from './MymessageResponse';
-
+import { MyMessageMessage } from './MyMessageMessage';
+import { MyMessageResponse } from './MyMessageResponse';
+import { MyMessageAttme } from './MyMessageAttme';
+import { MyMessageSystem } from './MyMessageSystem';
 import {
     BrowserRouter as Router,
     Route,
     NavLink
 } from 'react-router-dom';
+
+/**
+ * 网站的主页面对象。
+ */
 export class MyMessage extends React.Component<{}, AppState> {
-
-
+    
     render() {
-        return (<div className='mymessage'>
-            <div className='mymessage-title'>我的消息</div>
-            <Router>
-                <div className='mymessage-content'>
-                    <div className='mymessage-nav'>
-                        <div id='myresponse'><NavLink to='/messagebox/responselogin'>回复我的</NavLink></div>
-                        <div id='myattme'><NavLink to='/messagebox/attme'>@我的</NavLink></div>
-                        <div id='mylikes'><NavLink to='/messagebox/likes'>收到的赞</NavLink></div>
-                        <div id='mysystem'><NavLink to='/messagebox/systemlogin'>系统通知</NavLink></div>
-                        <div id='mymessage'><NavLink to='/messagebox/login'>我的私信</NavLink></div>
+        let url = sendRequest();
+        let token = location.href.match(/access_token=(\S+)&token_type/);
+        let accessToken: string;
+        if (token) {
+            accessToken = token[1];
+        }
+        return (<div className='mymessage-root'>
+                    <div className='mymessage'>
+                            <div className='mymessage-login'><a href={url}>登陆</a></div>
+                            <div className='mymessage-title'>我的消息</div>
+                            <Router>
+                                <div className='mymessage-content'>
+                                    <div className='mymessage-nav'>
+                                        <div id='response'><NavLink to={`/mymessage/response?access_token=${accessToken}`}>回复我的</NavLink></div>
+                                        <div id='attme'><NavLink to={`/mymessage/attme?access_token=${accessToken}`}>@我的</NavLink></div>
+                                        <div id='likes'><NavLink to={`/mymessage/likes?access_token=${accessToken}`}>收到的赞</NavLink></div>
+                                        <div id='system'><NavLink to={`/mymessage/system?access_token=${accessToken}`}>系统通知</NavLink></div>
+                                        <div id='message'><NavLink to={`/mymessage/message?access_token=${accessToken}`}>我的私信</NavLink></div>
+                                    </div>
+                                    <Route path='/mymessage/response' component={MyMessageResponse} />
+                                    <Route path='/mymessage/attme' component={MyMessageAttme} />
+                                    <Route path='/mymessage/likes' component={Likes} />
+                                    <Route path='/mymessage/system' component={MyMessageSystem} />
+                                    <Route path="/mymessage/message" component={MyMessageMessage} />
+                                </div>
+                            </Router>
                     </div>
-                    <Route path='/messagebox/response' component={MymessageResponse} />
-                    <Route path='/messagebox/attme' component={Attme} />
-                    <Route path='/messagebox/likes' component={Likes} />
-                    <Route path='/messagebox/systemlogin' component={Systemlogin} />
-                    <Route path='/messagebox/responselogin' component={Responselogin} />
-                    <Route path='/messagebox/system' component={MymessageSystem} />
-                    <Route exact path='/messagebox/login' component={login} />
-                    <Route path="/messagebox/message" component={MymessageMessage} />
                 </div>
-                </Router>
-        </div>
-        );
-    }
+            );
+	}
 
 }
-export class Responselogin extends React.Component {
-    render() {
-        Utility.changeNav('#myresponse');
-        let url = Utility.responseRequest();
-        return <div className='test'><a href={url}>回复登陆</a></div>;
-    }
-}
 
-export class Attme extends React.Component {
-    render() {
-        Utility. changeNav('#myattme');
-        return <div className='test'>这里有人@我</div>;
-    }
+//选中效果
+export function changeNav(id) {
+    $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
+    $(id).addClass('mymessage-nav-focus'); 
 }
 
 export class Likes extends React.Component {
     render() {
-        Utility.changeNav('#mylikes');
-        return <div className='test'>这里是我收到的赞</div>;
+        changeNav('#likes');
+        return <div>这里是我收到的赞</div>;
     }
 }
 
-export class Systemlogin extends React.Component {
-    render() {
-        Utility. changeNav('#mysystem');
-        let url = Utility.systemRequest();
-        return <div className='test'><a href={url}>系统登陆</a></div>;
-    }
-}
-
-export class login extends React.Component {
-    render() {
-        Utility.changeNav('#mymessage');
-        let url = Utility.sendRequest();
-        return <div className='test'><a href={url}>登陆</a></div>;
-    }
+function sendRequest() {
+    //申请到的appID
+    let appId = 'fcf89870-61d7-4a21-919d-797ab28b81b3';
+    //申请后的回调地址
+    let c = 'http://localhost:54163/mymessage';
+    let redirectURI = encodeURI(c);
+    //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
+    let path = 'https://login.cc98.org/OAuth/Authorize?'
+    let queryParams = ['client_id=' + appId, 'response_type=token', 'scope=all', 'redirect_uri=' + redirectURI];
+    let query = queryParams.join('&');
+    let url = path + query;
+    return url;
 }

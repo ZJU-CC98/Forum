@@ -6,10 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * 聊天窗口的状态信息，我和对方的用户名及头像
  */
-var MymessageWindowProps = (function () {
-    function MymessageWindowProps() {
+var MyMessageWindowProps = (function () {
+    function MyMessageWindowProps() {
     }
-    return MymessageWindowProps;
+    return MyMessageWindowProps;
 }());
-exports.MymessageWindowProps = MymessageWindowProps;
-//# sourceMappingURL=MymessageWindowProps.js.map
+exports.MyMessageWindowProps = MyMessageWindowProps;
+//# sourceMappingURL=MyMessageWindowProps.js.map

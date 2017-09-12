@@ -25,10 +25,11 @@ var MyFocusBoard = (function (_super) {
      * 从上往下分别为：页面标题、关注版面列表区域、选中版面的主题列表区域，分别用三个组件表示
      */
     MyFocusBoard.prototype.render = function () {
-        return (React.createElement("div", { className: 'focus' },
-            React.createElement("div", { className: 'focus-title' }, "\u6211\u7684\u5173\u6CE8\u7248\u9762"),
-            React.createElement(FocusBoardAreaComponent_1.FocusBoardAreaComponent, null),
-            React.createElement(FocusPostAreaComponent_1.FocusPostAreaComponent, null)));
+        return (React.createElement("div", { className: 'focus-root' },
+            React.createElement("div", { className: 'focus' },
+                React.createElement("div", { className: 'focus-title' }, "\u6211\u7684\u5173\u6CE8\u7248\u9762"),
+                React.createElement(FocusBoardAreaComponent_1.FocusBoardAreaComponent, null),
+                React.createElement(FocusPostAreaComponent_1.FocusPostAreaComponent, null))));
     };
     return MyFocusBoard;
 }(React.Component));

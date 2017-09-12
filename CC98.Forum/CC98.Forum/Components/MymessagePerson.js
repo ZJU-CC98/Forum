@@ -14,12 +14,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = require("react");
-var MymessagePerson = (function (_super) {
-    __extends(MymessagePerson, _super);
-    function MymessagePerson() {
+var MyMessagePerson = (function (_super) {
+    __extends(MyMessagePerson, _super);
+    function MyMessagePerson() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    MymessagePerson.prototype.render = function () {
+    MyMessagePerson.prototype.render = function () {
         return (React.createElement("div", { className: 'mymessage-message-person' },
             React.createElement("img", { className: 'mymessage-message-pPortraitUrl', src: this.props.portraitUrl }),
             React.createElement("div", { className: 'mymessage-message-pInfo' },
@@ -30,7 +30,7 @@ var MymessagePerson = (function (_super) {
                     "]",
                     this.props.content))));
     };
-    return MymessagePerson;
+    return MyMessagePerson;
 }(React.Component));
-exports.MymessagePerson = MymessagePerson;
-//# sourceMappingURL=MymessagePerson.js.map
+exports.MyMessagePerson = MyMessagePerson;
+//# sourceMappingURL=MyMessagePerson.js.map

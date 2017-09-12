@@ -14,12 +14,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = require("react");
-var MymessageSender = (function (_super) {
-    __extends(MymessageSender, _super);
-    function MymessageSender() {
+var MyMessageSender = (function (_super) {
+    __extends(MyMessageSender, _super);
+    function MyMessageSender() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    MymessageSender.prototype.render = function () {
+    MyMessageSender.prototype.render = function () {
         return (React.createElement("div", { className: 'mymessage-message-wc' },
             React.createElement("div", { className: 'mymessage-message-wcTime' }, this.props.sendTime),
             React.createElement("div", { className: 'mymessage-message-wcSender' },
@@ -33,7 +33,7 @@ var MymessageSender = (function (_super) {
                 React.createElement("div", { className: 'mymessage-message-wcRead1' },
                     React.createElement("div", { className: 'mymessage-message-wcRead2' }, this.props.isRead ? '已读' : '未读')))));
     };
-    return MymessageSender;
+    return MyMessageSender;
 }(React.Component));
-exports.MymessageSender = MymessageSender;
-//# sourceMappingURL=MymessageSender.js.map
+exports.MyMessageSender = MyMessageSender;
+//# sourceMappingURL=MyMessageSender.js.map
