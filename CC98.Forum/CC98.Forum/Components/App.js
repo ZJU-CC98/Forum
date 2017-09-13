@@ -19,6 +19,7 @@ var BoardList_1 = require("./BoardList");
 var UserCenter_1 = require("./UserCenter");
 var MyMessage_1 = require("./MyMessage");
 var AllNewPost_1 = require("./AllNewPost");
+var MyFocusBoard_1 = require("./MyFocusBoard");
 var Header_1 = require("./Header");
 var MainPage_1 = require("./MainPage");
 var RouteComponent = (function (_super) {
@@ -56,6 +57,7 @@ var App = (function (_super) {
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/boardlist", component: BoardList_1.BoardList }),
                     React.createElement(react_router_dom_1.Route, { path: "/usercenter", component: UserCenter_1.UserCenter }),
                     React.createElement(react_router_dom_1.Route, { path: "/mymessage", component: MyMessage_1.MyMessage }),
+                    React.createElement(react_router_dom_1.Route, { path: "/focus", component: MyFocusBoard_1.MyFocusBoard }),
                     React.createElement(react_router_dom_1.Route, { path: "/newtopics", component: AllNewPost_1.AllNewPost }))));
     };
     return App;

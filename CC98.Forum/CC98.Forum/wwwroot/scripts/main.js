@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 124);
+/******/ 	return __webpack_require__(__webpack_require__.s = 125);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1896,7 +1896,7 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            __webpack_require__(131)("./" + name);
+            __webpack_require__(132)("./" + name);
             // because defineLocale currently also sets the global locale, we
             // want to undo that for lazy loaded locales
             getSetGlobalLocale(oldLocale);
@@ -4531,7 +4531,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(131)(module)))
 
 /***/ }),
 /* 1 */
@@ -4829,7 +4829,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var State = __webpack_require__(3);
 var React = __webpack_require__(1);
 var List_1 = __webpack_require__(6);
-var $ = __webpack_require__(129);
+var $ = __webpack_require__(130);
 /*export async function getData() {
     let hottopics: State.TopicTitleAndContentState[] = [];
     var response = await fetch('http://api.cc98.org/Topic/Hot');
@@ -16884,32 +16884,261 @@ exports.MyMessageResponsebox = MyMessageResponsebox;
 /* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(125);
-module.exports = __webpack_require__(166);
+"use strict";
 
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var React = __webpack_require__(1);
+var FocusPostComponent_1 = __webpack_require__(162);
+var Utility = __webpack_require__(4);
+/**
+ * 表示我关注的某个版面的主题列表
+ */
+var FocusPostAreaComponent = (function (_super) {
+    __extends(FocusPostAreaComponent, _super);
+    /**
+     * 构造函数
+     * @param props
+     */
+    function FocusPostAreaComponent(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            data: [],
+            curPage: 1,
+            loading: true
+        };
+        _this.handleScroll = _this.handleScroll.bind(_this);
+        return _this;
+    }
+    /**
+     * 进入立即获取20条新帖的数据，同时为滚动条添加监听事件
+     */
+    FocusPostAreaComponent.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Utility.getAllNewPost(this.state.curPage)];
+                    case 1:
+                        data = _a.sent();
+                        this.setState({ data: data });
+                        document.addEventListener('scroll', this.handleScroll);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * 移除DOM时，为滚动条移除监听事件
+     */
+    FocusPostAreaComponent.prototype.componentWillUnmount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                document.removeEventListener('scroll', this.handleScroll);
+                return [2 /*return*/];
+            });
+        });
+    };
+    /**
+     * 处理滚动的函数
+     */
+    FocusPostAreaComponent.prototype.handleScroll = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var newData, err_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(isBottom() && this.state.loading)) return [3 /*break*/, 5];
+                        /**
+                        *查看新帖数目大于100条时不再继续加载
+                        */
+                        if (this.state.curPage >= 5) {
+                            $('#focus-post-loading').addClass('displaynone');
+                            $('#focus-post-loaddone').removeClass('displaynone');
+                            return [2 /*return*/];
+                        }
+                        /**
+                        *发出第一条fetch请求前将this.state.loading设置为false，防止后面重复发送fetch请求
+                        */
+                        this.setState({ loading: false });
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, Utility.getAllNewPost(this.state.curPage + 1)];
+                    case 2:
+                        newData = _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        err_1 = _a.sent();
+                        /**
+                        *如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
+                        */
+                        this.setState({ loading: true });
+                        return [2 /*return*/];
+                    case 4:
+                        /**
+                        *如果正确获取到数据，则添加新数据，翻页+1，同时this.state.loading设置为true，后续才可以再次发送fetch请求
+                        */
+                        this.setState({ data: this.state.data.concat(newData), curPage: this.state.curPage + 1, loading: true });
+                        _a.label = 5;
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * 将主题排列好
+     */
+    FocusPostAreaComponent.prototype.render = function () {
+        return React.createElement("div", { className: 'focus-post-area' },
+            React.createElement("div", { className: 'focus-post-topicArea' }, this.state.data.map(coverFocusPost)),
+            React.createElement("div", { className: 'focus-post-loading', id: 'focus-post-loading' },
+                React.createElement("img", { src: 'http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif' })),
+            React.createElement("div", { className: 'focus-post-loaddone displaynone', id: 'focus-post-loaddone' }, "---------------------- \u5DF2\u52A0\u8F7D100\u6761\u65B0\u5E16\uFF0C\u65E0\u6CD5\u52A0\u8F7D\u66F4\u591A ----------------------"));
+    };
+    return FocusPostAreaComponent;
+}(React.Component));
+exports.FocusPostAreaComponent = FocusPostAreaComponent;
+/**
+* 单个主题数据转换成单个主题组件
+*/
+function coverFocusPost(item) {
+    return React.createElement(FocusPostComponent_1.FocusPostComponent, { title: item.title, hitCount: item.hitCount, id: item.id, boardId: item.boardId, boardName: item.boardName, replyCount: item.replyCount, authorName: item.authorName, portraitUrl: item.portraitUrl, createTime: item.createTime, likeCount: item.likeCount, dislikeCount: item.dislikeCount, fanCount: item.fanCount });
+}
+/**
+*滚动条在Y轴上的滚动距离
+*/
+function getScrollTop() {
+    var scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
+    if (document.body) {
+        bodyScrollTop = document.body.scrollTop;
+    }
+    if (document.documentElement) {
+        documentScrollTop = document.documentElement.scrollTop;
+    }
+    scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
+    return scrollTop;
+}
+/**
+*文档的总高度
+*/
+function getScrollHeight() {
+    var scrollHeight = 0, bodyScrollHeight = 0, documentScrollHeight = 0;
+    if (document.body) {
+        bodyScrollHeight = document.body.scrollHeight;
+    }
+    if (document.documentElement) {
+        documentScrollHeight = document.documentElement.scrollHeight;
+    }
+    scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
+    return scrollHeight;
+}
+/**
+*浏览器视口的高度
+*/
+function getWindowHeight() {
+    var windowHeight = 0;
+    if (document.compatMode == "CSS1Compat") {
+        windowHeight = document.documentElement.clientHeight;
+    }
+    else {
+        windowHeight = document.body.clientHeight;
+    }
+    return windowHeight;
+}
+/**
+*判断滚动条是否滚动到底部
+*/
+function isBottom() {
+    /*
+    *预留100px给“正在加载”的提示标志
+    */
+    if (getScrollTop() + getWindowHeight() + 100 > getScrollHeight()) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+//# sourceMappingURL=FocusPostAreaComponent.js.map
 
 /***/ }),
 /* 125 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(126);
+module.exports = __webpack_require__(169);
+
+
+/***/ }),
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var ReactDOM = __webpack_require__(126);
-var App_1 = __webpack_require__(127);
+var ReactDOM = __webpack_require__(127);
+var App_1 = __webpack_require__(128);
 // 显示应用程序核心内容
 ReactDOM.render(React.createElement(App_1.App, null), document.getElementById('root'));
 
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports) {
 
 module.exports = ReactDOM;
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16927,15 +17156,16 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
-var post_1 = __webpack_require__(128);
+var post_1 = __webpack_require__(129);
 var List_1 = __webpack_require__(6);
-var CurUserPost_1 = __webpack_require__(132);
-var BoardList_1 = __webpack_require__(133);
-var UserCenter_1 = __webpack_require__(134);
-var MyMessage_1 = __webpack_require__(150);
-var AllNewPost_1 = __webpack_require__(160);
-var Header_1 = __webpack_require__(163);
-var MainPage_1 = __webpack_require__(164);
+var CurUserPost_1 = __webpack_require__(133);
+var BoardList_1 = __webpack_require__(134);
+var UserCenter_1 = __webpack_require__(135);
+var MyMessage_1 = __webpack_require__(151);
+var AllNewPost_1 = __webpack_require__(161);
+var MyFocusBoard_1 = __webpack_require__(163);
+var Header_1 = __webpack_require__(166);
+var MainPage_1 = __webpack_require__(167);
 var RouteComponent = (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -16971,6 +17201,7 @@ var App = (function (_super) {
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/boardlist", component: BoardList_1.BoardList }),
                     React.createElement(react_router_dom_1.Route, { path: "/usercenter", component: UserCenter_1.UserCenter }),
                     React.createElement(react_router_dom_1.Route, { path: "/mymessage", component: MyMessage_1.MyMessage }),
+                    React.createElement(react_router_dom_1.Route, { path: "/focus", component: MyFocusBoard_1.MyFocusBoard }),
                     React.createElement(react_router_dom_1.Route, { path: "/newtopics", component: AllNewPost_1.AllNewPost }))));
     };
     return App;
@@ -16979,7 +17210,7 @@ exports.App = App;
 //# sourceMappingURL=App.js.map
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17626,13 +17857,13 @@ exports.UserMessageBox = UserMessageBox;
 //# sourceMappingURL=post.js.map
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports) {
 
 module.exports = $;
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -17660,7 +17891,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -17909,10 +18140,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 131;
+webpackContext.id = 132;
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18524,7 +18755,7 @@ exports.PageModel = PageModel;
 //# sourceMappingURL=CurUserPost.js.map
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18879,7 +19110,7 @@ exports.BoardList = BoardList;
 //# sourceMappingURL=BoardList.js.map
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18900,8 +19131,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterNavigation_1 = __webpack_require__(135);
-var UserCenterRouter_1 = __webpack_require__(136);
+var UserCenterNavigation_1 = __webpack_require__(136);
+var UserCenterRouter_1 = __webpack_require__(137);
 /**
  * 用户中心页面
  */
@@ -18925,7 +19156,7 @@ exports.UserCenter = UserCenter;
 //# sourceMappingURL=UserCenter.js.map
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18984,7 +19215,7 @@ var CustomLink = function (_a) {
 //# sourceMappingURL=UserCenterNavigation.js.map
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19005,11 +19236,11 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterExact_1 = __webpack_require__(137);
-var UserCenterMyFollowings_1 = __webpack_require__(143);
-var UserCenterMyFans_1 = __webpack_require__(144);
-var UserCenterMyPosts_1 = __webpack_require__(145);
-var UserCenterMyFavorites_1 = __webpack_require__(148);
+var UserCenterExact_1 = __webpack_require__(138);
+var UserCenterMyFollowings_1 = __webpack_require__(144);
+var UserCenterMyFans_1 = __webpack_require__(145);
+var UserCenterMyPosts_1 = __webpack_require__(146);
+var UserCenterMyFavorites_1 = __webpack_require__(149);
 /**
  * 用户中心主体
  */
@@ -19032,7 +19263,7 @@ exports.UserCenterRouter = UserCenterRouter;
 //# sourceMappingURL=UserCenterRouter.js.map
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19087,9 +19318,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var UserCenterExactProfile_1 = __webpack_require__(138);
-var UserCenterExactActivities_1 = __webpack_require__(139);
-var UserCenterExactAvatar_1 = __webpack_require__(142);
+var UserCenterExactProfile_1 = __webpack_require__(139);
+var UserCenterExactActivities_1 = __webpack_require__(140);
+var UserCenterExactAvatar_1 = __webpack_require__(143);
 /**
  * 用户中心主页
  */
@@ -19157,7 +19388,7 @@ exports.UserCenterExact = UserCenterExact;
 //# sourceMappingURL=UserCenterExact.js.map
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19214,7 +19445,7 @@ exports.UserCenterExactProfile = UserCenterExactProfile;
 //# sourceMappingURL=UserCenterExactProfile.js.map
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19235,8 +19466,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterExactActivitiesPosts_1 = __webpack_require__(140);
-var UserCenterExactActivitiesReplies_1 = __webpack_require__(141);
+var UserCenterExactActivitiesPosts_1 = __webpack_require__(141);
+var UserCenterExactActivitiesReplies_1 = __webpack_require__(142);
 /**
  * 用户中心主页近期动态组件
  */
@@ -19269,7 +19500,7 @@ var CustomLink = function (_a) {
 //# sourceMappingURL=UserCenterExactActivities.js.map
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19323,7 +19554,7 @@ userRecentPost.title = '这是帖子标题';
 //# sourceMappingURL=UserCenterExactActivitiesPosts.js.map
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19377,7 +19608,7 @@ userRecentPost.title = '这是帖子标题';
 //# sourceMappingURL=UserCenterExactActivitiesReplies.js.map
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19414,7 +19645,7 @@ exports.UserCenterExactAvatar = UserCenterExactAvatar;
 //# sourceMappingURL=UserCenterExactAvatar.js.map
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19468,7 +19699,7 @@ userFanInfo.name = '董松松松';
 //# sourceMappingURL=UserCenterMyFollowings.js.map
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19522,7 +19753,7 @@ userFanInfo.name = '董松松松';
 //# sourceMappingURL=UserCenterMyFans.js.map
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19540,8 +19771,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterMyPostsExact_1 = __webpack_require__(146);
-var UserCenterMyPostsReplies_1 = __webpack_require__(147);
+var UserCenterMyPostsExact_1 = __webpack_require__(147);
+var UserCenterMyPostsReplies_1 = __webpack_require__(148);
 /**
  * 用户中心我的主题组件
  */
@@ -19572,7 +19803,7 @@ var CustomLink = function (_a) {
 //# sourceMappingURL=UserCenterMyPosts.js.map
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19625,7 +19856,7 @@ userRecentPost.title = '这是帖子标题';
 //# sourceMappingURL=UserCenterMyPostsExact.js.map
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19679,7 +19910,7 @@ userRecentPost.title = '这是帖子标题';
 //# sourceMappingURL=UserCenterMyPostsReplies.js.map
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19700,7 +19931,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterMyFavoritesPosts_1 = __webpack_require__(149);
+var UserCenterMyFavoritesPosts_1 = __webpack_require__(150);
 //import { UserCenterMyFavoritesPostsBoards } from './UserCenterMyFavoritesPostsBoards';
 //<Route path='/usercenter/myfavorites/boards' component={UserCenterMyFavoritesPostsBoards} />
 /**
@@ -19732,7 +19963,7 @@ var CustomLink = function (_a) {
 //# sourceMappingURL=UserCenterMyFavorites.js.map
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19785,7 +20016,7 @@ userRecentPost.title = '这是帖子标题';
 //# sourceMappingURL=UserCenterMyFavoritesPosts.js.map
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19802,10 +20033,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var MyMessageMessage_1 = __webpack_require__(151);
-var MyMessageResponse_1 = __webpack_require__(156);
-var MyMessageAttme_1 = __webpack_require__(157);
-var MyMessageSystem_1 = __webpack_require__(158);
+var MyMessageMessage_1 = __webpack_require__(152);
+var MyMessageResponse_1 = __webpack_require__(157);
+var MyMessageAttme_1 = __webpack_require__(158);
+var MyMessageSystem_1 = __webpack_require__(159);
 var react_router_dom_1 = __webpack_require__(2);
 /**
  * 网站的主页面对象。
@@ -19883,7 +20114,7 @@ function sendRequest() {
 //# sourceMappingURL=MyMessage.js.map
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19938,8 +20169,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var MyMessagePerson_1 = __webpack_require__(152);
-var MyMessageWindow_1 = __webpack_require__(153);
+var MyMessagePerson_1 = __webpack_require__(153);
+var MyMessageWindow_1 = __webpack_require__(154);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -20085,7 +20316,7 @@ function contains(arr, obj) {
 //# sourceMappingURL=MyMessageMessage.js.map
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20127,7 +20358,7 @@ exports.MyMessagePerson = MyMessagePerson;
 //# sourceMappingURL=MyMessagePerson.js.map
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20182,8 +20413,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var MyMessageSender_1 = __webpack_require__(154);
-var MyMessageReceiver_1 = __webpack_require__(155);
+var MyMessageSender_1 = __webpack_require__(155);
+var MyMessageReceiver_1 = __webpack_require__(156);
 var MyMessageWindow = (function (_super) {
     __extends(MyMessageWindow, _super);
     function MyMessageWindow(props) {
@@ -20328,7 +20559,7 @@ function reverseArr(arr, s, e) {
 //# sourceMappingURL=MyMessageWindow.js.map
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20373,7 +20604,7 @@ exports.MyMessageSender = MyMessageSender;
 //# sourceMappingURL=MyMessageSender.js.map
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20423,7 +20654,7 @@ exports.MyMessageReceiver = MyMessageReceiver;
 //# sourceMappingURL=MyMessageReceiver.js.map
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20582,7 +20813,7 @@ function contains(arr, obj) {
 //# sourceMappingURL=MyMessageResponse.js.map
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20741,7 +20972,7 @@ function contains(arr, obj) {
 //# sourceMappingURL=MyMessageAttme.js.map
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20796,7 +21027,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var MyMessageSystembox_1 = __webpack_require__(159);
+var MyMessageSystembox_1 = __webpack_require__(160);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -20899,7 +21130,7 @@ function contains(arr, obj) {
 //# sourceMappingURL=MyMessageSystem.js.map
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20941,7 +21172,7 @@ exports.MyMessageSystembox = MyMessageSystembox;
 //# sourceMappingURL=MyMessageSystembox.js.map
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20961,7 +21192,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var FocusPostAreaComponent_1 = __webpack_require__(161);
+var FocusPostAreaComponent_1 = __webpack_require__(124);
 /**
  * 网站的主页面对象。
  */
@@ -20985,235 +21216,6 @@ var AllNewPost = (function (_super) {
 }(React.Component));
 exports.AllNewPost = AllNewPost;
 //# sourceMappingURL=AllNewPost.js.map
-
-/***/ }),
-/* 161 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var React = __webpack_require__(1);
-var FocusPostComponent_1 = __webpack_require__(162);
-var Utility = __webpack_require__(4);
-/**
- * 表示我关注的某个版面的主题列表
- */
-var FocusPostAreaComponent = (function (_super) {
-    __extends(FocusPostAreaComponent, _super);
-    /**
-     * 构造函数
-     * @param props
-     */
-    function FocusPostAreaComponent(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = {
-            data: [],
-            curPage: 1,
-            loading: true
-        };
-        _this.handleScroll = _this.handleScroll.bind(_this);
-        return _this;
-    }
-    /**
-     * 进入立即获取20条新帖的数据，同时为滚动条添加监听事件
-     */
-    FocusPostAreaComponent.prototype.componentDidMount = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var data;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getAllNewPost(this.state.curPage)];
-                    case 1:
-                        data = _a.sent();
-                        this.setState({ data: data });
-                        document.addEventListener('scroll', this.handleScroll);
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    /**
-     * 移除DOM时，为滚动条移除监听事件
-     */
-    FocusPostAreaComponent.prototype.componentWillUnmount = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                document.removeEventListener('scroll', this.handleScroll);
-                return [2 /*return*/];
-            });
-        });
-    };
-    /**
-     * 处理滚动的函数
-     */
-    FocusPostAreaComponent.prototype.handleScroll = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var newData, err_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!(isBottom() && this.state.loading)) return [3 /*break*/, 5];
-                        /**
-                        *查看新帖数目大于100条时不再继续加载
-                        */
-                        if (this.state.curPage >= 5) {
-                            $('#focus-post-loading').addClass('displaynone');
-                            $('#focus-post-loaddone').removeClass('displaynone');
-                            return [2 /*return*/];
-                        }
-                        /**
-                        *发出第一条fetch请求前将this.state.loading设置为false，防止后面重复发送fetch请求
-                        */
-                        this.setState({ loading: false });
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, Utility.getAllNewPost(this.state.curPage + 1)];
-                    case 2:
-                        newData = _a.sent();
-                        return [3 /*break*/, 4];
-                    case 3:
-                        err_1 = _a.sent();
-                        /**
-                        *如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
-                        */
-                        this.setState({ loading: true });
-                        return [2 /*return*/];
-                    case 4:
-                        /**
-                        *如果正确获取到数据，则添加新数据，翻页+1，同时this.state.loading设置为true，后续才可以再次发送fetch请求
-                        */
-                        this.setState({ data: this.state.data.concat(newData), curPage: this.state.curPage + 1, loading: true });
-                        _a.label = 5;
-                    case 5: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    /**
-     * 将主题排列好
-     */
-    FocusPostAreaComponent.prototype.render = function () {
-        return React.createElement("div", { className: 'focus-post-area' },
-            React.createElement("div", { className: 'focus-post-topicArea' }, this.state.data.map(coverFocusPost)),
-            React.createElement("div", { className: 'focus-post-loading', id: 'focus-post-loading' },
-                React.createElement("img", { src: 'http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif' })),
-            React.createElement("div", { className: 'focus-post-loaddone displaynone', id: 'focus-post-loaddone' }, "---------------------- \u5DF2\u52A0\u8F7D100\u6761\u65B0\u5E16\uFF0C\u65E0\u6CD5\u52A0\u8F7D\u66F4\u591A ----------------------"));
-    };
-    return FocusPostAreaComponent;
-}(React.Component));
-exports.FocusPostAreaComponent = FocusPostAreaComponent;
-/**
-* 单个主题数据转换成单个主题组件
-*/
-function coverFocusPost(item) {
-    return React.createElement(FocusPostComponent_1.FocusPostComponent, { title: item.title, hitCount: item.hitCount, id: item.id, boardId: item.boardId, boardName: item.boardName, replyCount: item.replyCount, authorName: item.authorName, portraitUrl: item.portraitUrl, createTime: item.createTime, likeCount: item.likeCount, dislikeCount: item.dislikeCount, fanCount: item.fanCount });
-}
-/**
-*滚动条在Y轴上的滚动距离
-*/
-function getScrollTop() {
-    var scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
-    if (document.body) {
-        bodyScrollTop = document.body.scrollTop;
-    }
-    if (document.documentElement) {
-        documentScrollTop = document.documentElement.scrollTop;
-    }
-    scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
-    return scrollTop;
-}
-/**
-*文档的总高度
-*/
-function getScrollHeight() {
-    var scrollHeight = 0, bodyScrollHeight = 0, documentScrollHeight = 0;
-    if (document.body) {
-        bodyScrollHeight = document.body.scrollHeight;
-    }
-    if (document.documentElement) {
-        documentScrollHeight = document.documentElement.scrollHeight;
-    }
-    scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
-    return scrollHeight;
-}
-/**
-*浏览器视口的高度
-*/
-function getWindowHeight() {
-    var windowHeight = 0;
-    if (document.compatMode == "CSS1Compat") {
-        windowHeight = document.documentElement.clientHeight;
-    }
-    else {
-        windowHeight = document.body.clientHeight;
-    }
-    return windowHeight;
-}
-/**
-*判断滚动条是否滚动到底部
-*/
-function isBottom() {
-    /*
-    *预留100px给“正在加载”的提示标志
-    */
-    if (getScrollTop() + getWindowHeight() + 100 > getScrollHeight()) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-//# sourceMappingURL=FocusPostAreaComponent.js.map
 
 /***/ }),
 /* 162 */
@@ -21296,6 +21298,138 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var React = __webpack_require__(1);
+var FocusBoardAreaComponent_1 = __webpack_require__(164);
+var FocusPostAreaComponent_1 = __webpack_require__(124);
+var MyFocusBoard = (function (_super) {
+    __extends(MyFocusBoard, _super);
+    function MyFocusBoard() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * 从上往下分别为：页面标题、关注版面列表区域、选中版面的主题列表区域，分别用三个组件表示
+     */
+    MyFocusBoard.prototype.render = function () {
+        return (React.createElement("div", { className: 'focus-root' },
+            React.createElement("div", { className: 'focus' },
+                React.createElement("div", { className: 'focus-title' }, "\u6211\u7684\u5173\u6CE8\u7248\u9762"),
+                React.createElement(FocusBoardAreaComponent_1.FocusBoardAreaComponent, null),
+                React.createElement(FocusPostAreaComponent_1.FocusPostAreaComponent, null))));
+    };
+    return MyFocusBoard;
+}(React.Component));
+exports.MyFocusBoard = MyFocusBoard;
+//# sourceMappingURL=MyFocusBoard.js.map
+
+/***/ }),
+/* 164 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var React = __webpack_require__(1);
+var FocusBoardComponent_1 = __webpack_require__(165);
+/**
+ * 表示我关注的版面列表区域
+ */
+var FocusBoardAreaComponent = (function (_super) {
+    __extends(FocusBoardAreaComponent, _super);
+    /**
+     * 构造函数，同时构造假的版面列表数据
+     * @param props
+     */
+    function FocusBoardAreaComponent(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            data: [{ id: 100, name: '校园信息' }, { id: 459, name: '实习兼职' }, { id: 135, name: '开怀一笑' }, { id: 758, name: '似水流年' }]
+        };
+        return _this;
+    }
+    /**
+     * 将我关注的版面排列好
+     */
+    FocusBoardAreaComponent.prototype.render = function () {
+        return React.createElement("div", { className: 'focus-board-area' }, this.state.data.map(coverFocusBoard));
+    };
+    return FocusBoardAreaComponent;
+}(React.Component));
+exports.FocusBoardAreaComponent = FocusBoardAreaComponent;
+function coverFocusBoard(item) {
+    return React.createElement(FocusBoardComponent_1.FocusBoardComponent, { id: item.id, name: item.name });
+}
+//# sourceMappingURL=FocusBoardAreaComponent.js.map
+
+/***/ }),
+/* 165 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var React = __webpack_require__(1);
+/**
+ * 我关注的版面（单个版面的样式）
+ */
+var FocusBoardComponent = (function (_super) {
+    __extends(FocusBoardComponent, _super);
+    function FocusBoardComponent() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    FocusBoardComponent.prototype.render = function () {
+        return React.createElement("div", { className: 'focus-board' }, this.props.name);
+    };
+    return FocusBoardComponent;
+}(React.Component));
+exports.FocusBoardComponent = FocusBoardComponent;
+//# sourceMappingURL=FocusBoardComponent.js.map
+
+/***/ }),
+/* 166 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 /*
 <div className="root">
@@ -21329,7 +21463,8 @@ var Header = (function (_super) {
                                 React.createElement("a", { href: "/mymessage", style: { color: "#fff" } }, "\u6D88\u606F")),
                             React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
                                 React.createElement("a", { href: "/", style: { color: "#fff" } }, "\u9996\u9875")),
-                            React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } }, "\u5173\u6CE8"),
+                            React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
+                                React.createElement("a", { href: "/focus", style: { color: "#fff" } }, "\u5173\u6CE8")),
                             React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
                                 React.createElement("a", { href: "/newTopics", style: { color: "#fff" } }, "\u65B0\u5E16")),
                             React.createElement("div", { className: "topBarText", style: { margin: '0 0 0 10px' } },
@@ -21466,7 +21601,7 @@ exports.Header = Header;
 //# sourceMappingURL=Header.js.map
 
 /***/ }),
-/* 164 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21518,7 +21653,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var HotTopic_1 = __webpack_require__(165);
+var HotTopic_1 = __webpack_require__(168);
 var Recommended1 = (function (_super) {
     __extends(Recommended1, _super);
     function Recommended1() {
@@ -21801,7 +21936,7 @@ exports.MainPage = MainPage;
 //# sourceMappingURL=MainPage.js.map
 
 /***/ }),
-/* 165 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21824,7 +21959,7 @@ exports.HotTopic = HotTopic;
 //# sourceMappingURL=HotTopic.js.map
 
 /***/ }),
-/* 166 */
+/* 169 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

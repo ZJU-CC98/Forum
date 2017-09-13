@@ -25,7 +25,7 @@ export class Header extends React.Component<{}, AppState> {
                             <div className="select">userName</div>
                             <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/mymessage" style={{ color: "#fff" }}>消息</a></div>
                             <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/" style={{ color:"#fff" }}>首页</a></div>
-                            <div className="topBarText" style={{ margin: '0 10px 0 10px' }}>关注</div>
+                            <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/focus" style={{ color: "#fff" }}>关注</a></div>
                             <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/newTopics" style={{ color:"#fff" }}>新帖</a></div>
                             <div className="topBarText" style={{ margin: '0 0 0 10px' }}><a href="/boardList" style={{ color: "#fff" }}>版面</a></div>
                         </div>
