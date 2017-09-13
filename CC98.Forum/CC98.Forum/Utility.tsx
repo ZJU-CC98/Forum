@@ -171,47 +171,7 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
 
     return post;
 }
-export function sendRequest() {
-    //申请到的appID
-    let appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
-    //申请后的回调地址
-    let c = 'http://localhost:58187/messagebox/message';
-    let redirectURI = encodeURI(c);
-    //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
-    let path = 'https://login.cc98.org/OAuth/Authorize?'
-    let queryParams = ['client_id=' + appId, 'response_type=token', 'scope=all', 'redirect_uri=' + redirectURI];
-    let query = queryParams.join('&');
-    let url = path + query;
-    return url;
-}
 
-export function systemRequest() {
-    //申请到的appID
-    let appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
-    //申请后的回调地址
-    let c = 'http://localhost:58187/messagebox/system';
-    let redirectURI = encodeURI(c);
-    //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
-    let path = 'https://login.cc98.org/OAuth/Authorize?'
-    let queryParams = ['client_id=' + appId, 'response_type=token', 'scope=all', 'redirect_uri=' + redirectURI];
-    let query = queryParams.join('&');
-    let url = path + query;
-    return url;
-}
-
-export function responseRequest() {
-    //申请到的appID
-    let appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
-    //申请后的回调地址
-    let c = 'http://localhost:58187/messagebox/response';
-    let redirectURI = encodeURI(c);
-    //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
-    let path = 'https://login.cc98.org/OAuth/Authorize?'
-    let queryParams = ['client_id=' + appId, 'response_type=token', 'scope=all', 'redirect_uri=' + redirectURI];
-    let query = queryParams.join('&');
-    let url = path + query;
-    return url;
-}
 export function changeNav(id) {
     $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
     $(id).addClass('mymessage-nav-focus');

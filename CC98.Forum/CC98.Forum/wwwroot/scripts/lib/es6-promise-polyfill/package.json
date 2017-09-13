@@ -2,7 +2,7 @@
   "_args": [
     [
       "es6-promise-polyfill@1.2.0",
-      "C:\\Users\\Mana\\Desktop\\Forum-dev\\CC98.Forum\\CC98.Forum"
+      "C:\\Users\\user\\source\\repos\\Forum\\CC98.Forum\\CC98.Forum"
     ]
   ],
   "_from": "es6-promise-polyfill@1.2.0",
@@ -31,7 +31,7 @@
   "_shasum": "f38925f23cb3e3e8ce6cda8ff774fcebbb090cde",
   "_shrinkwrap": null,
   "_spec": "es6-promise-polyfill@1.2.0",
-  "_where": "C:\\Users\\Mana\\Desktop\\Forum-dev\\CC98.Forum\\CC98.Forum",
+  "_where": "C:\\Users\\user\\source\\repos\\Forum\\CC98.Forum\\CC98.Forum",
   "author": {
     "email": "rdvornov@gmail.com",
     "name": "Roman Dvornov"

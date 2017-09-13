@@ -39,7 +39,7 @@ export class MyMessage extends React.Component<{}, AppState> {
                                     <Route path='/mymessage/attme' component={MyMessageAttme} />
                                     <Route path='/mymessage/likes' component={Likes} />
                                     <Route path='/mymessage/system' component={MyMessageSystem} />
-                                    <Route path="/mymessage/message" component={MyMessageMessage} />
+                                    <Route path='/mymessage/message' component={MyMessageMessage} />
                                 </div>
                             </Router>
                     </div>
@@ -64,9 +64,9 @@ export class Likes extends React.Component {
 
 function sendRequest() {
     //申请到的appID
-    let appId = 'fcf89870-61d7-4a21-919d-797ab28b81b3';
+    let appId = '457bfed1-ab0b-4606-a346-05afac262d5a';
     //申请后的回调地址
-    let c = 'http://localhost:54163/mymessage';
+    let c = `${location.origin}/mymessage`;
     let redirectURI = encodeURI(c);
     //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
     let path = 'https://login.cc98.org/OAuth/Authorize?'

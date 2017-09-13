@@ -53,7 +53,7 @@ var MyMessage = (function (_super) {
                         React.createElement(react_router_dom_1.Route, { path: '/mymessage/attme', component: MyMessageAttme_1.MyMessageAttme }),
                         React.createElement(react_router_dom_1.Route, { path: '/mymessage/likes', component: Likes }),
                         React.createElement(react_router_dom_1.Route, { path: '/mymessage/system', component: MyMessageSystem_1.MyMessageSystem }),
-                        React.createElement(react_router_dom_1.Route, { path: "/mymessage/message", component: MyMessageMessage_1.MyMessageMessage }))))));
+                        React.createElement(react_router_dom_1.Route, { path: '/mymessage/message', component: MyMessageMessage_1.MyMessageMessage }))))));
     };
     return MyMessage;
 }(React.Component));
@@ -78,9 +78,9 @@ var Likes = (function (_super) {
 exports.Likes = Likes;
 function sendRequest() {
     //申请到的appID
-    var appId = 'fcf89870-61d7-4a21-919d-797ab28b81b3';
+    var appId = '457bfed1-ab0b-4606-a346-05afac262d5a';
     //申请后的回调地址
-    var c = 'http://localhost:54163/mymessage';
+    var c = location.origin + "/mymessage";
     var redirectURI = encodeURI(c);
     //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
     var path = 'https://login.cc98.org/OAuth/Authorize?';
