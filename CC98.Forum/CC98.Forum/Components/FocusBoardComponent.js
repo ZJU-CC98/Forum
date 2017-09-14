@@ -17,7 +17,7 @@ var React = require("react");
 /**
  * 我关注的版面（单个版面的样式）
  */
-var FocusBoardComponent = (function (_super) {
+var FocusBoardComponent = /** @class */ (function (_super) {
     __extends(FocusBoardComponent, _super);
     function FocusBoardComponent() {
         return _super !== null && _super.apply(this, arguments) || this;

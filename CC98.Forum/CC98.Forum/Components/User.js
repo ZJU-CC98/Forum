@@ -17,7 +17,7 @@ var React = require("react");
 var react_router_dom_1 = require("react-router-dom");
 var UserNavigation_1 = require("./UserNavigation");
 var UserRouter_1 = require("./UserRouter");
-var User = (function (_super) {
+var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
         return _super !== null && _super.apply(this, arguments) || this;

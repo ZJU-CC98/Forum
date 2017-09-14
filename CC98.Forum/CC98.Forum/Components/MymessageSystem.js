@@ -54,7 +54,7 @@ var MymessageSystemwindow_1 = require("./MymessageSystemwindow");
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
-var MymessageSystem = (function (_super) {
+var MymessageSystem = /** @class */ (function (_super) {
     __extends(MymessageSystem, _super);
     function MymessageSystem(props) {
         var _this = _super.call(this, props) || this;

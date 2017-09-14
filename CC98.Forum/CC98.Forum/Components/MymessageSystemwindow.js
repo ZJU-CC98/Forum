@@ -50,7 +50,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = require("react");
 var MymessageSystembox_1 = require("./MymessageSystembox");
-var MymessageSystemwindow = (function (_super) {
+var MymessageSystemwindow = /** @class */ (function (_super) {
     __extends(MymessageSystemwindow, _super);
     function MymessageSystemwindow(props) {
         var _this = _super.call(this, props) || this;

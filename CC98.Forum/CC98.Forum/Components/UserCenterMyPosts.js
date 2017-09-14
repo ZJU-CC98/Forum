@@ -17,7 +17,7 @@ var UserCenterMyPostsReplies_1 = require("./UserCenterMyPostsReplies");
 /**
  * 用户中心我的主题组件
  */
-var UserCenterMyPosts = (function (_super) {
+var UserCenterMyPosts = /** @class */ (function (_super) {
     __extends(UserCenterMyPosts, _super);
     function UserCenterMyPosts() {
         return _super !== null && _super.apply(this, arguments) || this;

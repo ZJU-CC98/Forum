@@ -14,7 +14,10 @@ declare var __dirname;
 const config: webpack.Configuration = {
 	module: {
 		rules: [
-			{ test: /\.tsx?$/, use: 'awesome-typescript-loader' },
+			{
+				test: /\.tsx?$/,
+				use: 'awesome-typescript-loader'
+			},
 			{
 				test: /\.scss$/,
 				use: ExtractTextPlugin.extract({ use: [{ loader: 'css-loader', options: { minimize: true } }, 'sass-loader'] })

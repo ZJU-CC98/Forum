@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
 *私信聊天时显示的单个用户信息
 */
-var MymessagePersonProps = (function () {
+var MymessagePersonProps = /** @class */ (function () {
     function MymessagePersonProps() {
     }
     return MymessagePersonProps;

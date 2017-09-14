@@ -17,7 +17,7 @@ var React = require("react");
 /**
  * 用户中心主页个人资料组件
  */
-var UserCenterExactProfile = (function (_super) {
+var UserCenterExactProfile = /** @class */ (function (_super) {
     __extends(UserCenterExactProfile, _super);
     function UserCenterExactProfile() {
         return _super !== null && _super.apply(this, arguments) || this;

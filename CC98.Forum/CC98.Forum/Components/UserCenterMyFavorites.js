@@ -21,7 +21,7 @@ var UserCenterMyFavoritesPosts_1 = require("./UserCenterMyFavoritesPosts");
 /**
  * 用户中心主页近期动态组件
  */
-var UserCenterMyFavorites = (function (_super) {
+var UserCenterMyFavorites = /** @class */ (function (_super) {
     __extends(UserCenterMyFavorites, _super);
     function UserCenterMyFavorites() {
         return _super !== null && _super.apply(this, arguments) || this;

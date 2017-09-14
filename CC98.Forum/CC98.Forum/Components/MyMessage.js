@@ -16,7 +16,7 @@ var MymessageMessage_1 = require("./MymessageMessage");
 var MymessageSystem_1 = require("./MymessageSystem");
 var MymessageResponse_1 = require("./MymessageResponse");
 var react_router_dom_1 = require("react-router-dom");
-var MyMessage = (function (_super) {
+var MyMessage = /** @class */ (function (_super) {
     __extends(MyMessage, _super);
     function MyMessage() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -49,7 +49,7 @@ var MyMessage = (function (_super) {
     return MyMessage;
 }(React.Component));
 exports.MyMessage = MyMessage;
-var Responselogin = (function (_super) {
+var Responselogin = /** @class */ (function (_super) {
     __extends(Responselogin, _super);
     function Responselogin() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -63,7 +63,7 @@ var Responselogin = (function (_super) {
     return Responselogin;
 }(React.Component));
 exports.Responselogin = Responselogin;
-var Attme = (function (_super) {
+var Attme = /** @class */ (function (_super) {
     __extends(Attme, _super);
     function Attme() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -75,7 +75,7 @@ var Attme = (function (_super) {
     return Attme;
 }(React.Component));
 exports.Attme = Attme;
-var Likes = (function (_super) {
+var Likes = /** @class */ (function (_super) {
     __extends(Likes, _super);
     function Likes() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -87,7 +87,7 @@ var Likes = (function (_super) {
     return Likes;
 }(React.Component));
 exports.Likes = Likes;
-var Systemlogin = (function (_super) {
+var Systemlogin = /** @class */ (function (_super) {
     __extends(Systemlogin, _super);
     function Systemlogin() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -101,7 +101,7 @@ var Systemlogin = (function (_super) {
     return Systemlogin;
 }(React.Component));
 exports.Systemlogin = Systemlogin;
-var login = (function (_super) {
+var login = /** @class */ (function (_super) {
     __extends(login, _super);
     function login() {
         return _super !== null && _super.apply(this, arguments) || this;

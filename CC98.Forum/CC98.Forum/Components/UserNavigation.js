@@ -12,7 +12,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var react_router_dom_1 = require("react-router-dom");
-var UserNavigation = (function (_super) {
+var UserNavigation = /** @class */ (function (_super) {
     __extends(UserNavigation, _super);
     function UserNavigation() {
         return _super !== null && _super.apply(this, arguments) || this;

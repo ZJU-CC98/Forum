@@ -18,7 +18,7 @@ var FocusBoardComponent_1 = require("./FocusBoardComponent");
 /**
  * 表示我关注的版面列表区域
  */
-var FocusBoardAreaComponent = (function (_super) {
+var FocusBoardAreaComponent = /** @class */ (function (_super) {
     __extends(FocusBoardAreaComponent, _super);
     /**
      * 构造函数，同时构造假的版面列表数据

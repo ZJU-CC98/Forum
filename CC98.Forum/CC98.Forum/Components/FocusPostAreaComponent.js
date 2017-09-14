@@ -54,7 +54,7 @@ var Utility = require("../Utility");
 /**
  * 表示我关注的某个版面的主题列表
  */
-var FocusPostAreaComponent = (function (_super) {
+var FocusPostAreaComponent = /** @class */ (function (_super) {
     __extends(FocusPostAreaComponent, _super);
     /**
      * 构造函数

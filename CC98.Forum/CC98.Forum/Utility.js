@@ -41,13 +41,13 @@ var List_1 = require("./Components/List");
 var $ = require("jquery");
 /*export async function getData() {
     let hottopics: State.TopicTitleAndContentState[] = [];
-    var response = await fetch('http://api.cc98.org/Topic/Hot');
-    var data: State.TopicTitleAndContentState[] = await response.json();
-    for (var i = 0; i < 10; i++) {
+    let response = await fetch('http://api.cc98.org/Topic/Hot');
+    let data: State.TopicTitleAndContentState[] = await response.json();
+    for (let i = 0; i < 10; i++) {
         hottopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].authorName || '匿名', data[i].id);
     }
 
-    var items = hottopics.map(convertHotTopic);
+    let items = hottopics.map(convertHotTopic);
 
     return items;
 }*/
@@ -77,7 +77,7 @@ function getBoardTopicAsync(curPage, boardid) {
                     if (curPage * 20 <= totalTopicCount) {
                         topicNumberInPage = 20;
                     }
-                    else if (curPage == 1 && totalTopicCount < 19) {
+                    else if (curPage === 1 && totalTopicCount < 19) {
                         topicNumberInPage = totalTopicCount;
                     }
                     else {
@@ -94,7 +94,7 @@ function getBoardTopicAsync(curPage, boardid) {
 exports.getBoardTopicAsync = getBoardTopicAsync;
 function getTopic(topicid) {
     return __awaiter(this, void 0, void 0, function () {
-        var response, data, hitCountResponse, hitCountJson, hitCount, topicMessage, userMesResponse, userMesJson;
+        var response, data, hitCountResponse, hitCountJson, hitCount, userMesResponse, userMesJson, topicMessage;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, fetch("http://api.cc98.org/Post/Topic/" + topicid, { headers: { Range: "bytes=" + 0 + "-" + 0 } })];
@@ -125,56 +125,58 @@ function getTopic(topicid) {
 exports.getTopic = getTopic;
 function getTopicContent(topicid, curPage) {
     return __awaiter(this, void 0, void 0, function () {
-        var startPage, endPage, topic, topic, replyCountResponse, replyCountJson, replyCount, content, post, topicNumberInPage, i, userMesResponse, userMesJson;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var startPage, endPage, topic, _a, replyCountResponse, replyCountJson, replyCount, content, post, topicNumberInPage, i, userMesResponse, userMesJson;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
                     startPage = (curPage - 1) * 10;
                     endPage = curPage * 10 - 1;
-                    if (!(curPage != 1)) return [3 /*break*/, 2];
+                    if (!(curPage !== 1)) return [3 /*break*/, 2];
                     return [4 /*yield*/, fetch("http://api.cc98.org/Post/Topic/" + topicid, { headers: { Range: "bytes=" + startPage + "-" + endPage } })];
                 case 1:
-                    topic = _a.sent();
+                    _a = _b.sent();
                     return [3 /*break*/, 4];
                 case 2: return [4 /*yield*/, fetch("http://api.cc98.org/Post/Topic/" + topicid, { headers: { Range: "bytes=" + 1 + "-" + 9 } })];
                 case 3:
-                    topic = _a.sent();
-                    _a.label = 4;
-                case 4: return [4 /*yield*/, fetch("http://api.cc98.org/Topic/" + topicid)];
+                    _a = _b.sent();
+                    _b.label = 4;
+                case 4:
+                    topic = _a;
+                    return [4 /*yield*/, fetch("http://api.cc98.org/Topic/" + topicid)];
                 case 5:
-                    replyCountResponse = _a.sent();
+                    replyCountResponse = _b.sent();
                     return [4 /*yield*/, replyCountResponse.json()];
                 case 6:
-                    replyCountJson = _a.sent();
+                    replyCountJson = _b.sent();
                     replyCount = replyCountJson.replyCount;
                     return [4 /*yield*/, topic.json()];
                 case 7:
-                    content = _a.sent();
+                    content = _b.sent();
                     post = [];
-                    if (curPage != 1 && curPage * 10 <= replyCount) {
+                    if (curPage !== 1 && curPage * 10 <= replyCount) {
                         topicNumberInPage = 10;
                     }
-                    else if (curPage == 1 && replyCount >= 9) {
+                    else if (curPage === 1 && replyCount >= 9) {
                         topicNumberInPage = 9;
                     }
-                    else if (curPage == 1 && replyCount < 9) {
+                    else if (curPage === 1 && replyCount < 9) {
                         topicNumberInPage = replyCount;
                     }
                     else {
                         topicNumberInPage = (replyCount - (curPage - 1) * 10);
                     }
                     i = 0;
-                    _a.label = 8;
+                    _b.label = 8;
                 case 8:
                     if (!(i < topicNumberInPage)) return [3 /*break*/, 12];
                     return [4 /*yield*/, fetch("http://api.cc98.org/User/" + content[i].userId)];
                 case 9:
-                    userMesResponse = _a.sent();
+                    userMesResponse = _b.sent();
                     return [4 /*yield*/, userMesResponse.json()];
                 case 10:
-                    userMesJson = _a.sent();
+                    userMesJson = _b.sent();
                     post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName || '匿名', userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId);
-                    _a.label = 11;
+                    _b.label = 11;
                 case 11:
                     i++;
                     return [3 /*break*/, 8];
@@ -198,7 +200,7 @@ function getPager(curPage, totalPage) {
     }
     else if (totalPage < 10 && totalPage > 1) {
         if (curPage == undefined || curPage == 1) {
-            var i;
+            var i = void 0;
             for (i = 0; i < totalPage; i++) {
                 pages[i] = i + 1;
             }
@@ -206,7 +208,7 @@ function getPager(curPage, totalPage) {
             pages[i + 1] = -4;
         }
         else if (curPage == 2) {
-            var i;
+            var i = void 0;
             for (i = 1; i <= totalPage; i++) {
                 pages[i] = i;
             }
@@ -215,7 +217,7 @@ function getPager(curPage, totalPage) {
             pages[i + 1] = -4;
         }
         else {
-            var i;
+            var i = void 0;
             for (i = 2; i <= totalPage + 1; i++) {
                 pages[i] = i - 1;
             }
@@ -294,10 +296,10 @@ function sendRequest() {
     var appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
     //申请后的回调地址
     var c = 'http://localhost:58187/messagebox/message';
-    var redirectURI = encodeURI(c);
+    var redirectUri = encodeURI(c);
     //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
     var path = 'https://login.cc98.org/OAuth/Authorize?';
-    var queryParams = ['client_id=' + appId, 'response_type=token', 'scope=all', 'redirect_uri=' + redirectURI];
+    var queryParams = ["client_id=" + appId, 'response_type=token', 'scope=all', "redirect_uri=" + redirectUri];
     var query = queryParams.join('&');
     var url = path + query;
     return url;
@@ -308,10 +310,10 @@ function systemRequest() {
     var appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
     //申请后的回调地址
     var c = 'http://localhost:58187/messagebox/system';
-    var redirectURI = encodeURI(c);
+    var redirectUri = encodeURI(c);
     //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
     var path = 'https://login.cc98.org/OAuth/Authorize?';
-    var queryParams = ['client_id=' + appId, 'response_type=token', 'scope=all', 'redirect_uri=' + redirectURI];
+    var queryParams = ["client_id=" + appId, 'response_type=token', 'scope=all', "redirect_uri=" + redirectUri];
     var query = queryParams.join('&');
     var url = path + query;
     return url;
@@ -322,10 +324,10 @@ function responseRequest() {
     var appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
     //申请后的回调地址
     var c = 'http://localhost:58187/messagebox/response';
-    var redirectURI = encodeURI(c);
+    var redirectUri = encodeURI(c);
     //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
     var path = 'https://login.cc98.org/OAuth/Authorize?';
-    var queryParams = ['client_id=' + appId, 'response_type=token', 'scope=all', 'redirect_uri=' + redirectURI];
+    var queryParams = ["client_id=" + appId, 'response_type=token', 'scope=all', "redirect_uri=" + redirectUri];
     var query = queryParams.join('&');
     var url = path + query;
     return url;
@@ -403,10 +405,10 @@ function setStorage(key, value) {
     var v = value;
     if (typeof v == 'object') {
         v = JSON.stringify(v);
-        v = 'obj-' + v;
+        v = "obj-" + v;
     }
     else {
-        v = 'str-' + v;
+        v = "str-" + v;
     }
     sessionStorage.setItem(key, v);
 }

@@ -47,7 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var HotTopic_1 = require("./HotTopic");
-var Recommended1 = (function (_super) {
+var Recommended1 = /** @class */ (function (_super) {
     __extends(Recommended1, _super);
     function Recommended1() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -95,7 +95,7 @@ var Recommended1 = (function (_super) {
     return Recommended1;
 }(React.Component));
 exports.Recommended1 = Recommended1;
-var HotTopicComponent = (function (_super) {
+var HotTopicComponent = /** @class */ (function (_super) {
     __extends(HotTopicComponent, _super);
     function HotTopicComponent(props) {
         var _this = _super.call(this, props) || this;
@@ -163,7 +163,7 @@ exports.HotTopicComponent = HotTopicComponent;
 /**
  * 网站的主页面对象。
  */
-var MainPage = (function (_super) {
+var MainPage = /** @class */ (function (_super) {
     __extends(MainPage, _super);
     function MainPage() {
         return _super !== null && _super.apply(this, arguments) || this;

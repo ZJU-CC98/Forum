@@ -48,7 +48,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var Utility = require("../Utility");
 var react_router_dom_1 = require("react-router-dom");
-var RouteComponent = (function (_super) {
+var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
         return _super.call(this, props, context) || this;
@@ -63,7 +63,7 @@ var RouteComponent = (function (_super) {
     return RouteComponent;
 }(React.Component));
 exports.RouteComponent = RouteComponent;
-var List = (function (_super) {
+var List = /** @class */ (function (_super) {
     __extends(List, _super);
     function List(props, context) {
         var _this = _super.call(this, props, context) || this;
@@ -147,7 +147,7 @@ var List = (function (_super) {
     return List;
 }(RouteComponent));
 exports.List = List;
-var ListHead = (function (_super) {
+var ListHead = /** @class */ (function (_super) {
     __extends(ListHead, _super);
     function ListHead(props, content) {
         var _this = _super.call(this, props, content) || this;
@@ -236,7 +236,7 @@ var ListHead = (function (_super) {
     return ListHead;
 }(RouteComponent));
 exports.ListHead = ListHead;
-var ListNotice = (function (_super) {
+var ListNotice = /** @class */ (function (_super) {
     __extends(ListNotice, _super);
     function ListNotice(props, context) {
         var _this = _super.call(this, props, context) || this;
@@ -257,7 +257,7 @@ exports.ListNotice = ListNotice;
 /**
  * 提供显示连续页码的交互效果。
  */
-var ListButtonAndPager = (function (_super) {
+var ListButtonAndPager = /** @class */ (function (_super) {
     __extends(ListButtonAndPager, _super);
     function ListButtonAndPager(props, content) {
         var _this = _super.call(this, props, content) || this;
@@ -305,7 +305,7 @@ var ListButtonAndPager = (function (_super) {
     return ListButtonAndPager;
 }(React.Component));
 exports.ListButtonAndPager = ListButtonAndPager;
-var PageModel = (function (_super) {
+var PageModel = /** @class */ (function (_super) {
     __extends(PageModel, _super);
     function PageModel() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -351,7 +351,7 @@ var PageModel = (function (_super) {
     return PageModel;
 }(React.Component));
 exports.PageModel = PageModel;
-var ListTag = (function (_super) {
+var ListTag = /** @class */ (function (_super) {
     __extends(ListTag, _super);
     function ListTag() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -371,7 +371,7 @@ var ListTag = (function (_super) {
     return ListTag;
 }(React.Component));
 exports.ListTag = ListTag;
-var ListContent = (function (_super) {
+var ListContent = /** @class */ (function (_super) {
     __extends(ListContent, _super);
     function ListContent() {
         var _this = _super.call(this) || this;
@@ -435,7 +435,7 @@ var ListContent = (function (_super) {
     return ListContent;
 }(RouteComponent));
 exports.ListContent = ListContent;
-var TopicTitleAndContent = (function (_super) {
+var TopicTitleAndContent = /** @class */ (function (_super) {
     __extends(TopicTitleAndContent, _super);
     function TopicTitleAndContent(props, context) {
         var _this = _super.call(this, props, context) || this;

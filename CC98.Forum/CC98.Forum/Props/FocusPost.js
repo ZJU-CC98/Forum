@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * 表示我关注的某个版面的某个帖子
  */
-var FocusPost = (function () {
+var FocusPost = /** @class */ (function () {
     function FocusPost() {
     }
     return FocusPost;

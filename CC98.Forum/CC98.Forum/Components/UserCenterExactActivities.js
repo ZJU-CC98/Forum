@@ -20,7 +20,7 @@ var UserCenterExactActivitiesReplies_1 = require("./UserCenterExactActivitiesRep
 /**
  * 用户中心主页近期动态组件
  */
-var UserCenterExactActivities = (function (_super) {
+var UserCenterExactActivities = /** @class */ (function (_super) {
     __extends(UserCenterExactActivities, _super);
     function UserCenterExactActivities() {
         return _super !== null && _super.apply(this, arguments) || this;

@@ -34,7 +34,7 @@
     "extract-text-webpack-plugin": "3.0.0",
     "node-sass": "^4.5.3",
     "sass-loader": "6.0.6",
-    "typescript": "2.4.2",
+    "typescript": "2.5.2",
     "unminified-webpack-plugin": "1.2.0",
     "webpack": "3.4.1"
   }

@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 //用户中心主页用户头像与徽章组件
-var UserCenterExactAvatar = (function (_super) {
+var UserCenterExactAvatar = /** @class */ (function (_super) {
     __extends(UserCenterExactAvatar, _super);
     function UserCenterExactAvatar() {
         return _super !== null && _super.apply(this, arguments) || this;

@@ -20,7 +20,7 @@ var UserCenterRouter_1 = require("./UserCenterRouter");
 /**
  * 用户中心页面
  */
-var UserCenter = (function (_super) {
+var UserCenter = /** @class */ (function (_super) {
     __extends(UserCenter, _super);
     function UserCenter() {
         return _super !== null && _super.apply(this, arguments) || this;

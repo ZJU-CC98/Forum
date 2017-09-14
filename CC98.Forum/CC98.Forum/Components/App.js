@@ -21,7 +21,8 @@ var MyMessage_1 = require("./MyMessage");
 var AllNewPost_1 = require("./AllNewPost");
 var Header_1 = require("./Header");
 var MainPage_1 = require("./MainPage");
-var RouteComponent = (function (_super) {
+var UbbContainer_1 = require("./UbbContainer");
+var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
         var _this = _super.call(this, props, context) || this;
@@ -39,17 +40,19 @@ exports.RouteComponent = RouteComponent;
                 <li><Link to="/messagebox">信箱</Link></li>
                 <li><Link to="newtopics">新帖 </Link></li>
                  <hr />*/
-var App = (function (_super) {
+var App = /** @class */ (function (_super) {
     __extends(App, _super);
     function App() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     App.prototype.render = function () {
+        var data = '[b]Test[/b] [img]http://file.cc98.org/uploadface/5298.png[/img] [noubb][b]Test No UBB[/b][/noubb]';
         return React.createElement("div", null,
             React.createElement(react_router_dom_1.BrowserRouter, null,
-                React.createElement("div", { style: { backgroundColor: '#F5FAFD', justifyContent: "center", display: "flex", flexDirection: "column" } },
+                React.createElement("div", { style: { backgroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column' } },
                     React.createElement(Header_1.Header, null),
-                    React.createElement(react_router_dom_1.Route, { exact: true, path: '/', component: MainPage_1.MainPage }),
+                    React.createElement(UbbContainer_1.UbbContainer, { code: data }),
+                    React.createElement(react_router_dom_1.Route, { exact: true, path: "/", component: MainPage_1.MainPage }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/:page?", component: post_1.Post }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/user/:userName/:page?", component: CurUserPost_1.CurUserPost }),
                     React.createElement(react_router_dom_1.Route, { path: "/list/:boardid/:page?", component: List_1.List }),

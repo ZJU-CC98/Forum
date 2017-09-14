@@ -18,7 +18,7 @@ var react_router_dom_1 = require("react-router-dom");
 /**
  * 用户中心侧边栏导航组件
  */
-var UserCenterNavigation = (function (_super) {
+var UserCenterNavigation = /** @class */ (function (_super) {
     __extends(UserCenterNavigation, _super);
     function UserCenterNavigation() {
         return _super !== null && _super.apply(this, arguments) || this;

@@ -18,7 +18,7 @@ var FocusPostAreaComponent_1 = require("./FocusPostAreaComponent");
 /**
  * 网站的主页面对象。
  */
-var AllNewPost = (function (_super) {
+var AllNewPost = /** @class */ (function (_super) {
     __extends(AllNewPost, _super);
     function AllNewPost() {
         return _super !== null && _super.apply(this, arguments) || this;

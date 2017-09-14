@@ -14,7 +14,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = require("react");
-var MymessageSender = (function (_super) {
+var MymessageSender = /** @class */ (function (_super) {
     __extends(MymessageSender, _super);
     function MymessageSender() {
         return _super !== null && _super.apply(this, arguments) || this;

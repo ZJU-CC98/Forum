@@ -3,7 +3,7 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 Object.defineProperty(exports, "__esModule", { value: true });
-var MymessageWindowState = (function () {
+var MymessageWindowState = /** @class */ (function () {
     function MymessageWindowState() {
     }
     return MymessageWindowState;

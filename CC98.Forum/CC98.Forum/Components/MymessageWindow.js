@@ -51,7 +51,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var MymessageSender_1 = require("./MymessageSender");
 var MymessageReceiver_1 = require("./MymessageReceiver");
-var MymessageWindow = (function (_super) {
+var MymessageWindow = /** @class */ (function (_super) {
     __extends(MymessageWindow, _super);
     function MymessageWindow(props) {
         var _this = _super.call(this, props) || this;

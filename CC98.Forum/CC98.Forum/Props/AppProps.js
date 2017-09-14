@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * 热门话题
  */
-var HotTopic = (function () {
+var HotTopic = /** @class */ (function () {
     function HotTopic(title, author, id, authorId) {
         this.title = title;
         this.authorName = author;
@@ -13,13 +13,13 @@ var HotTopic = (function () {
     return HotTopic;
 }());
 exports.HotTopic = HotTopic;
-var ListPagerProps = (function () {
+var ListPagerProps = /** @class */ (function () {
     function ListPagerProps() {
     }
     return ListPagerProps;
 }());
 exports.ListPagerProps = ListPagerProps;
-var topicSet = (function () {
+var topicSet = /** @class */ (function () {
     function topicSet() {
     }
     return topicSet;

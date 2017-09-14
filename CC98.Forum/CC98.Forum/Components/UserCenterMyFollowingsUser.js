@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 //用户中心我的关注&我的粉丝用户通用组件
-var UserCenterMyFollowingsUser = (function (_super) {
+var UserCenterMyFollowingsUser = /** @class */ (function (_super) {
     __extends(UserCenterMyFollowingsUser, _super);
     function UserCenterMyFollowingsUser() {
         return _super !== null && _super.apply(this, arguments) || this;

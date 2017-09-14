@@ -55,7 +55,7 @@ var UserCenterExactAvatar_1 = require("./UserCenterExactAvatar");
 /**
  * 用户中心主页
  */
-var UserCenterExact = (function (_super) {
+var UserCenterExact = /** @class */ (function (_super) {
     __extends(UserCenterExact, _super);
     function UserCenterExact() {
         return _super !== null && _super.apply(this, arguments) || this;

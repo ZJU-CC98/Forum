@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * 表示我关注的某个版面
  */
-var FocusBoard = (function () {
+var FocusBoard = /** @class */ (function () {
     function FocusBoard() {
     }
     return FocusBoard;

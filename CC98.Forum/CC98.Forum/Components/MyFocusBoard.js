@@ -16,7 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var FocusBoardAreaComponent_1 = require("./FocusBoardAreaComponent");
 var FocusPostAreaComponent_1 = require("./FocusPostAreaComponent");
-var MyFocusBoard = (function (_super) {
+var MyFocusBoard = /** @class */ (function (_super) {
     __extends(MyFocusBoard, _super);
     function MyFocusBoard() {
         return _super !== null && _super.apply(this, arguments) || this;

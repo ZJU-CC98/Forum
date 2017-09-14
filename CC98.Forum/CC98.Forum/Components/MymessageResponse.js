@@ -54,7 +54,7 @@ var MymessageResponsewindow_1 = require("./MymessageResponsewindow");
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
-var MymessageResponse = (function (_super) {
+var MymessageResponse = /** @class */ (function (_super) {
     __extends(MymessageResponse, _super);
     function MymessageResponse(props) {
         var _this = _super.call(this, props) || this;

@@ -53,7 +53,7 @@ var react_router_dom_1 = require("react-router-dom");
 var UserCenterExactProfile_1 = require("./UserCenterExactProfile");
 var UserCenterExactActivities_1 = require("./UserCenterExactActivities");
 var UserCenterExactAvatar_1 = require("./UserCenterExactAvatar");
-var UserRouter = (function (_super) {
+var UserRouter = /** @class */ (function (_super) {
     __extends(UserRouter, _super);
     function UserRouter() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -65,7 +65,7 @@ var UserRouter = (function (_super) {
     return UserRouter;
 }(React.Component));
 exports.UserRouter = UserRouter;
-var UserExact = (function (_super) {
+var UserExact = /** @class */ (function (_super) {
     __extends(UserExact, _super);
     function UserExact() {
         return _super !== null && _super.apply(this, arguments) || this;

@@ -17,7 +17,7 @@ var React = require("react");
 /**
  * 用户最近单个帖子组件
  */
-var UserCenterExactActivitiesPost = (function (_super) {
+var UserCenterExactActivitiesPost = /** @class */ (function (_super) {
     __extends(UserCenterExactActivitiesPost, _super);
     function UserCenterExactActivitiesPost() {
         return _super !== null && _super.apply(this, arguments) || this;

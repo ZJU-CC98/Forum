@@ -16,7 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var UserCenterExactActivitiesPost_1 = require("./UserCenterExactActivitiesPost");
 var AppState_1 = require("../States/AppState");
-var UserCenterMyPostsExact = (function (_super) {
+var UserCenterMyPostsExact = /** @class */ (function (_super) {
     __extends(UserCenterMyPostsExact, _super);
     function UserCenterMyPostsExact(props) {
         var _this = _super.call(this, props) || this;

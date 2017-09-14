@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var MessageMatch = (function () {
+var MessageMatch = /** @class */ (function () {
     function MessageMatch() {
     }
     return MessageMatch;

@@ -49,7 +49,7 @@ var React = require("react");
 var Utility = require("../Utility");
 var react_router_dom_1 = require("react-router-dom");
 var moment = require('moment');
-var RouteComponent = (function (_super) {
+var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
         return _super.call(this, props, context) || this;
@@ -64,7 +64,7 @@ var RouteComponent = (function (_super) {
     return RouteComponent;
 }(React.Component));
 exports.RouteComponent = RouteComponent;
-var CurUserPost = (function (_super) {
+var CurUserPost = /** @class */ (function (_super) {
     __extends(CurUserPost, _super);
     function CurUserPost(props, context) {
         var _this = _super.call(this, props, context) || this;
@@ -151,7 +151,7 @@ var CurUserPost = (function (_super) {
     return CurUserPost;
 }(RouteComponent));
 exports.CurUserPost = CurUserPost;
-var Reply = (function (_super) {
+var Reply = /** @class */ (function (_super) {
     __extends(Reply, _super);
     function Reply(props, content) {
         var _this = _super.call(this, props, content) || this;
@@ -191,7 +191,7 @@ var Reply = (function (_super) {
     return Reply;
 }(RouteComponent));
 exports.Reply = Reply;
-var Replier = (function (_super) {
+var Replier = /** @class */ (function (_super) {
     __extends(Replier, _super);
     function Replier(props, content) {
         var _this = _super.call(this, props, content) || this;
@@ -237,7 +237,7 @@ var Replier = (function (_super) {
     return Replier;
 }(RouteComponent));
 exports.Replier = Replier;
-var PostTopic = (function (_super) {
+var PostTopic = /** @class */ (function (_super) {
     __extends(PostTopic, _super);
     function PostTopic(props, content) {
         var _this = _super.call(this, props, content) || this;
@@ -279,7 +279,7 @@ var PostTopic = (function (_super) {
     return PostTopic;
 }(RouteComponent));
 exports.PostTopic = PostTopic;
-var AuthorMessage = (function (_super) {
+var AuthorMessage = /** @class */ (function (_super) {
     __extends(AuthorMessage, _super);
     function AuthorMessage(props, content) {
         var _this = _super.call(this, props, content) || this;
@@ -308,7 +308,7 @@ var AuthorMessage = (function (_super) {
     return AuthorMessage;
 }(RouteComponent));
 exports.AuthorMessage = AuthorMessage;
-var TopicTitle = (function (_super) {
+var TopicTitle = /** @class */ (function (_super) {
     __extends(TopicTitle, _super);
     function TopicTitle(props, content) {
         var _this = _super.call(this, props, content) || this;
@@ -370,7 +370,7 @@ var TopicTitle = (function (_super) {
     return TopicTitle;
 }(RouteComponent));
 exports.TopicTitle = TopicTitle;
-var TopicContent = (function (_super) {
+var TopicContent = /** @class */ (function (_super) {
     __extends(TopicContent, _super);
     function TopicContent(props, content) {
         var _this = _super.call(this, props, content) || this;
@@ -408,7 +408,7 @@ var TopicContent = (function (_super) {
     return TopicContent;
 }(RouteComponent));
 exports.TopicContent = TopicContent;
-var ReplyContent = (function (_super) {
+var ReplyContent = /** @class */ (function (_super) {
     __extends(ReplyContent, _super);
     function ReplyContent(props, content) {
         var _this = _super.call(this, props, content) || this;
@@ -444,7 +444,7 @@ var ReplyContent = (function (_super) {
     return ReplyContent;
 }(RouteComponent));
 exports.ReplyContent = ReplyContent;
-var TopicGood = (function (_super) {
+var TopicGood = /** @class */ (function (_super) {
     __extends(TopicGood, _super);
     function TopicGood(props, content) {
         var _this = _super.call(this, props, content) || this;
@@ -479,7 +479,7 @@ var TopicGood = (function (_super) {
     return TopicGood;
 }(RouteComponent));
 exports.TopicGood = TopicGood;
-var TopicVote = (function (_super) {
+var TopicVote = /** @class */ (function (_super) {
     __extends(TopicVote, _super);
     function TopicVote(props, content) {
         var _this = _super.call(this, props, content) || this;
@@ -512,7 +512,7 @@ var TopicVote = (function (_super) {
     return TopicVote;
 }(RouteComponent));
 exports.TopicVote = TopicVote;
-var TopicPager = (function (_super) {
+var TopicPager = /** @class */ (function (_super) {
     __extends(TopicPager, _super);
     function TopicPager(props, content) {
         var _this = _super.call(this, props, content) || this;
@@ -558,7 +558,7 @@ var TopicPager = (function (_super) {
     return TopicPager;
 }(RouteComponent));
 exports.TopicPager = TopicPager;
-var PageModel = (function (_super) {
+var PageModel = /** @class */ (function (_super) {
     __extends(PageModel, _super);
     function PageModel() {
         return _super !== null && _super.apply(this, arguments) || this;

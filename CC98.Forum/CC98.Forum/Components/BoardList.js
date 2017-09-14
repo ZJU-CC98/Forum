@@ -49,7 +49,7 @@ var React = require("react");
 var AppState_1 = require("../States/AppState");
 var Utility = require("../Utility");
 //链接到的地址是  /list/boardid
-var BoardID = (function (_super) {
+var BoardID = /** @class */ (function (_super) {
     __extends(BoardID, _super);
     function BoardID(props) {
         var _this = _super.call(this, props) || this;
@@ -272,7 +272,7 @@ var BoardID = (function (_super) {
     return BoardID;
 }(React.Component));
 exports.BoardID = BoardID;
-var ChildBoard = (function (_super) {
+var ChildBoard = /** @class */ (function (_super) {
     __extends(ChildBoard, _super);
     function ChildBoard(props) {
         var _this = _super.call(this, props) || this;
@@ -334,7 +334,7 @@ var ChildBoard = (function (_super) {
     return ChildBoard;
 }(React.Component));
 exports.ChildBoard = ChildBoard;
-var BoardList = (function (_super) {
+var BoardList = /** @class */ (function (_super) {
     __extends(BoardList, _super);
     function BoardList() {
         return _super !== null && _super.apply(this, arguments) || this;

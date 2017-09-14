@@ -18,7 +18,7 @@ var React = require("react");
             </div>
         </div>
 */
-var Header = (function (_super) {
+var Header = /** @class */ (function (_super) {
     __extends(Header, _super);
     function Header() {
         return _super !== null && _super.apply(this, arguments) || this;

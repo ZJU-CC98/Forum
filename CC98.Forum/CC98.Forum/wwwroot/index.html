@@ -4,184 +4,187 @@
 	<meta charset="utf-8" />
 	<title></title>
 	<link rel="stylesheet" href="/content/site.min.css" />
-    <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
-    
+	<link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
+
 
 </head>
 <body>
-    <script>
-        window.onload = function () {
-            var SelectA = document.getElementsByClassName("select")[0];
-            var SubA = document.getElementsByTagName("ul")[0];
-            var LiA = SubA.getElementsByTagName("li");
-            var i = 0;
+	<script>
+		window.onload = function () {
+			var selectA = document.getElementsByClassName("select")[0];
+			var subA = document.getElementsByTagName("ul")[0];
+			var liA = subA.getElementsByTagName("li");
+			var i = 0;
 
-            SelectA.onclick = function (event) {
-                var styleA = SubA.style;
-                styleA.display = styleA.display == "block" ? "none" : "block";
-                //阻止事件冒泡
-                (event || window.event).cancelBubble = true
-            };
+			selectA.onclick = function (event) {
+				var styleA = subA.style;
+				styleA.display = styleA.display === "block" ? "none" : "block";
+				//阻止事件冒泡
+				(event || window.event).cancelBubble = true;
+			};
 
-            for (i = 0; i < LiA.length; i++) {
-                //鼠标划过
-                LiA[i].onmouseover = function () {
-                    this.className = "hover"
-                };
-                //鼠标离开
-                LiA[i].onmouseout = function () {
-                    this.className = "";
-                };
-            }
+			for (i = 0; i < liA.length; i++) {
+				//鼠标划过
+				liA[i].onmouseover = function () {
+					this.className = "hover";
+				};
+				//鼠标离开
+				liA[i].onmouseout = function () {
+					this.className = "";
+				};
+			}
 
-            var SelectB = document.getElementsByClassName("select")[1];
-            var DownArrowB = document.getElementsByClassName("downArrow")[0];
-            var SubB = document.getElementsByTagName("ul")[1];
-            var LiB = SubB.getElementsByTagName("li");
-            var k = 0;
+			var selectB = document.getElementsByClassName("select")[1];
+			var downArrowB = document.getElementsByClassName("downArrow")[0];
+			var subB = document.getElementsByTagName("ul")[1];
+			var liB = subB.getElementsByTagName("li");
+			var k = 0;
 
-            SelectB.onclick = function (event) {
-                var styleB = SubB.style;
-                styleB.display = styleB.display === "block" ? "none" : "block";
-                //阻止事件冒泡
-                (event || window.event).cancelBubble = true;
-            };
+			selectB.onclick = function (event) {
+				var styleB = subB.style;
+				styleB.display = styleB.display === "block" ? "none" : "block";
+				//阻止事件冒泡
+				(event || window.event).cancelBubble = true;
+			};
 
-            DownArrowB.onclick = function (event) {
-                var styleB = SubB.style;
-                styleB.display = styleB.display === "block" ? "none" : "block";
-                //阻止事件冒泡
-                (event || window.event).cancelBubble = true;
-            };
+			downArrowB.onclick = function (event) {
+				var styleB = subB.style;
+				styleB.display = styleB.display === "block" ? "none" : "block";
+				//阻止事件冒泡
+				(event || window.event).cancelBubble = true;
+			};
 
-            for (k = 0; k < LiB.length; k++) {
-                //鼠标划过
-                LiB[k].onmouseover = function () {
-                    this.className = "hover";
-                };
-                //鼠标离开
-                LiB[k].onmouseout = function () {
-                    this.className = "";
-                };
-                //鼠标点击
-                LiB[k].onclick = function () {
-                    SelectB.innerHTML = this.innerHTML;
-                };
-            }
+			for (k = 0; k < liB.length; k++) {
+				//鼠标划过
+				liB[k].onmouseover = function () {
+					this.className = "hover";
+				};
+				//鼠标离开
+				liB[k].onmouseout = function () {
+					this.className = "";
+				};
+				//鼠标点击
+				liB[k].onclick = function () {
+					selectB.innerHTML = this.innerHTML;
+				};
+			}
 
-            document.onclick = function () {
-                SubA.style.display = "none";
-                SubB.style.display = "none";
+			document.onclick = function () {
+				subA.style.display = "none";
+				subB.style.display = "none";
 
-            };
+			};
 
 
 
-            var button = document.getElementsByClassName("recommended1Button");
-            var content = document.getElementsByClassName("content");
+			var button = document.getElementsByClassName("recommended1Button");
+			var content = document.getElementsByClassName("content");
 
-            var randomNum = Math.floor(Math.random() * 5);
-            content[randomNum].style.display = "flex";
-            button[randomNum].id = "hover";
+			var randomNum = Math.floor(Math.random() * 5);
+			content[randomNum].style.display = "flex";
+			button[randomNum].id = "hover";
 
-            button[0].onmouseover = function (event) {
-                for (var j = 0; j < 5; j++) {
-                    content[j].style.display = "none";
-                }
-                document.getElementById("hover").id = "";
-                content[0].style.display = "flex";
-                button[0].id = "hover";
-            }
+			button[0].onmouseover = function (event) {
+				for (var j = 0; j < 5; j++) {
+					content[j].style.display = "none";
+				}
+				document.getElementById("hover").id = "";
+				content[0].style.display = "flex";
+				button[0].id = "hover";
+			};
 
-            button[1].onmouseover = function (event) {
-                for (var j = 0; j < 5; j++) {
-                    content[j].style.display = "none";
-                }
-                document.getElementById("hover").id = "";
-                content[1].style.display = "flex";
-                button[1].id = "hover";
+			button[1].onmouseover = function (event) {
+				for (var j = 0; j < 5; j++) {
+					content[j].style.display = "none";
+				}
+				document.getElementById("hover").id = "";
+				content[1].style.display = "flex";
+				button[1].id = "hover";
 
-            }
+			};
 
-            button[2].onmouseover = function (event) {
-                for (var j = 0; j < 5; j++) {
-                    content[j].style.display = "none";
-                }
-                document.getElementById("hover").id = "";
-                content[2].style.display = "flex";
-                button[2].id = "hover";
+			button[2].onmouseover = function (event) {
+				for (var j = 0; j < 5; j++) {
+					content[j].style.display = "none";
+				}
+				document.getElementById("hover").id = "";
+				content[2].style.display = "flex";
+				button[2].id = "hover";
 
-            }
+			};
 
-            button[3].onmouseover = function (event) {
-                for (var j = 0; j < 5; j++) {
-                    content[j].style.display = "none";
-                }
-                document.getElementById("hover").id = "";
-                content[3].style.display = "flex";
-                button[3].id = "hover";
+			button[3].onmouseover = function (event) {
+				for (var j = 0; j < 5; j++) {
+					content[j].style.display = "none";
+				}
+				document.getElementById("hover").id = "";
+				content[3].style.display = "flex";
+				button[3].id = "hover";
 
-            }
+			};
 
-            button[4].onmouseover = function (event) {
-                for (var j = 0; j < 5; j++) {
-                    content[j].style.display = "none";
-                }
-                document.getElementById("hover").id = "";
-                content[4].style.display = "flex";
-                button[4].id = "hover";
+			button[4].onmouseover = function (event) {
+				for (var j = 0; j < 5; j++) {
+					content[j].style.display = "none";
+				}
+				document.getElementById("hover").id = "";
+				content[4].style.display = "flex";
+				button[4].id = "hover";
 
-            }
-        };
-    </script>
+			};
+		};
+	</script>
 
-	<div id="root" ></div>
-    <script src="/scripts/lib/es6-promise-polyfill/promise.js"></script>
+	<div id="root"></div>
+
 	<script>
 		function loadFallbackScript(condition, url) {
 			condition || document.write('\u003Cscript src=\u0022' + url + '\u0022\u003E\u003C/script\u003E');
 		}
 	</script>
 
+	<script src="/scripts/lib/es6-promise-polyfill/promise.js"></script>
+
+
 	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"
 			integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f"
 			crossorigin="anonymous"></script>
-	<script>loadFallbackScript(window && window.jQuery, '/scripts/lib/jquery/jquery.min.js')</script>
+	<script>loadFallbackScript(window.jQuery, '/scripts/lib/jquery/jquery.min.js')</script>
 
 	<script src="https://cdn.bootcss.com/signalr.js/2.2.2/jquery.signalR.min.js"
 			integrity="sha384-UyTLqwQkFvHAap06eaaT+YIRbXlVc+ytcEGjGDcMjfd770PbDHhW6XcNv9E4X4di"
 			crossorigin="anonymous"></script>
-	<script>loadFallbackScript(window && window.jQuery && window.jQuery.connection, '/scripts/lib/jquery.signalR.min.js');</script>
+	<script>loadFallbackScript(window.jQuery && window.jQuery.connection, '/scripts/lib/jquery.signalR.min.js');</script>
 
 	<script src="https://cdn.bootcss.com/react/15.6.1/react.min.js"
-				integrity="sha384-u/3By6KAUETM5AnedAbB9xV0qLxlsRyVBi8mEekTeqD468SBVx2FXEm+1lf85M7c"
-				crossorigin="anonymous"></script>
-	<script>loadFallbackScript(window && window.React, '/scripts/lib/react/react.min.js');</script>
+			integrity="sha384-u/3By6KAUETM5AnedAbB9xV0qLxlsRyVBi8mEekTeqD468SBVx2FXEm+1lf85M7c"
+			crossorigin="anonymous"></script>
+	<script>loadFallbackScript(window.React, '/scripts/lib/react/react.min.js');</script>
 
 	<script src="https://cdn.bootcss.com/react/15.6.1/react-dom.min.js"
-				integrity="sha384-GfT+iyYg21YqdPMH/FWlWLugDiK/neASGRCN8yWPB2Hlam+uP7J0lIgPcbCeHoVG"
-				crossorigin="anonymous"></script>
-	<script>loadFallbackScript(window && window.ReactDOM, '/scripts/lib/react-dom/react-dom.min.js');</script>
+			integrity="sha384-GfT+iyYg21YqdPMH/FWlWLugDiK/neASGRCN8yWPB2Hlam+uP7J0lIgPcbCeHoVG"
+			crossorigin="anonymous"></script>
+	<script>loadFallbackScript(window.ReactDOM, '/scripts/lib/react-dom/react-dom.min.js');</script>
 
 	<script src="https://cdn.bootcss.com/react-router/4.1.2/react-router.min.js"
 			integrity="sha384-E8Ht+XYK8X998NatfYd+Q9CfvNMv2FWo/caZrRXx/ZKSycXNJh2nY7FmrS77TFk4"
 			crossorigin="anonymous"></script>
-	<script>loadFallbackScript(window && window.ReactRouter, '/scripts/lib/react-router/react-router.min.js');</script>
+	<script>loadFallbackScript(window.ReactRouter, '/scripts/lib/react-router/react-router.min.js');</script>
 
 	<script src="https://cdn.bootcss.com/react-router-dom/4.1.2/react-router-dom.min.js"
 			integrity="sha384-7ksIDLjJKbAMsW1o08kt14DVotOLkdUcy4Ul327Ni31yp1SXN5IiV6uV7NV35Hqi"
 			crossorigin="anonymous"></script>
-	<script>loadFallbackScript(window && window.ReactRouterDOM, '/scripts/lib/react-router-dom/react-router-dom.min.js');</script>
+	<script>loadFallbackScript(window.ReactRouterDOM, '/scripts/lib/react-router-dom/react-router-dom.min.js');</script>
 
 	<script src="https://cdn.bootcss.com/redux/3.7.2/redux.min.js"
 			integrity="sha384-1qvo8UIQh8p/bN1YGe52MRwQG6KUSl9zZkYlzl1/0lIEsEtjlJwQwpCaxoO9D+9T"
 			crossorigin="anonymous"></script>
-	<script>loadFallbackScript(window && window.Redux, '/scripts/lib/redux/redux.min.js')</script>
+	<script>loadFallbackScript(window.Redux, '/scripts/lib/redux/redux.min.js')</script>
 
 	<script src="https://cdn.bootcss.com/react-redux/5.0.5/react-redux.min.js"
 			integrity="sha384-bKquTDDYjpatshkKDNhd9s020AbcR/35kluCYP/suaU0hZ0q3dHc4TyOJ7xUFsQG"
 			crossorigin="anonymous"></script>
-	<script>loadFallbackScript(window && window.ReactRedux, '/scripts/lib/react-redux/react-redux.min.js');</script>
+	<script>loadFallbackScript(window.ReactRedux, '/scripts/lib/react-redux/react-redux.min.js');</script>
 
 	<script src="/scripts/main.js"></script>
 

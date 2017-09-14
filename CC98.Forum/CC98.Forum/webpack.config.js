@@ -9,7 +9,10 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var config = {
     module: {
         rules: [
-            { test: /\.tsx?$/, use: 'awesome-typescript-loader' },
+            {
+                test: /\.tsx?$/,
+                use: 'awesome-typescript-loader'
+            },
             {
                 test: /\.scss$/,
                 use: ExtractTextPlugin.extract({ use: [{ loader: 'css-loader', options: { minimize: true } }, 'sass-loader'] })

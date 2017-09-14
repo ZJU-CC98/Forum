@@ -17,7 +17,7 @@ var React = require("react");
 /**
  * 我关注的某个版面的单个主题
  */
-var FocusPostComponent = (function (_super) {
+var FocusPostComponent = /** @class */ (function (_super) {
     __extends(FocusPostComponent, _super);
     function FocusPostComponent() {
         return _super !== null && _super.apply(this, arguments) || this;

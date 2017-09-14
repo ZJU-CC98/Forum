@@ -23,7 +23,7 @@ var UserCenterMyFavorites_1 = require("./UserCenterMyFavorites");
 /**
  * 用户中心主体
  */
-var UserCenterRouter = (function (_super) {
+var UserCenterRouter = /** @class */ (function (_super) {
     __extends(UserCenterRouter, _super);
     function UserCenterRouter() {
         return _super !== null && _super.apply(this, arguments) || this;

@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * 一条站短消息
  */
-var MymessageProps = (function () {
+var MymessageProps = /** @class */ (function () {
     function MymessageProps() {
     }
     return MymessageProps;

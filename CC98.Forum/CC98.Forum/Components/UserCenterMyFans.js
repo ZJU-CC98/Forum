@@ -17,7 +17,7 @@ var React = require("react");
 var AppState_1 = require("../States/AppState");
 var UserCenterMyFollowingsUser_1 = require("./UserCenterMyFollowingsUser");
 //用户中心我的粉丝组件
-var UserCenterMyFans = (function (_super) {
+var UserCenterMyFans = /** @class */ (function (_super) {
     __extends(UserCenterMyFans, _super);
     function UserCenterMyFans(props) {
         var _this = _super.call(this, props) || this;

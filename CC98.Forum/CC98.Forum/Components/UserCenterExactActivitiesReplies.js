@@ -17,7 +17,7 @@ var React = require("react");
 var UserCenterExactActivitiesPost_1 = require("./UserCenterExactActivitiesPost");
 var AppState_1 = require("../States/AppState");
 //用户中心主页最近回复组件
-var UserCenterExactActivitiesReplies = (function (_super) {
+var UserCenterExactActivitiesReplies = /** @class */ (function (_super) {
     __extends(UserCenterExactActivitiesReplies, _super);
     function UserCenterExactActivitiesReplies(props) {
         var _this = _super.call(this, props) || this;
