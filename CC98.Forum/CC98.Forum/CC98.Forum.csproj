@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="img\**" />
+    <Content Remove="img\**" />
+    <EmbeddedResource Remove="img\**" />
+    <None Remove="img\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="CC98.Forum.rar" />
     <None Remove="Components\UbbContainer.tsx" />
     <None Remove="UbbCode.tsx" />
@@ -16,43 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\font-awesome-4.7.0\css\font-awesome.css" />
-    <None Include="wwwroot\font-awesome-4.7.0\css\font-awesome.min.css" />
-    <None Include="wwwroot\font-awesome-4.7.0\fonts\fontawesome-webfont.eot" />
-    <None Include="wwwroot\font-awesome-4.7.0\fonts\fontawesome-webfont.svg" />
-    <None Include="wwwroot\font-awesome-4.7.0\fonts\fontawesome-webfont.ttf" />
-    <None Include="wwwroot\font-awesome-4.7.0\fonts\fontawesome-webfont.woff" />
-    <None Include="wwwroot\font-awesome-4.7.0\fonts\fontawesome-webfont.woff2" />
-    <None Include="wwwroot\font-awesome-4.7.0\fonts\FontAwesome.otf" />
-    <None Include="wwwroot\font-awesome-4.7.0\HELP-US-OUT.txt" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\animated.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\bordered-pulled.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\core.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\fixed-width.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\font-awesome.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\icons.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\larger.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\list.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\mixins.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\path.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\rotated-flipped.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\screen-reader.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\stacked.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\variables.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\font-awesome.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_animated.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_bordered-pulled.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_core.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_fixed-width.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_icons.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_larger.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_list.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_mixins.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_path.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_rotated-flipped.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_screen-reader.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_stacked.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_variables.scss" />
     <None Include="wwwroot\images\authorImg.jpg" />
   </ItemGroup>
 
@@ -62,10 +32,6 @@
     <PackageReference Include="Microsoft.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Rewrite" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="img\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -3,8 +3,37 @@
 <head>
 	<meta charset="utf-8" />
 	<title></title>
+
+	<script>
+		function loadFallbackScript(condition, url) {
+			condition || document.write('<' + 'script src="' + url + '"></' + 'script>');
+		}
+
+		function loadFallbackCss(id, property, value, url) {
+			var testElement = document.getElementById(id);
+			var style = document.defaultView && document.defaultView.getComputedStyle
+				? document.defaultView.getComputedStyle(testElement)
+				: testElement.currentStyle;
+
+			if (style[property] !== value) {
+				document.write('<link rel="stylesheet" href="' + url + '" />');
+			}
+		}
+
+	</script>
+
+	<link rel="stylesheet"
+		  href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"
+		  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+		  crossorigin="anonymous">
+
+	<meta id="fa-test" name="x-stylesheet-fallback-test" content="" class="fa" />
+	<script>
+		loadFallbackCss('fa-test', 'display', 'inline-block', '/content/font-awesome/css/font-awesome.min.css');
+	</script>
+
+
 	<link rel="stylesheet" href="/content/site.min.css" />
-	<link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
 
 
 </head>
@@ -137,13 +166,10 @@
 
 	<div id="root"></div>
 
-	<script>
-		function loadFallbackScript(condition, url) {
-			condition || document.write('\u003Cscript src=\u0022' + url + '\u0022\u003E\u003C/script\u003E');
-		}
-	</script>
-
-	<script src="/scripts/lib/es6-promise-polyfill/promise.js"></script>
+	<script src="https://cdn.bootcss.com/es6-promise/4.1.1/es6-promise.min.js"
+			integrity="sha384-NoLzkHcfupp2D2gnHAAyZZLSMaxnGKAfVeAI4gT0bmGLbLnUOR98iZl+XHPPmfEI"
+			crossorigin="anonymous"></script>
+	<script>loadFallbackScript(window.ES6Promise, '/scripts/lib/es6-promise/es6-promise.min.js');</script>
 
 
 	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"
