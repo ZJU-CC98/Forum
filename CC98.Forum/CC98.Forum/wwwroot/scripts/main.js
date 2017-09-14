@@ -1896,7 +1896,7 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            __webpack_require__(131)("./" + name);
+            __webpack_require__(130)("./" + name);
             // because defineLocale currently also sets the global locale, we
             // want to undo that for lazy loaded locales
             getSetGlobalLocale(oldLocale);
@@ -4531,7 +4531,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(129)(module)))
 
 /***/ }),
 /* 1 */
@@ -4677,11 +4677,12 @@ var TopicTitleAndContentState = (function () {
           this.lastReply = lastReply;
           this.title = title;
       }*/
-    function TopicTitleAndContentState(title, authorName, topicid, authorId) {
+    function TopicTitleAndContentState(title, authorName, topicid, authorId, lastPostInfo) {
         this.authorName = authorName;
         this.title = title;
         this.id = topicid;
         this.authorId = authorId;
+        this.lastPostInfo = lastPostInfo;
     }
     return TopicTitleAndContentState;
 }());
@@ -4829,7 +4830,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var State = __webpack_require__(3);
 var React = __webpack_require__(1);
 var List_1 = __webpack_require__(7);
-var $ = __webpack_require__(129);
+var $ = __webpack_require__(131);
 /*export async function getData() {
     let hottopics: State.TopicTitleAndContentState[] = [];
     var response = await fetch('http://api.cc98.org/Topic/Hot');
@@ -4875,7 +4876,7 @@ function getBoardTopicAsync(curPage, boardid) {
                         topicNumberInPage = (totalTopicCount - (curPage - 1) * 20);
                     }
                     for (i = 0; i < topicNumberInPage; i++) {
-                        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].authorName || '匿名', data[i].id, data[i].authorId);
+                        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].authorName || '匿名', data[i].id, data[i].authorId, data[i].lastPostInfo);
                     }
                     return [2 /*return*/, boardtopics];
             }
@@ -4976,7 +4977,7 @@ function getTopicContent(topicid, curPage) {
 }
 exports.getTopicContent = getTopicContent;
 function convertHotTopic(item) {
-    return React.createElement(List_1.TopicTitleAndContent, { title: item.title, authorName: item.authorName, id: item.id, authorId: item.authorId });
+    return React.createElement(List_1.TopicTitleAndContent, { title: item.title, authorName: item.authorName, id: item.id, authorId: item.authorId, lastPostUserName: item.lastPostInfo.userName, lastPostTime: item.lastPostInfo.time });
 }
 exports.convertHotTopic = convertHotTopic;
 function getPager(curPage, totalPage) {
@@ -5360,6 +5361,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var Utility = __webpack_require__(4);
 var react_router_dom_1 = __webpack_require__(2);
+var moment = __webpack_require__(0);
 var RouteComponent = (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -5705,7 +5707,7 @@ var ListContent = (function (_super) {
         });
     };
     ListContent.prototype.convertTopicToElement = function (item) {
-        return React.createElement(TopicTitleAndContent, { key: item.title, title: item.title, authorName: item.authorName, id: item.id, authorId: item.authorId });
+        return React.createElement(TopicTitleAndContent, { key: item.title, title: item.title, authorName: item.authorName, id: item.id, authorId: item.authorId, lastPostUserName: item.lastPostInfo.userName, lastPostTime: item.lastPostInfo.time });
     };
     ListContent.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
@@ -5738,9 +5740,9 @@ var ListContent = (function (_super) {
                     React.createElement("button", { className: "listContentTag" }, "\u7CBE\u534E"),
                     React.createElement("button", { className: "listContentTag" }, "\u6700\u70ED")),
                 React.createElement("div", { className: "row", style: { height: '40px', alignItems: 'center' } },
-                    React.createElement("div", { style: { marginRight: '152px', marginLeft: '15px' } },
+                    React.createElement("div", { style: { marginRight: '257px', marginLeft: '15px' } },
                         React.createElement("span", null, "\u4F5C\u8005")),
-                    React.createElement("div", { style: { marginRight: '85px', marginLeft: '15px' } },
+                    React.createElement("div", { style: { marginRight: '115px', marginLeft: '15px' } },
                         React.createElement("span", null, "\u6700\u540E\u53D1\u8868")))),
             React.createElement("div", null, this.state.items.map(this.convertTopicToElement)));
     };
@@ -5755,9 +5757,10 @@ var TopicTitleAndContent = (function (_super) {
             title: _this.props.title,
             authorName: _this.props.authorName,
             likeNumber: 123,
-            unlikeNumber: 11,
+            dislikeNumber: 11,
             commentNumber: 214,
-            lastReply: 'Dearkano 2017-2-2',
+            lastPostUserName: _this.props.lastPostUserName,
+            lastPostTime: _this.props.lastPostTime,
             id: _this.props.id,
             authorId: _this.props.authorId
         };
@@ -5771,23 +5774,27 @@ var TopicTitleAndContent = (function (_super) {
                     React.createElement("div", { style: { marginLeft: '20px', } },
                         " ",
                         React.createElement("span", null, this.state.title))),
-                React.createElement("div", { className: "row" },
-                    React.createElement("div", { style: { marginRight: '10px', marginLeft: '15px', width: '80px' } },
+                React.createElement("div", { className: "row", style: { width: "500px", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" } },
+                    React.createElement("div", { style: { width: "100px", marginRight: '10px', marginLeft: '15px' } },
                         " ",
                         React.createElement("span", null,
                             React.createElement("a", null, this.state.authorName))),
-                    React.createElement("div", { className: "row", style: { flexDirection: 'row', alignItems: 'flex-end' } },
-                        React.createElement("div", { id: "liked" },
+                    React.createElement("div", { className: "row", style: { width: "150px", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" } },
+                        React.createElement("div", { id: "liked", style: { display: "flex" } },
                             React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
                             React.createElement("span", { className: "timeProp tagSize" }, this.state.likeNumber)),
-                        React.createElement("div", { id: "disliked" },
+                        React.createElement("div", { id: "disliked", style: { display: "flex" } },
                             React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg" }),
-                            React.createElement("span", { className: "timeProp tagSize" }, this.state.unlikeNumber)),
-                        React.createElement("div", { id: "commentsAmount" },
+                            React.createElement("span", { className: "timeProp tagSize" }, this.state.dislikeNumber)),
+                        React.createElement("div", { id: "commentsAmount", style: { display: "flex" } },
                             React.createElement("i", { className: "fa fa-commenting-o fa-lg" }),
                             React.createElement("span", { className: "timeProp tagSize" }, this.state.commentNumber))),
-                    React.createElement("div", { id: "lastReply" },
-                        React.createElement("span", null, this.state.lastReply)))));
+                    React.createElement("div", { id: "lastReply", style: { width: "100px" } },
+                        React.createElement("span", null,
+                            this.state.lastPostUserName,
+                            " ")),
+                    React.createElement("div", { style: { width: "150px", marginRight: "20px" } },
+                        React.createElement("span", null, moment(this.state.lastPostTime).format('YYYY-MM-DD HH:mm:ss'))))));
     };
     return TopicTitleAndContent;
 }(React.Component));
@@ -17666,12 +17673,6 @@ exports.UserMessageBox = UserMessageBox;
 /* 129 */
 /***/ (function(module, exports) {
 
-module.exports = $;
-
-/***/ }),
-/* 130 */
-/***/ (function(module, exports) {
-
 module.exports = function(module) {
 	if(!module.webpackPolyfill) {
 		module.deprecate = function() {};
@@ -17697,7 +17698,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 131 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -17946,7 +17947,13 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 131;
+webpackContext.id = 130;
+
+/***/ }),
+/* 131 */
+/***/ (function(module, exports) {
+
+module.exports = $;
 
 /***/ }),
 /* 132 */

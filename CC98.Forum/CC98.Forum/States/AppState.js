@@ -125,11 +125,12 @@ var TopicTitleAndContentState = (function () {
           this.lastReply = lastReply;
           this.title = title;
       }*/
-    function TopicTitleAndContentState(title, authorName, topicid, authorId) {
+    function TopicTitleAndContentState(title, authorName, topicid, authorId, lastPostInfo) {
         this.authorName = authorName;
         this.title = title;
         this.id = topicid;
         this.authorId = authorId;
+        this.lastPostInfo = lastPostInfo;
     }
     return TopicTitleAndContentState;
 }());

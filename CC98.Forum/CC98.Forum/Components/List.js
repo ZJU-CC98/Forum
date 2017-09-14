@@ -48,6 +48,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var Utility = require("../Utility");
 var react_router_dom_1 = require("react-router-dom");
+var moment = require('moment');
 var RouteComponent = (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -393,7 +394,7 @@ var ListContent = (function (_super) {
         });
     };
     ListContent.prototype.convertTopicToElement = function (item) {
-        return React.createElement(TopicTitleAndContent, { key: item.title, title: item.title, authorName: item.authorName, id: item.id, authorId: item.authorId });
+        return React.createElement(TopicTitleAndContent, { key: item.title, title: item.title, authorName: item.authorName, id: item.id, authorId: item.authorId, lastPostUserName: item.lastPostInfo.userName, lastPostTime: item.lastPostInfo.time });
     };
     ListContent.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
@@ -426,9 +427,9 @@ var ListContent = (function (_super) {
                     React.createElement("button", { className: "listContentTag" }, "\u7CBE\u534E"),
                     React.createElement("button", { className: "listContentTag" }, "\u6700\u70ED")),
                 React.createElement("div", { className: "row", style: { height: '40px', alignItems: 'center' } },
-                    React.createElement("div", { style: { marginRight: '152px', marginLeft: '15px' } },
+                    React.createElement("div", { style: { marginRight: '257px', marginLeft: '15px' } },
                         React.createElement("span", null, "\u4F5C\u8005")),
-                    React.createElement("div", { style: { marginRight: '85px', marginLeft: '15px' } },
+                    React.createElement("div", { style: { marginRight: '115px', marginLeft: '15px' } },
                         React.createElement("span", null, "\u6700\u540E\u53D1\u8868")))),
             React.createElement("div", null, this.state.items.map(this.convertTopicToElement)));
     };
@@ -443,9 +444,10 @@ var TopicTitleAndContent = (function (_super) {
             title: _this.props.title,
             authorName: _this.props.authorName,
             likeNumber: 123,
-            unlikeNumber: 11,
+            dislikeNumber: 11,
             commentNumber: 214,
-            lastReply: 'Dearkano 2017-2-2',
+            lastPostUserName: _this.props.lastPostUserName,
+            lastPostTime: _this.props.lastPostTime,
             id: _this.props.id,
             authorId: _this.props.authorId
         };
@@ -459,23 +461,27 @@ var TopicTitleAndContent = (function (_super) {
                     React.createElement("div", { style: { marginLeft: '20px', } },
                         " ",
                         React.createElement("span", null, this.state.title))),
-                React.createElement("div", { className: "row" },
-                    React.createElement("div", { style: { marginRight: '10px', marginLeft: '15px', width: '80px' } },
+                React.createElement("div", { className: "row", style: { width: "500px", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" } },
+                    React.createElement("div", { style: { width: "100px", marginRight: '10px', marginLeft: '15px' } },
                         " ",
                         React.createElement("span", null,
                             React.createElement("a", null, this.state.authorName))),
-                    React.createElement("div", { className: "row", style: { flexDirection: 'row', alignItems: 'flex-end' } },
-                        React.createElement("div", { id: "liked" },
+                    React.createElement("div", { className: "row", style: { width: "150px", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" } },
+                        React.createElement("div", { id: "liked", style: { display: "flex" } },
                             React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
                             React.createElement("span", { className: "timeProp tagSize" }, this.state.likeNumber)),
-                        React.createElement("div", { id: "disliked" },
+                        React.createElement("div", { id: "disliked", style: { display: "flex" } },
                             React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg" }),
-                            React.createElement("span", { className: "timeProp tagSize" }, this.state.unlikeNumber)),
-                        React.createElement("div", { id: "commentsAmount" },
+                            React.createElement("span", { className: "timeProp tagSize" }, this.state.dislikeNumber)),
+                        React.createElement("div", { id: "commentsAmount", style: { display: "flex" } },
                             React.createElement("i", { className: "fa fa-commenting-o fa-lg" }),
                             React.createElement("span", { className: "timeProp tagSize" }, this.state.commentNumber))),
-                    React.createElement("div", { id: "lastReply" },
-                        React.createElement("span", null, this.state.lastReply)))));
+                    React.createElement("div", { id: "lastReply", style: { width: "100px" } },
+                        React.createElement("span", null,
+                            this.state.lastPostUserName,
+                            " ")),
+                    React.createElement("div", { style: { width: "150px", marginRight: "20px" } },
+                        React.createElement("span", null, moment(this.state.lastPostTime).format('YYYY-MM-DD HH:mm:ss'))))));
     };
     return TopicTitleAndContent;
 }(React.Component));

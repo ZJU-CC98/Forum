@@ -4,11 +4,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * 热门话题
  */
 var HotTopic = (function () {
-    function HotTopic(title, author, id, authorId) {
+    function HotTopic(title, author, id, authorId, lastPostUserName, lastPostTime) {
         this.title = title;
         this.authorName = author;
         this.id = id;
         this.authorId = authorId;
+        this.lastPostUserName = lastPostUserName;
+        this.lastPostTime = lastPostTime;
     }
     return HotTopic;
 }());

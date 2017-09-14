@@ -13,7 +13,7 @@ import {
 } from 'react-router-dom';
 import { MessageMatch } from '../Match/Match'
 import TopicTitleAndContentState = State.TopicTitleAndContentState;
-
+var moment = require('moment');
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
 
@@ -260,7 +260,10 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
             title={item.title}
             authorName={item.authorName}
             id={item.id}
-            authorId={item.authorId} />;
+            authorId={item.authorId}
+            lastPostUserName={item.lastPostInfo.userName}
+            lastPostTime={item.lastPostInfo.time}
+/>;
     }
     async componentWillReceiveProps(newProps) {
         let page: number;
@@ -286,8 +289,8 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
                     <button className="listContentTag">最热</button>
                 </div>
                 <div className="row" style={{ height: '40px', alignItems: 'center' }}>
-                    <div style={{ marginRight: '152px', marginLeft: '15px' }}><span>作者</span></div>
-                    <div style={{ marginRight: '85px', marginLeft: '15px' }}><span>最后发表</span></div>
+                    <div style={{ marginRight: '257px', marginLeft: '15px' }}><span>作者</span></div>
+                    <div style={{ marginRight: '115px', marginLeft: '15px' }}><span>最后发表</span></div>
                 </div>
             </div>
             <div>{this.state.items.map(this.convertTopicToElement)}</div>
@@ -296,16 +299,17 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
     }
 }
 
-export class TopicTitleAndContent extends React.Component<HotTopic, State.TopicTitleAndContentState> {
+export class TopicTitleAndContent extends React.Component<HotTopic, {title,authorName,likeNumber,dislikeNumber,commentNumber,lastPostUserName,lastPostTime,id,authorId}> {
     constructor(props, context) {
         super(props, context);
         this.state = {
             title: this.props.title,
             authorName: this.props.authorName,
             likeNumber: 123,
-            unlikeNumber: 11,
+            dislikeNumber: 11,
             commentNumber: 214,
-            lastReply: 'Dearkano 2017-2-2',
+            lastPostUserName: this.props.lastPostUserName,
+            lastPostTime: this.props.lastPostTime,
             id: this.props.id,
             authorId: this.props.authorId
         }
@@ -316,14 +320,15 @@ export class TopicTitleAndContent extends React.Component<HotTopic, State.TopicT
         return <div id="changeColor">
             <div className="row topicInList" >
                 <Link to={url}><div style={{ marginLeft: '20px', }}> <span >{this.state.title}</span></div></Link>
-                <div className="row">
-                    <div style={{ marginRight: '10px', marginLeft: '15px', width: '80px' }}> <span ><a >{this.state.authorName}</a></span></div>
-                    <div className="row" style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
-                        <div id="liked"><i className="fa fa-thumbs-o-up fa-lg"></i><span className="timeProp tagSize">{this.state.likeNumber}</span></div>
-                        <div id="disliked"><i className="fa fa-thumbs-o-down fa-lg"></i><span className="timeProp tagSize">{this.state.unlikeNumber}</span></div>
-                        <div id="commentsAmount"><i className="fa fa-commenting-o fa-lg"></i><span className="timeProp tagSize">{this.state.commentNumber}</span></div>
+                <div className="row" style={{ width:"500px" ,flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" }}>
+                    <div style={{ width:"100px", marginRight: '10px', marginLeft: '15px'}}> <span ><a >{this.state.authorName}</a></span></div>
+                    <div className="row" style={{ width: "150px", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" }}>
+                        <div id="liked" style={{ display:"flex" }}><i className="fa fa-thumbs-o-up fa-lg"></i><span className="timeProp tagSize">{this.state.likeNumber}</span></div>
+                        <div id="disliked" style={{ display: "flex" }}><i className="fa fa-thumbs-o-down fa-lg"></i><span className="timeProp tagSize">{this.state.dislikeNumber}</span></div>
+                        <div id="commentsAmount" style={{ display: "flex" }}><i className="fa fa-commenting-o fa-lg"></i><span className="timeProp tagSize">{this.state.commentNumber}</span></div>
                     </div>
-                    <div id="lastReply"><span >{this.state.lastReply}</span></div>
+                    <div id="lastReply" style={{ width: "100px" }}><span >{this.state.lastPostUserName} </span></div>
+                    <div style={{ width: "150px", marginRight:"20px" }}><span>{moment(this.state.lastPostTime).format('YYYY-MM-DD HH:mm:ss')}</span></div>
                 </div>
             </div>
         </div>;

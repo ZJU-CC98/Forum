@@ -84,7 +84,7 @@ function getBoardTopicAsync(curPage, boardid) {
                         topicNumberInPage = (totalTopicCount - (curPage - 1) * 20);
                     }
                     for (i = 0; i < topicNumberInPage; i++) {
-                        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].authorName || '匿名', data[i].id, data[i].authorId);
+                        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].authorName || '匿名', data[i].id, data[i].authorId, data[i].lastPostInfo);
                     }
                     return [2 /*return*/, boardtopics];
             }
@@ -185,7 +185,7 @@ function getTopicContent(topicid, curPage) {
 }
 exports.getTopicContent = getTopicContent;
 function convertHotTopic(item) {
-    return React.createElement(List_1.TopicTitleAndContent, { title: item.title, authorName: item.authorName, id: item.id, authorId: item.authorId });
+    return React.createElement(List_1.TopicTitleAndContent, { title: item.title, authorName: item.authorName, id: item.id, authorId: item.authorId, lastPostUserName: item.lastPostInfo.userName, lastPostTime: item.lastPostInfo.time });
 }
 exports.convertHotTopic = convertHotTopic;
 function getPager(curPage, totalPage) {
