@@ -2,11 +2,11 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
-import { MymessageWindowProps } from '../Props/MymessageWindowProps';
-import { MymessageWindowState } from '../States/MymessageWindowState';
-import { MymessageProps } from '../Props/MymessageProps';
-import { MymessageSender } from './MymessageSender';
-import { MymessageReceiver } from './MymessageReceiver';
+import { MyMessageWindowProps } from '../Props/MyMessageWindowProps';
+import { MyMessageWindowState } from '../States/MyMessageWindowState';
+import { MyMessageProps } from '../Props/MyMessageProps';
+import { MyMessageSender } from './MyMessageSender';
+import { MyMessageReceiver } from './MyMessageReceiver';
 
 import {
     BrowserRouter as Router,
@@ -14,7 +14,7 @@ import {
     NavLink
 } from 'react-router-dom';
 
-export class MymessageWindow extends React.Component<MymessageWindowProps, MymessageWindowState>{
+export class MyMessageWindow extends React.Component<MyMessageWindowProps, MyMessageWindowState>{
 
     constructor(props) {
         super(props);
@@ -30,7 +30,7 @@ export class MymessageWindow extends React.Component<MymessageWindowProps, Mymes
         this.getMessageData(nextProps);
     }
 
-    async getMessageData(item: MymessageWindowProps) {
+    async getMessageData(item: MyMessageWindowProps) {
         if (item.chatName != '系统') {
             let data = [];
             let startPage = -50;
@@ -60,14 +60,14 @@ export class MymessageWindow extends React.Component<MymessageWindowProps, Mymes
         }
     }
 
-    coverMymessageProps = (item: MymessageProps) => {
+    coverMyMessageProps = (item: MyMessageProps) => {
         if (item.title == '回复提示' || item.title == '@提示' || item.title == '转账通知' || item.title == '系统消息' || item.title == `用户：${this.props.myName} 在帖子中回复了你`) {
         }
         else if (item.senderName == this.props.chatName) {
-            return <MymessageReceiver id={item.id} senderName={item.senderName} receiverName={item.receiverName} title={item.title} content={item.content} isRead={item.isRead} sendTime={item.sendTime} chatPortraitUrl={item.chatPortraitUrl} myPortraitUrl={item.myPortraitUrl} />
+            return <MyMessageReceiver id={item.id} senderName={item.senderName} receiverName={item.receiverName} title={item.title} content={item.content} isRead={item.isRead} sendTime={item.sendTime} chatPortraitUrl={item.chatPortraitUrl} myPortraitUrl={item.myPortraitUrl} />
         }
         else {
-            return <MymessageSender id={item.id} senderName={item.senderName} receiverName={item.receiverName} title={item.title} content={item.content} isRead={item.isRead} sendTime={item.sendTime} chatPortraitUrl={item.chatPortraitUrl} myPortraitUrl={item.myPortraitUrl}/>
+            return <MyMessageSender id={item.id} senderName={item.senderName} receiverName={item.receiverName} title={item.title} content={item.content} isRead={item.isRead} sendTime={item.sendTime} chatPortraitUrl={item.chatPortraitUrl} myPortraitUrl={item.myPortraitUrl}/>
         }
     }
 
@@ -100,7 +100,7 @@ export class MymessageWindow extends React.Component<MymessageWindowProps, Mymes
                         <div className='mymessage-message-wTitle'>与 {this.props.chatName} 的私信</div>
                         <div className='mymessage-message-wReport'><button onClick={this.report}>举报</button></div>
                     </div>
-                    <div className='mymessage-message-wContent'>{this.state.data.map(this.coverMymessageProps)}</div>
+                    <div className='mymessage-message-wContent'>{this.state.data.map(this.coverMyMessageProps)}</div>
                     <div className='mymessage-message-wPost'>
                         <textarea className='mymessage-message-wPostArea' id='myMessageContent'></textarea>
                         <button className='mymessage-message-wPostBtn' onClick={this.postMessage}>回复</button>
@@ -110,7 +110,7 @@ export class MymessageWindow extends React.Component<MymessageWindowProps, Mymes
 }
 
 
-function sortArr(arr: MymessageProps[]) {
+function sortArr(arr: MyMessageProps[]) {
     let s: number = -1;
     let e: number = -1;
     for (let i = 0; i < arr.length-1; i++) {
@@ -128,7 +128,7 @@ function sortArr(arr: MymessageProps[]) {
     }
 }
 
-function reverseArr(arr: MymessageProps[], s: number, e: number) {
+function reverseArr(arr: MyMessageProps[], s: number, e: number) {
     for (let i = s; i < e; i++) {
         [arr[i], arr[e]] = [arr[e], arr[i]];
         e--;

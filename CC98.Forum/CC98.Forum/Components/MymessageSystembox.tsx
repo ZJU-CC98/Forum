@@ -2,9 +2,9 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
-import { MymessageProps } from '../Props/MymessageProps';
+import { MyMessageProps } from '../Props/MyMessageProps';
 
-export class MymessageSystembox extends React.Component<MymessageProps> {
+export class MyMessageSystembox extends React.Component<MyMessageProps> {
     /*
     componentDidMount() {
         document.getElementById(String(this.props.id)).innerHTML = '修改后的内容';//UBBCode(this.props.cotent,'')

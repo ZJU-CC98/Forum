@@ -17,6 +17,10 @@ import { AllNewPost } from './AllNewPost'
 import { Header } from './Header'
 import { MainPage } from './MainPage'
 
+import { UbbContainer } from './UbbContainer';
+import * as Ubb from '../Ubb/UbbCodeExtension';
+
+
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
 	match: match<TMatch>;
 	constructor(props, context) {
@@ -35,20 +39,23 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
 export class App extends React.Component<{}, AppState> {
 
 	render() {
-        return <div><Router>
-            <div style={{ backgroundColor: '#F5FAFD', justifyContent: "center", display: "flex", flexDirection:"column" }}>
-                <Header />
-                <Route exact path='/' component={MainPage}></Route>
-                 <Route exact path="/topic/:topicid/:page?" component={Post} />
-                 <Route exact path="/topic/:topicid/user/:userName/:page?" component={CurUserPost} />
-                 <Route path="/list/:boardid/:page?" component={List} />
-                 <Route exact path="/boardlist" component={BoardList} />
-                 <Route path="/usercenter" component={UserCenter} />
-                 <Route  path="/messagebox" component={MyMessage} />
-                 <Route path="/newtopics" component={AllNewPost} />
+		const data = '[b]Test[/b] [img]http://file.cc98.org/uploadface/5298.png[/img] [noubb][b]Test No UBB[/b][/noubb]';
+
+		return <div><Router>
+			<div style={{ backgroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column' }}>
+				<Header />
+
+				<UbbContainer code={data} />
+
+				<Route exact path="/" component={MainPage}></Route>
+				<Route exact path="/topic/:topicid/:page?" component={Post} />
+				<Route exact path="/topic/:topicid/user/:userName/:page?" component={CurUserPost} />
+				<Route path="/list/:boardid/:page?" component={List} />
+				<Route exact path="/boardlist" component={BoardList} />
+				<Route path="/usercenter" component={UserCenter} />
+				<Route path="/messagebox" component={MyMessage} />
+				<Route path="/newtopics" component={AllNewPost} />
 			</div>
 		</Router></div>;
 	}
-
 }
-

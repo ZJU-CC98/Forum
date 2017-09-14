@@ -14,7 +14,10 @@ declare var __dirname;
 const config: webpack.Configuration = {
 	module: {
 		rules: [
-			{ test: /\.tsx?$/, use: 'awesome-typescript-loader' },
+			{
+				test: /\.tsx?$/,
+				use: 'awesome-typescript-loader'
+			},
 			{
 				test: /\.scss$/,
 				use: ExtractTextPlugin.extract({ use: [{ loader: 'css-loader', options: { minimize: true } }, 'sass-loader'] })
@@ -38,8 +41,8 @@ const config: webpack.Configuration = {
 		'redux': 'Redux',
 		'react-redux': 'ReactRedux',
 		'jquery': '$',
-        'signalr': '$.connection',
- 
+		'signalr': '$.connection',
+
 	},
 	plugins: [
 		new webpack.optimize.UglifyJsPlugin(), // 简化 JS
@@ -53,10 +56,11 @@ const config: webpack.Configuration = {
 			{ from: 'node_modules/react-router/umd', to: 'scripts/lib/react-router' },
 			{ from: 'node_modules/react-router-dom/umd', to: 'scripts/lib/react-router-dom' },
 			{ from: 'node_modules/redux/dist', to: 'scripts/lib/redux' },
-            { from: 'node_modules/react-redux/dist', to: 'scripts/lib/react-redux' },
-            { from: 'node_modules/moment', to: 'scripts/lib/moment' },
-            { from: 'node_modules/bootstrap/dist', to: 'scripts/lib/bootstrap' },
-            { from: 'node_modules/es6-promise-polyfill',to:'scripts/lib/es6-promise-polyfill'}
+			{ from: 'node_modules/react-redux/dist', to: 'scripts/lib/react-redux' },
+			{ from: 'node_modules/moment', to: 'scripts/lib/moment' },
+			{ from: 'node_modules/bootstrap/dist', to: 'scripts/lib/bootstrap' },
+			{ from: 'node_modules/es6-promise/dist', to: 'scripts/lib/es6-promise' },
+			{ from: 'node_modules/font-awesome', to: 'content/font-awesome' }
 		]),
 		new ExtractTextPlugin('content/site.min.css')
 	]

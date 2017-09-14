@@ -1419,16 +1419,20 @@ body {
         }
     }
 }
+
+/*****************************************以下为我的消息的样式*********************************/
+.mymessage-root {
+    display: flex;
+    justify-content: center;
+}
+
 .mymessage {
     display: flex;
     flex-direction: column;
     width: 1140px;
     height: 780px;
 
-    margin: {
-        top: 240px;
-        bottom: 60px;
-    }
+    margin-bottom: 60px;
 }
 
 .mymessage-title {
@@ -1447,6 +1451,7 @@ body {
 }
 
 .mymessage-nav {
+    flex-shrink: 0;
     width: 198px;
     height: 674px;
     margin-right: 30px;
@@ -1478,10 +1483,11 @@ body {
     }
 }
 
-.test {
-    flex-grow: 1;
-    font-size: 40px;
-    border: 1px solid $color-border;
+.mymessage-login {
+    position: absolute;
+    top: 250px;
+    left: 50%;
+    font-size: 20px;
 }
 
 .mymessage-message {
@@ -1848,92 +1854,142 @@ body {
 }
 
 .mymessage-response {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    max-width: 910px;
-    height: 680px;
-    font-family: 微软雅黑;
     border: 1px solid $color-border;
+    overflow-y: auto;
+    background-color: $color-post;
 
     .mymessage-response-box { /*一个消息的框框*/
+        flex-shrink: 0;
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        height: 120px;
-        width: 910px;
+        min-height: 120px;
         border-bottom: 1px dashed lightgray;
     }
 
     .mymessage-response-img { /*头像*/
-        margin-left: 20px;
-        margin-right: 20px;
+        margin: 30px 20px;
         border-radius: 50%;
         width: 60px;
         height: 60px;
-        margin-top: 30px;
-        margin-bottom: 30px;
     }
 
     .mymessage-response-box-left { /*一个消息框的左边-头像*/
-        height: 120px;
-        width: 100px;
+        flex-basis: 100px;
     }
 
     .mymessage-response-box-middle { /*消息框的中间-文字*/
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        height: 120px;
-        width: 750px;
-    }
+        flex-basis: 750px;
 
-    .mymessage-response-box-middle-title { /*消息框文字第一行 学术信息*/
-        height: 30px;
-        width: 60px;
-        font-size: 14px;
-        line-height: 30px;
-        color: dodgerblue;
-        margin-top: 20px;
-    }
+        .mymessage-response-box-middle-name { /*消息框文字第一行 用户名*/
+            height: 30px;
+            flex-basis: 90px;
+            font-size: 14px;
+            line-height: 30px;
+            color: $color-black;
+            margin-top: 20px;
+        }
 
-    .mymessage-response-box-middle-date { /*消息框文字第一行日期*/
-        height: 30px;
-        width: 300px;
-        font-size: 12px;
-        line-height: 30px;
-        color: gray;
-        margin-top: 20px;
-        margin-left: 10px;
-    }
+        .mymessage-response-box-middle-title { /*消息框文字第一行 学术信息*/
+            height: 30px;
+            flex-basis: 70px;
+            font-size: 14px;
+            line-height: 30px;
+            color: dodgerblue;
+            margin-top: 20px;
+        }
 
-    .mymessage-response-content { /*消息框文字第二行-主体内容*/
-        height: 30px;
-        width: 750px;
-        font-size: 16px;
-        line-height: 30px;
-        color: black;
-        margin-left: 10px;
-        margin-bottom: 40px;
+        .mymessage-response-box-middle-date { /*消息框文字第一行日期*/
+            height: 30px;
+            flex-basis: 300px;
+            font-size: 12px;
+            line-height: 30px;
+            color: gray;
+            margin-top: 20px;
+        }
+
+        .mymessage-response-content { /*消息框文字第二行-主体内容*/
+            height: 30px;
+            flex-basis: 750px;
+            font-size: 16px;
+            line-height: 30px;
+            color: black;
+            margin-left: 10px;
+            margin-bottom: 50px;
+        }
     }
 
     .mymessage-response-box-right { /*查看*/
-        height: 120px;
-        width: 60px;
+        flex-basis: 60px;
         line-height: 120px;
         font-size: 14px;
         color: gray;
+        margin-left: 10px;
     }
 }
+
+.mymessage-system {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    border: 1px solid $color-border;
+    overflow-y: auto;
+    background-color: $color-post;
+
+    .mymessage-system-box { /*一个系统消息的框框*/
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        min-height: 120px;
+        border-bottom: 1px dashed lightgray;
+
+        .mymessage-system-box-title { /*一个系统消息标题*/
+            height: 50px;
+            max-width: 200px;
+            font-size: 16px;
+            line-height: 50px;
+            color: $color-black;
+            margin-left: 30px;
+        }
+
+        .mymessage-system-box-date { /*一个系统消息日期*/
+            height: 50px;
+            width: 650px;
+            font-size: 12px;
+            line-height: 50px;
+            color: lightgray;
+            margin-left: 10px;
+        }
+
+        .mymessage-system-box-content { /*一个系统消息内容*/
+            height: 70px;
+            width: 840px;
+            font-size: 14px;
+            color: gray;
+            margin-left: 30px;
+            margin-right: 40px;
+        }
+    }
+}
+
+/*****************************************以下为我的关注的样式*********************************/
+.focus-root {
+    display: flex;
+    justify-content: center;
+}
+
 .focus {
     display: flex;
     flex-direction: column;
     width: 1140px;
     min-height: 780px;
 
-    margin: {
-        top: 20px;
-        bottom: 60px;
-    }
+    margin-bottom: 60px;
 }
 
 .focus-title {

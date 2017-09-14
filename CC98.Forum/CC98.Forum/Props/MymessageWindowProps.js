@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * 聊天窗口的状态信息，我和对方的用户名及头像
  */
-var MymessageWindowProps = (function () {
+var MymessageWindowProps = /** @class */ (function () {
     function MymessageWindowProps() {
     }
     return MymessageWindowProps;
