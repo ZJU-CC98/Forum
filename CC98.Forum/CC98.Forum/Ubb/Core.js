@@ -631,6 +631,9 @@ var UbbTagHandler = /** @class */ (function () {
     return UbbTagHandler;
 }());
 exports.UbbTagHandler = UbbTagHandler;
+/**
+ * 定义基于文字的 UBB 标签处理程序的基类。
+ */
 var TextTagHandler = /** @class */ (function (_super) {
     __extends(TextTagHandler, _super);
     function TextTagHandler() {
@@ -643,9 +646,7 @@ var TextTagHandler = /** @class */ (function (_super) {
 }(UbbTagHandler));
 exports.TextTagHandler = TextTagHandler;
 /**
-
-/**
- * 表示递归处理内容的标签处理程序。
+ * 定义递归处理内容的标签处理程序的基类。
  */
 var RecursiveTagHandler = /** @class */ (function (_super) {
     __extends(RecursiveTagHandler, _super);

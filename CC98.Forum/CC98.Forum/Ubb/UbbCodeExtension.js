@@ -14,6 +14,7 @@ var ImageTagHandler_1 = require("./ImageTagHandler");
  */
 function createEngine() {
     var engine = new Ubb.UbbCodeEngine();
+    // 在此处添加引擎所支持的所有标签处理器
     engine.tagHandlers.register(new BTagHandler_1.BTagHandler());
     engine.tagHandlers.register(new ImageTagHandler_1.ImageTagHandler());
     return engine;
