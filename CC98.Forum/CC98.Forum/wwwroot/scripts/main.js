@@ -5731,7 +5731,7 @@ var UbbTagData = /** @class */ (function () {
                         var nextSeperator = tokenString.substring(index + 1).match(/[=,]/i);
                         if (nextSeperator) {
                             // 结束位置
-                            var endMarkLocation = nextSeperator.index;
+                            var endMarkLocation = nextSeperator.index + index + 1;
                             index = endMarkLocation;
                             return Token.stringValue(tokenString.substring(start, endMarkLocation));
                         }
@@ -17876,7 +17876,7 @@ var App = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     App.prototype.render = function () {
-        var data = '[b]Test[/b] [img]http://file.cc98.org/uploadface/5298.png[/img] [noubb][b]Test No UBB[/b][/noubb]';
+        var data = '[b]Test[/b][size=5]abc[/size] [img]http://file.cc98.org/uploadface/5298.png[/img] [noubb][b]Test No UBB[/b][/noubb]';
         return React.createElement("div", null,
             React.createElement(react_router_dom_1.BrowserRouter, null,
                 React.createElement("div", { style: { backgroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column' } },

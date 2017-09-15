@@ -498,7 +498,7 @@ export class UbbTagData {
 						if (nextSeperator) {
 
 							// 结束位置
-							const endMarkLocation = nextSeperator.index;
+							const endMarkLocation = nextSeperator.index + index + 1;
 							index = endMarkLocation;
 							return Token.stringValue(tokenString.substring(start, endMarkLocation));
 
