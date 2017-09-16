@@ -18,8 +18,12 @@
     <None Remove="Components\UbbContainer.tsx" />
     <None Remove="UbbCode.tsx" />
     <None Remove="Ubb\BTagHandler.tsx" />
+    <None Remove="Ubb\ColorTagHandler.tsx" />
+    <None Remove="Ubb\DelTagHandler.tsx" />
     <None Remove="Ubb\ImageTagHandler.tsx" />
     <None Remove="Ubb\NoUbbTagHandler.tsx" />
+    <None Remove="Ubb\URLTagHandler.tsx" />
+    <None Remove="Ubb\UTagHandler.tsx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,9 +41,13 @@
   <ItemGroup>
     <TypeScriptCompile Include="Components\UbbContainer.tsx" />
     <TypeScriptCompile Include="Ubb\BTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\ColorTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\DelTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\ImageTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\Core.tsx" />
     <TypeScriptCompile Include="Ubb\NoUbbTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\URLTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\UTagHandler.tsx" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

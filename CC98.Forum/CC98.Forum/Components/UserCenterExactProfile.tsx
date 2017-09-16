@@ -4,12 +4,14 @@
 
 import * as React from 'react';
 import { UserInfo } from '../States/AppState';
+import { UbbContainer } from './UbbContainer'
 
 /**
  * 用户中心主页个人资料组件
  */
 export class UserCenterExactProfile extends React.Component<UserCenterExactProfileProps> {
     render() {
+        console.log(this.props.userInfo.signatureCode);
         return (
             <div className="user-profile">
                 <button type='button'>私信</button>
@@ -27,7 +29,7 @@ export class UserCenterExactProfile extends React.Component<UserCenterExactProfi
                 {this.props.userInfo.signatureCode ?
                     <div className='user-description'>
                         <p>个性签名</p>
-                        <p>{this.props.userInfo.signatureCode}</p>
+                        <UbbContainer code={this.props.userInfo.signatureCode} />
                     </div> : null
                 }
             </div>

@@ -7,15 +7,16 @@ import {
 	Route,
 	Link
 } from 'react-router-dom';
-import { Post } from './post'
-import { List } from './List'
-import { CurUserPost } from './CurUserPost'
-import { BoardList } from './BoardList'
-import { UserCenter } from './UserCenter'
-import { MyMessage } from './MyMessage'
-import { AllNewPost } from './AllNewPost'
-import { Header } from './Header'
-import { MainPage } from './MainPage'
+import { Post } from './post';
+import { List } from './List';
+import { CurUserPost } from './CurUserPost';
+import { BoardList } from './BoardList';
+import { UserCenter } from './UserCenter';
+import { MyMessage } from './MyMessage';
+import { AllNewPost } from './AllNewPost';
+import { Header } from './Header';
+import { MainPage } from './MainPage';
+import { User } from './User';
 
 import { UbbContainer } from './UbbContainer';
 import * as Ubb from '../Ubb/UbbCodeExtension';
@@ -39,10 +40,10 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
 export class App extends React.Component<{}, AppState> {
 
 	render() {
-		const data = '[b]Test[/b] [img]http://file.cc98.org/uploadface/5298.png[/img] [noubb][b]Test No UBB[/b][/noubb]';
+        const data = '[url=http://www.cc98.org]aaa[/url] [quote][color=#FF0000][size=5][i][del]这是一段引用[/del][/i][/size][/color][b][u]Test[/u][/b][/quote] [img]http://file.cc98.org/uploadface/5298.png[/img] [noubb][b]Test No UBB[/b][/noubb]';
 
 		return <div><Router>
-			<div style={{ backgroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column' }}>
+			<div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column' }}>
 				<Header />
 
 				<UbbContainer code={data} />
@@ -54,7 +55,8 @@ export class App extends React.Component<{}, AppState> {
 				<Route exact path="/boardlist" component={BoardList} />
 				<Route path="/usercenter" component={UserCenter} />
 				<Route path="/messagebox" component={MyMessage} />
-				<Route path="/newtopics" component={AllNewPost} />
+                <Route path="/newtopics" component={AllNewPost} />
+                <Route path="/user" component={User} />
 			</div>
 		</Router></div>;
 	}

@@ -1233,21 +1233,17 @@ body {
                     flex-wrap: wrap;
                     justify-content: space-between;
 
-                    & :first-child {
+                    & > p {
                         width: 100%;
                         margin-bottom: 20px;
                     }
 
-                    img {
-                        width: 33.33%;
-                        height: 33.33%;
-                    }
-
-                    & :last-child {
-                        width: 60%;
+                    article {
+                        width: 100%;
                         padding: 10px;
                         font-size: 12px;
                         text-indent: 2em;
+                        white-space: pre;
                     }
                 }
             }
