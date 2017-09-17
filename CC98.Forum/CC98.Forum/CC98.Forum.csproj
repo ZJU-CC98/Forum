@@ -46,7 +46,7 @@
     <TypeScriptCompile Include="Ubb\ImageTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\Core.tsx" />
     <TypeScriptCompile Include="Ubb\NoUbbTagHandler.tsx" />
-    <TypeScriptCompile Include="Ubb\URLTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\UrlTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\UTagHandler.tsx" />
   </ItemGroup>
 

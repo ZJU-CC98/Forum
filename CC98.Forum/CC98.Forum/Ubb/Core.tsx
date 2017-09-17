@@ -444,7 +444,7 @@ export class UbbTagData {
 			 * 从字符串中扫描获得下一个完整的语义符号。
 			 * @returns {string} 下一个完整的语义符号。
 			 */
-			function scanToken(): Token {
+			function scanToken(lastTokenType: TokenType): Token {
 
 				/**
 				 * 从当前位置开始扫描字符串，直到找到对应的结束字符。
@@ -492,8 +492,11 @@ export class UbbTagData {
 
 						const start = index;
 
+						// 根据最后一个标记的类型，本次标记的终止符会有所变化
+						const matchExp = lastTokenType === TokenType.ItemSeperator ? /[=,]/i : /,/i;
+
 						// 寻找下个分隔符
-						const nextSeperator = tokenString.substring(index + 1).match(/[=,]/i);
+						const nextSeperator = tokenString.substring(index + 1).match(matchExp);
 
 						if (nextSeperator) {
 
@@ -513,11 +516,13 @@ export class UbbTagData {
 
 
 			const allTokens: Token[] = [];
+			let lastTokenType = TokenType.ItemSeperator;
 
 			while (true) {
-				const newToken = scanToken();
+				const newToken = scanToken(lastTokenType);
 				if (newToken) {
 					allTokens.push(newToken);
+					lastTokenType = newToken.type;
 				} else {
 					break;
 				}
@@ -701,6 +706,19 @@ export abstract class UbbTagHandler {
 	 * @param context UBB 处理上下文。
 	 */
 	abstract exec(tagSegment: UbbTagSegment, context: UbbCodeContext): ReactNode;
+
+	/**
+	 * 在解析完成处理标签内部的内容后，将标签本身作为文本处理。
+	 * @param tagData 标签相关的数据。
+	 * @param content 标签的内容。
+	 */
+	protected static renderTagAsString(tagData: UbbTagData, content: ReactNode): ReactNode {
+		return [
+			`[${tagData.orignalString}]`,
+			content,
+			`[/${tagData.tagName}]`
+		];
+	}
 }
 
 /**
