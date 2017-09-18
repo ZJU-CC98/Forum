@@ -12,6 +12,7 @@ import { ColorTagHandler } from './ColorTagHandler';
 import { URLTagHandler } from './URLTagHandler';
 import { UTagHandler } from './UTagHandler';
 import { DelTagHandler } from './DelTagHandler';
+import { MP3TagHandler } from './MP3TagHandler';
 
 /**
  * 创建一个具有所有功能的默认引擎。
@@ -30,6 +31,7 @@ export function createEngine(): Ubb.UbbCodeEngine {
     engine.tagHandlers.register(new URLTagHandler());
     engine.tagHandlers.register(new UTagHandler());
     engine.tagHandlers.register(new DelTagHandler());
+    engine.tagHandlers.register(new MP3TagHandler());
 
 	return engine;
 }

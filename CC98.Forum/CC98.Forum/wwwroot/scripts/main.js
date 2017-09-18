@@ -17838,8 +17838,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterExactActivitiesPosts_1 = __webpack_require__(153);
-var UserCenterExactActivitiesReplies_1 = __webpack_require__(154);
+var UserCenterExactActivitiesPosts_1 = __webpack_require__(154);
+var UserCenterExactActivitiesReplies_1 = __webpack_require__(155);
 /**
  * 用户中心主页近期动态组件
  */
@@ -18003,7 +18003,7 @@ exports.MyMessageResponsebox = MyMessageResponsebox;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(130);
-module.exports = __webpack_require__(181);
+module.exports = __webpack_require__(184);
 
 
 /***/ }),
@@ -18050,11 +18050,11 @@ var List_1 = __webpack_require__(7);
 var CurUserPost_1 = __webpack_require__(137);
 var BoardList_1 = __webpack_require__(138);
 var UserCenter_1 = __webpack_require__(139);
-var MyMessage_1 = __webpack_require__(162);
-var AllNewPost_1 = __webpack_require__(172);
-var Header_1 = __webpack_require__(175);
-var MainPage_1 = __webpack_require__(176);
-var User_1 = __webpack_require__(178);
+var MyMessage_1 = __webpack_require__(165);
+var AllNewPost_1 = __webpack_require__(175);
+var Header_1 = __webpack_require__(178);
+var MainPage_1 = __webpack_require__(179);
+var User_1 = __webpack_require__(181);
 var UbbContainer_1 = __webpack_require__(124);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
@@ -18080,7 +18080,7 @@ var App = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     App.prototype.render = function () {
-        var data = '[url=http://www.cc98.org]aaa[/url] [quote][color=#FF0000][size=5][i][del]这是一段引用[/del][/i][/size][/color][b][u]Test[/u][/b][/quote] [img]http://file.cc98.org/uploadface/5298.png[/img] [noubb][b]Test No UBB[/b][/noubb]';
+        var data = '[flash=100px,20px,1]http://static.hdslb.com/miniloader.swf?aid=14469948&page=1[/flash] [mp3]http://file.cc98.org/uploadfile/2016/12/29/13593383608.mp3[/mp3][url=http://www.cc98.org]aaa[/url] [quote][color=#FF0000][size=5][i][del]这是一段引用[/del][/i][/size][/color][b][u]Test[/u][/b][/quote] [img]http://file.cc98.org/uploadface/5298.png[/img] [noubb][b]Test No UBB[/b][/noubb]';
         return React.createElement("div", null,
             React.createElement(react_router_dom_1.BrowserRouter, null,
                 React.createElement("div", { style: { backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column' } },
@@ -20090,7 +20090,7 @@ var UserCenterNavigation = /** @class */ (function (_super) {
                 React.createElement("hr", null),
                 React.createElement(CustomLink, { to: '/usercenter/myfans', label: '我的粉丝', myClassName: 'fa-users' }),
                 React.createElement("hr", null),
-                React.createElement(CustomLink, { to: '/usercenter/myconfig', label: '功能设置', myClassName: 'fa-cog' }))));
+                React.createElement(CustomLink, { to: '/usercenter/config', label: '功能设置', myClassName: 'fa-cog' }))));
     };
     return UserCenterNavigation;
 }(React.Component));
@@ -20129,10 +20129,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
 var UserCenterExact_1 = __webpack_require__(142);
-var UserCenterMyFollowings_1 = __webpack_require__(155);
-var UserCenterMyFans_1 = __webpack_require__(156);
-var UserCenterMyPosts_1 = __webpack_require__(157);
-var UserCenterMyFavorites_1 = __webpack_require__(160);
+var UserCenterMyFollowings_1 = __webpack_require__(156);
+var UserCenterMyFans_1 = __webpack_require__(157);
+var UserCenterMyPosts_1 = __webpack_require__(158);
+var UserCenterMyFavorites_1 = __webpack_require__(161);
+var UserCenterConfig_1 = __webpack_require__(163);
 /**
  * 用户中心主体
  */
@@ -20147,7 +20148,8 @@ var UserCenterRouter = /** @class */ (function (_super) {
             React.createElement(react_router_dom_1.Route, { path: '/usercenter/myfollowings', component: UserCenterMyFollowings_1.UserCenterMyFollowings }),
             React.createElement(react_router_dom_1.Route, { path: '/usercenter/myfans', component: UserCenterMyFans_1.UserCenterMyFans }),
             React.createElement(react_router_dom_1.Route, { path: '/usercenter/myposts', component: UserCenterMyPosts_1.UserCenterMyPosts }),
-            React.createElement(react_router_dom_1.Route, { path: '/usercenter/myfavorites', component: UserCenterMyFavorites_1.UserCenterMyFavorites })));
+            React.createElement(react_router_dom_1.Route, { path: '/usercenter/myfavorites', component: UserCenterMyFavorites_1.UserCenterMyFavorites }),
+            React.createElement(react_router_dom_1.Route, { path: '/usercenter/config', component: UserCenterConfig_1.UserCenterConfig })));
     };
     return UserCenterRouter;
 }(React.Component));
@@ -20302,6 +20304,7 @@ var ColorTagHandler_1 = __webpack_require__(149);
 var URLTagHandler_1 = __webpack_require__(150);
 var UTagHandler_1 = __webpack_require__(151);
 var DelTagHandler_1 = __webpack_require__(152);
+var MP3TagHandler_1 = __webpack_require__(153);
 /**
  * 创建一个具有所有功能的默认引擎。
  */
@@ -20317,6 +20320,7 @@ function createEngine() {
     engine.tagHandlers.register(new URLTagHandler_1.URLTagHandler());
     engine.tagHandlers.register(new UTagHandler_1.UTagHandler());
     engine.tagHandlers.register(new DelTagHandler_1.DelTagHandler());
+    engine.tagHandlers.register(new MP3TagHandler_1.MP3TagHandler());
     return engine;
 }
 exports.createEngine = createEngine;
@@ -20794,6 +20798,60 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
+var Ubb = __webpack_require__(3);
+/**
+ * 处理 [mp3] 标签的处理器。
+ */
+var MP3TagHandler = /** @class */ (function (_super) {
+    __extends(MP3TagHandler, _super);
+    function MP3TagHandler() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(MP3TagHandler.prototype, "tagName", {
+        get: function () {
+            return 'mp3';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MP3TagHandler.prototype.execCore = function (innerContent, tagData, context) {
+        //不允许显示媒体内容
+        if (context.options.allowMediaContent === false) {
+            return innerContent;
+        }
+        //是否自动播放
+        var autoPlay = false;
+        if (tagData.value('mp3') === '1' && context.options.allowAutoPlay === true) {
+            autoPlay = true;
+        }
+        return (React.createElement("audio", { src: innerContent, controls: true, autoPlay: autoPlay }));
+    };
+    return MP3TagHandler;
+}(Ubb.TextTagHandler));
+exports.MP3TagHandler = MP3TagHandler;
+
+
+/***/ }),
+/* 154 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(1);
 var UserCenterExactActivitiesPost_1 = __webpack_require__(6);
 var AppState_1 = __webpack_require__(4);
 //用户中心主页帖子动态组件
@@ -20828,7 +20886,7 @@ userRecentPost.title = '这是帖子标题';
 
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20882,7 +20940,7 @@ userRecentPost.title = '这是帖子标题';
 
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20936,7 +20994,7 @@ userFanInfo.name = '董松松松';
 
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20990,7 +21048,7 @@ userFanInfo.name = '董松松松';
 
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21008,8 +21066,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterMyPostsExact_1 = __webpack_require__(158);
-var UserCenterMyPostsReplies_1 = __webpack_require__(159);
+var UserCenterMyPostsExact_1 = __webpack_require__(159);
+var UserCenterMyPostsReplies_1 = __webpack_require__(160);
 /**
  * 用户中心我的主题组件
  */
@@ -21040,7 +21098,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21093,7 +21151,7 @@ userRecentPost.title = '这是帖子标题';
 
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21147,7 +21205,7 @@ userRecentPost.title = '这是帖子标题';
 
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21168,7 +21226,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterMyFavoritesPosts_1 = __webpack_require__(161);
+var UserCenterMyFavoritesPosts_1 = __webpack_require__(162);
 //import { UserCenterMyFavoritesPostsBoards } from './UserCenterMyFavoritesPostsBoards';
 //<Route path='/usercenter/myfavorites/boards' component={UserCenterMyFavoritesPostsBoards} />
 /**
@@ -21200,7 +21258,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21253,7 +21311,83 @@ userRecentPost.title = '这是帖子标题';
 
 
 /***/ }),
-/* 162 */
+/* 163 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(1);
+var UserCenterConfigAvatar_1 = __webpack_require__(164);
+var UserCenterConfig = /** @class */ (function (_super) {
+    __extends(UserCenterConfig, _super);
+    function UserCenterConfig() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserCenterConfig.prototype.render = function () {
+        return (React.createElement("div", { className: "user-center-config" },
+            React.createElement(UserCenterConfigAvatar_1.UserCenterConfigAvatar, null),
+            React.createElement("hr", null)));
+    };
+    return UserCenterConfig;
+}(React.Component));
+exports.UserCenterConfig = UserCenterConfig;
+
+
+/***/ }),
+/* 164 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(1);
+var UserCenterConfigAvatar = /** @class */ (function (_super) {
+    __extends(UserCenterConfigAvatar, _super);
+    function UserCenterConfigAvatar() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserCenterConfigAvatar.prototype.render = function () {
+        return (React.createElement("div", { className: "user-center-config-avatar" },
+            React.createElement("img", { src: '' }),
+            React.createElement("div", null,
+                React.createElement("button", { id: "chooseDefaultAvatar", type: "button" }, "\u9009\u62E9\u8BBA\u575B\u5934\u50CF"),
+                React.createElement("button", { id: "uploadAvatar", type: "button" }, "\u4E0A\u4F20\u5934\u50CF"),
+                React.createElement("p", null, "\u56FE\u7247\u957F\u5BBD\u4E3A160\u00D7160\u50CF\u7D20\u7684\u56FE\u7247"))));
+    };
+    return UserCenterConfigAvatar;
+}(React.Component));
+exports.UserCenterConfigAvatar = UserCenterConfigAvatar;
+
+
+/***/ }),
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21270,10 +21404,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var MyMessageMessage_1 = __webpack_require__(163);
-var MyMessageResponse_1 = __webpack_require__(168);
-var MyMessageAttme_1 = __webpack_require__(169);
-var MyMessageSystem_1 = __webpack_require__(170);
+var MyMessageMessage_1 = __webpack_require__(166);
+var MyMessageResponse_1 = __webpack_require__(171);
+var MyMessageAttme_1 = __webpack_require__(172);
+var MyMessageSystem_1 = __webpack_require__(173);
 var react_router_dom_1 = __webpack_require__(2);
 /**
  * 网站的主页面对象。
@@ -21351,7 +21485,7 @@ function sendRequest() {
 
 
 /***/ }),
-/* 163 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21406,8 +21540,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var MyMessagePerson_1 = __webpack_require__(164);
-var MyMessageWindow_1 = __webpack_require__(165);
+var MyMessagePerson_1 = __webpack_require__(167);
+var MyMessageWindow_1 = __webpack_require__(168);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -21553,7 +21687,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 164 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21595,7 +21729,7 @@ exports.MyMessagePerson = MyMessagePerson;
 
 
 /***/ }),
-/* 165 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21650,8 +21784,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var MyMessageSender_1 = __webpack_require__(166);
-var MyMessageReceiver_1 = __webpack_require__(167);
+var MyMessageSender_1 = __webpack_require__(169);
+var MyMessageReceiver_1 = __webpack_require__(170);
 var MyMessageWindow = /** @class */ (function (_super) {
     __extends(MyMessageWindow, _super);
     function MyMessageWindow(props) {
@@ -21796,7 +21930,7 @@ function reverseArr(arr, s, e) {
 
 
 /***/ }),
-/* 166 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21841,7 +21975,7 @@ exports.MyMessageSender = MyMessageSender;
 
 
 /***/ }),
-/* 167 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21891,7 +22025,7 @@ exports.MyMessageReceiver = MyMessageReceiver;
 
 
 /***/ }),
-/* 168 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22050,7 +22184,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 169 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22209,7 +22343,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 170 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22264,7 +22398,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var MyMessageSystembox_1 = __webpack_require__(171);
+var MyMessageSystembox_1 = __webpack_require__(174);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -22367,7 +22501,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 171 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22409,7 +22543,7 @@ exports.MyMessageSystembox = MyMessageSystembox;
 
 
 /***/ }),
-/* 172 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22429,7 +22563,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var FocusPostAreaComponent_1 = __webpack_require__(173);
+var FocusPostAreaComponent_1 = __webpack_require__(176);
 /**
  * 网站的主页面对象。
  */
@@ -22455,7 +22589,7 @@ exports.AllNewPost = AllNewPost;
 
 
 /***/ }),
-/* 173 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22510,7 +22644,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var FocusPostComponent_1 = __webpack_require__(174);
+var FocusPostComponent_1 = __webpack_require__(177);
 var Utility = __webpack_require__(5);
 /**
  * 表示我关注的某个版面的主题列表
@@ -22684,7 +22818,7 @@ function isBottom() {
 
 
 /***/ }),
-/* 174 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22748,7 +22882,7 @@ exports.FocusPostComponent = FocusPostComponent;
 
 
 /***/ }),
-/* 175 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22935,7 +23069,7 @@ exports.Header = Header;
 
 
 /***/ }),
-/* 176 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22987,7 +23121,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var HotTopic_1 = __webpack_require__(177);
+var HotTopic_1 = __webpack_require__(180);
 var Recommended1 = /** @class */ (function (_super) {
     __extends(Recommended1, _super);
     function Recommended1() {
@@ -23270,7 +23404,7 @@ exports.MainPage = MainPage;
 
 
 /***/ }),
-/* 177 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23293,7 +23427,7 @@ exports.HotTopic = HotTopic;
 
 
 /***/ }),
-/* 178 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23314,8 +23448,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
-var UserNavigation_1 = __webpack_require__(179);
-var UserRouter_1 = __webpack_require__(180);
+var UserNavigation_1 = __webpack_require__(182);
+var UserRouter_1 = __webpack_require__(183);
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
@@ -23336,7 +23470,7 @@ exports.User = User;
 
 
 /***/ }),
-/* 179 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23379,7 +23513,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 180 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23504,7 +23638,7 @@ var UserExact = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 181 */
+/* 184 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

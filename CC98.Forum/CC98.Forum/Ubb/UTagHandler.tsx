@@ -14,7 +14,15 @@ export class UTagHandler extends Ubb.RecursiveTagHandler {
 	}
 
 	execCore(innerContent: React.ReactNode, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
+        const style = {
+            textDecoration: 'underline'
+        };
 
-		return <u>{innerContent}</u>;
+
+        if (context.options.compatibility === Ubb.UbbCompatiblityMode.EnforceMorden) {
+            return <span style={style}>{innerContent}</span>;
+        } else {
+            return <u>{innerContent}</u>;
+        }
 	}
 }
