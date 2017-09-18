@@ -75,7 +75,7 @@ export class HotTopicComponent extends React.Component<{}, HotTopicState> {
         var response = await fetch('http://api.cc98.org/Topic/Hot');
         var data = await response.json();
         for (let i = 0; i < 10; i++) {
-            hotTopics[i] = new HotTopic(data[i].title, data[i].boardName,data[i].id,data[i].boardId)
+            hotTopics[i] = new HotTopic(data[i].title, data[i].boardName, data[i].id, data[i].boardId)
         }
         return hotTopics;
     }
@@ -89,11 +89,11 @@ export class HotTopicComponent extends React.Component<{}, HotTopicState> {
 
 
     convertHotTopic(item: HotTopic) {
-let boardUrl=`/list/${item.boardid}`;
-let topicUrl=`/topic/${item.id}`;
+        let boardUrl = `/list/${item.boardid}`;
+        let topicUrl = `/topic/${item.id}`;
         return <div className="listRow">
-            <div className="boardName" > <a href={boardUrl}>[{item.boardName}]</a></div><div className="topicTitle"><a href={topicUrl}>{item.title}</a></div>
-        </div>
+            <div className="boardName" > <a href={boardUrl}>[{item.boardName}]</a></div > <div className="topicTitle"><a href={topicUrl}>{item.title}</a></div>
+        </div >
     }
 
     render() {
