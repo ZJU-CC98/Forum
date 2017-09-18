@@ -6,25 +6,19 @@ import * as React from 'react';
 import * as Ubb from './Core';
 
 /**
- * 处理 [quote] 标签的处理器。
+ * 处理 [cursor] 标签的处理器。
  */
-export class QuoteTagHandler extends Ubb.RecursiveTagHandler {
+export class CursorTagHandler extends Ubb.RecursiveTagHandler {
 
-	get tagName(): string { return 'quote' };
+	get tagName(): string { return 'cursor' };
 
     execCore(innerContent: React.ReactNode, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
+        const cursor = tagData.value('cursor');
+
         const style = {
-            width: '100%',
-            padding: '13px 19px 13px 17px',
-            backgroundColor: '#F5FAFF'
+            cursor: cursor
         };
         
-        return <div style={style}>{innerContent}</div>;
+        return <span style={style}>{innerContent}</span>;
 	}
-}
-
-export class QuotexTagHandler extends QuoteTagHandler {
-    get tagName() {
-        return 'quotex';
-    }
 }

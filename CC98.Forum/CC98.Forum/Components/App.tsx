@@ -40,13 +40,16 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
 export class App extends React.Component<{}, AppState> {
 
 	render() {
-        const data = '[flash=100px,20px,1]http://static.hdslb.com/miniloader.swf?aid=14469948&page=1[/flash] [mp3]http://file.cc98.org/uploadfile/2016/12/29/13593383608.mp3[/mp3][url=http://www.cc98.org]aaa[/url] [quote][color=#FF0000][size=5][i][del]这是一段引用[/del][/i][/size][/color][b][u]Test[/u][/b][/quote] [img]http://file.cc98.org/uploadface/5298.png[/img] [noubb][b]Test No UBB[/b][/noubb]';
+        const data = '[flash=100px,20px,1]http://static.hdslb.com/miniloader.swf?aid=14469948&page=1[/flash] [mp3]http://file.cc98.org/uploadfile/2016/12/29/13593383608.mp3[/mp3][url=http://www.cc98.org]aaa[/url] [quotex][quote][color=#FF0000][size=5][i][del]这是一段引用[/del][/i][/size][/color][b][u]Test[/u][/b][/quote][/quotex] [img]http://file.cc98.org/uploadface/5298.png[/img] [noubb][b]Test No UBB[/b][/noubb]';
+        //测试ubb[code]tag用
+        const code = "[code]\n[quotex][b]以下是引用[i]挠头侠在2017/9/17 22:35:38[/i]的发言：[/b]\n校...校...校车?\n[/quotex]\n[/code]\n\n";
 
 		return <div><Router>
 			<div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column' }}>
 				<Header />
 
 				<UbbContainer code={data} />
+				<UbbContainer code={code} />
 
 				<Route exact path="/" component={MainPage}></Route>
 				<Route exact path="/topic/:topicid/:page?" component={Post} />

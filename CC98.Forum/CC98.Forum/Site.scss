@@ -2715,3 +2715,27 @@ body {
     margin: 0;
     padding: 0;
 }
+
+/*
+* UBB用
+*/
+
+.ubb-code {
+    ol {
+        list-style: none;
+        counter-reset: li
+    }
+
+    li {
+        counter-increment: li
+    }
+
+    li::before {
+        content: counter(li);
+        display: inline-flex;
+        width: 50px;
+        margin: 0 10px;
+        justify-content: center;
+        background-color: #ebebeb;
+    }
+}
