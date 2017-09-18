@@ -9,7 +9,7 @@ import { ITagHandler } from './ITagHandler';
 import { SizeTagHandler } from './SizeTagHandler';
 import { QuoteTagHandler } from './QuoteTagHandler';
 import { ColorTagHandler } from './ColorTagHandler';
-import { URLTagHandler } from './URLTagHandler';
+import { UrlTagHandler as URLTagHandler } from './URLTagHandler';
 import { UTagHandler } from './UTagHandler';
 import { DelTagHandler } from './DelTagHandler';
 import { MP3TagHandler } from './MP3TagHandler';

@@ -8,7 +8,7 @@ import * as Ubb from './Core';
 /**
  * 处理 [url] 标签的处理器。
  */
-export class URLTagHandler extends Ubb.TextTagHandler {
+export class UrlTagHandler extends Ubb.TextTagHandler {
     get tagName(): string {
         return 'url';
     }

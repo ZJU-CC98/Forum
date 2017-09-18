@@ -53,7 +53,7 @@
     <TypeScriptCompile Include="Ubb\Core.tsx" />
     <TypeScriptCompile Include="Ubb\MP3TagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\NoUbbTagHandler.tsx" />
-    <TypeScriptCompile Include="Ubb\URLTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\UrlTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\UTagHandler.tsx" />
   </ItemGroup>
 
