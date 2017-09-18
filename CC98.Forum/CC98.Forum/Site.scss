@@ -1,5 +1,4 @@
-﻿@import url("test.scss");
-$bgcolor: #E9E9E9;
+﻿$bgcolor: #E9E9E9;
 $bgcolor2: #F5FAFD;
 $color-body: rgb(245,250,255);
 $color-thinBlack: rgb(120,120,120);
@@ -308,8 +307,8 @@ $color-black: rgb(32,32,32);
     max-width: 1140px;
     margin-top: 20px;
     margin-bottom: 20px;
-    word-wrap: break-word;
-    color: rgb(80,80,80);
+    word-wrap:break-word;
+    color:rgb(80,80,80);
 }
 
 .signature {
@@ -439,12 +438,12 @@ $color-black: rgb(32,32,32);
     align-items: flex-end;
 }
 
-#reply:nth-child(2n+1) .rpyClr a {
-    color: #2576A8;
+#reply:nth-child(2n+1) .rpyClr a{
+       color: #2576A8;
 }
 
-#reply:nth-child(2n) .rpyClr a {
-    color: #EE0000;
+#reply:nth-child(2n) .rpyClr a{
+        color: #EE0000;
 }
 
 #replierMes {
@@ -536,7 +535,6 @@ $color-black: rgb(32,32,32);
     color: #FFFFFF;
     border-radius: 5px;
 }
-
 .listContentTag {
     margin-top: 10px;
     margin-left: 20px;
@@ -604,11 +602,11 @@ a {
     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
     box-shadow: 0 1px 2px rgba(0,0,0,.2);
 }
-
 .orange {
     color: #fef4e9;
     border: solid 1px #da7c0c;
     background: #f78d1d;
+    
 }
 
 .orange:hover {
@@ -617,24 +615,23 @@ a {
 
 .orange:active {
     color: #fcd3a5;
-    background-color: #faa51a;
+    background-color:#faa51a;
 }
-
 .green {
     color: #fef4e9;
     border: solid 1px #71c671;
     background-color: #66cd00;
+   
 }
 
 .green:hover {
-    background-color: #71cd61
+    background-color:#71cd61
 }
 
 .green:active {
     color: #fcd3a5;
     background-color: #66cd00;
 }
-
 .button:hover {
     text-decoration: none;
 }
@@ -643,7 +640,6 @@ a {
     position: relative;
     top: 1px;
 }
-
 .pagination {
     display: inline-block;
     padding-left: 0;
@@ -798,20 +794,18 @@ a {
     cursor: not-allowed;
     background-color: #fff;
 }
-
-.page-item {
-    box-sizing: inherit;
+.page-item{
+    box-sizing:inherit;
 }
-
-.page-link {
-    position: relative;
-    display: block;
-    padding-left: 5px;
-    padding-top: 5px;
-    color: #0275d8;
-    margin-left: -1px;
-    border: 1px solid #ddd;
-    line-height: 2px;
+.page-link{
+    position:relative;
+    display:block;
+    padding-left:5px;
+    padding-top:5px;
+    color:#0275d8;
+    margin-left:-1px;
+    border:1px solid #ddd;
+    line-height:2px;
 }
 
 
@@ -958,21 +952,19 @@ a {
 .anArea {
     display: flex;
     flex-direction: column;
-    width: 1140px;
+    width:1140px;
     box-sizing: border-box;
     background-color: rgb(252,252,252);
     margin-bottom: 30px;
 }
-
-.viewBoard {
-    margin-left: 30px;
-    border-radius: 5px;
-    background-color: #FFFFFF;
-    border-color: #000000;
-    width: 30px;
-    height: 20px;
+.viewBoard{
+    margin-left:30px;
+    border-radius:5px ;
+    background-color:#FFFFFF;
+    border-color:#000000;
+    width:30px;
+    height:20px;
 }
-
 .hideBoard {
     margin-left: 30px;
     border-radius: 5px;
@@ -981,7 +973,6 @@ a {
     width: 30px;
     height: 20px;
 }
-
 .areaName {
     font-size: 14px;
     font-family: 微软雅黑;
@@ -1001,14 +992,12 @@ a {
     margin: 18px 15px 18px 18px;
     width: 250px;
 }
-
 .noImgBoardContent {
     display: flex;
     flex-direction: column;
     margin: 0px 15px 18px 18px;
     width: 250px;
 }
-
 .greenBackdrop {
     height: 88px;
     width: 250px;
@@ -1052,14 +1041,13 @@ a {
 }
 
 //个人中心页面用
-.user-center {
-    * {
-        margin: 0;
-        padding: 0;
-        border: 0;
-    }
+.user-center{
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
 }
-
+}
 body {
     background-color: rgb(245,250,255);
 }
@@ -1244,21 +1232,17 @@ body {
                     flex-wrap: wrap;
                     justify-content: space-between;
 
-                    & :first-child {
+                    & > p {
                         width: 100%;
                         margin-bottom: 20px;
                     }
 
-                    img {
-                        width: 33.33%;
-                        height: 33.33%;
-                    }
-
-                    & :last-child {
-                        width: 60%;
+                    article {
+                        width: 100%;
                         padding: 10px;
                         font-size: 12px;
                         text-indent: 2em;
+                        white-space: pre;
                     }
                 }
             }
@@ -1442,6 +1426,7 @@ body {
     flex-direction: column;
     width: 1140px;
     height: 780px;
+
     margin-bottom: 60px;
 }
 
@@ -1998,6 +1983,7 @@ body {
     flex-direction: column;
     width: 1140px;
     min-height: 780px;
+
     margin-bottom: 60px;
 }
 
@@ -2180,6 +2166,7 @@ body {
     height: 50px;
     width: 100%;
     opacity: 0.5;
+
     justify-content: center;
     background-color: rgba(80,80,80,0.6); //仅背景条半透明
 }
@@ -2270,8 +2257,8 @@ body {
 }
 
 #dropdown .sub {
-    display: none;
     width: 94px;
+    display: none;
     font-size: 12px;
     font-family: 微软雅黑;
     color: rgb(255,255,255);
@@ -2394,7 +2381,11 @@ body {
     padding: 25px 0 0 20px;
 }
 
-.content1, .content2, .content3, .content4, .content5 {
+.content1 {
+    display: none;
+}
+
+.content2, .content3, .content4, .content5 {
     display: none;
 }
 
@@ -2688,7 +2679,6 @@ body {
     background-color: rgb(0,157,255);
     margin-top: 20px;
 }
-
 .mainPage {
     display: flex;
     flex-direction: row;
@@ -2721,8 +2711,31 @@ body {
     border-radius: 20px 0;
     margin-bottom: 30px;
 }
-
 body {
     margin: 0;
     padding: 0;
+}
+
+/*
+* UBB用
+*/
+
+.ubb-code {
+    ol {
+        list-style: none;
+        counter-reset: li
+    }
+
+    li {
+        counter-increment: li
+    }
+
+    li::before {
+        content: counter(li);
+        display: inline-flex;
+        width: 50px;
+        margin: 0 10px;
+        justify-content: center;
+        background-color: #ebebeb;
+    }
 }
