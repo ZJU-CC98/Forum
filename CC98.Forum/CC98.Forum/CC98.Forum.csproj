@@ -17,9 +17,6 @@
     <None Remove="CC98.Forum.rar" />
     <None Remove="Components\UbbContainer.tsx" />
     <None Remove="UbbCode.tsx" />
-    <None Remove="Ubb\BTagHandler.tsx" />
-    <None Remove="Ubb\ImageTagHandler.tsx" />
-    <None Remove="Ubb\NoUbbTagHandler.tsx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,10 +33,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="Components\UbbContainer.tsx" />
-    <TypeScriptCompile Include="Ubb\BTagHandler.tsx" />
-    <TypeScriptCompile Include="Ubb\ImageTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\Core.tsx" />
-    <TypeScriptCompile Include="Ubb\NoUbbTagHandler.tsx" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

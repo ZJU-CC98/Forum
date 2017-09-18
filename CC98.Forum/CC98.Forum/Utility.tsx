@@ -44,7 +44,7 @@ export async function getBoardTopicAsync(curPage,boardid) {
         topicNumberInPage = (totalTopicCount - (curPage - 1) * 20);
     }
     for (let i = 0; i < topicNumberInPage; i++) {
-        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].authorName || '匿名', data[i].id, data[i].authorId);
+        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].authorName || '匿名', data[i].id, data[i].authorId, data[i].lastPostInfo);
     }
     return boardtopics;
 
@@ -95,7 +95,7 @@ export async function getTopicContent(topicid: number, curPage: number) {
     return post;
 }
 export function convertHotTopic(item: State.TopicTitleAndContentState) {
-    return <TopicTitleAndContent title={item.title} authorName={item.authorName} id={item.id} authorId={item.authorId} />
+    return <TopicTitleAndContent title={item.title} authorName={item.authorName} id={item.id} authorId={item.authorId} lastPostTime={item.lastPostInfo.time} lastPostUserName={item.lastPostInfo.userName} />
         ;
 }
 export function getPager(curPage, totalPage) {

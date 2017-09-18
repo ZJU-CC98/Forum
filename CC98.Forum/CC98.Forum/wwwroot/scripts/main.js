@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 125);
+/******/ 	return __webpack_require__(__webpack_require__.s = 124);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1896,7 +1896,7 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            __webpack_require__(132)("./" + name);
+            __webpack_require__(130)("./" + name);
             // because defineLocale currently also sets the global locale, we
             // want to undo that for lazy loaded locales
             getSetGlobalLocale(oldLocale);
@@ -4531,7 +4531,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(131)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(129)(module)))
 
 /***/ }),
 /* 1 */
@@ -4677,11 +4677,12 @@ var TopicTitleAndContentState = /** @class */ (function () {
           this.lastReply = lastReply;
           this.title = title;
       }*/
-    function TopicTitleAndContentState(title, authorName, topicid, authorId) {
+    function TopicTitleAndContentState(title, authorName, topicid, authorId, lastPostInfo) {
         this.authorName = authorName;
         this.title = title;
         this.id = topicid;
         this.authorId = authorId;
+        this.lastPostInfo = lastPostInfo;
     }
     return TopicTitleAndContentState;
 }());
@@ -4828,8 +4829,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var State = __webpack_require__(3);
 var React = __webpack_require__(1);
-var List_1 = __webpack_require__(7);
-var $ = __webpack_require__(130);
+var List_1 = __webpack_require__(6);
+var $ = __webpack_require__(131);
 /*export async function getData() {
     let hottopics: State.TopicTitleAndContentState[] = [];
     let response = await fetch('http://api.cc98.org/Topic/Hot');
@@ -4875,7 +4876,7 @@ function getBoardTopicAsync(curPage, boardid) {
                         topicNumberInPage = (totalTopicCount - (curPage - 1) * 20);
                     }
                     for (i = 0; i < topicNumberInPage; i++) {
-                        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].authorName || '匿名', data[i].id, data[i].authorId);
+                        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].authorName || '匿名', data[i].id, data[i].authorId, data[i].lastPostInfo);
                     }
                     return [2 /*return*/, boardtopics];
             }
@@ -4978,7 +4979,7 @@ function getTopicContent(topicid, curPage) {
 }
 exports.getTopicContent = getTopicContent;
 function convertHotTopic(item) {
-    return React.createElement(List_1.TopicTitleAndContent, { title: item.title, authorName: item.authorName, id: item.id, authorId: item.authorId });
+    return React.createElement(List_1.TopicTitleAndContent, { title: item.title, authorName: item.authorName, id: item.id, authorId: item.authorId, lastPostTime: item.lastPostInfo.time, lastPostUserName: item.lastPostInfo.userName });
 }
 exports.convertHotTopic = convertHotTopic;
 function getPager(curPage, totalPage) {
@@ -5271,877 +5272,6 @@ exports.UserCenterExactActivitiesPost = UserCenterExactActivitiesPost;
 
 "use strict";
 
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * 提供 UBB 处理上下文所需要的相关数据。
- */
-var UbbCodeContextData = /** @class */ (function () {
-    function UbbCodeContextData() {
-    }
-    return UbbCodeContextData;
-}());
-exports.UbbCodeContextData = UbbCodeContextData;
-/**
- * 处理 UBB 编码时可用于存储相关信息的上下文对象。
- */
-var UbbCodeContext = /** @class */ (function () {
-    /**
-     * 初始化一个上下文对象的新实例。
-     * @param engine 引擎对象。
-     * @param options 处理选项。
-     */
-    function UbbCodeContext(engine, options) {
-        this._engine = engine;
-        this._options = options;
-    }
-    Object.defineProperty(UbbCodeContext.prototype, "engine", {
-        /**
-         * 获取关联到本次处理上下文的处理引擎对象。
-         * @returns {UbbCodeEngine} 关联到本次处理上下文的处理引擎对象。
-         */
-        get: function () {
-            return this._engine;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(UbbCodeContext.prototype, "options", {
-        /**
-         * 获取处理 UBB 需要注意的选项。
-         * @returns {UbbCodeOptions} 处理 UBB 需要注意的选项。
-         */
-        get: function () {
-            return this._options;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(UbbCodeContext.prototype, "data", {
-        /**
-         * 获取上下文相关的数据。
-         * @returns {UbbCodeContextData} 上下文相关的数据。
-         */
-        get: function () {
-            return this._engine.data;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return UbbCodeContext;
-}());
-exports.UbbCodeContext = UbbCodeContext;
-/**
- * 控制 UBB 编码的选项。在 UBB 编码过程中，需要考虑这些选项。
- */
-var UbbCodeOptions = /** @class */ (function () {
-    function UbbCodeOptions() {
-        /**
-         * 是否自动检测 URL 并添加链接效果。
-         */
-        this.autoDetectUrl = true;
-        /**
-         * 是否允许外部链接。
-         */
-        this.allowExternalUrl = true;
-        /**
-         * 是否允许显示图像。
-         */
-        this.allowImage = true;
-        /**
-         * 是否允许多媒体资源，如视频，音频，Flash 等。
-         */
-        this.allowMediaContent = true;
-        /**
-         * 是否允许自动播放多媒体资源。
-         */
-        this.allowAutoPlay = true;
-        /**
-         * UBB 处理中的兼容性控制选项。
-         */
-        this.compatibility = UbbCompatiblityMode.Recommended;
-    }
-    return UbbCodeOptions;
-}());
-exports.UbbCodeOptions = UbbCodeOptions;
-/**
- * 定义 UBB 呈现时使用的兼容性模式。
- */
-var UbbCompatiblityMode;
-(function (UbbCompatiblityMode) {
-    /**
-     * 使用最低级别兼容性，尽可能保持 UBB 代码的原始含义，即使可能会带来显示效果问题。
-     */
-    UbbCompatiblityMode[UbbCompatiblityMode["Transitional"] = 0] = "Transitional";
-    /**
-     * 如果能在不改变语义的情况下使用较新的呈现技术，则使用新技术；如果不能保证语义一致则不进行更改。
-     */
-    UbbCompatiblityMode[UbbCompatiblityMode["Recommended"] = 1] = "Recommended";
-    /**
-     * 强制使用对现代浏览器更友好的新技术呈现，即使可能在一定程度上改变语义。
-     */
-    UbbCompatiblityMode[UbbCompatiblityMode["EnforceMorden"] = 2] = "EnforceMorden";
-})(UbbCompatiblityMode = exports.UbbCompatiblityMode || (exports.UbbCompatiblityMode = {}));
-/**
-         * 定义符号的类型。
-         */
-var TokenType;
-(function (TokenType) {
-    /**
-     * 一串文本。
-     */
-    TokenType[TokenType["String"] = 0] = "String";
-    /**
-     * 项目之间的分隔符。
-     */
-    TokenType[TokenType["ItemSeperator"] = 1] = "ItemSeperator";
-    /**
-     * 单个项目内名称和值的分隔符。
-     */
-    TokenType[TokenType["NameValueSeperator"] = 2] = "NameValueSeperator";
-})(TokenType || (TokenType = {}));
-/**
- * 表示一个符号。
- */
-var Token = /** @class */ (function () {
-    /**
-     * 初始化一个符号对象的新实例。
-     * @param type 符号的类型。
-     * @param value 符号的值。
-     */
-    function Token(type, value) {
-        this.type = type;
-        this.value = value;
-    }
-    /**
-     * 创建一个表示一串文本的符号。
-     * @param value 文本的值内容。
-     */
-    Token.stringValue = function (value) {
-        return new Token(TokenType.String, value);
-    };
-    /**
-     * 获取表示项目分隔符的符号。
-     */
-    Token.itemSeperator = new Token(TokenType.ItemSeperator, null);
-    /**
-     * 获取表示值分隔符的符号。
-     */
-    Token.nameValueSeperator = new Token(TokenType.NameValueSeperator, null);
-    return Token;
-}());
-/**
- * 定义 UBB 片段的类型。
- */
-var UbbSegmentType;
-(function (UbbSegmentType) {
-    /**
-     * 纯文字片段。
-     */
-    UbbSegmentType[UbbSegmentType["Text"] = 0] = "Text";
-    /**
-     * 标签片段。
-     */
-    UbbSegmentType[UbbSegmentType["Tag"] = 1] = "Tag";
-})(UbbSegmentType || (UbbSegmentType = {}));
-/**
- * 表示 UBB 内容的一个片段。
- */
-var UbbSegment = /** @class */ (function () {
-    /**
-     * 初始化一个 UBB 片段的新实例。
-     * @param parent 新片段的上级。
-     */
-    function UbbSegment(parent) {
-        this._parent = parent;
-    }
-    Object.defineProperty(UbbSegment.prototype, "parent", {
-        /**
-         * 获取该对象的上级片段。
-         * @returns {UbbSegment} 该对象的上级片段。
-         */
-        get: function () { return this._parent; },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    return UbbSegment;
-}());
-/**
- * 表示 UBB 的文字片段。
- */
-var UbbTextSegment = /** @class */ (function (_super) {
-    __extends(UbbTextSegment, _super);
-    /**
-     * 创建一个新的 UbbTextSegment 对象。
-     * @param text 新片段包含的文字。
-     */
-    function UbbTextSegment(text, parent) {
-        var _this = _super.call(this, parent) || this;
-        _this._text = text;
-        return _this;
-    }
-    Object.defineProperty(UbbTextSegment.prototype, "type", {
-        get: function () { return UbbSegmentType.Text; },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(UbbTextSegment.prototype, "text", {
-        /**
-         * 获取片段中包含的文字。
-         * @returns {string} 片段中包含的文字。
-         */
-        get: function () { return this._text; },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    UbbTextSegment.prototype.clone = function (newParent) {
-        return new UbbTextSegment(this._text, newParent);
-    };
-    return UbbTextSegment;
-}(UbbSegment));
-/**
- * 表示 UBB 的标签片段。
- */
-var UbbTagSegment = /** @class */ (function (_super) {
-    __extends(UbbTagSegment, _super);
-    function UbbTagSegment(tagData, parent) {
-        var _this = _super.call(this, parent) || this;
-        /**
-         * 标签片段是否关闭。
-         */
-        _this._isClosed = false;
-        /**
-         * 标签中包含的子标签数据。
-         */
-        _this._subSegments = [];
-        _this._tagData = tagData;
-        return _this;
-    }
-    Object.defineProperty(UbbTagSegment.prototype, "type", {
-        get: function () { return UbbSegmentType.Tag; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(UbbTagSegment.prototype, "isClosed", {
-        /**
-         * 获取一个值，指示标签是否关闭。
-         * @returns {boolean}
-         */
-        get: function () { return this._isClosed; },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(UbbTagSegment.prototype, "tagData", {
-        get: function () { return this._tagData; },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(UbbTagSegment.prototype, "subSegments", {
-        get: function () { return this._subSegments; },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    /**
-     * 强制关闭一个标签，并将标签挂接到新的上级标签。
-     * @param segment 要关闭的标签。
-     * @param newParent 新的上级标签。
-     * @returns {UbbSegment[]} 产生的新的标签的集合。
-     */
-    UbbTagSegment.forceClose = function (segment, newParent) {
-        // 文字标签无需关闭
-        if (segment.type === UbbSegmentType.Text) {
-            newParent._subSegments.push(segment.clone(newParent));
-        }
-        else {
-            // 已经关闭的标签也无需关闭
-            var seg = segment;
-            if (seg.isClosed) {
-                newParent._subSegments.push(segment.clone(newParent));
-            }
-            else {
-                console.warn('标签 %s 没有正确关闭，已经被转换为纯文字。', seg.tagData.tagName);
-                // 未关闭标签，自己将被转换为纯文字
-                newParent._subSegments.push(new UbbTextSegment("[" + seg._tagData.orignalString + "]", segment.parent));
-                // 自己的下级将被递归强制关闭，并提升为和自己同级
-                for (var _i = 0, _a = seg._subSegments; _i < _a.length; _i++) {
-                    var sub = _a[_i];
-                    UbbTagSegment.forceClose(sub, newParent);
-                }
-            }
-        }
-    };
-    /**
-     * 关闭该标签，并强制处理所有未关闭的下级标签。
-     */
-    UbbTagSegment.prototype.close = function () {
-        // 复制自己的下级并清空数组。
-        var subs = this._subSegments;
-        this._subSegments = [];
-        for (var _i = 0, subs_1 = subs; _i < subs_1.length; _i++) {
-            var item = subs_1[_i];
-            UbbTagSegment.forceClose(item, this);
-        }
-        // 设置关闭状态
-        this._isClosed = true;
-    };
-    UbbTagSegment.prototype.clone = function (newParent) {
-        var result = new UbbTagSegment(this._tagData, newParent);
-        result._content = this._content;
-        result._isClosed = this._isClosed;
-        for (var _i = 0, _a = this._subSegments; _i < _a.length; _i++) {
-            var item = _a[_i];
-            result._subSegments.push(item.clone(result));
-        }
-        return result;
-    };
-    /**
-     * 获取标签的内部内容，不包括标签自身。
-     */
-    UbbTagSegment.prototype.getContentText = function () {
-        var subContents = [];
-        for (var _i = 0, _a = this._subSegments; _i < _a.length; _i++) {
-            var subItem = _a[_i];
-            if (subItem.type === UbbSegmentType.Text) {
-                subContents.push(subItem.text);
-            }
-            else {
-                subContents.push(subItem.getFullText());
-            }
-        }
-        return subContents.join('');
-    };
-    /**
-     * 获取标签的全部文字内容。
-     */
-    UbbTagSegment.prototype.getFullText = function () {
-        return "[" + this._tagData.orignalString + "]" + this.getContentText() + "[/" + this._tagData.tagName + "]";
-    };
-    return UbbTagSegment;
-}(UbbSegment));
-/**
- * 定义 UBB 标签中包含的数据。
- */
-var UbbTagData = /** @class */ (function () {
-    function UbbTagData(orignalString, parameters) {
-        if (!parameters) {
-            throw new Error('参数不能为空。');
-        }
-        this._originalString = orignalString;
-        this._parameters = parameters;
-        // 填充命名参数
-        this._namedParameters = {};
-        for (var _i = 0, parameters_1 = parameters; _i < parameters_1.length; _i++) {
-            var item = parameters_1[_i];
-            if (item.name) {
-                this._namedParameters[item.name] = item.value;
-            }
-        }
-    }
-    Object.defineProperty(UbbTagData.prototype, "orignalString", {
-        /**
-         * 获取标签包含的原始文字。
-         * @returns {string} 标签包含的原始文字。
-         */
-        get: function () { return this._originalString; },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    UbbTagData.parse = function (tagString) {
-        // 空字符串处理
-        if (!tagString) {
-            return null;
-        }
-        var tokens = getAllTokens(tagString);
-        // 无法分割标签
-        if (tokens.length === 0) {
-            return null;
-        }
-        var result = convertTokens(tokens);
-        return new UbbTagData(tagString, result);
-        /**
-         * 提取字符串中的所有符号。
-         */
-        function getAllTokens(tokenString) {
-            var index = 0;
-            /**
-             * 从字符串中扫描获得下一个完整的语义符号。
-             * @returns {string} 下一个完整的语义符号。
-             */
-            function scanToken() {
-                /**
-                 * 从当前位置开始扫描字符串，直到找到对应的结束字符。
-                 * @returns {string} 从当前位置开始到相同字符结束的字符串。
-                 */
-                function scanQuoted() {
-                    // 开始字符串。
-                    var quoteMark = tokenString[index];
-                    var endMarkLocation = tokenString.indexOf('"', index + 1);
-                    // 找不到结束符号
-                    if (endMarkLocation < 0) {
-                        console.error('UBB: 解析标签字符串 %s 时无法找到位置 %d 处 %s 对应的结束字符串。', tokenString, index, quoteMark);
-                        endMarkLocation = tokenString.length;
-                    }
-                    var start = index + 1;
-                    index = endMarkLocation + 1;
-                    return tokenString.substring(start, endMarkLocation);
-                }
-                while (true) {
-                    // 超过范围。
-                    if (index >= tokenString.length) {
-                        return null;
-                    }
-                    var c = tokenString[index];
-                    if (/\s/i.test(c)) {
-                        index++;
-                        continue;
-                    }
-                    else if (c === ',') {
-                        index++;
-                        return Token.itemSeperator;
-                    }
-                    else if (c === '=') {
-                        index++;
-                        return Token.nameValueSeperator;
-                    }
-                    else if (c === '"' || c === '\'') {
-                        return Token.stringValue(scanQuoted());
-                    }
-                    else {
-                        var start = index;
-                        // 寻找下个分隔符
-                        var nextSeperator = tokenString.substring(index + 1).match(/[=,]/i);
-                        if (nextSeperator) {
-                            // 结束位置
-                            var endMarkLocation = nextSeperator.index + index + 1;
-                            index = endMarkLocation;
-                            return Token.stringValue(tokenString.substring(start, endMarkLocation));
-                        }
-                        else {
-                            index = tokenString.length;
-                            return Token.stringValue(tokenString.substring(start));
-                        }
-                    }
-                }
-            }
-            var allTokens = [];
-            while (true) {
-                var newToken = scanToken();
-                if (newToken) {
-                    allTokens.push(newToken);
-                }
-                else {
-                    break;
-                }
-            }
-            return allTokens;
-        }
-        /**
-         * 将令牌转换为参数集合。
-         * @param tokens 要转换的令牌的数组。
-         */
-        function convertTokens(tokens) {
-            var parameters = [];
-            if (!tokens || tokens.length === 0) {
-                console.error('UBB: 无法将标签字符串 %s 解析为参数的集合。', tagString);
-                return parameters;
-            }
-            var lastName = null;
-            var lastValue = null;
-            var lastTokenType = TokenType.ItemSeperator;
-            for (var _i = 0, tokens_1 = tokens; _i < tokens_1.length; _i++) {
-                var token = tokens_1[_i];
-                switch (token.type) {
-                    case TokenType.ItemSeperator:
-                        parameters.push(new UbbTagParameter(lastName, lastValue));
-                        lastName = null;
-                        lastValue = null;
-                        lastTokenType = TokenType.ItemSeperator;
-                        break;
-                    case TokenType.NameValueSeperator:
-                        if (lastTokenType !== TokenType.String) {
-                            throw new Error('名称值分隔符只能出现在值之后。');
-                        }
-                        lastName = lastValue;
-                        lastValue = null;
-                        lastTokenType = TokenType.NameValueSeperator;
-                        break;
-                    default:
-                        if (lastTokenType === TokenType.String) {
-                            throw new Error('不能连续出现多个值。');
-                        }
-                        lastValue = token.value;
-                        lastTokenType = TokenType.String;
-                        break;
-                }
-            }
-            // 添加最后一个值
-            parameters.push(new UbbTagParameter(lastName, lastValue));
-            // 第一个项目需要特殊处理，默认是名称而非值
-            if (!parameters[0].name) {
-                parameters[0] = new UbbTagParameter(parameters[0].value, null);
-            }
-            return parameters;
-        }
-    };
-    Object.defineProperty(UbbTagData.prototype, "tagName", {
-        /**
-         * 获取标签的名称。
-         * @returns {string} 标签的名称。
-         */
-        get: function () {
-            return this._parameters[0].name;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(UbbTagData.prototype, "mainValue", {
-        /**
-         * 获取标签的主要值，也即紧跟在标签名称和等号后的值。
-         * @returns {string} 标签的主要值。
-         */
-        get: function () {
-            return this._parameters[0].value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * 获取给定参数的值。
-     * @param indexOrName 要获取的参数的索引或者名称。
-     * @returns {string} 给定位置参数的值。
-     */
-    UbbTagData.prototype.value = function (indexOrName) {
-        if (typeof indexOrName === 'number') {
-            return this._parameters[indexOrName].value;
-        }
-        else if (typeof indexOrName === 'string') {
-            return this._namedParameters[indexOrName];
-        }
-        else {
-            throw new Error('参数必须是字符串或者数字。');
-        }
-    };
-    /**
-     * 获取给定参数的名称。
-     * @param index 要获取的参数的索引。
-     * @returns {string} 给定位置参数的名称。
-     */
-    UbbTagData.prototype.name = function (index) {
-        return this._parameters[index].name;
-    };
-    /**
-     * 获取给定的参数。
-     * @param index 要获取的参数的索引。
-     * @returns {UbbTagParameter} 给定位置的参数。
-     */
-    UbbTagData.prototype.parameter = function (index) {
-        return this._parameters[index];
-    };
-    return UbbTagData;
-}());
-exports.UbbTagData = UbbTagData;
-/**
- * 表示 UBB 标签中单个参数的内容。
- */
-var UbbTagParameter = /** @class */ (function () {
-    /**
-     * 初始化一个对象的新实例。
-     * @param name 新参数的名称。
-     * @param value 新参数的值。
-     */
-    function UbbTagParameter(name, value) {
-        this._name = name;
-        this._value = value;
-    }
-    Object.defineProperty(UbbTagParameter.prototype, "name", {
-        /**
-         * 获取参数的名称。如果参数没有名称，则该属性为 null。
-         */
-        get: function () {
-            return this._name;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(UbbTagParameter.prototype, "value", {
-        /**
-         * 获取参数的值。如果该参数没有值，则该属性为 null。
-         */
-        get: function () {
-            return this._value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return UbbTagParameter;
-}());
-/**
- * 定义 UBB 处理程序的基类。
- */
-var UbbTagHandler = /** @class */ (function () {
-    function UbbTagHandler() {
-    }
-    return UbbTagHandler;
-}());
-exports.UbbTagHandler = UbbTagHandler;
-/**
- * 定义基于文字的 UBB 标签处理程序的基类。
- */
-var TextTagHandler = /** @class */ (function (_super) {
-    __extends(TextTagHandler, _super);
-    function TextTagHandler() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    TextTagHandler.prototype.exec = function (tagSegment, context) {
-        return this.execCore(tagSegment.getContentText(), tagSegment.tagData, context);
-    };
-    return TextTagHandler;
-}(UbbTagHandler));
-exports.TextTagHandler = TextTagHandler;
-/**
- * 定义递归处理内容的标签处理程序的基类。
- */
-var RecursiveTagHandler = /** @class */ (function (_super) {
-    __extends(RecursiveTagHandler, _super);
-    function RecursiveTagHandler() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    RecursiveTagHandler.prototype.exec = function (tagSegment, context) {
-        var result = [];
-        for (var _i = 0, _a = tagSegment.subSegments; _i < _a.length; _i++) {
-            var subSeg = _a[_i];
-            result.push(context.engine.execSegment(subSeg, context));
-        }
-        return this.execCore(result, tagSegment.tagData, context);
-    };
-    return RecursiveTagHandler;
-}(UbbTagHandler));
-exports.RecursiveTagHandler = RecursiveTagHandler;
-/**
- * 定义 UBB 处理程序列表。
- */
-var UbbHandlerList = /** @class */ (function () {
-    function UbbHandlerList() {
-        /**
-         * 内部的标签处理器列表。
-         */
-        this._tagHandlerList = {};
-    }
-    /**
-     * 获取给定标签名称的处理程序。
-     * @param tagName 标签名称。
-     * @returns {UbbTagHandler} 标签处理程序。
-     */
-    UbbHandlerList.prototype.getHandler = function (tagName) {
-        return this._tagHandlerList[tagName] || null;
-    };
-    /**
-     * 注册解析器标签的核心函数。
-     * @param tagHandler 要注册的标签处理器。
-     */
-    UbbHandlerList.prototype.register = function (tagHandler) {
-        if (!tagHandler || !tagHandler.tagName) {
-            throw new Error('参数 tagHandler 无效，或者未提供正确的标签名称。');
-        }
-        // 检查是否已经注册
-        if (tagHandler.tagName in this._tagHandlerList) {
-            throw new Error("\u6807\u7B7E " + tagHandler.tagName + " \u5DF2\u7ECF\u88AB\u6CE8\u518C\u3002");
-        }
-        // 添加新项目
-        this._tagHandlerList[tagHandler.tagName] = tagHandler;
-    };
-    return UbbHandlerList;
-}());
-/**
- * 注册所有处理程序。
- */
-function registerAllHandlers() {
-}
-// 注册所有预置方法。
-registerAllHandlers();
-/**
- * 提供处理 UBB 程序的核心方法。
- */
-var UbbCodeEngine = /** @class */ (function () {
-    function UbbCodeEngine() {
-        /**
-         * 获取该引擎中注册的处理程序。
-         */
-        this._tagHandlers = new UbbHandlerList();
-        /**
-         * 引擎保存的上下文数据。
-         */
-        this._data = new UbbCodeContextData();
-    }
-    Object.defineProperty(UbbCodeEngine.prototype, "tagHandlers", {
-        /**
-         * 该引擎中注册的处理程序。
-         */
-        get: function () {
-            return this._tagHandlers;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(UbbCodeEngine.prototype, "data", {
-        /**
-         * 获取引擎保存的上下文数据。
-         * @returns {UbbCodeContextData} 引擎保存的上下文数据。
-         */
-        get: function () {
-            return this._data;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    /**
-     * 获取给定标签名称的处理程序。
-     * @param tagName 给定的标签名称。
-     * @returns {UbbTagHandler} 给定标签名称的处理程序。
-     */
-    UbbCodeEngine.prototype.getHandler = function (tagName) {
-        return this._tagHandlers.getHandler(tagName);
-    };
-    /**
-     * 执行 UBB 解析的核心函数。
-     * @param content 要解析的内容。
-     * @param options 解析使用的相关选项。
-     * @returns {string} 解析后的 HTML 代码。
-     */
-    UbbCodeEngine.prototype.exec = function (content, options) {
-        var context = new UbbCodeContext(this, options);
-        return this.execCore(content, context);
-    };
-    /**
-     * 尝试找到关闭标记对应的开始标记，并关闭该标记。
-     * @param tagName 标记名称。
-     * @param parent 该标记的第一个上级。
-     * @returns {UbbTagSegment} 新的上级标签。
-     */
-    UbbCodeEngine.tryHandleEndTag = function (tagName, parent) {
-        var p = parent;
-        // 循环找到合适的上级，并关闭上级
-        while (p && p.tagData) {
-            if (p.tagData.tagName === tagName) {
-                p.close();
-                return p.parent;
-            }
-            p = p.parent;
-        }
-        // 没有找到任何上级
-        console.warn('UBB: 找不到结束标签 %s 的开始标签，该标签将被作为一般文字处理。', tagName);
-        parent.subSegments.push(new UbbTextSegment("[/" + tagName + "]", parent));
-        return parent;
-    };
-    /**
-     * 构建标签的核心方法。
-     * @param content 包含多个标签的字符串。
-     * @param parent 字符串的上级容器。
-     */
-    UbbCodeEngine.buildSegmentsCore = function (content, parent) {
-        var regExp = /([\s\S]*?)\[(.*?)]/gi;
-        while (true) {
-            var startIndex = regExp.lastIndex;
-            var tagMatch = regExp.exec(content);
-            // 未找到标记，则这是最后一个标签。
-            if (!tagMatch) {
-                // 提取最后一段内容，如果找到，附加到最后
-                var remainContent = content.substring(startIndex);
-                if (remainContent) {
-                    parent.subSegments.push(new UbbTextSegment(remainContent, parent));
-                }
-                return;
-            }
-            var beforeText = tagMatch[1], tagString = tagMatch[2];
-            // 添加前面的文字。
-            if (beforeText) {
-                parent.subSegments.push(new UbbTextSegment(beforeText, parent));
-            }
-            // 检测是否是结束标记
-            var endTagMatch = tagString.match(/^\/(.*)$/i);
-            if (endTagMatch) {
-                var endTagName = endTagMatch[1];
-                parent = UbbCodeEngine.tryHandleEndTag(endTagName, parent);
-            }
-            else {
-                try {
-                    // 提取新的标签数据
-                    var tagData = UbbTagData.parse(tagString);
-                    var newTag = new UbbTagSegment(tagData, parent);
-                    parent.subSegments.push(newTag);
-                    // 新上级
-                    parent = newTag;
-                    continue;
-                }
-                catch (error) {
-                    // 提取数据失败，则视为没有匹配
-                    console.warn('标签字符串 %s 解析失败，将被视为普通文字。', tagString);
-                    parent.subSegments.push(new UbbTextSegment("[" + tagString + "]", parent));
-                }
-            }
-        }
-    };
-    /**
-     * 执行 UBB 处理的核心函数。
-     * @param content 要处理的内容。
-     * @param context UBB 处理上下文。
-     * @returns {JSX.Element} 处理完成的 HTML 内容。
-     */
-    UbbCodeEngine.prototype.execCore = function (content, context) {
-        var root = new UbbTagSegment(null, null);
-        UbbCodeEngine.buildSegmentsCore(content, root);
-        var result = [];
-        for (var _i = 0, _a = root.subSegments; _i < _a.length; _i++) {
-            var item = _a[_i];
-            result.push(this.execSegment(item, context));
-        }
-        return result;
-    };
-    UbbCodeEngine.prototype.execSegment = function (segment, context) {
-        if (segment.type === UbbSegmentType.Text) {
-            return segment.text;
-        }
-        else {
-            var tag = segment;
-            var handler = this.getHandler(tag.tagData.tagName);
-            if (!handler) {
-                console.warn('没有找到标签 %s 的处理程序，将被视为一般文字。');
-                return tag.getFullText();
-            }
-            return handler.exec(tag, context);
-        }
-    };
-    return UbbCodeEngine;
-}());
-exports.UbbCodeEngine = UbbCodeEngine;
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -6191,6 +5321,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var Utility = __webpack_require__(4);
 var react_router_dom_1 = __webpack_require__(2);
+var moment = __webpack_require__(0);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -6536,7 +5667,7 @@ var ListContent = /** @class */ (function (_super) {
         });
     };
     ListContent.prototype.convertTopicToElement = function (item) {
-        return React.createElement(TopicTitleAndContent, { key: item.title, title: item.title, authorName: item.authorName, id: item.id, authorId: item.authorId });
+        return React.createElement(TopicTitleAndContent, { key: item.title, title: item.title, authorName: item.authorName, id: item.id, authorId: item.authorId, lastPostUserName: item.lastPostInfo.userName, lastPostTime: item.lastPostInfo.time });
     };
     ListContent.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
@@ -6569,9 +5700,9 @@ var ListContent = /** @class */ (function (_super) {
                     React.createElement("button", { className: "listContentTag" }, "\u7CBE\u534E"),
                     React.createElement("button", { className: "listContentTag" }, "\u6700\u70ED")),
                 React.createElement("div", { className: "row", style: { height: '40px', alignItems: 'center' } },
-                    React.createElement("div", { style: { marginRight: '152px', marginLeft: '15px' } },
+                    React.createElement("div", { style: { marginRight: '257px', marginLeft: '15px' } },
                         React.createElement("span", null, "\u4F5C\u8005")),
-                    React.createElement("div", { style: { marginRight: '85px', marginLeft: '15px' } },
+                    React.createElement("div", { style: { marginRight: '115px', marginLeft: '15px' } },
                         React.createElement("span", null, "\u6700\u540E\u53D1\u8868")))),
             React.createElement("div", null, this.state.items.map(this.convertTopicToElement)));
     };
@@ -6586,9 +5717,10 @@ var TopicTitleAndContent = /** @class */ (function (_super) {
             title: _this.props.title,
             authorName: _this.props.authorName,
             likeNumber: 123,
-            unlikeNumber: 11,
+            dislikeNumber: 11,
             commentNumber: 214,
-            lastReply: 'Dearkano 2017-2-2',
+            lastPostUserName: _this.props.lastPostUserName,
+            lastPostTime: _this.props.lastPostTime,
             id: _this.props.id,
             authorId: _this.props.authorId
         };
@@ -6602,23 +5734,27 @@ var TopicTitleAndContent = /** @class */ (function (_super) {
                     React.createElement("div", { style: { marginLeft: '20px', } },
                         " ",
                         React.createElement("span", null, this.state.title))),
-                React.createElement("div", { className: "row" },
-                    React.createElement("div", { style: { marginRight: '10px', marginLeft: '15px', width: '80px' } },
+                React.createElement("div", { className: "row", style: { width: "500px", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" } },
+                    React.createElement("div", { style: { width: "100px", marginRight: '10px', marginLeft: '15px' } },
                         " ",
                         React.createElement("span", null,
                             React.createElement("a", null, this.state.authorName))),
-                    React.createElement("div", { className: "row", style: { flexDirection: 'row', alignItems: 'flex-end' } },
-                        React.createElement("div", { id: "liked" },
+                    React.createElement("div", { className: "row", style: { width: "150px", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" } },
+                        React.createElement("div", { id: "liked", style: { display: "flex" } },
                             React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
                             React.createElement("span", { className: "timeProp tagSize" }, this.state.likeNumber)),
-                        React.createElement("div", { id: "disliked" },
+                        React.createElement("div", { id: "disliked", style: { display: "flex" } },
                             React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg" }),
-                            React.createElement("span", { className: "timeProp tagSize" }, this.state.unlikeNumber)),
-                        React.createElement("div", { id: "commentsAmount" },
+                            React.createElement("span", { className: "timeProp tagSize" }, this.state.dislikeNumber)),
+                        React.createElement("div", { id: "commentsAmount", style: { display: "flex" } },
                             React.createElement("i", { className: "fa fa-commenting-o fa-lg" }),
                             React.createElement("span", { className: "timeProp tagSize" }, this.state.commentNumber))),
-                    React.createElement("div", { id: "lastReply" },
-                        React.createElement("span", null, this.state.lastReply)))));
+                    React.createElement("div", { id: "lastReply", style: { width: "100px" } },
+                        React.createElement("span", null,
+                            this.state.lastPostUserName,
+                            " ")),
+                    React.createElement("div", { style: { width: "150px", marginRight: "20px" } },
+                        React.createElement("span", null, moment(this.state.lastPostTime).format('YYYY-MM-DD HH:mm:ss'))))));
     };
     return TopicTitleAndContent;
 }(React.Component));
@@ -6626,7 +5762,7 @@ exports.TopicTitleAndContent = TopicTitleAndContent;
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -6704,7 +5840,7 @@ return af;
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -6851,7 +5987,7 @@ return ar;
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -6915,7 +6051,7 @@ return arDz;
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -6979,7 +6115,7 @@ return arKw;
 
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -7110,7 +6246,7 @@ return arLy;
 
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -7175,7 +6311,7 @@ return arMa;
 
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -7285,7 +6421,7 @@ return arSa;
 
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -7349,7 +6485,7 @@ return arTn;
 
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -7459,7 +6595,7 @@ return az;
 
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -7598,7 +6734,7 @@ return be;
 
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -7693,7 +6829,7 @@ return bg;
 
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -7817,7 +6953,7 @@ return bn;
 
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -7941,7 +7077,7 @@ return bo;
 
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -8054,7 +7190,7 @@ return br;
 
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -8202,7 +7338,7 @@ return bs;
 
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -8295,7 +7431,7 @@ return ca;
 
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -8472,7 +7608,7 @@ return cs;
 
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -8540,7 +7676,7 @@ return cv;
 
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -8626,7 +7762,7 @@ return cy;
 
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -8691,7 +7827,7 @@ return da;
 
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -8774,7 +7910,7 @@ return de;
 
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -8858,7 +7994,7 @@ return deAt;
 
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -8941,7 +8077,7 @@ return deCh;
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -9046,7 +8182,7 @@ return dv;
 
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -9151,7 +8287,7 @@ return el;
 
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -9223,7 +8359,7 @@ return enAu;
 
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -9291,7 +8427,7 @@ return enCa;
 
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -9363,7 +8499,7 @@ return enGb;
 
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -9435,7 +8571,7 @@ return enIe;
 
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -9507,7 +8643,7 @@ return enNz;
 
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -9585,7 +8721,7 @@ return eo;
 
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -9673,7 +8809,7 @@ return es;
 
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -9760,7 +8896,7 @@ return esDo;
 
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -9845,7 +8981,7 @@ return et;
 
 
 /***/ }),
-/* 42 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -9916,7 +9052,7 @@ return eu;
 
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -10028,7 +9164,7 @@ return fa;
 
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -10140,7 +9276,7 @@ return fi;
 
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -10205,7 +9341,7 @@ return fo;
 
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -10293,7 +9429,7 @@ return fr;
 
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -10372,7 +9508,7 @@ return frCa;
 
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -10455,7 +9591,7 @@ return frCh;
 
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -10535,7 +9671,7 @@ return fy;
 
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -10616,7 +9752,7 @@ return gd;
 
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -10698,7 +9834,7 @@ return gl;
 
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -10825,7 +9961,7 @@ return gomLatn;
 
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -10929,7 +10065,7 @@ return he;
 
 
 /***/ }),
-/* 54 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -11058,7 +10194,7 @@ return hi;
 
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -11208,7 +10344,7 @@ return hr;
 
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -11322,7 +10458,7 @@ return hu;
 
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -11422,7 +10558,7 @@ return hyAm;
 
 
 /***/ }),
-/* 58 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -11510,7 +10646,7 @@ return id;
 
 
 /***/ }),
-/* 59 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -11642,7 +10778,7 @@ return is;
 
 
 /***/ }),
-/* 60 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -11717,7 +10853,7 @@ return it;
 
 
 /***/ }),
-/* 61 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -11802,7 +10938,7 @@ return ja;
 
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -11890,7 +11026,7 @@ return jv;
 
 
 /***/ }),
-/* 63 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -11984,7 +11120,7 @@ return ka;
 
 
 /***/ }),
-/* 64 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12076,7 +11212,7 @@ return kk;
 
 
 /***/ }),
-/* 65 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12139,7 +11275,7 @@ return km;
 
 
 /***/ }),
-/* 66 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12270,7 +11406,7 @@ return kn;
 
 
 /***/ }),
-/* 67 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12344,7 +11480,7 @@ return ko;
 
 
 /***/ }),
-/* 68 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12437,7 +11573,7 @@ return ky;
 
 
 /***/ }),
-/* 69 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12579,7 +11715,7 @@ return lb;
 
 
 /***/ }),
-/* 70 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12654,7 +11790,7 @@ return lo;
 
 
 /***/ }),
-/* 71 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12776,7 +11912,7 @@ return lt;
 
 
 /***/ }),
-/* 72 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12878,7 +12014,7 @@ return lv;
 
 
 /***/ }),
-/* 73 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12994,7 +12130,7 @@ return me;
 
 
 /***/ }),
-/* 74 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13063,7 +12199,7 @@ return mi;
 
 
 /***/ }),
-/* 75 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13158,7 +12294,7 @@ return mk;
 
 
 /***/ }),
-/* 76 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13244,7 +12380,7 @@ return ml;
 
 
 /***/ }),
-/* 77 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13408,7 +12544,7 @@ return mr;
 
 
 /***/ }),
-/* 78 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13495,7 +12631,7 @@ return ms;
 
 
 /***/ }),
-/* 79 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13583,7 +12719,7 @@ return msMy;
 
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13684,7 +12820,7 @@ return my;
 
 
 /***/ }),
-/* 81 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13752,7 +12888,7 @@ return nb;
 
 
 /***/ }),
-/* 82 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13880,7 +13016,7 @@ return ne;
 
 
 /***/ }),
-/* 83 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13973,7 +13109,7 @@ return nl;
 
 
 /***/ }),
-/* 84 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14066,7 +13202,7 @@ return nlBe;
 
 
 /***/ }),
-/* 85 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14131,7 +13267,7 @@ return nn;
 
 
 /***/ }),
-/* 86 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14260,7 +13396,7 @@ return paIn;
 
 
 /***/ }),
-/* 87 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14372,7 +13508,7 @@ return pl;
 
 
 /***/ }),
-/* 88 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14442,7 +13578,7 @@ return pt;
 
 
 /***/ }),
-/* 89 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14508,7 +13644,7 @@ return ptBr;
 
 
 /***/ }),
-/* 90 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14588,7 +13724,7 @@ return ro;
 
 
 /***/ }),
-/* 91 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14776,7 +13912,7 @@ return ru;
 
 
 /***/ }),
-/* 92 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14879,7 +14015,7 @@ return sd;
 
 
 /***/ }),
-/* 93 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14945,7 +14081,7 @@ return se;
 
 
 /***/ }),
-/* 94 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15021,7 +14157,7 @@ return si;
 
 
 /***/ }),
-/* 95 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15176,7 +14312,7 @@ return sk;
 
 
 /***/ }),
-/* 96 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15343,7 +14479,7 @@ return sl;
 
 
 /***/ }),
-/* 97 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15418,7 +14554,7 @@ return sq;
 
 
 /***/ }),
-/* 98 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15533,7 +14669,7 @@ return sr;
 
 
 /***/ }),
-/* 99 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15648,7 +14784,7 @@ return srCyrl;
 
 
 /***/ }),
-/* 100 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15742,7 +14878,7 @@ return ss;
 
 
 /***/ }),
-/* 101 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15816,7 +14952,7 @@ return sv;
 
 
 /***/ }),
-/* 102 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15880,7 +15016,7 @@ return sw;
 
 
 /***/ }),
-/* 103 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16015,7 +15151,7 @@ return ta;
 
 
 /***/ }),
-/* 104 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16109,7 +15245,7 @@ return te;
 
 
 /***/ }),
-/* 105 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16182,7 +15318,7 @@ return tet;
 
 
 /***/ }),
-/* 106 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16254,7 +15390,7 @@ return th;
 
 
 /***/ }),
-/* 107 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16321,7 +15457,7 @@ return tlPh;
 
 
 /***/ }),
-/* 108 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16446,7 +15582,7 @@ return tlh;
 
 
 /***/ }),
-/* 109 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16541,7 +15677,7 @@ return tr;
 
 
 /***/ }),
-/* 110 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16637,7 +15773,7 @@ return tzl;
 
 
 /***/ }),
-/* 111 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16700,7 +15836,7 @@ return tzm;
 
 
 /***/ }),
-/* 112 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16763,7 +15899,7 @@ return tzmLatn;
 
 
 /***/ }),
-/* 113 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16919,7 +16055,7 @@ return uk;
 
 
 /***/ }),
-/* 114 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17023,7 +16159,7 @@ return ur;
 
 
 /***/ }),
-/* 115 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17086,7 +16222,7 @@ return uz;
 
 
 /***/ }),
-/* 116 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17149,7 +16285,7 @@ return uzLatn;
 
 
 /***/ }),
-/* 117 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17233,7 +16369,7 @@ return vi;
 
 
 /***/ }),
-/* 118 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17306,7 +16442,7 @@ return xPseudo;
 
 
 /***/ }),
-/* 119 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17371,7 +16507,7 @@ return yo;
 
 
 /***/ }),
-/* 120 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17487,7 +16623,7 @@ return zhCn;
 
 
 /***/ }),
-/* 121 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17597,7 +16733,7 @@ return zhHk;
 
 
 /***/ }),
-/* 122 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17706,7 +16842,7 @@ return zhTw;
 
 
 /***/ }),
-/* 123 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17749,7 +16885,7 @@ exports.UserCenterMyFollowingsUser = UserCenterMyFollowingsUser;
 
 
 /***/ }),
-/* 124 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17796,35 +16932,35 @@ exports.MyMessageResponsebox = MyMessageResponsebox;
 
 
 /***/ }),
-/* 125 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(126);
-module.exports = __webpack_require__(171);
+__webpack_require__(125);
+module.exports = __webpack_require__(166);
 
 
 /***/ }),
-/* 126 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var ReactDOM = __webpack_require__(127);
-var App_1 = __webpack_require__(128);
+var ReactDOM = __webpack_require__(126);
+var App_1 = __webpack_require__(127);
 // 显示应用程序核心内容
 ReactDOM.render(React.createElement(App_1.App, null), document.getElementById('root'));
 
 
 /***/ }),
-/* 127 */
+/* 126 */
 /***/ (function(module, exports) {
 
 module.exports = ReactDOM;
 
 /***/ }),
-/* 128 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17842,16 +16978,15 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
-var post_1 = __webpack_require__(129);
-var List_1 = __webpack_require__(7);
-var CurUserPost_1 = __webpack_require__(133);
-var BoardList_1 = __webpack_require__(134);
-var UserCenter_1 = __webpack_require__(135);
-var MyMessage_1 = __webpack_require__(151);
-var AllNewPost_1 = __webpack_require__(161);
-var Header_1 = __webpack_require__(164);
-var MainPage_1 = __webpack_require__(165);
-var UbbContainer_1 = __webpack_require__(167);
+var post_1 = __webpack_require__(128);
+var List_1 = __webpack_require__(6);
+var CurUserPost_1 = __webpack_require__(132);
+var BoardList_1 = __webpack_require__(133);
+var UserCenter_1 = __webpack_require__(134);
+var MyMessage_1 = __webpack_require__(150);
+var AllNewPost_1 = __webpack_require__(160);
+var Header_1 = __webpack_require__(163);
+var MainPage_1 = __webpack_require__(164);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -17862,26 +16997,18 @@ var RouteComponent = /** @class */ (function (_super) {
     return RouteComponent;
 }(React.Component));
 exports.RouteComponent = RouteComponent;
-/* <h1>Ashida Mana~</h1>
-                <li><Link to="/topic/4723305">moe</Link></li>
-                <li><Link to="/boardlist">meow</Link></li>
-                <li><a href={`https://login.cc98.org/OAuth/Authorize?scope=getuserinfo*&response_type=token&client_id=9428333a-a0e3-486b-b375-7904f1bceba9&redirect_uri=http%3A%2F%2Flocalhost%3A${location.port}%2Fusercenter`} > 登陆</a></li>
-                <li><Link to="/usercenter">个人中心</Link></li>
-                <li><Link to="/messagebox">信箱</Link></li>
-                <li><Link to="newtopics">新帖 </Link></li>
-                 <hr />*/
 var App = /** @class */ (function (_super) {
     __extends(App, _super);
     function App() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     App.prototype.render = function () {
-        var data = '[b]Test[/b][size=5]abc[/size] [img]http://file.cc98.org/uploadface/5298.png[/img] [noubb][b]Test No UBB[/b][/noubb]';
+        var data = '[b]Test[/b] [img]http://file.cc98.org/uploadface/5298.png[/img] [noubb][b]Test No UBB[/b][/noubb]';
+        //<UbbContainer code={data} />
         return React.createElement("div", null,
             React.createElement(react_router_dom_1.BrowserRouter, null,
                 React.createElement("div", { style: { backgroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column' } },
                     React.createElement(Header_1.Header, null),
-                    React.createElement(UbbContainer_1.UbbContainer, { code: data }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/", component: MainPage_1.MainPage }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/:page?", component: post_1.Post }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/user/:userName/:page?", component: CurUserPost_1.CurUserPost }),
@@ -17897,7 +17024,7 @@ exports.App = App;
 
 
 /***/ }),
-/* 129 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18544,13 +17671,7 @@ exports.UserMessageBox = UserMessageBox;
 
 
 /***/ }),
-/* 130 */
-/***/ (function(module, exports) {
-
-module.exports = $;
-
-/***/ }),
-/* 131 */
+/* 129 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -18578,240 +17699,240 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 132 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 8,
-	"./af.js": 8,
-	"./ar": 9,
-	"./ar-dz": 10,
-	"./ar-dz.js": 10,
-	"./ar-kw": 11,
-	"./ar-kw.js": 11,
-	"./ar-ly": 12,
-	"./ar-ly.js": 12,
-	"./ar-ma": 13,
-	"./ar-ma.js": 13,
-	"./ar-sa": 14,
-	"./ar-sa.js": 14,
-	"./ar-tn": 15,
-	"./ar-tn.js": 15,
-	"./ar.js": 9,
-	"./az": 16,
-	"./az.js": 16,
-	"./be": 17,
-	"./be.js": 17,
-	"./bg": 18,
-	"./bg.js": 18,
-	"./bn": 19,
-	"./bn.js": 19,
-	"./bo": 20,
-	"./bo.js": 20,
-	"./br": 21,
-	"./br.js": 21,
-	"./bs": 22,
-	"./bs.js": 22,
-	"./ca": 23,
-	"./ca.js": 23,
-	"./cs": 24,
-	"./cs.js": 24,
-	"./cv": 25,
-	"./cv.js": 25,
-	"./cy": 26,
-	"./cy.js": 26,
-	"./da": 27,
-	"./da.js": 27,
-	"./de": 28,
-	"./de-at": 29,
-	"./de-at.js": 29,
-	"./de-ch": 30,
-	"./de-ch.js": 30,
-	"./de.js": 28,
-	"./dv": 31,
-	"./dv.js": 31,
-	"./el": 32,
-	"./el.js": 32,
-	"./en-au": 33,
-	"./en-au.js": 33,
-	"./en-ca": 34,
-	"./en-ca.js": 34,
-	"./en-gb": 35,
-	"./en-gb.js": 35,
-	"./en-ie": 36,
-	"./en-ie.js": 36,
-	"./en-nz": 37,
-	"./en-nz.js": 37,
-	"./eo": 38,
-	"./eo.js": 38,
-	"./es": 39,
-	"./es-do": 40,
-	"./es-do.js": 40,
-	"./es.js": 39,
-	"./et": 41,
-	"./et.js": 41,
-	"./eu": 42,
-	"./eu.js": 42,
-	"./fa": 43,
-	"./fa.js": 43,
-	"./fi": 44,
-	"./fi.js": 44,
-	"./fo": 45,
-	"./fo.js": 45,
-	"./fr": 46,
-	"./fr-ca": 47,
-	"./fr-ca.js": 47,
-	"./fr-ch": 48,
-	"./fr-ch.js": 48,
-	"./fr.js": 46,
-	"./fy": 49,
-	"./fy.js": 49,
-	"./gd": 50,
-	"./gd.js": 50,
-	"./gl": 51,
-	"./gl.js": 51,
-	"./gom-latn": 52,
-	"./gom-latn.js": 52,
-	"./he": 53,
-	"./he.js": 53,
-	"./hi": 54,
-	"./hi.js": 54,
-	"./hr": 55,
-	"./hr.js": 55,
-	"./hu": 56,
-	"./hu.js": 56,
-	"./hy-am": 57,
-	"./hy-am.js": 57,
-	"./id": 58,
-	"./id.js": 58,
-	"./is": 59,
-	"./is.js": 59,
-	"./it": 60,
-	"./it.js": 60,
-	"./ja": 61,
-	"./ja.js": 61,
-	"./jv": 62,
-	"./jv.js": 62,
-	"./ka": 63,
-	"./ka.js": 63,
-	"./kk": 64,
-	"./kk.js": 64,
-	"./km": 65,
-	"./km.js": 65,
-	"./kn": 66,
-	"./kn.js": 66,
-	"./ko": 67,
-	"./ko.js": 67,
-	"./ky": 68,
-	"./ky.js": 68,
-	"./lb": 69,
-	"./lb.js": 69,
-	"./lo": 70,
-	"./lo.js": 70,
-	"./lt": 71,
-	"./lt.js": 71,
-	"./lv": 72,
-	"./lv.js": 72,
-	"./me": 73,
-	"./me.js": 73,
-	"./mi": 74,
-	"./mi.js": 74,
-	"./mk": 75,
-	"./mk.js": 75,
-	"./ml": 76,
-	"./ml.js": 76,
-	"./mr": 77,
-	"./mr.js": 77,
-	"./ms": 78,
-	"./ms-my": 79,
-	"./ms-my.js": 79,
-	"./ms.js": 78,
-	"./my": 80,
-	"./my.js": 80,
-	"./nb": 81,
-	"./nb.js": 81,
-	"./ne": 82,
-	"./ne.js": 82,
-	"./nl": 83,
-	"./nl-be": 84,
-	"./nl-be.js": 84,
-	"./nl.js": 83,
-	"./nn": 85,
-	"./nn.js": 85,
-	"./pa-in": 86,
-	"./pa-in.js": 86,
-	"./pl": 87,
-	"./pl.js": 87,
-	"./pt": 88,
-	"./pt-br": 89,
-	"./pt-br.js": 89,
-	"./pt.js": 88,
-	"./ro": 90,
-	"./ro.js": 90,
-	"./ru": 91,
-	"./ru.js": 91,
-	"./sd": 92,
-	"./sd.js": 92,
-	"./se": 93,
-	"./se.js": 93,
-	"./si": 94,
-	"./si.js": 94,
-	"./sk": 95,
-	"./sk.js": 95,
-	"./sl": 96,
-	"./sl.js": 96,
-	"./sq": 97,
-	"./sq.js": 97,
-	"./sr": 98,
-	"./sr-cyrl": 99,
-	"./sr-cyrl.js": 99,
-	"./sr.js": 98,
-	"./ss": 100,
-	"./ss.js": 100,
-	"./sv": 101,
-	"./sv.js": 101,
-	"./sw": 102,
-	"./sw.js": 102,
-	"./ta": 103,
-	"./ta.js": 103,
-	"./te": 104,
-	"./te.js": 104,
-	"./tet": 105,
-	"./tet.js": 105,
-	"./th": 106,
-	"./th.js": 106,
-	"./tl-ph": 107,
-	"./tl-ph.js": 107,
-	"./tlh": 108,
-	"./tlh.js": 108,
-	"./tr": 109,
-	"./tr.js": 109,
-	"./tzl": 110,
-	"./tzl.js": 110,
-	"./tzm": 111,
-	"./tzm-latn": 112,
-	"./tzm-latn.js": 112,
-	"./tzm.js": 111,
-	"./uk": 113,
-	"./uk.js": 113,
-	"./ur": 114,
-	"./ur.js": 114,
-	"./uz": 115,
-	"./uz-latn": 116,
-	"./uz-latn.js": 116,
-	"./uz.js": 115,
-	"./vi": 117,
-	"./vi.js": 117,
-	"./x-pseudo": 118,
-	"./x-pseudo.js": 118,
-	"./yo": 119,
-	"./yo.js": 119,
-	"./zh-cn": 120,
-	"./zh-cn.js": 120,
-	"./zh-hk": 121,
-	"./zh-hk.js": 121,
-	"./zh-tw": 122,
-	"./zh-tw.js": 122
+	"./af": 7,
+	"./af.js": 7,
+	"./ar": 8,
+	"./ar-dz": 9,
+	"./ar-dz.js": 9,
+	"./ar-kw": 10,
+	"./ar-kw.js": 10,
+	"./ar-ly": 11,
+	"./ar-ly.js": 11,
+	"./ar-ma": 12,
+	"./ar-ma.js": 12,
+	"./ar-sa": 13,
+	"./ar-sa.js": 13,
+	"./ar-tn": 14,
+	"./ar-tn.js": 14,
+	"./ar.js": 8,
+	"./az": 15,
+	"./az.js": 15,
+	"./be": 16,
+	"./be.js": 16,
+	"./bg": 17,
+	"./bg.js": 17,
+	"./bn": 18,
+	"./bn.js": 18,
+	"./bo": 19,
+	"./bo.js": 19,
+	"./br": 20,
+	"./br.js": 20,
+	"./bs": 21,
+	"./bs.js": 21,
+	"./ca": 22,
+	"./ca.js": 22,
+	"./cs": 23,
+	"./cs.js": 23,
+	"./cv": 24,
+	"./cv.js": 24,
+	"./cy": 25,
+	"./cy.js": 25,
+	"./da": 26,
+	"./da.js": 26,
+	"./de": 27,
+	"./de-at": 28,
+	"./de-at.js": 28,
+	"./de-ch": 29,
+	"./de-ch.js": 29,
+	"./de.js": 27,
+	"./dv": 30,
+	"./dv.js": 30,
+	"./el": 31,
+	"./el.js": 31,
+	"./en-au": 32,
+	"./en-au.js": 32,
+	"./en-ca": 33,
+	"./en-ca.js": 33,
+	"./en-gb": 34,
+	"./en-gb.js": 34,
+	"./en-ie": 35,
+	"./en-ie.js": 35,
+	"./en-nz": 36,
+	"./en-nz.js": 36,
+	"./eo": 37,
+	"./eo.js": 37,
+	"./es": 38,
+	"./es-do": 39,
+	"./es-do.js": 39,
+	"./es.js": 38,
+	"./et": 40,
+	"./et.js": 40,
+	"./eu": 41,
+	"./eu.js": 41,
+	"./fa": 42,
+	"./fa.js": 42,
+	"./fi": 43,
+	"./fi.js": 43,
+	"./fo": 44,
+	"./fo.js": 44,
+	"./fr": 45,
+	"./fr-ca": 46,
+	"./fr-ca.js": 46,
+	"./fr-ch": 47,
+	"./fr-ch.js": 47,
+	"./fr.js": 45,
+	"./fy": 48,
+	"./fy.js": 48,
+	"./gd": 49,
+	"./gd.js": 49,
+	"./gl": 50,
+	"./gl.js": 50,
+	"./gom-latn": 51,
+	"./gom-latn.js": 51,
+	"./he": 52,
+	"./he.js": 52,
+	"./hi": 53,
+	"./hi.js": 53,
+	"./hr": 54,
+	"./hr.js": 54,
+	"./hu": 55,
+	"./hu.js": 55,
+	"./hy-am": 56,
+	"./hy-am.js": 56,
+	"./id": 57,
+	"./id.js": 57,
+	"./is": 58,
+	"./is.js": 58,
+	"./it": 59,
+	"./it.js": 59,
+	"./ja": 60,
+	"./ja.js": 60,
+	"./jv": 61,
+	"./jv.js": 61,
+	"./ka": 62,
+	"./ka.js": 62,
+	"./kk": 63,
+	"./kk.js": 63,
+	"./km": 64,
+	"./km.js": 64,
+	"./kn": 65,
+	"./kn.js": 65,
+	"./ko": 66,
+	"./ko.js": 66,
+	"./ky": 67,
+	"./ky.js": 67,
+	"./lb": 68,
+	"./lb.js": 68,
+	"./lo": 69,
+	"./lo.js": 69,
+	"./lt": 70,
+	"./lt.js": 70,
+	"./lv": 71,
+	"./lv.js": 71,
+	"./me": 72,
+	"./me.js": 72,
+	"./mi": 73,
+	"./mi.js": 73,
+	"./mk": 74,
+	"./mk.js": 74,
+	"./ml": 75,
+	"./ml.js": 75,
+	"./mr": 76,
+	"./mr.js": 76,
+	"./ms": 77,
+	"./ms-my": 78,
+	"./ms-my.js": 78,
+	"./ms.js": 77,
+	"./my": 79,
+	"./my.js": 79,
+	"./nb": 80,
+	"./nb.js": 80,
+	"./ne": 81,
+	"./ne.js": 81,
+	"./nl": 82,
+	"./nl-be": 83,
+	"./nl-be.js": 83,
+	"./nl.js": 82,
+	"./nn": 84,
+	"./nn.js": 84,
+	"./pa-in": 85,
+	"./pa-in.js": 85,
+	"./pl": 86,
+	"./pl.js": 86,
+	"./pt": 87,
+	"./pt-br": 88,
+	"./pt-br.js": 88,
+	"./pt.js": 87,
+	"./ro": 89,
+	"./ro.js": 89,
+	"./ru": 90,
+	"./ru.js": 90,
+	"./sd": 91,
+	"./sd.js": 91,
+	"./se": 92,
+	"./se.js": 92,
+	"./si": 93,
+	"./si.js": 93,
+	"./sk": 94,
+	"./sk.js": 94,
+	"./sl": 95,
+	"./sl.js": 95,
+	"./sq": 96,
+	"./sq.js": 96,
+	"./sr": 97,
+	"./sr-cyrl": 98,
+	"./sr-cyrl.js": 98,
+	"./sr.js": 97,
+	"./ss": 99,
+	"./ss.js": 99,
+	"./sv": 100,
+	"./sv.js": 100,
+	"./sw": 101,
+	"./sw.js": 101,
+	"./ta": 102,
+	"./ta.js": 102,
+	"./te": 103,
+	"./te.js": 103,
+	"./tet": 104,
+	"./tet.js": 104,
+	"./th": 105,
+	"./th.js": 105,
+	"./tl-ph": 106,
+	"./tl-ph.js": 106,
+	"./tlh": 107,
+	"./tlh.js": 107,
+	"./tr": 108,
+	"./tr.js": 108,
+	"./tzl": 109,
+	"./tzl.js": 109,
+	"./tzm": 110,
+	"./tzm-latn": 111,
+	"./tzm-latn.js": 111,
+	"./tzm.js": 110,
+	"./uk": 112,
+	"./uk.js": 112,
+	"./ur": 113,
+	"./ur.js": 113,
+	"./uz": 114,
+	"./uz-latn": 115,
+	"./uz-latn.js": 115,
+	"./uz.js": 114,
+	"./vi": 116,
+	"./vi.js": 116,
+	"./x-pseudo": 117,
+	"./x-pseudo.js": 117,
+	"./yo": 118,
+	"./yo.js": 118,
+	"./zh-cn": 119,
+	"./zh-cn.js": 119,
+	"./zh-hk": 120,
+	"./zh-hk.js": 120,
+	"./zh-tw": 121,
+	"./zh-tw.js": 121
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -18827,10 +17948,16 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 132;
+webpackContext.id = 130;
 
 /***/ }),
-/* 133 */
+/* 131 */
+/***/ (function(module, exports) {
+
+module.exports = $;
+
+/***/ }),
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19442,7 +18569,7 @@ exports.PageModel = PageModel;
 
 
 /***/ }),
-/* 134 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19797,7 +18924,7 @@ exports.BoardList = BoardList;
 
 
 /***/ }),
-/* 135 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19818,8 +18945,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterNavigation_1 = __webpack_require__(136);
-var UserCenterRouter_1 = __webpack_require__(137);
+var UserCenterNavigation_1 = __webpack_require__(135);
+var UserCenterRouter_1 = __webpack_require__(136);
 /**
  * 用户中心页面
  */
@@ -19843,7 +18970,7 @@ exports.UserCenter = UserCenter;
 
 
 /***/ }),
-/* 136 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19902,7 +19029,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 137 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19923,11 +19050,11 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterExact_1 = __webpack_require__(138);
-var UserCenterMyFollowings_1 = __webpack_require__(144);
-var UserCenterMyFans_1 = __webpack_require__(145);
-var UserCenterMyPosts_1 = __webpack_require__(146);
-var UserCenterMyFavorites_1 = __webpack_require__(149);
+var UserCenterExact_1 = __webpack_require__(137);
+var UserCenterMyFollowings_1 = __webpack_require__(143);
+var UserCenterMyFans_1 = __webpack_require__(144);
+var UserCenterMyPosts_1 = __webpack_require__(145);
+var UserCenterMyFavorites_1 = __webpack_require__(148);
 /**
  * 用户中心主体
  */
@@ -19950,7 +19077,7 @@ exports.UserCenterRouter = UserCenterRouter;
 
 
 /***/ }),
-/* 138 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20005,9 +19132,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var UserCenterExactProfile_1 = __webpack_require__(139);
-var UserCenterExactActivities_1 = __webpack_require__(140);
-var UserCenterExactAvatar_1 = __webpack_require__(143);
+var UserCenterExactProfile_1 = __webpack_require__(138);
+var UserCenterExactActivities_1 = __webpack_require__(139);
+var UserCenterExactAvatar_1 = __webpack_require__(142);
 /**
  * 用户中心主页
  */
@@ -20075,7 +19202,7 @@ exports.UserCenterExact = UserCenterExact;
 
 
 /***/ }),
-/* 139 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20132,7 +19259,7 @@ exports.UserCenterExactProfile = UserCenterExactProfile;
 
 
 /***/ }),
-/* 140 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20153,8 +19280,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterExactActivitiesPosts_1 = __webpack_require__(141);
-var UserCenterExactActivitiesReplies_1 = __webpack_require__(142);
+var UserCenterExactActivitiesPosts_1 = __webpack_require__(140);
+var UserCenterExactActivitiesReplies_1 = __webpack_require__(141);
 /**
  * 用户中心主页近期动态组件
  */
@@ -20187,7 +19314,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 141 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20241,7 +19368,7 @@ userRecentPost.title = '这是帖子标题';
 
 
 /***/ }),
-/* 142 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20295,7 +19422,7 @@ userRecentPost.title = '这是帖子标题';
 
 
 /***/ }),
-/* 143 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20332,7 +19459,7 @@ exports.UserCenterExactAvatar = UserCenterExactAvatar;
 
 
 /***/ }),
-/* 144 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20353,7 +19480,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var AppState_1 = __webpack_require__(3);
-var UserCenterMyFollowingsUser_1 = __webpack_require__(123);
+var UserCenterMyFollowingsUser_1 = __webpack_require__(122);
 //用户中心我的关注组件
 var UserCenterMyFollowings = /** @class */ (function (_super) {
     __extends(UserCenterMyFollowings, _super);
@@ -20386,7 +19513,7 @@ userFanInfo.name = '董松松松';
 
 
 /***/ }),
-/* 145 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20407,7 +19534,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var AppState_1 = __webpack_require__(3);
-var UserCenterMyFollowingsUser_1 = __webpack_require__(123);
+var UserCenterMyFollowingsUser_1 = __webpack_require__(122);
 //用户中心我的粉丝组件
 var UserCenterMyFans = /** @class */ (function (_super) {
     __extends(UserCenterMyFans, _super);
@@ -20440,7 +19567,7 @@ userFanInfo.name = '董松松松';
 
 
 /***/ }),
-/* 146 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20458,8 +19585,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterMyPostsExact_1 = __webpack_require__(147);
-var UserCenterMyPostsReplies_1 = __webpack_require__(148);
+var UserCenterMyPostsExact_1 = __webpack_require__(146);
+var UserCenterMyPostsReplies_1 = __webpack_require__(147);
 /**
  * 用户中心我的主题组件
  */
@@ -20490,7 +19617,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 147 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20543,7 +19670,7 @@ userRecentPost.title = '这是帖子标题';
 
 
 /***/ }),
-/* 148 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20597,7 +19724,7 @@ userRecentPost.title = '这是帖子标题';
 
 
 /***/ }),
-/* 149 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20618,7 +19745,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterMyFavoritesPosts_1 = __webpack_require__(150);
+var UserCenterMyFavoritesPosts_1 = __webpack_require__(149);
 //import { UserCenterMyFavoritesPostsBoards } from './UserCenterMyFavoritesPostsBoards';
 //<Route path='/usercenter/myfavorites/boards' component={UserCenterMyFavoritesPostsBoards} />
 /**
@@ -20650,7 +19777,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 150 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20703,7 +19830,7 @@ userRecentPost.title = '这是帖子标题';
 
 
 /***/ }),
-/* 151 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20720,10 +19847,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var MyMessageMessage_1 = __webpack_require__(152);
-var MyMessageResponse_1 = __webpack_require__(157);
-var MyMessageAttme_1 = __webpack_require__(158);
-var MyMessageSystem_1 = __webpack_require__(159);
+var MyMessageMessage_1 = __webpack_require__(151);
+var MyMessageResponse_1 = __webpack_require__(156);
+var MyMessageAttme_1 = __webpack_require__(157);
+var MyMessageSystem_1 = __webpack_require__(158);
 var react_router_dom_1 = __webpack_require__(2);
 /**
  * 网站的主页面对象。
@@ -20801,7 +19928,7 @@ function sendRequest() {
 
 
 /***/ }),
-/* 152 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20856,8 +19983,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var MyMessagePerson_1 = __webpack_require__(153);
-var MyMessageWindow_1 = __webpack_require__(154);
+var MyMessagePerson_1 = __webpack_require__(152);
+var MyMessageWindow_1 = __webpack_require__(153);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -21003,7 +20130,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 153 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21045,7 +20172,7 @@ exports.MyMessagePerson = MyMessagePerson;
 
 
 /***/ }),
-/* 154 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21100,8 +20227,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var MyMessageSender_1 = __webpack_require__(155);
-var MyMessageReceiver_1 = __webpack_require__(156);
+var MyMessageSender_1 = __webpack_require__(154);
+var MyMessageReceiver_1 = __webpack_require__(155);
 var MyMessageWindow = /** @class */ (function (_super) {
     __extends(MyMessageWindow, _super);
     function MyMessageWindow(props) {
@@ -21246,7 +20373,7 @@ function reverseArr(arr, s, e) {
 
 
 /***/ }),
-/* 155 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21291,7 +20418,7 @@ exports.MyMessageSender = MyMessageSender;
 
 
 /***/ }),
-/* 156 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21341,7 +20468,7 @@ exports.MyMessageReceiver = MyMessageReceiver;
 
 
 /***/ }),
-/* 157 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21396,7 +20523,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var MyMessageResponsebox_1 = __webpack_require__(124);
+var MyMessageResponsebox_1 = __webpack_require__(123);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -21500,7 +20627,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 158 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21555,7 +20682,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var MyMessageResponsebox_1 = __webpack_require__(124);
+var MyMessageResponsebox_1 = __webpack_require__(123);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -21659,7 +20786,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 159 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21714,7 +20841,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var MyMessageSystembox_1 = __webpack_require__(160);
+var MyMessageSystembox_1 = __webpack_require__(159);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -21817,7 +20944,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 160 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21859,7 +20986,7 @@ exports.MyMessageSystembox = MyMessageSystembox;
 
 
 /***/ }),
-/* 161 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21879,7 +21006,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var FocusPostAreaComponent_1 = __webpack_require__(162);
+var FocusPostAreaComponent_1 = __webpack_require__(161);
 /**
  * 网站的主页面对象。
  */
@@ -21905,7 +21032,7 @@ exports.AllNewPost = AllNewPost;
 
 
 /***/ }),
-/* 162 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21960,7 +21087,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var FocusPostComponent_1 = __webpack_require__(163);
+var FocusPostComponent_1 = __webpack_require__(162);
 var Utility = __webpack_require__(4);
 /**
  * 表示我关注的某个版面的主题列表
@@ -22134,7 +21261,7 @@ function isBottom() {
 
 
 /***/ }),
-/* 163 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22198,7 +21325,7 @@ exports.FocusPostComponent = FocusPostComponent;
 
 
 /***/ }),
-/* 164 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22385,7 +21512,7 @@ exports.Header = Header;
 
 
 /***/ }),
-/* 165 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22437,7 +21564,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var HotTopic_1 = __webpack_require__(166);
+var HotTopic_1 = __webpack_require__(165);
 var Recommended1 = /** @class */ (function (_super) {
     __extends(Recommended1, _super);
     function Recommended1() {
@@ -22720,7 +21847,7 @@ exports.MainPage = MainPage;
 
 
 /***/ }),
-/* 166 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22743,197 +21870,7 @@ exports.HotTopic = HotTopic;
 
 
 /***/ }),
-/* 167 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(1);
-var Ubb = __webpack_require__(168);
-var UbbContainerProps = /** @class */ (function () {
-    function UbbContainerProps() {
-    }
-    return UbbContainerProps;
-}());
-exports.UbbContainerProps = UbbContainerProps;
-var UbbContainer = /** @class */ (function (_super) {
-    __extends(UbbContainer, _super);
-    function UbbContainer() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    UbbContainer.prototype.render = function () {
-        // 获取引擎对象，如果不使用引擎对象则创建一个默认的
-        var engine = this.props.engine || Ubb.createEngine();
-        // 获取选项，如果不设置选项则创建一个默认的
-        var options = this.props.options || new Ubb.UbbCodeOptions();
-        var ubbHtml = engine.exec(this.props.code, options);
-        // 注意兼容性设置， HTML4 不支持 article 标签
-        if (options.compatibility === Ubb.UbbCompatiblityMode.Transitional) {
-            return React.createElement("blockquote", null, ubbHtml);
-        }
-        else {
-            return React.createElement("article", null, ubbHtml);
-        }
-    };
-    return UbbContainer;
-}(React.Component));
-exports.UbbContainer = UbbContainer;
-
-
-/***/ }),
-/* 168 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-var Ubb = __webpack_require__(6);
-var BTagHandler_1 = __webpack_require__(169);
-var ImageTagHandler_1 = __webpack_require__(170);
-/**
- * 创建一个具有所有功能的默认引擎。
- */
-function createEngine() {
-    var engine = new Ubb.UbbCodeEngine();
-    // 在此处添加引擎所支持的所有标签处理器
-    engine.tagHandlers.register(new BTagHandler_1.BTagHandler());
-    engine.tagHandlers.register(new ImageTagHandler_1.ImageTagHandler());
-    return engine;
-}
-exports.createEngine = createEngine;
-// 重新导出核心功能
-__export(__webpack_require__(6));
-
-
-/***/ }),
-/* 169 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(1);
-var Ubb = __webpack_require__(6);
-/**
- * 处理 [b] 标签的处理器。
- */
-var BTagHandler = /** @class */ (function (_super) {
-    __extends(BTagHandler, _super);
-    function BTagHandler() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(BTagHandler.prototype, "tagName", {
-        get: function () {
-            return 'b';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    BTagHandler.prototype.execCore = function (innerContent, tagData, context) {
-        // HTML5 标准建议不再使用 b 标签
-        if (context.options.compatibility === Ubb.UbbCompatiblityMode.EnforceMorden) {
-            return React.createElement("strong", null, innerContent);
-        }
-        else {
-            return React.createElement("b", null, innerContent);
-        }
-    };
-    return BTagHandler;
-}(Ubb.RecursiveTagHandler));
-exports.BTagHandler = BTagHandler;
-
-
-/***/ }),
-/* 170 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(1);
-var Ubb = __webpack_require__(6);
-var ImageTagHandler = /** @class */ (function (_super) {
-    __extends(ImageTagHandler, _super);
-    function ImageTagHandler() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(ImageTagHandler.prototype, "tagName", {
-        get: function () { return 'img'; },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    ImageTagHandler.prototype.execCore = function (content, tagData, context) {
-        var imageUri = content;
-        var title = tagData.value('title');
-        // 不允许显示图像
-        if (!context.options.allowImage) {
-            return content;
-        }
-        var imageTag = React.createElement("img", { src: imageUri, alt: title });
-        // HTML5 模式下，使用 figure 表示插图
-        if (context.options.compatibility === Ubb.UbbCompatiblityMode.EnforceMorden) {
-            return React.createElement("figure", null,
-                imageTag,
-                React.createElement("figcaption", null, title));
-        }
-        else {
-            return imageTag;
-        }
-    };
-    return ImageTagHandler;
-}(Ubb.TextTagHandler));
-exports.ImageTagHandler = ImageTagHandler;
-
-
-/***/ }),
-/* 171 */
+/* 166 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
