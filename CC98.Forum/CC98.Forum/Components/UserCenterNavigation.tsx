@@ -27,7 +27,7 @@ export class UserCenterNavigation extends React.Component {
                 <hr />
                 <CustomLink to='/usercenter/myfans' label='我的粉丝' myClassName='fa-users' />
                 <hr />
-                <CustomLink to='/usercenter/myconfig' label='功能设置' myClassName='fa-cog' />
+                <CustomLink to='/usercenter/config' label='功能设置' myClassName='fa-cog' />
             </ul>
         </div>);
     }

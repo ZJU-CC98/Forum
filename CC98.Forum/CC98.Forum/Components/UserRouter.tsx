@@ -68,7 +68,3 @@ interface UserCenterExactState {
     */
     responseState: number;
 }
-
-interface myType {
-    [name: string]: string;
-}

@@ -1,5 +1,4 @@
-﻿@import url("test.scss");
-$bgcolor: #E9E9E9;
+﻿$bgcolor: #E9E9E9;
 $bgcolor2: #F5FAFD;
 $color-body: rgb(245,250,255);
 $color-thinBlack: rgb(120,120,120);
@@ -1233,21 +1232,17 @@ body {
                     flex-wrap: wrap;
                     justify-content: space-between;
 
-                    & :first-child {
+                    & > p {
                         width: 100%;
                         margin-bottom: 20px;
                     }
 
-                    img {
-                        width: 33.33%;
-                        height: 33.33%;
-                    }
-
-                    & :last-child {
-                        width: 60%;
+                    article {
+                        width: 100%;
                         padding: 10px;
                         font-size: 12px;
                         text-indent: 2em;
+                        white-space: pre;
                     }
                 }
             }
@@ -2719,4 +2714,28 @@ body {
 body {
     margin: 0;
     padding: 0;
+}
+
+/*
+* UBB用
+*/
+
+.ubb-code {
+    ol {
+        list-style: none;
+        counter-reset: li
+    }
+
+    li {
+        counter-increment: li
+    }
+
+    li::before {
+        content: counter(li);
+        display: inline-flex;
+        width: 50px;
+        margin: 0 10px;
+        justify-content: center;
+        background-color: #ebebeb;
+    }
 }

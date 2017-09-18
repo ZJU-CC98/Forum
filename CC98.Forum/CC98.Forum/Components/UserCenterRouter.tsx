@@ -11,6 +11,7 @@ import { UserCenterMyFollowings } from './UserCenterMyFollowings';
 import { UserCenterMyFans } from './UserCenterMyFans';
 import { UserCenterMyPosts } from './UserCenterMyPosts';
 import { UserCenterMyFavorites } from './UserCenterMyFavorites'; 
+import { UserCenterConfig } from './UserCenterConfig';
 
 /**
  * 用户中心主体
@@ -23,6 +24,7 @@ export class UserCenterRouter extends React.Component {
             <Route path='/usercenter/myfans' component={UserCenterMyFans} />
             <Route path='/usercenter/myposts' component={UserCenterMyPosts} />
             <Route path='/usercenter/myfavorites' component={UserCenterMyFavorites} />
+            <Route path='/usercenter/config' component={UserCenterConfig} />
         </div>);
     }
 }

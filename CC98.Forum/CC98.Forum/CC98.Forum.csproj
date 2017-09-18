@@ -16,7 +16,22 @@
   <ItemGroup>
     <None Remove="CC98.Forum.rar" />
     <None Remove="Components\UbbContainer.tsx" />
+    <None Remove="Components\UserCenterConfig.tsx" />
+    <None Remove="Components\UserCenterConfigAvatar.tsx" />
     <None Remove="UbbCode.tsx" />
+    <None Remove="Ubb\BTagHandler.tsx" />
+    <None Remove="Ubb\CodeTagHandler.tsx" />
+    <None Remove="Ubb\ColorTagHandler.tsx" />
+    <None Remove="Ubb\CursorTagHandler.tsx" />
+    <None Remove="Ubb\DelTagHandler.tsx" />
+    <None Remove="Ubb\EnglishTagHandler.tsx" />
+    <None Remove="Ubb\FlashTagHandler.tsx" />
+    <None Remove="Ubb\ImageTagHandler.tsx" />
+    <None Remove="Ubb\MP3TagHandler.tsx" />
+    <None Remove="Ubb\NoUbbTagHandler.tsx" />
+    <None Remove="Ubb\URLTagHandler.tsx" />
+    <None Remove="Ubb\UserTagHandler.tsx" />
+    <None Remove="Ubb\UTagHandler.tsx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,7 +48,21 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="Components\UbbContainer.tsx" />
+    <TypeScriptCompile Include="Components\UserCenterConfig.tsx" />
+    <TypeScriptCompile Include="Components\UserCenterConfigAvatar.tsx" />
+    <TypeScriptCompile Include="Ubb\BTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\CodeTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\ColorTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\CursorTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\DelTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\EnglishTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\ImageTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\Core.tsx" />
+    <TypeScriptCompile Include="Ubb\MP3TagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\NoUbbTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\UrlTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\UserTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\UTagHandler.tsx" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
