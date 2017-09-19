@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { AppState } from '../States/AppState';
 import { HotTopicState } from '../States/AppState';
 import { HotTopic } from './HotTopic';
+import * as $ from 'jquery';
 import {
     HashRouter as Router,
     Route,
@@ -11,37 +12,55 @@ import {
 
 export class Recommended1 extends React.Component<{}, {}> {
     render() {
+
+        $(document).ready(function () {
+            let button = $(".recommended1Button");
+            let content = $(".recommended1Content");
+
+            let randomNum = Math.floor(Math.random() * 5);  //生成0-4的随机数
+            content.eq(randomNum).css("display","flex");
+            button.eq(randomNum).css("background-color", "rgb(53,177,255)");
+
+            button.mouseover(function () {
+                let index = $(this).index();    //获取当前元素下标
+                content.css("display", "none");
+                content.eq(index).css("display", "flex");
+                button.css("background-color", "rgb(255,255,255)");
+                button.eq(index).css("background-color", "rgb(53,177,255)");
+            });
+        });
+
         return <div className="recommended1">
-            <div className="recommended1Content">
-                <div className="content1">
+            <div>
+                <div className="recommended1Content">
                     <div className="recommended1Img"><img src="images/recommended2Img.jpg" /></div>
                     <div className="coloum">
                         <div className="recommended1Title">推荐阅读标题1</div>
                         <div className="recommended1Abstract">推荐阅读摘要1</div>
                     </div>
                 </div>
-                <div className="content1">
+                <div className="recommended1Content">
                     <div className="recommended1Img"><img src="images/recommended2Img.jpg" /></div>
                     <div className="coloum">
                         <div className="recommended1Title">推荐阅读标题2</div>
                         <div className="recommended1Abstract">推荐阅读摘要2</div>
                     </div>
                 </div>
-                <div className="content1">
+                <div className="recommended1Content">
                     <div className="recommended1Img"><img src="images/recommended2Img.jpg" /></div>
                     <div className="coloum">
                         <div className="recommended1Title">推荐阅读标题3</div>
                         <div className="recommended1Abstract">推荐阅读摘要3</div>
                     </div>
                 </div>
-                <div className="content1">
+                <div className="recommended1Content">
                     <div className="recommended1Img"><img src="images/recommended2Img.jpg" /></div>
                     <div className="coloum">
                         <div className="recommended1Title">推荐阅读标题4</div>
                         <div className="recommended1Abstract">推荐阅读摘要4</div>
                     </div>
                 </div>
-                <div className="content1">
+                <div className="recommended1Content">
                     <div className="recommended1Img"><img src="images/recommended2Img.jpg" /></div>
                     <div className="coloum">
                         <div className="recommended1Title">推荐阅读标题5</div>

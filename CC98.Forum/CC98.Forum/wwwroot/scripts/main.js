@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 129);
+/******/ 	return __webpack_require__(__webpack_require__.s = 130);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1896,7 +1896,7 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            __webpack_require__(135)("./" + name);
+            __webpack_require__(136)("./" + name);
             // because defineLocale currently also sets the global locale, we
             // want to undo that for lazy loaded locales
             getSetGlobalLocale(oldLocale);
@@ -4531,7 +4531,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(134)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(135)(module)))
 
 /***/ }),
 /* 1 */
@@ -5715,8 +5715,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var State = __webpack_require__(4);
 var React = __webpack_require__(1);
-var List_1 = __webpack_require__(7);
-var $ = __webpack_require__(8);
+var List_1 = __webpack_require__(8);
+var $ = __webpack_require__(7);
 /*export async function getData() {
     let hottopics: State.TopicTitleAndContentState[] = [];
     let response = await fetch('http://api.cc98.org/Topic/Hot');
@@ -6154,6 +6154,12 @@ exports.UserCenterExactActivitiesPost = UserCenterExactActivitiesPost;
 
 /***/ }),
 /* 7 */
+/***/ (function(module, exports) {
+
+module.exports = $;
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6640,12 +6646,6 @@ var TopicTitleAndContent = /** @class */ (function (_super) {
 }(React.Component));
 exports.TopicTitleAndContent = TopicTitleAndContent;
 
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-module.exports = $;
 
 /***/ }),
 /* 9 */
@@ -17748,7 +17748,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var UbbContainer_1 = __webpack_require__(142);
+var UbbContainer_1 = __webpack_require__(125);
 /**
  * 用户中心主页个人资料组件
  */
@@ -17807,6 +17807,58 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
+var Ubb = __webpack_require__(143);
+var UbbContainerProps = /** @class */ (function () {
+    function UbbContainerProps() {
+    }
+    return UbbContainerProps;
+}());
+exports.UbbContainerProps = UbbContainerProps;
+var UbbContainer = /** @class */ (function (_super) {
+    __extends(UbbContainer, _super);
+    function UbbContainer() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UbbContainer.prototype.render = function () {
+        // 获取引擎对象，如果不使用引擎对象则创建一个默认的
+        var engine = this.props.engine || Ubb.createEngine();
+        // 获取选项，如果不设置选项则创建一个默认的
+        var options = this.props.options || new Ubb.UbbCodeOptions();
+        var ubbHtml = engine.exec(this.props.code, options);
+        // 注意兼容性设置， HTML4 不支持 article 标签
+        if (options.compatibility === Ubb.UbbCompatiblityMode.Transitional) {
+            return React.createElement("blockquote", null, ubbHtml);
+        }
+        else {
+            return React.createElement("article", null, ubbHtml);
+        }
+    };
+    return UbbContainer;
+}(React.Component));
+exports.UbbContainer = UbbContainer;
+
+
+/***/ }),
+/* 126 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(3);
 var UserCenterExactActivitiesPosts_1 = __webpack_require__(158);
 var UserCenterExactActivitiesReplies_1 = __webpack_require__(159);
@@ -17842,7 +17894,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17879,7 +17931,7 @@ exports.UserCenterExactAvatar = UserCenterExactAvatar;
 
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17922,7 +17974,7 @@ exports.UserCenterMyFollowingsUser = UserCenterMyFollowingsUser;
 
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17969,35 +18021,35 @@ exports.MyMessageResponsebox = MyMessageResponsebox;
 
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(130);
-module.exports = __webpack_require__(191);
+__webpack_require__(131);
+module.exports = __webpack_require__(188);
 
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var ReactDOM = __webpack_require__(131);
-var App_1 = __webpack_require__(132);
+var ReactDOM = __webpack_require__(132);
+var App_1 = __webpack_require__(133);
 // 显示应用程序核心内容
 ReactDOM.render(React.createElement(App_1.App, null), document.getElementById('root'));
 
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports) {
 
 module.exports = ReactDOM;
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18015,17 +18067,17 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(3);
-var post_1 = __webpack_require__(133);
-var List_1 = __webpack_require__(7);
-var CurUserPost_1 = __webpack_require__(136);
-var BoardList_1 = __webpack_require__(137);
-var UserCenter_1 = __webpack_require__(138);
-var MyMessage_1 = __webpack_require__(171);
-var AllNewPost_1 = __webpack_require__(181);
-var Header_1 = __webpack_require__(184);
-var MainPage_1 = __webpack_require__(185);
-var User_1 = __webpack_require__(187);
-var Login_1 = __webpack_require__(190);
+var post_1 = __webpack_require__(134);
+var List_1 = __webpack_require__(8);
+var CurUserPost_1 = __webpack_require__(137);
+var BoardList_1 = __webpack_require__(138);
+var UserCenter_1 = __webpack_require__(139);
+var MyMessage_1 = __webpack_require__(169);
+var AllNewPost_1 = __webpack_require__(179);
+var Header_1 = __webpack_require__(182);
+var MainPage_1 = __webpack_require__(183);
+var User_1 = __webpack_require__(185);
+var UbbContainer_1 = __webpack_require__(125);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -18057,6 +18109,8 @@ var App = /** @class */ (function (_super) {
             React.createElement(react_router_dom_1.BrowserRouter, null,
                 React.createElement("div", { style: { backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column' } },
                     React.createElement(Header_1.Header, null),
+                    React.createElement(UbbContainer_1.UbbContainer, { code: data }),
+                    React.createElement(UbbContainer_1.UbbContainer, { code: code }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/", component: MainPage_1.MainPage }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/:page?", component: post_1.Post }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/user/:userName/:page?", component: CurUserPost_1.CurUserPost }),
@@ -18065,8 +18119,7 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { path: "/usercenter", component: UserCenter_1.UserCenter }),
                     React.createElement(react_router_dom_1.Route, { path: "/messagebox", component: MyMessage_1.MyMessage }),
                     React.createElement(react_router_dom_1.Route, { path: "/newtopics", component: AllNewPost_1.AllNewPost }),
-                    React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }),
-                    React.createElement(react_router_dom_1.Route, { path: "/login", component: Login_1.Login }))));
+                    React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }))));
     };
     return App;
 }(React.Component));
@@ -18074,7 +18127,7 @@ exports.App = App;
 
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18721,7 +18774,7 @@ exports.UserMessageBox = UserMessageBox;
 
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -18749,7 +18802,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -18998,10 +19051,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 135;
+webpackContext.id = 136;
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19613,7 +19666,7 @@ exports.PageModel = PageModel;
 
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19968,7 +20021,7 @@ exports.BoardList = BoardList;
 
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19989,8 +20042,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(3);
-var UserCenterNavigation_1 = __webpack_require__(139);
-var UserCenterRouter_1 = __webpack_require__(140);
+var UserCenterNavigation_1 = __webpack_require__(140);
+var UserCenterRouter_1 = __webpack_require__(141);
 /**
  * 用户中心页面
  */
@@ -20014,7 +20067,7 @@ exports.UserCenter = UserCenter;
 
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20073,7 +20126,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20094,7 +20147,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(3);
-var UserCenterExact_1 = __webpack_require__(141);
+var UserCenterExact_1 = __webpack_require__(142);
 var UserCenterMyFollowings_1 = __webpack_require__(160);
 var UserCenterMyFans_1 = __webpack_require__(161);
 var UserCenterMyPosts_1 = __webpack_require__(162);
@@ -20123,7 +20176,7 @@ exports.UserCenterRouter = UserCenterRouter;
 
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20179,8 +20232,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var UserCenterExactProfile_1 = __webpack_require__(124);
-var UserCenterExactActivities_1 = __webpack_require__(125);
-var UserCenterExactAvatar_1 = __webpack_require__(126);
+var UserCenterExactActivities_1 = __webpack_require__(126);
+var UserCenterExactAvatar_1 = __webpack_require__(127);
 /**
  * 用户中心主页
  */
@@ -20245,62 +20298,6 @@ var UserCenterExact = /** @class */ (function (_super) {
     return UserCenterExact;
 }(React.Component));
 exports.UserCenterExact = UserCenterExact;
-
-
-/***/ }),
-/* 142 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(1);
-var Ubb = __webpack_require__(143);
-var UbbContainerProps = /** @class */ (function () {
-    function UbbContainerProps() {
-    }
-    return UbbContainerProps;
-}());
-exports.UbbContainerProps = UbbContainerProps;
-var UbbContainer = /** @class */ (function (_super) {
-    __extends(UbbContainer, _super);
-    function UbbContainer() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    UbbContainer.prototype.render = function () {
-        // 获取引擎对象，如果不使用引擎对象则创建一个默认的
-        var engine = this.props.engine || Ubb.createEngine();
-        // 获取选项，如果不设置选项则创建一个默认的
-        var options = this.props.options || new Ubb.UbbCodeOptions();
-        var ubbHtml = engine.exec(this.props.code, options);
-        //打开回车与空格
-        var style = {
-            whiteSpace: "pre"
-        };
-        // 注意兼容性设置， HTML4 不支持 article 标签
-        if (options.compatibility === Ubb.UbbCompatiblityMode.Transitional) {
-            return React.createElement("blockquote", { style: style }, ubbHtml);
-        }
-        else {
-            return React.createElement("article", { style: style }, ubbHtml);
-        }
-    };
-    return UbbContainer;
-}(React.Component));
-exports.UbbContainer = UbbContainer;
 
 
 /***/ }),
@@ -21069,6 +21066,7 @@ var CodeTagHandler = /** @class */ (function (_super) {
     });
     ;
     CodeTagHandler.prototype.execCore = function (content, tagData, context) {
+        console.log(content.split('\n'));
         var element = content.split('\n').map(function (item, index) {
             return React.createElement("li", null, item);
         });
@@ -21210,7 +21208,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var AppState_1 = __webpack_require__(4);
-var UserCenterMyFollowingsUser_1 = __webpack_require__(127);
+var UserCenterMyFollowingsUser_1 = __webpack_require__(128);
 //用户中心我的关注组件
 var UserCenterMyFollowings = /** @class */ (function (_super) {
     __extends(UserCenterMyFollowings, _super);
@@ -21264,7 +21262,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var AppState_1 = __webpack_require__(4);
-var UserCenterMyFollowingsUser_1 = __webpack_require__(127);
+var UserCenterMyFollowingsUser_1 = __webpack_require__(128);
 //用户中心我的粉丝组件
 var UserCenterMyFans = /** @class */ (function (_super) {
     __extends(UserCenterMyFans, _super);
@@ -21581,8 +21579,6 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var UserCenterConfigAvatar_1 = __webpack_require__(168);
-var UserCenterConfigSignature_1 = __webpack_require__(169);
-var UsercenterConfigPassword_1 = __webpack_require__(170);
 var UserCenterConfig = /** @class */ (function (_super) {
     __extends(UserCenterConfig, _super);
     function UserCenterConfig() {
@@ -21591,10 +21587,7 @@ var UserCenterConfig = /** @class */ (function (_super) {
     UserCenterConfig.prototype.render = function () {
         return (React.createElement("div", { className: "user-center-config" },
             React.createElement(UserCenterConfigAvatar_1.UserCenterConfigAvatar, null),
-            React.createElement("hr", null),
-            React.createElement(UserCenterConfigSignature_1.UserCenterConfigSignature, null),
-            React.createElement("hr", null),
-            React.createElement(UsercenterConfigPassword_1.UserCenterConfigPassword, null)));
+            React.createElement("hr", null)));
     };
     return UserCenterConfig;
 }(React.Component));
@@ -21629,12 +21622,11 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
     }
     UserCenterConfigAvatar.prototype.render = function () {
         return (React.createElement("div", { className: "user-center-config-avatar" },
-            React.createElement("img", { src: 'http://file.cc98.org/uploadface/5298.png' }),
+            React.createElement("img", { src: '' }),
             React.createElement("div", null,
                 React.createElement("button", { id: "chooseDefaultAvatar", type: "button" }, "\u9009\u62E9\u8BBA\u575B\u5934\u50CF"),
-                React.createElement("div", null,
-                    React.createElement("button", { id: "uploadAvatar", type: "button" }, "\u4E0A\u4F20\u5934\u50CF"),
-                    React.createElement("p", null, "\u56FE\u7247\u957F\u5BBD\u4E3A160\u00D7160\u50CF\u7D20\u7684\u56FE\u7247")))));
+                React.createElement("button", { id: "uploadAvatar", type: "button" }, "\u4E0A\u4F20\u5934\u50CF"),
+                React.createElement("p", null, "\u56FE\u7247\u957F\u5BBD\u4E3A160\u00D7160\u50CF\u7D20\u7684\u56FE\u7247"))));
     };
     return UserCenterConfigAvatar;
 }(React.Component));
@@ -21647,9 +21639,6 @@ exports.UserCenterConfigAvatar = UserCenterConfigAvatar;
 
 "use strict";
 
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -21662,111 +21651,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var UserCenterConfigSignature = /** @class */ (function (_super) {
-    __extends(UserCenterConfigSignature, _super);
-    function UserCenterConfigSignature(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = {
-            signature: '你还没有个性签名',
-            signatureExtends: null
-        };
-        _this.handleChange = _this.handleChange.bind(_this);
-        return _this;
-    }
-    UserCenterConfigSignature.prototype.handleChange = function (event) {
-        this.setState({ signature: event.target.value });
-        console.log(this.state.signature);
-    };
-    UserCenterConfigSignature.prototype.render = function () {
-        return (React.createElement("div", { className: "user-center-config-signature" },
-            React.createElement("div", { className: "signature-buttons" },
-                React.createElement("button", { id: "signatureImg", type: "button" }, "\u56FE\u7247"),
-                React.createElement("button", { id: "signatureVideo", type: "button" }, "\u89C6\u9891"),
-                React.createElement("button", { id: "signatureAudio", type: "button" }, "\u97F3\u4E50"),
-                React.createElement("button", { id: "signatureColor", type: "button" }, "A"),
-                React.createElement("button", { id: "signatureStrong", type: "button" }, "B")),
-            React.createElement("div", { className: "signature-extends" }),
-            React.createElement("textarea", { id: "signature", onChange: this.handleChange, value: this.state.signature }),
-            React.createElement("div", null,
-                React.createElement("p", null, "\u6CE8* \u4E2A\u6027\u7B7E\u540D\u5C06\u5728\u4E2A\u4EBA\u4E3B\u9875\u3001\u53D1\u5E03\u6587\u7AE0\u3001\u56DE\u590D\u6587\u7AE0\u4E2D\u663E\u793A"),
-                React.createElement("button", { id: "signatureUpload", type: "button" }, "\u4FDD\u5B58\u7B7E\u540D\u6863"))));
-    };
-    return UserCenterConfigSignature;
-}(React.Component));
-exports.UserCenterConfigSignature = UserCenterConfigSignature;
-var UserCenterConfigSignatureState = /** @class */ (function () {
-    function UserCenterConfigSignatureState() {
-    }
-    return UserCenterConfigSignatureState;
-}());
-
-
-/***/ }),
-/* 170 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(1);
-var UserCenterConfigPassword = /** @class */ (function (_super) {
-    __extends(UserCenterConfigPassword, _super);
-    function UserCenterConfigPassword() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    UserCenterConfigPassword.prototype.render = function () {
-        return (React.createElement("div", { className: "user-center-config-password" },
-            React.createElement("p", null, "\u4FEE\u6539\u5BC6\u7801"),
-            React.createElement("div", { className: "password-inputs" },
-                React.createElement("p", null, "\u539F\u5BC6\u7801"),
-                React.createElement("input", { type: "password", id: "oldPassword" }),
-                React.createElement("p", null, "\u65B0\u5BC6\u7801"),
-                React.createElement("input", { type: "password", id: "newPassword" }),
-                React.createElement("p", null, "\u786E\u8BA4\u5BC6\u7801"),
-                React.createElement("input", { type: "password", id: "confirmPassword" }),
-                React.createElement("button", { type: "button" }, "\u63D0\u4EA4\u5BC6\u7801")),
-            React.createElement("p", { id: "passwordChangeMesssage" })));
-    };
-    return UserCenterConfigPassword;
-}(React.Component));
-exports.UserCenterConfigPassword = UserCenterConfigPassword;
-
-
-/***/ }),
-/* 171 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(1);
-var MyMessageMessage_1 = __webpack_require__(172);
-var MyMessageResponse_1 = __webpack_require__(177);
-var MyMessageAttme_1 = __webpack_require__(178);
-var MyMessageSystem_1 = __webpack_require__(179);
+var MyMessageMessage_1 = __webpack_require__(170);
+var MyMessageResponse_1 = __webpack_require__(175);
+var MyMessageAttme_1 = __webpack_require__(176);
+var MyMessageSystem_1 = __webpack_require__(177);
 var react_router_dom_1 = __webpack_require__(3);
 /**
  * 网站的主页面对象。
@@ -21844,7 +21732,7 @@ function sendRequest() {
 
 
 /***/ }),
-/* 172 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21899,8 +21787,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var MyMessagePerson_1 = __webpack_require__(173);
-var MyMessageWindow_1 = __webpack_require__(174);
+var MyMessagePerson_1 = __webpack_require__(171);
+var MyMessageWindow_1 = __webpack_require__(172);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -22046,7 +21934,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 173 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22088,7 +21976,7 @@ exports.MyMessagePerson = MyMessagePerson;
 
 
 /***/ }),
-/* 174 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22143,8 +22031,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var MyMessageSender_1 = __webpack_require__(175);
-var MyMessageReceiver_1 = __webpack_require__(176);
+var MyMessageSender_1 = __webpack_require__(173);
+var MyMessageReceiver_1 = __webpack_require__(174);
 var MyMessageWindow = /** @class */ (function (_super) {
     __extends(MyMessageWindow, _super);
     function MyMessageWindow(props) {
@@ -22289,7 +22177,7 @@ function reverseArr(arr, s, e) {
 
 
 /***/ }),
-/* 175 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22334,7 +22222,7 @@ exports.MyMessageSender = MyMessageSender;
 
 
 /***/ }),
-/* 176 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22384,7 +22272,7 @@ exports.MyMessageReceiver = MyMessageReceiver;
 
 
 /***/ }),
-/* 177 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22439,7 +22327,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var MyMessageResponsebox_1 = __webpack_require__(128);
+var MyMessageResponsebox_1 = __webpack_require__(129);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -22543,7 +22431,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 178 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22598,7 +22486,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var MyMessageResponsebox_1 = __webpack_require__(128);
+var MyMessageResponsebox_1 = __webpack_require__(129);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -22702,7 +22590,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 179 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22757,7 +22645,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var MyMessageSystembox_1 = __webpack_require__(180);
+var MyMessageSystembox_1 = __webpack_require__(178);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -22860,7 +22748,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 180 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22902,7 +22790,7 @@ exports.MyMessageSystembox = MyMessageSystembox;
 
 
 /***/ }),
-/* 181 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22922,7 +22810,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var FocusPostAreaComponent_1 = __webpack_require__(182);
+var FocusPostAreaComponent_1 = __webpack_require__(180);
 /**
  * 网站的主页面对象。
  */
@@ -22948,7 +22836,7 @@ exports.AllNewPost = AllNewPost;
 
 
 /***/ }),
-/* 182 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23003,7 +22891,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var FocusPostComponent_1 = __webpack_require__(183);
+var FocusPostComponent_1 = __webpack_require__(181);
 var Utility = __webpack_require__(5);
 /**
  * 表示我关注的某个版面的主题列表
@@ -23177,7 +23065,7 @@ function isBottom() {
 
 
 /***/ }),
-/* 183 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23241,7 +23129,7 @@ exports.FocusPostComponent = FocusPostComponent;
 
 
 /***/ }),
-/* 184 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23258,7 +23146,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var $ = __webpack_require__(8);
+var $ = __webpack_require__(7);
 var DropDown = /** @class */ (function (_super) {
     __extends(DropDown, _super);
     function DropDown() {
@@ -23419,7 +23307,7 @@ exports.Header = Header;
 
 
 /***/ }),
-/* 185 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23471,40 +23359,55 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var HotTopic_1 = __webpack_require__(186);
+var HotTopic_1 = __webpack_require__(184);
+var $ = __webpack_require__(7);
 var Recommended1 = /** @class */ (function (_super) {
     __extends(Recommended1, _super);
     function Recommended1() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Recommended1.prototype.render = function () {
+        $(document).ready(function () {
+            var button = $(".recommended1Button");
+            var content = $(".recommended1Content");
+            var randomNum = Math.floor(Math.random() * 5); //生成0-4的随机数
+            content.eq(randomNum).css("display", "flex");
+            button.eq(randomNum).css("background-color", "rgb(53,177,255)");
+            button.mouseover(function () {
+                var index = $(this).index(); //获取当前元素下标
+                content.css("display", "none");
+                content.eq(index).css("display", "flex");
+                button.css("background-color", "rgb(255,255,255)");
+                button.eq(index).css("background-color", "rgb(53,177,255)");
+            });
+        });
         return React.createElement("div", { className: "recommended1" },
-            React.createElement("div", { className: "recommended1Content" },
-                React.createElement("div", { className: "content1" },
+            React.createElement("div", null,
+                React.createElement("div", { className: "recommended1Content" },
                     React.createElement("div", { className: "recommended1Img" },
                         React.createElement("img", { src: "images/recommended2Img.jpg" })),
                     React.createElement("div", { className: "coloum" },
                         React.createElement("div", { className: "recommended1Title" }, "\u63A8\u8350\u9605\u8BFB\u6807\u98981"),
                         React.createElement("div", { className: "recommended1Abstract" }, "\u63A8\u8350\u9605\u8BFB\u6458\u89811"))),
-                React.createElement("div", { className: "content1" },
+                React.createElement("div", { className: "recommended1Content" },
                     React.createElement("div", { className: "recommended1Img" },
                         React.createElement("img", { src: "images/recommended2Img.jpg" })),
                     React.createElement("div", { className: "coloum" },
                         React.createElement("div", { className: "recommended1Title" }, "\u63A8\u8350\u9605\u8BFB\u6807\u98982"),
                         React.createElement("div", { className: "recommended1Abstract" }, "\u63A8\u8350\u9605\u8BFB\u6458\u89812"))),
-                React.createElement("div", { className: "content1" },
+                React.createElement("div", { className: "recommended1Content" },
                     React.createElement("div", { className: "recommended1Img" },
                         React.createElement("img", { src: "images/recommended2Img.jpg" })),
                     React.createElement("div", { className: "coloum" },
                         React.createElement("div", { className: "recommended1Title" }, "\u63A8\u8350\u9605\u8BFB\u6807\u98983"),
                         React.createElement("div", { className: "recommended1Abstract" }, "\u63A8\u8350\u9605\u8BFB\u6458\u89813"))),
-                React.createElement("div", { className: "content1" },
+                React.createElement("div", { className: "recommended1Content" },
                     React.createElement("div", { className: "recommended1Img" },
                         React.createElement("img", { src: "images/recommended2Img.jpg" })),
                     React.createElement("div", { className: "coloum" },
                         React.createElement("div", { className: "recommended1Title" }, "\u63A8\u8350\u9605\u8BFB\u6807\u98984"),
                         React.createElement("div", { className: "recommended1Abstract" }, "\u63A8\u8350\u9605\u8BFB\u6458\u89814"))),
-                React.createElement("div", { className: "content1" },
+                React.createElement("div", { className: "recommended1Content" },
                     React.createElement("div", { className: "recommended1Img" },
                         React.createElement("img", { src: "images/recommended2Img.jpg" })),
                     React.createElement("div", { className: "coloum" },
@@ -23755,7 +23658,7 @@ exports.MainPage = MainPage;
 
 
 /***/ }),
-/* 186 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23778,7 +23681,7 @@ exports.HotTopic = HotTopic;
 
 
 /***/ }),
-/* 187 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23799,8 +23702,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(3);
-var UserNavigation_1 = __webpack_require__(188);
-var UserRouter_1 = __webpack_require__(189);
+var UserNavigation_1 = __webpack_require__(186);
+var UserRouter_1 = __webpack_require__(187);
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
@@ -23821,7 +23724,7 @@ exports.User = User;
 
 
 /***/ }),
-/* 188 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23864,7 +23767,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 189 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23921,8 +23824,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(3);
 var UserCenterExactProfile_1 = __webpack_require__(124);
-var UserCenterExactActivities_1 = __webpack_require__(125);
-var UserCenterExactAvatar_1 = __webpack_require__(126);
+var UserCenterExactActivities_1 = __webpack_require__(126);
+var UserCenterExactAvatar_1 = __webpack_require__(127);
 var UserRouter = /** @class */ (function (_super) {
     __extends(UserRouter, _super);
     function UserRouter() {
@@ -23989,120 +23892,7 @@ var UserExact = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 190 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(1);
-var Login = /** @class */ (function (_super) {
-    __extends(Login, _super);
-    function Login(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = {
-            loginName: '',
-            loginPassword: '',
-            loginMessage: ''
-        };
-        _this.handleNameChange = _this.handleNameChange.bind(_this);
-        _this.handlePasswordChange = _this.handlePasswordChange.bind(_this);
-        _this.handleLogin = _this.handleLogin.bind(_this);
-        return _this;
-    }
-    Login.prototype.shake = function (element) {
-        element.classList.add('shake');
-        setTimeout(function () { element.classList.remove('shake'); }, 500);
-        return element;
-    };
-    Login.prototype.handleNameChange = function (e) {
-        this.setState({
-            loginName: e.target.value
-        });
-    };
-    Login.prototype.handlePasswordChange = function (e) {
-        this.setState({
-            loginPassword: e.target.value
-        });
-    };
-    Login.prototype.handleLogin = function (e) {
-        e.preventDefault();
-        if (!(this.state.loginName || this.state.loginPassword)) {
-            this.setState({
-                loginMessage: "请输入用户名和密码"
-            });
-            this.shake(document.getElementById('loginName')).focus();
-            this.shake(document.getElementById('loginPassword'));
-            return false;
-        }
-        else if (!this.state.loginName) {
-            this.setState({
-                loginMessage: "请输入用户名"
-            });
-            this.shake(document.getElementById('loginName')).focus();
-            return false;
-        }
-        else if (!this.state.loginPassword) {
-            this.setState({
-                loginMessage: "请输入密码"
-            });
-            this.shake(document.getElementById('loginPassword')).focus();
-            return false;
-        }
-        else {
-            this.setState({
-                loginMessage: "登陆中"
-            });
-        }
-    };
-    Login.prototype.render = function () {
-        return (React.createElement("div", { className: "login" },
-            React.createElement("div", null,
-                React.createElement("img", { src: "/images/login.png" }),
-                React.createElement("div", null,
-                    React.createElement("img", { src: "/images/login_welcome.png" }),
-                    React.createElement("form", { onSubmit: this.handleLogin },
-                        React.createElement("div", { className: "login-form" },
-                            React.createElement("p", null, "\u7528\u6237\u540D"),
-                            React.createElement("input", { type: "text", id: "loginName", onChange: this.handleNameChange, value: this.state.loginName })),
-                        React.createElement("div", { className: "login-form" },
-                            React.createElement("p", null, "\u5BC6\u7801"),
-                            React.createElement("input", { type: "password", id: "loginPassword", onChange: this.handlePasswordChange })),
-                        React.createElement("p", { id: "loginMessage" }, this.state.loginMessage),
-                        React.createElement("button", { type: "submit" }, "\u767B\u9646\u8D26\u53F7")),
-                    React.createElement("p", null,
-                        React.createElement("span", null,
-                            "\u8FD8\u6CA1\u8D26\u53F7\uFF1F\u6211\u8981 ",
-                            React.createElement("a", { href: "" }, "\u6CE8\u518C")))))));
-    };
-    return Login;
-}(React.Component));
-exports.Login = Login;
-/**
- * 登陆页状态
- */
-var LoginState = /** @class */ (function () {
-    function LoginState() {
-    }
-    return LoginState;
-}());
-
-
-/***/ }),
-/* 191 */
+/* 188 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
