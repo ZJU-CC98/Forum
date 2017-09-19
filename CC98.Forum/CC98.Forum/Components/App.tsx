@@ -17,6 +17,7 @@ import { AllNewPost } from './AllNewPost';
 import { Header } from './Header';
 import { MainPage } from './MainPage';
 import { User } from './User';
+import { Login } from './Login';
 
 import { UbbContainer } from './UbbContainer';
 import * as Ubb from '../Ubb/UbbCodeExtension';
@@ -47,10 +48,6 @@ export class App extends React.Component<{}, AppState> {
 		return <div><Router>
 			<div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column' }}>
 				<Header />
-
-				<UbbContainer code={data} />
-				<UbbContainer code={code} />
-
 				<Route exact path="/" component={MainPage}></Route>
 				<Route exact path="/topic/:topicid/:page?" component={Post} />
 				<Route exact path="/topic/:topicid/user/:userName/:page?" component={CurUserPost} />
@@ -60,6 +57,7 @@ export class App extends React.Component<{}, AppState> {
 				<Route path="/messagebox" component={MyMessage} />
                 <Route path="/newtopics" component={AllNewPost} />
                 <Route path="/user" component={User} />
+                <Route path="/login" component={Login} />
 			</div>
 		</Router></div>;
 	}
