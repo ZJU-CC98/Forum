@@ -20,13 +20,19 @@ export class UbbContainer extends React.Component<UbbContainerProps, {}> {
 		// 获取选项，如果不设置选项则创建一个默认的
 		const options = this.props.options || new Ubb.UbbCodeOptions();
 
-		const ubbHtml = engine.exec(this.props.code, options);
+        const ubbHtml = engine.exec(this.props.code, options);
+
+        //打开回车与空格
+        const style = {
+            whiteSpace: "pre"
+
+        };
 
 		// 注意兼容性设置， HTML4 不支持 article 标签
 		if (options.compatibility === Ubb.UbbCompatiblityMode.Transitional) {
-			return <blockquote>{ubbHtml}</blockquote>;
+            return <blockquote style={style}>{ubbHtml}</blockquote>;
 		} else {
-			return <article>{ubbHtml}</article>;
+            return <article style={style}>{ubbHtml}</article>;
 		}
 	}
 

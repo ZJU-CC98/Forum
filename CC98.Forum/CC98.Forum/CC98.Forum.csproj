@@ -18,6 +18,8 @@
     <None Remove="Components\UbbContainer.tsx" />
     <None Remove="Components\UserCenterConfig.tsx" />
     <None Remove="Components\UserCenterConfigAvatar.tsx" />
+    <None Remove="Components\UsercenterConfigPassword.tsx" />
+    <None Remove="Components\UserCenterConfigSignature.tsx" />
     <None Remove="UbbCode.tsx" />
     <None Remove="Ubb\BTagHandler.tsx" />
     <None Remove="Ubb\CodeTagHandler.tsx" />
@@ -50,6 +52,8 @@
     <TypeScriptCompile Include="Components\UbbContainer.tsx" />
     <TypeScriptCompile Include="Components\UserCenterConfig.tsx" />
     <TypeScriptCompile Include="Components\UserCenterConfigAvatar.tsx" />
+    <TypeScriptCompile Include="Components\UsercenterConfigPassword.tsx" />
+    <TypeScriptCompile Include="Components\UserCenterConfigSignature.tsx" />
     <TypeScriptCompile Include="Ubb\BTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\CodeTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\ColorTagHandler.tsx" />
