@@ -5,6 +5,8 @@
 import * as React from 'react';
 
 import { UserCenterConfigAvatar } from './UserCenterConfigAvatar';
+import { UserCenterConfigSignature } from './UserCenterConfigSignature';
+import { UserCenterConfigPassword } from './UsercenterConfigPassword';
 
 export class UserCenterConfig extends React.Component {
 
@@ -12,6 +14,9 @@ export class UserCenterConfig extends React.Component {
         return (<div className="user-center-config">
             <UserCenterConfigAvatar />
             <hr />
+            <UserCenterConfigSignature />
+            <hr />
+            <UserCenterConfigPassword />
         </div>);
     }
 }
