@@ -17808,12 +17808,18 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var Ubb = __webpack_require__(143);
+/**
+ * 定义 UBBContainer 组件需要使用的属性。
+ */
 var UbbContainerProps = /** @class */ (function () {
     function UbbContainerProps() {
     }
     return UbbContainerProps;
 }());
 exports.UbbContainerProps = UbbContainerProps;
+/**
+ * 提供用于解析 UBB 的核心组件。
+ */
 var UbbContainer = /** @class */ (function (_super) {
     __extends(UbbContainer, _super);
     function UbbContainer() {
@@ -17824,8 +17830,8 @@ var UbbContainer = /** @class */ (function (_super) {
         var engine = this.props.engine || Ubb.createEngine();
         // 获取选项，如果不设置选项则创建一个默认的
         var options = this.props.options || new Ubb.UbbCodeOptions();
-        var ubbHtml = engine.exec(this.props.code, options);
-        //打开回车与空格
+        var ubbHtml = engine.exec(this.props.code || '', options);
+        //打开回车与空格00
         var style = {
             whiteSpace: 'pre-line'
         };
@@ -18282,7 +18288,7 @@ var Post = /** @class */ (function (_super) {
         if (this.state.page == 1) {
             topic = React.createElement(PostTopic, { imgUrl: "/images/ads.jpg", page: this.state.page, topicid: this.state.topicid });
         }
-        return React.createElement("div", { className: "center", style: { overflowX: "scroll", minWidth: "1140px", marginTop: "40px" } },
+        return React.createElement("div", { className: "center", style: { overflowX: 'scroll', minWidth: '1140px', marginTop: '40px' } },
             React.createElement(TopicPager, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
             topic,
             React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: Reply }));
@@ -18305,12 +18311,8 @@ var Reply = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        page = newProps.match.params.page;
-                        if (newProps.match.params.page == undefined) {
-                            page = 1;
-                        }
-                        this.Contents = Utility.getTopicContent(newProps.match.params.topicid, page);
-                        return [4 /*yield*/, this.Contents];
+                        page = newProps.match.params.page || 1;
+                        return [4 /*yield*/, Utility.getTopicContent(newProps.match.params.topicid, page)];
                     case 1:
                         realContents = _a.sent();
                         this.setState({ contents: realContents });
@@ -18325,7 +18327,7 @@ var Reply = /** @class */ (function (_super) {
             React.createElement(ReplyContent, { key: item.content, content: item.content, signature: item.signature }));
     };
     Reply.prototype.render = function () {
-        return React.createElement("div", { className: "center", style: { width: "1140px" } }, this.state.contents.map(this.generateContents));
+        return React.createElement("div", { className: "center", style: { width: '1140px' } }, this.state.contents.map(this.generateContents));
     };
     return Reply;
 }(RouteComponent));
@@ -18335,42 +18337,42 @@ var Replier = /** @class */ (function (_super) {
     function Replier(props, content) {
         var _this = _super.call(this, props, content) || this;
         _this.state = {
-            imgUrl: "/images/authorImg.jpg",
-            timeImgUrl: "/images/clock.jpg",
-            userName: "VayneTian",
+            imgUrl: '/images/authorImg.jpg',
+            timeImgUrl: '/images/clock.jpg',
+            userName: 'VayneTian',
             replyTime: Date(),
             topicsNumber: 999,
             level: 2,
         };
         return _this;
     }
-    Replier.prototype.ShowUserMessage = function () {
+    Replier.prototype.showUserMessage = function () {
         //return <UserMessageBox userName="dearkano" userFans="2333" />;
-        var x = document.getElementById("userInformation");
+        var x = document.getElementById('userInformation');
     };
     Replier.prototype.render = function () {
         var url = "/user/" + this.props.userId;
         var curUserPostUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userName;
         return React.createElement("div", { className: "replyRoot" },
-            React.createElement("div", { className: "row", style: { width: "1140px", display: "flex", marginBottom: "10px" } },
+            React.createElement("div", { className: "row", style: { width: '1140px', display: 'flex', marginBottom: '10px' } },
                 React.createElement("div", { id: "authorImg" },
                     React.createElement("a", { href: url },
-                        React.createElement("img", { onMouseOver: this.ShowUserMessage, src: this.props.userImgUrl }))),
+                        React.createElement("img", { onMouseOver: this.showUserMessage, src: this.props.userImgUrl }))),
                 React.createElement("div", { id: "userInformation" }),
                 React.createElement("div", { className: "column", id: "rpymes" },
                     React.createElement("div", { className: "row", id: "replierMes" },
-                        React.createElement("div", { style: { marginLeft: "10px" } },
+                        React.createElement("div", { style: { marginLeft: '10px' } },
                             React.createElement("span", null,
                                 this.props.floor,
                                 "L")),
-                        React.createElement("div", { className: "rpyClr", style: { marginLeft: "10px" } },
+                        React.createElement("div", { className: "rpyClr", style: { marginLeft: '10px' } },
                             React.createElement("a", { href: url }, this.props.userName)),
-                        React.createElement("div", { id: "topicsNumber", style: { marginLeft: "10px" } },
+                        React.createElement("div", { id: "topicsNumber", style: { marginLeft: '10px' } },
                             "\u8D34\u6570   ",
                             React.createElement("span", { className: "rpyClrodd" }, this.props.sendTopicNumber),
                             " ")),
                     React.createElement("div", { className: "row" },
-                        React.createElement("div", { id: "clockimg", style: { marginLeft: "6px" } },
+                        React.createElement("div", { id: "clockimg", style: { marginLeft: '6px' } },
                             React.createElement("i", { className: "fa fa-clock-o fa-lg fa-fw" })),
                         React.createElement("div", null,
                             React.createElement("span", { className: "timeProp" }, moment(this.props.replyTime).format('YYYY-MM-DD HH:mm:ss'))))),
@@ -18389,7 +18391,7 @@ var PostTopic = /** @class */ (function (_super) {
     function PostTopic(props, content) {
         var _this = _super.call(this, props, content) || this;
         _this.state = {
-            topicMessage: { title: "ss", time: "2017" }
+            topicMessage: { title: 'ss', time: '2017' }
         };
         return _this;
     }
@@ -18410,7 +18412,7 @@ var PostTopic = /** @class */ (function (_super) {
     PostTopic.prototype.render = function () {
         return React.createElement("div", { className: "root" },
             React.createElement("div", { className: "essay" },
-                React.createElement(AuthorMessage, { authorId: this.state.topicMessage.userId, AuthorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl }),
+                React.createElement(AuthorMessage, { authorId: this.state.topicMessage.userId, authorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl }),
                 React.createElement(TopicTitle, { Title: this.state.topicMessage.title, Time: this.state.topicMessage.time, HitCount: this.state.topicMessage.hitCount }),
                 React.createElement("div", { id: "ads" },
                     React.createElement("img", { src: this.props.imgUrl }))),
@@ -18426,7 +18428,7 @@ var AuthorMessage = /** @class */ (function (_super) {
     function AuthorMessage(props, content) {
         var _this = _super.call(this, props, content) || this;
         _this.state = {
-            userName: "Mana",
+            userName: 'Mana',
             fansNumber: 233,
             imgUrl: _this.props.authorImgUrl
         };
@@ -18439,13 +18441,13 @@ var AuthorMessage = /** @class */ (function (_super) {
                 React.createElement("a", { href: url },
                     React.createElement("img", { src: this.props.authorImgUrl }))),
             React.createElement("div", { className: "column" },
-                React.createElement("div", { className: "row authorFans", style: { justifyContent: "space-between" } },
+                React.createElement("div", { className: "row authorFans", style: { justifyContent: 'space-between' } },
                     React.createElement("div", { id: "authorName" },
                         React.createElement("p", null,
-                            React.createElement("a", { href: url }, this.props.AuthorName))),
+                            React.createElement("a", { href: url }, this.props.authorName))),
                     React.createElement("div", { id: "fans", className: "row" },
-                        React.createElement("div", { style: { marginRight: "3px" } }, "\u7C89\u4E1D"),
-                        React.createElement("div", { style: { color: "#EE0000" } }, this.state.fansNumber))),
+                        React.createElement("div", { style: { marginRight: '3px' } }, "\u7C89\u4E1D"),
+                        React.createElement("div", { style: { color: '#EE0000' } }, this.state.fansNumber))),
                 React.createElement("div", { className: "row" },
                     React.createElement("button", { id: "watch" }, "\u5173\u6CE8"),
                     React.createElement("button", { id: "email" }, "\u79C1\u4FE1"))));
@@ -18460,9 +18462,9 @@ var TopicTitle = /** @class */ (function (_super) {
         _this.state = {
             isNotice: true,
             isTop: true,
-            title: "这是一个长长啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊的标题",
-            tag: "女装/开车",
-            time: "2017.8.12",
+            title: '这是一个长长啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊的标题',
+            tag: '女装/开车',
+            time: '2017.8.12',
             likeNumber: 666,
             unlikeNumber: 233,
             viewTimes: 2366
@@ -18471,23 +18473,23 @@ var TopicTitle = /** @class */ (function (_super) {
     }
     TopicTitle.prototype.returnProps = function (isTop, isNotice, title) {
         if (isTop == true && isNotice == false) {
-            return React.createElement("div", { id: "title1", className: "row", style: { justifyContent: "flex-start" } },
-                React.createElement("div", { className: "titleProp", style: { width: "70px" } }, "\u3010\u7F6E\u9876\u3011"),
+            return React.createElement("div", { id: "title1", className: "row", style: { justifyContent: 'flex-start' } },
+                React.createElement("div", { className: "titleProp", style: { width: '70px' } }, "\u3010\u7F6E\u9876\u3011"),
                 React.createElement("div", { id: "essayTitle" }, title));
         }
         else if (isTop == false && isNotice == true) {
-            return React.createElement("div", { id: "title1", className: "row", style: { justifyContent: "flex-start" } },
-                React.createElement("div", { style: { width: "70px" }, className: "titleProp" }, "\u3010\u516C\u544A\u3011"),
+            return React.createElement("div", { id: "title1", className: "row", style: { justifyContent: 'flex-start' } },
+                React.createElement("div", { style: { width: '70px' }, className: "titleProp" }, "\u3010\u516C\u544A\u3011"),
                 React.createElement("div", { id: "essayTitle" }, title));
         }
         else if (isTop == true && isNotice == true) {
-            return React.createElement("div", { id: "title1", className: "row", style: { justifyContent: "flex-start" } },
-                React.createElement("div", { className: "titleProp", style: { width: "70px", height: "30px", whiteSpace: "nowrap" } }, "\u3010\u7F6E\u9876\u3011"),
-                React.createElement("div", { style: { width: "70px", height: "30px", whiteSpace: "nowrap" }, className: "titleProp" }, "\u3010\u516C\u544A\u3011"),
+            return React.createElement("div", { id: "title1", className: "row", style: { justifyContent: 'flex-start' } },
+                React.createElement("div", { className: "titleProp", style: { width: '70px', height: '30px', whiteSpace: 'nowrap' } }, "\u3010\u7F6E\u9876\u3011"),
+                React.createElement("div", { style: { width: '70px', height: '30px', whiteSpace: 'nowrap' }, className: "titleProp" }, "\u3010\u516C\u544A\u3011"),
                 React.createElement("div", { id: "essayTitle" }, title));
         }
         else {
-            return React.createElement("div", { id: "title1", className: "row", style: { justifyContent: "flex-start" } },
+            return React.createElement("div", { id: "title1", className: "row", style: { justifyContent: 'flex-start' } },
                 React.createElement("div", { id: "essayTitle" }, title));
         }
     };
@@ -18514,12 +18516,12 @@ var TopicTitle = /** @class */ (function (_super) {
                         React.createElement("span", { className: "timeProp tagSize" },
                             this.props.HitCount,
                             "\u6B21")))),
-            React.createElement("div", { className: "column", style: { width: "100px" } },
-                React.createElement("div", { className: "row", style: { marginTop: "10px" } },
+            React.createElement("div", { className: "column", style: { width: '100px' } },
+                React.createElement("div", { className: "row", style: { marginTop: '10px' } },
                     React.createElement("div", { id: "like", className: "tagSize" },
                         React.createElement("i", { className: "fa fa-star-o fa-lg" }),
-                        React.createElement("span", { style: { marginLeft: "10px" } }, "\u6536\u85CF\u6587\u7AE0"))),
-                React.createElement("div", { className: "row", style: { marginTop: "35px" } },
+                        React.createElement("span", { style: { marginLeft: '10px' } }, "\u6536\u85CF\u6587\u7AE0"))),
+                React.createElement("div", { className: "row", style: { marginTop: '35px' } },
                     React.createElement("div", { id: "liked", className: "row tagSize" },
                         React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg fa-fw" }),
                         this.state.likeNumber),
@@ -18584,7 +18586,7 @@ var ReplyContent = /** @class */ (function (_super) {
         return React.createElement("div", { className: "root" },
             React.createElement("div", { className: "content" },
                 React.createElement("div", { className: "substance" },
-                    React.createElement("span", { style: { maxWidth: "1100px" } }, this.props.content)),
+                    React.createElement("span", { style: { maxWidth: '1100px' } }, this.props.content)),
                 React.createElement("div", { className: "signature" }, this.props.signature),
                 React.createElement("div", { className: "comment" },
                     React.createElement("div", { id: "commentliked" },
@@ -18609,16 +18611,16 @@ var TopicGood = /** @class */ (function (_super) {
     function TopicGood(props, content) {
         var _this = _super.call(this, props, content) || this;
         _this.state = {
-            userName: "Mana",
+            userName: 'Mana',
             grade: 10,
             reward: 20,
-            credit: "6666炒鸡赞",
-            imgUrl: "/images/authorImg.jpg"
+            credit: '6666炒鸡赞',
+            imgUrl: '/images/authorImg.jpg'
         };
         return _this;
     }
     TopicGood.prototype.render = function () {
-        return React.createElement("div", { className: "good tagSize", style: { marginLeft: "2px" } },
+        return React.createElement("div", { className: "good tagSize", style: { marginLeft: '2px' } },
             React.createElement("div", { id: "userImage" },
                 React.createElement("img", { src: this.state.imgUrl }),
                 " "),
@@ -18644,7 +18646,7 @@ var TopicVote = /** @class */ (function (_super) {
     function TopicVote(props, content) {
         var _this = _super.call(this, props, content) || this;
         _this.state = {
-            option: "我认为他说的很对",
+            option: '我认为他说的很对',
             votes: 60,
             totalVotes: 220,
             voted: false,
@@ -18652,22 +18654,22 @@ var TopicVote = /** @class */ (function (_super) {
         return _this;
     }
     TopicVote.prototype.render = function () {
-        return React.createElement("div", { className: "vote", style: { marginLeft: "2px" } },
+        return React.createElement("div", { className: "vote", style: { marginLeft: '2px' } },
             React.createElement("div", { className: "row" },
                 React.createElement("input", { id: "checkbox", type: "checkbox" }),
                 " ",
-                React.createElement("span", { id: "option1", style: { marginLeft: "15px" } },
+                React.createElement("span", { id: "option1", style: { marginLeft: '15px' } },
                     this.state.option,
                     " ")),
             React.createElement("div", { className: "row" },
                 React.createElement("div", { className: "progress" },
                     React.createElement("div", { className: "voteResult" })),
-                React.createElement("span", { style: { marginLeft: "15px" } }, this.state.votes),
+                React.createElement("span", { style: { marginLeft: '15px' } }, this.state.votes),
                 React.createElement("span", null,
                     " (",
                     this.state.votes / this.state.totalVotes * 100,
                     "%)")),
-            React.createElement("div", { style: { marginLeft: "20px" } }, this.state.voted ? React.createElement("span", null, "\u4F60\u5DF2\u7ECF\u6295\u8FC7\u7968\u5566") : React.createElement("button", { className: "operation" }, "\u6295\u7968")));
+            React.createElement("div", { style: { marginLeft: '20px' } }, this.state.voted ? React.createElement("span", null, "\u4F60\u5DF2\u7ECF\u6295\u8FC7\u7968\u5566") : React.createElement("button", { className: "operation" }, "\u6295\u7968")));
     };
     return TopicVote;
 }(RouteComponent));
@@ -18694,7 +18696,7 @@ var TopicPager = /** @class */ (function (_super) {
             var pages;
             return __generator(this, function (_a) {
                 pages = Utility.getPager(newProps.page, newProps.totalPage);
-                console.log("new=" + pages);
+                console.log('new=' + pages);
                 this.setState({ pager: pages });
                 return [2 /*return*/];
             });
@@ -18724,12 +18726,9 @@ var PageModel = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     PageModel.prototype.render = function () {
-        var last = '<';
-        var next = '>';
-        var start = '<<';
-        var end = '>>';
+        var pageUrl;
         if (this.props.pageNumber > 0) {
-            var pageUrl = "/topic/" + this.props.topicid + "/" + this.props.pageNumber;
+            pageUrl = "/topic/" + this.props.topicid + "/" + this.props.pageNumber;
             if (this.props.pageNumber != this.props.curPage) {
                 return React.createElement("li", { className: "page-item" },
                     React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, this.props.pageNumber));
@@ -18740,22 +18739,26 @@ var PageModel = /** @class */ (function (_super) {
             }
         }
         else if (this.props.pageNumber == -1) {
-            var pageUrl = "/topic/" + this.props.topicid + "/" + (this.props.curPage - 1);
+            pageUrl = "/topic/" + this.props.topicid + "/" + (this.props.curPage - 1);
+            var last = '<';
             return React.createElement("li", { className: "page-item" },
                 React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, last));
         }
         else if (this.props.pageNumber == -2) {
-            var pageUrl = "/topic/" + this.props.topicid + "/" + (this.props.curPage + 1);
+            pageUrl = "/topic/" + this.props.topicid + "/" + (this.props.curPage + 1);
+            var next = '>';
             return React.createElement("li", { className: "page-item" },
                 React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, next));
         }
         else if (this.props.pageNumber == -3) {
-            var pageUrl = "/topic/" + this.props.topicid + "/1";
+            pageUrl = "/topic/" + this.props.topicid + "/1";
+            var start = '<<';
             return React.createElement("li", { className: "page-item" },
                 React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, start));
         }
         else {
-            var pageUrl = "/topic/" + this.props.topicid + "/" + this.props.totalPage;
+            pageUrl = "/topic/" + this.props.topicid + "/" + this.props.totalPage;
+            var end = '>>';
             return React.createElement("li", { className: "page-item" },
                 React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, end));
         }
@@ -19723,26 +19726,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var AppState_1 = __webpack_require__(4);
 var Utility = __webpack_require__(5);
+var $ = __webpack_require__(7);
 //链接到的地址是  /list/boardid
-var BoardID = /** @class */ (function (_super) {
-    __extends(BoardID, _super);
-    function BoardID(props) {
+var BoardList = /** @class */ (function (_super) {
+    __extends(BoardList, _super);
+    function BoardList(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
             board: [],
-            view1: false, view2: false, view3: false, view4: false,
         };
         return _this;
     }
-    /*
-       let board: Board[] = [];
-            let response = await fetch("http://api.cc98.org/Board/Root");
-            let data = await response.json();
-            for (var i = 0; i < 20; i++) {
-                board[i] = new Board(data[i].name, data[i].todayPostCount, data[i].totalPostCount, data[i].id, data[i].masters);
-            }
-    */
-    BoardID.prototype.componentDidMount = function () {
+    BoardList.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
             var boardNameList, board, response, data, i, i;
             return __generator(this, function (_a) {
@@ -19779,174 +19774,60 @@ var BoardID = /** @class */ (function (_super) {
             });
         });
     };
-    BoardID.prototype.generateRootBoard = function (boards) {
-        if (boards.id == 2) {
-            if (this.state.view1 == true) {
-                return React.createElement("div", { className: "column" },
-                    React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
-                        React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
-                            React.createElement("div", { className: "areaName" }, boards.name),
-                            React.createElement("div", { className: "areaName" },
-                                "\u4E3B\u7BA1\uFF1A",
-                                boards.masters),
-                            React.createElement("button", { className: "hideBoard", onClick: this.view1.bind(this) }, "-")),
-                        React.createElement(ChildBoard, { boardid: boards.id })),
-                    React.createElement("div", { style: { height: "30px", backgroundColor: "#F5FAFD" } }));
-            }
-            else {
-                return React.createElement("div", { className: "column" },
-                    React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
-                        React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
-                            React.createElement("div", { className: "areaName" }, boards.name),
-                            React.createElement("div", { className: "areaName" },
-                                "\u4E3B\u7BA1\uFF1A",
-                                boards.masters),
-                            React.createElement("button", { className: "viewBoard", onClick: this.view1.bind(this) }, "+"))),
-                    React.createElement("div", { style: { height: "30px", backgroundColor: "#F5FAFD" } }));
-            }
-        }
-        else if (boards.id == 29) {
-            if (this.state.view2 == true) {
-                return React.createElement("div", { className: "column" },
-                    React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
-                        React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
-                            React.createElement("div", { className: "areaName" },
-                                boards.name,
-                                React.createElement("button", { className: "hideBoard", onClick: this.view2.bind(this) }, "-")),
-                            React.createElement("div", { className: "areaName" },
-                                "\u4E3B\u7BA1\uFF1A",
-                                boards.masters)),
-                        React.createElement(ChildBoard, { boardid: boards.id })),
-                    React.createElement("div", { style: { height: "30px", backgroundColor: "#F5FAFD" } }));
-            }
-            else {
-                return React.createElement("div", { className: "column" },
-                    React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
-                        React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
-                            React.createElement("div", { className: "areaName" },
-                                boards.name,
-                                React.createElement("button", { className: "viewBoard", onClick: this.view2.bind(this) }, "+")),
-                            React.createElement("div", { className: "areaName" },
-                                "\u4E3B\u7BA1\uFF1A",
-                                boards.masters))),
-                    React.createElement("div", { style: { height: "30px", backgroundColor: "#F5FAFD" } }));
-            }
-        }
-        else if (boards.id == 35) {
-            if (this.state.view3 == true) {
-                return React.createElement("div", { className: "column" },
-                    React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
-                        React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
-                            React.createElement("div", { className: "areaName" },
-                                boards.name,
-                                React.createElement("button", { className: "hideBoard", onClick: this.view3.bind(this) }, "-")),
-                            React.createElement("div", { className: "areaName" },
-                                "\u4E3B\u7BA1\uFF1A",
-                                boards.masters)),
-                        React.createElement(ChildBoard, { boardid: boards.id })),
-                    React.createElement("div", { style: { height: "30px", backgroundColor: "#F5FAFD" } }));
-            }
-            else {
-                return React.createElement("div", { className: "column" },
-                    React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
-                        React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
-                            React.createElement("div", { className: "areaName" },
-                                boards.name,
-                                React.createElement("button", { className: "viewBoard", onClick: this.view3.bind(this) }, "+")),
-                            React.createElement("div", { className: "areaName" },
-                                "\u4E3B\u7BA1\uFF1A",
-                                boards.masters))),
-                    React.createElement("div", { style: { height: "30px", backgroundColor: "#F5FAFD" } }));
-            }
-        }
-        else if (boards.id == 37) {
-            if (this.state.view4 == true) {
-                return React.createElement("div", { className: "column" },
-                    React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
-                        React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
-                            React.createElement("div", { className: "areaName" },
-                                boards.name,
-                                React.createElement("button", { className: "hideBoard", onClick: this.view4.bind(this) }, "-")),
-                            React.createElement("div", { className: "areaName" },
-                                "\u4E3B\u7BA1\uFF1A",
-                                boards.masters)),
-                        React.createElement(ChildBoard, { boardid: boards.id })),
-                    React.createElement("div", { style: { height: "30px", backgroundColor: "#F5FAFD" } }));
-            }
-            else {
-                return React.createElement("div", { className: "column" },
-                    React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
-                        React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
-                            React.createElement("div", { className: "areaName" },
-                                boards.name,
-                                React.createElement("button", { className: "viewBoard", onClick: this.view4.bind(this) }, "+")),
-                            React.createElement("div", { className: "areaName" },
-                                "\u4E3B\u7BA1\uFF1A",
-                                boards.masters))),
-                    React.createElement("div", { style: { height: "30px", backgroundColor: "#F5FAFD" } }));
-            }
+    BoardList.prototype.generateRootBoard = function (boards) {
+        if (boards.id == 2 || boards.id == 29 || boards.id == 35 || boards.id == 37) {
+            return React.createElement("div", { className: "anArea" },
+                React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
+                    React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
+                        React.createElement("div", { className: "areaName" }, boards.name),
+                        React.createElement("div", { className: "areaName" },
+                            "\u4E3B\u7BA1\uFF1A",
+                            boards.masters),
+                        React.createElement("div", { className: "hideBoard" }, "+")),
+                    React.createElement(ChildBoard, { boardid: boards.id })));
         }
         else if (boards.id == 758) {
-            return React.createElement("div", { className: "column" },
+            return React.createElement("div", { className: "anArea" },
                 React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
                     React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
                         React.createElement("div", { className: "areaName" },
                             React.createElement("a", { href: "/list/758" }, boards.name)),
                         React.createElement("div", { className: "areaName" },
                             "\u4E3B\u7BA1\uFF1A",
-                            boards.masters))),
-                React.createElement("div", { style: { height: "30px", backgroundColor: "#F5FAFD" } }));
+                            boards.masters))));
         }
         else {
-            return React.createElement("div", { className: "column" },
+            return React.createElement("div", { className: "anArea" },
                 React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
                     React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
                         React.createElement("div", { className: "areaName" }, boards.name),
                         React.createElement("div", { className: "areaName" },
                             "\u4E3B\u7BA1\uFF1A",
                             boards.masters)),
-                    React.createElement(ChildBoard, { boardid: boards.id })),
-                React.createElement("div", { style: { height: "30px", backgroundColor: "#F5FAFD" } }));
+                    React.createElement(ChildBoard, { boardid: boards.id })));
         }
     };
-    BoardID.prototype.view1 = function () {
-        if (this.state.view1 == false) {
-            this.setState({ view1: true });
-        }
-        else {
-            this.setState({ view1: false });
-        }
+    BoardList.prototype.render = function () {
+        $(document).ready(function () {
+            var button = $(".hideBoard");
+            button.click(function () {
+                if ($(this).text() === "+") {
+                    $(this).parent().next().css("display", "flex");
+                    $(this).text("-");
+                }
+                else {
+                    $(this).parent().next().css("display", "none");
+                    $(this).text("+");
+                }
+                ;
+                return false; //阻止事件冒泡
+            });
+        });
+        return React.createElement("div", { className: "boardList" }, this.state.board.map(this.generateRootBoard));
     };
-    BoardID.prototype.view2 = function () {
-        if (this.state.view2 == false) {
-            this.setState({ view2: true });
-        }
-        else {
-            this.setState({ view2: false });
-        }
-    };
-    BoardID.prototype.view3 = function () {
-        if (this.state.view3 == false) {
-            this.setState({ view3: true });
-        }
-        else {
-            this.setState({ view3: false });
-        }
-    };
-    BoardID.prototype.view4 = function () {
-        if (this.state.view4 == false) {
-            this.setState({ view4: true });
-        }
-        else {
-            this.setState({ view4: false });
-        }
-    };
-    BoardID.prototype.render = function () {
-        return React.createElement("div", { className: "anArea" }, this.state.board.map(this.generateRootBoard.bind(this)));
-    };
-    return BoardID;
+    return BoardList;
 }(React.Component));
-exports.BoardID = BoardID;
+exports.BoardList = BoardList;
 var ChildBoard = /** @class */ (function (_super) {
     __extends(ChildBoard, _super);
     function ChildBoard(props) {
@@ -19981,7 +19862,7 @@ var ChildBoard = /** @class */ (function (_super) {
         });
     };
     ChildBoard.prototype.convertChildBoard = function (item) {
-        return React.createElement("div", { id: "kk", className: "boardContent" },
+        return React.createElement("div", { className: "boardContent" },
             React.createElement("a", { href: "/list/" + item.id },
                 React.createElement("div", { className: "greenBackdrop" })),
             React.createElement("a", { href: "/list/" + item.id },
@@ -20000,7 +19881,7 @@ var ChildBoard = /** @class */ (function (_super) {
     ChildBoard.prototype.render = function () {
         var cid = "Board" + this.props.boardid;
         if (this.props.boardid == 2 || this.props.boardid == 29 || this.props.boardid == 35 || this.props.boardid == 37) {
-            return React.createElement("div", { className: "areaContent" }, this.state.thisBoardState.map(this.convertNoImgChildBoard));
+            return React.createElement("div", { className: "noImgAreaContent" }, this.state.thisBoardState.map(this.convertNoImgChildBoard));
         }
         else {
             return React.createElement("div", { className: "areaContent" }, this.state.thisBoardState.map(this.convertChildBoard));
@@ -20009,18 +19890,6 @@ var ChildBoard = /** @class */ (function (_super) {
     return ChildBoard;
 }(React.Component));
 exports.ChildBoard = ChildBoard;
-var BoardList = /** @class */ (function (_super) {
-    __extends(BoardList, _super);
-    function BoardList() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    BoardList.prototype.render = function () {
-        return React.createElement("div", { className: "boardList", style: { marginTop: "40px" } },
-            React.createElement(BoardID, null));
-    };
-    return BoardList;
-}(React.Component));
-exports.BoardList = BoardList;
 
 
 /***/ }),
@@ -23494,35 +23363,35 @@ var Recommended1 = /** @class */ (function (_super) {
             });
         });
         return React.createElement("div", { className: "recommended1" },
-            React.createElement("div", null,
+            React.createElement("div", { className: "column" },
                 React.createElement("div", { className: "recommended1Content" },
                     React.createElement("div", { className: "recommended1Img" },
                         React.createElement("img", { src: "images/recommended2Img.jpg" })),
-                    React.createElement("div", { className: "coloum" },
+                    React.createElement("div", { className: "column" },
                         React.createElement("div", { className: "recommended1Title" }, "\u63A8\u8350\u9605\u8BFB\u6807\u98981"),
                         React.createElement("div", { className: "recommended1Abstract" }, "\u63A8\u8350\u9605\u8BFB\u6458\u89811"))),
                 React.createElement("div", { className: "recommended1Content" },
                     React.createElement("div", { className: "recommended1Img" },
                         React.createElement("img", { src: "images/recommended2Img.jpg" })),
-                    React.createElement("div", { className: "coloum" },
+                    React.createElement("div", { className: "column" },
                         React.createElement("div", { className: "recommended1Title" }, "\u63A8\u8350\u9605\u8BFB\u6807\u98982"),
                         React.createElement("div", { className: "recommended1Abstract" }, "\u63A8\u8350\u9605\u8BFB\u6458\u89812"))),
                 React.createElement("div", { className: "recommended1Content" },
                     React.createElement("div", { className: "recommended1Img" },
                         React.createElement("img", { src: "images/recommended2Img.jpg" })),
-                    React.createElement("div", { className: "coloum" },
+                    React.createElement("div", { className: "column" },
                         React.createElement("div", { className: "recommended1Title" }, "\u63A8\u8350\u9605\u8BFB\u6807\u98983"),
                         React.createElement("div", { className: "recommended1Abstract" }, "\u63A8\u8350\u9605\u8BFB\u6458\u89813"))),
                 React.createElement("div", { className: "recommended1Content" },
                     React.createElement("div", { className: "recommended1Img" },
                         React.createElement("img", { src: "images/recommended2Img.jpg" })),
-                    React.createElement("div", { className: "coloum" },
+                    React.createElement("div", { className: "column" },
                         React.createElement("div", { className: "recommended1Title" }, "\u63A8\u8350\u9605\u8BFB\u6807\u98984"),
                         React.createElement("div", { className: "recommended1Abstract" }, "\u63A8\u8350\u9605\u8BFB\u6458\u89814"))),
                 React.createElement("div", { className: "recommended1Content" },
                     React.createElement("div", { className: "recommended1Img" },
                         React.createElement("img", { src: "images/recommended2Img.jpg" })),
-                    React.createElement("div", { className: "coloum" },
+                    React.createElement("div", { className: "column" },
                         React.createElement("div", { className: "recommended1Title" }, "\u63A8\u8350\u9605\u8BFB\u6807\u98985"),
                         React.createElement("div", { className: "recommended1Abstract" }, "\u63A8\u8350\u9605\u8BFB\u6458\u89815")))),
             React.createElement("div", { className: "buttonRow" },
@@ -23718,7 +23587,7 @@ var MainPage = /** @class */ (function (_super) {
                 React.createElement("div", { className: "recommended2" },
                     React.createElement("div", { className: "dashedBorder" },
                         React.createElement("div", { className: "heading" }, "\u63A8\u8350")),
-                    React.createElement("div", { className: "coloum" },
+                    React.createElement("div", { className: "column" },
                         React.createElement("div", { className: "row" },
                             React.createElement("div", { className: "recommended2Img" },
                                 React.createElement("img", { src: "/images/recommended2Img.jpg" })),

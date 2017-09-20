@@ -10,19 +10,19 @@ export class FocusPostComponent extends React.Component<FocusPost> {
    
     render() {
  var topicUrl = `/topic/${this.props.id}`;
-        return (<div className='focus-post'>
-                    <img className='focus-post-portraitUrl' src={this.props.portraitUrl}></img>
-                    <div className='focus-post-info1'>
-                        <div className='focus-post-authorInfo'>
-                            <div className='focus-post-blackText'>{this.props.authorName}</div>
-                            <div className='focus-post-redText'>{this.props.fanCount}</div>
-                            <div className='focus-post-blackText'>粉丝</div>
+        return (<div className="focus-post">
+                    <img className="focus-post-portraitUrl" src={this.props.portraitUrl}></img>
+                    <div className="focus-post-info1">
+                        <div className="focus-post-authorInfo">
+                            <div className="focus-post-blackText">{this.props.authorName}</div>
+                            <div className="focus-post-redText">{this.props.fanCount}</div>
+                            <div className="focus-post-blackText">粉丝</div>
                         </div>
-                        <div className='focus-post-title'><a href={topicUrl}>{this.props.title}</a></div>
+                        <div className="focus-post-title"><a href={topicUrl}>{this.props.title}</a></div>
                     </div>
-                    <div className='focus-post-info2'>
-                        <div className='focus-post-board'>{this.props.boardName} / {this.props.createTime}</div>
-                        <div className='focus-post-response'>
+                    <div className="focus-post-info2">
+                        <div className="focus-post-board">{this.props.boardName} / {this.props.createTime}</div>
+                        <div className="focus-post-response">
                             <div><i className="fa fa-thumbs-o-up" aria-hidden="true"></i>{this.props.likeCount}</div>
                             <div><i className="fa fa-thumbs-o-down" aria-hidden="true"></i>{this.props.dislikeCount}</div>
                             <div><i className="fa fa-eye" aria-hidden="true"></i>{this.props.hitCount}</div>

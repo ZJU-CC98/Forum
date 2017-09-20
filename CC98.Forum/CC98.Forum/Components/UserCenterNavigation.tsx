@@ -5,8 +5,6 @@
 import * as React from 'react';
 import {
     Link,
-    match,
-    BrowserRouter as Router,
     Route
 } from 'react-router-dom';
 
@@ -15,19 +13,19 @@ import {
  */
 export class UserCenterNavigation extends React.Component {
     render() {
-        return (<div className='user-center-navigation'>
+        return (<div className="user-center-navigation">
             <ul>
-                <CustomLink to='/usercenter' label='主页' activeOnlyWhenExact={true} myClassName='fa-home' />
+                <CustomLink to="/usercenter" label="主页" activeOnlyWhenExact={true} myClassName="fa-home" />
                 <hr />
-                <CustomLink to='/usercenter/myposts' label='我的主题' myClassName='fa-pencil-square-o'/>
+                <CustomLink to="/usercenter/myposts" label="我的主题" myClassName="fa-pencil-square-o"/>
                 <hr />
-                <CustomLink to='/usercenter/myfavorites' label='我的收藏' myClassName='fa-star' />
+                <CustomLink to="/usercenter/myfavorites" label="我的收藏" myClassName="fa-star" />
                 <hr />
-                <CustomLink to='/usercenter/myfollowings' label='我的关注' myClassName='fa-heart' />
+                <CustomLink to="/usercenter/myfollowings" label="我的关注" myClassName="fa-heart" />
                 <hr />
-                <CustomLink to='/usercenter/myfans' label='我的粉丝' myClassName='fa-users' />
+                <CustomLink to="/usercenter/myfans" label="我的粉丝" myClassName="fa-users" />
                 <hr />
-                <CustomLink to='/usercenter/config' label='功能设置' myClassName='fa-cog' />
+                <CustomLink to="/usercenter/config" label="功能设置" myClassName="fa-cog" />
             </ul>
         </div>);
     }

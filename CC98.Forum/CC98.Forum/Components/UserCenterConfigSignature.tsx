@@ -10,9 +10,9 @@ export class UserCenterConfigSignature extends React.Component<null, UserCenterC
         this.state = {
             signature: '你还没有个性签名',
             signatureExtends: null
-        }
+        };
 
-        this.handleChange = this.handleChange.bind(this);
+	    this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange(event) {

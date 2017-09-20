@@ -14,20 +14,20 @@ export class UserCenterExactProfile extends React.Component<UserCenterExactProfi
         console.log(this.props.userInfo.signatureCode);
         return (
             <div className="user-profile">
-                <button type='button'>私信</button>
-                <div id='userId'><p>{this.props.userInfo.name}</p></div>
-                <div id='userGenderAndBirthday'>
+                <button type="button">私信</button>
+                <div id="userId"><p>{this.props.userInfo.name}</p></div>
+                <div id="userGenderAndBirthday">
                     <p>性别  {(this.props.userInfo.gender === 0) ? '男' : '女'} </p>{this.props.userInfo.birthday === null ? '' : <p>生日  {this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T'))}</p>}
                 </div>
                 {this.props.userInfo.personalDescription ?
-                    <div className='user-description'>
+                    <div className="user-description">
                         <p>个人说明</p>
                         <img src={this.props.userInfo.photourl} />
                         <p>{this.props.userInfo.personalDescription}</p>
                     </div> : null
                 }
                 {this.props.userInfo.signatureCode ?
-                    <div className='user-description'>
+                    <div className="user-description">
                         <p>个性签名</p>
                         <UbbContainer code={this.props.userInfo.signatureCode} />
                     </div> : null

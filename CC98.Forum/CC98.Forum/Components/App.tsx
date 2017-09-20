@@ -1,12 +1,9 @@
 ﻿import * as React from 'react';
 import { AppState } from '../States/AppState';
-import * as ReactDOM from 'react-dom';
 import { match } from 'react-router';
 import {
 	BrowserRouter as Router,
-	Route,
-	Link
-} from 'react-router-dom';
+	Route } from 'react-router-dom';
 import { Post } from './post';
 import { List } from './List';
 import { CurUserPost } from './CurUserPost';
@@ -20,7 +17,6 @@ import { User } from './User';
 import { Login } from './Login';
 
 import { UbbContainer } from './UbbContainer';
-import * as Ubb from '../Ubb/UbbCodeExtension';
 
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {

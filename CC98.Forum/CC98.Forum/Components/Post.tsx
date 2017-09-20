@@ -2,9 +2,7 @@
 import * as State from '../States/AppState';
 import * as Utility from '../Utility';
 
-import {
-	BrowserRouter as Router,
-	Route,
+import { Route,
 	Link
 } from 'react-router-dom';
 
@@ -32,8 +30,8 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
 			page = 1;
 		}
 		else { page = parseInt(newProps.match.params.page); }
-		let userName = newProps.match.params.userName;
-		let totalPage = await this.getTotalPage(this.match.params.topicid);
+		const userName = newProps.match.params.userName;
+		const totalPage = await this.getTotalPage(this.match.params.topicid);
 		this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName });
 	}
 	async componentDidMount() {
@@ -42,14 +40,14 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
 			page = 1;
 		}
 		else { page = parseInt(this.match.params.page); }
-		let totalPage = await this.getTotalPage(this.match.params.topicid);
-		let userName = this.match.params.userName;
+		const totalPage = await this.getTotalPage(this.match.params.topicid);
+		const userName = this.match.params.userName;
 		this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName });
 	}
 	async getTotalPage(topicid) {
-		var replyCountResponse = await fetch(`http://api.cc98.org/Topic/${topicid}`);
-		var replyCountJson = await replyCountResponse.json();
-		var replyCount = replyCountJson.replyCount;
+		const replyCountResponse = await fetch(`http://api.cc98.org/Topic/${topicid}`);
+		const replyCountJson = await replyCountResponse.json();
+		const replyCount = replyCountJson.replyCount;
 		if (replyCount > 10) {
 			return (replyCount - replyCount % 10) / 10 + 1;
 		} else {
@@ -80,7 +78,7 @@ export class Reply extends RouteComponent<{}, { contents }, { page, topicid, use
 		super(props, content);
 		this.state = {
 			contents: [],
-		}
+		};
 
 	}
 
@@ -114,16 +112,17 @@ export class Replier extends RouteComponent<{ userId, topicid, userName, replyTi
 			replyTime: Date(),
 			topicsNumber: 999,
 			level: 2,
-		}
+		};
 	}
 	showUserMessage() {
 		//return <UserMessageBox userName="dearkano" userFans="2333" />;
-		var x = document.getElementById('userInformation');
+		const x = document.getElementById('userInformation');
 
 	}
+
 	render() {
-		let url = `/user/${this.props.userId}`;
-		let curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userName}`;
+		const url = `/user/${this.props.userId}`;
+		const curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userName}`;
 		return <div className="replyRoot">
 			<div className="row" style={{ width: '1140px', display: 'flex', marginBottom: '10px' }}>
 				<div id="authorImg" ><a href={url}><img onMouseOver={this.showUserMessage} src={this.props.userImgUrl}></img></a></div><div id="userInformation"></div>
@@ -153,7 +152,7 @@ export class PostTopic extends RouteComponent<{ imgUrl, page, topicid }, State.P
 		super(props, content);
 		this.state = {
 			topicMessage: { title: 'ss', time: '2017' }
-		}
+		};
 	}
 	async componentDidMount() {
 		const topicMessage = await Utility.getTopic(this.props.topicid);
@@ -182,17 +181,18 @@ export class AuthorMessage extends RouteComponent<{ authorName: string, authorId
 			userName: 'Mana',
 			fansNumber: 233,
 			imgUrl: this.props.authorImgUrl
-		}
+		};
 	}
 	render() {
-		let url = `/user/${this.props.authorId}`;
+		const url = `/user/${this.props.authorId}`;
 		return <div className="row" id="authormes">
 
 			<div id="authorImg" ><a href={url}><img src={this.props.authorImgUrl}></img></a></div>
 			<div className="column">
 				<div className="row authorFans" style={{ justifyContent: 'space-between' }}>
 					<div id="authorName"><p><a href={url}>{this.props.authorName}</a></p></div>
-					<div id="fans" className="row"><div style={{ marginRight: '3px' }}>粉丝</div><div style={{ color: '#EE0000' }}>{this.state.fansNumber}</div></div>
+					<div id="fans" className="row"><div style={{ marginRight: '3px' }}>粉丝</div><div style={{ color: '#EE0000' }}>{
+						this.state.fansNumber}</div></div>
 				</div>
 
 				<div className="row">
@@ -215,7 +215,7 @@ export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.
 			likeNumber: 666,
 			unlikeNumber: 233,
 			viewTimes: 2366
-		}
+		};
 	}
 	returnProps(isTop, isNotice, title) {
 		if (isTop == true && isNotice == false) {
@@ -271,7 +271,7 @@ export class TopicContent extends RouteComponent<{ content: string, signature: s
 		this.state = {
 			likeNumber: 666,
 			dislikeNumber: 233,
-		}
+		};
 	}
 	//<div className="signature">{this.state.Signature}</div>
 	render() {
@@ -294,7 +294,7 @@ export class ReplyContent extends RouteComponent<{ content, signature }, { likeN
 			likeNumber: 2424,
 			dislikeNumber: 4433,
 
-		}
+		};
 	}
 	//content: "央视网消息：7月26日至27日，习近平在省部级主要领导干部专题研讨班开班式上强调，党的十八大以来的5年，是党和国家发展进程中很不平凡的5年。我们加强党对意识形态工作的领导，巩固了全党全社会思想上的团结统一。党的十八大以来，面对意识形态领域日益错综复杂的形势，习总书记发表了一系列重要讲话，深刻阐述了意识形态工作的重大理论和现实问题。本图解梳理了相关重要论述以及十八大以来各领域工作成绩，以飨读者。</p><p>央视网消息：7月26日至27日，习近平在省部级主要领导干部专题研讨班开班式上强调，党的十八大以来的5年，是党和国家发展进程中很不平凡的5年。我们加强党对意识形态工作的领导，巩固了全党全社会思想上的团结统一。党的十八大以来，面对意识形态领域日益错综复杂的形势，习总书记发表了一系列重要讲话，深刻阐述了意识形态工作的重大理论和现实问题。本图解梳理了相关重要论述以及十八大以来各领域工作成绩，以飨读者。",
 	//
@@ -321,7 +321,7 @@ export class TopicGood extends RouteComponent<{}, State.TopicGoodState, {}> {
 			reward: 20,
 			credit: '6666炒鸡赞',
 			imgUrl: '/images/authorImg.jpg'
-		}
+		};
 	}
 	render() {
 		return <div className="good tagSize" style={{ marginLeft: '2px' }}>
@@ -342,7 +342,7 @@ export class TopicVote extends RouteComponent<{}, State.TopicVoteState, {}> {
 			votes: 60,
 			totalVotes: 220,
 			voted: false,
-		}
+		};
 	}
 	render() {
 		return <div className="vote" style={{ marginLeft: '2px' }}>
@@ -363,7 +363,7 @@ export class TopicPager extends RouteComponent<{ page, topicid, totalPage }, { p
 		super(props, content);
 		this.state = {
 			pager: [1, 2, 3, 4, 5]
-		}
+		};
 	}
 	/**
 	 * 将页码转换为 UI 界面。
@@ -396,7 +396,7 @@ export class TopicPager extends RouteComponent<{ page, topicid, totalPage }, { p
 export class PageModel extends React.Component<{ pageNumber, topicid, curPage, totalPage }, {}> {
 
 	render() {
-		var pageUrl: string;
+		let pageUrl: string;
 		if (this.props.pageNumber > 0) {
 			pageUrl = `/topic/${this.props.topicid}/${this.props.pageNumber}`;
 			if (this.props.pageNumber != this.props.curPage) {
@@ -408,22 +408,22 @@ export class PageModel extends React.Component<{ pageNumber, topicid, curPage, t
 
 		} else if (this.props.pageNumber == -1) {
 			pageUrl = `/topic/${this.props.topicid}/${this.props.curPage - 1}`;
-			let last = '<';
+			const last = '<';
 			return <li className="page-item"><Link className="page-link" to={pageUrl}>{last}</Link></li>
 				;
 		} else if (this.props.pageNumber == -2) {
 			pageUrl = `/topic/${this.props.topicid}/${this.props.curPage + 1}`;
-			let next = '>';
+			const next = '>';
 			return <li className="page-item"><Link className="page-link" to={pageUrl}>{next}</Link></li>
 				;
 		} else if (this.props.pageNumber == -3) {
 			pageUrl = `/topic/${this.props.topicid}/1`;
-			let start = '<<';
+			const start = '<<';
 			return <li className="page-item"><Link className="page-link" to={pageUrl}>{start}</Link></li>
 				;
 		} else {
 			pageUrl = `/topic/${this.props.topicid}/${this.props.totalPage}`;
-			let end = '>>';
+			const end = '>>';
 			return <li className="page-item"><Link className="page-link" to={pageUrl}>{end}</Link></li>
 				;
 		}

@@ -10,6 +10,6 @@ import { FocusBoard } from '../Props/FocusBoard';
 export class FocusBoardComponent extends React.Component<FocusBoard>{
 
     render() {
-        return <div className='focus-board'>{this.props.name}</div>
+        return <div className="focus-board">{this.props.name}</div>;
     }
 }

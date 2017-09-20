@@ -93,25 +93,25 @@ export class MyMessageMessage extends React.Component<{}, MyMessageMessageState>
 
     //对this.stata.data进行批量化转化为JSX的函数，每个JSX可点击改变state里聊天对象的信息
     coverMessagePerson = (item: MyMessagePersonProps) => {
-        let changeChatName = () => { 
-            this.setState({ chatName: item.name, chatPortraitUrl: item.portraitUrl });
+	    const changeChatName = () => { 
+		    this.setState({ chatName: item.name, chatPortraitUrl: item.portraitUrl });
 
-            //给选中的聊天对象添加选中效果
-            $('.mymessage-message-pList > div').removeClass('mymessage-message-pFocus');
-            $(`#${item.name}`).addClass('mymessage-message-pFocus');
-        }
-        return <div onClick={changeChatName} id={`${item.name}`}><MyMessagePerson name={item.name} portraitUrl={item.portraitUrl} title={item.title} content={item.content} /></div>;
-    }
+		    //给选中的聊天对象添加选中效果
+		    $('.mymessage-message-pList > div').removeClass('mymessage-message-pFocus');
+		    $(`#${item.name}`).addClass('mymessage-message-pFocus');
+	    };
+	    return <div onClick={changeChatName} id={`${item.name}`}><MyMessagePerson name={item.name} portraitUrl={item.portraitUrl} title={item.title} content={item.content} /></div>;
+	};
 
-    render() {
+	render() {
         //给我的私信添加选中样式
         $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
         $('#message').addClass('mymessage-nav-focus'); 
         return (
-            <div className='mymessage-message'>
-                <div className='mymessage-message-people'>
-                    <div className='mymessage-message-pTitle'>近期私信</div>
-                    <div className='mymessage-message-pList'>{this.state.data.map(this.coverMessagePerson)}</div>
+            <div className="mymessage-message">
+                <div className="mymessage-message-people">
+                    <div className="mymessage-message-pTitle">近期私信</div>
+                    <div className="mymessage-message-pList">{this.state.data.map(this.coverMessagePerson)}</div>
                 </div>
                 <MyMessageWindow chatName={this.state.chatName} chatPortraitUrl={this.state.chatPortraitUrl} myName={this.state.myName} myPortraitUrl={this.state.myPortraitUrl} token={this.state.token} />
             </div>

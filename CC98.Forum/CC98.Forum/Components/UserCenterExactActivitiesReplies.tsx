@@ -16,13 +16,13 @@ export class UserCenterExactActivitiesReplies extends React.Component<null, User
 
     render() {
         //state转换为JSX
-        let userRecentPosts = this.state.userRecentPosts.map((item) => (<UserCenterExactActivitiesPost userRecentPost={item} />));
+        const userRecentPosts = this.state.userRecentPosts.map((item) => (<UserCenterExactActivitiesPost userRecentPost={item} />));
         //添加分隔线
         for (let i = 1; i < userRecentPosts.length; i += 2) {
             userRecentPosts.splice(i, 0, <hr />);
         }
         return (
-            <div className='user-posts'>
+            <div className="user-posts">
                 {userRecentPosts}
             </div>
         );

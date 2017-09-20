@@ -17,19 +17,19 @@ export class UserCenterExact extends React.Component<null, UserCenterExactState>
         console.log(location);
         console.log(location.hash !== '' && location.hash.indexOf('access_token') !== -1);
         if (location.hash !== '' && location.hash.indexOf('access_token') !== -1) {
-            let hash: myType = {};
+            const hash: myType = {};
             location.hash.slice(1).split('&').map((item) => item.split('=')).forEach((item) => {
                 hash[item[0]] = item[1];
             });
             window.localStorage.token = hash['access_token'];
         }
 
-        let response = await fetch('https://api.cc98.org/Me/', {
-            headers: {
-                'Authorization': 'bearer' + ' ' + window.localStorage.token
-            }
+        const response = await fetch('https://api.cc98.org/Me/', {
+	        headers: {
+		        'Authorization': 'bearer' + ' ' + window.localStorage.token
+	        }
         });
-        let data = await response.json();
+        const data = await response.json();
         console.log(response);
         this.setState({
             userInfo: data,
@@ -42,7 +42,7 @@ export class UserCenterExact extends React.Component<null, UserCenterExactState>
     render() {
         let element;
         if (this.state !== null && this.state.responseState === 200) {
-            element = (<div className='user-center-exact'>
+            element = (<div className="user-center-exact">
                 <UserCenterExactAvatar userAvatarImgURL={this.state.userAvatarImgURL} />
                 <UserCenterExactProfile userInfo={this.state.userInfo} />
                 <UserCenterExactActivities />

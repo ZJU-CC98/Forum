@@ -1,28 +1,22 @@
 ﻿import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { AppState } from '../States/AppState';
 import * as $ from 'jquery';
-import {
-    BrowserRouter as Router,
-    Route,
-    Link
-} from 'react-router-dom';
 
 export class DropDown extends React.Component<{}, AppState> {   //顶部条的下拉菜单组件
     render() {
         $(document).ready(function () {
 
-            let selectA = $(".select").eq(0);
-            let subA = $("ul").eq(0);
-            let liA = subA.find("li");
+            const selectA = $('.select').eq(0);
+            const subA = $('ul').eq(0);
+            const liA = subA.find('li');
 
             $(document).click(function () {
-                subA.css("display", "none");
+                subA.css('display', 'none');
             });
 
             selectA.click(function () {
-                if (subA.css("display") === "block") subA.css("display", "none");
-                else subA.css("display", "block");
+                if (subA.css('display') === 'block') subA.css('display', 'none');
+                else subA.css('display', 'block');
                 return false;   //阻止事件冒泡
             });
 
@@ -31,11 +25,11 @@ export class DropDown extends React.Component<{}, AppState> {   //顶部条的�
             或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
 
             liA.mouseover(function () {
-                this.className = "hover";
+                this.className = 'hover';
             });
 
             liA.mouseout(function () {
-                this.className = "";
+                this.className = '';
             });
         });
 
@@ -43,17 +37,17 @@ export class DropDown extends React.Component<{}, AppState> {   //顶部条的�
             <div className="box">
                 <div className="userImg"><img src="/images/userImg.png"></img></div>
                 <div className="select">userName</div>
-                <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/mymessage" style={{ color: "#fff" }}>消息</a></div>
-                <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/" style={{ color: "#fff" }}>首页</a></div>
-                <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/focus" style={{ color: "#fff" }}>关注</a></div>
-                <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/newTopics" style={{ color: "#fff" }}>新帖</a></div>
-                <div className="topBarText" style={{ margin: '0 0 0 10px' }}><a href="/boardList" style={{ color: "#fff" }}>版面</a></div>
+                <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/mymessage" style={{ color: '#fff' }}>消息</a></div>
+                <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/" style={{ color: '#fff' }}>首页</a></div>
+                <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/focus" style={{ color: '#fff' }}>关注</a></div>
+                <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/newTopics" style={{ color: '#fff' }}>新帖</a></div>
+                <div className="topBarText" style={{ margin: '0 0 0 10px' }}><a href="/boardList" style={{ color: '#fff' }}>版面</a></div>
             </div>
             <ul className="sub">
                 <li>个人中心</li>
                 <li>设置</li>
             </ul>
-        </div>
+        </div>;
     }
 }
 
@@ -62,17 +56,17 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
 
         $(document).ready(function () {
 
-            let selectB = $(".select").eq(1);
-            let subB = $("ul").eq(1);
-            let liB = subB.find("li");
+            const selectB = $('.select').eq(1);
+            const subB = $('ul').eq(1);
+            const liB = subB.find('li');
 
             $(document).click(function () {
-                subB.css("display", "none");
+                subB.css('display', 'none');
             });
 
             selectB.click(function () {
-                if (subB.css("display") === "block") subB.css("display", "none");
-                else subB.css("display", "block");
+                if (subB.css('display') === 'block') subB.css('display', 'none');
+                else subB.css('display', 'block');
                 return false;   //阻止事件冒泡
             });
 
@@ -85,11 +79,11 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
             });
 
             liB.mouseover(function () {
-                this.className = "hover";
+                this.className = 'hover';
             });
 
             liB.mouseout(function () {
-                this.className = "";
+                this.className = '';
             });
         });
 
@@ -107,7 +101,7 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
                 <li>主题</li>
                 <li>用户</li>
             </ul>
-        </div>
+        </div>;
     }
 }
 
@@ -151,7 +145,7 @@ export class Header extends React.Component<{}, AppState> {
                     <Search />
                 </div>
             </div>
-        </div>
+        </div>;
 
     }
 }

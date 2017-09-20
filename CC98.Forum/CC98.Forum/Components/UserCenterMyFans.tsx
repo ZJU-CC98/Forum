@@ -17,13 +17,13 @@ export class UserCenterMyFans extends React.Component<null, UserCenterMyFansStat
     }
     render() {
         //state转换为JSX
-        let userFans = this.state.userFans.map((item) => (<UserCenterMyFollowingsUser userFanInfo={item} />));
+        const userFans = this.state.userFans.map((item) => (<UserCenterMyFollowingsUser userFanInfo={item} />));
         //添加分隔线
         for (let i = 1; i < userFans.length; i += 2) {
             userFans.splice(i, 0, <hr />);
         }
 
-        return (<div className='user-center-myfans'>
+        return (<div className="user-center-myfans">
             {userFans}
         </div>);
     }
