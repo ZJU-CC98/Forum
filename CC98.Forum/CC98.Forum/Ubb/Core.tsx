@@ -983,7 +983,7 @@ export class UbbCodeEngine {
 			const handler = this.getHandler(tag.tagData.tagName);
 
 			if (!handler) {
-				console.warn('没有找到标签 %s 的处理程序，将被视为一般文字。');
+				console.warn('没有找到标签 %s 的处理程序，将被视为一般文字。', tag.tagData.tagName);
 				return tag.getFullText();
 			}
 

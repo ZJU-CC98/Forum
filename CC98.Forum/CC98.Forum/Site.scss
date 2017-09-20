@@ -1490,6 +1490,8 @@ body {
                     background-color: rgb(248,251,255);
 
                     button {
+                        cursor: pointer;
+                        background-color: white;
                         margin-left: 30px;
                         height: 15px;
                     }
@@ -1497,7 +1499,8 @@ body {
 
                 #signature {
                     margin: 0px;
-                    width: 100%;
+                    padding: 20px;
+                    width: 95.3%;
                     height: 252px;
                     border: 1px solid rgb(233, 233, 233);
                     resize: vertical;
@@ -2862,4 +2865,116 @@ body {
         justify-content: center;
         background-color: #ebebeb;
     }
+}
+
+/*
+    登陆页用
+*/
+
+.login {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    & > div {
+        margin-top: 30px;
+        background-color: white;
+        min-width: 1140px;
+        display: flex;
+        border: 1px solid rgb(204,204,204);
+        height: 567px;
+
+        & > img {
+            margin: 30px;
+        }
+
+        & > div {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin-top: 50px;
+
+            & > img {
+                width: 123px;
+                height: 26px;
+                margin-right: 200px;
+            }
+
+            & > p {
+                margin-right: 200px;
+                font-size: 12px;
+            }
+        }
+    }
+
+    .login-form {
+        display: flex;
+        margin-right: 80px;
+        margin-top: 30px;
+        font-size: 12px;
+
+        input {
+            width: 320px;
+            height: 40px;
+            border: 1px solid rgb(204,204,204);
+            border-radius: 5px;
+            margin-left: 25px;
+            padding: 0 10px;
+        }
+    }
+
+    a {
+        color: rgb(40,167,225);
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    button {
+        margin-right: 80px;
+        height: 40px;
+        width: 340px;
+        border: 0;
+        background-color: rgb(40,167,225);
+        color: white;
+        border-radius: 5px;
+
+        &:hover {
+            background-color: rgb(41,174,223);
+        }
+
+        &:active {
+            background-color: rgb(38,154,196);
+        }
+    }
+
+    #loginMessage {
+        color: red;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        width: 340px;
+        margin-right: 80px;
+    }
+}
+
+@keyframes cssShake {
+    from {
+        transform: rotate(2deg);
+    }
+
+    to {
+        transform: rotate(-2deg);
+    }
+}
+
+.shake {
+    animation-name: cssShake;
+    animation-duration: 50ms;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
 }

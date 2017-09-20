@@ -4,7 +4,22 @@
 
 import * as React from 'react';
 
-export class UserCenterConfigSignature extends React.Component {
+export class UserCenterConfigSignature extends React.Component<null, UserCenterConfigSignatureState> {
+    constructor(props) {
+        super(props);
+        this.state = {
+            signature: '你还没有个性签名',
+            signatureExtends: null
+        }
+
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({ signature: event.target.value });
+        console.log(this.state.signature);
+    }
+
     render() {
         return (<div className="user-center-config-signature">
             <div className="signature-buttons">
@@ -14,11 +29,17 @@ export class UserCenterConfigSignature extends React.Component {
                 <button id="signatureColor" type="button">A</button>
                 <button id="signatureStrong" type="button">B</button>
             </div>
-            <textarea id="signature" />
+            <div className="signature-extends"></div>
+            <textarea id="signature" onChange={this.handleChange} value={this.state.signature} />
             <div>
                 <p>注* 个性签名将在个人主页、发布文章、回复文章中显示</p>
                 <button id="signatureUpload" type="button">保存签名档</button>
             </div>
         </div>);
     }
+}
+
+class UserCenterConfigSignatureState {
+    signature: string;
+    signatureExtends: JSX.Element;
 }

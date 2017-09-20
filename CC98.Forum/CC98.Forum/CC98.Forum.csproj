@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <None Remove="CC98.Forum.rar" />
+    <None Remove="Components\Login.tsx" />
     <None Remove="Components\UbbContainer.tsx" />
     <None Remove="Components\UserCenterConfig.tsx" />
     <None Remove="Components\UserCenterConfigAvatar.tsx" />
@@ -49,6 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="Components\Login.tsx" />
     <TypeScriptCompile Include="Components\UbbContainer.tsx" />
     <TypeScriptCompile Include="Components\UserCenterConfig.tsx" />
     <TypeScriptCompile Include="Components\UserCenterConfigAvatar.tsx" />
