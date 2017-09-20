@@ -8,9 +8,8 @@ import {
     Link
 } from 'react-router-dom';
 
-export class DropDown extends React.Component<{}, AppState> {
+export class DropDown extends React.Component<{}, AppState> {   //顶部条的下拉菜单组件
     render() {
-
         $(document).ready(function () {
 
             let selectA = $(".select").eq(0);
@@ -58,7 +57,7 @@ export class DropDown extends React.Component<{}, AppState> {
     }
 }
 
-export class Search extends React.Component<{}, AppState> {
+export class Search extends React.Component<{}, AppState> {     //搜索框组件
     render() {
 
         $(document).ready(function () {

@@ -17825,12 +17825,16 @@ var UbbContainer = /** @class */ (function (_super) {
         // 获取选项，如果不设置选项则创建一个默认的
         var options = this.props.options || new Ubb.UbbCodeOptions();
         var ubbHtml = engine.exec(this.props.code, options);
+        //打开回车与空格
+        var style = {
+            whiteSpace: "pre"
+        };
         // 注意兼容性设置， HTML4 不支持 article 标签
         if (options.compatibility === Ubb.UbbCompatiblityMode.Transitional) {
-            return React.createElement("blockquote", null, ubbHtml);
+            return React.createElement("blockquote", { style: style }, ubbHtml);
         }
         else {
-            return React.createElement("article", null, ubbHtml);
+            return React.createElement("article", { style: style }, ubbHtml);
         }
     };
     return UbbContainer;
@@ -18025,7 +18029,7 @@ exports.MyMessageResponsebox = MyMessageResponsebox;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(131);
-module.exports = __webpack_require__(188);
+module.exports = __webpack_require__(190);
 
 
 /***/ }),
@@ -18072,11 +18076,11 @@ var List_1 = __webpack_require__(8);
 var CurUserPost_1 = __webpack_require__(137);
 var BoardList_1 = __webpack_require__(138);
 var UserCenter_1 = __webpack_require__(139);
-var MyMessage_1 = __webpack_require__(169);
-var AllNewPost_1 = __webpack_require__(179);
-var Header_1 = __webpack_require__(182);
-var MainPage_1 = __webpack_require__(183);
-var User_1 = __webpack_require__(185);
+var MyMessage_1 = __webpack_require__(171);
+var AllNewPost_1 = __webpack_require__(181);
+var Header_1 = __webpack_require__(184);
+var MainPage_1 = __webpack_require__(185);
+var User_1 = __webpack_require__(187);
 var UbbContainer_1 = __webpack_require__(125);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
@@ -19720,26 +19724,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var AppState_1 = __webpack_require__(4);
 var Utility = __webpack_require__(5);
+var $ = __webpack_require__(7);
 //链接到的地址是  /list/boardid
-var BoardID = /** @class */ (function (_super) {
-    __extends(BoardID, _super);
-    function BoardID(props) {
+var BoardList = /** @class */ (function (_super) {
+    __extends(BoardList, _super);
+    function BoardList(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
             board: [],
-            view1: false, view2: false, view3: false, view4: false,
         };
         return _this;
     }
-    /*
-       let board: Board[] = [];
-            let response = await fetch("http://api.cc98.org/Board/Root");
-            let data = await response.json();
-            for (var i = 0; i < 20; i++) {
-                board[i] = new Board(data[i].name, data[i].todayPostCount, data[i].totalPostCount, data[i].id, data[i].masters);
-            }
-    */
-    BoardID.prototype.componentDidMount = function () {
+    BoardList.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
             var boardNameList, board, response, data, i, i;
             return __generator(this, function (_a) {
@@ -19776,174 +19772,60 @@ var BoardID = /** @class */ (function (_super) {
             });
         });
     };
-    BoardID.prototype.generateRootBoard = function (boards) {
-        if (boards.id == 2) {
-            if (this.state.view1 == true) {
-                return React.createElement("div", { className: "column" },
-                    React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
-                        React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
-                            React.createElement("div", { className: "areaName" }, boards.name),
-                            React.createElement("div", { className: "areaName" },
-                                "\u4E3B\u7BA1\uFF1A",
-                                boards.masters),
-                            React.createElement("button", { className: "hideBoard", onClick: this.view1.bind(this) }, "-")),
-                        React.createElement(ChildBoard, { boardid: boards.id })),
-                    React.createElement("div", { style: { height: "30px", backgroundColor: "#F5FAFD" } }));
-            }
-            else {
-                return React.createElement("div", { className: "column" },
-                    React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
-                        React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
-                            React.createElement("div", { className: "areaName" }, boards.name),
-                            React.createElement("div", { className: "areaName" },
-                                "\u4E3B\u7BA1\uFF1A",
-                                boards.masters),
-                            React.createElement("button", { className: "viewBoard", onClick: this.view1.bind(this) }, "+"))),
-                    React.createElement("div", { style: { height: "30px", backgroundColor: "#F5FAFD" } }));
-            }
-        }
-        else if (boards.id == 29) {
-            if (this.state.view2 == true) {
-                return React.createElement("div", { className: "column" },
-                    React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
-                        React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
-                            React.createElement("div", { className: "areaName" },
-                                boards.name,
-                                React.createElement("button", { className: "hideBoard", onClick: this.view2.bind(this) }, "-")),
-                            React.createElement("div", { className: "areaName" },
-                                "\u4E3B\u7BA1\uFF1A",
-                                boards.masters)),
-                        React.createElement(ChildBoard, { boardid: boards.id })),
-                    React.createElement("div", { style: { height: "30px", backgroundColor: "#F5FAFD" } }));
-            }
-            else {
-                return React.createElement("div", { className: "column" },
-                    React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
-                        React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
-                            React.createElement("div", { className: "areaName" },
-                                boards.name,
-                                React.createElement("button", { className: "viewBoard", onClick: this.view2.bind(this) }, "+")),
-                            React.createElement("div", { className: "areaName" },
-                                "\u4E3B\u7BA1\uFF1A",
-                                boards.masters))),
-                    React.createElement("div", { style: { height: "30px", backgroundColor: "#F5FAFD" } }));
-            }
-        }
-        else if (boards.id == 35) {
-            if (this.state.view3 == true) {
-                return React.createElement("div", { className: "column" },
-                    React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
-                        React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
-                            React.createElement("div", { className: "areaName" },
-                                boards.name,
-                                React.createElement("button", { className: "hideBoard", onClick: this.view3.bind(this) }, "-")),
-                            React.createElement("div", { className: "areaName" },
-                                "\u4E3B\u7BA1\uFF1A",
-                                boards.masters)),
-                        React.createElement(ChildBoard, { boardid: boards.id })),
-                    React.createElement("div", { style: { height: "30px", backgroundColor: "#F5FAFD" } }));
-            }
-            else {
-                return React.createElement("div", { className: "column" },
-                    React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
-                        React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
-                            React.createElement("div", { className: "areaName" },
-                                boards.name,
-                                React.createElement("button", { className: "viewBoard", onClick: this.view3.bind(this) }, "+")),
-                            React.createElement("div", { className: "areaName" },
-                                "\u4E3B\u7BA1\uFF1A",
-                                boards.masters))),
-                    React.createElement("div", { style: { height: "30px", backgroundColor: "#F5FAFD" } }));
-            }
-        }
-        else if (boards.id == 37) {
-            if (this.state.view4 == true) {
-                return React.createElement("div", { className: "column" },
-                    React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
-                        React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
-                            React.createElement("div", { className: "areaName" },
-                                boards.name,
-                                React.createElement("button", { className: "hideBoard", onClick: this.view4.bind(this) }, "-")),
-                            React.createElement("div", { className: "areaName" },
-                                "\u4E3B\u7BA1\uFF1A",
-                                boards.masters)),
-                        React.createElement(ChildBoard, { boardid: boards.id })),
-                    React.createElement("div", { style: { height: "30px", backgroundColor: "#F5FAFD" } }));
-            }
-            else {
-                return React.createElement("div", { className: "column" },
-                    React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
-                        React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
-                            React.createElement("div", { className: "areaName" },
-                                boards.name,
-                                React.createElement("button", { className: "viewBoard", onClick: this.view4.bind(this) }, "+")),
-                            React.createElement("div", { className: "areaName" },
-                                "\u4E3B\u7BA1\uFF1A",
-                                boards.masters))),
-                    React.createElement("div", { style: { height: "30px", backgroundColor: "#F5FAFD" } }));
-            }
+    BoardList.prototype.generateRootBoard = function (boards) {
+        if (boards.id == 2 || boards.id == 29 || boards.id == 35 || boards.id == 37) {
+            return React.createElement("div", { className: "anArea" },
+                React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
+                    React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
+                        React.createElement("div", { className: "areaName" }, boards.name),
+                        React.createElement("div", { className: "areaName" },
+                            "\u4E3B\u7BA1\uFF1A",
+                            boards.masters),
+                        React.createElement("div", { className: "hideBoard" }, "+")),
+                    React.createElement(ChildBoard, { boardid: boards.id })));
         }
         else if (boards.id == 758) {
-            return React.createElement("div", { className: "column" },
+            return React.createElement("div", { className: "anArea" },
                 React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
                     React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
                         React.createElement("div", { className: "areaName" },
                             React.createElement("a", { href: "/list/758" }, boards.name)),
                         React.createElement("div", { className: "areaName" },
                             "\u4E3B\u7BA1\uFF1A",
-                            boards.masters))),
-                React.createElement("div", { style: { height: "30px", backgroundColor: "#F5FAFD" } }));
+                            boards.masters))));
         }
         else {
-            return React.createElement("div", { className: "column" },
+            return React.createElement("div", { className: "anArea" },
                 React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
                     React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
                         React.createElement("div", { className: "areaName" }, boards.name),
                         React.createElement("div", { className: "areaName" },
                             "\u4E3B\u7BA1\uFF1A",
                             boards.masters)),
-                    React.createElement(ChildBoard, { boardid: boards.id })),
-                React.createElement("div", { style: { height: "30px", backgroundColor: "#F5FAFD" } }));
+                    React.createElement(ChildBoard, { boardid: boards.id })));
         }
     };
-    BoardID.prototype.view1 = function () {
-        if (this.state.view1 == false) {
-            this.setState({ view1: true });
-        }
-        else {
-            this.setState({ view1: false });
-        }
+    BoardList.prototype.render = function () {
+        $(document).ready(function () {
+            var button = $(".hideBoard");
+            button.click(function () {
+                if ($(this).text() === "+") {
+                    $(this).parent().next().css("display", "flex");
+                    $(this).text("-");
+                }
+                else {
+                    $(this).parent().next().css("display", "none");
+                    $(this).text("+");
+                }
+                ;
+                return false; //阻止事件冒泡
+            });
+        });
+        return React.createElement("div", { className: "boardList" }, this.state.board.map(this.generateRootBoard));
     };
-    BoardID.prototype.view2 = function () {
-        if (this.state.view2 == false) {
-            this.setState({ view2: true });
-        }
-        else {
-            this.setState({ view2: false });
-        }
-    };
-    BoardID.prototype.view3 = function () {
-        if (this.state.view3 == false) {
-            this.setState({ view3: true });
-        }
-        else {
-            this.setState({ view3: false });
-        }
-    };
-    BoardID.prototype.view4 = function () {
-        if (this.state.view4 == false) {
-            this.setState({ view4: true });
-        }
-        else {
-            this.setState({ view4: false });
-        }
-    };
-    BoardID.prototype.render = function () {
-        return React.createElement("div", { className: "anArea" }, this.state.board.map(this.generateRootBoard.bind(this)));
-    };
-    return BoardID;
+    return BoardList;
 }(React.Component));
-exports.BoardID = BoardID;
+exports.BoardList = BoardList;
 var ChildBoard = /** @class */ (function (_super) {
     __extends(ChildBoard, _super);
     function ChildBoard(props) {
@@ -19978,7 +19860,7 @@ var ChildBoard = /** @class */ (function (_super) {
         });
     };
     ChildBoard.prototype.convertChildBoard = function (item) {
-        return React.createElement("div", { id: "kk", className: "boardContent" },
+        return React.createElement("div", { className: "boardContent" },
             React.createElement("a", { href: "/list/" + item.id },
                 React.createElement("div", { className: "greenBackdrop" })),
             React.createElement("a", { href: "/list/" + item.id },
@@ -19997,7 +19879,7 @@ var ChildBoard = /** @class */ (function (_super) {
     ChildBoard.prototype.render = function () {
         var cid = "Board" + this.props.boardid;
         if (this.props.boardid == 2 || this.props.boardid == 29 || this.props.boardid == 35 || this.props.boardid == 37) {
-            return React.createElement("div", { className: "areaContent" }, this.state.thisBoardState.map(this.convertNoImgChildBoard));
+            return React.createElement("div", { className: "noImgAreaContent" }, this.state.thisBoardState.map(this.convertNoImgChildBoard));
         }
         else {
             return React.createElement("div", { className: "areaContent" }, this.state.thisBoardState.map(this.convertChildBoard));
@@ -20006,18 +19888,6 @@ var ChildBoard = /** @class */ (function (_super) {
     return ChildBoard;
 }(React.Component));
 exports.ChildBoard = ChildBoard;
-var BoardList = /** @class */ (function (_super) {
-    __extends(BoardList, _super);
-    function BoardList() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    BoardList.prototype.render = function () {
-        return React.createElement("div", { className: "boardList", style: { marginTop: "40px" } },
-            React.createElement(BoardID, null));
-    };
-    return BoardList;
-}(React.Component));
-exports.BoardList = BoardList;
 
 
 /***/ }),
@@ -21066,7 +20936,6 @@ var CodeTagHandler = /** @class */ (function (_super) {
     });
     ;
     CodeTagHandler.prototype.execCore = function (content, tagData, context) {
-        console.log(content.split('\n'));
         var element = content.split('\n').map(function (item, index) {
             return React.createElement("li", null, item);
         });
@@ -21579,6 +21448,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var UserCenterConfigAvatar_1 = __webpack_require__(168);
+var UserCenterConfigSignature_1 = __webpack_require__(169);
+var UsercenterConfigPassword_1 = __webpack_require__(170);
 var UserCenterConfig = /** @class */ (function (_super) {
     __extends(UserCenterConfig, _super);
     function UserCenterConfig() {
@@ -21587,7 +21458,10 @@ var UserCenterConfig = /** @class */ (function (_super) {
     UserCenterConfig.prototype.render = function () {
         return (React.createElement("div", { className: "user-center-config" },
             React.createElement(UserCenterConfigAvatar_1.UserCenterConfigAvatar, null),
-            React.createElement("hr", null)));
+            React.createElement("hr", null),
+            React.createElement(UserCenterConfigSignature_1.UserCenterConfigSignature, null),
+            React.createElement("hr", null),
+            React.createElement(UsercenterConfigPassword_1.UserCenterConfigPassword, null)));
     };
     return UserCenterConfig;
 }(React.Component));
@@ -21622,11 +21496,12 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
     }
     UserCenterConfigAvatar.prototype.render = function () {
         return (React.createElement("div", { className: "user-center-config-avatar" },
-            React.createElement("img", { src: '' }),
+            React.createElement("img", { src: 'http://file.cc98.org/uploadface/5298.png' }),
             React.createElement("div", null,
                 React.createElement("button", { id: "chooseDefaultAvatar", type: "button" }, "\u9009\u62E9\u8BBA\u575B\u5934\u50CF"),
-                React.createElement("button", { id: "uploadAvatar", type: "button" }, "\u4E0A\u4F20\u5934\u50CF"),
-                React.createElement("p", null, "\u56FE\u7247\u957F\u5BBD\u4E3A160\u00D7160\u50CF\u7D20\u7684\u56FE\u7247"))));
+                React.createElement("div", null,
+                    React.createElement("button", { id: "uploadAvatar", type: "button" }, "\u4E0A\u4F20\u5934\u50CF"),
+                    React.createElement("p", null, "\u56FE\u7247\u957F\u5BBD\u4E3A160\u00D7160\u50CF\u7D20\u7684\u56FE\u7247")))));
     };
     return UserCenterConfigAvatar;
 }(React.Component));
@@ -21635,6 +21510,94 @@ exports.UserCenterConfigAvatar = UserCenterConfigAvatar;
 
 /***/ }),
 /* 169 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(1);
+var UserCenterConfigSignature = /** @class */ (function (_super) {
+    __extends(UserCenterConfigSignature, _super);
+    function UserCenterConfigSignature() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserCenterConfigSignature.prototype.render = function () {
+        return (React.createElement("div", { className: "user-center-config-signature" },
+            React.createElement("div", { className: "signature-buttons" },
+                React.createElement("button", { id: "signatureImg", type: "button" }, "\u56FE\u7247"),
+                React.createElement("button", { id: "signatureVideo", type: "button" }, "\u89C6\u9891"),
+                React.createElement("button", { id: "signatureAudio", type: "button" }, "\u97F3\u4E50"),
+                React.createElement("button", { id: "signatureColor", type: "button" }, "A"),
+                React.createElement("button", { id: "signatureStrong", type: "button" }, "B")),
+            React.createElement("textarea", { id: "signature" }),
+            React.createElement("div", null,
+                React.createElement("p", null, "\u6CE8* \u4E2A\u6027\u7B7E\u540D\u5C06\u5728\u4E2A\u4EBA\u4E3B\u9875\u3001\u53D1\u5E03\u6587\u7AE0\u3001\u56DE\u590D\u6587\u7AE0\u4E2D\u663E\u793A"),
+                React.createElement("button", { id: "signatureUpload", type: "button" }, "\u4FDD\u5B58\u7B7E\u540D\u6863"))));
+    };
+    return UserCenterConfigSignature;
+}(React.Component));
+exports.UserCenterConfigSignature = UserCenterConfigSignature;
+
+
+/***/ }),
+/* 170 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(1);
+var UserCenterConfigPassword = /** @class */ (function (_super) {
+    __extends(UserCenterConfigPassword, _super);
+    function UserCenterConfigPassword() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserCenterConfigPassword.prototype.render = function () {
+        return (React.createElement("div", { className: "user-center-config-password" },
+            React.createElement("p", null, "\u4FEE\u6539\u5BC6\u7801"),
+            React.createElement("div", { className: "password-inputs" },
+                React.createElement("p", null, "\u539F\u5BC6\u7801"),
+                React.createElement("input", { type: "password", id: "oldPassword" }),
+                React.createElement("p", null, "\u65B0\u5BC6\u7801"),
+                React.createElement("input", { type: "password", id: "newPassword" }),
+                React.createElement("p", null, "\u786E\u8BA4\u5BC6\u7801"),
+                React.createElement("input", { type: "password", id: "confirmPassword" }),
+                React.createElement("button", { type: "button" }, "\u63D0\u4EA4\u5BC6\u7801")),
+            React.createElement("p", { id: "passwordChangeMesssage" })));
+    };
+    return UserCenterConfigPassword;
+}(React.Component));
+exports.UserCenterConfigPassword = UserCenterConfigPassword;
+
+
+/***/ }),
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21651,10 +21614,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var MyMessageMessage_1 = __webpack_require__(170);
-var MyMessageResponse_1 = __webpack_require__(175);
-var MyMessageAttme_1 = __webpack_require__(176);
-var MyMessageSystem_1 = __webpack_require__(177);
+var MyMessageMessage_1 = __webpack_require__(172);
+var MyMessageResponse_1 = __webpack_require__(177);
+var MyMessageAttme_1 = __webpack_require__(178);
+var MyMessageSystem_1 = __webpack_require__(179);
 var react_router_dom_1 = __webpack_require__(3);
 /**
  * 网站的主页面对象。
@@ -21732,7 +21695,7 @@ function sendRequest() {
 
 
 /***/ }),
-/* 170 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21787,8 +21750,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var MyMessagePerson_1 = __webpack_require__(171);
-var MyMessageWindow_1 = __webpack_require__(172);
+var MyMessagePerson_1 = __webpack_require__(173);
+var MyMessageWindow_1 = __webpack_require__(174);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -21934,7 +21897,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 171 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21976,7 +21939,7 @@ exports.MyMessagePerson = MyMessagePerson;
 
 
 /***/ }),
-/* 172 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22031,8 +21994,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var MyMessageSender_1 = __webpack_require__(173);
-var MyMessageReceiver_1 = __webpack_require__(174);
+var MyMessageSender_1 = __webpack_require__(175);
+var MyMessageReceiver_1 = __webpack_require__(176);
 var MyMessageWindow = /** @class */ (function (_super) {
     __extends(MyMessageWindow, _super);
     function MyMessageWindow(props) {
@@ -22177,7 +22140,7 @@ function reverseArr(arr, s, e) {
 
 
 /***/ }),
-/* 173 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22222,7 +22185,7 @@ exports.MyMessageSender = MyMessageSender;
 
 
 /***/ }),
-/* 174 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22272,7 +22235,7 @@ exports.MyMessageReceiver = MyMessageReceiver;
 
 
 /***/ }),
-/* 175 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22431,7 +22394,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 176 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22590,7 +22553,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 177 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22645,7 +22608,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var MyMessageSystembox_1 = __webpack_require__(178);
+var MyMessageSystembox_1 = __webpack_require__(180);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -22748,7 +22711,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 178 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22790,7 +22753,7 @@ exports.MyMessageSystembox = MyMessageSystembox;
 
 
 /***/ }),
-/* 179 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22810,7 +22773,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var FocusPostAreaComponent_1 = __webpack_require__(180);
+var FocusPostAreaComponent_1 = __webpack_require__(182);
 /**
  * 网站的主页面对象。
  */
@@ -22836,7 +22799,7 @@ exports.AllNewPost = AllNewPost;
 
 
 /***/ }),
-/* 180 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22891,7 +22854,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(1);
-var FocusPostComponent_1 = __webpack_require__(181);
+var FocusPostComponent_1 = __webpack_require__(183);
 var Utility = __webpack_require__(5);
 /**
  * 表示我关注的某个版面的主题列表
@@ -23065,7 +23028,7 @@ function isBottom() {
 
 
 /***/ }),
-/* 181 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23129,7 +23092,7 @@ exports.FocusPostComponent = FocusPostComponent;
 
 
 /***/ }),
-/* 182 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23307,7 +23270,7 @@ exports.Header = Header;
 
 
 /***/ }),
-/* 183 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23359,7 +23322,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var HotTopic_1 = __webpack_require__(184);
+var HotTopic_1 = __webpack_require__(186);
 var $ = __webpack_require__(7);
 var Recommended1 = /** @class */ (function (_super) {
     __extends(Recommended1, _super);
@@ -23382,35 +23345,35 @@ var Recommended1 = /** @class */ (function (_super) {
             });
         });
         return React.createElement("div", { className: "recommended1" },
-            React.createElement("div", null,
+            React.createElement("div", { className: "column" },
                 React.createElement("div", { className: "recommended1Content" },
                     React.createElement("div", { className: "recommended1Img" },
                         React.createElement("img", { src: "images/recommended2Img.jpg" })),
-                    React.createElement("div", { className: "coloum" },
+                    React.createElement("div", { className: "column" },
                         React.createElement("div", { className: "recommended1Title" }, "\u63A8\u8350\u9605\u8BFB\u6807\u98981"),
                         React.createElement("div", { className: "recommended1Abstract" }, "\u63A8\u8350\u9605\u8BFB\u6458\u89811"))),
                 React.createElement("div", { className: "recommended1Content" },
                     React.createElement("div", { className: "recommended1Img" },
                         React.createElement("img", { src: "images/recommended2Img.jpg" })),
-                    React.createElement("div", { className: "coloum" },
+                    React.createElement("div", { className: "column" },
                         React.createElement("div", { className: "recommended1Title" }, "\u63A8\u8350\u9605\u8BFB\u6807\u98982"),
                         React.createElement("div", { className: "recommended1Abstract" }, "\u63A8\u8350\u9605\u8BFB\u6458\u89812"))),
                 React.createElement("div", { className: "recommended1Content" },
                     React.createElement("div", { className: "recommended1Img" },
                         React.createElement("img", { src: "images/recommended2Img.jpg" })),
-                    React.createElement("div", { className: "coloum" },
+                    React.createElement("div", { className: "column" },
                         React.createElement("div", { className: "recommended1Title" }, "\u63A8\u8350\u9605\u8BFB\u6807\u98983"),
                         React.createElement("div", { className: "recommended1Abstract" }, "\u63A8\u8350\u9605\u8BFB\u6458\u89813"))),
                 React.createElement("div", { className: "recommended1Content" },
                     React.createElement("div", { className: "recommended1Img" },
                         React.createElement("img", { src: "images/recommended2Img.jpg" })),
-                    React.createElement("div", { className: "coloum" },
+                    React.createElement("div", { className: "column" },
                         React.createElement("div", { className: "recommended1Title" }, "\u63A8\u8350\u9605\u8BFB\u6807\u98984"),
                         React.createElement("div", { className: "recommended1Abstract" }, "\u63A8\u8350\u9605\u8BFB\u6458\u89814"))),
                 React.createElement("div", { className: "recommended1Content" },
                     React.createElement("div", { className: "recommended1Img" },
                         React.createElement("img", { src: "images/recommended2Img.jpg" })),
-                    React.createElement("div", { className: "coloum" },
+                    React.createElement("div", { className: "column" },
                         React.createElement("div", { className: "recommended1Title" }, "\u63A8\u8350\u9605\u8BFB\u6807\u98985"),
                         React.createElement("div", { className: "recommended1Abstract" }, "\u63A8\u8350\u9605\u8BFB\u6458\u89815")))),
             React.createElement("div", { className: "buttonRow" },
@@ -23606,7 +23569,7 @@ var MainPage = /** @class */ (function (_super) {
                 React.createElement("div", { className: "recommended2" },
                     React.createElement("div", { className: "dashedBorder" },
                         React.createElement("div", { className: "heading" }, "\u63A8\u8350")),
-                    React.createElement("div", { className: "coloum" },
+                    React.createElement("div", { className: "column" },
                         React.createElement("div", { className: "row" },
                             React.createElement("div", { className: "recommended2Img" },
                                 React.createElement("img", { src: "/images/recommended2Img.jpg" })),
@@ -23658,7 +23621,7 @@ exports.MainPage = MainPage;
 
 
 /***/ }),
-/* 184 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23681,7 +23644,7 @@ exports.HotTopic = HotTopic;
 
 
 /***/ }),
-/* 185 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23702,8 +23665,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(3);
-var UserNavigation_1 = __webpack_require__(186);
-var UserRouter_1 = __webpack_require__(187);
+var UserNavigation_1 = __webpack_require__(188);
+var UserRouter_1 = __webpack_require__(189);
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
@@ -23724,7 +23687,7 @@ exports.User = User;
 
 
 /***/ }),
-/* 186 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23767,7 +23730,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 187 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23892,7 +23855,7 @@ var UserExact = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 188 */
+/* 190 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

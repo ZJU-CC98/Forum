@@ -77,7 +77,7 @@ $color-black: rgb(32,32,32);
     display: flex;
 }
 
-.coloum {
+.column {
     display: flex;
     flex-direction: column;
 }
@@ -963,22 +963,19 @@ a {
     margin-bottom: 30px;
 }
 
-.viewBoard {
-    margin-left: 30px;
-    border-radius: 5px;
-    background-color: #FFFFFF;
-    border-color: #000000;
-    width: 30px;
-    height: 20px;
-}
-
 .hideBoard {
-    margin-left: 30px;
-    border-radius: 5px;
-    background-color: #FFFFFF;
-    border-color: #000000;
-    width: 30px;
     height: 20px;
+    width: 30px;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: #000000;
+    border-width: 1px;
+    font-size: 14px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    text-align: center;
+    margin-left: 30px;
+    cursor: pointer;
 }
 
 .areaName {
@@ -990,6 +987,12 @@ a {
 
 .areaContent {
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.noImgAreaContent {
+    display: none;
     flex-direction: row;
     flex-wrap: wrap;
 }
