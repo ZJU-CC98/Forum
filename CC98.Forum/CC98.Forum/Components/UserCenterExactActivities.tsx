@@ -25,6 +25,10 @@ export class UserCenterExactActivities extends React.Component {
                         <Route path={`${location.pathname}/replies`} component={UserCenterExactActivitiesReplies} />
                     </div>
                 </Router>
+                <hr />
+                <div className="user-activities-nomore">
+                    <p>没有更多啦</p>
+                </div>
             </div>
         );
     }

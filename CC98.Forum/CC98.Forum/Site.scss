@@ -1263,6 +1263,7 @@ body {
 
             .user-activities {
                 width: 100%;
+                margin-top: 20px;
 
                 .user-activities-active {
                     color: rgb(160,160,160);
@@ -1273,18 +1274,29 @@ body {
                     margin-bottom: 30px;
                 }
 
+                hr {
+                    background-color: #fff;
+                    border-top: 1px dashed rgb(204,204,204);
+                    margin: 20px 0;
+                }
+
+                .user-activities-nomore {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+
+                    p {
+                        margin: 40px 0 0 0;
+                    }
+                }
+
                 .user-posts {
                     margin-top: 20px;
 
                     p {
                         line-height: 3em;
                         overflow: hidden;
-                    }
-
-                    hr {
-                        background-color: #fff;
-                        border-top: 1px dashed rgb(204,204,204);
-                        margin: 20px 0 20px 0;
                     }
 
                     .user-post-board {
