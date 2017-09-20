@@ -1,16 +1,8 @@
 {
   "_args": [
     [
-      {
-        "raw": "signalr@2.2.2",
-        "scope": null,
-        "escapedName": "signalr",
-        "name": "signalr",
-        "rawSpec": "2.2.2",
-        "spec": "2.2.2",
-        "type": "version"
-      },
-      "C:\\Users\\dongy\\Documents\\Source\\Repos\\NewRepo\\CC98.Forum\\CC98.Forum"
+      "signalr@2.2.2",
+      "d:\\Users\\guoyang\\Source\\Repos\\Forum\\CC98.Forum\\CC98.Forum"
     ]
   ],
   "_from": "signalr@2.2.2",
@@ -23,17 +15,16 @@
     "tmp": "tmp/signalr-2.2.2.tgz_1494950333486_0.47720096656121314"
   },
   "_npmUser": {
-    "name": "signalr",
-    "email": "npmsignalr@microsoft.com"
+    "email": "npmsignalr@microsoft.com",
+    "name": "signalr"
   },
   "_npmVersion": "2.15.8",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "signalr@2.2.2",
-    "scope": null,
-    "escapedName": "signalr",
     "name": "signalr",
+    "raw": "signalr@2.2.2",
     "rawSpec": "2.2.2",
+    "scope": null,
     "spec": "2.2.2",
     "type": "version"
   },
@@ -44,7 +35,7 @@
   "_shasum": "ba07915eb5e08cfbc87765047ec6972694d008e2",
   "_shrinkwrap": null,
   "_spec": "signalr@2.2.2",
-  "_where": "C:\\Users\\dongy\\Documents\\Source\\Repos\\NewRepo\\CC98.Forum\\CC98.Forum",
+  "_where": "d:\\Users\\guoyang\\Source\\Repos\\Forum\\CC98.Forum\\CC98.Forum",
   "author": {
     "name": "Microsoft"
   },
@@ -63,13 +54,14 @@
   },
   "gitHead": "0b78d46dab5126e17dc6d88805fc0e480b7c66a0",
   "homepage": "https://github.com/signalr/bower-signalr#readme",
+  "installable": true,
   "keywords": [
-    "signalr",
-    "microsoft",
     "asp.net",
     "javascript",
     "jquery",
-    "realtime"
+    "microsoft",
+    "realtime",
+    "signalr"
   ],
   "license": "Apache-2.0",
   "main": "jquery.signalR.js",
@@ -81,7 +73,6 @@
   ],
   "name": "signalr",
   "optionalDependencies": {},
-  "readme": "ERROR: No README data found!",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/signalr/bower-signalr.git"
