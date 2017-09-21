@@ -130,7 +130,7 @@ export function getPager(curPage, totalPage) {
             if (curPage == undefined || curPage == 1) {
                 pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, - 2, -4];
             } else if (curPage > 1 && curPage < 6) {
-                pages = [-3, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - 2, -4];
+                pages = [-3, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ,- 2, -4];
             } else {
                 pages = [-3, -1, curPage - 4, curPage - 3, curPage - 2, curPage - 1, curPage, curPage + 1, curPage + 2, curPage + 3, curPage + 4, curPage + 5, - 2, -4];
             }
