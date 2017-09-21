@@ -29,7 +29,7 @@ $color-black: rgb(32,32,32);
     background-color: $bgcolor2;
     max-width: 1140px;
     margin-top: 15px;
-    border: #EAEAEA solid thin;
+
     font-family: 微软雅黑;
     font-size: 14px;
 }
@@ -68,7 +68,9 @@ $color-black: rgb(32,32,32);
 .essay {
     display: inline-flex;
     align-self: flex-start;
-    border: #EAEAEA solid thin;
+    border-bottom: #EAEAEA solid thin;
+    border-left: #EAEAEA solid thin;
+    border-right: #EAEAEA solid thin;
     min-height: 100px;
     min-width: 1140px;
 }
@@ -77,7 +79,7 @@ $color-black: rgb(32,32,32);
     display: flex;
 }
 
-.coloum {
+.column {
     display: flex;
     flex-direction: column;
 }
@@ -110,12 +112,14 @@ $color-black: rgb(32,32,32);
     font-size: 13px;
 }
 
-#authorImg {
+.authorImg {
     display: inline-flex;
     margin: 100px,100px,100px,100px;
+    width: 60px;
+    height: 60px;
 }
 
-#authorImg img {
+.authorImg img {
     margin-left: 20px;
     border-radius: 50%;
     width: 60px;
@@ -290,9 +294,7 @@ $color-black: rgb(32,32,32);
     display: flex;
     align-self: flex-start;
     flex-direction: column;
-    border-bottom: #EAEAEA solid thin;
-    border-left: #EAEAEA solid thin;
-    border-right: #EAEAEA solid thin;
+
     width: 1140px;
 }
 
@@ -438,11 +440,11 @@ $color-black: rgb(32,32,32);
     align-items: flex-end;
 }
 
-#reply:nth-child(2n+1) .rpyClr a{
+.reply:nth-child(2n+1) .rpyClr a{
        color: #2576A8;
 }
 
-#reply:nth-child(2n) .rpyClr a{
+.reply:nth-child(2n) .rpyClr a{
         color: #EE0000;
 }
 
@@ -464,6 +466,7 @@ $color-black: rgb(32,32,32);
     font-size: 12px;
     font-family: 微软雅黑;
     padding-left: 7px;
+    padding-right: 7px;
     border-radius: 5px;
     background: #FFFFFF;
     border: 1px solid #5CADDD;
@@ -2738,4 +2741,40 @@ body {
         justify-content: center;
         background-color: #ebebeb;
     }
+}
+
+/**
+    弹出用户悬浮窗
+*/
+.popup {
+
+    width: 380px;
+    height: 250px; /*高度自由，因为不确定，内容多少。*/
+    border: 1px solid #D5D5D5;
+    background: #fff; /*窗口内容不透明，背景为白色*/
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.25); /*内容窗口带阴影*/
+    border-radius: 8px; /* 所有角都使用半径为8px的圆角，此属性为CSS3标准属性 */
+    -moz-border-radius: 8px; /* Mozilla浏览器的私有属性 */
+    -webkit-border-radius: 8px; /* Webkit浏览器的私有属性 */ /*窗口圆角*/
+    z-index: 9000;
+}
+.popup_title {
+    background: url(/images/headerBackground.jpg) no-repeat center;
+    height: 125px;
+    line-height: 24px; /*使垂直居中*/
+    border-bottom: 1px solid #efefef; /*底边框*/
+    border-radius: 8px 8px 0 0; /* 左上角和右上角使用半径为5px的圆角，此属性为CSS3标准属性 */
+    -moz-border-radius: 8px 8px 0 0; /* Mozilla浏览器的私有属性 */
+    -webkit-border-radius: 8px 8px 0 0; /* Webkit浏览器的私有属性 */ /*窗口圆角*/
+    color: #535353;
+    font-size: 16px; /*字体颜色和字体大小*/
+    cursor: move; /*可移动样式*/
+    -moz-user-select: none; /* Firefox all */
+    -webkit-user-select: none; /* Chrome all / Safari all /opera15+*/
+    -ms-user-select: none; /*IE10*/
+    -khtml-user-select: none; /*早期浏览器*/
+    user-select: none;
+    -o-user-select: none; /* 以上两个属性目前并未支持，写在这里为了减少风险 */
 }

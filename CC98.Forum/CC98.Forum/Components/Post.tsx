@@ -1,7 +1,7 @@
 ﻿import * as React from 'react';
 import * as State from "../States/AppState";
 import * as Utility from '../Utility';
-
+import * as $ from 'jquery';
 import {
     BrowserRouter as Router,
     Route,
@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom';
 
 import { match } from "react-router";
+import { UbbContainer } from './UbbContainer';
 var moment = require('moment');
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
 
@@ -64,12 +65,13 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         if (this.state.page == 1) {
             topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} />;
         }
-        return <div className="center" style={{ overflowX: "scroll", minWidth: "1140px", marginTop:"40px" }} >
-                <TopicPager page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
-                {topic}
-                <Route path="/topic/:topicid/:page?" component={Reply} />
-            </div>
-                ;  
+        return <div className="center" style={{ overflowX: "scroll", minWidth: "1140px", marginTop: "40px" }} >
+            <TopicPager page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
+            {topic}
+            <Route path="/topic/:topicid/:page?" component={Reply} />
+            <TopicPager page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
+        </div>
+            ;
 
     }
 
@@ -89,27 +91,28 @@ export class Reply extends RouteComponent<{}, { contents }, { page, topicid, use
             page = 1;
         }
         let realContents;
-            this.Contents = Utility.getTopicContent(newProps.match.params.topicid, page);
-             realContents = await this.Contents;
-   
+        this.Contents = Utility.getTopicContent(newProps.match.params.topicid, page);
+        realContents = await this.Contents;
+
         this.setState({ contents: realContents });
 
     }
     private generateContents(item: State.ContentState) {
-        return <div id="reply">
-            <Replier key={item.id} userId={item.userId}topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} />
+        return <div className="reply" ><div style={{ marginTop: "15px", marginBotton:"5px",border: "#EAEAEA solid thin" }}>
+            <Replier key={item.id} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} />
             <ReplyContent key={item.content} content={item.content} signature={item.signature} />
-        </div>;
+        </div>
+            </div>;
     }
     render() {
-        return <div className="center" style={{ width: "1140px" }}>
+        return <div className="center" style={{ width: "1140px"}}>
             {this.state.contents.map(this.generateContents)}
         </div>
             ;
     }
 }
 
-export class Replier extends RouteComponent<{ userId,topicid,userName, replyTime, floor, userImgUrl, sendTopicNumber }, State.ReplierState, { topicid }>{
+export class Replier extends RouteComponent<{ userId, topicid, userName, replyTime, floor, userImgUrl, sendTopicNumber }, State.ReplierState, { topicid }>{
     constructor(props, content) {
         super(props, content);
         this.state = {
@@ -121,43 +124,117 @@ export class Replier extends RouteComponent<{ userId,topicid,userName, replyTime
             level: 2,
         }
     }
-    ShowUserMessage() {
-        //return <UserMessageBox userName="dearkano" userFans="2333" />;
-        var x = document.getElementById("userInformation");
-       
-    }
     render() {
         let url = `/user/${this.props.userId}`;
         let curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userName}`;
+        $(document).ready(function () {
+
+           /* $(".mouse-userDetails").mouseover(function (event: JQuery.Event) {
+                const currentImage = event.currentTarget;
+                $(currentImage).find(".userDetails").show();
+                $(currentImage).nextAll("#rpymes").css({ opacity: "0" });
+
+            }).mouseleave(function (event: JQuery.Event) {
+                const currentImage = event.currentTarget;
+                const upperDiv = event.relatedTarget;
+                $(currentImage).nextAll("#rpymes").css({ opacity: "1" });
+                $(currentImage).find(".userDetails").hide();
+                $(".userDetails").mouseleave(function (event: JQuery.Event) {
+                    const currentImage = event.currentTarget;
+                    $(currentImage).nextAll("#rpymes").css({ opacity: "1" });
+                    $(".userDetails").hide();
+                });
+            });*/
+            $(".authorImg").mouseenter(function (event: JQuery.Event) {
+                const currentImage = event.currentTarget;
+                $(currentImage).next(".userDetails").show();
+            });
+            $(".mouse-userDetails").mouseleave(function (event: JQuery.Event) {
+                const currentImage = event.currentTarget;
+                $(currentImage).find(".userDetails").hide();
+            });
+
+        });
+
+
         return <div className="replyRoot">
             <div className="row" style={{ width: "1140px", display: "flex", marginBottom: "10px" }}>
-                <div id="authorImg" ><a href={url}><img onMouseOver={this.ShowUserMessage} src={this.props.userImgUrl}></img></a></div><div id="userInformation"></div>
-                <div className="column" id="rpymes">
+          
+                <div className="row mouse-userDetails" style={{ height: "250px", width: "380px" }} >
+                    <div className="authorImg" ><a href={url}><img src={this.props.userImgUrl}></img></a></div>
+                    <div className="userDetails" style={{ display: "none", position: "absolute", zindedx: "1" }}>
+                        <UserDetails userName={this.props.userName} />
+                    </div>
+            
+                </div>
+                <div className="column" id="rpymes" style={{ marginLeft:"-300px" }}>
                     <div className="row" id="replierMes">
                         <div style={{ marginLeft: "10px" }}><span>{this.props.floor}L</span></div>
                         <div className="rpyClr" style={{ marginLeft: "10px" }}><a href={url}>{this.props.userName}</a></div>
                         <div id="topicsNumber" style={{ marginLeft: "10px" }}>贴数   <span className="rpyClrodd">{this.props.sendTopicNumber}</span> </div>
                     </div>
-                    <div className="row">
+                    <div className="row" >
                         <div id="clockimg" style={{ marginLeft: "6px" }}><i className="fa fa-clock-o fa-lg fa-fw"></i></div>
                         <div><span className="timeProp">{moment(this.props.replyTime).format('YYYY-MM-DD HH:mm:ss')}</span></div>
                     </div>
                 </div>
-                <div id="operation">
+                <div id="operation"  >
                     <button className="operation">引用</button>
                     <button className="operation">编辑</button>
                     <button className="operation">私信</button>
                     <button className="operation">举报</button>
-                    <Link className="operation" to={curUserPostUrl}>只看此用户</Link>
+                    <Link className="operation"  to={curUserPostUrl}>只看此用户</Link>
                 </div>
             </div></div>;
+    }
+}
+export class UserDetails extends RouteComponent<{ userName }, { portraitUrl, userName }, {}>{
+    constructor(props) {
+        super(props);
+        this.state = ({ portraitUrl: null, userName: null });
+    }
+    async componentDidMount() {
+        if (this.props.userName != null) {
+ let url = `http://api.cc98.org/user/name/${this.props.userName}`;
+        let message = await fetch(url);
+        let data = await message.json();
+        this.setState({ portraitUrl: data.portraitUrl, userName: data.name });
+        }
+       
+    }
+    render() {
+        if (this.props.userName != null) {
+            return <div className='popup'>
+                <div className='popup_title'>
+                    <div className="row">
+                        <div className="row authorImg" style={{ marginLeft: "10px", marginTop: "10px" }}>
+                            <img src={this.state.portraitUrl}></img>
+                        </div>
+                        <div className="column" style={{ marginLeft: "25px", marginTop: "30px" }}>
+                            <div className="row">
+                                <div style={{ fontFamily: "微软雅黑", color: "blue", marginRight: "10px" }}> {this.state.userName}</div>   <div style={{ marginRight: "10px", fontSize: "14px" }}>   粉丝  </div><div style={{ color: "red", fontSize: "12px" }}>2333</div>
+                            </div>
+                            <div className="row" style={{ marginTop: "10px", fontSize: "14px" }}>
+                                技术组组长
+                        </div>
+                        </div>
+                        <div>
+                            <button id="watch" style={{ width: "80px", backgroundColor: "#FF6A6A", marginRight: "10px", marginLeft: "25px", marginTop: "50px", height: "30px" }}>关注</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>;
+        } else {
+            return;
+        }
     }
 }
 export class PostTopic extends RouteComponent<{ imgUrl, page, topicid }, State.PostTopicState, {}> {
     constructor(props, content) {
         super(props, content);
         this.state = {
-            topicMessage: { title: "ss", time: "2017" }
+            topicMessage: { title: "ss", time: "2017" ,content:"",signature:""}
         }
     }
     async componentDidMount() {
@@ -179,7 +256,7 @@ export class PostTopic extends RouteComponent<{ imgUrl, page, topicid }, State.P
     }
 }
 
-export class AuthorMessage extends RouteComponent<{ AuthorName,authorId ,authorImgUrl }, State.AuthorMessageState, {}> {
+export class AuthorMessage extends RouteComponent<{ AuthorName, authorId, authorImgUrl }, State.AuthorMessageState, {}> {
     constructor(props, content) {
         super(props, content);
         this.state = {
@@ -192,8 +269,8 @@ export class AuthorMessage extends RouteComponent<{ AuthorName,authorId ,authorI
         let url = `/user/${this.props.authorId}`;
         return <div className="row" id="authormes">
 
-            <div id="authorImg" ><a href={url}><img src={this.props.authorImgUrl}></img></a></div>
-            <div className="column">
+            <div className="authorImg" ><a href={url}><img src={this.props.authorImgUrl}></img></a></div>
+            <div className="column" style={{ marginLeft:"20px" }}>
                 <div className="row authorFans" style={{ justifyContent: "space-between" }}>
                     <div id="authorName"><p><a href={url}>{this.props.AuthorName}</a></p></div>
                     <div id="fans" className="row"><div style={{ marginRight: "3px" }}>粉丝</div><div style={{ color: "#EE0000" }}>{this.state.fansNumber}</div></div>
@@ -221,7 +298,7 @@ export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.
             viewTimes: 2366
         }
     }
-    returnProps(isTop, isNotice,title) {
+    returnProps(isTop, isNotice, title) {
         if (isTop == true && isNotice == false) {
             return <div id="title1" className="row" style={{ justifyContent: "flex-start" }}>
                 <div className="titleProp" style={{ width: "70px" }}>【置顶】</div>
@@ -235,7 +312,7 @@ export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.
         } else if (isTop == true && isNotice == true) {
             return <div id="title1" className="row" style={{ justifyContent: "flex-start" }}>
                 <div className="titleProp" style={{ width: "70px", height: "30px", whiteSpace: "nowrap" }}>【置顶】</div>
-                <div style={{ width: "70px" ,height:"30px",whiteSpace:"nowrap"}} className="titleProp">【公告】</div>
+                <div style={{ width: "70px", height: "30px", whiteSpace: "nowrap" }} className="titleProp">【公告】</div>
                 <div id="essayTitle">{title}</div>
             </div>;
         } else {
@@ -248,7 +325,7 @@ export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.
         return <div id="title">
             <div className="column" id="topicTitleProp" >
                 <div id="essay1" className="row">
-                    {this.returnProps(this.state.isTop, this.state.isNotice, this.props.Title)}  
+                    {this.returnProps(this.state.isTop, this.state.isNotice, this.props.Title)}
 
                 </div>
                 <div className="row" id="essayProp">
@@ -269,7 +346,7 @@ export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.
         </div>;
     }
 }
-export class TopicContent extends RouteComponent<{ content, signature }, { likeNumber, dislikeNumber }, {}> {
+export class TopicContent extends RouteComponent<{ content:string, signature:string }, { likeNumber:number, dislikeNumber:number }, {}> {
     constructor(props, content) {
         super(props, content);
         this.state = {
@@ -280,8 +357,8 @@ export class TopicContent extends RouteComponent<{ content, signature }, { likeN
     //<div className="signature">{this.state.Signature}</div>
     render() {
         return <div className="content">
-            <div className="substance">{this.props.content}</div>
-            <div className="signature">{this.props.signature}</div>
+            <div className="substance"><UbbContainer code={this.props.content} /> </div>
+            <div className="signature"><UbbContainer code={this.props.signature} /></div>
             <div className="comment">
                 <div id="commentlike" className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg"></i></button>   收藏文章 </div>
                 <div id="commentliked"><i className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
@@ -303,10 +380,10 @@ export class ReplyContent extends RouteComponent<{ content, signature }, { likeN
     //content: "央视网消息：7月26日至27日，习近平在省部级主要领导干部专题研讨班开班式上强调，党的十八大以来的5年，是党和国家发展进程中很不平凡的5年。我们加强党对意识形态工作的领导，巩固了全党全社会思想上的团结统一。党的十八大以来，面对意识形态领域日益错综复杂的形势，习总书记发表了一系列重要讲话，深刻阐述了意识形态工作的重大理论和现实问题。本图解梳理了相关重要论述以及十八大以来各领域工作成绩，以飨读者。</p><p>央视网消息：7月26日至27日，习近平在省部级主要领导干部专题研讨班开班式上强调，党的十八大以来的5年，是党和国家发展进程中很不平凡的5年。我们加强党对意识形态工作的领导，巩固了全党全社会思想上的团结统一。党的十八大以来，面对意识形态领域日益错综复杂的形势，习总书记发表了一系列重要讲话，深刻阐述了意识形态工作的重大理论和现实问题。本图解梳理了相关重要论述以及十八大以来各领域工作成绩，以飨读者。",
     //
     render() {
-        return <div className="root">
+        return <div className="root" style={{ marginTop:"-170px" }}>
             <div className="content">
-                <div className="substance"><span style={{ maxWidth: "1100px" }}>{this.props.content}</span></div>
-                <div className="signature">{this.props.signature}</div>
+                <div className="substance"><UbbContainer code={this.props.content} /></div>
+                <div className="signature"><UbbContainer code={this.props.signature} /></div>
                 <div className="comment">
 
                     <div id="commentliked"><i className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
@@ -328,7 +405,7 @@ export class TopicGood extends RouteComponent<{}, State.TopicGoodState, {}> {
         }
     }
     render() {
-        return <div className="good tagSize" style={{ marginLeft: "2px" }}>
+        return <div className="good tagSize" >
             <div id="userImage"><img src={this.state.imgUrl} ></img> </div>
             <div id="userName"><span>{this.state.userName}</span></div>
             <div id="grades"><span>评分 </span><span id="grade">+{this.state.grade}</span></div>
@@ -349,7 +426,7 @@ export class TopicVote extends RouteComponent<{}, State.TopicVoteState, {}> {
         }
     }
     render() {
-        return <div className="vote" style={{ marginLeft: "2px" }}>
+        return <div className="vote" >
             <div className="row"><input id="checkbox" type="checkbox" /> <span id="option1" style={{ marginLeft: "15px" }}>{this.state.option} </span></div>
             <div className="row">
                 <div className="progress">
@@ -432,7 +509,7 @@ export class PageModel extends React.Component<{ pageNumber, topicid, curPage, t
         }
     }
 }
-export class UserMessageBox extends React.Component<{userName,userFans}, {}>{
+export class UserMessageBox extends React.Component<{ userName, userFans }, {}>{
     render() {
         return <div id="userMessageBox">{this.props.userName}</div>;
     }
