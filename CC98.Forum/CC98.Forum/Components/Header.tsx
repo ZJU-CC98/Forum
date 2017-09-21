@@ -57,6 +57,7 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
         $(document).ready(function () {
 
             const selectB = $('.select').eq(1);
+            const downArrow = $('.downArrow');
             const subB = $('ul').eq(1);
             const liB = subB.find('li');
 
@@ -65,6 +66,12 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
             });
 
             selectB.click(function () {
+                if (subB.css('display') === 'block') subB.css('display', 'none');
+                else subB.css('display', 'block');
+                return false;   //阻止事件冒泡
+            });
+
+            downArrow.click(function () {
                 if (subB.css('display') === 'block') subB.css('display', 'none');
                 else subB.css('display', 'block');
                 return false;   //阻止事件冒泡

@@ -974,12 +974,18 @@ a {
 }
 
 .hideBoard {
-    margin-left: 30px;
-    border-radius: 5px;
-    background-color: #FFFFFF;
-    border-color: #000000;
     width: 30px;
     height: 20px;
+    margin-left: 30px;
+    border-radius: 5px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #000000;
+    font-size: 14px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    text-align: center;
+    cursor: pointer;
 }
 
 .areaName {
@@ -1106,6 +1112,31 @@ body {
         background-color: white;
         border: 1px solid rgb(204,204,204);
 
+        button {
+            width: 80px;
+            position: fixed;
+            bottom: 5%;
+            right: 13%;
+            height: 50px;
+            border-radius: 10px;
+            opacity: 0.5;
+            display: none;
+
+            &:hover {
+                opacity: 0.8;
+            }
+
+            &:active {
+                opacity: 1;
+            }
+        }
+
+        .btn-show {
+            animation-name: fadeIn;
+            animation-duration: 500ms;
+            display: inherit;
+        } 
+        
         ul {
             list-style-type: none;
             padding: 0;
@@ -2518,12 +2549,8 @@ body {
     padding: 25px 0 0 20px;
 }
 
-.content1 {
-    display: none;
-}
-
-.content2, .content3, .content4, .content5 {
-    display: none;
+.recommended1Content {
+    display:none;
 }
 
 .recommended1Img {
@@ -2755,6 +2782,12 @@ body {
     font-family: 微软雅黑;
     color: rgb(255,136,56);
     margin: 6px 6px 5px 8px;
+}
+
+.boardName a{
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(255,136,56);
 }
 
 .topicTitle {
@@ -3019,6 +3052,16 @@ body {
 
     to {
         transform: rotate(-2deg);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 0.5;
     }
 }
 

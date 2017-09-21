@@ -58,9 +58,10 @@ export class RootBoard extends React.Component<{ board }, { isExpanded: boolean 
         this.toggleIsExpanded = this.toggleIsExpanded.bind(this);//JS的this是可变的，取决于调用方法的地方，bind方法用于此刻的this值
     }
 
-    toggleIsExpanded() {     // 定义一个方法修改展开状态
-        if (this.state.isExpanded) this.setState({ isExpanded: false, });
-        else this.setState({ isExpanded: true, });
+    toggleIsExpanded() {
+        this.setState(prevState => ({    // 定义一个方法修改展开状态
+            isExpanded: !prevState.isExpanded   //setState() 可以接收一个函数，这个函数接受两个参数，第一个参数prevState表示上一个状态值，第二个参数props表示当前的props
+        }));
     }
 
     render() {
@@ -86,12 +87,11 @@ export class RootBoard extends React.Component<{ board }, { isExpanded: boolean 
                         <div className="areaName">主管：{boards.masters}</div>
                         <div className="hideBoard" onClick={this.toggleIsExpanded} > {buttonContent}</div>
                     </div>
-                    <div className="hiddenContent" style={{ display }}> <ChildBoard boardid={boards.id} /></div>
+                    <div className="hiddenContent" style={{ display: display }}> <ChildBoard boardid={boards.id} /></div>
                 </div>
             </div>;
         }
     }
-
 }
 export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>{
     constructor(props) {

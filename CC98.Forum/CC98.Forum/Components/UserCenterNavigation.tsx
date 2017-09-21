@@ -7,6 +7,7 @@ import {
     Link,
     Route
 } from 'react-router-dom';
+import * as $ from 'jquery';
 
 /**
  * 用户中心侧边栏导航组件
@@ -14,13 +15,16 @@ import {
 export class UserCenterNavigation extends React.Component {
     handleScroll(e) {
         let navigation = document.getElementById('userCenterNavigation');
+        let btn = document.getElementById('scrollToTop');
 
         if (window.pageYOffset > 234 && navigation.style.position !== 'fixed') {
             navigation.style.position = 'fixed';
+            btn.classList.add('btn-show');
         }
 
         if (window.pageYOffset < 234 && navigation.style.position && navigation.style.position !== 'inherit') {
             navigation.style.position = 'inherit';
+            btn.classList.remove('btn-show');
         }
     }
 
@@ -30,6 +34,10 @@ export class UserCenterNavigation extends React.Component {
 
     componentWillUnmount() {
         document.removeEventListener('scroll', this.handleScroll);
+    }
+
+    scrollToTop() {
+        $('body,html').animate({ scrollTop: 0 }, 1000);
     }
 
     render() {
@@ -47,6 +55,7 @@ export class UserCenterNavigation extends React.Component {
                 <hr />
                 <CustomLink to="/usercenter/config" label="功能设置" myClassName="fa-cog" />
             </ul>
+            <button type="button" id="scrollToTop" onClick={this.scrollToTop}>回到顶部</button>
         </div>);
     }
 }
