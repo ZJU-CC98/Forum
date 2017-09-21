@@ -27,35 +27,35 @@ export class Recommended1 extends React.Component<{}, {}> {
         return <div className="recommended1">
             <div className="column">
                 <div className="recommended1Content">
-                    <div className="recommended1Img"><img src="images/recommended2Img.jpg" /></div>
+                    <div className="recommended1Img"><img src="/images/recommended2Img.jpg" /></div>
                     <div className="column">
                         <div className="recommended1Title">推荐阅读标题1</div>
                         <div className="recommended1Abstract">推荐阅读摘要1</div>
                     </div>
                 </div>
                 <div className="recommended1Content">
-                    <div className="recommended1Img"><img src="images/recommended2Img.jpg" /></div>
+                    <div className="recommended1Img"><img src="/images/recommended2Img.jpg" /></div>
                     <div className="column">
                         <div className="recommended1Title">推荐阅读标题2</div>
                         <div className="recommended1Abstract">推荐阅读摘要2</div>
                     </div>
                 </div>
                 <div className="recommended1Content">
-                    <div className="recommended1Img"><img src="images/recommended2Img.jpg" /></div>
+                    <div className="recommended1Img"><img src="/images/recommended2Img.jpg" /></div>
                     <div className="column">
                         <div className="recommended1Title">推荐阅读标题3</div>
                         <div className="recommended1Abstract">推荐阅读摘要3</div>
                     </div>
                 </div>
                 <div className="recommended1Content">
-                    <div className="recommended1Img"><img src="images/recommended2Img.jpg" /></div>
+                    <div className="recommended1Img"><img src="/images/recommended2Img.jpg" /></div>
                     <div className="column">
                         <div className="recommended1Title">推荐阅读标题4</div>
                         <div className="recommended1Abstract">推荐阅读摘要4</div>
                     </div>
                 </div>
                 <div className="recommended1Content">
-                    <div className="recommended1Img"><img src="images/recommended2Img.jpg" /></div>
+                    <div className="recommended1Img"><img src="/images/recommended2Img.jpg" /></div>
                     <div className="column">
                         <div className="recommended1Title">推荐阅读标题5</div>
                         <div className="recommended1Abstract">推荐阅读摘要5</div>
