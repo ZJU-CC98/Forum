@@ -29,7 +29,7 @@ $color-black: rgb(32,32,32);
     background-color: $bgcolor2;
     max-width: 1140px;
     margin-top: 15px;
-    border: #EAEAEA solid thin;
+
     font-family: 微软雅黑;
     font-size: 14px;
 }
@@ -68,7 +68,9 @@ $color-black: rgb(32,32,32);
 .essay {
     display: inline-flex;
     align-self: flex-start;
-    border: #EAEAEA solid thin;
+    border-bottom: #EAEAEA solid thin;
+    border-left: #EAEAEA solid thin;
+    border-right: #EAEAEA solid thin;
     min-height: 100px;
     min-width: 1140px;
 }
@@ -110,12 +112,14 @@ $color-black: rgb(32,32,32);
     font-size: 13px;
 }
 
-#authorImg {
+.authorImg {
     display: inline-flex;
     margin: 100px,100px,100px,100px;
+    width: 60px;
+    height: 60px;
 }
 
-#authorImg img {
+.authorImg img {
     margin-left: 20px;
     border-radius: 50%;
     width: 60px;
@@ -290,9 +294,7 @@ $color-black: rgb(32,32,32);
     display: flex;
     align-self: flex-start;
     flex-direction: column;
-    border-bottom: #EAEAEA solid thin;
-    border-left: #EAEAEA solid thin;
-    border-right: #EAEAEA solid thin;
+
     width: 1140px;
 }
 
@@ -307,8 +309,8 @@ $color-black: rgb(32,32,32);
     max-width: 1140px;
     margin-top: 20px;
     margin-bottom: 20px;
-    word-wrap: break-word;
-    color: rgb(80,80,80);
+    word-wrap:break-word;
+    color:rgb(80,80,80);
 }
 
 .signature {
@@ -438,12 +440,12 @@ $color-black: rgb(32,32,32);
     align-items: flex-end;
 }
 
-#reply:nth-child(2n+1) .rpyClr a {
-    color: #2576A8;
+.reply:nth-child(2n+1) .rpyClr a{
+       color: #2576A8;
 }
 
-#reply:nth-child(2n) .rpyClr a {
-    color: #EE0000;
+.reply:nth-child(2n) .rpyClr a{
+        color: #EE0000;
 }
 
 #replierMes {
@@ -464,6 +466,7 @@ $color-black: rgb(32,32,32);
     font-size: 12px;
     font-family: 微软雅黑;
     padding-left: 7px;
+    padding-right: 7px;
     border-radius: 5px;
     background: #FFFFFF;
     border: 1px solid #5CADDD;
@@ -535,7 +538,6 @@ $color-black: rgb(32,32,32);
     color: #FFFFFF;
     border-radius: 5px;
 }
-
 .listContentTag {
     margin-top: 10px;
     margin-left: 20px;
@@ -603,11 +605,11 @@ a {
     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
     box-shadow: 0 1px 2px rgba(0,0,0,.2);
 }
-
 .orange {
     color: #fef4e9;
     border: solid 1px #da7c0c;
     background: #f78d1d;
+    
 }
 
 .orange:hover {
@@ -616,24 +618,23 @@ a {
 
 .orange:active {
     color: #fcd3a5;
-    background-color: #faa51a;
+    background-color:#faa51a;
 }
-
 .green {
     color: #fef4e9;
     border: solid 1px #71c671;
     background-color: #66cd00;
+   
 }
 
 .green:hover {
-    background-color: #71cd61
+    background-color:#71cd61
 }
 
 .green:active {
     color: #fcd3a5;
     background-color: #66cd00;
 }
-
 .button:hover {
     text-decoration: none;
 }
@@ -642,7 +643,6 @@ a {
     position: relative;
     top: 1px;
 }
-
 .pagination {
     display: inline-block;
     padding-left: 0;
@@ -797,20 +797,18 @@ a {
     cursor: not-allowed;
     background-color: #fff;
 }
-
-.page-item {
-    box-sizing: inherit;
+.page-item{
+    box-sizing:inherit;
 }
-
-.page-link {
-    position: relative;
-    display: block;
-    padding-left: 5px;
-    padding-top: 5px;
-    color: #0275d8;
-    margin-left: -1px;
-    border: 1px solid #ddd;
-    line-height: 2px;
+.page-link{
+    position:relative;
+    display:block;
+    padding-left:5px;
+    padding-top:5px;
+    color:#0275d8;
+    margin-left:-1px;
+    border:1px solid #ddd;
+    line-height:2px;
 }
 
 
@@ -957,27 +955,27 @@ a {
 .anArea {
     display: flex;
     flex-direction: column;
-    width: 1140px;
+    width:1140px;
     box-sizing: border-box;
     background-color: rgb(252,252,252);
     margin-bottom: 30px;
 }
-
-.hideBoard {
-    height: 20px;
-    width: 30px;
-    border-radius: 5px;
-    border-style: solid;
-    border-color: #000000;
-    border-width: 1px;
-    font-size: 14px;
-    font-family: 微软雅黑;
-    color: rgb(80,80,80);
-    text-align: center;
-    margin-left: 30px;
-    cursor: pointer;
+.viewBoard{
+    margin-left:30px;
+    border-radius:5px ;
+    background-color:#FFFFFF;
+    border-color:#000000;
+    width:30px;
+    height:20px;
 }
-
+.hideBoard {
+    margin-left: 30px;
+    border-radius: 5px;
+    background-color: #FFFFFF;
+    border-color: #000000;
+    width: 30px;
+    height: 20px;
+}
 .areaName {
     font-size: 14px;
     font-family: 微软雅黑;
@@ -991,26 +989,18 @@ a {
     flex-wrap: wrap;
 }
 
-.noImgAreaContent {
-    display: none;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-
 .boardContent {
     display: flex;
     flex-direction: column;
     margin: 18px 15px 18px 18px;
     width: 250px;
 }
-
 .noImgBoardContent {
     display: flex;
     flex-direction: column;
     margin: 0px 15px 18px 18px;
     width: 250px;
 }
-
 .greenBackdrop {
     height: 88px;
     width: 250px;
@@ -1054,14 +1044,13 @@ a {
 }
 
 //个人中心页面用
-.user-center {
-    * {
-        margin: 0;
-        padding: 0;
-        border: 0;
-    }
+.user-center{
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
 }
-
+}
 body {
     background-color: rgb(245,250,255);
 }
@@ -1172,7 +1161,7 @@ body {
     }
 
     .user-center-router {
-        width: 74%;
+        width: 72.5%;
         padding: 30px;
         background-color: white;
         border: 1px solid rgb(204,204,204);
@@ -1263,7 +1252,6 @@ body {
 
             .user-activities {
                 width: 100%;
-                margin-top: 20px;
 
                 .user-activities-active {
                     color: rgb(160,160,160);
@@ -1274,29 +1262,18 @@ body {
                     margin-bottom: 30px;
                 }
 
-                hr {
-                    background-color: #fff;
-                    border-top: 1px dashed rgb(204,204,204);
-                    margin: 20px 0;
-                }
-
-                .user-activities-nomore {
-                    width: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-
-                    p {
-                        margin: 40px 0 0 0;
-                    }
-                }
-
                 .user-posts {
                     margin-top: 20px;
 
                     p {
                         line-height: 3em;
                         overflow: hidden;
+                    }
+
+                    hr {
+                        background-color: #fff;
+                        border-top: 1px dashed rgb(204,204,204);
+                        margin: 20px 0 20px 0;
                     }
 
                     .user-post-board {
@@ -1438,131 +1415,6 @@ body {
         .user-center-myfavorites {
             @extend .user-center-myposts;
         }
-
-        .user-center-config {
-            button {
-                background-color: rgb(240,240,240);
-
-                &:hover {
-                    background-color: rgb(230,230,230);
-                }
-
-                &:active {
-                    background-color: rgb(220,220,220);
-                }
-            }
-
-            hr {
-                border-top: 1px dashed #ccc;
-                margin: 30px 0;
-            }
-
-            .user-center-config-avatar {
-                display: flex;
-                align-items: center;
-
-                & > img {
-                    width: 160px;
-                    height: 160px;
-                    border-radius: 80px;
-                }
-
-                & > div {
-                    display: flex;
-                    flex-direction: column;
-
-                    & > button {
-                        width: 100px;
-                        height: 30px;
-                        margin-left: 30px;
-                        margin-bottom: 20px;
-                    }
-
-                    & > div {
-                        display: flex;
-                        align-items: center;
-
-                        button {
-                            width: 100px;
-                            height: 30px;
-                            margin-left: 30px;
-                            margin-right: 20px;
-                        }
-                    }
-                }
-            }
-
-            .user-center-config-signature {
-                .signature-buttons {
-                    display: flex;
-                    align-items: center;
-                    width: 100%;
-                    border: 1px solid #E9E9E9;
-                    height: 40px;
-                    background-color: rgb(248,251,255);
-
-                    button {
-                        cursor: pointer;
-                        background-color: white;
-                        margin-left: 30px;
-                        height: 15px;
-                    }
-                }
-
-                #signature {
-                    margin: 0px;
-                    padding: 20px;
-                    width: 95.3%;
-                    height: 252px;
-                    border: 1px solid rgb(233, 233, 233);
-                    resize: vertical;
-                }
-
-                div {
-                    display: flex;
-                }
-
-                p {
-                    flex-grow: 1;
-                    font-size: 12px;
-                }
-
-                #signatureUpload {
-                    width: 100px;
-                    height: 25px;
-                    margin-top: -5px;
-                    margin-right: -2px;
-                }
-            }
-
-            .user-center-config-password {
-                & > p {
-                    font-size: 12px;
-                    margin: 30px 0;
-                }
-
-                .password-inputs {
-                    display: flex;
-                    align-items: center;
-
-                    p {
-                        font-size: 12px;
-                    }
-                }
-
-                input {
-                    width: 160px;
-                    height: 30px;
-                    margin: 0 20px;
-                    border: 1px solid #E9E9E9;
-                }
-
-                button {
-                    width: 100px;
-                    height: 25px;
-                }
-            }
-        }
     }
 }
 
@@ -1577,6 +1429,7 @@ body {
     flex-direction: column;
     width: 1140px;
     height: 780px;
+
     margin-bottom: 60px;
 }
 
@@ -2133,6 +1986,7 @@ body {
     flex-direction: column;
     width: 1140px;
     min-height: 780px;
+
     margin-bottom: 60px;
 }
 
@@ -2315,6 +2169,7 @@ body {
     height: 50px;
     width: 100%;
     opacity: 0.5;
+
     justify-content: center;
     background-color: rgba(80,80,80,0.6); //仅背景条半透明
 }
@@ -2529,7 +2384,11 @@ body {
     padding: 25px 0 0 20px;
 }
 
-.recommended1Content {
+.content1 {
+    display: none;
+}
+
+.content2, .content3, .content4, .content5 {
     display: none;
 }
 
@@ -2579,6 +2438,18 @@ body {
     border-radius: 50%;
     box-sizing: border-box;
     margin: 0 5px 0 5px;
+}
+
+#hover {
+    width: 10px;
+    height: 10px;
+    border-style: solid;
+    border-color: rgb(160,160,160);
+    border-width: 1px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    margin: 0 5px 0 5px;
+    background-color: rgb(53,177,255);
 }
 //推荐阅读到此为止~
 
@@ -2811,7 +2682,6 @@ body {
     background-color: rgb(0,157,255);
     margin-top: 20px;
 }
-
 .mainPage {
     display: flex;
     flex-direction: row;
@@ -2844,7 +2714,6 @@ body {
     border-radius: 20px 0;
     margin-bottom: 30px;
 }
-
 body {
     margin: 0;
     padding: 0;
@@ -2855,138 +2724,57 @@ body {
 */
 
 .ubb-code {
-    width: 100%;
-    font-size: 12px;
-
     ol {
         list-style: none;
-        counter-reset: li;
-        padding: 0;
+        counter-reset: li
     }
 
     li {
-        counter-increment: li;
-        background-color: white;
+        counter-increment: li
     }
 
     li::before {
         content: counter(li);
         display: inline-flex;
         width: 50px;
-        margin: 0 5px 0 0;
+        margin: 0 10px;
         justify-content: center;
         background-color: #ebebeb;
     }
 }
 
-/*
-    登陆页用
+/**
+    弹出用户悬浮窗
 */
+.popup {
 
-.login {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-
-    & > div {
-        margin-top: 30px;
-        background-color: white;
-        min-width: 1140px;
-        display: flex;
-        border: 1px solid rgb(204,204,204);
-        height: 567px;
-
-        & > img {
-            margin: 30px;
-        }
-
-        & > div {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            margin-top: 50px;
-
-            & > img {
-                width: 123px;
-                height: 26px;
-                margin-right: 200px;
-            }
-
-            & > p {
-                margin-right: 200px;
-                font-size: 12px;
-            }
-        }
-    }
-
-    .login-form {
-        display: flex;
-        margin-right: 80px;
-        margin-top: 30px;
-        font-size: 12px;
-
-        input {
-            width: 320px;
-            height: 40px;
-            border: 1px solid rgb(204,204,204);
-            border-radius: 5px;
-            margin-left: 25px;
-            padding: 0 10px;
-        }
-    }
-
-    a {
-        color: rgb(40,167,225);
-    }
-
-    form {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-    }
-
-    button {
-        margin-right: 80px;
-        height: 40px;
-        width: 340px;
-        border: 0;
-        background-color: rgb(40,167,225);
-        color: white;
-        border-radius: 5px;
-
-        &:hover {
-            background-color: rgb(41,174,223);
-        }
-
-        &:active {
-            background-color: rgb(38,154,196);
-        }
-    }
-
-    #loginMessage {
-        color: red;
-        display: inline-flex;
-        flex-direction: column;
-        align-items: center;
-        width: 340px;
-        margin-right: 80px;
-    }
+    width: 380px;
+    height: 250px; /*高度自由，因为不确定，内容多少。*/
+    border: 1px solid #D5D5D5;
+    background: #fff; /*窗口内容不透明，背景为白色*/
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.25); /*内容窗口带阴影*/
+    border-radius: 8px; /* 所有角都使用半径为8px的圆角，此属性为CSS3标准属性 */
+    -moz-border-radius: 8px; /* Mozilla浏览器的私有属性 */
+    -webkit-border-radius: 8px; /* Webkit浏览器的私有属性 */ /*窗口圆角*/
+    z-index: 9000;
 }
-
-@keyframes cssShake {
-    from {
-        transform: rotate(2deg);
-    }
-
-    to {
-        transform: rotate(-2deg);
-    }
-}
-
-.shake {
-    animation-name: cssShake;
-    animation-duration: 50ms;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
+.popup_title {
+    background: url(/images/headerBackground.jpg) no-repeat center;
+    height: 125px;
+    line-height: 24px; /*使垂直居中*/
+    border-bottom: 1px solid #efefef; /*底边框*/
+    border-radius: 8px 8px 0 0; /* 左上角和右上角使用半径为5px的圆角，此属性为CSS3标准属性 */
+    -moz-border-radius: 8px 8px 0 0; /* Mozilla浏览器的私有属性 */
+    -webkit-border-radius: 8px 8px 0 0; /* Webkit浏览器的私有属性 */ /*窗口圆角*/
+    color: #535353;
+    font-size: 16px; /*字体颜色和字体大小*/
+    cursor: move; /*可移动样式*/
+    -moz-user-select: none; /* Firefox all */
+    -webkit-user-select: none; /* Chrome all / Safari all /opera15+*/
+    -ms-user-select: none; /*IE10*/
+    -khtml-user-select: none; /*早期浏览器*/
+    user-select: none;
+    -o-user-select: none; /* 以上两个属性目前并未支持，写在这里为了减少风险 */
 }

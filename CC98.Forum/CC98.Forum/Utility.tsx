@@ -11,18 +11,7 @@ import * as $ from 'jquery';
 import { FocusPost } from './Props/FocusPost';
 
 
-/*export async function getData() {
-    let hottopics: State.TopicTitleAndContentState[] = [];
-    let response = await fetch('http://api.cc98.org/Topic/Hot');
-    let data: State.TopicTitleAndContentState[] = await response.json();
-    for (let i = 0; i < 10; i++) {
-        hottopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].authorName || '匿名', data[i].id);
-    }
 
-    let items = hottopics.map(convertHotTopic);
-
-    return items;
-}*/
 
 export async function getBoardTopicAsync(curPage,boardid) {
     const startPage = (curPage - 1) * 20;
@@ -44,7 +33,7 @@ export async function getBoardTopicAsync(curPage,boardid) {
         topicNumberInPage = (totalTopicCount - (curPage - 1) * 20);
     }
     for (let i = 0; i < topicNumberInPage; i++) {
-        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].authorName || '匿名', data[i].id, data[i].authorId);
+        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].authorName || '匿名', data[i].id, data[i].authorId, data[i].lastPostInfo);
     }
     return boardtopics;
 
@@ -85,17 +74,22 @@ export async function getTopicContent(topicid: number, curPage: number) {
         topicNumberInPage = (replyCount - (curPage - 1) * 10);
     }
     for (let i = 0; i < topicNumberInPage; i++) {
-
-        const userMesResponse = await fetch(`http://api.cc98.org/User/${content[i].userId}`);
+        if (content[i].id != null) {
+  const userMesResponse = await fetch(`http://api.cc98.org/User/${content[i].userId}`);
         const userMesJson = await userMesResponse.json();
+        
+      
 
         post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName || '匿名', userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode,content[i].userId);
+        } else {
+            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId,  '匿名', 0,'', '', null);
+        }
     }
 
     return post;
 }
 export function convertHotTopic(item: State.TopicTitleAndContentState) {
-    return <TopicTitleAndContent title={item.title} authorName={item.authorName} id={item.id} authorId={item.authorId} />
+    return <TopicTitleAndContent title={item.title} authorName={item.authorName} id={item.id} authorId={item.authorId} lastPostTime={item.lastPostInfo.time} lastPostUserName={item.lastPostInfo.userName} />
         ;
 }
 export function getPager(curPage, totalPage) {
