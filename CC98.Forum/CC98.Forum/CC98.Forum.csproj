@@ -51,6 +51,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="Components\Login.tsx" />
+    <TypeScriptCompile Include="Components\SendTopic.tsx" />
     <TypeScriptCompile Include="Components\UbbContainer.tsx" />
     <TypeScriptCompile Include="Components\UserCenterConfig.tsx" />
     <TypeScriptCompile Include="Components\UserCenterConfigAvatar.tsx" />

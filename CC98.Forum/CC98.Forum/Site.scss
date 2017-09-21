@@ -2770,7 +2770,6 @@ body {
     -webkit-border-radius: 8px 8px 0 0; /* Webkit浏览器的私有属性 */ /*窗口圆角*/
     color: #535353;
     font-size: 16px; /*字体颜色和字体大小*/
-    cursor: move; /*可移动样式*/
     -moz-user-select: none; /* Firefox all */
     -webkit-user-select: none; /* Chrome all / Safari all /opera15+*/
     -ms-user-select: none; /*IE10*/
@@ -2888,4 +2887,42 @@ body {
     animation-duration: 50ms;
     animation-iteration-count: infinite;
     animation-direction: alternate;
+}
+#sendTopic {
+    border:#EAEAEA solid thin;
+    width: 1140px;
+    height: 330px;
+    display: flex;
+    flex-direction:column;
+
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    #sendTopic-options {
+        background-color:#F5FAFE;
+        width:1140px;
+        height:40px;
+    }
+
+    #sendTopic-input {
+        background-color:#fff;
+        height:290px;
+        padding-top:5px;
+        padding-left:5px;
+        padding-right:5px;
+        border:none;
+    }
+}
+.editor__menu {
+    float: left;
+    margin: 0 2px;
+    vertical-align: text-top;
+}
+.editor__menu li{
+    list-style: none;
+    a{
+        background-image:url(/images/editOption.png);
+    }
 }

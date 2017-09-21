@@ -91,9 +91,9 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
             <div className="box">
                 <form>
                     <div className="select">主题</div>
-                    <div className="downArrow"><img src="images/downArrow.png" width="12" height="12" /></div>
+                    <div className="downArrow"><img src="/images/downArrow.png" width="12" height="12" /></div>
                     <input name="searchText" type="text" placeholder="猜猜能搜到什么..." />
-                    <div className="fangdajing"><img src="images/fangdajing.ico" width="15" height="15" /></div>
+                    <div className="fangdajing"><img src="/images/fangdajing.ico" width="15" height="15" /></div>
                 </form>
             </div>
             <ul className="sub">
@@ -110,7 +110,7 @@ export class Header extends React.Component<{}, AppState> {
         return <div className="header">
             <div className="topBar">
                 <div className="topBarRow">
-                    <div className="row"><div style={{ margin: '10px 0 0 0' }}><a href="/"><img src="images/矢量智能对象.ico" /></a></div><div style={{ margin: '15px 0 0 5px' }}><a href="/"><img src="/images/CC98.ico" /></a></div></div>
+                    <div className="row"><div style={{ margin: '10px 0 0 0' }}><a href="/"><img src="/images/矢量智能对象.ico" /></a></div><div style={{ margin: '15px 0 0 5px' }}><a href="/"><img src="/images/CC98.ico" /></a></div></div>
                     <DropDown />
                 </div>
             </div>
