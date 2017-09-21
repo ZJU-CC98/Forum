@@ -1247,7 +1247,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var State = __webpack_require__(3);
 var React = __webpack_require__(0);
 var List_1 = __webpack_require__(9);
-var $ = __webpack_require__(5);
+var $ = __webpack_require__(6);
 function getBoardTopicAsync(curPage, boardid) {
     return __awaiter(this, void 0, void 0, function () {
         var startPage, endPage, boardtopics, url, response, data, totalTopicCountResponse, totalTopicCountJson, totalTopicCount, topicNumberInPage, i;
@@ -1632,12 +1632,6 @@ exports.getStorage = getStorage;
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports) {
-
-module.exports = $;
-
-/***/ }),
-/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1680,6 +1674,12 @@ var UserCenterExactActivitiesPost = /** @class */ (function (_super) {
 }(React.Component));
 exports.UserCenterExactActivitiesPost = UserCenterExactActivitiesPost;
 
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+module.exports = $;
 
 /***/ }),
 /* 7 */
@@ -2882,7 +2882,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(4);
-var $ = __webpack_require__(5);
+var $ = __webpack_require__(6);
 var react_router_dom_1 = __webpack_require__(2);
 var UbbContainer_1 = __webpack_require__(7);
 var moment = __webpack_require__(8);
@@ -5003,16 +5003,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var AppState_1 = __webpack_require__(3);
 var Utility = __webpack_require__(4);
-var $ = __webpack_require__(5);
 //链接到的地址是  /list/boardid
 var BoardList = /** @class */ (function (_super) {
     __extends(BoardList, _super);
     function BoardList(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
-            board: [],
+            thisBoardState: [],
         };
-        _this.toggleCollapse = _this.toggleCollapse.bind(_this);
         return _this;
     }
     BoardList.prototype.componentDidMount = function () {
@@ -5045,28 +5043,46 @@ var BoardList = /** @class */ (function (_super) {
                         _a.label = 4;
                     case 4:
                         this.setState({
-                            board: board,
+                            thisBoardState: board,
                         });
                         return [2 /*return*/];
                 }
             });
         });
     };
-    BoardList.prototype.toggleCollapse = function () {
+    BoardList.prototype.generateRootBoard = function (item) {
+        return React.createElement(RootBoard, { board: item });
     };
-    BoardList.prototype.generateRootBoard = function (boards) {
+    BoardList.prototype.render = function () {
+        return React.createElement("div", { className: "boardList" }, this.state.thisBoardState.map(this.generateRootBoard));
+    };
+    return BoardList;
+}(React.Component));
+exports.BoardList = BoardList;
+var RootBoard = /** @class */ (function (_super) {
+    __extends(RootBoard, _super);
+    function RootBoard(props) {
+        var _this = _super.call(this, props) || this;
+        var boards = _this.props.board;
         if (boards.id === 2 || boards.id === 29 || boards.id === 35 || boards.id === 37) {
-            return React.createElement("div", { className: "anArea" },
-                React.createElement("div", { className: "column", style: { border: '2px solid #e9e9e9' } },
-                    React.createElement("div", { className: "row", style: { marginTop: '15px', marginBottom: '15px' } },
-                        React.createElement("div", { className: "areaName" }, boards.name),
-                        React.createElement("div", { className: "areaName" },
-                            "\u4E3B\u7BA1\uFF1A",
-                            boards.masters),
-                        React.createElement("div", { className: "hideBoard", onClick: this.toggleCollapse }, "+")),
-                    React.createElement(ChildBoard, { boardid: boards.id })));
-        }
-        else if (boards.id === 758) {
+            _this.state = { isExpanded: false, };
+        } //四个民工版默认状态为折叠
+        else {
+            _this.state = { isExpanded: true, };
+        } //其他版默认状态为展开
+        _this.toggleIsExpanded = _this.toggleIsExpanded.bind(_this); //JS的this是可变的，取决于调用方法的地方，bind方法用于此刻的this值
+        return _this;
+    }
+    RootBoard.prototype.toggleIsExpanded = function () {
+        this.setState(function (prevState) { return ({
+            isExpanded: !prevState.isExpanded
+        }); });
+    };
+    RootBoard.prototype.render = function () {
+        var display = this.state.isExpanded ? "flex" : "none"; //根据 isExpanded 状态定义样式
+        var buttonContent = this.state.isExpanded ? "-" : "+"; //根据 isExpanded 状态定义按钮内容
+        var boards = this.props.board;
+        if (boards.id === 758) {
             return React.createElement("div", { className: "anArea" },
                 React.createElement("div", { className: "column", style: { border: '2px solid #e9e9e9' } },
                     React.createElement("div", { className: "row", style: { marginTop: '15px', marginBottom: '15px' } },
@@ -5083,31 +5099,18 @@ var BoardList = /** @class */ (function (_super) {
                         React.createElement("div", { className: "areaName" }, boards.name),
                         React.createElement("div", { className: "areaName" },
                             "\u4E3B\u7BA1\uFF1A",
-                            boards.masters)),
-                    React.createElement(ChildBoard, { boardid: boards.id })));
+                            boards.masters),
+                        React.createElement("div", { className: "hideBoard", onClick: this.toggleIsExpanded },
+                            " ",
+                            buttonContent)),
+                    React.createElement("div", { className: "hiddenContent", style: { display: display } },
+                        " ",
+                        React.createElement(ChildBoard, { boardid: boards.id }))));
         }
     };
-    BoardList.prototype.render = function () {
-        $(function () {
-            var button = $('.hideBoard');
-            button.click(function () {
-                if ($(this).text() === '+') {
-                    $(this).parent().next().css('display', 'flex');
-                    $(this).text('-');
-                }
-                else {
-                    $(this).parent().next().css('display', 'none');
-                    $(this).text('+');
-                }
-                ;
-                return false; //阻止事件冒泡
-            });
-        });
-        return React.createElement("div", { className: "boardList" }, this.state.board.map(this.generateRootBoard));
-    };
-    return BoardList;
+    return RootBoard;
 }(React.Component));
-exports.BoardList = BoardList;
+exports.RootBoard = RootBoard;
 var ChildBoard = /** @class */ (function (_super) {
     __extends(ChildBoard, _super);
     function ChildBoard(props) {
@@ -5159,9 +5162,8 @@ var ChildBoard = /** @class */ (function (_super) {
                 React.createElement("div", { className: "boardName2" }, item.name)));
     };
     ChildBoard.prototype.render = function () {
-        var cid = "Board" + this.props.boardid;
-        if (this.props.boardid == 2 || this.props.boardid == 29 || this.props.boardid == 35 || this.props.boardid == 37) {
-            return React.createElement("div", { className: "noImgAreaContent" }, this.state.thisBoardState.map(this.convertNoImgChildBoard));
+        if (this.props.boardid === 2 || this.props.boardid === 29 || this.props.boardid === 35 || this.props.boardid === 37) {
+            return React.createElement("div", { className: "areaContent" }, this.state.thisBoardState.map(this.convertNoImgChildBoard));
         }
         else {
             return React.createElement("div", { className: "areaContent" }, this.state.thisBoardState.map(this.convertChildBoard));
@@ -5523,7 +5525,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPost_1 = __webpack_require__(6);
+var UserCenterExactActivitiesPost_1 = __webpack_require__(5);
 var AppState_1 = __webpack_require__(3);
 //用户中心主页帖子动态组件
 var UserCenterExactActivitiesPosts = /** @class */ (function (_super) {
@@ -5607,7 +5609,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPost_1 = __webpack_require__(6);
+var UserCenterExactActivitiesPost_1 = __webpack_require__(5);
 var AppState_1 = __webpack_require__(3);
 //用户中心主页最近回复组件
 var UserCenterExactActivitiesReplies = /** @class */ (function (_super) {
@@ -5819,7 +5821,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPost_1 = __webpack_require__(6);
+var UserCenterExactActivitiesPost_1 = __webpack_require__(5);
 var AppState_1 = __webpack_require__(3);
 var UserCenterMyPostsExact = /** @class */ (function (_super) {
     __extends(UserCenterMyPostsExact, _super);
@@ -5872,7 +5874,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPost_1 = __webpack_require__(6);
+var UserCenterExactActivitiesPost_1 = __webpack_require__(5);
 var AppState_1 = __webpack_require__(3);
 //用户中心主页最近回复组件
 var UserCenterMyPostsReplies = /** @class */ (function (_super) {
@@ -5979,7 +5981,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPost_1 = __webpack_require__(6);
+var UserCenterExactActivitiesPost_1 = __webpack_require__(5);
 var AppState_1 = __webpack_require__(3);
 var UserCenterMyFavoritesPosts = /** @class */ (function (_super) {
     __extends(UserCenterMyFavoritesPosts, _super);
@@ -7615,7 +7617,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var $ = __webpack_require__(5);
+var $ = __webpack_require__(6);
 var DropDown = /** @class */ (function (_super) {
     __extends(DropDown, _super);
     function DropDown() {
@@ -7676,12 +7678,20 @@ var Search = /** @class */ (function (_super) {
     Search.prototype.render = function () {
         $(document).ready(function () {
             var selectB = $('.select').eq(1);
+            var downArrow = $('.downArrow');
             var subB = $('ul').eq(1);
             var liB = subB.find('li');
             $(document).click(function () {
                 subB.css('display', 'none');
             });
             selectB.click(function () {
+                if (subB.css('display') === 'block')
+                    subB.css('display', 'none');
+                else
+                    subB.css('display', 'block');
+                return false; //阻止事件冒泡
+            });
+            downArrow.click(function () {
                 if (subB.css('display') === 'block')
                     subB.css('display', 'none');
                 else
@@ -7706,10 +7716,10 @@ var Search = /** @class */ (function (_super) {
                 React.createElement("form", null,
                     React.createElement("div", { className: "select" }, "\u4E3B\u9898"),
                     React.createElement("div", { className: "downArrow" },
-                        React.createElement("img", { src: "images/downArrow.png", width: "12", height: "12" })),
+                        React.createElement("img", { src: "/images/downArrow.png", width: "12", height: "12" })),
                     React.createElement("input", { name: "searchText", type: "text", placeholder: "猜猜能搜到什么..." }),
                     React.createElement("div", { className: "fangdajing" },
-                        React.createElement("img", { src: "images/fangdajing.ico", width: "15", height: "15" })))),
+                        React.createElement("img", { src: "/images/fangdajing.ico", width: "15", height: "15" })))),
             React.createElement("ul", { className: "sub" },
                 React.createElement("li", null, "\u7248\u9762"),
                 React.createElement("li", null, "\u4E3B\u9898"),
@@ -7730,7 +7740,7 @@ var Header = /** @class */ (function (_super) {
                     React.createElement("div", { className: "row" },
                         React.createElement("div", { style: { margin: '10px 0 0 0' } },
                             React.createElement("a", { href: "/" },
-                                React.createElement("img", { src: "images/矢量智能对象.ico" }))),
+                                React.createElement("img", { src: "/images/矢量智能对象.ico" }))),
                         React.createElement("div", { style: { margin: '15px 0 0 5px' } },
                             React.createElement("a", { href: "/" },
                                 React.createElement("img", { src: "/images/CC98.ico" })))),
@@ -7829,7 +7839,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var HotTopic_1 = __webpack_require__(72);
-var $ = __webpack_require__(5);
+var $ = __webpack_require__(6);
 var Recommended1 = /** @class */ (function (_super) {
     __extends(Recommended1, _super);
     function Recommended1() {
@@ -7854,31 +7864,31 @@ var Recommended1 = /** @class */ (function (_super) {
             React.createElement("div", { className: "column" },
                 React.createElement("div", { className: "recommended1Content" },
                     React.createElement("div", { className: "recommended1Img" },
-                        React.createElement("img", { src: "images/recommended2Img.jpg" })),
+                        React.createElement("img", { src: "/images/recommended2Img.jpg" })),
                     React.createElement("div", { className: "column" },
                         React.createElement("div", { className: "recommended1Title" }, "\u63A8\u8350\u9605\u8BFB\u6807\u98981"),
                         React.createElement("div", { className: "recommended1Abstract" }, "\u63A8\u8350\u9605\u8BFB\u6458\u89811"))),
                 React.createElement("div", { className: "recommended1Content" },
                     React.createElement("div", { className: "recommended1Img" },
-                        React.createElement("img", { src: "images/recommended2Img.jpg" })),
+                        React.createElement("img", { src: "/images/recommended2Img.jpg" })),
                     React.createElement("div", { className: "column" },
                         React.createElement("div", { className: "recommended1Title" }, "\u63A8\u8350\u9605\u8BFB\u6807\u98982"),
                         React.createElement("div", { className: "recommended1Abstract" }, "\u63A8\u8350\u9605\u8BFB\u6458\u89812"))),
                 React.createElement("div", { className: "recommended1Content" },
                     React.createElement("div", { className: "recommended1Img" },
-                        React.createElement("img", { src: "images/recommended2Img.jpg" })),
+                        React.createElement("img", { src: "/images/recommended2Img.jpg" })),
                     React.createElement("div", { className: "column" },
                         React.createElement("div", { className: "recommended1Title" }, "\u63A8\u8350\u9605\u8BFB\u6807\u98983"),
                         React.createElement("div", { className: "recommended1Abstract" }, "\u63A8\u8350\u9605\u8BFB\u6458\u89813"))),
                 React.createElement("div", { className: "recommended1Content" },
                     React.createElement("div", { className: "recommended1Img" },
-                        React.createElement("img", { src: "images/recommended2Img.jpg" })),
+                        React.createElement("img", { src: "/images/recommended2Img.jpg" })),
                     React.createElement("div", { className: "column" },
                         React.createElement("div", { className: "recommended1Title" }, "\u63A8\u8350\u9605\u8BFB\u6807\u98984"),
                         React.createElement("div", { className: "recommended1Abstract" }, "\u63A8\u8350\u9605\u8BFB\u6458\u89814"))),
                 React.createElement("div", { className: "recommended1Content" },
                     React.createElement("div", { className: "recommended1Img" },
-                        React.createElement("img", { src: "images/recommended2Img.jpg" })),
+                        React.createElement("img", { src: "/images/recommended2Img.jpg" })),
                     React.createElement("div", { className: "column" },
                         React.createElement("div", { className: "recommended1Title" }, "\u63A8\u8350\u9605\u8BFB\u6807\u98985"),
                         React.createElement("div", { className: "recommended1Abstract" }, "\u63A8\u8350\u9605\u8BFB\u6458\u89815")))),
