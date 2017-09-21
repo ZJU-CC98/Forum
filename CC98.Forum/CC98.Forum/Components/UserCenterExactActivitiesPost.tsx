@@ -11,17 +11,17 @@ import { UserRecentPost } from '../States/AppState';
 export class UserCenterExactActivitiesPost extends React.Component<UserCenterExactActivitiesPostProps> {
     render() {
         return (
-            <div className='user-post'>
+            <div className="user-post">
                 <p>
-                    <span className='user-post-board'>{this.props.userRecentPost.board}</span>
-                    <span className='user-post-date'>{this.props.userRecentPost.date}</span>
-                    <samp className='user-post-title'>{this.props.userRecentPost.title}</samp>
+                    <span className="user-post-board">{this.props.userRecentPost.board}</span>
+                    <span className="user-post-date">{this.props.userRecentPost.date}</span>
+                    <samp className="user-post-title">{this.props.userRecentPost.title}</samp>
                 </p>
-                <p className='user-post-approval'>
-                    <span className='fa-thumbs-o-up'>{` ${this.props.userRecentPost.approval}`}</span>
-                    <span className='fa-thumbs-o-down'>{` ${this.props.userRecentPost.disapproval}`}</span>
+                <p className="user-post-approval">
+                    <span className="fa-thumbs-o-up">{` ${this.props.userRecentPost.approval}`}</span>
+                    <span className="fa-thumbs-o-down">{` ${this.props.userRecentPost.disapproval}`}</span>
                 </p>
-                <p className='user-post-content'>{this.props.userRecentPost.content}</p>
+                <p className="user-post-content">{this.props.userRecentPost.content}</p>
             </div>    
         );
     }

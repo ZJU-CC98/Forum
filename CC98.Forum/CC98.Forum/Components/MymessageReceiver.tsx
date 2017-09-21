@@ -3,6 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
 import { MyMessageProps } from '../Props/MyMessageProps';
+import { UbbContainer } from './UbbContainer';
 
 export class MyMessageReceiver extends React.Component<MyMessageProps> {
     /*
@@ -12,15 +13,15 @@ export class MyMessageReceiver extends React.Component<MyMessageProps> {
     */
 
     render() {
-        return (<div className='mymessage-message-wc'>
-                    <div className='mymessage-message-wcTime'>{this.props.sendTime}</div>
-                    <div className='mymessage-message-wcReceiver'>
-                        <img className='mymessage-message-wcPortraitUrl' src={this.props.chatPortraitUrl} />
-                        <div className='mymessage-message-wcContent'>
-              <div className='mymessage-message-wcText' id={String(this.props.id)}>【{this.props.title}】{this.props.content}</div>
+        return (<div className="mymessage-message-wc">
+                    <div className="mymessage-message-wcTime">{this.props.sendTime}</div>
+                    <div className="mymessage-message-wcReceiver">
+                        <img className="mymessage-message-wcPortraitUrl" src={this.props.chatPortraitUrl} />
+                        <div className="mymessage-message-wcContent">
+                            <div className="mymessage-message-wcText" id={String(this.props.id)}>【{this.props.title}】<UbbContainer code={this.props.content}/></div>
                         </div>
-                        <div className='mymessage-message-wcRead1'>
-                            <div className='mymessage-message-wcRead2'>
+                        <div className="mymessage-message-wcRead1">
+                            <div className="mymessage-message-wcRead2">
                                 {this.props.isRead ? '已读' : '未读'}
                             </div>
                         </div>

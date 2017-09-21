@@ -18,13 +18,13 @@ import { UserCenterConfig } from './UserCenterConfig';
  */
 export class UserCenterRouter extends React.Component {
     render() {
-        return (<div className='user-center-router'>
-            <Route exact path='/usercenter/' component={UserCenterExact} />
-            <Route path='/usercenter/myfollowings' component={UserCenterMyFollowings} />
-            <Route path='/usercenter/myfans' component={UserCenterMyFans} />
-            <Route path='/usercenter/myposts' component={UserCenterMyPosts} />
-            <Route path='/usercenter/myfavorites' component={UserCenterMyFavorites} />
-            <Route path='/usercenter/config' component={UserCenterConfig} />
+        return (<div className="user-center-router">
+            <Route exact path="/usercenter/" component={UserCenterExact} />
+            <Route path="/usercenter/myfollowings" component={UserCenterMyFollowings} />
+            <Route path="/usercenter/myfans" component={UserCenterMyFans} />
+            <Route path="/usercenter/myposts" component={UserCenterMyPosts} />
+            <Route path="/usercenter/myfavorites" component={UserCenterMyFavorites} />
+            <Route path="/usercenter/config" component={UserCenterConfig} />
         </div>);
     }
 }

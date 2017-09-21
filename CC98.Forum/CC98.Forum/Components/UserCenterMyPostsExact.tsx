@@ -11,18 +11,18 @@ export class UserCenterMyPostsExact extends React.Component<null, UserCenterMyPo
     constructor(props) {
         super(props);
         //临时填充数据
-        this.state = { userRecentPosts: [userRecentPost, userRecentPost, userRecentPost, userRecentPost] };
+        this.state = { userRecentPosts: new Array(50).fill(userRecentPost) };
     }
 
     render() {
         //state转换为JSX
-        let userRecentPosts = this.state.userRecentPosts.map((item) => (<UserCenterExactActivitiesPost userRecentPost={item} />));
+        const userRecentPosts = this.state.userRecentPosts.map((item) => (<UserCenterExactActivitiesPost userRecentPost={item} />));
         //添加分隔线
         for (let i = 1; i < userRecentPosts.length; i += 2) {
             userRecentPosts.splice(i, 0, <hr />);
         }
         return (
-            <div className='user-posts'>
+            <div className="user-posts">
                 {userRecentPosts}
             </div>
         );

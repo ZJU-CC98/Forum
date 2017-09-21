@@ -13,12 +13,12 @@ import { UserCenterRouter } from './UserCenterRouter';
 export class UserCenter extends React.Component {
     render() {
         return (
-            <div className='user-center'>
-                <div className='user-center-head'>
+            <div className="user-center">
+                <div className="user-center-head">
                     <p>个人中心</p>
                 </div>
                 <Router>
-                    <div className='user-center-body'>
+                    <div className="user-center-body">
                         <UserCenterNavigation />
                         <UserCenterRouter />
                     </div>

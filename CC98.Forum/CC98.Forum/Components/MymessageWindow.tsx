@@ -8,12 +8,6 @@ import { MyMessageProps } from '../Props/MyMessageProps';
 import { MyMessageSender } from './MyMessageSender';
 import { MyMessageReceiver } from './MyMessageReceiver';
 
-import {
-    BrowserRouter as Router,
-    Route,
-    NavLink
-} from 'react-router-dom';
-
 export class MyMessageWindow extends React.Component<MyMessageWindowProps, MyMessageWindowState>{
 
     constructor(props) {
@@ -32,20 +26,20 @@ export class MyMessageWindow extends React.Component<MyMessageWindowProps, MyMes
 
     async getMessageData(item: MyMessageWindowProps) {
         if (item.chatName != '系统') {
-            let data = [];
+            const data = [];
             let startPage = -50;
             //循环取站短消息，一次性50条，直到全部取完
             do {
                 startPage += 50;
-                let response = await fetch(`https://api.cc98.org/Message?userName=${item.chatName}&filter=both`, {
-                    headers: {
-                        Range: `bytes=${startPage}-${startPage + 49}`,
-                        Authorization: `Bearer ${item.token}`
-                    }
+                const response = await fetch(`https://api.cc98.org/Message?userName=${item.chatName}&filter=both`, {
+	                headers: {
+		                Range: `bytes=${startPage}-${startPage + 49}`,
+		                Authorization: `Bearer ${item.token}`
+	                }
                 });
-                let nowData = await response.json();
+                const nowData = await response.json();
                 for (let i in nowData) {
-                    data.push(nowData[i])
+                    data.push(nowData[i]);
                 }
             } while (data.length % 50 == 0);
             //给每个数据都加上我和正在聊天者的头像的图片地址
@@ -64,46 +58,46 @@ export class MyMessageWindow extends React.Component<MyMessageWindowProps, MyMes
         if (item.title == '回复提示' || item.title == '@提示' || item.title == '转账通知' || item.title == '系统消息' || item.title == `用户：${this.props.myName} 在帖子中回复了你`) {
         }
         else if (item.senderName == this.props.chatName) {
-            return <MyMessageReceiver id={item.id} senderName={item.senderName} receiverName={item.receiverName} title={item.title} content={item.content} isRead={item.isRead} sendTime={item.sendTime} chatPortraitUrl={item.chatPortraitUrl} myPortraitUrl={item.myPortraitUrl} />
+            return <MyMessageReceiver id={item.id} senderName={item.senderName} receiverName={item.receiverName} title={item.title} content={item.content} isRead={item.isRead} sendTime={item.sendTime} chatPortraitUrl={item.chatPortraitUrl} myPortraitUrl={item.myPortraitUrl} />;
         }
         else {
-            return <MyMessageSender id={item.id} senderName={item.senderName} receiverName={item.receiverName} title={item.title} content={item.content} isRead={item.isRead} sendTime={item.sendTime} chatPortraitUrl={item.chatPortraitUrl} myPortraitUrl={item.myPortraitUrl}/>
+            return <MyMessageSender id={item.id} senderName={item.senderName} receiverName={item.receiverName} title={item.title} content={item.content} isRead={item.isRead} sendTime={item.sendTime} chatPortraitUrl={item.chatPortraitUrl} myPortraitUrl={item.myPortraitUrl}/>;
         }
-    }
+    };
 
-    postMessage = () => {
-        let bodyObj = { receiverName: this.props.chatName, title: '你好', content: $('#myMessageContent').val() };
-        let bodyContent = JSON.stringify(bodyObj);
-        let messageId = fetch('https://api.cc98.org/Message', {
-            method: 'POST',
-            headers: { Authorization: `Bearer ${this.props.token}`, 'content-type': 'application/json'},
-            body: bodyContent
+	postMessage = () => {
+        const bodyObj = { receiverName: this.props.chatName, title: '你好', content: $('#myMessageContent').val() };
+        const bodyContent = JSON.stringify(bodyObj);
+        const messageId = fetch('https://api.cc98.org/Message', {
+	        method: 'POST',
+	        headers: { Authorization: `Bearer ${this.props.token}`, 'content-type': 'application/json'},
+	        body: bodyContent
         });
         //重新获取数据并渲染
         console.log($('#myMessageContent').val());
         //这里写法有点奇怪，但是这样写才能暂停0.2秒再执行this.getMessageData，不能在setTimeout的第一个函数里直接调用this.getMessageData,那样会立即执行
-        let self = this;
+        const self = this;
         setTimeout(function () { self.getMessageData(self.props) }, 200);
         //清空输入框
         $('#myMessageContent').val('');
-    }
+    };
 
-    report = () => {
+	report = () => {
         alert('举报他人恶意私信请到【论坛事务】按照格式发帖投诉，记得截图保留证据，管理员会及时进行处理！感谢您对CC98的支持！');
-    }
+    };
 
-    render() {
+	render() {
         console.log('开始render');
-        return (<div className='mymessage-message-window'>
-                    <div className='mymessage-message-wHeader'>
-                        <div className='mymessage-message-wReport'></div>
-                        <div className='mymessage-message-wTitle'>与 {this.props.chatName} 的私信</div>
-                        <div className='mymessage-message-wReport'><button onClick={this.report}>举报</button></div>
+        return (<div className="mymessage-message-window">
+                    <div className="mymessage-message-wHeader">
+                        <div className="mymessage-message-wReport"></div>
+                        <div className="mymessage-message-wTitle">与 {this.props.chatName} 的私信</div>
+                        <div className="mymessage-message-wReport"><button onClick={this.report}>举报</button></div>
                     </div>
-                    <div className='mymessage-message-wContent'>{this.state.data.map(this.coverMyMessageProps)}</div>
-                    <div className='mymessage-message-wPost'>
-                        <textarea className='mymessage-message-wPostArea' id='myMessageContent'></textarea>
-                        <button className='mymessage-message-wPostBtn' onClick={this.postMessage}>回复</button>
+                    <div className="mymessage-message-wContent">{this.state.data.map(this.coverMyMessageProps)}</div>
+                    <div className="mymessage-message-wPost">
+                        <textarea className="mymessage-message-wPostArea" id="myMessageContent"></textarea>
+                        <button className="mymessage-message-wPostBtn" onClick={this.postMessage}>回复</button>
                     </div>
                 </div>);
     }

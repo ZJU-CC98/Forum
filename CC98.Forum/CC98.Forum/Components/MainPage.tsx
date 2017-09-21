@@ -1,32 +1,26 @@
 ﻿import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { AppState } from '../States/AppState';
 import { HotTopicState } from '../States/AppState';
 import { HotTopic } from './HotTopic';
 import * as $ from 'jquery';
-import {
-    HashRouter as Router,
-    Route,
-    Link
-} from 'react-router-dom';
 
 export class Recommended1 extends React.Component<{}, {}> {
     render() {
 
         $(document).ready(function () {
-            let button = $(".recommended1Button");
-            let content = $(".recommended1Content");
+            const button = $('.recommended1Button');
+            const content = $('.recommended1Content');
 
-            let randomNum = Math.floor(Math.random() * 5);  //生成0-4的随机数
-            content.eq(randomNum).css("display","flex");
-            button.eq(randomNum).css("background-color", "rgb(53,177,255)");
+            const randomNum = Math.floor(Math.random() * 5);  //生成0-4的随机数
+            content.eq(randomNum).css('display','flex');
+            button.eq(randomNum).css('background-color', 'rgb(53,177,255)');
 
             button.mouseover(function () {
-                let index = $(this).index();    //获取当前元素下标
-                content.css("display", "none");
-                content.eq(index).css("display", "flex");
-                button.css("background-color", "rgb(255,255,255)");
-                button.eq(index).css("background-color", "rgb(53,177,255)");
+                const index = $(this).index();    //获取当前元素下标
+                content.css('display', 'none');
+                content.eq(index).css('display', 'flex');
+                button.css('background-color', 'rgb(255,255,255)');
+                button.eq(index).css('background-color', 'rgb(53,177,255)');
             });
         });
 
@@ -75,7 +69,7 @@ export class Recommended1 extends React.Component<{}, {}> {
                 <div className="recommended1Button"></div>
                 <div className="recommended1Button"></div>
             </div>
-        </div>
+        </div>;
     }
 }
 
@@ -85,38 +79,39 @@ export class HotTopicComponent extends React.Component<{}, HotTopicState> {
         super(props);       //super 表示调用基类（Component系统类型）构造方法
         this.state = {
             hotTopicState: new Array<HotTopic>(),
-        }
+        };
 
     }
 
     async getHotTopic() {
-        let hotTopics: HotTopic[] = [];
-        var response = await fetch('http://api.cc98.org/Topic/Hot');
-        var data = await response.json();
+        const hotTopics: HotTopic[] = [];
+        const response = await fetch('http://api.cc98.org/Topic/Hot');
+        const data = await response.json();
         for (let i = 0; i < 10; i++) {
-            hotTopics[i] = new HotTopic(data[i].title, data[i].boardName, data[i].id, data[i].boardId)
+            hotTopics[i] = new HotTopic(data[i].title, data[i].boardName, data[i].id, data[i].boardId);
         }
         return hotTopics;
     }
 
     async componentDidMount() {
-        var x = await this.getHotTopic();
-        this.setState({
+	    const x = await this.getHotTopic();
+	    this.setState({
             hotTopicState: x,
-        })
+        });
     }
 
 
-    convertHotTopic(item: HotTopic) {
-        let boardUrl = `/list/${item.boardid}`;
-        let topicUrl = `/topic/${item.id}`;
+	convertHotTopic(item: HotTopic) {
+        const boardUrl = `/list/${item.boardid}`;
+        const topicUrl = `/topic/${item.id}`;
         return <div className="listRow">
-            <div className="boardName" > <a href={boardUrl}>[{item.boardName}]</a></div > <div className="topicTitle"><a href={topicUrl}>{item.title}</a></div>
-        </div >
-    }
+            <div className="boardName" > <a href={boardUrl}>[{item.boardName}]</a></div > <div className="topicTitle"><a href={topicUrl}>{
+	            item.title}</a></div>
+        </div >;
+	}
 
     render() {
-        return <div>{this.state.hotTopicState.map(this.convertHotTopic)}</div>
+        return <div>{this.state.hotTopicState.map(this.convertHotTopic)}</div>;
     }
 }
 /**
@@ -277,7 +272,7 @@ export class MainPage extends React.Component<{}, AppState> {
                 </div>
             </div>
 
-        </div>
+        </div>;
     }
 
 }

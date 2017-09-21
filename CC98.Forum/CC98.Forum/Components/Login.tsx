@@ -11,9 +11,9 @@ export class Login extends React.Component<null, LoginState> {
             loginName: '',
             loginPassword: '',
             loginMessage: ''
-        }
+        };
 
-        this.handleNameChange = this.handleNameChange.bind(this);
+	    this.handleNameChange = this.handleNameChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
     }
@@ -41,28 +41,28 @@ export class Login extends React.Component<null, LoginState> {
         
         if (!(this.state.loginName || this.state.loginPassword)) {
             this.setState({
-                loginMessage: "请输入用户名和密码"
+                loginMessage: '请输入用户名和密码'
             });
             this.shake(document.getElementById('loginName')).focus();
             this.shake(document.getElementById('loginPassword'));
             return false;
         } else if (!this.state.loginName) {
             this.setState({
-                loginMessage: "请输入用户名"
+                loginMessage: '请输入用户名'
             });
             this.shake(document.getElementById('loginName')).focus();
 
             return false;
         } else if (!this.state.loginPassword) {
             this.setState({
-                loginMessage: "请输入密码"
+                loginMessage: '请输入密码'
             });
             this.shake(document.getElementById('loginPassword')).focus();
 
             return false;
         }else {
             this.setState({
-                loginMessage: "登陆中"
+                loginMessage: '登陆中'
             });
         }
     }

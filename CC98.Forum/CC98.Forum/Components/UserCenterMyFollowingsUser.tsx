@@ -9,16 +9,16 @@ import { UserFanInfo } from '../States/AppState';
 export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFollowingsUserProps> {
     render() {
         return (
-            <div className='user-center-myfollowings-user'>
+            <div className="user-center-myfollowings-user">
                 <img src={this.props.userFanInfo.avatarImgURL} />
                 <p>
-                    <span className='user-center-myfollowings-user-id'>{this.props.userFanInfo.name}</span>
+                    <span className="user-center-myfollowings-user-id">{this.props.userFanInfo.name}</span>
                     主题
-                    <span className='user-center-myfollowings-user-posts'>{this.props.userFanInfo.posts}</span>
+                    <span className="user-center-myfollowings-user-posts">{this.props.userFanInfo.posts}</span>
                     粉丝
-                    <span className='user-center-myfollowings-user-fans'>{this.props.userFanInfo.fans}</span>
+                    <span className="user-center-myfollowings-user-fans">{this.props.userFanInfo.fans}</span>
                 </p>
-                <button type='button'>取消关注</button>
+                <button type="button">取消关注</button>
             </div>
         );
     }

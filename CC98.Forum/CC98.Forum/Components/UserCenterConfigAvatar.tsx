@@ -7,7 +7,7 @@ import * as React from 'react';
 export class UserCenterConfigAvatar extends React.Component {
     render() {
         return (<div className="user-center-config-avatar">
-            <img src='http://file.cc98.org/uploadface/5298.png'></img>
+            <img src="http://file.cc98.org/uploadface/5298.png"></img>
             <div>
                 <button id="chooseDefaultAvatar" type="button" >选择论坛头像</button>
                 <div>

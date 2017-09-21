@@ -13,8 +13,8 @@ import { UserCenterExactAvatar } from './UserCenterExactAvatar'
 
 export class UserRouter extends React.Component {
     render() {
-        return (<div className='user-center-router'>
-            <Route path='/user/' component={UserExact} />
+        return (<div className="user-center-router">
+            <Route path="/user/" component={UserExact} />
         </div>);
     }
 }
@@ -31,7 +31,7 @@ class UserExact extends React.Component<null, UserCenterExactState> {
         } else {
             response = await fetch(`https://api.cc98.org/User/${location.pathname.split('/')[2]}`);
         }
-        let data = await response.json();
+        const data = await response.json();
         this.setState({
             userInfo: data,
             userAvatarImgURL: data.portraitUrl,
@@ -42,7 +42,7 @@ class UserExact extends React.Component<null, UserCenterExactState> {
     render() {
         let element;
         if (this.state !== null && this.state.responseState === 200) {
-            element = (<div className='user-center-exact'>
+            element = (<div className="user-center-exact">
                 <UserCenterExactAvatar userAvatarImgURL={this.state.userAvatarImgURL} />
                 <UserCenterExactProfile userInfo={this.state.userInfo} />
                 <UserCenterExactActivities />
