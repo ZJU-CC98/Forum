@@ -1097,6 +1097,31 @@ body {
         background-color: white;
         border: 1px solid rgb(204,204,204);
 
+        button {
+            width: 80px;
+            position: fixed;
+            bottom: 5%;
+            right: 13%;
+            height: 50px;
+            border-radius: 10px;
+            opacity: 0.5;
+            display: none;
+
+            &:hover {
+                opacity: 0.8;
+            }
+
+            &:active {
+                opacity: 1;
+            }
+        }
+
+        .btn-show {
+            animation-name: fadeIn;
+            animation-duration: 500ms;
+            display: inherit;
+        } 
+        
         ul {
             list-style-type: none;
             padding: 0;
@@ -3008,6 +3033,16 @@ body {
 
     to {
         transform: rotate(-2deg);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 0.5;
     }
 }
 
