@@ -10,7 +10,7 @@ import {
 
 import { match } from "react-router";
 import { UbbContainer } from './UbbContainer';
-var moment = require('moment');
+import * as moment from 'moment';
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
 
     constructor(props?, context?) {
@@ -47,9 +47,9 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName });
     }
     async getTotalPage(topicid) {
-        var replyCountResponse = await fetch(`http://api.cc98.org/Topic/${topicid}`);
-        var replyCountJson = await replyCountResponse.json();
-        var replyCount = replyCountJson.replyCount;
+        let replyCountResponse = await fetch(`http://api.cc98.org/Topic/${topicid}`);
+        let replyCountJson = await replyCountResponse.json();
+        let replyCount = replyCountJson.replyCount;
         if (replyCount > 10) {
             return (replyCount - replyCount % 10) / 10 + 1;
         } else {
@@ -477,12 +477,9 @@ export class TopicPager extends RouteComponent<{ page, topicid, totalPage }, { p
 export class PageModel extends React.Component<{ pageNumber, topicid, curPage, totalPage }, {}> {
 
     render() {
-        let last = '<';
-        let next = '>';
-        let start = '<<';
-        let end = '>>';
+        let pageUrl;
         if (this.props.pageNumber > 0) {
-            var pageUrl = `/topic/${this.props.topicid}/${this.props.pageNumber}`;
+            pageUrl = `/topic/${this.props.topicid}/${this.props.pageNumber}`;
             if (this.props.pageNumber != this.props.curPage) {
                 return <li className="page-item"><Link className="page-link" to={pageUrl}>{this.props.pageNumber}</Link></li>;
             } else {
@@ -491,19 +488,23 @@ export class PageModel extends React.Component<{ pageNumber, topicid, curPage, t
             }
 
         } else if (this.props.pageNumber == -1) {
-            var pageUrl = `/topic/${this.props.topicid}/${this.props.curPage - 1}`;
+            pageUrl = `/topic/${this.props.topicid}/${this.props.curPage - 1}`;
+            const last = '<';
             return <li className="page-item"><Link className="page-link" to={pageUrl}>{last}</Link></li>
                 ;
         } else if (this.props.pageNumber == -2) {
-            var pageUrl = `/topic/${this.props.topicid}/${this.props.curPage + 1}`;
+            pageUrl = `/topic/${this.props.topicid}/${this.props.curPage + 1}`;
+            const next = '>';
             return <li className="page-item"><Link className="page-link" to={pageUrl}>{next}</Link></li>
                 ;
         } else if (this.props.pageNumber == -3) {
-            var pageUrl = `/topic/${this.props.topicid}/1`;
+            pageUrl = `/topic/${this.props.topicid}/1`;
+            const start = '<<';
             return <li className="page-item"><Link className="page-link" to={pageUrl}>{start}</Link></li>
                 ;
         } else {
-            var pageUrl = `/topic/${this.props.topicid}/${this.props.totalPage}`;
+            pageUrl = `/topic/${this.props.topicid}/${this.props.totalPage}`;
+            const end = '>>';
             return <li className="page-item"><Link className="page-link" to={pageUrl}>{end}</Link></li>
                 ;
         }
