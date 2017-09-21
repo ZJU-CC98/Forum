@@ -23,10 +23,10 @@ export class FocusBoardAreaComponent extends React.Component<{}, FocusBoardAreaS
      * 将我关注的版面排列好
      */
     render() {
-        return <div className='focus-board-area'>{this.state.data.map(coverFocusBoard)}</div>;
+        return <div className="focus-board-area">{this.state.data.map(coverFocusBoard)}</div>;
     }
 }
 
 function coverFocusBoard(item: FocusBoard) {
-    return <FocusBoardComponent id={item.id} name={item.name} />  
+    return <FocusBoardComponent id={item.id} name={item.name} />;
 }

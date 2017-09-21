@@ -8,9 +8,9 @@ import * as React from 'react';
 export class UserCenterExactAvatar extends React.Component<UserCenterExactAvatarProps> {
     render() {
         return (
-            <div className='user-avatar'>
-                <img className='user-avatar-img' src={this.props.userAvatarImgURL} />
-                <div className='user-badge'></div>
+            <div className="user-avatar">
+                <img className="user-avatar-img" src={this.props.userAvatarImgURL} />
+                <div className="user-badge"></div>
             </div>    
         );
     }

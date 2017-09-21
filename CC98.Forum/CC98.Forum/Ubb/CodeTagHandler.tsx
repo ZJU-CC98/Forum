@@ -12,7 +12,6 @@ export class CodeTagHandler extends Ubb.TextTagHandler {
 	get tagName(): string { return 'code' };
 
 	execCore(content: string, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
-        console.log(content.split('\n'));
         let element = content.split('\n').map((item, index) => {
             return <li>{item}</li>
         });

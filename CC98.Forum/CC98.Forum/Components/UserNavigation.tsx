@@ -1,16 +1,14 @@
 ﻿import * as React from 'react';
 import {
     Link,
-    match,
-    BrowserRouter as Router,
     Route
 } from 'react-router-dom';
 
 export class UserNavigation extends React.Component {
     render() {
-        return (<div className='user-center-navigation'>
+        return (<div className="user-center-navigation">
             <ul>
-                <CustomLink to={`${location.pathname}`} label='主页' activeOnlyWhenExact={true} myClassName='fa-home' />
+                <CustomLink to={`${location.pathname}`} label="主页" activeOnlyWhenExact={true} myClassName="fa-home" />
             </ul>
         </div>);
     }

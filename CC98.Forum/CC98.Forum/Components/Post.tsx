@@ -1,5 +1,5 @@
 ﻿import * as React from 'react';
-import * as State from "../States/AppState";
+import * as State from '../States/AppState';
 import * as Utility from '../Utility';
 import * as $ from 'jquery';
 import {
@@ -13,51 +13,51 @@ import { UbbContainer } from './UbbContainer';
 import * as moment from 'moment';
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
 
-    constructor(props?, context?) {
-        super(props, context);
-    }
-    get match(): match<TMatch> {
-        return (this.props as any).match;
-    }
+	constructor(props?, context?) {
+		super(props, context);
+	}
+	get match(): match<TMatch> {
+		return (this.props as any).match;
+	}
 }
 
 export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName }, { topicid, page, userName }> {
-    constructor(props, context) {
-        super(props, context);
-        this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null };
-    }
-    async componentWillReceiveProps(newProps) {
-        let page: number;
-        if (!newProps.match.params.page) {
-            page = 1;
-        }
-        else { page = parseInt(newProps.match.params.page); }
-        let userName = newProps.match.params.userName;
-        let totalPage = await this.getTotalPage(this.match.params.topicid);
-        this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName });
-    }
-    async componentDidMount() {
-        let page: number;
-        if (!this.match.params.page) {
-            page = 1;
-        }
-        else { page = parseInt(this.match.params.page); }
-        let totalPage = await this.getTotalPage(this.match.params.topicid);
-        let userName = this.match.params.userName;
-        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName });
-    }
-    async getTotalPage(topicid) {
-        let replyCountResponse = await fetch(`http://api.cc98.org/Topic/${topicid}`);
-        let replyCountJson = await replyCountResponse.json();
-        let replyCount = replyCountJson.replyCount;
-        if (replyCount > 10) {
-            return (replyCount - replyCount % 10) / 10 + 1;
-        } else {
-            return 1;
-        }
-    }
-    returnTopic() {
-        return <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} />;
+	constructor(props, context) {
+		super(props, context);
+		this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null };
+	}
+	async componentWillReceiveProps(newProps) {
+		let page: number;
+		if (!newProps.match.params.page) {
+			page = 1;
+		}
+		else { page = parseInt(newProps.match.params.page); }
+		const userName = newProps.match.params.userName;
+		const totalPage = await this.getTotalPage(this.match.params.topicid);
+		this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName });
+	}
+	async componentDidMount() {
+		let page: number;
+		if (!this.match.params.page) {
+			page = 1;
+		}
+		else { page = parseInt(this.match.params.page); }
+		const totalPage = await this.getTotalPage(this.match.params.topicid);
+		const userName = this.match.params.userName;
+		this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName });
+	}
+	async getTotalPage(topicid) {
+		const replyCountResponse = await fetch(`http://api.cc98.org/Topic/${topicid}`);
+		const replyCountJson = await replyCountResponse.json();
+		const replyCount = replyCountJson.replyCount;
+		if (replyCount > 10) {
+			return (replyCount - replyCount % 10) / 10 + 1;
+		} else {
+			return 1;
+		}
+	}
+	returnTopic() {
+		return <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} />;
 
     }
     render() {
@@ -73,28 +73,22 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         </div>
             ;
 
-    }
+	}
 
 }
 export class Reply extends RouteComponent<{}, { contents }, { page, topicid, userName }>{
-    constructor(props, content) {
-        super(props, content);
-        this.state = {
-            contents: [],
-        }
+	constructor(props, content) {
+		super(props, content);
+		this.state = {
+			contents: [],
+		};
 
-    }
-    Contents;
-    async componentWillReceiveProps(newProps) {
-        let page = newProps.match.params.page;
-        if (newProps.match.params.page == undefined) {
-            page = 1;
-        }
-        let realContents;
-        this.Contents = Utility.getTopicContent(newProps.match.params.topicid, page);
-        realContents = await this.Contents;
+	}
 
-        this.setState({ contents: realContents });
+	async componentWillReceiveProps(newProps) {
+		const page = newProps.match.params.page || 1;
+		const realContents = await Utility.getTopicContent(newProps.match.params.topicid, page);
+		this.setState({ contents: realContents });
 
     }
     private generateContents(item: State.ContentState) {
@@ -249,11 +243,11 @@ export class PostTopic extends RouteComponent<{ imgUrl, page, topicid }, State.P
                 <div id="ads"><img src={this.props.imgUrl}></img></div>
             </div>
 
-            <TopicContent content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} />
-            <TopicGood />
-            <TopicVote />
-        </div>;
-    }
+			<TopicContent content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} />
+			<TopicGood />
+			<TopicVote />
+		</div>;
+	}
 }
 
 export class AuthorMessage extends RouteComponent<{ AuthorName, authorId, authorImgUrl }, State.AuthorMessageState, {}> {
@@ -268,6 +262,18 @@ export class AuthorMessage extends RouteComponent<{ AuthorName, authorId, author
     render() {
         let url = `/user/${this.props.authorId}`;
         return <div className="row" id="authormes">
+export class AuthorMessage extends RouteComponent<{ authorName: string, authorId: number, authorImgUrl: string }, State.AuthorMessageState, {}> {
+	constructor(props, content) {
+		super(props, content);
+		this.state = {
+			userName: 'Mana',
+			fansNumber: 233,
+			imgUrl: this.props.authorImgUrl
+		};
+	}
+	render() {
+		const url = `/user/${this.props.authorId}`;
+		return <div className="row" id="authormes">
 
             <div className="authorImg" ><a href={url}><img src={this.props.authorImgUrl}></img></a></div>
             <div className="column" style={{ marginLeft:"20px" }}>
@@ -276,13 +282,13 @@ export class AuthorMessage extends RouteComponent<{ AuthorName, authorId, author
                     <div id="fans" className="row"><div style={{ marginRight: "3px" }}>粉丝</div><div style={{ color: "#EE0000" }}>{this.state.fansNumber}</div></div>
                 </div>
 
-                <div className="row">
-                    <button id="watch">关注</button>
-                    <button id="email">私信</button>
-                </div>
-            </div>
-        </div>;
-    }
+				<div className="row">
+					<button id="watch">关注</button>
+					<button id="email">私信</button>
+				</div>
+			</div>
+		</div>;
+	}
 }
 export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.TopicTitleState, {}> {
     constructor(props, content) {
@@ -327,24 +333,24 @@ export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.
                 <div id="essay1" className="row">
                     {this.returnProps(this.state.isTop, this.state.isNotice, this.props.Title)}
 
-                </div>
-                <div className="row" id="essayProp">
-                    <div id="tags"><span className="tagProp tagSize">标签： {this.state.tag}</span><span className="tagProp"></span></div>
-                    <div id="time"><span className="viewProp"><i className="fa fa-clock-o fa-lg fa-fw"></i></span> <span className="timeProp tagSize">{moment(this.props.Time).format('YYYY-MM-DD HH:mm:ss')}</span></div>
-                    <div id="viewtimes"><span className="viewProp"><i className="fa fa-eye fa-lg fa-fw"></i>  </span> <span className="timeProp tagSize">{this.props.HitCount}次</span></div>
-                </div>
-            </div>
-            <div className="column" style={{ width: "100px" }}>
-                <div className="row" style={{ marginTop: "10px" }}>
-                    <div id="like" className="tagSize"><i className="fa fa-star-o fa-lg"></i><span style={{ marginLeft: "10px" }}>收藏文章</span></div>
-                </div>
-                <div className="row" style={{ marginTop: "35px" }}>
-                    <div id="liked" className="row tagSize"><i className="fa fa-thumbs-o-up fa-lg fa-fw"></i>{this.state.likeNumber}</div>
-                    <div id="disliked" className="row tagSize"><i className="fa fa-thumbs-o-down fa-lg fa-fw"></i>{this.state.unlikeNumber}</div>
-                </div>
-            </div>
-        </div>;
-    }
+				</div>
+				<div className="row" id="essayProp">
+					<div id="tags"><span className="tagProp tagSize">标签： {this.state.tag}</span><span className="tagProp"></span></div>
+					<div id="time"><span className="viewProp"><i className="fa fa-clock-o fa-lg fa-fw"></i></span> <span className="timeProp tagSize">{moment(this.props.Time).format('YYYY-MM-DD HH:mm:ss')}</span></div>
+					<div id="viewtimes"><span className="viewProp"><i className="fa fa-eye fa-lg fa-fw"></i>  </span> <span className="timeProp tagSize">{this.props.HitCount}次</span></div>
+				</div>
+			</div>
+			<div className="column" style={{ width: '100px' }}>
+				<div className="row" style={{ marginTop: '10px' }}>
+					<div id="like" className="tagSize"><i className="fa fa-star-o fa-lg"></i><span style={{ marginLeft: '10px' }}>收藏文章</span></div>
+				</div>
+				<div className="row" style={{ marginTop: '35px' }}>
+					<div id="liked" className="row tagSize"><i className="fa fa-thumbs-o-up fa-lg fa-fw"></i>{this.state.likeNumber}</div>
+					<div id="disliked" className="row tagSize"><i className="fa fa-thumbs-o-down fa-lg fa-fw"></i>{this.state.unlikeNumber}</div>
+				</div>
+			</div>
+		</div>;
+	}
 }
 export class TopicContent extends RouteComponent<{ content:string, signature:string }, { likeNumber:number, dislikeNumber:number }, {}> {
     constructor(props, content) {
@@ -369,11 +375,11 @@ export class TopicContent extends RouteComponent<{ content:string, signature:str
     }
 }
 export class ReplyContent extends RouteComponent<{ content, signature }, { likeNumber, dislikeNumber }, {}> {
-    constructor(props, content) {
-        super(props, content);
-        this.state = {
-            likeNumber: 2424,
-            dislikeNumber: 4433,
+	constructor(props, content) {
+		super(props, content);
+		this.state = {
+			likeNumber: 2424,
+			dislikeNumber: 4433,
 
         }
     }
@@ -386,12 +392,12 @@ export class ReplyContent extends RouteComponent<{ content, signature }, { likeN
                 <div className="signature"><UbbContainer code={this.props.signature} /></div>
                 <div className="comment">
 
-                    <div id="commentliked"><i className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
-                    <div id="commentunliked"><i className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
-                    <div id="commentlike"> <div className="commentbutton">   评分</div></div>
-                </div>
-            </div></div>;
-    }
+					<div id="commentliked"><i className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
+					<div id="commentunliked"><i className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
+					<div id="commentlike"> <div className="commentbutton">   评分</div></div>
+				</div>
+			</div></div>;
+	}
 }
 export class TopicGood extends RouteComponent<{}, State.TopicGoodState, {}> {
     constructor(props, content) {
@@ -440,12 +446,12 @@ export class TopicVote extends RouteComponent<{}, State.TopicVoteState, {}> {
     }
 }
 export class TopicPager extends RouteComponent<{ page, topicid, totalPage }, { pager }, {}> {
-    constructor(props, content) {
-        super(props, content);
-        this.state = {
-            pager: [1, 2, 3, 4, 5]
-        }
-    }
+	constructor(props, content) {
+		super(props, content);
+		this.state = {
+			pager: [1, 2, 3, 4, 5]
+		};
+	}
 	/**
 	 * 将页码转换为 UI 界面。
 	 * @param pageNumber 要转换的页码。
@@ -453,62 +459,62 @@ export class TopicPager extends RouteComponent<{ page, topicid, totalPage }, { p
 	 */
 
 
-    generatePageLink(pageNumber: number) {
+	generatePageLink(pageNumber: number) {
 
-        return <PageModel pageNumber={pageNumber} topicid={this.props.topicid} curPage={this.props.page} totalPage={this.props.totalPage} />;
-    }
-    async componentWillReceiveProps(newProps) {
-        const pages = Utility.getPager(newProps.page, newProps.totalPage);
-        console.log("new=" + pages);
-        this.setState({ pager: pages });
-    }
-    async componentDidMount() {
-        const pages = Utility.getPager(this.props.page, this.props.totalPage);
-        this.setState({ pager: pages });
-    }
-    render() {
-        return <div className="row" style={{ width: '1140px', height: '50px', marginTop: '15px', justifyContent: 'space-between', borderBottom: ' #EAEAEA solid thin', alignItems: 'flex-end' }}>
-            <div id="pager" >
-                <div className="row pagination">{this.state.pager.map(this.generatePageLink.bind(this))}</div>
-            </div>
-        </div>;
-    }
+		return <PageModel pageNumber={pageNumber} topicid={this.props.topicid} curPage={this.props.page} totalPage={this.props.totalPage} />;
+	}
+	async componentWillReceiveProps(newProps) {
+		const pages = Utility.getPager(newProps.page, newProps.totalPage);
+		console.log('new=' + pages);
+		this.setState({ pager: pages });
+	}
+	async componentDidMount() {
+		const pages = Utility.getPager(this.props.page, this.props.totalPage);
+		this.setState({ pager: pages });
+	}
+	render() {
+		return <div className="row" style={{ width: '1140px', height: '50px', marginTop: '15px', justifyContent: 'space-between', borderBottom: ' #EAEAEA solid thin', alignItems: 'flex-end' }}>
+			<div id="pager" >
+				<div className="row pagination">{this.state.pager.map(this.generatePageLink.bind(this))}</div>
+			</div>
+		</div>;
+	}
 }
 export class PageModel extends React.Component<{ pageNumber, topicid, curPage, totalPage }, {}> {
 
-    render() {
-        let pageUrl;
-        if (this.props.pageNumber > 0) {
-            pageUrl = `/topic/${this.props.topicid}/${this.props.pageNumber}`;
-            if (this.props.pageNumber != this.props.curPage) {
-                return <li className="page-item"><Link className="page-link" to={pageUrl}>{this.props.pageNumber}</Link></li>;
-            } else {
-                return <li className="page-item active"><Link className="page-link" to={pageUrl}>{this.props.pageNumber}</Link></li>;
+	render() {
+		let pageUrl: string;
+		if (this.props.pageNumber > 0) {
+			pageUrl = `/topic/${this.props.topicid}/${this.props.pageNumber}`;
+			if (this.props.pageNumber != this.props.curPage) {
+				return <li className="page-item"><Link className="page-link" to={pageUrl}>{this.props.pageNumber}</Link></li>;
+			} else {
+				return <li className="page-item active"><Link className="page-link" to={pageUrl}>{this.props.pageNumber}</Link></li>;
 
-            }
+			}
 
-        } else if (this.props.pageNumber == -1) {
-            pageUrl = `/topic/${this.props.topicid}/${this.props.curPage - 1}`;
-            const last = '<';
-            return <li className="page-item"><Link className="page-link" to={pageUrl}>{last}</Link></li>
-                ;
-        } else if (this.props.pageNumber == -2) {
-            pageUrl = `/topic/${this.props.topicid}/${this.props.curPage + 1}`;
-            const next = '>';
-            return <li className="page-item"><Link className="page-link" to={pageUrl}>{next}</Link></li>
-                ;
-        } else if (this.props.pageNumber == -3) {
-            pageUrl = `/topic/${this.props.topicid}/1`;
-            const start = '<<';
-            return <li className="page-item"><Link className="page-link" to={pageUrl}>{start}</Link></li>
-                ;
-        } else {
-            pageUrl = `/topic/${this.props.topicid}/${this.props.totalPage}`;
-            const end = '>>';
-            return <li className="page-item"><Link className="page-link" to={pageUrl}>{end}</Link></li>
-                ;
-        }
-    }
+		} else if (this.props.pageNumber == -1) {
+			pageUrl = `/topic/${this.props.topicid}/${this.props.curPage - 1}`;
+			const last = '<';
+			return <li className="page-item"><Link className="page-link" to={pageUrl}>{last}</Link></li>
+				;
+		} else if (this.props.pageNumber == -2) {
+			pageUrl = `/topic/${this.props.topicid}/${this.props.curPage + 1}`;
+			const next = '>';
+			return <li className="page-item"><Link className="page-link" to={pageUrl}>{next}</Link></li>
+				;
+		} else if (this.props.pageNumber == -3) {
+			pageUrl = `/topic/${this.props.topicid}/1`;
+			const start = '<<';
+			return <li className="page-item"><Link className="page-link" to={pageUrl}>{start}</Link></li>
+				;
+		} else {
+			pageUrl = `/topic/${this.props.topicid}/${this.props.totalPage}`;
+			const end = '>>';
+			return <li className="page-item"><Link className="page-link" to={pageUrl}>{end}</Link></li>
+				;
+		}
+	}
 }
 export class UserMessageBox extends React.Component<{ userName, userFans }, {}>{
     render() {

@@ -21,15 +21,15 @@ export class FocusPostAreaComponent extends React.Component<{}, FocusPostAreaSta
             data: [],
             curPage: 1,
             loading: true
-        }
-        this.handleScroll = this.handleScroll.bind(this);
+        };
+	    this.handleScroll = this.handleScroll.bind(this);
     }
 
     /**
      * 进入立即获取20条新帖的数据，同时为滚动条添加监听事件
      */
     async componentDidMount() {
-        let data = await Utility.getAllNewPost(this.state.curPage);
+        const data = await Utility.getAllNewPost(this.state.curPage);
         this.setState({ data: data });
         document.addEventListener('scroll', this.handleScroll);
     }
@@ -77,10 +77,10 @@ export class FocusPostAreaComponent extends React.Component<{}, FocusPostAreaSta
      * 将主题排列好
      */
     render() {
-        return <div className='focus-post-area'>
-                    <div className='focus-post-topicArea'>{this.state.data.map(coverFocusPost)}</div>
-                    <div className='focus-post-loading' id='focus-post-loading'><img src='http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif'></img></div>
-                    <div className='focus-post-loaddone displaynone' id='focus-post-loaddone'>---------------------- 已加载100条新帖，无法加载更多 ----------------------</div>
+        return <div className="focus-post-area">
+                    <div className="focus-post-topicArea">{this.state.data.map(coverFocusPost)}</div>
+                    <div className="focus-post-loading" id="focus-post-loading"><img src="http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif"></img></div>
+                    <div className="focus-post-loaddone displaynone" id="focus-post-loaddone">---------------------- 已加载100条新帖，无法加载更多 ----------------------</div>
                </div>;
     }
     
@@ -98,7 +98,9 @@ function coverFocusPost(item: FocusPost) {
 *滚动条在Y轴上的滚动距离
 */
 function getScrollTop() {
-    　　var scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
+	let scrollTop = 0;
+	let bodyScrollTop = 0;
+	let documentScrollTop = 0;
     　　if (document.body) {
         　　　　bodyScrollTop = document.body.scrollTop;
     　　}
@@ -113,7 +115,9 @@ function getScrollTop() {
 *文档的总高度
 */
 function getScrollHeight() {
-    　　var scrollHeight = 0, bodyScrollHeight = 0, documentScrollHeight = 0;
+	let scrollHeight = 0;
+	let bodyScrollHeight = 0;
+	let documentScrollHeight = 0;
     　　if (document.body) {
         　　　　bodyScrollHeight = document.body.scrollHeight;
     　　}
@@ -128,8 +132,8 @@ function getScrollHeight() {
 *浏览器视口的高度
 */
 function getWindowHeight() {
-    　　var windowHeight = 0;
-    　　if (document.compatMode == "CSS1Compat") {
+    　　let windowHeight = 0;
+    　　if (document.compatMode == 'CSS1Compat') {
         　　　　windowHeight = document.documentElement.clientHeight;
     　　} else {
         　　　　windowHeight = document.body.clientHeight;

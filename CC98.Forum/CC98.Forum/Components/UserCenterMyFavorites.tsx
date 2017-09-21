@@ -18,9 +18,9 @@ export class UserCenterMyFavorites extends React.Component {
     render() {
         return (
             <Router>
-                <div className='user-center-myfavorites'>
-                    <CustomLink to='/usercenter/myfavorites' label='文章' activeOnlyWhenExact={true} /> | <CustomLink to='/usercenter/myfavorites/boards' label='版面' activeOnlyWhenExact={false} />
-                    <Route exact path='/usercenter/myfavorites' component={UserCenterMyFavoritesPosts} />
+                <div className="user-center-myfavorites">
+                    <CustomLink to="/usercenter/myfavorites" label="文章" activeOnlyWhenExact={true} /> | <CustomLink to="/usercenter/myfavorites/boards" label="版面" activeOnlyWhenExact={false} />
+                    <Route exact path="/usercenter/myfavorites" component={UserCenterMyFavoritesPosts} />
                 </div>
             </Router>
         );

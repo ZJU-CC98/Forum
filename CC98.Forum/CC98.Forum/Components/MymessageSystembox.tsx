@@ -12,11 +12,11 @@ export class MyMessageSystembox extends React.Component<MyMessageProps> {
     */
 
     render() {
-        return (<div className='mymessage-system-box'>
-            <div className='mymessage-system-box-title'>
+        return (<div className="mymessage-system-box">
+            <div className="mymessage-system-box-title">
                 {this.props.title}
             </div>
-            <div className='mymessage-system-box-date' >
+            <div className="mymessage-system-box-date" >
                 {this.props.sendTime}
             </div>
             <div className="mymessage-system-box-content">

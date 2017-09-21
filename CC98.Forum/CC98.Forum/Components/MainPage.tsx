@@ -1,49 +1,62 @@
 ﻿import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { AppState } from '../States/AppState';
 import { HotTopicState } from '../States/AppState';
 import { HotTopic } from './HotTopic';
-import {
-    HashRouter as Router,
-    Route,
-    Link
-} from 'react-router-dom';
+import * as $ from 'jquery';
 
 export class Recommended1 extends React.Component<{}, {}> {
     render() {
+
+        $(document).ready(function () {
+            const button = $('.recommended1Button');
+            const content = $('.recommended1Content');
+
+            const randomNum = Math.floor(Math.random() * 5);  //生成0-4的随机数
+            content.eq(randomNum).css('display','flex');
+            button.eq(randomNum).css('background-color', 'rgb(53,177,255)');
+
+            button.mouseover(function () {
+                const index = $(this).index();    //获取当前元素下标
+                content.css('display', 'none');
+                content.eq(index).css('display', 'flex');
+                button.css('background-color', 'rgb(255,255,255)');
+                button.eq(index).css('background-color', 'rgb(53,177,255)');
+            });
+        });
+
         return <div className="recommended1">
-            <div className="recommended1Content">
-                <div className="content1">
+            <div className="column">
+                <div className="recommended1Content">
                     <div className="recommended1Img"><img src="images/recommended2Img.jpg" /></div>
-                    <div className="coloum">
+                    <div className="column">
                         <div className="recommended1Title">推荐阅读标题1</div>
                         <div className="recommended1Abstract">推荐阅读摘要1</div>
                     </div>
                 </div>
-                <div className="content1">
+                <div className="recommended1Content">
                     <div className="recommended1Img"><img src="images/recommended2Img.jpg" /></div>
-                    <div className="coloum">
+                    <div className="column">
                         <div className="recommended1Title">推荐阅读标题2</div>
                         <div className="recommended1Abstract">推荐阅读摘要2</div>
                     </div>
                 </div>
-                <div className="content1">
+                <div className="recommended1Content">
                     <div className="recommended1Img"><img src="images/recommended2Img.jpg" /></div>
-                    <div className="coloum">
+                    <div className="column">
                         <div className="recommended1Title">推荐阅读标题3</div>
                         <div className="recommended1Abstract">推荐阅读摘要3</div>
                     </div>
                 </div>
-                <div className="content1">
+                <div className="recommended1Content">
                     <div className="recommended1Img"><img src="images/recommended2Img.jpg" /></div>
-                    <div className="coloum">
+                    <div className="column">
                         <div className="recommended1Title">推荐阅读标题4</div>
                         <div className="recommended1Abstract">推荐阅读摘要4</div>
                     </div>
                 </div>
-                <div className="content1">
+                <div className="recommended1Content">
                     <div className="recommended1Img"><img src="images/recommended2Img.jpg" /></div>
-                    <div className="coloum">
+                    <div className="column">
                         <div className="recommended1Title">推荐阅读标题5</div>
                         <div className="recommended1Abstract">推荐阅读摘要5</div>
                     </div>
@@ -56,7 +69,7 @@ export class Recommended1 extends React.Component<{}, {}> {
                 <div className="recommended1Button"></div>
                 <div className="recommended1Button"></div>
             </div>
-        </div>
+        </div>;
     }
 }
 
@@ -66,38 +79,39 @@ export class HotTopicComponent extends React.Component<{}, HotTopicState> {
         super(props);       //super 表示调用基类（Component系统类型）构造方法
         this.state = {
             hotTopicState: new Array<HotTopic>(),
-        }
+        };
 
     }
 
     async getHotTopic() {
-        let hotTopics: HotTopic[] = [];
-        var response = await fetch('http://api.cc98.org/Topic/Hot');
-        var data = await response.json();
+        const hotTopics: HotTopic[] = [];
+        const response = await fetch('http://api.cc98.org/Topic/Hot');
+        const data = await response.json();
         for (let i = 0; i < 10; i++) {
-            hotTopics[i] = new HotTopic(data[i].title, data[i].boardName,data[i].id,data[i].boardId)
+            hotTopics[i] = new HotTopic(data[i].title, data[i].boardName, data[i].id, data[i].boardId);
         }
         return hotTopics;
     }
 
     async componentDidMount() {
-        var x = await this.getHotTopic();
-        this.setState({
+	    const x = await this.getHotTopic();
+	    this.setState({
             hotTopicState: x,
-        })
+        });
     }
 
 
-    convertHotTopic(item: HotTopic) {
-let boardUrl=`/list/${item.boardid}`;
-let topicUrl=`/topic/${item.id}`;
+	convertHotTopic(item: HotTopic) {
+        const boardUrl = `/list/${item.boardid}`;
+        const topicUrl = `/topic/${item.id}`;
         return <div className="listRow">
-            <div className="boardName" > <a href={boardUrl}>[{item.boardName}]</a></div><div className="topicTitle"><a href={topicUrl}>{item.title}</a></div>
-        </div>
-    }
+            <div className="boardName" > <a href={boardUrl}>[{item.boardName}]</a></div > <div className="topicTitle"><a href={topicUrl}>{
+	            item.title}</a></div>
+        </div >;
+	}
 
     render() {
-        return <div>{this.state.hotTopicState.map(this.convertHotTopic)}</div>
+        return <div>{this.state.hotTopicState.map(this.convertHotTopic)}</div>;
     }
 }
 /**
@@ -204,7 +218,7 @@ export class MainPage extends React.Component<{}, AppState> {
                     <div className="dashedBorder">
                         <div className="heading">推荐</div>
                     </div>
-                    <div className="coloum">
+                    <div className="column">
                         <div className="row">
                             <div className="recommended2Img"><img src="/images/recommended2Img.jpg"></img></div>
                             <div className="recommended2Title">广播台点歌通道</div>
@@ -258,7 +272,7 @@ export class MainPage extends React.Component<{}, AppState> {
                 </div>
             </div>
 
-        </div>
+        </div>;
     }
 
 }
