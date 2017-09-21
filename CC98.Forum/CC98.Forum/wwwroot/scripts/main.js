@@ -1247,7 +1247,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var State = __webpack_require__(3);
 var React = __webpack_require__(0);
 var List_1 = __webpack_require__(9);
-var $ = __webpack_require__(6);
+var $ = __webpack_require__(5);
 function getBoardTopicAsync(curPage, boardid) {
     return __awaiter(this, void 0, void 0, function () {
         var startPage, endPage, boardtopics, url, response, data, totalTopicCountResponse, totalTopicCountJson, totalTopicCount, topicNumberInPage, i;
@@ -1632,6 +1632,12 @@ exports.getStorage = getStorage;
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports) {
+
+module.exports = $;
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1674,12 +1680,6 @@ var UserCenterExactActivitiesPost = /** @class */ (function (_super) {
 }(React.Component));
 exports.UserCenterExactActivitiesPost = UserCenterExactActivitiesPost;
 
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-module.exports = $;
 
 /***/ }),
 /* 7 */
@@ -2882,7 +2882,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(4);
-var $ = __webpack_require__(6);
+var $ = __webpack_require__(5);
 var react_router_dom_1 = __webpack_require__(2);
 var UbbContainer_1 = __webpack_require__(7);
 var SendTopic_1 = __webpack_require__(36);
@@ -3851,9 +3851,10 @@ var QuoteTagHandler = /** @class */ (function (_super) {
     ;
     QuoteTagHandler.prototype.execCore = function (innerContent, tagData, context) {
         var style = {
-            width: '100%',
+            width: '60%',
             padding: '13px 19px 13px 17px',
-            backgroundColor: '#F5FAFF'
+            backgroundColor: '#F5FAFF',
+            border: '1px solid rgb(204,204,204)'
         };
         return React.createElement("div", { style: style }, innerContent);
     };
@@ -5303,6 +5304,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(2);
+var $ = __webpack_require__(5);
 /**
  * 用户中心侧边栏导航组件
  */
@@ -5313,11 +5315,14 @@ var UserCenterNavigation = /** @class */ (function (_super) {
     }
     UserCenterNavigation.prototype.handleScroll = function (e) {
         var navigation = document.getElementById('userCenterNavigation');
+        var btn = document.getElementById('scrollToTop');
         if (window.pageYOffset > 234 && navigation.style.position !== 'fixed') {
             navigation.style.position = 'fixed';
+            btn.classList.add('btn-show');
         }
         if (window.pageYOffset < 234 && navigation.style.position && navigation.style.position !== 'inherit') {
             navigation.style.position = 'inherit';
+            btn.classList.remove('btn-show');
         }
     };
     UserCenterNavigation.prototype.componentDidMount = function () {
@@ -5325,6 +5330,9 @@ var UserCenterNavigation = /** @class */ (function (_super) {
     };
     UserCenterNavigation.prototype.componentWillUnmount = function () {
         document.removeEventListener('scroll', this.handleScroll);
+    };
+    UserCenterNavigation.prototype.scrollToTop = function () {
+        $('body,html').animate({ scrollTop: 0 }, 1000);
     };
     UserCenterNavigation.prototype.render = function () {
         return (React.createElement("div", { className: "user-center-navigation", id: "userCenterNavigation" },
@@ -5339,7 +5347,8 @@ var UserCenterNavigation = /** @class */ (function (_super) {
                 React.createElement("hr", null),
                 React.createElement(CustomLink, { to: "/usercenter/myfans", label: "我的粉丝", myClassName: "fa-users" }),
                 React.createElement("hr", null),
-                React.createElement(CustomLink, { to: "/usercenter/config", label: "功能设置", myClassName: "fa-cog" }))));
+                React.createElement(CustomLink, { to: "/usercenter/config", label: "功能设置", myClassName: "fa-cog" })),
+            React.createElement("button", { type: "button", id: "scrollToTop", onClick: this.scrollToTop }, "\u56DE\u5230\u9876\u90E8")));
     };
     return UserCenterNavigation;
 }(React.Component));
@@ -5586,7 +5595,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPost_1 = __webpack_require__(5);
+var UserCenterExactActivitiesPost_1 = __webpack_require__(6);
 var AppState_1 = __webpack_require__(3);
 //用户中心主页帖子动态组件
 var UserCenterExactActivitiesPosts = /** @class */ (function (_super) {
@@ -5670,7 +5679,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPost_1 = __webpack_require__(5);
+var UserCenterExactActivitiesPost_1 = __webpack_require__(6);
 var AppState_1 = __webpack_require__(3);
 //用户中心主页最近回复组件
 var UserCenterExactActivitiesReplies = /** @class */ (function (_super) {
@@ -5882,7 +5891,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPost_1 = __webpack_require__(5);
+var UserCenterExactActivitiesPost_1 = __webpack_require__(6);
 var AppState_1 = __webpack_require__(3);
 var UserCenterMyPostsExact = /** @class */ (function (_super) {
     __extends(UserCenterMyPostsExact, _super);
@@ -5935,7 +5944,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPost_1 = __webpack_require__(5);
+var UserCenterExactActivitiesPost_1 = __webpack_require__(6);
 var AppState_1 = __webpack_require__(3);
 //用户中心主页最近回复组件
 var UserCenterMyPostsReplies = /** @class */ (function (_super) {
@@ -6042,7 +6051,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPost_1 = __webpack_require__(5);
+var UserCenterExactActivitiesPost_1 = __webpack_require__(6);
 var AppState_1 = __webpack_require__(3);
 var UserCenterMyFavoritesPosts = /** @class */ (function (_super) {
     __extends(UserCenterMyFavoritesPosts, _super);
@@ -7678,7 +7687,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var $ = __webpack_require__(6);
+var $ = __webpack_require__(5);
 var DropDown = /** @class */ (function (_super) {
     __extends(DropDown, _super);
     function DropDown() {
@@ -7892,7 +7901,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var HotTopic_1 = __webpack_require__(73);
-var $ = __webpack_require__(6);
+var $ = __webpack_require__(5);
 var Recommended1 = /** @class */ (function (_super) {
     __extends(Recommended1, _super);
     function Recommended1() {
@@ -8279,8 +8288,23 @@ var UserNavigation = /** @class */ (function (_super) {
     function UserNavigation() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    UserNavigation.prototype.handleScroll = function (e) {
+        var navigation = document.getElementById('userCenterNavigation');
+        if (window.pageYOffset > 234 && navigation.style.position !== 'fixed') {
+            navigation.style.position = 'fixed';
+        }
+        if (window.pageYOffset < 234 && navigation.style.position && navigation.style.position !== 'inherit') {
+            navigation.style.position = 'inherit';
+        }
+    };
+    UserNavigation.prototype.componentDidMount = function () {
+        document.addEventListener('scroll', this.handleScroll);
+    };
+    UserNavigation.prototype.componentWillUnmount = function () {
+        document.removeEventListener('scroll', this.handleScroll);
+    };
     UserNavigation.prototype.render = function () {
-        return (React.createElement("div", { className: "user-center-navigation" },
+        return (React.createElement("div", { className: "user-center-navigation", id: "userCenterNavigation" },
             React.createElement("ul", null,
                 React.createElement(CustomLink, { to: "" + location.pathname, label: "主页", activeOnlyWhenExact: true, myClassName: "fa-home" }))));
     };
