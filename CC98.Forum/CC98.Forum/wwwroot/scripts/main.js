@@ -2984,11 +2984,11 @@ var Post = /** @class */ (function (_super) {
         if (this.state.page == 1) {
             topic = React.createElement(PostTopic, { imgUrl: "/images/ads.jpg", page: this.state.page, topicid: this.state.topicid });
         }
-        return React.createElement("div", { className: "center", style: { overflowX: "scroll", minWidth: "1140px", marginTop: "40px" } },
+        return React.createElement("div", { className: "center", style: { minWidth: "1140px", marginTop: "40px" } },
             React.createElement(TopicPager, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
             topic,
             React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: Reply }),
-            React.createElement(TopicPager, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
+            React.createElement(TopicPagerDown, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
             React.createElement(SendTopic_1.SendTopic, null));
     };
     return Post;
@@ -3493,6 +3493,52 @@ var TopicPager = /** @class */ (function (_super) {
     return TopicPager;
 }(RouteComponent));
 exports.TopicPager = TopicPager;
+var TopicPagerDown = /** @class */ (function (_super) {
+    __extends(TopicPagerDown, _super);
+    function TopicPagerDown(props, content) {
+        var _this = _super.call(this, props, content) || this;
+        _this.state = {
+            pager: [1, 2, 3, 4, 5]
+        };
+        return _this;
+    }
+    /**
+     * 将页码转换为 UI 界面。
+     * @param pageNumber 要转换的页码。
+     * @returns {JSX.Element} 页码对应的 UI 元素。
+     */
+    TopicPagerDown.prototype.generatePageLink = function (pageNumber) {
+        return React.createElement(PageModel, { pageNumber: pageNumber, topicid: this.props.topicid, curPage: this.props.page, totalPage: this.props.totalPage });
+    };
+    TopicPagerDown.prototype.componentWillReceiveProps = function (newProps) {
+        return __awaiter(this, void 0, void 0, function () {
+            var pages;
+            return __generator(this, function (_a) {
+                pages = Utility.getPager(newProps.page, newProps.totalPage);
+                console.log('new=' + pages);
+                this.setState({ pager: pages });
+                return [2 /*return*/];
+            });
+        });
+    };
+    TopicPagerDown.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var pages;
+            return __generator(this, function (_a) {
+                pages = Utility.getPager(this.props.page, this.props.totalPage);
+                this.setState({ pager: pages });
+                return [2 /*return*/];
+            });
+        });
+    };
+    TopicPagerDown.prototype.render = function () {
+        return React.createElement("div", { className: "row", style: { width: '1140px', height: '50px', marginTop: '15px', justifyContent: 'space-between', alignItems: 'flex-end' } },
+            React.createElement("div", { id: "pager" },
+                React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this)))));
+    };
+    return TopicPagerDown;
+}(RouteComponent));
+exports.TopicPagerDown = TopicPagerDown;
 var PageModel = /** @class */ (function (_super) {
     __extends(PageModel, _super);
     function PageModel() {
@@ -4382,9 +4428,26 @@ var SendTopic = /** @class */ (function (_super) {
                         React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-60px 0px" } })),
                     React.createElement("li", { title: "代码 <pre><code> Ctrl+K", className: "wmd-button", id: "wmd-code-button", style: { left: " 125px" } },
                         React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-80px 0px" } })),
+                    React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer2" }),
                     React.createElement("li", { title: "图片 <img> Ctrl+G", className: "wmd-button", id: "wmd-image-button", style: { left: "150px" } },
                         React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-100px 0px" } })),
-                    React.createElement("li", { className: "editor__menu--divider wmd-spacer2", id: "wmd-spacer2" }))),
+                    React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer2" }),
+                    React.createElement("li", { title: "数字列表 <ol> Ctrl+O", className: "wmd-button", id: "wmd-olist-button", style: { left: " 200px" } },
+                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-120px 0px" } })),
+                    React.createElement("li", { title: "普通列表 <ul> Ctrl+U", className: "wmd-button", id: "wmd-ulist-button", style: { left: "225px" } },
+                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: " -140px 0px" } })),
+                    React.createElement("li", { title: "标题 <h1>/<h2> Ctrl+H", className: "wmd-button", id: "wmd-heading-button", style: { left: "250px" } },
+                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-160px 0px" } })),
+                    React.createElement("li", { title: "分割线 <hr> Ctrl+R", className: "wmd-button", id: "wmd-hr-button", style: { left: "275px" } },
+                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-180px 0px" } })),
+                    React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer3" }),
+                    React.createElement("li", { title: "撤销 - Ctrl+Z", className: "wmd-button", id: "wmd-undo-button", style: { left: "325px" } },
+                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-200px 0px" } })),
+                    React.createElement("li", { title: "重做 - Ctrl+Y", className: "wmd-button", id: "wmd-redo-button", style: { left: "350px" } },
+                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-220px -20px" } })),
+                    React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer4" }),
+                    React.createElement("li", { title: "Markdown 语法", className: "wmd-button", id: "wmd-help-button", style: { left: " 400px" } },
+                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-300px 0px" } })))),
             React.createElement("form", null,
                 React.createElement("div", { id: "sendTopic-input" },
                     React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input" }))),
