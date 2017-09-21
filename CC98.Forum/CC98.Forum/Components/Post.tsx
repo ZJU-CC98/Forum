@@ -238,7 +238,7 @@ export class PostTopic extends RouteComponent<{ imgUrl, page, topicid }, State.P
     render() {
         return <div className="root">
             <div className="essay">
-                <AuthorMessage authorId={this.state.topicMessage.userId} AuthorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} />
+                <AuthorMessage authorId={this.state.topicMessage.userId} authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} />
                 <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount} />
                 <div id="ads"><img src={this.props.imgUrl}></img></div>
             </div>
@@ -250,18 +250,7 @@ export class PostTopic extends RouteComponent<{ imgUrl, page, topicid }, State.P
 	}
 }
 
-export class AuthorMessage extends RouteComponent<{ AuthorName, authorId, authorImgUrl }, State.AuthorMessageState, {}> {
-    constructor(props, content) {
-        super(props, content);
-        this.state = {
-            userName: "Mana",
-            fansNumber: 233,
-            imgUrl: this.props.authorImgUrl
-        }
-    }
-    render() {
-        let url = `/user/${this.props.authorId}`;
-        return <div className="row" id="authormes">
+
 export class AuthorMessage extends RouteComponent<{ authorName: string, authorId: number, authorImgUrl: string }, State.AuthorMessageState, {}> {
 	constructor(props, content) {
 		super(props, content);
@@ -278,7 +267,7 @@ export class AuthorMessage extends RouteComponent<{ authorName: string, authorId
             <div className="authorImg" ><a href={url}><img src={this.props.authorImgUrl}></img></a></div>
             <div className="column" style={{ marginLeft:"20px" }}>
                 <div className="row authorFans" style={{ justifyContent: "space-between" }}>
-                    <div id="authorName"><p><a href={url}>{this.props.AuthorName}</a></p></div>
+                    <div id="authorName"><p><a href={url}>{this.props.authorName}</a></p></div>
                     <div id="fans" className="row"><div style={{ marginRight: "3px" }}>粉丝</div><div style={{ color: "#EE0000" }}>{this.state.fansNumber}</div></div>
                 </div>
 
