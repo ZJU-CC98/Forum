@@ -1090,8 +1090,9 @@ body {
     justify-content: space-between;
 
     .user-center-navigation {
-        width: 15%;
+        width: 174px;
         height: 620px;
+        top: 100px;
         padding: 10px;
         background-color: white;
         border: 1px solid rgb(204,204,204);
@@ -1162,6 +1163,7 @@ body {
 
     .user-center-router {
         width: 72.5%;
+        margin-left: auto;
         padding: 30px;
         background-color: white;
         border: 1px solid rgb(204,204,204);
@@ -1414,6 +1416,131 @@ body {
 
         .user-center-myfavorites {
             @extend .user-center-myposts;
+        }
+
+        .user-center-config {
+            button {
+                background-color: rgb(240,240,240);
+
+                &:hover {
+                    background-color: rgb(230,230,230);
+                }
+
+                &:active {
+                    background-color: rgb(220,220,220);
+                }
+            }
+        }
+
+        hr {
+            border-top: 1px dashed #ccc;
+            margin: 30px 0;
+        }
+
+        .user-center-config-avatar {
+            display: flex;
+            align-items: center;
+
+            & > img {
+                width: 160px;
+                height: 160px;
+                border-radius: 80px;
+            }
+
+            & > div {
+                display: flex;
+                flex-direction: column;
+
+                & > button {
+                    width: 100px;
+                    height: 30px;
+                    margin-left: 30px;
+                    margin-bottom: 20px;
+                }
+
+                & > div {
+                    display: flex;
+                    align-items: center;
+
+                    button {
+                        width: 100px;
+                        height: 30px;
+                        margin-left: 30px;
+                        margin-right: 20px;
+                    }
+                }
+            }
+        }
+
+        .user-center-config-signature {
+            .signature-buttons {
+                display: flex;
+                align-items: center;
+                width: 100%;
+                border: 1px solid #E9E9E9;
+                height: 40px;
+                background-color: rgb(248,251,255);
+
+                button {
+                    cursor: pointer;
+                    background-color: white;
+                    margin-left: 30px;
+                    height: 15px;
+                }
+            }
+
+            #signature {
+                margin: 0px;
+                padding: 20px;
+                width: 787px;
+                height: 252px;
+                border: 1px solid rgb(233, 233, 233);
+                resize: vertical;
+            }
+
+            div {
+                display: flex;
+            }
+
+            p {
+                flex-grow: 1;
+                font-size: 12px;
+            }
+
+            #signatureUpload {
+                width: 100px;
+                height: 25px;
+                margin-top: -5px;
+                margin-right: -2px;
+            }
+        }
+
+        .user-center-config-password {
+            & > p {
+                font-size: 12px;
+                margin: 30px 0;
+            }
+
+            .password-inputs {
+                display: flex;
+                align-items: center;
+
+                p {
+                    font-size: 12px;
+                }
+            }
+
+            input {
+                width: 160px;
+                height: 30px;
+                margin: 0 20px;
+                border: 1px solid #E9E9E9;
+            }
+
+            button {
+                width: 100px;
+                height: 25px;
+            }
         }
     }
 }
@@ -2155,6 +2282,7 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
+    min-width: 1140px;
     margin: 0 0 20px 0;
     padding: 0px;
     justify-content: center;

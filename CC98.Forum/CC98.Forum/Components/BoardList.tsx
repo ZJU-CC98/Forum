@@ -9,10 +9,8 @@ export class BoardList extends React.Component<{}, { board: Board[] }> {
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
         this.state = {
-            board: [],
-		};
-
-		this.toggleCollapse = this.toggleCollapse.bind(this);
+            thisBoardState: [],
+        }
     }
 
     async componentDidMount() {
@@ -35,28 +33,42 @@ export class BoardList extends React.Component<{}, { board: Board[] }> {
         }
 
         this.setState({
-            board: board,
-        });
-	}
+            thisBoardState: board,
+        })
+    }
 
-	toggleCollapse() {
-		
-	}
+    generateRootBoard(item: Board) {    //返回一条父版信息
+        return <RootBoard board={item} />;
+    }
 
-    generateRootBoard(boards: Board) {
-        if (boards.id === 2 || boards.id === 29 || boards.id === 35 || boards.id === 37) {  //四个民工版 带折叠功能
-            return <div className="anArea">
-                <div className="column" style={{ border: '2px solid #e9e9e9' }}>
-                    <div className="row" style={{ marginTop: '15px', marginBottom: '15px' }}>
-                        <div className="areaName" >{boards.name}</div>
-                        <div className="areaName">主管：{boards.masters}</div>
-                        <div className="hideBoard" onClick={this.toggleCollapse}>+</div>
-                    </div>
-                    <ChildBoard boardid={boards.id} />
-                </div>
-            </div>;
-        }
-        else if (boards.id === 758) {    //似水流年版 没有子版
+    render() {
+
+        return <div className="boardList">
+            {this.state.thisBoardState.map(this.generateRootBoard)}
+        </div>
+    }
+}
+export class RootBoard extends React.Component<{ board }, { isExpanded: boolean }>{
+
+    constructor(props) {
+        super(props);
+        let boards = this.props.board;
+        if (boards.id === 2 || boards.id === 29 || boards.id === 35 || boards.id === 37) { this.state = { isExpanded: false, }; }//四个民工版默认状态为折叠
+        else { this.state = { isExpanded: true, }; }//其他版默认状态为展开
+        this.toggleIsExpanded = this.toggleIsExpanded.bind(this);//JS的this是可变的，取决于调用方法的地方，bind方法用于此刻的this值
+    }
+
+    toggleIsExpanded() {     // 定义一个方法修改展开状态
+        if (this.state.isExpanded) this.setState({ isExpanded: false, });
+        else this.setState({ isExpanded: true, });
+    }
+
+    render() {
+        let display = this.state.isExpanded ? "flex" : "none";    //根据 isExpanded 状态定义样式
+        let buttonContent = this.state.isExpanded ? "-" : "+";      //根据 isExpanded 状态定义按钮内容
+        let boards = this.props.board;
+
+        if (boards.id === 758) {    //似水流年版 没有子版
             return <div className="anArea">
                 <div className="column" style={{ border: '2px solid #e9e9e9' }}>
                     <div className="row" style={{ marginTop: '15px', marginBottom: '15px' }}>
@@ -72,34 +84,14 @@ export class BoardList extends React.Component<{}, { board: Board[] }> {
                     <div className="row" style={{ marginTop: '15px', marginBottom: '15px' }}>
                         <div className="areaName">{boards.name}</div>
                         <div className="areaName">主管：{boards.masters}</div>
+                        <div className="hideBoard" onClick={this.toggleIsExpanded} > {buttonContent}</div>
                     </div>
-                    <ChildBoard boardid={boards.id} />
+                    <div className="hiddenContent" style={{ display }}> <ChildBoard boardid={boards.id} /></div>
                 </div>
             </div>;
         }
     }
 
-	render() {
-
-        $(() => {
-
-	        const button = $('.hideBoard');
-	        button.click(function () {
-		        if ($(this).text() === '+') {
-			        $(this).parent().next().css('display', 'flex');
-			        $(this).text('-');
-		        } else {
-			        $(this).parent().next().css('display', 'none');
-			        $(this).text('+');
-		        };
-		        return false;   //阻止事件冒泡
-	        });
-        });
-
-        return <div className="boardList">
-            {this.state.board.map(this.generateRootBoard)}
-        </div>;
-    }
 }
 export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>{
     constructor(props) {
@@ -133,9 +125,8 @@ export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>
         </div>;
     }
     render() {
-	    const cid = `Board${this.props.boardid}`;
-	    if (this.props.boardid == 2 || this.props.boardid == 29 || this.props.boardid == 35 || this.props.boardid == 37) {
-            return <div className="noImgAreaContent" >
+        if (this.props.boardid === 2 || this.props.boardid === 29 || this.props.boardid === 35 || this.props.boardid === 37) {
+            return <div className="areaContent" >
                 {this.state.thisBoardState.map(this.convertNoImgChildBoard)}
             </div>;
         } else {
@@ -143,6 +134,5 @@ export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>
                 {this.state.thisBoardState.map(this.convertChildBoard)}
             </div>;
         }
-
-	}
+    }
 }
