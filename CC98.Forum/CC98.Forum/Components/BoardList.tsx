@@ -4,7 +4,7 @@ import * as Utility from '../Utility';
 import * as $ from 'jquery';
 //链接到的地址是  /list/boardid
 
-export class BoardList extends React.Component<{}, { board: Board[] }> {
+export class BoardList extends React.Component<{}, { thisBoardState: Board[] }> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
