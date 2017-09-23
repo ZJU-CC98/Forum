@@ -8010,11 +8010,28 @@ var Footer = /** @class */ (function (_super) {
     }
     Footer.prototype.render = function () {
         return React.createElement("div", { className: "footer" },
-            React.createElement("div", { className: "footerRow" }, "\u53CB\u60C5\u94FE\u63A5    |    \u6D59\u6C5F\u5927\u5B66    |    \u6D59\u6C5F\u5927\u5B66\u8BA1\u7B97\u673A\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u4F53\u80B2\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6587\u521B\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662"),
-            React.createElement("div", { className: "footerRow" }, "\u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662"),
-            React.createElement("div", { className: "footerRow" },
-                "Copyright \u00A9 2003-2017 CC98 Network Association. Email: contact@cc98.org ",
-                React.createElement("a", { href: "http://www.cc98.org/onlineshow.asp" }, " \u8BBA\u575B\u7EDF\u8BA1")));
+            React.createElement("div", { className: "row", style: { justifyContent: "center", alignItems: "center" } },
+                React.createElement("div", { className: "column" },
+                    React.createElement("div", { className: "footerRow" },
+                        React.createElement("div", { style: { marginRight: "15px", color: "#000" } }, "\u53CB\u60C5\u94FE\u63A5"),
+                        React.createElement("a", { href: "http://www.zju.edu.cn/" }, "\u6D59\u6C5F\u5927\u5B66"),
+                        "|",
+                        React.createElement("a", { href: "http://www.cs.zju.edu.cn/" }, "\u6D59\u6C5F\u5927\u5B66\u8BA1\u7B97\u673A\u5B66\u9662"),
+                        "    |    ",
+                        React.createElement("a", { href: "http://www.zju88.org/agent/index.do" }, "\u98D8\u6E3A\u6C34\u4E91\u95F4"),
+                        "  |",
+                        React.createElement("a", { href: "http://www.qsc.zju.edu.cn/" }, "\u6C42\u662F\u6F6E"),
+                        "|",
+                        React.createElement("a", { href: "http://luckweb.057101.com/bt2/index.asp" }, "\u7F18\u7F51"),
+                        "|",
+                        React.createElement("a", { href: "http://www.nexushd.org/login.php" }, "NexusHD"),
+                        "    |    ",
+                        React.createElement("a", { href: "https://www.zdgd.zju.edu.cn/" }, "\u6D59\u6C5F\u5927\u5B66\u5E7F\u64AD\u7535\u89C6\u7F51"),
+                        "|",
+                        React.createElement("a", { href: "http://zy.zju.edu.cn/" }, "\u6D59\u5927\u641C\u7D22")),
+                    React.createElement("div", { className: "footerRow" },
+                        "Copyright \u00A9 2003-2017 CC98 Network Association. Email: contact@cc98.org ",
+                        React.createElement("a", { href: "http://www.cc98.org/onlineshow.asp" }, " \u8BBA\u575B\u7EDF\u8BA1")))));
     };
     return Footer;
 }(React.Component));
