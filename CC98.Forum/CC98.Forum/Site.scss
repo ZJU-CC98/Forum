@@ -19,8 +19,9 @@ $color-black: rgb(32,32,32);
     align-items: center;
     justify-content: center;
     background-color: #FFFFFF;
-    min-width: 1140px;
+    width: 1140px;
     font-family: 微软雅黑;
+
 }
 
 .replyRoot {
@@ -74,6 +75,7 @@ $color-black: rgb(32,32,32);
     border-right: #EAEAEA solid thin;
     height: 100px;
     min-width: 1140px;
+    box-sizing: border-box;
 }
 
 .row {
@@ -150,7 +152,7 @@ $color-black: rgb(32,32,32);
     font-size: 12px;
     font-family: 微软雅黑;
     letter-spacing: 3px;
-    padding-left: 12px;
+    padding-left: 10px;
     border-radius: 5px;
     background: #67B3FF;
     border: 1px solid #2576A8;
@@ -159,7 +161,7 @@ $color-black: rgb(32,32,32);
 }
 
 #title {
-    max-width: 620px;
+    width: 646px;
     display: flex;
     border-right: $bgcolor solid thin;
 }
@@ -281,21 +283,30 @@ $color-black: rgb(32,32,32);
 }
 
 #ads {
-    min-width: 278px;
+    min-width: 250px;
     display: inline-flex;
 }
 
 #ads img {
     display: flex;
-    width: 240px;
-    margin-left: 20px;
+    width: 250px;
 }
 
 .content {
     display: flex;
     align-self: flex-start;
     flex-direction: column;
-    width: 1140px;
+    min-width: 1140px;
+    border-left: #EAEAEA solid thin;
+    border-right: #EAEAEA solid thin;
+    box-sizing: border-box;
+}
+.reply-content {
+    display: flex;
+    align-self: flex-start;
+    flex-direction: column;
+    min-width: 1140px;
+    box-sizing: border-box;
 }
 
 .substance {
@@ -370,6 +381,7 @@ $color-black: rgb(32,32,32);
     font-size: 12px;
     border-left: #EAEAEA solid thin;
     border-right: #EAEAEA solid thin;
+    box-sizing: border-box;
 }
 
 #userImage img {
@@ -404,6 +416,7 @@ $color-black: rgb(32,32,32);
     border-bottom: #EAEAEA solid thin;
     border-right: #EAEAEA solid thin;
     font-size: 14px;
+    box-sizing: border-box;
 }
 
 .buttonFont {
@@ -640,11 +653,11 @@ a {
 .blue {
     color: #fff;
     border: solid 1px #add8e6;
-    background-color: #8eefee;
+    background-color: #b2dfee;
 }
 
 .blue:hover {
-    background-color: #b2dfee;
+    background-color: #87CEEB;
 }
 
 .blue:active {
@@ -1805,7 +1818,7 @@ body {
 .focus-allNewPost {
     color: $color-thinBlack;
     min-height: 12px;
-    margin-top: 20px;
+
     font-size: 12px;
     display: flex;
     align-items: baseline;

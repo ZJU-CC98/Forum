@@ -70,8 +70,9 @@ export class SendTopic extends RouteComponent<{}, {}, {}>{
                 </div>
             </form>
 
-        </div>
+        </div><div className="row" style={{ justifyContent: "center" }}>
             <div id="post-topic-button" onClick={this.sendTopic} className="button blue" style={{ marginTop: "20px", width: "70px", letterSpacing: "5px" }}>回复</div>
-        </div>;
+</div>
+            </div>;
     }
 }

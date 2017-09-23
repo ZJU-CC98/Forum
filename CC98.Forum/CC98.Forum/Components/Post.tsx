@@ -122,6 +122,7 @@ export class Replier extends RouteComponent<{ userId, topicid, userName, replyTi
     }
     render() {
         let url = `/user/${this.props.userId}`;
+        let realUrl = encodeURIComponent(url);
         let curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userName}`;
         $(document).ready(function () {
 
@@ -145,7 +146,7 @@ export class Replier extends RouteComponent<{ userId, topicid, userName, replyTi
             <div className="row" style={{ width: "1140px", display: "flex", marginBottom: "10px" }}>
 
                 <div className="row mouse-userDetails" style={{ height: "250px", width: "380px" }} >
-                    <div className="authorImg" ><a href={url}><img src={this.props.userImgUrl}></img></a></div>
+                    <div className="authorImg" ><a href={realUrl}><img src={this.props.userImgUrl}></img></a></div>
                     <div className="userDetails" style={{ display: "none", position: "absolute", zindedx: "1" }}>
                         <UserDetails userName={this.props.userName} />
                     </div>
@@ -286,18 +287,17 @@ export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.
     returnProps(isTop, isNotice, title) {
         if (isTop == true && isNotice == false) {
             return <div id="title1" className="row" style={{ justifyContent: "flex-start" }}>
-                <div className="titleProp" style={{ width: "70px" }}>【置顶】</div>
+        
                 <div id="essayTitle">{title}</div>
             </div>;
         } else if (isTop == false && isNotice == true) {
             return <div id="title1" className="row" style={{ justifyContent: "flex-start" }}>
-                <div style={{ width: "70px" }} className="titleProp">【公告】</div>
+         
                 <div id="essayTitle">{title}</div>
             </div>;
         } else if (isTop == true && isNotice == true) {
             return <div id="title1" className="row" style={{ justifyContent: "flex-start" }}>
-                <div className="titleProp" style={{ width: "70px", height: "30px", whiteSpace: "nowrap" }}>【置顶】</div>
-                <div style={{ width: "70px", height: "30px", whiteSpace: "nowrap" }} className="titleProp">【公告】</div>
+
                 <div id="essayTitle">{title}</div>
             </div>;
         } else {
@@ -319,15 +319,7 @@ export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.
                     <div id="viewtimes"><span className="viewProp"><i className="fa fa-eye fa-lg fa-fw"></i>  </span> <span className="timeProp tagSize">{this.props.HitCount}次</span></div>
                 </div>
             </div>
-            <div className="column" style={{ width: '100px' }}>
-                <div className="row" style={{ marginTop: '10px' }}>
-                    <div id="like" className="tagSize"><i className="fa fa-star-o fa-lg"></i><span style={{ marginLeft: '10px' }}>收藏文章</span></div>
-                </div>
-                <div className="row" style={{ marginTop: '35px' }}>
-                    <div id="liked" className="row tagSize"><i className="fa fa-thumbs-o-up fa-lg fa-fw"></i>{this.state.likeNumber}</div>
-                    <div id="disliked" className="row tagSize"><i className="fa fa-thumbs-o-down fa-lg fa-fw"></i>{this.state.unlikeNumber}</div>
-                </div>
-            </div>
+       
         </div>;
     }
 }
@@ -366,7 +358,7 @@ export class ReplyContent extends RouteComponent<{ content, signature }, { likeN
     //
     render() {
         return <div className="root" style={{ marginTop: "-170px" }}>
-            <div className="content">
+            <div className="reply-content">
                 <div className="substance"><UbbContainer code={this.props.content} /></div>
                 <div className="signature"><UbbContainer code={this.props.signature} /></div>
                 <div className="comment">
@@ -452,7 +444,7 @@ export class TopicPager extends RouteComponent<{ page, topicid, totalPage }, { p
         this.setState({ pager: pages });
     } t
     render() {
-        return <div className="row" style={{ width: '1140px', height: '50px', marginTop: '15px', justifyContent: 'space-between', borderBottom: ' #EAEAEA solid thin', alignItems: 'flex-end' }}>
+        return <div className="row" style={{ minWidth: '1140px', height: '50px', marginTop: '15px', justifyContent: 'space-between', borderBottom: ' #EAEAEA solid thin', alignItems: 'flex-end', flexDirection: "row-reverse" }}>
             <div id="pager" >
                 <div className="row pagination">{this.state.pager.map(this.generatePageLink.bind(this))}</div>
             </div>
@@ -487,7 +479,7 @@ export class TopicPagerDown extends RouteComponent<{ page, topicid, totalPage },
         this.setState({ pager: pages });
     } t
     render() {
-        return <div className="row" style={{ width: '1140px', height: '50px', marginTop: '15px', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        return <div className="row" style={{ width: '1140px', height: '50px', marginTop: '35px', justifyContent: 'space-between', alignItems: 'flex-end' }}>
             <div id="pager" >
                 <div className="row pagination">{this.state.pager.map(this.generatePageLink.bind(this))}</div>
             </div>
