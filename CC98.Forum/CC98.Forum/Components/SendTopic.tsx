@@ -26,8 +26,7 @@ export class SendTopic extends RouteComponent<{}, {}, {}>{
         let mes = await fetch(url, {
             method: "POST",
             headers: {
-                'Authorization': "Bearer A4Az37llRpk2X88lj1yGD
-                uFR710ay_u2FOEjjcgwCC4teaEHdUm6-9Riph1efujX8nbh6l45WPXQmCAxribGiQGey2vr-Q5WpDJG5IQP_iMDgiXia7H0DDmQp1IcdlRNSlthcoNJVZMLvM3hMHfQucjlDkN4pMnkG7FWC53SjmffpxlDbZBfsgIPV1SLY0cdlb - wiOHUa - mn9lCr8iNuwwAmC4VvQ83uyA_XzgzeaEoCILNFfUrcXifySrnRGFaYbdXop7CRPVxddhgiqierb2Pf_xWBTE3gTZQRj4rRUpeXaC77CfWGh9h4jnQgnL5t_w9FnsJD12oLphHJE5rhV4HqTxaf49HCMk4VDomPEyOHptCPAXJ - 4pVca0Vv_NJ9TTAqLDW4ndE1xC_zXHgX87xMxsSxDREQ_4KgQm0LrP-CqtehvClrG7zKVMFwxCBz - V5DW1mtOouOmEf6ihjM8BFIjZn4oNyxS0uSp85gWTeIDiix5jSS4dWVjUe5xlzRGWklYhS96XIyoYMyCYoLG - cAp5Vny6WhpbsEIUsu0EnH6HDNQPkYwX - FQbYEgRrGBxZmaX_m - Q3aWftTjFLpzXQ0CC8oXSp4Ph8xiM_Zp - lZz7elYoCR9Iy2tDBUkLuZCMGUFwlxh5ue_8d94iAFXQ", 'ContentType': 'application/x-www-form-urlencoded' },
+                'Authorization': "Bearer A4Az37llRpk2X88lj1yGDuFR710ay_u2FOEjjcgwCC4teaEHdUm6-9Riph1efujX8nbh6l45WPXQmCAxribGiQGey2vr-Q5WpDJG5IQP_iMDgiXia7H0DDmQp1IcdlRNSlthcoNJVZMLvM3hMHfQucjlDkN4pMnkG7FWC53SjmffpxlDbZBfsgIPV1SLY0cdlb - wiOHUa - mn9lCr8iNuwwAmC4VvQ83uyA_XzgzeaEoCILNFfUrcXifySrnRGFaYbdXop7CRPVxddhgiqierb2Pf_xWBTE3gTZQRj4rRUpeXaC77CfWGh9h4jnQgnL5t_w9FnsJD12oLphHJE5rhV4HqTxaf49HCMk4VDomPEyOHptCPAXJ - 4pVca0Vv_NJ9TTAqLDW4ndE1xC_zXHgX87xMxsSxDREQ_4KgQm0LrP-CqtehvClrG7zKVMFwxCBz - V5DW1mtOouOmEf6ihjM8BFIjZn4oNyxS0uSp85gWTeIDiix5jSS4dWVjUe5xlzRGWklYhS96XIyoYMyCYoLG - cAp5Vny6WhpbsEIUsu0EnH6HDNQPkYwX - FQbYEgRrGBxZmaX_m - Q3aWftTjFLpzXQ0CC8oXSp4Ph8xiM_Zp - lZz7elYoCR9Iy2tDBUkLuZCMGUFwlxh5ue_8d94iAFXQ", 'ContentType': 'application/x-www-form-urlencoded' },
             body:content
         });
         console.log("已发送");
@@ -71,8 +70,9 @@ export class SendTopic extends RouteComponent<{}, {}, {}>{
                 </div>
             </form>
 
-        </div>
+        </div><div className="row" style={{ justifyContent: "center" }}>
             <div id="post-topic-button" onClick={this.sendTopic} className="button blue" style={{ marginTop: "20px", width: "70px", letterSpacing: "5px" }}>回复</div>
-        </div>;
+</div>
+            </div>;
     }
 }

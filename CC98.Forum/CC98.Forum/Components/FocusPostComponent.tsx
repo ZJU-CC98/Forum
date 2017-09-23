@@ -3,6 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
 import { FocusPost } from '../Props/FocusPost';
+import * as moment from 'moment';
 /**
  * 我关注的某个版面的单个主题
  */
@@ -21,7 +22,7 @@ export class FocusPostComponent extends React.Component<FocusPost> {
                         <div className="focus-post-title"><a href={topicUrl}>{this.props.title}</a></div>
                     </div>
                     <div className="focus-post-info2">
-                        <div className="focus-post-board">{this.props.boardName} / {this.props.createTime}</div>
+                <div className="focus-post-board">{this.props.boardName} / {moment(this.props.createTime).format('YYYY-MM-DD HH:mm:ss')}</div>
                         <div className="focus-post-response">
                             <div><i className="fa fa-thumbs-o-up" aria-hidden="true"></i>{this.props.likeCount}</div>
                             <div><i className="fa fa-thumbs-o-down" aria-hidden="true"></i>{this.props.dislikeCount}</div>
