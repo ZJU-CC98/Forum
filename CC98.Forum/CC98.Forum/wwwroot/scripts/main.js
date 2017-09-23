@@ -5135,10 +5135,9 @@ var RootBoard = /** @class */ (function (_super) {
         return _this;
     }
     RootBoard.prototype.toggleIsExpanded = function () {
-        if (this.state.isExpanded)
-            this.setState({ isExpanded: false, });
-        else
-            this.setState({ isExpanded: true, });
+        this.setState(function (prevState) { return ({
+            isExpanded: !prevState.isExpanded //setState() 可以接收一个函数，这个函数接受两个参数，第一个参数prevState表示上一个状态值，第二个参数props表示当前的props
+        }); });
     };
     RootBoard.prototype.render = function () {
         var display = this.state.isExpanded ? "flex" : "none"; //根据 isExpanded 状态定义样式
@@ -7748,12 +7747,20 @@ var Search = /** @class */ (function (_super) {
     Search.prototype.render = function () {
         $(document).ready(function () {
             var selectB = $('.select').eq(1);
+            var downArrow = $('.downArrow');
             var subB = $('ul').eq(1);
             var liB = subB.find('li');
             $(document).click(function () {
                 subB.css('display', 'none');
             });
             selectB.click(function () {
+                if (subB.css('display') === 'block')
+                    subB.css('display', 'none');
+                else
+                    subB.css('display', 'block');
+                return false; //阻止事件冒泡
+            });
+            downArrow.click(function () {
                 if (subB.css('display') === 'block')
                     subB.css('display', 'none');
                 else
