@@ -2726,7 +2726,7 @@ function isBottom() {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(17);
-module.exports = __webpack_require__(78);
+module.exports = __webpack_require__(79);
 
 
 /***/ }),
@@ -2777,9 +2777,10 @@ var MyMessage_1 = __webpack_require__(56);
 var AllNewPost_1 = __webpack_require__(66);
 var MyFocusBoard_1 = __webpack_require__(68);
 var Header_1 = __webpack_require__(71);
-var MainPage_1 = __webpack_require__(72);
-var User_1 = __webpack_require__(74);
-var Login_1 = __webpack_require__(77);
+var Footer_1 = __webpack_require__(72);
+var MainPage_1 = __webpack_require__(73);
+var User_1 = __webpack_require__(75);
+var Login_1 = __webpack_require__(78);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -2821,7 +2822,8 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { path: "/focus", component: MyFocusBoard_1.MyFocusBoard }),
                     React.createElement(react_router_dom_1.Route, { path: "/newtopics", component: AllNewPost_1.AllNewPost }),
                     React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }),
-                    React.createElement(react_router_dom_1.Route, { path: "/login", component: Login_1.Login }))));
+                    React.createElement(react_router_dom_1.Route, { path: "/login", component: Login_1.Login }),
+                    React.createElement(Footer_1.Footer, null))));
     };
     return App;
 }(React.Component));
@@ -8014,6 +8016,42 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var Footer = /** @class */ (function (_super) {
+    __extends(Footer, _super);
+    function Footer() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Footer.prototype.render = function () {
+        return React.createElement("div", { className: "footer" },
+            React.createElement("div", { className: "footerRow" }, "\u53CB\u60C5\u94FE\u63A5    |    \u6D59\u6C5F\u5927\u5B66    |    \u6D59\u6C5F\u5927\u5B66\u8BA1\u7B97\u673A\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u4F53\u80B2\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6587\u521B\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662"),
+            React.createElement("div", { className: "footerRow" }, "\u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662"),
+            React.createElement("div", { className: "footerRow" },
+                "Copyright \u00A9 2003-2017 CC98 Network Association. Email: contact@cc98.org ",
+                React.createElement("a", { href: "http://www.cc98.org/onlineshow.asp" }, " \u8BBA\u575B\u7EDF\u8BA1")));
+    };
+    return Footer;
+}(React.Component));
+exports.Footer = Footer;
+
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -8051,7 +8089,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var HotTopic_1 = __webpack_require__(73);
+var HotTopic_1 = __webpack_require__(74);
 var $ = __webpack_require__(5);
 var Recommended1 = /** @class */ (function (_super) {
     __extends(Recommended1, _super);
@@ -8350,7 +8388,7 @@ exports.MainPage = MainPage;
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8373,7 +8411,7 @@ exports.HotTopic = HotTopic;
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8394,8 +8432,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(2);
-var UserNavigation_1 = __webpack_require__(75);
-var UserRouter_1 = __webpack_require__(76);
+var UserNavigation_1 = __webpack_require__(76);
+var UserRouter_1 = __webpack_require__(77);
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
@@ -8416,7 +8454,7 @@ exports.User = User;
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8474,7 +8512,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8599,7 +8637,7 @@ var UserExact = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8712,7 +8750,7 @@ var LoginState = /** @class */ (function () {
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
