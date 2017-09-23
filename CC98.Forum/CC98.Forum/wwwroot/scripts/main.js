@@ -5295,19 +5295,36 @@ var $ = __webpack_require__(5);
  */
 var UserCenterNavigation = /** @class */ (function (_super) {
     __extends(UserCenterNavigation, _super);
-    function UserCenterNavigation() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function UserCenterNavigation(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            isScroll: false,
+            buttonClassName: ''
+        };
+        _this.handleScroll = _this.handleScroll.bind(_this);
+        return _this;
     }
     UserCenterNavigation.prototype.handleScroll = function (e) {
-        var navigation = document.getElementById('userCenterNavigation');
-        var btn = document.getElementById('scrollToTop');
-        if (window.pageYOffset > 234 && navigation.style.position !== 'fixed') {
-            navigation.style.position = 'fixed';
-            btn.classList.add('btn-show');
+        if (window.pageYOffset > 234 && !this.state.isScroll) {
+            this.setState({
+                isScroll: true,
+                buttonClassName: 'btn-show'
+            });
         }
-        if (window.pageYOffset < 234 && navigation.style.position && navigation.style.position !== 'inherit') {
-            navigation.style.position = 'inherit';
-            btn.classList.remove('btn-show');
+        if (window.pageYOffset < 234 && this.state.isScroll) {
+            this.setState(function (prevState) {
+                if (prevState.buttonClassName === '') {
+                    return {
+                        isScroll: false
+                    };
+                }
+                else {
+                    return {
+                        isScroll: false,
+                        buttonClassName: 'btn-disappare'
+                    };
+                }
+            });
         }
     };
     UserCenterNavigation.prototype.componentDidMount = function () {
@@ -5317,10 +5334,10 @@ var UserCenterNavigation = /** @class */ (function (_super) {
         document.removeEventListener('scroll', this.handleScroll);
     };
     UserCenterNavigation.prototype.scrollToTop = function () {
-        $('body,html').animate({ scrollTop: 0 }, 1000);
+        $('body,html').animate({ scrollTop: 0 }, 500);
     };
     UserCenterNavigation.prototype.render = function () {
-        return (React.createElement("div", { className: "user-center-navigation", id: "userCenterNavigation" },
+        return (React.createElement("div", { className: this.state.isScroll ? 'user-center-navigation user-center-navigation-fixed' : 'user-center-navigation', id: "userCenterNavigation" },
             React.createElement("ul", null,
                 React.createElement(CustomLink, { to: "/usercenter", label: "主页", activeOnlyWhenExact: true, myClassName: "fa-home" }),
                 React.createElement("hr", null),
@@ -5333,7 +5350,7 @@ var UserCenterNavigation = /** @class */ (function (_super) {
                 React.createElement(CustomLink, { to: "/usercenter/myfans", label: "我的粉丝", myClassName: "fa-users" }),
                 React.createElement("hr", null),
                 React.createElement(CustomLink, { to: "/usercenter/config", label: "功能设置", myClassName: "fa-cog" })),
-            React.createElement("button", { type: "button", id: "scrollToTop", onClick: this.scrollToTop }, "\u56DE\u5230\u9876\u90E8")));
+            React.createElement("button", { type: "button", id: "scrollToTop", className: this.state.buttonClassName, onClick: this.scrollToTop }, "\u56DE\u5230\u9876\u90E8")));
     };
     return UserCenterNavigation;
 }(React.Component));

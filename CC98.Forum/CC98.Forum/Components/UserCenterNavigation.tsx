@@ -12,19 +12,37 @@ import * as $ from 'jquery';
 /**
  * 用户中心侧边栏导航组件
  */
-export class UserCenterNavigation extends React.Component {
-    handleScroll(e) {
-        let navigation = document.getElementById('userCenterNavigation');
-        let btn = document.getElementById('scrollToTop');
+export class UserCenterNavigation extends React.Component<null, UserCenterNavigationState> {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isScroll: false,
+            buttonClassName: ''
+        };
+        this.handleScroll = this.handleScroll.bind(this);
+    }
 
-        if (window.pageYOffset > 234 && navigation.style.position !== 'fixed') {
-            navigation.style.position = 'fixed';
-            btn.classList.add('btn-show');
+    handleScroll(e) {
+        if (window.pageYOffset > 234 && !this.state.isScroll) {
+            this.setState({
+                isScroll: true,
+                buttonClassName: 'btn-show'
+            });
         }
 
-        if (window.pageYOffset < 234 && navigation.style.position && navigation.style.position !== 'inherit') {
-            navigation.style.position = 'inherit';
-            btn.classList.remove('btn-show');
+        if (window.pageYOffset < 234 && this.state.isScroll) {
+            this.setState((prevState) => {
+                if (prevState.buttonClassName === '') {
+                    return {
+                        isScroll: false
+                    }
+                } else {
+                    return {
+                        isScroll: false,
+                        buttonClassName: 'btn-disappare'
+                    }
+                }
+            });
         }
     }
 
@@ -37,11 +55,11 @@ export class UserCenterNavigation extends React.Component {
     }
 
     scrollToTop() {
-        $('body,html').animate({ scrollTop: 0 }, 1000);
+        $('body,html').animate({ scrollTop: 0 }, 500);
     }
 
     render() {
-        return (<div className="user-center-navigation" id="userCenterNavigation">
+        return (<div className={this.state.isScroll ? 'user-center-navigation user-center-navigation-fixed' : 'user-center-navigation'} id = "userCenterNavigation" >
             <ul>
                 <CustomLink to="/usercenter" label="主页" activeOnlyWhenExact={true} myClassName="fa-home" />
                 <hr />
@@ -55,7 +73,7 @@ export class UserCenterNavigation extends React.Component {
                 <hr />
                 <CustomLink to="/usercenter/config" label="功能设置" myClassName="fa-cog" />
             </ul>
-            <button type="button" id="scrollToTop" onClick={this.scrollToTop}>回到顶部</button>
+            <button type="button" id="scrollToTop" className={this.state.buttonClassName} onClick={this.scrollToTop}>回到顶部</button>
         </div>);
     }
 }
@@ -67,3 +85,8 @@ const CustomLink = ({ label, to, activeOnlyWhenExact = false, myClassName }) => 
         </li>
     )} />
 );
+
+interface UserCenterNavigationState {
+    isScroll: boolean;
+    buttonClassName: string;
+}
