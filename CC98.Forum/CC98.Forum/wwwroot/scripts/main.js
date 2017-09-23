@@ -4378,9 +4378,150 @@ exports.CodeTagHandler = CodeTagHandler;
 
 /***/ }),
 /* 36 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-throw new Error("Module parse failed: C:\\Users\\Mana\\Source\\Repos\\cc98\\Forum\\CC98.Forum\\CC98.Forum\\node_modules\\awesome-typescript-loader\\dist\\entry.js!C:\\Users\\Mana\\Source\\Repos\\cc98\\Forum\\CC98.Forum\\CC98.Forum\\Components\\SendTopic.tsx Unterminated string constant (80:53)\nYou may need an appropriate loader to handle this file type.\n|                                 method: \"POST\",\r\n|                                 headers: {\r\n|                                     'Authorization': \"Bearer A4Az37llRpk2X88lj1yGD,\r\n|                                     uFR710ay_u2FOEjjcgwCC4teaEHdUm6: -9, Riph1efujX8nbh6l45WPXQmCAxribGiQGey2vr: -Q5WpDJG5IQP_iMDgiXia7H0DDmQp1IcdlRNSlthcoNJVZMLvM3hMHfQucjlDkN4pMnkG7FWC53SjmffpxlDbZBfsgIPV1SLY0cdlb - wiOHUa - mn9lCr8iNuwwAmC4VvQ83uyA_XzgzeaEoCILNFfUrcXifySrnRGFaYbdXop7CRPVxddhgiqierb2Pf_xWBTE3gTZQRj4rRUpeXaC77CfWGh9h4jnQgnL5t_w9FnsJD12oLphHJE5rhV4HqTxaf49HCMk4VDomPEyOHptCPAXJ - 4, pVca0Vv_NJ9TTAqLDW4ndE1xC_zXHgX87xMxsSxDREQ_4KgQm0LrP: -CqtehvClrG7zKVMFwxCBz - V5DW1mtOouOmEf6ihjM8BFIjZn4oNyxS0uSp85gWTeIDiix5jSS4dWVjUe5xlzRGWklYhS96XIyoYMyCYoLG - cAp5Vny6WhpbsEIUsu0EnH6HDNQPkYwX - FQbYEgRrGBxZmaX_m - Q3aWftTjFLpzXQ0CC8oXSp4Ph8xiM_Zp - lZz7elYoCR9Iy2tDBUkLuZCMGUFwlxh5ue_8d94iAFXQ, \", 'ContentType': 'application/x-www-form-urlencoded' },: body, content: content\r\n|                                 }\r");
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var RouteComponent = /** @class */ (function (_super) {
+    __extends(RouteComponent, _super);
+    function RouteComponent(props, context) {
+        return _super.call(this, props, context) || this;
+    }
+    Object.defineProperty(RouteComponent.prototype, "match", {
+        get: function () {
+            return this.props.match;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return RouteComponent;
+}(React.Component));
+exports.RouteComponent = RouteComponent;
+var SendTopic = /** @class */ (function (_super) {
+    __extends(SendTopic, _super);
+    function SendTopic() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    SendTopic.prototype.sendTopic = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var url, content, mes;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        url = "http://api.cc98.org/Post/Topic/4728978";
+                        content = ' Content=aaaatest&ContentType=MarkDown';
+                        return [4 /*yield*/, fetch(url, {
+                                method: "POST",
+                                headers: {
+                                    'Authorization': "Bearer A4Az37llRpk2X88lj1yGDuFR710ay_u2FOEjjcgwCC4teaEHdUm6-9Riph1efujX8nbh6l45WPXQmCAxribGiQGey2vr-Q5WpDJG5IQP_iMDgiXia7H0DDmQp1IcdlRNSlthcoNJVZMLvM3hMHfQucjlDkN4pMnkG7FWC53SjmffpxlDbZBfsgIPV1SLY0cdlb - wiOHUa - mn9lCr8iNuwwAmC4VvQ83uyA_XzgzeaEoCILNFfUrcXifySrnRGFaYbdXop7CRPVxddhgiqierb2Pf_xWBTE3gTZQRj4rRUpeXaC77CfWGh9h4jnQgnL5t_w9FnsJD12oLphHJE5rhV4HqTxaf49HCMk4VDomPEyOHptCPAXJ - 4pVca0Vv_NJ9TTAqLDW4ndE1xC_zXHgX87xMxsSxDREQ_4KgQm0LrP-CqtehvClrG7zKVMFwxCBz - V5DW1mtOouOmEf6ihjM8BFIjZn4oNyxS0uSp85gWTeIDiix5jSS4dWVjUe5xlzRGWklYhS96XIyoYMyCYoLG - cAp5Vny6WhpbsEIUsu0EnH6HDNQPkYwX - FQbYEgRrGBxZmaX_m - Q3aWftTjFLpzXQ0CC8oXSp4Ph8xiM_Zp - lZz7elYoCR9Iy2tDBUkLuZCMGUFwlxh5ue_8d94iAFXQ", 'ContentType': 'application/x-www-form-urlencoded'
+                                },
+                                body: content
+                            })];
+                    case 1:
+                        mes = _a.sent();
+                        console.log("已发送");
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    SendTopic.prototype.render = function () {
+        /*  $(document).ready(function () {
+              $("#post-topic-button").click(async function () {
+  
+              });
+          });*/
+        return React.createElement("div", { style: { display: "flex", flexDirection: "column" } },
+            React.createElement("div", { id: "sendTopic" },
+                React.createElement("div", { id: "sendTopic-options" },
+                    React.createElement("ul", { className: "editor__menu clearfix", id: "wmd-button-row" },
+                        React.createElement("li", { title: "加粗 <strong> Ctrl+B", className: "wmd-button", id: "wmd-bold-button" },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "0px 0px" } })),
+                        React.createElement("li", { title: "斜体 <em> Ctrl+I", className: "wmd-button", id: "wmd-italic-button", style: { left: " 25px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: " -20px 0px" } })),
+                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer1" }),
+                        React.createElement("li", { title: "链接 <a> Ctrl+L", className: "wmd-button", id: "wmd-link-button", style: { left: "75px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-40px 0px" } })),
+                        React.createElement("li", { title: "引用 <blockquote> Ctrl+Q", className: "wmd-button", id: "wmd-quote-button", style: { left: " 100px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-60px 0px" } })),
+                        React.createElement("li", { title: "代码 <pre><code> Ctrl+K", className: "wmd-button", id: "wmd-code-button", style: { left: " 125px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-80px 0px" } })),
+                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer2" }),
+                        React.createElement("li", { title: "图片 <img> Ctrl+G", className: "wmd-button", id: "wmd-image-button", style: { left: "150px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-100px 0px" } })),
+                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer2" }),
+                        React.createElement("li", { title: "数字列表 <ol> Ctrl+O", className: "wmd-button", id: "wmd-olist-button", style: { left: " 200px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-120px 0px" } })),
+                        React.createElement("li", { title: "普通列表 <ul> Ctrl+U", className: "wmd-button", id: "wmd-ulist-button", style: { left: "225px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: " -140px 0px" } })),
+                        React.createElement("li", { title: "标题 <h1>/<h2> Ctrl+H", className: "wmd-button", id: "wmd-heading-button", style: { left: "250px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-160px 0px" } })),
+                        React.createElement("li", { title: "分割线 <hr> Ctrl+R", className: "wmd-button", id: "wmd-hr-button", style: { left: "275px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-180px 0px" } })),
+                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer3" }),
+                        React.createElement("li", { title: "撤销 - Ctrl+Z", className: "wmd-button", id: "wmd-undo-button", style: { left: "325px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-200px 0px" } })),
+                        React.createElement("li", { title: "重做 - Ctrl+Y", className: "wmd-button", id: "wmd-redo-button", style: { left: "350px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-220px -20px" } })),
+                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer4" }),
+                        React.createElement("li", { title: "Markdown 语法", className: "wmd-button", id: "wmd-help-button", style: { left: " 400px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-300px 0px" } })))),
+                React.createElement("form", null,
+                    React.createElement("div", null,
+                        React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input" })))),
+            React.createElement("div", { id: "post-topic-button", onClick: this.sendTopic, className: "button blue", style: { marginTop: "20px", width: "70px", letterSpacing: "5px" } }, "\u56DE\u590D"));
+    };
+    return SendTopic;
+}(RouteComponent));
+exports.SendTopic = SendTopic;
+
 
 /***/ }),
 /* 37 */
