@@ -1313,7 +1313,7 @@ function getTopic(topicid) {
                     return [4 /*yield*/, userMesResponse.json()];
                 case 6:
                     userMesJson = _a.sent();
-                    topicMessage = new State.TopicState(data[0].userName || '匿名', data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl, hitCount, data[0].userId);
+                    topicMessage = new State.TopicState(data[0].userName || '匿名', data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId);
                     return [2 /*return*/, topicMessage];
             }
         });
@@ -1322,7 +1322,7 @@ function getTopic(topicid) {
 exports.getTopic = getTopic;
 function getTopicContent(topicid, curPage) {
     return __awaiter(this, void 0, void 0, function () {
-        var startPage, endPage, topic, _a, replyCountResponse, replyCountJson, replyCount, content, post, topicNumberInPage, i, userMesResponse, userMesJson;
+        var startPage, endPage, topic, _a, replyCountResponse, replyCountJson, replyCount, content, post, topicNumberInPage, i, userMesResponse, userMesJson, purl;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -1366,7 +1366,7 @@ function getTopicContent(topicid, curPage) {
                     _b.label = 8;
                 case 8:
                     if (!(i < topicNumberInPage)) return [3 /*break*/, 13];
-                    if (!(content[i].id != null)) return [3 /*break*/, 11];
+                    if (!(content[i].name != null)) return [3 /*break*/, 11];
                     return [4 /*yield*/, fetch("http://api.cc98.org/User/" + content[i].userId)];
                 case 9:
                     userMesResponse = _b.sent();
@@ -1376,7 +1376,8 @@ function getTopicContent(topicid, curPage) {
                     post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName || '匿名', userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId);
                     return [3 /*break*/, 12];
                 case 11:
-                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', 0, '', '', null);
+                    purl = 'https://www.cc98.org/pic/anonymous.gif';
+                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', 0, purl, '', null);
                     _b.label = 12;
                 case 12:
                     i++;
@@ -2992,7 +2993,7 @@ var Post = /** @class */ (function (_super) {
             topic,
             React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: Reply }),
             React.createElement(TopicPagerDown, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
-            React.createElement(SendTopic_1.SendTopic, null));
+            React.createElement(SendTopic_1.SendTopic, { topicid: this.state.topicid }));
     };
     return Post;
 }(RouteComponent));
@@ -3131,7 +3132,8 @@ var UserDetails = /** @class */ (function (_super) {
         });
     };
     UserDetails.prototype.render = function () {
-        var userUrl = "/user/name/" + this.props.userName;
+        var url = "/user/name/" + this.props.userName;
+        var userUrl = encodeURIComponent(url);
         if (this.props.userName != null) {
             return React.createElement("div", { className: 'popup' },
                 React.createElement("div", { className: 'popup_title' },
@@ -4434,8 +4436,10 @@ var RouteComponent = /** @class */ (function (_super) {
 exports.RouteComponent = RouteComponent;
 var SendTopic = /** @class */ (function (_super) {
     __extends(SendTopic, _super);
-    function SendTopic() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function SendTopic(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = ({ content: '' });
+        return _this;
     }
     SendTopic.prototype.sendTopic = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -4443,29 +4447,32 @@ var SendTopic = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        url = "http://api.cc98.org/Post/Topic/4728978";
-                        content = ' Content=aaaatest&ContentType=MarkDown';
+                        url = "https://api.cc98.org/Post/Topic/" + this.props.topicid;
+                        console.log(url);
+                        content = "Content=" + this.state.content + "&ContentType=Markdown&Title=";
+                        console.log(content);
                         return [4 /*yield*/, fetch(url, {
                                 method: "POST",
                                 headers: {
-                                    'Authorization': "Bearer A4Az37llRpk2X88lj1yGDuFR710ay_u2FOEjjcgwCC4teaEHdUm6-9Riph1efujX8nbh6l45WPXQmCAxribGiQGey2vr-Q5WpDJG5IQP_iMDgiXia7H0DDmQp1IcdlRNSlthcoNJVZMLvM3hMHfQucjlDkN4pMnkG7FWC53SjmffpxlDbZBfsgIPV1SLY0cdlb - wiOHUa - mn9lCr8iNuwwAmC4VvQ83uyA_XzgzeaEoCILNFfUrcXifySrnRGFaYbdXop7CRPVxddhgiqierb2Pf_xWBTE3gTZQRj4rRUpeXaC77CfWGh9h4jnQgnL5t_w9FnsJD12oLphHJE5rhV4HqTxaf49HCMk4VDomPEyOHptCPAXJ - 4pVca0Vv_NJ9TTAqLDW4ndE1xC_zXHgX87xMxsSxDREQ_4KgQm0LrP-CqtehvClrG7zKVMFwxCBz - V5DW1mtOouOmEf6ihjM8BFIjZn4oNyxS0uSp85gWTeIDiix5jSS4dWVjUe5xlzRGWklYhS96XIyoYMyCYoLG - cAp5Vny6WhpbsEIUsu0EnH6HDNQPkYwX - FQbYEgRrGBxZmaX_m - Q3aWftTjFLpzXQ0CC8oXSp4Ph8xiM_Zp - lZz7elYoCR9Iy2tDBUkLuZCMGUFwlxh5ue_8d94iAFXQ", 'ContentType': 'application/x-www-form-urlencoded'
+                                    'Content-Type': 'application/x-www-form-urlencoded',
+                                    'Authorization': 'Bearer 6hJw-y6xd43wiHXeJqjnazvowgOqBGsHthZ-B1ybBjwLViFEGP_J3u0xKjzwin1THV6fHbf8nbHPzNnFWsgh1_grCkUQLebA3CAX3SFc_1Am_VeAJYqcy_Eq-HGraioZHT0NSCZ8svrzorFQuqb75oFJyfHWnFOyZyjFKi6HZdc1zsIwAXuCbmw_tFNFQYetO1lMJDKOWrj8-IPfNd_rO6Hx4zG-7zxvlw1Xk5UDR56tX7uOQRoopZoruBdoXVI8NDqByl5znk_q6Q6IeCSrx6Su0X5ljFiWVtw9F4VFMxoC6-I1IgT5hx9fhdGNrtSrpiA3SrC7aLZBAOdOADMXYZ8XXxC-aw45o7stf4J6DhnDxL02cc8e27VdlgMyXkZAh1dS-FQ107UJ2jTzUuW-vU6yDRfSvovo7k0axTEgbEcnMea30tO4Hu2yGeKKDuoo12bb7JlVrGDcMmkpdPlWTr1WVgiKbzNspp8hD85sJhqlNcrFpMvP0KrzedTZ1X-USgDd2Ha56hcvyLgL5ZEc0DFBaCe3K0ANdmb7eCxOTOeYwRROFlzyqd7O90gJeO46rz4KtNBFOdh78WwaohGSV-yKGDOoiojxLwl1jzHos-LIZ3DlUL-_P8hcIIFUtzf-rFR4rzyOFcBz2n7-AXCR3fgEdEGyhez-bl1C7Ng5aTY',
                                 },
                                 body: content
                             })];
                     case 1:
                         mes = _a.sent();
-                        console.log("已发送");
                         return [2 /*return*/];
                 }
             });
         });
     };
+    SendTopic.prototype.getInitialState = function () {
+        return { value: '' };
+    };
+    SendTopic.prototype.handleChange = function (event) {
+        this.setState({ content: event.target.value });
+    };
     SendTopic.prototype.render = function () {
-        /*  $(document).ready(function () {
-              $("#post-topic-button").click(async function () {
-  
-              });
-          });*/
         return React.createElement("div", { style: { display: "flex", flexDirection: "column" } },
             React.createElement("div", { id: "sendTopic" },
                 React.createElement("div", { id: "sendTopic-options" },
@@ -4503,9 +4510,9 @@ var SendTopic = /** @class */ (function (_super) {
                             React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-300px 0px" } })))),
                 React.createElement("form", null,
                     React.createElement("div", null,
-                        React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input" })))),
+                        React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input", value: this.state.content, onChange: this.handleChange.bind(this) })))),
             React.createElement("div", { className: "row", style: { justifyContent: "center" } },
-                React.createElement("div", { id: "post-topic-button", onClick: this.sendTopic, className: "button blue", style: { marginTop: "20px", width: "70px", letterSpacing: "5px" } }, "\u56DE\u590D")));
+                React.createElement("div", { id: "post-topic-button", onClick: this.sendTopic.bind(this), className: "button blue", style: { marginTop: "20px", width: "70px", letterSpacing: "5px" } }, "\u56DE\u590D")));
     };
     return SendTopic;
 }(RouteComponent));
@@ -8010,11 +8017,28 @@ var Footer = /** @class */ (function (_super) {
     }
     Footer.prototype.render = function () {
         return React.createElement("div", { className: "footer" },
-            React.createElement("div", { className: "footerRow" }, "\u53CB\u60C5\u94FE\u63A5    |    \u6D59\u6C5F\u5927\u5B66    |    \u6D59\u6C5F\u5927\u5B66\u8BA1\u7B97\u673A\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u4F53\u80B2\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6587\u521B\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662"),
-            React.createElement("div", { className: "footerRow" }, "\u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662    |    \u6D59\u6C5F\u5927\u5B66\u6316\u6398\u673A\u5B66\u9662"),
-            React.createElement("div", { className: "footerRow" },
-                "Copyright \u00A9 2003-2017 CC98 Network Association. Email: contact@cc98.org ",
-                React.createElement("a", { href: "http://www.cc98.org/onlineshow.asp" }, " \u8BBA\u575B\u7EDF\u8BA1")));
+            React.createElement("div", { className: "row", style: { justifyContent: "center", alignItems: "center" } },
+                React.createElement("div", { className: "column" },
+                    React.createElement("div", { className: "footerRow" },
+                        React.createElement("div", { style: { marginRight: "15px", color: "#000" } }, "\u53CB\u60C5\u94FE\u63A5"),
+                        React.createElement("a", { href: "http://www.zju.edu.cn/" }, "\u6D59\u6C5F\u5927\u5B66"),
+                        "|",
+                        React.createElement("a", { href: "http://www.cs.zju.edu.cn/" }, "\u6D59\u6C5F\u5927\u5B66\u8BA1\u7B97\u673A\u5B66\u9662"),
+                        "    |    ",
+                        React.createElement("a", { href: "http://www.zju88.org/agent/index.do" }, "\u98D8\u6E3A\u6C34\u4E91\u95F4"),
+                        "  |",
+                        React.createElement("a", { href: "http://www.qsc.zju.edu.cn/" }, "\u6C42\u662F\u6F6E"),
+                        "|",
+                        React.createElement("a", { href: "http://luckweb.057101.com/bt2/index.asp" }, "\u7F18\u7F51"),
+                        "|",
+                        React.createElement("a", { href: "http://www.nexushd.org/login.php" }, "NexusHD"),
+                        "    |    ",
+                        React.createElement("a", { href: "https://www.zdgd.zju.edu.cn/" }, "\u6D59\u6C5F\u5927\u5B66\u5E7F\u64AD\u7535\u89C6\u7F51"),
+                        "|",
+                        React.createElement("a", { href: "http://zy.zju.edu.cn/" }, "\u6D59\u5927\u641C\u7D22")),
+                    React.createElement("div", { className: "footerRow" },
+                        "Copyright \u00A9 2003-2017 CC98 Network Association. Email: contact@cc98.org ",
+                        React.createElement("a", { href: "http://www.cc98.org/onlineshow.asp" }, " \u8BBA\u575B\u7EDF\u8BA1")))));
     };
     return Footer;
 }(React.Component));

@@ -17,27 +17,34 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
         return (this.props as any).match;
     }
 }
-export class SendTopic extends RouteComponent<{}, {}, {}>{
-
+export class SendTopic extends RouteComponent<{ topicid }, { content: string }, {}>{
+    constructor(props) {
+        super(props);
+        this.state = ({ content:'' });
+    }
     async sendTopic() {
-        let url = `http://api.cc98.org/Post/Topic/4728978`;
-        let content = ' Content=aaaatest&ContentType=MarkDown' ;
-        
+        let url = `https://api.cc98.org/Post/Topic/${this.props.topicid}`;
+        console.log(url);
+        let content = `Content=${this.state.content}&ContentType=Markdown&Title=`;
+        console.log(content);
         let mes = await fetch(url, {
             method: "POST",
             headers: {
-                'Authorization': "Bearer A4Az37llRpk2X88lj1yGDuFR710ay_u2FOEjjcgwCC4teaEHdUm6-9Riph1efujX8nbh6l45WPXQmCAxribGiQGey2vr-Q5WpDJG5IQP_iMDgiXia7H0DDmQp1IcdlRNSlthcoNJVZMLvM3hMHfQucjlDkN4pMnkG7FWC53SjmffpxlDbZBfsgIPV1SLY0cdlb - wiOHUa - mn9lCr8iNuwwAmC4VvQ83uyA_XzgzeaEoCILNFfUrcXifySrnRGFaYbdXop7CRPVxddhgiqierb2Pf_xWBTE3gTZQRj4rRUpeXaC77CfWGh9h4jnQgnL5t_w9FnsJD12oLphHJE5rhV4HqTxaf49HCMk4VDomPEyOHptCPAXJ - 4pVca0Vv_NJ9TTAqLDW4ndE1xC_zXHgX87xMxsSxDREQ_4KgQm0LrP-CqtehvClrG7zKVMFwxCBz - V5DW1mtOouOmEf6ihjM8BFIjZn4oNyxS0uSp85gWTeIDiix5jSS4dWVjUe5xlzRGWklYhS96XIyoYMyCYoLG - cAp5Vny6WhpbsEIUsu0EnH6HDNQPkYwX - FQbYEgRrGBxZmaX_m - Q3aWftTjFLpzXQ0CC8oXSp4Ph8xiM_Zp - lZz7elYoCR9Iy2tDBUkLuZCMGUFwlxh5ue_8d94iAFXQ", 'ContentType': 'application/x-www-form-urlencoded' },
-            body:content
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Bearer 6hJw-y6xd43wiHXeJqjnazvowgOqBGsHthZ-B1ybBjwLViFEGP_J3u0xKjzwin1THV6fHbf8nbHPzNnFWsgh1_grCkUQLebA3CAX3SFc_1Am_VeAJYqcy_Eq-HGraioZHT0NSCZ8svrzorFQuqb75oFJyfHWnFOyZyjFKi6HZdc1zsIwAXuCbmw_tFNFQYetO1lMJDKOWrj8-IPfNd_rO6Hx4zG-7zxvlw1Xk5UDR56tX7uOQRoopZoruBdoXVI8NDqByl5znk_q6Q6IeCSrx6Su0X5ljFiWVtw9F4VFMxoC6-I1IgT5hx9fhdGNrtSrpiA3SrC7aLZBAOdOADMXYZ8XXxC-aw45o7stf4J6DhnDxL02cc8e27VdlgMyXkZAh1dS-FQ107UJ2jTzUuW-vU6yDRfSvovo7k0axTEgbEcnMea30tO4Hu2yGeKKDuoo12bb7JlVrGDcMmkpdPlWTr1WVgiKbzNspp8hD85sJhqlNcrFpMvP0KrzedTZ1X-USgDd2Ha56hcvyLgL5ZEc0DFBaCe3K0ANdmb7eCxOTOeYwRROFlzyqd7O90gJeO46rz4KtNBFOdh78WwaohGSV-yKGDOoiojxLwl1jzHos-LIZ3DlUL-_P8hcIIFUtzf-rFR4rzyOFcBz2n7-AXCR3fgEdEGyhez-bl1C7Ng5aTY',
+
+            },
+            body: content
         });
-        console.log("已发送");
+    }
+    getInitialState(){
+        return { value: '' };
+    }
+    handleChange(event) {
+        this.setState({ content: event.target.value });
     }
     render() {
 
-      /*  $(document).ready(function () {
-            $("#post-topic-button").click(async function () {
-
-            });
-        });*/
 
         return <div style={{ display: "flex", flexDirection: "column" }}><div id="sendTopic">
             <div id="sendTopic-options">
@@ -65,14 +72,14 @@ export class SendTopic extends RouteComponent<{}, {}, {}>{
             </div>
             <form>
                 <div >
-                    <textarea id="sendTopic-input" name="sendTopic-input">
-                    </textarea>
+                    <textarea id="sendTopic-input" name="sendTopic-input" value={this.state.content} onChange={this.handleChange.bind(this)}/>
+                   
                 </div>
             </form>
 
         </div><div className="row" style={{ justifyContent: "center" }}>
-            <div id="post-topic-button" onClick={this.sendTopic} className="button blue" style={{ marginTop: "20px", width: "70px", letterSpacing: "5px" }}>回复</div>
-</div>
-            </div>;
+                <div id="post-topic-button" onClick={this.sendTopic.bind(this)} className="button blue" style={{ marginTop: "20px", width: "70px", letterSpacing: "5px" }}>回复</div>
+            </div>
+        </div>;
     }
 }

@@ -71,7 +71,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
             {topic}
             <Route path="/topic/:topicid/:page?" component={Reply} />
             <TopicPagerDown page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
-            <SendTopic />
+            <SendTopic topicid={this.state.topicid} />
         </div>
             ;
 
@@ -187,7 +187,8 @@ export class UserDetails extends RouteComponent<{ userName }, { portraitUrl, use
         }
     }
     render() {
-        let userUrl = `/user/name/${this.props.userName}`;
+        let url = `/user/name/${this.props.userName}`;
+        let userUrl = encodeURIComponent(url);
         if (this.props.userName != null) {
             return <div className='popup'>
                 <div className='popup_title'>

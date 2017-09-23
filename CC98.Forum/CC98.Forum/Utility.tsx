@@ -7,19 +7,19 @@ import {
     Route,
     Link
 } from 'react-router-dom';
-import * as $ from 'jquery'; 
+import * as $ from 'jquery';
 import { FocusPost } from './Props/FocusPost';
 
 
 
 
-export async function getBoardTopicAsync(curPage,boardid) {
+export async function getBoardTopicAsync(curPage, boardid) {
     const startPage = (curPage - 1) * 20;
     const endPage = curPage * 20 - 1;
     const boardtopics: State.TopicTitleAndContentState[] = [];
     const url = `http://api.cc98.org/Topic/Board/${boardid}`;
     const response = await fetch(url,
-	    { headers: { Range: `bytes=${startPage}-${endPage}` } });
+        { headers: { Range: `bytes=${startPage}-${endPage}` } });
     const data: State.TopicTitleAndContentState[] = await response.json();
     const totalTopicCountResponse = await fetch(`http://api.cc98.org/Board/${boardid}`);
     const totalTopicCountJson = await totalTopicCountResponse.json();
@@ -45,18 +45,18 @@ export async function getTopic(topicid: number) {
     const hitCountResponse = await fetch(`http://api.cc98.org/Topic/${topicid}`);
     const hitCountJson = await hitCountResponse.json();
     const hitCount = hitCountJson.hitCount;
-	const userMesResponse = await fetch(`http://api.cc98.org/User/${data[0].userId}`);
+    const userMesResponse = await fetch(`http://api.cc98.org/User/${data[0].userId}`);
     const userMesJson = await userMesResponse.json();
-    const topicMessage = new State.TopicState(data[0].userName || '匿名', data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl, hitCount,data[0].userId);
+    const topicMessage = new State.TopicState(data[0].userName || '匿名', data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId);
     return topicMessage;
 }
 export async function getTopicContent(topicid: number, curPage: number) {
     const startPage = (curPage - 1) * 10;
-	const endPage = curPage * 10 - 1;
+    const endPage = curPage * 10 - 1;
 
-	const topic = curPage !== 1
-		? await fetch(`http://api.cc98.org/Post/Topic/${topicid}`, { headers: { Range: `bytes=${startPage}-${endPage}` } })
-		: await fetch(`http://api.cc98.org/Post/Topic/${topicid}`, { headers: { Range: `bytes=${1}-${9}` } });
+    const topic = curPage !== 1
+        ? await fetch(`http://api.cc98.org/Post/Topic/${topicid}`, { headers: { Range: `bytes=${startPage}-${endPage}` } })
+        : await fetch(`http://api.cc98.org/Post/Topic/${topicid}`, { headers: { Range: `bytes=${1}-${9}` } });
 
     const replyCountResponse = await fetch(`http://api.cc98.org/Topic/${topicid}`);
     const replyCountJson = await replyCountResponse.json();
@@ -74,15 +74,13 @@ export async function getTopicContent(topicid: number, curPage: number) {
         topicNumberInPage = (replyCount - (curPage - 1) * 10);
     }
     for (let i = 0; i < topicNumberInPage; i++) {
-        if (content[i].id != null) {
-  const userMesResponse = await fetch(`http://api.cc98.org/User/${content[i].userId}`);
-        const userMesJson = await userMesResponse.json();
-        
-      
-
-        post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName || '匿名', userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode,content[i].userId);
+        if (content[i].name != null) {
+            const userMesResponse = await fetch(`http://api.cc98.org/User/${content[i].userId}`);
+            const userMesJson = await userMesResponse.json();
+            post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName || '匿名', userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId);
         } else {
-            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId,  '匿名', 0,'', '', null);
+            let purl = 'https://www.cc98.org/pic/anonymous.gif';
+            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', 0, purl, '', null);
         }
     }
 
@@ -130,7 +128,7 @@ export function getPager(curPage, totalPage) {
             if (curPage == undefined || curPage == 1) {
                 pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, - 2, -4];
             } else if (curPage > 1 && curPage < 6) {
-                pages = [-3, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ,- 2, -4];
+                pages = [-3, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, - 2, -4];
             } else {
                 pages = [-3, -1, curPage - 4, curPage - 3, curPage - 2, curPage - 1, curPage, curPage + 1, curPage + 2, curPage + 3, curPage + 4, curPage + 5, - 2, -4];
             }
@@ -154,7 +152,7 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
         if (content[i].userName == userName) {
             const userMesResponse = await fetch(`http://api.cc98.org/User/${content[i].userId}`);
             const userMesJson = await userMesResponse.json();
-            post[j] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName || '匿名', userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode,content[i].userId);
+            post[j] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName || '匿名', userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId);
             j++;
         }
     }
