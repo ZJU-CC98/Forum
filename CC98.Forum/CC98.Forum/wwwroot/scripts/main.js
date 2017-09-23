@@ -2984,11 +2984,11 @@ var Post = /** @class */ (function (_super) {
         if (this.state.page == 1) {
             topic = React.createElement(PostTopic, { imgUrl: "/images/ads.jpg", page: this.state.page, topicid: this.state.topicid });
         }
-        return React.createElement("div", { className: "center", style: { overflowX: "scroll", minWidth: "1140px", marginTop: "40px" } },
+        return React.createElement("div", { className: "center", style: { minWidth: "1140px", marginTop: "40px" } },
             React.createElement(TopicPager, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
             topic,
             React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: Reply }),
-            React.createElement(TopicPager, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
+            React.createElement(TopicPagerDown, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
             React.createElement(SendTopic_1.SendTopic, null));
     };
     return Post;
@@ -3493,6 +3493,52 @@ var TopicPager = /** @class */ (function (_super) {
     return TopicPager;
 }(RouteComponent));
 exports.TopicPager = TopicPager;
+var TopicPagerDown = /** @class */ (function (_super) {
+    __extends(TopicPagerDown, _super);
+    function TopicPagerDown(props, content) {
+        var _this = _super.call(this, props, content) || this;
+        _this.state = {
+            pager: [1, 2, 3, 4, 5]
+        };
+        return _this;
+    }
+    /**
+     * 将页码转换为 UI 界面。
+     * @param pageNumber 要转换的页码。
+     * @returns {JSX.Element} 页码对应的 UI 元素。
+     */
+    TopicPagerDown.prototype.generatePageLink = function (pageNumber) {
+        return React.createElement(PageModel, { pageNumber: pageNumber, topicid: this.props.topicid, curPage: this.props.page, totalPage: this.props.totalPage });
+    };
+    TopicPagerDown.prototype.componentWillReceiveProps = function (newProps) {
+        return __awaiter(this, void 0, void 0, function () {
+            var pages;
+            return __generator(this, function (_a) {
+                pages = Utility.getPager(newProps.page, newProps.totalPage);
+                console.log('new=' + pages);
+                this.setState({ pager: pages });
+                return [2 /*return*/];
+            });
+        });
+    };
+    TopicPagerDown.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var pages;
+            return __generator(this, function (_a) {
+                pages = Utility.getPager(this.props.page, this.props.totalPage);
+                this.setState({ pager: pages });
+                return [2 /*return*/];
+            });
+        });
+    };
+    TopicPagerDown.prototype.render = function () {
+        return React.createElement("div", { className: "row", style: { width: '1140px', height: '50px', marginTop: '15px', justifyContent: 'space-between', alignItems: 'flex-end' } },
+            React.createElement("div", { id: "pager" },
+                React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this)))));
+    };
+    return TopicPagerDown;
+}(RouteComponent));
+exports.TopicPagerDown = TopicPagerDown;
 var PageModel = /** @class */ (function (_super) {
     __extends(PageModel, _super);
     function PageModel() {
@@ -4332,69 +4378,9 @@ exports.CodeTagHandler = CodeTagHandler;
 
 /***/ }),
 /* 36 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var RouteComponent = /** @class */ (function (_super) {
-    __extends(RouteComponent, _super);
-    function RouteComponent(props, context) {
-        return _super.call(this, props, context) || this;
-    }
-    Object.defineProperty(RouteComponent.prototype, "match", {
-        get: function () {
-            return this.props.match;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return RouteComponent;
-}(React.Component));
-exports.RouteComponent = RouteComponent;
-var SendTopic = /** @class */ (function (_super) {
-    __extends(SendTopic, _super);
-    function SendTopic() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    SendTopic.prototype.render = function () {
-        return React.createElement("div", { id: "sendTopic" },
-            React.createElement("div", { id: "sendTopic-options" },
-                React.createElement("ul", { className: "editor__menu clearfix", id: "wmd-button-row" },
-                    React.createElement("li", { title: "加粗 <strong> Ctrl+B", className: "wmd-button", id: "wmd-bold-button" },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "0px 0px" } })),
-                    React.createElement("li", { title: "斜体 <em> Ctrl+I", className: "wmd-button", id: "wmd-italic-button", style: { left: " 25px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: " -20px 0px" } })),
-                    React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer1" }),
-                    React.createElement("li", { title: "链接 <a> Ctrl+L", className: "wmd-button", id: "wmd-link-button", style: { left: "75px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-40px 0px" } })),
-                    React.createElement("li", { title: "引用 <blockquote> Ctrl+Q", className: "wmd-button", id: "wmd-quote-button", style: { left: " 100px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-60px 0px" } })),
-                    React.createElement("li", { title: "代码 <pre><code> Ctrl+K", className: "wmd-button", id: "wmd-code-button", style: { left: " 125px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-80px 0px" } })),
-                    React.createElement("li", { title: "图片 <img> Ctrl+G", className: "wmd-button", id: "wmd-image-button", style: { left: "150px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-100px 0px" } })),
-                    React.createElement("li", { className: "editor__menu--divider wmd-spacer2", id: "wmd-spacer2" }))),
-            React.createElement("form", null,
-                React.createElement("div", { id: "sendTopic-input" },
-                    React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input" }))),
-            React.createElement("div", { id: "sendTopic-send" }));
-    };
-    return SendTopic;
-}(RouteComponent));
-exports.SendTopic = SendTopic;
-
+throw new Error("Module parse failed: C:\\Users\\Mana\\Source\\Repos\\cc98\\Forum\\CC98.Forum\\CC98.Forum\\node_modules\\awesome-typescript-loader\\dist\\entry.js!C:\\Users\\Mana\\Source\\Repos\\cc98\\Forum\\CC98.Forum\\CC98.Forum\\Components\\SendTopic.tsx Unterminated string constant (80:53)\nYou may need an appropriate loader to handle this file type.\n|                                 method: \"POST\",\r\n|                                 headers: {\r\n|                                     'Authorization': \"Bearer A4Az37llRpk2X88lj1yGD,\r\n|                                     uFR710ay_u2FOEjjcgwCC4teaEHdUm6: -9, Riph1efujX8nbh6l45WPXQmCAxribGiQGey2vr: -Q5WpDJG5IQP_iMDgiXia7H0DDmQp1IcdlRNSlthcoNJVZMLvM3hMHfQucjlDkN4pMnkG7FWC53SjmffpxlDbZBfsgIPV1SLY0cdlb - wiOHUa - mn9lCr8iNuwwAmC4VvQ83uyA_XzgzeaEoCILNFfUrcXifySrnRGFaYbdXop7CRPVxddhgiqierb2Pf_xWBTE3gTZQRj4rRUpeXaC77CfWGh9h4jnQgnL5t_w9FnsJD12oLphHJE5rhV4HqTxaf49HCMk4VDomPEyOHptCPAXJ - 4, pVca0Vv_NJ9TTAqLDW4ndE1xC_zXHgX87xMxsSxDREQ_4KgQm0LrP: -CqtehvClrG7zKVMFwxCBz - V5DW1mtOouOmEf6ihjM8BFIjZn4oNyxS0uSp85gWTeIDiix5jSS4dWVjUe5xlzRGWklYhS96XIyoYMyCYoLG - cAp5Vny6WhpbsEIUsu0EnH6HDNQPkYwX - FQbYEgRrGBxZmaX_m - Q3aWftTjFLpzXQ0CC8oXSp4Ph8xiM_Zp - lZz7elYoCR9Iy2tDBUkLuZCMGUFwlxh5ue_8d94iAFXQ, \", 'ContentType': 'application/x-www-form-urlencoded' },: body, content: content\r\n|                                 }\r");
 
 /***/ }),
 /* 37 */
@@ -5309,19 +5295,36 @@ var $ = __webpack_require__(5);
  */
 var UserCenterNavigation = /** @class */ (function (_super) {
     __extends(UserCenterNavigation, _super);
-    function UserCenterNavigation() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function UserCenterNavigation(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            isScroll: false,
+            buttonClassName: ''
+        };
+        _this.handleScroll = _this.handleScroll.bind(_this);
+        return _this;
     }
     UserCenterNavigation.prototype.handleScroll = function (e) {
-        var navigation = document.getElementById('userCenterNavigation');
-        var btn = document.getElementById('scrollToTop');
-        if (window.pageYOffset > 234 && navigation.style.position !== 'fixed') {
-            navigation.style.position = 'fixed';
-            btn.classList.add('btn-show');
+        if (window.pageYOffset > 234 && !this.state.isScroll) {
+            this.setState({
+                isScroll: true,
+                buttonClassName: 'btn-show'
+            });
         }
-        if (window.pageYOffset < 234 && navigation.style.position && navigation.style.position !== 'inherit') {
-            navigation.style.position = 'inherit';
-            btn.classList.remove('btn-show');
+        if (window.pageYOffset < 234 && this.state.isScroll) {
+            this.setState(function (prevState) {
+                if (prevState.buttonClassName === '') {
+                    return {
+                        isScroll: false
+                    };
+                }
+                else {
+                    return {
+                        isScroll: false,
+                        buttonClassName: 'btn-disappare'
+                    };
+                }
+            });
         }
     };
     UserCenterNavigation.prototype.componentDidMount = function () {
@@ -5331,10 +5334,10 @@ var UserCenterNavigation = /** @class */ (function (_super) {
         document.removeEventListener('scroll', this.handleScroll);
     };
     UserCenterNavigation.prototype.scrollToTop = function () {
-        $('body,html').animate({ scrollTop: 0 }, 1000);
+        $('body,html').animate({ scrollTop: 0 }, 500);
     };
     UserCenterNavigation.prototype.render = function () {
-        return (React.createElement("div", { className: "user-center-navigation", id: "userCenterNavigation" },
+        return (React.createElement("div", { className: this.state.isScroll ? 'user-center-navigation user-center-navigation-fixed' : 'user-center-navigation', id: "userCenterNavigation" },
             React.createElement("ul", null,
                 React.createElement(CustomLink, { to: "/usercenter", label: "主页", activeOnlyWhenExact: true, myClassName: "fa-home" }),
                 React.createElement("hr", null),
@@ -5347,7 +5350,7 @@ var UserCenterNavigation = /** @class */ (function (_super) {
                 React.createElement(CustomLink, { to: "/usercenter/myfans", label: "我的粉丝", myClassName: "fa-users" }),
                 React.createElement("hr", null),
                 React.createElement(CustomLink, { to: "/usercenter/config", label: "功能设置", myClassName: "fa-cog" })),
-            React.createElement("button", { type: "button", id: "scrollToTop", onClick: this.scrollToTop }, "\u56DE\u5230\u9876\u90E8")));
+            React.createElement("button", { type: "button", id: "scrollToTop", className: this.state.buttonClassName, onClick: this.scrollToTop }, "\u56DE\u5230\u9876\u90E8")));
     };
     return UserCenterNavigation;
 }(React.Component));

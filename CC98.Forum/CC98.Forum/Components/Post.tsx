@@ -66,11 +66,11 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         if (this.state.page == 1) {
             topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} />;
         }
-        return <div className="center" style={{ overflowX: "scroll", minWidth: "1140px", marginTop: "40px" }} >
+        return <div className="center" style={{  minWidth: "1140px", marginTop: "40px" }} >
             <TopicPager page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
             {topic}
             <Route path="/topic/:topicid/:page?" component={Reply} />
-            <TopicPager page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
+            <TopicPagerDown page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
             <SendTopic />
         </div>
             ;
@@ -453,6 +453,41 @@ export class TopicPager extends RouteComponent<{ page, topicid, totalPage }, { p
     } t
     render() {
         return <div className="row" style={{ width: '1140px', height: '50px', marginTop: '15px', justifyContent: 'space-between', borderBottom: ' #EAEAEA solid thin', alignItems: 'flex-end' }}>
+            <div id="pager" >
+                <div className="row pagination">{this.state.pager.map(this.generatePageLink.bind(this))}</div>
+            </div>
+        </div>;
+    }
+}
+export class TopicPagerDown extends RouteComponent<{ page, topicid, totalPage }, { pager }, {}> {
+    constructor(props, content) {
+        super(props, content);
+        this.state = {
+            pager: [1, 2, 3, 4, 5]
+        };
+    }
+	/**
+	 * 将页码转换为 UI 界面。
+	 * @param pageNumber 要转换的页码。
+	 * @returns {JSX.Element} 页码对应的 UI 元素。
+	 */
+
+
+    generatePageLink(pageNumber: number) {
+
+        return <PageModel pageNumber={pageNumber} topicid={this.props.topicid} curPage={this.props.page} totalPage={this.props.totalPage} />;
+    }
+    async componentWillReceiveProps(newProps) {
+        const pages = Utility.getPager(newProps.page, newProps.totalPage);
+        console.log('new=' + pages);
+        this.setState({ pager: pages });
+    }
+    async componentDidMount() {
+        const pages = Utility.getPager(this.props.page, this.props.totalPage);
+        this.setState({ pager: pages });
+    } t
+    render() {
+        return <div className="row" style={{ width: '1140px', height: '50px', marginTop: '15px', justifyContent: 'space-between', alignItems: 'flex-end' }}>
             <div id="pager" >
                 <div className="row pagination">{this.state.pager.map(this.generatePageLink.bind(this))}</div>
             </div>
