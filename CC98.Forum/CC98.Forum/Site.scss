@@ -2044,10 +2044,13 @@ body {
     text-align: center;
     background-color: rgb(242,242,242);
     padding-top: 15px;
-    position: fixed;
-    bottom: 0; //控制footer永远在底部，即使在页面高度不够时
     width: 100%;
     min-width: 1140px;
+}
+
+.fixed-bottom {     //用于控制footer在页面底部
+    position: fixed;
+    bottom: 0;
 }
 
 .footerRow {
