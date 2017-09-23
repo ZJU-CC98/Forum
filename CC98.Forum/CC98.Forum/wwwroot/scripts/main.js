@@ -1683,6 +1683,12 @@ exports.UserCenterExactActivitiesPost = UserCenterExactActivitiesPost;
 
 /***/ }),
 /* 7 */
+/***/ (function(module, exports) {
+
+module.exports = moment;
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1744,12 +1750,6 @@ exports.UbbContainer = UbbContainer;
 
 
 /***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-module.exports = moment;
-
-/***/ }),
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1803,7 +1803,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(4);
-var moment = __webpack_require__(8);
+var moment = __webpack_require__(7);
 var react_router_dom_1 = __webpack_require__(2);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
@@ -2178,12 +2178,13 @@ var ListContent = /** @class */ (function (_super) {
     ListContent.prototype.render = function () {
         return React.createElement("div", { className: "listContent " },
             React.createElement("div", { className: "row", style: { justifyContent: 'space-between', } },
-                React.createElement("div", { className: "row", style: { height: '40px', marginTop: '5px', alignItems: 'center' } },
-                    React.createElement("button", { className: "listContentTag" }, "\u5168\u90E8"),
-                    React.createElement("button", { className: "listContentTag" }, "\u7CBE\u534E"),
-                    React.createElement("button", { className: "listContentTag" }, "\u6700\u70ED")),
+                React.createElement("div", { className: "row", style: { height: '40px', marginTop: '5px' } },
+                    React.createElement("div", null,
+                        React.createElement("button", { className: "listContentTag" }, "\u5168\u90E8"),
+                        React.createElement("button", { className: "listContentTag" }, "\u7CBE\u534E"),
+                        React.createElement("button", { className: "listContentTag" }, "\u6700\u70ED"))),
                 React.createElement("div", { className: "row", style: { height: '40px', alignItems: 'center' } },
-                    React.createElement("div", { style: { marginRight: '152px', marginLeft: '15px' } },
+                    React.createElement("div", { style: { marginRight: '52px', marginLeft: '15px' } },
                         React.createElement("span", null, "\u4F5C\u8005")),
                     React.createElement("div", { style: { marginRight: '85px', marginLeft: '15px' } },
                         React.createElement("span", null, "\u6700\u540E\u53D1\u8868")))),
@@ -2265,7 +2266,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UbbContainer_1 = __webpack_require__(7);
+var UbbContainer_1 = __webpack_require__(8);
 /**
  * 用户中心主页个人资料组件
  */
@@ -2886,9 +2887,9 @@ var React = __webpack_require__(0);
 var Utility = __webpack_require__(4);
 var $ = __webpack_require__(5);
 var react_router_dom_1 = __webpack_require__(2);
-var UbbContainer_1 = __webpack_require__(7);
+var UbbContainer_1 = __webpack_require__(8);
 var SendTopic_1 = __webpack_require__(36);
-var moment = __webpack_require__(8);
+var moment = __webpack_require__(7);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -3049,6 +3050,7 @@ var Replier = /** @class */ (function (_super) {
     }
     Replier.prototype.render = function () {
         var url = "/user/" + this.props.userId;
+        var realUrl = encodeURIComponent(url);
         var curUserPostUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userName;
         $(document).ready(function () {
             $(".authorImg").mouseenter(function (event) {
@@ -3068,7 +3070,7 @@ var Replier = /** @class */ (function (_super) {
             React.createElement("div", { className: "row", style: { width: "1140px", display: "flex", marginBottom: "10px" } },
                 React.createElement("div", { className: "row mouse-userDetails", style: { height: "250px", width: "380px" } },
                     React.createElement("div", { className: "authorImg" },
-                        React.createElement("a", { href: url },
+                        React.createElement("a", { href: realUrl },
                             React.createElement("img", { src: this.props.userImgUrl }))),
                     React.createElement("div", { className: "userDetails", style: { display: "none", position: "absolute", zindedx: "1" } },
                         React.createElement(UserDetails, { userName: this.props.userName }))),
@@ -3245,18 +3247,14 @@ var TopicTitle = /** @class */ (function (_super) {
     TopicTitle.prototype.returnProps = function (isTop, isNotice, title) {
         if (isTop == true && isNotice == false) {
             return React.createElement("div", { id: "title1", className: "row", style: { justifyContent: "flex-start" } },
-                React.createElement("div", { className: "titleProp", style: { width: "70px" } }, "\u3010\u7F6E\u9876\u3011"),
                 React.createElement("div", { id: "essayTitle" }, title));
         }
         else if (isTop == false && isNotice == true) {
             return React.createElement("div", { id: "title1", className: "row", style: { justifyContent: "flex-start" } },
-                React.createElement("div", { style: { width: "70px" }, className: "titleProp" }, "\u3010\u516C\u544A\u3011"),
                 React.createElement("div", { id: "essayTitle" }, title));
         }
         else if (isTop == true && isNotice == true) {
             return React.createElement("div", { id: "title1", className: "row", style: { justifyContent: "flex-start" } },
-                React.createElement("div", { className: "titleProp", style: { width: "70px", height: "30px", whiteSpace: "nowrap" } }, "\u3010\u7F6E\u9876\u3011"),
-                React.createElement("div", { style: { width: "70px", height: "30px", whiteSpace: "nowrap" }, className: "titleProp" }, "\u3010\u516C\u544A\u3011"),
                 React.createElement("div", { id: "essayTitle" }, title));
         }
         else {
@@ -3286,19 +3284,7 @@ var TopicTitle = /** @class */ (function (_super) {
                         " ",
                         React.createElement("span", { className: "timeProp tagSize" },
                             this.props.HitCount,
-                            "\u6B21")))),
-            React.createElement("div", { className: "column", style: { width: '100px' } },
-                React.createElement("div", { className: "row", style: { marginTop: '10px' } },
-                    React.createElement("div", { id: "like", className: "tagSize" },
-                        React.createElement("i", { className: "fa fa-star-o fa-lg" }),
-                        React.createElement("span", { style: { marginLeft: '10px' } }, "\u6536\u85CF\u6587\u7AE0"))),
-                React.createElement("div", { className: "row", style: { marginTop: '35px' } },
-                    React.createElement("div", { id: "liked", className: "row tagSize" },
-                        React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg fa-fw" }),
-                        this.state.likeNumber),
-                    React.createElement("div", { id: "disliked", className: "row tagSize" },
-                        React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg fa-fw" }),
-                        this.state.unlikeNumber))));
+                            "\u6B21")))));
     };
     return TopicTitle;
 }(RouteComponent));
@@ -3358,7 +3344,7 @@ var ReplyContent = /** @class */ (function (_super) {
     //
     ReplyContent.prototype.render = function () {
         return React.createElement("div", { className: "root", style: { marginTop: "-170px" } },
-            React.createElement("div", { className: "content" },
+            React.createElement("div", { className: "reply-content" },
                 React.createElement("div", { className: "substance" },
                     React.createElement(UbbContainer_1.UbbContainer, { code: this.props.content })),
                 React.createElement("div", { className: "signature" },
@@ -3488,7 +3474,7 @@ var TopicPager = /** @class */ (function (_super) {
         });
     };
     TopicPager.prototype.render = function () {
-        return React.createElement("div", { className: "row", style: { width: '1140px', height: '50px', marginTop: '15px', justifyContent: 'space-between', borderBottom: ' #EAEAEA solid thin', alignItems: 'flex-end' } },
+        return React.createElement("div", { className: "row", style: { minWidth: '1140px', height: '50px', marginTop: '15px', justifyContent: 'space-between', borderBottom: ' #EAEAEA solid thin', alignItems: 'flex-end', flexDirection: "row-reverse" } },
             React.createElement("div", { id: "pager" },
                 React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this)))));
     };
@@ -3534,7 +3520,7 @@ var TopicPagerDown = /** @class */ (function (_super) {
         });
     };
     TopicPagerDown.prototype.render = function () {
-        return React.createElement("div", { className: "row", style: { width: '1140px', height: '50px', marginTop: '15px', justifyContent: 'space-between', alignItems: 'flex-end' } },
+        return React.createElement("div", { className: "row", style: { width: '1140px', height: '50px', marginTop: '35px', justifyContent: 'space-between', alignItems: 'flex-end' } },
             React.createElement("div", { id: "pager" },
                 React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this)))));
     };
@@ -4518,7 +4504,8 @@ var SendTopic = /** @class */ (function (_super) {
                 React.createElement("form", null,
                     React.createElement("div", null,
                         React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input" })))),
-            React.createElement("div", { id: "post-topic-button", onClick: this.sendTopic, className: "button blue", style: { marginTop: "20px", width: "70px", letterSpacing: "5px" } }, "\u56DE\u590D"));
+            React.createElement("div", { className: "row", style: { justifyContent: "center" } },
+                React.createElement("div", { id: "post-topic-button", onClick: this.sendTopic, className: "button blue", style: { marginTop: "20px", width: "70px", letterSpacing: "5px" } }, "\u56DE\u590D")));
     };
     return SendTopic;
 }(RouteComponent));
@@ -4580,7 +4567,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(4);
 var react_router_dom_1 = __webpack_require__(2);
-var moment = __webpack_require__(8);
+var moment = __webpack_require__(7);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -6978,7 +6965,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var UbbContainer_1 = __webpack_require__(7);
+var UbbContainer_1 = __webpack_require__(8);
 var MyMessageSender = /** @class */ (function (_super) {
     __extends(MyMessageSender, _super);
     function MyMessageSender() {
@@ -7024,7 +7011,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var UbbContainer_1 = __webpack_require__(7);
+var UbbContainer_1 = __webpack_require__(8);
 var MyMessageReceiver = /** @class */ (function (_super) {
     __extends(MyMessageReceiver, _super);
     function MyMessageReceiver() {
@@ -7639,6 +7626,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
+var moment = __webpack_require__(7);
 /**
  * 我关注的某个版面的单个主题
  */
@@ -7662,14 +7650,11 @@ var FocusPostComponent = /** @class */ (function (_super) {
                 React.createElement("div", { className: "focus-post-board" },
                     this.props.boardName,
                     " / ",
-                    this.props.createTime),
+                    moment(this.props.createTime).format('YYYY-MM-DD HH:mm:ss')),
                 React.createElement("div", { className: "focus-post-response" },
                     React.createElement("div", null,
                         React.createElement("i", { className: "fa fa-thumbs-o-up", "aria-hidden": "true" }),
                         this.props.likeCount),
-                    React.createElement("div", null,
-                        React.createElement("i", { className: "fa fa-thumbs-o-down", "aria-hidden": "true" }),
-                        this.props.dislikeCount),
                     React.createElement("div", null,
                         React.createElement("i", { className: "fa fa-eye", "aria-hidden": "true" }),
                         this.props.hitCount),
