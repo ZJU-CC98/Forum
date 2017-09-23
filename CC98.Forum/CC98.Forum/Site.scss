@@ -634,6 +634,20 @@ a {
     color: #fcd3a5;
     background-color: #66cd00;
 }
+.blue {
+    color: #fff;
+    border: solid 1px #add8e6;
+    background-color: #8eefee;
+}
+
+.blue:hover {
+    background-color: #b2dfee;
+}
+
+.blue:active {
+    color: #b0e2ff;
+    background-color: #b0e0e6;
+}
 
 .button:hover {
     text-decoration: none;
@@ -3088,7 +3102,6 @@ body {
         height: 30px;
         border-bottom:#CCCCCC solid thin;
     }
-
     #sendTopic-input {
         background-color: #fff;
         height: 290px;
@@ -3096,9 +3109,9 @@ body {
         padding-left: 5px;
         padding-right: 5px;
         border: none;
+        width:1130px;
     }
 }
-
 .editor__menu {
     float: left;
     margin: 0 2px;
@@ -3141,5 +3154,22 @@ margin: 5px 4px;
     white-space: nowrap;
     overflow: hidden;
     text-transform: capitalize;
+}
+#sendTopic-send {
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    width: 50px;
+    margin-top:20px;
+    background-color: rgb(128,187,235);
+    color:#fff;
+    text-decoration: none;
+    font: 14px/100% Arial, Helvetica, sans-serif;
+    padding: .5em 2em .55em;
+    letter-spacing:5px;
+    -webkit-border-radius: .5em;
+    -moz-border-radius: .5em;
+    border-radius: .5em;
 }
 
