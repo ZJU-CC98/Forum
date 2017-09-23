@@ -13,6 +13,7 @@ import { MyMessage } from './MyMessage';
 import { AllNewPost } from './AllNewPost';
 import { MyFocusBoard } from './MyFocusBoard';
 import { Header } from './Header';
+import { Footer } from './Footer';
 import { MainPage } from './MainPage';
 import { User } from './User';
 import { Login } from './Login';
@@ -56,7 +57,8 @@ export class App extends React.Component<{}, AppState> {
                     <Route path="/focus" component={MyFocusBoard} />
 					<Route path="/newtopics" component={AllNewPost} />
 					<Route path="/user" component={User} />
-					<Route path="/login" component={Login} />
+                    <Route path="/login" component={Login} />
+                    <Footer />
 				</div>
 			</Router></div>;
 	}

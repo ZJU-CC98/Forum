@@ -649,6 +649,7 @@ a {
     color: #fcd3a5;
     background-color: #66cd00;
 }
+
 .blue {
     color: #fff;
     border: solid 1px #add8e6;
@@ -1841,7 +1842,6 @@ body {
     padding: 0px;
     justify-content: center;
     background: url(/images/headerBackground.jpg) no-repeat center;
-    justify-content: center;
     z-index: 2;
 }
 
@@ -2049,6 +2049,36 @@ body {
 #search .sub li.hover {
     background: rgb(233,233,233);
 }
+
+//-------------------------以下是底部的样式~~~---------------------------------------------------
+.footer {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background-color: rgb(242,242,242);
+    padding-top: 15px;
+    position: fixed;
+    bottom: 0; //控制footer永远在底部，即使在页面高度不够时
+    width: 100%;
+    min-width: 1140px;
+}
+
+.footerRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    margin-bottom: 15px;
+}
+
+.footerRow a {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    margin-left: 10px;
+}
 //以下这段是推荐阅读的样式~~
 .recommended1 {
     display: flex;
@@ -2066,7 +2096,7 @@ body {
 }
 
 .recommended1Content {
-    display:none;
+    display: none;
 }
 
 .recommended1Img {
@@ -2300,7 +2330,7 @@ body {
     margin: 6px 6px 5px 8px;
 }
 
-.boardName a{
+.boardName a {
     font-size: 12px;
     font-family: 微软雅黑;
     color: rgb(255,136,56);
@@ -2582,7 +2612,6 @@ body {
 
 #sendTopic {
     border: #CCCCCC solid thin;
-
     width: 1140px;
     height: 330px;
     display: flex;
@@ -2594,8 +2623,9 @@ body {
         background-color: #fff;
         width: 1140px;
         height: 30px;
-        border-bottom:#CCCCCC solid thin;
+        border-bottom: #CCCCCC solid thin;
     }
+
     #sendTopic-input {
         background-color: #fff;
         height: 290px;
@@ -2603,9 +2633,10 @@ body {
         padding-left: 5px;
         padding-right: 5px;
         border: none;
-        width:1130px;
+        width: 1130px;
     }
 }
+
 .editor__menu {
     float: left;
     margin: 0 2px;
@@ -2618,7 +2649,7 @@ body {
     float: left;
     list-style-type: none;
     margin-right: 2px;
-    margin-left:2px;
+    margin-left: 2px;
 }
 
 .editor__menu--bold {
@@ -2637,8 +2668,9 @@ body {
     cursor: pointer;
     background-color: #fff;
 }
-.wmd-spacer1{
-margin: 5px 4px;
+
+.wmd-spacer1 {
+    margin: 5px 4px;
     width: 0px;
     height: 20px;
     padding-left: 0px;
@@ -2649,21 +2681,21 @@ margin: 5px 4px;
     overflow: hidden;
     text-transform: capitalize;
 }
+
 #sendTopic-send {
     display: inline-block;
     outline: none;
     cursor: pointer;
     text-align: center;
     width: 50px;
-    margin-top:20px;
+    margin-top: 20px;
     background-color: rgb(128,187,235);
-    color:#fff;
+    color: #fff;
     text-decoration: none;
     font: 14px/100% Arial, Helvetica, sans-serif;
     padding: .5em 2em .55em;
-    letter-spacing:5px;
+    letter-spacing: 5px;
     -webkit-border-radius: .5em;
     -moz-border-radius: .5em;
     border-radius: .5em;
 }
-
