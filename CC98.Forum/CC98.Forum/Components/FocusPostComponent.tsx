@@ -25,7 +25,7 @@ export class FocusPostComponent extends React.Component<FocusPost> {
                 <div className="focus-post-board">{this.props.boardName} / {moment(this.props.createTime).format('YYYY-MM-DD HH:mm:ss')}</div>
                         <div className="focus-post-response">
                             <div><i className="fa fa-thumbs-o-up" aria-hidden="true"></i>{this.props.likeCount}</div>
-                            <div><i className="fa fa-thumbs-o-down" aria-hidden="true"></i>{this.props.dislikeCount}</div>
+                            
                             <div><i className="fa fa-eye" aria-hidden="true"></i>{this.props.hitCount}</div>
                             <div><i className="fa fa-commenting-o" aria-hidden="true"></i>{this.props.replyCount}</div>
                         </div>

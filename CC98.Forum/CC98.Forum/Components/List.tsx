@@ -279,14 +279,14 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
 
 		return <div className="listContent ">
 			<div className="row" style={{ justifyContent: 'space-between', }}>
-				<div className="row" style={{ height: '40px', marginTop: '5px', alignItems: 'center' }}>
+				<div className="row" style={{ height: '40px', marginTop: '5px' }}>
 
                     <div><button className="listContentTag">全部</button>
 					<button className="listContentTag">精华</button>
 					<button className="listContentTag">最热</button></div>
 				</div>
 				<div className="row" style={{ height: '40px', alignItems: 'center' }}>
-					<div style={{ marginRight: '152px', marginLeft: '15px' }}><span>作者</span></div>
+					<div style={{ marginRight: '52px', marginLeft: '15px' }}><span>作者</span></div>
 					<div style={{ marginRight: '85px', marginLeft: '15px' }}><span>最后发表</span></div>
 				</div>
 			</div>
