@@ -1901,6 +1901,8 @@ body {
 
 //以下是头部中顶部条下拉菜单的样式~
 
+
+
 #dropdown ul {
     list-style-type: none;
     margin: 0;
@@ -1908,6 +1910,12 @@ body {
 }
 
 #dropdown .box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#dropdown .userInfo {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -1941,13 +1949,12 @@ body {
 }
 
 #dropdown .sub {
-    width: 94px;
+    width: 124px;
     display: none;
     font-size: 12px;
     font-family: 微软雅黑;
     color: rgb(255,255,255);
     background-color: rgba(80,80,80,0.6);
-    margin-left: 30px;
 }
 
 #dropdown .sub li {
@@ -2206,14 +2213,12 @@ body {
 
 .ad {
     display: flex;
-    height: 60px;
-    width: 250px;
     margin-bottom: 30px;
 }
 
 .ad img {
     width: 250px;
-    height: 60px;
+    height: 100px;
 }
 
 .news {

@@ -31,7 +31,7 @@ export class SendTopic extends RouteComponent<{ topicid }, { content: string }, 
             method: "POST",
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': 'Bearer 6hJw-y6xd43wiHXeJqjnazvowgOqBGsHthZ-B1ybBjwLViFEGP_J3u0xKjzwin1THV6fHbf8nbHPzNnFWsgh1_grCkUQLebA3CAX3SFc_1Am_VeAJYqcy_Eq-HGraioZHT0NSCZ8svrzorFQuqb75oFJyfHWnFOyZyjFKi6HZdc1zsIwAXuCbmw_tFNFQYetO1lMJDKOWrj8-IPfNd_rO6Hx4zG-7zxvlw1Xk5UDR56tX7uOQRoopZoruBdoXVI8NDqByl5znk_q6Q6IeCSrx6Su0X5ljFiWVtw9F4VFMxoC6-I1IgT5hx9fhdGNrtSrpiA3SrC7aLZBAOdOADMXYZ8XXxC-aw45o7stf4J6DhnDxL02cc8e27VdlgMyXkZAh1dS-FQ107UJ2jTzUuW-vU6yDRfSvovo7k0axTEgbEcnMea30tO4Hu2yGeKKDuoo12bb7JlVrGDcMmkpdPlWTr1WVgiKbzNspp8hD85sJhqlNcrFpMvP0KrzedTZ1X-USgDd2Ha56hcvyLgL5ZEc0DFBaCe3K0ANdmb7eCxOTOeYwRROFlzyqd7O90gJeO46rz4KtNBFOdh78WwaohGSV-yKGDOoiojxLwl1jzHos-LIZ3DlUL-_P8hcIIFUtzf-rFR4rzyOFcBz2n7-AXCR3fgEdEGyhez-bl1C7Ng5aTY',
+                'Authorization': 'Bearer _cWbRJFA8il7ccX7oJ5njc4JPF0h9Rxg898Qtbo7Wk-OdUfndezg44KIsCte7JKUMMwmAOEJ_-QDhJIKEO0nuySMYcHLuB6HGZP6K6SFpQDOw6HFAUfPkkTyXRCFXJStGyFhjTtU6H30bd7PhssahB-jAm4cQIJ7m-20a6FXNOGCH3XRN8fjdrNYR6zCz82q1TTM8bxkQkhBUHKM7864K3sK9hWfU9xQRsNy4q-1LBejm_tZtVITNqEDtmi372aFz4fZUsX2n5qSg4LTeI4GV84kMtX8f_UZamTw39wDdUXyvCtecf4NgrPSvOOos0sp-fDULlme29qoUscPod6rAahEFE_GxXRTJdol4b6gZdkfQsTutrc6aUtvhWsFIHLj9GX38XqTvbZTF1FmSBrjJmVqQS3Ha_MPn9rO7JkpsaFkDUgJjkRz3LuZr2L_wnzNSuvrEjibrzF3p3t5oaCoz7XUQF5B1n1G7xiQ7n52_vYt2Ye-0YW6R9YSwjqDg8L6zWTU2QCAlUA_hAZc-gDQI_s-IlGXrAK-INCNUK8dDwjsZVB1mIFKhBQ5MgbrxOGU85Hdctn2SypIFIypAuZjDI7FelHanTPsPvXuDH4m4uRoXP2GR9ahyv_79NVf077j',
 
             },
             body: content
