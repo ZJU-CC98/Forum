@@ -20,11 +20,18 @@
 }
 
 .user-center {
+    button, ul, li {
+        border: 0;
+        margin: 0;
+        padding: 0;
+    }
+
     display: flex;
     flex-direction: column;
     align-items: center;
     font-size: 14px;
     font-family: 微软雅黑;
+    width: 100%;
     min-width: 1140px;
 
     a {
@@ -40,38 +47,43 @@
     }
 }
 
-.user-center-head {
-    width: 1140px;
-    height: 73px;
+.user-center-content {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 1140px;
+}
+
+.user-center-head {
+    height: 4.5rem;
+    display: flex;
+    align-self: flex-start;
     align-items: center;
 }
 
 .user-center-body {
-    width: 1140px;
-    min-width: 666px;
+    width: 100%;
     display: flex;
-    justify-content: space-between;
+    margin-bottom: 3rem;
 
     .user-center-navigation-fixed {
-        position: fixed;
+        position: sticky;
     }
 
     .user-center-navigation {
-        width: 174px;
-        height: 620px;
+        height: 33rem;
         top: 100px;
-        padding: 10px;
+        padding: 1rem;
         background-color: white;
         border: 1px solid rgb(204,204,204);
 
         button {
-            width: 80px;
+            width: 5rem;
             position: fixed;
             bottom: 5%;
             right: 13%;
-            height: 50px;
-            border-radius: 10px;
+            height: 3rem;
+            border-radius: 1rem;
             opacity: 0.5;
             display: none;
             z-index: 2;
@@ -82,6 +94,10 @@
 
             &:active {
                 opacity: 1;
+            }
+
+            &:focus {
+                outline: none;
             }
         }
 
@@ -105,6 +121,7 @@
             hr {
                 background-color: #fff;
                 border-top: 1px dashed rgb(204,204,204);
+                width: 11rem;
             }
         }
 
@@ -115,48 +132,18 @@
         }
 
         li {
-            height: 53px;
+            height: 3.5rem;
             display: flex;
             align-items: center;
             font-family: FontAwesome;
 
-            .fa-home:before {
-                font-family: FontAwesome;
-                content: "\f015";
-            }
-
-            .fa-pencil-square-o:before {
-                font-family: FontAwesome;
-                content: "\f044";
-            }
-
-            .fa-star:before {
-                font-family: FontAwesome;
-                content: "\f005";
-            }
-
-            .fa-heart:before {
-                font-family: FontAwesome;
-                content: "\f004";
-            }
-
-            .fa-users:before {
-                font-family: FontAwesome;
-                content: "\f0C0";
-            }
-
-            .fa-cog:before {
-                font-family: FontAwesome;
-                content: "\f013";
-            }
-
             a {
                 display: inline-flex;
                 align-items: center;
-                padding-left: 10px;
+                padding-left: 0.65rem;
 
                 p {
-                    margin-left: 10px;
+                    margin-left: 0.65rem;
                 }
             }
         }
@@ -165,14 +152,13 @@
     .user-center-router {
         width: 72.5%;
         margin-left: auto;
-        padding: 30px;
+        padding: 2rem;
         background-color: white;
         border: 1px solid rgb(204,204,204);
 
         .user-center-exact {
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-between;
 
             .user-avatar {
                 width: 20%;
@@ -188,26 +174,33 @@
             }
 
             .user-profile {
-                width: 80%;
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                padding: 0 2rem;
 
                 & > * {
-                    margin: 30px;
-                    margin-right: 0px;
+                    margin-bottom: 1rem;
                 }
 
                 #userId {
                     font-size: 18px;
-                    margin-top: 5px;
+                    margin-top: 0.5rem;
+                    display: flex;
+                    align-items: center;
+
+                    & > p {
+                        flex-grow: 1;
+                    }
                 }
 
                 button {
-                    transition-duration: 0.4s;
-                    background-color: rgb(104,179,255);
-                    color: white;
-                    width: 80px;
-                    height: 30px;
+                    transition-duration: .4s;
+                    background-color: #68b3ff;
+                    color: #fff;
+                    width: 5rem;
+                    height: 2rem;
                     margin: 0;
-                    float: right;
                     border-radius: 3px;
 
                     &:hover {
@@ -222,30 +215,27 @@
                 #userGenderAndBirthday {
                     display: flex;
 
-                    & :first-child {
-                        width: 108px;
+                    p {
+                        flex-grow: 1;
 
                         &:after {
                             font-family: FontAwesome;
-                            content: '\F222';
                         }
                     }
                 }
 
                 .user-description {
                     display: flex;
-                    flex-direction: row;
                     flex-wrap: wrap;
-                    justify-content: space-between;
 
                     & > p {
                         width: 100%;
-                        margin-bottom: 20px;
+                        margin-bottom: 1rem;
                     }
 
                     article {
                         width: 100%;
-                        padding: 10px;
+                        padding: 1rem;
                         font-size: 12px;
                         text-indent: 2em;
                         white-space: pre;
@@ -262,54 +252,59 @@
 
                 & > p {
                     font-size: 18px;
-                    margin-bottom: 30px;
+                    margin-bottom: 2rem;
                 }
 
                 .user-posts {
-                    margin-top: 20px;
+                    margin-top: 1rem;
 
-                    p {
-                        line-height: 3em;
-                        overflow: hidden;
+                    div {
+                        margin: 2rem 0;
                     }
 
                     hr {
                         background-color: #fff;
                         border-top: 1px dashed rgb(204,204,204);
-                        margin: 20px 0 20px 0;
+                    }
+
+                    .user-post-info a {
+                        margin-right: 2rem;
                     }
 
                     .user-post-board {
-                        margin-right: 16px;
                         color: rgb(53,167,255);
                     }
 
                     .user-post-date {
-                        margin-right: 16px;
                         color: rgb(160,160,160);
-                    }
-
-                    .user-post-approval {
-                        float: right;
-                        font-size: 12px;
-
-                        span {
-                            font-family: FontAwesome;
-                            margin: 20px;
-                        }
-
-                        .fa-thumbs-o-up:before {
-                            content: '\F087';
-                        }
-
-                        .fa-thumbs-o-down:before {
-                            content: '\F088';
-                        }
                     }
 
                     .user-post-content {
                         font-size: 12px;
+                        display: flex;
+
+                        a {
+                            flex-grow: 1;
+                        }
+
+                        .fa-thumbs-o-up {
+                            flex-grow: 0;
+                            font-family: FontAwesome;
+                            margin: 0 0.5rem;
+                        }
+
+                        .fa-thumbs-o-down {
+                            flex-grow: 0;
+                            font-family: FontAwesome;
+                            margin: 0 0.5rem;
+                        }
                     }
+                }
+
+                .user-activities-nomore {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
                 }
             }
         }
