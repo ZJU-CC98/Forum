@@ -1366,7 +1366,7 @@ function getTopicContent(topicid, curPage) {
                     _b.label = 8;
                 case 8:
                     if (!(i < topicNumberInPage)) return [3 /*break*/, 13];
-                    if (!(content[i].name != null)) return [3 /*break*/, 11];
+                    if (!(content[i].userName != null)) return [3 /*break*/, 11];
                     return [4 /*yield*/, fetch("http://api.cc98.org/User/" + content[i].userId)];
                 case 9:
                     userMesResponse = _b.sent();
@@ -1668,14 +1668,14 @@ var UserCenterExactActivitiesPost = /** @class */ (function (_super) {
     }
     UserCenterExactActivitiesPost.prototype.render = function () {
         return (React.createElement("div", { className: "user-post" },
-            React.createElement("p", null,
-                React.createElement("span", { className: "user-post-board" }, this.props.userRecentPost.board),
-                React.createElement("span", { className: "user-post-date" }, this.props.userRecentPost.date),
-                React.createElement("samp", { className: "user-post-title" }, this.props.userRecentPost.title)),
-            React.createElement("p", { className: "user-post-approval" },
-                React.createElement("span", { className: "fa-thumbs-o-up" }, " " + this.props.userRecentPost.approval),
-                React.createElement("span", { className: "fa-thumbs-o-down" }, " " + this.props.userRecentPost.disapproval)),
-            React.createElement("p", { className: "user-post-content" }, this.props.userRecentPost.content)));
+            React.createElement("div", { className: "user-post-info" },
+                React.createElement("a", { className: "user-post-board" }, this.props.userRecentPost.board),
+                React.createElement("a", { className: "user-post-date" }, this.props.userRecentPost.date),
+                React.createElement("a", { className: "user-post-title" }, this.props.userRecentPost.title)),
+            React.createElement("div", { className: "user-post-content" },
+                React.createElement("a", null, this.props.userRecentPost.content),
+                React.createElement("a", { className: "fa-thumbs-o-up" }, " " + this.props.userRecentPost.approval),
+                React.createElement("a", { className: "fa-thumbs-o-down" }, " " + this.props.userRecentPost.disapproval))));
     };
     return UserCenterExactActivitiesPost;
 }(React.Component));
@@ -2279,9 +2279,9 @@ var UserCenterExactProfile = /** @class */ (function (_super) {
     UserCenterExactProfile.prototype.render = function () {
         console.log(this.props.userInfo.signatureCode);
         return (React.createElement("div", { className: "user-profile" },
-            React.createElement("button", { type: "button" }, "\u79C1\u4FE1"),
             React.createElement("div", { id: "userId" },
-                React.createElement("p", null, this.props.userInfo.name)),
+                React.createElement("p", null, this.props.userInfo.name),
+                React.createElement("button", { type: "button" }, "\u79C1\u4FE1")),
             React.createElement("div", { id: "userGenderAndBirthday" },
                 React.createElement("p", null,
                     "\u6027\u522B  ",
@@ -5392,12 +5392,13 @@ var UserCenter = /** @class */ (function (_super) {
     }
     UserCenter.prototype.render = function () {
         return (React.createElement("div", { className: "user-center" },
-            React.createElement("div", { className: "user-center-head" },
-                React.createElement("p", null, "\u4E2A\u4EBA\u4E2D\u5FC3")),
-            React.createElement(react_router_dom_1.BrowserRouter, null,
-                React.createElement("div", { className: "user-center-body" },
-                    React.createElement(UserCenterNavigation_1.UserCenterNavigation, null),
-                    React.createElement(UserCenterRouter_1.UserCenterRouter, null)))));
+            React.createElement("div", { className: "user-center-content" },
+                React.createElement("div", { className: "user-center-head" },
+                    React.createElement("p", null, "\u4E2A\u4EBA\u4E2D\u5FC3")),
+                React.createElement(react_router_dom_1.BrowserRouter, null,
+                    React.createElement("div", { className: "user-center-body" },
+                        React.createElement(UserCenterNavigation_1.UserCenterNavigation, null),
+                        React.createElement(UserCenterRouter_1.UserCenterRouter, null))))));
     };
     return UserCenter;
 }(React.Component));

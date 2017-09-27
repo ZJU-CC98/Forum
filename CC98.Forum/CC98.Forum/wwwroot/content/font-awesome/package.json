@@ -1,8 +1,16 @@
 {
   "_args": [
     [
-      "font-awesome@4.7.0",
-      "C:\\Users\\an\\Source\\Repos2\\Forum\\CC98.Forum\\CC98.Forum"
+      {
+        "raw": "font-awesome@4.7.0",
+        "scope": null,
+        "escapedName": "font-awesome",
+        "name": "font-awesome",
+        "rawSpec": "4.7.0",
+        "spec": "4.7.0",
+        "type": "version"
+      },
+      "C:\\Users\\dongy\\Documents\\Source\\Repos\\NewRepo\\CC98.Forum\\CC98.Forum"
     ]
   ],
   "_from": "font-awesome@4.7.0",
@@ -15,16 +23,17 @@
     "tmp": "tmp/font-awesome-4.7.0.tgz_1477344817307_0.6990068354643881"
   },
   "_npmUser": {
-    "email": "julian@goodafternoon.co",
-    "name": "juliankrispel"
+    "name": "juliankrispel",
+    "email": "julian@goodafternoon.co"
   },
   "_npmVersion": "3.3.12",
   "_phantomChildren": {},
   "_requested": {
-    "name": "font-awesome",
     "raw": "font-awesome@4.7.0",
-    "rawSpec": "4.7.0",
     "scope": null,
+    "escapedName": "font-awesome",
+    "name": "font-awesome",
+    "rawSpec": "4.7.0",
     "spec": "4.7.0",
     "type": "version"
   },
@@ -35,10 +44,10 @@
   "_shasum": "8fa8cf0411a1a31afd07b06d2902bb9fc815a133",
   "_shrinkwrap": null,
   "_spec": "font-awesome@4.7.0",
-  "_where": "C:\\Users\\an\\Source\\Repos2\\Forum\\CC98.Forum\\CC98.Forum",
+  "_where": "C:\\Users\\dongy\\Documents\\Source\\Repos\\NewRepo\\CC98.Forum\\CC98.Forum",
   "author": {
-    "email": "dave@fontawesome.io",
     "name": "Dave Gandy",
+    "email": "dave@fontawesome.io",
     "url": "http://twitter.com/davegandy"
   },
   "bugs": {
@@ -75,14 +84,13 @@
   },
   "gitHead": "a8386aae19e200ddb0f6845b5feeee5eb7013687",
   "homepage": "http://fontawesome.io/",
-  "installable": true,
   "keywords": [
+    "font",
     "awesome",
-    "bootstrap",
-    "font",
-    "font",
     "fontawesome",
-    "icon"
+    "icon",
+    "font",
+    "bootstrap"
   ],
   "license": "(OFL-1.1 AND MIT)",
   "maintainers": [
@@ -93,6 +101,7 @@
   ],
   "name": "font-awesome",
   "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/FortAwesome/Font-Awesome.git"

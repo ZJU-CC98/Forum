@@ -73,8 +73,10 @@ export async function getTopicContent(topicid: number, curPage: number) {
     } else {
         topicNumberInPage = (replyCount - (curPage - 1) * 10);
     }
+
     for (let i = 0; i < topicNumberInPage; i++) {
-        if (content[i].name != null) {
+
+        if (content[i].userName != null) {
             const userMesResponse = await fetch(`http://api.cc98.org/User/${content[i].userId}`);
             const userMesJson = await userMesResponse.json();
             post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName || '匿名', userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId);
