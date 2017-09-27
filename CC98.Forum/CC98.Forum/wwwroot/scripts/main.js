@@ -1366,7 +1366,7 @@ function getTopicContent(topicid, curPage) {
                     _b.label = 8;
                 case 8:
                     if (!(i < topicNumberInPage)) return [3 /*break*/, 13];
-                    if (!(content[i].name != null)) return [3 /*break*/, 11];
+                    if (!(content[i].userName != null)) return [3 /*break*/, 11];
                     return [4 /*yield*/, fetch("http://api.cc98.org/User/" + content[i].userId)];
                 case 9:
                     userMesResponse = _b.sent();
