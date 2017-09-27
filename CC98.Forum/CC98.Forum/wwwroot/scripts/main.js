@@ -1668,14 +1668,14 @@ var UserCenterExactActivitiesPost = /** @class */ (function (_super) {
     }
     UserCenterExactActivitiesPost.prototype.render = function () {
         return (React.createElement("div", { className: "user-post" },
-            React.createElement("p", null,
-                React.createElement("span", { className: "user-post-board" }, this.props.userRecentPost.board),
-                React.createElement("span", { className: "user-post-date" }, this.props.userRecentPost.date),
-                React.createElement("samp", { className: "user-post-title" }, this.props.userRecentPost.title)),
-            React.createElement("p", { className: "user-post-approval" },
-                React.createElement("span", { className: "fa-thumbs-o-up" }, " " + this.props.userRecentPost.approval),
-                React.createElement("span", { className: "fa-thumbs-o-down" }, " " + this.props.userRecentPost.disapproval)),
-            React.createElement("p", { className: "user-post-content" }, this.props.userRecentPost.content)));
+            React.createElement("div", { className: "user-post-info" },
+                React.createElement("a", { className: "user-post-board" }, this.props.userRecentPost.board),
+                React.createElement("a", { className: "user-post-date" }, this.props.userRecentPost.date),
+                React.createElement("a", { className: "user-post-title" }, this.props.userRecentPost.title)),
+            React.createElement("div", { className: "user-post-content" },
+                React.createElement("a", null, this.props.userRecentPost.content),
+                React.createElement("a", { className: "fa-thumbs-o-up" }, " " + this.props.userRecentPost.approval),
+                React.createElement("a", { className: "fa-thumbs-o-down" }, " " + this.props.userRecentPost.disapproval))));
     };
     return UserCenterExactActivitiesPost;
 }(React.Component));
@@ -2279,9 +2279,9 @@ var UserCenterExactProfile = /** @class */ (function (_super) {
     UserCenterExactProfile.prototype.render = function () {
         console.log(this.props.userInfo.signatureCode);
         return (React.createElement("div", { className: "user-profile" },
-            React.createElement("button", { type: "button" }, "\u79C1\u4FE1"),
             React.createElement("div", { id: "userId" },
-                React.createElement("p", null, this.props.userInfo.name)),
+                React.createElement("p", null, this.props.userInfo.name),
+                React.createElement("button", { type: "button" }, "\u79C1\u4FE1")),
             React.createElement("div", { id: "userGenderAndBirthday" },
                 React.createElement("p", null,
                     "\u6027\u522B  ",
@@ -4455,7 +4455,7 @@ var SendTopic = /** @class */ (function (_super) {
                                 method: "POST",
                                 headers: {
                                     'Content-Type': 'application/x-www-form-urlencoded',
-                                    'Authorization': 'Bearer 6hJw-y6xd43wiHXeJqjnazvowgOqBGsHthZ-B1ybBjwLViFEGP_J3u0xKjzwin1THV6fHbf8nbHPzNnFWsgh1_grCkUQLebA3CAX3SFc_1Am_VeAJYqcy_Eq-HGraioZHT0NSCZ8svrzorFQuqb75oFJyfHWnFOyZyjFKi6HZdc1zsIwAXuCbmw_tFNFQYetO1lMJDKOWrj8-IPfNd_rO6Hx4zG-7zxvlw1Xk5UDR56tX7uOQRoopZoruBdoXVI8NDqByl5znk_q6Q6IeCSrx6Su0X5ljFiWVtw9F4VFMxoC6-I1IgT5hx9fhdGNrtSrpiA3SrC7aLZBAOdOADMXYZ8XXxC-aw45o7stf4J6DhnDxL02cc8e27VdlgMyXkZAh1dS-FQ107UJ2jTzUuW-vU6yDRfSvovo7k0axTEgbEcnMea30tO4Hu2yGeKKDuoo12bb7JlVrGDcMmkpdPlWTr1WVgiKbzNspp8hD85sJhqlNcrFpMvP0KrzedTZ1X-USgDd2Ha56hcvyLgL5ZEc0DFBaCe3K0ANdmb7eCxOTOeYwRROFlzyqd7O90gJeO46rz4KtNBFOdh78WwaohGSV-yKGDOoiojxLwl1jzHos-LIZ3DlUL-_P8hcIIFUtzf-rFR4rzyOFcBz2n7-AXCR3fgEdEGyhez-bl1C7Ng5aTY',
+                                    'Authorization': 'Bearer _cWbRJFA8il7ccX7oJ5njc4JPF0h9Rxg898Qtbo7Wk-OdUfndezg44KIsCte7JKUMMwmAOEJ_-QDhJIKEO0nuySMYcHLuB6HGZP6K6SFpQDOw6HFAUfPkkTyXRCFXJStGyFhjTtU6H30bd7PhssahB-jAm4cQIJ7m-20a6FXNOGCH3XRN8fjdrNYR6zCz82q1TTM8bxkQkhBUHKM7864K3sK9hWfU9xQRsNy4q-1LBejm_tZtVITNqEDtmi372aFz4fZUsX2n5qSg4LTeI4GV84kMtX8f_UZamTw39wDdUXyvCtecf4NgrPSvOOos0sp-fDULlme29qoUscPod6rAahEFE_GxXRTJdol4b6gZdkfQsTutrc6aUtvhWsFIHLj9GX38XqTvbZTF1FmSBrjJmVqQS3Ha_MPn9rO7JkpsaFkDUgJjkRz3LuZr2L_wnzNSuvrEjibrzF3p3t5oaCoz7XUQF5B1n1G7xiQ7n52_vYt2Ye-0YW6R9YSwjqDg8L6zWTU2QCAlUA_hAZc-gDQI_s-IlGXrAK-INCNUK8dDwjsZVB1mIFKhBQ5MgbrxOGU85Hdctn2SypIFIypAuZjDI7FelHanTPsPvXuDH4m4uRoXP2GR9ahyv_79NVf077j',
                                 },
                                 body: content
                             })];
@@ -5392,12 +5392,13 @@ var UserCenter = /** @class */ (function (_super) {
     }
     UserCenter.prototype.render = function () {
         return (React.createElement("div", { className: "user-center" },
-            React.createElement("div", { className: "user-center-head" },
-                React.createElement("p", null, "\u4E2A\u4EBA\u4E2D\u5FC3")),
-            React.createElement(react_router_dom_1.BrowserRouter, null,
-                React.createElement("div", { className: "user-center-body" },
-                    React.createElement(UserCenterNavigation_1.UserCenterNavigation, null),
-                    React.createElement(UserCenterRouter_1.UserCenterRouter, null)))));
+            React.createElement("div", { className: "user-center-content" },
+                React.createElement("div", { className: "user-center-head" },
+                    React.createElement("p", null, "\u4E2A\u4EBA\u4E2D\u5FC3")),
+                React.createElement(react_router_dom_1.BrowserRouter, null,
+                    React.createElement("div", { className: "user-center-body" },
+                        React.createElement(UserCenterNavigation_1.UserCenterNavigation, null),
+                        React.createElement(UserCenterRouter_1.UserCenterRouter, null))))));
     };
     return UserCenter;
 }(React.Component));
@@ -7832,18 +7833,19 @@ var DropDown = /** @class */ (function (_super) {
     }
     DropDown.prototype.render = function () {
         $(document).ready(function () {
-            var selectA = $('.select').eq(0);
+            var userInfo = $('.userInfo').eq(0);
             var subA = $('ul').eq(0);
             var liA = subA.find('li');
-            $(document).click(function () {
+            userInfo.hover(function () {
+                subA.css('display', 'block');
+            }, function () {
                 subA.css('display', 'none');
             });
-            selectA.click(function () {
-                if (subA.css('display') === 'block')
-                    subA.css('display', 'none');
-                else
-                    subA.css('display', 'block');
-                return false; //阻止事件冒泡
+            subA.hover(function () {
+                $(this).css('display', 'block');
+                ;
+            }, function () {
+                $(this).css('display', 'none');
             });
             /*在一个对象上触发某类事件（比如单击onclick事件），如果此对象定义了此事件的处理程序，那么此事件就会调用这个处理程序，
             如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
@@ -7857,11 +7859,10 @@ var DropDown = /** @class */ (function (_super) {
         });
         return React.createElement("div", { id: "dropdown" },
             React.createElement("div", { className: "box" },
-                React.createElement("div", { className: "userImg" },
-                    React.createElement("img", { src: "/images/userImg.png" })),
-                React.createElement("div", { className: "select" }, "userName"),
-                React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
-                    React.createElement("a", { href: "/mymessage", style: { color: '#fff' } }, "\u6D88\u606F")),
+                React.createElement("div", { className: "userInfo" },
+                    React.createElement("div", { className: "userImg" },
+                        React.createElement("img", { src: "/images/userImg.png" })),
+                    React.createElement("div", { className: "select" }, "userName")),
                 React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
                     React.createElement("a", { href: "/", style: { color: '#fff' } }, "\u9996\u9875")),
                 React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
@@ -7872,7 +7873,7 @@ var DropDown = /** @class */ (function (_super) {
                     React.createElement("a", { href: "/boardList", style: { color: '#fff' } }, "\u7248\u9762"))),
             React.createElement("ul", { className: "sub" },
                 React.createElement("li", null, "\u4E2A\u4EBA\u4E2D\u5FC3"),
-                React.createElement("li", null, "\u8BBE\u7F6E")));
+                React.createElement("li", null, "\u6D88\u606F")));
     };
     return DropDown;
 }(React.Component));
@@ -8017,28 +8018,27 @@ var Footer = /** @class */ (function (_super) {
     }
     Footer.prototype.render = function () {
         return React.createElement("div", { className: "footer" },
-            React.createElement("div", { className: "row", style: { justifyContent: "center", alignItems: "center" } },
-                React.createElement("div", { className: "column" },
-                    React.createElement("div", { className: "footerRow" },
-                        React.createElement("div", { style: { marginRight: "15px", color: "#000" } }, "\u53CB\u60C5\u94FE\u63A5"),
-                        React.createElement("a", { href: "http://www.zju.edu.cn/" }, "\u6D59\u6C5F\u5927\u5B66"),
-                        "|",
-                        React.createElement("a", { href: "http://www.cs.zju.edu.cn/" }, "\u6D59\u6C5F\u5927\u5B66\u8BA1\u7B97\u673A\u5B66\u9662"),
-                        "    |    ",
-                        React.createElement("a", { href: "http://www.zju88.org/agent/index.do" }, "\u98D8\u6E3A\u6C34\u4E91\u95F4"),
-                        "  |",
-                        React.createElement("a", { href: "http://www.qsc.zju.edu.cn/" }, "\u6C42\u662F\u6F6E"),
-                        "|",
-                        React.createElement("a", { href: "http://luckweb.057101.com/bt2/index.asp" }, "\u7F18\u7F51"),
-                        "|",
-                        React.createElement("a", { href: "http://www.nexushd.org/login.php" }, "NexusHD"),
-                        "    |    ",
-                        React.createElement("a", { href: "https://www.zdgd.zju.edu.cn/" }, "\u6D59\u6C5F\u5927\u5B66\u5E7F\u64AD\u7535\u89C6\u7F51"),
-                        "|",
-                        React.createElement("a", { href: "http://zy.zju.edu.cn/" }, "\u6D59\u5927\u641C\u7D22")),
-                    React.createElement("div", { className: "footerRow" },
-                        "Copyright \u00A9 2003-2017 CC98 Network Association. Email: contact@cc98.org ",
-                        React.createElement("a", { href: "http://www.cc98.org/onlineshow.asp" }, " \u8BBA\u575B\u7EDF\u8BA1")))));
+            React.createElement("div", { className: "column" },
+                React.createElement("div", { className: "footerRow" },
+                    React.createElement("div", { style: { marginRight: "15px", color: "#000" } }, "\u53CB\u60C5\u94FE\u63A5"),
+                    React.createElement("a", { href: "http://www.zju.edu.cn/" }, "\u6D59\u6C5F\u5927\u5B66"),
+                    "|",
+                    React.createElement("a", { href: "http://www.cs.zju.edu.cn/" }, "\u6D59\u6C5F\u5927\u5B66\u8BA1\u7B97\u673A\u5B66\u9662"),
+                    "|",
+                    React.createElement("a", { href: "http://www.zju88.org/agent/index.do" }, "\u98D8\u6E3A\u6C34\u4E91\u95F4"),
+                    "|",
+                    React.createElement("a", { href: "http://www.qsc.zju.edu.cn/" }, "\u6C42\u662F\u6F6E"),
+                    "|",
+                    React.createElement("a", { href: "http://luckweb.057101.com/bt2/index.asp" }, "\u7F18\u7F51"),
+                    "|",
+                    React.createElement("a", { href: "http://www.nexushd.org/login.php" }, "NexusHD"),
+                    "|",
+                    React.createElement("a", { href: "https://www.zdgd.zju.edu.cn/" }, "\u6D59\u6C5F\u5927\u5B66\u5E7F\u64AD\u7535\u89C6\u7F51"),
+                    "|",
+                    React.createElement("a", { href: "http://zy.zju.edu.cn/" }, "\u6D59\u5927\u641C\u7D22")),
+                React.createElement("div", { className: "footerRow" },
+                    "Copyright \u00A9 2003-2017 CC98 Network Association. Email: contact@cc98.org",
+                    React.createElement("a", { href: "http://www.cc98.org/onlineshow.asp" }, " \u8BBA\u575B\u7EDF\u8BA1"))));
     };
     return Footer;
 }(React.Component));
