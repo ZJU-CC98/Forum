@@ -1384,7 +1384,7 @@ function getTopicContent(topicid, curPage) {
                     return [3 /*break*/, 12];
                 case 11:
                     purl = 'https://www.cc98.org/pic/anonymous.gif';
-                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', 0, purl, '', null);
+                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null);
                     _b.label = 12;
                 case 12:
                     i++;
@@ -1978,7 +1978,7 @@ var ListHead = /** @class */ (function (_super) {
             React.createElement("a", { href: webUrl }, name));
     };
     ListHead.prototype.render = function () {
-        return React.createElement("div", { className: "column", style: { width: '1140px', } },
+        return React.createElement("div", { className: "column", style: { minWidth: '1140px', } },
             React.createElement("div", { className: "row", style: { flexDirection: 'row', justifyContent: 'space-between', width: '1140px' } },
                 React.createElement("div", { style: { flexgrow: '1', flexDirection: 'row', display: 'flex' } },
                     React.createElement("div", { id: "ListImg" },
@@ -3182,7 +3182,7 @@ var PostTopic = /** @class */ (function (_super) {
     function PostTopic(props, content) {
         var _this = _super.call(this, props, content) || this;
         _this.state = {
-            topicMessage: { title: "ss", time: "2017", content: "", signature: "" }
+            topicMessage: { title: "加载中...", time: "", content: "", signature: "" }
         };
         return _this;
     }
@@ -3907,7 +3907,7 @@ var QuoteTagHandler = /** @class */ (function (_super) {
             padding: '13px 19px 13px 17px',
             backgroundColor: '#F5FAFF',
             border: '1px solid rgb(204,204,204)',
-            margin: '35px',
+            margin: '30px',
             maxHeight: '800px'
         };
         return React.createElement("div", { style: style }, innerContent);

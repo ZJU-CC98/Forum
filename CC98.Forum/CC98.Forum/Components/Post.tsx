@@ -228,7 +228,7 @@ export class PostTopic extends RouteComponent<{ imgUrl, page, topicid }, State.P
     constructor(props, content) {
         super(props, content);
         this.state = {
-            topicMessage: { title: "ss", time: "2017", content: "", signature: "" }
+            topicMessage: { title: "加载中...", time: "", content: "", signature: "" }
         }
     }
     async componentDidMount() {

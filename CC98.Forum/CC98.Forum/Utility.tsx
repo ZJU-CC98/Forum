@@ -88,7 +88,7 @@ export async function getTopicContent(topicid: number, curPage: number) {
             post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName , userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId);
         } else {
             let purl = 'https://www.cc98.org/pic/anonymous.gif';
-            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', 0, purl, '', null);
+            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null);
         }
     }
     return post;
