@@ -66,7 +66,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         if (this.state.page == 1) {
             topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} />;
         }
-        return <div className="center" style={{  minWidth: "1140px", marginTop: "40px" }} >
+        return <div className="center" style={{  minWidth: "1140px" }} >
             <TopicPager page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
             {topic}
             <Route path="/topic/:topicid/:page?" component={Reply} />
@@ -90,6 +90,7 @@ export class Reply extends RouteComponent<{}, { contents }, { page, topicid, use
     async componentWillReceiveProps(newProps) {
         const page = newProps.match.params.page || 1;
         const realContents = await Utility.getTopicContent(newProps.match.params.topicid, page);
+        console.log(realContents);
         this.setState({ contents: realContents });
 
     }
@@ -101,6 +102,8 @@ export class Reply extends RouteComponent<{}, { contents }, { page, topicid, use
         </div>;
     }
     render() {
+        console.log("new");
+        console.log(this.state.contents);
         return <div className="center" style={{ width: "1140px" }}>
             {this.state.contents.map(this.generateContents)}
         </div>
@@ -125,8 +128,6 @@ export class Replier extends RouteComponent<{ userId, topicid, userName, replyTi
         let realUrl = encodeURIComponent(url);
         let curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userName}`;
         $(document).ready(function () {
-
-
             $(".authorImg").mouseenter(function (event: JQuery.Event) {
                 const currentImage = event.currentTarget;
                 $(currentImage).next(".userDetails").show();
@@ -141,6 +142,13 @@ export class Replier extends RouteComponent<{ userId, topicid, userName, replyTi
         if (!this.props.userId) {
             topicNumber = '';
         }
+        let userDetails;
+        if (this.props.userName != '匿名') {
+         userDetails = <UserDetails userName={this.props.userName} />;
+        } else {
+             userDetails = null;
+        }
+    
 
         return <div className="replyRoot">
             <div className="row" style={{ width: "1140px", display: "flex", marginBottom: "10px" }}>
@@ -148,7 +156,7 @@ export class Replier extends RouteComponent<{ userId, topicid, userName, replyTi
                 <div className="row mouse-userDetails" style={{ height: "250px", width: "380px" }} >
                     <div className="authorImg" ><a href={realUrl}><img src={this.props.userImgUrl}></img></a></div>
                     <div className="userDetails" style={{ display: "none", position: "absolute", zindedx: "1" }}>
-                        <UserDetails userName={this.props.userName} />
+                        {userDetails}
                     </div>
 
                 </div>
@@ -179,7 +187,7 @@ export class UserDetails extends RouteComponent<{ userName }, { portraitUrl, use
         this.state = ({ portraitUrl: null, userName: null });
     }
     async componentDidMount() {
-        if (this.props.userName != null) {
+        if (this.props.userName != '匿名') {
             let url = `http://api.cc98.org/user/name/${this.props.userName}`;
             let message = await fetch(url);
             let data = await message.json();
@@ -189,7 +197,7 @@ export class UserDetails extends RouteComponent<{ userName }, { portraitUrl, use
     render() {
         let url = `/user/name/${this.props.userName}`;
         let userUrl = encodeURIComponent(url);
-        if (this.props.userName != null) {
+        if (this.props.userName != '匿名') {
             return <div className='popup'>
                 <div className='popup_title'>
                     <div className="row">
