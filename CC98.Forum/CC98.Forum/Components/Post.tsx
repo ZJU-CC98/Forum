@@ -510,23 +510,23 @@ export class PageModel extends React.Component<{ pageNumber, topicid, curPage, t
 
         } else if (this.props.pageNumber == -1) {
             pageUrl = `/topic/${this.props.topicid}/${this.props.curPage - 1}`;
-            const last = '<';
-            return <li className="page-item"><Link className="page-link" to={pageUrl}>{last}</Link></li>
+          
+            return <li className="page-item"><Link className="page-link" to={pageUrl}>&lsaquo;</Link></li>
                 ;
         } else if (this.props.pageNumber == -2) {
             pageUrl = `/topic/${this.props.topicid}/${this.props.curPage + 1}`;
-            const next = '>';
-            return <li className="page-item"><Link className="page-link" to={pageUrl}>{next}</Link></li>
+           
+            return <li className="page-item"><Link className="page-link" to={pageUrl}>&rsaquo;</Link></li>
                 ;
         } else if (this.props.pageNumber == -3) {
             pageUrl = `/topic/${this.props.topicid}/1`;
-            const start = '<<';
-            return <li className="page-item"><Link className="page-link" to={pageUrl}>{start}</Link></li>
+
+            return <li className="page-item"><Link className="page-link" to={pageUrl}>&lsaquo;&lsaquo;</Link></li>
                 ;
         } else {
             pageUrl = `/topic/${this.props.topicid}/${this.props.totalPage}`;
-            const end = '>>';
-            return <li className="page-item"><Link className="page-link" to={pageUrl}>{end}</Link></li>
+
+            return <li className="page-item"><Link className="page-link" to={pageUrl}>&rsaquo;&rsaquo;</Link></li>
                 ;
         }
     }

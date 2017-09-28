@@ -3565,27 +3565,23 @@ var PageModel = /** @class */ (function (_super) {
         }
         else if (this.props.pageNumber == -1) {
             pageUrl = "/topic/" + this.props.topicid + "/" + (this.props.curPage - 1);
-            var last = '<';
             return React.createElement("li", { className: "page-item" },
-                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, last));
+                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u2039"));
         }
         else if (this.props.pageNumber == -2) {
             pageUrl = "/topic/" + this.props.topicid + "/" + (this.props.curPage + 1);
-            var next = '>';
             return React.createElement("li", { className: "page-item" },
-                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, next));
+                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u203A"));
         }
         else if (this.props.pageNumber == -3) {
             pageUrl = "/topic/" + this.props.topicid + "/1";
-            var start = '<<';
             return React.createElement("li", { className: "page-item" },
-                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, start));
+                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u2039\u2039"));
         }
         else {
             pageUrl = "/topic/" + this.props.topicid + "/" + this.props.totalPage;
-            var end = '>>';
             return React.createElement("li", { className: "page-item" },
-                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, end));
+                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u203A\u203A"));
         }
     };
     return PageModel;
