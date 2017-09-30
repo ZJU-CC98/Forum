@@ -7869,7 +7869,7 @@ var DropDown = /** @class */ (function (_super) {
                     React.createElement("a", { href: "/focus", style: { color: '#fff' } }, "\u5173\u6CE8")),
                 React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
                     React.createElement("a", { href: "/newTopics", style: { color: '#fff' } }, "\u65B0\u5E16")),
-                React.createElement("div", { className: "topBarText", style: { margin: '0 0 0 10px' } },
+                React.createElement("div", { className: "topBarText", style: { margin: '0 0 0 10px', backgroundColor: 'rgb(53,177,255)' } },
                     React.createElement("a", { href: "/boardList", style: { color: '#fff' } }, "\u7248\u9762"))),
             React.createElement("ul", { className: "sub" },
                 React.createElement("li", null, "\u4E2A\u4EBA\u4E2D\u5FC3"),
