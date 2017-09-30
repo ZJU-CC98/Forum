@@ -110,7 +110,7 @@ export class ListHead extends RouteComponent<{ boardid }, State.ListHeadState, {
 		return <div style={{ marginRight: '10px' }}><a href={webUrl}>{name}</a></div>;
 	}
 	render() {
-		return <div className="column" style={{ width: '1140px', }}>
+		return <div className="column" style={{ minWidth: '1140px', }}>
 			<div className="row" style={{ flexDirection: 'row', justifyContent: 'space-between', width: '1140px' }}>
 				<div style={{ flexgrow: '1', flexDirection: 'row', display: 'flex' }}>
 					<div id="ListImg" ><img src={this.state.imgUrl}></img></div>

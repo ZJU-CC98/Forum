@@ -1291,7 +1291,7 @@ function getBoardTopicAsync(curPage, boardid) {
 exports.getBoardTopicAsync = getBoardTopicAsync;
 function getTopic(topicid) {
     return __awaiter(this, void 0, void 0, function () {
-        var response, data, hitCountResponse, hitCountJson, hitCount, userMesResponse, userMesJson, topicMessage;
+        var response, data, hitCountResponse, hitCountJson, hitCount, topicMessage, userMesResponse, userMesJson;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, fetch("http://api.cc98.org/Post/Topic/" + topicid, { headers: { Range: "bytes=" + 0 + "-" + 0 } })];
@@ -1307,14 +1307,20 @@ function getTopic(topicid) {
                 case 4:
                     hitCountJson = _a.sent();
                     hitCount = hitCountJson.hitCount;
+                    topicMessage = null;
+                    if (!(data[0].userId != null)) return [3 /*break*/, 7];
                     return [4 /*yield*/, fetch("http://api.cc98.org/User/" + data[0].userId)];
                 case 5:
                     userMesResponse = _a.sent();
                     return [4 /*yield*/, userMesResponse.json()];
                 case 6:
                     userMesJson = _a.sent();
-                    topicMessage = new State.TopicState(data[0].userName || '匿名', data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId);
-                    return [2 /*return*/, topicMessage];
+                    topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId);
+                    return [3 /*break*/, 8];
+                case 7:
+                    topicMessage = new State.TopicState('匿名', data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null);
+                    _a.label = 8;
+                case 8: return [2 /*return*/, topicMessage];
             }
         });
     });
@@ -1367,17 +1373,18 @@ function getTopicContent(topicid, curPage) {
                 case 8:
                     if (!(i < topicNumberInPage)) return [3 /*break*/, 13];
                     if (!(content[i].userName != null)) return [3 /*break*/, 11];
-                    return [4 /*yield*/, fetch("http://api.cc98.org/User/" + content[i].userId)];
+                    console.log("111");
+                    return [4 /*yield*/, fetch("http://api.cc98.org/user/name/" + content[i].userName)];
                 case 9:
                     userMesResponse = _b.sent();
                     return [4 /*yield*/, userMesResponse.json()];
                 case 10:
                     userMesJson = _b.sent();
-                    post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName || '匿名', userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId);
+                    post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId);
                     return [3 /*break*/, 12];
                 case 11:
                     purl = 'https://www.cc98.org/pic/anonymous.gif';
-                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', 0, purl, '', null);
+                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null);
                     _b.label = 12;
                 case 12:
                     i++;
@@ -1475,7 +1482,7 @@ function getCurUserTopicContent(topicid, curPage, userName) {
                 case 5:
                     if (!(i < replyCount)) return [3 /*break*/, 9];
                     if (!(content[i].userName == userName)) return [3 /*break*/, 8];
-                    return [4 /*yield*/, fetch("http://api.cc98.org/User/" + content[i].userId)];
+                    return [4 /*yield*/, fetch("http://api.cc98.org/User/Name/" + content[i].userName)];
                 case 6:
                     userMesResponse = _a.sent();
                     return [4 /*yield*/, userMesResponse.json()];
@@ -1971,7 +1978,7 @@ var ListHead = /** @class */ (function (_super) {
             React.createElement("a", { href: webUrl }, name));
     };
     ListHead.prototype.render = function () {
-        return React.createElement("div", { className: "column", style: { width: '1140px', } },
+        return React.createElement("div", { className: "column", style: { minWidth: '1140px', } },
             React.createElement("div", { className: "row", style: { flexDirection: 'row', justifyContent: 'space-between', width: '1140px' } },
                 React.createElement("div", { style: { flexgrow: '1', flexDirection: 'row', display: 'flex' } },
                     React.createElement("div", { id: "ListImg" },
@@ -2988,7 +2995,7 @@ var Post = /** @class */ (function (_super) {
         if (this.state.page == 1) {
             topic = React.createElement(PostTopic, { imgUrl: "/images/ads.jpg", page: this.state.page, topicid: this.state.topicid });
         }
-        return React.createElement("div", { className: "center", style: { minWidth: "1140px", marginTop: "40px" } },
+        return React.createElement("div", { className: "center", style: { minWidth: "1140px" } },
             React.createElement(TopicPager, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
             topic,
             React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: Reply }),
@@ -3017,6 +3024,7 @@ var Reply = /** @class */ (function (_super) {
                         return [4 /*yield*/, Utility.getTopicContent(newProps.match.params.topicid, page)];
                     case 1:
                         realContents = _a.sent();
+                        console.log(realContents);
                         this.setState({ contents: realContents });
                         return [2 /*return*/];
                 }
@@ -3030,6 +3038,8 @@ var Reply = /** @class */ (function (_super) {
                 React.createElement(ReplyContent, { key: item.content, content: item.content, signature: item.signature })));
     };
     Reply.prototype.render = function () {
+        console.log("new");
+        console.log(this.state.contents);
         return React.createElement("div", { className: "center", style: { width: "1140px" } }, this.state.contents.map(this.generateContents));
     };
     return Reply;
@@ -3067,14 +3077,20 @@ var Replier = /** @class */ (function (_super) {
         if (!this.props.userId) {
             topicNumber = '';
         }
+        var userDetails;
+        if (this.props.userName != '匿名') {
+            userDetails = React.createElement(UserDetails, { userName: this.props.userName });
+        }
+        else {
+            userDetails = null;
+        }
         return React.createElement("div", { className: "replyRoot" },
             React.createElement("div", { className: "row", style: { width: "1140px", display: "flex", marginBottom: "10px" } },
                 React.createElement("div", { className: "row mouse-userDetails", style: { height: "250px", width: "380px" } },
                     React.createElement("div", { className: "authorImg" },
                         React.createElement("a", { href: realUrl },
                             React.createElement("img", { src: this.props.userImgUrl }))),
-                    React.createElement("div", { className: "userDetails", style: { display: "none", position: "absolute", zindedx: "1" } },
-                        React.createElement(UserDetails, { userName: this.props.userName }))),
+                    React.createElement("div", { className: "userDetails", style: { display: "none", position: "absolute", zindedx: "1" } }, userDetails)),
                 React.createElement("div", { className: "column", id: "rpymes", style: { marginLeft: "-300px" } },
                     React.createElement("div", { className: "row", id: "replierMes" },
                         React.createElement("div", { style: { marginLeft: "10px" } },
@@ -3116,7 +3132,7 @@ var UserDetails = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!(this.props.userName != null)) return [3 /*break*/, 3];
+                        if (!(this.props.userName != '匿名')) return [3 /*break*/, 3];
                         url = "http://api.cc98.org/user/name/" + this.props.userName;
                         return [4 /*yield*/, fetch(url)];
                     case 1:
@@ -3134,7 +3150,7 @@ var UserDetails = /** @class */ (function (_super) {
     UserDetails.prototype.render = function () {
         var url = "/user/name/" + this.props.userName;
         var userUrl = encodeURIComponent(url);
-        if (this.props.userName != null) {
+        if (this.props.userName != '匿名') {
             return React.createElement("div", { className: 'popup' },
                 React.createElement("div", { className: 'popup_title' },
                     React.createElement("div", { className: "row" },
@@ -3166,7 +3182,7 @@ var PostTopic = /** @class */ (function (_super) {
     function PostTopic(props, content) {
         var _this = _super.call(this, props, content) || this;
         _this.state = {
-            topicMessage: { title: "ss", time: "2017", content: "", signature: "" }
+            topicMessage: { title: "加载中...", time: "", content: "", signature: "" }
         };
         return _this;
     }
@@ -3549,27 +3565,23 @@ var PageModel = /** @class */ (function (_super) {
         }
         else if (this.props.pageNumber == -1) {
             pageUrl = "/topic/" + this.props.topicid + "/" + (this.props.curPage - 1);
-            var last = '<';
             return React.createElement("li", { className: "page-item" },
-                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, last));
+                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u2039"));
         }
         else if (this.props.pageNumber == -2) {
             pageUrl = "/topic/" + this.props.topicid + "/" + (this.props.curPage + 1);
-            var next = '>';
             return React.createElement("li", { className: "page-item" },
-                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, next));
+                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u203A"));
         }
         else if (this.props.pageNumber == -3) {
             pageUrl = "/topic/" + this.props.topicid + "/1";
-            var start = '<<';
             return React.createElement("li", { className: "page-item" },
-                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, start));
+                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u2039\u2039"));
         }
         else {
             pageUrl = "/topic/" + this.props.topicid + "/" + this.props.totalPage;
-            var end = '>>';
             return React.createElement("li", { className: "page-item" },
-                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, end));
+                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u203A\u203A"));
         }
     };
     return PageModel;
@@ -3887,10 +3899,12 @@ var QuoteTagHandler = /** @class */ (function (_super) {
     ;
     QuoteTagHandler.prototype.execCore = function (innerContent, tagData, context) {
         var style = {
-            width: '60%',
+            width: '200%',
             padding: '13px 19px 13px 17px',
             backgroundColor: '#F5FAFF',
-            border: '1px solid rgb(204,204,204)'
+            border: '1px solid rgb(204,204,204)',
+            margin: '30px',
+            maxHeight: '800px'
         };
         return React.createElement("div", { style: style }, innerContent);
     };

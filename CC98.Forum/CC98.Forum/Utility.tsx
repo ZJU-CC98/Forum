@@ -45,9 +45,16 @@ export async function getTopic(topicid: number) {
     const hitCountResponse = await fetch(`http://api.cc98.org/Topic/${topicid}`);
     const hitCountJson = await hitCountResponse.json();
     const hitCount = hitCountJson.hitCount;
-    const userMesResponse = await fetch(`http://api.cc98.org/User/${data[0].userId}`);
-    const userMesJson = await userMesResponse.json();
-    const topicMessage = new State.TopicState(data[0].userName || '匿名', data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId);
+    let topicMessage=null;
+    if (data[0].userId != null) {
+        const userMesResponse = await fetch(`http://api.cc98.org/User/${data[0].userId}`);
+        const userMesJson = await userMesResponse.json();
+         topicMessage = new State.TopicState(data[0].userName , data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId);
+    } else {
+         topicMessage = new State.TopicState('匿名', data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null);
+    }
+
+
     return topicMessage;
 }
 export async function getTopicContent(topicid: number, curPage: number) {
@@ -73,19 +80,17 @@ export async function getTopicContent(topicid: number, curPage: number) {
     } else {
         topicNumberInPage = (replyCount - (curPage - 1) * 10);
     }
-
     for (let i = 0; i < topicNumberInPage; i++) {
-
         if (content[i].userName != null) {
-            const userMesResponse = await fetch(`http://api.cc98.org/User/${content[i].userId}`);
+            console.log("111");
+            const userMesResponse = await fetch(`http://api.cc98.org/user/name/${content[i].userName}`);
             const userMesJson = await userMesResponse.json();
-            post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName || '匿名', userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId);
+            post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName , userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId);
         } else {
             let purl = 'https://www.cc98.org/pic/anonymous.gif';
-            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', 0, purl, '', null);
+            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null);
         }
     }
-
     return post;
 }
 export function convertHotTopic(item: State.TopicTitleAndContentState) {
@@ -152,7 +157,7 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
     const post: State.ContentState[] = [];
     for (let i = 0, j = 0; i < replyCount; i++) {
         if (content[i].userName == userName) {
-            const userMesResponse = await fetch(`http://api.cc98.org/User/${content[i].userId}`);
+            const userMesResponse = await fetch(`http://api.cc98.org/User/Name/${content[i].userName}`);
             const userMesJson = await userMesResponse.json();
             post[j] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName || '匿名', userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId);
             j++;
