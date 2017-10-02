@@ -1742,7 +1742,8 @@ var UbbContainer = /** @class */ (function (_super) {
         var ubbHtml = engine.exec(this.props.code || '', options);
         //打开回车与空格00
         var style = {
-            whiteSpace: 'pre-line'
+            whiteSpace: 'pre-line',
+            width: "100%"
         };
         // 注意兼容性设置， HTML4 不支持 article 标签
         if (options.compatibility === Ubb.UbbCompatiblityMode.Transitional) {
@@ -3016,15 +3017,22 @@ var Reply = /** @class */ (function (_super) {
     }
     Reply.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
-            var page, realContents;
+            var page, storageId, realContents;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         page = newProps.match.params.page || 1;
+                        storageId = "TopicContent_" + newProps.match.params.topicid + "_" + page;
+                        if (!!Utility.getStorage(storageId)) return [3 /*break*/, 2];
                         return [4 /*yield*/, Utility.getTopicContent(newProps.match.params.topicid, page)];
                     case 1:
                         realContents = _a.sent();
-                        console.log(realContents);
+                        Utility.setStorage(storageId, realContents);
+                        return [3 /*break*/, 3];
+                    case 2:
+                        realContents = Utility.getStorage(storageId);
+                        _a.label = 3;
+                    case 3:
                         this.setState({ contents: realContents });
                         return [2 /*return*/];
                 }
@@ -3038,8 +3046,6 @@ var Reply = /** @class */ (function (_super) {
                 React.createElement(ReplyContent, { key: item.content, content: item.content, signature: item.signature })));
     };
     Reply.prototype.render = function () {
-        console.log("new");
-        console.log(this.state.contents);
         return React.createElement("div", { className: "center", style: { width: "1140px" } }, this.state.contents.map(this.generateContents));
     };
     return Reply;
@@ -3475,7 +3481,6 @@ var TopicPager = /** @class */ (function (_super) {
             var pages;
             return __generator(this, function (_a) {
                 pages = Utility.getPager(newProps.page, newProps.totalPage);
-                console.log('new=' + pages);
                 this.setState({ pager: pages });
                 return [2 /*return*/];
             });
@@ -3521,7 +3526,6 @@ var TopicPagerDown = /** @class */ (function (_super) {
             var pages;
             return __generator(this, function (_a) {
                 pages = Utility.getPager(newProps.page, newProps.totalPage);
-                console.log('new=' + pages);
                 this.setState({ pager: pages });
                 return [2 /*return*/];
             });
@@ -3899,7 +3903,6 @@ var QuoteTagHandler = /** @class */ (function (_super) {
     ;
     QuoteTagHandler.prototype.execCore = function (innerContent, tagData, context) {
         var style = {
-            width: '200%',
             padding: '13px 19px 13px 17px',
             backgroundColor: '#F5FAFF',
             border: '1px solid rgb(204,204,204)',
@@ -7872,19 +7875,19 @@ var DropDown = /** @class */ (function (_super) {
             });
         });
         return React.createElement("div", { id: "dropdown" },
-            React.createElement("div", { className: "box" },
+            React.createElement("div", { className: "box", style: { paddingBottom: "-10px", height: "50px" } },
                 React.createElement("div", { className: "userInfo" },
                     React.createElement("div", { className: "userImg" },
                         React.createElement("img", { src: "/images/userImg.png" })),
                     React.createElement("div", { className: "select" }, "userName")),
-                React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
+                React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0px 10px' } },
                     React.createElement("a", { href: "/", style: { color: '#fff' } }, "\u9996\u9875")),
-                React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
+                React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0px 10px' } },
                     React.createElement("a", { href: "/focus", style: { color: '#fff' } }, "\u5173\u6CE8")),
-                React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
+                React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0px 10px' } },
                     React.createElement("a", { href: "/newTopics", style: { color: '#fff' } }, "\u65B0\u5E16")),
-                React.createElement("div", { className: "boardListLink", style: { margin: '0 0 0 10px' } },
-                    React.createElement("a", { href: "/boardList", style: { marginTop: '16px', color: '#fff' } }, "\u7248\u9762"))),
+                React.createElement("div", { className: "topBarText", id: "boardListIndex", style: { fontSize: "16px", marginTop: "-1px" } },
+                    React.createElement("a", { href: "/boardList", style: { color: '#fff' } }, "\u7248\u9762"))),
             React.createElement("ul", { className: "sub" },
                 React.createElement("li", null, "\u4E2A\u4EBA\u4E2D\u5FC3"),
                 React.createElement("li", null, "\u6D88\u606F")));
@@ -8269,12 +8272,7 @@ var MainPage = /** @class */ (function (_super) {
                             React.createElement("div", { className: "announcementDate" }, "[2017.08.17]"),
                             React.createElement("div", { className: "announcementText" }, "\u516C\u544A3"),
                             React.createElement("div", { className: "announcementLink1" }, "\u2605\u8BE6\u60C5\u70B9\u51FB\u2605")),
-                        React.createElement("div", { className: "row" },
-                            React.createElement("div", { className: "announcementLink2" }, "\u2605\u5E7F\u64AD\u53F0\u70B9\u6B4C\u901A\u9053\u2605"),
-                            React.createElement("div", { className: "announcementLink2" }, "\u2605CC98 Share\u2605"),
-                            React.createElement("div", { className: "announcementLink2" }, "\u2605\u63A8\u8350\u9605\u8BFB\u6295\u7A3F\u2605"),
-                            React.createElement("div", { className: "announcementLink2" }, "\u2605\u793E\u56E2\u53CA\u5B66\u751F\u7EC4\u7EC7\u7528\u6237\u8BA4\u8BC1\u7533\u8BF7\u2605"),
-                            React.createElement("div", { className: "announcementLink2" }, "\u2605MyCC98 \u5B89\u5353\u5BA2\u6237\u7AEF\u2605")))),
+                        React.createElement("div", { className: "row" }))),
                 React.createElement(Recommended1, null),
                 React.createElement("div", { className: "row" },
                     React.createElement("div", { className: "list1" },

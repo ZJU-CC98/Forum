@@ -39,8 +39,8 @@ export class UbbContainer extends React.Component<UbbContainerProps, {}> {
 
 		//打开回车与空格00
 		const style = {
-			whiteSpace: 'pre-line'
-
+			whiteSpace: 'pre-line',
+            width: "100%"
 		};
 
 		// 注意兼容性设置， HTML4 不支持 article 标签

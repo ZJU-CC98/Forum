@@ -14,7 +14,7 @@ export class QuoteTagHandler extends Ubb.RecursiveTagHandler {
 
     execCore(innerContent: React.ReactNode, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
         const style = {
-            width: '200%',
+            
             padding: '13px 19px 13px 17px',
             backgroundColor: '#F5FAFF',
             border: '1px solid rgb(204,204,204)',

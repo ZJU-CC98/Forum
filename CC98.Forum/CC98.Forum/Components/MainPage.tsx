@@ -131,11 +131,7 @@ export class MainPage extends React.Component<{}, AppState> {
                         <div className="row"><div className="announcementDate">[2017.08.17]</div><div className="announcementText">公告2</div><div className="announcementLink1">★详情点击★</div></div>
                         <div className="row"><div className="announcementDate">[2017.08.17]</div><div className="announcementText">公告3</div><div className="announcementLink1">★详情点击★</div></div>
                         <div className="row">
-                            <div className="announcementLink2">★广播台点歌通道★</div>
-                            <div className="announcementLink2">★CC98 Share★</div>
-                            <div className="announcementLink2">★推荐阅读投稿★</div>
-                            <div className="announcementLink2">★社团及学生组织用户认证申请★</div>
-                            <div className="announcementLink2">★MyCC98 安卓客户端★</div>
+                            
                         </div>
                     </div>
                 </div>
