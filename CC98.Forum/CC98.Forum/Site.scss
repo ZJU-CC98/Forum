@@ -987,7 +987,20 @@ a {
     min-width: 1140px;
     align-items: center;
 }
-
+#boardListIndex {
+    margin: 0px 0px 0px 10px;
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background: linear-gradient(to bottom,rgba(53, 177, 255,1) ,rgba(79, 148, 205,1));
+    line-height: 60px;
+    opacity: 1;
+}
+#boardListIndex:hover {
+    background: #87CEFF;
+}
 .anArea {
     display: flex;
     flex-direction: column;
@@ -1844,7 +1857,6 @@ body {
     flex-direction: row;
     height: 50px;
     width: 100%;
-    opacity: 0.8;
     justify-content: center;
     background-color: rgba(80,80,80,0.6); //仅背景条半透明
 }
@@ -1945,15 +1957,18 @@ body {
 }
 
 #dropdown .sub {
+    opacity:0.9999;
     width: 124px;
     display: none;
     font-size: 12px;
     font-family: 微软雅黑;
     color: rgb(255,255,255);
-    background-color: rgba(80,80,80,0.6);
+    background-color: rgba(80,80,80,0.5);
+    line-height:25px;
 }
 
 #dropdown .sub li {
+
     height: 25px;
     cursor: pointer;
     text-align: center;
