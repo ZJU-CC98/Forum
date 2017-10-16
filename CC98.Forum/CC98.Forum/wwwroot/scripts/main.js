@@ -2736,7 +2736,7 @@ function isBottom() {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(17);
-module.exports = __webpack_require__(79);
+module.exports = __webpack_require__(80);
 
 
 /***/ }),
@@ -2791,6 +2791,7 @@ var Footer_1 = __webpack_require__(72);
 var MainPage_1 = __webpack_require__(73);
 var User_1 = __webpack_require__(75);
 var Login_1 = __webpack_require__(78);
+var LoginTest_1 = __webpack_require__(79);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -2833,6 +2834,7 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { path: "/newtopics", component: AllNewPost_1.AllNewPost }),
                     React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }),
                     React.createElement(react_router_dom_1.Route, { path: "/login", component: Login_1.Login }),
+                    React.createElement(react_router_dom_1.Route, { path: "/logintest", component: LoginTest_1.LoginTest }),
                     React.createElement(Footer_1.Footer, null))));
     };
     return App;
@@ -7875,19 +7877,19 @@ var DropDown = /** @class */ (function (_super) {
             });
         });
         return React.createElement("div", { id: "dropdown" },
-            React.createElement("div", { className: "box", style: { paddingBottom: "-10px", height: "50px" } },
+            React.createElement("div", { className: "box" },
                 React.createElement("div", { className: "userInfo" },
                     React.createElement("div", { className: "userImg" },
                         React.createElement("img", { src: "/images/userImg.png" })),
                     React.createElement("div", { className: "select" }, "userName")),
-                React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0px 10px' } },
+                React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
                     React.createElement("a", { href: "/", style: { color: '#fff' } }, "\u9996\u9875")),
-                React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0px 10px' } },
+                React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
                     React.createElement("a", { href: "/focus", style: { color: '#fff' } }, "\u5173\u6CE8")),
-                React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0px 10px' } },
+                React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
                     React.createElement("a", { href: "/newTopics", style: { color: '#fff' } }, "\u65B0\u5E16")),
-                React.createElement("div", { className: "topBarText", id: "boardListIndex", style: { fontSize: "16px", marginTop: "-1px" } },
-                    React.createElement("a", { href: "/boardList", style: { color: '#fff' } }, "\u7248\u9762"))),
+                React.createElement("div", { className: "boardListLink", style: { margin: '0 0 0 10px' } },
+                    React.createElement("a", { href: "/boardList", style: { marginTop: '16px', color: '#fff' } }, "\u7248\u9762"))),
             React.createElement("ul", { className: "sub" },
                 React.createElement("li", null, "\u4E2A\u4EBA\u4E2D\u5FC3"),
                 React.createElement("li", null, "\u6D88\u606F")));
@@ -8772,6 +8774,180 @@ var LoginState = /** @class */ (function () {
 
 /***/ }),
 /* 79 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var LoginTest = /** @class */ (function (_super) {
+    __extends(LoginTest, _super);
+    function LoginTest(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            loginName: '',
+            loginPassword: '',
+            loginMessage: ''
+        };
+        _this.handleNameChange = _this.handleNameChange.bind(_this);
+        _this.handlePasswordChange = _this.handlePasswordChange.bind(_this);
+        _this.handleLogin = _this.handleLogin.bind(_this);
+        return _this;
+    }
+    LoginTest.prototype.login = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var url, response, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        url = 'http://openid.cc98.org/connect/token';
+                        return [4 /*yield*/, fetch(url, {
+                                method: "POST",
+                                headers: {},
+                                body: "client_id=9a1fd200-8687-44b1-4c20-08d50a96e5cd" + "&grant_type=password" + "&username=" + this.state.loginName + "&password=" + this.state.loginPassword
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 2:
+                        data = _a.sent();
+                        console.log(data);
+                        this.setState({
+                            loginMessage: data
+                        });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    LoginTest.prototype.catch = function (e) {
+        console.log("Oops, error", e);
+    };
+    LoginTest.prototype.shake = function (element) {
+        element.classList.add('shake');
+        setTimeout(function () { element.classList.remove('shake'); }, 500);
+        return element;
+    };
+    LoginTest.prototype.handleNameChange = function (e) {
+        this.setState({
+            loginName: e.target.value
+        });
+    };
+    LoginTest.prototype.handlePasswordChange = function (e) {
+        this.setState({
+            loginPassword: e.target.value
+        });
+    };
+    LoginTest.prototype.handleLogin = function (e) {
+        e.preventDefault();
+        if (!(this.state.loginName || this.state.loginPassword)) {
+            this.setState({
+                loginMessage: '请输入用户名和密码'
+            });
+            this.shake(document.getElementById('loginName')).focus();
+            this.shake(document.getElementById('loginPassword'));
+            return false;
+        }
+        else if (!this.state.loginName) {
+            this.setState({
+                loginMessage: '请输入用户名'
+            });
+            this.shake(document.getElementById('loginName')).focus();
+            return false;
+        }
+        else if (!this.state.loginPassword) {
+            this.setState({
+                loginMessage: '请输入密码'
+            });
+            this.shake(document.getElementById('loginPassword')).focus();
+            return false;
+        }
+        else {
+            this.setState({
+                loginMessage: '登陆中'
+            });
+        }
+    };
+    LoginTest.prototype.render = function () {
+        return (React.createElement("div", { className: "login" },
+            React.createElement("div", null,
+                React.createElement("img", { src: "/images/login.png" }),
+                React.createElement("div", null,
+                    React.createElement("img", { src: "/images/login_welcome.png" }),
+                    React.createElement("form", { onSubmit: this.handleLogin },
+                        React.createElement("div", { className: "login-form" },
+                            React.createElement("p", null, "\u7528\u6237\u540D"),
+                            React.createElement("input", { type: "text", id: "loginName", onChange: this.handleNameChange, value: this.state.loginName })),
+                        React.createElement("div", { className: "login-form" },
+                            React.createElement("p", null, "\u5BC6\u7801"),
+                            React.createElement("input", { type: "password", id: "loginPassword", onChange: this.handlePasswordChange })),
+                        React.createElement("p", { id: "loginMessage" }, this.state.loginMessage),
+                        React.createElement("button", { type: "submit", onClick: this.login.bind(this) }, "\u767B\u9646\u8D26\u53F7")),
+                    React.createElement("p", null,
+                        React.createElement("span", null,
+                            "\u8FD8\u6CA1\u8D26\u53F7\uFF1F\u6211\u8981 ",
+                            React.createElement("a", { href: "" }, "\u6CE8\u518C")))))));
+    };
+    return LoginTest;
+}(React.Component));
+exports.LoginTest = LoginTest;
+/**
+ * 登陆页状态
+ */
+var LoginState = /** @class */ (function () {
+    function LoginState() {
+    }
+    return LoginState;
+}());
+
+
+/***/ }),
+/* 80 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

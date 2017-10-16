@@ -17,6 +17,7 @@ import { Footer } from './Footer';
 import { MainPage } from './MainPage';
 import { User } from './User';
 import { Login } from './Login';
+import { LoginTest } from './LoginTest';
 
 import { UbbContainer } from './UbbContainer';
 
@@ -46,7 +47,7 @@ export class App extends React.Component<{}, AppState> {
 		return <div>
 			<Router>
 				    <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column' }}>
-					<Header />
+                    <Header />
 					<Route exact path="/" component={MainPage}></Route>
 					<Route exact path="/topic/:topicid/:page?" component={Post} />
 					<Route exact path="/topic/:topicid/user/:userName/:page?" component={CurUserPost} />
@@ -58,6 +59,7 @@ export class App extends React.Component<{}, AppState> {
 					<Route path="/newtopics" component={AllNewPost} />
 					<Route path="/user" component={User} />
                     <Route path="/login" component={Login} />
+                    <Route path="/logintest" component={LoginTest} />
                     <Footer />
 				</div>
 			</Router></div>;
