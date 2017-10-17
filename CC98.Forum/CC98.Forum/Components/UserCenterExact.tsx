@@ -30,13 +30,11 @@ export class UserCenterExact extends React.Component<null, UserCenterExactState>
 	        }
         });
         const data = await response.json();
-        console.log(response);
         this.setState({
             userInfo: data,
             userAvatarImgURL: data.portraitUrl,
             responseState: response.status
         });
-        console.log(this.state);
     }
 
     render() {

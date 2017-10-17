@@ -10,7 +10,8 @@ export class Login extends React.Component<null, LoginState> {
         this.state = {
             loginName: '',
             loginPassword: '',
-            loginMessage: ''
+            loginMessage: '',
+            isLogining: false
         };
 
 	    this.handleNameChange = this.handleNameChange.bind(this);
@@ -36,9 +37,13 @@ export class Login extends React.Component<null, LoginState> {
         });
     }
     
-    handleLogin(e) {
+    async handleLogin(e) {
         e.preventDefault();
-        
+        //如果在登陆中则无视提交
+        if (this.state.isLogining) {
+            return false;
+        }
+
         if (!(this.state.loginName || this.state.loginPassword)) {
             this.setState({
                 loginMessage: '请输入用户名和密码'
@@ -62,9 +67,14 @@ export class Login extends React.Component<null, LoginState> {
             return false;
         }else {
             this.setState({
-                loginMessage: '登陆中'
-            });
+                loginMessage: '登陆中',
+                isLogining: true
+            });            
         }
+
+        let response = await fetch("http://openid.cc98.org/openid");
+        let data = await response.json();
+        console.log(data);
     }
 
     render() {
@@ -82,7 +92,7 @@ export class Login extends React.Component<null, LoginState> {
                                 <p>密码</p><input type="password" id="loginPassword" onChange={this.handlePasswordChange} />
                             </div>
                             <p id="loginMessage">{this.state.loginMessage}</p>
-                            <button type="submit">登陆账号</button>
+                            <button type="submit" disabled={this.state.isLogining}>登陆账号</button>
                         </form>
                         <p><span>还没账号？我要 <a href="">注册</a></span></p>
                     </div>
@@ -108,4 +118,8 @@ class LoginState {
     * 登陆信息
     */
     loginMessage: string;
+    /**
+    * 登陆状态
+    */
+    isLogining: boolean;
 }
