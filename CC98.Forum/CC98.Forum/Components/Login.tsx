@@ -71,10 +71,7 @@ export class Login extends React.Component<null, LoginState> {
                 isLogining: true
             });            
         }
-
-        let response = await fetch("http://openid.cc98.org/openid");
-        let data = await response.json();
-        console.log(data);
+        
     }
 
     render() {
