@@ -89,8 +89,15 @@ export class Reply extends RouteComponent<{}, { contents }, { page, topicid, use
 
     async componentWillReceiveProps(newProps) {
         const page = newProps.match.params.page || 1;
-        const realContents = await Utility.getTopicContent(newProps.match.params.topicid, page);
-        console.log(realContents);
+        const storageId = `TopicContent_${newProps.match.params.topicid}_${page}`;
+        let realContents;
+        if (!Utility.getStorage(storageId)) {
+            realContents = await Utility.getTopicContent(newProps.match.params.topicid, page);
+            Utility.setStorage(storageId, realContents);
+        }
+        else {
+            realContents = Utility.getStorage(storageId);
+        }
         this.setState({ contents: realContents });
 
     }
@@ -102,8 +109,6 @@ export class Reply extends RouteComponent<{}, { contents }, { page, topicid, use
         </div>;
     }
     render() {
-        console.log("new");
-        console.log(this.state.contents);
         return <div className="center" style={{ width: "1140px" }}>
             {this.state.contents.map(this.generateContents)}
         </div>
@@ -445,7 +450,6 @@ export class TopicPager extends RouteComponent<{ page, topicid, totalPage }, { p
     }
     async componentWillReceiveProps(newProps) {
         const pages = Utility.getPager(newProps.page, newProps.totalPage);
-        console.log('new=' + pages);
         this.setState({ pager: pages });
     }
     async componentDidMount() {
@@ -480,7 +484,6 @@ export class TopicPagerDown extends RouteComponent<{ page, topicid, totalPage },
     }
     async componentWillReceiveProps(newProps) {
         const pages = Utility.getPager(newProps.page, newProps.totalPage);
-        console.log('new=' + pages);
         this.setState({ pager: pages });
     }
     async componentDidMount() {

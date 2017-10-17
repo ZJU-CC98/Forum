@@ -1742,7 +1742,8 @@ var UbbContainer = /** @class */ (function (_super) {
         var ubbHtml = engine.exec(this.props.code || '', options);
         //打开回车与空格00
         var style = {
-            whiteSpace: 'pre-line'
+            whiteSpace: 'pre-line',
+            width: "100%"
         };
         // 注意兼容性设置， HTML4 不支持 article 标签
         if (options.compatibility === Ubb.UbbCompatiblityMode.Transitional) {
@@ -2735,7 +2736,7 @@ function isBottom() {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(17);
-module.exports = __webpack_require__(79);
+module.exports = __webpack_require__(80);
 
 
 /***/ }),
@@ -2790,6 +2791,7 @@ var Footer_1 = __webpack_require__(72);
 var MainPage_1 = __webpack_require__(73);
 var User_1 = __webpack_require__(75);
 var Login_1 = __webpack_require__(78);
+var LoginTest_1 = __webpack_require__(79);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -2832,6 +2834,7 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { path: "/newtopics", component: AllNewPost_1.AllNewPost }),
                     React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }),
                     React.createElement(react_router_dom_1.Route, { path: "/login", component: Login_1.Login }),
+                    React.createElement(react_router_dom_1.Route, { path: "/logintest", component: LoginTest_1.LoginTest }),
                     React.createElement(Footer_1.Footer, null))));
     };
     return App;
@@ -3016,15 +3019,22 @@ var Reply = /** @class */ (function (_super) {
     }
     Reply.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
-            var page, realContents;
+            var page, storageId, realContents;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         page = newProps.match.params.page || 1;
+                        storageId = "TopicContent_" + newProps.match.params.topicid + "_" + page;
+                        if (!!Utility.getStorage(storageId)) return [3 /*break*/, 2];
                         return [4 /*yield*/, Utility.getTopicContent(newProps.match.params.topicid, page)];
                     case 1:
                         realContents = _a.sent();
-                        console.log(realContents);
+                        Utility.setStorage(storageId, realContents);
+                        return [3 /*break*/, 3];
+                    case 2:
+                        realContents = Utility.getStorage(storageId);
+                        _a.label = 3;
+                    case 3:
                         this.setState({ contents: realContents });
                         return [2 /*return*/];
                 }
@@ -3038,8 +3048,6 @@ var Reply = /** @class */ (function (_super) {
                 React.createElement(ReplyContent, { key: item.content, content: item.content, signature: item.signature })));
     };
     Reply.prototype.render = function () {
-        console.log("new");
-        console.log(this.state.contents);
         return React.createElement("div", { className: "center", style: { width: "1140px" } }, this.state.contents.map(this.generateContents));
     };
     return Reply;
@@ -3475,7 +3483,6 @@ var TopicPager = /** @class */ (function (_super) {
             var pages;
             return __generator(this, function (_a) {
                 pages = Utility.getPager(newProps.page, newProps.totalPage);
-                console.log('new=' + pages);
                 this.setState({ pager: pages });
                 return [2 /*return*/];
             });
@@ -3521,7 +3528,6 @@ var TopicPagerDown = /** @class */ (function (_super) {
             var pages;
             return __generator(this, function (_a) {
                 pages = Utility.getPager(newProps.page, newProps.totalPage);
-                console.log('new=' + pages);
                 this.setState({ pager: pages });
                 return [2 /*return*/];
             });
@@ -3899,7 +3905,6 @@ var QuoteTagHandler = /** @class */ (function (_super) {
     ;
     QuoteTagHandler.prototype.execCore = function (innerContent, tagData, context) {
         var style = {
-            width: '200%',
             padding: '13px 19px 13px 17px',
             backgroundColor: '#F5FAFF',
             border: '1px solid rgb(204,204,204)',
@@ -5660,11 +5665,13 @@ var UserCenterExact = /** @class */ (function (_super) {
                         return [4 /*yield*/, response.json()];
                     case 2:
                         data = _a.sent();
+                        console.log(response);
                         this.setState({
                             userInfo: data,
                             userAvatarImgURL: data.portraitUrl,
                             responseState: response.status
                         });
+                        console.log(this.state);
                         return [2 /*return*/];
                 }
             });
@@ -7881,8 +7888,8 @@ var DropDown = /** @class */ (function (_super) {
                     React.createElement("a", { href: "/focus", style: { color: '#fff' } }, "\u5173\u6CE8")),
                 React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
                     React.createElement("a", { href: "/newTopics", style: { color: '#fff' } }, "\u65B0\u5E16")),
-                React.createElement("div", { className: "topBarText", style: { margin: '0 0 0 10px' } },
-                    React.createElement("a", { href: "/boardList", style: { color: '#fff' } }, "\u7248\u9762"))),
+                React.createElement("div", { className: "boardListLink", style: { margin: '0 0 0 10px' } },
+                    React.createElement("a", { href: "/boardList", style: { marginTop: '16px', color: '#fff' } }, "\u7248\u9762"))),
             React.createElement("ul", { className: "sub" },
                 React.createElement("li", null, "\u4E2A\u4EBA\u4E2D\u5FC3"),
                 React.createElement("li", null, "\u6D88\u606F")));
@@ -8267,12 +8274,7 @@ var MainPage = /** @class */ (function (_super) {
                             React.createElement("div", { className: "announcementDate" }, "[2017.08.17]"),
                             React.createElement("div", { className: "announcementText" }, "\u516C\u544A3"),
                             React.createElement("div", { className: "announcementLink1" }, "\u2605\u8BE6\u60C5\u70B9\u51FB\u2605")),
-                        React.createElement("div", { className: "row" },
-                            React.createElement("div", { className: "announcementLink2" }, "\u2605\u5E7F\u64AD\u53F0\u70B9\u6B4C\u901A\u9053\u2605"),
-                            React.createElement("div", { className: "announcementLink2" }, "\u2605CC98 Share\u2605"),
-                            React.createElement("div", { className: "announcementLink2" }, "\u2605\u63A8\u8350\u9605\u8BFB\u6295\u7A3F\u2605"),
-                            React.createElement("div", { className: "announcementLink2" }, "\u2605\u793E\u56E2\u53CA\u5B66\u751F\u7EC4\u7EC7\u7528\u6237\u8BA4\u8BC1\u7533\u8BF7\u2605"),
-                            React.createElement("div", { className: "announcementLink2" }, "\u2605MyCC98 \u5B89\u5353\u5BA2\u6237\u7AEF\u2605")))),
+                        React.createElement("div", { className: "row" }))),
                 React.createElement(Recommended1, null),
                 React.createElement("div", { className: "row" },
                     React.createElement("div", { className: "list1" },
@@ -8676,6 +8678,116 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var Login = /** @class */ (function (_super) {
+    __extends(Login, _super);
+    function Login(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            loginName: '',
+            loginPassword: '',
+            loginMessage: ''
+        };
+        _this.handleNameChange = _this.handleNameChange.bind(_this);
+        _this.handlePasswordChange = _this.handlePasswordChange.bind(_this);
+        _this.handleLogin = _this.handleLogin.bind(_this);
+        return _this;
+    }
+    Login.prototype.shake = function (element) {
+        element.classList.add('shake');
+        setTimeout(function () { element.classList.remove('shake'); }, 500);
+        return element;
+    };
+    Login.prototype.handleNameChange = function (e) {
+        this.setState({
+            loginName: e.target.value
+        });
+    };
+    Login.prototype.handlePasswordChange = function (e) {
+        this.setState({
+            loginPassword: e.target.value
+        });
+    };
+    Login.prototype.handleLogin = function (e) {
+        e.preventDefault();
+        if (!(this.state.loginName || this.state.loginPassword)) {
+            this.setState({
+                loginMessage: '请输入用户名和密码'
+            });
+            this.shake(document.getElementById('loginName')).focus();
+            this.shake(document.getElementById('loginPassword'));
+            return false;
+        }
+        else if (!this.state.loginName) {
+            this.setState({
+                loginMessage: '请输入用户名'
+            });
+            this.shake(document.getElementById('loginName')).focus();
+            return false;
+        }
+        else if (!this.state.loginPassword) {
+            this.setState({
+                loginMessage: '请输入密码'
+            });
+            this.shake(document.getElementById('loginPassword')).focus();
+            return false;
+        }
+        else {
+            this.setState({
+                loginMessage: '登陆中'
+            });
+        }
+    };
+    Login.prototype.render = function () {
+        return (React.createElement("div", { className: "login" },
+            React.createElement("div", null,
+                React.createElement("img", { src: "/images/login.png" }),
+                React.createElement("div", null,
+                    React.createElement("img", { src: "/images/login_welcome.png" }),
+                    React.createElement("form", { onSubmit: this.handleLogin },
+                        React.createElement("div", { className: "login-form" },
+                            React.createElement("p", null, "\u7528\u6237\u540D"),
+                            React.createElement("input", { type: "text", id: "loginName", onChange: this.handleNameChange, value: this.state.loginName })),
+                        React.createElement("div", { className: "login-form" },
+                            React.createElement("p", null, "\u5BC6\u7801"),
+                            React.createElement("input", { type: "password", id: "loginPassword", onChange: this.handlePasswordChange })),
+                        React.createElement("p", { id: "loginMessage" }, this.state.loginMessage),
+                        React.createElement("button", { type: "submit" }, "\u767B\u9646\u8D26\u53F7")),
+                    React.createElement("p", null,
+                        React.createElement("span", null,
+                            "\u8FD8\u6CA1\u8D26\u53F7\uFF1F\u6211\u8981 ",
+                            React.createElement("a", { href: "" }, "\u6CE8\u518C")))))));
+    };
+    return Login;
+}(React.Component));
+exports.Login = Login;
+/**
+ * 登陆页状态
+ */
+var LoginState = /** @class */ (function () {
+    function LoginState() {
+    }
+    return LoginState;
+}());
+
+
+/***/ }),
+/* 79 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -8713,87 +8825,95 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Login = /** @class */ (function (_super) {
-    __extends(Login, _super);
-    function Login(props) {
+var LoginTest = /** @class */ (function (_super) {
+    __extends(LoginTest, _super);
+    function LoginTest(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
             loginName: '',
             loginPassword: '',
-            loginMessage: '',
-            isLogining: false
+            loginMessage: ''
         };
         _this.handleNameChange = _this.handleNameChange.bind(_this);
         _this.handlePasswordChange = _this.handlePasswordChange.bind(_this);
         _this.handleLogin = _this.handleLogin.bind(_this);
         return _this;
     }
-    Login.prototype.shake = function (element) {
-        element.classList.add('shake');
-        setTimeout(function () { element.classList.remove('shake'); }, 500);
-        return element;
-    };
-    Login.prototype.handleNameChange = function (e) {
-        this.setState({
-            loginName: e.target.value
-        });
-    };
-    Login.prototype.handlePasswordChange = function (e) {
-        this.setState({
-            loginPassword: e.target.value
-        });
-    };
-    Login.prototype.handleLogin = function (e) {
+    LoginTest.prototype.login = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var response, data;
+            var url, response, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        e.preventDefault();
-                        //如果在登陆中则无视提交
-                        if (this.state.isLogining) {
-                            return [2 /*return*/, false];
-                        }
-                        if (!!(this.state.loginName || this.state.loginPassword)) return [3 /*break*/, 1];
-                        this.setState({
-                            loginMessage: '请输入用户名和密码'
-                        });
-                        this.shake(document.getElementById('loginName')).focus();
-                        this.shake(document.getElementById('loginPassword'));
-                        return [2 /*return*/, false];
+                        url = 'http://openid.cc98.org/connect/token';
+                        return [4 /*yield*/, fetch(url, {
+                                method: "POST",
+                                headers: {},
+                                body: "client_id=9a1fd200-8687-44b1-4c20-08d50a96e5cd" + "&grant_type=password" + "&username=" + this.state.loginName + "&password=" + this.state.loginPassword
+                            })];
                     case 1:
-                        if (!!this.state.loginName) return [3 /*break*/, 2];
-                        this.setState({
-                            loginMessage: '请输入用户名'
-                        });
-                        this.shake(document.getElementById('loginName')).focus();
-                        return [2 /*return*/, false];
-                    case 2:
-                        if (!!this.state.loginPassword) return [3 /*break*/, 3];
-                        this.setState({
-                            loginMessage: '请输入密码'
-                        });
-                        this.shake(document.getElementById('loginPassword')).focus();
-                        return [2 /*return*/, false];
-                    case 3:
-                        this.setState({
-                            loginMessage: '登陆中',
-                            isLogining: true
-                        });
-                        return [4 /*yield*/, fetch("http://openid.cc98.org/Authorize")];
-                    case 4:
                         response = _a.sent();
                         return [4 /*yield*/, response.json()];
-                    case 5:
+                    case 2:
                         data = _a.sent();
                         console.log(data);
-                        _a.label = 6;
-                    case 6: return [2 /*return*/];
+                        this.setState({
+                            loginMessage: data
+                        });
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    Login.prototype.render = function () {
+    LoginTest.prototype.catch = function (e) {
+        console.log("Oops, error", e);
+    };
+    LoginTest.prototype.shake = function (element) {
+        element.classList.add('shake');
+        setTimeout(function () { element.classList.remove('shake'); }, 500);
+        return element;
+    };
+    LoginTest.prototype.handleNameChange = function (e) {
+        this.setState({
+            loginName: e.target.value
+        });
+    };
+    LoginTest.prototype.handlePasswordChange = function (e) {
+        this.setState({
+            loginPassword: e.target.value
+        });
+    };
+    LoginTest.prototype.handleLogin = function (e) {
+        e.preventDefault();
+        if (!(this.state.loginName || this.state.loginPassword)) {
+            this.setState({
+                loginMessage: '请输入用户名和密码'
+            });
+            this.shake(document.getElementById('loginName')).focus();
+            this.shake(document.getElementById('loginPassword'));
+            return false;
+        }
+        else if (!this.state.loginName) {
+            this.setState({
+                loginMessage: '请输入用户名'
+            });
+            this.shake(document.getElementById('loginName')).focus();
+            return false;
+        }
+        else if (!this.state.loginPassword) {
+            this.setState({
+                loginMessage: '请输入密码'
+            });
+            this.shake(document.getElementById('loginPassword')).focus();
+            return false;
+        }
+        else {
+            this.setState({
+                loginMessage: '登陆中'
+            });
+        }
+    };
+    LoginTest.prototype.render = function () {
         return (React.createElement("div", { className: "login" },
             React.createElement("div", null,
                 React.createElement("img", { src: "/images/login.png" }),
@@ -8807,15 +8927,15 @@ var Login = /** @class */ (function (_super) {
                             React.createElement("p", null, "\u5BC6\u7801"),
                             React.createElement("input", { type: "password", id: "loginPassword", onChange: this.handlePasswordChange })),
                         React.createElement("p", { id: "loginMessage" }, this.state.loginMessage),
-                        React.createElement("button", { type: "submit", disabled: this.state.isLogining }, "\u767B\u9646\u8D26\u53F7")),
+                        React.createElement("button", { type: "submit", onClick: this.login.bind(this) }, "\u767B\u9646\u8D26\u53F7")),
                     React.createElement("p", null,
                         React.createElement("span", null,
                             "\u8FD8\u6CA1\u8D26\u53F7\uFF1F\u6211\u8981 ",
                             React.createElement("a", { href: "" }, "\u6CE8\u518C")))))));
     };
-    return Login;
+    return LoginTest;
 }(React.Component));
-exports.Login = Login;
+exports.LoginTest = LoginTest;
 /**
  * 登陆页状态
  */
@@ -8827,7 +8947,7 @@ var LoginState = /** @class */ (function () {
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
