@@ -6137,15 +6137,15 @@ var UserCenterExactActivitiesPost = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     UserCenterExactActivitiesPost.prototype.render = function () {
-        return (React.createElement("div", { className: 'user-post' },
+        return (React.createElement("div", { className: "user-post" },
             React.createElement("p", null,
-                React.createElement("span", { className: 'user-post-board' }, this.props.userRecentPost.board),
-                React.createElement("span", { className: 'user-post-date' }, this.props.userRecentPost.date),
-                React.createElement("samp", { className: 'user-post-title' }, this.props.userRecentPost.title)),
-            React.createElement("p", { className: 'user-post-approval' },
-                React.createElement("span", { className: 'fa-thumbs-o-up' }, " " + this.props.userRecentPost.approval),
-                React.createElement("span", { className: 'fa-thumbs-o-down' }, " " + this.props.userRecentPost.disapproval)),
-            React.createElement("p", { className: 'user-post-content' }, this.props.userRecentPost.content)));
+                React.createElement("span", { className: "user-post-board" }, this.props.userRecentPost.board),
+                React.createElement("span", { className: "user-post-date" }, this.props.userRecentPost.date),
+                React.createElement("samp", { className: "user-post-title" }, this.props.userRecentPost.title)),
+            React.createElement("p", { className: "user-post-approval" },
+                React.createElement("span", { className: "fa-thumbs-o-up" }, " " + this.props.userRecentPost.approval),
+                React.createElement("span", { className: "fa-thumbs-o-down" }, " " + this.props.userRecentPost.disapproval)),
+            React.createElement("p", { className: "user-post-content" }, this.props.userRecentPost.content)));
     };
     return UserCenterExactActivitiesPost;
 }(React.Component));
@@ -6302,7 +6302,7 @@ var List = /** @class */ (function (_super) {
         });
     };
     List.prototype.render = function () {
-        return React.createElement("div", { id: "listRoot", style: { marginTop: "40px" } },
+        return React.createElement("div", { id: "listRoot", style: { marginTop: '40px' } },
             React.createElement(ListHead, { key: this.state.page, boardid: this.state.boardid }),
             React.createElement(ListNotice, null),
             React.createElement(ListButtonAndPager, { page: this.state.page, totalPage: this.state.totalPage, boardid: this.state.boardid }),
@@ -6343,7 +6343,9 @@ var ListHead = /** @class */ (function (_super) {
                         return [4 /*yield*/, managersResponse.json()];
                     case 2:
                         managerJson = _a.sent();
-                        this.setState({ listName: managerJson.name, todayTopics: managerJson.todayPostCount, totalTopics: managerJson.totalTopicCount, listManager: managerJson.masters });
+                        this.setState({
+                            listName: managerJson.name, todayTopics: managerJson.todayPostCount, totalTopics: managerJson.totalTopicCount, listManager: managerJson.masters
+                        });
                         return [2 /*return*/];
                 }
             });
@@ -6372,7 +6374,7 @@ var ListHead = /** @class */ (function (_super) {
         var name = item.toString();
         var userName = encodeURIComponent(item.toString());
         var webUrl = "/user/name/" + userName;
-        return React.createElement("div", { style: { marginRight: "10px" } },
+        return React.createElement("div", { style: { marginRight: '10px' } },
             React.createElement("a", { href: webUrl }, name));
     };
     ListHead.prototype.render = function () {
@@ -6384,10 +6386,10 @@ var ListHead = /** @class */ (function (_super) {
                     React.createElement("div", { className: "column", style: { marginTop: '20px', marginLeft: '10px' } },
                         React.createElement("div", { className: "row", style: { marginTop: '10px' } },
                             React.createElement("div", null, "\u4ECA\u65E5\u4E3B\u9898"),
-                            React.createElement("div", { style: { marginLeft: "10px" } }, this.state.todayTopics)),
+                            React.createElement("div", { style: { marginLeft: '10px' } }, this.state.todayTopics)),
                         React.createElement("div", { className: "row", style: { marginTop: '10px' } },
                             React.createElement("div", null, "\u603B\u4E3B\u9898"),
-                            React.createElement("div", { style: { marginLeft: "20px" } }, this.state.totalTopics)))),
+                            React.createElement("div", { style: { marginLeft: '20px' } }, this.state.totalTopics)))),
                 React.createElement("div", { className: "column", style: { flexgrow: '0' } },
                     React.createElement("div", { id: "like" },
                         React.createElement("button", { style: { border: 'none', color: '#F5FAFC' } }, "\u2730"),
@@ -6461,9 +6463,9 @@ var ListButtonAndPager = /** @class */ (function (_super) {
     };
     ListButtonAndPager.prototype.render = function () {
         return React.createElement("div", { className: "row", style: { width: '1140px', height: '50px', marginTop: '15px', justifyContent: 'space-between', alignItems: 'flex-end' } },
-            React.createElement("div", { style: { marginBottom: "20px" } },
+            React.createElement("div", { style: { marginBottom: '20px' } },
                 React.createElement("button", { className: "button orange" }, "\u53D1\u4E3B\u9898"),
-                React.createElement("button", { className: "button green", style: { marginLeft: "20px" } }, "\u53D1\u6295\u7968")),
+                React.createElement("button", { className: "button green", style: { marginLeft: '20px' } }, "\u53D1\u6295\u7968")),
             React.createElement("div", { id: "pager" },
                 React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this)))));
     };
@@ -6476,41 +6478,39 @@ var PageModel = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     PageModel.prototype.render = function () {
-        var last = '<';
-        var next = '>';
-        var start = '<<';
-        var end = '>>';
+        var pageUrl;
         if (this.props.pageNumber > 0) {
-            var pageUrl = "/list/" + this.props.boardid + "/" + this.props.pageNumber;
-            if (this.props.pageNumber != this.props.curPage) {
+            pageUrl = "/list/" + this.props.boardid + "/" + this.props.pageNumber;
+            if (this.props.pageNumber !== this.props.curPage) {
                 return React.createElement("li", { className: "page-item" },
                     React.createElement(react_router_dom_1.Link, { to: pageUrl, className: "page-link" }, this.props.pageNumber));
             }
             else {
                 return React.createElement("li", { className: "page-item active" },
-                    React.createElement(react_router_dom_1.Link, { to: pageUrl, className: "page-link " }, this.props.pageNumber));
+                    React.createElement(react_router_dom_1.Link, { to: pageUrl, className: "page-link " }, this.props
+                        .pageNumber));
             }
         }
         else if (this.props.pageNumber == -1) {
-            var pageUrl = "/list/" + this.props.boardid + "/" + (this.props.curPage - 1);
+            pageUrl = "/list/" + this.props.boardid + "/" + (this.props.curPage - 1);
             return React.createElement("li", { className: "page-item" },
-                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, last));
+                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u2039"));
         }
         else if (this.props.pageNumber == -2) {
-            var pageUrl = "/list/" + this.props.boardid + "/" + (this.props.curPage + 1);
+            pageUrl = "/list/" + this.props.boardid + "/" + (this.props.curPage + 1);
             return React.createElement("li", { className: "page-item" },
-                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, next));
+                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u203A"));
         }
         else if (this.props.pageNumber == -3) {
-            var pageUrl = "/list/" + this.props.boardid + "/1";
+            pageUrl = "/list/" + this.props.boardid + "/1";
             return React.createElement("li", { className: "page-item" },
                 " ",
-                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, start));
+                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u00AB"));
         }
         else if (this.props.pageNumber == -4) {
-            var pageUrl = "/list/" + this.props.boardid + "/" + this.props.totalPage;
+            pageUrl = "/list/" + this.props.boardid + "/" + this.props.totalPage;
             return React.createElement("li", { className: "page-item" },
-                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, end));
+                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u00BB"));
         }
     };
     return PageModel;
@@ -6586,7 +6586,7 @@ var ListContent = /** @class */ (function (_super) {
     ListContent.prototype.render = function () {
         return React.createElement("div", { className: "listContent " },
             React.createElement("div", { className: "row", style: { justifyContent: 'space-between', } },
-                React.createElement("div", { className: "row", style: { height: '40px', marginTop: "5px", alignItems: "center" } },
+                React.createElement("div", { className: "row", style: { height: '40px', marginTop: '5px', alignItems: 'center' } },
                     React.createElement("button", { className: "listContentTag" }, "\u5168\u90E8"),
                     React.createElement("button", { className: "listContentTag" }, "\u7CBE\u534E"),
                     React.createElement("button", { className: "listContentTag" }, "\u6700\u70ED")),
@@ -6628,7 +6628,8 @@ var TopicTitleAndContent = /** @class */ (function (_super) {
                     React.createElement("div", { style: { marginRight: '10px', marginLeft: '15px', width: '80px' } },
                         " ",
                         React.createElement("span", null,
-                            React.createElement("a", null, this.state.authorName))),
+                            React.createElement("a", null, this.state
+                                .authorName))),
                     React.createElement("div", { className: "row", style: { flexDirection: 'row', alignItems: 'flex-end' } },
                         React.createElement("div", { id: "liked" },
                             React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
@@ -17760,10 +17761,10 @@ var UserCenterExactProfile = /** @class */ (function (_super) {
     UserCenterExactProfile.prototype.render = function () {
         console.log(this.props.userInfo.signatureCode);
         return (React.createElement("div", { className: "user-profile" },
-            React.createElement("button", { type: 'button' }, "\u79C1\u4FE1"),
-            React.createElement("div", { id: 'userId' },
+            React.createElement("button", { type: "button" }, "\u79C1\u4FE1"),
+            React.createElement("div", { id: "userId" },
                 React.createElement("p", null, this.props.userInfo.name)),
-            React.createElement("div", { id: 'userGenderAndBirthday' },
+            React.createElement("div", { id: "userGenderAndBirthday" },
                 React.createElement("p", null,
                     "\u6027\u522B  ",
                     (this.props.userInfo.gender === 0) ? '男' : '女',
@@ -17772,12 +17773,12 @@ var UserCenterExactProfile = /** @class */ (function (_super) {
                     "\u751F\u65E5  ",
                     this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T')))),
             this.props.userInfo.personalDescription ?
-                React.createElement("div", { className: 'user-description' },
+                React.createElement("div", { className: "user-description" },
                     React.createElement("p", null, "\u4E2A\u4EBA\u8BF4\u660E"),
                     React.createElement("img", { src: this.props.userInfo.photourl }),
                     React.createElement("p", null, this.props.userInfo.personalDescription)) : null,
             this.props.userInfo.signatureCode ?
-                React.createElement("div", { className: 'user-description' },
+                React.createElement("div", { className: "user-description" },
                     React.createElement("p", null, "\u4E2A\u6027\u7B7E\u540D"),
                     React.createElement(UbbContainer_1.UbbContainer, { code: this.props.userInfo.signatureCode })) : null));
     };
@@ -17885,9 +17886,9 @@ var UserCenterExactActivities = /** @class */ (function (_super) {
             React.createElement("p", null, "\u8FD1\u671F\u52A8\u6001"),
             React.createElement(react_router_dom_1.BrowserRouter, null,
                 React.createElement("div", null,
-                    React.createElement(CustomLink, { to: "" + location.pathname, label: '主题', activeOnlyWhenExact: true }),
+                    React.createElement(CustomLink, { to: "" + location.pathname, label: "主题", activeOnlyWhenExact: true }),
                     " | ",
-                    React.createElement(CustomLink, { to: location.pathname + "/replies", label: '回复', activeOnlyWhenExact: false }),
+                    React.createElement(CustomLink, { to: location.pathname + "/replies", label: "回复", activeOnlyWhenExact: false }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "" + location.pathname, component: UserCenterExactActivitiesPosts_1.UserCenterExactActivitiesPosts }),
                     React.createElement(react_router_dom_1.Route, { path: location.pathname + "/replies", component: UserCenterExactActivitiesReplies_1.UserCenterExactActivitiesReplies })))));
     };
@@ -17931,9 +17932,9 @@ var UserCenterExactAvatar = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     UserCenterExactAvatar.prototype.render = function () {
-        return (React.createElement("div", { className: 'user-avatar' },
-            React.createElement("img", { className: 'user-avatar-img', src: this.props.userAvatarImgURL }),
-            React.createElement("div", { className: 'user-badge' })));
+        return (React.createElement("div", { className: "user-avatar" },
+            React.createElement("img", { className: "user-avatar-img", src: this.props.userAvatarImgURL }),
+            React.createElement("div", { className: "user-badge" })));
     };
     return UserCenterExactAvatar;
 }(React.Component));
@@ -17968,15 +17969,15 @@ var UserCenterMyFollowingsUser = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     UserCenterMyFollowingsUser.prototype.render = function () {
-        return (React.createElement("div", { className: 'user-center-myfollowings-user' },
+        return (React.createElement("div", { className: "user-center-myfollowings-user" },
             React.createElement("img", { src: this.props.userFanInfo.avatarImgURL }),
             React.createElement("p", null,
-                React.createElement("span", { className: 'user-center-myfollowings-user-id' }, this.props.userFanInfo.name),
+                React.createElement("span", { className: "user-center-myfollowings-user-id" }, this.props.userFanInfo.name),
                 "\u4E3B\u9898",
-                React.createElement("span", { className: 'user-center-myfollowings-user-posts' }, this.props.userFanInfo.posts),
+                React.createElement("span", { className: "user-center-myfollowings-user-posts" }, this.props.userFanInfo.posts),
                 "\u7C89\u4E1D",
-                React.createElement("span", { className: 'user-center-myfollowings-user-fans' }, this.props.userFanInfo.fans)),
-            React.createElement("button", { type: 'button' }, "\u53D6\u6D88\u5173\u6CE8")));
+                React.createElement("span", { className: "user-center-myfollowings-user-fans" }, this.props.userFanInfo.fans)),
+            React.createElement("button", { type: "button" }, "\u53D6\u6D88\u5173\u6CE8")));
     };
     return UserCenterMyFollowingsUser;
 }(React.Component));
@@ -18015,15 +18016,15 @@ var MyMessageResponsebox = /** @class */ (function (_super) {
     }
     */
     MyMessageResponsebox.prototype.render = function () {
-        return (React.createElement("div", { className: 'mymessage-response-box' },
-            React.createElement("div", { className: 'mymessage-response-box-left' },
-                React.createElement("img", { className: 'mymessage-response-img', src: this.props.chatPortraitUrl })),
-            React.createElement("div", { className: 'mymessage-response-box-middle' },
-                React.createElement("div", { className: 'mymessage-response-box-middle-name' }, this.props.senderName),
-                React.createElement("div", { className: 'mymessage-response-box-middle-title' }, this.props.title),
-                React.createElement("div", { className: 'mymessage-response-box-middle-date' }, this.props.sendTime),
+        return (React.createElement("div", { className: "mymessage-response-box" },
+            React.createElement("div", { className: "mymessage-response-box-left" },
+                React.createElement("img", { className: "mymessage-response-img", src: this.props.chatPortraitUrl })),
+            React.createElement("div", { className: "mymessage-response-box-middle" },
+                React.createElement("div", { className: "mymessage-response-box-middle-name" }, this.props.senderName),
+                React.createElement("div", { className: "mymessage-response-box-middle-title" }, this.props.title),
+                React.createElement("div", { className: "mymessage-response-box-middle-date" }, this.props.sendTime),
                 React.createElement("div", { className: "mymessage-response-box-middle-content" }, this.props.content)),
-            React.createElement("div", { className: 'mymessage-response-box-right' }, "\u67E5\u770B")));
+            React.createElement("div", { className: "mymessage-response-box-right" }, "\u67E5\u770B")));
     };
     return MyMessageResponsebox;
 }(React.Component));
@@ -18285,7 +18286,7 @@ var Post = /** @class */ (function (_super) {
     };
     Post.prototype.render = function () {
         var topic = null;
-        if (this.state.page == 1) {
+        if (this.state.page === 1) {
             topic = React.createElement(PostTopic, { imgUrl: "/images/ads.jpg", page: this.state.page, topicid: this.state.topicid });
         }
         return React.createElement("div", { className: "center", style: { overflowX: 'scroll', minWidth: '1140px', marginTop: '40px' } },
@@ -19209,7 +19210,7 @@ var CurUserPost = /** @class */ (function (_super) {
         if (this.state.page == 1) {
             topic = React.createElement(PostTopic, { imgUrl: "/images/ads.jpg", page: this.state.page, topicid: this.state.topicid, userName: this.state.userName });
         }
-        return React.createElement("div", { className: "center", style: { overflowX: "scroll", minWidth: "1140px" } },
+        return React.createElement("div", { className: "center", style: { overflowX: 'scroll', minWidth: '1140px' } },
             React.createElement(TopicPager, { userName: this.state.userName, page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
             topic,
             React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/user/:userName/:page?", component: Reply }));
@@ -19252,7 +19253,7 @@ var Reply = /** @class */ (function (_super) {
             React.createElement(ReplyContent, { key: item.content, content: item.content, signature: item.signature }));
     };
     Reply.prototype.render = function () {
-        return React.createElement("div", { className: "center", style: { width: "1140px" } }, this.state.contents.map(this.generateContents));
+        return React.createElement("div", { className: "center", style: { width: '1140px' } }, this.state.contents.map(this.generateContents));
     };
     return Reply;
 }(RouteComponent));
@@ -19262,9 +19263,9 @@ var Replier = /** @class */ (function (_super) {
     function Replier(props, content) {
         var _this = _super.call(this, props, content) || this;
         _this.state = {
-            imgUrl: "/images/authorImg.jpg",
-            timeImgUrl: "/images/clock.jpg",
-            userName: "VayneTian",
+            imgUrl: '/images/authorImg.jpg',
+            timeImgUrl: '/images/clock.jpg',
+            userName: 'VayneTian',
             replyTime: Date(),
             topicsNumber: 999,
             level: 2,
@@ -19274,22 +19275,23 @@ var Replier = /** @class */ (function (_super) {
     Replier.prototype.render = function () {
         var curUserPostUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userName;
         return React.createElement("div", { className: "replyRoot" },
-            React.createElement("div", { className: "row", style: { width: "1140px", display: "flex", marginBottom: "10px" } },
+            React.createElement("div", { className: "row", style: { width: '1140px', display: 'flex', marginBottom: '10px' } },
                 React.createElement("div", { id: "authorImg" },
                     React.createElement("img", { src: this.props.userImgUrl })),
                 React.createElement("div", { className: "column", id: "rpymes" },
                     React.createElement("div", { className: "row", id: "replierMes" },
-                        React.createElement("div", { style: { marginLeft: "10px" } },
+                        React.createElement("div", { style: { marginLeft: '10px' } },
                             React.createElement("span", null,
                                 this.props.floor,
                                 "L")),
-                        React.createElement("div", { className: "rpyClr", style: { marginLeft: "10px" } }, this.props.userName),
-                        React.createElement("div", { id: "topicsNumber", style: { marginLeft: "10px" } },
+                        React.createElement("div", { className: "rpyClr", style: { marginLeft: '10px' } }, this.props.userName),
+                        React.createElement("div", { id: "topicsNumber", style: { marginLeft: '10px' } },
                             "\u8D34\u6570   ",
-                            React.createElement("span", { className: "rpyClrodd" }, this.props.sendTopicNumber),
+                            React.createElement("span", { className: "rpyClrodd" }, this.props
+                                .sendTopicNumber),
                             " ")),
                     React.createElement("div", { className: "row" },
-                        React.createElement("div", { id: "clockimg", style: { marginLeft: "6px" } },
+                        React.createElement("div", { id: "clockimg", style: { marginLeft: '6px' } },
                             React.createElement("i", { className: "fa fa-clock-o fa-lg fa-fw" })),
                         React.createElement("div", null,
                             React.createElement("span", { className: "timeProp" }, moment(this.props.replyTime).format('YYYY-MM-DD HH:mm:ss'))))),
@@ -19308,7 +19310,7 @@ var PostTopic = /** @class */ (function (_super) {
     function PostTopic(props, content) {
         var _this = _super.call(this, props, content) || this;
         _this.state = {
-            topicMessage: { title: "ss", time: "2017" }
+            topicMessage: { title: 'ss', time: '2017' }
         };
         return _this;
     }
@@ -19350,7 +19352,7 @@ var AuthorMessage = /** @class */ (function (_super) {
     function AuthorMessage(props, content) {
         var _this = _super.call(this, props, content) || this;
         _this.state = {
-            userName: "Mana",
+            userName: 'Mana',
             fansNumber: 233,
             imgUrl: _this.props.authorImgUrl
         };
@@ -19361,12 +19363,12 @@ var AuthorMessage = /** @class */ (function (_super) {
             React.createElement("div", { id: "authorImg" },
                 React.createElement("img", { src: this.props.authorImgUrl })),
             React.createElement("div", { className: "column" },
-                React.createElement("div", { className: "row authorFans", style: { justifyContent: "space-between" } },
+                React.createElement("div", { className: "row authorFans", style: { justifyContent: 'space-between' } },
                     React.createElement("div", { id: "authorName" },
                         React.createElement("p", null, this.props.AuthorName)),
                     React.createElement("div", { id: "fans", className: "row" },
-                        React.createElement("div", { style: { marginRight: "3px" } }, "\u7C89\u4E1D"),
-                        React.createElement("div", { style: { color: "#EE0000" } }, this.state.fansNumber))),
+                        React.createElement("div", { style: { marginRight: '3px' } }, "\u7C89\u4E1D"),
+                        React.createElement("div", { style: { color: '#EE0000' } }, this.state.fansNumber))),
                 React.createElement("div", { className: "row" },
                     React.createElement("button", { id: "watch" }, "\u5173\u6CE8"),
                     React.createElement("button", { id: "email" }, "\u79C1\u4FE1"))));
@@ -19381,9 +19383,9 @@ var TopicTitle = /** @class */ (function (_super) {
         _this.state = {
             isNotice: true,
             isTop: true,
-            title: "这是一个长长啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊的标题",
-            tag: "女装/开车",
-            time: "2017.8.12",
+            title: '这是一个长长啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊的标题',
+            tag: '女装/开车',
+            time: '2017.8.12',
             likeNumber: 666,
             unlikeNumber: 233,
             viewTimes: 2366
@@ -19396,9 +19398,9 @@ var TopicTitle = /** @class */ (function (_super) {
                 React.createElement("div", { id: "essay1", className: "row" },
                     React.createElement("div", { id: "title1", className: "row" },
                         " ",
-                        React.createElement("span", { className: "titleProp" }, this.state.isTop ? "【置顶】" : ""),
+                        React.createElement("span", { className: "titleProp" }, this.state.isTop ? '【置顶】' : ''),
                         React.createElement("span", { className: "titleProp" },
-                            this.state.isNotice ? "【公告】" : "",
+                            this.state.isNotice ? '【公告】' : '',
                             " "),
                         React.createElement("span", { id: "essayTitle" }, this.props.Title))),
                 React.createElement("div", { className: "row", id: "essayProp" },
@@ -19420,12 +19422,12 @@ var TopicTitle = /** @class */ (function (_super) {
                         React.createElement("span", { className: "timeProp tagSize" },
                             this.props.HitCount,
                             "\u6B21")))),
-            React.createElement("div", { className: "column", style: { width: "100px" } },
-                React.createElement("div", { className: "row", style: { marginTop: "10px" } },
+            React.createElement("div", { className: "column", style: { width: '100px' } },
+                React.createElement("div", { className: "row", style: { marginTop: '10px' } },
                     React.createElement("div", { id: "like", className: "tagSize" },
                         React.createElement("i", { className: "fa fa-star-o fa-lg" }),
-                        React.createElement("span", { style: { marginLeft: "10px" } }, "\u6536\u85CF\u6587\u7AE0"))),
-                React.createElement("div", { className: "row", style: { marginTop: "35px" } },
+                        React.createElement("span", { style: { marginLeft: '10px' } }, "\u6536\u85CF\u6587\u7AE0"))),
+                React.createElement("div", { className: "row", style: { marginTop: '35px' } },
                     React.createElement("div", { id: "liked", className: "row tagSize" },
                         React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg fa-fw" }),
                         this.state.likeNumber),
@@ -19490,7 +19492,7 @@ var ReplyContent = /** @class */ (function (_super) {
         return React.createElement("div", { className: "root" },
             React.createElement("div", { className: "content" },
                 React.createElement("div", { className: "substance" },
-                    React.createElement("span", { style: { maxWidth: "1100px" } }, this.props.content)),
+                    React.createElement("span", { style: { maxWidth: '1100px' } }, this.props.content)),
                 React.createElement("div", { className: "signature" }, this.props.signature),
                 React.createElement("div", { className: "comment" },
                     React.createElement("div", { id: "commentliked" },
@@ -19515,16 +19517,16 @@ var TopicGood = /** @class */ (function (_super) {
     function TopicGood(props, content) {
         var _this = _super.call(this, props, content) || this;
         _this.state = {
-            userName: "Mana",
+            userName: 'Mana',
             grade: 10,
             reward: 20,
-            credit: "6666炒鸡赞",
-            imgUrl: "/images/authorImg.jpg"
+            credit: '6666炒鸡赞',
+            imgUrl: '/images/authorImg.jpg'
         };
         return _this;
     }
     TopicGood.prototype.render = function () {
-        return React.createElement("div", { className: "good tagSize", style: { marginLeft: "2px" } },
+        return React.createElement("div", { className: "good tagSize", style: { marginLeft: '2px' } },
             React.createElement("div", { id: "userImage" },
                 React.createElement("img", { src: this.state.imgUrl }),
                 " "),
@@ -19550,7 +19552,7 @@ var TopicVote = /** @class */ (function (_super) {
     function TopicVote(props, content) {
         var _this = _super.call(this, props, content) || this;
         _this.state = {
-            option: "我认为他说的很对",
+            option: '我认为他说的很对',
             votes: 60,
             totalVotes: 220,
             voted: false,
@@ -19558,22 +19560,22 @@ var TopicVote = /** @class */ (function (_super) {
         return _this;
     }
     TopicVote.prototype.render = function () {
-        return React.createElement("div", { className: "vote", style: { marginLeft: "2px" } },
+        return React.createElement("div", { className: "vote", style: { marginLeft: '2px' } },
             React.createElement("div", { className: "row" },
                 React.createElement("input", { id: "checkbox", type: "checkbox" }),
                 " ",
-                React.createElement("span", { id: "option", style: { marginLeft: "15px" } },
+                React.createElement("span", { id: "option", style: { marginLeft: '15px' } },
                     this.state.option,
                     " ")),
             React.createElement("div", { className: "row" },
                 React.createElement("div", { className: "progress" },
                     React.createElement("div", { className: "voteResult" })),
-                React.createElement("span", { style: { marginLeft: "15px" } }, this.state.votes),
+                React.createElement("span", { style: { marginLeft: '15px' } }, this.state.votes),
                 React.createElement("span", null,
                     " (",
                     this.state.votes / this.state.totalVotes * 100,
                     "%)")),
-            React.createElement("div", { style: { marginLeft: "20px" } }, this.state.voted ? React.createElement("span", null, "\u4F60\u5DF2\u7ECF\u6295\u8FC7\u7968\u5566") : React.createElement("button", { className: "operation" }, "\u6295\u7968")));
+            React.createElement("div", { style: { marginLeft: '20px' } }, this.state.voted ? React.createElement("span", null, "\u4F60\u5DF2\u7ECF\u6295\u8FC7\u7968\u5566") : React.createElement("button", { className: "operation" }, "\u6295\u7968")));
     };
     return TopicVote;
 }(RouteComponent));
@@ -19600,7 +19602,7 @@ var TopicPager = /** @class */ (function (_super) {
             var pages;
             return __generator(this, function (_a) {
                 pages = Utility.getPager(newProps.page, newProps.totalPage);
-                console.log("new=" + pages);
+                console.log('new=' + pages);
                 this.setState({ pager: pages });
                 return [2 /*return*/];
             });
@@ -19735,6 +19737,7 @@ var BoardList = /** @class */ (function (_super) {
         _this.state = {
             board: [],
         };
+        _this.toggleCollapse = _this.toggleCollapse.bind(_this);
         return _this;
     }
     BoardList.prototype.componentDidMount = function () {
@@ -19746,7 +19749,7 @@ var BoardList = /** @class */ (function (_super) {
                         boardNameList = [];
                         board = [];
                         if (!!Utility.getStorage('board_2')) return [3 /*break*/, 3];
-                        return [4 /*yield*/, fetch("http://api.cc98.org/Board/Root")];
+                        return [4 /*yield*/, fetch('http://api.cc98.org/Board/Root')];
                     case 1:
                         response = _a.sent();
                         return [4 /*yield*/, response.json()];
@@ -19754,8 +19757,8 @@ var BoardList = /** @class */ (function (_super) {
                         data = _a.sent();
                         for (i = 0; i < 20; i++) {
                             board[i] = new AppState_1.Board(data[i].name, data[i].todayPostCount, data[i].totalPostCount, data[i].id, data[i].masters);
-                            Utility.setStorage('board_' + data[i].id.toString(), board[i]);
-                            boardNameList[i] = 'board_' + data[i].id.toString();
+                            Utility.setStorage("board_" + data[i].id.toString(), board[i]);
+                            boardNameList[i] = "board_" + data[i].id.toString();
                         }
                         Utility.setStorage('boardList', boardNameList);
                         return [3 /*break*/, 4];
@@ -19774,22 +19777,24 @@ var BoardList = /** @class */ (function (_super) {
             });
         });
     };
+    BoardList.prototype.toggleCollapse = function () {
+    };
     BoardList.prototype.generateRootBoard = function (boards) {
-        if (boards.id == 2 || boards.id == 29 || boards.id == 35 || boards.id == 37) {
+        if (boards.id === 2 || boards.id === 29 || boards.id === 35 || boards.id === 37) {
             return React.createElement("div", { className: "anArea" },
-                React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
-                    React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
+                React.createElement("div", { className: "column", style: { border: '2px solid #e9e9e9' } },
+                    React.createElement("div", { className: "row", style: { marginTop: '15px', marginBottom: '15px' } },
                         React.createElement("div", { className: "areaName" }, boards.name),
                         React.createElement("div", { className: "areaName" },
                             "\u4E3B\u7BA1\uFF1A",
                             boards.masters),
-                        React.createElement("div", { className: "hideBoard" }, "+")),
+                        React.createElement("div", { className: "hideBoard", onClick: this.toggleCollapse }, "+")),
                     React.createElement(ChildBoard, { boardid: boards.id })));
         }
-        else if (boards.id == 758) {
+        else if (boards.id === 758) {
             return React.createElement("div", { className: "anArea" },
-                React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
-                    React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
+                React.createElement("div", { className: "column", style: { border: '2px solid #e9e9e9' } },
+                    React.createElement("div", { className: "row", style: { marginTop: '15px', marginBottom: '15px' } },
                         React.createElement("div", { className: "areaName" },
                             React.createElement("a", { href: "/list/758" }, boards.name)),
                         React.createElement("div", { className: "areaName" },
@@ -19798,8 +19803,8 @@ var BoardList = /** @class */ (function (_super) {
         }
         else {
             return React.createElement("div", { className: "anArea" },
-                React.createElement("div", { className: "column", style: { border: "2px solid #e9e9e9" } },
-                    React.createElement("div", { className: "row", style: { marginTop: "15px", marginBottom: "15px" } },
+                React.createElement("div", { className: "column", style: { border: '2px solid #e9e9e9' } },
+                    React.createElement("div", { className: "row", style: { marginTop: '15px', marginBottom: '15px' } },
                         React.createElement("div", { className: "areaName" }, boards.name),
                         React.createElement("div", { className: "areaName" },
                             "\u4E3B\u7BA1\uFF1A",
@@ -19808,16 +19813,16 @@ var BoardList = /** @class */ (function (_super) {
         }
     };
     BoardList.prototype.render = function () {
-        $(document).ready(function () {
-            var button = $(".hideBoard");
+        $(function () {
+            var button = $('.hideBoard');
             button.click(function () {
-                if ($(this).text() === "+") {
-                    $(this).parent().next().css("display", "flex");
-                    $(this).text("-");
+                if ($(this).text() === '+') {
+                    $(this).parent().next().css('display', 'flex');
+                    $(this).text('-');
                 }
                 else {
-                    $(this).parent().next().css("display", "none");
-                    $(this).text("+");
+                    $(this).parent().next().css('display', 'none');
+                    $(this).text('+');
                 }
                 ;
                 return false; //阻止事件冒泡
@@ -19925,11 +19930,11 @@ var UserCenter = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     UserCenter.prototype.render = function () {
-        return (React.createElement("div", { className: 'user-center' },
-            React.createElement("div", { className: 'user-center-head' },
+        return (React.createElement("div", { className: "user-center" },
+            React.createElement("div", { className: "user-center-head" },
                 React.createElement("p", null, "\u4E2A\u4EBA\u4E2D\u5FC3")),
             React.createElement(react_router_dom_1.BrowserRouter, null,
-                React.createElement("div", { className: 'user-center-body' },
+                React.createElement("div", { className: "user-center-body" },
                     React.createElement(UserCenterNavigation_1.UserCenterNavigation, null),
                     React.createElement(UserCenterRouter_1.UserCenterRouter, null)))));
     };
@@ -19969,19 +19974,19 @@ var UserCenterNavigation = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     UserCenterNavigation.prototype.render = function () {
-        return (React.createElement("div", { className: 'user-center-navigation' },
+        return (React.createElement("div", { className: "user-center-navigation" },
             React.createElement("ul", null,
-                React.createElement(CustomLink, { to: '/usercenter', label: '主页', activeOnlyWhenExact: true, myClassName: 'fa-home' }),
+                React.createElement(CustomLink, { to: "/usercenter", label: "主页", activeOnlyWhenExact: true, myClassName: "fa-home" }),
                 React.createElement("hr", null),
-                React.createElement(CustomLink, { to: '/usercenter/myposts', label: '我的主题', myClassName: 'fa-pencil-square-o' }),
+                React.createElement(CustomLink, { to: "/usercenter/myposts", label: "我的主题", myClassName: "fa-pencil-square-o" }),
                 React.createElement("hr", null),
-                React.createElement(CustomLink, { to: '/usercenter/myfavorites', label: '我的收藏', myClassName: 'fa-star' }),
+                React.createElement(CustomLink, { to: "/usercenter/myfavorites", label: "我的收藏", myClassName: "fa-star" }),
                 React.createElement("hr", null),
-                React.createElement(CustomLink, { to: '/usercenter/myfollowings', label: '我的关注', myClassName: 'fa-heart' }),
+                React.createElement(CustomLink, { to: "/usercenter/myfollowings", label: "我的关注", myClassName: "fa-heart" }),
                 React.createElement("hr", null),
-                React.createElement(CustomLink, { to: '/usercenter/myfans', label: '我的粉丝', myClassName: 'fa-users' }),
+                React.createElement(CustomLink, { to: "/usercenter/myfans", label: "我的粉丝", myClassName: "fa-users" }),
                 React.createElement("hr", null),
-                React.createElement(CustomLink, { to: '/usercenter/config', label: '功能设置', myClassName: 'fa-cog' }))));
+                React.createElement(CustomLink, { to: "/usercenter/config", label: "功能设置", myClassName: "fa-cog" }))));
     };
     return UserCenterNavigation;
 }(React.Component));
@@ -20034,13 +20039,13 @@ var UserCenterRouter = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     UserCenterRouter.prototype.render = function () {
-        return (React.createElement("div", { className: 'user-center-router' },
-            React.createElement(react_router_dom_1.Route, { exact: true, path: '/usercenter/', component: UserCenterExact_1.UserCenterExact }),
-            React.createElement(react_router_dom_1.Route, { path: '/usercenter/myfollowings', component: UserCenterMyFollowings_1.UserCenterMyFollowings }),
-            React.createElement(react_router_dom_1.Route, { path: '/usercenter/myfans', component: UserCenterMyFans_1.UserCenterMyFans }),
-            React.createElement(react_router_dom_1.Route, { path: '/usercenter/myposts', component: UserCenterMyPosts_1.UserCenterMyPosts }),
-            React.createElement(react_router_dom_1.Route, { path: '/usercenter/myfavorites', component: UserCenterMyFavorites_1.UserCenterMyFavorites }),
-            React.createElement(react_router_dom_1.Route, { path: '/usercenter/config', component: UserCenterConfig_1.UserCenterConfig })));
+        return (React.createElement("div", { className: "user-center-router" },
+            React.createElement(react_router_dom_1.Route, { exact: true, path: "/usercenter/", component: UserCenterExact_1.UserCenterExact }),
+            React.createElement(react_router_dom_1.Route, { path: "/usercenter/myfollowings", component: UserCenterMyFollowings_1.UserCenterMyFollowings }),
+            React.createElement(react_router_dom_1.Route, { path: "/usercenter/myfans", component: UserCenterMyFans_1.UserCenterMyFans }),
+            React.createElement(react_router_dom_1.Route, { path: "/usercenter/myposts", component: UserCenterMyPosts_1.UserCenterMyPosts }),
+            React.createElement(react_router_dom_1.Route, { path: "/usercenter/myfavorites", component: UserCenterMyFavorites_1.UserCenterMyFavorites }),
+            React.createElement(react_router_dom_1.Route, { path: "/usercenter/config", component: UserCenterConfig_1.UserCenterConfig })));
     };
     return UserCenterRouter;
 }(React.Component));
@@ -20154,7 +20159,7 @@ var UserCenterExact = /** @class */ (function (_super) {
     UserCenterExact.prototype.render = function () {
         var element;
         if (this.state !== null && this.state.responseState === 200) {
-            element = (React.createElement("div", { className: 'user-center-exact' },
+            element = (React.createElement("div", { className: "user-center-exact" },
                 React.createElement(UserCenterExactAvatar_1.UserCenterExactAvatar, { userAvatarImgURL: this.state.userAvatarImgURL }),
                 React.createElement(UserCenterExactProfile_1.UserCenterExactProfile, { userInfo: this.state.userInfo }),
                 React.createElement(UserCenterExactActivities_1.UserCenterExactActivities, null)));
@@ -20988,7 +20993,7 @@ var UserCenterExactActivitiesPosts = /** @class */ (function (_super) {
         for (var i = 1; i < userRecentPosts.length; i += 2) {
             userRecentPosts.splice(i, 0, React.createElement("hr", null));
         }
-        return (React.createElement("div", { className: 'user-posts' }, userRecentPosts));
+        return (React.createElement("div", { className: "user-posts" }, userRecentPosts));
     };
     return UserCenterExactActivitiesPosts;
 }(React.Component));
@@ -21042,7 +21047,7 @@ var UserCenterExactActivitiesReplies = /** @class */ (function (_super) {
         for (var i = 1; i < userRecentPosts.length; i += 2) {
             userRecentPosts.splice(i, 0, React.createElement("hr", null));
         }
-        return (React.createElement("div", { className: 'user-posts' }, userRecentPosts));
+        return (React.createElement("div", { className: "user-posts" }, userRecentPosts));
     };
     return UserCenterExactActivitiesReplies;
 }(React.Component));
@@ -21098,7 +21103,7 @@ var UserCenterMyFollowings = /** @class */ (function (_super) {
         for (var i = 1; i < userFollowings.length; i += 2) {
             userFollowings.splice(i, 0, React.createElement("hr", null));
         }
-        return (React.createElement("div", { className: 'user-center-myfollowings' }, userFollowings));
+        return (React.createElement("div", { className: "user-center-myfollowings" }, userFollowings));
     };
     return UserCenterMyFollowings;
 }(React.Component));
@@ -21152,7 +21157,7 @@ var UserCenterMyFans = /** @class */ (function (_super) {
         for (var i = 1; i < userFans.length; i += 2) {
             userFans.splice(i, 0, React.createElement("hr", null));
         }
-        return (React.createElement("div", { className: 'user-center-myfans' }, userFans));
+        return (React.createElement("div", { className: "user-center-myfans" }, userFans));
     };
     return UserCenterMyFans;
 }(React.Component));
@@ -21196,12 +21201,12 @@ var UserCenterMyPosts = /** @class */ (function (_super) {
     }
     UserCenterMyPosts.prototype.render = function () {
         return (React.createElement(react_router_dom_1.BrowserRouter, null,
-            React.createElement("div", { className: 'user-center-myposts' },
-                React.createElement(CustomLink, { to: '/usercenter/myposts', label: '主题', activeOnlyWhenExact: true }),
+            React.createElement("div", { className: "user-center-myposts" },
+                React.createElement(CustomLink, { to: "/usercenter/myposts", label: "主题", activeOnlyWhenExact: true }),
                 " | ",
-                React.createElement(CustomLink, { to: '/usercenter/myposts/replies', label: '回复', activeOnlyWhenExact: false }),
-                React.createElement(react_router_dom_1.Route, { exact: true, path: '/usercenter/myposts', component: UserCenterMyPostsExact_1.UserCenterMyPostsExact }),
-                React.createElement(react_router_dom_1.Route, { path: '/usercenter/myposts/replies', component: UserCenterMyPostsReplies_1.UserCenterMyPostsReplies }))));
+                React.createElement(CustomLink, { to: "/usercenter/myposts/replies", label: "回复", activeOnlyWhenExact: false }),
+                React.createElement(react_router_dom_1.Route, { exact: true, path: "/usercenter/myposts", component: UserCenterMyPostsExact_1.UserCenterMyPostsExact }),
+                React.createElement(react_router_dom_1.Route, { path: "/usercenter/myposts/replies", component: UserCenterMyPostsReplies_1.UserCenterMyPostsReplies }))));
     };
     return UserCenterMyPosts;
 }(React.Component));
@@ -21253,7 +21258,7 @@ var UserCenterMyPostsExact = /** @class */ (function (_super) {
         for (var i = 1; i < userRecentPosts.length; i += 2) {
             userRecentPosts.splice(i, 0, React.createElement("hr", null));
         }
-        return (React.createElement("div", { className: 'user-posts' }, userRecentPosts));
+        return (React.createElement("div", { className: "user-posts" }, userRecentPosts));
     };
     return UserCenterMyPostsExact;
 }(React.Component));
@@ -21307,7 +21312,7 @@ var UserCenterMyPostsReplies = /** @class */ (function (_super) {
         for (var i = 1; i < userRecentPosts.length; i += 2) {
             userRecentPosts.splice(i, 0, React.createElement("hr", null));
         }
-        return (React.createElement("div", { className: 'user-posts' }, userRecentPosts));
+        return (React.createElement("div", { className: "user-posts" }, userRecentPosts));
     };
     return UserCenterMyPostsReplies;
 }(React.Component));
@@ -21357,11 +21362,11 @@ var UserCenterMyFavorites = /** @class */ (function (_super) {
     }
     UserCenterMyFavorites.prototype.render = function () {
         return (React.createElement(react_router_dom_1.BrowserRouter, null,
-            React.createElement("div", { className: 'user-center-myfavorites' },
-                React.createElement(CustomLink, { to: '/usercenter/myfavorites', label: '文章', activeOnlyWhenExact: true }),
+            React.createElement("div", { className: "user-center-myfavorites" },
+                React.createElement(CustomLink, { to: "/usercenter/myfavorites", label: "文章", activeOnlyWhenExact: true }),
                 " | ",
-                React.createElement(CustomLink, { to: '/usercenter/myfavorites/boards', label: '版面', activeOnlyWhenExact: false }),
-                React.createElement(react_router_dom_1.Route, { exact: true, path: '/usercenter/myfavorites', component: UserCenterMyFavoritesPosts_1.UserCenterMyFavoritesPosts }))));
+                React.createElement(CustomLink, { to: "/usercenter/myfavorites/boards", label: "版面", activeOnlyWhenExact: false }),
+                React.createElement(react_router_dom_1.Route, { exact: true, path: "/usercenter/myfavorites", component: UserCenterMyFavoritesPosts_1.UserCenterMyFavoritesPosts }))));
     };
     return UserCenterMyFavorites;
 }(React.Component));
@@ -21413,7 +21418,7 @@ var UserCenterMyFavoritesPosts = /** @class */ (function (_super) {
         for (var i = 1; i < userRecentPosts.length; i += 2) {
             userRecentPosts.splice(i, 0, React.createElement("hr", null));
         }
-        return (React.createElement("div", { className: 'user-posts' }, userRecentPosts));
+        return (React.createElement("div", { className: "user-posts" }, userRecentPosts));
     };
     return UserCenterMyFavoritesPosts;
 }(React.Component));
@@ -21498,7 +21503,7 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
     }
     UserCenterConfigAvatar.prototype.render = function () {
         return (React.createElement("div", { className: "user-center-config-avatar" },
-            React.createElement("img", { src: 'http://file.cc98.org/uploadface/5298.png' }),
+            React.createElement("img", { src: "http://file.cc98.org/uploadface/5298.png" }),
             React.createElement("div", null,
                 React.createElement("button", { id: "chooseDefaultAvatar", type: "button" }, "\u9009\u62E9\u8BBA\u575B\u5934\u50CF"),
                 React.createElement("div", null,
@@ -21652,29 +21657,29 @@ var MyMessage = /** @class */ (function (_super) {
         if (token) {
             accessToken = token[1];
         }
-        return (React.createElement("div", { className: 'mymessage-root' },
-            React.createElement("div", { className: 'mymessage' },
-                React.createElement("div", { className: 'mymessage-login' },
+        return (React.createElement("div", { className: "mymessage-root" },
+            React.createElement("div", { className: "mymessage" },
+                React.createElement("div", { className: "mymessage-login" },
                     React.createElement("a", { href: url }, "\u767B\u9646")),
-                React.createElement("div", { className: 'mymessage-title' }, "\u6211\u7684\u6D88\u606F"),
+                React.createElement("div", { className: "mymessage-title" }, "\u6211\u7684\u6D88\u606F"),
                 React.createElement(react_router_dom_1.BrowserRouter, null,
-                    React.createElement("div", { className: 'mymessage-content' },
-                        React.createElement("div", { className: 'mymessage-nav' },
-                            React.createElement("div", { id: 'response' },
+                    React.createElement("div", { className: "mymessage-content" },
+                        React.createElement("div", { className: "mymessage-nav" },
+                            React.createElement("div", { id: "response" },
                                 React.createElement(react_router_dom_1.NavLink, { to: "/mymessage/response?access_token=" + accessToken }, "\u56DE\u590D\u6211\u7684")),
-                            React.createElement("div", { id: 'attme' },
+                            React.createElement("div", { id: "attme" },
                                 React.createElement(react_router_dom_1.NavLink, { to: "/mymessage/attme?access_token=" + accessToken }, "@\u6211\u7684")),
-                            React.createElement("div", { id: 'likes' },
+                            React.createElement("div", { id: "likes" },
                                 React.createElement(react_router_dom_1.NavLink, { to: "/mymessage/likes?access_token=" + accessToken }, "\u6536\u5230\u7684\u8D5E")),
-                            React.createElement("div", { id: 'system' },
+                            React.createElement("div", { id: "system" },
                                 React.createElement(react_router_dom_1.NavLink, { to: "/mymessage/system?access_token=" + accessToken }, "\u7CFB\u7EDF\u901A\u77E5")),
-                            React.createElement("div", { id: 'message' },
+                            React.createElement("div", { id: "message" },
                                 React.createElement(react_router_dom_1.NavLink, { to: "/mymessage/message?access_token=" + accessToken }, "\u6211\u7684\u79C1\u4FE1"))),
-                        React.createElement(react_router_dom_1.Route, { path: '/mymessage/response', component: MyMessageResponse_1.MyMessageResponse }),
-                        React.createElement(react_router_dom_1.Route, { path: '/mymessage/attme', component: MyMessageAttme_1.MyMessageAttme }),
-                        React.createElement(react_router_dom_1.Route, { path: '/mymessage/likes', component: Likes }),
-                        React.createElement(react_router_dom_1.Route, { path: '/mymessage/system', component: MyMessageSystem_1.MyMessageSystem }),
-                        React.createElement(react_router_dom_1.Route, { path: '/mymessage/message', component: MyMessageMessage_1.MyMessageMessage }))))));
+                        React.createElement(react_router_dom_1.Route, { path: "/mymessage/response", component: MyMessageResponse_1.MyMessageResponse }),
+                        React.createElement(react_router_dom_1.Route, { path: "/mymessage/attme", component: MyMessageAttme_1.MyMessageAttme }),
+                        React.createElement(react_router_dom_1.Route, { path: "/mymessage/likes", component: Likes }),
+                        React.createElement(react_router_dom_1.Route, { path: "/mymessage/system", component: MyMessageSystem_1.MyMessageSystem }),
+                        React.createElement(react_router_dom_1.Route, { path: "/mymessage/message", component: MyMessageMessage_1.MyMessageMessage }))))));
     };
     return MyMessage;
 }(React.Component));
@@ -21893,10 +21898,10 @@ var MyMessageMessage = /** @class */ (function (_super) {
         //给我的私信添加选中样式
         $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
         $('#message').addClass('mymessage-nav-focus');
-        return (React.createElement("div", { className: 'mymessage-message' },
-            React.createElement("div", { className: 'mymessage-message-people' },
-                React.createElement("div", { className: 'mymessage-message-pTitle' }, "\u8FD1\u671F\u79C1\u4FE1"),
-                React.createElement("div", { className: 'mymessage-message-pList' }, this.state.data.map(this.coverMessagePerson))),
+        return (React.createElement("div", { className: "mymessage-message" },
+            React.createElement("div", { className: "mymessage-message-people" },
+                React.createElement("div", { className: "mymessage-message-pTitle" }, "\u8FD1\u671F\u79C1\u4FE1"),
+                React.createElement("div", { className: "mymessage-message-pList" }, this.state.data.map(this.coverMessagePerson))),
             React.createElement(MyMessageWindow_1.MyMessageWindow, { chatName: this.state.chatName, chatPortraitUrl: this.state.chatPortraitUrl, myName: this.state.myName, myPortraitUrl: this.state.myPortraitUrl, token: this.state.token })));
     };
     return MyMessageMessage;
@@ -21941,11 +21946,11 @@ var MyMessagePerson = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     MyMessagePerson.prototype.render = function () {
-        return (React.createElement("div", { className: 'mymessage-message-person' },
-            React.createElement("img", { className: 'mymessage-message-pPortraitUrl', src: this.props.portraitUrl }),
-            React.createElement("div", { className: 'mymessage-message-pInfo' },
-                React.createElement("div", { className: 'mymessage-message-pName' }, this.props.name),
-                React.createElement("div", { className: 'mymessage-message-pMessage' },
+        return (React.createElement("div", { className: "mymessage-message-person" },
+            React.createElement("img", { className: "mymessage-message-pPortraitUrl", src: this.props.portraitUrl }),
+            React.createElement("div", { className: "mymessage-message-pInfo" },
+                React.createElement("div", { className: "mymessage-message-pName" }, this.props.name),
+                React.createElement("div", { className: "mymessage-message-pMessage" },
                     "[",
                     this.props.title,
                     "]",
@@ -22114,19 +22119,19 @@ var MyMessageWindow = /** @class */ (function (_super) {
     };
     MyMessageWindow.prototype.render = function () {
         console.log('开始render');
-        return (React.createElement("div", { className: 'mymessage-message-window' },
-            React.createElement("div", { className: 'mymessage-message-wHeader' },
-                React.createElement("div", { className: 'mymessage-message-wReport' }),
-                React.createElement("div", { className: 'mymessage-message-wTitle' },
+        return (React.createElement("div", { className: "mymessage-message-window" },
+            React.createElement("div", { className: "mymessage-message-wHeader" },
+                React.createElement("div", { className: "mymessage-message-wReport" }),
+                React.createElement("div", { className: "mymessage-message-wTitle" },
                     "\u4E0E ",
                     this.props.chatName,
                     " \u7684\u79C1\u4FE1"),
-                React.createElement("div", { className: 'mymessage-message-wReport' },
+                React.createElement("div", { className: "mymessage-message-wReport" },
                     React.createElement("button", { onClick: this.report }, "\u4E3E\u62A5"))),
-            React.createElement("div", { className: 'mymessage-message-wContent' }, this.state.data.map(this.coverMyMessageProps)),
-            React.createElement("div", { className: 'mymessage-message-wPost' },
-                React.createElement("textarea", { className: 'mymessage-message-wPostArea', id: 'myMessageContent' }),
-                React.createElement("button", { className: 'mymessage-message-wPostBtn', onClick: this.postMessage }, "\u56DE\u590D"))));
+            React.createElement("div", { className: "mymessage-message-wContent" }, this.state.data.map(this.coverMyMessageProps)),
+            React.createElement("div", { className: "mymessage-message-wPost" },
+                React.createElement("textarea", { className: "mymessage-message-wPostArea", id: "myMessageContent" }),
+                React.createElement("button", { className: "mymessage-message-wPostBtn", onClick: this.postMessage }, "\u56DE\u590D"))));
     };
     return MyMessageWindow;
 }(React.Component));
@@ -22184,18 +22189,18 @@ var MyMessageSender = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     MyMessageSender.prototype.render = function () {
-        return (React.createElement("div", { className: 'mymessage-message-wc' },
-            React.createElement("div", { className: 'mymessage-message-wcTime' }, this.props.sendTime),
-            React.createElement("div", { className: 'mymessage-message-wcSender' },
-                React.createElement("img", { className: 'mymessage-message-wcPortraitUrl', src: this.props.myPortraitUrl }),
-                React.createElement("div", { className: 'mymessage-message-wcContent' },
-                    React.createElement("div", { id: String(this.props.id), className: 'mymessage-message-wcText' },
+        return (React.createElement("div", { className: "mymessage-message-wc" },
+            React.createElement("div", { className: "mymessage-message-wcTime" }, this.props.sendTime),
+            React.createElement("div", { className: "mymessage-message-wcSender" },
+                React.createElement("img", { className: "mymessage-message-wcPortraitUrl", src: this.props.myPortraitUrl }),
+                React.createElement("div", { className: "mymessage-message-wcContent" },
+                    React.createElement("div", { id: String(this.props.id), className: "mymessage-message-wcText" },
                         "\u3010",
                         this.props.title,
                         "\u3011",
                         this.props.content)),
-                React.createElement("div", { className: 'mymessage-message-wcRead1' },
-                    React.createElement("div", { className: 'mymessage-message-wcRead2' }, this.props.isRead ? '已读' : '未读')))));
+                React.createElement("div", { className: "mymessage-message-wcRead1" },
+                    React.createElement("div", { className: "mymessage-message-wcRead2" }, this.props.isRead ? '已读' : '未读')))));
     };
     return MyMessageSender;
 }(React.Component));
@@ -22234,18 +22239,18 @@ var MyMessageReceiver = /** @class */ (function (_super) {
     }
     */
     MyMessageReceiver.prototype.render = function () {
-        return (React.createElement("div", { className: 'mymessage-message-wc' },
-            React.createElement("div", { className: 'mymessage-message-wcTime' }, this.props.sendTime),
-            React.createElement("div", { className: 'mymessage-message-wcReceiver' },
-                React.createElement("img", { className: 'mymessage-message-wcPortraitUrl', src: this.props.chatPortraitUrl }),
-                React.createElement("div", { className: 'mymessage-message-wcContent' },
-                    React.createElement("div", { className: 'mymessage-message-wcText', id: String(this.props.id) },
+        return (React.createElement("div", { className: "mymessage-message-wc" },
+            React.createElement("div", { className: "mymessage-message-wcTime" }, this.props.sendTime),
+            React.createElement("div", { className: "mymessage-message-wcReceiver" },
+                React.createElement("img", { className: "mymessage-message-wcPortraitUrl", src: this.props.chatPortraitUrl }),
+                React.createElement("div", { className: "mymessage-message-wcContent" },
+                    React.createElement("div", { className: "mymessage-message-wcText", id: String(this.props.id) },
                         "\u3010",
                         this.props.title,
                         "\u3011",
                         this.props.content)),
-                React.createElement("div", { className: 'mymessage-message-wcRead1' },
-                    React.createElement("div", { className: 'mymessage-message-wcRead2' }, this.props.isRead ? '已读' : '未读')))));
+                React.createElement("div", { className: "mymessage-message-wcRead1" },
+                    React.createElement("div", { className: "mymessage-message-wcRead2" }, this.props.isRead ? '已读' : '未读')))));
     };
     return MyMessageReceiver;
 }(React.Component));
@@ -22394,7 +22399,7 @@ var MyMessageResponse = /** @class */ (function (_super) {
         //给我的回复添加选中样式
         $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
         $('#response').addClass('mymessage-nav-focus');
-        return React.createElement("div", { className: 'mymessage-response' }, this.state.data.map(this.coverMessageResponse));
+        return React.createElement("div", { className: "mymessage-response" }, this.state.data.map(this.coverMessageResponse));
     };
     return MyMessageResponse;
 }(React.Component));
@@ -22553,7 +22558,7 @@ var MyMessageAttme = /** @class */ (function (_super) {
         //给我的回复添加选中样式
         $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
         $('#attme').addClass('mymessage-nav-focus');
-        return React.createElement("div", { className: 'mymessage-response' }, this.state.data.map(this.coverMessageResponse));
+        return React.createElement("div", { className: "mymessage-response" }, this.state.data.map(this.coverMessageResponse));
     };
     return MyMessageAttme;
 }(React.Component));
@@ -22711,7 +22716,7 @@ var MyMessageSystem = /** @class */ (function (_super) {
         //给我的回复添加选中样式
         $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
         $('#system').addClass('mymessage-nav-focus');
-        return React.createElement("div", { className: 'mymessage-system' }, this.state.data.map(this.coverMessageSystem));
+        return React.createElement("div", { className: "mymessage-system" }, this.state.data.map(this.coverMessageSystem));
     };
     return MyMessageSystem;
 }(React.Component));
@@ -22760,9 +22765,9 @@ var MyMessageSystembox = /** @class */ (function (_super) {
     }
     */
     MyMessageSystembox.prototype.render = function () {
-        return (React.createElement("div", { className: 'mymessage-system-box' },
-            React.createElement("div", { className: 'mymessage-system-box-title' }, this.props.title),
-            React.createElement("div", { className: 'mymessage-system-box-date' }, this.props.sendTime),
+        return (React.createElement("div", { className: "mymessage-system-box" },
+            React.createElement("div", { className: "mymessage-system-box-title" }, this.props.title),
+            React.createElement("div", { className: "mymessage-system-box-date" }, this.props.sendTime),
             React.createElement("div", { className: "mymessage-system-box-content" }, this.props.content)));
     };
     return MyMessageSystembox;
@@ -22804,10 +22809,10 @@ var AllNewPost = /** @class */ (function (_super) {
      * 全站新帖列表
      */
     AllNewPost.prototype.render = function () {
-        return (React.createElement("div", { className: 'focus-root' },
-            React.createElement("div", { className: 'focus' },
-                React.createElement("div", { className: 'focus-allNewPost' },
-                    React.createElement("i", { className: 'fa fa-home', "aria-hidden": 'true' }),
+        return (React.createElement("div", { className: "focus-root" },
+            React.createElement("div", { className: "focus" },
+                React.createElement("div", { className: "focus-allNewPost" },
+                    React.createElement("i", { className: "fa fa-home", "aria-hidden": "true" }),
                     "\u9996\u9875/\u5168\u7AD9\u65B0\u5E16"),
                 React.createElement(FocusPostAreaComponent_1.FocusPostAreaComponent, null))));
     };
@@ -22973,11 +22978,11 @@ var FocusPostAreaComponent = /** @class */ (function (_super) {
      * 将主题排列好
      */
     FocusPostAreaComponent.prototype.render = function () {
-        return React.createElement("div", { className: 'focus-post-area' },
-            React.createElement("div", { className: 'focus-post-topicArea' }, this.state.data.map(coverFocusPost)),
-            React.createElement("div", { className: 'focus-post-loading', id: 'focus-post-loading' },
-                React.createElement("img", { src: 'http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif' })),
-            React.createElement("div", { className: 'focus-post-loaddone displaynone', id: 'focus-post-loaddone' }, "---------------------- \u5DF2\u52A0\u8F7D100\u6761\u65B0\u5E16\uFF0C\u65E0\u6CD5\u52A0\u8F7D\u66F4\u591A ----------------------"));
+        return React.createElement("div", { className: "focus-post-area" },
+            React.createElement("div", { className: "focus-post-topicArea" }, this.state.data.map(coverFocusPost)),
+            React.createElement("div", { className: "focus-post-loading", id: "focus-post-loading" },
+                React.createElement("img", { src: "http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif" })),
+            React.createElement("div", { className: "focus-post-loaddone displaynone", id: "focus-post-loaddone" }, "---------------------- \u5DF2\u52A0\u8F7D100\u6761\u65B0\u5E16\uFF0C\u65E0\u6CD5\u52A0\u8F7D\u66F4\u591A ----------------------"));
     };
     return FocusPostAreaComponent;
 }(React.Component));
@@ -22992,7 +22997,9 @@ function coverFocusPost(item) {
 *滚动条在Y轴上的滚动距离
 */
 function getScrollTop() {
-    var scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
+    var scrollTop = 0;
+    var bodyScrollTop = 0;
+    var documentScrollTop = 0;
     if (document.body) {
         bodyScrollTop = document.body.scrollTop;
     }
@@ -23006,7 +23013,9 @@ function getScrollTop() {
 *文档的总高度
 */
 function getScrollHeight() {
-    var scrollHeight = 0, bodyScrollHeight = 0, documentScrollHeight = 0;
+    var scrollHeight = 0;
+    var bodyScrollHeight = 0;
+    var documentScrollHeight = 0;
     if (document.body) {
         bodyScrollHeight = document.body.scrollHeight;
     }
@@ -23021,7 +23030,7 @@ function getScrollHeight() {
 */
 function getWindowHeight() {
     var windowHeight = 0;
-    if (document.compatMode == "CSS1Compat") {
+    if (document.compatMode == 'CSS1Compat') {
         windowHeight = document.documentElement.clientHeight;
     }
     else {
@@ -23076,21 +23085,21 @@ var FocusPostComponent = /** @class */ (function (_super) {
     }
     FocusPostComponent.prototype.render = function () {
         var topicUrl = "/topic/" + this.props.id;
-        return (React.createElement("div", { className: 'focus-post' },
-            React.createElement("img", { className: 'focus-post-portraitUrl', src: this.props.portraitUrl }),
-            React.createElement("div", { className: 'focus-post-info1' },
-                React.createElement("div", { className: 'focus-post-authorInfo' },
-                    React.createElement("div", { className: 'focus-post-blackText' }, this.props.authorName),
-                    React.createElement("div", { className: 'focus-post-redText' }, this.props.fanCount),
-                    React.createElement("div", { className: 'focus-post-blackText' }, "\u7C89\u4E1D")),
-                React.createElement("div", { className: 'focus-post-title' },
+        return (React.createElement("div", { className: "focus-post" },
+            React.createElement("img", { className: "focus-post-portraitUrl", src: this.props.portraitUrl }),
+            React.createElement("div", { className: "focus-post-info1" },
+                React.createElement("div", { className: "focus-post-authorInfo" },
+                    React.createElement("div", { className: "focus-post-blackText" }, this.props.authorName),
+                    React.createElement("div", { className: "focus-post-redText" }, this.props.fanCount),
+                    React.createElement("div", { className: "focus-post-blackText" }, "\u7C89\u4E1D")),
+                React.createElement("div", { className: "focus-post-title" },
                     React.createElement("a", { href: topicUrl }, this.props.title))),
-            React.createElement("div", { className: 'focus-post-info2' },
-                React.createElement("div", { className: 'focus-post-board' },
+            React.createElement("div", { className: "focus-post-info2" },
+                React.createElement("div", { className: "focus-post-board" },
                     this.props.boardName,
                     " / ",
                     this.props.createTime),
-                React.createElement("div", { className: 'focus-post-response' },
+                React.createElement("div", { className: "focus-post-response" },
                     React.createElement("div", null,
                         React.createElement("i", { className: "fa fa-thumbs-o-up", "aria-hidden": "true" }),
                         this.props.likeCount),
@@ -23135,27 +23144,27 @@ var DropDown = /** @class */ (function (_super) {
     }
     DropDown.prototype.render = function () {
         $(document).ready(function () {
-            var selectA = $(".select").eq(0);
-            var subA = $("ul").eq(0);
-            var liA = subA.find("li");
+            var selectA = $('.select').eq(0);
+            var subA = $('ul').eq(0);
+            var liA = subA.find('li');
             $(document).click(function () {
-                subA.css("display", "none");
+                subA.css('display', 'none');
             });
             selectA.click(function () {
-                if (subA.css("display") === "block")
-                    subA.css("display", "none");
+                if (subA.css('display') === 'block')
+                    subA.css('display', 'none');
                 else
-                    subA.css("display", "block");
+                    subA.css('display', 'block');
                 return false; //阻止事件冒泡
             });
             /*在一个对象上触发某类事件（比如单击onclick事件），如果此对象定义了此事件的处理程序，那么此事件就会调用这个处理程序，
             如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
             或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
             liA.mouseover(function () {
-                this.className = "hover";
+                this.className = 'hover';
             });
             liA.mouseout(function () {
-                this.className = "";
+                this.className = '';
             });
         });
         return React.createElement("div", { id: "dropdown" },
@@ -23164,15 +23173,15 @@ var DropDown = /** @class */ (function (_super) {
                     React.createElement("img", { src: "/images/userImg.png" })),
                 React.createElement("div", { className: "select" }, "userName"),
                 React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
-                    React.createElement("a", { href: "/mymessage", style: { color: "#fff" } }, "\u6D88\u606F")),
+                    React.createElement("a", { href: "/mymessage", style: { color: '#fff' } }, "\u6D88\u606F")),
                 React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
-                    React.createElement("a", { href: "/", style: { color: "#fff" } }, "\u9996\u9875")),
+                    React.createElement("a", { href: "/", style: { color: '#fff' } }, "\u9996\u9875")),
                 React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
-                    React.createElement("a", { href: "/focus", style: { color: "#fff" } }, "\u5173\u6CE8")),
+                    React.createElement("a", { href: "/focus", style: { color: '#fff' } }, "\u5173\u6CE8")),
                 React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
-                    React.createElement("a", { href: "/newTopics", style: { color: "#fff" } }, "\u65B0\u5E16")),
+                    React.createElement("a", { href: "/newTopics", style: { color: '#fff' } }, "\u65B0\u5E16")),
                 React.createElement("div", { className: "topBarText", style: { margin: '0 0 0 10px' } },
-                    React.createElement("a", { href: "/boardList", style: { color: "#fff" } }, "\u7248\u9762"))),
+                    React.createElement("a", { href: "/boardList", style: { color: '#fff' } }, "\u7248\u9762"))),
             React.createElement("ul", { className: "sub" },
                 React.createElement("li", null, "\u4E2A\u4EBA\u4E2D\u5FC3"),
                 React.createElement("li", null, "\u8BBE\u7F6E")));
@@ -23187,17 +23196,17 @@ var Search = /** @class */ (function (_super) {
     }
     Search.prototype.render = function () {
         $(document).ready(function () {
-            var selectB = $(".select").eq(1);
-            var subB = $("ul").eq(1);
-            var liB = subB.find("li");
+            var selectB = $('.select').eq(1);
+            var subB = $('ul').eq(1);
+            var liB = subB.find('li');
             $(document).click(function () {
-                subB.css("display", "none");
+                subB.css('display', 'none');
             });
             selectB.click(function () {
-                if (subB.css("display") === "block")
-                    subB.css("display", "none");
+                if (subB.css('display') === 'block')
+                    subB.css('display', 'none');
                 else
-                    subB.css("display", "block");
+                    subB.css('display', 'block');
                 return false; //阻止事件冒泡
             });
             /*在一个对象上触发某类事件（比如单击onclick事件），如果此对象定义了此事件的处理程序，那么此事件就会调用这个处理程序，
@@ -23207,10 +23216,10 @@ var Search = /** @class */ (function (_super) {
                 selectB.text($(this).text());
             });
             liB.mouseover(function () {
-                this.className = "hover";
+                this.className = 'hover';
             });
             liB.mouseout(function () {
-                this.className = "";
+                this.className = '';
             });
         });
         return React.createElement("div", { id: "search" },
@@ -23349,17 +23358,17 @@ var Recommended1 = /** @class */ (function (_super) {
     }
     Recommended1.prototype.render = function () {
         $(document).ready(function () {
-            var button = $(".recommended1Button");
-            var content = $(".recommended1Content");
+            var button = $('.recommended1Button');
+            var content = $('.recommended1Content');
             var randomNum = Math.floor(Math.random() * 5); //生成0-4的随机数
-            content.eq(randomNum).css("display", "flex");
-            button.eq(randomNum).css("background-color", "rgb(53,177,255)");
+            content.eq(randomNum).css('display', 'flex');
+            button.eq(randomNum).css('background-color', 'rgb(53,177,255)');
             button.mouseover(function () {
                 var index = $(this).index(); //获取当前元素下标
-                content.css("display", "none");
-                content.eq(index).css("display", "flex");
-                button.css("background-color", "rgb(255,255,255)");
-                button.eq(index).css("background-color", "rgb(53,177,255)");
+                content.css('display', 'none');
+                content.eq(index).css('display', 'flex');
+                button.css('background-color', 'rgb(255,255,255)');
+                button.eq(index).css('background-color', 'rgb(53,177,255)');
             });
         });
         return React.createElement("div", { className: "recommended1" },
@@ -23691,11 +23700,11 @@ var User = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     User.prototype.render = function () {
-        return (React.createElement("div", { className: 'user-center' },
-            React.createElement("div", { className: 'user-center-head' },
+        return (React.createElement("div", { className: "user-center" },
+            React.createElement("div", { className: "user-center-head" },
                 React.createElement("p", null, "\u7528\u6237\u8BE6\u60C5")),
             React.createElement(react_router_dom_1.BrowserRouter, null,
-                React.createElement("div", { className: 'user-center-body' },
+                React.createElement("div", { className: "user-center-body" },
                     React.createElement(UserNavigation_1.UserNavigation, null),
                     React.createElement(UserRouter_1.UserRouter, null)))));
     };
@@ -23729,9 +23738,9 @@ var UserNavigation = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     UserNavigation.prototype.render = function () {
-        return (React.createElement("div", { className: 'user-center-navigation' },
+        return (React.createElement("div", { className: "user-center-navigation" },
             React.createElement("ul", null,
-                React.createElement(CustomLink, { to: "" + location.pathname, label: '主页', activeOnlyWhenExact: true, myClassName: 'fa-home' }))));
+                React.createElement(CustomLink, { to: "" + location.pathname, label: "主页", activeOnlyWhenExact: true, myClassName: "fa-home" }))));
     };
     return UserNavigation;
 }(React.Component));
@@ -23813,8 +23822,8 @@ var UserRouter = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     UserRouter.prototype.render = function () {
-        return (React.createElement("div", { className: 'user-center-router' },
-            React.createElement(react_router_dom_1.Route, { path: '/user/', component: UserExact })));
+        return (React.createElement("div", { className: "user-center-router" },
+            React.createElement(react_router_dom_1.Route, { path: "/user/", component: UserExact })));
     };
     return UserRouter;
 }(React.Component));
@@ -23858,7 +23867,7 @@ var UserExact = /** @class */ (function (_super) {
     UserExact.prototype.render = function () {
         var element;
         if (this.state !== null && this.state.responseState === 200) {
-            element = (React.createElement("div", { className: 'user-center-exact' },
+            element = (React.createElement("div", { className: "user-center-exact" },
                 React.createElement(UserCenterExactAvatar_1.UserCenterExactAvatar, { userAvatarImgURL: this.state.userAvatarImgURL }),
                 React.createElement(UserCenterExactProfile_1.UserCenterExactProfile, { userInfo: this.state.userInfo }),
                 React.createElement(UserCenterExactActivities_1.UserCenterExactActivities, null)));
@@ -23926,7 +23935,7 @@ var Login = /** @class */ (function (_super) {
         e.preventDefault();
         if (!(this.state.loginName || this.state.loginPassword)) {
             this.setState({
-                loginMessage: "请输入用户名和密码"
+                loginMessage: '请输入用户名和密码'
             });
             this.shake(document.getElementById('loginName')).focus();
             this.shake(document.getElementById('loginPassword'));
@@ -23934,21 +23943,21 @@ var Login = /** @class */ (function (_super) {
         }
         else if (!this.state.loginName) {
             this.setState({
-                loginMessage: "请输入用户名"
+                loginMessage: '请输入用户名'
             });
             this.shake(document.getElementById('loginName')).focus();
             return false;
         }
         else if (!this.state.loginPassword) {
             this.setState({
-                loginMessage: "请输入密码"
+                loginMessage: '请输入密码'
             });
             this.shake(document.getElementById('loginPassword')).focus();
             return false;
         }
         else {
             this.setState({
-                loginMessage: "登陆中"
+                loginMessage: '登陆中'
             });
         }
     };

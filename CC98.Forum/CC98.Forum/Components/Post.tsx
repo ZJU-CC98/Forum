@@ -60,7 +60,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
 	}
 	render() {
 		let topic = null;
-		if (this.state.page == 1) {
+		if (this.state.page === 1) {
 			topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} />;
 		}
 		return <div className="center" style={{ overflowX: 'scroll', minWidth: '1140px', marginTop: '40px' }} >
