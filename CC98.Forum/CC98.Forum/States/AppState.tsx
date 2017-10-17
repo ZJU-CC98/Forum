@@ -150,11 +150,12 @@ export class TopicTitleAndContentState {
 		  this.lastReply = lastReply;
 		  this.title = title;
 	  }*/
-	constructor(title, authorName,topicid,authorId) {
+	constructor(title, authorName,topicid,authorId,lastPostInfo) {
 		this.authorName = authorName;
         this.title = title;
         this.id = topicid;
         this.authorId = authorId;
+        this.lastPostInfo = lastPostInfo;
 	}
 
 	likeNumber: number;
@@ -162,7 +163,7 @@ export class TopicTitleAndContentState {
 	commentNumber: number;
 	authorName: string;
 	title: string;
-    lastReply: string;
+    lastPostInfo;
     id: number;
     authorId: number;
 

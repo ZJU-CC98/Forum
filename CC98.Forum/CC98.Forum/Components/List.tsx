@@ -2,7 +2,7 @@
 import { HotTopic } from '../Props/AppProps'
 import * as State from '../States/AppState'
 import * as Utility from '../Utility'
-
+import * as moment from 'moment';
 import { match } from 'react-router';
 import {
 	Route,
@@ -110,7 +110,7 @@ export class ListHead extends RouteComponent<{ boardid }, State.ListHeadState, {
 		return <div style={{ marginRight: '10px' }}><a href={webUrl}>{name}</a></div>;
 	}
 	render() {
-		return <div className="column" style={{ width: '1140px', }}>
+		return <div className="column" style={{ minWidth: '1140px', }}>
 			<div className="row" style={{ flexDirection: 'row', justifyContent: 'space-between', width: '1140px' }}>
 				<div style={{ flexgrow: '1', flexDirection: 'row', display: 'flex' }}>
 					<div id="ListImg" ><img src={this.state.imgUrl}></img></div>
@@ -253,11 +253,13 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
 	}
 	private convertTopicToElement(item: TopicTitleAndContentState) {
 
-		return <TopicTitleAndContent key={item.title}
-			title={item.title}
-			authorName={item.authorName}
-			id={item.id}
-			authorId={item.authorId} />;
+        return <TopicTitleAndContent key={item.title}
+            title={item.title}
+            authorName={item.authorName}
+            id={item.id}
+            authorId={item.authorId}
+            lastPostTime={item.lastPostInfo.time}
+            lastPostUserName={item.lastPostInfo.userName} />;
 	}
 	async componentWillReceiveProps(newProps) {
 		let page: number;
@@ -277,13 +279,14 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
 
 		return <div className="listContent ">
 			<div className="row" style={{ justifyContent: 'space-between', }}>
-				<div className="row" style={{ height: '40px', marginTop: '5px', alignItems: 'center' }}>
-					<button className="listContentTag">全部</button>
+				<div className="row" style={{ height: '40px', marginTop: '5px' }}>
+
+                    <div><button className="listContentTag">全部</button>
 					<button className="listContentTag">精华</button>
-					<button className="listContentTag">最热</button>
+					<button className="listContentTag">最热</button></div>
 				</div>
 				<div className="row" style={{ height: '40px', alignItems: 'center' }}>
-					<div style={{ marginRight: '152px', marginLeft: '15px' }}><span>作者</span></div>
+					<div style={{ marginRight: '52px', marginLeft: '15px' }}><span>作者</span></div>
 					<div style={{ marginRight: '85px', marginLeft: '15px' }}><span>最后发表</span></div>
 				</div>
 			</div>
@@ -293,40 +296,72 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
 	}
 }
 
-export class TopicTitleAndContent extends React.Component<HotTopic, State.TopicTitleAndContentState> {
-	constructor(props, context) {
-		super(props, context);
-		this.state = {
-			title: this.props.title,
-			authorName: this.props.authorName,
-			likeNumber: 123,
-			unlikeNumber: 11,
-			commentNumber: 214,
-			lastReply: 'Dearkano 2017-2-2',
-			id: this.props.id,
-			authorId: this.props.authorId
-		};
-	}
-	render() {
+export class TopicTitleAndContent extends React.Component<HotTopic, { title, authorName, likeNumber, dislikeNumber, commentNumber, lastPostUserName, lastPostTime, id, authorId }> {
 
-		const url = `/topic/${this.state.id}`;
-		return <div id="changeColor">
-			<div className="row topicInList" >
-				<Link to={url}><div style={{ marginLeft: '20px', }}> <span >{this.state.title}</span></div></Link>
-				<div className="row">
-					<div style={{ marginRight: '10px', marginLeft: '15px', width: '80px' }}> <span ><a >{this.state
-						.authorName}</a></span></div>
-					<div className="row" style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
-						<div id="liked"><i className="fa fa-thumbs-o-up fa-lg"></i><span className="timeProp tagSize">{
-							this.state.likeNumber}</span></div>
-						<div id="disliked"><i className="fa fa-thumbs-o-down fa-lg"></i><span className="timeProp tagSize">{
-							this.state.unlikeNumber}</span></div>
-						<div id="commentsAmount"><i className="fa fa-commenting-o fa-lg"></i><span className="timeProp tagSize">{
-							this.state.commentNumber}</span></div>
-					</div>
-					<div id="lastReply"><span >{this.state.lastReply}</span></div>
-				</div>
-			</div>
-		</div>;
-	}
+    constructor(props, context) {
+
+        super(props, context);
+
+        this.state = {
+
+            title: this.props.title,
+
+            authorName: this.props.authorName,
+
+            likeNumber: 123,
+
+            dislikeNumber: 11,
+
+            commentNumber: 214,
+
+            lastPostUserName: this.props.lastPostUserName,
+
+            lastPostTime: this.props.lastPostTime,
+
+            id: this.props.id,
+
+            authorId: this.props.authorId
+
+        }
+
+    }
+
+    render() {
+
+
+
+        let url = `/topic/${this.state.id}`;
+
+        return <div id="changeColor">
+
+            <div className="row topicInList" >
+
+                <Link to={url}><div style={{ marginLeft: '20px', }}> <span >{this.state.title}</span></div></Link>
+
+                <div className="row" style={{ width: "500px", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" }}>
+
+                    <div style={{ width: "100px", marginRight: '10px', marginLeft: '15px' }}> <span ><a >{this.state.authorName}</a></span></div>
+
+                    <div className="row" style={{ width: "150px", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" }}>
+
+                        <div id="liked" style={{ display: "flex" }}><i className="fa fa-thumbs-o-up fa-lg"></i><span className="timeProp tagSize">{this.state.likeNumber}</span></div>
+
+                        <div id="disliked" style={{ display: "flex" }}><i className="fa fa-thumbs-o-down fa-lg"></i><span className="timeProp tagSize">{this.state.dislikeNumber}</span></div>
+
+                        <div id="commentsAmount" style={{ display: "flex" }}><i className="fa fa-commenting-o fa-lg"></i><span className="timeProp tagSize">{this.state.commentNumber}</span></div>
+
+                    </div>
+
+                    <div id="lastReply" style={{ width: "100px" }}><span >{this.state.lastPostUserName} </span></div>
+
+                    <div style={{ width: "150px", marginRight: "20px" }}><span>{moment(this.state.lastPostTime).format('YYYY-MM-DD HH:mm:ss')}</span></div>
+
+                </div>
+
+            </div>
+
+        </div>;
+
+    }
+
 }

@@ -11,7 +11,7 @@ export class UserCenterMyPostsExact extends React.Component<null, UserCenterMyPo
     constructor(props) {
         super(props);
         //临时填充数据
-        this.state = { userRecentPosts: [userRecentPost, userRecentPost, userRecentPost, userRecentPost] };
+        this.state = { userRecentPosts: new Array(50).fill(userRecentPost) };
     }
 
     render() {

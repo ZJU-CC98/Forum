@@ -41,7 +41,8 @@ const config: webpack.Configuration = {
 		'redux': 'Redux',
 		'react-redux': 'ReactRedux',
 		'jquery': '$',
-		'signalr': '$.connection',
+        'signalr': '$.connection',
+        'moment' : 'moment',
 
 	},
 	plugins: [
@@ -60,7 +61,8 @@ const config: webpack.Configuration = {
 			{ from: 'node_modules/moment', to: 'scripts/lib/moment' },
 			{ from: 'node_modules/bootstrap/dist', to: 'scripts/lib/bootstrap' },
 			{ from: 'node_modules/es6-promise/dist', to: 'scripts/lib/es6-promise' },
-			{ from: 'node_modules/font-awesome', to: 'content/font-awesome' }
+            { from: 'node_modules/font-awesome', to: 'content/font-awesome' },
+            { from: 'node_modules/moment', to: 'scripts/moment' }
 		]),
 		new ExtractTextPlugin('content/site.min.css')
 	]

@@ -1,4 +1,6 @@
-﻿$bgcolor: #E9E9E9;
+﻿@import 'UserCenter.scss';
+
+$bgcolor: #E9E9E9;
 $bgcolor2: #F5FAFD;
 $color-body: rgb(245,250,255);
 $color-thinBlack: rgb(120,120,120);
@@ -17,7 +19,7 @@ $color-black: rgb(32,32,32);
     align-items: center;
     justify-content: center;
     background-color: #FFFFFF;
-    min-width: 1140px;
+    width: 1140px;
     font-family: 微软雅黑;
 }
 
@@ -29,7 +31,6 @@ $color-black: rgb(32,32,32);
     background-color: $bgcolor2;
     max-width: 1140px;
     margin-top: 15px;
-    border: #EAEAEA solid thin;
     font-family: 微软雅黑;
     font-size: 14px;
 }
@@ -41,11 +42,12 @@ $color-black: rgb(32,32,32);
     font-size: 12px;
     align-items: center;
     justify-content: center;
+    min-width: 1140px;
 }
 
 .listContent {
     display: flex;
-    width: 1140px;
+    min-width: 1140px;
     border: #EAEAEA solid thin;
     border-radius: 5px;
     background-color: $bgcolor2;
@@ -56,7 +58,7 @@ $color-black: rgb(32,32,32);
 
 .notice {
     display: flex;
-    width: 1140px;
+    min-width: 1140px;
     height: 190px;
     border: #EAEAEA solid thin;
     border-radius: 5px;
@@ -68,9 +70,12 @@ $color-black: rgb(32,32,32);
 .essay {
     display: inline-flex;
     align-self: flex-start;
-    border: #EAEAEA solid thin;
-    min-height: 100px;
+    border-bottom: #EAEAEA solid thin;
+    border-left: #EAEAEA solid thin;
+    border-right: #EAEAEA solid thin;
+    height: 100px;
     min-width: 1140px;
+    box-sizing: border-box;
 }
 
 .row {
@@ -110,12 +115,14 @@ $color-black: rgb(32,32,32);
     font-size: 13px;
 }
 
-#authorImg {
+.authorImg {
     display: inline-flex;
     margin: 100px,100px,100px,100px;
+    width: 60px;
+    height: 60px;
 }
 
-#authorImg img {
+.authorImg img {
     margin-left: 20px;
     border-radius: 50%;
     width: 60px;
@@ -145,7 +152,7 @@ $color-black: rgb(32,32,32);
     font-size: 12px;
     font-family: 微软雅黑;
     letter-spacing: 3px;
-    padding-left: 12px;
+    padding-left: 10px;
     border-radius: 5px;
     background: #67B3FF;
     border: 1px solid #2576A8;
@@ -154,7 +161,7 @@ $color-black: rgb(32,32,32);
 }
 
 #title {
-    max-width: 620px;
+    width: 646px;
     display: flex;
     border-right: $bgcolor solid thin;
 }
@@ -276,24 +283,31 @@ $color-black: rgb(32,32,32);
 }
 
 #ads {
-    min-width: 278px;
+    min-width: 250px;
     display: inline-flex;
 }
 
 #ads img {
     display: flex;
-    width: 240px;
-    margin-left: 20px;
+    width: 250px;
 }
 
 .content {
     display: flex;
     align-self: flex-start;
     flex-direction: column;
-    border-bottom: #EAEAEA solid thin;
+    min-width: 1140px;
     border-left: #EAEAEA solid thin;
     border-right: #EAEAEA solid thin;
-    width: 1140px;
+    box-sizing: border-box;
+}
+
+.reply-content {
+    display: flex;
+    align-self: flex-start;
+    flex-direction: column;
+    min-width: 1140px;
+    box-sizing: border-box;
 }
 
 .substance {
@@ -368,6 +382,7 @@ $color-black: rgb(32,32,32);
     font-size: 12px;
     border-left: #EAEAEA solid thin;
     border-right: #EAEAEA solid thin;
+    box-sizing: border-box;
 }
 
 #userImage img {
@@ -402,6 +417,7 @@ $color-black: rgb(32,32,32);
     border-bottom: #EAEAEA solid thin;
     border-right: #EAEAEA solid thin;
     font-size: 14px;
+    box-sizing: border-box;
 }
 
 .buttonFont {
@@ -438,11 +454,11 @@ $color-black: rgb(32,32,32);
     align-items: flex-end;
 }
 
-#reply:nth-child(2n+1) .rpyClr a {
+.reply:nth-child(2n+1) .rpyClr a {
     color: #2576A8;
 }
 
-#reply:nth-child(2n) .rpyClr a {
+.reply:nth-child(2n) .rpyClr a {
     color: #EE0000;
 }
 
@@ -464,6 +480,7 @@ $color-black: rgb(32,32,32);
     font-size: 12px;
     font-family: 微软雅黑;
     padding-left: 7px;
+    padding-right: 7px;
     border-radius: 5px;
     background: #FFFFFF;
     border: 1px solid #5CADDD;
@@ -632,6 +649,21 @@ a {
 .green:active {
     color: #fcd3a5;
     background-color: #66cd00;
+}
+
+.blue {
+    color: #fff;
+    border: solid 1px #add8e6;
+    background-color: #b2dfee;
+}
+
+.blue:hover {
+    background-color: #87CEEB;
+}
+
+.blue:active {
+    color: #b0e2ff;
+    background-color: #b0e0e6;
 }
 
 .button:hover {
@@ -963,18 +995,27 @@ a {
     margin-bottom: 30px;
 }
 
-.hideBoard {
-    height: 20px;
-    width: 30px;
+.viewBoard {
+    margin-left: 30px;
     border-radius: 5px;
+    background-color: #FFFFFF;
+    border-color: #000000;
+    width: 30px;
+    height: 20px;
+}
+
+.hideBoard {
+    width: 30px;
+    height: 20px;
+    margin-left: 30px;
+    border-radius: 5px;
+    border-width: 1px;
     border-style: solid;
     border-color: #000000;
-    border-width: 1px;
     font-size: 14px;
     font-family: 微软雅黑;
     color: rgb(80,80,80);
     text-align: center;
-    margin-left: 30px;
     cursor: pointer;
 }
 
@@ -987,12 +1028,6 @@ a {
 
 .areaContent {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-
-.noImgAreaContent {
-    display: none;
     flex-direction: row;
     flex-wrap: wrap;
 }
@@ -1053,506 +1088,11 @@ a {
     margin-top: 12px;
 }
 
-//个人中心页面用
-.user-center {
-    * {
-        margin: 0;
-        padding: 0;
-        border: 0;
-    }
-}
-
 body {
     background-color: rgb(245,250,255);
 }
 
-.user-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 14px;
-    font-family: 微软雅黑;
-    min-width: 1140px;
 
-    a {
-        color: black;
-
-        &:link {
-            text-decoration: none;
-        }
-
-        &:visited {
-            text-decoration: none;
-        }
-    }
-}
-
-.user-center-head {
-    width: 1140px;
-    height: 73px;
-    display: flex;
-    align-items: center;
-}
-
-.user-center-body {
-    width: 1140px;
-    min-width: 666px;
-    display: flex;
-    justify-content: space-between;
-
-    .user-center-navigation {
-        width: 15%;
-        height: 620px;
-        padding: 10px;
-        background-color: white;
-        border: 1px solid rgb(204,204,204);
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-
-            hr {
-                background-color: #fff;
-                border-top: 1px dashed rgb(204,204,204);
-            }
-        }
-
-        .user-center-navigation-active {
-            * {
-                color: red;
-            }
-        }
-
-        li {
-            height: 53px;
-            display: flex;
-            align-items: center;
-            font-family: FontAwesome;
-
-            .fa-home:before {
-                font-family: FontAwesome;
-                content: "\f015";
-            }
-
-            .fa-pencil-square-o:before {
-                font-family: FontAwesome;
-                content: "\f044";
-            }
-
-            .fa-star:before {
-                font-family: FontAwesome;
-                content: "\f005";
-            }
-
-            .fa-heart:before {
-                font-family: FontAwesome;
-                content: "\f004";
-            }
-
-            .fa-users:before {
-                font-family: FontAwesome;
-                content: "\f0C0";
-            }
-
-            .fa-cog:before {
-                font-family: FontAwesome;
-                content: "\f013";
-            }
-
-            a {
-                display: inline-flex;
-                align-items: center;
-                padding-left: 10px;
-
-                p {
-                    margin-left: 10px;
-                }
-            }
-        }
-    }
-
-    .user-center-router {
-        width: 74%;
-        padding: 30px;
-        background-color: white;
-        border: 1px solid rgb(204,204,204);
-
-        .user-center-exact {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-
-            .user-avatar {
-                width: 20%;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-
-                .user-avatar-img {
-                    width: 160px;
-                    height: 160px;
-                    border-radius: 80px;
-                }
-            }
-
-            .user-profile {
-                width: 80%;
-
-                & > * {
-                    margin: 30px;
-                    margin-right: 0px;
-                }
-
-                #userId {
-                    font-size: 18px;
-                    margin-top: 5px;
-                }
-
-                button {
-                    transition-duration: 0.4s;
-                    background-color: rgb(104,179,255);
-                    color: white;
-                    width: 80px;
-                    height: 30px;
-                    margin: 0;
-                    float: right;
-                    border-radius: 3px;
-
-                    &:hover {
-                        background-color: rgb(41,174,223);
-                    }
-
-                    &:active {
-                        background-color: rgb(38,154,196);
-                    }
-                }
-
-                #userGenderAndBirthday {
-                    display: flex;
-
-                    & :first-child {
-                        width: 108px;
-
-                        &:after {
-                            font-family: FontAwesome;
-                            content: '\F222';
-                        }
-                    }
-                }
-
-                .user-description {
-                    display: flex;
-                    flex-direction: row;
-                    flex-wrap: wrap;
-                    justify-content: space-between;
-
-                    & > p {
-                        width: 100%;
-                        margin-bottom: 20px;
-                    }
-
-                    article {
-                        width: 100%;
-                        padding: 10px;
-                        font-size: 12px;
-                        text-indent: 2em;
-                        white-space: pre;
-                    }
-                }
-            }
-
-            .user-activities {
-                width: 100%;
-
-                .user-activities-active {
-                    color: rgb(160,160,160);
-                }
-
-                & > p {
-                    font-size: 18px;
-                    margin-bottom: 30px;
-                }
-
-                .user-posts {
-                    margin-top: 20px;
-
-                    p {
-                        line-height: 3em;
-                        overflow: hidden;
-                    }
-
-                    hr {
-                        background-color: #fff;
-                        border-top: 1px dashed rgb(204,204,204);
-                        margin: 20px 0 20px 0;
-                    }
-
-                    .user-post-board {
-                        margin-right: 16px;
-                        color: rgb(53,167,255);
-                    }
-
-                    .user-post-date {
-                        margin-right: 16px;
-                        color: rgb(160,160,160);
-                    }
-
-                    .user-post-approval {
-                        float: right;
-                        font-size: 12px;
-
-                        span {
-                            font-family: FontAwesome;
-                            margin: 20px;
-                        }
-
-                        .fa-thumbs-o-up:before {
-                            content: '\F087';
-                        }
-
-                        .fa-thumbs-o-down:before {
-                            content: '\F088';
-                        }
-                    }
-
-                    .user-post-content {
-                        font-size: 12px;
-                    }
-                }
-            }
-        }
-
-        .user-center-myfans, .user-center-myfollowings {
-            hr {
-                margin-bottom: 30px;
-                background-color: #fff;
-                border-top: 1px dashed rgb(204,204,204);
-            }
-
-            .user-center-myfollowings-user {
-                display: flex;
-                align-items: center;
-                margin-bottom: 30px;
-
-                p {
-                    flex-grow: 1;
-                }
-
-                img {
-                    width: 60px;
-                    height: 60px;
-                    border-radius: 30px;
-                    margin-right: 20px;
-                }
-
-                button {
-                    width: 70px;
-                    height: 26px;
-                    font-size: 12px;
-                    border-radius: 3px;
-                    background-color: rgb(230,230,230);
-                    color: rgb(160,160,160);
-                }
-
-                .user-center-myfollowings-user-id {
-                    margin-right: 20px;
-                }
-
-                .user-center-myfollowings-user-posts {
-                    margin: 0 14px 0 12px;
-                    color: rgb(53,167,255);
-                }
-
-                .user-center-myfollowings-user-fans {
-                    margin: 0 14px 0 12px;
-                    color: rgb(255,54,54);
-                }
-            }
-        }
-
-        .user-center-myposts {
-            .user-activities-active {
-                color: rgb(160,160,160);
-            }
-
-            .user-posts {
-                margin-top: 20px;
-
-                p {
-                    line-height: 3em;
-                    overflow: hidden;
-                }
-
-                hr {
-                    background-color: #fff;
-                    border-top: 1px dashed rgb(204,204,204);
-                    margin: 20px 0 20px 0;
-                }
-
-                .user-post-board {
-                    margin-right: 16px;
-                    color: rgb(53,167,255);
-                }
-
-                .user-post-date {
-                    margin-right: 16px;
-                    color: rgb(160,160,160);
-                }
-
-                .user-post-approval {
-                    float: right;
-                    font-size: 12px;
-
-                    span {
-                        font-family: FontAwesome;
-                        margin: 20px;
-                    }
-
-                    .fa-thumbs-o-up:before {
-                        content: '\F087';
-                    }
-
-                    .fa-thumbs-o-down:before {
-                        content: '\F088';
-                    }
-                }
-
-                .user-post-content {
-                    font-size: 12px;
-                }
-            }
-        }
-
-        .user-center-myfavorites {
-            @extend .user-center-myposts;
-        }
-
-        .user-center-config {
-            button {
-                background-color: rgb(240,240,240);
-
-                &:hover {
-                    background-color: rgb(230,230,230);
-                }
-
-                &:active {
-                    background-color: rgb(220,220,220);
-                }
-            }
-
-            hr {
-                border-top: 1px dashed #ccc;
-                margin: 30px 0;
-            }
-
-            .user-center-config-avatar {
-                display: flex;
-                align-items: center;
-
-                & > img {
-                    width: 160px;
-                    height: 160px;
-                    border-radius: 80px;
-                }
-
-                & > div {
-                    display: flex;
-                    flex-direction: column;
-
-                    & > button {
-                        width: 100px;
-                        height: 30px;
-                        margin-left: 30px;
-                        margin-bottom: 20px;
-                    }
-
-                    & > div {
-                        display: flex;
-                        align-items: center;
-
-                        button {
-                            width: 100px;
-                            height: 30px;
-                            margin-left: 30px;
-                            margin-right: 20px;
-                        }
-                    }
-                }
-            }
-
-            .user-center-config-signature {
-                .signature-buttons {
-                    display: flex;
-                    align-items: center;
-                    width: 100%;
-                    border: 1px solid #E9E9E9;
-                    height: 40px;
-                    background-color: rgb(248,251,255);
-
-                    button {
-                        cursor: pointer;
-                        background-color: white;
-                        margin-left: 30px;
-                        height: 15px;
-                    }
-                }
-
-                #signature {
-                    margin: 0px;
-                    padding: 20px;
-                    width: 95.3%;
-                    height: 252px;
-                    border: 1px solid rgb(233, 233, 233);
-                    resize: vertical;
-                }
-
-                div {
-                    display: flex;
-                }
-
-                p {
-                    flex-grow: 1;
-                    font-size: 12px;
-                }
-
-                #signatureUpload {
-                    width: 100px;
-                    height: 25px;
-                    margin-top: -5px;
-                    margin-right: -2px;
-                }
-            }
-
-            .user-center-config-password {
-                & > p {
-                    font-size: 12px;
-                    margin: 30px 0;
-                }
-
-                .password-inputs {
-                    display: flex;
-                    align-items: center;
-
-                    p {
-                        font-size: 12px;
-                    }
-                }
-
-                input {
-                    width: 160px;
-                    height: 30px;
-                    margin: 0 20px;
-                    border: 1px solid #E9E9E9;
-                }
-
-                button {
-                    width: 100px;
-                    height: 25px;
-                }
-            }
-        }
-    }
-}
 
 /*****************************************以下为我的消息的样式*********************************/
 .mymessage-root {
@@ -2270,7 +1810,6 @@ body {
 .focus-allNewPost {
     color: $color-thinBlack;
     min-height: 12px;
-    margin-top: 20px;
     font-size: 12px;
     display: flex;
     align-items: baseline;
@@ -2289,11 +1828,11 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
+    min-width: 1140px;
     margin: 0 0 20px 0;
     padding: 0px;
     justify-content: center;
-    background: url(/images/headerBackground.jpg) no-repeat center;
-    justify-content: center;
+    background: url(/images/autumn1.png) no-repeat center;
     z-index: 2;
 }
 
@@ -2302,9 +1841,8 @@ body {
     flex-direction: row;
     height: 50px;
     width: 100%;
-    opacity: 0.5;
     justify-content: center;
-    background-color: rgba(80,80,80,0.6); //仅背景条半透明
+    background-color: rgba(80,80,80,0.5); //仅背景条半透明，内层元素无半透明效果
 }
 
 .topBarRow {
@@ -2317,9 +1855,8 @@ body {
 .headerContent {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     width: 100%;
-    height: 190px;
+    height: 140px;
     justify-content: center;
 }
 
@@ -2328,7 +1865,7 @@ body {
     flex-direction: row;
     justify-content: space-between;
     width: 1140px;
-    margin-top: 134px;
+    margin-top: 104px;
 }
 
 .linkBar {
@@ -2353,13 +1890,29 @@ body {
 
 //以下是头部中顶部条下拉菜单的样式~
 
+#dropdown {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(255,255,255);
+}
+
 #dropdown ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
 
+#search {
+    opacity: 0.8;
+}
+
 #dropdown .box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#dropdown .userInfo {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -2379,37 +1932,42 @@ body {
     align-items: center;
     width: 94px;
     height: 50px;
-    font-size: 12px;
-    font-family: 微软雅黑;
-    color: rgb(255,255,255);
     cursor: pointer;
 }
 
 #dropdown .topBarText {
-    font-size: 12px;
-    font-family: 微软雅黑;
-    color: rgb(252,252,252);
     margin-top: 12px;
 }
 
+#dropdown .boardListLink {
+    display: flex;
+    height: 55px;
+    width: 60px;
+    border-radius: 0 0 5px 5px;
+    background-color: rgb(53,177,255);
+    font-size: 16px; //这里字体要大一点
+    letter-spacing: 2px;
+    justify-content: center;
+}
+
 #dropdown .sub {
-    width: 94px;
+    width: 124px;
     display: none;
-    font-size: 12px;
-    font-family: 微软雅黑;
-    color: rgb(255,255,255);
-    background-color: rgba(80,80,80,0.6);
-    margin-left: 30px;
+    background-color: rgba(80,80,80,0.5);
+    margin-top: -5px;
+    opacity: 0.9999; //暂时不知道原因，但是如果不加上一个小于1的opacity值，下拉会出问题,猜测是opacity把元素及所有子元素合在一起？
 }
 
 #dropdown .sub li {
+    display: flex;
     height: 25px;
     cursor: pointer;
-    text-align: center;
+    justify-content: center;
+    align-items: center;
 }
 
 #dropdown .sub li.hover {
-    background: rgb(233,233,233);
+    background: rgb(53,177,255);
 }
 //以下是头部中搜索条的样式
 #search ul {
@@ -2432,7 +1990,6 @@ body {
     border-color: rgb(233,233,233);
     border-width: 2px;
     box-sizing: border-box;
-    cursor: pointer;
 }
 
 #search form {
@@ -2501,6 +2058,35 @@ body {
 #search .sub li.hover {
     background: rgb(233,233,233);
 }
+
+//-------------------------以下是底部的样式~~~---------------------------------------------------
+.footer {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background-color: rgb(242,242,242);
+    padding-top: 15px;
+    width: 100%;
+    min-width: 1140px;
+}
+
+.footerRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    margin-bottom: 15px;
+}
+
+.footerRow a {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    margin-left: 10px;
+    margin-right: 10px;
+}
 //以下这段是推荐阅读的样式~~
 .recommended1 {
     display: flex;
@@ -2558,6 +2144,10 @@ body {
     margin-top: 18px;
 }
 
+.recommended1Content {
+    display: none;
+}
+
 .recommended1Button {
     width: 10px;
     height: 10px;
@@ -2567,6 +2157,18 @@ body {
     border-radius: 50%;
     box-sizing: border-box;
     margin: 0 5px 0 5px;
+}
+
+#hover {
+    width: 10px;
+    height: 10px;
+    border-style: solid;
+    border-color: rgb(160,160,160);
+    border-width: 1px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    margin: 0 5px 0 5px;
+    background-color: rgb(53,177,255);
 }
 //推荐阅读到此为止~
 
@@ -2614,14 +2216,12 @@ body {
 
 .ad {
     display: flex;
-    height: 60px;
-    width: 250px;
     margin-bottom: 30px;
 }
 
 .ad img {
     width: 250px;
-    height: 60px;
+    height: 100px;
 }
 
 .news {
@@ -2736,6 +2336,12 @@ body {
     margin: 6px 6px 5px 8px;
 }
 
+.boardName a {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(255,136,56);
+}
+
 .topicTitle {
     font-size: 12px;
     font-family: 微软雅黑;
@@ -2843,30 +2449,59 @@ body {
 */
 
 .ubb-code {
-    width: 100%;
-    font-size: 12px;
-
     ol {
         list-style: none;
-        counter-reset: li;
-        padding: 0;
+        counter-reset: li
     }
 
     li {
-        counter-increment: li;
-        background-color: white;
+        counter-increment: li
     }
 
     li::before {
         content: counter(li);
         display: inline-flex;
         width: 50px;
-        margin: 0 5px 0 0;
+        margin: 0 10px;
         justify-content: center;
         background-color: #ebebeb;
     }
 }
 
+/**
+    弹出用户悬浮窗
+*/
+.popup {
+    width: 380px;
+    height: 250px; /*高度自由，因为不确定，内容多少。*/
+    border: 1px solid #D5D5D5;
+    background: #fff; /*窗口内容不透明，背景为白色*/
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.25); /*内容窗口带阴影*/
+    border-radius: 8px; /* 所有角都使用半径为8px的圆角，此属性为CSS3标准属性 */
+    -moz-border-radius: 8px; /* Mozilla浏览器的私有属性 */
+    -webkit-border-radius: 8px; /* Webkit浏览器的私有属性 */ /*窗口圆角*/
+    z-index: 9000;
+}
+
+.popup_title {
+    background: url(/images/headerBackground.jpg) no-repeat center;
+    height: 125px;
+    line-height: 24px; /*使垂直居中*/
+    border-bottom: 1px solid #efefef; /*底边框*/
+    border-radius: 8px 8px 0 0; /* 左上角和右上角使用半径为5px的圆角，此属性为CSS3标准属性 */
+    -moz-border-radius: 8px 8px 0 0; /* Mozilla浏览器的私有属性 */
+    -webkit-border-radius: 8px 8px 0 0; /* Webkit浏览器的私有属性 */ /*窗口圆角*/
+    color: #535353;
+    font-size: 16px; /*字体颜色和字体大小*/
+    -moz-user-select: none; /* Firefox all */
+    -webkit-user-select: none; /* Chrome all / Safari all /opera15+*/
+    -ms-user-select: none; /*IE10*/
+    -khtml-user-select: none; /*早期浏览器*/
+    user-select: none;
+    -o-user-select: none; /* 以上两个属性目前并未支持，写在这里为了减少风险 */
+}
 /*
     登陆页用
 */
@@ -2964,11 +2599,11 @@ body {
 
 @keyframes cssShake {
     from {
-        transform: rotate(2deg);
+        transform: translateX(-5px);
     }
 
     to {
-        transform: rotate(-2deg);
+        transform: translateX(5px);
     }
 }
 
@@ -2977,4 +2612,96 @@ body {
     animation-duration: 50ms;
     animation-iteration-count: infinite;
     animation-direction: alternate;
+}
+
+//------------------------登录页到此结束----------------------------------
+
+#sendTopic {
+    border: #CCCCCC solid thin;
+    width: 1140px;
+    height: 330px;
+    display: flex;
+    flex-direction: column;
+
+
+
+    #sendTopic-options {
+        background-color: #fff;
+        width: 1140px;
+        height: 30px;
+        border-bottom: #CCCCCC solid thin;
+    }
+
+    #sendTopic-input {
+        background-color: #fff;
+        height: 290px;
+        padding-top: 5px;
+        padding-left: 5px;
+        padding-right: 5px;
+        border: none;
+        width: 1130px;
+    }
+}
+
+.editor__menu {
+    float: left;
+    margin: 0 2px;
+    vertical-align: text-top;
+    padding-left: 5px;
+}
+
+.editor__menu li {
+    list-style: none;
+    float: left;
+    list-style-type: none;
+    margin-right: 2px;
+    margin-left: 2px;
+}
+
+.editor__menu--bold {
+    background-image: url(/images/editOption.png);
+    background-size: 380px 60px;
+    border-bottom-color: rgb(255, 255, 255);
+    display: block;
+    height: 20px;
+    list-style-type: none;
+    width: 20px;
+    border-left-width: 5px;
+    border-right-width: 5px;
+    border-style: solid;
+    border-width: 5px;
+    border-color: rgb(255, 255, 255);
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.wmd-spacer1 {
+    margin: 5px 4px;
+    width: 0px;
+    height: 20px;
+    padding-left: 0px;
+    padding-right: 0px;
+    border-right: 1px solid #ddd;
+    text-indent: 110%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-transform: capitalize;
+}
+
+#sendTopic-send {
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    width: 50px;
+    margin-top: 20px;
+    background-color: rgb(128,187,235);
+    color: #fff;
+    text-decoration: none;
+    font: 14px/100% Arial, Helvetica, sans-serif;
+    padding: .5em 2em .55em;
+    letter-spacing: 5px;
+    -webkit-border-radius: .5em;
+    -moz-border-radius: .5em;
+    border-radius: .5em;
 }

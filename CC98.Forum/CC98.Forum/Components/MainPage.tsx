@@ -27,35 +27,35 @@ export class Recommended1 extends React.Component<{}, {}> {
         return <div className="recommended1">
             <div className="column">
                 <div className="recommended1Content">
-                    <div className="recommended1Img"><img src="images/recommended2Img.jpg" /></div>
+                    <div className="recommended1Img"><img src="/images/recommended2Img.jpg" /></div>
                     <div className="column">
                         <div className="recommended1Title">推荐阅读标题1</div>
                         <div className="recommended1Abstract">推荐阅读摘要1</div>
                     </div>
                 </div>
                 <div className="recommended1Content">
-                    <div className="recommended1Img"><img src="images/recommended2Img.jpg" /></div>
+                    <div className="recommended1Img"><img src="/images/recommended2Img.jpg" /></div>
                     <div className="column">
                         <div className="recommended1Title">推荐阅读标题2</div>
                         <div className="recommended1Abstract">推荐阅读摘要2</div>
                     </div>
                 </div>
                 <div className="recommended1Content">
-                    <div className="recommended1Img"><img src="images/recommended2Img.jpg" /></div>
+                    <div className="recommended1Img"><img src="/images/recommended2Img.jpg" /></div>
                     <div className="column">
                         <div className="recommended1Title">推荐阅读标题3</div>
                         <div className="recommended1Abstract">推荐阅读摘要3</div>
                     </div>
                 </div>
                 <div className="recommended1Content">
-                    <div className="recommended1Img"><img src="images/recommended2Img.jpg" /></div>
+                    <div className="recommended1Img"><img src="/images/recommended2Img.jpg" /></div>
                     <div className="column">
                         <div className="recommended1Title">推荐阅读标题4</div>
                         <div className="recommended1Abstract">推荐阅读摘要4</div>
                     </div>
                 </div>
                 <div className="recommended1Content">
-                    <div className="recommended1Img"><img src="images/recommended2Img.jpg" /></div>
+                    <div className="recommended1Img"><img src="/images/recommended2Img.jpg" /></div>
                     <div className="column">
                         <div className="recommended1Title">推荐阅读标题5</div>
                         <div className="recommended1Abstract">推荐阅读摘要5</div>
@@ -131,11 +131,7 @@ export class MainPage extends React.Component<{}, AppState> {
                         <div className="row"><div className="announcementDate">[2017.08.17]</div><div className="announcementText">公告2</div><div className="announcementLink1">★详情点击★</div></div>
                         <div className="row"><div className="announcementDate">[2017.08.17]</div><div className="announcementText">公告3</div><div className="announcementLink1">★详情点击★</div></div>
                         <div className="row">
-                            <div className="announcementLink2">★广播台点歌通道★</div>
-                            <div className="announcementLink2">★CC98 Share★</div>
-                            <div className="announcementLink2">★推荐阅读投稿★</div>
-                            <div className="announcementLink2">★社团及学生组织用户认证申请★</div>
-                            <div className="announcementLink2">★MyCC98 安卓客户端★</div>
+                            
                         </div>
                     </div>
                 </div>

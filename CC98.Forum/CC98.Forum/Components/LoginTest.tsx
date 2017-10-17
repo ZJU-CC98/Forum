@@ -1,22 +1,41 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
+﻿import * as React from 'react'; import * as State from '../States/AppState';
+import * as Utility from '../Utility';
+import * as $ from 'jquery';
+import {
+    BrowserRouter as Router,
+    Route,
+    Link
+} from 'react-router-dom';
 
-import * as React from 'react';
+import { match } from "react-router";
 
-export class Login extends React.Component<null, LoginState> {
+export class LoginTest extends React.Component<null, LoginState> {
     constructor(props) {
         super(props);
         this.state = {
             loginName: '',
             loginPassword: '',
-            loginMessage: '',
-            isLogining: false
+            loginMessage: ''
         };
 
-	    this.handleNameChange = this.handleNameChange.bind(this);
+        this.handleNameChange = this.handleNameChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
+    }
+
+    async login() {
+        let url = 'http://openid.cc98.org/connect/token';
+        let response = await fetch(url, {
+            method: "POST",
+            headers: {
+            },
+            body:
+            "client_id=9a1fd200-8687-44b1-4c20-08d50a96e5cd" + "&grant_type=password"+"&username=" + this.state.loginName + "&password=" + this.state.loginPassword
+        });
+        let data = await response.json();
+        console.log(data);
+    } catch(e) {
+        console.log("Oops, error", e);
     }
 
     shake(element: HTMLElement) {
@@ -36,13 +55,9 @@ export class Login extends React.Component<null, LoginState> {
             loginPassword: e.target.value
         });
     }
-    
-    async handleLogin(e) {
+
+    handleLogin(e) {
         e.preventDefault();
-        //如果在登陆中则无视提交
-        if (this.state.isLogining) {
-            return false;
-        }
 
         if (!(this.state.loginName || this.state.loginPassword)) {
             this.setState({
@@ -65,15 +80,12 @@ export class Login extends React.Component<null, LoginState> {
             this.shake(document.getElementById('loginPassword')).focus();
 
             return false;
-        }else {
+        } else {
             this.setState({
-                loginMessage: '登陆中',
-                isLogining: true
-            });            
+                loginMessage: '登陆中'
+            });
         }
-        
     }
-
     render() {
         return (
             <div className="login">
@@ -89,13 +101,13 @@ export class Login extends React.Component<null, LoginState> {
                                 <p>密码</p><input type="password" id="loginPassword" onChange={this.handlePasswordChange} />
                             </div>
                             <p id="loginMessage">{this.state.loginMessage}</p>
-                            <button type="submit" disabled={this.state.isLogining}>登陆账号</button>
+                            <button type="submit" onClick={this.login.bind(this)}>登陆账号</button>
                         </form>
                         <p><span>还没账号？我要 <a href="">注册</a></span></p>
                     </div>
                 </div>
             </div>
-            );
+        );
     }
 }
 
@@ -115,8 +127,4 @@ class LoginState {
     * 登陆信息
     */
     loginMessage: string;
-    /**
-    * 登陆状态
-    */
-    isLogining: boolean;
 }

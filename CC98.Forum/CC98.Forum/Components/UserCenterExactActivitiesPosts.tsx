@@ -11,10 +11,40 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
     constructor(props) {
         super(props);
         //临时填充数据
-        this.state = { userRecentPosts: [userRecentPost, userRecentPost, userRecentPost, userRecentPost] };
+        this.state = {
+            userRecentPosts: new Array(10).fill(userRecentPost),
+            isLoading: false
+        };
+        this.scrollHandler = this.scrollHandler.bind(this);
     }
-    
+
+    scrollHandler(e) {
+        let pageYLeft = document.body.scrollHeight - window.pageYOffset;
+        
+        if (pageYLeft < 1500 && this.state.isLoading === false) {
+            this.setState((prevState) => {
+                this.setState({isLoading: true});
+
+                let posts = prevState.userRecentPosts;
+                posts = posts.concat(new Array(10).fill(userRecentPost));
+                return {
+                    userRecentPosts: posts,
+                    isLoading: false
+                };
+            });
+        }
+    }
+
+    async componentDidMount() {
+        window.addEventListener('scroll', this.scrollHandler);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.scrollHandler);
+    }
+
     render() {
+
         //state转换为JSX
         const userRecentPosts = this.state.userRecentPosts.map((item) => (<UserCenterExactActivitiesPost userRecentPost={item} />));
         //添加分隔线
@@ -31,6 +61,7 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
 
 interface UserCenterExactActivitiesPostsState {
     userRecentPosts: UserRecentPost[];
+    isLoading: boolean;
 }
 
 //临时填充数据

@@ -14,15 +14,17 @@ export class UserCenter extends React.Component {
     render() {
         return (
             <div className="user-center">
-                <div className="user-center-head">
-                    <p>个人中心</p>
-                </div>
-                <Router>
-                    <div className="user-center-body">
-                        <UserCenterNavigation />
-                        <UserCenterRouter />
+                <div className="user-center-content">
+                    <div className="user-center-head">
+                        <p>个人中心</p>
                     </div>
-                </Router>
+                    <Router>
+                        <div className="user-center-body">
+                            <UserCenterNavigation />
+                            <UserCenterRouter />
+                        </div>
+                    </Router>
+                </div>
             </div>
         );
     }

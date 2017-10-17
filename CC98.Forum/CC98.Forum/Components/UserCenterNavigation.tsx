@@ -7,13 +7,59 @@ import {
     Link,
     Route
 } from 'react-router-dom';
+import * as $ from 'jquery';
 
 /**
  * 用户中心侧边栏导航组件
  */
-export class UserCenterNavigation extends React.Component {
+export class UserCenterNavigation extends React.Component<null, UserCenterNavigationState> {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isScroll: false,
+            buttonClassName: ''
+        };
+        this.handleScroll = this.handleScroll.bind(this);
+    }
+
+    handleScroll(e) {
+        if (window.pageYOffset > 234 && !this.state.isScroll) {
+            this.setState({
+                isScroll: true,
+                buttonClassName: 'btn-show'
+            });
+        }
+
+        if (window.pageYOffset < 234 && this.state.isScroll) {
+            this.setState((prevState) => {
+                if (prevState.buttonClassName === '') {
+                    return {
+                        isScroll: false
+                    }
+                } else {
+                    return {
+                        isScroll: false,
+                        buttonClassName: 'btn-disappare'
+                    }
+                }
+            });
+        }
+    }
+
+    componentDidMount() {
+        document.addEventListener('scroll', this.handleScroll);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('scroll', this.handleScroll);
+    }
+
+    scrollToTop() {
+        $('body,html').animate({ scrollTop: 0 }, 500);
+    }
+
     render() {
-        return (<div className="user-center-navigation">
+        return (<div className={this.state.isScroll ? 'user-center-navigation user-center-navigation-fixed' : 'user-center-navigation'} id = "userCenterNavigation" >
             <ul>
                 <CustomLink to="/usercenter" label="主页" activeOnlyWhenExact={true} myClassName="fa-home" />
                 <hr />
@@ -27,6 +73,7 @@ export class UserCenterNavigation extends React.Component {
                 <hr />
                 <CustomLink to="/usercenter/config" label="功能设置" myClassName="fa-cog" />
             </ul>
+            <button type="button" id="scrollToTop" className={this.state.buttonClassName} onClick={this.scrollToTop}>回到顶部</button>
         </div>);
     }
 }
@@ -38,3 +85,8 @@ const CustomLink = ({ label, to, activeOnlyWhenExact = false, myClassName }) => 
         </li>
     )} />
 );
+
+interface UserCenterNavigationState {
+    isScroll: boolean;
+    buttonClassName: string;
+}
