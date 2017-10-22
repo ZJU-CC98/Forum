@@ -245,66 +245,66 @@
 
             .user-activities {
                 width: 100%;
-
-                .user-activities-active {
-                    color: rgb(160,160,160);
-                }
-
+                
                 & > p {
                     font-size: 18px;
                     margin-bottom: 2rem;
                 }
-
-                .user-posts {
-                    margin-top: 1rem;
-
-                    div {
-                        margin: 2rem 0;
-                    }
-
-                    hr {
-                        background-color: #fff;
-                        border-top: 1px dashed rgb(204,204,204);
-                    }
-
-                    .user-post-info a {
-                        margin-right: 2rem;
-                    }
-
-                    .user-post-board {
-                        color: rgb(53,167,255);
-                    }
-
-                    .user-post-date {
-                        color: rgb(160,160,160);
-                    }
-
-                    .user-post-content {
-                        font-size: 12px;
-                        display: flex;
-
-                        a {
-                            flex-grow: 1;
-                        }
-
-                        .fa-thumbs-o-up {
-                            flex-grow: 0;
-                            font-family: FontAwesome;
-                            margin: 0 0.5rem;
-                        }
-
-                        .fa-thumbs-o-down {
-                            flex-grow: 0;
-                            font-family: FontAwesome;
-                            margin: 0 0.5rem;
-                        }
-                    }
-                }
-
+                
                 .user-activities-nomore {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
+                }
+            }
+        }
+
+        .user-activities-active {
+            color: rgb(160,160,160);
+        }
+
+        .user-posts {
+            margin-top: 1rem;
+
+            div {
+                margin: 2rem 0;
+            }
+
+            hr {
+                background-color: #fff;
+                border-top: 1px dashed rgb(204,204,204);
+            }
+
+            .user-post-info a {
+                margin-right: 2rem;
+            }
+
+            .user-post-board {
+                color: rgb(53,167,255);
+            }
+
+            .user-post-date {
+                color: rgb(160,160,160);
+            }
+
+            .user-post-content {
+                font-size: 12px;
+                display: flex;
+
+                a {
+                    flex-grow: 1;
+                }
+
+                .fa-thumbs-o-up {
+                    flex-grow: 0;
+                    font-family: FontAwesome;
+                    margin: 0 0.5rem;
+                }
+
+                .fa-thumbs-o-down {
+                    flex-grow: 0;
+                    font-family: FontAwesome;
+                    margin: 0 0.5rem;
                 }
             }
         }
@@ -355,63 +355,6 @@
                     color: rgb(255,54,54);
                 }
             }
-        }
-
-        .user-center-myposts {
-            .user-activities-active {
-                color: rgb(160,160,160);
-            }
-
-            .user-posts {
-                margin-top: 20px;
-
-                p {
-                    line-height: 3em;
-                    overflow: hidden;
-                }
-
-                hr {
-                    background-color: #fff;
-                    border-top: 1px dashed rgb(204,204,204);
-                    margin: 20px 0 20px 0;
-                }
-
-                .user-post-board {
-                    margin-right: 16px;
-                    color: rgb(53,167,255);
-                }
-
-                .user-post-date {
-                    margin-right: 16px;
-                    color: rgb(160,160,160);
-                }
-
-                .user-post-approval {
-                    float: right;
-                    font-size: 12px;
-
-                    span {
-                        font-family: FontAwesome;
-                        margin: 20px;
-                    }
-
-                    .fa-thumbs-o-up:before {
-                        content: '\F087';
-                    }
-
-                    .fa-thumbs-o-down:before {
-                        content: '\F088';
-                    }
-                }
-
-                .user-post-content {
-                    font-size: 12px;
-                }
-            }
-        }
-
-        .user-center-myfavorites {
-            @extend .user-center-myposts;
         }
 
         .user-center-config {
