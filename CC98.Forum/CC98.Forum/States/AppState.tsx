@@ -121,9 +121,6 @@ export class MainPageTopicState {
     mainPageTopicState: MainPageTopic[];
 }
 
-export class HotTopicState {
-    hotTopicState: HotTopic[];
-}
 export class ListHeadState {
     imgUrl: string;
     listName: string;
