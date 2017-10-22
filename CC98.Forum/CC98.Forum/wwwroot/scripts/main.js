@@ -1204,6 +1204,12 @@ exports.UserFanInfo = UserFanInfo;
 
 /***/ }),
 /* 4 */
+/***/ (function(module, exports) {
+
+module.exports = $;
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1247,7 +1253,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var State = __webpack_require__(3);
 var React = __webpack_require__(0);
 var List_1 = __webpack_require__(9);
-var $ = __webpack_require__(5);
+var $ = __webpack_require__(4);
 function getBoardTopicAsync(curPage, boardid) {
     return __awaiter(this, void 0, void 0, function () {
         var startPage, endPage, boardtopics, url, response, data, totalTopicCountResponse, totalTopicCountJson, totalTopicCount, topicNumberInPage, i;
@@ -1639,12 +1645,6 @@ exports.getStorage = getStorage;
 
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-module.exports = $;
-
-/***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1811,7 +1811,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(4);
+var Utility = __webpack_require__(5);
 var moment = __webpack_require__(7);
 var react_router_dom_1 = __webpack_require__(2);
 var RouteComponent = /** @class */ (function (_super) {
@@ -2555,7 +2555,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
 var FocusPostComponent_1 = __webpack_require__(67);
-var Utility = __webpack_require__(4);
+var Utility = __webpack_require__(5);
 /**
  * 表示我关注的某个版面的主题列表
  */
@@ -2895,8 +2895,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(4);
-var $ = __webpack_require__(5);
+var Utility = __webpack_require__(5);
+var $ = __webpack_require__(4);
 var react_router_dom_1 = __webpack_require__(2);
 var UbbContainer_1 = __webpack_require__(8);
 var SendTopic_1 = __webpack_require__(36);
@@ -4591,7 +4591,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(4);
+var Utility = __webpack_require__(5);
 var react_router_dom_1 = __webpack_require__(2);
 var moment = __webpack_require__(7);
 var RouteComponent = /** @class */ (function (_super) {
@@ -5205,7 +5205,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var AppState_1 = __webpack_require__(3);
-var Utility = __webpack_require__(4);
+var Utility = __webpack_require__(5);
 //链接到的地址是  /list/boardid
 var BoardList = /** @class */ (function (_super) {
     __extends(BoardList, _super);
@@ -5446,7 +5446,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(2);
-var $ = __webpack_require__(5);
+var $ = __webpack_require__(4);
 /**
  * 用户中心侧边栏导航组件
  */
@@ -7844,7 +7844,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var $ = __webpack_require__(5);
+var $ = __webpack_require__(4);
 var DropDown = /** @class */ (function (_super) {
     __extends(DropDown, _super);
     function DropDown() {
@@ -8118,7 +8118,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var HotTopic_1 = __webpack_require__(74);
-var $ = __webpack_require__(5);
+var $ = __webpack_require__(4);
 var Recommended1 = /** @class */ (function (_super) {
     __extends(Recommended1, _super);
     function Recommended1() {
@@ -8237,7 +8237,6 @@ var HotTopicComponent = /** @class */ (function (_super) {
                     "[",
                     item.boardName,
                     "]")),
-            " ",
             React.createElement("div", { className: "topicTitle" },
                 React.createElement("a", { href: topicUrl }, item.title)));
     };
@@ -8247,6 +8246,65 @@ var HotTopicComponent = /** @class */ (function (_super) {
     return HotTopicComponent;
 }(React.Component));
 exports.HotTopicComponent = HotTopicComponent;
+var Shixijianzhi = /** @class */ (function (_super) {
+    __extends(Shixijianzhi, _super);
+    function Shixijianzhi(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            hotTopicState: new Array(),
+        };
+        return _this;
+    }
+    Shixijianzhi.prototype.getTopicInfo = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var hotTopics, url, response, data, i;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        hotTopics = [];
+                        url = 'http://api.cc98.org/Topic/Board/459';
+                        return [4 /*yield*/, fetch(url, { headers: { Range: 'bytes=0-9' } })];
+                    case 1:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 2:
+                        data = _a.sent();
+                        for (i = 0; i < 10; i++) {
+                            hotTopics[i] = new HotTopic_1.HotTopic(data[i].title, data[i].boardName, data[i].id, data[i].boardId);
+                        }
+                        return [2 /*return*/, hotTopics];
+                }
+            });
+        });
+    };
+    Shixijianzhi.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var x;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getTopicInfo()];
+                    case 1:
+                        x = _a.sent();
+                        this.setState({
+                            hotTopicState: x,
+                        });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Shixijianzhi.prototype.convertHotTopic = function (item) {
+        var topicUrl = "/topic/" + item.id;
+        return React.createElement("div", { className: "listRow" },
+            React.createElement("div", { className: "topicTitle" },
+                React.createElement("a", { href: topicUrl }, item.title)));
+    };
+    Shixijianzhi.prototype.render = function () {
+        return React.createElement("div", null, this.state.hotTopicState.map(this.convertHotTopic));
+    };
+    return Shixijianzhi;
+}(React.Component));
+exports.Shixijianzhi = Shixijianzhi;
 /**
  * 网站的主页面对象。
  */
@@ -8350,7 +8408,9 @@ var MainPage = /** @class */ (function (_super) {
                     React.createElement("div", { className: "list1" },
                         React.createElement("div", { className: "blueBar2" },
                             React.createElement("div", { className: "listName" }, "\u5B9E\u4E60\u517C\u804C"),
-                            React.createElement("div", { className: "more" }, "\u66F4\u591A"))),
+                            React.createElement("div", { className: "more" }, "\u66F4\u591A")),
+                        React.createElement("div", { className: "listContent1" },
+                            React.createElement(Shixijianzhi, null))),
                     React.createElement("div", { className: "list2" },
                         React.createElement("div", { className: "blueBar2" },
                             React.createElement("div", { className: "listName" }, "\u5931\u7269\u62DB\u9886"),
@@ -8431,6 +8491,21 @@ var HotTopic = /** @class */ (function () {
     return HotTopic;
 }());
 exports.HotTopic = HotTopic;
+/**
+ * 首页话题信息类
+ * 用于首页左侧信息栏，该类的对象需要标题，id，所在版面，及所在版面id
+ */
+var MainPageTopicInfo = /** @class */ (function () {
+    //构造方法
+    function MainPageTopicInfo(title, id, boardName, boardid) {
+        this.title = title;
+        this.id = id;
+        this.boardName = boardName;
+        this.boardid = boardid;
+    }
+    return MainPageTopicInfo;
+}());
+exports.MainPageTopicInfo = MainPageTopicInfo;
 
 
 /***/ }),
@@ -8825,6 +8900,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
+var $ = __webpack_require__(4);
 var LoginTest = /** @class */ (function (_super) {
     __extends(LoginTest, _super);
     function LoginTest(props) {
@@ -8841,15 +8917,24 @@ var LoginTest = /** @class */ (function (_super) {
     }
     LoginTest.prototype.login = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var url, response, data;
+            var url, requestBody, response, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         url = 'http://openid.cc98.org/connect/token';
+                        requestBody = {
+                            'client_id': '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
+                            'client_secret': '8b53f727-08e2-4509-8857-e34bf92b27f2',
+                            'grant_type': 'password',
+                            'username': this.state.loginName,
+                            'password': this.state.loginPassword
+                        };
                         return [4 /*yield*/, fetch(url, {
                                 method: "POST",
-                                headers: {},
-                                body: "client_id=9a1fd200-8687-44b1-4c20-08d50a96e5cd" + "&grant_type=password" + "&username=" + this.state.loginName + "&password=" + this.state.loginPassword
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded',
+                                },
+                                body: $.param(requestBody)
                             })];
                     case 1:
                         response = _a.sent();
@@ -8857,15 +8942,13 @@ var LoginTest = /** @class */ (function (_super) {
                     case 2:
                         data = _a.sent();
                         console.log(data);
-                        this.setState({
-                            loginMessage: data
-                        });
                         return [2 /*return*/];
                 }
             });
         });
     };
     LoginTest.prototype.catch = function (e) {
+        alert(e.error); //这行好像没什么用……暂时还不会处理不同的error……
         console.log("Oops, error", e);
     };
     LoginTest.prototype.shake = function (element) {

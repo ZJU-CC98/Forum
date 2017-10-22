@@ -1,9 +1,11 @@
 ﻿import * as React from 'react';
 import { AppState } from '../States/AppState';
-import { HotTopicState } from '../States/AppState';
-import { HotTopic } from './HotTopic';
+import { MainPageTopicState } from '../States/AppState';
 import * as $ from 'jquery';
 
+/**
+ * 推荐阅读组件
+ **/
 export class Recommended1 extends React.Component<{}, {}> {
     render() {
 
@@ -12,7 +14,7 @@ export class Recommended1 extends React.Component<{}, {}> {
             const content = $('.recommended1Content');
 
             const randomNum = Math.floor(Math.random() * 5);  //生成0-4的随机数
-            content.eq(randomNum).css('display','flex');
+            content.eq(randomNum).css('display', 'flex');
             button.eq(randomNum).css('background-color', 'rgb(53,177,255)');
 
             button.mouseover(function () {
@@ -73,47 +75,114 @@ export class Recommended1 extends React.Component<{}, {}> {
     }
 }
 
-export class HotTopicComponent extends React.Component<{}, HotTopicState> {
+/**
+ * 首页话题类
+ * 用于首页左侧的几个信息栏，该类的对象（一条主题)需要标题，id，所在版面，及所在版面id等几个属性
+ **/
+export class MainPageTopic {
+
+    //属性
+    title: string;
+    id: number;
+    boardName: string;
+    boardid: number;
+
+    //构造方法
+    constructor(title, id, boardName, boardid) {
+        this.title = title;
+        this.id = id;
+        this.boardName = boardName;
+        this.boardid = boardid;
+    }
+}
+
+/**
+ * 热门话题组件
+ **/
+export class HotTopicComponent extends React.Component<{}, MainPageTopicState> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
         this.state = {
-            hotTopicState: new Array<HotTopic>(),
+            mainPageTopicState: new Array<MainPageTopic>(),
         };
-
     }
 
-    async getHotTopic() {
-        const hotTopics: HotTopic[] = [];
+    async getTopicInfo() {
+        const mainPageTopics: MainPageTopic[] = [];
         const response = await fetch('http://api.cc98.org/Topic/Hot');
         const data = await response.json();
         for (let i = 0; i < 10; i++) {
-            hotTopics[i] = new HotTopic(data[i].title, data[i].boardName, data[i].id, data[i].boardId);
+            mainPageTopics[i] = new MainPageTopic(data[i].title, data[i].boardName, data[i].id, data[i].boardId);
         }
-        return hotTopics;
+        return mainPageTopics;
     }
 
     async componentDidMount() {
-	    const x = await this.getHotTopic();
-	    this.setState({
-            hotTopicState: x,
+        const x = await this.getTopicInfo();
+        this.setState({
+            mainPageTopicState: x,
         });
     }
 
 
-	convertHotTopic(item: HotTopic) {
+    convertMainPageTopic(item: MainPageTopic) {
         const boardUrl = `/list/${item.boardid}`;
         const topicUrl = `/topic/${item.id}`;
         return <div className="listRow">
-            <div className="boardName" > <a href={boardUrl}>[{item.boardName}]</a></div > <div className="topicTitle"><a href={topicUrl}>{
-	            item.title}</a></div>
+            <div className="boardName" > <a href={boardUrl}>[{item.boardName}]</a></div >
+            <div className="topicTitle"><a href={topicUrl}>{item.title}</a></div>
         </div >;
-	}
+    }
 
     render() {
-        return <div>{this.state.hotTopicState.map(this.convertHotTopic)}</div>;
+        return <div>{this.state.mainPageTopicState.map(this.convertMainPageTopic)}</div>;
     }
 }
+
+/**
+ * 实习兼职组件，注意组件类名开头需大写!
+ **/
+export class Shixijianzhi extends React.Component<{}, MainPageTopicState>{
+
+    constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
+        super(props);       //super 表示调用基类（Component系统类型）构造方法
+        this.state = {
+            mainPageTopicState: new Array<MainPageTopic>(),
+        };
+    }
+
+    async getTopicInfo() {
+        const mainPageTopics: MainPageTopic[] = [];
+        const url = 'http://api.cc98.org/Topic/Board/459';
+        const response = await fetch(url,
+            { headers: { Range: 'bytes=0-9' } });   //该api要求提供返回主题的数量，这里需要返回10条
+        const data = await response.json();
+        for (let i = 0; i < 10; i++) {
+            mainPageTopics[i] = new MainPageTopic(data[i].title, data[i].boardName, data[i].id, data[i].boardId);
+        }
+        return mainPageTopics;
+    }
+
+    async componentDidMount() {
+        const x = await this.getTopicInfo();
+        this.setState({
+            mainPageTopicState: x,
+        });
+    }
+
+    convertMainPageTopic(item: MainPageTopic) {
+        const topicUrl = `/topic/${item.id}`;
+        return <div className="listRow">
+            <div className="topicTitle"><a href={topicUrl}>{item.title}</a></div>
+        </div >;
+    }
+
+    render() {
+        return <div>{this.state.mainPageTopicState.map(this.convertMainPageTopic)}</div>;
+    }
+}
+
 /**
  * 网站的主页面对象。
  */
@@ -131,7 +200,7 @@ export class MainPage extends React.Component<{}, AppState> {
                         <div className="row"><div className="announcementDate">[2017.08.17]</div><div className="announcementText">公告2</div><div className="announcementLink1">★详情点击★</div></div>
                         <div className="row"><div className="announcementDate">[2017.08.17]</div><div className="announcementText">公告3</div><div className="announcementLink1">★详情点击★</div></div>
                         <div className="row">
-                            
+
                         </div>
                     </div>
                 </div>
@@ -198,6 +267,9 @@ export class MainPage extends React.Component<{}, AppState> {
                         <div className="blueBar2">
                             <div className="listName">实习兼职</div>
                             <div className="more">更多</div>
+                        </div>
+                        <div className="listContent1">
+                            <Shixijianzhi />
                         </div>
                     </div>
                     <div className="list2">
