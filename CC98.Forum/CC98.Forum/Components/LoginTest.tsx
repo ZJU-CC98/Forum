@@ -25,16 +25,30 @@ export class LoginTest extends React.Component<null, LoginState> {
 
     async login() {
         let url = 'http://openid.cc98.org/connect/token';
+
+        /*
+        请求的正文部分，密码模式需要5个参数，其中client_id和client_secret来自申请的应用，grant_type值固定为"password"
+        */
+        const requestBody = {
+            'client_id': '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
+            'client_secret': '8b53f727-08e2-4509-8857-e34bf92b27f2',
+            'grant_type': 'password',
+            'username': this.state.loginName,
+            'password': this.state.loginPassword
+        }
+
         let response = await fetch(url, {
             method: "POST",
             headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',//在fetch API里这不是默认值，需要手动添加
             },
-            body:
-            "client_id=9a1fd200-8687-44b1-4c20-08d50a96e5cd" + "&grant_type=password"+"&username=" + this.state.loginName + "&password=" + this.state.loginPassword
+            body: $.param(requestBody)
+
         });
         let data = await response.json();
         console.log(data);
-    } catch(e) {
+    } catch(e) {    //捕捉到例外，开始执行catch语句，否则跳过
+        alert(e.error);     //这行好像没什么用……暂时还不会处理不同的error……
         console.log("Oops, error", e);
     }
 
