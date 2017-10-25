@@ -1,8 +1,25 @@
 ﻿import * as React from 'react';
+import * as Utility from '../Utility';
 import { AppState } from '../States/AppState';
 import * as $ from 'jquery';
 
-export class DropDown extends React.Component<{}, AppState> {   //顶部条的下拉菜单组件
+export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   //顶部条的下拉菜单组件
+    constructor(props?, context?) {
+        super(props, context);
+        this.state = ({
+            userName:'null',
+            userImgUrl: "/images/userImg.png"
+        });
+    }
+    async componentDidMount() {
+        if (Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName")) {
+            let userName = Utility.getLocalStorage("userName");
+            let response = await fetch(`http://api.cc98.org/User/Name/${userName}`);
+            let data = await response.json();
+            let userImgUrl = data.portraitUrl;
+            this.setState({ userName: userName, userImgUrl: userImgUrl });
+        }
+    }
     render() {
         $(document).ready(function () {
 
@@ -37,8 +54,8 @@ export class DropDown extends React.Component<{}, AppState> {   //顶部条的�
         return <div id="dropdown">
             <div className="box">
                 <div className="userInfo">
-                    <div className="userImg"><img src="/images/userImg.png"></img></div>
-                    <div className="select">userName</div>
+                    <div className="userImg"><img src={this.state.userImgUrl}></img></div>
+                    <div className="select">{this.state.userName}</div>
                 </div>
                 <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/" style={{ color: '#fff' }}>首页</a></div>
                 <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/focus" style={{ color: '#fff' }}>关注</a></div>
