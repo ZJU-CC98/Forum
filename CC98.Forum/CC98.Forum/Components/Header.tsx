@@ -60,11 +60,12 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
                 <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/" style={{ color: '#fff' }}>首页</a></div>
                 <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/focus" style={{ color: '#fff' }}>关注</a></div>
                 <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/newTopics" style={{ color: '#fff' }}>新帖</a></div>
-                <div className="boardListLink" style={{ margin: '0 0 0 10px' }}><a href="/boardList" style={{ marginTop: '16px', color: '#fff' }}>版面</a></div>
+                <a href="/boardList"><div className="boardListLink" style={{ margin: '0 0 0 10px' }}><div style={{ marginTop: '16px', color: '#fff' }}>版面</div></div></a>
             </div>
             <ul className="sub">
                 <li>个人中心</li>
                 <li>消息</li>
+                <li>注销</li>
             </ul>
         </div>;
     }
