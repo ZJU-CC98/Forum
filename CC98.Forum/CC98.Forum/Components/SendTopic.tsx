@@ -23,7 +23,7 @@ export class SendTopic extends RouteComponent<{ topicid }, { content: string }, 
         this.state = ({ content:'' });
     }
     async sendTopic() {
-        let url = `https://api.cc98.org/Post/Topic/${this.props.topicid}`;
+        let url = `http://apitest.niconi.cc/topic/test`;
         let content = `Content=${this.state.content}&ContentType=Markdown&Title=`;
         let token = Utility.getLocalStorage("accessToken");
         let mes = await fetch(url, {
@@ -33,7 +33,7 @@ export class SendTopic extends RouteComponent<{ topicid }, { content: string }, 
                 'Authorization': token,
 
             },
-            body: content
+           
         });
     }
     getInitialState(){

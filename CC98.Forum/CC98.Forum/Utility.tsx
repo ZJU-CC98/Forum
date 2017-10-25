@@ -302,4 +302,12 @@ export function getLocalStorage(key) {
     } else if (v.indexOf('str-') === 0) {
         return v.slice(4);
     }
+ }
+export function removeLocalStorage(key) {
+    localStorage.removeItem(key);
+    return;
+}
+export function removeStorage(key) {
+    sessionStorage.removeItem(key);
+    return;
 }
