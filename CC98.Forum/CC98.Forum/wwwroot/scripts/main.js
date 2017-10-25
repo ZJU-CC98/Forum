@@ -7948,7 +7948,7 @@ var DropDown = /** @class */ (function (_super) {
     function DropDown(props, context) {
         var _this = _super.call(this, props, context) || this;
         _this.state = ({
-            userName: "未登录",
+            userName: "载入中……",
             userImgUrl: "/images/unLoggedOn.png"
         });
         return _this;
@@ -8005,6 +8005,10 @@ var DropDown = /** @class */ (function (_super) {
                 this.className = '';
             });
         });
+        if (this.state.userName === "adddna")
+            alert("欢迎回来~");
+        if (this.state.userName === "Dearkano")
+            alert("渣男，快滚!");
         if (Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName")) {
             return React.createElement("div", { id: "dropdown" },
                 React.createElement("div", { className: "box" },
