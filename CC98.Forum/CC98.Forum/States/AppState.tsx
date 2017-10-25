@@ -1,4 +1,4 @@
-﻿import { HotTopic} from '../Components/HotTopic'
+﻿import { MainPageTopic } from '../Components/MainPage';
 /**
  * 表示应用程序的状态。
  */
@@ -10,10 +10,10 @@ export class AppState {
  */
 export class TopicVoteState {
 
-	votes: number;
-	totalVotes: number;
-	option: string;
-	voted: boolean;
+    votes: number;
+    totalVotes: number;
+    option: string;
+    voted: boolean;
 }
 /**
  * 发帖内容状态
@@ -26,22 +26,22 @@ export class PostTopicState {
  * 作者信息状态
  */
 export class AuthorMessageState {
-	imgUrl: string;
-	userName: string;
+    imgUrl: string;
+    userName: string;
     fansNumber: number;
 }
 /**
  * 题目信息状态
  */
 export class TopicTitleState {
-	title: string;
-	isTop: boolean;
-	isNotice: boolean;
-	tag: string;
-	likeNumber: number;
-	unlikeNumber: number;
-	time: string;
-	viewTimes: number;
+    title: string;
+    isTop: boolean;
+    isNotice: boolean;
+    tag: string;
+    likeNumber: number;
+    unlikeNumber: number;
+    time: string;
+    viewTimes: number;
 }
 /**
  * 文章内容
@@ -60,7 +60,7 @@ export class ContentState {
         sendTopicNumber: number,
         userImgUrl: string,
         signature: string,
-        userId:number
+        userId: number
     ) {
         this.userName = userName;
         this.id = id;
@@ -78,7 +78,7 @@ export class ContentState {
         this.userId = userId;
     }
     id: number;
-	content: string;
+    content: string;
     time: string;
     isDelete: boolean;
     floor: number;
@@ -96,43 +96,48 @@ export class ContentState {
  * 点赞信息状态
  */
 export class TopicGoodState {
-	imgUrl: string;
-	userName: string;
-	grade: number;
-	reward: number;
-	credit: string;
+    imgUrl: string;
+    userName: string;
+    grade: number;
+    reward: number;
+    credit: string;
 }
 /**
  * 回复者状态
  */
 export class ReplierState {
-	userName: string;
-	level: number;
-	topicsNumber: number;
-	replyTime: string;
-	imgUrl: string;
-	timeImgUrl: string;
+    userName: string;
+    level: number;
+    topicsNumber: number;
+    replyTime: string;
+    imgUrl: string;
+    timeImgUrl: string;
 }
-export class HotTopicState {
-    hotTopicState: HotTopic[];
+/**
+ * 首页话题信息状态
+ * 拥有一个属性mainPageTopicState，为MainPageTopic类数组，用于存放组件所需的主题信息（一般为10条）
+ **/
+export class MainPageTopicState {
+    mainPageTopicState: MainPageTopic[];
 }
+
 export class ListHeadState {
-	imgUrl: string;
-	listName: string;
-	todayTopics: number;
-	totalTopics: number;
-	adsUrl: string;
-	listManager;
+    imgUrl: string;
+    listName: string;
+    todayTopics: number;
+    totalTopics: number;
+    adsUrl: string;
+    listManager;
     isHidden: boolean;
     isEncrypted: boolean;
     isAnomynous: boolean;
     isLocked: boolean;
 }
 export class ListNoticeState {
-	notice: string;
+    notice: string;
 }
 export class ListTagState {
-	tags: Object;
+    tags: Object;
 }
 
 /**
@@ -142,7 +147,7 @@ export class ListContentState {
 	/**
 	 * 当前要显示的页面。
 	 */
-	items: TopicTitleAndContentState[];
+    items: TopicTitleAndContentState[];
 }
 export class TopicTitleAndContentState {
 	/*  constructor(title, authorName, lastReply) {
@@ -150,19 +155,19 @@ export class TopicTitleAndContentState {
 		  this.lastReply = lastReply;
 		  this.title = title;
 	  }*/
-	constructor(title, authorName,topicid,authorId,lastPostInfo) {
-		this.authorName = authorName;
+    constructor(title, authorName, topicid, authorId, lastPostInfo) {
+        this.authorName = authorName;
         this.title = title;
         this.id = topicid;
         this.authorId = authorId;
         this.lastPostInfo = lastPostInfo;
-	}
+    }
 
-	likeNumber: number;
-	unlikeNumber: number;
-	commentNumber: number;
-	authorName: string;
-	title: string;
+    likeNumber: number;
+    unlikeNumber: number;
+    commentNumber: number;
+    authorName: string;
+    title: string;
     lastPostInfo;
     id: number;
     authorId: number;
@@ -176,13 +181,13 @@ export class ListPagerState {
 	/**
 	 * 当前要显示的页码。
 	 */
-	currentPage: number;
+    currentPage: number;
 }
 export class PagerState {
-	constructor(page: number) {
-		this.pageNumber = page;
-	}
-	pageNumber: number;
+    constructor(page: number) {
+        this.pageNumber = page;
+    }
+    pageNumber: number;
 }
 export class TopicState {
     constructor(userName: string,
@@ -192,7 +197,7 @@ export class TopicState {
         signature: string,
         userImgUrl: string,
         hitCount: number,
-        userId:number
+        userId: number
     ) {
         this.userName = userName;
         this.time = time;

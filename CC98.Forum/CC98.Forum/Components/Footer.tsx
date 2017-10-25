@@ -2,7 +2,7 @@
 import { AppState } from '../States/AppState';
 import * as $ from 'jquery';
 
-export class Footer extends React.Component<{}, AppState> {   //顶部条的下拉菜单组件
+export class Footer extends React.Component<{}, AppState> {   //底部
     render() {
         return <div className="footer">
             <div className="column">

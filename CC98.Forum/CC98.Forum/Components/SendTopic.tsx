@@ -24,14 +24,13 @@ export class SendTopic extends RouteComponent<{ topicid }, { content: string }, 
     }
     async sendTopic() {
         let url = `https://api.cc98.org/Post/Topic/${this.props.topicid}`;
-        console.log(url);
         let content = `Content=${this.state.content}&ContentType=Markdown&Title=`;
-        console.log(content);
+        let token = Utility.getLocalStorage("accessToken");
         let mes = await fetch(url, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': 'Bearer _cWbRJFA8il7ccX7oJ5njc4JPF0h9Rxg898Qtbo7Wk-OdUfndezg44KIsCte7JKUMMwmAOEJ_-QDhJIKEO0nuySMYcHLuB6HGZP6K6SFpQDOw6HFAUfPkkTyXRCFXJStGyFhjTtU6H30bd7PhssahB-jAm4cQIJ7m-20a6FXNOGCH3XRN8fjdrNYR6zCz82q1TTM8bxkQkhBUHKM7864K3sK9hWfU9xQRsNy4q-1LBejm_tZtVITNqEDtmi372aFz4fZUsX2n5qSg4LTeI4GV84kMtX8f_UZamTw39wDdUXyvCtecf4NgrPSvOOos0sp-fDULlme29qoUscPod6rAahEFE_GxXRTJdol4b6gZdkfQsTutrc6aUtvhWsFIHLj9GX38XqTvbZTF1FmSBrjJmVqQS3Ha_MPn9rO7JkpsaFkDUgJjkRz3LuZr2L_wnzNSuvrEjibrzF3p3t5oaCoz7XUQF5B1n1G7xiQ7n52_vYt2Ye-0YW6R9YSwjqDg8L6zWTU2QCAlUA_hAZc-gDQI_s-IlGXrAK-INCNUK8dDwjsZVB1mIFKhBQ5MgbrxOGU85Hdctn2SypIFIypAuZjDI7FelHanTPsPvXuDH4m4uRoXP2GR9ahyv_79NVf077j',
+                'Authorization': token,
 
             },
             body: content
@@ -77,7 +76,7 @@ export class SendTopic extends RouteComponent<{ topicid }, { content: string }, 
                 </div>
             </form>
 
-        </div><div className="row" style={{ justifyContent: "center" }}>
+        </div><div className="row" style={{ justifyContent: "center", marginBottom:"20px " }}>
                 <div id="post-topic-button" onClick={this.sendTopic.bind(this)} className="button blue" style={{ marginTop: "20px", width: "70px", letterSpacing: "5px" }}>回复</div>
             </div>
         </div>;

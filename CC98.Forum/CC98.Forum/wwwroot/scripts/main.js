@@ -1055,12 +1055,16 @@ var ReplierState = /** @class */ (function () {
     return ReplierState;
 }());
 exports.ReplierState = ReplierState;
-var HotTopicState = /** @class */ (function () {
-    function HotTopicState() {
+/**
+ * 首页话题信息状态
+ * 拥有一个属性mainPageTopicState，为MainPageTopic类数组，用于存放组件所需的主题信息（一般为10条）
+ **/
+var MainPageTopicState = /** @class */ (function () {
+    function MainPageTopicState() {
     }
-    return HotTopicState;
+    return MainPageTopicState;
 }());
-exports.HotTopicState = HotTopicState;
+exports.MainPageTopicState = MainPageTopicState;
 var ListHeadState = /** @class */ (function () {
     function ListHeadState() {
     }
@@ -1204,12 +1208,6 @@ exports.UserFanInfo = UserFanInfo;
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports) {
-
-module.exports = $;
-
-/***/ }),
-/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1253,7 +1251,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var State = __webpack_require__(3);
 var React = __webpack_require__(0);
 var List_1 = __webpack_require__(9);
-var $ = __webpack_require__(4);
+var $ = __webpack_require__(5);
 function getBoardTopicAsync(curPage, boardid) {
     return __awaiter(this, void 0, void 0, function () {
         var startPage, endPage, boardtopics, url, response, data, totalTopicCountResponse, totalTopicCountJson, totalTopicCount, topicNumberInPage, i;
@@ -1642,7 +1640,39 @@ function getStorage(key) {
     }
 }
 exports.getStorage = getStorage;
+function setLocalStorage(key, value) {
+    var v = value;
+    if (typeof v == 'object') {
+        v = JSON.stringify(v);
+        v = "obj-" + v;
+    }
+    else {
+        v = "str-" + v;
+    }
+    localStorage.setItem(key, v);
+}
+exports.setLocalStorage = setLocalStorage;
+function getLocalStorage(key) {
+    var v = localStorage.getItem(key);
+    if (!v) {
+        return;
+    }
+    if (v.indexOf('obj-') === 0) {
+        v = v.slice(4);
+        return JSON.parse(v);
+    }
+    else if (v.indexOf('str-') === 0) {
+        return v.slice(4);
+    }
+}
+exports.getLocalStorage = getLocalStorage;
 
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+module.exports = $;
 
 /***/ }),
 /* 6 */
@@ -1811,7 +1841,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(5);
+var Utility = __webpack_require__(4);
 var moment = __webpack_require__(7);
 var react_router_dom_1 = __webpack_require__(2);
 var RouteComponent = /** @class */ (function (_super) {
@@ -1908,7 +1938,8 @@ var List = /** @class */ (function (_super) {
             React.createElement(ListNotice, null),
             React.createElement(ListButtonAndPager, { page: this.state.page, totalPage: this.state.totalPage, boardid: this.state.boardid }),
             React.createElement(ListTag, null),
-            React.createElement(react_router_dom_1.Route, { path: "/list/:boardid/:page?", component: ListContent }));
+            React.createElement(react_router_dom_1.Route, { path: "/list/:boardid/:page?", component: ListContent }),
+            React.createElement(PagerDown, { page: this.state.page, totalPage: this.state.totalPage, boardid: this.state.boardid }));
     };
     return List;
 }(RouteComponent));
@@ -2073,6 +2104,51 @@ var ListButtonAndPager = /** @class */ (function (_super) {
     return ListButtonAndPager;
 }(React.Component));
 exports.ListButtonAndPager = ListButtonAndPager;
+var PagerDown = /** @class */ (function (_super) {
+    __extends(PagerDown, _super);
+    function PagerDown(props, content) {
+        var _this = _super.call(this, props, content) || this;
+        _this.state = {
+            pager: [1, 2, 3, 4, 5]
+        };
+        return _this;
+    }
+    /**
+     * 将页码转换为 UI 界面。
+     * @param pageNumber 要转换的页码。
+     * @returns {JSX.Element} 页码对应的 UI 元素。
+     */
+    PagerDown.prototype.generatePageLink = function (pageNumber) {
+        return React.createElement(PageModel, { pageNumber: pageNumber, boardid: this.props.boardid, curPage: this.props.page, totalPage: this.props.totalPage });
+    };
+    PagerDown.prototype.componentWillReceiveProps = function (newProps) {
+        return __awaiter(this, void 0, void 0, function () {
+            var pages;
+            return __generator(this, function (_a) {
+                pages = Utility.getPager(newProps.page, newProps.totalPage);
+                this.setState({ pager: pages });
+                return [2 /*return*/];
+            });
+        });
+    };
+    PagerDown.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var pages;
+            return __generator(this, function (_a) {
+                pages = Utility.getPager(this.props.page, this.props.totalPage);
+                this.setState({ pager: pages });
+                return [2 /*return*/];
+            });
+        });
+    };
+    PagerDown.prototype.render = function () {
+        return React.createElement("div", { className: "row", style: { width: '1140px', height: '50px', marginTop: '15px', justifyContent: 'space-between', alignItems: 'flex-end' } },
+            React.createElement("div", { id: "pager" },
+                React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this)))));
+    };
+    return PagerDown;
+}(React.Component));
+exports.PagerDown = PagerDown;
 var PageModel = /** @class */ (function (_super) {
     __extends(PageModel, _super);
     function PageModel() {
@@ -2555,7 +2631,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
 var FocusPostComponent_1 = __webpack_require__(67);
-var Utility = __webpack_require__(5);
+var Utility = __webpack_require__(4);
 /**
  * 表示我关注的某个版面的主题列表
  */
@@ -2736,7 +2812,7 @@ function isBottom() {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(17);
-module.exports = __webpack_require__(80);
+module.exports = __webpack_require__(79);
 
 
 /***/ }),
@@ -2789,9 +2865,9 @@ var MyFocusBoard_1 = __webpack_require__(68);
 var Header_1 = __webpack_require__(71);
 var Footer_1 = __webpack_require__(72);
 var MainPage_1 = __webpack_require__(73);
-var User_1 = __webpack_require__(75);
-var Login_1 = __webpack_require__(78);
-var LoginTest_1 = __webpack_require__(79);
+var User_1 = __webpack_require__(74);
+var Login_1 = __webpack_require__(77);
+var LoginTest_1 = __webpack_require__(78);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -2895,8 +2971,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(5);
-var $ = __webpack_require__(4);
+var Utility = __webpack_require__(4);
+var $ = __webpack_require__(5);
 var react_router_dom_1 = __webpack_require__(2);
 var UbbContainer_1 = __webpack_require__(8);
 var SendTopic_1 = __webpack_require__(36);
@@ -4438,6 +4514,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
+var Utility = __webpack_require__(4);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -4462,19 +4539,18 @@ var SendTopic = /** @class */ (function (_super) {
     }
     SendTopic.prototype.sendTopic = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var url, content, mes;
+            var url, content, token, mes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         url = "https://api.cc98.org/Post/Topic/" + this.props.topicid;
-                        console.log(url);
                         content = "Content=" + this.state.content + "&ContentType=Markdown&Title=";
-                        console.log(content);
+                        token = Utility.getLocalStorage("accessToken");
                         return [4 /*yield*/, fetch(url, {
                                 method: "POST",
                                 headers: {
                                     'Content-Type': 'application/x-www-form-urlencoded',
-                                    'Authorization': 'Bearer _cWbRJFA8il7ccX7oJ5njc4JPF0h9Rxg898Qtbo7Wk-OdUfndezg44KIsCte7JKUMMwmAOEJ_-QDhJIKEO0nuySMYcHLuB6HGZP6K6SFpQDOw6HFAUfPkkTyXRCFXJStGyFhjTtU6H30bd7PhssahB-jAm4cQIJ7m-20a6FXNOGCH3XRN8fjdrNYR6zCz82q1TTM8bxkQkhBUHKM7864K3sK9hWfU9xQRsNy4q-1LBejm_tZtVITNqEDtmi372aFz4fZUsX2n5qSg4LTeI4GV84kMtX8f_UZamTw39wDdUXyvCtecf4NgrPSvOOos0sp-fDULlme29qoUscPod6rAahEFE_GxXRTJdol4b6gZdkfQsTutrc6aUtvhWsFIHLj9GX38XqTvbZTF1FmSBrjJmVqQS3Ha_MPn9rO7JkpsaFkDUgJjkRz3LuZr2L_wnzNSuvrEjibrzF3p3t5oaCoz7XUQF5B1n1G7xiQ7n52_vYt2Ye-0YW6R9YSwjqDg8L6zWTU2QCAlUA_hAZc-gDQI_s-IlGXrAK-INCNUK8dDwjsZVB1mIFKhBQ5MgbrxOGU85Hdctn2SypIFIypAuZjDI7FelHanTPsPvXuDH4m4uRoXP2GR9ahyv_79NVf077j',
+                                    'Authorization': token,
                                 },
                                 body: content
                             })];
@@ -4530,7 +4606,7 @@ var SendTopic = /** @class */ (function (_super) {
                 React.createElement("form", null,
                     React.createElement("div", null,
                         React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input", value: this.state.content, onChange: this.handleChange.bind(this) })))),
-            React.createElement("div", { className: "row", style: { justifyContent: "center" } },
+            React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "20px " } },
                 React.createElement("div", { id: "post-topic-button", onClick: this.sendTopic.bind(this), className: "button blue", style: { marginTop: "20px", width: "70px", letterSpacing: "5px" } }, "\u56DE\u590D")));
     };
     return SendTopic;
@@ -4591,7 +4667,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(5);
+var Utility = __webpack_require__(4);
 var react_router_dom_1 = __webpack_require__(2);
 var moment = __webpack_require__(7);
 var RouteComponent = /** @class */ (function (_super) {
@@ -5205,7 +5281,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var AppState_1 = __webpack_require__(3);
-var Utility = __webpack_require__(5);
+var Utility = __webpack_require__(4);
 //链接到的地址是  /list/boardid
 var BoardList = /** @class */ (function (_super) {
     __extends(BoardList, _super);
@@ -5446,7 +5522,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(2);
-var $ = __webpack_require__(4);
+var $ = __webpack_require__(5);
 /**
  * 用户中心侧边栏导航组件
  */
@@ -5456,8 +5532,7 @@ var UserCenterNavigation = /** @class */ (function (_super) {
         var _this = _super.call(this, props) || this;
         _this.state = {
             isScroll: false,
-            buttonClassName: '',
-            navigationClassName: 'user-center-navigation'
+            buttonClassName: ''
         };
         _this.handleScroll = _this.handleScroll.bind(_this);
         return _this;
@@ -5466,8 +5541,7 @@ var UserCenterNavigation = /** @class */ (function (_super) {
         if (window.pageYOffset > 234 && !this.state.isScroll) {
             this.setState({
                 isScroll: true,
-                buttonClassName: 'btn-show',
-                navigationClassName: 'user-center-navigation user-center-navigation-fixed'
+                buttonClassName: 'btn-show'
             });
         }
         if (window.pageYOffset < 234 && this.state.isScroll) {
@@ -5480,8 +5554,7 @@ var UserCenterNavigation = /** @class */ (function (_super) {
                 else {
                     return {
                         isScroll: false,
-                        buttonClassName: 'btn-disappare',
-                        navigationClassName: 'user-center-navigation user-center-navigation-unfixed'
+                        buttonClassName: 'btn-disappare'
                     };
                 }
             });
@@ -5497,7 +5570,7 @@ var UserCenterNavigation = /** @class */ (function (_super) {
         $('body,html').animate({ scrollTop: 0 }, 500);
     };
     UserCenterNavigation.prototype.render = function () {
-        return (React.createElement("div", { className: this.state.navigationClassName, id: "userCenterNavigation" },
+        return (React.createElement("div", { className: this.state.isScroll ? 'user-center-navigation user-center-navigation-fixed' : 'user-center-navigation', id: "userCenterNavigation" },
             React.createElement("ul", null,
                 React.createElement(CustomLink, { to: "/usercenter", label: "主页", activeOnlyWhenExact: true, myClassName: "fa-home" }),
                 React.createElement("hr", null),
@@ -5595,6 +5668,41 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var UserCenterExactProfile_1 = __webpack_require__(10);
@@ -5608,36 +5716,54 @@ var UserCenterExact = /** @class */ (function (_super) {
     function UserCenterExact() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    UserCenterExact.prototype.componentWillMount = function () {
-        //if (location.hash !== '' && location.hash.indexOf('access_token') !== -1) {
-        //    const hash: myType = {};
-        //    location.hash.slice(1).split('&').map((item) => item.split('=')).forEach((item) => {
-        //        hash[item[0]] = item[1];
-        //    });
-        //    window.localStorage.token = hash['access_token'];
-        //}
-        //const response = await fetch('https://api.cc98.org/Me/', {
-        // headers: {
-        //  'Authorization': 'bearer' + ' ' + window.localStorage.token
-        // }
-        //});
-        //const data = await response.json();
-        this.setState({
-            //userInfo: data,
-            //userAvatarImgURL: data.portraitUrl,
-            responseState: 401 //response.status
+    UserCenterExact.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var hash_1, response, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        console.log(location);
+                        console.log(location.hash !== '' && location.hash.indexOf('access_token') !== -1);
+                        if (location.hash !== '' && location.hash.indexOf('access_token') !== -1) {
+                            hash_1 = {};
+                            location.hash.slice(1).split('&').map(function (item) { return item.split('='); }).forEach(function (item) {
+                                hash_1[item[0]] = item[1];
+                            });
+                            window.localStorage.token = hash_1['access_token'];
+                        }
+                        return [4 /*yield*/, fetch('https://api.cc98.org/Me/', {
+                                headers: {
+                                    'Authorization': 'bearer' + ' ' + window.localStorage.token
+                                }
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 2:
+                        data = _a.sent();
+                        this.setState({
+                            userInfo: data,
+                            userAvatarImgURL: data.portraitUrl,
+                            responseState: response.status
+                        });
+                        return [2 /*return*/];
+                }
+            });
         });
     };
     UserCenterExact.prototype.render = function () {
         var element;
-        if (this.state.responseState === 200) {
+        if (this.state !== null && this.state.responseState === 200) {
             element = (React.createElement("div", { className: "user-center-exact" },
                 React.createElement(UserCenterExactAvatar_1.UserCenterExactAvatar, { userAvatarImgURL: this.state.userAvatarImgURL }),
                 React.createElement(UserCenterExactProfile_1.UserCenterExactProfile, { userInfo: this.state.userInfo }),
                 React.createElement(UserCenterExactActivities_1.UserCenterExactActivities, null)));
         }
-        else if (this.state.responseState === 401) {
-            element = React.createElement("p", null, "\u8BF7\u767B\u9646");
+        else if (this.state !== null && this.state.responseState === 401) {
+            element = React.createElement("p", null, "\u8BF7\u91CD\u65B0\u767B\u9646");
+        }
+        else {
+            element = React.createElement("p", null, "\u52A0\u8F7D\u4E2D");
         }
         return element;
     };
@@ -7790,14 +7916,77 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var $ = __webpack_require__(4);
+var Utility = __webpack_require__(4);
+var $ = __webpack_require__(5);
 var DropDown = /** @class */ (function (_super) {
     __extends(DropDown, _super);
-    function DropDown() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function DropDown(props, context) {
+        var _this = _super.call(this, props, context) || this;
+        _this.state = ({
+            userName: 'null',
+            userImgUrl: "/images/userImg.png"
+        });
+        return _this;
     }
+    DropDown.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var userName, response, data, userImgUrl;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName"))) return [3 /*break*/, 3];
+                        userName = Utility.getLocalStorage("userName");
+                        return [4 /*yield*/, fetch("http://api.cc98.org/User/Name/" + userName)];
+                    case 1:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 2:
+                        data = _a.sent();
+                        userImgUrl = data.portraitUrl;
+                        this.setState({ userName: userName, userImgUrl: userImgUrl });
+                        _a.label = 3;
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     DropDown.prototype.render = function () {
         $(document).ready(function () {
             var userInfo = $('.userInfo').eq(0);
@@ -7828,8 +8017,8 @@ var DropDown = /** @class */ (function (_super) {
             React.createElement("div", { className: "box" },
                 React.createElement("div", { className: "userInfo" },
                     React.createElement("div", { className: "userImg" },
-                        React.createElement("img", { src: "/images/userImg.png" })),
-                    React.createElement("div", { className: "select" }, "userName")),
+                        React.createElement("img", { src: this.state.userImgUrl })),
+                    React.createElement("div", { className: "select" }, this.state.userName)),
                 React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
                     React.createElement("a", { href: "/", style: { color: '#fff' } }, "\u9996\u9875")),
                 React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
@@ -8065,8 +8254,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var HotTopic_1 = __webpack_require__(74);
-var $ = __webpack_require__(4);
+var $ = __webpack_require__(5);
+/**
+ * 推荐阅读组件
+ **/
 var Recommended1 = /** @class */ (function (_super) {
     __extends(Recommended1, _super);
     function Recommended1() {
@@ -8129,22 +8320,40 @@ var Recommended1 = /** @class */ (function (_super) {
     return Recommended1;
 }(React.Component));
 exports.Recommended1 = Recommended1;
+/**
+ * 首页话题类
+ * 用于首页左侧的几个信息栏，该类的对象（一条主题)需要标题，id，所在版面，及所在版面id等几个属性
+ **/
+var MainPageTopic = /** @class */ (function () {
+    //构造方法
+    function MainPageTopic(title, id, boardName, boardid) {
+        this.title = title;
+        this.id = id;
+        this.boardName = boardName;
+        this.boardid = boardid;
+    }
+    return MainPageTopic;
+}());
+exports.MainPageTopic = MainPageTopic;
+/**
+ * 热门话题组件
+ **/
 var HotTopicComponent = /** @class */ (function (_super) {
     __extends(HotTopicComponent, _super);
     function HotTopicComponent(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
-            hotTopicState: new Array(),
+            mainPageTopicState: new Array(),
         };
         return _this;
     }
-    HotTopicComponent.prototype.getHotTopic = function () {
+    HotTopicComponent.prototype.getTopicInfo = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var hotTopics, response, data, i;
+            var mainPageTopics, response, data, i;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        hotTopics = [];
+                        mainPageTopics = [];
                         return [4 /*yield*/, fetch('http://api.cc98.org/Topic/Hot')];
                     case 1:
                         response = _a.sent();
@@ -8152,9 +8361,9 @@ var HotTopicComponent = /** @class */ (function (_super) {
                     case 2:
                         data = _a.sent();
                         for (i = 0; i < 10; i++) {
-                            hotTopics[i] = new HotTopic_1.HotTopic(data[i].title, data[i].boardName, data[i].id, data[i].boardId);
+                            mainPageTopics[i] = new MainPageTopic(data[i].title, data[i].boardName, data[i].id, data[i].boardId);
                         }
-                        return [2 /*return*/, hotTopics];
+                        return [2 /*return*/, mainPageTopics];
                 }
             });
         });
@@ -8164,18 +8373,18 @@ var HotTopicComponent = /** @class */ (function (_super) {
             var x;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getHotTopic()];
+                    case 0: return [4 /*yield*/, this.getTopicInfo()];
                     case 1:
                         x = _a.sent();
                         this.setState({
-                            hotTopicState: x,
+                            mainPageTopicState: x,
                         });
                         return [2 /*return*/];
                 }
             });
         });
     };
-    HotTopicComponent.prototype.convertHotTopic = function (item) {
+    HotTopicComponent.prototype.convertMainPageTopic = function (item) {
         var boardUrl = "/list/" + item.boardid;
         var topicUrl = "/topic/" + item.id;
         return React.createElement("div", { className: "listRow" },
@@ -8185,16 +8394,77 @@ var HotTopicComponent = /** @class */ (function (_super) {
                     "[",
                     item.boardName,
                     "]")),
-            " ",
             React.createElement("div", { className: "topicTitle" },
                 React.createElement("a", { href: topicUrl }, item.title)));
     };
     HotTopicComponent.prototype.render = function () {
-        return React.createElement("div", null, this.state.hotTopicState.map(this.convertHotTopic));
+        return React.createElement("div", null, this.state.mainPageTopicState.map(this.convertMainPageTopic));
     };
     return HotTopicComponent;
 }(React.Component));
 exports.HotTopicComponent = HotTopicComponent;
+/**
+ * 实习兼职组件，注意组件类名开头需大写!
+ **/
+var Shixijianzhi = /** @class */ (function (_super) {
+    __extends(Shixijianzhi, _super);
+    function Shixijianzhi(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            mainPageTopicState: new Array(),
+        };
+        return _this;
+    }
+    Shixijianzhi.prototype.getTopicInfo = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var mainPageTopics, url, response, data, i;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        mainPageTopics = [];
+                        url = 'http://api.cc98.org/Topic/Board/459';
+                        return [4 /*yield*/, fetch(url, { headers: { Range: 'bytes=0-9' } })];
+                    case 1:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 2:
+                        data = _a.sent();
+                        for (i = 0; i < 10; i++) {
+                            mainPageTopics[i] = new MainPageTopic(data[i].title, data[i].boardName, data[i].id, data[i].boardId);
+                        }
+                        return [2 /*return*/, mainPageTopics];
+                }
+            });
+        });
+    };
+    Shixijianzhi.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var x;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getTopicInfo()];
+                    case 1:
+                        x = _a.sent();
+                        this.setState({
+                            mainPageTopicState: x,
+                        });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Shixijianzhi.prototype.convertMainPageTopic = function (item) {
+        var topicUrl = "/topic/" + item.id;
+        return React.createElement("div", { className: "listRow" },
+            React.createElement("div", { className: "topicTitle" },
+                React.createElement("a", { href: topicUrl }, item.title)));
+    };
+    Shixijianzhi.prototype.render = function () {
+        return React.createElement("div", null, this.state.mainPageTopicState.map(this.convertMainPageTopic));
+    };
+    return Shixijianzhi;
+}(React.Component));
+exports.Shixijianzhi = Shixijianzhi;
 /**
  * 网站的主页面对象。
  */
@@ -8298,7 +8568,9 @@ var MainPage = /** @class */ (function (_super) {
                     React.createElement("div", { className: "list1" },
                         React.createElement("div", { className: "blueBar2" },
                             React.createElement("div", { className: "listName" }, "\u5B9E\u4E60\u517C\u804C"),
-                            React.createElement("div", { className: "more" }, "\u66F4\u591A"))),
+                            React.createElement("div", { className: "more" }, "\u66F4\u591A")),
+                        React.createElement("div", { className: "listContent1" },
+                            React.createElement(Shixijianzhi, null))),
                     React.createElement("div", { className: "list2" },
                         React.createElement("div", { className: "blueBar2" },
                             React.createElement("div", { className: "listName" }, "\u5931\u7269\u62DB\u9886"),
@@ -8364,29 +8636,6 @@ exports.MainPage = MainPage;
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * 热门话题类
- */
-var HotTopic = /** @class */ (function () {
-    //构造方法
-    function HotTopic(title, boardName, id, boardid) {
-        this.title = title;
-        this.boardName = boardName;
-        this.id = id;
-        this.boardid = boardid;
-    }
-    return HotTopic;
-}());
-exports.HotTopic = HotTopic;
-
-
-/***/ }),
-/* 75 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 // A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
@@ -8403,8 +8652,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(2);
-var UserNavigation_1 = __webpack_require__(76);
-var UserRouter_1 = __webpack_require__(77);
+var UserNavigation_1 = __webpack_require__(75);
+var UserRouter_1 = __webpack_require__(76);
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
@@ -8412,13 +8661,12 @@ var User = /** @class */ (function (_super) {
     }
     User.prototype.render = function () {
         return (React.createElement("div", { className: "user-center" },
-            React.createElement("div", { className: "user-center-content" },
-                React.createElement("div", { className: "user-center-head" },
-                    React.createElement("p", null, "\u7528\u6237\u8BE6\u60C5")),
-                React.createElement(react_router_dom_1.BrowserRouter, null,
-                    React.createElement("div", { className: "user-center-body" },
-                        React.createElement(UserNavigation_1.UserNavigation, null),
-                        React.createElement(UserRouter_1.UserRouter, null))))));
+            React.createElement("div", { className: "user-center-head" },
+                React.createElement("p", null, "\u7528\u6237\u8BE6\u60C5")),
+            React.createElement(react_router_dom_1.BrowserRouter, null,
+                React.createElement("div", { className: "user-center-body" },
+                    React.createElement(UserNavigation_1.UserNavigation, null),
+                    React.createElement(UserRouter_1.UserRouter, null)))));
     };
     return User;
 }(React.Component));
@@ -8426,7 +8674,7 @@ exports.User = User;
 
 
 /***/ }),
-/* 76 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8467,8 +8715,7 @@ var UserNavigation = /** @class */ (function (_super) {
     UserNavigation.prototype.render = function () {
         return (React.createElement("div", { className: "user-center-navigation", id: "userCenterNavigation" },
             React.createElement("ul", null,
-                React.createElement(CustomLink, { to: "" + location.pathname, label: "主页", activeOnlyWhenExact: true, myClassName: "fa-home" }),
-                React.createElement("hr", null))));
+                React.createElement(CustomLink, { to: "" + location.pathname, label: "主页", activeOnlyWhenExact: true, myClassName: "fa-home" }))));
     };
     return UserNavigation;
 }(React.Component));
@@ -8485,7 +8732,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 77 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8610,7 +8857,7 @@ var UserExact = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 78 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8665,7 +8912,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var $ = __webpack_require__(4);
 var Login = /** @class */ (function (_super) {
     __extends(Login, _super);
     function Login(props) {
@@ -8698,64 +8944,41 @@ var Login = /** @class */ (function (_super) {
     };
     Login.prototype.handleLogin = function (e) {
         return __awaiter(this, void 0, void 0, function () {
-            var url, requestBody, response, data;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        e.preventDefault();
-                        //如果在登陆中则无视提交
-                        if (this.state.isLogining) {
-                            return [2 /*return*/, false];
-                        }
-                        if (!!(this.state.loginName || this.state.loginPassword)) return [3 /*break*/, 1];
-                        this.setState({
-                            loginMessage: '请输入用户名和密码'
-                        });
-                        this.shake(document.getElementById('loginName')).focus();
-                        this.shake(document.getElementById('loginPassword'));
-                        return [2 /*return*/, false];
-                    case 1:
-                        if (!!this.state.loginName) return [3 /*break*/, 2];
-                        this.setState({
-                            loginMessage: '请输入用户名'
-                        });
-                        this.shake(document.getElementById('loginName')).focus();
-                        return [2 /*return*/, false];
-                    case 2:
-                        if (!!this.state.loginPassword) return [3 /*break*/, 3];
-                        this.setState({
-                            loginMessage: '请输入密码'
-                        });
-                        this.shake(document.getElementById('loginPassword')).focus();
-                        return [2 /*return*/, false];
-                    case 3:
-                        this.setState({
-                            loginMessage: '登陆中',
-                            isLogining: true
-                        });
-                        url = 'http://openid.cc98.org/connect/token';
-                        requestBody = {
-                            'client_id': '8a1bd823-c3cf-44c0-6498-08d50009f244',
-                            'client_secret': 'fc95e3fc-da10-4e19-9394-3e9f5df0f2c6',
-                            'grant_type': 'password',
-                            'ResponseType': 'token',
-                            'scope': 'openid',
-                            'username': this.state.loginName,
-                            'password': this.state.loginPassword
-                        };
-                        return [4 /*yield*/, fetch(url, {
-                                method: 'POST',
-                                body: $.param(requestBody)
-                            })];
-                    case 4:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.json()];
-                    case 5:
-                        data = _a.sent();
-                        console.log(data);
-                        _a.label = 6;
-                    case 6: return [2 /*return*/];
+                e.preventDefault();
+                //如果在登陆中则无视提交
+                if (this.state.isLogining) {
+                    return [2 /*return*/, false];
                 }
+                if (!(this.state.loginName || this.state.loginPassword)) {
+                    this.setState({
+                        loginMessage: '请输入用户名和密码'
+                    });
+                    this.shake(document.getElementById('loginName')).focus();
+                    this.shake(document.getElementById('loginPassword'));
+                    return [2 /*return*/, false];
+                }
+                else if (!this.state.loginName) {
+                    this.setState({
+                        loginMessage: '请输入用户名'
+                    });
+                    this.shake(document.getElementById('loginName')).focus();
+                    return [2 /*return*/, false];
+                }
+                else if (!this.state.loginPassword) {
+                    this.setState({
+                        loginMessage: '请输入密码'
+                    });
+                    this.shake(document.getElementById('loginPassword')).focus();
+                    return [2 /*return*/, false];
+                }
+                else {
+                    this.setState({
+                        loginMessage: '登陆中',
+                        isLogining: true
+                    });
+                }
+                return [2 /*return*/];
             });
         });
     };
@@ -8793,7 +9016,7 @@ var LoginState = /** @class */ (function () {
 
 
 /***/ }),
-/* 79 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8845,6 +9068,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
+var Utility = __webpack_require__(4);
+var $ = __webpack_require__(5);
 var LoginTest = /** @class */ (function (_super) {
     __extends(LoginTest, _super);
     function LoginTest(props) {
@@ -8861,28 +9086,41 @@ var LoginTest = /** @class */ (function (_super) {
     }
     LoginTest.prototype.login = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var url, response, data;
+            var url, requestBody, response, data, token;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         url = 'http://openid.cc98.org/connect/token';
+                        requestBody = {
+                            'client_id': '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
+                            'client_secret': '8b53f727-08e2-4509-8857-e34bf92b27f2',
+                            'grant_type': 'password',
+                            'username': this.state.loginName,
+                            'password': this.state.loginPassword
+                        };
                         return [4 /*yield*/, fetch(url, {
                                 method: "POST",
-                                headers: {},
-                                body: "client_id=9a1fd200-8687-44b1-4c20-08d50a96e5cd" + "&grant_type=password" + "&username=" + this.state.loginName + "&password=" + this.state.loginPassword
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded',
+                                },
+                                body: $.param(requestBody)
                             })];
                     case 1:
                         response = _a.sent();
                         return [4 /*yield*/, response.json()];
                     case 2:
                         data = _a.sent();
-                        console.log(data);
+                        token = "Bearer " + data.access_token;
+                        console.log(token);
+                        Utility.setLocalStorage("accessToken", token);
+                        Utility.setLocalStorage("userName", this.state.loginName);
                         return [2 /*return*/];
                 }
             });
         });
     };
     LoginTest.prototype.catch = function (e) {
+        alert(e.error); //这行好像没什么用……暂时还不会处理不同的error……
         console.log("Oops, error", e);
     };
     LoginTest.prototype.shake = function (element) {
@@ -8964,7 +9202,7 @@ var LoginState = /** @class */ (function () {
 
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
