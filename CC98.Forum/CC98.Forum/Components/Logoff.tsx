@@ -18,8 +18,12 @@ export class LogOff extends React.Component<null, LogOffState> {
         localStorage.removeItem('userName');
 
         this.setState({
-            logOffInfo: '登出成功'
+            logOffInfo: '登出成功 正在前往登录页'
         });
+
+        setTimeout(() => {
+            location.pathname = "/logon";
+        },2000);        
     }
 
     render() {

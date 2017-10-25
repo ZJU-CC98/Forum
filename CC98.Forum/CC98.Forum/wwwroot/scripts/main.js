@@ -2886,14 +2886,6 @@ var RouteComponent = /** @class */ (function (_super) {
     return RouteComponent;
 }(React.Component));
 exports.RouteComponent = RouteComponent;
-/* <h1>Ashida Mana~</h1>
-                <li><Link to="/topic/4723305">moe</Link></li>
-                <li><Link to="/boardlist">meow</Link></li>
-                <li><a href={`https://login.cc98.org/OAuth/Authorize?scope=getuserinfo*&response_type=token&client_id=9428333a-a0e3-486b-b375-7904f1bceba9&redirect_uri=http%3A%2F%2Flocalhost%3A${location.port}%2Fusercenter`} > 登陆</a></li>
-                <li><Link to="/usercenter">个人中心</Link></li>
-                <li><Link to="/messagebox">信箱</Link></li>
-                <li><Link to="/newtopics">新帖 </Link></li>
-                 <hr />*/
 var App = /** @class */ (function (_super) {
     __extends(App, _super);
     function App() {
@@ -9038,7 +9030,11 @@ var LogOnExact = /** @class */ (function (_super) {
                         response = _a.sent();
                         //请求是否成功
                         if (response.status !== 200) {
-                            throw e;
+                            this.setState({
+                                loginMessage: "\u767B\u9646\u5931\u8D25 " + response.status,
+                                isLogining: false
+                            });
+                            return [2 /*return*/, false];
                         }
                         return [4 /*yield*/, response.json()];
                     case 2:
@@ -9048,9 +9044,13 @@ var LogOnExact = /** @class */ (function (_super) {
                         Utility.setLocalStorage("accessToken", token);
                         Utility.setLocalStorage("userName", this.state.loginName);
                         this.setState({
-                            loginMessage: '登陆成功',
+                            loginMessage: '登陆成功 正在返回首页',
                             isLogining: false
                         });
+                        //跳转至个人中心页
+                        setTimeout(function () {
+                            location.pathname = "/";
+                        }, 2000);
                         return [2 /*return*/];
                 }
             });
@@ -9060,7 +9060,7 @@ var LogOnExact = /** @class */ (function (_super) {
         //alert(e.error);     这行好像没什么用……暂时还不会处理不同的error……
         console.log("Oops, error", e);
         this.setState({
-            loginMessage: "\u767B\u9646\u5931\u8D25 " + e.error,
+            loginMessage: "\u767B\u9646\u5931\u8D25",
             isLogining: false
         });
     };
@@ -9131,8 +9131,11 @@ var LogOff = /** @class */ (function (_super) {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('userName');
         this.setState({
-            logOffInfo: '登出成功'
+            logOffInfo: '登出成功 正在前往登录页'
         });
+        setTimeout(function () {
+            location.pathname = "/logon";
+        }, 2000);
     };
     LogOff.prototype.render = function () {
         return (React.createElement("div", { className: "login" },

@@ -95,7 +95,11 @@ export class LogOnExact extends React.Component<null, LogOnState> {
 
         //请求是否成功
         if (response.status !== 200) {
-            throw e;
+            this.setState({
+                loginMessage: `登陆失败 ${response.status}`,
+                isLogining: false
+            });
+            return false;
         }
 
         let data = await response.json();
@@ -106,17 +110,20 @@ export class LogOnExact extends React.Component<null, LogOnState> {
         Utility.setLocalStorage("userName", this.state.loginName);
 
         this.setState({
-            loginMessage: '登陆成功',
+            loginMessage: '登陆成功 正在返回首页',
             isLogining: false
         });
 
         //跳转至个人中心页
+        setTimeout(() => {
+            location.pathname = "/";
+        }, 2000); 
 
     } catch(e) {    //捕捉到例外，开始执行catch语句，否则跳过
         //alert(e.error);     这行好像没什么用……暂时还不会处理不同的error……
         console.log("Oops, error", e);
         this.setState({
-            loginMessage: `登陆失败 ${e.error}`,
+            loginMessage: `登陆失败`,
             isLogining: false
         });
     }
