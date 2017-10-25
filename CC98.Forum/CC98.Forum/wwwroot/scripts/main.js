@@ -7970,8 +7970,8 @@ var DropDown = /** @class */ (function (_super) {
     function DropDown(props, context) {
         var _this = _super.call(this, props, context) || this;
         _this.state = ({
-            userName: 'null',
-            userImgUrl: "/images/userImg.png"
+            userName: "未登录",
+            userImgUrl: "/images/unLoggedOn.png"
         });
         return _this;
     }
@@ -7997,51 +7997,74 @@ var DropDown = /** @class */ (function (_super) {
             });
         });
     };
+    DropDown.prototype.logOff = function () {
+        Utility.removeLocalStorage("accessToken");
+        Utility.removeLocalStorage("userName");
+        location = window.location; //刷新当前页面
+    };
     DropDown.prototype.render = function () {
         $(document).ready(function () {
             var userInfo = $('.userInfo').eq(0);
-            var subA = $('ul').eq(0);
-            var liA = subA.find('li');
+            var dropDownSub = $('.dropDownSub').eq(0);
+            var dropDownLi = dropDownSub.find('li');
             userInfo.hover(function () {
-                subA.css('display', 'block');
+                dropDownSub.slideDown("fast");
             }, function () {
-                subA.css('display', 'none');
+                dropDownSub.css('display', 'none');
             });
-            subA.hover(function () {
-                $(this).css('display', 'block');
-                ;
+            dropDownSub.hover(function () {
+                dropDownSub.css('display', 'block');
             }, function () {
-                $(this).css('display', 'none');
+                dropDownSub.slideUp("fast");
             });
             /*在一个对象上触发某类事件（比如单击onclick事件），如果此对象定义了此事件的处理程序，那么此事件就会调用这个处理程序，
             如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
             或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
-            liA.mouseover(function () {
+            dropDownLi.mouseover(function () {
                 this.className = 'hover';
             });
-            liA.mouseout(function () {
+            dropDownLi.mouseout(function () {
                 this.className = '';
             });
         });
-        return React.createElement("div", { id: "dropdown" },
-            React.createElement("div", { className: "box" },
-                React.createElement("div", { className: "userInfo" },
-                    React.createElement("div", { className: "userImg" },
-                        React.createElement("img", { src: this.state.userImgUrl })),
-                    React.createElement("div", { className: "select" }, this.state.userName)),
-                React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
-                    React.createElement("a", { href: "/", style: { color: '#fff' } }, "\u9996\u9875")),
-                React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
-                    React.createElement("a", { href: "/focus", style: { color: '#fff' } }, "\u5173\u6CE8")),
-                React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
-                    React.createElement("a", { href: "/newTopics", style: { color: '#fff' } }, "\u65B0\u5E16")),
-                React.createElement("a", { href: "/boardList" },
-                    React.createElement("div", { className: "boardListLink", style: { margin: '0 0 0 10px' } },
-                        React.createElement("div", { style: { marginTop: '16px', color: '#fff' } }, "\u7248\u9762")))),
-            React.createElement("ul", { className: "sub" },
-                React.createElement("li", null, "\u4E2A\u4EBA\u4E2D\u5FC3"),
-                React.createElement("li", null, "\u6D88\u606F"),
-                React.createElement("li", null, "\u6CE8\u9500")));
+        if (Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName")) {
+            return React.createElement("div", { id: "dropdown" },
+                React.createElement("div", { className: "box" },
+                    React.createElement("div", { className: "userInfo" },
+                        React.createElement("div", { className: "userImg" },
+                            React.createElement("img", { src: this.state.userImgUrl })),
+                        React.createElement("div", { className: "userName" }, this.state.userName)),
+                    React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
+                        React.createElement("a", { href: "/", style: { color: '#fff' } }, "\u9996\u9875")),
+                    React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
+                        React.createElement("a", { href: "/focus", style: { color: '#fff' } }, "\u5173\u6CE8")),
+                    React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
+                        React.createElement("a", { href: "/newTopics", style: { color: '#fff' } }, "\u65B0\u5E16")),
+                    React.createElement("a", { href: "/boardList" },
+                        React.createElement("div", { className: "boardListLink", style: { margin: '0 0 0 10px' } },
+                            React.createElement("div", { style: { marginTop: '16px', color: '#fff' } }, "\u7248\u9762")))),
+                React.createElement("div", { className: "dropDownSubBox" },
+                    React.createElement("ul", { className: "dropDownSub" },
+                        React.createElement("a", { href: "/usercenter" },
+                            " ",
+                            React.createElement("li", null, "\u4E2A\u4EBA\u4E2D\u5FC3")),
+                        React.createElement("a", { href: "/mymessage" },
+                            React.createElement("li", null, "\u6D88\u606F")),
+                        React.createElement("li", { onClick: this.logOff }, "\u6CE8\u9500"))));
+        }
+        else {
+            return React.createElement("div", { id: "dropdown" },
+                React.createElement("div", { className: "box" },
+                    React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
+                        React.createElement("a", { href: "/", style: { color: '#fff' } }, "\u9996\u9875")),
+                    React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
+                        React.createElement("a", { href: "/logintest", style: { color: '#fff' } }, "\u767B\u5F55")),
+                    React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
+                        React.createElement("a", { href: "/newTopics", style: { color: '#fff' } }, "\u65B0\u5E16")),
+                    React.createElement("a", { href: "/boardList" },
+                        React.createElement("div", { className: "boardListLink", style: { margin: '0 0 0 10px' } },
+                            React.createElement("div", { style: { marginTop: '16px', color: '#fff' } }, "\u7248\u9762")))));
+        }
     };
     return DropDown;
 }(React.Component));
@@ -8053,50 +8076,49 @@ var Search = /** @class */ (function (_super) {
     }
     Search.prototype.render = function () {
         $(document).ready(function () {
-            var selectB = $('.select').eq(1);
+            var searchBoxSelect = $('.searchBoxSelect');
             var downArrow = $('.downArrow');
-            var subB = $('ul').eq(1);
-            var liB = subB.find('li');
+            var searchBoxSub = $('.searchBoxSub');
+            var searchBoxLi = searchBoxSub.find('li');
             $(document).click(function () {
-                subB.css('display', 'none');
+                searchBoxSub.css('display', 'none');
             });
-            selectB.click(function () {
-                if (subB.css('display') === 'block')
-                    subB.css('display', 'none');
+            searchBoxSelect.click(function () {
+                if (searchBoxSub.css('display') === 'block')
+                    searchBoxSub.css('display', 'none');
                 else
-                    subB.css('display', 'block');
+                    searchBoxSub.css('display', 'block');
                 return false; //阻止事件冒泡
             });
             downArrow.click(function () {
-                if (subB.css('display') === 'block')
-                    subB.css('display', 'none');
+                if (searchBoxSub.css('display') === 'block')
+                    searchBoxSub.css('display', 'none');
                 else
-                    subB.css('display', 'block');
+                    searchBoxSub.css('display', 'block');
                 return false; //阻止事件冒泡
             });
             /*在一个对象上触发某类事件（比如单击onclick事件），如果此对象定义了此事件的处理程序，那么此事件就会调用这个处理程序，
             如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
             或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
-            liB.click(function () {
-                selectB.text($(this).text());
+            searchBoxLi.click(function () {
+                searchBoxSelect.text($(this).text());
             });
-            liB.mouseover(function () {
+            searchBoxLi.mouseover(function () {
                 this.className = 'hover';
             });
-            liB.mouseout(function () {
+            searchBoxLi.mouseout(function () {
                 this.className = '';
             });
         });
         return React.createElement("div", { id: "search" },
             React.createElement("div", { className: "box" },
-                React.createElement("form", null,
-                    React.createElement("div", { className: "select" }, "\u4E3B\u9898"),
-                    React.createElement("div", { className: "downArrow" },
-                        React.createElement("img", { src: "/images/downArrow.png", width: "12", height: "12" })),
-                    React.createElement("input", { name: "searchText", type: "text", placeholder: "猜猜能搜到什么..." }),
-                    React.createElement("div", { className: "fangdajing" },
-                        React.createElement("img", { src: "/images/fangdajing.ico", width: "15", height: "15" })))),
-            React.createElement("ul", { className: "sub" },
+                React.createElement("div", { className: "searchBoxSelect" }, "\u4E3B\u9898"),
+                React.createElement("div", { className: "downArrow" },
+                    React.createElement("img", { src: "/images/downArrow.png", width: "12", height: "12" })),
+                React.createElement("input", { name: "searchText", type: "text", placeholder: "猜猜能搜到什么..." }),
+                React.createElement("div", { className: "fangdajing" },
+                    React.createElement("img", { src: "/images/fangdajing.ico", width: "15", height: "15" }))),
+            React.createElement("ul", { className: "searchBoxSub" },
                 React.createElement("li", null, "\u7248\u9762"),
                 React.createElement("li", null, "\u4E3B\u9898"),
                 React.createElement("li", null, "\u7528\u6237")));
