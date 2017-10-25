@@ -1943,11 +1943,20 @@ body {
     display: flex;
     height: 55px;
     width: 60px;
-    border-radius: 0 0 5px 5px;
+    border-radius: 0 0 10px 10px;
     background-color: rgb(53,177,255);
     font-size: 16px; //这里字体要大一点
     letter-spacing: 2px;
     justify-content: center;
+    background: linear-gradient(rgb(53,177,255),rgb(13,137,255)); //渐变效果
+    background: -webkit-linear-gradient(rgb(53,177,255),rgb(13,137,255)); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(rgb(53,177,255),rgb(13,137,255)); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(rgb(53,177,255),rgb(13,137,255)); /* Firefox 3.6 - 15 */
+}
+
+#dropdown .boardListLink:hover { //:hover 选择器用于选择鼠标指针浮动在上面的元素
+    filter: brightness(1.1); //亮度
+    -webkit-filter: brightness(1.1);
 }
 
 #dropdown .sub {
@@ -2058,7 +2067,6 @@ body {
 #search .sub li.hover {
     background: rgb(233,233,233);
 }
-
 //-------------------------以下是底部的样式~~~---------------------------------------------------
 .footer {
     display: flex;
@@ -2171,7 +2179,6 @@ body {
     background-color: rgb(53,177,255);
 }
 //推荐阅读到此为止~
-
 .list1 {
     display: flex;
     flex-direction: column;
@@ -2443,11 +2450,9 @@ body {
     margin: 0;
     padding: 0;
 }
-
 /*
 * UBB用
 */
-
 .ubb-code {
     ol {
         list-style: none;
@@ -2467,7 +2472,6 @@ body {
         background-color: #ebebeb;
     }
 }
-
 /**
     弹出用户悬浮窗
 */
@@ -2505,7 +2509,6 @@ body {
 /*
     登陆页用
 */
-
 .login {
     display: flex;
     align-items: center;
@@ -2620,9 +2623,7 @@ body {
     animation-iteration-count: infinite;
     animation-direction: alternate;
 }
-
 //------------------------登录页到此结束----------------------------------
-
 #sendTopic {
     border: #CCCCCC solid thin;
     width: 1140px;

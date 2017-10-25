@@ -1666,6 +1666,16 @@ function getLocalStorage(key) {
     }
 }
 exports.getLocalStorage = getLocalStorage;
+function removeLocalStorage(key) {
+    localStorage.removeItem(key);
+    return;
+}
+exports.removeLocalStorage = removeLocalStorage;
+function removeStorage(key) {
+    sessionStorage.removeItem(key);
+    return;
+}
+exports.removeStorage = removeStorage;
 
 
 /***/ }),
@@ -4537,7 +4547,7 @@ var SendTopic = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        url = "https://api.cc98.org/Post/Topic/" + this.props.topicid;
+                        url = "http://apitest.niconi.cc/topic/test";
                         content = "Content=" + this.state.content + "&ContentType=Markdown&Title=";
                         token = Utility.getLocalStorage("accessToken");
                         return [4 /*yield*/, fetch(url, {
@@ -4546,7 +4556,6 @@ var SendTopic = /** @class */ (function (_super) {
                                     'Content-Type': 'application/x-www-form-urlencoded',
                                     'Authorization': token,
                                 },
-                                body: content
                             })];
                     case 1:
                         mes = _a.sent();
@@ -8012,11 +8021,13 @@ var DropDown = /** @class */ (function (_super) {
                     React.createElement("a", { href: "/focus", style: { color: '#fff' } }, "\u5173\u6CE8")),
                 React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
                     React.createElement("a", { href: "/newTopics", style: { color: '#fff' } }, "\u65B0\u5E16")),
-                React.createElement("div", { className: "boardListLink", style: { margin: '0 0 0 10px' } },
-                    React.createElement("a", { href: "/boardList", style: { marginTop: '16px', color: '#fff' } }, "\u7248\u9762"))),
+                React.createElement("a", { href: "/boardList" },
+                    React.createElement("div", { className: "boardListLink", style: { margin: '0 0 0 10px' } },
+                        React.createElement("div", { style: { marginTop: '16px', color: '#fff' } }, "\u7248\u9762")))),
             React.createElement("ul", { className: "sub" },
                 React.createElement("li", null, "\u4E2A\u4EBA\u4E2D\u5FC3"),
-                React.createElement("li", null, "\u6D88\u606F")));
+                React.createElement("li", null, "\u6D88\u606F"),
+                React.createElement("li", null, "\u6CE8\u9500")));
     };
     return DropDown;
 }(React.Component));
@@ -8348,7 +8359,7 @@ var HotTopicComponent = /** @class */ (function (_super) {
                     case 2:
                         data = _a.sent();
                         for (i = 0; i < 10; i++) {
-                            mainPageTopics[i] = new MainPageTopic(data[i].title, data[i].boardName, data[i].id, data[i].boardId);
+                            mainPageTopics[i] = new MainPageTopic(data[i].title, data[i].id, data[i].boardName, data[i].boardId);
                         }
                         return [2 /*return*/, mainPageTopics];
                 }
@@ -8417,7 +8428,7 @@ var Shixijianzhi = /** @class */ (function (_super) {
                     case 2:
                         data = _a.sent();
                         for (i = 0; i < 10; i++) {
-                            mainPageTopics[i] = new MainPageTopic(data[i].title, data[i].boardName, data[i].id, data[i].boardId);
+                            mainPageTopics[i] = new MainPageTopic(data[i].title, data[i].id, data[i].boardName, data[i].boardId);
                         }
                         return [2 /*return*/, mainPageTopics];
                 }
