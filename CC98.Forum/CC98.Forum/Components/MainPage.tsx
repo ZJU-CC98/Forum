@@ -159,7 +159,7 @@ export class Shixijianzhi extends React.Component<{}, MainPageTopicState>{
             { headers: { Range: 'bytes=0-9' } });   //该api要求提供返回主题的数量，这里需要返回10条
         const data = await response.json();
         for (let i = 0; i < 10; i++) {
-            mainPageTopics[i] = new MainPageTopic(data[i].title, data[i].boardName, data[i].id, data[i].boardId);
+            mainPageTopics[i] = new MainPageTopic(data[i].title, data[i].id, data[i].boardName, data[i].boardId);
         }
         return mainPageTopics;
     }
