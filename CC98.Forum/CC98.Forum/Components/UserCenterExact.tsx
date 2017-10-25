@@ -14,14 +14,6 @@ import { UserCenterExactAvatar } from './UserCenterExactAvatar'
 export class UserCenterExact extends React.Component<null, UserCenterExactState> {
 
     async componentDidMount() {
-        if (location.hash !== '' && location.hash.indexOf('access_token') !== -1) {
-            const hash: myType = {};
-            location.hash.slice(1).split('&').map((item) => item.split('=')).forEach((item) => {
-                hash[item[0]] = item[1];
-            });
-            window.localStorage.token = hash['access_token'];
-        }
-
         const response = await fetch('https://api.cc98.org/Me/', {
 	        headers: {
 		        'Authorization': 'bearer' + ' ' + window.localStorage.token
@@ -65,8 +57,4 @@ interface UserCenterExactState {
     * 加载状态
     */
     responseState: number;
-}
-
-interface myType {
-    [name: string]: string;
 }

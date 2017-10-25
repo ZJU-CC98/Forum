@@ -2526,6 +2526,7 @@ body {
     display: flex;
     align-items: center;
     flex-direction: column;
+    margin-bottom: 6rem;
 
     & > div {
         margin-top: 30px;
@@ -2555,6 +2556,12 @@ body {
             & > p {
                 margin-right: 200px;
                 font-size: 12px;
+            }
+
+            .LogOffInfo {
+                align-self: center;
+                font-size: 1rem;
+                margin-right: 0;
             }
         }
     }
