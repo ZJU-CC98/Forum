@@ -1055,12 +1055,16 @@ var ReplierState = /** @class */ (function () {
     return ReplierState;
 }());
 exports.ReplierState = ReplierState;
-var HotTopicState = /** @class */ (function () {
-    function HotTopicState() {
+/**
+ * 首页话题信息状态
+ * 拥有一个属性mainPageTopicState，为MainPageTopic类数组，用于存放组件所需的主题信息（一般为10条）
+ **/
+var MainPageTopicState = /** @class */ (function () {
+    function MainPageTopicState() {
     }
-    return HotTopicState;
+    return MainPageTopicState;
 }());
-exports.HotTopicState = HotTopicState;
+exports.MainPageTopicState = MainPageTopicState;
 var ListHeadState = /** @class */ (function () {
     function ListHeadState() {
     }
@@ -2736,7 +2740,7 @@ function isBottom() {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(17);
-module.exports = __webpack_require__(80);
+module.exports = __webpack_require__(79);
 
 
 /***/ }),
@@ -2789,9 +2793,9 @@ var MyFocusBoard_1 = __webpack_require__(68);
 var Header_1 = __webpack_require__(71);
 var Footer_1 = __webpack_require__(72);
 var MainPage_1 = __webpack_require__(73);
-var User_1 = __webpack_require__(75);
-var Login_1 = __webpack_require__(78);
-var LoginTest_1 = __webpack_require__(79);
+var User_1 = __webpack_require__(74);
+var Login_1 = __webpack_require__(77);
+var LoginTest_1 = __webpack_require__(78);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -8115,8 +8119,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var HotTopic_1 = __webpack_require__(74);
 var $ = __webpack_require__(4);
+/**
+ * 推荐阅读组件
+ **/
 var Recommended1 = /** @class */ (function (_super) {
     __extends(Recommended1, _super);
     function Recommended1() {
@@ -8179,22 +8185,40 @@ var Recommended1 = /** @class */ (function (_super) {
     return Recommended1;
 }(React.Component));
 exports.Recommended1 = Recommended1;
+/**
+ * 首页话题类
+ * 用于首页左侧的几个信息栏，该类的对象（一条主题)需要标题，id，所在版面，及所在版面id等几个属性
+ **/
+var MainPageTopic = /** @class */ (function () {
+    //构造方法
+    function MainPageTopic(title, id, boardName, boardid) {
+        this.title = title;
+        this.id = id;
+        this.boardName = boardName;
+        this.boardid = boardid;
+    }
+    return MainPageTopic;
+}());
+exports.MainPageTopic = MainPageTopic;
+/**
+ * 热门话题组件
+ **/
 var HotTopicComponent = /** @class */ (function (_super) {
     __extends(HotTopicComponent, _super);
     function HotTopicComponent(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
-            hotTopicState: new Array(),
+            mainPageTopicState: new Array(),
         };
         return _this;
     }
-    HotTopicComponent.prototype.getHotTopic = function () {
+    HotTopicComponent.prototype.getTopicInfo = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var hotTopics, response, data, i;
+            var mainPageTopics, response, data, i;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        hotTopics = [];
+                        mainPageTopics = [];
                         return [4 /*yield*/, fetch('http://api.cc98.org/Topic/Hot')];
                     case 1:
                         response = _a.sent();
@@ -8202,9 +8226,9 @@ var HotTopicComponent = /** @class */ (function (_super) {
                     case 2:
                         data = _a.sent();
                         for (i = 0; i < 10; i++) {
-                            hotTopics[i] = new HotTopic_1.HotTopic(data[i].title, data[i].boardName, data[i].id, data[i].boardId);
+                            mainPageTopics[i] = new MainPageTopic(data[i].title, data[i].boardName, data[i].id, data[i].boardId);
                         }
-                        return [2 /*return*/, hotTopics];
+                        return [2 /*return*/, mainPageTopics];
                 }
             });
         });
@@ -8214,18 +8238,18 @@ var HotTopicComponent = /** @class */ (function (_super) {
             var x;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getHotTopic()];
+                    case 0: return [4 /*yield*/, this.getTopicInfo()];
                     case 1:
                         x = _a.sent();
                         this.setState({
-                            hotTopicState: x,
+                            mainPageTopicState: x,
                         });
                         return [2 /*return*/];
                 }
             });
         });
     };
-    HotTopicComponent.prototype.convertHotTopic = function (item) {
+    HotTopicComponent.prototype.convertMainPageTopic = function (item) {
         var boardUrl = "/list/" + item.boardid;
         var topicUrl = "/topic/" + item.id;
         return React.createElement("div", { className: "listRow" },
@@ -8239,27 +8263,30 @@ var HotTopicComponent = /** @class */ (function (_super) {
                 React.createElement("a", { href: topicUrl }, item.title)));
     };
     HotTopicComponent.prototype.render = function () {
-        return React.createElement("div", null, this.state.hotTopicState.map(this.convertHotTopic));
+        return React.createElement("div", null, this.state.mainPageTopicState.map(this.convertMainPageTopic));
     };
     return HotTopicComponent;
 }(React.Component));
 exports.HotTopicComponent = HotTopicComponent;
+/**
+ * 实习兼职组件，注意组件类名开头需大写!
+ **/
 var Shixijianzhi = /** @class */ (function (_super) {
     __extends(Shixijianzhi, _super);
     function Shixijianzhi(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
-            hotTopicState: new Array(),
+            mainPageTopicState: new Array(),
         };
         return _this;
     }
     Shixijianzhi.prototype.getTopicInfo = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var hotTopics, url, response, data, i;
+            var mainPageTopics, url, response, data, i;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        hotTopics = [];
+                        mainPageTopics = [];
                         url = 'http://api.cc98.org/Topic/Board/459';
                         return [4 /*yield*/, fetch(url, { headers: { Range: 'bytes=0-9' } })];
                     case 1:
@@ -8268,9 +8295,9 @@ var Shixijianzhi = /** @class */ (function (_super) {
                     case 2:
                         data = _a.sent();
                         for (i = 0; i < 10; i++) {
-                            hotTopics[i] = new HotTopic_1.HotTopic(data[i].title, data[i].boardName, data[i].id, data[i].boardId);
+                            mainPageTopics[i] = new MainPageTopic(data[i].title, data[i].boardName, data[i].id, data[i].boardId);
                         }
-                        return [2 /*return*/, hotTopics];
+                        return [2 /*return*/, mainPageTopics];
                 }
             });
         });
@@ -8284,21 +8311,21 @@ var Shixijianzhi = /** @class */ (function (_super) {
                     case 1:
                         x = _a.sent();
                         this.setState({
-                            hotTopicState: x,
+                            mainPageTopicState: x,
                         });
                         return [2 /*return*/];
                 }
             });
         });
     };
-    Shixijianzhi.prototype.convertHotTopic = function (item) {
+    Shixijianzhi.prototype.convertMainPageTopic = function (item) {
         var topicUrl = "/topic/" + item.id;
         return React.createElement("div", { className: "listRow" },
             React.createElement("div", { className: "topicTitle" },
                 React.createElement("a", { href: topicUrl }, item.title)));
     };
     Shixijianzhi.prototype.render = function () {
-        return React.createElement("div", null, this.state.hotTopicState.map(this.convertHotTopic));
+        return React.createElement("div", null, this.state.mainPageTopicState.map(this.convertMainPageTopic));
     };
     return Shixijianzhi;
 }(React.Component));
@@ -8474,44 +8501,6 @@ exports.MainPage = MainPage;
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * 热门话题类
- */
-var HotTopic = /** @class */ (function () {
-    //构造方法
-    function HotTopic(title, boardName, id, boardid) {
-        this.title = title;
-        this.boardName = boardName;
-        this.id = id;
-        this.boardid = boardid;
-    }
-    return HotTopic;
-}());
-exports.HotTopic = HotTopic;
-/**
- * 首页话题信息类
- * 用于首页左侧信息栏，该类的对象需要标题，id，所在版面，及所在版面id
- */
-var MainPageTopicInfo = /** @class */ (function () {
-    //构造方法
-    function MainPageTopicInfo(title, id, boardName, boardid) {
-        this.title = title;
-        this.id = id;
-        this.boardName = boardName;
-        this.boardid = boardid;
-    }
-    return MainPageTopicInfo;
-}());
-exports.MainPageTopicInfo = MainPageTopicInfo;
-
-
-/***/ }),
-/* 75 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 // A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
@@ -8528,8 +8517,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(2);
-var UserNavigation_1 = __webpack_require__(76);
-var UserRouter_1 = __webpack_require__(77);
+var UserNavigation_1 = __webpack_require__(75);
+var UserRouter_1 = __webpack_require__(76);
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
@@ -8550,7 +8539,7 @@ exports.User = User;
 
 
 /***/ }),
-/* 76 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8608,7 +8597,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 77 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8733,7 +8722,7 @@ var UserExact = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 78 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8892,7 +8881,7 @@ var LoginState = /** @class */ (function () {
 
 
 /***/ }),
-/* 79 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9074,7 +9063,7 @@ var LoginState = /** @class */ (function () {
 
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
