@@ -70,8 +70,8 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
                 </div>
                 <div className="dropDownSubBox">
                     <ul className="dropDownSub">
-                        <a href="/usercenter"> <li>个人中心</li></a>
-                        <a href="/mymessage"><li>消息</li></a>
+                        <a href="/userCenter"> <li>个人中心</li></a>
+                        <a href="/myMessage"><li>消息</li></a>
                         <li onClick={this.logOff}>注销</li>
                     </ul>
                 </div>
@@ -81,7 +81,7 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
             return <div id="dropdown">
                 <div className="box">
                     <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/" style={{ color: '#fff' }}>首页</a></div>
-                    <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/logintest" style={{ color: '#fff' }}>登录</a></div>
+                    <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/logOn" style={{ color: '#fff' }}>登录</a></div>
                     <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/newTopics" style={{ color: '#fff' }}>新帖</a></div>
                     <a href="/boardList"><div className="boardListLink" style={{ margin: '0 0 0 10px' }}><div style={{ marginTop: '16px', color: '#fff' }}>版面</div></div></a>
                 </div>

@@ -8023,10 +8023,10 @@ var DropDown = /** @class */ (function (_super) {
                             React.createElement("div", { style: { marginTop: '16px', color: '#fff' } }, "\u7248\u9762")))),
                 React.createElement("div", { className: "dropDownSubBox" },
                     React.createElement("ul", { className: "dropDownSub" },
-                        React.createElement("a", { href: "/usercenter" },
+                        React.createElement("a", { href: "/userCenter" },
                             " ",
                             React.createElement("li", null, "\u4E2A\u4EBA\u4E2D\u5FC3")),
-                        React.createElement("a", { href: "/mymessage" },
+                        React.createElement("a", { href: "/myMessage" },
                             React.createElement("li", null, "\u6D88\u606F")),
                         React.createElement("li", { onClick: this.logOff }, "\u6CE8\u9500"))));
         }
@@ -8036,7 +8036,7 @@ var DropDown = /** @class */ (function (_super) {
                     React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
                         React.createElement("a", { href: "/", style: { color: '#fff' } }, "\u9996\u9875")),
                     React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
-                        React.createElement("a", { href: "/logintest", style: { color: '#fff' } }, "\u767B\u5F55")),
+                        React.createElement("a", { href: "/logOn", style: { color: '#fff' } }, "\u767B\u5F55")),
                     React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
                         React.createElement("a", { href: "/newTopics", style: { color: '#fff' } }, "\u65B0\u5E16")),
                     React.createElement("a", { href: "/boardList" },
