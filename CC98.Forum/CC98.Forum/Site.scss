@@ -21,7 +21,6 @@ $color-black: rgb(32,32,32);
     background-color: #FFFFFF;
     width: 1140px;
     font-family: 微软雅黑;
-
 }
 
 .replyRoot {
@@ -43,7 +42,7 @@ $color-black: rgb(32,32,32);
     font-size: 12px;
     align-items: center;
     justify-content: center;
-    min-width:1140px;
+    min-width: 1140px;
 }
 
 .listContent {
@@ -59,7 +58,7 @@ $color-black: rgb(32,32,32);
 
 .notice {
     display: flex;
-    width:1140px;
+    min-width: 1140px;
     height: 190px;
     border: #EAEAEA solid thin;
     border-radius: 5px;
@@ -302,6 +301,7 @@ $color-black: rgb(32,32,32);
     border-right: #EAEAEA solid thin;
     box-sizing: border-box;
 }
+
 .reply-content {
     display: flex;
     align-self: flex-start;
@@ -315,16 +315,14 @@ $color-black: rgb(32,32,32);
     border-bottom: 1px dashed #EAEAEA;
     line-height: 200%;
     flex-grow: 1;
-    margin-right: 120px;
-    margin-left: 50px;
+    margin-right: 20px;
+    margin-left: 20px;
     font-size: 14px;
     max-width: 1140px;
     margin-top: 20px;
     margin-bottom: 20px;
     word-wrap: break-word;
     color: rgb(80,80,80);
-    overflow-y:auto;
-    max-height:800px;
 }
 
 .signature {
@@ -987,20 +985,7 @@ a {
     min-width: 1140px;
     align-items: center;
 }
-#boardListIndex {
-    margin: 0px 0px 0px 10px;
-    width: 60px;
-    height: 60px;
-    text-align: center;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    background: linear-gradient(to bottom,rgba(53, 177, 255,1) ,rgba(79, 148, 205,1));
-    line-height: 60px;
-    opacity: 1;
-}
-#boardListIndex:hover {
-    background: #87CEFF;
-}
+
 .anArea {
     display: flex;
     flex-direction: column;
@@ -1825,7 +1810,6 @@ body {
 .focus-allNewPost {
     color: $color-thinBlack;
     min-height: 12px;
-
     font-size: 12px;
     display: flex;
     align-items: baseline;
@@ -1858,7 +1842,7 @@ body {
     height: 50px;
     width: 100%;
     justify-content: center;
-    background-color: rgba(80,80,80,0.6); //仅背景条半透明
+    background-color: rgba(80,80,80,0.5); //仅背景条半透明，内层元素无半透明效果
 }
 
 .topBarRow {
@@ -1871,7 +1855,6 @@ body {
 .headerContent {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     width: 100%;
     height: 140px;
     justify-content: center;
@@ -1907,16 +1890,22 @@ body {
 
 //以下是头部中顶部条下拉菜单的样式~
 
-
+#dropdown {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(255,255,255);
+}
 
 #dropdown ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
-#search{
-    opacity:0.8;
+
+#search {
+    opacity: 0.8;
 }
+
 #dropdown .box {
     display: flex;
     flex-direction: row;
@@ -1943,39 +1932,42 @@ body {
     align-items: center;
     width: 94px;
     height: 50px;
-    font-size: 12px;
-    font-family: 微软雅黑;
-    color: rgb(255,255,255);
     cursor: pointer;
 }
 
 #dropdown .topBarText {
-    font-size: 12px;
-    font-family: 微软雅黑;
-    color: rgb(252,252,252);
     margin-top: 12px;
 }
 
+#dropdown .boardListLink {
+    display: flex;
+    height: 55px;
+    width: 60px;
+    border-radius: 0 0 5px 5px;
+    background-color: rgb(53,177,255);
+    font-size: 16px; //这里字体要大一点
+    letter-spacing: 2px;
+    justify-content: center;
+}
+
 #dropdown .sub {
-    opacity:0.9999;
     width: 124px;
     display: none;
-    font-size: 12px;
-    font-family: 微软雅黑;
-    color: rgb(255,255,255);
     background-color: rgba(80,80,80,0.5);
-    line-height:25px;
+    margin-top: -5px;
+    opacity: 0.9999; //暂时不知道原因，但是如果不加上一个小于1的opacity值，下拉会出问题,猜测是opacity把元素及所有子元素合在一起？
 }
 
 #dropdown .sub li {
-
+    display: flex;
     height: 25px;
     cursor: pointer;
-    text-align: center;
+    justify-content: center;
+    align-items: center;
 }
 
 #dropdown .sub li.hover {
-    background: rgb(233,233,233);
+    background: rgb(53,177,255);
 }
 //以下是头部中搜索条的样式
 #search ul {
@@ -2494,7 +2486,7 @@ body {
 }
 
 .popup_title {
-    background: url(/images/autumn1.png) no-repeat center;
+    background: url(/images/headerBackground.jpg) no-repeat center;
     height: 125px;
     line-height: 24px; /*使垂直居中*/
     border-bottom: 1px solid #efefef; /*底边框*/
