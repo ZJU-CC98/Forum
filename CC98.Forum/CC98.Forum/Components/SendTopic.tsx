@@ -77,7 +77,7 @@ export class SendTopic extends RouteComponent<{ topicid }, { content: string }, 
                 </div>
             </form>
 
-        </div><div className="row" style={{ justifyContent: "center" }}>
+        </div><div className="row" style={{ justifyContent: "center", marginBottom:"20px" }}>
                 <div id="post-topic-button" onClick={this.sendTopic.bind(this)} className="button blue" style={{ marginTop: "20px", width: "70px", letterSpacing: "5px" }}>回复</div>
             </div>
         </div>;

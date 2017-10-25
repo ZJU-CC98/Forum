@@ -1908,7 +1908,8 @@ var List = /** @class */ (function (_super) {
             React.createElement(ListNotice, null),
             React.createElement(ListButtonAndPager, { page: this.state.page, totalPage: this.state.totalPage, boardid: this.state.boardid }),
             React.createElement(ListTag, null),
-            React.createElement(react_router_dom_1.Route, { path: "/list/:boardid/:page?", component: ListContent }));
+            React.createElement(react_router_dom_1.Route, { path: "/list/:boardid/:page?", component: ListContent }),
+            React.createElement(PagerDown, { page: this.state.page, totalPage: this.state.totalPage, boardid: this.state.boardid }));
     };
     return List;
 }(RouteComponent));
@@ -2073,6 +2074,51 @@ var ListButtonAndPager = /** @class */ (function (_super) {
     return ListButtonAndPager;
 }(React.Component));
 exports.ListButtonAndPager = ListButtonAndPager;
+var PagerDown = /** @class */ (function (_super) {
+    __extends(PagerDown, _super);
+    function PagerDown(props, content) {
+        var _this = _super.call(this, props, content) || this;
+        _this.state = {
+            pager: [1, 2, 3, 4, 5]
+        };
+        return _this;
+    }
+    /**
+     * 将页码转换为 UI 界面。
+     * @param pageNumber 要转换的页码。
+     * @returns {JSX.Element} 页码对应的 UI 元素。
+     */
+    PagerDown.prototype.generatePageLink = function (pageNumber) {
+        return React.createElement(PageModel, { pageNumber: pageNumber, boardid: this.props.boardid, curPage: this.props.page, totalPage: this.props.totalPage });
+    };
+    PagerDown.prototype.componentWillReceiveProps = function (newProps) {
+        return __awaiter(this, void 0, void 0, function () {
+            var pages;
+            return __generator(this, function (_a) {
+                pages = Utility.getPager(newProps.page, newProps.totalPage);
+                this.setState({ pager: pages });
+                return [2 /*return*/];
+            });
+        });
+    };
+    PagerDown.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var pages;
+            return __generator(this, function (_a) {
+                pages = Utility.getPager(this.props.page, this.props.totalPage);
+                this.setState({ pager: pages });
+                return [2 /*return*/];
+            });
+        });
+    };
+    PagerDown.prototype.render = function () {
+        return React.createElement("div", { className: "row", style: { width: '1140px', height: '50px', marginTop: '15px', justifyContent: 'space-between', alignItems: 'flex-end' } },
+            React.createElement("div", { id: "pager" },
+                React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this)))));
+    };
+    return PagerDown;
+}(React.Component));
+exports.PagerDown = PagerDown;
 var PageModel = /** @class */ (function (_super) {
     __extends(PageModel, _super);
     function PageModel() {
@@ -4528,7 +4574,7 @@ var SendTopic = /** @class */ (function (_super) {
                 React.createElement("form", null,
                     React.createElement("div", null,
                         React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input", value: this.state.content, onChange: this.handleChange.bind(this) })))),
-            React.createElement("div", { className: "row", style: { justifyContent: "center" } },
+            React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "20px" } },
                 React.createElement("div", { id: "post-topic-button", onClick: this.sendTopic.bind(this), className: "button blue", style: { marginTop: "20px", width: "70px", letterSpacing: "5px" } }, "\u56DE\u590D")));
     };
     return SendTopic;
