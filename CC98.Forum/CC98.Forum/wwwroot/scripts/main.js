@@ -8362,7 +8362,7 @@ var HotTopicComponent = /** @class */ (function (_super) {
                     case 2:
                         data = _a.sent();
                         for (i = 0; i < 10; i++) {
-                            mainPageTopics[i] = new MainPageTopic(data[i].title, data[i].boardName, data[i].id, data[i].boardId);
+                            mainPageTopics[i] = new MainPageTopic(data[i].title, data[i].id, data[i].boardName, data[i].boardId);
                         }
                         return [2 /*return*/, mainPageTopics];
                 }
