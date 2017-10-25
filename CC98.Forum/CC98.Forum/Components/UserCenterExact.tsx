@@ -14,8 +14,6 @@ import { UserCenterExactAvatar } from './UserCenterExactAvatar'
 export class UserCenterExact extends React.Component<null, UserCenterExactState> {
 
     async componentDidMount() {
-        console.log(location);
-        console.log(location.hash !== '' && location.hash.indexOf('access_token') !== -1);
         if (location.hash !== '' && location.hash.indexOf('access_token') !== -1) {
             const hash: myType = {};
             location.hash.slice(1).split('&').map((item) => item.split('=')).forEach((item) => {

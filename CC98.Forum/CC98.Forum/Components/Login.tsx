@@ -3,6 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
+import * as $ from 'jquery';
 
 export class Login extends React.Component<null, LoginState> {
     constructor(props) {
@@ -69,7 +70,28 @@ export class Login extends React.Component<null, LoginState> {
             this.setState({
                 loginMessage: '登陆中',
                 isLogining: true
-            });            
+            }); 
+
+            const url = 'http://openid.cc98.org/connect/token';
+
+            const requestBody = {
+                'client_id': '8a1bd823-c3cf-44c0-6498-08d50009f244',
+                'client_secret': 'fc95e3fc-da10-4e19-9394-3e9f5df0f2c6',
+                'grant_type': 'password',
+                'ResponseType': 'token',
+                'scope': 'openid',
+                'username': this.state.loginName,
+                'password': this.state.loginPassword
+            };
+
+            let response = await fetch(url, {
+                method: 'POST',
+                body: $.param(requestBody)
+            });
+
+            let data = await response.json();
+
+            console.log(data);
         }
         
     }
