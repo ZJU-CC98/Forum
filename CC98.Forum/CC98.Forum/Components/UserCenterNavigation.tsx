@@ -17,7 +17,8 @@ export class UserCenterNavigation extends React.Component<null, UserCenterNaviga
         super(props);
         this.state = {
             isScroll: false,
-            buttonClassName: ''
+            buttonClassName: '',
+            navigationClassName: 'user-center-navigation'
         };
         this.handleScroll = this.handleScroll.bind(this);
     }
@@ -26,7 +27,8 @@ export class UserCenterNavigation extends React.Component<null, UserCenterNaviga
         if (window.pageYOffset > 234 && !this.state.isScroll) {
             this.setState({
                 isScroll: true,
-                buttonClassName: 'btn-show'
+                buttonClassName: 'btn-show',
+                navigationClassName: 'user-center-navigation user-center-navigation-fixed'
             });
         }
 
@@ -39,7 +41,8 @@ export class UserCenterNavigation extends React.Component<null, UserCenterNaviga
                 } else {
                     return {
                         isScroll: false,
-                        buttonClassName: 'btn-disappare'
+                        buttonClassName: 'btn-disappare',
+                        navigationClassName: 'user-center-navigation user-center-navigation-unfixed'
                     }
                 }
             });
@@ -59,7 +62,7 @@ export class UserCenterNavigation extends React.Component<null, UserCenterNaviga
     }
 
     render() {
-        return (<div className={this.state.isScroll ? 'user-center-navigation user-center-navigation-fixed' : 'user-center-navigation'} id = "userCenterNavigation" >
+        return (<div className={this.state.navigationClassName} id="userCenterNavigation" >
             <ul>
                 <CustomLink to="/usercenter" label="主页" activeOnlyWhenExact={true} myClassName="fa-home" />
                 <hr />
@@ -89,4 +92,5 @@ const CustomLink = ({ label, to, activeOnlyWhenExact = false, myClassName }) => 
 interface UserCenterNavigationState {
     isScroll: boolean;
     buttonClassName: string;
+    navigationClassName: string;
 }

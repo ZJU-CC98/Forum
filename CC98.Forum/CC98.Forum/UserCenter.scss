@@ -61,18 +61,48 @@
     align-items: center;
 }
 
+@keyframes fixnavigation {
+    from {
+        position: sticky;
+        top: 0px;
+    }
+    to {
+        position: sticky;
+        top: 100px;
+    }
+}
+
+@keyframes unfixnavigation {
+    from {
+        position: sticky;
+        top: 100px;
+    }
+
+    to {
+        position: sticky;
+        top: 0px;
+    }
+}
+
 .user-center-body {
     width: 100%;
     display: flex;
     margin-bottom: 3rem;
 
     .user-center-navigation-fixed {
-        position: sticky;
+        animation-name: fixnavigation;
+        animation-duration: 500ms;
+        animation-fill-mode: both;
+    }
+
+    .user-center-navigation-unfixed {
+        animation-name: unfixnavigation;
+        animation-duration: 500ms;
+        animation-fill-mode: both;
     }
 
     .user-center-navigation {
         height: 33rem;
-        top: 100px;
         padding: 1rem;
         background-color: white;
         border: 1px solid rgb(204,204,204);
@@ -245,12 +275,12 @@
 
             .user-activities {
                 width: 100%;
-                
+
                 & > p {
                     font-size: 18px;
                     margin-bottom: 2rem;
                 }
-                
+
                 .user-activities-nomore {
                     display: flex;
                     flex-direction: column;

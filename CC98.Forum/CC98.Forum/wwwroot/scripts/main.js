@@ -5541,7 +5541,8 @@ var UserCenterNavigation = /** @class */ (function (_super) {
         var _this = _super.call(this, props) || this;
         _this.state = {
             isScroll: false,
-            buttonClassName: ''
+            buttonClassName: '',
+            navigationClassName: 'user-center-navigation'
         };
         _this.handleScroll = _this.handleScroll.bind(_this);
         return _this;
@@ -5550,7 +5551,8 @@ var UserCenterNavigation = /** @class */ (function (_super) {
         if (window.pageYOffset > 234 && !this.state.isScroll) {
             this.setState({
                 isScroll: true,
-                buttonClassName: 'btn-show'
+                buttonClassName: 'btn-show',
+                navigationClassName: 'user-center-navigation user-center-navigation-fixed'
             });
         }
         if (window.pageYOffset < 234 && this.state.isScroll) {
@@ -5563,7 +5565,8 @@ var UserCenterNavigation = /** @class */ (function (_super) {
                 else {
                     return {
                         isScroll: false,
-                        buttonClassName: 'btn-disappare'
+                        buttonClassName: 'btn-disappare',
+                        navigationClassName: 'user-center-navigation user-center-navigation-unfixed'
                     };
                 }
             });
@@ -5579,7 +5582,7 @@ var UserCenterNavigation = /** @class */ (function (_super) {
         $('body,html').animate({ scrollTop: 0 }, 500);
     };
     UserCenterNavigation.prototype.render = function () {
-        return (React.createElement("div", { className: this.state.isScroll ? 'user-center-navigation user-center-navigation-fixed' : 'user-center-navigation', id: "userCenterNavigation" },
+        return (React.createElement("div", { className: this.state.navigationClassName, id: "userCenterNavigation" },
             React.createElement("ul", null,
                 React.createElement(CustomLink, { to: "/usercenter", label: "主页", activeOnlyWhenExact: true, myClassName: "fa-home" }),
                 React.createElement("hr", null),
@@ -5731,8 +5734,6 @@ var UserCenterExact = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log(location);
-                        console.log(location.hash !== '' && location.hash.indexOf('access_token') !== -1);
                         if (location.hash !== '' && location.hash.indexOf('access_token') !== -1) {
                             hash_1 = {};
                             location.hash.slice(1).split('&').map(function (item) { return item.split('='); }).forEach(function (item) {
@@ -8370,7 +8371,7 @@ var HotTopicComponent = /** @class */ (function (_super) {
                     case 2:
                         data = _a.sent();
                         for (i = 0; i < 10; i++) {
-                            mainPageTopics[i] = new MainPageTopic(data[i].title, data[i].boardName, data[i].id, data[i].boardId);
+                            mainPageTopics[i] = new MainPageTopic(data[i].title, data[i].id, data[i].boardName, data[i].boardId);
                         }
                         return [2 /*return*/, mainPageTopics];
                 }
@@ -8439,7 +8440,7 @@ var Shixijianzhi = /** @class */ (function (_super) {
                     case 2:
                         data = _a.sent();
                         for (i = 0; i < 10; i++) {
-                            mainPageTopics[i] = new MainPageTopic(data[i].title, data[i].boardName, data[i].id, data[i].boardId);
+                            mainPageTopics[i] = new MainPageTopic(data[i].title, data[i].id, data[i].boardName, data[i].boardId);
                         }
                         return [2 /*return*/, mainPageTopics];
                 }
@@ -8670,12 +8671,13 @@ var User = /** @class */ (function (_super) {
     }
     User.prototype.render = function () {
         return (React.createElement("div", { className: "user-center" },
-            React.createElement("div", { className: "user-center-head" },
-                React.createElement("p", null, "\u7528\u6237\u8BE6\u60C5")),
-            React.createElement(react_router_dom_1.BrowserRouter, null,
-                React.createElement("div", { className: "user-center-body" },
-                    React.createElement(UserNavigation_1.UserNavigation, null),
-                    React.createElement(UserRouter_1.UserRouter, null)))));
+            React.createElement("div", { className: "user-center-content" },
+                React.createElement("div", { className: "user-center-head" },
+                    React.createElement("p", null, "\u7528\u6237\u8BE6\u60C5")),
+                React.createElement(react_router_dom_1.BrowserRouter, null,
+                    React.createElement("div", { className: "user-center-body" },
+                        React.createElement(UserNavigation_1.UserNavigation, null),
+                        React.createElement(UserRouter_1.UserRouter, null))))));
     };
     return User;
 }(React.Component));
@@ -8724,7 +8726,8 @@ var UserNavigation = /** @class */ (function (_super) {
     UserNavigation.prototype.render = function () {
         return (React.createElement("div", { className: "user-center-navigation", id: "userCenterNavigation" },
             React.createElement("ul", null,
-                React.createElement(CustomLink, { to: "" + location.pathname, label: "主页", activeOnlyWhenExact: true, myClassName: "fa-home" }))));
+                React.createElement(CustomLink, { to: "" + location.pathname, label: "主页", activeOnlyWhenExact: true, myClassName: "fa-home" }),
+                React.createElement("hr", null))));
     };
     return UserNavigation;
 }(React.Component));
@@ -8921,6 +8924,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
+var $ = __webpack_require__(5);
 var Login = /** @class */ (function (_super) {
     __extends(Login, _super);
     function Login(props) {
@@ -8953,41 +8957,64 @@ var Login = /** @class */ (function (_super) {
     };
     Login.prototype.handleLogin = function (e) {
         return __awaiter(this, void 0, void 0, function () {
+            var url, requestBody, response, data;
             return __generator(this, function (_a) {
-                e.preventDefault();
-                //如果在登陆中则无视提交
-                if (this.state.isLogining) {
-                    return [2 /*return*/, false];
+                switch (_a.label) {
+                    case 0:
+                        e.preventDefault();
+                        //如果在登陆中则无视提交
+                        if (this.state.isLogining) {
+                            return [2 /*return*/, false];
+                        }
+                        if (!!(this.state.loginName || this.state.loginPassword)) return [3 /*break*/, 1];
+                        this.setState({
+                            loginMessage: '请输入用户名和密码'
+                        });
+                        this.shake(document.getElementById('loginName')).focus();
+                        this.shake(document.getElementById('loginPassword'));
+                        return [2 /*return*/, false];
+                    case 1:
+                        if (!!this.state.loginName) return [3 /*break*/, 2];
+                        this.setState({
+                            loginMessage: '请输入用户名'
+                        });
+                        this.shake(document.getElementById('loginName')).focus();
+                        return [2 /*return*/, false];
+                    case 2:
+                        if (!!this.state.loginPassword) return [3 /*break*/, 3];
+                        this.setState({
+                            loginMessage: '请输入密码'
+                        });
+                        this.shake(document.getElementById('loginPassword')).focus();
+                        return [2 /*return*/, false];
+                    case 3:
+                        this.setState({
+                            loginMessage: '登陆中',
+                            isLogining: true
+                        });
+                        url = 'http://openid.cc98.org/connect/token';
+                        requestBody = {
+                            'client_id': '8a1bd823-c3cf-44c0-6498-08d50009f244',
+                            'client_secret': 'fc95e3fc-da10-4e19-9394-3e9f5df0f2c6',
+                            'grant_type': 'password',
+                            'ResponseType': 'token',
+                            'scope': 'openid',
+                            'username': this.state.loginName,
+                            'password': this.state.loginPassword
+                        };
+                        return [4 /*yield*/, fetch(url, {
+                                method: 'POST',
+                                body: $.param(requestBody)
+                            })];
+                    case 4:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 5:
+                        data = _a.sent();
+                        console.log(data);
+                        _a.label = 6;
+                    case 6: return [2 /*return*/];
                 }
-                if (!(this.state.loginName || this.state.loginPassword)) {
-                    this.setState({
-                        loginMessage: '请输入用户名和密码'
-                    });
-                    this.shake(document.getElementById('loginName')).focus();
-                    this.shake(document.getElementById('loginPassword'));
-                    return [2 /*return*/, false];
-                }
-                else if (!this.state.loginName) {
-                    this.setState({
-                        loginMessage: '请输入用户名'
-                    });
-                    this.shake(document.getElementById('loginName')).focus();
-                    return [2 /*return*/, false];
-                }
-                else if (!this.state.loginPassword) {
-                    this.setState({
-                        loginMessage: '请输入密码'
-                    });
-                    this.shake(document.getElementById('loginPassword')).focus();
-                    return [2 /*return*/, false];
-                }
-                else {
-                    this.setState({
-                        loginMessage: '登陆中',
-                        isLogining: true
-                    });
-                }
-                return [2 /*return*/];
             });
         });
     };
