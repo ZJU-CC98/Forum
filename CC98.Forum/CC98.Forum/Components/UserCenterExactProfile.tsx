@@ -11,7 +11,6 @@ import { UbbContainer } from './UbbContainer'
  */
 export class UserCenterExactProfile extends React.Component<UserCenterExactProfileProps> {
     render() {
-        console.log(this.props.userInfo.signatureCode);
         return (
             <div className="user-profile">                
                 <div id="userId"><p>{this.props.userInfo.name}</p><button type="button">私信</button></div>

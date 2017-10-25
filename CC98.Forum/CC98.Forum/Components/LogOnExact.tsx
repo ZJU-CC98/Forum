@@ -4,8 +4,9 @@
 
 import * as React from 'react';
 import * as $ from 'jquery';
+import * as Utility from '../Utility';
 
-export class Login extends React.Component<null, LoginState> {
+export class LogOnExact extends React.Component<null, LogOnState> {
     constructor(props) {
         super(props);
         this.state = {
@@ -15,7 +16,7 @@ export class Login extends React.Component<null, LoginState> {
             isLogining: false
         };
 
-	    this.handleNameChange = this.handleNameChange.bind(this);
+        this.handleNameChange = this.handleNameChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
     }
@@ -37,22 +38,18 @@ export class Login extends React.Component<null, LoginState> {
             loginPassword: e.target.value
         });
     }
-    
+
     async handleLogin(e) {
+        //阻止表单提交
         e.preventDefault();
+
         //如果在登陆中则无视提交
         if (this.state.isLogining) {
             return false;
         }
 
-        if (!(this.state.loginName || this.state.loginPassword)) {
-            this.setState({
-                loginMessage: '请输入用户名和密码'
-            });
-            this.shake(document.getElementById('loginName')).focus();
-            this.shake(document.getElementById('loginPassword'));
-            return false;
-        } else if (!this.state.loginName) {
+        //缺少用户名或者密码
+        if (!this.state.loginName) {
             this.setState({
                 loginMessage: '请输入用户名'
             });
@@ -66,34 +63,62 @@ export class Login extends React.Component<null, LoginState> {
             this.shake(document.getElementById('loginPassword')).focus();
 
             return false;
-        }else {
-            this.setState({
-                loginMessage: '登陆中',
-                isLogining: true
-            }); 
-
-            const url = 'http://openid.cc98.org/connect/token';
-
-            const requestBody = {
-                'client_id': '8a1bd823-c3cf-44c0-6498-08d50009f244',
-                'client_secret': 'fc95e3fc-da10-4e19-9394-3e9f5df0f2c6',
-                'grant_type': 'password',
-                'ResponseType': 'token',
-                'scope': 'openid',
-                'username': this.state.loginName,
-                'password': this.state.loginPassword
-            };
-
-            let response = await fetch(url, {
-                method: 'POST',
-                body: $.param(requestBody)
-            });
-
-            let data = await response.json();
-
-            console.log(data);
         }
-        
+
+        //登陆
+        this.setState({
+            loginMessage: '登陆中',
+            isLogining: true
+        });
+
+        let url = 'http://openid.cc98.org/connect/token';
+
+        /*
+        请求的正文部分，密码模式需要5个参数，其中client_id和client_secret来自申请的应用，grant_type值固定为"password"
+        */
+        const requestBody = {
+            'client_id': '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
+            'client_secret': '8b53f727-08e2-4509-8857-e34bf92b27f2',
+            'grant_type': 'password',
+            'username': this.state.loginName,
+            'password': this.state.loginPassword
+        }
+
+        let response = await fetch(url, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',//在fetch API里这不是默认值，需要手动添加
+            },
+            body: $.param(requestBody)
+
+        });
+
+        //请求是否成功
+        if (response.status !== 200) {
+            throw e;
+        }
+
+        let data = await response.json();
+        const token = "Bearer " + data.access_token;
+
+        //缓存token
+        Utility.setLocalStorage("accessToken", token);
+        Utility.setLocalStorage("userName", this.state.loginName);
+
+        this.setState({
+            loginMessage: '登陆成功',
+            isLogining: false
+        });
+
+        //跳转至个人中心页
+
+    } catch(e) {    //捕捉到例外，开始执行catch语句，否则跳过
+        //alert(e.error);     这行好像没什么用……暂时还不会处理不同的error……
+        console.log("Oops, error", e);
+        this.setState({
+            loginMessage: `登陆失败 ${e.error}`,
+            isLogining: false
+        });
     }
 
     render() {
@@ -117,14 +142,14 @@ export class Login extends React.Component<null, LoginState> {
                     </div>
                 </div>
             </div>
-            );
+        );
     }
 }
 
 /**
  * 登陆页状态
  */
-class LoginState {
+class LogOnState {
     /**
     * 用户名
     */

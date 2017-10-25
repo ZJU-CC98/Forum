@@ -16,13 +16,13 @@
   <ItemGroup>
     <None Remove="CC98.Forum.rar" />
     <None Remove="Components\Footer.tsx" />
-    <None Remove="Components\Login.tsx" />
-    <None Remove="Components\LoginTest.tsx" />
     <None Remove="Components\UbbContainer.tsx" />
     <None Remove="Components\UserCenterConfig.tsx" />
     <None Remove="Components\UserCenterConfigAvatar.tsx" />
     <None Remove="Components\UsercenterConfigPassword.tsx" />
     <None Remove="Components\UserCenterConfigSignature.tsx" />
+    <None Remove="Reducer.tsx" />
+    <None Remove="Store.tsx" />
     <None Remove="UbbCode.tsx" />
     <None Remove="Ubb\BTagHandler.tsx" />
     <None Remove="Ubb\CodeTagHandler.tsx" />
@@ -53,8 +53,9 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="Components\Footer.tsx" />
-    <TypeScriptCompile Include="Components\Login.tsx" />
-    <TypeScriptCompile Include="Components\LoginTest.tsx" />
+    <TypeScriptCompile Include="Components\LogOn.tsx" />
+    <TypeScriptCompile Include="Components\LogOnExact.tsx" />
+    <TypeScriptCompile Include="Components\LogOff.tsx" />
     <TypeScriptCompile Include="Components\SendTopic.tsx" />
     <TypeScriptCompile Include="Components\UbbContainer.tsx" />
     <TypeScriptCompile Include="Components\UserCenterConfig.tsx" />

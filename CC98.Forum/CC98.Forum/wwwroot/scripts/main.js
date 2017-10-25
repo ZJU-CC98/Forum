@@ -2361,7 +2361,6 @@ var UserCenterExactProfile = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     UserCenterExactProfile.prototype.render = function () {
-        console.log(this.props.userInfo.signatureCode);
         return (React.createElement("div", { className: "user-profile" },
             React.createElement("div", { id: "userId" },
                 React.createElement("p", null, this.props.userInfo.name),
@@ -2812,7 +2811,7 @@ function isBottom() {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(17);
-module.exports = __webpack_require__(79);
+module.exports = __webpack_require__(80);
 
 
 /***/ }),
@@ -2866,8 +2865,7 @@ var Header_1 = __webpack_require__(71);
 var Footer_1 = __webpack_require__(72);
 var MainPage_1 = __webpack_require__(73);
 var User_1 = __webpack_require__(74);
-var Login_1 = __webpack_require__(77);
-var LoginTest_1 = __webpack_require__(78);
+var LogOn_1 = __webpack_require__(77);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -2892,9 +2890,6 @@ var App = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     App.prototype.render = function () {
-        /*
-        const data =
-            '妹子是河南人 96年的 双鱼座 现在是浙江大学传媒学院研一新生 坐标：西溪 身高162 颜值见照片啦 喜欢健身 吃吃喝喝 追剧（传媒学子的基本素养） 性格随和 非常好相处 有一点点“傻白甜” 厨艺也很棒，吃过她做的大盘鸡，超级美味！ 之前有过一次恋爱经历，但因为对方没有“男友力”，缺乏安全感就分手了 和小姐姐一起做室友很偶然也很有缘分，觉得她就是那种比较单纯，性格非常温和，虽然比我小，但是非常会照顾人，希望她能够早日在浙大找到对的人！ 所以希望你~ 有一个强壮的体魄，身高在178左右（可以约健身房哦！） 有一颗温暖的心灵，让妹子有所依靠 诚恳、踏实、爱奋斗~ QQ：2577047698 （希望你加QQ时能够介绍一下自己，也能分享一张自己的照片~） 之前妹子qq验证出了点问题，现在ok了哦，所以有意的小哥哥们就上吧！ 当当当当~王道时间： [upload=jpg,1]http://file.cc98.org/uploadfile/2017/9/18/2344641658.jpg[/upload]（昨天刚刚新鲜出炉的开学典礼照片哟~） [upload=jpg,1]http://file.cc98.org/uploadfile/2017/9/18/2351342848.jpg[/upload]（还有美腻的自拍！） 非诚勿扰哦！ [em07]';*/
         return React.createElement("div", null,
             React.createElement(react_router_dom_1.BrowserRouter, null,
                 React.createElement("div", { style: { backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column' } },
@@ -2909,8 +2904,7 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { path: "/focus", component: MyFocusBoard_1.MyFocusBoard }),
                     React.createElement(react_router_dom_1.Route, { path: "/newtopics", component: AllNewPost_1.AllNewPost }),
                     React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }),
-                    React.createElement(react_router_dom_1.Route, { path: "/login", component: Login_1.Login }),
-                    React.createElement(react_router_dom_1.Route, { path: "/logintest", component: LoginTest_1.LoginTest }),
+                    React.createElement(react_router_dom_1.Route, { path: "/logon", component: LogOn_1.LogOn }),
                     React.createElement(Footer_1.Footer, null))));
     };
     return App;
@@ -5721,22 +5715,14 @@ var UserCenterExact = /** @class */ (function (_super) {
     }
     UserCenterExact.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var hash_1, response, data;
+            var response, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        if (location.hash !== '' && location.hash.indexOf('access_token') !== -1) {
-                            hash_1 = {};
-                            location.hash.slice(1).split('&').map(function (item) { return item.split('='); }).forEach(function (item) {
-                                hash_1[item[0]] = item[1];
-                            });
-                            window.localStorage.token = hash_1['access_token'];
-                        }
-                        return [4 /*yield*/, fetch('https://api.cc98.org/Me/', {
-                                headers: {
-                                    'Authorization': 'bearer' + ' ' + window.localStorage.token
-                                }
-                            })];
+                    case 0: return [4 /*yield*/, fetch('https://api.cc98.org/Me/', {
+                            headers: {
+                                'Authorization': 'bearer' + ' ' + window.localStorage.token
+                            }
+                        })];
                     case 1:
                         response = _a.sent();
                         return [4 /*yield*/, response.json()];
@@ -8878,168 +8864,28 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var $ = __webpack_require__(5);
-var Login = /** @class */ (function (_super) {
-    __extends(Login, _super);
-    function Login(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = {
-            loginName: '',
-            loginPassword: '',
-            loginMessage: '',
-            isLogining: false
-        };
-        _this.handleNameChange = _this.handleNameChange.bind(_this);
-        _this.handlePasswordChange = _this.handlePasswordChange.bind(_this);
-        _this.handleLogin = _this.handleLogin.bind(_this);
-        return _this;
-    }
-    Login.prototype.shake = function (element) {
-        element.classList.add('shake');
-        setTimeout(function () { element.classList.remove('shake'); }, 500);
-        return element;
-    };
-    Login.prototype.handleNameChange = function (e) {
-        this.setState({
-            loginName: e.target.value
-        });
-    };
-    Login.prototype.handlePasswordChange = function (e) {
-        this.setState({
-            loginPassword: e.target.value
-        });
-    };
-    Login.prototype.handleLogin = function (e) {
-        return __awaiter(this, void 0, void 0, function () {
-            var url, requestBody, response, data;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        e.preventDefault();
-                        //如果在登陆中则无视提交
-                        if (this.state.isLogining) {
-                            return [2 /*return*/, false];
-                        }
-                        if (!!(this.state.loginName || this.state.loginPassword)) return [3 /*break*/, 1];
-                        this.setState({
-                            loginMessage: '请输入用户名和密码'
-                        });
-                        this.shake(document.getElementById('loginName')).focus();
-                        this.shake(document.getElementById('loginPassword'));
-                        return [2 /*return*/, false];
-                    case 1:
-                        if (!!this.state.loginName) return [3 /*break*/, 2];
-                        this.setState({
-                            loginMessage: '请输入用户名'
-                        });
-                        this.shake(document.getElementById('loginName')).focus();
-                        return [2 /*return*/, false];
-                    case 2:
-                        if (!!this.state.loginPassword) return [3 /*break*/, 3];
-                        this.setState({
-                            loginMessage: '请输入密码'
-                        });
-                        this.shake(document.getElementById('loginPassword')).focus();
-                        return [2 /*return*/, false];
-                    case 3:
-                        this.setState({
-                            loginMessage: '登陆中',
-                            isLogining: true
-                        });
-                        url = 'http://openid.cc98.org/connect/token';
-                        requestBody = {
-                            'client_id': '8a1bd823-c3cf-44c0-6498-08d50009f244',
-                            'client_secret': 'fc95e3fc-da10-4e19-9394-3e9f5df0f2c6',
-                            'grant_type': 'password',
-                            'ResponseType': 'token',
-                            'scope': 'openid',
-                            'username': this.state.loginName,
-                            'password': this.state.loginPassword
-                        };
-                        return [4 /*yield*/, fetch(url, {
-                                method: 'POST',
-                                body: $.param(requestBody)
-                            })];
-                    case 4:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.json()];
-                    case 5:
-                        data = _a.sent();
-                        console.log(data);
-                        _a.label = 6;
-                    case 6: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    Login.prototype.render = function () {
-        return (React.createElement("div", { className: "login" },
-            React.createElement("div", null,
-                React.createElement("img", { src: "/images/login.png" }),
-                React.createElement("div", null,
-                    React.createElement("img", { src: "/images/login_welcome.png" }),
-                    React.createElement("form", { onSubmit: this.handleLogin },
-                        React.createElement("div", { className: "login-form" },
-                            React.createElement("p", null, "\u7528\u6237\u540D"),
-                            React.createElement("input", { type: "text", id: "loginName", onChange: this.handleNameChange, value: this.state.loginName })),
-                        React.createElement("div", { className: "login-form" },
-                            React.createElement("p", null, "\u5BC6\u7801"),
-                            React.createElement("input", { type: "password", id: "loginPassword", onChange: this.handlePasswordChange })),
-                        React.createElement("p", { id: "loginMessage" }, this.state.loginMessage),
-                        React.createElement("button", { type: "submit", disabled: this.state.isLogining }, "\u767B\u9646\u8D26\u53F7")),
-                    React.createElement("p", null,
-                        React.createElement("span", null,
-                            "\u8FD8\u6CA1\u8D26\u53F7\uFF1F\u6211\u8981 ",
-                            React.createElement("a", { href: "" }, "\u6CE8\u518C")))))));
-    };
-    return Login;
-}(React.Component));
-exports.Login = Login;
+var react_router_dom_1 = __webpack_require__(2);
+var LogOnExact_1 = __webpack_require__(78);
+var Logoff_1 = __webpack_require__(79);
 /**
- * 登陆页状态
+ * 用户中心页面
  */
-var LoginState = /** @class */ (function () {
-    function LoginState() {
+var LogOn = /** @class */ (function (_super) {
+    __extends(LogOn, _super);
+    function LogOn() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    return LoginState;
-}());
+    LogOn.prototype.render = function () {
+        return (React.createElement(react_router_dom_1.BrowserRouter, null,
+            React.createElement("div", null,
+                React.createElement(react_router_dom_1.Route, { path: "/logon", exact: true, component: LogOnExact_1.LogOnExact }),
+                React.createElement(react_router_dom_1.Route, { path: "/logon/logoff", component: Logoff_1.LogOff }))));
+    };
+    return LogOn;
+}(React.Component));
+exports.LogOn = LogOn;
 
 
 /***/ }),
@@ -9048,6 +8894,9 @@ var LoginState = /** @class */ (function () {
 
 "use strict";
 
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -9095,28 +8944,70 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(4);
 var $ = __webpack_require__(5);
-var LoginTest = /** @class */ (function (_super) {
-    __extends(LoginTest, _super);
-    function LoginTest(props) {
+var Utility = __webpack_require__(4);
+var LogOnExact = /** @class */ (function (_super) {
+    __extends(LogOnExact, _super);
+    function LogOnExact(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
             loginName: '',
             loginPassword: '',
-            loginMessage: ''
+            loginMessage: '',
+            isLogining: false
         };
         _this.handleNameChange = _this.handleNameChange.bind(_this);
         _this.handlePasswordChange = _this.handlePasswordChange.bind(_this);
         _this.handleLogin = _this.handleLogin.bind(_this);
         return _this;
     }
-    LoginTest.prototype.login = function () {
+    LogOnExact.prototype.shake = function (element) {
+        element.classList.add('shake');
+        setTimeout(function () { element.classList.remove('shake'); }, 500);
+        return element;
+    };
+    LogOnExact.prototype.handleNameChange = function (e) {
+        this.setState({
+            loginName: e.target.value
+        });
+    };
+    LogOnExact.prototype.handlePasswordChange = function (e) {
+        this.setState({
+            loginPassword: e.target.value
+        });
+    };
+    LogOnExact.prototype.handleLogin = function (e) {
         return __awaiter(this, void 0, void 0, function () {
             var url, requestBody, response, data, token;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        //阻止表单提交
+                        e.preventDefault();
+                        //如果在登陆中则无视提交
+                        if (this.state.isLogining) {
+                            return [2 /*return*/, false];
+                        }
+                        //缺少用户名或者密码
+                        if (!this.state.loginName) {
+                            this.setState({
+                                loginMessage: '请输入用户名'
+                            });
+                            this.shake(document.getElementById('loginName')).focus();
+                            return [2 /*return*/, false];
+                        }
+                        else if (!this.state.loginPassword) {
+                            this.setState({
+                                loginMessage: '请输入密码'
+                            });
+                            this.shake(document.getElementById('loginPassword')).focus();
+                            return [2 /*return*/, false];
+                        }
+                        //登陆
+                        this.setState({
+                            loginMessage: '登陆中',
+                            isLogining: true
+                        });
                         url = 'http://openid.cc98.org/connect/token';
                         requestBody = {
                             'client_id': '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
@@ -9134,68 +9025,35 @@ var LoginTest = /** @class */ (function (_super) {
                             })];
                     case 1:
                         response = _a.sent();
+                        //请求是否成功
+                        if (response.status !== 200) {
+                            throw e;
+                        }
                         return [4 /*yield*/, response.json()];
                     case 2:
                         data = _a.sent();
                         token = "Bearer " + data.access_token;
-                        console.log(token);
+                        //缓存token
                         Utility.setLocalStorage("accessToken", token);
                         Utility.setLocalStorage("userName", this.state.loginName);
+                        this.setState({
+                            loginMessage: '登陆成功',
+                            isLogining: false
+                        });
                         return [2 /*return*/];
                 }
             });
         });
     };
-    LoginTest.prototype.catch = function (e) {
-        alert(e.error); //这行好像没什么用……暂时还不会处理不同的error……
+    LogOnExact.prototype.catch = function (e) {
+        //alert(e.error);     这行好像没什么用……暂时还不会处理不同的error……
         console.log("Oops, error", e);
-    };
-    LoginTest.prototype.shake = function (element) {
-        element.classList.add('shake');
-        setTimeout(function () { element.classList.remove('shake'); }, 500);
-        return element;
-    };
-    LoginTest.prototype.handleNameChange = function (e) {
         this.setState({
-            loginName: e.target.value
+            loginMessage: "\u767B\u9646\u5931\u8D25 " + e.error,
+            isLogining: false
         });
     };
-    LoginTest.prototype.handlePasswordChange = function (e) {
-        this.setState({
-            loginPassword: e.target.value
-        });
-    };
-    LoginTest.prototype.handleLogin = function (e) {
-        e.preventDefault();
-        if (!(this.state.loginName || this.state.loginPassword)) {
-            this.setState({
-                loginMessage: '请输入用户名和密码'
-            });
-            this.shake(document.getElementById('loginName')).focus();
-            this.shake(document.getElementById('loginPassword'));
-            return false;
-        }
-        else if (!this.state.loginName) {
-            this.setState({
-                loginMessage: '请输入用户名'
-            });
-            this.shake(document.getElementById('loginName')).focus();
-            return false;
-        }
-        else if (!this.state.loginPassword) {
-            this.setState({
-                loginMessage: '请输入密码'
-            });
-            this.shake(document.getElementById('loginPassword')).focus();
-            return false;
-        }
-        else {
-            this.setState({
-                loginMessage: '登陆中'
-            });
-        }
-    };
-    LoginTest.prototype.render = function () {
+    LogOnExact.prototype.render = function () {
         return (React.createElement("div", { className: "login" },
             React.createElement("div", null,
                 React.createElement("img", { src: "/images/login.png" }),
@@ -9209,27 +9067,76 @@ var LoginTest = /** @class */ (function (_super) {
                             React.createElement("p", null, "\u5BC6\u7801"),
                             React.createElement("input", { type: "password", id: "loginPassword", onChange: this.handlePasswordChange })),
                         React.createElement("p", { id: "loginMessage" }, this.state.loginMessage),
-                        React.createElement("button", { type: "submit", onClick: this.login.bind(this) }, "\u767B\u9646\u8D26\u53F7")),
+                        React.createElement("button", { type: "submit", disabled: this.state.isLogining }, "\u767B\u9646\u8D26\u53F7")),
                     React.createElement("p", null,
                         React.createElement("span", null,
                             "\u8FD8\u6CA1\u8D26\u53F7\uFF1F\u6211\u8981 ",
                             React.createElement("a", { href: "" }, "\u6CE8\u518C")))))));
     };
-    return LoginTest;
+    return LogOnExact;
 }(React.Component));
-exports.LoginTest = LoginTest;
+exports.LogOnExact = LogOnExact;
 /**
  * 登陆页状态
  */
-var LoginState = /** @class */ (function () {
-    function LoginState() {
+var LogOnState = /** @class */ (function () {
+    function LogOnState() {
     }
-    return LoginState;
+    return LogOnState;
 }());
 
 
 /***/ }),
 /* 79 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var LogOff = /** @class */ (function (_super) {
+    __extends(LogOff, _super);
+    function LogOff(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            logOffInfo: '登出中'
+        };
+        return _this;
+    }
+    LogOff.prototype.componentDidMount = function () {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('userName');
+        this.setState({
+            logOffInfo: '登出成功'
+        });
+    };
+    LogOff.prototype.render = function () {
+        return (React.createElement("div", { className: "login" },
+            React.createElement("div", null,
+                React.createElement("img", { src: "/images/login.png" }),
+                React.createElement("div", null,
+                    React.createElement("p", { className: "LogOffInfo" }, this.state.logOffInfo)))));
+    };
+    return LogOff;
+}(React.Component));
+exports.LogOff = LogOff;
+
+
+/***/ }),
+/* 80 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
