@@ -1666,6 +1666,16 @@ function getLocalStorage(key) {
     }
 }
 exports.getLocalStorage = getLocalStorage;
+function removeLocalStorage(key) {
+    localStorage.removeItem(key);
+    return;
+}
+exports.removeLocalStorage = removeLocalStorage;
+function removeStorage(key) {
+    sessionStorage.removeItem(key);
+    return;
+}
+exports.removeStorage = removeStorage;
 
 
 /***/ }),
@@ -4543,7 +4553,7 @@ var SendTopic = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        url = "https://api.cc98.org/Post/Topic/" + this.props.topicid;
+                        url = "http://apitest.niconi.cc/topic/test";
                         content = "Content=" + this.state.content + "&ContentType=Markdown&Title=";
                         token = Utility.getLocalStorage("accessToken");
                         return [4 /*yield*/, fetch(url, {
@@ -4552,7 +4562,6 @@ var SendTopic = /** @class */ (function (_super) {
                                     'Content-Type': 'application/x-www-form-urlencoded',
                                     'Authorization': token,
                                 },
-                                body: content
                             })];
                     case 1:
                         mes = _a.sent();
