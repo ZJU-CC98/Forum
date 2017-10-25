@@ -45,8 +45,11 @@ export class LoginTest extends React.Component<null, LoginState> {
             body: $.param(requestBody)
 
         });
-        let data = await response.json();
-        console.log(data);
+        let data = await response.json();       
+        const token = "Bearer " + data.access_token;
+        console.log(token);
+        Utility.setLocalStorage("accessToken", token);
+        Utility.setLocalStorage("userName", this.state.loginName);
     } catch(e) {    //捕捉到例外，开始执行catch语句，否则跳过
         alert(e.error);     //这行好像没什么用……暂时还不会处理不同的error……
         console.log("Oops, error", e);
@@ -78,6 +81,7 @@ export class LoginTest extends React.Component<null, LoginState> {
                 loginMessage: '请输入用户名和密码'
             });
             this.shake(document.getElementById('loginName')).focus();
+            
             this.shake(document.getElementById('loginPassword'));
             return false;
         } else if (!this.state.loginName) {

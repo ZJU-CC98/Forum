@@ -281,3 +281,25 @@ export function getStorage(key) {
         return v.slice(4);
     }
 }
+ export function setLocalStorage(key, value) {
+    let v = value;
+    if (typeof v == 'object') {
+        v = JSON.stringify(v);
+        v = `obj-${v}`;
+    } else {
+        v = `str-${v}`;
+    }
+    localStorage.setItem(key, v);
+}
+export function getLocalStorage(key) {
+    let v = localStorage.getItem(key);
+    if (!v) {
+        return;
+    }
+    if (v.indexOf('obj-') === 0) {
+        v = v.slice(4);
+        return JSON.parse(v);
+    } else if (v.indexOf('str-') === 0) {
+        return v.slice(4);
+    }
+}

@@ -29,6 +29,7 @@ export class UserNavigation extends React.Component {
         return (<div className="user-center-navigation" id="userCenterNavigation">
             <ul>
                 <CustomLink to={`${location.pathname}`} label="主页" activeOnlyWhenExact={true} myClassName="fa-home" />
+                <hr />
             </ul>
         </div>);
     }
