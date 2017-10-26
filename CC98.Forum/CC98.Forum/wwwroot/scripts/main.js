@@ -4557,7 +4557,7 @@ var SendTopic = /** @class */ (function (_super) {
                         content = "Content=" + this.state.content + "&ContentType=Markdown&Title=";
                         token = Utility.getLocalStorage("accessToken");
                         return [4 /*yield*/, fetch(url, {
-                                method: "POST",
+                                method: "GET",
                                 headers: {
                                     'Content-Type': 'application/x-www-form-urlencoded',
                                     'Authorization': token,

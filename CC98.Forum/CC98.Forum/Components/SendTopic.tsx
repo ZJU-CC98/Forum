@@ -27,7 +27,7 @@ export class SendTopic extends RouteComponent<{ topicid }, { content: string }, 
         let content = `Content=${this.state.content}&ContentType=Markdown&Title=`;
         let token = Utility.getLocalStorage("accessToken");
         let mes = await fetch(url, {
-            method: "POST",
+            method: "GET",
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Authorization': token,
