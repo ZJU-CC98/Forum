@@ -1902,8 +1902,8 @@ body {
     padding: 0;
 }
 
-#search {
-    opacity: 0.8;
+#dropdown a{
+    color:rgb(255,255,255);
 }
 
 #dropdown .box {
@@ -1925,7 +1925,7 @@ body {
     margin: 0 0 0 0;
 }
 
-#dropdown .select {
+#dropdown .userName {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -1943,40 +1943,51 @@ body {
     display: flex;
     height: 55px;
     width: 60px;
-    border-radius: 0 0 5px 5px;
+    border-radius: 0 0 10px 10px;
     background-color: rgb(53,177,255);
     font-size: 16px; //这里字体要大一点
     letter-spacing: 2px;
     justify-content: center;
+    background: linear-gradient(rgb(53,177,255),rgb(13,137,255)); //渐变效果
+    background: -webkit-linear-gradient(rgb(53,177,255),rgb(13,137,255)); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(rgb(53,177,255),rgb(13,137,255)); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(rgb(53,177,255),rgb(13,137,255)); /* Firefox 3.6 - 15 */
 }
 
-#dropdown .sub {
-    width: 124px;
+#dropdown .boardListLink:hover { //:hover 选择器用于选择鼠标指针浮动在上面的元素
+    filter: brightness(1.1); //亮度
+    -webkit-filter: brightness(1.1);
+}
+
+#dropdown .dropDownSubBox{
+    margin-top:-5px;
+}
+
+#dropdown .dropDownSub {
+    width: 94px;
     display: none;
     background-color: rgba(80,80,80,0.5);
-    margin-top: -5px;
+    margin-left:30px;
     opacity: 0.9999; //暂时不知道原因，但是如果不加上一个小于1的opacity值，下拉会出问题,猜测是opacity把元素及所有子元素合在一起？
 }
 
-#dropdown .sub li {
-    display: flex;
+#dropdown .dropDownSub li {
+    display:flex;
     height: 25px;
     cursor: pointer;
     justify-content: center;
     align-items: center;
 }
 
-#dropdown .sub li.hover {
+#dropdown .dropDownSub li.hover {
     background: rgb(53,177,255);
 }
 //以下是头部中搜索条的样式
-#search ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+#search {
+   
 }
 
-#search .box, #search .select, #search input, #search a, #search .sub {
+#search .box, #search .select, #search input, #search a, #search .searchBoxSub {
     background: rgb(255,255,255);
 }
 
@@ -1990,6 +2001,8 @@ body {
     border-color: rgb(233,233,233);
     border-width: 2px;
     box-sizing: border-box;
+    align-items: center;
+    opacity: 0.8;
 }
 
 #search form {
@@ -1998,7 +2011,7 @@ body {
     align-items: center;
 }
 
-#search .select {
+#search .searchBoxSelect {
     display: flex;
     width: 30px;
     height: 30px;
@@ -2008,6 +2021,7 @@ body {
     justify-content: center;
     align-items: center;
     margin-left: 2px;
+    cursor: pointer;
 }
 
 #search .downArrow {
@@ -2017,6 +2031,7 @@ body {
     height: 32px;
     border-right: 2px solid rgb(233,233,233);
     padding-right: 2px;
+    cursor: pointer;
 }
 
 #search input {
@@ -2036,7 +2051,13 @@ body {
     padding: 2px 0 0 3px;
 }
 
-#search .sub {
+#search ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#search .searchBoxSub {
     width: 50px;
     border-radius: 5px;
     border-style: solid;
@@ -2049,16 +2070,16 @@ body {
     color: rgb(80,80,80);
 }
 
-#search .sub li {
+#search .searchBoxSub li {
     height: 25px;
     cursor: pointer;
     padding-left: 5px;
+    padding-top:3px;
 }
 
-#search .sub li.hover {
+#search .searchBoxSub li.hover {
     background: rgb(233,233,233);
 }
-
 //-------------------------以下是底部的样式~~~---------------------------------------------------
 .footer {
     display: flex;
@@ -2171,7 +2192,6 @@ body {
     background-color: rgb(53,177,255);
 }
 //推荐阅读到此为止~
-
 .list1 {
     display: flex;
     flex-direction: column;
@@ -2443,11 +2463,9 @@ body {
     margin: 0;
     padding: 0;
 }
-
 /*
 * UBB用
 */
-
 .ubb-code {
     ol {
         list-style: none;
@@ -2467,7 +2485,6 @@ body {
         background-color: #ebebeb;
     }
 }
-
 /**
     弹出用户悬浮窗
 */
@@ -2505,11 +2522,11 @@ body {
 /*
     登陆页用
 */
-
 .login {
     display: flex;
     align-items: center;
     flex-direction: column;
+    margin-bottom: 6rem;
 
     & > div {
         margin-top: 30px;
@@ -2539,6 +2556,12 @@ body {
             & > p {
                 margin-right: 200px;
                 font-size: 12px;
+            }
+
+            .LogOffInfo {
+                align-self: center;
+                font-size: 1rem;
+                margin-right: 0;
             }
         }
     }
@@ -2613,9 +2636,7 @@ body {
     animation-iteration-count: infinite;
     animation-direction: alternate;
 }
-
 //------------------------登录页到此结束----------------------------------
-
 #sendTopic {
     border: #CCCCCC solid thin;
     width: 1140px;
