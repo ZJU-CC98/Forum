@@ -66,7 +66,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         if (this.state.page == 1) {
             topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} />;
         }
-        return <div className="center" style={{  minWidth: "1140px" }} >
+        return <div className="center" >
             <TopicPager page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
             {topic}
             <Route path="/topic/:topicid/:page?" component={Reply} />
@@ -102,14 +102,14 @@ export class Reply extends RouteComponent<{}, { contents }, { page, topicid, use
 
     }
     private generateContents(item: State.ContentState) {
-        return <div className="reply" ><div style={{ marginTop: "15px", marginBotton: "5px", border: "#EAEAEA solid thin" }}>
+        return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
             <Replier key={item.id} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} />
             <ReplyContent key={item.content} content={item.content} signature={item.signature} />
         </div>
         </div>;
     }
     render() {
-        return <div className="center" style={{ width: "1140px" }}>
+        return <div className="center" style={{ width: "100%" }}>
             {this.state.contents.map(this.generateContents)}
         </div>
             ;
@@ -156,23 +156,23 @@ export class Replier extends RouteComponent<{ userId, topicid, userName, replyTi
     
 
         return <div className="replyRoot">
-            <div className="row" style={{ width: "1140px", display: "flex", marginBottom: "10px" }}>
+            <div className="row" style={{  display: "flex", marginBottom: "0.625rem" }}>
 
-                <div className="row mouse-userDetails" style={{ height: "250px", width: "380px" }} >
+                <div className="row mouse-userDetails" style={{ height: "15.625rem", width: "23.75rem" }} >
                     <div className="authorImg" ><a href={realUrl}><img src={this.props.userImgUrl}></img></a></div>
                     <div className="userDetails" style={{ display: "none", position: "absolute", zindedx: "1" }}>
                         {userDetails}
                     </div>
 
                 </div>
-                <div className="column" id="rpymes" style={{ marginLeft: "-300px" }}>
+                <div className="column" id="rpymes" style={{ marginLeft: "-18.75rem" }}>
                     <div className="row" id="replierMes">
-                        <div style={{ marginLeft: "10px" }}><span>{this.props.floor}L</span></div>
-                        <div className="rpyClr" style={{ marginLeft: "10px" }}><a href={url}>{this.props.userName}</a></div>
-                        <div id="topicsNumber" style={{ marginLeft: "10px" }}>{topicNumber}   <span className="rpyClrodd">{this.props.sendTopicNumber}</span> </div>
+                        <div style={{ marginLeft: "0.625rem" }}><span>{this.props.floor}L</span></div>
+                        <div className="rpyClr" style={{ marginLeft: "0.625rem" }}><a href={url}>{this.props.userName}</a></div>
+                        <div id="topicsNumber" style={{ marginLeft: "0.625rem" }}>{topicNumber}   <span className="rpyClrodd">{this.props.sendTopicNumber}</span> </div>
                     </div>
                     <div className="row" >
-                        <div id="clockimg" style={{ marginLeft: "6px" }}><i className="fa fa-clock-o fa-lg fa-fw"></i></div>
+                        <div id="clockimg" style={{ marginLeft: "0.375rem" }}><i className="fa fa-clock-o fa-lg fa-fw"></i></div>
                         <div><span className="timeProp">{moment(this.props.replyTime).format('YYYY-MM-DD HH:mm:ss')}</span></div>
                     </div>
                 </div>
@@ -270,15 +270,15 @@ export class AuthorMessage extends RouteComponent<{ authorName: string, authorId
         return <div className="row" id="authormes">
 
             <div className="authorImg" ><a href={url}><img src={this.props.authorImgUrl}></img></a></div>
-            <div className="column" style={{ marginLeft: "20px" }}>
+            <div className="column" style={{ marginRight:"1rem" }}>
                 <div className="row authorFans" style={{ justifyContent: "space-between" }}>
                     <div id="authorName"><p><a href={url}>{this.props.authorName}</a></p></div>
-                    <div id="fans" className="row"><div style={{ marginRight: "3px" }}>粉丝</div><div style={{ color: "#EE0000" }}>{this.state.fansNumber}</div></div>
+                    <div id="fans" className="row"><div style={{ marginRight: "0.1875rem" }}>粉丝</div><div style={{ color: "#EE0000" }}>{this.state.fansNumber}</div></div>
                 </div>
 
                 <div className="row">
-                    <button id="watch">关注</button>
-                    <button id="email">私信</button>
+                    <button id="watch" style={{ marginLeft:"1rem" }}>关注</button>
+                    <button id="email" style={{ marginLeft: "1rem" }}>私信</button>
                 </div>
             </div>
         </div>;
@@ -418,15 +418,15 @@ export class TopicVote extends RouteComponent<{}, State.TopicVoteState, {}> {
     }
     render() {
         return <div className="vote" >
-            <div className="row"><input id="checkbox" type="checkbox" /> <span id="option1" style={{ marginLeft: "15px" }}>{this.state.option} </span></div>
-            <div className="row">
+            <div className="row"><input id="checkbox" type="checkbox" /> <span id="option1" style={{ marginLeft: "0.9375rem" }}>{this.state.option} </span></div>
+            <div className="row" style={{ alignItems:"center" }}>
                 <div className="progress">
                     <div className="voteResult"></div>
                 </div>
-                <span style={{ marginLeft: "15px" }}>{this.state.votes}</span>
+                <span style={{ marginLeft: "0.9375rem" }}>{this.state.votes}</span>
                 <span> ({this.state.votes / this.state.totalVotes * 100}%)</span>
             </div>
-            <div style={{ marginLeft: "20px" }}>{this.state.voted ? <span>你已经投过票啦</span> : <button className="operation">投票</button>}</div>
+            <div style={{ marginLeft: "1.25rem" }}>{this.state.voted ? <span>你已经投过票啦</span> : <button className="operation">投票</button>}</div>
         </div>;
     }
 }
@@ -457,7 +457,7 @@ export class TopicPager extends RouteComponent<{ page, topicid, totalPage }, { p
         this.setState({ pager: pages });
     } t
     render() {
-        return <div className="row" style={{ minWidth: '1140px', height: '50px', marginTop: '15px', justifyContent: 'space-between', borderBottom: ' #EAEAEA solid thin', alignItems: 'flex-end', flexDirection: "row-reverse" }}>
+        return <div className="row" style={{ width:"100%", justifyContent: 'space-between', borderBottom: ' #EAEAEA solid thin', alignItems: 'flex-end', flexDirection: "row-reverse" }}>
             <div id="pager" >
                 <div className="row pagination">{this.state.pager.map(this.generatePageLink.bind(this))}</div>
             </div>
@@ -491,7 +491,7 @@ export class TopicPagerDown extends RouteComponent<{ page, topicid, totalPage },
         this.setState({ pager: pages });
     } t
     render() {
-        return <div className="row" style={{ width: '1140px', height: '50px', marginTop: '35px', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        return <div className="row" style={{ width: '100%', justifyContent: 'space-between', alignItems: 'flex-end' }}>
             <div id="pager" >
                 <div className="row pagination">{this.state.pager.map(this.generatePageLink.bind(this))}</div>
             </div>

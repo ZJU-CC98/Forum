@@ -13,14 +13,17 @@ $color-post: rgb(252,252,252);
 $color-red: rgb(255,60,60);
 $color-black: rgb(32,32,32);
 
+#root{
+    font-size:16px;
+}
 .root {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: #FFFFFF;
-    width: 1140px;
     font-family: 微软雅黑;
+    width:100%;
 }
 
 .replyRoot {
@@ -29,36 +32,36 @@ $color-black: rgb(32,32,32);
     align-items: flex-start;
     justify-content: flex-start;
     background-color: $bgcolor2;
-    max-width: 1140px;
-    margin-top: 15px;
     font-family: 微软雅黑;
-    font-size: 14px;
+    font-size: 0.875rem;
 }
 
 #listRoot {
     display: flex;
     flex-direction: column;
     font-family: 微软雅黑;
-    font-size: 12px;
+    font-size: 0.75rem;
     align-items: center;
     justify-content: center;
-    min-width: 1140px;
+    margin-left: 6.25rem;
+    margin-right: 6.25rem;
+    margin-top:2.5rem;
 }
 
 .listContent {
     display: flex;
-    min-width: 1140px;
     border: #EAEAEA solid thin;
-    border-radius: 5px;
+    border-radius: 0.3125rem;
     background-color: $bgcolor2;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    width:100%;
 }
 
 .notice {
     display: flex;
-    min-width: 1140px;
+
     height: 190px;
     border: #EAEAEA solid thin;
     border-radius: 5px;
@@ -68,13 +71,13 @@ $color-black: rgb(32,32,32);
 }
 
 .essay {
-    display: inline-flex;
+    height:6rem;
+    width:100%;
+    display: flex;
     align-self: flex-start;
     border-bottom: #EAEAEA solid thin;
     border-left: #EAEAEA solid thin;
     border-right: #EAEAEA solid thin;
-    height: 100px;
-    min-width: 1140px;
     box-sizing: border-box;
 }
 
@@ -90,36 +93,31 @@ $color-black: rgb(32,32,32);
 
 
 #authormes {
-    min-width: 240px;
     border-right: $bgcolor solid thin;
 }
 
 
 #authorName {
-    margin: 10px,10px,10px,10px;
-    display: inline-flex;
+   margin-left:1rem;
     justify-content: flex-start;
 }
 
 #authorName p {
-    margin-top: 23px;
-    padding-left: 12px;
-    font-size: 13px;
+    margin-top: 1.4375rem;
+    font-size: 0.8125rem;
     font-family: 微软雅黑;
     color: #9ACD32;
 }
 
 #fans {
-    margin-top: 23px;
+    margin-left:1rem;
+    margin-top: 1.4375rem;
     font-family: 微软雅黑;
-    font-size: 13px;
+    font-size: 0.8125rem;
 }
 
 .authorImg {
-    display: inline-flex;
-    margin: 100px,100px,100px,100px;
-    width: 60px;
-    height: 60px;
+
 }
 
 .authorImg img {
@@ -131,58 +129,47 @@ $color-black: rgb(32,32,32);
 }
 
 #watch {
-    margin-top: 2px;
-    min-width: 60px;
-    max-height: 30px;
-    font-size: 12px;
+    width: 4rem;
+    font-size: 0.75rem;
     font-family: 微软雅黑;
-    letter-spacing: 3px;
-    padding-left: 12px;
-    margin-left: 8px;
-    border-radius: 5px;
+    letter-spacing: 0.1875rem;
+    padding-left: 0.625rem;
+    border-radius: 0.3125rem;
     background: red;
     border: 1px solid #B22222;
     color: #fff;
 }
 
 #email {
-    margin-top: 2px;
-    min-width: 60px;
-    max-height: 30px;
-    font-size: 12px;
+    width: 4rem;
+    font-size: 0.75rem;
     font-family: 微软雅黑;
-    letter-spacing: 3px;
-    padding-left: 10px;
-    border-radius: 5px;
+    letter-spacing: 0.1875rem;
+    padding-left: 0.625rem;
+    border-radius: 0.3125rem;
     background: #67B3FF;
     border: 1px solid #2576A8;
     color: #fff;
-    margin-left: 20px;
 }
 
 #title {
-    width: 646px;
+    width: 37rem;
     display: flex;
     border-right: $bgcolor solid thin;
 }
 
 #topicTitleProp {
-    width: 520px;
-    height: 100px;
+    height: 6rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-#essay1 {
-    max-width: 520px;
-    flex-grow: 1;
-}
+
 
 #title1 {
-    flex-grow: 1;
-    margin-top: 15px;
-    margin-left: 20px;
+    margin-top: 1rem;
+    margin-left: 1.25rem;
 }
 
 .titleProp {
@@ -197,29 +184,27 @@ $color-black: rgb(32,32,32);
 
 #essayProp {
     display: flex;
-    font-size: 10px;
-    margin-bottom: 10px;
-    min-width: 620px;
+    font-size: 0.625rem;
+    margin-bottom: 0.625rem;
 }
 
 #like {
     flex-grow: 0;
-    margin-top: 16px;
+    margin-top:1rem;
     margin-left: auto;
-    margin-right: 10px;
+    margin-right: 1rem;
 }
 
 #like span {
 }
 
 .tagSize {
-    font-size: 12px;
+    font-size: 0.75rem;
 }
 
 #essayGrow {
     display: flex;
     flex-direction: row;
-    flex-grow: 1;
 }
 
 #onlike {
@@ -227,86 +212,76 @@ $color-black: rgb(32,32,32);
     background-color: #FFFFFF;
 }
 
-#tags {
-    margin-top: -5px;
-}
+
 
 .tagProp {
-    margin-left: 25px;
+    margin-left: 1.5625rem;
 }
 
 #time {
-    margin-top: -5px;
     display: flex;
     flex-direction: row;
-    margin-left: 10px;
+    margin-left: 0.625rem;
 }
 
 .timeProp {
-    margin-left: 3px;
-    font-size: 12px;
+    margin-left:0.1875rem;
+    font-size: 0.75rem;
 }
 
 #time img {
-    width: 10px;
-    height: 10px;
+    width: 0.625rem;
+    height: 0.625rem;
 }
 
 #viewtimes {
-    margin-top: -5px;
     display: flex;
     flex-direction: row;
 }
 
 .viewProp {
-    margin-left: 10px;
-}
-
-#liked {
-    margin-top: -5px;
+    margin-left: 0.625rem;
 }
 
 #liked img {
-    width: 10px;
-    height: 10px;
+    width: 0.625rem;
+    height: 0.625rem;
 }
 
 #disliked {
-    margin-left: 10px;
-    margin-top: -5px;
-    margin-right: 10px;
+    margin-left: 0.625rem;
+    margin-right: 0.625rem;
 }
 
 #disliked img {
-    width: 10px;
-    height: 10px;
+    width: 0.625rem;
+    height: 0.625rem;
 }
 
 #ads {
-    min-width: 250px;
+    width:20rem;
     display: inline-flex;
 }
 
 #ads img {
     display: flex;
-    width: 250px;
 }
 
 .content {
     display: flex;
     align-self: flex-start;
     flex-direction: column;
-    min-width: 1140px;
+    width:100%;
     border-left: #EAEAEA solid thin;
     border-right: #EAEAEA solid thin;
     box-sizing: border-box;
 }
 
 .reply-content {
+    width:100%;
     display: flex;
     align-self: flex-start;
     flex-direction: column;
-    min-width: 1140px;
     box-sizing: border-box;
 }
 
@@ -314,131 +289,122 @@ $color-black: rgb(32,32,32);
     display: flex;
     border-bottom: 1px dashed #EAEAEA;
     line-height: 200%;
-    flex-grow: 1;
-    margin-right: 20px;
-    margin-left: 20px;
-    font-size: 14px;
-    max-width: 1140px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin:1.25rem;
+    font-size: 0.875rem;
     word-wrap: break-word;
     color: rgb(80,80,80);
 }
 
 .signature {
     color: rgb(80,80,80);
-    margin-bottom: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-top: 20px;
-    font-size: 14px;
+    margin:1.25rem;
+    font-size: 0.875rem;
 }
 
 .comment {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    font-size: 12px;
+    font-size: 0.75rem;
     align-items: flex-end;
-    margin-bottom: 10px;
-    margin-right: 10px;
+    margin-bottom: 0.625rem;
+    margin-right: 0.625rem;
 }
 
 #commentlike {
 }
 
 #commentliked {
-    margin-left: 15px;
+    margin-left: 1rem;
 }
 
 #commentunliked {
-    margin-left: 20px;
+    margin-left: 1.25rem;
 }
 
 #commentliked img {
-    width: 10px;
-    height: 10px;
+    width: 0.625rem;
+    height: 0.625rem;
 }
 
 #commentunliked img {
-    width: 10px;
-    height: 10px;
+    width: 0.625rem;
+    height: 0.625rem;
 }
 
 .commentbutton {
     border: none;
     background-color: #FFFFFF;
-    margin-left: 10px;
+    margin-left: 0.625rem;
     outline: none;
 }
 
 .good {
-    min-width: 1140px;
+    width:100%;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-content: center;
-    padding-top: 20px;
-    font-size: 12px;
-    border-left: #EAEAEA solid thin;
-    border-right: #EAEAEA solid thin;
+    padding: 1.25rem;
+    font-size: 0.75rem;
+    border: #EAEAEA solid thin;
     box-sizing: border-box;
 }
 
 #userImage img {
-    width: 20px;
-    height: 20px;
+    width: 1.25rem;
+    height: 1.25rem;
     border-radius: 50%;
-    margin-left: 20px;
+    margin-left: 1.25rem;
 }
 
 #userName {
-    margin-left: 10px;
+    margin-left: 0.625rem;
 }
 
 #grades {
-    margin-left: 20px;
+    margin-left: 1.25rem;
 }
 
 #reward {
-    margin-left: 20px;
+    margin-left: 1.25rem;
 }
 
 #credit {
-    margin-left: 40px;
+    margin-left: 2.5rem;
 }
 
 .vote {
-    min-width: 1140px;
+    width:100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     border-left: #EAEAEA solid thin;
     border-bottom: #EAEAEA solid thin;
     border-right: #EAEAEA solid thin;
-    font-size: 14px;
+    font-size:0.875rem;
     box-sizing: border-box;
 }
 
 .buttonFont {
-    font-size: 12px;
+    font-size: 0.75rem;
 }
 
 #checkbox {
-    margin-left: 20px;
+    margin-left: 1.25rem;
 }
 
 #option1 {
-    margin: 10px;
+    margin: 0.625rem;
 }
 
 .progress {
-    margin-left: 20px;
+    margin-left: 1.25rem;
     display: flex;
-    width: 600px;
-    height: 10px;
+    width: 40rem;
+    height: 0.625rem;
     background-color: #ECEEEF;
-    border-radius: 5px;
+    border-radius: 0.3125rem;
     box-sizing: border-box;
 }
 
@@ -453,7 +419,9 @@ $color-black: rgb(32,32,32);
     display: flex;
     align-items: flex-end;
 }
-
+.reply{
+    width:100%;
+}
 .reply:nth-child(2n+1) .rpyClr a {
     color: #2576A8;
 }
@@ -472,22 +440,23 @@ $color-black: rgb(32,32,32);
     width: 10px;
     height: 10px;
 }
-
+#operation{
+    margin-top:1rem;
+    margin-left:38rem;
+}
 .operation {
-    margin-top: 35px;
-    min-width: 20px;
-    max-height: 20px;
-    font-size: 12px;
+    margin-top: 1rem;
+    font-size: 0.75rem;
     font-family: 微软雅黑;
-    padding-left: 7px;
-    padding-right: 7px;
-    border-radius: 5px;
+    padding-left: 0.4375rem;
+    padding-right: 0.4375rem;
+    border-radius: 0.3125rem;
     background: #FFFFFF;
     border: 1px solid #5CADDD;
     color: #000000;
-    margin-left: 5px;
-    margin-right: 10px;
-    margin-bottom: 10px;
+    margin-left: 0.3125rem;
+    margin-right: 0.625rem;
+    margin-bottom: 0.625rem;
     outline: none;
 }
 
@@ -504,8 +473,8 @@ $color-black: rgb(32,32,32);
 
 #noticeName {
     display: flex;
-    height: 30px;
-    width: 1140px;
+    margin-top:0.4375rem;
+    margin-bottom:0.4375rem;
     background-color: #3399FE;
 }
 
@@ -538,36 +507,35 @@ $color-black: rgb(32,32,32);
 
 .chooseTag {
     border: #33C499 solid thin;
-    width: 100px;
-    height: 30px;
-    margin-left: 10px;
+    width: 6rem;
+    height:2rem;
+    margin-left: 0.625rem;
     background-color: $bgcolor2;
-    border-radius: 5px;
+    border-radius: 0.3125rem;
 }
 
 .tagNumber {
     background-color: #9BCCFE;
-    width: 50px;
-    height: 25px;
     color: #FFFFFF;
-    border-radius: 5px;
+    border-radius: 0.3125rem;
 }
 
 .listContentTag {
-    margin-top: 10px;
-    margin-left: 20px;
+    margin-top: 0.625rem;
+    margin-left: 1.25rem;
+    margin-bottom:0.625rem;
     border: none;
     background-color: $bgcolor2;
 }
 
 .topicInList {
-    height: 60px;
+   height:4rem;
     text-align: center;
-    width: 1140px;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-right: 10px;
+    margin-right: 0.625rem;
 }
 
 #commentsAmount img {
@@ -592,8 +560,7 @@ a {
 #tagButton {
     border-radius: 5px;
     border: #33C499 solid thin;
-    width: 70px;
-    height: 30px;
+    width: 4.375rem;
     background-color: #F5FAFD;
 }
 
@@ -602,6 +569,8 @@ a {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-left:6rem;
+    margin-right:6rem;
 }
 
 .button {
@@ -678,8 +647,8 @@ a {
 .pagination {
     display: inline-block;
     padding-left: 0;
-    margin: 20px 0;
-    border-radius: 4px;
+    margin: 1.25rem 0;
+    border-radius: 0.25rem;
 }
 
 .pagination > li {
@@ -1699,7 +1668,7 @@ body {
 .focus-post-area {
     display: flex;
     flex-direction: column;
-    margin-top: 10px;
+    margin-top: 0.625rem;
 
     .focus-post-topicArea {
         display: flex;
@@ -1828,7 +1797,6 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
-    min-width: 1140px;
     margin: 0 0 20px 0;
     padding: 0px;
     justify-content: center;
@@ -2489,29 +2457,29 @@ body {
     弹出用户悬浮窗
 */
 .popup {
-    width: 380px;
-    height: 250px; /*高度自由，因为不确定，内容多少。*/
+    width: 23.75rem;
+    height: 15.625rem; /*高度自由，因为不确定，内容多少。*/
     border: 1px solid #D5D5D5;
     background: #fff; /*窗口内容不透明，背景为白色*/
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
     -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
     -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.25); /*内容窗口带阴影*/
-    border-radius: 8px; /* 所有角都使用半径为8px的圆角，此属性为CSS3标准属性 */
-    -moz-border-radius: 8px; /* Mozilla浏览器的私有属性 */
-    -webkit-border-radius: 8px; /* Webkit浏览器的私有属性 */ /*窗口圆角*/
+    border-radius: 0.5rem; /* 所有角都使用半径为8px的圆角，此属性为CSS3标准属性 */
+    -moz-border-radius: 0.5rem; /* Mozilla浏览器的私有属性 */
+    -webkit-border-radius: 0.5rem; /* Webkit浏览器的私有属性 */ /*窗口圆角*/
     z-index: 9000;
 }
 
 .popup_title {
     background: url(/images/headerBackground.jpg) no-repeat center;
-    height: 125px;
-    line-height: 24px; /*使垂直居中*/
+    height: 7.8rem;
+    line-height: 1.5rem; /*使垂直居中*/
     border-bottom: 1px solid #efefef; /*底边框*/
-    border-radius: 8px 8px 0 0; /* 左上角和右上角使用半径为5px的圆角，此属性为CSS3标准属性 */
-    -moz-border-radius: 8px 8px 0 0; /* Mozilla浏览器的私有属性 */
-    -webkit-border-radius: 8px 8px 0 0; /* Webkit浏览器的私有属性 */ /*窗口圆角*/
+    border-radius: 0.5rem 0.5rem 0 0; /* 左上角和右上角使用半径为5px的圆角，此属性为CSS3标准属性 */
+    -moz-border-radius: 0.5rem 0.5rem 0 0; /* Mozilla浏览器的私有属性 */
+    -webkit-border-radius: 0.5rem 0.5rem 0 0; /* Webkit浏览器的私有属性 */ /*窗口圆角*/
     color: #535353;
-    font-size: 16px; /*字体颜色和字体大小*/
+    font-size: 1rem; /*字体颜色和字体大小*/
     -moz-user-select: none; /* Firefox all */
     -webkit-user-select: none; /* Chrome all / Safari all /opera15+*/
     -ms-user-select: none; /*IE10*/
@@ -2593,13 +2561,13 @@ body {
     }
 
     button {
-        margin-right: 80px;
-        height: 40px;
-        width: 340px;
+        margin-right: 5rem;
+        height: 2.5rem;
+        width: 20rem;
         border: 0;
         background-color: rgb(40,167,225);
         color: white;
-        border-radius: 5px;
+        border-radius: 0.3125rem;
 
         &:hover {
             background-color: rgb(41,174,223);
@@ -2639,8 +2607,6 @@ body {
 //------------------------登录页到此结束----------------------------------
 #sendTopic {
     border: #CCCCCC solid thin;
-    width: 1140px;
-    height: 330px;
     display: flex;
     flex-direction: column;
 
@@ -2648,19 +2614,14 @@ body {
 
     #sendTopic-options {
         background-color: #fff;
-        width: 1140px;
-        height: 30px;
         border-bottom: #CCCCCC solid thin;
     }
 
     #sendTopic-input {
         background-color: #fff;
-        height: 290px;
-        padding-top: 5px;
-        padding-left: 5px;
-        padding-right: 5px;
+        height: 20rem;
         border: none;
-        width: 1130px;
+        width:99.8%;
     }
 }
 
@@ -2668,7 +2629,7 @@ body {
     float: left;
     margin: 0 2px;
     vertical-align: text-top;
-    padding-left: 5px;
+    padding-left: 0.3125rem;
 }
 
 .editor__menu li {

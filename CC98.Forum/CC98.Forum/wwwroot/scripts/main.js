@@ -1943,7 +1943,7 @@ var List = /** @class */ (function (_super) {
         });
     };
     List.prototype.render = function () {
-        return React.createElement("div", { id: "listRoot", style: { marginTop: '40px' } },
+        return React.createElement("div", { id: "listRoot" },
             React.createElement(ListHead, { key: this.state.page, boardid: this.state.boardid }),
             React.createElement(ListNotice, null),
             React.createElement(ListButtonAndPager, { page: this.state.page, totalPage: this.state.totalPage, boardid: this.state.boardid }),
@@ -2020,27 +2020,27 @@ var ListHead = /** @class */ (function (_super) {
             React.createElement("a", { href: webUrl }, name));
     };
     ListHead.prototype.render = function () {
-        return React.createElement("div", { className: "column", style: { minWidth: '1140px', } },
-            React.createElement("div", { className: "row", style: { flexDirection: 'row', justifyContent: 'space-between', width: '1140px' } },
+        return React.createElement("div", { className: "column", style: { width: "100%" } },
+            React.createElement("div", { className: "row", style: { flexDirection: 'row', justifyContent: 'space-between' } },
                 React.createElement("div", { style: { flexgrow: '1', flexDirection: 'row', display: 'flex' } },
                     React.createElement("div", { id: "ListImg" },
                         React.createElement("img", { src: this.state.imgUrl })),
-                    React.createElement("div", { className: "column", style: { marginTop: '20px', marginLeft: '10px' } },
-                        React.createElement("div", { className: "row", style: { marginTop: '10px' } },
+                    React.createElement("div", { className: "column", style: { marginTop: '1.25rem', marginLeft: '0.625rempx' } },
+                        React.createElement("div", { className: "row", style: { marginTop: '0.625rem' } },
                             React.createElement("div", null, "\u4ECA\u65E5\u4E3B\u9898"),
-                            React.createElement("div", { style: { marginLeft: '10px' } }, this.state.todayTopics)),
-                        React.createElement("div", { className: "row", style: { marginTop: '10px' } },
+                            React.createElement("div", { style: { marginLeft: '0.625rem' } }, this.state.todayTopics)),
+                        React.createElement("div", { className: "row", style: { marginTop: '0.625rem' } },
                             React.createElement("div", null, "\u603B\u4E3B\u9898"),
-                            React.createElement("div", { style: { marginLeft: '20px' } }, this.state.totalTopics)))),
+                            React.createElement("div", { style: { marginLeft: '1.25rem' } }, this.state.totalTopics)))),
                 React.createElement("div", { className: "column", style: { flexgrow: '0' } },
                     React.createElement("div", { id: "like" },
                         React.createElement("button", { style: { border: 'none', color: '#F5FAFC' } }, "\u2730"),
                         "  \u6536\u85CF\u7248\u9762"),
                     React.createElement("div", null,
-                        React.createElement("img", { src: this.state.adsUrl, style: { width: '250px', height: '60px' } })))),
-            React.createElement("div", { className: "row", style: { marginTop: '5px' } },
+                        React.createElement("img", { src: this.state.adsUrl, style: { width: '15.625rem', height: '3.75rem' } })))),
+            React.createElement("div", { className: "row", style: { marginTop: '0.3125rem' } },
                 React.createElement("span", null, "\u7248\u4E3B : "),
-                React.createElement("div", { className: "row", style: { marginLeft: '5px' } }, this.state.listManager.map(this.generateMasters))));
+                React.createElement("div", { className: "row", style: { marginLeft: '0.3125rem' } }, this.state.listManager.map(this.generateMasters))));
     };
     return ListHead;
 }(RouteComponent));
@@ -2055,10 +2055,10 @@ var ListNotice = /** @class */ (function (_super) {
         return _this;
     }
     ListNotice.prototype.render = function () {
-        return React.createElement("div", { className: "notice", style: { marginTop: '10px' } },
+        return React.createElement("div", { className: "notice", style: { marginTop: '0.625rem' } },
             React.createElement("div", { id: "noticeName" },
-                React.createElement("span", { style: { marginLeft: '15px', marginTop: '7px', color: '#FFFFFF' } }, "\u672C\u7248\u516C\u544A")),
-            React.createElement("span", { style: { marginLeft: '15px', marginTop: '15px', marginRight: '15px' } }, this.state.notice));
+                React.createElement("span", { style: { marginLeft: '0.9375rem', marginTop: '0.4375rem', color: '#FFFFFF' } }, "\u672C\u7248\u516C\u544A")),
+            React.createElement("span", { style: { marginLeft: '0.9375rem', marginTop: '0.9375rem', marginRight: '0.9375rem' } }, this.state.notice));
     };
     return ListNotice;
 }(RouteComponent));
@@ -2104,10 +2104,10 @@ var ListButtonAndPager = /** @class */ (function (_super) {
         });
     };
     ListButtonAndPager.prototype.render = function () {
-        return React.createElement("div", { className: "row", style: { width: '1140px', height: '50px', marginTop: '15px', justifyContent: 'space-between', alignItems: 'flex-end' } },
-            React.createElement("div", { style: { marginBottom: '20px' } },
+        return React.createElement("div", { className: "row", style: { width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", marginTop: '0.9375rem', justifyContent: 'space-between', alignItems: 'flex-end' } },
+            React.createElement("div", { style: { marginBottom: '1.25rem' } },
                 React.createElement("button", { className: "button orange" }, "\u53D1\u4E3B\u9898"),
-                React.createElement("button", { className: "button green", style: { marginLeft: '20px' } }, "\u53D1\u6295\u7968")),
+                React.createElement("button", { className: "button green", style: { marginLeft: '1.25rem' } }, "\u53D1\u6295\u7968")),
             React.createElement("div", { id: "pager" },
                 React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this)))));
     };
@@ -2152,7 +2152,7 @@ var PagerDown = /** @class */ (function (_super) {
         });
     };
     PagerDown.prototype.render = function () {
-        return React.createElement("div", { className: "row", style: { width: '1140px', height: '50px', marginTop: '15px', justifyContent: 'space-between', alignItems: 'flex-end' } },
+        return React.createElement("div", { className: "row", style: { width: '100%', marginTop: '0.9375rem', justifyContent: 'space-between', alignItems: 'flex-end' } },
             React.createElement("div", { id: "pager" },
                 React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this)))));
     };
@@ -2209,7 +2209,7 @@ var ListTag = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     ListTag.prototype.render = function () {
-        return React.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '1140px', borderTop: 'dashed #EAEAEA thin', marginTop: '25px', marginBottom: '25px' } },
+        return React.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginTop: '1.5625rem', marginBottom: '25px' } },
             React.createElement("div", { className: "row" },
                 "  ",
                 React.createElement("button", { id: "tagButton" }, "\u5168\u90E8"),
@@ -2273,15 +2273,14 @@ var ListContent = /** @class */ (function (_super) {
     ListContent.prototype.render = function () {
         return React.createElement("div", { className: "listContent " },
             React.createElement("div", { className: "row", style: { justifyContent: 'space-between', } },
-                React.createElement("div", { className: "row", style: { height: '40px', marginTop: '5px' } },
-                    React.createElement("div", null,
-                        React.createElement("button", { className: "listContentTag" }, "\u5168\u90E8"),
-                        React.createElement("button", { className: "listContentTag" }, "\u7CBE\u534E"),
-                        React.createElement("button", { className: "listContentTag" }, "\u6700\u70ED"))),
-                React.createElement("div", { className: "row", style: { height: '40px', alignItems: 'center' } },
-                    React.createElement("div", { style: { marginRight: '52px', marginLeft: '15px' } },
+                React.createElement("div", { className: "row", style: { alignItems: 'center' } },
+                    React.createElement("div", { className: "listContentTag" }, "\u5168\u90E8"),
+                    React.createElement("div", { className: "listContentTag" }, "\u7CBE\u534E"),
+                    React.createElement("div", { className: "listContentTag" }, "\u6700\u70ED")),
+                React.createElement("div", { className: "row", style: { alignItems: 'center' } },
+                    React.createElement("div", { style: { marginRight: '17rem' } },
                         React.createElement("span", null, "\u4F5C\u8005")),
-                    React.createElement("div", { style: { marginRight: '85px', marginLeft: '15px' } },
+                    React.createElement("div", { style: { marginRight: '7.6875rem' } },
                         React.createElement("span", null, "\u6700\u540E\u53D1\u8868")))),
             React.createElement("div", null, this.state.items.map(this.convertTopicToElement)));
     };
@@ -2310,15 +2309,15 @@ var TopicTitleAndContent = /** @class */ (function (_super) {
         return React.createElement("div", { id: "changeColor" },
             React.createElement("div", { className: "row topicInList" },
                 React.createElement(react_router_dom_1.Link, { to: url },
-                    React.createElement("div", { style: { marginLeft: '20px', } },
+                    React.createElement("div", { style: { marginLeft: '1.25rem', } },
                         " ",
                         React.createElement("span", null, this.state.title))),
-                React.createElement("div", { className: "row", style: { width: "500px", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" } },
-                    React.createElement("div", { style: { width: "100px", marginRight: '10px', marginLeft: '15px' } },
+                React.createElement("div", { className: "row", style: { width: "44%", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" } },
+                    React.createElement("div", { style: { width: "15rem", marginRight: '0.625rem', marginLeft: '1rem' } },
                         " ",
                         React.createElement("span", null,
                             React.createElement("a", null, this.state.authorName))),
-                    React.createElement("div", { className: "row", style: { width: "150px", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" } },
+                    React.createElement("div", { className: "row", style: { width: "25rem", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" } },
                         React.createElement("div", { id: "liked", style: { display: "flex" } },
                             React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
                             React.createElement("span", { className: "timeProp tagSize" }, this.state.likeNumber)),
@@ -2328,11 +2327,11 @@ var TopicTitleAndContent = /** @class */ (function (_super) {
                         React.createElement("div", { id: "commentsAmount", style: { display: "flex" } },
                             React.createElement("i", { className: "fa fa-commenting-o fa-lg" }),
                             React.createElement("span", { className: "timeProp tagSize" }, this.state.commentNumber))),
-                    React.createElement("div", { id: "lastReply", style: { width: "100px" } },
+                    React.createElement("div", { id: "lastReply", style: { width: "15rem" } },
                         React.createElement("span", null,
                             this.state.lastPostUserName,
                             " ")),
-                    React.createElement("div", { style: { width: "150px", marginRight: "20px" } },
+                    React.createElement("div", { style: { width: "30rem", marginRight: "20px" } },
                         React.createElement("span", null, moment(this.state.lastPostTime).format('YYYY-MM-DD HH:mm:ss'))))));
     };
     return TopicTitleAndContent;
@@ -3070,7 +3069,7 @@ var Post = /** @class */ (function (_super) {
         if (this.state.page == 1) {
             topic = React.createElement(PostTopic, { imgUrl: "/images/ads.jpg", page: this.state.page, topicid: this.state.topicid });
         }
-        return React.createElement("div", { className: "center", style: { minWidth: "1140px" } },
+        return React.createElement("div", { className: "center" },
             React.createElement(TopicPager, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
             topic,
             React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: Reply }),
@@ -3115,12 +3114,12 @@ var Reply = /** @class */ (function (_super) {
     };
     Reply.prototype.generateContents = function (item) {
         return React.createElement("div", { className: "reply" },
-            React.createElement("div", { style: { marginTop: "15px", marginBotton: "5px", border: "#EAEAEA solid thin" } },
+            React.createElement("div", { style: { marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" } },
                 React.createElement(Replier, { key: item.id, userId: item.userId, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber }),
                 React.createElement(ReplyContent, { key: item.content, content: item.content, signature: item.signature })));
     };
     Reply.prototype.render = function () {
-        return React.createElement("div", { className: "center", style: { width: "1140px" } }, this.state.contents.map(this.generateContents));
+        return React.createElement("div", { className: "center", style: { width: "100%" } }, this.state.contents.map(this.generateContents));
     };
     return Reply;
 }(RouteComponent));
@@ -3165,27 +3164,27 @@ var Replier = /** @class */ (function (_super) {
             userDetails = null;
         }
         return React.createElement("div", { className: "replyRoot" },
-            React.createElement("div", { className: "row", style: { width: "1140px", display: "flex", marginBottom: "10px" } },
-                React.createElement("div", { className: "row mouse-userDetails", style: { height: "250px", width: "380px" } },
+            React.createElement("div", { className: "row", style: { display: "flex", marginBottom: "0.625rem" } },
+                React.createElement("div", { className: "row mouse-userDetails", style: { height: "15.625rem", width: "23.75rem" } },
                     React.createElement("div", { className: "authorImg" },
                         React.createElement("a", { href: realUrl },
                             React.createElement("img", { src: this.props.userImgUrl }))),
                     React.createElement("div", { className: "userDetails", style: { display: "none", position: "absolute", zindedx: "1" } }, userDetails)),
-                React.createElement("div", { className: "column", id: "rpymes", style: { marginLeft: "-300px" } },
+                React.createElement("div", { className: "column", id: "rpymes", style: { marginLeft: "-18.75rem" } },
                     React.createElement("div", { className: "row", id: "replierMes" },
-                        React.createElement("div", { style: { marginLeft: "10px" } },
+                        React.createElement("div", { style: { marginLeft: "0.625rem" } },
                             React.createElement("span", null,
                                 this.props.floor,
                                 "L")),
-                        React.createElement("div", { className: "rpyClr", style: { marginLeft: "10px" } },
+                        React.createElement("div", { className: "rpyClr", style: { marginLeft: "0.625rem" } },
                             React.createElement("a", { href: url }, this.props.userName)),
-                        React.createElement("div", { id: "topicsNumber", style: { marginLeft: "10px" } },
+                        React.createElement("div", { id: "topicsNumber", style: { marginLeft: "0.625rem" } },
                             topicNumber,
                             "   ",
                             React.createElement("span", { className: "rpyClrodd" }, this.props.sendTopicNumber),
                             " ")),
                     React.createElement("div", { className: "row" },
-                        React.createElement("div", { id: "clockimg", style: { marginLeft: "6px" } },
+                        React.createElement("div", { id: "clockimg", style: { marginLeft: "0.375rem" } },
                             React.createElement("i", { className: "fa fa-clock-o fa-lg fa-fw" })),
                         React.createElement("div", null,
                             React.createElement("span", { className: "timeProp" }, moment(this.props.replyTime).format('YYYY-MM-DD HH:mm:ss'))))),
@@ -3311,17 +3310,17 @@ var AuthorMessage = /** @class */ (function (_super) {
             React.createElement("div", { className: "authorImg" },
                 React.createElement("a", { href: url },
                     React.createElement("img", { src: this.props.authorImgUrl }))),
-            React.createElement("div", { className: "column", style: { marginLeft: "20px" } },
+            React.createElement("div", { className: "column", style: { marginRight: "1rem" } },
                 React.createElement("div", { className: "row authorFans", style: { justifyContent: "space-between" } },
                     React.createElement("div", { id: "authorName" },
                         React.createElement("p", null,
                             React.createElement("a", { href: url }, this.props.authorName))),
                     React.createElement("div", { id: "fans", className: "row" },
-                        React.createElement("div", { style: { marginRight: "3px" } }, "\u7C89\u4E1D"),
+                        React.createElement("div", { style: { marginRight: "0.1875rem" } }, "\u7C89\u4E1D"),
                         React.createElement("div", { style: { color: "#EE0000" } }, this.state.fansNumber))),
                 React.createElement("div", { className: "row" },
-                    React.createElement("button", { id: "watch" }, "\u5173\u6CE8"),
-                    React.createElement("button", { id: "email" }, "\u79C1\u4FE1"))));
+                    React.createElement("button", { id: "watch", style: { marginLeft: "1rem" } }, "\u5173\u6CE8"),
+                    React.createElement("button", { id: "email", style: { marginLeft: "1rem" } }, "\u79C1\u4FE1"))));
     };
     return AuthorMessage;
 }(RouteComponent));
@@ -3517,18 +3516,18 @@ var TopicVote = /** @class */ (function (_super) {
             React.createElement("div", { className: "row" },
                 React.createElement("input", { id: "checkbox", type: "checkbox" }),
                 " ",
-                React.createElement("span", { id: "option1", style: { marginLeft: "15px" } },
+                React.createElement("span", { id: "option1", style: { marginLeft: "0.9375rem" } },
                     this.state.option,
                     " ")),
-            React.createElement("div", { className: "row" },
+            React.createElement("div", { className: "row", style: { alignItems: "center" } },
                 React.createElement("div", { className: "progress" },
                     React.createElement("div", { className: "voteResult" })),
-                React.createElement("span", { style: { marginLeft: "15px" } }, this.state.votes),
+                React.createElement("span", { style: { marginLeft: "0.9375rem" } }, this.state.votes),
                 React.createElement("span", null,
                     " (",
                     this.state.votes / this.state.totalVotes * 100,
                     "%)")),
-            React.createElement("div", { style: { marginLeft: "20px" } }, this.state.voted ? React.createElement("span", null, "\u4F60\u5DF2\u7ECF\u6295\u8FC7\u7968\u5566") : React.createElement("button", { className: "operation" }, "\u6295\u7968")));
+            React.createElement("div", { style: { marginLeft: "1.25rem" } }, this.state.voted ? React.createElement("span", null, "\u4F60\u5DF2\u7ECF\u6295\u8FC7\u7968\u5566") : React.createElement("button", { className: "operation" }, "\u6295\u7968")));
     };
     return TopicVote;
 }(RouteComponent));
@@ -3571,7 +3570,7 @@ var TopicPager = /** @class */ (function (_super) {
         });
     };
     TopicPager.prototype.render = function () {
-        return React.createElement("div", { className: "row", style: { minWidth: '1140px', height: '50px', marginTop: '15px', justifyContent: 'space-between', borderBottom: ' #EAEAEA solid thin', alignItems: 'flex-end', flexDirection: "row-reverse" } },
+        return React.createElement("div", { className: "row", style: { width: "100%", justifyContent: 'space-between', borderBottom: ' #EAEAEA solid thin', alignItems: 'flex-end', flexDirection: "row-reverse" } },
             React.createElement("div", { id: "pager" },
                 React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this)))));
     };
@@ -3616,7 +3615,7 @@ var TopicPagerDown = /** @class */ (function (_super) {
         });
     };
     TopicPagerDown.prototype.render = function () {
-        return React.createElement("div", { className: "row", style: { width: '1140px', height: '50px', marginTop: '35px', justifyContent: 'space-between', alignItems: 'flex-end' } },
+        return React.createElement("div", { className: "row", style: { width: '100%', justifyContent: 'space-between', alignItems: 'flex-end' } },
             React.createElement("div", { id: "pager" },
                 React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this)))));
     };
@@ -4563,7 +4562,7 @@ var SendTopic = /** @class */ (function (_super) {
         this.setState({ content: event.target.value });
     };
     SendTopic.prototype.render = function () {
-        return React.createElement("div", { style: { display: "flex", flexDirection: "column" } },
+        return React.createElement("div", { style: { width: "100%", display: "flex", flexDirection: "column" } },
             React.createElement("div", { id: "sendTopic" },
                 React.createElement("div", { id: "sendTopic-options" },
                     React.createElement("ul", { className: "editor__menu clearfix", id: "wmd-button-row" },
@@ -4601,8 +4600,8 @@ var SendTopic = /** @class */ (function (_super) {
                 React.createElement("form", null,
                     React.createElement("div", null,
                         React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input", value: this.state.content, onChange: this.handleChange.bind(this) })))),
-            React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "20px " } },
-                React.createElement("div", { id: "post-topic-button", onClick: this.sendTopic.bind(this), className: "button blue", style: { marginTop: "20px", width: "70px", letterSpacing: "5px" } }, "\u56DE\u590D")));
+            React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "1.25rem " } },
+                React.createElement("div", { id: "post-topic-button", onClick: this.sendTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u56DE\u590D")));
     };
     return SendTopic;
 }(RouteComponent));
@@ -8006,9 +8005,7 @@ var DropDown = /** @class */ (function (_super) {
             });
         });
         if (this.state.userName === "adddna")
-            alert("欢迎回来~");
-        if (this.state.userName === "Dearkano")
-            alert("渣男，快滚!");
+            alert("guna!");
         if (Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName")) {
             return React.createElement("div", { id: "dropdown" },
                 React.createElement("div", { className: "box" },

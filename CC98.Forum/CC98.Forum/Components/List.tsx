@@ -63,7 +63,7 @@ export class List extends RouteComponent<{}, { page: number, totalPage: number, 
 		this.setState({ page: page, totalPage: totalPage, boardid: boardid });
 	}
 	render() {
-		return <div id="listRoot" style={{ marginTop: '40px' }}>
+		return <div id="listRoot">
 			<ListHead key={this.state.page} boardid={this.state.boardid} />
 			<ListNotice />
 			<ListButtonAndPager page={this.state.page} totalPage={this.state.totalPage} boardid={this.state.boardid} />
@@ -111,23 +111,23 @@ export class ListHead extends RouteComponent<{ boardid }, State.ListHeadState, {
 		return <div style={{ marginRight: '10px' }}><a href={webUrl}>{name}</a></div>;
 	}
 	render() {
-		return <div className="column" style={{ minWidth: '1140px', }}>
-			<div className="row" style={{ flexDirection: 'row', justifyContent: 'space-between', width: '1140px' }}>
+        return <div className="column" style={{width:"100%"}} >
+			<div className="row" style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 				<div style={{ flexgrow: '1', flexDirection: 'row', display: 'flex' }}>
 					<div id="ListImg" ><img src={this.state.imgUrl}></img></div>
-					<div className="column" style={{ marginTop: '20px', marginLeft: '10px' }}>
+					<div className="column" style={{ marginTop: '1.25rem', marginLeft: '0.625rempx' }}>
 
-						<div className="row" style={{ marginTop: '10px' }}><div>今日主题</div><div style={{ marginLeft: '10px' }}>{this.state.todayTopics}</div></div>
-						<div className="row" style={{ marginTop: '10px' }}><div>总主题</div><div style={{ marginLeft: '20px' }}>{this.state.totalTopics}</div></div>
+						<div className="row" style={{ marginTop: '0.625rem' }}><div>今日主题</div><div style={{ marginLeft: '0.625rem' }}>{this.state.todayTopics}</div></div>
+						<div className="row" style={{ marginTop: '0.625rem' }}><div>总主题</div><div style={{ marginLeft: '1.25rem' }}>{this.state.totalTopics}</div></div>
 					</div>
 				</div>
 				<div className="column" style={{ flexgrow: '0' }}>
 					<div id="like"><button style={{ border: 'none', color: '#F5FAFC' }}>✰</button>  收藏版面</div>
-					<div ><img src={this.state.adsUrl} style={{ width: '250px', height: '60px' }}></img></div>
+					<div ><img src={this.state.adsUrl} style={{ width: '15.625rem', height: '3.75rem' }}></img></div>
 				</div>
 			</div>
-			<div className="row" style={{ marginTop: '5px' }}>
-				<span>版主 : </span><div className="row" style={{ marginLeft: '5px' }}>{this.state.listManager.map(this.generateMasters)}</div>
+			<div className="row" style={{ marginTop: '0.3125rem' }}>
+				<span>版主 : </span><div className="row" style={{ marginLeft: '0.3125rem' }}>{this.state.listManager.map(this.generateMasters)}</div>
 			</div>
 		</div>;
 
@@ -141,12 +141,12 @@ export class ListNotice extends RouteComponent<{}, State.ListNoticeState, {}> {
 		};
 	}
 	render() {
-		return <div className="notice" style={{ marginTop: '10px' }}>
+		return <div className="notice" style={{ marginTop: '0.625rem' }}>
 			<div id="noticeName">
-				<span style={{ marginLeft: '15px', marginTop: '7px', color: '#FFFFFF' }}>本版公告</span>
+				<span style={{ marginLeft: '0.9375rem', marginTop: '0.4375rem', color: '#FFFFFF' }}>本版公告</span>
 
 			</div>
-			<span style={{ marginLeft: '15px', marginTop: '15px', marginRight: '15px' }}>{this.state.notice}</span>
+			<span style={{ marginLeft: '0.9375rem', marginTop: '0.9375rem', marginRight: '0.9375rem' }}>{this.state.notice}</span>
 		</div>;
 	}
 }
@@ -180,10 +180,10 @@ export class ListButtonAndPager extends React.Component<{ boardid: number, page:
 		this.setState({ pager: pages });
 	}
 	render() {
-		return <div className="row" style={{ width: '1140px', height: '50px', marginTop: '15px', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-			<div style={{ marginBottom: '20px' }}>
+        return <div className="row" style={{ width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem",marginTop: '0.9375rem', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+			<div style={{ marginBottom: '1.25rem' }}>
 				<button className="button orange">发主题</button>
-				<button className="button green" style={{ marginLeft: '20px' }}>发投票</button>
+				<button className="button green" style={{ marginLeft: '1.25rem' }}>发投票</button>
 			</div>
 			<div id="pager" >
 				<div className="row pagination">{this.state.pager.map(this.generatePageLink.bind(this))}</div>
@@ -217,7 +217,7 @@ export class PagerDown extends React.Component<{ boardid: number, page: number, 
         this.setState({ pager: pages });
     }
     render() {
-        return <div className="row" style={{ width: '1140px', height: '50px', marginTop: '15px', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        return <div className="row" style={{ width: '100%',  marginTop: '0.9375rem', justifyContent: 'space-between', alignItems: 'flex-end' }}>
             <div id="pager" >
                 <div className="row pagination">{this.state.pager.map(this.generatePageLink.bind(this))}</div>
             </div>
@@ -264,8 +264,8 @@ export class PageModel extends React.Component<{ boardid: number, pageNumber: nu
 }
 export class ListTag extends React.Component<{}> {
 
-	render() {
-		return <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '1140px', borderTop: 'dashed #EAEAEA thin', marginTop: '25px', marginBottom: '25px' }}>
+    render() {
+        return <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight:"0.3125rem", borderTop: 'dashed #EAEAEA thin', marginTop: '1.5625rem', marginBottom: '25px' }}>
 			<div className="row">  <button id="tagButton">全部</button>
 				<button className="chooseTag">dota <span className="tagNumber">1234</span></button>
 				<button className="chooseTag">csgo <span className="tagNumber">5687</span ></button></div>
@@ -313,15 +313,15 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
 
 		return <div className="listContent ">
 			<div className="row" style={{ justifyContent: 'space-between', }}>
-				<div className="row" style={{ height: '40px', marginTop: '5px' }}>
+                <div className="row" style={{ alignItems: 'center' }} >
 
-                    <div><button className="listContentTag">全部</button>
-					<button className="listContentTag">精华</button>
-					<button className="listContentTag">最热</button></div>
+                    <div className="listContentTag">全部</div>
+					<div className="listContentTag">精华</div>
+					<div className="listContentTag">最热</div>
 				</div>
-				<div className="row" style={{ height: '40px', alignItems: 'center' }}>
-					<div style={{ marginRight: '52px', marginLeft: '15px' }}><span>作者</span></div>
-					<div style={{ marginRight: '85px', marginLeft: '15px' }}><span>最后发表</span></div>
+				<div className="row" style={{ alignItems: 'center' }}>
+					<div style={{ marginRight: '17rem' }}><span>作者</span></div>
+					<div style={{ marginRight: '7.6875rem'}}><span>最后发表</span></div>
 				</div>
 			</div>
 			<div>{this.state.items.map(this.convertTopicToElement)}</div>
@@ -370,13 +370,13 @@ export class TopicTitleAndContent extends React.Component<HotTopic, { title, aut
 
             <div className="row topicInList" >
 
-                <Link to={url}><div style={{ marginLeft: '20px', }}> <span >{this.state.title}</span></div></Link>
+                <Link to={url}><div style={{ marginLeft: '1.25rem', }}> <span >{this.state.title}</span></div></Link>
 
-                <div className="row" style={{ width: "500px", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" }}>
+                <div className="row" style={{ width: "44%", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" }}>
 
-                    <div style={{ width: "100px", marginRight: '10px', marginLeft: '15px' }}> <span ><a >{this.state.authorName}</a></span></div>
+                    <div style={{ width:"15rem", marginRight: '0.625rem', marginLeft: '1rem' }}> <span ><a >{this.state.authorName}</a></span></div>
 
-                    <div className="row" style={{ width: "150px", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" }}>
+                    <div className="row" style={{width:"25rem",  flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" }}>
 
                         <div id="liked" style={{ display: "flex" }}><i className="fa fa-thumbs-o-up fa-lg"></i><span className="timeProp tagSize">{this.state.likeNumber}</span></div>
 
@@ -386,9 +386,9 @@ export class TopicTitleAndContent extends React.Component<HotTopic, { title, aut
 
                     </div>
 
-                    <div id="lastReply" style={{ width: "100px" }}><span >{this.state.lastPostUserName} </span></div>
+                    <div id="lastReply" style={{ width: "15rem" }}><span >{this.state.lastPostUserName} </span></div>
 
-                    <div style={{ width: "150px", marginRight: "20px" }}><span>{moment(this.state.lastPostTime).format('YYYY-MM-DD HH:mm:ss')}</span></div>
+                    <div style={{ width: "30rem", marginRight: "20px" }}><span>{moment(this.state.lastPostTime).format('YYYY-MM-DD HH:mm:ss')}</span></div>
 
                 </div>
 

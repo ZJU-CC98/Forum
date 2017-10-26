@@ -45,7 +45,7 @@ export class SendTopic extends RouteComponent<{ topicid }, { content: string }, 
     render() {
 
 
-        return <div style={{ display: "flex", flexDirection: "column" }}><div id="sendTopic">
+        return <div style={{ width:"100%" ,display: "flex", flexDirection: "column" }}><div id="sendTopic">
             <div id="sendTopic-options">
                 <ul className="editor__menu clearfix" id="wmd-button-row" >
                     <li title="加粗 <strong> Ctrl+B" className="wmd-button" id="wmd-bold-button" ><a className="editor__menu--bold" style={{ backgroundPosition: "0px 0px" }}></a></li>
@@ -76,8 +76,8 @@ export class SendTopic extends RouteComponent<{ topicid }, { content: string }, 
                 </div>
             </form>
 
-        </div><div className="row" style={{ justifyContent: "center", marginBottom:"20px " }}>
-                <div id="post-topic-button" onClick={this.sendTopic.bind(this)} className="button blue" style={{ marginTop: "20px", width: "70px", letterSpacing: "5px" }}>回复</div>
+        </div><div className="row" style={{ justifyContent: "center", marginBottom:"1.25rem " }}>
+                <div id="post-topic-button" onClick={this.sendTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复</div>
             </div>
         </div>;
     }
