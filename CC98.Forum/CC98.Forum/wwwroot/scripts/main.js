@@ -7976,6 +7976,7 @@ var DropDown = /** @class */ (function (_super) {
     };
     DropDown.prototype.logOff = function () {
         Utility.removeLocalStorage("accessToken");
+        console.log("after remove token=" + Utility.getLocalStorage("accessToken"));
         Utility.removeLocalStorage("userName");
         location = window.location; //刷新当前页面
     };
@@ -9063,6 +9064,7 @@ var LogOnExact = /** @class */ (function (_super) {
                     case 2:
                         data = _a.sent();
                         token = "Bearer " + data.access_token;
+                        console.log("after logon token=" + token);
                         //缓存token
                         Utility.setLocalStorage("accessToken", token);
                         Utility.setLocalStorage("userName", this.state.loginName);

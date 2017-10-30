@@ -23,6 +23,7 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
 
     logOff() {
         Utility.removeLocalStorage("accessToken");
+        console.log("after remove token=" + Utility.getLocalStorage("accessToken"));
         Utility.removeLocalStorage("userName");
         location = window.location;     //刷新当前页面
     }
