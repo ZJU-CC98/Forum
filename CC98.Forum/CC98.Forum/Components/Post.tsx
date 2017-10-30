@@ -365,7 +365,6 @@ export class ReplyContent extends RouteComponent<{ content, signature }, { likeN
         this.state = {
             likeNumber: 2424,
             dislikeNumber: 4433,
-
         }
     }
     //content: "央视网消息：7月26日至27日，习近平在省部级主要领导干部专题研讨班开班式上强调，党的十八大以来的5年，是党和国家发展进程中很不平凡的5年。我们加强党对意识形态工作的领导，巩固了全党全社会思想上的团结统一。党的十八大以来，面对意识形态领域日益错综复杂的形势，习总书记发表了一系列重要讲话，深刻阐述了意识形态工作的重大理论和现实问题。本图解梳理了相关重要论述以及十八大以来各领域工作成绩，以飨读者。</p><p>央视网消息：7月26日至27日，习近平在省部级主要领导干部专题研讨班开班式上强调，党的十八大以来的5年，是党和国家发展进程中很不平凡的5年。我们加强党对意识形态工作的领导，巩固了全党全社会思想上的团结统一。党的十八大以来，面对意识形态领域日益错综复杂的形势，习总书记发表了一系列重要讲话，深刻阐述了意识形态工作的重大理论和现实问题。本图解梳理了相关重要论述以及十八大以来各领域工作成绩，以飨读者。",
@@ -397,7 +396,7 @@ export class TopicGood extends RouteComponent<{}, State.TopicGoodState, {}> {
     }
     render() {
         return <div className="good tagSize" >
-            <div id="userImage"><img src={this.state.imgUrl} ></img> </div>
+            <div id="userImage"><img src={this.state.imgUrl}></img> </div>
             <div id="userName"><span>{this.state.userName}</span></div>
             <div id="grades"><span>评分 </span><span id="grade">+{this.state.grade}</span></div>
             <div id="reward"><span>赏金 </span><span id="money">{this.state.reward}</span><span>论坛币</span></div>
@@ -455,7 +454,7 @@ export class TopicPager extends RouteComponent<{ page, topicid, totalPage }, { p
     async componentDidMount() {
         const pages = Utility.getPager(this.props.page, this.props.totalPage);
         this.setState({ pager: pages });
-    } t
+    } 
     render() {
         return <div className="row" style={{ width:"100%", justifyContent: 'space-between', borderBottom: ' #EAEAEA solid thin', alignItems: 'flex-end', flexDirection: "row-reverse" }}>
             <div id="pager" >
