@@ -143,7 +143,7 @@ export class Replier extends RouteComponent<{ userId, topicid, userName, replyTi
             });
 
         });
-        let topicNumber = '帖数';
+        let topicNumber = '帖数 ';
         if (!this.props.userId) {
             topicNumber = '';
         }
@@ -156,22 +156,22 @@ export class Replier extends RouteComponent<{ userId, topicid, userName, replyTi
     
 
         return <div className="replyRoot">
-            <div className="row" style={{  display: "flex", marginBottom: "0.625rem" }}>
+            <div className="row" style={{  width:"100%",display: "flex", marginBottom: "0.625rem" }}>
 
-                <div className="row mouse-userDetails" style={{ height: "15.625rem", width: "23.75rem" }} >
+                <div className="row mouse-userDetails" style={{ height: "15.625rem" }} >
                     <div className="authorImg" ><a href={realUrl}><img src={this.props.userImgUrl}></img></a></div>
                     <div className="userDetails" style={{ display: "none", position: "absolute", zindedx: "1" }}>
                         {userDetails}
                     </div>
 
                 </div>
-                <div className="column" id="rpymes" style={{ marginLeft: "-18.75rem" }}>
+                <div className="column" id="rpymes" >
                     <div className="row" id="replierMes">
                         <div style={{ marginLeft: "0.625rem" }}><span>{this.props.floor}L</span></div>
                         <div className="rpyClr" style={{ marginLeft: "0.625rem" }}><a href={url}>{this.props.userName}</a></div>
-                        <div id="topicsNumber" style={{ marginLeft: "0.625rem" }}>{topicNumber}   <span className="rpyClrodd">{this.props.sendTopicNumber}</span> </div>
+                        <div id="topicsNumber" style={{ marginLeft: "0.625rem", display: "flex", flexWrap: "nowrap", wordBreak:"keepAll" }}>{topicNumber}   <span className="rpyClrodd">{this.props.sendTopicNumber}</span> </div>
                     </div>
-                    <div className="row" >
+                    <div className="row" style={{ display:"flex",flexWrap:"nowrap" }}>
                         <div id="clockimg" style={{ marginLeft: "0.375rem" }}><i className="fa fa-clock-o fa-lg fa-fw"></i></div>
                         <div><span className="timeProp">{moment(this.props.replyTime).format('YYYY-MM-DD HH:mm:ss')}</span></div>
                     </div>
@@ -245,7 +245,7 @@ export class PostTopic extends RouteComponent<{ imgUrl, page, topicid }, State.P
             <div className="essay">
                 <AuthorMessage authorId={this.state.topicMessage.userId} authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} />
                 <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount} />
-                <div id="ads"><img src={this.props.imgUrl}></img></div>
+                <div id="ads"><img width="20rem" src={this.props.imgUrl}></img></div>
             </div>
 
             <TopicContent content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} />
@@ -328,9 +328,9 @@ export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.
 
                 </div>
                 <div className="row" id="essayProp">
-                    <div id="tags"><span className="tagProp tagSize">标签： {this.state.tag}</span><span className="tagProp"></span></div>
-                    <div id="time"><span className="viewProp"><i className="fa fa-clock-o fa-lg fa-fw"></i></span> <span className="timeProp tagSize">{moment(this.props.Time).format('YYYY-MM-DD HH:mm:ss')}</span></div>
-                    <div id="viewtimes"><span className="viewProp"><i className="fa fa-eye fa-lg fa-fw"></i>  </span> <span className="timeProp tagSize">{this.props.HitCount}次</span></div>
+                    <div id="tags"><div className="tagProp tagSize">标签： {this.state.tag}</div><div className="tagProp"></div></div>
+                    <div id="time"><div className="viewProp"><i className="fa fa-clock-o fa-lg fa-fw"></i></div> <div className="timeProp tagSize">{moment(this.props.Time).format('YYYY-MM-DD HH:mm:ss')}</div></div>
+                    <div id="viewtimes"><div className="viewProp"><i className="fa fa-eye fa-lg fa-fw"></i>  </div> <div className="timeProp tagSize">{this.props.HitCount}次</div></div>
                 </div>
             </div>
        

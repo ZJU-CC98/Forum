@@ -47,6 +47,7 @@ export class App extends React.Component<{}, AppState> {
 					<Route path="/newtopics" component={AllNewPost} />
 					<Route path="/user" component={User} />
                     <Route path="/logon" component={LogOn} />
+
                     <Footer />
 				</div>
 			</Router></div>;

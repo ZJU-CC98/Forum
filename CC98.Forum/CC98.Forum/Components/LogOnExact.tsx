@@ -103,7 +103,7 @@ export class LogOnExact extends React.Component<null, LogOnState> {
         }
 
         let data = await response.json();
-        const token = "Bearer " + data.access_token;
+        const token = "Bearer " + encodeURIComponent(data.access_token);
         console.log("after logon token=" + token);
 
         //缓存token

@@ -31,7 +31,6 @@ export class SendTopic extends RouteComponent<{ topicid }, { content: string }, 
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Authorization': token,
-
             },
            
         });

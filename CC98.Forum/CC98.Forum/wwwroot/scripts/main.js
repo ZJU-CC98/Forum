@@ -2328,11 +2328,11 @@ var TopicTitleAndContent = /** @class */ (function (_super) {
                             React.createElement("i", { className: "fa fa-commenting-o fa-lg" }),
                             React.createElement("span", { className: "timeProp tagSize" }, this.state.commentNumber))),
                     React.createElement("div", { id: "lastReply", style: { width: "15rem" } },
-                        React.createElement("span", null,
+                        React.createElement("div", null,
                             this.state.lastPostUserName,
                             " ")),
                     React.createElement("div", { style: { width: "30rem", marginRight: "20px" } },
-                        React.createElement("span", null, moment(this.state.lastPostTime).format('YYYY-MM-DD HH:mm:ss'))))));
+                        React.createElement("div", { style: { wordBreak: "keepAll" } }, moment(this.state.lastPostTime).format('YYYY-MM-DD HH:mm:ss'))))));
     };
     return TopicTitleAndContent;
 }(React.Component));
@@ -2820,7 +2820,7 @@ function isBottom() {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(17);
-module.exports = __webpack_require__(80);
+module.exports = __webpack_require__(81);
 
 
 /***/ }),
@@ -2875,6 +2875,7 @@ var Footer_1 = __webpack_require__(72);
 var MainPage_1 = __webpack_require__(73);
 var User_1 = __webpack_require__(74);
 var LogOn_1 = __webpack_require__(77);
+var BeautifulBoardList_1 = __webpack_require__(80);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -2906,6 +2907,7 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { path: "/newtopics", component: AllNewPost_1.AllNewPost }),
                     React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }),
                     React.createElement(react_router_dom_1.Route, { path: "/logon", component: LogOn_1.LogOn }),
+                    React.createElement(react_router_dom_1.Route, { path: "/newboardlist", component: BeautifulBoardList_1.NewBoardList }),
                     React.createElement(Footer_1.Footer, null))));
     };
     return App;
@@ -3152,7 +3154,7 @@ var Replier = /** @class */ (function (_super) {
                 $(currentImage).find(".userDetails").hide();
             });
         });
-        var topicNumber = '帖数';
+        var topicNumber = '帖数 ';
         if (!this.props.userId) {
             topicNumber = '';
         }
@@ -3164,13 +3166,13 @@ var Replier = /** @class */ (function (_super) {
             userDetails = null;
         }
         return React.createElement("div", { className: "replyRoot" },
-            React.createElement("div", { className: "row", style: { display: "flex", marginBottom: "0.625rem" } },
-                React.createElement("div", { className: "row mouse-userDetails", style: { height: "15.625rem", width: "23.75rem" } },
+            React.createElement("div", { className: "row", style: { width: "100%", display: "flex", marginBottom: "0.625rem" } },
+                React.createElement("div", { className: "row mouse-userDetails", style: { height: "15.625rem" } },
                     React.createElement("div", { className: "authorImg" },
                         React.createElement("a", { href: realUrl },
                             React.createElement("img", { src: this.props.userImgUrl }))),
                     React.createElement("div", { className: "userDetails", style: { display: "none", position: "absolute", zindedx: "1" } }, userDetails)),
-                React.createElement("div", { className: "column", id: "rpymes", style: { marginLeft: "-18.75rem" } },
+                React.createElement("div", { className: "column", id: "rpymes" },
                     React.createElement("div", { className: "row", id: "replierMes" },
                         React.createElement("div", { style: { marginLeft: "0.625rem" } },
                             React.createElement("span", null,
@@ -3178,12 +3180,12 @@ var Replier = /** @class */ (function (_super) {
                                 "L")),
                         React.createElement("div", { className: "rpyClr", style: { marginLeft: "0.625rem" } },
                             React.createElement("a", { href: url }, this.props.userName)),
-                        React.createElement("div", { id: "topicsNumber", style: { marginLeft: "0.625rem" } },
+                        React.createElement("div", { id: "topicsNumber", style: { marginLeft: "0.625rem", display: "flex", flexWrap: "nowrap", wordBreak: "keepAll" } },
                             topicNumber,
                             "   ",
                             React.createElement("span", { className: "rpyClrodd" }, this.props.sendTopicNumber),
                             " ")),
-                    React.createElement("div", { className: "row" },
+                    React.createElement("div", { className: "row", style: { display: "flex", flexWrap: "nowrap" } },
                         React.createElement("div", { id: "clockimg", style: { marginLeft: "0.375rem" } },
                             React.createElement("i", { className: "fa fa-clock-o fa-lg fa-fw" })),
                         React.createElement("div", null,
@@ -3285,7 +3287,7 @@ var PostTopic = /** @class */ (function (_super) {
                 React.createElement(AuthorMessage, { authorId: this.state.topicMessage.userId, authorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl }),
                 React.createElement(TopicTitle, { Title: this.state.topicMessage.title, Time: this.state.topicMessage.time, HitCount: this.state.topicMessage.hitCount }),
                 React.createElement("div", { id: "ads" },
-                    React.createElement("img", { src: this.props.imgUrl }))),
+                    React.createElement("img", { width: "20rem", src: this.props.imgUrl }))),
             React.createElement(TopicContent, { content: this.state.topicMessage.content, signature: this.state.topicMessage.signature }),
             React.createElement(TopicGood, null),
             React.createElement(TopicVote, null));
@@ -3365,21 +3367,21 @@ var TopicTitle = /** @class */ (function (_super) {
                 React.createElement("div", { id: "essay1", className: "row" }, this.returnProps(this.state.isTop, this.state.isNotice, this.props.Title)),
                 React.createElement("div", { className: "row", id: "essayProp" },
                     React.createElement("div", { id: "tags" },
-                        React.createElement("span", { className: "tagProp tagSize" },
+                        React.createElement("div", { className: "tagProp tagSize" },
                             "\u6807\u7B7E\uFF1A ",
                             this.state.tag),
-                        React.createElement("span", { className: "tagProp" })),
+                        React.createElement("div", { className: "tagProp" })),
                     React.createElement("div", { id: "time" },
-                        React.createElement("span", { className: "viewProp" },
+                        React.createElement("div", { className: "viewProp" },
                             React.createElement("i", { className: "fa fa-clock-o fa-lg fa-fw" })),
                         " ",
-                        React.createElement("span", { className: "timeProp tagSize" }, moment(this.props.Time).format('YYYY-MM-DD HH:mm:ss'))),
+                        React.createElement("div", { className: "timeProp tagSize" }, moment(this.props.Time).format('YYYY-MM-DD HH:mm:ss'))),
                     React.createElement("div", { id: "viewtimes" },
-                        React.createElement("span", { className: "viewProp" },
+                        React.createElement("div", { className: "viewProp" },
                             React.createElement("i", { className: "fa fa-eye fa-lg fa-fw" }),
                             "  "),
                         " ",
-                        React.createElement("span", { className: "timeProp tagSize" },
+                        React.createElement("div", { className: "timeProp tagSize" },
                             this.props.HitCount,
                             "\u6B21")))));
     };
@@ -9063,7 +9065,7 @@ var LogOnExact = /** @class */ (function (_super) {
                         return [4 /*yield*/, response.json()];
                     case 2:
                         data = _a.sent();
-                        token = "Bearer " + data.access_token;
+                        token = "Bearer " + encodeURIComponent(data.access_token);
                         console.log("after logon token=" + token);
                         //缓存token
                         Utility.setLocalStorage("accessToken", token);
@@ -9176,6 +9178,131 @@ exports.LogOff = LogOff;
 
 /***/ }),
 /* 80 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var AppState_1 = __webpack_require__(3);
+var Utility = __webpack_require__(4);
+//链接到的地址是  /list/boardid
+var NewBoardList = /** @class */ (function (_super) {
+    __extends(NewBoardList, _super);
+    function NewBoardList(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            thisBoardState: [],
+        };
+        return _this;
+    }
+    NewBoardList.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var boardNameList, board, response, data, i, i;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        boardNameList = [];
+                        board = [];
+                        if (!!Utility.getStorage('board_2')) return [3 /*break*/, 3];
+                        return [4 /*yield*/, fetch('http://api.cc98.org/Board/Root')];
+                    case 1:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 2:
+                        data = _a.sent();
+                        for (i = 0; i < 20; i++) {
+                            board[i] = new AppState_1.Board(data[i].name, data[i].todayPostCount, data[i].totalPostCount, data[i].id, data[i].masters);
+                            Utility.setStorage("board_" + data[i].id.toString(), board[i]);
+                            boardNameList[i] = "board_" + data[i].id.toString();
+                        }
+                        Utility.setStorage('boardList', boardNameList);
+                        return [3 /*break*/, 4];
+                    case 3:
+                        for (i = 0; i < 20; i++) {
+                            boardNameList = Utility.getStorage('boardList');
+                            board[i] = Utility.getStorage(boardNameList[i]);
+                        }
+                        _a.label = 4;
+                    case 4:
+                        this.setState({
+                            thisBoardState: board,
+                        });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    NewBoardList.prototype.generateRootBoard = function (item) {
+        return React.createElement(LeftBoard, { board: item });
+    };
+    NewBoardList.prototype.render = function () {
+        return React.createElement("div", { className: "newBoardList" },
+            React.createElement("div", { className: "leftList" }, this.state.thisBoardState.map(this.generateRootBoard)));
+    };
+    return NewBoardList;
+}(React.Component));
+exports.NewBoardList = NewBoardList;
+var LeftBoard = /** @class */ (function (_super) {
+    __extends(LeftBoard, _super);
+    function LeftBoard() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    LeftBoard.prototype.render = function () {
+        return React.createElement("div", { className: "oneBoard" }, this.props.board.name);
+    };
+    return LeftBoard;
+}(React.Component));
+exports.LeftBoard = LeftBoard;
+
+
+/***/ }),
+/* 81 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -15,6 +15,7 @@ $color-black: rgb(32,32,32);
 
 #root{
     font-size:16px;
+    min-width:75rem;
 }
 .root {
     display: flex;
@@ -176,6 +177,7 @@ $color-black: rgb(32,32,32);
 }
 
 #essayTitle {
+    word-break:keep-all;
     color: #000000;
     font-size: 16px;
 }
@@ -195,7 +197,11 @@ $color-black: rgb(32,32,32);
 
 #like span {
 }
-
+#tags{
+    display:flex;
+    flex-wrap:nowrap;
+    word-break:keep-all;
+}
 .tagSize {
     font-size: 0.75rem;
 }
@@ -225,6 +231,7 @@ $color-black: rgb(32,32,32);
 .timeProp {
     margin-left:0.1875rem;
     font-size: 0.75rem;
+    word-break:keep-all;
 }
 
 #time img {
@@ -416,6 +423,7 @@ $color-black: rgb(32,32,32);
 #replierMes {
     display: flex;
     align-items: flex-end;
+    flex-wrap:nowrap;
 }
 .reply{
     width:100%;
@@ -427,7 +435,9 @@ $color-black: rgb(32,32,32);
 .reply:nth-child(2n) .rpyClr a {
     color: #EE0000;
 }
-
+.rpyClr{
+    word-break:keep-all;
+}
 #replierMes {
     margin-top: 25px;
     margin-bottom: 10px;
@@ -440,9 +450,12 @@ $color-black: rgb(32,32,32);
 }
 #operation{
     margin-top:1rem;
-    margin-left:38rem;
+    height:3rem;
+    display:flex;
+    justify-content:flex-end;
 }
 .operation {
+    word-break:keep-all;
     margin-top: 1rem;
     font-size: 0.75rem;
     font-family: 微软雅黑;
@@ -462,6 +475,7 @@ $color-black: rgb(32,32,32);
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    height:6rem;
 }
 
 #ListImg img {
@@ -475,7 +489,11 @@ $color-black: rgb(32,32,32);
     margin-bottom:0.4375rem;
     background-color: #3399FE;
 }
-
+#topicsNumber{
+    display:flex;
+    flex-wrap:nowrap;
+    word-break:keep-all;
+}
 .postTopic {
     width: 80px;
     height: 30px;
@@ -546,8 +564,8 @@ $color-black: rgb(32,32,32);
 }
 
 #lastReply {
-    margin-right: 20px;
-    margin-left: 15px;
+    margin-right: -1.8rem;
+    margin-left: 1rem;
 }
 
 a {
@@ -952,7 +970,24 @@ a {
     min-width: 1140px;
     align-items: center;
 }
-
+.newBoardList{
+    min-height: 50rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.leftList{
+    background-color:#fff;
+    border:#EAEAEA solid thin;
+    margin-left:1.5rem;
+    border-radius:0.3rem;
+}
+.oneBoard {
+    margin: 1rem;
+    font-size: 1.2rem;
+    font-family: 方正宋刻本秀楷简体;
+}
 .anArea {
     display: flex;
     flex-direction: column;

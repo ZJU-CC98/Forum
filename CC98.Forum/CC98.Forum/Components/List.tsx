@@ -386,9 +386,9 @@ export class TopicTitleAndContent extends React.Component<HotTopic, { title, aut
 
                     </div>
 
-                    <div id="lastReply" style={{ width: "15rem" }}><span >{this.state.lastPostUserName} </span></div>
+                    <div id="lastReply" style={{ width: "15rem" }}><div>{this.state.lastPostUserName} </div></div>
 
-                    <div style={{ width: "30rem", marginRight: "20px" }}><span>{moment(this.state.lastPostTime).format('YYYY-MM-DD HH:mm:ss')}</span></div>
+                    <div style={{ width: "30rem", marginRight: "20px" }}><div style={{ wordBreak:"keepAll" }}>{moment(this.state.lastPostTime).format('YYYY-MM-DD HH:mm:ss')}</div></div>
 
                 </div>
 
