@@ -245,7 +245,7 @@ export class PostTopic extends RouteComponent<{ imgUrl, page, topicid }, State.P
             <div className="essay">
                 <AuthorMessage authorId={this.state.topicMessage.userId} authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} />
                 <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount} />
-                <div id="ads"><img width="20rem" src={this.props.imgUrl}></img></div>
+                <div id="ads"><img  src={this.props.imgUrl}></img></div>
             </div>
 
             <TopicContent content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} />

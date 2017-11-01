@@ -2820,7 +2820,7 @@ function isBottom() {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(17);
-module.exports = __webpack_require__(81);
+module.exports = __webpack_require__(80);
 
 
 /***/ }),
@@ -2875,7 +2875,6 @@ var Footer_1 = __webpack_require__(72);
 var MainPage_1 = __webpack_require__(73);
 var User_1 = __webpack_require__(74);
 var LogOn_1 = __webpack_require__(77);
-var BeautifulBoardList_1 = __webpack_require__(80);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -2907,7 +2906,6 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { path: "/newtopics", component: AllNewPost_1.AllNewPost }),
                     React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }),
                     React.createElement(react_router_dom_1.Route, { path: "/logon", component: LogOn_1.LogOn }),
-                    React.createElement(react_router_dom_1.Route, { path: "/newboardlist", component: BeautifulBoardList_1.NewBoardList }),
                     React.createElement(Footer_1.Footer, null))));
     };
     return App;
@@ -3287,7 +3285,7 @@ var PostTopic = /** @class */ (function (_super) {
                 React.createElement(AuthorMessage, { authorId: this.state.topicMessage.userId, authorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl }),
                 React.createElement(TopicTitle, { Title: this.state.topicMessage.title, Time: this.state.topicMessage.time, HitCount: this.state.topicMessage.hitCount }),
                 React.createElement("div", { id: "ads" },
-                    React.createElement("img", { width: "20rem", src: this.props.imgUrl }))),
+                    React.createElement("img", { src: this.props.imgUrl }))),
             React.createElement(TopicContent, { content: this.state.topicMessage.content, signature: this.state.topicMessage.signature }),
             React.createElement(TopicGood, null),
             React.createElement(TopicVote, null));
@@ -4536,19 +4534,26 @@ var SendTopic = /** @class */ (function (_super) {
     }
     SendTopic.prototype.sendTopic = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var url, content, token, mes;
+            var url, token, t, myHeaders, c, m, p, n, k, mes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        url = "http://apitest.niconi.cc/topic/test";
-                        content = "Content=" + this.state.content + "&ContentType=Markdown&Title=";
+                        url = "http://openid.cc98.org";
                         token = Utility.getLocalStorage("accessToken");
+                        t = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1MDMzMDMsImV4cCI6MTUwOTUwNjkwMywiaXNzIjoiaHR0cDovL29wZW5pZC5jYzk4Lm9yZyIsImF1ZCI6Imh0dHA6Ly9vcGVuaWQuY2M5OC5vcmcvcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoiOWExZmQyMDAtODY4Ny00NGIxLTRjMjAtMDhkNTBhOTZlNWNkIiwic3ViIjoiNTU2NTUxIiwiYXV0aF90aW1lIjoxNTA5NTAzMzAzLCJpZHAiOiJsb2NhbCIsImp0aSI6ImU1YWZmNWQwM2QyZjk3Njc2NWYyYTQwMjk2YWVmOTM3Iiwic2NvcGUiOlsib3BlbmlkIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbIkNDOTgiXX0.UgaVLvuUsdvnO7zp9YUo9BDs6_XYsC9noonNXOb2up6kKigWrMUZomq1tS8Xq6Gh52nHdSgiTtVVGZ9V4ZCAEkn0RCnpkwYZa7zDP3tuKqJL7gvnfsuDCsdvl59kXT9UUdtdWO7g8gC5ZFTmYXuQVAIayfSvxu4KLCzRZM8M7GmCejfsLGsEf-H6yJr-Pq2dMAoRtmetubmuc7W6PcY4l3UZqeuWh2f5yMuoljLc4MiGT2Cs4uqn6xOwqzEKA_lq5vljlSiM24jrbnoJDkdccSTolQYcRpohoTZwAP0wDraoDJEsmPhra8hPD9lmpC4XgykNSqdWSq8gD1ajVr6-XA';
+                        myHeaders = new Headers();
+                        c = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1MDI1MjIsImV4cCI6MTUwOTUwNjEyMiwiaXNzIjoiaHR0cHM6Ly9vcGVuaWQuY2M5OC5vcmciLCJhdWQiOiJodHRwczovL29wZW5pZC5jYzk4Lm9yZy9yZXNvdXJjZXMiLCJjbGllbnRfaWQiOiI0MmY4YWVhNi03YmRhLTQ4NTctZjk1OC0wOGQ1MTUyZjZlODUiLCJzdWIiOiI1MzM2MzMiLCJhdXRoX3RpbWUiOjE1MDk1MDI1MjEsImlkcCI6ImxvY2FsIiwianRpIjoiMjliNDU1YWJjNjkwNzJlYmJmY2JiYjY1OTFjMjdhZWUiLCJzY29wZSI6WyJvcGVuaWQiXSwiYW1yIjpbImlkc3J2Il19.NnxBKBOiWIyMkq2BKzUrVD5I4xpZVjl-rPZVavAgo8O8hbebOdOk3meWsyWHVaecciNnyYle3zIxvo9xOIznaWcHppkLpEPS0IZuZE3ze7bJlbzzGM5ektuLScaMuHJUqEVjHsG8L9KGJn02_3_O6dERGOdwnpoQD60l8cDibgdWSsQE94GfB0xTt4WN0ScRnmQvkSZg9o42FF1kq7kcmIsjpYQRblgISEjn-QoHU6p1XDnIVi--WWLFZoJzrYfhuM1I18d7os5tjQ4S8CVcmuxlWZlTwGuU-T3bDTGt9lGrCszgLtdm1hqsanZdteb7FG2TQJ5MdMW2L1la8sdGdg';
+                        m = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1MDI1MjIsImV4cCI6MTUwOTUwNjEyMiwiaXNzIjoiaHR0cHM6Ly9vcGVuaWQuY2M5OC5vcmciLCJhdWQiOiJodHRwczovL29wZW5pZC5jYzk4Lm9yZy9yZXNvdXJjZXMiLCJjbGllbnRfaWQiOiI0MmY4YWVhNi03YmRhLTQ4NTctZjk1OC0wOGQ1MTUyZjZlODUiLCJzdWIiOiI1MzM2MzMiLCJhdXRoX3RpbWUiOjE1MDk1MDI1MjEsImlkcCI6ImxvY2FsIiwianRpIjoiMjliNDU1YWJjNjkwNzJlYmJmY2JiYjY1OTFjMjdhZWUiLCJzY29wZSI6WyJvcGVuaWQiXSwiYW1yIjpbImlkc3J2Il19.NnxBKBOiWIyMkq2BKzUrVD5I4xpZVjl-rPZVavAgo8O8hbebOdOk3meWsyWHVaecciNnyYle3zIxvo9xOIznaWcHppkLpEPS0IZuZE3ze7bJlbzzGM5ektuLScaMuHJUqEVjHsG8L9KGJn02_3_O6dERGOdwnpoQD60l8cDibgdWSsQE94GfB0xTt4WN0ScRnmQvkSZg9o42FF1kq7kcmIsjpYQRblgISEjn-QoHU6p1XDnIVi--WWLFZoJzrYfhuM1I18d7os5tjQ4S8CVcmuxlWZlTwGuU-T3bDTGt9lGrCszgLtdm1hqsanZdteb7FG2TQJ5MdMW2L1la8sdGdg';
+                        p = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1MDM2NDcsImV4cCI6MTUwOTUwNzI0NywiaXNzIjoiaHR0cDovL29wZW5pZC5jYzk4Lm9yZyIsImF1ZCI6Imh0dHA6Ly9vcGVuaWQuY2M5OC5vcmcvcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoiOWExZmQyMDAtODY4Ny00NGIxLTRjMjAtMDhkNTBhOTZlNWNkIiwic3ViIjoiNTU2NTUxIiwiYXV0aF90aW1lIjoxNTA5NTAzNjQ3LCJpZHAiOiJsb2NhbCIsImp0aSI6IjExZTZjNjRjMjVmYmI3YzVlMThkM2U5OTZiM2ExYjk1Iiwic2NvcGUiOlsib3BlbmlkIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbIkNDOTgiXX0.jIfLIMB43UATkulE9RgNJ95AuO93vq8_6BwHVXwxQRCNiMrQyYS17GdHgruRtrY0jA5BK2p8XKgfZBS5ocD_rf5Aazmo8TwVI3s2mrrew34Lz50t4CrPbisPvbJ5L3jj35Tcxizy8xwXF4dmyvUxP9nSm6vqykEZx_BW37Ee0QSkScNuauVVM3x4gaNt6X6kbrPnGRQ1vnBDLjb9OvAdL_Jw6Wwp-NHgd6PCoXn-xg6DElwIUXmxoyIU39AddFMRy7zFzPOqyu2AqcDTD_SZ3uNacbk31jfJ56XdWAO5FJD5TLkIT-0-bvguMPwmZI_JFsIqIruaDlI1jT5-kXi05A';
+                        n = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1MDM3MzgsImV4cCI6MTUwOTUwNzMzOCwiaXNzIjoiaHR0cDovL29wZW5pZC5jYzk4Lm9yZyIsImF1ZCI6Imh0dHA6Ly9vcGVuaWQuY2M5OC5vcmcvcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoiOWExZmQyMDAtODY4Ny00NGIxLTRjMjAtMDhkNTBhOTZlNWNkIiwic3ViIjoiNTc4NTI1IiwiYXV0aF90aW1lIjoxNTA5NTAzNzM4LCJpZHAiOiJsb2NhbCIsImp0aSI6Ijc3NmViYTZiM2QwYjNjM2U4MmFmNjI2OWZhMmFjMTlkIiwic2NvcGUiOlsib3BlbmlkIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbIkNDOTgiXX0.BY-ITokw9BlHxQ8uWB1GXN3iVJUS3Hrs4rTUyj_mjs56NxN1Uz5YLK-l0_2UwU9QgPNm3nvQ0kT1SmVNrup-02XgLeUMtsOevP65iwyrAH3OBFMnVOwBHr0nIpGeaq-_DfcrpX135Ac0iCJKdE-40OFUlHnfozJS3sPB6DQqEwKERPclm7jULdaSCDm5J0_vmkdJMDIysYfPQ_b1BMP48zPPwdFCxZYry6sal0nsRWFsZVhSsK63yZ8w-Mck7s8JxLFf3rEfR4Te1a4mQZEsPkQcNUm4Crp8OTfpIC0e4dF3YIpWHHkxTwFiCBabSnN32cnl3ieOmc9EImRKjRVhlg';
+                        k = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1NDMxNjEsImV4cCI6MTUwOTU0Njc2MSwiaXNzIjoiaHR0cDovL29wZW5pZC5jYzk4Lm9yZyIsImF1ZCI6Imh0dHA6Ly9vcGVuaWQuY2M5OC5vcmcvcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoiOWExZmQyMDAtODY4Ny00NGIxLTRjMjAtMDhkNTBhOTZlNWNkIiwic3ViIjoiNTU2NTUxIiwiYXV0aF90aW1lIjoxNTA5NTQzMTYxLCJpZHAiOiJsb2NhbCIsImp0aSI6IjQyYWY4YjI5YzQyYmMyY2U3MzhjOGEwMWU5YjZmZTljIiwic2NvcGUiOlsib3BlbmlkIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbIkNDOTgiXX0.J-T05gxAuWgTpIop4bf1Nk5STBAOfBdfJH6_NmV5LPfECtLE2RjA-JNzMqi7WfisRRb7WurPOs_t0Y5AFlOZi8992ZT7S6e1TqMFN6ldeWiTdw8rLCu-1bZwUcVjKXDk9X2_mXHyc3Na40xAM0w4mSmdwxg0X2gv-OmglVdNyPATTmY__mZltS7vf2ZVK06QFsKcCvDaOIi9SH0Q6LFnDamIaZwnwv2YVYGyvAHv_VySZrhWq0VpGAuWNOMSwOXy48ZhfYXLqSEXASRH8xdcpK7HKwW6h9uOGohKMNUi34DQ10rr-C6zWGqNtq-FBAYOqEoaYYGWSdrmOHinfEGO8w';
+                        myHeaders.append("Authorization", k);
+                        myHeaders.append("Accept", 'application/json');
+                        myHeaders.append("Content-Type", 'application/x-www-form-urlencoded');
                         return [4 /*yield*/, fetch(url, {
-                                method: "GET",
-                                headers: {
-                                    'Content-Type': 'application/x-www-form-urlencoded',
-                                    'Authorization': token,
-                                },
+                                method: "POST",
+                                headers: myHeaders,
+                                body: { 'token': k }
                             })];
                     case 1:
                         mes = _a.sent();
@@ -9178,131 +9183,6 @@ exports.LogOff = LogOff;
 
 /***/ }),
 /* 80 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var AppState_1 = __webpack_require__(3);
-var Utility = __webpack_require__(4);
-//链接到的地址是  /list/boardid
-var NewBoardList = /** @class */ (function (_super) {
-    __extends(NewBoardList, _super);
-    function NewBoardList(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = {
-            thisBoardState: [],
-        };
-        return _this;
-    }
-    NewBoardList.prototype.componentDidMount = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var boardNameList, board, response, data, i, i;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        boardNameList = [];
-                        board = [];
-                        if (!!Utility.getStorage('board_2')) return [3 /*break*/, 3];
-                        return [4 /*yield*/, fetch('http://api.cc98.org/Board/Root')];
-                    case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.json()];
-                    case 2:
-                        data = _a.sent();
-                        for (i = 0; i < 20; i++) {
-                            board[i] = new AppState_1.Board(data[i].name, data[i].todayPostCount, data[i].totalPostCount, data[i].id, data[i].masters);
-                            Utility.setStorage("board_" + data[i].id.toString(), board[i]);
-                            boardNameList[i] = "board_" + data[i].id.toString();
-                        }
-                        Utility.setStorage('boardList', boardNameList);
-                        return [3 /*break*/, 4];
-                    case 3:
-                        for (i = 0; i < 20; i++) {
-                            boardNameList = Utility.getStorage('boardList');
-                            board[i] = Utility.getStorage(boardNameList[i]);
-                        }
-                        _a.label = 4;
-                    case 4:
-                        this.setState({
-                            thisBoardState: board,
-                        });
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    NewBoardList.prototype.generateRootBoard = function (item) {
-        return React.createElement(LeftBoard, { board: item });
-    };
-    NewBoardList.prototype.render = function () {
-        return React.createElement("div", { className: "newBoardList" },
-            React.createElement("div", { className: "leftList" }, this.state.thisBoardState.map(this.generateRootBoard)));
-    };
-    return NewBoardList;
-}(React.Component));
-exports.NewBoardList = NewBoardList;
-var LeftBoard = /** @class */ (function (_super) {
-    __extends(LeftBoard, _super);
-    function LeftBoard() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    LeftBoard.prototype.render = function () {
-        return React.createElement("div", { className: "oneBoard" }, this.props.board.name);
-    };
-    return LeftBoard;
-}(React.Component));
-exports.LeftBoard = LeftBoard;
-
-
-/***/ }),
-/* 81 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
