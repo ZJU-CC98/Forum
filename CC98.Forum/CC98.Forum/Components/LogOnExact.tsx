@@ -71,7 +71,7 @@ export class LogOnExact extends React.Component<null, LogOnState> {
             isLogining: true
         });
 
-        let url = 'http://openid.cc98.org/connect/token';
+        let url = 'https://openid.cc98.org/connect/token';
 
         /*
         请求的正文部分，密码模式需要5个参数，其中client_id和client_secret来自申请的应用，grant_type值固定为"password"
@@ -81,7 +81,8 @@ export class LogOnExact extends React.Component<null, LogOnState> {
             'client_secret': '8b53f727-08e2-4509-8857-e34bf92b27f2',
             'grant_type': 'password',
             'username': this.state.loginName,
-            'password': this.state.loginPassword
+            'password': this.state.loginPassword,
+            'scope':"cc98-api openid"
         }
 
         let response = await fetch(url, {

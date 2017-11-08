@@ -48,7 +48,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName });
     }
     async getTotalPage(topicid) {
-        const replyCountResponse = await fetch(`http://api.cc98.org/Topic/${topicid}`);
+        const replyCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`);
         const replyCountJson = await replyCountResponse.json();
         const replyCount = replyCountJson.replyCount;
         if (replyCount > 10) {
@@ -193,7 +193,7 @@ export class UserDetails extends RouteComponent<{ userName }, { portraitUrl, use
     }
     async componentDidMount() {
         if (this.props.userName != '匿名') {
-            let url = `http://api.cc98.org/user/name/${this.props.userName}`;
+            let url = `http://apitest.niconi.cc/user/name/${this.props.userName}`;
             let message = await fetch(url);
             let data = await message.json();
             this.setState({ portraitUrl: data.portraitUrl, userName: data.name });
@@ -245,7 +245,7 @@ export class PostTopic extends RouteComponent<{ imgUrl, page, topicid }, State.P
             <div className="essay">
                 <AuthorMessage authorId={this.state.topicMessage.userId} authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} />
                 <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount} />
-                <div id="ads"><img  src={this.props.imgUrl}></img></div>
+                <div id="ads"><img width="15.6rem" src={this.props.imgUrl}></img></div>
             </div>
 
             <TopicContent content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} />

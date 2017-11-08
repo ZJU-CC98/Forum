@@ -2,7 +2,8 @@
 import { HotTopic } from '../Props/AppProps'
 import * as State from '../States/AppState'
 import * as Utility from '../Utility'
-import * as moment from 'moment';
+import * as moment from 'moment'; 
+import { UbbContainer } from './UbbContainer';
 import { match } from 'react-router';
 import {
 	Route,
@@ -21,18 +22,19 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
 	}
 }
 
-export class List extends RouteComponent<{}, { page: number, totalPage: number, boardid: number }, { page: string, boardid: number }>  {
+export class List extends RouteComponent<{}, {bigPaper:string, page: number, totalPage: number, boardid: number }, { page: string, boardid: number }>  {
 
 	constructor(props, context) {
 		super(props, context);
 
-		// 默认页码
-		this.state = { page: 1, totalPage: 1, boardid: this.match.params.boardid };
+        // 默认页码
+        this.state = { page: 1, totalPage: 1, boardid: this.match.params.boardid, bigPaper:"" };
 	}
-	async getTotalListPage(boardid) {
-		const totalTopicCountResponse = await fetch(`http://api.cc98.org/Board/${boardid}`);
+    async getTotalListPage(boardid) {
+        const token = Utility.getLocalStorage("accessToken");
+        const totalTopicCountResponse = await fetch(`http://apitest.niconi.cc/Board/${boardid}`, { headers: {'Authorization':token}});
 		const totalTopicCountJson = await totalTopicCountResponse.json();
-		const totalTopicCount = totalTopicCountJson.totalTopicCount;
+		const totalTopicCount = totalTopicCountJson.postCount;
 		return (totalTopicCount - totalTopicCount % 20) / 20 + 1;
 	}
 	async componentWillReceiveProps(newProps) {
@@ -49,7 +51,12 @@ export class List extends RouteComponent<{}, { page: number, totalPage: number, 
 		// 设置状态
 		this.setState({ page: page, totalPage: totalPage, boardid: boardid });
 	}
-	async componentDidMount() {
+    async componentDidMount() {
+   
+        const token = Utility.getLocalStorage("accessToken");
+        const response = await fetch(`http://apitest.niconi.cc/Board/${this.match.params.boardid}`, { headers: { 'Authorization': token } });
+        const json = await response.json();
+        let bigPaper:string = json.bigPaper;
 		let page: number;
 		// 未提供页码，防止出错不进行后续处理
 		if (!this.match.params.page) {
@@ -59,13 +66,13 @@ export class List extends RouteComponent<{}, { page: number, totalPage: number, 
 		else { page = parseInt(this.match.params.page); }
 		const boardid = this.match.params.boardid;
 		const totalPage = await this.getTotalListPage(boardid);
-		// 设置状态
-		this.setState({ page: page, totalPage: totalPage, boardid: boardid });
+        // 设置状态
+        this.setState({ bigPaper: bigPaper,page: page, totalPage: totalPage, boardid: boardid});
 	}
 	render() {
 		return <div id="listRoot">
-			<ListHead key={this.state.page} boardid={this.state.boardid} />
-			<ListNotice />
+            <ListHead key={this.state.page} boardid={this.state.boardid} />
+            <ListNotice bigPaper={this.state.bigPaper} />
 			<ListButtonAndPager page={this.state.page} totalPage={this.state.totalPage} boardid={this.state.boardid} />
 			<ListTag />
             <Route path="/list/:boardid/:page?" component={ListContent} />
@@ -89,20 +96,24 @@ export class ListHead extends RouteComponent<{ boardid }, State.ListHeadState, {
 			isLocked: false
 		};
 	}
-	async componentDidMount() {
-		const url = `http://api.cc98.org/Board/${this.props.boardid}`;
-		const managersResponse = await fetch(url);
+    async componentDidMount() {
+        const token = Utility.getLocalStorage("accessToken");
+        const url = `http://apitest.niconi.cc/Board/${this.props.boardid}`;
+        const managersResponse = await fetch(url, { headers: {'Authorization':token} });
 		const managerJson = await managersResponse.json();
 		this.setState({
-			listName: managerJson.name, todayTopics: managerJson.todayPostCount, totalTopics: managerJson.totalTopicCount, listManager: managerJson.masters
+			listName: managerJson.name, todayTopics: managerJson.todayCount, totalTopics: managerJson.topicCount, listManager: managerJson.boardMasters
 		});
 	}
 	async componentWillRecieveProps(newProps) {
 
-		const url = `http://api.cc98.org/Board/${newProps.boardid}`;
-		const managersResponse = await fetch(url);
-		const managerJson = await managersResponse.json();
-		this.setState({ listName: managerJson.name, todayTopics: managerJson.todayPostCount, totalTopics: managerJson.totalTopicCount, listManager: managerJson.masters });
+        const token = Utility.getLocalStorage("accessToken");
+        const url = `http://apitest.niconi.cc/Board/${this.props.boardid}`;
+        const managersResponse = await fetch(url, { headers: { 'Authorization': token } });
+        const managerJson = await managersResponse.json();
+        this.setState({
+            listName: managerJson.name, todayTopics: managerJson.todayCount, totalTopics: managerJson.topicCount, listManager: managerJson.boardMasters
+        });
 	}
 	generateMasters(item) {
 		const name = item.toString();
@@ -133,7 +144,7 @@ export class ListHead extends RouteComponent<{ boardid }, State.ListHeadState, {
 
 	}
 }
-export class ListNotice extends RouteComponent<{}, State.ListNoticeState, {}> {
+export class ListNotice extends RouteComponent<{bigPaper:string}, State.ListNoticeState, {}> {
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
@@ -141,12 +152,11 @@ export class ListNotice extends RouteComponent<{}, State.ListNoticeState, {}> {
 		};
 	}
 	render() {
-		return <div className="notice" style={{ marginTop: '0.625rem' }}>
-			<div id="noticeName">
-				<span style={{ marginLeft: '0.9375rem', marginTop: '0.4375rem', color: '#FFFFFF' }}>本版公告</span>
-
-			</div>
-			<span style={{ marginLeft: '0.9375rem', marginTop: '0.9375rem', marginRight: '0.9375rem' }}>{this.state.notice}</span>
+        return <div className="notice" style={{ marginTop: '0.625rem' }}>
+            <div style={{ backgroundColor:"#3399FE" }}>
+				<div style={{ marginLeft: '0.9375rem', marginTop:'0.5rem',marginBottom:'0.5rem',fontSize:'1rem',color: '#FFFFFF' }}>本版公告</div>
+            </div>
+            <div className="substance"><UbbContainer code={this.props.bigPaper} /></div>
 		</div>;
 	}
 }
@@ -281,19 +291,20 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
 		this.state = { items: [] };
 
 	}
-	async componentDidMount() {
-		const data = await Utility.getBoardTopicAsync(1, this.match.params.boardid);
+    async componentDidMount() {
+   
+        const data = await Utility.getBoardTopicAsync(1, this.match.params.boardid);
+        console.log(data);
 		this.setState({ items: data });
 	}
 	private convertTopicToElement(item: TopicTitleAndContentState) {
-
         return <TopicTitleAndContent key={item.title}
             title={item.title}
-            authorName={item.authorName}
+            authorName={item.userName}
             id={item.id}
-            authorId={item.authorId}
-            lastPostTime={item.lastPostInfo.time}
-            lastPostUserName={item.lastPostInfo.userName} />;
+            authorId={item.userId}
+            lastPostTime={item.lastPostTime}
+            lastPostUserName={item.lastPostUser} />;
 	}
 	async componentWillReceiveProps(newProps) {
 		let page: number;

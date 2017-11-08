@@ -14,16 +14,18 @@ import { FocusPost } from './Props/FocusPost';
 
 
 export async function getBoardTopicAsync(curPage, boardid) {
+    const token = getLocalStorage("accessToken");
     const startPage = (curPage - 1) * 20;
     const endPage = curPage * 20 - 1;
     const boardtopics: State.TopicTitleAndContentState[] = [];
-    const url = `http://api.cc98.org/Topic/Board/${boardid}`;
+    const url = `http://apitest.niconi.cc/Topic/Board/${boardid}?from=${startPage}&size=20`;
     const response = await fetch(url,
-        { headers: { Range: `bytes=${startPage}-${endPage}` } });
+        { headers: { 'Authorization':token} });
     const data: State.TopicTitleAndContentState[] = await response.json();
-    const totalTopicCountResponse = await fetch(`http://api.cc98.org/Board/${boardid}`);
+    const totalTopicCountResponse = await fetch(`http://apitest.niconi.cc/Board/${boardid}`);
     const totalTopicCountJson = await totalTopicCountResponse.json();
-    const totalTopicCount = totalTopicCountJson.totalTopicCount;
+
+    const totalTopicCount = totalTopicCountJson.postCount;
     let topicNumberInPage;
     if (curPage * 20 <= totalTopicCount) {
         topicNumberInPage = 20;
@@ -33,21 +35,25 @@ export async function getBoardTopicAsync(curPage, boardid) {
         topicNumberInPage = (totalTopicCount - (curPage - 1) * 20);
     }
     for (let i = 0; i < topicNumberInPage; i++) {
-        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].authorName || '匿名', data[i].id, data[i].authorId, data[i].lastPostInfo);
+        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName || '匿名', data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime);
     }
+
     return boardtopics;
 
 }
 export async function getTopic(topicid: number) {
-
-    const response = await fetch(`http://api.cc98.org/Post/Topic/${topicid}`, { headers: { Range: `bytes=${0}-${0}` } });
+    let token = getLocalStorage("accessToken");
+    const response = await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}?from=0&size=1`, {
+        
+        headers: { 'Authorization': token }
+    });
     const data = await response.json();
-    const hitCountResponse = await fetch(`http://api.cc98.org/Topic/${topicid}`);
+    const hitCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`);
     const hitCountJson = await hitCountResponse.json();
     const hitCount = hitCountJson.hitCount;
     let topicMessage=null;
     if (data[0].userId != null) {
-        const userMesResponse = await fetch(`http://api.cc98.org/User/${data[0].userId}`);
+        const userMesResponse = await fetch(`http://apitest.niconi.cc/User/${data[0].userId}`);
         const userMesJson = await userMesResponse.json();
          topicMessage = new State.TopicState(data[0].userName , data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId);
     } else {
@@ -60,12 +66,12 @@ export async function getTopic(topicid: number) {
 export async function getTopicContent(topicid: number, curPage: number) {
     const startPage = (curPage - 1) * 10;
     const endPage = curPage * 10 - 1;
-
+    let token = getLocalStorage("accessToken");
     const topic = curPage !== 1
-        ? await fetch(`http://api.cc98.org/Post/Topic/${topicid}`, { headers: { Range: `bytes=${startPage}-${endPage}` } })
-        : await fetch(`http://api.cc98.org/Post/Topic/${topicid}`, { headers: { Range: `bytes=${1}-${9}` } });
+        ? await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}?from=${startPage}&size=10`, { headers: { 'Authorization': token } })
+        : await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}?from=1&size=9`, { headers: { 'Authorization': token  } });
 
-    const replyCountResponse = await fetch(`http://api.cc98.org/Topic/${topicid}`);
+    const replyCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`);
     const replyCountJson = await replyCountResponse.json();
     const replyCount = replyCountJson.replyCount;
     const content = await topic.json();
@@ -83,7 +89,7 @@ export async function getTopicContent(topicid: number, curPage: number) {
     for (let i = 0; i < topicNumberInPage; i++) {
         if (content[i].userName != null) {
             console.log("111");
-            const userMesResponse = await fetch(`http://api.cc98.org/user/name/${content[i].userName}`);
+            const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
             const userMesJson = await userMesResponse.json();
             post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName , userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId);
         } else {
@@ -94,7 +100,7 @@ export async function getTopicContent(topicid: number, curPage: number) {
     return post;
 }
 export function convertHotTopic(item: State.TopicTitleAndContentState) {
-    return <TopicTitleAndContent title={item.title} authorName={item.authorName} id={item.id} authorId={item.authorId} lastPostTime={item.lastPostInfo.time} lastPostUserName={item.lastPostInfo.userName} />
+    return <TopicTitleAndContent title={item.title} authorName={item.userName} id={item.id} authorId={item.userId} lastPostTime={item.lastPostTime} lastPostUserName={item.lastPostUser} />
         ;
 }
 export function getPager(curPage, totalPage) {
@@ -149,15 +155,15 @@ export function getPager(curPage, totalPage) {
 }
 export async function getCurUserTopicContent(topicid: number, curPage: number, userName: string) {
 
-    const replyCountResponse = await fetch(`http://api.cc98.org/Topic/${topicid}`);
+    const replyCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`);
     const replyCountJson = await replyCountResponse.json();
     const replyCount = replyCountJson.replyCount;
-    const topic = await fetch(`http://api.cc98.org/Post/Topic/${topicid}`, { headers: { Range: `bytes=${1}-${replyCount}` } });
+    const topic = await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}`, { headers: { Range: `bytes=${1}-${replyCount}` } });
     const content = await topic.json();
     const post: State.ContentState[] = [];
     for (let i = 0, j = 0; i < replyCount; i++) {
         if (content[i].userName == userName) {
-            const userMesResponse = await fetch(`http://api.cc98.org/User/Name/${content[i].userName}`);
+            const userMesResponse = await fetch(`http://apitest.niconi.cc/User/Name/${content[i].userName}`);
             const userMesJson = await userMesResponse.json();
             post[j] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName || '匿名', userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId);
             j++;

@@ -155,22 +155,24 @@ export class TopicTitleAndContentState {
 		  this.lastReply = lastReply;
 		  this.title = title;
 	  }*/
-    constructor(title, authorName, topicid, authorId, lastPostInfo) {
-        this.authorName = authorName;
+    constructor(title, userName, topicid, userId, lastPostUser,lastPostTime) {
+        this.userName = userName;
         this.title = title;
         this.id = topicid;
-        this.authorId = authorId;
-        this.lastPostInfo = lastPostInfo;
+        this.userId = userId;
+        this.lastPostUser = lastPostUser;
+        this.lastPostTime = lastPostTime;
     }
 
     likeNumber: number;
     unlikeNumber: number;
     commentNumber: number;
-    authorName: string;
+    userName: string;
     title: string;
-    lastPostInfo;
+    lastPostUser: string;
+    lastPostTime: string;
     id: number;
-    authorId: number;
+    userId: number;
 
 }
 

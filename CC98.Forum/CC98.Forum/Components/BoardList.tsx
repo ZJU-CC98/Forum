@@ -17,10 +17,10 @@ export class BoardList extends React.Component<{}, { thisBoardState: Board[] }> 
         let boardNameList = [];
         const board: Board[] = [];
         if (!Utility.getStorage('board_2')) {   //缓存
-            const response = await fetch('http://api.cc98.org/Board/Root');
+            const response = await fetch('http://apitest.niconi.cc/Board/Root');
             const data = await response.json();
             for (let i = 0; i < 20; i++) {
-                board[i] = new Board(data[i].name, data[i].todayPostCount, data[i].totalPostCount, data[i].id, data[i].masters);
+                board[i] = new Board(data[i].name, data[i].todayCount, data[i].postCount, data[i].id, data[i].boardMastersString);
                 Utility.setStorage(`board_${data[i].id.toString()}`, board[i]);
                 boardNameList[i] = `board_${data[i].id.toString()}`;
             }
