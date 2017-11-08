@@ -1377,14 +1377,13 @@ function getTopicContent(topicid, curPage) {
                         topicNumberInPage = replyCount;
                     }
                     else {
-                        topicNumberInPage = (replyCount - (curPage - 1) * 10);
+                        topicNumberInPage = (replyCount - (curPage - 1) * 10 + 1);
                     }
                     i = 0;
                     _b.label = 8;
                 case 8:
                     if (!(i < topicNumberInPage)) return [3 /*break*/, 13];
                     if (!(content[i].userName != null)) return [3 /*break*/, 11];
-                    console.log("111");
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + content[i].userName)];
                 case 9:
                     userMesResponse = _b.sent();
@@ -1572,7 +1571,7 @@ function getAllNewPost(curPage) {
                     endPage = curPage * 20;
                     size = endPage - startPage;
                     token = getLocalStorage("accessToken");
-                    return [4 /*yield*/, fetch("https://apitest.niconi.cc/Topic/New?from=" + startPage + "&size=" + size, { headers: { 'Authorization': token } })];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/New?from=" + startPage + "&size=" + size, { headers: { 'Authorization': token } })];
                 case 1:
                     newTopics0 = _c.sent();
                     return [4 /*yield*/, newTopics0.json()];
@@ -1590,7 +1589,7 @@ function getAllNewPost(curPage) {
                     newTopics1[i].userName = '匿名';
                     newTopics1[i].portraitUrl = 'https://www.cc98.org/pic/anonymous.gif';
                     return [3 /*break*/, 7];
-                case 4: return [4 /*yield*/, fetch("https://apitest.niconi.cc/User/" + newTopics1[i].userId)];
+                case 4: return [4 /*yield*/, fetch("http://apitest.niconi.cc/User/" + newTopics1[i].userId)];
                 case 5:
                     userInfo0 = _c.sent();
                     return [4 /*yield*/, userInfo0.json()];
@@ -1598,7 +1597,7 @@ function getAllNewPost(curPage) {
                     userInfo1 = _c.sent();
                     newTopics1[i].portraitUrl = userInfo1.portraitUrl;
                     _c.label = 7;
-                case 7: return [4 /*yield*/, fetch("https://apitest.niconi.cc/Board/" + newTopics1[i].boardId)];
+                case 7: return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + newTopics1[i].boardId)];
                 case 8:
                     boardInfo0 = _c.sent();
                     return [4 /*yield*/, boardInfo0.json()];
@@ -3314,7 +3313,7 @@ var PostTopic = /** @class */ (function (_super) {
                 React.createElement(AuthorMessage, { authorId: this.state.topicMessage.userId, authorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl }),
                 React.createElement(TopicTitle, { Title: this.state.topicMessage.title, Time: this.state.topicMessage.time, HitCount: this.state.topicMessage.hitCount }),
                 React.createElement("div", { id: "ads" },
-                    React.createElement("img", { width: "15.6rem", src: this.props.imgUrl }))),
+                    React.createElement("img", { width: "100%", src: this.props.imgUrl }))),
             React.createElement(TopicContent, { content: this.state.topicMessage.content, signature: this.state.topicMessage.signature }),
             React.createElement(TopicGood, null),
             React.createElement(TopicVote, null));
@@ -4586,6 +4585,7 @@ var SendTopic = /** @class */ (function (_super) {
                             })];
                     case 1:
                         mes = _a.sent();
+                        this.setState({ content: "" });
                         return [2 /*return*/];
                 }
             });

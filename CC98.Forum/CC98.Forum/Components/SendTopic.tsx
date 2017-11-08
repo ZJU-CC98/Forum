@@ -45,6 +45,8 @@ export class SendTopic extends RouteComponent<{ topicid }, { content: string }, 
             body:contentJson
         }
         )
+        this.setState({content:""});
+
     }
     getInitialState() {
         return { value: '' };

@@ -84,11 +84,11 @@ export async function getTopicContent(topicid: number, curPage: number) {
     } else if (curPage === 1 && replyCount < 9) {
         topicNumberInPage = replyCount;
     } else {
-        topicNumberInPage = (replyCount - (curPage - 1) * 10);
+        topicNumberInPage = (replyCount - (curPage - 1) * 10+1);
     }
     for (let i = 0; i < topicNumberInPage; i++) {
         if (content[i].userName != null) {
-            console.log("111");
+
             const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
             const userMesJson = await userMesResponse.json();
             post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName , userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId);
@@ -233,7 +233,7 @@ export async function getAllNewPost(curPage: number) {
     /**
      * 通过api获取到主题之后转成json格式，但此时没有作者头像的图片地址和版面名称
      */
-    const newTopics0 = await fetch(`https://apitest.niconi.cc/Topic/New?from=${startPage}&size=${size}`, { headers: {'Authorization':token} });
+    const newTopics0 = await fetch(`http://apitest.niconi.cc/Topic/New?from=${startPage}&size=${size}`, { headers: {'Authorization':token} });
     const newTopics1 = await newTopics0.json();
     for (let i in newTopics1) {
         /**
@@ -244,14 +244,14 @@ export async function getAllNewPost(curPage: number) {
             newTopics1[i].portraitUrl = 'https://www.cc98.org/pic/anonymous.gif';
         }
         else {
-            const userInfo0 = await fetch(`https://apitest.niconi.cc/User/${newTopics1[i].userId}`);
+            const userInfo0 = await fetch(`http://apitest.niconi.cc/User/${newTopics1[i].userId}`);
             const userInfo1 = await userInfo0.json();
             newTopics1[i].portraitUrl = userInfo1.portraitUrl;
         }
         /**
          * 根据版面id获取版面名称
          */
-        const boardInfo0 = await fetch(`https://apitest.niconi.cc/Board/${newTopics1[i].boardId}`);
+        const boardInfo0 = await fetch(`http://apitest.niconi.cc/Board/${newTopics1[i].boardId}`);
         const boardInfo1 = await boardInfo0.json();
         newTopics1[i].boardName = boardInfo1.name;
         /**
