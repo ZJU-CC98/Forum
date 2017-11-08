@@ -228,28 +228,30 @@ export async function getAllNewPost(curPage: number) {
      */
     const startPage: number = (curPage - 1) * 20 + 1;
     const endPage: number = curPage * 20;
+    const size = endPage - startPage;
+    let token = getLocalStorage("accessToken");
     /**
      * 通过api获取到主题之后转成json格式，但此时没有作者头像的图片地址和版面名称
      */
-    const newTopics0 = await fetch('https://api.cc98.org/Topic/New', { headers: { Range: `bytes=${startPage}-${endPage}` } });
+    const newTopics0 = await fetch(`https://apitest.niconi.cc/Topic/New?from=${startPage}&size=${size}`, { headers: {'Authorization':token} });
     const newTopics1 = await newTopics0.json();
     for (let i in newTopics1) {
         /**
         *根据作者名字获取作者头像的图片地址
         */
-        if (newTopics1[i].authorName == null) {
-            newTopics1[i].authorName = '匿名';
+        if (newTopics1[i].userName == null) {
+            newTopics1[i].userName = '匿名';
             newTopics1[i].portraitUrl = 'https://www.cc98.org/pic/anonymous.gif';
         }
         else {
-            const userInfo0 = await fetch(`https://api.cc98.org/User/${newTopics1[i].authorId}`);
+            const userInfo0 = await fetch(`https://apitest.niconi.cc/User/${newTopics1[i].userId}`);
             const userInfo1 = await userInfo0.json();
             newTopics1[i].portraitUrl = userInfo1.portraitUrl;
         }
         /**
          * 根据版面id获取版面名称
          */
-        const boardInfo0 = await fetch(`https://api.cc98.org/Board/${newTopics1[i].boardId}`);
+        const boardInfo0 = await fetch(`https://apitest.niconi.cc/Board/${newTopics1[i].boardId}`);
         const boardInfo1 = await boardInfo0.json();
         newTopics1[i].boardName = boardInfo1.name;
         /**
@@ -262,8 +264,8 @@ export async function getAllNewPost(curPage: number) {
     /**
      * 将补充完善的数据赋值给newTopics，以便后续进行可视化
      */
-    const newTopics: FocusPost[] = newTopics1;
-    return newTopics;
+    //const newTopics: FocusPost[] = newTopics1;
+    return newTopics1;
 }
 export function setStorage(key, value) {
     let v = value;

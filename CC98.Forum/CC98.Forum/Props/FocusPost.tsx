@@ -32,7 +32,7 @@ export class FocusPost {
     /**
     *主题作者的用户名。如果主题为匿名主题，则该参数为 null
     */
-    authorName: string;
+    userName: string;
     /**
     *主题作者的头像的图片url地址
     */
@@ -40,7 +40,7 @@ export class FocusPost {
     /**
     *主题的创建时间
     */
-    createTime: Date;
+    time: Date;
     /**
     *主题被赞的次数
     */

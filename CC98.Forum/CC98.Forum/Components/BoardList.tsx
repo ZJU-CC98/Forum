@@ -103,10 +103,10 @@ export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>
 
     async componentDidMount() {
         const boards: Board[] = [];
-        const response = await fetch(`http://api.cc98.org/Board/${this.props.boardid}/Subs`);
+        const response = await fetch(`http://apitest.niconi.cc/Board/${this.props.boardid}/Sub`);
         const data = await response.json();
         for (let i = 0; i < data.length; i++) {
-            boards[i] = new Board(data[i].name, data[i].todayPostCount, data[i].totalPostCount, data[i].id, data[i].masters);
+            boards[i] = new Board(data[i].name, data[i].todayCount, data[i].postCount, data[i].id, data[i].masters);
         }
         this.setState({
             thisBoardState: boards,

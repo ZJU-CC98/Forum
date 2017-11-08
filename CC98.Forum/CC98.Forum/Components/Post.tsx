@@ -91,13 +91,14 @@ export class Reply extends RouteComponent<{}, { contents }, { page, topicid, use
         const page = newProps.match.params.page || 1;
         const storageId = `TopicContent_${newProps.match.params.topicid}_${page}`;
         let realContents;
-        if (!Utility.getStorage(storageId)) {
+       /* if (!Utility.getStorage(storageId)) {
             realContents = await Utility.getTopicContent(newProps.match.params.topicid, page);
             Utility.setStorage(storageId, realContents);
         }
         else {
             realContents = Utility.getStorage(storageId);
-        }
+        }*/
+        realContents = await Utility.getTopicContent(newProps.match.params.topicid, page);
         this.setState({ contents: realContents });
 
     }
@@ -245,7 +246,7 @@ export class PostTopic extends RouteComponent<{ imgUrl, page, topicid }, State.P
             <div className="essay">
                 <AuthorMessage authorId={this.state.topicMessage.userId} authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} />
                 <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount} />
-                <div id="ads"><img width="15.6rem" src={this.props.imgUrl}></img></div>
+                <div id="ads"><img src={this.props.imgUrl}></img></div>
             </div>
 
             <TopicContent content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} />

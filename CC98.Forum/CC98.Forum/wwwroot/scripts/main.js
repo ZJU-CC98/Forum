@@ -1564,13 +1564,15 @@ exports.changeNav = changeNav;
  */
 function getAllNewPost(curPage) {
     return __awaiter(this, void 0, void 0, function () {
-        var startPage, endPage, newTopics0, newTopics1, _a, _b, _i, i, userInfo0, userInfo1, boardInfo0, boardInfo1, newTopics;
+        var startPage, endPage, size, token, newTopics0, newTopics1, _a, _b, _i, i, userInfo0, userInfo1, boardInfo0, boardInfo1;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
                     startPage = (curPage - 1) * 20 + 1;
                     endPage = curPage * 20;
-                    return [4 /*yield*/, fetch('https://api.cc98.org/Topic/New', { headers: { Range: "bytes=" + startPage + "-" + endPage } })];
+                    size = endPage - startPage;
+                    token = getLocalStorage("accessToken");
+                    return [4 /*yield*/, fetch("https://apitest.niconi.cc/Topic/New?from=" + startPage + "&size=" + size, { headers: { 'Authorization': token } })];
                 case 1:
                     newTopics0 = _c.sent();
                     return [4 /*yield*/, newTopics0.json()];
@@ -1584,11 +1586,11 @@ function getAllNewPost(curPage) {
                 case 3:
                     if (!(_i < _a.length)) return [3 /*break*/, 11];
                     i = _a[_i];
-                    if (!(newTopics1[i].authorName == null)) return [3 /*break*/, 4];
-                    newTopics1[i].authorName = '匿名';
+                    if (!(newTopics1[i].userName == null)) return [3 /*break*/, 4];
+                    newTopics1[i].userName = '匿名';
                     newTopics1[i].portraitUrl = 'https://www.cc98.org/pic/anonymous.gif';
                     return [3 /*break*/, 7];
-                case 4: return [4 /*yield*/, fetch("https://api.cc98.org/User/" + newTopics1[i].authorId)];
+                case 4: return [4 /*yield*/, fetch("https://apitest.niconi.cc/User/" + newTopics1[i].userId)];
                 case 5:
                     userInfo0 = _c.sent();
                     return [4 /*yield*/, userInfo0.json()];
@@ -1596,7 +1598,7 @@ function getAllNewPost(curPage) {
                     userInfo1 = _c.sent();
                     newTopics1[i].portraitUrl = userInfo1.portraitUrl;
                     _c.label = 7;
-                case 7: return [4 /*yield*/, fetch("https://api.cc98.org/Board/" + newTopics1[i].boardId)];
+                case 7: return [4 /*yield*/, fetch("https://apitest.niconi.cc/Board/" + newTopics1[i].boardId)];
                 case 8:
                     boardInfo0 = _c.sent();
                     return [4 /*yield*/, boardInfo0.json()];
@@ -1613,9 +1615,12 @@ function getAllNewPost(curPage) {
                 case 10:
                     _i++;
                     return [3 /*break*/, 3];
-                case 11:
-                    newTopics = newTopics1;
-                    return [2 /*return*/, newTopics];
+                case 11: 
+                /**
+                 * 将补充完善的数据赋值给newTopics，以便后续进行可视化
+                 */
+                //const newTopics: FocusPost[] = newTopics1;
+                return [2 /*return*/, newTopics1];
             }
         });
     });
@@ -2776,7 +2781,7 @@ exports.FocusPostAreaComponent = FocusPostAreaComponent;
 * 单个主题数据转换成单个主题组件
 */
 function coverFocusPost(item) {
-    return React.createElement(FocusPostComponent_1.FocusPostComponent, { title: item.title, hitCount: item.hitCount, id: item.id, boardId: item.boardId, boardName: item.boardName, replyCount: item.replyCount, authorName: item.authorName, portraitUrl: item.portraitUrl, createTime: item.createTime, likeCount: item.likeCount, dislikeCount: item.dislikeCount, fanCount: item.fanCount });
+    return React.createElement(FocusPostComponent_1.FocusPostComponent, { title: item.title, hitCount: item.hitCount, id: item.id, boardId: item.boardId, boardName: item.boardName, replyCount: item.replyCount, userName: item.userName, portraitUrl: item.portraitUrl, time: item.time, likeCount: item.likeCount, dislikeCount: item.dislikeCount, fanCount: item.fanCount });
 }
 /**
 *滚动条在Y轴上的滚动距离
@@ -3120,16 +3125,16 @@ var Reply = /** @class */ (function (_super) {
                     case 0:
                         page = newProps.match.params.page || 1;
                         storageId = "TopicContent_" + newProps.match.params.topicid + "_" + page;
-                        if (!!Utility.getStorage(storageId)) return [3 /*break*/, 2];
                         return [4 /*yield*/, Utility.getTopicContent(newProps.match.params.topicid, page)];
                     case 1:
+                        /* if (!Utility.getStorage(storageId)) {
+                             realContents = await Utility.getTopicContent(newProps.match.params.topicid, page);
+                             Utility.setStorage(storageId, realContents);
+                         }
+                         else {
+                             realContents = Utility.getStorage(storageId);
+                         }*/
                         realContents = _a.sent();
-                        Utility.setStorage(storageId, realContents);
-                        return [3 /*break*/, 3];
-                    case 2:
-                        realContents = Utility.getStorage(storageId);
-                        _a.label = 3;
-                    case 3:
                         this.setState({ contents: realContents });
                         return [2 /*return*/];
                 }
@@ -4549,14 +4554,6 @@ var RouteComponent = /** @class */ (function (_super) {
     return RouteComponent;
 }(React.Component));
 exports.RouteComponent = RouteComponent;
-var Body = /** @class */ (function () {
-    function Body(content, contentType, title) {
-        this.content = content;
-        this.contentType = contentType;
-        this.title = title;
-    }
-    return Body;
-}());
 var SendTopic = /** @class */ (function (_super) {
     __extends(SendTopic, _super);
     function SendTopic(props) {
@@ -4566,13 +4563,18 @@ var SendTopic = /** @class */ (function (_super) {
     }
     SendTopic.prototype.sendTopic = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var url, content, token, myHeaders, mes;
+            var url, content, contentJson, token, myHeaders, mes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         url = "http://apitest.niconi.cc/post/topic/" + this.props.topicid;
-                        content = "content=" + this.state.content + "&contentType=1&title=";
+                        content = {
+                            content: this.state.content,
+                            contentType: 1,
+                            title: ""
+                        };
                         console.log(content);
+                        contentJson = JSON.stringify(content);
                         token = Utility.getLocalStorage("accessToken");
                         myHeaders = new Headers();
                         myHeaders.append("Authorization", token);
@@ -4580,7 +4582,7 @@ var SendTopic = /** @class */ (function (_super) {
                         return [4 /*yield*/, fetch(url, {
                                 method: 'POST',
                                 headers: myHeaders,
-                                body: content
+                                body: contentJson
                             })];
                     case 1:
                         mes = _a.sent();
@@ -5434,14 +5436,14 @@ var ChildBoard = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         boards = [];
-                        return [4 /*yield*/, fetch("http://api.cc98.org/Board/" + this.props.boardid + "/Subs")];
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + this.props.boardid + "/Sub")];
                     case 1:
                         response = _a.sent();
                         return [4 /*yield*/, response.json()];
                     case 2:
                         data = _a.sent();
                         for (i = 0; i < data.length; i++) {
-                            boards[i] = new AppState_1.Board(data[i].name, data[i].todayPostCount, data[i].totalPostCount, data[i].id, data[i].masters);
+                            boards[i] = new AppState_1.Board(data[i].name, data[i].todayCount, data[i].postCount, data[i].id, data[i].masters);
                         }
                         this.setState({
                             thisBoardState: boards,
@@ -7763,7 +7765,7 @@ var FocusPostComponent = /** @class */ (function (_super) {
             React.createElement("img", { className: "focus-post-portraitUrl", src: this.props.portraitUrl }),
             React.createElement("div", { className: "focus-post-info1" },
                 React.createElement("div", { className: "focus-post-authorInfo" },
-                    React.createElement("div", { className: "focus-post-blackText" }, this.props.authorName),
+                    React.createElement("div", { className: "focus-post-blackText" }, this.props.userName),
                     React.createElement("div", { className: "focus-post-redText" }, this.props.fanCount),
                     React.createElement("div", { className: "focus-post-blackText" }, "\u7C89\u4E1D")),
                 React.createElement("div", { className: "focus-post-title" },
@@ -7772,7 +7774,7 @@ var FocusPostComponent = /** @class */ (function (_super) {
                 React.createElement("div", { className: "focus-post-board" },
                     this.props.boardName,
                     " / ",
-                    moment(this.props.createTime).format('YYYY-MM-DD HH:mm:ss')),
+                    moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')),
                 React.createElement("div", { className: "focus-post-response" },
                     React.createElement("div", null,
                         React.createElement("i", { className: "fa fa-thumbs-o-up", "aria-hidden": "true" }),

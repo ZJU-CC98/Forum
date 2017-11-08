@@ -26,10 +26,14 @@ export class SendTopic extends RouteComponent<{ topicid }, { content: string }, 
     async sendTopic() {
         let url = `http://apitest.niconi.cc/post/topic/${this.props.topicid}`;
 
-        let content = `content=${this.state.content}&contentType=1&title=`;
+        let content = {
+            content: this.state.content,
+            contentType: 1,
+            title:""
+        }
      
         console.log(content);
-       //let contentJson = JSON.parse(content);
+       let contentJson = JSON.stringify(content);
         let token = Utility.getLocalStorage("accessToken");
         let myHeaders = new Headers();
         myHeaders.append("Authorization", token);
@@ -38,7 +42,7 @@ export class SendTopic extends RouteComponent<{ topicid }, { content: string }, 
         let mes = await fetch(url, {
             method: 'POST',
             headers: myHeaders,
-            body:content
+            body:contentJson
         }
         )
     }
