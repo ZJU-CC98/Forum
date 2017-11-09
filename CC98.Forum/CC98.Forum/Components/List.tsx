@@ -70,7 +70,8 @@ export class List extends RouteComponent<{}, {bigPaper:string, page: number, tot
         this.setState({ bigPaper: bigPaper,page: page, totalPage: totalPage, boardid: boardid});
 	}
 	render() {
-		return <div id="listRoot">
+        return <div id="listRoot">
+            <Category boardId={this.state.boardid} />
             <ListHead key={this.state.page} boardid={this.state.boardid} />
             <ListNotice bigPaper={this.state.bigPaper} />
 			<ListButtonAndPager page={this.state.page} totalPage={this.state.totalPage} boardid={this.state.boardid} />
@@ -79,6 +80,22 @@ export class List extends RouteComponent<{}, {bigPaper:string, page: number, tot
             <PagerDown page={this.state.page} totalPage={this.state.totalPage} boardid={this.state.boardid}/>
 		</div>;
 	}
+}
+export class Category extends React.Component<{boardId}, { boardId,  boardName }>{
+    constructor(props) {
+        super(props);
+        this.state = ({ boardId: "",boardName: "" });
+    }
+    async componentDidMount() {
+        const boardResponse = await fetch(`http://apitest.niconi.cc/Board/${this.props.boardId}`);
+        const boardData = await boardResponse.json();
+        const boardName = boardData.name;
+        this.setState({ boardId: this.props.boardId, boardName: boardName });
+    }
+    render() {
+        const listUrl = `/list/${this.state.boardId}`;
+        return <div className="row" style={{width:"100%", justifyContent: "flex-start", color: "blue", fontSize: "0.75rem" }}>&rsaquo;&rsaquo;<a style={{ color: "blue", fontSize: "0.75rem" }} href="/">首页</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "0.75rem" }} href={listUrl} >{this.state.boardName}</a></div>;
+    }
 }
 export class ListHead extends RouteComponent<{ boardid }, State.ListHeadState, {}> {
 	constructor(props, content) {

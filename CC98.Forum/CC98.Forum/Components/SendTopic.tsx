@@ -18,7 +18,7 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
     }
 }
 
-export class SendTopic extends RouteComponent<{ topicid }, { content: string }, {}>{
+export class SendTopic extends RouteComponent<{ topicid,onChange }, { content: string }, {}>{
     constructor(props) {
         super(props);
         this.state = ({ content: '' });
@@ -31,20 +31,18 @@ export class SendTopic extends RouteComponent<{ topicid }, { content: string }, 
             contentType: 1,
             title:""
         }
-     
-        console.log(content);
        let contentJson = JSON.stringify(content);
         let token = Utility.getLocalStorage("accessToken");
         let myHeaders = new Headers();
         myHeaders.append("Authorization", token);
         myHeaders.append("Content-Type", 'application/json');
-       // console.log(contentJson);
         let mes = await fetch(url, {
             method: 'POST',
             headers: myHeaders,
             body:contentJson
         }
         )
+        this.props.onChange();
         this.setState({content:""});
 
     }

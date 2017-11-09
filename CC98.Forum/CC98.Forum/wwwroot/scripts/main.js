@@ -1966,6 +1966,7 @@ var List = /** @class */ (function (_super) {
     };
     List.prototype.render = function () {
         return React.createElement("div", { id: "listRoot" },
+            React.createElement(Category, { boardId: this.state.boardid }),
             React.createElement(ListHead, { key: this.state.page, boardid: this.state.boardid }),
             React.createElement(ListNotice, { bigPaper: this.state.bigPaper }),
             React.createElement(ListButtonAndPager, { page: this.state.page, totalPage: this.state.totalPage, boardid: this.state.boardid }),
@@ -1976,6 +1977,42 @@ var List = /** @class */ (function (_super) {
     return List;
 }(RouteComponent));
 exports.List = List;
+var Category = /** @class */ (function (_super) {
+    __extends(Category, _super);
+    function Category(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = ({ boardId: "", boardName: "" });
+        return _this;
+    }
+    Category.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var boardResponse, boardData, boardName;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + this.props.boardId)];
+                    case 1:
+                        boardResponse = _a.sent();
+                        return [4 /*yield*/, boardResponse.json()];
+                    case 2:
+                        boardData = _a.sent();
+                        boardName = boardData.name;
+                        this.setState({ boardId: this.props.boardId, boardName: boardName });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Category.prototype.render = function () {
+        var listUrl = "/list/" + this.state.boardId;
+        return React.createElement("div", { className: "row", style: { justifyContent: "flex-start", color: "blue", fontSize: "0.75rem" } },
+            "\u203A\u203A",
+            React.createElement("a", { style: { color: "blue", fontSize: "0.75rem" }, href: "/" }, "\u9996\u9875"),
+            "\u00A0\u2192\u00A0",
+            React.createElement("a", { style: { color: "blue", fontSize: "0.75rem" }, href: listUrl }, this.state.boardName));
+    };
+    return Category;
+}(React.Component));
+exports.Category = Category;
 var ListHead = /** @class */ (function (_super) {
     __extends(ListHead, _super);
     function ListHead(props, content) {
@@ -3019,9 +3056,32 @@ var Post = /** @class */ (function (_super) {
     __extends(Post, _super);
     function Post(props, context) {
         var _this = _super.call(this, props, context) || this;
+        _this.handleChange = _this.handleChange.bind(_this);
         _this.state = { page: 1, topicid: _this.match.params.topicid, totalPage: 1, userName: null };
         return _this;
     }
+    Post.prototype.handleChange = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var page, totalPage, userName;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!this.match.params.page) {
+                            page = 1;
+                        }
+                        else {
+                            page = parseInt(this.match.params.page);
+                        }
+                        return [4 /*yield*/, this.getTotalPage(this.match.params.topicid)];
+                    case 1:
+                        totalPage = _a.sent();
+                        userName = this.match.params.userName;
+                        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     Post.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
             var page, userName, totalPage;
@@ -3098,15 +3158,64 @@ var Post = /** @class */ (function (_super) {
             topic = React.createElement(PostTopic, { imgUrl: "/images/ads.jpg", page: this.state.page, topicid: this.state.topicid });
         }
         return React.createElement("div", { className: "center" },
-            React.createElement(TopicPager, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
+            React.createElement("div", { className: "row", style: { width: "100%", justifyContent: 'space-between', borderBottom: '#EAEAEA solid thin', alignItems: "center" } },
+                React.createElement(Category, { topicid: this.state.topicid }),
+                React.createElement(TopicPager, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage })),
             topic,
             React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: Reply }),
             React.createElement(TopicPagerDown, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
-            React.createElement(SendTopic_1.SendTopic, { topicid: this.state.topicid }));
+            React.createElement(SendTopic_1.SendTopic, { onChange: this.handleChange, topicid: this.state.topicid }));
     };
     return Post;
 }(RouteComponent));
 exports.Post = Post;
+var Category = /** @class */ (function (_super) {
+    __extends(Category, _super);
+    function Category(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = ({ boardId: "", topicId: "", boardName: "", title: "" });
+        return _this;
+    }
+    Category.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, topicName, boardId, boardResponse, boardData, boardName;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + this.props.topicid)];
+                    case 1:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 2:
+                        data = _a.sent();
+                        topicName = data.title;
+                        boardId = data.boardId;
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + boardId)];
+                    case 3:
+                        boardResponse = _a.sent();
+                        return [4 /*yield*/, boardResponse.json()];
+                    case 4:
+                        boardData = _a.sent();
+                        boardName = boardData.name;
+                        this.setState({ boardId: boardId, topicId: this.props.topicid, boardName: boardName, title: topicName });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Category.prototype.render = function () {
+        var listUrl = "/list/" + this.state.boardId;
+        var topicUrl = "/topic/" + this.state.topicId;
+        return React.createElement("div", { style: { color: "blue", fontSize: "0.75rem" } },
+            "\u203A\u203A",
+            React.createElement("a", { style: { color: "blue", fontSize: "0.75rem" }, href: "/" }, "\u9996\u9875"),
+            "\u00A0\u2192\u00A0",
+            React.createElement("a", { style: { color: "blue", fontSize: "0.75rem" }, href: listUrl }, this.state.boardName),
+            "\u00A0\u2192\u00A0",
+            React.createElement("a", { style: { color: "blue", fontSize: "0.75rem" }, href: topicUrl }, this.state.title));
+    };
+    return Category;
+}(React.Component));
+exports.Category = Category;
 var Reply = /** @class */ (function (_super) {
     __extends(Reply, _super);
     function Reply(props, content) {
@@ -3180,7 +3289,7 @@ var Replier = /** @class */ (function (_super) {
                 $(currentImage).find(".userDetails").hide();
             });
         });
-        var topicNumber = '帖数 ';
+        var topicNumber = '帖数&nbsp;';
         if (!this.props.userId) {
             topicNumber = '';
         }
@@ -3209,7 +3318,7 @@ var Replier = /** @class */ (function (_super) {
                         React.createElement("div", { id: "topicsNumber", style: { marginLeft: "0.625rem", display: "flex", flexWrap: "nowrap", wordBreak: "keepAll" } },
                             topicNumber,
                             "   ",
-                            React.createElement("span", { className: "rpyClrodd" }, this.props.sendTopicNumber),
+                            React.createElement("span", { style: { color: "red" } }, this.props.sendTopicNumber),
                             " ")),
                     React.createElement("div", { className: "row", style: { display: "flex", flexWrap: "nowrap" } },
                         React.createElement("div", { id: "clockimg", style: { marginLeft: "0.375rem" } },
@@ -3598,9 +3707,8 @@ var TopicPager = /** @class */ (function (_super) {
         });
     };
     TopicPager.prototype.render = function () {
-        return React.createElement("div", { className: "row", style: { width: "100%", justifyContent: 'space-between', borderBottom: ' #EAEAEA solid thin', alignItems: 'flex-end', flexDirection: "row-reverse" } },
-            React.createElement("div", { id: "pager" },
-                React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this)))));
+        return React.createElement("div", { id: "pager" },
+            React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this))));
     };
     return TopicPager;
 }(RouteComponent));
@@ -4572,7 +4680,6 @@ var SendTopic = /** @class */ (function (_super) {
                             contentType: 1,
                             title: ""
                         };
-                        console.log(content);
                         contentJson = JSON.stringify(content);
                         token = Utility.getLocalStorage("accessToken");
                         myHeaders = new Headers();
@@ -4585,6 +4692,7 @@ var SendTopic = /** @class */ (function (_super) {
                             })];
                     case 1:
                         mes = _a.sent();
+                        this.props.onChange();
                         this.setState({ content: "" });
                         return [2 /*return*/];
                 }

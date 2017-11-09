@@ -239,6 +239,7 @@ export async function getAllNewPost(curPage: number) {
         /**
         *根据作者名字获取作者头像的图片地址
         */
+        if()
         if (newTopics1[i].userName == null) {
             newTopics1[i].userName = '匿名';
             newTopics1[i].portraitUrl = 'https://www.cc98.org/pic/anonymous.gif';

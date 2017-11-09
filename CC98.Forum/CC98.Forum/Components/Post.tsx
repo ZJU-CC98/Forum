@@ -25,7 +25,18 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
 export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName }, { topicid, page, userName }> {
     constructor(props, context) {
         super(props, context);
+        this.handleChange = this.handleChange.bind(this);
         this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null };
+    }
+    async handleChange() {
+        let page: number;
+        if (!this.match.params.page) {
+            page = 1;
+        }
+        else { page = parseInt(this.match.params.page); }
+        const totalPage = await this.getTotalPage(this.match.params.topicid);
+        const userName = this.match.params.userName;
+        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName });
     }
     async componentWillReceiveProps(newProps) {
         let page: number;
@@ -67,16 +78,40 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
             topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} />;
         }
         return <div className="center" >
-            <TopicPager page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
+            <div className="row" style={{ width: "100%", justifyContent: 'space-between', borderBottom: '#EAEAEA solid thin', alignItems:"center" }}>
+                <Category topicid={this.state.topicid} />
+                <TopicPager page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} /></div>
+          
             {topic}
             <Route path="/topic/:topicid/:page?" component={Reply} />
             <TopicPagerDown page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
-            <SendTopic topicid={this.state.topicid} />
+            <SendTopic onChange={this.handleChange} topicid={this.state.topicid} />
         </div>
             ;
 
     }
 
+}
+export class Category extends React.Component<{ topicid }, { boardId, topicId, boardName, title }>{
+    constructor(props) {
+        super(props);
+        this.state = ({ boardId: "", topicId: "", boardName:"", title:"" });
+    }
+    async componentDidMount() {
+        const response = await fetch(`http://apitest.niconi.cc/Topic/${this.props.topicid}`);
+        const data = await response.json();
+        const topicName = data.title;
+        const boardId = data.boardId;
+        const boardResponse = await fetch(`http://apitest.niconi.cc/Board/${boardId}`);
+        const boardData = await boardResponse.json();
+        const boardName = boardData.name;
+        this.setState({ boardId: boardId, topicId: this.props.topicid, boardName: boardName, title: topicName });
+    }
+    render() {
+        const listUrl = `/list/${this.state.boardId}`;
+        const topicUrl = `/topic/${this.state.topicId}`;
+        return <div style={{ color: "blue", fontSize: "0.75rem" }}>&rsaquo;&rsaquo;<a style={{ color: "blue", fontSize: "0.75rem" }} href="/">首页</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "0.75rem" }} href={listUrl} >{this.state.boardName}</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "0.75rem" }} href={topicUrl}>{this.state.title}</a></div>;
+    }
 }
 export class Reply extends RouteComponent<{}, { contents }, { page, topicid, userName }>{
     constructor(props, content) {
@@ -144,7 +179,7 @@ export class Replier extends RouteComponent<{ userId, topicid, userName, replyTi
             });
 
         });
-        let topicNumber = '帖数 ';
+        let topicNumber = '帖数&nbsp;';
         if (!this.props.userId) {
             topicNumber = '';
         }
@@ -170,7 +205,7 @@ export class Replier extends RouteComponent<{ userId, topicid, userName, replyTi
                     <div className="row" id="replierMes">
                         <div style={{ marginLeft: "0.625rem" }}><span>{this.props.floor}L</span></div>
                         <div className="rpyClr" style={{ marginLeft: "0.625rem" }}><a href={url}>{this.props.userName}</a></div>
-                        <div id="topicsNumber" style={{ marginLeft: "0.625rem", display: "flex", flexWrap: "nowrap", wordBreak:"keepAll" }}>{topicNumber}   <span className="rpyClrodd">{this.props.sendTopicNumber}</span> </div>
+                        <div id="topicsNumber" style={{ marginLeft: "0.625rem", display: "flex", flexWrap: "nowrap", wordBreak: "keepAll" }}>{topicNumber}   <span style={{ color:"red" }}>{this.props.sendTopicNumber}</span> </div>
                     </div>
                     <div className="row" style={{ display:"flex",flexWrap:"nowrap" }}>
                         <div id="clockimg" style={{ marginLeft: "0.375rem" }}><i className="fa fa-clock-o fa-lg fa-fw"></i></div>
@@ -457,11 +492,10 @@ export class TopicPager extends RouteComponent<{ page, topicid, totalPage }, { p
         this.setState({ pager: pages });
     } 
     render() {
-        return <div className="row" style={{ width:"100%", justifyContent: 'space-between', borderBottom: ' #EAEAEA solid thin', alignItems: 'flex-end', flexDirection: "row-reverse" }}>
-            <div id="pager" >
+        return <div id="pager" >
                 <div className="row pagination">{this.state.pager.map(this.generatePageLink.bind(this))}</div>
             </div>
-        </div>;
+        ;
     }
 }
 export class TopicPagerDown extends RouteComponent<{ page, topicid, totalPage }, { pager }, {}> {
