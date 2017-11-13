@@ -87,7 +87,8 @@ export class Category extends React.Component<{boardId}, { boardId,  boardName }
         this.state = ({ boardId: "",boardName: "" });
     }
     async componentDidMount() {
-        const boardResponse = await fetch(`http://apitest.niconi.cc/Board/${this.props.boardId}`);
+           let token=Utility.getLocalStorage("accessToken");
+        const boardResponse = await fetch(`http://apitest.niconi.cc/Board/${this.props.boardId}` ,{headers:{'Authorization':token}});
         const boardData = await boardResponse.json();
         const boardName = boardData.name;
         this.setState({ boardId: this.props.boardId, boardName: boardName });
@@ -254,7 +255,6 @@ export class PagerDown extends React.Component<{ boardid: number, page: number, 
 export class PageModel extends React.Component<{ boardid: number, pageNumber: number, curPage: number, totalPage: number }, {}> {
 
 	render() {
-
 		let pageUrl: string;
 		if (this.props.pageNumber > 0) {
 			pageUrl = `/list/${this.props.boardid}/${this.props.pageNumber}`;

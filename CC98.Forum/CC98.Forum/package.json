@@ -27,7 +27,7 @@
     "@types/redux": "3.6.31",
     "@types/signalr": "2.2.34",
     "@types/webpack": "3.0.5",
-    "awesome-typescript-loader": "3.2.2",
+    "awesome-typescript-loader": "3.3.0",
     "clean-webpack-plugin": "0.1.16",
     "copy-webpack-plugin": "4.0.1",
     "css-loader": "^0.28.4",

@@ -19,7 +19,7 @@ export class TopicVoteState {
  * 发帖内容状态
  */
 export class PostTopicState {
-
+    userName;
     topicMessage;
 }
 /**
@@ -60,7 +60,8 @@ export class ContentState {
         sendTopicNumber: number,
         userImgUrl: string,
         signature: string,
-        userId: number
+        userId: number,
+        privilege:string
     ) {
         this.userName = userName;
         this.id = id;
@@ -76,6 +77,7 @@ export class ContentState {
         this.userImgUrl = userImgUrl;
         this.signature = signature;
         this.userId = userId;
+        this.privilege=privilege;
     }
     id: number;
     content: string;
@@ -91,6 +93,7 @@ export class ContentState {
     userImgUrl: string;
     signature: string;
     userId: number;
+    privilege:string;
 }
 /**
  * 点赞信息状态
@@ -153,7 +156,7 @@ export class TopicTitleAndContentState {
 	/*  constructor(title, authorName, lastReply) {
 		  this.authorName = authorName;
 		  this.lastReply = lastReply;
-		  this.title = title;
+		    this.title = title;
 	  }*/
     constructor(title, userName, topicid, userId, lastPostUser,lastPostTime) {
         this.userName = userName;
