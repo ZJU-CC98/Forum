@@ -82,7 +82,7 @@ export class LogOnExact extends React.Component<null, LogOnState> {
             'grant_type': 'password',
             'username': this.state.loginName,
             'password': this.state.loginPassword,
-            'scope': 'cc98-api openid',
+            'scope':"cc98-api openid"
         }
 
         let response = await fetch(url, {

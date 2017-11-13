@@ -4,6 +4,7 @@
 import * as React from 'react';
 import { MyMessageProps } from '../Props/MyMessageProps';
 import { UbbContainer } from './UbbContainer'
+
 export class MyMessageSender extends React.Component<MyMessageProps> {
     render() {
         return (<div className="mymessage-message-wc">

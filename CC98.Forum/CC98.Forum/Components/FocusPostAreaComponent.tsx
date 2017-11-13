@@ -90,7 +90,7 @@ export class FocusPostAreaComponent extends React.Component<{}, FocusPostAreaSta
 * 单个主题数据转换成单个主题组件
 */
 function coverFocusPost(item: FocusPost) {
-    return <FocusPostComponent title={item.title} hitCount={item.hitCount} id={item.id} boardId={item.boardId} boardName={item.boardName} replyCount={item.replyCount} authorName={item.authorName} portraitUrl={item.portraitUrl} createTime={item.createTime} likeCount={item.likeCount} dislikeCount={item.dislikeCount} fanCount={item.fanCount}/>;
+    return <FocusPostComponent title={item.title} hitCount={item.hitCount} id={item.id} boardId={item.boardId} boardName={item.boardName} replyCount={item.replyCount} userName={item.userName} portraitUrl={item.portraitUrl} time={item.time} likeCount={item.likeCount} dislikeCount={item.dislikeCount} fanCount={item.fanCount}/>;
 }
 
 

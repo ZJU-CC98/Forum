@@ -35,11 +35,11 @@ export class App extends React.Component<{}, AppState> {
     render() {
 		return <div>
 			<Router>
-				    <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column' }}>
+				    <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column',alignItems:"center" }}>
                     <Header />
 					<Route exact path="/" component={MainPage}></Route>
 					<Route exact path="/topic/:topicid/:page?" component={Post} />
-					<Route exact path="/topic/:topicid/user/:userName/:page?" component={CurUserPost} />
+					<Route exact path="/topic/:topicid/user/:userId/:page?" component={CurUserPost} />
 					<Route path="/list/:boardid/:page?" component={List} />
 					<Route exact path="/boardlist" component={BoardList} />
 					<Route path="/usercenter" component={UserCenter} />

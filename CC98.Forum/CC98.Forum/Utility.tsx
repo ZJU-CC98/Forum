@@ -14,16 +14,18 @@ import { FocusPost } from './Props/FocusPost';
 
 
 export async function getBoardTopicAsync(curPage, boardid) {
+    const token = getLocalStorage("accessToken");
     const startPage = (curPage - 1) * 20;
     const endPage = curPage * 20 - 1;
     const boardtopics: State.TopicTitleAndContentState[] = [];
-    const url = `http://api.cc98.org/Topic/Board/${boardid}`;
+    const url = `http://apitest.niconi.cc/Topic/Board/${boardid}?from=${startPage}&size=20`;
     const response = await fetch(url,
-        { headers: { Range: `bytes=${startPage}-${endPage}` } });
+        { headers: { 'Authorization': token } });
     const data: State.TopicTitleAndContentState[] = await response.json();
-    const totalTopicCountResponse = await fetch(`http://api.cc98.org/Board/${boardid}`);
+    const totalTopicCountResponse = await fetch(`http://apitest.niconi.cc/Board/${boardid}`);
     const totalTopicCountJson = await totalTopicCountResponse.json();
-    const totalTopicCount = totalTopicCountJson.totalTopicCount;
+
+    const totalTopicCount = totalTopicCountJson.postCount;
     let topicNumberInPage;
     if (curPage * 20 <= totalTopicCount) {
         topicNumberInPage = 20;
@@ -33,25 +35,29 @@ export async function getBoardTopicAsync(curPage, boardid) {
         topicNumberInPage = (totalTopicCount - (curPage - 1) * 20);
     }
     for (let i = 0; i < topicNumberInPage; i++) {
-        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].authorName || '匿名', data[i].id, data[i].authorId, data[i].lastPostInfo);
+        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName || '匿名', data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime);
     }
+
     return boardtopics;
 
 }
 export async function getTopic(topicid: number) {
+    let token = getLocalStorage("accessToken");
+    const response = await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}?from=0&size=1`, {
 
-    const response = await fetch(`http://api.cc98.org/Post/Topic/${topicid}`, { headers: { Range: `bytes=${0}-${0}` } });
+        headers: { 'Authorization': token }
+    });
     const data = await response.json();
-    const hitCountResponse = await fetch(`http://api.cc98.org/Topic/${topicid}`);
+    const hitCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers: { 'Authorization': token } });
     const hitCountJson = await hitCountResponse.json();
     const hitCount = hitCountJson.hitCount;
-    let topicMessage=null;
+    let topicMessage = null;
     if (data[0].userId != null) {
-        const userMesResponse = await fetch(`http://api.cc98.org/User/${data[0].userId}`);
+        const userMesResponse = await fetch(`http://apitest.niconi.cc/User/${data[0].userId}`);
         const userMesJson = await userMesResponse.json();
-         topicMessage = new State.TopicState(data[0].userName , data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId);
+        topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId);
     } else {
-         topicMessage = new State.TopicState('匿名', data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null);
+        topicMessage = new State.TopicState('匿名', data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null);
     }
 
 
@@ -60,12 +66,12 @@ export async function getTopic(topicid: number) {
 export async function getTopicContent(topicid: number, curPage: number) {
     const startPage = (curPage - 1) * 10;
     const endPage = curPage * 10 - 1;
-
+    let token = getLocalStorage("accessToken");
     const topic = curPage !== 1
-        ? await fetch(`http://api.cc98.org/Post/Topic/${topicid}`, { headers: { Range: `bytes=${startPage}-${endPage}` } })
-        : await fetch(`http://api.cc98.org/Post/Topic/${topicid}`, { headers: { Range: `bytes=${1}-${9}` } });
+        ? await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}?from=${startPage}&size=10`, { headers: { 'Authorization': token } })
+        : await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}?from=1&size=9`, { headers: { 'Authorization': token } });
 
-    const replyCountResponse = await fetch(`http://api.cc98.org/Topic/${topicid}`);
+    const replyCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers: { 'Authorization': token } });
     const replyCountJson = await replyCountResponse.json();
     const replyCount = replyCountJson.replyCount;
     const content = await topic.json();
@@ -78,23 +84,23 @@ export async function getTopicContent(topicid: number, curPage: number) {
     } else if (curPage === 1 && replyCount < 9) {
         topicNumberInPage = replyCount;
     } else {
-        topicNumberInPage = (replyCount - (curPage - 1) * 10);
+        topicNumberInPage = (replyCount - (curPage - 1) * 10 + 1);
     }
     for (let i = 0; i < topicNumberInPage; i++) {
         if (content[i].userName != null) {
-            console.log("111");
-            const userMesResponse = await fetch(`http://api.cc98.org/user/name/${content[i].userName}`);
+
+            const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
             const userMesJson = await userMesResponse.json();
-            post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName , userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId);
+            post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege);
         } else {
             let purl = 'https://www.cc98.org/pic/anonymous.gif';
-            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null);
+            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null,"匿名用户");
         }
     }
     return post;
 }
 export function convertHotTopic(item: State.TopicTitleAndContentState) {
-    return <TopicTitleAndContent title={item.title} authorName={item.authorName} id={item.id} authorId={item.authorId} lastPostTime={item.lastPostInfo.time} lastPostUserName={item.lastPostInfo.userName} />
+    return <TopicTitleAndContent title={item.title} authorName={item.userName} id={item.id} authorId={item.userId} lastPostTime={item.lastPostTime} lastPostUserName={item.lastPostUser} />
         ;
 }
 export function getPager(curPage, totalPage) {
@@ -147,23 +153,63 @@ export function getPager(curPage, totalPage) {
     }
     return pages;
 }
-export async function getCurUserTopicContent(topicid: number, curPage: number, userName: string) {
-
-    const replyCountResponse = await fetch(`http://api.cc98.org/Topic/${topicid}`);
-    const replyCountJson = await replyCountResponse.json();
-    const replyCount = replyCountJson.replyCount;
-    const topic = await fetch(`http://api.cc98.org/Post/Topic/${topicid}`, { headers: { Range: `bytes=${1}-${replyCount}` } });
-    const content = await topic.json();
-    const post: State.ContentState[] = [];
-    for (let i = 0, j = 0; i < replyCount; i++) {
-        if (content[i].userName == userName) {
-            const userMesResponse = await fetch(`http://api.cc98.org/User/Name/${content[i].userName}`);
-            const userMesJson = await userMesResponse.json();
-            post[j] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName || '匿名', userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId);
-            j++;
-        }
+export async function getCurUserTopic(topicid: number, userId: number) {
+    let token = getLocalStorage("accessToken");
+    const response = await fetch(`http://apitest.niconi.cc/post/Topic/user?topicid=${topicid}&userid=${userId}&from=0&size=1`, { headers: { 'Authorization': token } });
+    const data = await response.json();
+    const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${data[0].userName}`);
+    const userMesJson = await userMesResponse.json();
+    data[0].userImgUrl = userMesJson.portraitUrl;
+    return data[0];
+}
+export async function getCurUserTopicContent(topicid: number, curPage: number, userName: string, userId: number) {
+    const topicMessage = await getTopic(topicid);
+    let start: number;
+    let isUserPoster: boolean;
+    if (topicMessage.userName === userName) {
+        isUserPoster = true;
+        if(curPage===1)
+             start = (curPage - 1) * 10 + 1;
+        else
+             start = (curPage - 1) * 10;
+    } else {
+        isUserPoster = false;
+             start = (curPage - 1) * 10;
     }
 
+    const token = getLocalStorage("accessToken");
+    const topic = await fetch(`http://apitest.niconi.cc/Post/Topic/user?topicid=${topicid}&userId=${userId}&from=${start}&size=10`, { headers: { 'Authorization': token } });
+    const content = await topic.json();
+
+
+    let post: State.ContentState[] = [];
+    let topicNumberInPage: number;
+    const replyCount = content[0].count;
+
+    if (curPage !== 1 && curPage * 10 <= replyCount) {
+        topicNumberInPage = 10;
+    } else if (curPage === 1 && replyCount >= 9 && isUserPoster == true) {
+        topicNumberInPage = 9;
+    } else if (curPage === 1 && replyCount >= 9 && isUserPoster == false) {
+        topicNumberInPage = 10;
+    } else if (curPage === 1 && replyCount < 9) {
+        topicNumberInPage = replyCount;
+    } else {
+        topicNumberInPage = (replyCount - (curPage - 1) * 10);
+    }
+
+    for (let i = 0; i < topicNumberInPage; i++) {
+        if (content[i].userName != null) {
+            const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
+            const userMesJson = await userMesResponse.json();
+
+            post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId,userMesJson.privilege);
+
+        } else {
+            let purl = 'https://www.cc98.org/pic/anonymous.gif';
+            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null,"匿名用户");
+        }
+    }
 
     return post;
 }
@@ -222,28 +268,31 @@ export async function getAllNewPost(curPage: number) {
      */
     const startPage: number = (curPage - 1) * 20 + 1;
     const endPage: number = curPage * 20;
+    const size = endPage - startPage;
+    let token = getLocalStorage("accessToken");
     /**
      * 通过api获取到主题之后转成json格式，但此时没有作者头像的图片地址和版面名称
      */
-    const newTopics0 = await fetch('https://api.cc98.org/Topic/New', { headers: { Range: `bytes=${startPage}-${endPage}` } });
+    const newTopics0 = await fetch(`http://apitest.niconi.cc/Topic/New?from=${startPage}&size=${size}`, { headers: { 'Authorization': token } });
     const newTopics1 = await newTopics0.json();
     for (let i in newTopics1) {
         /**
         *根据作者名字获取作者头像的图片地址
         */
-        if (newTopics1[i].authorName == null) {
-            newTopics1[i].authorName = '匿名';
+
+        if (newTopics1[i].userName == null) {
+            newTopics1[i].userName = '匿名';
             newTopics1[i].portraitUrl = 'https://www.cc98.org/pic/anonymous.gif';
         }
         else {
-            const userInfo0 = await fetch(`https://api.cc98.org/User/${newTopics1[i].authorId}`);
+            const userInfo0 = await fetch(`http://apitest.niconi.cc/User/${newTopics1[i].userId}`);
             const userInfo1 = await userInfo0.json();
             newTopics1[i].portraitUrl = userInfo1.portraitUrl;
         }
         /**
          * 根据版面id获取版面名称
          */
-        const boardInfo0 = await fetch(`https://api.cc98.org/Board/${newTopics1[i].boardId}`);
+        const boardInfo0 = await fetch(`http://apitest.niconi.cc/Board/${newTopics1[i].boardId}`);
         const boardInfo1 = await boardInfo0.json();
         newTopics1[i].boardName = boardInfo1.name;
         /**
@@ -256,8 +305,8 @@ export async function getAllNewPost(curPage: number) {
     /**
      * 将补充完善的数据赋值给newTopics，以便后续进行可视化
      */
-    const newTopics: FocusPost[] = newTopics1;
-    return newTopics;
+    //const newTopics: FocusPost[] = newTopics1;
+    return newTopics1;
 }
 export function setStorage(key, value) {
     let v = value;
@@ -281,7 +330,7 @@ export function getStorage(key) {
         return v.slice(4);
     }
 }
- export function setLocalStorage(key, value) {
+export function setLocalStorage(key, value) {
     let v = value;
     if (typeof v == 'object') {
         v = JSON.stringify(v);
@@ -302,7 +351,7 @@ export function getLocalStorage(key) {
     } else if (v.indexOf('str-') === 0) {
         return v.slice(4);
     }
- }
+}
 export function removeLocalStorage(key) {
     localStorage.removeItem(key);
     return;

@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 17);
+/******/ 	return __webpack_require__(__webpack_require__.s = 16);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -968,478 +968,6 @@ module.exports = ReactRouterDOM;
 
 "use strict";
 
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var State = __webpack_require__(4);
-var React = __webpack_require__(0);
-var List_1 = __webpack_require__(9);
-var $ = __webpack_require__(5);
-function getBoardTopicAsync(curPage, boardid) {
-    return __awaiter(this, void 0, void 0, function () {
-        var startPage, endPage, boardtopics, url, response, data, totalTopicCountResponse, totalTopicCountJson, totalTopicCount, topicNumberInPage, i;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    startPage = (curPage - 1) * 20;
-                    endPage = curPage * 20 - 1;
-                    boardtopics = [];
-                    url = "http://api.cc98.org/Topic/Board/" + boardid;
-                    return [4 /*yield*/, fetch(url, { headers: { Range: "bytes=" + startPage + "-" + endPage } })];
-                case 1:
-                    response = _a.sent();
-                    return [4 /*yield*/, response.json()];
-                case 2:
-                    data = _a.sent();
-                    return [4 /*yield*/, fetch("http://api.cc98.org/Board/" + boardid)];
-                case 3:
-                    totalTopicCountResponse = _a.sent();
-                    return [4 /*yield*/, totalTopicCountResponse.json()];
-                case 4:
-                    totalTopicCountJson = _a.sent();
-                    totalTopicCount = totalTopicCountJson.totalTopicCount;
-                    if (curPage * 20 <= totalTopicCount) {
-                        topicNumberInPage = 20;
-                    }
-                    else if (curPage === 1 && totalTopicCount < 19) {
-                        topicNumberInPage = totalTopicCount;
-                    }
-                    else {
-                        topicNumberInPage = (totalTopicCount - (curPage - 1) * 20);
-                    }
-                    for (i = 0; i < topicNumberInPage; i++) {
-                        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].authorName || '匿名', data[i].id, data[i].authorId, data[i].lastPostInfo);
-                    }
-                    return [2 /*return*/, boardtopics];
-            }
-        });
-    });
-}
-exports.getBoardTopicAsync = getBoardTopicAsync;
-function getTopic(topicid) {
-    return __awaiter(this, void 0, void 0, function () {
-        var response, data, hitCountResponse, hitCountJson, hitCount, topicMessage, userMesResponse, userMesJson;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, fetch("http://api.cc98.org/Post/Topic/" + topicid, { headers: { Range: "bytes=" + 0 + "-" + 0 } })];
-                case 1:
-                    response = _a.sent();
-                    return [4 /*yield*/, response.json()];
-                case 2:
-                    data = _a.sent();
-                    return [4 /*yield*/, fetch("http://api.cc98.org/Topic/" + topicid)];
-                case 3:
-                    hitCountResponse = _a.sent();
-                    return [4 /*yield*/, hitCountResponse.json()];
-                case 4:
-                    hitCountJson = _a.sent();
-                    hitCount = hitCountJson.hitCount;
-                    topicMessage = null;
-                    if (!(data[0].userId != null)) return [3 /*break*/, 7];
-                    return [4 /*yield*/, fetch("http://api.cc98.org/User/" + data[0].userId)];
-                case 5:
-                    userMesResponse = _a.sent();
-                    return [4 /*yield*/, userMesResponse.json()];
-                case 6:
-                    userMesJson = _a.sent();
-                    topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId);
-                    return [3 /*break*/, 8];
-                case 7:
-                    topicMessage = new State.TopicState('匿名', data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null);
-                    _a.label = 8;
-                case 8: return [2 /*return*/, topicMessage];
-            }
-        });
-    });
-}
-exports.getTopic = getTopic;
-function getTopicContent(topicid, curPage) {
-    return __awaiter(this, void 0, void 0, function () {
-        var startPage, endPage, topic, _a, replyCountResponse, replyCountJson, replyCount, content, post, topicNumberInPage, i, userMesResponse, userMesJson, purl;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    startPage = (curPage - 1) * 10;
-                    endPage = curPage * 10 - 1;
-                    if (!(curPage !== 1)) return [3 /*break*/, 2];
-                    return [4 /*yield*/, fetch("http://api.cc98.org/Post/Topic/" + topicid, { headers: { Range: "bytes=" + startPage + "-" + endPage } })];
-                case 1:
-                    _a = _b.sent();
-                    return [3 /*break*/, 4];
-                case 2: return [4 /*yield*/, fetch("http://api.cc98.org/Post/Topic/" + topicid, { headers: { Range: "bytes=" + 1 + "-" + 9 } })];
-                case 3:
-                    _a = _b.sent();
-                    _b.label = 4;
-                case 4:
-                    topic = _a;
-                    return [4 /*yield*/, fetch("http://api.cc98.org/Topic/" + topicid)];
-                case 5:
-                    replyCountResponse = _b.sent();
-                    return [4 /*yield*/, replyCountResponse.json()];
-                case 6:
-                    replyCountJson = _b.sent();
-                    replyCount = replyCountJson.replyCount;
-                    return [4 /*yield*/, topic.json()];
-                case 7:
-                    content = _b.sent();
-                    post = [];
-                    if (curPage !== 1 && curPage * 10 <= replyCount) {
-                        topicNumberInPage = 10;
-                    }
-                    else if (curPage === 1 && replyCount >= 9) {
-                        topicNumberInPage = 9;
-                    }
-                    else if (curPage === 1 && replyCount < 9) {
-                        topicNumberInPage = replyCount;
-                    }
-                    else {
-                        topicNumberInPage = (replyCount - (curPage - 1) * 10);
-                    }
-                    i = 0;
-                    _b.label = 8;
-                case 8:
-                    if (!(i < topicNumberInPage)) return [3 /*break*/, 13];
-                    if (!(content[i].userName != null)) return [3 /*break*/, 11];
-                    console.log("111");
-                    return [4 /*yield*/, fetch("http://api.cc98.org/user/name/" + content[i].userName)];
-                case 9:
-                    userMesResponse = _b.sent();
-                    return [4 /*yield*/, userMesResponse.json()];
-                case 10:
-                    userMesJson = _b.sent();
-                    post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId);
-                    return [3 /*break*/, 12];
-                case 11:
-                    purl = 'https://www.cc98.org/pic/anonymous.gif';
-                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null);
-                    _b.label = 12;
-                case 12:
-                    i++;
-                    return [3 /*break*/, 8];
-                case 13: return [2 /*return*/, post];
-            }
-        });
-    });
-}
-exports.getTopicContent = getTopicContent;
-function convertHotTopic(item) {
-    return React.createElement(List_1.TopicTitleAndContent, { title: item.title, authorName: item.authorName, id: item.id, authorId: item.authorId, lastPostTime: item.lastPostInfo.time, lastPostUserName: item.lastPostInfo.userName });
-}
-exports.convertHotTopic = convertHotTopic;
-function getPager(curPage, totalPage) {
-    if (curPage == undefined) {
-        curPage = 1;
-    }
-    var pages = [];
-    if (totalPage == 1) {
-        pages = [1];
-    }
-    else if (totalPage < 10 && totalPage > 1) {
-        if (curPage == undefined || curPage == 1) {
-            var i = void 0;
-            for (i = 0; i < totalPage; i++) {
-                pages[i] = i + 1;
-            }
-            pages[i] = -2;
-            pages[i + 1] = -4;
-        }
-        else if (curPage == 2) {
-            var i = void 0;
-            for (i = 1; i <= totalPage; i++) {
-                pages[i] = i;
-            }
-            pages[0] = -1;
-            pages[i] = -2;
-            pages[i + 1] = -4;
-        }
-        else {
-            var i = void 0;
-            for (i = 2; i <= totalPage + 1; i++) {
-                pages[i] = i - 1;
-            }
-            pages[0] = -3;
-            pages[1] = -1;
-            pages[i] = -2;
-            pages[i + 1] = -4;
-        }
-    }
-    else {
-        if (curPage + 5 <= totalPage) {
-            if (curPage == undefined || curPage == 1) {
-                pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, -2, -4];
-            }
-            else if (curPage > 1 && curPage < 6) {
-                pages = [-3, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, -2, -4];
-            }
-            else {
-                pages = [-3, -1, curPage - 4, curPage - 3, curPage - 2, curPage - 1, curPage, curPage + 1, curPage + 2, curPage + 3, curPage + 4, curPage + 5, -2, -4];
-            }
-        }
-        else if (curPage + 5 > totalPage && curPage != totalPage) {
-            return [-3, -1, totalPage - 9, totalPage - 8, totalPage - 7, totalPage - 6, totalPage - 5, totalPage - 4, totalPage - 3, totalPage - 2, totalPage - 1, totalPage, -2, -4];
-        }
-        else if (curPage == totalPage) {
-            return [-3, -1, totalPage - 9, totalPage - 8, totalPage - 7, totalPage - 6, totalPage - 5, totalPage - 4, totalPage - 3, totalPage - 2, totalPage - 1, totalPage];
-        }
-    }
-    return pages;
-}
-exports.getPager = getPager;
-function getCurUserTopicContent(topicid, curPage, userName) {
-    return __awaiter(this, void 0, void 0, function () {
-        var replyCountResponse, replyCountJson, replyCount, topic, content, post, i, j, userMesResponse, userMesJson;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, fetch("http://api.cc98.org/Topic/" + topicid)];
-                case 1:
-                    replyCountResponse = _a.sent();
-                    return [4 /*yield*/, replyCountResponse.json()];
-                case 2:
-                    replyCountJson = _a.sent();
-                    replyCount = replyCountJson.replyCount;
-                    return [4 /*yield*/, fetch("http://api.cc98.org/Post/Topic/" + topicid, { headers: { Range: "bytes=" + 1 + "-" + replyCount } })];
-                case 3:
-                    topic = _a.sent();
-                    return [4 /*yield*/, topic.json()];
-                case 4:
-                    content = _a.sent();
-                    post = [];
-                    i = 0, j = 0;
-                    _a.label = 5;
-                case 5:
-                    if (!(i < replyCount)) return [3 /*break*/, 9];
-                    if (!(content[i].userName == userName)) return [3 /*break*/, 8];
-                    return [4 /*yield*/, fetch("http://api.cc98.org/User/Name/" + content[i].userName)];
-                case 6:
-                    userMesResponse = _a.sent();
-                    return [4 /*yield*/, userMesResponse.json()];
-                case 7:
-                    userMesJson = _a.sent();
-                    post[j] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDelete, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName || '匿名', userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId);
-                    j++;
-                    _a.label = 8;
-                case 8:
-                    i++;
-                    return [3 /*break*/, 5];
-                case 9: return [2 /*return*/, post];
-            }
-        });
-    });
-}
-exports.getCurUserTopicContent = getCurUserTopicContent;
-function sendRequest() {
-    //申请到的appID
-    var appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
-    //申请后的回调地址
-    var c = 'http://localhost:58187/messagebox/message';
-    var redirectUri = encodeURI(c);
-    //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
-    var path = 'https://login.cc98.org/OAuth/Authorize?';
-    var queryParams = ["client_id=" + appId, 'response_type=token', 'scope=all', "redirect_uri=" + redirectUri];
-    var query = queryParams.join('&');
-    var url = path + query;
-    return url;
-}
-exports.sendRequest = sendRequest;
-function systemRequest() {
-    //申请到的appID
-    var appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
-    //申请后的回调地址
-    var c = 'http://localhost:58187/messagebox/system';
-    var redirectUri = encodeURI(c);
-    //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
-    var path = 'https://login.cc98.org/OAuth/Authorize?';
-    var queryParams = ["client_id=" + appId, 'response_type=token', 'scope=all', "redirect_uri=" + redirectUri];
-    var query = queryParams.join('&');
-    var url = path + query;
-    return url;
-}
-exports.systemRequest = systemRequest;
-function responseRequest() {
-    //申请到的appID
-    var appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
-    //申请后的回调地址
-    var c = 'http://localhost:58187/messagebox/response';
-    var redirectUri = encodeURI(c);
-    //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
-    var path = 'https://login.cc98.org/OAuth/Authorize?';
-    var queryParams = ["client_id=" + appId, 'response_type=token', 'scope=all', "redirect_uri=" + redirectUri];
-    var query = queryParams.join('&');
-    var url = path + query;
-    return url;
-}
-exports.responseRequest = responseRequest;
-function changeNav(id) {
-    $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
-    $(id).addClass('mymessage-nav-focus');
-}
-exports.changeNav = changeNav;
-/**
- * 获取全站新帖
- * @param curPage
- */
-function getAllNewPost(curPage) {
-    return __awaiter(this, void 0, void 0, function () {
-        var startPage, endPage, newTopics0, newTopics1, _a, _b, _i, i, userInfo0, userInfo1, boardInfo0, boardInfo1, newTopics;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
-                case 0:
-                    startPage = (curPage - 1) * 20 + 1;
-                    endPage = curPage * 20;
-                    return [4 /*yield*/, fetch('https://api.cc98.org/Topic/New', { headers: { Range: "bytes=" + startPage + "-" + endPage } })];
-                case 1:
-                    newTopics0 = _c.sent();
-                    return [4 /*yield*/, newTopics0.json()];
-                case 2:
-                    newTopics1 = _c.sent();
-                    _a = [];
-                    for (_b in newTopics1)
-                        _a.push(_b);
-                    _i = 0;
-                    _c.label = 3;
-                case 3:
-                    if (!(_i < _a.length)) return [3 /*break*/, 11];
-                    i = _a[_i];
-                    if (!(newTopics1[i].authorName == null)) return [3 /*break*/, 4];
-                    newTopics1[i].authorName = '匿名';
-                    newTopics1[i].portraitUrl = 'https://www.cc98.org/pic/anonymous.gif';
-                    return [3 /*break*/, 7];
-                case 4: return [4 /*yield*/, fetch("https://api.cc98.org/User/" + newTopics1[i].authorId)];
-                case 5:
-                    userInfo0 = _c.sent();
-                    return [4 /*yield*/, userInfo0.json()];
-                case 6:
-                    userInfo1 = _c.sent();
-                    newTopics1[i].portraitUrl = userInfo1.portraitUrl;
-                    _c.label = 7;
-                case 7: return [4 /*yield*/, fetch("https://api.cc98.org/Board/" + newTopics1[i].boardId)];
-                case 8:
-                    boardInfo0 = _c.sent();
-                    return [4 /*yield*/, boardInfo0.json()];
-                case 9:
-                    boardInfo1 = _c.sent();
-                    newTopics1[i].boardName = boardInfo1.name;
-                    /**
-                    *这些数据是伪造的
-                    */
-                    newTopics1[i].likeCount = 6;
-                    newTopics1[i].dislikeCount = 3;
-                    newTopics1[i].fanCount = 28;
-                    _c.label = 10;
-                case 10:
-                    _i++;
-                    return [3 /*break*/, 3];
-                case 11:
-                    newTopics = newTopics1;
-                    return [2 /*return*/, newTopics];
-            }
-        });
-    });
-}
-exports.getAllNewPost = getAllNewPost;
-function setStorage(key, value) {
-    var v = value;
-    if (typeof v == 'object') {
-        v = JSON.stringify(v);
-        v = "obj-" + v;
-    }
-    else {
-        v = "str-" + v;
-    }
-    sessionStorage.setItem(key, v);
-}
-exports.setStorage = setStorage;
-function getStorage(key) {
-    var v = sessionStorage.getItem(key);
-    if (!v) {
-        return;
-    }
-    if (v.indexOf('obj-') === 0) {
-        v = v.slice(4);
-        return JSON.parse(v);
-    }
-    else if (v.indexOf('str-') === 0) {
-        return v.slice(4);
-    }
-}
-exports.getStorage = getStorage;
-function setLocalStorage(key, value) {
-    var v = value;
-    if (typeof v == 'object') {
-        v = JSON.stringify(v);
-        v = "obj-" + v;
-    }
-    else {
-        v = "str-" + v;
-    }
-    localStorage.setItem(key, v);
-}
-exports.setLocalStorage = setLocalStorage;
-function getLocalStorage(key) {
-    var v = localStorage.getItem(key);
-    if (!v) {
-        return;
-    }
-    if (v.indexOf('obj-') === 0) {
-        v = v.slice(4);
-        return JSON.parse(v);
-    }
-    else if (v.indexOf('str-') === 0) {
-        return v.slice(4);
-    }
-}
-exports.getLocalStorage = getLocalStorage;
-function removeLocalStorage(key) {
-    localStorage.removeItem(key);
-    return;
-}
-exports.removeLocalStorage = removeLocalStorage;
-function removeStorage(key) {
-    sessionStorage.removeItem(key);
-    return;
-}
-exports.removeStorage = removeStorage;
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * 表示应用程序的状态。
@@ -1490,7 +1018,7 @@ exports.TopicTitleState = TopicTitleState;
  * 文章内容
  */
 var ContentState = /** @class */ (function () {
-    function ContentState(id, content, time, isDelete, floor, isAnonymous, lastUpdateAuthor, lastUpdateTime, topicId, userName, sendTopicNumber, userImgUrl, signature, userId) {
+    function ContentState(id, content, time, isDelete, floor, isAnonymous, lastUpdateAuthor, lastUpdateTime, topicId, userName, sendTopicNumber, userImgUrl, signature, userId, privilege) {
         this.userName = userName;
         this.id = id;
         this.content = content;
@@ -1505,6 +1033,7 @@ var ContentState = /** @class */ (function () {
         this.userImgUrl = userImgUrl;
         this.signature = signature;
         this.userId = userId;
+        this.privilege = privilege;
     }
     return ContentState;
 }());
@@ -1568,14 +1097,15 @@ var TopicTitleAndContentState = /** @class */ (function () {
     /*  constructor(title, authorName, lastReply) {
           this.authorName = authorName;
           this.lastReply = lastReply;
-          this.title = title;
+            this.title = title;
       }*/
-    function TopicTitleAndContentState(title, authorName, topicid, authorId, lastPostInfo) {
-        this.authorName = authorName;
+    function TopicTitleAndContentState(title, userName, topicid, userId, lastPostUser, lastPostTime) {
+        this.userName = userName;
         this.title = title;
         this.id = topicid;
-        this.authorId = authorId;
-        this.lastPostInfo = lastPostInfo;
+        this.userId = userId;
+        this.lastPostUser = lastPostUser;
+        this.lastPostTime = lastPostTime;
     }
     return TopicTitleAndContentState;
 }());
@@ -1679,13 +1209,611 @@ exports.UserFanInfo = UserFanInfo;
 
 
 /***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var State = __webpack_require__(3);
+var React = __webpack_require__(0);
+var List_1 = __webpack_require__(9);
+var $ = __webpack_require__(6);
+function getBoardTopicAsync(curPage, boardid) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, startPage, endPage, boardtopics, url, response, data, totalTopicCountResponse, totalTopicCountJson, totalTopicCount, topicNumberInPage, i;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    startPage = (curPage - 1) * 20;
+                    endPage = curPage * 20 - 1;
+                    boardtopics = [];
+                    url = "http://apitest.niconi.cc/Topic/Board/" + boardid + "?from=" + startPage + "&size=20";
+                    return [4 /*yield*/, fetch(url, { headers: { 'Authorization': token } })];
+                case 1:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    data = _a.sent();
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + boardid)];
+                case 3:
+                    totalTopicCountResponse = _a.sent();
+                    return [4 /*yield*/, totalTopicCountResponse.json()];
+                case 4:
+                    totalTopicCountJson = _a.sent();
+                    totalTopicCount = totalTopicCountJson.postCount;
+                    if (curPage * 20 <= totalTopicCount) {
+                        topicNumberInPage = 20;
+                    }
+                    else if (curPage === 1 && totalTopicCount < 19) {
+                        topicNumberInPage = totalTopicCount;
+                    }
+                    else {
+                        topicNumberInPage = (totalTopicCount - (curPage - 1) * 20);
+                    }
+                    for (i = 0; i < topicNumberInPage; i++) {
+                        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName || '匿名', data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime);
+                    }
+                    return [2 /*return*/, boardtopics];
+            }
+        });
+    });
+}
+exports.getBoardTopicAsync = getBoardTopicAsync;
+function getTopic(topicid) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, response, data, hitCountResponse, hitCountJson, hitCount, topicMessage, userMesResponse, userMesJson;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Post/Topic/" + topicid + "?from=0&size=1", {
+                            headers: { 'Authorization': token }
+                        })];
+                case 1:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    data = _a.sent();
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + topicid, { headers: { 'Authorization': token } })];
+                case 3:
+                    hitCountResponse = _a.sent();
+                    return [4 /*yield*/, hitCountResponse.json()];
+                case 4:
+                    hitCountJson = _a.sent();
+                    hitCount = hitCountJson.hitCount;
+                    topicMessage = null;
+                    if (!(data[0].userId != null)) return [3 /*break*/, 7];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/User/" + data[0].userId)];
+                case 5:
+                    userMesResponse = _a.sent();
+                    return [4 /*yield*/, userMesResponse.json()];
+                case 6:
+                    userMesJson = _a.sent();
+                    topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId);
+                    return [3 /*break*/, 8];
+                case 7:
+                    topicMessage = new State.TopicState('匿名', data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null);
+                    _a.label = 8;
+                case 8: return [2 /*return*/, topicMessage];
+            }
+        });
+    });
+}
+exports.getTopic = getTopic;
+function getTopicContent(topicid, curPage) {
+    return __awaiter(this, void 0, void 0, function () {
+        var startPage, endPage, token, topic, _a, replyCountResponse, replyCountJson, replyCount, content, post, topicNumberInPage, i, userMesResponse, userMesJson, purl;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    startPage = (curPage - 1) * 10;
+                    endPage = curPage * 10 - 1;
+                    token = getLocalStorage("accessToken");
+                    if (!(curPage !== 1)) return [3 /*break*/, 2];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Post/Topic/" + topicid + "?from=" + startPage + "&size=10", { headers: { 'Authorization': token } })];
+                case 1:
+                    _a = _b.sent();
+                    return [3 /*break*/, 4];
+                case 2: return [4 /*yield*/, fetch("http://apitest.niconi.cc/Post/Topic/" + topicid + "?from=1&size=9", { headers: { 'Authorization': token } })];
+                case 3:
+                    _a = _b.sent();
+                    _b.label = 4;
+                case 4:
+                    topic = _a;
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + topicid, { headers: { 'Authorization': token } })];
+                case 5:
+                    replyCountResponse = _b.sent();
+                    return [4 /*yield*/, replyCountResponse.json()];
+                case 6:
+                    replyCountJson = _b.sent();
+                    replyCount = replyCountJson.replyCount;
+                    return [4 /*yield*/, topic.json()];
+                case 7:
+                    content = _b.sent();
+                    post = [];
+                    if (curPage !== 1 && curPage * 10 <= replyCount) {
+                        topicNumberInPage = 10;
+                    }
+                    else if (curPage === 1 && replyCount >= 9) {
+                        topicNumberInPage = 9;
+                    }
+                    else if (curPage === 1 && replyCount < 9) {
+                        topicNumberInPage = replyCount;
+                    }
+                    else {
+                        topicNumberInPage = (replyCount - (curPage - 1) * 10 + 1);
+                    }
+                    i = 0;
+                    _b.label = 8;
+                case 8:
+                    if (!(i < topicNumberInPage)) return [3 /*break*/, 13];
+                    if (!(content[i].userName != null)) return [3 /*break*/, 11];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + content[i].userName)];
+                case 9:
+                    userMesResponse = _b.sent();
+                    return [4 /*yield*/, userMesResponse.json()];
+                case 10:
+                    userMesJson = _b.sent();
+                    post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege);
+                    return [3 /*break*/, 12];
+                case 11:
+                    purl = 'https://www.cc98.org/pic/anonymous.gif';
+                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户");
+                    _b.label = 12;
+                case 12:
+                    i++;
+                    return [3 /*break*/, 8];
+                case 13: return [2 /*return*/, post];
+            }
+        });
+    });
+}
+exports.getTopicContent = getTopicContent;
+function convertHotTopic(item) {
+    return React.createElement(List_1.TopicTitleAndContent, { title: item.title, authorName: item.userName, id: item.id, authorId: item.userId, lastPostTime: item.lastPostTime, lastPostUserName: item.lastPostUser });
+}
+exports.convertHotTopic = convertHotTopic;
+function getPager(curPage, totalPage) {
+    if (curPage == undefined) {
+        curPage = 1;
+    }
+    var pages = [];
+    if (totalPage == 1) {
+        pages = [1];
+    }
+    else if (totalPage < 10 && totalPage > 1) {
+        if (curPage == undefined || curPage == 1) {
+            var i = void 0;
+            for (i = 0; i < totalPage; i++) {
+                pages[i] = i + 1;
+            }
+            pages[i] = -2;
+            pages[i + 1] = -4;
+        }
+        else if (curPage == 2) {
+            var i = void 0;
+            for (i = 1; i <= totalPage; i++) {
+                pages[i] = i;
+            }
+            pages[0] = -1;
+            pages[i] = -2;
+            pages[i + 1] = -4;
+        }
+        else {
+            var i = void 0;
+            for (i = 2; i <= totalPage + 1; i++) {
+                pages[i] = i - 1;
+            }
+            pages[0] = -3;
+            pages[1] = -1;
+            pages[i] = -2;
+            pages[i + 1] = -4;
+        }
+    }
+    else {
+        if (curPage + 5 <= totalPage) {
+            if (curPage == undefined || curPage == 1) {
+                pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, -2, -4];
+            }
+            else if (curPage > 1 && curPage < 6) {
+                pages = [-3, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, -2, -4];
+            }
+            else {
+                pages = [-3, -1, curPage - 4, curPage - 3, curPage - 2, curPage - 1, curPage, curPage + 1, curPage + 2, curPage + 3, curPage + 4, curPage + 5, -2, -4];
+            }
+        }
+        else if (curPage + 5 > totalPage && curPage != totalPage) {
+            return [-3, -1, totalPage - 9, totalPage - 8, totalPage - 7, totalPage - 6, totalPage - 5, totalPage - 4, totalPage - 3, totalPage - 2, totalPage - 1, totalPage, -2, -4];
+        }
+        else if (curPage == totalPage) {
+            return [-3, -1, totalPage - 9, totalPage - 8, totalPage - 7, totalPage - 6, totalPage - 5, totalPage - 4, totalPage - 3, totalPage - 2, totalPage - 1, totalPage];
+        }
+    }
+    return pages;
+}
+exports.getPager = getPager;
+function getCurUserTopic(topicid, userId) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, response, data, userMesResponse, userMesJson;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/Topic/user?topicid=" + topicid + "&userid=" + userId + "&from=0&size=1", { headers: { 'Authorization': token } })];
+                case 1:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    data = _a.sent();
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + data[0].userName)];
+                case 3:
+                    userMesResponse = _a.sent();
+                    return [4 /*yield*/, userMesResponse.json()];
+                case 4:
+                    userMesJson = _a.sent();
+                    data[0].userImgUrl = userMesJson.portraitUrl;
+                    return [2 /*return*/, data[0]];
+            }
+        });
+    });
+}
+exports.getCurUserTopic = getCurUserTopic;
+function getCurUserTopicContent(topicid, curPage, userName, userId) {
+    return __awaiter(this, void 0, void 0, function () {
+        var topicMessage, start, isUserPoster, token, topic, content, post, topicNumberInPage, replyCount, i, userMesResponse, userMesJson, purl;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, getTopic(topicid)];
+                case 1:
+                    topicMessage = _a.sent();
+                    if (topicMessage.userName === userName) {
+                        isUserPoster = true;
+                        if (curPage === 1)
+                            start = (curPage - 1) * 10 + 1;
+                        else
+                            start = (curPage - 1) * 10;
+                    }
+                    else {
+                        isUserPoster = false;
+                        start = (curPage - 1) * 10;
+                    }
+                    token = getLocalStorage("accessToken");
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Post/Topic/user?topicid=" + topicid + "&userId=" + userId + "&from=" + start + "&size=10", { headers: { 'Authorization': token } })];
+                case 2:
+                    topic = _a.sent();
+                    return [4 /*yield*/, topic.json()];
+                case 3:
+                    content = _a.sent();
+                    post = [];
+                    replyCount = content[0].count;
+                    if (curPage !== 1 && curPage * 10 <= replyCount) {
+                        topicNumberInPage = 10;
+                    }
+                    else if (curPage === 1 && replyCount >= 9 && isUserPoster == true) {
+                        topicNumberInPage = 9;
+                    }
+                    else if (curPage === 1 && replyCount >= 9 && isUserPoster == false) {
+                        topicNumberInPage = 10;
+                    }
+                    else if (curPage === 1 && replyCount < 9) {
+                        topicNumberInPage = replyCount;
+                    }
+                    else {
+                        topicNumberInPage = (replyCount - (curPage - 1) * 10);
+                    }
+                    i = 0;
+                    _a.label = 4;
+                case 4:
+                    if (!(i < topicNumberInPage)) return [3 /*break*/, 9];
+                    if (!(content[i].userName != null)) return [3 /*break*/, 7];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + content[i].userName)];
+                case 5:
+                    userMesResponse = _a.sent();
+                    return [4 /*yield*/, userMesResponse.json()];
+                case 6:
+                    userMesJson = _a.sent();
+                    post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege);
+                    return [3 /*break*/, 8];
+                case 7:
+                    purl = 'https://www.cc98.org/pic/anonymous.gif';
+                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户");
+                    _a.label = 8;
+                case 8:
+                    i++;
+                    return [3 /*break*/, 4];
+                case 9: return [2 /*return*/, post];
+            }
+        });
+    });
+}
+exports.getCurUserTopicContent = getCurUserTopicContent;
+function sendRequest() {
+    //申请到的appID
+    var appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
+    //申请后的回调地址
+    var c = 'http://localhost:58187/messagebox/message';
+    var redirectUri = encodeURI(c);
+    //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
+    var path = 'https://login.cc98.org/OAuth/Authorize?';
+    var queryParams = ["client_id=" + appId, 'response_type=token', 'scope=all', "redirect_uri=" + redirectUri];
+    var query = queryParams.join('&');
+    var url = path + query;
+    return url;
+}
+exports.sendRequest = sendRequest;
+function systemRequest() {
+    //申请到的appID
+    var appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
+    //申请后的回调地址
+    var c = 'http://localhost:58187/messagebox/system';
+    var redirectUri = encodeURI(c);
+    //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
+    var path = 'https://login.cc98.org/OAuth/Authorize?';
+    var queryParams = ["client_id=" + appId, 'response_type=token', 'scope=all', "redirect_uri=" + redirectUri];
+    var query = queryParams.join('&');
+    var url = path + query;
+    return url;
+}
+exports.systemRequest = systemRequest;
+function responseRequest() {
+    //申请到的appID
+    var appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
+    //申请后的回调地址
+    var c = 'http://localhost:58187/messagebox/response';
+    var redirectUri = encodeURI(c);
+    //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
+    var path = 'https://login.cc98.org/OAuth/Authorize?';
+    var queryParams = ["client_id=" + appId, 'response_type=token', 'scope=all', "redirect_uri=" + redirectUri];
+    var query = queryParams.join('&');
+    var url = path + query;
+    return url;
+}
+exports.responseRequest = responseRequest;
+function changeNav(id) {
+    $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
+    $(id).addClass('mymessage-nav-focus');
+}
+exports.changeNav = changeNav;
+/**
+ * 获取全站新帖
+ * @param curPage
+ */
+function getAllNewPost(curPage) {
+    return __awaiter(this, void 0, void 0, function () {
+        var startPage, endPage, size, token, newTopics0, newTopics1, _a, _b, _i, i, userInfo0, userInfo1, boardInfo0, boardInfo1;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
+                case 0:
+                    startPage = (curPage - 1) * 20 + 1;
+                    endPage = curPage * 20;
+                    size = endPage - startPage;
+                    token = getLocalStorage("accessToken");
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/New?from=" + startPage + "&size=" + size, { headers: { 'Authorization': token } })];
+                case 1:
+                    newTopics0 = _c.sent();
+                    return [4 /*yield*/, newTopics0.json()];
+                case 2:
+                    newTopics1 = _c.sent();
+                    _a = [];
+                    for (_b in newTopics1)
+                        _a.push(_b);
+                    _i = 0;
+                    _c.label = 3;
+                case 3:
+                    if (!(_i < _a.length)) return [3 /*break*/, 11];
+                    i = _a[_i];
+                    if (!(newTopics1[i].userName == null)) return [3 /*break*/, 4];
+                    newTopics1[i].userName = '匿名';
+                    newTopics1[i].portraitUrl = 'https://www.cc98.org/pic/anonymous.gif';
+                    return [3 /*break*/, 7];
+                case 4: return [4 /*yield*/, fetch("http://apitest.niconi.cc/User/" + newTopics1[i].userId)];
+                case 5:
+                    userInfo0 = _c.sent();
+                    return [4 /*yield*/, userInfo0.json()];
+                case 6:
+                    userInfo1 = _c.sent();
+                    newTopics1[i].portraitUrl = userInfo1.portraitUrl;
+                    _c.label = 7;
+                case 7: return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + newTopics1[i].boardId)];
+                case 8:
+                    boardInfo0 = _c.sent();
+                    return [4 /*yield*/, boardInfo0.json()];
+                case 9:
+                    boardInfo1 = _c.sent();
+                    newTopics1[i].boardName = boardInfo1.name;
+                    /**
+                    *这些数据是伪造的
+                    */
+                    newTopics1[i].likeCount = 6;
+                    newTopics1[i].dislikeCount = 3;
+                    newTopics1[i].fanCount = 28;
+                    _c.label = 10;
+                case 10:
+                    _i++;
+                    return [3 /*break*/, 3];
+                case 11: 
+                /**
+                 * 将补充完善的数据赋值给newTopics，以便后续进行可视化
+                 */
+                //const newTopics: FocusPost[] = newTopics1;
+                return [2 /*return*/, newTopics1];
+            }
+        });
+    });
+}
+exports.getAllNewPost = getAllNewPost;
+function setStorage(key, value) {
+    var v = value;
+    if (typeof v == 'object') {
+        v = JSON.stringify(v);
+        v = "obj-" + v;
+    }
+    else {
+        v = "str-" + v;
+    }
+    sessionStorage.setItem(key, v);
+}
+exports.setStorage = setStorage;
+function getStorage(key) {
+    var v = sessionStorage.getItem(key);
+    if (!v) {
+        return;
+    }
+    if (v.indexOf('obj-') === 0) {
+        v = v.slice(4);
+        return JSON.parse(v);
+    }
+    else if (v.indexOf('str-') === 0) {
+        return v.slice(4);
+    }
+}
+exports.getStorage = getStorage;
+function setLocalStorage(key, value) {
+    var v = value;
+    if (typeof v == 'object') {
+        v = JSON.stringify(v);
+        v = "obj-" + v;
+    }
+    else {
+        v = "str-" + v;
+    }
+    localStorage.setItem(key, v);
+}
+exports.setLocalStorage = setLocalStorage;
+function getLocalStorage(key) {
+    var v = localStorage.getItem(key);
+    if (!v) {
+        return;
+    }
+    if (v.indexOf('obj-') === 0) {
+        v = v.slice(4);
+        return JSON.parse(v);
+    }
+    else if (v.indexOf('str-') === 0) {
+        return v.slice(4);
+    }
+}
+exports.getLocalStorage = getLocalStorage;
+function removeLocalStorage(key) {
+    localStorage.removeItem(key);
+    return;
+}
+exports.removeLocalStorage = removeLocalStorage;
+function removeStorage(key) {
+    sessionStorage.removeItem(key);
+    return;
+}
+exports.removeStorage = removeStorage;
+
+
+/***/ }),
 /* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var Ubb = __webpack_require__(21);
+/**
+ * 定义 UBBContainer 组件需要使用的属性。
+ */
+var UbbContainerProps = /** @class */ (function () {
+    function UbbContainerProps() {
+    }
+    return UbbContainerProps;
+}());
+exports.UbbContainerProps = UbbContainerProps;
+/**
+ * 提供用于解析 UBB 的核心组件。
+ */
+var UbbContainer = /** @class */ (function (_super) {
+    __extends(UbbContainer, _super);
+    function UbbContainer() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UbbContainer.prototype.render = function () {
+        // 获取引擎对象，如果不使用引擎对象则创建一个默认的
+        var engine = this.props.engine || Ubb.createEngine();
+        // 获取选项，如果不设置选项则创建一个默认的
+        var options = this.props.options || new Ubb.UbbCodeOptions();
+        var ubbHtml = engine.exec(this.props.code || '', options);
+        //打开回车与空格00
+        var style = {
+            whiteSpace: 'pre-line',
+            width: "100%"
+        };
+        // 注意兼容性设置， HTML4 不支持 article 标签
+        if (options.compatibility === Ubb.UbbCompatiblityMode.Transitional) {
+            return React.createElement("blockquote", { style: style }, ubbHtml);
+        }
+        else {
+            return React.createElement("article", { style: style }, ubbHtml);
+        }
+    };
+    return UbbContainer;
+}(React.Component));
+exports.UbbContainer = UbbContainer;
+
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports) {
 
 module.exports = $;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1730,73 +1858,10 @@ exports.UserCenterExactActivitiesPost = UserCenterExactActivitiesPost;
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports) {
 
 module.exports = moment;
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var Ubb = __webpack_require__(22);
-/**
- * 定义 UBBContainer 组件需要使用的属性。
- */
-var UbbContainerProps = /** @class */ (function () {
-    function UbbContainerProps() {
-    }
-    return UbbContainerProps;
-}());
-exports.UbbContainerProps = UbbContainerProps;
-/**
- * 提供用于解析 UBB 的核心组件。
- */
-var UbbContainer = /** @class */ (function (_super) {
-    __extends(UbbContainer, _super);
-    function UbbContainer() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    UbbContainer.prototype.render = function () {
-        // 获取引擎对象，如果不使用引擎对象则创建一个默认的
-        var engine = this.props.engine || Ubb.createEngine();
-        // 获取选项，如果不设置选项则创建一个默认的
-        var options = this.props.options || new Ubb.UbbCodeOptions();
-        var ubbHtml = engine.exec(this.props.code || '', options);
-        //打开回车与空格00
-        var style = {
-            whiteSpace: 'pre-line',
-            width: "100%"
-        };
-        // 注意兼容性设置， HTML4 不支持 article 标签
-        if (options.compatibility === Ubb.UbbCompatiblityMode.Transitional) {
-            return React.createElement("blockquote", { style: style }, ubbHtml);
-        }
-        else {
-            return React.createElement("article", { style: style }, ubbHtml);
-        }
-    };
-    return UbbContainer;
-}(React.Component));
-exports.UbbContainer = UbbContainer;
-
 
 /***/ }),
 /* 9 */
@@ -1851,8 +1916,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(3);
-var moment = __webpack_require__(7);
+var Utility = __webpack_require__(4);
+var moment = __webpack_require__(8);
+var UbbContainer_1 = __webpack_require__(5);
 var react_router_dom_1 = __webpack_require__(2);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
@@ -1874,21 +1940,23 @@ var List = /** @class */ (function (_super) {
     function List(props, context) {
         var _this = _super.call(this, props, context) || this;
         // 默认页码
-        _this.state = { page: 1, totalPage: 1, boardid: _this.match.params.boardid };
+        _this.state = { page: 1, totalPage: 1, boardid: _this.match.params.boardid, bigPaper: "" };
         return _this;
     }
     List.prototype.getTotalListPage = function (boardid) {
         return __awaiter(this, void 0, void 0, function () {
-            var totalTopicCountResponse, totalTopicCountJson, totalTopicCount;
+            var token, totalTopicCountResponse, totalTopicCountJson, totalTopicCount;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, fetch("http://api.cc98.org/Board/" + boardid)];
+                    case 0:
+                        token = Utility.getLocalStorage("accessToken");
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + boardid, { headers: { 'Authorization': token } })];
                     case 1:
                         totalTopicCountResponse = _a.sent();
                         return [4 /*yield*/, totalTopicCountResponse.json()];
                     case 2:
                         totalTopicCountJson = _a.sent();
-                        totalTopicCount = totalTopicCountJson.totalTopicCount;
+                        totalTopicCount = totalTopicCountJson.postCount;
                         return [2 /*return*/, (totalTopicCount - totalTopicCount % 20) / 20 + 1];
                 }
             });
@@ -1920,10 +1988,18 @@ var List = /** @class */ (function (_super) {
     };
     List.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var page, boardid, totalPage;
+            var token, response, json, bigPaper, page, boardid, totalPage;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        token = Utility.getLocalStorage("accessToken");
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + this.match.params.boardid, { headers: { 'Authorization': token } })];
+                    case 1:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 2:
+                        json = _a.sent();
+                        bigPaper = json.bigPaper;
                         // 未提供页码，防止出错不进行后续处理
                         if (!this.match.params.page) {
                             page = 1;
@@ -1933,10 +2009,10 @@ var List = /** @class */ (function (_super) {
                         }
                         boardid = this.match.params.boardid;
                         return [4 /*yield*/, this.getTotalListPage(boardid)];
-                    case 1:
+                    case 3:
                         totalPage = _a.sent();
                         // 设置状态
-                        this.setState({ page: page, totalPage: totalPage, boardid: boardid });
+                        this.setState({ bigPaper: bigPaper, page: page, totalPage: totalPage, boardid: boardid });
                         return [2 /*return*/];
                 }
             });
@@ -1944,8 +2020,9 @@ var List = /** @class */ (function (_super) {
     };
     List.prototype.render = function () {
         return React.createElement("div", { id: "listRoot" },
+            React.createElement(Category, { boardId: this.state.boardid }),
             React.createElement(ListHead, { key: this.state.page, boardid: this.state.boardid }),
-            React.createElement(ListNotice, null),
+            React.createElement(ListNotice, { bigPaper: this.state.bigPaper }),
             React.createElement(ListButtonAndPager, { page: this.state.page, totalPage: this.state.totalPage, boardid: this.state.boardid }),
             React.createElement(ListTag, null),
             React.createElement(react_router_dom_1.Route, { path: "/list/:boardid/:page?", component: ListContent }),
@@ -1954,6 +2031,44 @@ var List = /** @class */ (function (_super) {
     return List;
 }(RouteComponent));
 exports.List = List;
+var Category = /** @class */ (function (_super) {
+    __extends(Category, _super);
+    function Category(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = ({ boardId: "", boardName: "" });
+        return _this;
+    }
+    Category.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var token, boardResponse, boardData, boardName;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        token = Utility.getLocalStorage("accessToken");
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + this.props.boardId, { headers: { 'Authorization': token } })];
+                    case 1:
+                        boardResponse = _a.sent();
+                        return [4 /*yield*/, boardResponse.json()];
+                    case 2:
+                        boardData = _a.sent();
+                        boardName = boardData.name;
+                        this.setState({ boardId: this.props.boardId, boardName: boardName });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Category.prototype.render = function () {
+        var listUrl = "/list/" + this.state.boardId;
+        return React.createElement("div", { className: "row", style: { width: "100%", justifyContent: "flex-start", color: "blue", fontSize: "0.75rem" } },
+            "\u203A\u203A",
+            React.createElement("a", { style: { color: "blue", fontSize: "0.75rem" }, href: "/" }, "\u9996\u9875"),
+            "\u00A0\u2192\u00A0",
+            React.createElement("a", { style: { color: "blue", fontSize: "0.75rem" }, href: listUrl }, this.state.boardName));
+    };
+    return Category;
+}(React.Component));
+exports.Category = Category;
 var ListHead = /** @class */ (function (_super) {
     __extends(ListHead, _super);
     function ListHead(props, content) {
@@ -1974,19 +2089,20 @@ var ListHead = /** @class */ (function (_super) {
     }
     ListHead.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var url, managersResponse, managerJson;
+            var token, url, managersResponse, managerJson;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        url = "http://api.cc98.org/Board/" + this.props.boardid;
-                        return [4 /*yield*/, fetch(url)];
+                        token = Utility.getLocalStorage("accessToken");
+                        url = "http://apitest.niconi.cc/Board/" + this.props.boardid;
+                        return [4 /*yield*/, fetch(url, { headers: { 'Authorization': token } })];
                     case 1:
                         managersResponse = _a.sent();
                         return [4 /*yield*/, managersResponse.json()];
                     case 2:
                         managerJson = _a.sent();
                         this.setState({
-                            listName: managerJson.name, todayTopics: managerJson.todayPostCount, totalTopics: managerJson.totalTopicCount, listManager: managerJson.masters
+                            listName: managerJson.name, todayTopics: managerJson.todayCount, totalTopics: managerJson.topicCount, listManager: managerJson.boardMasters
                         });
                         return [2 /*return*/];
                 }
@@ -1995,18 +2111,21 @@ var ListHead = /** @class */ (function (_super) {
     };
     ListHead.prototype.componentWillRecieveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
-            var url, managersResponse, managerJson;
+            var token, url, managersResponse, managerJson;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        url = "http://api.cc98.org/Board/" + newProps.boardid;
-                        return [4 /*yield*/, fetch(url)];
+                        token = Utility.getLocalStorage("accessToken");
+                        url = "http://apitest.niconi.cc/Board/" + this.props.boardid;
+                        return [4 /*yield*/, fetch(url, { headers: { 'Authorization': token } })];
                     case 1:
                         managersResponse = _a.sent();
                         return [4 /*yield*/, managersResponse.json()];
                     case 2:
                         managerJson = _a.sent();
-                        this.setState({ listName: managerJson.name, todayTopics: managerJson.todayPostCount, totalTopics: managerJson.totalTopicCount, listManager: managerJson.masters });
+                        this.setState({
+                            listName: managerJson.name, todayTopics: managerJson.todayCount, totalTopics: managerJson.topicCount, listManager: managerJson.boardMasters
+                        });
                         return [2 /*return*/];
                 }
             });
@@ -2056,9 +2175,10 @@ var ListNotice = /** @class */ (function (_super) {
     }
     ListNotice.prototype.render = function () {
         return React.createElement("div", { className: "notice", style: { marginTop: '0.625rem' } },
-            React.createElement("div", { id: "noticeName" },
-                React.createElement("span", { style: { marginLeft: '0.9375rem', marginTop: '0.4375rem', color: '#FFFFFF' } }, "\u672C\u7248\u516C\u544A")),
-            React.createElement("span", { style: { marginLeft: '0.9375rem', marginTop: '0.9375rem', marginRight: '0.9375rem' } }, this.state.notice));
+            React.createElement("div", { style: { backgroundColor: "#3399FE" } },
+                React.createElement("div", { style: { marginLeft: '0.9375rem', marginTop: '0.5rem', marginBottom: '0.5rem', fontSize: '1rem', color: '#FFFFFF' } }, "\u672C\u7248\u516C\u544A")),
+            React.createElement("div", { className: "substance" },
+                React.createElement(UbbContainer_1.UbbContainer, { code: this.props.bigPaper })));
     };
     return ListNotice;
 }(RouteComponent));
@@ -2238,6 +2358,7 @@ var ListContent = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, Utility.getBoardTopicAsync(1, this.match.params.boardid)];
                     case 1:
                         data = _a.sent();
+                        console.log(data);
                         this.setState({ items: data });
                         return [2 /*return*/];
                 }
@@ -2245,7 +2366,7 @@ var ListContent = /** @class */ (function (_super) {
         });
     };
     ListContent.prototype.convertTopicToElement = function (item) {
-        return React.createElement(TopicTitleAndContent, { key: item.title, title: item.title, authorName: item.authorName, id: item.id, authorId: item.authorId, lastPostTime: item.lastPostInfo.time, lastPostUserName: item.lastPostInfo.userName });
+        return React.createElement(TopicTitleAndContent, { key: item.title, title: item.title, authorName: item.userName, id: item.id, authorId: item.userId, lastPostTime: item.lastPostTime, lastPostUserName: item.lastPostUser });
     };
     ListContent.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
@@ -2345,165 +2466,6 @@ exports.TopicTitleAndContent = TopicTitleAndContent;
 
 "use strict";
 
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var Utility = __webpack_require__(3);
-var RouteComponent = /** @class */ (function (_super) {
-    __extends(RouteComponent, _super);
-    function RouteComponent(props, context) {
-        return _super.call(this, props, context) || this;
-    }
-    Object.defineProperty(RouteComponent.prototype, "match", {
-        get: function () {
-            return this.props.match;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return RouteComponent;
-}(React.Component));
-exports.RouteComponent = RouteComponent;
-var SendTopic = /** @class */ (function (_super) {
-    __extends(SendTopic, _super);
-    function SendTopic(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = ({ content: '' });
-        return _this;
-    }
-    SendTopic.prototype.sendTopic = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var url, token, t, myHeaders, c, m, p, n, k, mes;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        url = "http://openid.cc98.org";
-                        token = Utility.getLocalStorage("accessToken");
-                        t = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1MDMzMDMsImV4cCI6MTUwOTUwNjkwMywiaXNzIjoiaHR0cDovL29wZW5pZC5jYzk4Lm9yZyIsImF1ZCI6Imh0dHA6Ly9vcGVuaWQuY2M5OC5vcmcvcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoiOWExZmQyMDAtODY4Ny00NGIxLTRjMjAtMDhkNTBhOTZlNWNkIiwic3ViIjoiNTU2NTUxIiwiYXV0aF90aW1lIjoxNTA5NTAzMzAzLCJpZHAiOiJsb2NhbCIsImp0aSI6ImU1YWZmNWQwM2QyZjk3Njc2NWYyYTQwMjk2YWVmOTM3Iiwic2NvcGUiOlsib3BlbmlkIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbIkNDOTgiXX0.UgaVLvuUsdvnO7zp9YUo9BDs6_XYsC9noonNXOb2up6kKigWrMUZomq1tS8Xq6Gh52nHdSgiTtVVGZ9V4ZCAEkn0RCnpkwYZa7zDP3tuKqJL7gvnfsuDCsdvl59kXT9UUdtdWO7g8gC5ZFTmYXuQVAIayfSvxu4KLCzRZM8M7GmCejfsLGsEf-H6yJr-Pq2dMAoRtmetubmuc7W6PcY4l3UZqeuWh2f5yMuoljLc4MiGT2Cs4uqn6xOwqzEKA_lq5vljlSiM24jrbnoJDkdccSTolQYcRpohoTZwAP0wDraoDJEsmPhra8hPD9lmpC4XgykNSqdWSq8gD1ajVr6-XA';
-                        myHeaders = new Headers();
-                        c = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1MDI1MjIsImV4cCI6MTUwOTUwNjEyMiwiaXNzIjoiaHR0cHM6Ly9vcGVuaWQuY2M5OC5vcmciLCJhdWQiOiJodHRwczovL29wZW5pZC5jYzk4Lm9yZy9yZXNvdXJjZXMiLCJjbGllbnRfaWQiOiI0MmY4YWVhNi03YmRhLTQ4NTctZjk1OC0wOGQ1MTUyZjZlODUiLCJzdWIiOiI1MzM2MzMiLCJhdXRoX3RpbWUiOjE1MDk1MDI1MjEsImlkcCI6ImxvY2FsIiwianRpIjoiMjliNDU1YWJjNjkwNzJlYmJmY2JiYjY1OTFjMjdhZWUiLCJzY29wZSI6WyJvcGVuaWQiXSwiYW1yIjpbImlkc3J2Il19.NnxBKBOiWIyMkq2BKzUrVD5I4xpZVjl-rPZVavAgo8O8hbebOdOk3meWsyWHVaecciNnyYle3zIxvo9xOIznaWcHppkLpEPS0IZuZE3ze7bJlbzzGM5ektuLScaMuHJUqEVjHsG8L9KGJn02_3_O6dERGOdwnpoQD60l8cDibgdWSsQE94GfB0xTt4WN0ScRnmQvkSZg9o42FF1kq7kcmIsjpYQRblgISEjn-QoHU6p1XDnIVi--WWLFZoJzrYfhuM1I18d7os5tjQ4S8CVcmuxlWZlTwGuU-T3bDTGt9lGrCszgLtdm1hqsanZdteb7FG2TQJ5MdMW2L1la8sdGdg';
-                        m = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1MDI1MjIsImV4cCI6MTUwOTUwNjEyMiwiaXNzIjoiaHR0cHM6Ly9vcGVuaWQuY2M5OC5vcmciLCJhdWQiOiJodHRwczovL29wZW5pZC5jYzk4Lm9yZy9yZXNvdXJjZXMiLCJjbGllbnRfaWQiOiI0MmY4YWVhNi03YmRhLTQ4NTctZjk1OC0wOGQ1MTUyZjZlODUiLCJzdWIiOiI1MzM2MzMiLCJhdXRoX3RpbWUiOjE1MDk1MDI1MjEsImlkcCI6ImxvY2FsIiwianRpIjoiMjliNDU1YWJjNjkwNzJlYmJmY2JiYjY1OTFjMjdhZWUiLCJzY29wZSI6WyJvcGVuaWQiXSwiYW1yIjpbImlkc3J2Il19.NnxBKBOiWIyMkq2BKzUrVD5I4xpZVjl-rPZVavAgo8O8hbebOdOk3meWsyWHVaecciNnyYle3zIxvo9xOIznaWcHppkLpEPS0IZuZE3ze7bJlbzzGM5ektuLScaMuHJUqEVjHsG8L9KGJn02_3_O6dERGOdwnpoQD60l8cDibgdWSsQE94GfB0xTt4WN0ScRnmQvkSZg9o42FF1kq7kcmIsjpYQRblgISEjn-QoHU6p1XDnIVi--WWLFZoJzrYfhuM1I18d7os5tjQ4S8CVcmuxlWZlTwGuU-T3bDTGt9lGrCszgLtdm1hqsanZdteb7FG2TQJ5MdMW2L1la8sdGdg';
-                        p = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1MDM2NDcsImV4cCI6MTUwOTUwNzI0NywiaXNzIjoiaHR0cDovL29wZW5pZC5jYzk4Lm9yZyIsImF1ZCI6Imh0dHA6Ly9vcGVuaWQuY2M5OC5vcmcvcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoiOWExZmQyMDAtODY4Ny00NGIxLTRjMjAtMDhkNTBhOTZlNWNkIiwic3ViIjoiNTU2NTUxIiwiYXV0aF90aW1lIjoxNTA5NTAzNjQ3LCJpZHAiOiJsb2NhbCIsImp0aSI6IjExZTZjNjRjMjVmYmI3YzVlMThkM2U5OTZiM2ExYjk1Iiwic2NvcGUiOlsib3BlbmlkIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbIkNDOTgiXX0.jIfLIMB43UATkulE9RgNJ95AuO93vq8_6BwHVXwxQRCNiMrQyYS17GdHgruRtrY0jA5BK2p8XKgfZBS5ocD_rf5Aazmo8TwVI3s2mrrew34Lz50t4CrPbisPvbJ5L3jj35Tcxizy8xwXF4dmyvUxP9nSm6vqykEZx_BW37Ee0QSkScNuauVVM3x4gaNt6X6kbrPnGRQ1vnBDLjb9OvAdL_Jw6Wwp-NHgd6PCoXn-xg6DElwIUXmxoyIU39AddFMRy7zFzPOqyu2AqcDTD_SZ3uNacbk31jfJ56XdWAO5FJD5TLkIT-0-bvguMPwmZI_JFsIqIruaDlI1jT5-kXi05A';
-                        n = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1MDM3MzgsImV4cCI6MTUwOTUwNzMzOCwiaXNzIjoiaHR0cDovL29wZW5pZC5jYzk4Lm9yZyIsImF1ZCI6Imh0dHA6Ly9vcGVuaWQuY2M5OC5vcmcvcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoiOWExZmQyMDAtODY4Ny00NGIxLTRjMjAtMDhkNTBhOTZlNWNkIiwic3ViIjoiNTc4NTI1IiwiYXV0aF90aW1lIjoxNTA5NTAzNzM4LCJpZHAiOiJsb2NhbCIsImp0aSI6Ijc3NmViYTZiM2QwYjNjM2U4MmFmNjI2OWZhMmFjMTlkIiwic2NvcGUiOlsib3BlbmlkIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbIkNDOTgiXX0.BY-ITokw9BlHxQ8uWB1GXN3iVJUS3Hrs4rTUyj_mjs56NxN1Uz5YLK-l0_2UwU9QgPNm3nvQ0kT1SmVNrup-02XgLeUMtsOevP65iwyrAH3OBFMnVOwBHr0nIpGeaq-_DfcrpX135Ac0iCJKdE-40OFUlHnfozJS3sPB6DQqEwKERPclm7jULdaSCDm5J0_vmkdJMDIysYfPQ_b1BMP48zPPwdFCxZYry6sal0nsRWFsZVhSsK63yZ8w-Mck7s8JxLFf3rEfR4Te1a4mQZEsPkQcNUm4Crp8OTfpIC0e4dF3YIpWHHkxTwFiCBabSnN32cnl3ieOmc9EImRKjRVhlg';
-                        k = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1NDMxNjEsImV4cCI6MTUwOTU0Njc2MSwiaXNzIjoiaHR0cDovL29wZW5pZC5jYzk4Lm9yZyIsImF1ZCI6Imh0dHA6Ly9vcGVuaWQuY2M5OC5vcmcvcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoiOWExZmQyMDAtODY4Ny00NGIxLTRjMjAtMDhkNTBhOTZlNWNkIiwic3ViIjoiNTU2NTUxIiwiYXV0aF90aW1lIjoxNTA5NTQzMTYxLCJpZHAiOiJsb2NhbCIsImp0aSI6IjQyYWY4YjI5YzQyYmMyY2U3MzhjOGEwMWU5YjZmZTljIiwic2NvcGUiOlsib3BlbmlkIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbIkNDOTgiXX0.J-T05gxAuWgTpIop4bf1Nk5STBAOfBdfJH6_NmV5LPfECtLE2RjA-JNzMqi7WfisRRb7WurPOs_t0Y5AFlOZi8992ZT7S6e1TqMFN6ldeWiTdw8rLCu-1bZwUcVjKXDk9X2_mXHyc3Na40xAM0w4mSmdwxg0X2gv-OmglVdNyPATTmY__mZltS7vf2ZVK06QFsKcCvDaOIi9SH0Q6LFnDamIaZwnwv2YVYGyvAHv_VySZrhWq0VpGAuWNOMSwOXy48ZhfYXLqSEXASRH8xdcpK7HKwW6h9uOGohKMNUi34DQ10rr-C6zWGqNtq-FBAYOqEoaYYGWSdrmOHinfEGO8w';
-                        myHeaders.append("Authorization", token);
-                        myHeaders.append("Accept", 'application/json');
-                        myHeaders.append("Content-Type", 'application/x-www-form-urlencoded');
-                        return [4 /*yield*/, fetch(url, {
-                                method: "POST",
-                                headers: myHeaders,
-                                body: { 'token': token }
-                            })];
-                    case 1:
-                        mes = _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    SendTopic.prototype.getInitialState = function () {
-        return { value: '' };
-    };
-    SendTopic.prototype.handleChange = function (event) {
-        this.setState({ content: event.target.value });
-    };
-    SendTopic.prototype.render = function () {
-        return React.createElement("div", { style: { width: "100%", display: "flex", flexDirection: "column" } },
-            React.createElement("div", { id: "sendTopic" },
-                React.createElement("div", { id: "sendTopic-options" },
-                    React.createElement("ul", { className: "editor__menu clearfix", id: "wmd-button-row" },
-                        React.createElement("li", { title: "加粗 <strong> Ctrl+B", className: "wmd-button", id: "wmd-bold-button" },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "0px 0px" } })),
-                        React.createElement("li", { title: "斜体 <em> Ctrl+I", className: "wmd-button", id: "wmd-italic-button", style: { left: " 25px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: " -20px 0px" } })),
-                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer1" }),
-                        React.createElement("li", { title: "链接 <a> Ctrl+L", className: "wmd-button", id: "wmd-link-button", style: { left: "75px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-40px 0px" } })),
-                        React.createElement("li", { title: "引用 <blockquote> Ctrl+Q", className: "wmd-button", id: "wmd-quote-button", style: { left: " 100px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-60px 0px" } })),
-                        React.createElement("li", { title: "代码 <pre><code> Ctrl+K", className: "wmd-button", id: "wmd-code-button", style: { left: " 125px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-80px 0px" } })),
-                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer2" }),
-                        React.createElement("li", { title: "图片 <img> Ctrl+G", className: "wmd-button", id: "wmd-image-button", style: { left: "150px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-100px 0px" } })),
-                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer2" }),
-                        React.createElement("li", { title: "数字列表 <ol> Ctrl+O", className: "wmd-button", id: "wmd-olist-button", style: { left: " 200px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-120px 0px" } })),
-                        React.createElement("li", { title: "普通列表 <ul> Ctrl+U", className: "wmd-button", id: "wmd-ulist-button", style: { left: "225px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: " -140px 0px" } })),
-                        React.createElement("li", { title: "标题 <h1>/<h2> Ctrl+H", className: "wmd-button", id: "wmd-heading-button", style: { left: "250px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-160px 0px" } })),
-                        React.createElement("li", { title: "分割线 <hr> Ctrl+R", className: "wmd-button", id: "wmd-hr-button", style: { left: "275px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-180px 0px" } })),
-                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer3" }),
-                        React.createElement("li", { title: "撤销 - Ctrl+Z", className: "wmd-button", id: "wmd-undo-button", style: { left: "325px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-200px 0px" } })),
-                        React.createElement("li", { title: "重做 - Ctrl+Y", className: "wmd-button", id: "wmd-redo-button", style: { left: "350px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-220px -20px" } })),
-                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer4" }),
-                        React.createElement("li", { title: "Markdown 语法", className: "wmd-button", id: "wmd-help-button", style: { left: " 400px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-300px 0px" } })))),
-                React.createElement("form", null,
-                    React.createElement("div", null,
-                        React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input", value: this.state.content, onChange: this.handleChange.bind(this) })))),
-            React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "1.25rem " } },
-                React.createElement("div", { id: "post-topic-button", onClick: this.sendTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u56DE\u590D")));
-    };
-    return SendTopic;
-}(RouteComponent));
-exports.SendTopic = SendTopic;
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 // A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
@@ -2519,7 +2481,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UbbContainer_1 = __webpack_require__(8);
+var UbbContainer_1 = __webpack_require__(5);
 /**
  * 用户中心主页个人资料组件
  */
@@ -2557,7 +2519,7 @@ exports.UserCenterExactProfile = UserCenterExactProfile;
 
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2615,7 +2577,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2652,7 +2614,7 @@ exports.UserCenterExactAvatar = UserCenterExactAvatar;
 
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2695,7 +2657,7 @@ exports.UserCenterMyFollowingsUser = UserCenterMyFollowingsUser;
 
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2742,7 +2704,7 @@ exports.MyMessageResponsebox = MyMessageResponsebox;
 
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2798,7 +2760,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
 var FocusPostComponent_1 = __webpack_require__(67);
-var Utility = __webpack_require__(3);
+var Utility = __webpack_require__(4);
 /**
  * 表示我关注的某个版面的主题列表
  */
@@ -2911,7 +2873,7 @@ exports.FocusPostAreaComponent = FocusPostAreaComponent;
 * 单个主题数据转换成单个主题组件
 */
 function coverFocusPost(item) {
-    return React.createElement(FocusPostComponent_1.FocusPostComponent, { title: item.title, hitCount: item.hitCount, id: item.id, boardId: item.boardId, boardName: item.boardName, replyCount: item.replyCount, authorName: item.authorName, portraitUrl: item.portraitUrl, createTime: item.createTime, likeCount: item.likeCount, dislikeCount: item.dislikeCount, fanCount: item.fanCount });
+    return React.createElement(FocusPostComponent_1.FocusPostComponent, { title: item.title, hitCount: item.hitCount, id: item.id, boardId: item.boardId, boardName: item.boardName, replyCount: item.replyCount, userName: item.userName, portraitUrl: item.portraitUrl, time: item.time, likeCount: item.likeCount, dislikeCount: item.dislikeCount, fanCount: item.fanCount });
 }
 /**
 *滚动条在Y轴上的滚动距离
@@ -2975,35 +2937,35 @@ function isBottom() {
 
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(18);
-module.exports = __webpack_require__(81);
+__webpack_require__(17);
+module.exports = __webpack_require__(80);
 
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var ReactDOM = __webpack_require__(19);
-var App_1 = __webpack_require__(20);
+var ReactDOM = __webpack_require__(18);
+var App_1 = __webpack_require__(19);
 // 显示应用程序核心内容
 ReactDOM.render(React.createElement(App_1.App, null), document.getElementById('root'));
 
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports) {
 
 module.exports = ReactDOM;
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3021,7 +2983,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(2);
-var post_1 = __webpack_require__(21);
+var post_1 = __webpack_require__(20);
 var List_1 = __webpack_require__(9);
 var CurUserPost_1 = __webpack_require__(37);
 var BoardList_1 = __webpack_require__(38);
@@ -3034,7 +2996,6 @@ var Footer_1 = __webpack_require__(72);
 var MainPage_1 = __webpack_require__(73);
 var User_1 = __webpack_require__(74);
 var LogOn_1 = __webpack_require__(77);
-var CreateTopic_1 = __webpack_require__(80);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -3053,11 +3014,11 @@ var App = /** @class */ (function (_super) {
     App.prototype.render = function () {
         return React.createElement("div", null,
             React.createElement(react_router_dom_1.BrowserRouter, null,
-                React.createElement("div", { style: { backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column' } },
+                React.createElement("div", { style: { backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center" } },
                     React.createElement(Header_1.Header, null),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/", component: MainPage_1.MainPage }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/:page?", component: post_1.Post }),
-                    React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/user/:userName/:page?", component: CurUserPost_1.CurUserPost }),
+                    React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/user/:userId/:page?", component: CurUserPost_1.CurUserPost }),
                     React.createElement(react_router_dom_1.Route, { path: "/list/:boardid/:page?", component: List_1.List }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/boardlist", component: BoardList_1.BoardList }),
                     React.createElement(react_router_dom_1.Route, { path: "/usercenter", component: UserCenter_1.UserCenter }),
@@ -3066,7 +3027,6 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { path: "/newtopics", component: AllNewPost_1.AllNewPost }),
                     React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }),
                     React.createElement(react_router_dom_1.Route, { path: "/logon", component: LogOn_1.LogOn }),
-                    React.createElement(react_router_dom_1.Route, { path: "/createtopic", component: CreateTopic_1.CreateTopic }),
                     React.createElement(Footer_1.Footer, null))));
     };
     return App;
@@ -3075,7 +3035,7 @@ exports.App = App;
 
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3127,12 +3087,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(3);
-var $ = __webpack_require__(5);
+var Utility = __webpack_require__(4);
+var $ = __webpack_require__(6);
 var react_router_dom_1 = __webpack_require__(2);
-var UbbContainer_1 = __webpack_require__(8);
-var SendTopic_1 = __webpack_require__(10);
-var moment = __webpack_require__(7);
+var UbbContainer_1 = __webpack_require__(5);
+var SendTopic_1 = __webpack_require__(36);
+var moment = __webpack_require__(8);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -3152,9 +3112,32 @@ var Post = /** @class */ (function (_super) {
     __extends(Post, _super);
     function Post(props, context) {
         var _this = _super.call(this, props, context) || this;
+        _this.handleChange = _this.handleChange.bind(_this);
         _this.state = { page: 1, topicid: _this.match.params.topicid, totalPage: 1, userName: null };
         return _this;
     }
+    Post.prototype.handleChange = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var page, totalPage, userName;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!this.match.params.page) {
+                            page = 1;
+                        }
+                        else {
+                            page = parseInt(this.match.params.page);
+                        }
+                        return [4 /*yield*/, this.getTotalPage(this.match.params.topicid)];
+                    case 1:
+                        totalPage = _a.sent();
+                        userName = this.match.params.userName;
+                        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     Post.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
             var page, userName, totalPage;
@@ -3201,10 +3184,12 @@ var Post = /** @class */ (function (_super) {
     };
     Post.prototype.getTotalPage = function (topicid) {
         return __awaiter(this, void 0, void 0, function () {
-            var replyCountResponse, replyCountJson, replyCount;
+            var token, replyCountResponse, replyCountJson, replyCount;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, fetch("http://api.cc98.org/Topic/" + topicid)];
+                    case 0:
+                        token = Utility.getLocalStorage("accessToken");
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + topicid, { headers: { 'Authorization': token } })];
                     case 1:
                         replyCountResponse = _a.sent();
                         return [4 /*yield*/, replyCountResponse.json()];
@@ -3230,16 +3215,67 @@ var Post = /** @class */ (function (_super) {
         if (this.state.page == 1) {
             topic = React.createElement(PostTopic, { imgUrl: "/images/ads.jpg", page: this.state.page, topicid: this.state.topicid });
         }
-        return React.createElement("div", { className: "center" },
-            React.createElement(TopicPager, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
+        return React.createElement("div", { className: "center", style: { width: "80%" } },
+            React.createElement("div", { className: "row", style: { width: "100%", justifyContent: 'space-between', borderBottom: '#EAEAEA solid thin', alignItems: "center" } },
+                React.createElement(Category, { topicid: this.state.topicid }),
+                React.createElement(TopicPager, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage })),
             topic,
             React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: Reply }),
             React.createElement(TopicPagerDown, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
-            React.createElement(SendTopic_1.SendTopic, null));
+            React.createElement(SendTopic_1.SendTopic, { onChange: this.handleChange, topicid: this.state.topicid }));
     };
     return Post;
 }(RouteComponent));
 exports.Post = Post;
+var Category = /** @class */ (function (_super) {
+    __extends(Category, _super);
+    function Category(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = ({ boardId: "", topicId: "", boardName: "", title: "" });
+        return _this;
+    }
+    Category.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var token, response, data, topicName, boardId, boardResponse, boardData, boardName;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        token = Utility.getLocalStorage("accessToken");
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + this.props.topicid, { headers: { 'Authorization': token } })];
+                    case 1:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 2:
+                        data = _a.sent();
+                        topicName = data.title;
+                        boardId = data.boardId;
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + boardId, { headers: { 'Authorization': token } })];
+                    case 3:
+                        boardResponse = _a.sent();
+                        return [4 /*yield*/, boardResponse.json()];
+                    case 4:
+                        boardData = _a.sent();
+                        boardName = boardData.name;
+                        this.setState({ boardId: boardId, topicId: this.props.topicid, boardName: boardName, title: topicName });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Category.prototype.render = function () {
+        var listUrl = "/list/" + this.state.boardId;
+        var topicUrl = "/topic/" + this.state.topicId;
+        return React.createElement("div", { style: { color: "blue", fontSize: "0.75rem" } },
+            "\u203A\u203A",
+            React.createElement("a", { style: { color: "blue", fontSize: "0.75rem" }, href: "/" }, "\u9996\u9875"),
+            "\u00A0\u2192\u00A0",
+            React.createElement("a", { style: { color: "blue", fontSize: "0.75rem" }, href: listUrl }, this.state.boardName),
+            "\u00A0\u2192\u00A0",
+            React.createElement("a", { style: { color: "blue", fontSize: "0.75rem" }, href: topicUrl }, this.state.title));
+    };
+    return Category;
+}(React.Component));
+exports.Category = Category;
 var Reply = /** @class */ (function (_super) {
     __extends(Reply, _super);
     function Reply(props, content) {
@@ -3257,16 +3293,16 @@ var Reply = /** @class */ (function (_super) {
                     case 0:
                         page = newProps.match.params.page || 1;
                         storageId = "TopicContent_" + newProps.match.params.topicid + "_" + page;
-                        if (!!Utility.getStorage(storageId)) return [3 /*break*/, 2];
                         return [4 /*yield*/, Utility.getTopicContent(newProps.match.params.topicid, page)];
                     case 1:
+                        /* if (!Utility.getStorage(storageId)) {
+                             realContents = await Utility.getTopicContent(newProps.match.params.topicid, page);
+                             Utility.setStorage(storageId, realContents);
+                         }
+                         else {
+                             realContents = Utility.getStorage(storageId);
+                         }*/
                         realContents = _a.sent();
-                        Utility.setStorage(storageId, realContents);
-                        return [3 /*break*/, 3];
-                    case 2:
-                        realContents = Utility.getStorage(storageId);
-                        _a.label = 3;
-                    case 3:
                         this.setState({ contents: realContents });
                         return [2 /*return*/];
                 }
@@ -3276,7 +3312,7 @@ var Reply = /** @class */ (function (_super) {
     Reply.prototype.generateContents = function (item) {
         return React.createElement("div", { className: "reply" },
             React.createElement("div", { style: { marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" } },
-                React.createElement(Replier, { key: item.id, userId: item.userId, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber }),
+                React.createElement(Replier, { key: item.id, userId: item.userId, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber, privilege: item.privilege }),
                 React.createElement(ReplyContent, { key: item.content, content: item.content, signature: item.signature })));
     };
     Reply.prototype.render = function () {
@@ -3289,20 +3325,13 @@ var Replier = /** @class */ (function (_super) {
     __extends(Replier, _super);
     function Replier(props, content) {
         var _this = _super.call(this, props, content) || this;
-        _this.state = {
-            imgUrl: "/images/authorImg.jpg",
-            timeImgUrl: "/images/clock.jpg",
-            userName: "VayneTian",
-            replyTime: Date(),
-            topicsNumber: 999,
-            level: 2,
-        };
+        _this.state = {};
         return _this;
     }
     Replier.prototype.render = function () {
         var url = "/user/" + this.props.userId;
         var realUrl = encodeURIComponent(url);
-        var curUserPostUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userName;
+        var curUserPostUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userId;
         $(document).ready(function () {
             $(".authorImg").mouseenter(function (event) {
                 var currentImage = event.currentTarget;
@@ -3313,7 +3342,7 @@ var Replier = /** @class */ (function (_super) {
                 $(currentImage).find(".userDetails").hide();
             });
         });
-        var topicNumber = '帖数 ';
+        var topicNumber = '帖数';
         if (!this.props.userId) {
             topicNumber = '';
         }
@@ -3323,6 +3352,19 @@ var Replier = /** @class */ (function (_super) {
         }
         else {
             userDetails = null;
+        }
+        var userName;
+        if (this.props.privilege === "超级版主") {
+            userName = React.createElement("a", { style: { color: "pink" }, href: url }, this.props.userName);
+        }
+        else if (this.props.privilege === "全站贵宾") {
+            userName = React.createElement("a", { style: { color: "blue" }, href: url }, this.props.userName);
+        }
+        else if (this.props.privilege === "注册用户" || this.props.privilege == "匿名" || this.props.privilege === "匿名用户") {
+            userName = React.createElement("a", { style: { color: "black" }, href: url }, this.props.userName);
+        }
+        else if (this.props.privilege === "管理员") {
+            userName = React.createElement("a", { style: { color: "red" }, href: url }, this.props.userName);
         }
         return React.createElement("div", { className: "replyRoot" },
             React.createElement("div", { className: "row", style: { width: "100%", display: "flex", marginBottom: "0.625rem" } },
@@ -3334,15 +3376,14 @@ var Replier = /** @class */ (function (_super) {
                 React.createElement("div", { className: "column", id: "rpymes" },
                     React.createElement("div", { className: "row", id: "replierMes" },
                         React.createElement("div", { style: { marginLeft: "0.625rem" } },
-                            React.createElement("span", null,
-                                this.props.floor,
-                                "L")),
-                        React.createElement("div", { className: "rpyClr", style: { marginLeft: "0.625rem" } },
-                            React.createElement("a", { href: url }, this.props.userName)),
-                        React.createElement("div", { id: "topicsNumber", style: { marginLeft: "0.625rem", display: "flex", flexWrap: "nowrap", wordBreak: "keepAll" } },
+                            React.createElement("span", null, "\u7B2C"),
+                            React.createElement("span", { style: { color: "red" } }, this.props.floor),
+                            React.createElement("span", null, "\u697C")),
+                        React.createElement("div", { className: "rpyClr", style: { marginLeft: "0.625rem" } }, userName),
+                        React.createElement("div", { id: "topicsNumber", style: { marginLeft: "0.625rem", display: "flex", flexWrap: "nowrap", wordBreak: "keepAll", marginRight: "0.75rem" } },
                             topicNumber,
-                            "   ",
-                            React.createElement("span", { className: "rpyClrodd" }, this.props.sendTopicNumber),
+                            "\u00A0",
+                            React.createElement("span", { style: { color: "red" } }, this.props.sendTopicNumber),
                             " ")),
                     React.createElement("div", { className: "row", style: { display: "flex", flexWrap: "nowrap" } },
                         React.createElement("div", { id: "clockimg", style: { marginLeft: "0.375rem" } },
@@ -3373,7 +3414,7 @@ var UserDetails = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         if (!(this.props.userName != '匿名')) return [3 /*break*/, 3];
-                        url = "http://api.cc98.org/user/name/" + this.props.userName;
+                        url = "http://apitest.niconi.cc/user/name/" + this.props.userName;
                         return [4 /*yield*/, fetch(url)];
                     case 1:
                         message = _a.sent();
@@ -3446,8 +3487,8 @@ var PostTopic = /** @class */ (function (_super) {
                 React.createElement(AuthorMessage, { authorId: this.state.topicMessage.userId, authorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl }),
                 React.createElement(TopicTitle, { Title: this.state.topicMessage.title, Time: this.state.topicMessage.time, HitCount: this.state.topicMessage.hitCount }),
                 React.createElement("div", { id: "ads" },
-                    React.createElement("img", { src: this.props.imgUrl }))),
-            React.createElement(TopicContent, { content: this.state.topicMessage.content, signature: this.state.topicMessage.signature }),
+                    React.createElement("img", { width: "100%", src: this.props.imgUrl }))),
+            React.createElement(TopicContent, { content: this.state.topicMessage.content, signature: this.state.topicMessage.signature, topicid: this.props.topicid, userId: this.state.topicMessage.userId }),
             React.createElement(TopicGood, null),
             React.createElement(TopicVote, null));
     };
@@ -3559,31 +3600,63 @@ var TopicContent = /** @class */ (function (_super) {
     }
     //<div className="signature">{this.state.Signature}</div>
     TopicContent.prototype.render = function () {
-        return React.createElement("div", { className: "content" },
-            React.createElement("div", { className: "substance" },
-                React.createElement(UbbContainer_1.UbbContainer, { code: this.props.content }),
-                " "),
-            React.createElement("div", { className: "signature" },
-                React.createElement(UbbContainer_1.UbbContainer, { code: this.props.signature })),
-            React.createElement("div", { className: "comment" },
-                React.createElement("div", { id: "commentlike", className: "buttonFont" },
-                    React.createElement("button", { className: "commentbutton" },
-                        React.createElement("i", { className: "fa fa-star-o fa-lg" })),
-                    "   \u6536\u85CF\u6587\u7AE0 "),
-                React.createElement("div", { id: "commentliked" },
-                    React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
-                    React.createElement("span", { className: "commentProp" },
+        var curUserPostUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userId;
+        if (this.props.signature == "") {
+            return React.createElement("div", { className: "content" },
+                React.createElement("div", { className: "substance" },
+                    React.createElement(UbbContainer_1.UbbContainer, { code: this.props.content }),
+                    " "),
+                React.createElement("div", { className: "comment1" },
+                    React.createElement("div", { id: "commentlike", className: "buttonFont" },
+                        React.createElement("button", { className: "commentbutton" },
+                            React.createElement("i", { className: "fa fa-star-o fa-lg" })),
+                        "   \u6536\u85CF\u6587\u7AE0 "),
+                    React.createElement("div", { id: "commentliked" },
+                        React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
+                        React.createElement("span", { className: "commentProp" },
+                            " ",
+                            this.state.likeNumber)),
+                    React.createElement("div", { id: "commentunliked" },
+                        React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg" }),
+                        React.createElement("span", { className: "commentProp" },
+                            " ",
+                            this.state.dislikeNumber)),
+                    React.createElement("div", { id: "commentlike", className: "buttonFont row" },
                         " ",
-                        this.state.likeNumber)),
-                React.createElement("div", { id: "commentunliked" },
-                    React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg" }),
-                    React.createElement("span", { className: "commentProp" },
+                        React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206"),
+                        React.createElement("div", { className: "commentbutton" }, "   \u7F16\u8F91")),
+                    React.createElement("div", { className: "operation1" }, "\u5F15\u7528"),
+                    React.createElement(react_router_dom_1.Link, { className: "operation1", to: curUserPostUrl }, "\u53EA\u770B\u6B64\u7528\u6237")));
+        }
+        else {
+            return React.createElement("div", { className: "content" },
+                React.createElement("div", { className: "substance" },
+                    React.createElement(UbbContainer_1.UbbContainer, { code: this.props.content }),
+                    " "),
+                React.createElement("div", { className: "signature" },
+                    React.createElement(UbbContainer_1.UbbContainer, { code: this.props.signature })),
+                React.createElement("div", { className: "comment" },
+                    React.createElement("div", { id: "commentlike", className: "buttonFont" },
+                        React.createElement("button", { className: "commentbutton" },
+                            React.createElement("i", { className: "fa fa-star-o fa-lg" })),
+                        "   \u6536\u85CF\u6587\u7AE0 "),
+                    React.createElement("div", { id: "commentliked" },
+                        React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
+                        React.createElement("span", { className: "commentProp" },
+                            " ",
+                            this.state.likeNumber)),
+                    React.createElement("div", { id: "commentunliked" },
+                        React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg" }),
+                        React.createElement("span", { className: "commentProp" },
+                            " ",
+                            this.state.dislikeNumber)),
+                    React.createElement("div", { id: "commentlike", className: "buttonFont row" },
                         " ",
-                        this.state.dislikeNumber)),
-                React.createElement("div", { id: "commentlike", className: "buttonFont row" },
-                    " ",
-                    React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206"),
-                    React.createElement("div", { className: "commentbutton" }, "   \u7F16\u8F91"))));
+                        React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206"),
+                        React.createElement("div", { className: "commentbutton" }, "   \u7F16\u8F91")),
+                    React.createElement("div", { className: "operation1" }, "\u5F15\u7528"),
+                    React.createElement(react_router_dom_1.Link, { className: "operation1", to: curUserPostUrl }, "\u53EA\u770B\u6B64\u7528\u6237")));
+        }
     };
     return TopicContent;
 }(RouteComponent));
@@ -3598,29 +3671,49 @@ var ReplyContent = /** @class */ (function (_super) {
         };
         return _this;
     }
-    //content: "央视网消息：7月26日至27日，习近平在省部级主要领导干部专题研讨班开班式上强调，党的十八大以来的5年，是党和国家发展进程中很不平凡的5年。我们加强党对意识形态工作的领导，巩固了全党全社会思想上的团结统一。党的十八大以来，面对意识形态领域日益错综复杂的形势，习总书记发表了一系列重要讲话，深刻阐述了意识形态工作的重大理论和现实问题。本图解梳理了相关重要论述以及十八大以来各领域工作成绩，以飨读者。</p><p>央视网消息：7月26日至27日，习近平在省部级主要领导干部专题研讨班开班式上强调，党的十八大以来的5年，是党和国家发展进程中很不平凡的5年。我们加强党对意识形态工作的领导，巩固了全党全社会思想上的团结统一。党的十八大以来，面对意识形态领域日益错综复杂的形势，习总书记发表了一系列重要讲话，深刻阐述了意识形态工作的重大理论和现实问题。本图解梳理了相关重要论述以及十八大以来各领域工作成绩，以飨读者。",
-    //
     ReplyContent.prototype.render = function () {
-        return React.createElement("div", { className: "root", style: { marginTop: "-170px" } },
-            React.createElement("div", { className: "reply-content" },
-                React.createElement("div", { className: "substance" },
-                    React.createElement(UbbContainer_1.UbbContainer, { code: this.props.content })),
-                React.createElement("div", { className: "signature" },
-                    React.createElement(UbbContainer_1.UbbContainer, { code: this.props.signature })),
-                React.createElement("div", { className: "comment" },
-                    React.createElement("div", { id: "commentliked" },
-                        React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
-                        React.createElement("span", { className: "commentProp" },
+        if (this.props.signature == "") {
+            return React.createElement("div", { className: "root", style: { marginTop: "-170px" } },
+                React.createElement("div", { className: "reply-content" },
+                    React.createElement("div", { className: "substance" },
+                        React.createElement(UbbContainer_1.UbbContainer, { code: this.props.content })),
+                    React.createElement("div", { className: "comment1" },
+                        React.createElement("div", { id: "commentliked" },
+                            React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
+                            React.createElement("span", { className: "commentProp" },
+                                " ",
+                                this.state.likeNumber)),
+                        React.createElement("div", { id: "commentunliked" },
+                            React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg" }),
+                            React.createElement("span", { className: "commentProp" },
+                                " ",
+                                this.state.dislikeNumber)),
+                        React.createElement("div", { id: "commentlike" },
                             " ",
-                            this.state.likeNumber)),
-                    React.createElement("div", { id: "commentunliked" },
-                        React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg" }),
-                        React.createElement("span", { className: "commentProp" },
+                            React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206")))));
+        }
+        else {
+            return React.createElement("div", { className: "root", style: { marginTop: "-170px" } },
+                React.createElement("div", { className: "reply-content" },
+                    React.createElement("div", { className: "substance" },
+                        React.createElement(UbbContainer_1.UbbContainer, { code: this.props.content })),
+                    React.createElement("div", { className: "comment" },
+                        React.createElement("div", { id: "commentliked" },
+                            React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
+                            React.createElement("span", { className: "commentProp" },
+                                " ",
+                                this.state.likeNumber)),
+                        React.createElement("div", { id: "commentunliked" },
+                            React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg" }),
+                            React.createElement("span", { className: "commentProp" },
+                                " ",
+                                this.state.dislikeNumber)),
+                        React.createElement("div", { id: "commentlike" },
                             " ",
-                            this.state.dislikeNumber)),
-                    React.createElement("div", { id: "commentlike" },
-                        " ",
-                        React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206")))));
+                            React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206"))),
+                    React.createElement("div", { className: "signature" },
+                        React.createElement(UbbContainer_1.UbbContainer, { code: this.props.signature }))));
+        }
     };
     return ReplyContent;
 }(RouteComponent));
@@ -3731,9 +3824,8 @@ var TopicPager = /** @class */ (function (_super) {
         });
     };
     TopicPager.prototype.render = function () {
-        return React.createElement("div", { className: "row", style: { width: "100%", justifyContent: 'space-between', borderBottom: ' #EAEAEA solid thin', alignItems: 'flex-end', flexDirection: "row-reverse" } },
-            React.createElement("div", { id: "pager" },
-                React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this)))));
+        return React.createElement("div", { id: "pager" },
+            React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this))));
     };
     return TopicPager;
 }(RouteComponent));
@@ -3791,7 +3883,7 @@ var PageModel = /** @class */ (function (_super) {
     PageModel.prototype.render = function () {
         var pageUrl;
         if (this.props.pageNumber > 0) {
-            pageUrl = "/topic/" + this.props.topicid + "/" + this.props.pageNumber;
+            pageUrl = "/topic/" + this.props.topicid + "/" + this.props.pageNumber + "#1";
             if (this.props.pageNumber != this.props.curPage) {
                 return React.createElement("li", { className: "page-item" },
                     React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, this.props.pageNumber));
@@ -3802,22 +3894,22 @@ var PageModel = /** @class */ (function (_super) {
             }
         }
         else if (this.props.pageNumber == -1) {
-            pageUrl = "/topic/" + this.props.topicid + "/" + (this.props.curPage - 1);
+            pageUrl = "/topic/" + this.props.topicid + "/" + (this.props.curPage - 1) + "#1";
             return React.createElement("li", { className: "page-item" },
                 React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u2039"));
         }
         else if (this.props.pageNumber == -2) {
-            pageUrl = "/topic/" + this.props.topicid + "/" + (this.props.curPage + 1);
+            pageUrl = "/topic/" + this.props.topicid + "/" + (this.props.curPage + 1) + "#1";
             return React.createElement("li", { className: "page-item" },
                 React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u203A"));
         }
         else if (this.props.pageNumber == -3) {
-            pageUrl = "/topic/" + this.props.topicid + "/1";
+            pageUrl = "/topic/" + this.props.topicid + "#1";
             return React.createElement("li", { className: "page-item" },
                 React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u2039\u2039"));
         }
         else {
-            pageUrl = "/topic/" + this.props.topicid + "/" + this.props.totalPage;
+            pageUrl = "/topic/" + this.props.topicid + "/" + this.props.totalPage + "#1";
             return React.createElement("li", { className: "page-item" },
                 React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u203A\u203A"));
         }
@@ -3839,7 +3931,7 @@ exports.UserMessageBox = UserMessageBox;
 
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3852,20 +3944,20 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 var Ubb = __webpack_require__(1);
-var BTagHandler_1 = __webpack_require__(23);
-var ImageTagHandler_1 = __webpack_require__(24);
-var ITagHandler_1 = __webpack_require__(25);
-var SizeTagHandler_1 = __webpack_require__(26);
-var QuoteTagHandler_1 = __webpack_require__(27);
-var ColorTagHandler_1 = __webpack_require__(28);
-var URLTagHandler_1 = __webpack_require__(29);
-var UTagHandler_1 = __webpack_require__(30);
-var DelTagHandler_1 = __webpack_require__(31);
-var MP3TagHandler_1 = __webpack_require__(32);
-var CursorTagHandler_1 = __webpack_require__(33);
-var EnglishTagHandler_1 = __webpack_require__(34);
-var UserTagHandler_1 = __webpack_require__(35);
-var CodeTagHandler_1 = __webpack_require__(36);
+var BTagHandler_1 = __webpack_require__(22);
+var ImageTagHandler_1 = __webpack_require__(23);
+var ITagHandler_1 = __webpack_require__(24);
+var SizeTagHandler_1 = __webpack_require__(25);
+var QuoteTagHandler_1 = __webpack_require__(26);
+var ColorTagHandler_1 = __webpack_require__(27);
+var URLTagHandler_1 = __webpack_require__(28);
+var UTagHandler_1 = __webpack_require__(29);
+var DelTagHandler_1 = __webpack_require__(30);
+var MP3TagHandler_1 = __webpack_require__(31);
+var CursorTagHandler_1 = __webpack_require__(32);
+var EnglishTagHandler_1 = __webpack_require__(33);
+var UserTagHandler_1 = __webpack_require__(34);
+var CodeTagHandler_1 = __webpack_require__(35);
 /**
  * 创建一个具有所有功能的默认引擎。
  */
@@ -3895,7 +3987,7 @@ __export(__webpack_require__(1));
 
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3946,7 +4038,7 @@ exports.BTagHandler = BTagHandler;
 
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4002,7 +4094,7 @@ exports.ImageTagHandler = ImageTagHandler;
 
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4047,7 +4139,7 @@ exports.ITagHandler = ITagHandler;
 
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4100,7 +4192,7 @@ exports.SizeTagHandler = SizeTagHandler;
 
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4166,7 +4258,7 @@ exports.QuotexTagHandler = QuotexTagHandler;
 
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4215,7 +4307,7 @@ exports.ColorTagHandler = ColorTagHandler;
 
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4271,7 +4363,7 @@ exports.UrlTagHandler = UrlTagHandler;
 
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4324,7 +4416,7 @@ exports.UTagHandler = UTagHandler;
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4372,7 +4464,7 @@ exports.DelTagHandler = DelTagHandler;
 
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4426,7 +4518,7 @@ exports.MP3TagHandler = MP3TagHandler;
 
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4474,7 +4566,7 @@ exports.CursorTagHandler = CursorTagHandler;
 
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4522,7 +4614,7 @@ exports.EnglishTagHandler = EnglishTagHandler;
 
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4570,7 +4662,7 @@ exports.UserTagHandler = UserTagHandler;
 
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4615,6 +4707,166 @@ var CodeTagHandler = /** @class */ (function (_super) {
     return CodeTagHandler;
 }(Ubb.TextTagHandler));
 exports.CodeTagHandler = CodeTagHandler;
+
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var Utility = __webpack_require__(4);
+var RouteComponent = /** @class */ (function (_super) {
+    __extends(RouteComponent, _super);
+    function RouteComponent(props, context) {
+        return _super.call(this, props, context) || this;
+    }
+    Object.defineProperty(RouteComponent.prototype, "match", {
+        get: function () {
+            return this.props.match;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return RouteComponent;
+}(React.Component));
+exports.RouteComponent = RouteComponent;
+var SendTopic = /** @class */ (function (_super) {
+    __extends(SendTopic, _super);
+    function SendTopic(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = ({ content: '' });
+        return _this;
+    }
+    SendTopic.prototype.sendTopic = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var url, content, contentJson, token, myHeaders, mes;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        url = "http://apitest.niconi.cc/post/topic/" + this.props.topicid;
+                        content = {
+                            content: this.state.content,
+                            contentType: 1,
+                            title: ""
+                        };
+                        contentJson = JSON.stringify(content);
+                        token = Utility.getLocalStorage("accessToken");
+                        myHeaders = new Headers();
+                        myHeaders.append("Authorization", token);
+                        myHeaders.append("Content-Type", 'application/json');
+                        return [4 /*yield*/, fetch(url, {
+                                method: 'POST',
+                                headers: myHeaders,
+                                body: contentJson
+                            })];
+                    case 1:
+                        mes = _a.sent();
+                        this.props.onChange();
+                        this.setState({ content: "" });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    SendTopic.prototype.getInitialState = function () {
+        return { value: '' };
+    };
+    SendTopic.prototype.handleChange = function (event) {
+        this.setState({ content: event.target.value });
+    };
+    SendTopic.prototype.render = function () {
+        return React.createElement("div", { style: { width: "100%", display: "flex", flexDirection: "column" } },
+            React.createElement("div", { id: "sendTopic" },
+                React.createElement("div", { id: "sendTopic-options" },
+                    React.createElement("ul", { className: "editor__menu clearfix", id: "wmd-button-row" },
+                        React.createElement("li", { title: "加粗 <strong> Ctrl+B", className: "wmd-button", id: "wmd-bold-button" },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "0px 0px" } })),
+                        React.createElement("li", { title: "斜体 <em> Ctrl+I", className: "wmd-button", id: "wmd-italic-button", style: { left: " 25px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: " -20px 0px" } })),
+                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer1" }),
+                        React.createElement("li", { title: "链接 <a> Ctrl+L", className: "wmd-button", id: "wmd-link-button", style: { left: "75px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-40px 0px" } })),
+                        React.createElement("li", { title: "引用 <blockquote> Ctrl+Q", className: "wmd-button", id: "wmd-quote-button", style: { left: " 100px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-60px 0px" } })),
+                        React.createElement("li", { title: "代码 <pre><code> Ctrl+K", className: "wmd-button", id: "wmd-code-button", style: { left: " 125px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-80px 0px" } })),
+                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer2" }),
+                        React.createElement("li", { title: "图片 <img> Ctrl+G", className: "wmd-button", id: "wmd-image-button", style: { left: "150px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-100px 0px" } })),
+                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer2" }),
+                        React.createElement("li", { title: "数字列表 <ol> Ctrl+O", className: "wmd-button", id: "wmd-olist-button", style: { left: " 200px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-120px 0px" } })),
+                        React.createElement("li", { title: "普通列表 <ul> Ctrl+U", className: "wmd-button", id: "wmd-ulist-button", style: { left: "225px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: " -140px 0px" } })),
+                        React.createElement("li", { title: "标题 <h1>/<h2> Ctrl+H", className: "wmd-button", id: "wmd-heading-button", style: { left: "250px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-160px 0px" } })),
+                        React.createElement("li", { title: "分割线 <hr> Ctrl+R", className: "wmd-button", id: "wmd-hr-button", style: { left: "275px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-180px 0px" } })),
+                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer3" }),
+                        React.createElement("li", { title: "撤销 - Ctrl+Z", className: "wmd-button", id: "wmd-undo-button", style: { left: "325px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-200px 0px" } })),
+                        React.createElement("li", { title: "重做 - Ctrl+Y", className: "wmd-button", id: "wmd-redo-button", style: { left: "350px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-220px -20px" } })),
+                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer4" }),
+                        React.createElement("li", { title: "Markdown 语法", className: "wmd-button", id: "wmd-help-button", style: { left: " 400px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-300px 0px" } })))),
+                React.createElement("form", null,
+                    React.createElement("div", null,
+                        React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input", value: this.state.content, onChange: this.handleChange.bind(this) })))),
+            React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "1.25rem " } },
+                React.createElement("div", { id: "post-topic-button", onClick: this.sendTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u56DE\u590D")));
+    };
+    return SendTopic;
+}(RouteComponent));
+exports.SendTopic = SendTopic;
 
 
 /***/ }),
@@ -4670,9 +4922,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(3);
+var Utility = __webpack_require__(4);
+var UbbContainer_1 = __webpack_require__(5);
 var react_router_dom_1 = __webpack_require__(2);
-var moment = __webpack_require__(7);
+var moment = __webpack_require__(8);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -4692,12 +4945,12 @@ var CurUserPost = /** @class */ (function (_super) {
     __extends(CurUserPost, _super);
     function CurUserPost(props, context) {
         var _this = _super.call(this, props, context) || this;
-        _this.state = { page: 1, topicid: _this.match.params.topicid, totalPage: 1, userName: null };
+        _this.state = { page: 1, topicid: _this.match.params.topicid, totalPage: 1, userId: 559244 };
         return _this;
     }
     CurUserPost.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
-            var page, userName, totalPage;
+            var page, userId, totalPage;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -4707,11 +4960,12 @@ var CurUserPost = /** @class */ (function (_super) {
                         else {
                             page = parseInt(newProps.match.params.page);
                         }
-                        userName = newProps.match.params.userName;
-                        return [4 /*yield*/, this.getTotalPage(this.match.params.topicid)];
+                        userId = newProps.match.params.userId;
+                        return [4 /*yield*/, this.getTotalPage.bind(this)(this.match.params.topicid)];
                     case 1:
                         totalPage = _a.sent();
-                        this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName });
+                        console.log("kk" + newProps.match.params.userId);
+                        this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userId: newProps.match.params.userId });
                         return [2 /*return*/];
                 }
             });
@@ -4719,7 +4973,7 @@ var CurUserPost = /** @class */ (function (_super) {
     };
     CurUserPost.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var page, totalPage, userName;
+            var page, totalPage, userId;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -4729,11 +4983,12 @@ var CurUserPost = /** @class */ (function (_super) {
                         else {
                             page = parseInt(this.match.params.page);
                         }
-                        return [4 /*yield*/, this.getTotalPage(this.match.params.topicid)];
+                        return [4 /*yield*/, this.getTotalPage.bind(this)(this.match.params.topicid)];
                     case 1:
                         totalPage = _a.sent();
-                        userName = this.match.params.userName;
-                        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName });
+                        userId = this.match.params.userId;
+                        console.log("this" + userId);
+                        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userId: userId });
                         return [2 /*return*/];
                 }
             });
@@ -4741,16 +4996,18 @@ var CurUserPost = /** @class */ (function (_super) {
     };
     CurUserPost.prototype.getTotalPage = function (topicid) {
         return __awaiter(this, void 0, void 0, function () {
-            var replyCountResponse, replyCountJson, replyCount;
+            var token, replyCountResponse, replyCountJson, replyCount;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, fetch("http://api.cc98.org/Topic/" + topicid)];
+                    case 0:
+                        token = Utility.getLocalStorage("accessToken");
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/topic/user?topicid=" + topicid + "&userid=" + this.match.params.userId + "&from=0&size=1", { headers: { 'Authorization': token } })];
                     case 1:
                         replyCountResponse = _a.sent();
                         return [4 /*yield*/, replyCountResponse.json()];
                     case 2:
                         replyCountJson = _a.sent();
-                        replyCount = replyCountJson.replyCount;
+                        replyCount = replyCountJson[0].count;
                         if (replyCount > 10) {
                             return [2 /*return*/, (replyCount - replyCount % 10) / 10 + 1];
                         }
@@ -4765,12 +5022,13 @@ var CurUserPost = /** @class */ (function (_super) {
     CurUserPost.prototype.render = function () {
         var topic = null;
         if (this.state.page == 1) {
-            topic = React.createElement(PostTopic, { imgUrl: "/images/ads.jpg", page: this.state.page, topicid: this.state.topicid, userName: this.state.userName });
+            topic = React.createElement(PostTopic, { imgUrl: "/images/ads.jpg", page: this.state.page, topicid: this.state.topicid, userId: this.state.userId });
         }
-        return React.createElement("div", { className: "center", style: { overflowX: 'scroll', minWidth: '1140px' } },
-            React.createElement(TopicPager, { userName: this.state.userName, page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
+        return React.createElement("div", { className: "center", style: { width: "80%" } },
+            React.createElement(TopicPager, { userId: this.state.userId, page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
             topic,
-            React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/user/:userName/:page?", component: Reply }));
+            React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/user/:userId/:page?", component: Reply }),
+            React.createElement(TopicPagerDown, { userId: this.state.userId, page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }));
     };
     return CurUserPost;
 }(RouteComponent));
@@ -4786,17 +5044,22 @@ var Reply = /** @class */ (function (_super) {
     }
     Reply.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
-            var page, realContents;
+            var page, storageId, url, response, data, userName, realContents;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        page = newProps.match.params.page;
-                        if (newProps.match.params.page == undefined) {
-                            page = 1;
-                        }
-                        this.Contents = Utility.getCurUserTopicContent(newProps.match.params.topicid, page, newProps.match.params.userName);
-                        return [4 /*yield*/, this.Contents];
+                        page = newProps.match.params.page || 1;
+                        storageId = "TopicContent_" + newProps.match.params.topicid + "_" + page;
+                        url = "http://apitest.niconi.cc/user/" + newProps.match.params.userId;
+                        return [4 /*yield*/, fetch(url)];
                     case 1:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 2:
+                        data = _a.sent();
+                        userName = data.name;
+                        return [4 /*yield*/, Utility.getCurUserTopicContent(newProps.match.params.topicid, page, userName, newProps.match.params.userId)];
+                    case 3:
                         realContents = _a.sent();
                         this.setState({ contents: realContents });
                         return [2 /*return*/];
@@ -4805,12 +5068,13 @@ var Reply = /** @class */ (function (_super) {
         });
     };
     Reply.prototype.generateContents = function (item) {
-        return React.createElement("div", { id: "reply" },
-            React.createElement(Replier, { key: item.id, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber }),
-            React.createElement(ReplyContent, { key: item.content, content: item.content, signature: item.signature }));
+        return React.createElement("div", { className: "reply" },
+            React.createElement("div", { style: { marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" } },
+                React.createElement(Replier, { key: item.id, userId: item.userId, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber }),
+                React.createElement(ReplyContent, { key: item.content, content: item.content, signature: item.signature })));
     };
     Reply.prototype.render = function () {
-        return React.createElement("div", { className: "center", style: { width: '1140px' } }, this.state.contents.map(this.generateContents));
+        return React.createElement("div", { className: "center", style: { width: "100%" } }, this.state.contents.map(this.generateContents));
     };
     return Reply;
 }(RouteComponent));
@@ -4820,9 +5084,9 @@ var Replier = /** @class */ (function (_super) {
     function Replier(props, content) {
         var _this = _super.call(this, props, content) || this;
         _this.state = {
-            imgUrl: '/images/authorImg.jpg',
-            timeImgUrl: '/images/clock.jpg',
-            userName: 'VayneTian',
+            imgUrl: "/images/authorImg.jpg",
+            timeImgUrl: "/images/clock.jpg",
+            userName: "VayneTian",
             replyTime: Date(),
             topicsNumber: 999,
             level: 2,
@@ -4830,25 +5094,54 @@ var Replier = /** @class */ (function (_super) {
         return _this;
     }
     Replier.prototype.render = function () {
-        var curUserPostUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userName;
+        var url = "/user/" + this.props.userId;
+        var realUrl = encodeURIComponent(url);
+        var curUserPostUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userId;
+        $(document).ready(function () {
+            $(".authorImg").mouseenter(function (event) {
+                var currentImage = event.currentTarget;
+                $(currentImage).next(".userDetails").show();
+            });
+            $(".mouse-userDetails").mouseleave(function (event) {
+                var currentImage = event.currentTarget;
+                $(currentImage).find(".userDetails").hide();
+            });
+        });
+        var topicNumber = '帖数 ';
+        if (!this.props.userId) {
+            topicNumber = '';
+        }
+        var userDetails;
+        if (this.props.userName != '匿名') {
+            userDetails = React.createElement(UserDetails, { userName: this.props.userName });
+        }
+        else {
+            userDetails = null;
+        }
         return React.createElement("div", { className: "replyRoot" },
-            React.createElement("div", { className: "row", style: { width: '1140px', display: 'flex', marginBottom: '10px' } },
-                React.createElement("div", { id: "authorImg" },
-                    React.createElement("img", { src: this.props.userImgUrl })),
+            React.createElement("div", { className: "row", style: { width: "100%", display: "flex", marginBottom: "0.625rem" } },
+                React.createElement("div", { className: "row mouse-userDetails", style: { height: "15.625rem" } },
+                    React.createElement("div", { className: "authorImg" },
+                        React.createElement("a", { href: realUrl },
+                            React.createElement("img", { src: this.props.userImgUrl }))),
+                    React.createElement("div", { className: "userDetails", style: { display: "none", position: "absolute", zindedx: "1" } }, userDetails)),
                 React.createElement("div", { className: "column", id: "rpymes" },
                     React.createElement("div", { className: "row", id: "replierMes" },
-                        React.createElement("div", { style: { marginLeft: '10px' } },
-                            React.createElement("span", null,
-                                this.props.floor,
-                                "L")),
-                        React.createElement("div", { className: "rpyClr", style: { marginLeft: '10px' } }, this.props.userName),
-                        React.createElement("div", { id: "topicsNumber", style: { marginLeft: '10px' } },
-                            "\u8D34\u6570   ",
-                            React.createElement("span", { className: "rpyClrodd" }, this.props
-                                .sendTopicNumber),
+                        React.createElement("div", { style: { marginLeft: "0.625rem" } },
+                            "   ",
+                            React.createElement("div", { style: { marginLeft: "0.625rem" } },
+                                React.createElement("span", null, "\u7B2C"),
+                                React.createElement("span", { style: { color: "red" } }, this.props.floor),
+                                React.createElement("span", null, "\u697C"))),
+                        React.createElement("div", { className: "rpyClr", style: { marginLeft: "0.625rem" } },
+                            React.createElement("a", { href: url }, this.props.userName)),
+                        React.createElement("div", { id: "topicsNumber", style: { marginLeft: "0.625rem", display: "flex", flexWrap: "nowrap", wordBreak: "keepAll", marginRight: "0.75rem" } },
+                            topicNumber,
+                            "   ",
+                            React.createElement("span", { style: { color: "red" } }, this.props.sendTopicNumber),
                             " ")),
-                    React.createElement("div", { className: "row" },
-                        React.createElement("div", { id: "clockimg", style: { marginLeft: '6px' } },
+                    React.createElement("div", { className: "row", style: { display: "flex", flexWrap: "nowrap" } },
+                        React.createElement("div", { id: "clockimg", style: { marginLeft: "0.375rem" } },
                             React.createElement("i", { className: "fa fa-clock-o fa-lg fa-fw" })),
                         React.createElement("div", null,
                             React.createElement("span", { className: "timeProp" }, moment(this.props.replyTime).format('YYYY-MM-DD HH:mm:ss'))))),
@@ -4862,34 +5155,100 @@ var Replier = /** @class */ (function (_super) {
     return Replier;
 }(RouteComponent));
 exports.Replier = Replier;
+var UserDetails = /** @class */ (function (_super) {
+    __extends(UserDetails, _super);
+    function UserDetails(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = ({ portraitUrl: null, userName: null });
+        return _this;
+    }
+    UserDetails.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var url, message, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(this.props.userName != '匿名')) return [3 /*break*/, 3];
+                        url = "http://apitest.niconi.cc/user/name/" + this.props.userName;
+                        return [4 /*yield*/, fetch(url)];
+                    case 1:
+                        message = _a.sent();
+                        return [4 /*yield*/, message.json()];
+                    case 2:
+                        data = _a.sent();
+                        this.setState({ portraitUrl: data.portraitUrl, userName: this.props.userName });
+                        _a.label = 3;
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    UserDetails.prototype.render = function () {
+        var url = "/user/name/" + this.props.userName;
+        var userUrl = encodeURIComponent(url);
+        if (this.props.userName != '匿名') {
+            return React.createElement("div", { className: 'popup' },
+                React.createElement("div", { className: 'popup_title' },
+                    React.createElement("div", { className: "row" },
+                        React.createElement("div", { className: "row authorImg", style: { marginLeft: "10px", marginTop: "10px" } },
+                            React.createElement("a", { href: userUrl },
+                                " ",
+                                React.createElement("img", { src: this.state.portraitUrl }))),
+                        React.createElement("div", { className: "column", style: { marginLeft: "25px", marginTop: "30px" } },
+                            React.createElement("div", { className: "row" },
+                                React.createElement("div", { style: { fontFamily: "微软雅黑", color: "blue", marginRight: "10px" } },
+                                    " ",
+                                    this.state.userName),
+                                "   ",
+                                React.createElement("div", { style: { marginRight: "10px", fontSize: "14px" } }, "   \u7C89\u4E1D  "),
+                                React.createElement("div", { style: { color: "red", fontSize: "12px" } }, "2333")),
+                            React.createElement("div", { className: "row", style: { marginTop: "10px", fontSize: "14px" } }, "\u6280\u672F\u7EC4\u7EC4\u957F")),
+                        React.createElement("div", null,
+                            React.createElement("button", { id: "watch", style: { width: "80px", backgroundColor: "#FF6A6A", marginRight: "10px", marginLeft: "25px", marginTop: "50px", height: "30px" } }, "\u5173\u6CE8")))));
+        }
+        else {
+            return;
+        }
+    };
+    return UserDetails;
+}(RouteComponent));
+exports.UserDetails = UserDetails;
 var PostTopic = /** @class */ (function (_super) {
     __extends(PostTopic, _super);
     function PostTopic(props, content) {
         var _this = _super.call(this, props, content) || this;
         _this.state = {
-            topicMessage: { title: 'ss', time: '2017' }
+            topicMessage: { title: '加载中...', time: '2017' },
+            userName: ""
         };
         return _this;
     }
     PostTopic.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var topicMessage;
+            var topicMessage, response, data, userName;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, Utility.getTopic(this.props.topicid)];
                     case 1:
                         topicMessage = _a.sent();
-                        this.setState({ topicMessage: topicMessage });
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/" + this.props.userId)];
+                    case 2:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 3:
+                        data = _a.sent();
+                        userName = data.name;
+                        this.setState({ topicMessage: topicMessage, userName: userName });
                         return [2 /*return*/];
                 }
             });
         });
     };
     PostTopic.prototype.render = function () {
-        if (this.props.userName == this.state.topicMessage.userName) {
+        if (this.state.userName === this.state.topicMessage.userName) {
             return React.createElement("div", { className: "root" },
                 React.createElement("div", { className: "essay" },
-                    React.createElement(AuthorMessage, { AuthorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl }),
+                    React.createElement(AuthorMessage, { authorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl }),
                     React.createElement(TopicTitle, { Title: this.state.topicMessage.title, Time: this.state.topicMessage.time, HitCount: this.state.topicMessage.hitCount }),
                     React.createElement("div", { id: "ads" },
                         React.createElement("img", { src: this.props.imgUrl }))),
@@ -4916,19 +5275,22 @@ var AuthorMessage = /** @class */ (function (_super) {
         return _this;
     }
     AuthorMessage.prototype.render = function () {
+        var url = "/user/name/" + this.props.authorName;
         return React.createElement("div", { className: "row", id: "authormes" },
-            React.createElement("div", { id: "authorImg" },
-                React.createElement("img", { src: this.props.authorImgUrl })),
-            React.createElement("div", { className: "column" },
-                React.createElement("div", { className: "row authorFans", style: { justifyContent: 'space-between' } },
+            React.createElement("div", { className: "authorImg" },
+                React.createElement("a", { href: url },
+                    React.createElement("img", { src: this.props.authorImgUrl }))),
+            React.createElement("div", { className: "column", style: { marginRight: "1rem" } },
+                React.createElement("div", { className: "row authorFans", style: { justifyContent: "space-between" } },
                     React.createElement("div", { id: "authorName" },
-                        React.createElement("p", null, this.props.AuthorName)),
+                        React.createElement("p", null,
+                            React.createElement("a", { href: url }, this.props.authorName))),
                     React.createElement("div", { id: "fans", className: "row" },
-                        React.createElement("div", { style: { marginRight: '3px' } }, "\u7C89\u4E1D"),
-                        React.createElement("div", { style: { color: '#EE0000' } }, this.state.fansNumber))),
+                        React.createElement("div", { style: { marginRight: "0.1875rem" } }, "\u7C89\u4E1D"),
+                        React.createElement("div", { style: { color: "#EE0000" } }, this.state.fansNumber))),
                 React.createElement("div", { className: "row" },
-                    React.createElement("button", { id: "watch" }, "\u5173\u6CE8"),
-                    React.createElement("button", { id: "email" }, "\u79C1\u4FE1"))));
+                    React.createElement("button", { id: "watch", style: { marginLeft: "1rem" } }, "\u5173\u6CE8"),
+                    React.createElement("button", { id: "email", style: { marginLeft: "1rem" } }, "\u79C1\u4FE1"))));
     };
     return AuthorMessage;
 }(RouteComponent));
@@ -4940,57 +5302,56 @@ var TopicTitle = /** @class */ (function (_super) {
         _this.state = {
             isNotice: true,
             isTop: true,
-            title: '这是一个长长啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊的标题',
-            tag: '女装/开车',
-            time: '2017.8.12',
+            title: "这是一个长长啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊的标题",
+            tag: "女装/开车",
+            time: "2017.8.12",
             likeNumber: 666,
             unlikeNumber: 233,
             viewTimes: 2366
         };
         return _this;
     }
+    TopicTitle.prototype.returnProps = function (isTop, isNotice, title) {
+        if (isTop == true && isNotice == false) {
+            return React.createElement("div", { id: "title1", className: "row", style: { justifyContent: "flex-start" } },
+                React.createElement("div", { id: "essayTitle" }, title));
+        }
+        else if (isTop == false && isNotice == true) {
+            return React.createElement("div", { id: "title1", className: "row", style: { justifyContent: "flex-start" } },
+                React.createElement("div", { id: "essayTitle" }, title));
+        }
+        else if (isTop == true && isNotice == true) {
+            return React.createElement("div", { id: "title1", className: "row", style: { justifyContent: "flex-start" } },
+                React.createElement("div", { id: "essayTitle" }, title));
+        }
+        else {
+            return React.createElement("div", { id: "title1", className: "row", style: { justifyContent: "flex-start" } },
+                React.createElement("div", { id: "essayTitle" }, title));
+        }
+    };
     TopicTitle.prototype.render = function () {
         return React.createElement("div", { id: "title" },
             React.createElement("div", { className: "column", id: "topicTitleProp" },
-                React.createElement("div", { id: "essay1", className: "row" },
-                    React.createElement("div", { id: "title1", className: "row" },
-                        " ",
-                        React.createElement("span", { className: "titleProp" }, this.state.isTop ? '【置顶】' : ''),
-                        React.createElement("span", { className: "titleProp" },
-                            this.state.isNotice ? '【公告】' : '',
-                            " "),
-                        React.createElement("span", { id: "essayTitle" }, this.props.Title))),
+                React.createElement("div", { id: "essay1", className: "row" }, this.returnProps(this.state.isTop, this.state.isNotice, this.props.Title)),
                 React.createElement("div", { className: "row", id: "essayProp" },
                     React.createElement("div", { id: "tags" },
-                        React.createElement("span", { className: "tagProp tagSize" },
+                        React.createElement("div", { className: "tagProp tagSize" },
                             "\u6807\u7B7E\uFF1A ",
                             this.state.tag),
-                        React.createElement("span", { className: "tagProp" })),
+                        React.createElement("div", { className: "tagProp" })),
                     React.createElement("div", { id: "time" },
-                        React.createElement("span", { className: "viewProp" },
+                        React.createElement("div", { className: "viewProp" },
                             React.createElement("i", { className: "fa fa-clock-o fa-lg fa-fw" })),
                         " ",
-                        React.createElement("span", { className: "timeProp tagSize" }, moment(this.props.Time).format('YYYY-MM-DD HH:mm:ss'))),
+                        React.createElement("div", { className: "timeProp tagSize" }, moment(this.props.Time).format('YYYY-MM-DD HH:mm:ss'))),
                     React.createElement("div", { id: "viewtimes" },
-                        React.createElement("span", { className: "viewProp" },
+                        React.createElement("div", { className: "viewProp" },
                             React.createElement("i", { className: "fa fa-eye fa-lg fa-fw" }),
                             "  "),
                         " ",
-                        React.createElement("span", { className: "timeProp tagSize" },
+                        React.createElement("div", { className: "timeProp tagSize" },
                             this.props.HitCount,
-                            "\u6B21")))),
-            React.createElement("div", { className: "column", style: { width: '100px' } },
-                React.createElement("div", { className: "row", style: { marginTop: '10px' } },
-                    React.createElement("div", { id: "like", className: "tagSize" },
-                        React.createElement("i", { className: "fa fa-star-o fa-lg" }),
-                        React.createElement("span", { style: { marginLeft: '10px' } }, "\u6536\u85CF\u6587\u7AE0"))),
-                React.createElement("div", { className: "row", style: { marginTop: '35px' } },
-                    React.createElement("div", { id: "liked", className: "row tagSize" },
-                        React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg fa-fw" }),
-                        this.state.likeNumber),
-                    React.createElement("div", { id: "disliked", className: "row tagSize" },
-                        React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg fa-fw" }),
-                        this.state.unlikeNumber))));
+                            "\u6B21")))));
     };
     return TopicTitle;
 }(RouteComponent));
@@ -5007,28 +5368,58 @@ var TopicContent = /** @class */ (function (_super) {
     }
     //<div className="signature">{this.state.Signature}</div>
     TopicContent.prototype.render = function () {
-        return React.createElement("div", { className: "content" },
-            React.createElement("div", { className: "substance" }, this.props.content),
-            React.createElement("div", { className: "signature" }, this.props.signature),
-            React.createElement("div", { className: "comment" },
-                React.createElement("div", { id: "commentlike", className: "buttonFont" },
-                    React.createElement("button", { className: "commentbutton" },
-                        React.createElement("i", { className: "fa fa-star-o fa-lg" })),
-                    "   \u6536\u85CF\u6587\u7AE0 "),
-                React.createElement("div", { id: "commentliked" },
-                    React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
-                    React.createElement("span", { className: "commentProp" },
+        if (this.props.signature == "") {
+            return React.createElement("div", { className: "content" },
+                React.createElement("div", { className: "substance" },
+                    React.createElement(UbbContainer_1.UbbContainer, { code: this.props.content }),
+                    " "),
+                React.createElement("div", { className: "comment1" },
+                    React.createElement("div", { id: "commentlike", className: "buttonFont" },
+                        React.createElement("button", { className: "commentbutton" },
+                            React.createElement("i", { className: "fa fa-star-o fa-lg" })),
+                        "   \u6536\u85CF\u6587\u7AE0 "),
+                    React.createElement("div", { id: "commentliked" },
+                        React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
+                        React.createElement("span", { className: "commentProp" },
+                            " ",
+                            this.state.likeNumber)),
+                    React.createElement("div", { id: "commentunliked" },
+                        React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg" }),
+                        React.createElement("span", { className: "commentProp" },
+                            " ",
+                            this.state.dislikeNumber)),
+                    React.createElement("div", { id: "commentlike", className: "buttonFont row" },
                         " ",
-                        this.state.likeNumber)),
-                React.createElement("div", { id: "commentunliked" },
-                    React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg" }),
-                    React.createElement("span", { className: "commentProp" },
+                        React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206"),
+                        React.createElement("div", { className: "commentbutton" }, "   \u7F16\u8F91"))));
+        }
+        else {
+            return React.createElement("div", { className: "content" },
+                React.createElement("div", { className: "substance" },
+                    React.createElement(UbbContainer_1.UbbContainer, { code: this.props.content }),
+                    " "),
+                React.createElement("div", { className: "signature" },
+                    React.createElement(UbbContainer_1.UbbContainer, { code: this.props.signature })),
+                React.createElement("div", { className: "comment" },
+                    React.createElement("div", { id: "commentlike", className: "buttonFont" },
+                        React.createElement("button", { className: "commentbutton" },
+                            React.createElement("i", { className: "fa fa-star-o fa-lg" })),
+                        "   \u6536\u85CF\u6587\u7AE0 "),
+                    React.createElement("div", { id: "commentliked" },
+                        React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
+                        React.createElement("span", { className: "commentProp" },
+                            " ",
+                            this.state.likeNumber)),
+                    React.createElement("div", { id: "commentunliked" },
+                        React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg" }),
+                        React.createElement("span", { className: "commentProp" },
+                            " ",
+                            this.state.dislikeNumber)),
+                    React.createElement("div", { id: "commentlike", className: "buttonFont row" },
                         " ",
-                        this.state.dislikeNumber)),
-                React.createElement("div", { id: "commentlike", className: "buttonFont row" },
-                    " ",
-                    React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206"),
-                    React.createElement("div", { className: "commentbutton" }, "   \u7F16\u8F91"))));
+                        React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206"),
+                        React.createElement("div", { className: "commentbutton" }, "   \u7F16\u8F91"))));
+        }
     };
     return TopicContent;
 }(RouteComponent));
@@ -5043,28 +5434,49 @@ var ReplyContent = /** @class */ (function (_super) {
         };
         return _this;
     }
-    //content: "央视网消息：7月26日至27日，习近平在省部级主要领导干部专题研讨班开班式上强调，党的十八大以来的5年，是党和国家发展进程中很不平凡的5年。我们加强党对意识形态工作的领导，巩固了全党全社会思想上的团结统一。党的十八大以来，面对意识形态领域日益错综复杂的形势，习总书记发表了一系列重要讲话，深刻阐述了意识形态工作的重大理论和现实问题。本图解梳理了相关重要论述以及十八大以来各领域工作成绩，以飨读者。</p><p>央视网消息：7月26日至27日，习近平在省部级主要领导干部专题研讨班开班式上强调，党的十八大以来的5年，是党和国家发展进程中很不平凡的5年。我们加强党对意识形态工作的领导，巩固了全党全社会思想上的团结统一。党的十八大以来，面对意识形态领域日益错综复杂的形势，习总书记发表了一系列重要讲话，深刻阐述了意识形态工作的重大理论和现实问题。本图解梳理了相关重要论述以及十八大以来各领域工作成绩，以飨读者。",
-    //
     ReplyContent.prototype.render = function () {
-        return React.createElement("div", { className: "root" },
-            React.createElement("div", { className: "content" },
-                React.createElement("div", { className: "substance" },
-                    React.createElement("span", { style: { maxWidth: '1100px' } }, this.props.content)),
-                React.createElement("div", { className: "signature" }, this.props.signature),
-                React.createElement("div", { className: "comment" },
-                    React.createElement("div", { id: "commentliked" },
-                        React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
-                        React.createElement("span", { className: "commentProp" },
+        if (this.props.signature == "") {
+            return React.createElement("div", { className: "root", style: { marginTop: "-170px" } },
+                React.createElement("div", { className: "reply-content" },
+                    React.createElement("div", { className: "substance" },
+                        React.createElement(UbbContainer_1.UbbContainer, { code: this.props.content })),
+                    React.createElement("div", { className: "comment1" },
+                        React.createElement("div", { id: "commentliked" },
+                            React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
+                            React.createElement("span", { className: "commentProp" },
+                                " ",
+                                this.state.likeNumber)),
+                        React.createElement("div", { id: "commentunliked" },
+                            React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg" }),
+                            React.createElement("span", { className: "commentProp" },
+                                " ",
+                                this.state.dislikeNumber)),
+                        React.createElement("div", { id: "commentlike" },
                             " ",
-                            this.state.likeNumber)),
-                    React.createElement("div", { id: "commentunliked" },
-                        React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg" }),
-                        React.createElement("span", { className: "commentProp" },
+                            React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206")))));
+        }
+        else {
+            return React.createElement("div", { className: "root", style: { marginTop: "-170px" } },
+                React.createElement("div", { className: "reply-content" },
+                    React.createElement("div", { className: "substance" },
+                        React.createElement(UbbContainer_1.UbbContainer, { code: this.props.content })),
+                    React.createElement("div", { className: "comment" },
+                        React.createElement("div", { id: "commentliked" },
+                            React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
+                            React.createElement("span", { className: "commentProp" },
+                                " ",
+                                this.state.likeNumber)),
+                        React.createElement("div", { id: "commentunliked" },
+                            React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg" }),
+                            React.createElement("span", { className: "commentProp" },
+                                " ",
+                                this.state.dislikeNumber)),
+                        React.createElement("div", { id: "commentlike" },
                             " ",
-                            this.state.dislikeNumber)),
-                    React.createElement("div", { id: "commentlike" },
-                        " ",
-                        React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206")))));
+                            React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206"))),
+                    React.createElement("div", { className: "signature" },
+                        React.createElement(UbbContainer_1.UbbContainer, { code: this.props.signature }))));
+        }
     };
     return ReplyContent;
 }(RouteComponent));
@@ -5152,24 +5564,14 @@ var TopicPager = /** @class */ (function (_super) {
      * @returns {JSX.Element} 页码对应的 UI 元素。
      */
     TopicPager.prototype.generatePageLink = function (pageNumber) {
-        return React.createElement(PageModel, { userName: this.props.userName, pageNumber: pageNumber, topicid: this.props.topicid, curPage: this.props.page, totalPage: this.props.totalPage });
+        return React.createElement(PageModel, { userId: this.props.userId, pageNumber: pageNumber, topicid: this.props.topicid, curPage: this.props.page, totalPage: this.props.totalPage });
     };
     TopicPager.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
             var pages;
             return __generator(this, function (_a) {
                 pages = Utility.getPager(newProps.page, newProps.totalPage);
-                console.log('new=' + pages);
-                this.setState({ pager: pages });
-                return [2 /*return*/];
-            });
-        });
-    };
-    TopicPager.prototype.componentDidMount = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var pages;
-            return __generator(this, function (_a) {
-                pages = Utility.getPager(this.props.page, this.props.totalPage);
+                console.log('new=' + newProps.userId);
                 this.setState({ pager: pages });
                 return [2 /*return*/];
             });
@@ -5185,16 +5587,37 @@ var TopicPager = /** @class */ (function (_super) {
 exports.TopicPager = TopicPager;
 var PageModel = /** @class */ (function (_super) {
     __extends(PageModel, _super);
-    function PageModel() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function PageModel(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = ({ userName: "" });
+        return _this;
     }
+    PageModel.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, userName;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/" + this.props.userId)];
+                    case 1:
+                        response = _a.sent();
+                        console.log("cc" + this.props.userId);
+                        return [4 /*yield*/, response.json()];
+                    case 2:
+                        data = _a.sent();
+                        userName = data.name;
+                        this.setState({ userName: userName });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     PageModel.prototype.render = function () {
         var last = '<';
         var next = '>';
         var start = '<<';
         var end = '>>';
         if (this.props.pageNumber > 0) {
-            var pageUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userName + "/" + this.props.pageNumber;
+            var pageUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userId + "/" + this.props.pageNumber;
             if (this.props.pageNumber != this.props.curPage) {
                 return React.createElement("li", { className: "page-item" },
                     React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, this.props.pageNumber));
@@ -5205,22 +5628,22 @@ var PageModel = /** @class */ (function (_super) {
             }
         }
         else if (this.props.pageNumber == -1) {
-            var pageUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userName + "/" + (this.props.curPage - 1);
+            var pageUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userId + "/" + (this.props.curPage - 1);
             return React.createElement("li", { className: "page-item" },
                 React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, last));
         }
         else if (this.props.pageNumber == -2) {
-            var pageUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userName + "/" + (this.props.curPage + 1);
+            var pageUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userId + "/" + (this.props.curPage + 1);
             return React.createElement("li", { className: "page-item" },
                 React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, next));
         }
         else if (this.props.pageNumber == -3) {
-            var pageUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userName + "/1";
+            var pageUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userId + "/1";
             return React.createElement("li", { className: "page-item" },
                 React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, start));
         }
         else {
-            var pageUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userName + "/" + this.props.totalPage;
+            var pageUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userId + "/" + this.props.totalPage;
             return React.createElement("li", { className: "page-item" },
                 React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, end));
         }
@@ -5228,6 +5651,51 @@ var PageModel = /** @class */ (function (_super) {
     return PageModel;
 }(React.Component));
 exports.PageModel = PageModel;
+var TopicPagerDown = /** @class */ (function (_super) {
+    __extends(TopicPagerDown, _super);
+    function TopicPagerDown(props, content) {
+        var _this = _super.call(this, props, content) || this;
+        _this.state = {
+            pager: [1, 2, 3, 4, 5]
+        };
+        return _this;
+    }
+    /**
+     * 将页码转换为 UI 界面。
+     * @param pageNumber 要转换的页码。
+     * @returns {JSX.Element} 页码对应的 UI 元素。
+     */
+    TopicPagerDown.prototype.generatePageLink = function (pageNumber) {
+        return React.createElement(PageModel, { userId: this.props.userId, pageNumber: pageNumber, topicid: this.props.topicid, curPage: this.props.page, totalPage: this.props.totalPage });
+    };
+    TopicPagerDown.prototype.componentWillReceiveProps = function (newProps) {
+        return __awaiter(this, void 0, void 0, function () {
+            var pages;
+            return __generator(this, function (_a) {
+                pages = Utility.getPager(newProps.page, newProps.totalPage);
+                this.setState({ pager: pages });
+                return [2 /*return*/];
+            });
+        });
+    };
+    TopicPagerDown.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var pages;
+            return __generator(this, function (_a) {
+                pages = Utility.getPager(this.props.page, this.props.totalPage);
+                this.setState({ pager: pages });
+                return [2 /*return*/];
+            });
+        });
+    };
+    TopicPagerDown.prototype.render = function () {
+        return React.createElement("div", { className: "row", style: { width: '100%', justifyContent: 'space-between', alignItems: 'flex-end' } },
+            React.createElement("div", { id: "pager" },
+                React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this)))));
+    };
+    return TopicPagerDown;
+}(RouteComponent));
+exports.TopicPagerDown = TopicPagerDown;
 
 
 /***/ }),
@@ -5283,8 +5751,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var AppState_1 = __webpack_require__(4);
-var Utility = __webpack_require__(3);
+var AppState_1 = __webpack_require__(3);
+var Utility = __webpack_require__(4);
 //链接到的地址是  /list/boardid
 var BoardList = /** @class */ (function (_super) {
     __extends(BoardList, _super);
@@ -5304,14 +5772,14 @@ var BoardList = /** @class */ (function (_super) {
                         boardNameList = [];
                         board = [];
                         if (!!Utility.getStorage('board_2')) return [3 /*break*/, 3];
-                        return [4 /*yield*/, fetch('http://api.cc98.org/Board/Root')];
+                        return [4 /*yield*/, fetch('http://apitest.niconi.cc/Board/Root')];
                     case 1:
                         response = _a.sent();
                         return [4 /*yield*/, response.json()];
                     case 2:
                         data = _a.sent();
                         for (i = 0; i < 20; i++) {
-                            board[i] = new AppState_1.Board(data[i].name, data[i].todayPostCount, data[i].totalPostCount, data[i].id, data[i].masters);
+                            board[i] = new AppState_1.Board(data[i].name, data[i].todayCount, data[i].postCount, data[i].id, data[i].boardMastersString);
                             Utility.setStorage("board_" + data[i].id.toString(), board[i]);
                             boardNameList[i] = "board_" + data[i].id.toString();
                         }
@@ -5409,14 +5877,14 @@ var ChildBoard = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         boards = [];
-                        return [4 /*yield*/, fetch("http://api.cc98.org/Board/" + this.props.boardid + "/Subs")];
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + this.props.boardid + "/Sub")];
                     case 1:
                         response = _a.sent();
                         return [4 /*yield*/, response.json()];
                     case 2:
                         data = _a.sent();
                         for (i = 0; i < data.length; i++) {
-                            boards[i] = new AppState_1.Board(data[i].name, data[i].todayPostCount, data[i].totalPostCount, data[i].id, data[i].masters);
+                            boards[i] = new AppState_1.Board(data[i].name, data[i].todayCount, data[i].postCount, data[i].id, data[i].masters);
                         }
                         this.setState({
                             thisBoardState: boards,
@@ -5525,7 +5993,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(2);
-var $ = __webpack_require__(5);
+var $ = __webpack_require__(6);
 /**
  * 用户中心侧边栏导航组件
  */
@@ -5711,9 +6179,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactProfile_1 = __webpack_require__(11);
-var UserCenterExactActivities_1 = __webpack_require__(12);
-var UserCenterExactAvatar_1 = __webpack_require__(13);
+var UserCenterExactProfile_1 = __webpack_require__(10);
+var UserCenterExactActivities_1 = __webpack_require__(11);
+var UserCenterExactAvatar_1 = __webpack_require__(12);
 /**
  * 用户中心主页
  */
@@ -5824,8 +6292,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPost_1 = __webpack_require__(6);
-var AppState_1 = __webpack_require__(4);
+var UserCenterExactActivitiesPost_1 = __webpack_require__(7);
+var AppState_1 = __webpack_require__(3);
 //用户中心主页帖子动态组件
 var UserCenterExactActivitiesPosts = /** @class */ (function (_super) {
     __extends(UserCenterExactActivitiesPosts, _super);
@@ -5908,8 +6376,8 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPost_1 = __webpack_require__(6);
-var AppState_1 = __webpack_require__(4);
+var UserCenterExactActivitiesPost_1 = __webpack_require__(7);
+var AppState_1 = __webpack_require__(3);
 //用户中心主页最近回复组件
 var UserCenterExactActivitiesReplies = /** @class */ (function (_super) {
     __extends(UserCenterExactActivitiesReplies, _super);
@@ -5962,8 +6430,8 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var AppState_1 = __webpack_require__(4);
-var UserCenterMyFollowingsUser_1 = __webpack_require__(14);
+var AppState_1 = __webpack_require__(3);
+var UserCenterMyFollowingsUser_1 = __webpack_require__(13);
 //用户中心我的关注组件
 var UserCenterMyFollowings = /** @class */ (function (_super) {
     __extends(UserCenterMyFollowings, _super);
@@ -6016,8 +6484,8 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var AppState_1 = __webpack_require__(4);
-var UserCenterMyFollowingsUser_1 = __webpack_require__(14);
+var AppState_1 = __webpack_require__(3);
+var UserCenterMyFollowingsUser_1 = __webpack_require__(13);
 //用户中心我的粉丝组件
 var UserCenterMyFans = /** @class */ (function (_super) {
     __extends(UserCenterMyFans, _super);
@@ -6120,8 +6588,8 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPost_1 = __webpack_require__(6);
-var AppState_1 = __webpack_require__(4);
+var UserCenterExactActivitiesPost_1 = __webpack_require__(7);
+var AppState_1 = __webpack_require__(3);
 var UserCenterMyPostsExact = /** @class */ (function (_super) {
     __extends(UserCenterMyPostsExact, _super);
     function UserCenterMyPostsExact(props) {
@@ -6173,8 +6641,8 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPost_1 = __webpack_require__(6);
-var AppState_1 = __webpack_require__(4);
+var UserCenterExactActivitiesPost_1 = __webpack_require__(7);
+var AppState_1 = __webpack_require__(3);
 //用户中心主页最近回复组件
 var UserCenterMyPostsReplies = /** @class */ (function (_super) {
     __extends(UserCenterMyPostsReplies, _super);
@@ -6280,8 +6748,8 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPost_1 = __webpack_require__(6);
-var AppState_1 = __webpack_require__(4);
+var UserCenterExactActivitiesPost_1 = __webpack_require__(7);
+var AppState_1 = __webpack_require__(3);
 var UserCenterMyFavoritesPosts = /** @class */ (function (_super) {
     __extends(UserCenterMyFavoritesPosts, _super);
     function UserCenterMyFavoritesPosts(props) {
@@ -7062,7 +7530,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var UbbContainer_1 = __webpack_require__(8);
+var UbbContainer_1 = __webpack_require__(5);
 var MyMessageSender = /** @class */ (function (_super) {
     __extends(MyMessageSender, _super);
     function MyMessageSender() {
@@ -7108,7 +7576,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var UbbContainer_1 = __webpack_require__(8);
+var UbbContainer_1 = __webpack_require__(5);
 var MyMessageReceiver = /** @class */ (function (_super) {
     __extends(MyMessageReceiver, _super);
     function MyMessageReceiver() {
@@ -7194,7 +7662,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MyMessageResponsebox_1 = __webpack_require__(15);
+var MyMessageResponsebox_1 = __webpack_require__(14);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -7353,7 +7821,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MyMessageResponsebox_1 = __webpack_require__(15);
+var MyMessageResponsebox_1 = __webpack_require__(14);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -7677,7 +8145,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusPostAreaComponent_1 = __webpack_require__(16);
+var FocusPostAreaComponent_1 = __webpack_require__(15);
 /**
  * 网站的主页面对象。
  */
@@ -7723,7 +8191,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var moment = __webpack_require__(7);
+var moment = __webpack_require__(8);
 /**
  * 我关注的某个版面的单个主题
  */
@@ -7738,7 +8206,7 @@ var FocusPostComponent = /** @class */ (function (_super) {
             React.createElement("img", { className: "focus-post-portraitUrl", src: this.props.portraitUrl }),
             React.createElement("div", { className: "focus-post-info1" },
                 React.createElement("div", { className: "focus-post-authorInfo" },
-                    React.createElement("div", { className: "focus-post-blackText" }, this.props.authorName),
+                    React.createElement("div", { className: "focus-post-blackText" }, this.props.userName),
                     React.createElement("div", { className: "focus-post-redText" }, this.props.fanCount),
                     React.createElement("div", { className: "focus-post-blackText" }, "\u7C89\u4E1D")),
                 React.createElement("div", { className: "focus-post-title" },
@@ -7747,7 +8215,7 @@ var FocusPostComponent = /** @class */ (function (_super) {
                 React.createElement("div", { className: "focus-post-board" },
                     this.props.boardName,
                     " / ",
-                    moment(this.props.createTime).format('YYYY-MM-DD HH:mm:ss')),
+                    moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')),
                 React.createElement("div", { className: "focus-post-response" },
                     React.createElement("div", null,
                         React.createElement("i", { className: "fa fa-thumbs-o-up", "aria-hidden": "true" }),
@@ -7786,7 +8254,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
 var FocusBoardAreaComponent_1 = __webpack_require__(69);
-var FocusPostAreaComponent_1 = __webpack_require__(16);
+var FocusPostAreaComponent_1 = __webpack_require__(15);
 var MyFocusBoard = /** @class */ (function (_super) {
     __extends(MyFocusBoard, _super);
     function MyFocusBoard() {
@@ -7949,8 +8417,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(3);
-var $ = __webpack_require__(5);
+var Utility = __webpack_require__(4);
+var $ = __webpack_require__(6);
 var DropDown = /** @class */ (function (_super) {
     __extends(DropDown, _super);
     function DropDown(props, context) {
@@ -7990,31 +8458,33 @@ var DropDown = /** @class */ (function (_super) {
         location = window.location; //刷新当前页面
     };
     DropDown.prototype.render = function () {
-        if (Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName")) {
-            $(document).ready(function () {
-                var userInfo = $('.userInfo').eq(0);
-                var dropDownSub = $('.dropDownSub').eq(0);
-                var dropDownLi = dropDownSub.find('li');
-                userInfo.hover(function () {
-                    dropDownSub.slideDown("fast");
-                }, function () {
-                    dropDownSub.css('display', 'none');
-                });
-                dropDownSub.hover(function () {
-                    dropDownSub.css('display', 'block');
-                }, function () {
-                    dropDownSub.slideUp("fast");
-                });
-                /*在一个对象上触发某类事件（比如单击onclick事件），如果此对象定义了此事件的处理程序，那么此事件就会调用这个处理程序，
-                如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
-                或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
-                dropDownLi.mouseover(function () {
-                    this.className = 'hover';
-                });
-                dropDownLi.mouseout(function () {
-                    this.className = '';
-                });
+        $(document).ready(function () {
+            var userInfo = $('.userInfo').eq(0);
+            var dropDownSub = $('.dropDownSub').eq(0);
+            var dropDownLi = dropDownSub.find('li');
+            userInfo.hover(function () {
+                dropDownSub.slideDown("fast");
+            }, function () {
+                dropDownSub.css('display', 'none');
             });
+            dropDownSub.hover(function () {
+                dropDownSub.css('display', 'block');
+            }, function () {
+                dropDownSub.slideUp("fast");
+            });
+            /*在一个对象上触发某类事件（比如单击onclick事件），如果此对象定义了此事件的处理程序，那么此事件就会调用这个处理程序，
+            如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
+            或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
+            dropDownLi.mouseover(function () {
+                this.className = 'hover';
+            });
+            dropDownLi.mouseout(function () {
+                this.className = '';
+            });
+        });
+        if (this.state.userName === "adddna")
+            alert("guna!");
+        if (Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName")) {
             return React.createElement("div", { id: "dropdown" },
                 React.createElement("div", { className: "box" },
                     React.createElement("div", { className: "userInfo" },
@@ -8275,8 +8745,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var $ = __webpack_require__(5);
-var Utility = __webpack_require__(3);
+var $ = __webpack_require__(6);
 /**
  * 推荐阅读组件
  **/
@@ -8487,76 +8956,6 @@ var Shixijianzhi = /** @class */ (function (_super) {
     return Shixijianzhi;
 }(React.Component));
 exports.Shixijianzhi = Shixijianzhi;
-/*
- 测试用组件~
- */
-var Test = /** @class */ (function (_super) {
-    __extends(Test, _super);
-    function Test() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Test.prototype.logon = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var url, requestBody, response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        url = "http://openid.cc98.org/connect/authorize";
-                        requestBody = {
-                            'client_id': '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
-                            'redirect_uri': 'http://localhost:53004',
-                            'response_type': 'token',
-                            'scope': 'cc98-api openid',
-                        };
-                        return [4 /*yield*/, fetch(url, {
-                                method: "POST",
-                                headers: {
-                                    'Content-Type': 'application/x-www-form-urlencoded',
-                                },
-                                body: $.param(requestBody)
-                            })];
-                    case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.json()];
-                    case 2: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    Test.prototype.test = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var url, token, myHeaders, response, data;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        url = "http://apitest.niconi.cc/topic/test";
-                        token = Utility.getLocalStorage("accessToken");
-                        console.log(token);
-                        myHeaders = new Headers();
-                        myHeaders.append("Content-Type", 'application/x-www-form-urlencoded');
-                        myHeaders.append("Authorization", token);
-                        return [4 /*yield*/, fetch(url, {
-                                method: "GET",
-                                headers: myHeaders,
-                                body: { 'token': token }
-                            })];
-                    case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.json()];
-                    case 2:
-                        data = _a.sent();
-                        console.log(data);
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    Test.prototype.render = function () {
-        return React.createElement("div", { onClick: this.test }, "\u8FD9\u91CC\u662F\u840C\u840C\u7684adddna\u6D4B\u8BD5\u7684\u5730\u65B9~");
-    };
-    return Test;
-}(React.Component));
-exports.Test = Test;
 /**
  * 网站的主页面对象。
  */
@@ -8642,8 +9041,7 @@ var MainPage = /** @class */ (function (_super) {
                     React.createElement("div", { className: "list1" },
                         React.createElement("div", { className: "blueBar2" },
                             React.createElement("div", { className: "listName" }, "\u5B66\u672F\u4FE1\u606F"),
-                            React.createElement("div", { className: "more" }, "\u66F4\u591A")),
-                        React.createElement(Test, null)),
+                            React.createElement("div", { className: "more" }, "\u66F4\u591A"))),
                     React.createElement("div", { className: "list2" },
                         React.createElement("div", { className: "blueBar2" },
                             React.createElement("div", { className: "listName" }, "\u6700\u70ED\u56DE\u590D"),
@@ -8883,9 +9281,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterExactProfile_1 = __webpack_require__(11);
-var UserCenterExactActivities_1 = __webpack_require__(12);
-var UserCenterExactAvatar_1 = __webpack_require__(13);
+var UserCenterExactProfile_1 = __webpack_require__(10);
+var UserCenterExactActivities_1 = __webpack_require__(11);
+var UserCenterExactAvatar_1 = __webpack_require__(12);
 var UserRouter = /** @class */ (function (_super) {
     __extends(UserRouter, _super);
     function UserRouter() {
@@ -9050,8 +9448,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var $ = __webpack_require__(5);
-var Utility = __webpack_require__(3);
+var $ = __webpack_require__(6);
+var Utility = __webpack_require__(4);
 var LogOnExact = /** @class */ (function (_super) {
     __extends(LogOnExact, _super);
     function LogOnExact(props) {
@@ -9121,7 +9519,7 @@ var LogOnExact = /** @class */ (function (_super) {
                             'grant_type': 'password',
                             'username': this.state.loginName,
                             'password': this.state.loginPassword,
-                            'scope': 'cc98-api openid',
+                            'scope': "cc98-api openid"
                         };
                         return [4 /*yield*/, fetch(url, {
                                 method: "POST",
@@ -9152,6 +9550,10 @@ var LogOnExact = /** @class */ (function (_super) {
                             loginMessage: '登陆成功 正在返回首页',
                             isLogining: false
                         });
+                        //跳转至个人中心页
+                        setTimeout(function () {
+                            location.pathname = "/";
+                        }, 2000);
                         return [2 /*return*/];
                 }
             });
@@ -9252,62 +9654,6 @@ exports.LogOff = LogOff;
 
 /***/ }),
 /* 80 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var SendTopic_1 = __webpack_require__(10);
-var CreateTopic = /** @class */ (function (_super) {
-    __extends(CreateTopic, _super);
-    function CreateTopic() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    CreateTopic.prototype.render = function () {
-        return React.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'center' } },
-            React.createElement("div", { className: "createTopic" },
-                React.createElement("div", { className: "createTopicBoardName" }, " \u7248\u9762\u540D\u79F0 > \u53D1\u8868\u4E3B\u9898"),
-                React.createElement("div", { className: "createTopicTitle" },
-                    React.createElement("div", { className: "createTopicListName" }, "\u4E3B\u9898\u6807\u9898"),
-                    React.createElement("div", { className: "createTopicListName" }, "\u6807\u7B7E1\u25BC"),
-                    React.createElement("div", { className: "createTopicListName" }, "\u6807\u7B7E2\u25BC"),
-                    React.createElement("input", { type: "text", placeholder: "请输入主题的标题" })),
-                React.createElement("div", { className: "createTopicType" },
-                    React.createElement("div", { className: "createTopicListName" }, "\u53D1\u5E16\u7C7B\u578B"),
-                    React.createElement("input", { type: "radio", checked: true, name: "type", value: "normal" }),
-                    " \u666E\u901A",
-                    React.createElement("input", { type: "radio", name: "type", value: "academic" }),
-                    " \u5B66\u672F\u4FE1\u606F",
-                    React.createElement("div", { style: { color: 'rgb(255,0,0)' } }, "\uFF08\u6D3B\u52A8\u5E16\u548C\u5B66\u672F\u8D34\u8BF7\u9009\u62E9\u6B63\u786E\u7684\u53D1\u5E16\u7C7B\u578B\uFF09")),
-                React.createElement("div", { className: "createTopicOption" },
-                    React.createElement("div", { className: "createTopicListName" }, "\u9009\u9879"),
-                    React.createElement("input", { type: "radio", checked: true, name: "option", value: "all" }),
-                    "\u56DE\u590D\u6240\u6709\u4EBA\u53EF\u89C1",
-                    React.createElement("input", { type: "radio", name: "option", value: "host" }),
-                    "\u56DE\u590D\u4EC5\u697C\u4E3B\u53EF\u89C1",
-                    React.createElement("input", { type: "radio", name: "option", value: "special" }),
-                    "\u56DE\u590D\u4EC5\u7279\u5B9A\u7528\u6237\u53EF\u89C1"),
-                React.createElement(SendTopic_1.SendTopic, null),
-                React.createElement("div", { className: "createTopicContent" }, "\u8FD9\u91CC\u4E0E\u5FEB\u901F\u56DE\u590D\u76F8\u540C")));
-    };
-    return CreateTopic;
-}(React.Component));
-exports.CreateTopic = CreateTopic;
-
-
-/***/ }),
-/* 81 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
