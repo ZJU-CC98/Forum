@@ -18,7 +18,7 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
             let data = await response.json();
             let userImgUrl = data.portraitUrl;
             this.setState({ userName: userName, userImgUrl: userImgUrl });
-        }
+        }    
     }
 
     logOff() {
@@ -29,36 +29,35 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
     }
 
     render() {
-        $(document).ready(function () {
-
-            const userInfo = $('.userInfo').eq(0);
-            const dropDownSub = $('.dropDownSub').eq(0);
-            const dropDownLi = dropDownSub.find('li');
-
-            userInfo.hover(function () {
-                dropDownSub.slideDown("fast");
-            }, function () {
-                dropDownSub.css('display', 'none');
-            });
-            dropDownSub.hover(function () {
-                dropDownSub.css('display', 'block');
-            }, function () {
-                dropDownSub.slideUp("fast");
-            });
-            /*在一个对象上触发某类事件（比如单击onclick事件），如果此对象定义了此事件的处理程序，那么此事件就会调用这个处理程序，
-            如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
-            或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
-
-            dropDownLi.mouseover(function () {
-                this.className = 'hover';
-            });
-
-            dropDownLi.mouseout(function () {
-                this.className = '';
-            });
-        });
-        if (this.state.userName === "adddna") alert("guna!");
         if (Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName")) {
+            $(document).ready(function () {
+
+                const userInfo = $('.userInfo').eq(0);
+                const dropDownSub = $('.dropDownSub').eq(0);
+                const dropDownLi = dropDownSub.find('li');
+
+                userInfo.hover(function () {
+                    dropDownSub.slideDown("fast");
+                }, function () {
+                    dropDownSub.css('display', 'none');
+                });
+                dropDownSub.hover(function () {
+                    dropDownSub.css('display', 'block');
+                }, function () {
+                    dropDownSub.slideUp("fast");
+                });
+                /*在一个对象上触发某类事件（比如单击onclick事件），如果此对象定义了此事件的处理程序，那么此事件就会调用这个处理程序，
+                如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
+                或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
+
+                dropDownLi.mouseover(function () {
+                    this.className = 'hover';
+                });
+
+                dropDownLi.mouseout(function () {
+                    this.className = '';
+                });
+            });
             return <div id="dropdown">
                 <div className="box">
                     <div className="userInfo">
