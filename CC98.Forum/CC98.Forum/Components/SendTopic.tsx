@@ -18,7 +18,7 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
     }
 }
 
-export class SendTopic extends RouteComponent<{ topicid,onChange }, { content: string }, {}>{
+export class SendTopic extends RouteComponent<{ topicid, onChange }, { content: string }, {}>{
     constructor(props) {
         super(props);
         this.state = ({ content: '' });
@@ -29,9 +29,9 @@ export class SendTopic extends RouteComponent<{ topicid,onChange }, { content: s
         let content = {
             content: this.state.content,
             contentType: 1,
-            title:""
+            title: ""
         }
-       let contentJson = JSON.stringify(content);
+        let contentJson = JSON.stringify(content);
         let token = Utility.getLocalStorage("accessToken");
         let myHeaders = new Headers();
         myHeaders.append("Authorization", token);
@@ -39,11 +39,11 @@ export class SendTopic extends RouteComponent<{ topicid,onChange }, { content: s
         let mes = await fetch(url, {
             method: 'POST',
             headers: myHeaders,
-            body:contentJson
+            body: contentJson
         }
         )
         this.props.onChange();
-        this.setState({content:""});
+        this.setState({ content: "" });
 
     }
     getInitialState() {
@@ -82,11 +82,10 @@ export class SendTopic extends RouteComponent<{ topicid,onChange }, { content: s
             <form>
                 <div >
                     <textarea id="sendTopic-input" name="sendTopic-input" value={this.state.content} onChange={this.handleChange.bind(this)} />
-
                 </div>
             </form>
-
-        </div><div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
+        </div>
+            <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
                 <div id="post-topic-button" onClick={this.sendTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复</div>
             </div>
         </div>;
