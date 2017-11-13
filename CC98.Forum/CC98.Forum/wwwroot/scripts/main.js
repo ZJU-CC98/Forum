@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 16);
+/******/ 	return __webpack_require__(__webpack_require__.s = 17);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -968,250 +968,6 @@ module.exports = ReactRouterDOM;
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * 表示应用程序的状态。
- */
-var AppState = /** @class */ (function () {
-    function AppState() {
-    }
-    return AppState;
-}());
-exports.AppState = AppState;
-/**
- * 投票状态
- */
-var TopicVoteState = /** @class */ (function () {
-    function TopicVoteState() {
-    }
-    return TopicVoteState;
-}());
-exports.TopicVoteState = TopicVoteState;
-/**
- * 发帖内容状态
- */
-var PostTopicState = /** @class */ (function () {
-    function PostTopicState() {
-    }
-    return PostTopicState;
-}());
-exports.PostTopicState = PostTopicState;
-/**
- * 作者信息状态
- */
-var AuthorMessageState = /** @class */ (function () {
-    function AuthorMessageState() {
-    }
-    return AuthorMessageState;
-}());
-exports.AuthorMessageState = AuthorMessageState;
-/**
- * 题目信息状态
- */
-var TopicTitleState = /** @class */ (function () {
-    function TopicTitleState() {
-    }
-    return TopicTitleState;
-}());
-exports.TopicTitleState = TopicTitleState;
-/**
- * 文章内容
- */
-var ContentState = /** @class */ (function () {
-    function ContentState(id, content, time, isDelete, floor, isAnonymous, lastUpdateAuthor, lastUpdateTime, topicId, userName, sendTopicNumber, userImgUrl, signature, userId) {
-        this.userName = userName;
-        this.id = id;
-        this.content = content;
-        this.time = time;
-        this.isAnonymous = isAnonymous;
-        this.isDelete = isDelete;
-        this.floor = floor;
-        this.lastUpdateAuthor = lastUpdateAuthor;
-        this.lastUpdateTime = lastUpdateTime;
-        this.topicId = topicId;
-        this.sendTopicNumber = sendTopicNumber;
-        this.userImgUrl = userImgUrl;
-        this.signature = signature;
-        this.userId = userId;
-    }
-    return ContentState;
-}());
-exports.ContentState = ContentState;
-/**
- * 点赞信息状态
- */
-var TopicGoodState = /** @class */ (function () {
-    function TopicGoodState() {
-    }
-    return TopicGoodState;
-}());
-exports.TopicGoodState = TopicGoodState;
-/**
- * 回复者状态
- */
-var ReplierState = /** @class */ (function () {
-    function ReplierState() {
-    }
-    return ReplierState;
-}());
-exports.ReplierState = ReplierState;
-/**
- * 首页话题信息状态
- * 拥有一个属性mainPageTopicState，为MainPageTopic类数组，用于存放组件所需的主题信息（一般为10条）
- **/
-var MainPageTopicState = /** @class */ (function () {
-    function MainPageTopicState() {
-    }
-    return MainPageTopicState;
-}());
-exports.MainPageTopicState = MainPageTopicState;
-var ListHeadState = /** @class */ (function () {
-    function ListHeadState() {
-    }
-    return ListHeadState;
-}());
-exports.ListHeadState = ListHeadState;
-var ListNoticeState = /** @class */ (function () {
-    function ListNoticeState() {
-    }
-    return ListNoticeState;
-}());
-exports.ListNoticeState = ListNoticeState;
-var ListTagState = /** @class */ (function () {
-    function ListTagState() {
-    }
-    return ListTagState;
-}());
-exports.ListTagState = ListTagState;
-/**
- * 内容列表页面的状态。
- */
-var ListContentState = /** @class */ (function () {
-    function ListContentState() {
-    }
-    return ListContentState;
-}());
-exports.ListContentState = ListContentState;
-var TopicTitleAndContentState = /** @class */ (function () {
-    /*  constructor(title, authorName, lastReply) {
-          this.authorName = authorName;
-          this.lastReply = lastReply;
-          this.title = title;
-      }*/
-    function TopicTitleAndContentState(title, authorName, topicid, authorId, lastPostInfo) {
-        this.authorName = authorName;
-        this.title = title;
-        this.id = topicid;
-        this.authorId = authorId;
-        this.lastPostInfo = lastPostInfo;
-    }
-    return TopicTitleAndContentState;
-}());
-exports.TopicTitleAndContentState = TopicTitleAndContentState;
-/**
- * 定义页码列表组件的状态。
- */
-var ListPagerState = /** @class */ (function () {
-    function ListPagerState() {
-    }
-    return ListPagerState;
-}());
-exports.ListPagerState = ListPagerState;
-var PagerState = /** @class */ (function () {
-    function PagerState(page) {
-        this.pageNumber = page;
-    }
-    return PagerState;
-}());
-exports.PagerState = PagerState;
-var TopicState = /** @class */ (function () {
-    function TopicState(userName, title, content, time, signature, userImgUrl, hitCount, userId) {
-        this.userName = userName;
-        this.time = time;
-        this.title = title;
-        this.content = content;
-        this.signature = signature;
-        this.userImgUrl = userImgUrl;
-        this.hitCount = hitCount;
-        this.userId = userId;
-    }
-    return TopicState;
-}());
-exports.TopicState = TopicState;
-/**
- * 登录状态
- */
-var LoginState = /** @class */ (function () {
-    function LoginState() {
-    }
-    return LoginState;
-}());
-exports.LoginState = LoginState;
-/**
- * 已登录状态
- */
-var AlreadyLoginState = /** @class */ (function () {
-    function AlreadyLoginState() {
-    }
-    return AlreadyLoginState;
-}());
-exports.AlreadyLoginState = AlreadyLoginState;
-/**
- * 版面类
- */
-var Board = /** @class */ (function () {
-    //构造方法
-    function Board(name, todayPostCount, totalPostCount, boardID, master) {
-        this.name = name;
-        this.todayPostCount = todayPostCount;
-        this.totalPostCount = totalPostCount;
-        this.id = boardID;
-        this.masters = master;
-    }
-    return Board;
-}());
-exports.Board = Board;
-var BoardState = /** @class */ (function () {
-    function BoardState() {
-    }
-    return BoardState;
-}());
-exports.BoardState = BoardState;
-/**
-* 用户信息
-*/
-var UserInfo = /** @class */ (function () {
-    function UserInfo() {
-    }
-    return UserInfo;
-}());
-exports.UserInfo = UserInfo;
-/**
-* 表示用户最近帖子
-*/
-var UserRecentPost = /** @class */ (function () {
-    function UserRecentPost() {
-    }
-    return UserRecentPost;
-}());
-exports.UserRecentPost = UserRecentPost;
-/**
- * 表示用户粉丝信息
- */
-var UserFanInfo = /** @class */ (function () {
-    function UserFanInfo() {
-    }
-    return UserFanInfo;
-}());
-exports.UserFanInfo = UserFanInfo;
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -1248,7 +1004,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var State = __webpack_require__(3);
+var State = __webpack_require__(4);
 var React = __webpack_require__(0);
 var List_1 = __webpack_require__(9);
 var $ = __webpack_require__(5);
@@ -1679,6 +1435,250 @@ exports.removeStorage = removeStorage;
 
 
 /***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * 表示应用程序的状态。
+ */
+var AppState = /** @class */ (function () {
+    function AppState() {
+    }
+    return AppState;
+}());
+exports.AppState = AppState;
+/**
+ * 投票状态
+ */
+var TopicVoteState = /** @class */ (function () {
+    function TopicVoteState() {
+    }
+    return TopicVoteState;
+}());
+exports.TopicVoteState = TopicVoteState;
+/**
+ * 发帖内容状态
+ */
+var PostTopicState = /** @class */ (function () {
+    function PostTopicState() {
+    }
+    return PostTopicState;
+}());
+exports.PostTopicState = PostTopicState;
+/**
+ * 作者信息状态
+ */
+var AuthorMessageState = /** @class */ (function () {
+    function AuthorMessageState() {
+    }
+    return AuthorMessageState;
+}());
+exports.AuthorMessageState = AuthorMessageState;
+/**
+ * 题目信息状态
+ */
+var TopicTitleState = /** @class */ (function () {
+    function TopicTitleState() {
+    }
+    return TopicTitleState;
+}());
+exports.TopicTitleState = TopicTitleState;
+/**
+ * 文章内容
+ */
+var ContentState = /** @class */ (function () {
+    function ContentState(id, content, time, isDelete, floor, isAnonymous, lastUpdateAuthor, lastUpdateTime, topicId, userName, sendTopicNumber, userImgUrl, signature, userId) {
+        this.userName = userName;
+        this.id = id;
+        this.content = content;
+        this.time = time;
+        this.isAnonymous = isAnonymous;
+        this.isDelete = isDelete;
+        this.floor = floor;
+        this.lastUpdateAuthor = lastUpdateAuthor;
+        this.lastUpdateTime = lastUpdateTime;
+        this.topicId = topicId;
+        this.sendTopicNumber = sendTopicNumber;
+        this.userImgUrl = userImgUrl;
+        this.signature = signature;
+        this.userId = userId;
+    }
+    return ContentState;
+}());
+exports.ContentState = ContentState;
+/**
+ * 点赞信息状态
+ */
+var TopicGoodState = /** @class */ (function () {
+    function TopicGoodState() {
+    }
+    return TopicGoodState;
+}());
+exports.TopicGoodState = TopicGoodState;
+/**
+ * 回复者状态
+ */
+var ReplierState = /** @class */ (function () {
+    function ReplierState() {
+    }
+    return ReplierState;
+}());
+exports.ReplierState = ReplierState;
+/**
+ * 首页话题信息状态
+ * 拥有一个属性mainPageTopicState，为MainPageTopic类数组，用于存放组件所需的主题信息（一般为10条）
+ **/
+var MainPageTopicState = /** @class */ (function () {
+    function MainPageTopicState() {
+    }
+    return MainPageTopicState;
+}());
+exports.MainPageTopicState = MainPageTopicState;
+var ListHeadState = /** @class */ (function () {
+    function ListHeadState() {
+    }
+    return ListHeadState;
+}());
+exports.ListHeadState = ListHeadState;
+var ListNoticeState = /** @class */ (function () {
+    function ListNoticeState() {
+    }
+    return ListNoticeState;
+}());
+exports.ListNoticeState = ListNoticeState;
+var ListTagState = /** @class */ (function () {
+    function ListTagState() {
+    }
+    return ListTagState;
+}());
+exports.ListTagState = ListTagState;
+/**
+ * 内容列表页面的状态。
+ */
+var ListContentState = /** @class */ (function () {
+    function ListContentState() {
+    }
+    return ListContentState;
+}());
+exports.ListContentState = ListContentState;
+var TopicTitleAndContentState = /** @class */ (function () {
+    /*  constructor(title, authorName, lastReply) {
+          this.authorName = authorName;
+          this.lastReply = lastReply;
+          this.title = title;
+      }*/
+    function TopicTitleAndContentState(title, authorName, topicid, authorId, lastPostInfo) {
+        this.authorName = authorName;
+        this.title = title;
+        this.id = topicid;
+        this.authorId = authorId;
+        this.lastPostInfo = lastPostInfo;
+    }
+    return TopicTitleAndContentState;
+}());
+exports.TopicTitleAndContentState = TopicTitleAndContentState;
+/**
+ * 定义页码列表组件的状态。
+ */
+var ListPagerState = /** @class */ (function () {
+    function ListPagerState() {
+    }
+    return ListPagerState;
+}());
+exports.ListPagerState = ListPagerState;
+var PagerState = /** @class */ (function () {
+    function PagerState(page) {
+        this.pageNumber = page;
+    }
+    return PagerState;
+}());
+exports.PagerState = PagerState;
+var TopicState = /** @class */ (function () {
+    function TopicState(userName, title, content, time, signature, userImgUrl, hitCount, userId) {
+        this.userName = userName;
+        this.time = time;
+        this.title = title;
+        this.content = content;
+        this.signature = signature;
+        this.userImgUrl = userImgUrl;
+        this.hitCount = hitCount;
+        this.userId = userId;
+    }
+    return TopicState;
+}());
+exports.TopicState = TopicState;
+/**
+ * 登录状态
+ */
+var LoginState = /** @class */ (function () {
+    function LoginState() {
+    }
+    return LoginState;
+}());
+exports.LoginState = LoginState;
+/**
+ * 已登录状态
+ */
+var AlreadyLoginState = /** @class */ (function () {
+    function AlreadyLoginState() {
+    }
+    return AlreadyLoginState;
+}());
+exports.AlreadyLoginState = AlreadyLoginState;
+/**
+ * 版面类
+ */
+var Board = /** @class */ (function () {
+    //构造方法
+    function Board(name, todayPostCount, totalPostCount, boardID, master) {
+        this.name = name;
+        this.todayPostCount = todayPostCount;
+        this.totalPostCount = totalPostCount;
+        this.id = boardID;
+        this.masters = master;
+    }
+    return Board;
+}());
+exports.Board = Board;
+var BoardState = /** @class */ (function () {
+    function BoardState() {
+    }
+    return BoardState;
+}());
+exports.BoardState = BoardState;
+/**
+* 用户信息
+*/
+var UserInfo = /** @class */ (function () {
+    function UserInfo() {
+    }
+    return UserInfo;
+}());
+exports.UserInfo = UserInfo;
+/**
+* 表示用户最近帖子
+*/
+var UserRecentPost = /** @class */ (function () {
+    function UserRecentPost() {
+    }
+    return UserRecentPost;
+}());
+exports.UserRecentPost = UserRecentPost;
+/**
+ * 表示用户粉丝信息
+ */
+var UserFanInfo = /** @class */ (function () {
+    function UserFanInfo() {
+    }
+    return UserFanInfo;
+}());
+exports.UserFanInfo = UserFanInfo;
+
+
+/***/ }),
 /* 5 */
 /***/ (function(module, exports) {
 
@@ -1756,7 +1756,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(21);
+var Ubb = __webpack_require__(22);
 /**
  * 定义 UBBContainer 组件需要使用的属性。
  */
@@ -1851,7 +1851,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(4);
+var Utility = __webpack_require__(3);
 var moment = __webpack_require__(7);
 var react_router_dom_1 = __webpack_require__(2);
 var RouteComponent = /** @class */ (function (_super) {
@@ -2345,6 +2345,165 @@ exports.TopicTitleAndContent = TopicTitleAndContent;
 
 "use strict";
 
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var Utility = __webpack_require__(3);
+var RouteComponent = /** @class */ (function (_super) {
+    __extends(RouteComponent, _super);
+    function RouteComponent(props, context) {
+        return _super.call(this, props, context) || this;
+    }
+    Object.defineProperty(RouteComponent.prototype, "match", {
+        get: function () {
+            return this.props.match;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return RouteComponent;
+}(React.Component));
+exports.RouteComponent = RouteComponent;
+var SendTopic = /** @class */ (function (_super) {
+    __extends(SendTopic, _super);
+    function SendTopic(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = ({ content: '' });
+        return _this;
+    }
+    SendTopic.prototype.sendTopic = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var url, token, t, myHeaders, c, m, p, n, k, mes;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        url = "http://openid.cc98.org";
+                        token = Utility.getLocalStorage("accessToken");
+                        t = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1MDMzMDMsImV4cCI6MTUwOTUwNjkwMywiaXNzIjoiaHR0cDovL29wZW5pZC5jYzk4Lm9yZyIsImF1ZCI6Imh0dHA6Ly9vcGVuaWQuY2M5OC5vcmcvcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoiOWExZmQyMDAtODY4Ny00NGIxLTRjMjAtMDhkNTBhOTZlNWNkIiwic3ViIjoiNTU2NTUxIiwiYXV0aF90aW1lIjoxNTA5NTAzMzAzLCJpZHAiOiJsb2NhbCIsImp0aSI6ImU1YWZmNWQwM2QyZjk3Njc2NWYyYTQwMjk2YWVmOTM3Iiwic2NvcGUiOlsib3BlbmlkIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbIkNDOTgiXX0.UgaVLvuUsdvnO7zp9YUo9BDs6_XYsC9noonNXOb2up6kKigWrMUZomq1tS8Xq6Gh52nHdSgiTtVVGZ9V4ZCAEkn0RCnpkwYZa7zDP3tuKqJL7gvnfsuDCsdvl59kXT9UUdtdWO7g8gC5ZFTmYXuQVAIayfSvxu4KLCzRZM8M7GmCejfsLGsEf-H6yJr-Pq2dMAoRtmetubmuc7W6PcY4l3UZqeuWh2f5yMuoljLc4MiGT2Cs4uqn6xOwqzEKA_lq5vljlSiM24jrbnoJDkdccSTolQYcRpohoTZwAP0wDraoDJEsmPhra8hPD9lmpC4XgykNSqdWSq8gD1ajVr6-XA';
+                        myHeaders = new Headers();
+                        c = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1MDI1MjIsImV4cCI6MTUwOTUwNjEyMiwiaXNzIjoiaHR0cHM6Ly9vcGVuaWQuY2M5OC5vcmciLCJhdWQiOiJodHRwczovL29wZW5pZC5jYzk4Lm9yZy9yZXNvdXJjZXMiLCJjbGllbnRfaWQiOiI0MmY4YWVhNi03YmRhLTQ4NTctZjk1OC0wOGQ1MTUyZjZlODUiLCJzdWIiOiI1MzM2MzMiLCJhdXRoX3RpbWUiOjE1MDk1MDI1MjEsImlkcCI6ImxvY2FsIiwianRpIjoiMjliNDU1YWJjNjkwNzJlYmJmY2JiYjY1OTFjMjdhZWUiLCJzY29wZSI6WyJvcGVuaWQiXSwiYW1yIjpbImlkc3J2Il19.NnxBKBOiWIyMkq2BKzUrVD5I4xpZVjl-rPZVavAgo8O8hbebOdOk3meWsyWHVaecciNnyYle3zIxvo9xOIznaWcHppkLpEPS0IZuZE3ze7bJlbzzGM5ektuLScaMuHJUqEVjHsG8L9KGJn02_3_O6dERGOdwnpoQD60l8cDibgdWSsQE94GfB0xTt4WN0ScRnmQvkSZg9o42FF1kq7kcmIsjpYQRblgISEjn-QoHU6p1XDnIVi--WWLFZoJzrYfhuM1I18d7os5tjQ4S8CVcmuxlWZlTwGuU-T3bDTGt9lGrCszgLtdm1hqsanZdteb7FG2TQJ5MdMW2L1la8sdGdg';
+                        m = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1MDI1MjIsImV4cCI6MTUwOTUwNjEyMiwiaXNzIjoiaHR0cHM6Ly9vcGVuaWQuY2M5OC5vcmciLCJhdWQiOiJodHRwczovL29wZW5pZC5jYzk4Lm9yZy9yZXNvdXJjZXMiLCJjbGllbnRfaWQiOiI0MmY4YWVhNi03YmRhLTQ4NTctZjk1OC0wOGQ1MTUyZjZlODUiLCJzdWIiOiI1MzM2MzMiLCJhdXRoX3RpbWUiOjE1MDk1MDI1MjEsImlkcCI6ImxvY2FsIiwianRpIjoiMjliNDU1YWJjNjkwNzJlYmJmY2JiYjY1OTFjMjdhZWUiLCJzY29wZSI6WyJvcGVuaWQiXSwiYW1yIjpbImlkc3J2Il19.NnxBKBOiWIyMkq2BKzUrVD5I4xpZVjl-rPZVavAgo8O8hbebOdOk3meWsyWHVaecciNnyYle3zIxvo9xOIznaWcHppkLpEPS0IZuZE3ze7bJlbzzGM5ektuLScaMuHJUqEVjHsG8L9KGJn02_3_O6dERGOdwnpoQD60l8cDibgdWSsQE94GfB0xTt4WN0ScRnmQvkSZg9o42FF1kq7kcmIsjpYQRblgISEjn-QoHU6p1XDnIVi--WWLFZoJzrYfhuM1I18d7os5tjQ4S8CVcmuxlWZlTwGuU-T3bDTGt9lGrCszgLtdm1hqsanZdteb7FG2TQJ5MdMW2L1la8sdGdg';
+                        p = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1MDM2NDcsImV4cCI6MTUwOTUwNzI0NywiaXNzIjoiaHR0cDovL29wZW5pZC5jYzk4Lm9yZyIsImF1ZCI6Imh0dHA6Ly9vcGVuaWQuY2M5OC5vcmcvcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoiOWExZmQyMDAtODY4Ny00NGIxLTRjMjAtMDhkNTBhOTZlNWNkIiwic3ViIjoiNTU2NTUxIiwiYXV0aF90aW1lIjoxNTA5NTAzNjQ3LCJpZHAiOiJsb2NhbCIsImp0aSI6IjExZTZjNjRjMjVmYmI3YzVlMThkM2U5OTZiM2ExYjk1Iiwic2NvcGUiOlsib3BlbmlkIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbIkNDOTgiXX0.jIfLIMB43UATkulE9RgNJ95AuO93vq8_6BwHVXwxQRCNiMrQyYS17GdHgruRtrY0jA5BK2p8XKgfZBS5ocD_rf5Aazmo8TwVI3s2mrrew34Lz50t4CrPbisPvbJ5L3jj35Tcxizy8xwXF4dmyvUxP9nSm6vqykEZx_BW37Ee0QSkScNuauVVM3x4gaNt6X6kbrPnGRQ1vnBDLjb9OvAdL_Jw6Wwp-NHgd6PCoXn-xg6DElwIUXmxoyIU39AddFMRy7zFzPOqyu2AqcDTD_SZ3uNacbk31jfJ56XdWAO5FJD5TLkIT-0-bvguMPwmZI_JFsIqIruaDlI1jT5-kXi05A';
+                        n = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1MDM3MzgsImV4cCI6MTUwOTUwNzMzOCwiaXNzIjoiaHR0cDovL29wZW5pZC5jYzk4Lm9yZyIsImF1ZCI6Imh0dHA6Ly9vcGVuaWQuY2M5OC5vcmcvcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoiOWExZmQyMDAtODY4Ny00NGIxLTRjMjAtMDhkNTBhOTZlNWNkIiwic3ViIjoiNTc4NTI1IiwiYXV0aF90aW1lIjoxNTA5NTAzNzM4LCJpZHAiOiJsb2NhbCIsImp0aSI6Ijc3NmViYTZiM2QwYjNjM2U4MmFmNjI2OWZhMmFjMTlkIiwic2NvcGUiOlsib3BlbmlkIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbIkNDOTgiXX0.BY-ITokw9BlHxQ8uWB1GXN3iVJUS3Hrs4rTUyj_mjs56NxN1Uz5YLK-l0_2UwU9QgPNm3nvQ0kT1SmVNrup-02XgLeUMtsOevP65iwyrAH3OBFMnVOwBHr0nIpGeaq-_DfcrpX135Ac0iCJKdE-40OFUlHnfozJS3sPB6DQqEwKERPclm7jULdaSCDm5J0_vmkdJMDIysYfPQ_b1BMP48zPPwdFCxZYry6sal0nsRWFsZVhSsK63yZ8w-Mck7s8JxLFf3rEfR4Te1a4mQZEsPkQcNUm4Crp8OTfpIC0e4dF3YIpWHHkxTwFiCBabSnN32cnl3ieOmc9EImRKjRVhlg';
+                        k = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1NDMxNjEsImV4cCI6MTUwOTU0Njc2MSwiaXNzIjoiaHR0cDovL29wZW5pZC5jYzk4Lm9yZyIsImF1ZCI6Imh0dHA6Ly9vcGVuaWQuY2M5OC5vcmcvcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoiOWExZmQyMDAtODY4Ny00NGIxLTRjMjAtMDhkNTBhOTZlNWNkIiwic3ViIjoiNTU2NTUxIiwiYXV0aF90aW1lIjoxNTA5NTQzMTYxLCJpZHAiOiJsb2NhbCIsImp0aSI6IjQyYWY4YjI5YzQyYmMyY2U3MzhjOGEwMWU5YjZmZTljIiwic2NvcGUiOlsib3BlbmlkIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbIkNDOTgiXX0.J-T05gxAuWgTpIop4bf1Nk5STBAOfBdfJH6_NmV5LPfECtLE2RjA-JNzMqi7WfisRRb7WurPOs_t0Y5AFlOZi8992ZT7S6e1TqMFN6ldeWiTdw8rLCu-1bZwUcVjKXDk9X2_mXHyc3Na40xAM0w4mSmdwxg0X2gv-OmglVdNyPATTmY__mZltS7vf2ZVK06QFsKcCvDaOIi9SH0Q6LFnDamIaZwnwv2YVYGyvAHv_VySZrhWq0VpGAuWNOMSwOXy48ZhfYXLqSEXASRH8xdcpK7HKwW6h9uOGohKMNUi34DQ10rr-C6zWGqNtq-FBAYOqEoaYYGWSdrmOHinfEGO8w';
+                        myHeaders.append("Authorization", token);
+                        myHeaders.append("Accept", 'application/json');
+                        myHeaders.append("Content-Type", 'application/x-www-form-urlencoded');
+                        return [4 /*yield*/, fetch(url, {
+                                method: "POST",
+                                headers: myHeaders,
+                                body: { 'token': token }
+                            })];
+                    case 1:
+                        mes = _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    SendTopic.prototype.getInitialState = function () {
+        return { value: '' };
+    };
+    SendTopic.prototype.handleChange = function (event) {
+        this.setState({ content: event.target.value });
+    };
+    SendTopic.prototype.render = function () {
+        return React.createElement("div", { style: { width: "100%", display: "flex", flexDirection: "column" } },
+            React.createElement("div", { id: "sendTopic" },
+                React.createElement("div", { id: "sendTopic-options" },
+                    React.createElement("ul", { className: "editor__menu clearfix", id: "wmd-button-row" },
+                        React.createElement("li", { title: "加粗 <strong> Ctrl+B", className: "wmd-button", id: "wmd-bold-button" },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "0px 0px" } })),
+                        React.createElement("li", { title: "斜体 <em> Ctrl+I", className: "wmd-button", id: "wmd-italic-button", style: { left: " 25px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: " -20px 0px" } })),
+                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer1" }),
+                        React.createElement("li", { title: "链接 <a> Ctrl+L", className: "wmd-button", id: "wmd-link-button", style: { left: "75px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-40px 0px" } })),
+                        React.createElement("li", { title: "引用 <blockquote> Ctrl+Q", className: "wmd-button", id: "wmd-quote-button", style: { left: " 100px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-60px 0px" } })),
+                        React.createElement("li", { title: "代码 <pre><code> Ctrl+K", className: "wmd-button", id: "wmd-code-button", style: { left: " 125px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-80px 0px" } })),
+                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer2" }),
+                        React.createElement("li", { title: "图片 <img> Ctrl+G", className: "wmd-button", id: "wmd-image-button", style: { left: "150px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-100px 0px" } })),
+                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer2" }),
+                        React.createElement("li", { title: "数字列表 <ol> Ctrl+O", className: "wmd-button", id: "wmd-olist-button", style: { left: " 200px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-120px 0px" } })),
+                        React.createElement("li", { title: "普通列表 <ul> Ctrl+U", className: "wmd-button", id: "wmd-ulist-button", style: { left: "225px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: " -140px 0px" } })),
+                        React.createElement("li", { title: "标题 <h1>/<h2> Ctrl+H", className: "wmd-button", id: "wmd-heading-button", style: { left: "250px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-160px 0px" } })),
+                        React.createElement("li", { title: "分割线 <hr> Ctrl+R", className: "wmd-button", id: "wmd-hr-button", style: { left: "275px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-180px 0px" } })),
+                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer3" }),
+                        React.createElement("li", { title: "撤销 - Ctrl+Z", className: "wmd-button", id: "wmd-undo-button", style: { left: "325px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-200px 0px" } })),
+                        React.createElement("li", { title: "重做 - Ctrl+Y", className: "wmd-button", id: "wmd-redo-button", style: { left: "350px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-220px -20px" } })),
+                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer4" }),
+                        React.createElement("li", { title: "Markdown 语法", className: "wmd-button", id: "wmd-help-button", style: { left: " 400px" } },
+                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-300px 0px" } })))),
+                React.createElement("form", null,
+                    React.createElement("div", null,
+                        React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input", value: this.state.content, onChange: this.handleChange.bind(this) })))),
+            React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "1.25rem " } },
+                React.createElement("div", { id: "post-topic-button", onClick: this.sendTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u56DE\u590D")));
+    };
+    return SendTopic;
+}(RouteComponent));
+exports.SendTopic = SendTopic;
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 // A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
@@ -2398,7 +2557,7 @@ exports.UserCenterExactProfile = UserCenterExactProfile;
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2456,7 +2615,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2493,7 +2652,7 @@ exports.UserCenterExactAvatar = UserCenterExactAvatar;
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2536,7 +2695,7 @@ exports.UserCenterMyFollowingsUser = UserCenterMyFollowingsUser;
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2583,7 +2742,7 @@ exports.MyMessageResponsebox = MyMessageResponsebox;
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2639,7 +2798,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
 var FocusPostComponent_1 = __webpack_require__(67);
-var Utility = __webpack_require__(4);
+var Utility = __webpack_require__(3);
 /**
  * 表示我关注的某个版面的主题列表
  */
@@ -2816,35 +2975,35 @@ function isBottom() {
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(17);
-module.exports = __webpack_require__(80);
+__webpack_require__(18);
+module.exports = __webpack_require__(81);
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var ReactDOM = __webpack_require__(18);
-var App_1 = __webpack_require__(19);
+var ReactDOM = __webpack_require__(19);
+var App_1 = __webpack_require__(20);
 // 显示应用程序核心内容
 ReactDOM.render(React.createElement(App_1.App, null), document.getElementById('root'));
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports) {
 
 module.exports = ReactDOM;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2862,7 +3021,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(2);
-var post_1 = __webpack_require__(20);
+var post_1 = __webpack_require__(21);
 var List_1 = __webpack_require__(9);
 var CurUserPost_1 = __webpack_require__(37);
 var BoardList_1 = __webpack_require__(38);
@@ -2875,6 +3034,7 @@ var Footer_1 = __webpack_require__(72);
 var MainPage_1 = __webpack_require__(73);
 var User_1 = __webpack_require__(74);
 var LogOn_1 = __webpack_require__(77);
+var CreateTopic_1 = __webpack_require__(80);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -2906,6 +3066,7 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { path: "/newtopics", component: AllNewPost_1.AllNewPost }),
                     React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }),
                     React.createElement(react_router_dom_1.Route, { path: "/logon", component: LogOn_1.LogOn }),
+                    React.createElement(react_router_dom_1.Route, { path: "/createtopic", component: CreateTopic_1.CreateTopic }),
                     React.createElement(Footer_1.Footer, null))));
     };
     return App;
@@ -2914,7 +3075,7 @@ exports.App = App;
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2966,11 +3127,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(4);
+var Utility = __webpack_require__(3);
 var $ = __webpack_require__(5);
 var react_router_dom_1 = __webpack_require__(2);
 var UbbContainer_1 = __webpack_require__(8);
-var SendTopic_1 = __webpack_require__(36);
+var SendTopic_1 = __webpack_require__(10);
 var moment = __webpack_require__(7);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
@@ -3074,7 +3235,7 @@ var Post = /** @class */ (function (_super) {
             topic,
             React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: Reply }),
             React.createElement(TopicPagerDown, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
-            React.createElement(SendTopic_1.SendTopic, { topicid: this.state.topicid }));
+            React.createElement(SendTopic_1.SendTopic, null));
     };
     return Post;
 }(RouteComponent));
@@ -3678,7 +3839,7 @@ exports.UserMessageBox = UserMessageBox;
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3691,20 +3852,20 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 var Ubb = __webpack_require__(1);
-var BTagHandler_1 = __webpack_require__(22);
-var ImageTagHandler_1 = __webpack_require__(23);
-var ITagHandler_1 = __webpack_require__(24);
-var SizeTagHandler_1 = __webpack_require__(25);
-var QuoteTagHandler_1 = __webpack_require__(26);
-var ColorTagHandler_1 = __webpack_require__(27);
-var URLTagHandler_1 = __webpack_require__(28);
-var UTagHandler_1 = __webpack_require__(29);
-var DelTagHandler_1 = __webpack_require__(30);
-var MP3TagHandler_1 = __webpack_require__(31);
-var CursorTagHandler_1 = __webpack_require__(32);
-var EnglishTagHandler_1 = __webpack_require__(33);
-var UserTagHandler_1 = __webpack_require__(34);
-var CodeTagHandler_1 = __webpack_require__(35);
+var BTagHandler_1 = __webpack_require__(23);
+var ImageTagHandler_1 = __webpack_require__(24);
+var ITagHandler_1 = __webpack_require__(25);
+var SizeTagHandler_1 = __webpack_require__(26);
+var QuoteTagHandler_1 = __webpack_require__(27);
+var ColorTagHandler_1 = __webpack_require__(28);
+var URLTagHandler_1 = __webpack_require__(29);
+var UTagHandler_1 = __webpack_require__(30);
+var DelTagHandler_1 = __webpack_require__(31);
+var MP3TagHandler_1 = __webpack_require__(32);
+var CursorTagHandler_1 = __webpack_require__(33);
+var EnglishTagHandler_1 = __webpack_require__(34);
+var UserTagHandler_1 = __webpack_require__(35);
+var CodeTagHandler_1 = __webpack_require__(36);
 /**
  * 创建一个具有所有功能的默认引擎。
  */
@@ -3734,7 +3895,7 @@ __export(__webpack_require__(1));
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3785,7 +3946,7 @@ exports.BTagHandler = BTagHandler;
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3841,7 +4002,7 @@ exports.ImageTagHandler = ImageTagHandler;
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3886,7 +4047,7 @@ exports.ITagHandler = ITagHandler;
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3939,7 +4100,7 @@ exports.SizeTagHandler = SizeTagHandler;
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4005,7 +4166,7 @@ exports.QuotexTagHandler = QuotexTagHandler;
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4054,7 +4215,7 @@ exports.ColorTagHandler = ColorTagHandler;
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4110,7 +4271,7 @@ exports.UrlTagHandler = UrlTagHandler;
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4163,7 +4324,7 @@ exports.UTagHandler = UTagHandler;
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4211,7 +4372,7 @@ exports.DelTagHandler = DelTagHandler;
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4265,7 +4426,7 @@ exports.MP3TagHandler = MP3TagHandler;
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4313,7 +4474,7 @@ exports.CursorTagHandler = CursorTagHandler;
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4361,7 +4522,7 @@ exports.EnglishTagHandler = EnglishTagHandler;
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4409,7 +4570,7 @@ exports.UserTagHandler = UserTagHandler;
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4454,165 +4615,6 @@ var CodeTagHandler = /** @class */ (function (_super) {
     return CodeTagHandler;
 }(Ubb.TextTagHandler));
 exports.CodeTagHandler = CodeTagHandler;
-
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var Utility = __webpack_require__(4);
-var RouteComponent = /** @class */ (function (_super) {
-    __extends(RouteComponent, _super);
-    function RouteComponent(props, context) {
-        return _super.call(this, props, context) || this;
-    }
-    Object.defineProperty(RouteComponent.prototype, "match", {
-        get: function () {
-            return this.props.match;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return RouteComponent;
-}(React.Component));
-exports.RouteComponent = RouteComponent;
-var SendTopic = /** @class */ (function (_super) {
-    __extends(SendTopic, _super);
-    function SendTopic(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = ({ content: '' });
-        return _this;
-    }
-    SendTopic.prototype.sendTopic = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var url, token, t, myHeaders, c, m, p, n, k, mes;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        url = "http://openid.cc98.org";
-                        token = Utility.getLocalStorage("accessToken");
-                        t = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1MDMzMDMsImV4cCI6MTUwOTUwNjkwMywiaXNzIjoiaHR0cDovL29wZW5pZC5jYzk4Lm9yZyIsImF1ZCI6Imh0dHA6Ly9vcGVuaWQuY2M5OC5vcmcvcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoiOWExZmQyMDAtODY4Ny00NGIxLTRjMjAtMDhkNTBhOTZlNWNkIiwic3ViIjoiNTU2NTUxIiwiYXV0aF90aW1lIjoxNTA5NTAzMzAzLCJpZHAiOiJsb2NhbCIsImp0aSI6ImU1YWZmNWQwM2QyZjk3Njc2NWYyYTQwMjk2YWVmOTM3Iiwic2NvcGUiOlsib3BlbmlkIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbIkNDOTgiXX0.UgaVLvuUsdvnO7zp9YUo9BDs6_XYsC9noonNXOb2up6kKigWrMUZomq1tS8Xq6Gh52nHdSgiTtVVGZ9V4ZCAEkn0RCnpkwYZa7zDP3tuKqJL7gvnfsuDCsdvl59kXT9UUdtdWO7g8gC5ZFTmYXuQVAIayfSvxu4KLCzRZM8M7GmCejfsLGsEf-H6yJr-Pq2dMAoRtmetubmuc7W6PcY4l3UZqeuWh2f5yMuoljLc4MiGT2Cs4uqn6xOwqzEKA_lq5vljlSiM24jrbnoJDkdccSTolQYcRpohoTZwAP0wDraoDJEsmPhra8hPD9lmpC4XgykNSqdWSq8gD1ajVr6-XA';
-                        myHeaders = new Headers();
-                        c = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1MDI1MjIsImV4cCI6MTUwOTUwNjEyMiwiaXNzIjoiaHR0cHM6Ly9vcGVuaWQuY2M5OC5vcmciLCJhdWQiOiJodHRwczovL29wZW5pZC5jYzk4Lm9yZy9yZXNvdXJjZXMiLCJjbGllbnRfaWQiOiI0MmY4YWVhNi03YmRhLTQ4NTctZjk1OC0wOGQ1MTUyZjZlODUiLCJzdWIiOiI1MzM2MzMiLCJhdXRoX3RpbWUiOjE1MDk1MDI1MjEsImlkcCI6ImxvY2FsIiwianRpIjoiMjliNDU1YWJjNjkwNzJlYmJmY2JiYjY1OTFjMjdhZWUiLCJzY29wZSI6WyJvcGVuaWQiXSwiYW1yIjpbImlkc3J2Il19.NnxBKBOiWIyMkq2BKzUrVD5I4xpZVjl-rPZVavAgo8O8hbebOdOk3meWsyWHVaecciNnyYle3zIxvo9xOIznaWcHppkLpEPS0IZuZE3ze7bJlbzzGM5ektuLScaMuHJUqEVjHsG8L9KGJn02_3_O6dERGOdwnpoQD60l8cDibgdWSsQE94GfB0xTt4WN0ScRnmQvkSZg9o42FF1kq7kcmIsjpYQRblgISEjn-QoHU6p1XDnIVi--WWLFZoJzrYfhuM1I18d7os5tjQ4S8CVcmuxlWZlTwGuU-T3bDTGt9lGrCszgLtdm1hqsanZdteb7FG2TQJ5MdMW2L1la8sdGdg';
-                        m = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1MDI1MjIsImV4cCI6MTUwOTUwNjEyMiwiaXNzIjoiaHR0cHM6Ly9vcGVuaWQuY2M5OC5vcmciLCJhdWQiOiJodHRwczovL29wZW5pZC5jYzk4Lm9yZy9yZXNvdXJjZXMiLCJjbGllbnRfaWQiOiI0MmY4YWVhNi03YmRhLTQ4NTctZjk1OC0wOGQ1MTUyZjZlODUiLCJzdWIiOiI1MzM2MzMiLCJhdXRoX3RpbWUiOjE1MDk1MDI1MjEsImlkcCI6ImxvY2FsIiwianRpIjoiMjliNDU1YWJjNjkwNzJlYmJmY2JiYjY1OTFjMjdhZWUiLCJzY29wZSI6WyJvcGVuaWQiXSwiYW1yIjpbImlkc3J2Il19.NnxBKBOiWIyMkq2BKzUrVD5I4xpZVjl-rPZVavAgo8O8hbebOdOk3meWsyWHVaecciNnyYle3zIxvo9xOIznaWcHppkLpEPS0IZuZE3ze7bJlbzzGM5ektuLScaMuHJUqEVjHsG8L9KGJn02_3_O6dERGOdwnpoQD60l8cDibgdWSsQE94GfB0xTt4WN0ScRnmQvkSZg9o42FF1kq7kcmIsjpYQRblgISEjn-QoHU6p1XDnIVi--WWLFZoJzrYfhuM1I18d7os5tjQ4S8CVcmuxlWZlTwGuU-T3bDTGt9lGrCszgLtdm1hqsanZdteb7FG2TQJ5MdMW2L1la8sdGdg';
-                        p = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1MDM2NDcsImV4cCI6MTUwOTUwNzI0NywiaXNzIjoiaHR0cDovL29wZW5pZC5jYzk4Lm9yZyIsImF1ZCI6Imh0dHA6Ly9vcGVuaWQuY2M5OC5vcmcvcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoiOWExZmQyMDAtODY4Ny00NGIxLTRjMjAtMDhkNTBhOTZlNWNkIiwic3ViIjoiNTU2NTUxIiwiYXV0aF90aW1lIjoxNTA5NTAzNjQ3LCJpZHAiOiJsb2NhbCIsImp0aSI6IjExZTZjNjRjMjVmYmI3YzVlMThkM2U5OTZiM2ExYjk1Iiwic2NvcGUiOlsib3BlbmlkIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbIkNDOTgiXX0.jIfLIMB43UATkulE9RgNJ95AuO93vq8_6BwHVXwxQRCNiMrQyYS17GdHgruRtrY0jA5BK2p8XKgfZBS5ocD_rf5Aazmo8TwVI3s2mrrew34Lz50t4CrPbisPvbJ5L3jj35Tcxizy8xwXF4dmyvUxP9nSm6vqykEZx_BW37Ee0QSkScNuauVVM3x4gaNt6X6kbrPnGRQ1vnBDLjb9OvAdL_Jw6Wwp-NHgd6PCoXn-xg6DElwIUXmxoyIU39AddFMRy7zFzPOqyu2AqcDTD_SZ3uNacbk31jfJ56XdWAO5FJD5TLkIT-0-bvguMPwmZI_JFsIqIruaDlI1jT5-kXi05A';
-                        n = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1MDM3MzgsImV4cCI6MTUwOTUwNzMzOCwiaXNzIjoiaHR0cDovL29wZW5pZC5jYzk4Lm9yZyIsImF1ZCI6Imh0dHA6Ly9vcGVuaWQuY2M5OC5vcmcvcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoiOWExZmQyMDAtODY4Ny00NGIxLTRjMjAtMDhkNTBhOTZlNWNkIiwic3ViIjoiNTc4NTI1IiwiYXV0aF90aW1lIjoxNTA5NTAzNzM4LCJpZHAiOiJsb2NhbCIsImp0aSI6Ijc3NmViYTZiM2QwYjNjM2U4MmFmNjI2OWZhMmFjMTlkIiwic2NvcGUiOlsib3BlbmlkIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbIkNDOTgiXX0.BY-ITokw9BlHxQ8uWB1GXN3iVJUS3Hrs4rTUyj_mjs56NxN1Uz5YLK-l0_2UwU9QgPNm3nvQ0kT1SmVNrup-02XgLeUMtsOevP65iwyrAH3OBFMnVOwBHr0nIpGeaq-_DfcrpX135Ac0iCJKdE-40OFUlHnfozJS3sPB6DQqEwKERPclm7jULdaSCDm5J0_vmkdJMDIysYfPQ_b1BMP48zPPwdFCxZYry6sal0nsRWFsZVhSsK63yZ8w-Mck7s8JxLFf3rEfR4Te1a4mQZEsPkQcNUm4Crp8OTfpIC0e4dF3YIpWHHkxTwFiCBabSnN32cnl3ieOmc9EImRKjRVhlg';
-                        k = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU0MTJEREQ3RTk0NTdBQzk0RUJBM0Q0QkVGNTAyNTU1MUU3RTEyQkIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1QkxkMS1sRmVzbE91ajFMNzFBbFZSNS1FcnMifQ.eyJuYmYiOjE1MDk1NDMxNjEsImV4cCI6MTUwOTU0Njc2MSwiaXNzIjoiaHR0cDovL29wZW5pZC5jYzk4Lm9yZyIsImF1ZCI6Imh0dHA6Ly9vcGVuaWQuY2M5OC5vcmcvcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoiOWExZmQyMDAtODY4Ny00NGIxLTRjMjAtMDhkNTBhOTZlNWNkIiwic3ViIjoiNTU2NTUxIiwiYXV0aF90aW1lIjoxNTA5NTQzMTYxLCJpZHAiOiJsb2NhbCIsImp0aSI6IjQyYWY4YjI5YzQyYmMyY2U3MzhjOGEwMWU5YjZmZTljIiwic2NvcGUiOlsib3BlbmlkIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbIkNDOTgiXX0.J-T05gxAuWgTpIop4bf1Nk5STBAOfBdfJH6_NmV5LPfECtLE2RjA-JNzMqi7WfisRRb7WurPOs_t0Y5AFlOZi8992ZT7S6e1TqMFN6ldeWiTdw8rLCu-1bZwUcVjKXDk9X2_mXHyc3Na40xAM0w4mSmdwxg0X2gv-OmglVdNyPATTmY__mZltS7vf2ZVK06QFsKcCvDaOIi9SH0Q6LFnDamIaZwnwv2YVYGyvAHv_VySZrhWq0VpGAuWNOMSwOXy48ZhfYXLqSEXASRH8xdcpK7HKwW6h9uOGohKMNUi34DQ10rr-C6zWGqNtq-FBAYOqEoaYYGWSdrmOHinfEGO8w';
-                        myHeaders.append("Authorization", k);
-                        myHeaders.append("Accept", 'application/json');
-                        myHeaders.append("Content-Type", 'application/x-www-form-urlencoded');
-                        return [4 /*yield*/, fetch(url, {
-                                method: "POST",
-                                headers: myHeaders,
-                                body: { 'token': k }
-                            })];
-                    case 1:
-                        mes = _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    SendTopic.prototype.getInitialState = function () {
-        return { value: '' };
-    };
-    SendTopic.prototype.handleChange = function (event) {
-        this.setState({ content: event.target.value });
-    };
-    SendTopic.prototype.render = function () {
-        return React.createElement("div", { style: { width: "100%", display: "flex", flexDirection: "column" } },
-            React.createElement("div", { id: "sendTopic" },
-                React.createElement("div", { id: "sendTopic-options" },
-                    React.createElement("ul", { className: "editor__menu clearfix", id: "wmd-button-row" },
-                        React.createElement("li", { title: "加粗 <strong> Ctrl+B", className: "wmd-button", id: "wmd-bold-button" },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "0px 0px" } })),
-                        React.createElement("li", { title: "斜体 <em> Ctrl+I", className: "wmd-button", id: "wmd-italic-button", style: { left: " 25px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: " -20px 0px" } })),
-                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer1" }),
-                        React.createElement("li", { title: "链接 <a> Ctrl+L", className: "wmd-button", id: "wmd-link-button", style: { left: "75px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-40px 0px" } })),
-                        React.createElement("li", { title: "引用 <blockquote> Ctrl+Q", className: "wmd-button", id: "wmd-quote-button", style: { left: " 100px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-60px 0px" } })),
-                        React.createElement("li", { title: "代码 <pre><code> Ctrl+K", className: "wmd-button", id: "wmd-code-button", style: { left: " 125px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-80px 0px" } })),
-                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer2" }),
-                        React.createElement("li", { title: "图片 <img> Ctrl+G", className: "wmd-button", id: "wmd-image-button", style: { left: "150px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-100px 0px" } })),
-                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer2" }),
-                        React.createElement("li", { title: "数字列表 <ol> Ctrl+O", className: "wmd-button", id: "wmd-olist-button", style: { left: " 200px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-120px 0px" } })),
-                        React.createElement("li", { title: "普通列表 <ul> Ctrl+U", className: "wmd-button", id: "wmd-ulist-button", style: { left: "225px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: " -140px 0px" } })),
-                        React.createElement("li", { title: "标题 <h1>/<h2> Ctrl+H", className: "wmd-button", id: "wmd-heading-button", style: { left: "250px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-160px 0px" } })),
-                        React.createElement("li", { title: "分割线 <hr> Ctrl+R", className: "wmd-button", id: "wmd-hr-button", style: { left: "275px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-180px 0px" } })),
-                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer3" }),
-                        React.createElement("li", { title: "撤销 - Ctrl+Z", className: "wmd-button", id: "wmd-undo-button", style: { left: "325px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-200px 0px" } })),
-                        React.createElement("li", { title: "重做 - Ctrl+Y", className: "wmd-button", id: "wmd-redo-button", style: { left: "350px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-220px -20px" } })),
-                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer4" }),
-                        React.createElement("li", { title: "Markdown 语法", className: "wmd-button", id: "wmd-help-button", style: { left: " 400px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-300px 0px" } })))),
-                React.createElement("form", null,
-                    React.createElement("div", null,
-                        React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input", value: this.state.content, onChange: this.handleChange.bind(this) })))),
-            React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "1.25rem " } },
-                React.createElement("div", { id: "post-topic-button", onClick: this.sendTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u56DE\u590D")));
-    };
-    return SendTopic;
-}(RouteComponent));
-exports.SendTopic = SendTopic;
 
 
 /***/ }),
@@ -4668,7 +4670,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(4);
+var Utility = __webpack_require__(3);
 var react_router_dom_1 = __webpack_require__(2);
 var moment = __webpack_require__(7);
 var RouteComponent = /** @class */ (function (_super) {
@@ -5281,8 +5283,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var AppState_1 = __webpack_require__(3);
-var Utility = __webpack_require__(4);
+var AppState_1 = __webpack_require__(4);
+var Utility = __webpack_require__(3);
 //链接到的地址是  /list/boardid
 var BoardList = /** @class */ (function (_super) {
     __extends(BoardList, _super);
@@ -5709,9 +5711,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactProfile_1 = __webpack_require__(10);
-var UserCenterExactActivities_1 = __webpack_require__(11);
-var UserCenterExactAvatar_1 = __webpack_require__(12);
+var UserCenterExactProfile_1 = __webpack_require__(11);
+var UserCenterExactActivities_1 = __webpack_require__(12);
+var UserCenterExactAvatar_1 = __webpack_require__(13);
 /**
  * 用户中心主页
  */
@@ -5823,7 +5825,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var UserCenterExactActivitiesPost_1 = __webpack_require__(6);
-var AppState_1 = __webpack_require__(3);
+var AppState_1 = __webpack_require__(4);
 //用户中心主页帖子动态组件
 var UserCenterExactActivitiesPosts = /** @class */ (function (_super) {
     __extends(UserCenterExactActivitiesPosts, _super);
@@ -5907,7 +5909,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var UserCenterExactActivitiesPost_1 = __webpack_require__(6);
-var AppState_1 = __webpack_require__(3);
+var AppState_1 = __webpack_require__(4);
 //用户中心主页最近回复组件
 var UserCenterExactActivitiesReplies = /** @class */ (function (_super) {
     __extends(UserCenterExactActivitiesReplies, _super);
@@ -5960,8 +5962,8 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var AppState_1 = __webpack_require__(3);
-var UserCenterMyFollowingsUser_1 = __webpack_require__(13);
+var AppState_1 = __webpack_require__(4);
+var UserCenterMyFollowingsUser_1 = __webpack_require__(14);
 //用户中心我的关注组件
 var UserCenterMyFollowings = /** @class */ (function (_super) {
     __extends(UserCenterMyFollowings, _super);
@@ -6014,8 +6016,8 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var AppState_1 = __webpack_require__(3);
-var UserCenterMyFollowingsUser_1 = __webpack_require__(13);
+var AppState_1 = __webpack_require__(4);
+var UserCenterMyFollowingsUser_1 = __webpack_require__(14);
 //用户中心我的粉丝组件
 var UserCenterMyFans = /** @class */ (function (_super) {
     __extends(UserCenterMyFans, _super);
@@ -6119,7 +6121,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var UserCenterExactActivitiesPost_1 = __webpack_require__(6);
-var AppState_1 = __webpack_require__(3);
+var AppState_1 = __webpack_require__(4);
 var UserCenterMyPostsExact = /** @class */ (function (_super) {
     __extends(UserCenterMyPostsExact, _super);
     function UserCenterMyPostsExact(props) {
@@ -6172,7 +6174,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var UserCenterExactActivitiesPost_1 = __webpack_require__(6);
-var AppState_1 = __webpack_require__(3);
+var AppState_1 = __webpack_require__(4);
 //用户中心主页最近回复组件
 var UserCenterMyPostsReplies = /** @class */ (function (_super) {
     __extends(UserCenterMyPostsReplies, _super);
@@ -6279,7 +6281,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var UserCenterExactActivitiesPost_1 = __webpack_require__(6);
-var AppState_1 = __webpack_require__(3);
+var AppState_1 = __webpack_require__(4);
 var UserCenterMyFavoritesPosts = /** @class */ (function (_super) {
     __extends(UserCenterMyFavoritesPosts, _super);
     function UserCenterMyFavoritesPosts(props) {
@@ -7192,7 +7194,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MyMessageResponsebox_1 = __webpack_require__(14);
+var MyMessageResponsebox_1 = __webpack_require__(15);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -7351,7 +7353,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MyMessageResponsebox_1 = __webpack_require__(14);
+var MyMessageResponsebox_1 = __webpack_require__(15);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -7675,7 +7677,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusPostAreaComponent_1 = __webpack_require__(15);
+var FocusPostAreaComponent_1 = __webpack_require__(16);
 /**
  * 网站的主页面对象。
  */
@@ -7784,7 +7786,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
 var FocusBoardAreaComponent_1 = __webpack_require__(69);
-var FocusPostAreaComponent_1 = __webpack_require__(15);
+var FocusPostAreaComponent_1 = __webpack_require__(16);
 var MyFocusBoard = /** @class */ (function (_super) {
     __extends(MyFocusBoard, _super);
     function MyFocusBoard() {
@@ -7947,7 +7949,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(4);
+var Utility = __webpack_require__(3);
 var $ = __webpack_require__(5);
 var DropDown = /** @class */ (function (_super) {
     __extends(DropDown, _super);
@@ -7988,33 +7990,31 @@ var DropDown = /** @class */ (function (_super) {
         location = window.location; //刷新当前页面
     };
     DropDown.prototype.render = function () {
-        $(document).ready(function () {
-            var userInfo = $('.userInfo').eq(0);
-            var dropDownSub = $('.dropDownSub').eq(0);
-            var dropDownLi = dropDownSub.find('li');
-            userInfo.hover(function () {
-                dropDownSub.slideDown("fast");
-            }, function () {
-                dropDownSub.css('display', 'none');
-            });
-            dropDownSub.hover(function () {
-                dropDownSub.css('display', 'block');
-            }, function () {
-                dropDownSub.slideUp("fast");
-            });
-            /*在一个对象上触发某类事件（比如单击onclick事件），如果此对象定义了此事件的处理程序，那么此事件就会调用这个处理程序，
-            如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
-            或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
-            dropDownLi.mouseover(function () {
-                this.className = 'hover';
-            });
-            dropDownLi.mouseout(function () {
-                this.className = '';
-            });
-        });
-        if (this.state.userName === "adddna")
-            alert("guna!");
         if (Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName")) {
+            $(document).ready(function () {
+                var userInfo = $('.userInfo').eq(0);
+                var dropDownSub = $('.dropDownSub').eq(0);
+                var dropDownLi = dropDownSub.find('li');
+                userInfo.hover(function () {
+                    dropDownSub.slideDown("fast");
+                }, function () {
+                    dropDownSub.css('display', 'none');
+                });
+                dropDownSub.hover(function () {
+                    dropDownSub.css('display', 'block');
+                }, function () {
+                    dropDownSub.slideUp("fast");
+                });
+                /*在一个对象上触发某类事件（比如单击onclick事件），如果此对象定义了此事件的处理程序，那么此事件就会调用这个处理程序，
+                如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
+                或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
+                dropDownLi.mouseover(function () {
+                    this.className = 'hover';
+                });
+                dropDownLi.mouseout(function () {
+                    this.className = '';
+                });
+            });
             return React.createElement("div", { id: "dropdown" },
                 React.createElement("div", { className: "box" },
                     React.createElement("div", { className: "userInfo" },
@@ -8276,6 +8276,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var $ = __webpack_require__(5);
+var Utility = __webpack_require__(3);
 /**
  * 推荐阅读组件
  **/
@@ -8486,6 +8487,76 @@ var Shixijianzhi = /** @class */ (function (_super) {
     return Shixijianzhi;
 }(React.Component));
 exports.Shixijianzhi = Shixijianzhi;
+/*
+ 测试用组件~
+ */
+var Test = /** @class */ (function (_super) {
+    __extends(Test, _super);
+    function Test() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Test.prototype.logon = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var url, requestBody, response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        url = "http://openid.cc98.org/connect/authorize";
+                        requestBody = {
+                            'client_id': '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
+                            'redirect_uri': 'http://localhost:53004',
+                            'response_type': 'token',
+                            'scope': 'cc98-api openid',
+                        };
+                        return [4 /*yield*/, fetch(url, {
+                                method: "POST",
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded',
+                                },
+                                body: $.param(requestBody)
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 2: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    Test.prototype.test = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var url, token, myHeaders, response, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        url = "http://apitest.niconi.cc/topic/test";
+                        token = Utility.getLocalStorage("accessToken");
+                        console.log(token);
+                        myHeaders = new Headers();
+                        myHeaders.append("Content-Type", 'application/x-www-form-urlencoded');
+                        myHeaders.append("Authorization", token);
+                        return [4 /*yield*/, fetch(url, {
+                                method: "GET",
+                                headers: myHeaders,
+                                body: { 'token': token }
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 2:
+                        data = _a.sent();
+                        console.log(data);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Test.prototype.render = function () {
+        return React.createElement("div", { onClick: this.test }, "\u8FD9\u91CC\u662F\u840C\u840C\u7684adddna\u6D4B\u8BD5\u7684\u5730\u65B9~");
+    };
+    return Test;
+}(React.Component));
+exports.Test = Test;
 /**
  * 网站的主页面对象。
  */
@@ -8571,7 +8642,8 @@ var MainPage = /** @class */ (function (_super) {
                     React.createElement("div", { className: "list1" },
                         React.createElement("div", { className: "blueBar2" },
                             React.createElement("div", { className: "listName" }, "\u5B66\u672F\u4FE1\u606F"),
-                            React.createElement("div", { className: "more" }, "\u66F4\u591A"))),
+                            React.createElement("div", { className: "more" }, "\u66F4\u591A")),
+                        React.createElement(Test, null)),
                     React.createElement("div", { className: "list2" },
                         React.createElement("div", { className: "blueBar2" },
                             React.createElement("div", { className: "listName" }, "\u6700\u70ED\u56DE\u590D"),
@@ -8811,9 +8883,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterExactProfile_1 = __webpack_require__(10);
-var UserCenterExactActivities_1 = __webpack_require__(11);
-var UserCenterExactAvatar_1 = __webpack_require__(12);
+var UserCenterExactProfile_1 = __webpack_require__(11);
+var UserCenterExactActivities_1 = __webpack_require__(12);
+var UserCenterExactAvatar_1 = __webpack_require__(13);
 var UserRouter = /** @class */ (function (_super) {
     __extends(UserRouter, _super);
     function UserRouter() {
@@ -8979,7 +9051,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var $ = __webpack_require__(5);
-var Utility = __webpack_require__(4);
+var Utility = __webpack_require__(3);
 var LogOnExact = /** @class */ (function (_super) {
     __extends(LogOnExact, _super);
     function LogOnExact(props) {
@@ -9042,13 +9114,14 @@ var LogOnExact = /** @class */ (function (_super) {
                             loginMessage: '登陆中',
                             isLogining: true
                         });
-                        url = 'http://openid.cc98.org/connect/token';
+                        url = 'https://openid.cc98.org/connect/token';
                         requestBody = {
                             'client_id': '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
                             'client_secret': '8b53f727-08e2-4509-8857-e34bf92b27f2',
                             'grant_type': 'password',
                             'username': this.state.loginName,
-                            'password': this.state.loginPassword
+                            'password': this.state.loginPassword,
+                            'scope': 'cc98-api openid',
                         };
                         return [4 /*yield*/, fetch(url, {
                                 method: "POST",
@@ -9079,10 +9152,6 @@ var LogOnExact = /** @class */ (function (_super) {
                             loginMessage: '登陆成功 正在返回首页',
                             isLogining: false
                         });
-                        //跳转至个人中心页
-                        setTimeout(function () {
-                            location.pathname = "/";
-                        }, 2000);
                         return [2 /*return*/];
                 }
             });
@@ -9183,6 +9252,62 @@ exports.LogOff = LogOff;
 
 /***/ }),
 /* 80 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var SendTopic_1 = __webpack_require__(10);
+var CreateTopic = /** @class */ (function (_super) {
+    __extends(CreateTopic, _super);
+    function CreateTopic() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    CreateTopic.prototype.render = function () {
+        return React.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'center' } },
+            React.createElement("div", { className: "createTopic" },
+                React.createElement("div", { className: "createTopicBoardName" }, " \u7248\u9762\u540D\u79F0 > \u53D1\u8868\u4E3B\u9898"),
+                React.createElement("div", { className: "createTopicTitle" },
+                    React.createElement("div", { className: "createTopicListName" }, "\u4E3B\u9898\u6807\u9898"),
+                    React.createElement("div", { className: "createTopicListName" }, "\u6807\u7B7E1\u25BC"),
+                    React.createElement("div", { className: "createTopicListName" }, "\u6807\u7B7E2\u25BC"),
+                    React.createElement("input", { type: "text", placeholder: "请输入主题的标题" })),
+                React.createElement("div", { className: "createTopicType" },
+                    React.createElement("div", { className: "createTopicListName" }, "\u53D1\u5E16\u7C7B\u578B"),
+                    React.createElement("input", { type: "radio", checked: true, name: "type", value: "normal" }),
+                    " \u666E\u901A",
+                    React.createElement("input", { type: "radio", name: "type", value: "academic" }),
+                    " \u5B66\u672F\u4FE1\u606F",
+                    React.createElement("div", { style: { color: 'rgb(255,0,0)' } }, "\uFF08\u6D3B\u52A8\u5E16\u548C\u5B66\u672F\u8D34\u8BF7\u9009\u62E9\u6B63\u786E\u7684\u53D1\u5E16\u7C7B\u578B\uFF09")),
+                React.createElement("div", { className: "createTopicOption" },
+                    React.createElement("div", { className: "createTopicListName" }, "\u9009\u9879"),
+                    React.createElement("input", { type: "radio", checked: true, name: "option", value: "all" }),
+                    "\u56DE\u590D\u6240\u6709\u4EBA\u53EF\u89C1",
+                    React.createElement("input", { type: "radio", name: "option", value: "host" }),
+                    "\u56DE\u590D\u4EC5\u697C\u4E3B\u53EF\u89C1",
+                    React.createElement("input", { type: "radio", name: "option", value: "special" }),
+                    "\u56DE\u590D\u4EC5\u7279\u5B9A\u7528\u6237\u53EF\u89C1"),
+                React.createElement(SendTopic_1.SendTopic, null),
+                React.createElement("div", { className: "createTopicContent" }, "\u8FD9\u91CC\u4E0E\u5FEB\u901F\u56DE\u590D\u76F8\u540C")));
+    };
+    return CreateTopic;
+}(React.Component));
+exports.CreateTopic = CreateTopic;
+
+
+/***/ }),
+/* 81 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -17,7 +17,7 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
         return (this.props as any).match;
     }
 }
-export class SendTopic extends RouteComponent<{ topicid }, { content: string }, {}>{
+export class SendTopic extends RouteComponent<{}, { content: string }, {}>{
     constructor(props) {
         super(props);
         this.state = ({ content: '' });
@@ -39,7 +39,7 @@ export class SendTopic extends RouteComponent<{ topicid }, { content: string }, 
         let mes = await fetch(url, {
             method: "POST",
             headers: myHeaders,
-            body: {'token':token}
+            body: { 'token': token }
         });
     }
     getInitialState() {
