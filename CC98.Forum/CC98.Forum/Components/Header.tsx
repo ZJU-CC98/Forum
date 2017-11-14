@@ -57,7 +57,7 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
                 this.className = '';
             });
         });
-        if (this.state.userName === "adddna") alert("guna!");
+     
         if (Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName")) {
             return <div id="dropdown">
                 <div className="box">

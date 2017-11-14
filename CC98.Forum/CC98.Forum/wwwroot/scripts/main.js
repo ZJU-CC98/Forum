@@ -8482,8 +8482,6 @@ var DropDown = /** @class */ (function (_super) {
                 this.className = '';
             });
         });
-        if (this.state.userName === "adddna")
-            alert("guna!");
         if (Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName")) {
             return React.createElement("div", { id: "dropdown" },
                 React.createElement("div", { className: "box" },
