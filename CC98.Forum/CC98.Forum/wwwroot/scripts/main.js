@@ -436,7 +436,7 @@ var UbbTagSegment = /** @class */ (function (_super) {
      * 获取标签的全部文字内容。
      */
     UbbTagSegment.prototype.getFullText = function () {
-        return "[" + this._tagData.orignalString + "]" + this.getContentText() + "[/" + this._tagData.tagName + "]";
+        return this.tagData.startTagString + this.getContentText() + this.tagData.endTagString;
     };
     return UbbTagSegment;
 }(UbbSegment));
@@ -621,6 +621,28 @@ var UbbTagData = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(UbbTagData.prototype, "startTagString", {
+        /**
+         * 获取标签的开始标记字符串。
+         * @returns {string} 标签的开始标记字符串。
+         */
+        get: function () {
+            return "[" + this.orignalString + "]";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(UbbTagData.prototype, "endTagString", {
+        /**
+         * 获取标签的结束标记字符串。
+         * @returns {string} 标签的结束标记字符串。
+         */
+        get: function () {
+            return "[/" + this.tagName + "]";
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(UbbTagData.prototype, "mainValue", {
         /**
          * 获取标签的主要值，也即紧跟在标签名称和等号后的值。
@@ -715,9 +737,9 @@ var UbbTagHandler = /** @class */ (function () {
      */
     UbbTagHandler.renderTagAsString = function (tagData, content) {
         return [
-            "[" + tagData.orignalString + "]",
+            tagData.startTagString,
             content,
-            "[/" + tagData.tagName + "]"
+            tagData.endTagString
         ];
     };
     return UbbTagHandler;
@@ -762,42 +784,87 @@ exports.RecursiveTagHandler = RecursiveTagHandler;
 var UbbHandlerList = /** @class */ (function () {
     function UbbHandlerList() {
         /**
-         * 内部的标签处理器列表。
+         * 命名的内部标签处理器列表。
          */
-        this._tagHandlerList = {};
+        this._namedTagHandlerList = {};
+        /**
+         * 未命名的内部标签处理程序列表。
+         */
+        this._unnamedTagHanlderList = [];
     }
     /**
      * 获取给定标签名称的处理程序。
-     * @param tagName 标签名称。
+     * @param supportedTagNames 标签名称。
      * @returns {UbbTagHandler} 标签处理程序。
      */
     UbbHandlerList.prototype.getHandler = function (tagName) {
-        return this._tagHandlerList[tagName] || null;
+        // 首先寻找命名的标签处理程序
+        var namedTagHandler = this._namedTagHandlerList[tagName];
+        // 找到
+        if (namedTagHandler) {
+            return namedTagHandler;
+        }
+        // 寻找未命名的标签处理程序
+        for (var _i = 0, _a = this._unnamedTagHanlderList; _i < _a.length; _i++) {
+            var handler = _a[_i];
+            if (handler.supportedTagNames.test(tagName)) {
+                return handler;
+            }
+        }
+        // 找不到任何标签处理程序
+        return null;
     };
     /**
-     * 注册解析器标签的核心函数。
+     * 注册一个给定的标签处理程序。
+     * @param tagHandlerClass 处理程序对象的类型。
+     */
+    UbbHandlerList.prototype.register = function (tagHandlerClass) {
+        // ReSharper disable once InconsistentNaming
+        this.registerInstance(new tagHandlerClass());
+    };
+    /**
+     * 注册一个给定的处理程序实例。
      * @param tagHandler 要注册的标签处理器。
      */
-    UbbHandlerList.prototype.register = function (tagHandler) {
-        if (!tagHandler || !tagHandler.tagName) {
+    UbbHandlerList.prototype.registerInstance = function (tagHandler) {
+        if (!tagHandler || !tagHandler.supportedTagNames) {
             throw new Error('参数 tagHandler 无效，或者未提供正确的标签名称。');
         }
-        // 检查是否已经注册
-        if (tagHandler.tagName in this._tagHandlerList) {
-            throw new Error("\u6807\u7B7E " + tagHandler.tagName + " \u5DF2\u7ECF\u88AB\u6CE8\u518C\u3002");
+        if (typeof tagHandler.supportedTagNames === 'string') {
+            this.registerNamedCore([tagHandler.supportedTagNames], tagHandler);
         }
-        // 添加新项目
-        this._tagHandlerList[tagHandler.tagName] = tagHandler;
+        else if (tagHandler.supportedTagNames instanceof Array) {
+            this.registerNamedCore(tagHandler.supportedTagNames, tagHandler);
+        }
+        else {
+            this.registerUnnamedCore(tagHandler);
+        }
+    };
+    /**
+     * 注册命名处理程序的核心方法。
+     * @param tagNames 处理程序关联的一个或多个标签名。
+     * @param tagHandler 处理程序对象。
+     */
+    UbbHandlerList.prototype.registerNamedCore = function (tagNames, tagHandler) {
+        for (var _i = 0, tagNames_1 = tagNames; _i < tagNames_1.length; _i++) {
+            var tagName = tagNames_1[_i];
+            if (tagName in this._namedTagHandlerList) {
+                console.error('标签 %s 的处理程序已经被注册。', tagName);
+            }
+            else {
+                this._namedTagHandlerList[tagName] = tagHandler;
+            }
+        }
+    };
+    /**
+     * 注册未命名处理程序的核心方法。
+     * @param tagHandler 处理程序对象。
+     */
+    UbbHandlerList.prototype.registerUnnamedCore = function (tagHandler) {
+        this._unnamedTagHanlderList.push(tagHandler);
     };
     return UbbHandlerList;
 }());
-/**
- * 注册所有处理程序。
- */
-function registerAllHandlers() {
-}
-// 注册所有预置方法。
-registerAllHandlers();
 /**
  * 提供处理 UBB 程序的核心方法。
  */
@@ -836,7 +903,7 @@ var UbbCodeEngine = /** @class */ (function () {
     ;
     /**
      * 获取给定标签名称的处理程序。
-     * @param tagName 给定的标签名称。
+     * @param supportedTagNames 给定的标签名称。
      * @returns {UbbTagHandler} 给定标签名称的处理程序。
      */
     UbbCodeEngine.prototype.getHandler = function (tagName) {
@@ -854,7 +921,7 @@ var UbbCodeEngine = /** @class */ (function () {
     };
     /**
      * 尝试找到关闭标记对应的开始标记，并关闭该标记。
-     * @param tagName 标记名称。
+     * @param supportedTagNames 标记名称。
      * @param parent 该标记的第一个上级。
      * @returns {UbbTagSegment} 新的上级标签。
      */
@@ -2540,8 +2607,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterExactActivitiesPosts_1 = __webpack_require__(43);
-var UserCenterExactActivitiesReplies_1 = __webpack_require__(44);
+var UserCenterExactActivitiesPosts_1 = __webpack_require__(44);
+var UserCenterExactActivitiesReplies_1 = __webpack_require__(45);
 /**
  * 用户中心主页近期动态组件
  */
@@ -2759,7 +2826,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusPostComponent_1 = __webpack_require__(67);
+var FocusPostComponent_1 = __webpack_require__(68);
 var Utility = __webpack_require__(3);
 /**
  * 表示我关注的某个版面的主题列表
@@ -2941,7 +3008,7 @@ function isBottom() {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(17);
-module.exports = __webpack_require__(81);
+module.exports = __webpack_require__(82);
 
 
 /***/ }),
@@ -2985,18 +3052,18 @@ var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(2);
 var post_1 = __webpack_require__(20);
 var List_1 = __webpack_require__(9);
-var CurUserPost_1 = __webpack_require__(37);
-var BoardList_1 = __webpack_require__(38);
-var UserCenter_1 = __webpack_require__(39);
-var MyMessage_1 = __webpack_require__(56);
-var AllNewPost_1 = __webpack_require__(66);
-var MyFocusBoard_1 = __webpack_require__(68);
-var Header_1 = __webpack_require__(71);
-var Footer_1 = __webpack_require__(72);
-var MainPage_1 = __webpack_require__(73);
-var User_1 = __webpack_require__(74);
-var LogOn_1 = __webpack_require__(77);
-var CreateTopic_1 = __webpack_require__(80);
+var CurUserPost_1 = __webpack_require__(38);
+var BoardList_1 = __webpack_require__(39);
+var UserCenter_1 = __webpack_require__(40);
+var MyMessage_1 = __webpack_require__(57);
+var AllNewPost_1 = __webpack_require__(67);
+var MyFocusBoard_1 = __webpack_require__(69);
+var Header_1 = __webpack_require__(72);
+var Footer_1 = __webpack_require__(73);
+var MainPage_1 = __webpack_require__(74);
+var User_1 = __webpack_require__(75);
+var LogOn_1 = __webpack_require__(78);
+var CreateTopic_1 = __webpack_require__(81);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -3093,7 +3160,7 @@ var Utility = __webpack_require__(3);
 var $ = __webpack_require__(6);
 var react_router_dom_1 = __webpack_require__(2);
 var UbbContainer_1 = __webpack_require__(5);
-var SendTopic_1 = __webpack_require__(36);
+var SendTopic_1 = __webpack_require__(37);
 var moment = __webpack_require__(8);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
@@ -3960,27 +4027,29 @@ var CursorTagHandler_1 = __webpack_require__(32);
 var EnglishTagHandler_1 = __webpack_require__(33);
 var UserTagHandler_1 = __webpack_require__(34);
 var CodeTagHandler_1 = __webpack_require__(35);
+var UnresolvedTagHandler_1 = __webpack_require__(36);
 /**
  * 创建一个具有所有功能的默认引擎。
  */
 function createEngine() {
     var engine = new Ubb.UbbCodeEngine();
     // 在此处添加引擎所支持的所有标签处理器
-    engine.tagHandlers.register(new BTagHandler_1.BTagHandler());
-    engine.tagHandlers.register(new ImageTagHandler_1.ImageTagHandler());
-    engine.tagHandlers.register(new ITagHandler_1.ITagHandler());
-    engine.tagHandlers.register(new SizeTagHandler_1.SizeTagHandler());
-    engine.tagHandlers.register(new QuoteTagHandler_1.QuoteTagHandler());
-    engine.tagHandlers.register(new QuoteTagHandler_1.QuotexTagHandler());
-    engine.tagHandlers.register(new ColorTagHandler_1.ColorTagHandler());
-    engine.tagHandlers.register(new URLTagHandler_1.UrlTagHandler());
-    engine.tagHandlers.register(new UTagHandler_1.UTagHandler());
-    engine.tagHandlers.register(new DelTagHandler_1.DelTagHandler());
-    engine.tagHandlers.register(new MP3TagHandler_1.MP3TagHandler());
-    engine.tagHandlers.register(new CursorTagHandler_1.CursorTagHandler());
-    engine.tagHandlers.register(new EnglishTagHandler_1.EnglishTagHandler());
-    engine.tagHandlers.register(new UserTagHandler_1.UserTagHandler());
-    engine.tagHandlers.register(new CodeTagHandler_1.CodeTagHandler());
+    engine.tagHandlers.register(BTagHandler_1.BTagHandler);
+    engine.tagHandlers.register(ImageTagHandler_1.ImageTagHandler);
+    engine.tagHandlers.register(ITagHandler_1.ITagHandler);
+    engine.tagHandlers.register(SizeTagHandler_1.SizeTagHandler);
+    engine.tagHandlers.register(QuoteTagHandler_1.QuoteTagHandler);
+    engine.tagHandlers.register(ColorTagHandler_1.ColorTagHandler);
+    engine.tagHandlers.register(URLTagHandler_1.UrlTagHandler);
+    engine.tagHandlers.register(UTagHandler_1.UTagHandler);
+    engine.tagHandlers.register(DelTagHandler_1.DelTagHandler);
+    engine.tagHandlers.register(MP3TagHandler_1.MP3TagHandler);
+    engine.tagHandlers.register(CursorTagHandler_1.CursorTagHandler);
+    engine.tagHandlers.register(EnglishTagHandler_1.EnglishTagHandler);
+    engine.tagHandlers.register(UserTagHandler_1.UserTagHandler);
+    engine.tagHandlers.register(CodeTagHandler_1.CodeTagHandler);
+    // 以下是未命名标签处理程序，注意未命名标签处理程序的命中和注册顺序有关
+    engine.tagHandlers.register(UnresolvedTagHandler_1.UnresolvedTagHandler);
     return engine;
 }
 exports.createEngine = createEngine;
@@ -4018,7 +4087,7 @@ var BTagHandler = /** @class */ (function (_super) {
     function BTagHandler() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(BTagHandler.prototype, "tagName", {
+    Object.defineProperty(BTagHandler.prototype, "supportedTagNames", {
         get: function () {
             return 'b';
         },
@@ -4066,7 +4135,7 @@ var ImageTagHandler = /** @class */ (function (_super) {
     function ImageTagHandler() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(ImageTagHandler.prototype, "tagName", {
+    Object.defineProperty(ImageTagHandler.prototype, "supportedTagNames", {
         get: function () { return 'img'; },
         enumerable: true,
         configurable: true
@@ -4125,7 +4194,7 @@ var ITagHandler = /** @class */ (function (_super) {
     function ITagHandler() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(ITagHandler.prototype, "tagName", {
+    Object.defineProperty(ITagHandler.prototype, "supportedTagNames", {
         get: function () {
             return 'i';
         },
@@ -4170,7 +4239,7 @@ var SizeTagHandler = /** @class */ (function (_super) {
     function SizeTagHandler() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(SizeTagHandler.prototype, "tagName", {
+    Object.defineProperty(SizeTagHandler.prototype, "supportedTagNames", {
         get: function () {
             return 'size';
         },
@@ -4223,8 +4292,8 @@ var QuoteTagHandler = /** @class */ (function (_super) {
     function QuoteTagHandler() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(QuoteTagHandler.prototype, "tagName", {
-        get: function () { return 'quote'; },
+    Object.defineProperty(QuoteTagHandler.prototype, "supportedTagNames", {
+        get: function () { return ['quote', 'quotex']; },
         enumerable: true,
         configurable: true
     });
@@ -4242,21 +4311,6 @@ var QuoteTagHandler = /** @class */ (function (_super) {
     return QuoteTagHandler;
 }(Ubb.RecursiveTagHandler));
 exports.QuoteTagHandler = QuoteTagHandler;
-var QuotexTagHandler = /** @class */ (function (_super) {
-    __extends(QuotexTagHandler, _super);
-    function QuotexTagHandler() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(QuotexTagHandler.prototype, "tagName", {
-        get: function () {
-            return 'quotex';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return QuotexTagHandler;
-}(QuoteTagHandler));
-exports.QuotexTagHandler = QuotexTagHandler;
 
 
 /***/ }),
@@ -4289,7 +4343,7 @@ var ColorTagHandler = /** @class */ (function (_super) {
     function ColorTagHandler() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(ColorTagHandler.prototype, "tagName", {
+    Object.defineProperty(ColorTagHandler.prototype, "supportedTagNames", {
         get: function () {
             return 'color';
         },
@@ -4338,7 +4392,7 @@ var UrlTagHandler = /** @class */ (function (_super) {
     function UrlTagHandler() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(UrlTagHandler.prototype, "tagName", {
+    Object.defineProperty(UrlTagHandler.prototype, "supportedTagNames", {
         get: function () {
             return 'url';
         },
@@ -4394,7 +4448,7 @@ var UTagHandler = /** @class */ (function (_super) {
     function UTagHandler() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(UTagHandler.prototype, "tagName", {
+    Object.defineProperty(UTagHandler.prototype, "supportedTagNames", {
         get: function () {
             return 'u';
         },
@@ -4447,7 +4501,7 @@ var DelTagHandler = /** @class */ (function (_super) {
     function DelTagHandler() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(DelTagHandler.prototype, "tagName", {
+    Object.defineProperty(DelTagHandler.prototype, "supportedTagNames", {
         get: function () {
             return 'del';
         },
@@ -4495,7 +4549,7 @@ var MP3TagHandler = /** @class */ (function (_super) {
     function MP3TagHandler() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(MP3TagHandler.prototype, "tagName", {
+    Object.defineProperty(MP3TagHandler.prototype, "supportedTagNames", {
         get: function () {
             return 'mp3';
         },
@@ -4549,7 +4603,7 @@ var CursorTagHandler = /** @class */ (function (_super) {
     function CursorTagHandler() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(CursorTagHandler.prototype, "tagName", {
+    Object.defineProperty(CursorTagHandler.prototype, "supportedTagNames", {
         get: function () { return 'cursor'; },
         enumerable: true,
         configurable: true
@@ -4597,7 +4651,7 @@ var EnglishTagHandler = /** @class */ (function (_super) {
     function EnglishTagHandler() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(EnglishTagHandler.prototype, "tagName", {
+    Object.defineProperty(EnglishTagHandler.prototype, "supportedTagNames", {
         get: function () {
             return 'english';
         },
@@ -4645,7 +4699,7 @@ var UserTagHandler = /** @class */ (function (_super) {
     function UserTagHandler() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(UserTagHandler.prototype, "tagName", {
+    Object.defineProperty(UserTagHandler.prototype, "supportedTagNames", {
         get: function () { return 'user'; },
         enumerable: true,
         configurable: true
@@ -4693,7 +4747,7 @@ var CodeTagHandler = /** @class */ (function (_super) {
     function CodeTagHandler() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(CodeTagHandler.prototype, "tagName", {
+    Object.defineProperty(CodeTagHandler.prototype, "supportedTagNames", {
         get: function () { return 'code'; },
         enumerable: true,
         configurable: true
@@ -4713,6 +4767,50 @@ exports.CodeTagHandler = CodeTagHandler;
 
 /***/ }),
 /* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Ubb = __webpack_require__(1);
+/**
+ * 为所有未解析的标签提供通用处理。
+ */
+var UnresolvedTagHandler = /** @class */ (function (_super) {
+    __extends(UnresolvedTagHandler, _super);
+    function UnresolvedTagHandler() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(UnresolvedTagHandler.prototype, "supportedTagNames", {
+        get: function () { return /.*/i; },
+        enumerable: true,
+        configurable: true
+    });
+    UnresolvedTagHandler.prototype.execCore = function (innerContent, tagData, context) {
+        // 警告提示
+        console.warn('检测到未处理的标签 %s，该标签将被当做一般文字。', tagData.tagName);
+        return Ubb.UbbTagHandler.renderTagAsString(tagData, innerContent);
+    };
+    return UnresolvedTagHandler;
+}(Ubb.RecursiveTagHandler));
+exports.UnresolvedTagHandler = UnresolvedTagHandler;
+
+
+/***/ }),
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4872,7 +4970,7 @@ exports.SendTopic = SendTopic;
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5701,7 +5799,7 @@ exports.TopicPagerDown = TopicPagerDown;
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5927,7 +6025,7 @@ exports.ChildBoard = ChildBoard;
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5948,8 +6046,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterNavigation_1 = __webpack_require__(40);
-var UserCenterRouter_1 = __webpack_require__(41);
+var UserCenterNavigation_1 = __webpack_require__(41);
+var UserCenterRouter_1 = __webpack_require__(42);
 /**
  * 用户中心页面
  */
@@ -5974,7 +6072,7 @@ exports.UserCenter = UserCenter;
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6076,7 +6174,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6097,12 +6195,12 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterExact_1 = __webpack_require__(42);
-var UserCenterMyFollowings_1 = __webpack_require__(45);
-var UserCenterMyFans_1 = __webpack_require__(46);
-var UserCenterMyPosts_1 = __webpack_require__(47);
-var UserCenterMyFavorites_1 = __webpack_require__(50);
-var UserCenterConfig_1 = __webpack_require__(52);
+var UserCenterExact_1 = __webpack_require__(43);
+var UserCenterMyFollowings_1 = __webpack_require__(46);
+var UserCenterMyFans_1 = __webpack_require__(47);
+var UserCenterMyPosts_1 = __webpack_require__(48);
+var UserCenterMyFavorites_1 = __webpack_require__(51);
+var UserCenterConfig_1 = __webpack_require__(53);
 /**
  * 用户中心主体
  */
@@ -6126,7 +6224,7 @@ exports.UserCenterRouter = UserCenterRouter;
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6239,7 +6337,7 @@ exports.UserCenterExact = UserCenterExact;
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6358,7 +6456,7 @@ userRecentPost.title = '这是帖子标题';
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6412,7 +6510,7 @@ userRecentPost.title = '这是帖子标题';
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6466,7 +6564,7 @@ userFanInfo.name = '董松松松';
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6520,7 +6618,7 @@ userFanInfo.name = '董松松松';
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6538,8 +6636,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterMyPostsExact_1 = __webpack_require__(48);
-var UserCenterMyPostsReplies_1 = __webpack_require__(49);
+var UserCenterMyPostsExact_1 = __webpack_require__(49);
+var UserCenterMyPostsReplies_1 = __webpack_require__(50);
 /**
  * 用户中心我的主题组件
  */
@@ -6570,7 +6668,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6623,7 +6721,7 @@ userRecentPost.title = '这是帖子标题';
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6677,7 +6775,7 @@ userRecentPost.title = '这是帖子标题';
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6698,7 +6796,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(2);
-var UserCenterMyFavoritesPosts_1 = __webpack_require__(51);
+var UserCenterMyFavoritesPosts_1 = __webpack_require__(52);
 //import { UserCenterMyFavoritesPostsBoards } from './UserCenterMyFavoritesPostsBoards';
 //<Route path='/usercenter/myfavorites/boards' component={UserCenterMyFavoritesPostsBoards} />
 /**
@@ -6730,7 +6828,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6783,7 +6881,7 @@ userRecentPost.title = '这是帖子标题';
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6803,9 +6901,9 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterConfigAvatar_1 = __webpack_require__(53);
-var UserCenterConfigSignature_1 = __webpack_require__(54);
-var UsercenterConfigPassword_1 = __webpack_require__(55);
+var UserCenterConfigAvatar_1 = __webpack_require__(54);
+var UserCenterConfigSignature_1 = __webpack_require__(55);
+var UsercenterConfigPassword_1 = __webpack_require__(56);
 var UserCenterConfig = /** @class */ (function (_super) {
     __extends(UserCenterConfig, _super);
     function UserCenterConfig() {
@@ -6825,7 +6923,7 @@ exports.UserCenterConfig = UserCenterConfig;
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6865,7 +6963,7 @@ exports.UserCenterConfigAvatar = UserCenterConfigAvatar;
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6925,7 +7023,7 @@ var UserCenterConfigSignatureState = /** @class */ (function () {
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6969,7 +7067,7 @@ exports.UserCenterConfigPassword = UserCenterConfigPassword;
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6986,10 +7084,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var MyMessageMessage_1 = __webpack_require__(57);
-var MyMessageResponse_1 = __webpack_require__(62);
-var MyMessageAttme_1 = __webpack_require__(63);
-var MyMessageSystem_1 = __webpack_require__(64);
+var MyMessageMessage_1 = __webpack_require__(58);
+var MyMessageResponse_1 = __webpack_require__(63);
+var MyMessageAttme_1 = __webpack_require__(64);
+var MyMessageSystem_1 = __webpack_require__(65);
 var react_router_dom_1 = __webpack_require__(2);
 /**
  * 网站的主页面对象。
@@ -7067,7 +7165,7 @@ function sendRequest() {
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7122,8 +7220,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MyMessagePerson_1 = __webpack_require__(58);
-var MyMessageWindow_1 = __webpack_require__(59);
+var MyMessagePerson_1 = __webpack_require__(59);
+var MyMessageWindow_1 = __webpack_require__(60);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -7269,7 +7367,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7311,7 +7409,7 @@ exports.MyMessagePerson = MyMessagePerson;
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7366,8 +7464,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MyMessageSender_1 = __webpack_require__(60);
-var MyMessageReceiver_1 = __webpack_require__(61);
+var MyMessageSender_1 = __webpack_require__(61);
+var MyMessageReceiver_1 = __webpack_require__(62);
 var MyMessageWindow = /** @class */ (function (_super) {
     __extends(MyMessageWindow, _super);
     function MyMessageWindow(props) {
@@ -7512,7 +7610,7 @@ function reverseArr(arr, s, e) {
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7558,7 +7656,7 @@ exports.MyMessageSender = MyMessageSender;
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7609,7 +7707,7 @@ exports.MyMessageReceiver = MyMessageReceiver;
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7768,7 +7866,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7927,7 +8025,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7982,7 +8080,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MyMessageSystembox_1 = __webpack_require__(65);
+var MyMessageSystembox_1 = __webpack_require__(66);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -8085,7 +8183,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8127,7 +8225,7 @@ exports.MyMessageSystembox = MyMessageSystembox;
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8173,7 +8271,7 @@ exports.AllNewPost = AllNewPost;
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8235,7 +8333,7 @@ exports.FocusPostComponent = FocusPostComponent;
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8255,7 +8353,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusBoardAreaComponent_1 = __webpack_require__(69);
+var FocusBoardAreaComponent_1 = __webpack_require__(70);
 var FocusPostAreaComponent_1 = __webpack_require__(15);
 var MyFocusBoard = /** @class */ (function (_super) {
     __extends(MyFocusBoard, _super);
@@ -8278,7 +8376,7 @@ exports.MyFocusBoard = MyFocusBoard;
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8298,7 +8396,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusBoardComponent_1 = __webpack_require__(70);
+var FocusBoardComponent_1 = __webpack_require__(71);
 /**
  * 表示我关注的版面列表区域
  */
@@ -8330,7 +8428,7 @@ function coverFocusBoard(item) {
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8367,7 +8465,7 @@ exports.FocusBoardComponent = FocusBoardComponent;
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8641,7 +8739,7 @@ exports.Header = Header;
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8693,7 +8791,7 @@ exports.Footer = Footer;
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9194,7 +9292,7 @@ exports.MainPage = MainPage;
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9215,8 +9313,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(2);
-var UserNavigation_1 = __webpack_require__(75);
-var UserRouter_1 = __webpack_require__(76);
+var UserNavigation_1 = __webpack_require__(76);
+var UserRouter_1 = __webpack_require__(77);
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
@@ -9238,7 +9336,7 @@ exports.User = User;
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9297,7 +9395,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9422,7 +9520,7 @@ var UserExact = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9443,8 +9541,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(2);
-var LogOnExact_1 = __webpack_require__(78);
-var Logoff_1 = __webpack_require__(79);
+var LogOnExact_1 = __webpack_require__(79);
+var Logoff_1 = __webpack_require__(80);
 /**
  * 用户中心页面
  */
@@ -9465,7 +9563,7 @@ exports.LogOn = LogOn;
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9673,7 +9771,7 @@ var LogOnState = /** @class */ (function () {
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9725,7 +9823,7 @@ exports.LogOff = LogOff;
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9943,7 +10041,7 @@ exports.CreateTopicContent = CreateTopicContent;
 
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

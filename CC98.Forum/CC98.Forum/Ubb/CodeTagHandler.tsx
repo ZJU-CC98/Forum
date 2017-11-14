@@ -9,7 +9,7 @@ import * as Ubb from './Core';
  */
 export class CodeTagHandler extends Ubb.TextTagHandler {
 
-	get tagName(): string { return 'code' };
+	get supportedTagNames(): string { return 'code' };
 
 	execCore(content: string, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
         let element = content.split('\n').map((item, index) => {

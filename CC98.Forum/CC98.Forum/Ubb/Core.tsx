@@ -377,7 +377,7 @@ class UbbTagSegment extends UbbSegment {
 	 * 获取标签的全部文字内容。
 	 */
 	getFullText(): string {
-		return `[${this._tagData.orignalString}]${this.getContentText()}[/${this._tagData.tagName}]`;
+		return this.tagData.startTagString + this.getContentText() + this.tagData.endTagString;
 	}
 }
 
@@ -609,6 +609,22 @@ export class UbbTagData {
 	}
 
 	/**
+	 * 获取标签的开始标记字符串。
+	 * @returns {string} 标签的开始标记字符串。
+	 */
+	get startTagString(): string {
+		return `[${this.orignalString}]`;
+	}
+
+	/**
+	 * 获取标签的结束标记字符串。
+	 * @returns {string} 标签的结束标记字符串。
+	 */
+	get endTagString(): string {
+		return `[/${this.tagName}]`;
+	}
+
+	/**
 	 * 获取标签的主要值，也即紧跟在标签名称和等号后的值。
 	 * @returns {string} 标签的主要值。 
 	 */
@@ -695,10 +711,10 @@ class UbbTagParameter {
 export abstract class UbbTagHandler {
 
 	/**
-	 * 获取该处理程序处理的标签的名称。
-	 * @returns {string} 该处理程序能处理的标签的名称。 
+	 * 获取该处理程序支持处理的标签的名称。
+	 * @returns {string | string[] | RegExp} 该处理程序支持处理的标签的名称，可以为字符串，字符串数组或者正则表达式。
 	 */
-	abstract get tagName(): string;
+	abstract get supportedTagNames(): string | string[] | RegExp;
 
 	/**
 	 * 调用该处理程序处理给定的 UBB 内容。
@@ -714,9 +730,9 @@ export abstract class UbbTagHandler {
 	 */
 	protected static renderTagAsString(tagData: UbbTagData, content: ReactNode): ReactNode {
 		return [
-			`[${tagData.orignalString}]`,
+			tagData.startTagString,
 			content,
-			`[/${tagData.tagName}]`
+			tagData.endTagString
 		];
 	}
 }
@@ -771,52 +787,96 @@ export abstract class RecursiveTagHandler extends UbbTagHandler {
 class UbbHandlerList {
 
 	/**
-	 * 内部的标签处理器列表。
+	 * 命名的内部标签处理器列表。
 	 */
-	private _tagHandlerList: {
+	private _namedTagHandlerList: {
 		[tagName: string]: UbbTagHandler;
 	} = {};
 
 	/**
+	 * 未命名的内部标签处理程序列表。
+	 */
+	private _unnamedTagHanlderList: UbbTagHandler[] = [];
+
+	/**
 	 * 获取给定标签名称的处理程序。
-	 * @param tagName 标签名称。
+	 * @param supportedTagNames 标签名称。
 	 * @returns {UbbTagHandler} 标签处理程序。
 	 */
 	getHandler(tagName: string): UbbTagHandler {
-		return this._tagHandlerList[tagName] || null;
+
+		// 首先寻找命名的标签处理程序
+		const namedTagHandler = this._namedTagHandlerList[tagName];
+
+		// 找到
+		if (namedTagHandler) {
+			return namedTagHandler;
+		}
+
+		// 寻找未命名的标签处理程序
+		for (const handler of this._unnamedTagHanlderList) {
+			if ((handler.supportedTagNames as RegExp).test(tagName)) {
+				return handler;
+			}
+		}
+
+		// 找不到任何标签处理程序
+		return null;
 	}
 
+	/**
+	 * 注册一个给定的标签处理程序。
+	 * @param tagHandlerClass 处理程序对象的类型。
+	 */
+	register(tagHandlerClass: (new () => UbbTagHandler)) {
+		// ReSharper disable once InconsistentNaming
+		this.registerInstance(new tagHandlerClass());
+	}
 
 	/**
-	 * 注册解析器标签的核心函数。
+	 * 注册一个给定的处理程序实例。
 	 * @param tagHandler 要注册的标签处理器。
 	 */
-	register(tagHandler: UbbTagHandler): void {
+	registerInstance(tagHandler: UbbTagHandler): void {
 
-		if (!tagHandler || !tagHandler.tagName) {
+		if (!tagHandler || !tagHandler.supportedTagNames) {
 			throw new Error('参数 tagHandler 无效，或者未提供正确的标签名称。');
 		}
 
-		// 检查是否已经注册
-		if (tagHandler.tagName in this._tagHandlerList) {
-			throw new Error(`标签 ${tagHandler.tagName} 已经被注册。`);
+		if (typeof tagHandler.supportedTagNames === 'string') {
+			this.registerNamedCore([tagHandler.supportedTagNames], tagHandler);
+		} else if (tagHandler.supportedTagNames instanceof Array) {
+			this.registerNamedCore(tagHandler.supportedTagNames, tagHandler);
+		} else {
+			this.registerUnnamedCore(tagHandler);
 		}
-
-		// 添加新项目
-		this._tagHandlerList[tagHandler.tagName] = tagHandler;
 	}
 
+	/**
+	 * 注册命名处理程序的核心方法。
+	 * @param tagNames 处理程序关联的一个或多个标签名。
+	 * @param tagHandler 处理程序对象。
+	 */
+	private registerNamedCore(tagNames: string[], tagHandler: UbbTagHandler): void {
+
+		for (const tagName of tagNames) {
+			if (tagName in this._namedTagHandlerList) {
+				console.error('标签 %s 的处理程序已经被注册。', tagName);
+			} else {
+				this._namedTagHandlerList[tagName] = tagHandler;
+			}
+
+		}
+	}
+
+	/**
+	 * 注册未命名处理程序的核心方法。
+	 * @param tagHandler 处理程序对象。
+	 */
+	private registerUnnamedCore(tagHandler: UbbTagHandler): void {
+		this._unnamedTagHanlderList.push(tagHandler);
+	}
 }
-
-/**
- * 注册所有处理程序。
- */
-function registerAllHandlers() {
-}
-
-
-// 注册所有预置方法。
-registerAllHandlers();
 
 /**
  * 提供处理 UBB 程序的核心方法。
@@ -850,7 +910,7 @@ export class UbbCodeEngine {
 
 	/**
 	 * 获取给定标签名称的处理程序。
-	 * @param tagName 给定的标签名称。
+	 * @param supportedTagNames 给定的标签名称。
 	 * @returns {UbbTagHandler} 给定标签名称的处理程序。
 	 */
 	getHandler(tagName: string): UbbTagHandler {
@@ -871,7 +931,7 @@ export class UbbCodeEngine {
 
 	/**
 	 * 尝试找到关闭标记对应的开始标记，并关闭该标记。
-	 * @param tagName 标记名称。
+	 * @param supportedTagNames 标记名称。
 	 * @param parent 该标记的第一个上级。
 	 * @returns {UbbTagSegment} 新的上级标签。
 	 */

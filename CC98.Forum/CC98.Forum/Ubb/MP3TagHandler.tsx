@@ -9,7 +9,7 @@ import * as Ubb from './Core';
  * 处理 [mp3] 标签的处理器。
  */
 export class MP3TagHandler extends Ubb.TextTagHandler {
-	get tagName(): string {
+	get supportedTagNames(): string {
 		return 'mp3';
 	}
 

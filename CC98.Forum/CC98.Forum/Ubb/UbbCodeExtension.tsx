@@ -7,12 +7,9 @@ import { BTagHandler } from './BTagHandler';
 import { ImageTagHandler } from './ImageTagHandler';
 import { ITagHandler } from './ITagHandler';
 import { SizeTagHandler } from './SizeTagHandler';
-import {
-    QuoteTagHandler,
-    QuotexTagHandler
-} from './QuoteTagHandler';
+import { QuoteTagHandler } from './QuoteTagHandler';
 import { ColorTagHandler } from './ColorTagHandler';
-import { UrlTagHandler as URLTagHandler } from './URLTagHandler';
+import { UrlTagHandler } from './URLTagHandler';
 import { UTagHandler } from './UTagHandler';
 import { DelTagHandler } from './DelTagHandler';
 import { MP3TagHandler } from './MP3TagHandler';
@@ -20,6 +17,7 @@ import { CursorTagHandler } from './CursorTagHandler';
 import { EnglishTagHandler } from './EnglishTagHandler';
 import { UserTagHandler } from './UserTagHandler';
 import { CodeTagHandler } from './CodeTagHandler';
+import { UnresolvedTagHandler } from './UnresolvedTagHandler';
 
 /**
  * 创建一个具有所有功能的默认引擎。
@@ -29,21 +27,23 @@ export function createEngine(): Ubb.UbbCodeEngine {
 	const engine = new Ubb.UbbCodeEngine();
 
 	// 在此处添加引擎所支持的所有标签处理器
-	engine.tagHandlers.register(new BTagHandler());
-    engine.tagHandlers.register(new ImageTagHandler());
-    engine.tagHandlers.register(new ITagHandler());
-    engine.tagHandlers.register(new SizeTagHandler());
-    engine.tagHandlers.register(new QuoteTagHandler());
-    engine.tagHandlers.register(new QuotexTagHandler());
-    engine.tagHandlers.register(new ColorTagHandler());
-    engine.tagHandlers.register(new URLTagHandler());
-    engine.tagHandlers.register(new UTagHandler());
-    engine.tagHandlers.register(new DelTagHandler());
-    engine.tagHandlers.register(new MP3TagHandler());
-    engine.tagHandlers.register(new CursorTagHandler());
-    engine.tagHandlers.register(new EnglishTagHandler());
-    engine.tagHandlers.register(new UserTagHandler());
-    engine.tagHandlers.register(new CodeTagHandler());
+	engine.tagHandlers.register(BTagHandler);
+	engine.tagHandlers.register(ImageTagHandler);
+	engine.tagHandlers.register(ITagHandler);
+	engine.tagHandlers.register(SizeTagHandler);
+	engine.tagHandlers.register(QuoteTagHandler);
+	engine.tagHandlers.register(ColorTagHandler);
+	engine.tagHandlers.register(UrlTagHandler);
+	engine.tagHandlers.register(UTagHandler);
+	engine.tagHandlers.register(DelTagHandler);
+	engine.tagHandlers.register(MP3TagHandler);
+	engine.tagHandlers.register(CursorTagHandler);
+	engine.tagHandlers.register(EnglishTagHandler);
+	engine.tagHandlers.register(UserTagHandler);
+	engine.tagHandlers.register(CodeTagHandler);
+
+	// 以下是未命名标签处理程序，注意未命名标签处理程序的命中和注册顺序有关
+	engine.tagHandlers.register(UnresolvedTagHandler);
 
 	return engine;
 }

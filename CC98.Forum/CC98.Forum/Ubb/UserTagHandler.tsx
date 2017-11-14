@@ -9,7 +9,7 @@ import * as Ubb from './Core';
  */
 export class UserTagHandler extends Ubb.TextTagHandler {
 
-	get tagName(): string { return 'user' };
+	get supportedTagNames(): string { return 'user' };
 
 	execCore(content: string, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
         const userName = content;

@@ -6,18 +6,17 @@ import * as React from 'react';
 import * as Ubb from './Core';
 
 /**
- * 处理 [del] 标签的处理器。
+ * 为所有未解析的标签提供通用处理。
  */
-export class DelTagHandler extends Ubb.RecursiveTagHandler {
-	get supportedTagNames(): string {
-		return 'del';
-	}
+export class UnresolvedTagHandler extends Ubb.RecursiveTagHandler {
+
+	get supportedTagNames(): RegExp { return /.*/i; }
 
 	execCore(innerContent: React.ReactNode, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
-        const style = {
-            textDecoration: 'line-through'
-        };
 
-        return <span style={style}>{innerContent}</span>;
+		// 警告提示
+		console.warn('检测到未处理的标签 %s，该标签将被当做一般文字。', tagData.tagName);
+
+		return Ubb.UbbTagHandler.renderTagAsString(tagData, innerContent);
 	}
 }
