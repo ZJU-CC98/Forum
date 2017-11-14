@@ -1,0 +1,62 @@
+﻿.createTopic {
+    display: flex;
+    flex-direction: column;
+    width: 1140px;
+    font-family: 微软雅黑;
+    font-size: 14px;
+}
+
+.createTopicBoardName {
+    margin-bottom: 20px;
+}
+
+.createTopicTitle, .createTopicType, .createTopicOption {
+    display: flex;
+    height: 40px;
+    margin-bottom: 20px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 1px;
+    box-sizing: border-box;
+    background-color: rgb(255,255,255);
+    align-items: center;
+}
+
+.createTopicListName {
+    display: flex;
+    width: 120px;
+    justify-content: center;
+    border-width: 0 1px 0 0;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    box-sizing: border-box;
+}
+
+.createTopicTitle input {
+    display: flex;
+    width: 1020px;
+    border: 0;
+    font-size: 14px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    outline: none;
+    padding-left: 6px;
+}
+
+.createTopicTag {
+    display: flex;
+    width: 120px;
+    height: 40px;
+    margin-bottom: 20px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 1px;
+    box-sizing: border-box;
+    background-color: rgb(255,255,255);
+    align-items: center;
+    justify-content: center;
+}
+
+.createTopicContent {
+    display: flex;
+}

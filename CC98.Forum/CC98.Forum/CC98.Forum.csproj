@@ -36,6 +36,7 @@
     <None Remove="Ubb\ImageTagHandler.tsx" />
     <None Remove="Ubb\MP3TagHandler.tsx" />
     <None Remove="Ubb\NoUbbTagHandler.tsx" />
+    <None Remove="Ubb\UnresolvedTagHandler.tsx" />
     <None Remove="Ubb\URLTagHandler.tsx" />
     <None Remove="Ubb\UserTagHandler.tsx" />
     <None Remove="Ubb\UTagHandler.tsx" />
@@ -76,6 +77,7 @@
     <TypeScriptCompile Include="Ubb\Core.tsx" />
     <TypeScriptCompile Include="Ubb\MP3TagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\NoUbbTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\UnresolvedTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\UrlTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\UserTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\UTagHandler.tsx" />

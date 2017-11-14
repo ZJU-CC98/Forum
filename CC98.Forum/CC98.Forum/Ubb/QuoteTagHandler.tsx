@@ -10,24 +10,18 @@ import * as Ubb from './Core';
  */
 export class QuoteTagHandler extends Ubb.RecursiveTagHandler {
 
-	get tagName(): string { return 'quote' };
+	get supportedTagNames(): string[] { return ['quote', 'quotex'] };
 
-    execCore(innerContent: React.ReactNode, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
-        const style = {
-            
-            padding: '13px 19px 13px 17px',
-            backgroundColor: '#F5FAFF',
-            border: '1px solid rgb(204,204,204)',
-            margin: '30px',
-            maxHeight: '800px'
-        };
-        
-        return <div style={style}>{innerContent}</div>;
+	execCore(innerContent: React.ReactNode, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
+		const style = {
+
+			padding: '13px 19px 13px 17px',
+			backgroundColor: '#F5FAFF',
+			border: '1px solid rgb(204,204,204)',
+			margin: '30px',
+			maxHeight: '800px'
+		};
+
+		return <div style={style}>{innerContent}</div>;
 	}
-}
-
-export class QuotexTagHandler extends QuoteTagHandler {
-    get tagName() {
-        return 'quotex';
-    }
 }

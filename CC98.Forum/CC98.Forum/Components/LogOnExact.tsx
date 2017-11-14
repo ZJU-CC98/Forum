@@ -116,9 +116,9 @@ export class LogOnExact extends React.Component<null, LogOnState> {
             isLogining: false
         });
 
-        //跳转至个人中心页
+        //跳转至首页
         setTimeout(() => {
-            location.pathname = "/";
+        location.pathname = "/";
         }, 2000); 
 
     } catch(e) {    //捕捉到例外，开始执行catch语句，否则跳过

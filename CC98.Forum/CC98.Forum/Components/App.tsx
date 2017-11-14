@@ -17,6 +17,7 @@ import { Footer } from './Footer';
 import { MainPage } from './MainPage';
 import { User } from './User';
 import { LogOn } from './LogOn';
+import { CreateTopic } from './CreateTopic';
 
 import { UbbContainer } from './UbbContainer';
 
@@ -47,6 +48,7 @@ export class App extends React.Component<{}, AppState> {
 					<Route path="/newtopics" component={AllNewPost} />
 					<Route path="/user" component={User} />
                     <Route path="/logon" component={LogOn} />
+                    <Route path="/createtopic" component={CreateTopic} />
 
                     <Footer />
 				</div>

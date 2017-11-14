@@ -10,7 +10,7 @@ import * as Ubb from './Core';
  */
 export class CursorTagHandler extends Ubb.RecursiveTagHandler {
 
-	get tagName(): string { return 'cursor' };
+	get supportedTagNames(): string { return 'cursor' };
 
     execCore(innerContent: React.ReactNode, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
         const cursor = tagData.value('cursor');

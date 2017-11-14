@@ -2,6 +2,7 @@
 import { AppState } from '../States/AppState';
 import { MainPageTopicState } from '../States/AppState';
 import * as $ from 'jquery';
+import * as Utility from '../Utility';
 
 /**
  * 推荐阅读组件
@@ -182,6 +183,49 @@ export class Shixijianzhi extends React.Component<{}, MainPageTopicState>{
         return <div>{this.state.mainPageTopicState.map(this.convertMainPageTopic)}</div>;
     }
 }
+/*
+ 测试用组件~
+ */
+export class Test extends React.Component<{}, AppState>{
+    async logon() {
+
+        let url = "http://openid.cc98.org/connect/authorize";
+        const requestBody = {
+            'client_id': '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
+            'redirect_uri': 'http://localhost:53004',
+            'response_type': 'token',
+            'scope': 'cc98-api openid',
+        }
+        let response = await fetch(url, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',//在fetch API里这不是默认值，需要手动添加
+            },
+            body: $.param(requestBody)
+
+        });
+        return await response.json();
+    }
+
+    async test() {
+        let url = `http://apitest.niconi.cc/topic/test`;
+        let token = Utility.getLocalStorage("accessToken");
+        console.log(token);
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", 'application/x-www-form-urlencoded');
+        myHeaders.append("Authorization", token);
+        let response = await fetch(url, {
+            method: "GET",
+            headers: myHeaders,
+            body: { 'token': token }
+        });
+        let data = await response.json();
+        console.log(data);
+    }
+    render() {
+        return <div onClick={this.test}>这里是萌萌的adddna测试的地方~</div>
+    }
+}
 
 /**
  * 网站的主页面对象。
@@ -240,6 +284,7 @@ export class MainPage extends React.Component<{}, AppState> {
                             <div className="listName">学术信息</div>
                             <div className="more">更多</div>
                         </div>
+                        <Test />
                     </div>
                     <div className="list2">
                         <div className="blueBar2">

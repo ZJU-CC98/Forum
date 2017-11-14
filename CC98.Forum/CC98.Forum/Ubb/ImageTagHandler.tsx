@@ -7,7 +7,7 @@ import * as Ubb from './Core';
 
 export class ImageTagHandler extends Ubb.TextTagHandler {
 
-	get tagName(): string { return 'img' };
+	get supportedTagNames(): string { return 'img' };
 
 	execCore(content: string, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
 

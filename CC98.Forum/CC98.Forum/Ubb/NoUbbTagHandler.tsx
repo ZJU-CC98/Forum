@@ -9,7 +9,7 @@ import * as Ubb from './Core';
  * 提供对 [noubb] 标签的解析。
  */
 export class NoUbbTagHandler extends Ubb.TextTagHandler {
-	get tagName(): string { return 'noubb' };
+	get supportedTagNames(): string { return 'noubb' };
 
 	execCore(content: string, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
 		if (context.options.compatibility !== Ubb.UbbCompatiblityMode.Transitional) {

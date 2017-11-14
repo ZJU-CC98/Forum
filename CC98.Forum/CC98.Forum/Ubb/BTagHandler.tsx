@@ -9,7 +9,7 @@ import * as Ubb from './Core';
  * 处理 [b] 标签的处理器。
  */
 export class BTagHandler extends Ubb.RecursiveTagHandler {
-	get tagName(): string {
+	get supportedTagNames(): string {
 		return 'b';
 	}
 
