@@ -31,10 +31,10 @@ export class MyMessageWindow extends React.Component<MyMessageWindowProps, MyMes
             //循环取站短消息，一次性50条，直到全部取完
             do {
                 startPage += 50;
-                const response = await fetch(`https://api.cc98.org/Message?userName=${item.chatName}&filter=both`, {
+                const response = await fetch(`https://api.cc98.org/Message?userName=${item.chatName}&filter=Both`, {
 	                headers: {
 		                Range: `bytes=${startPage}-${startPage + 49}`,
-		                Authorization: `Bearer ${item.token}`
+		                Authorization: `${item.token}`
 	                }
                 });
                 const nowData = await response.json();
@@ -70,7 +70,7 @@ export class MyMessageWindow extends React.Component<MyMessageWindowProps, MyMes
         const bodyContent = JSON.stringify(bodyObj);
         const messageId = fetch('https://api.cc98.org/Message', {
 	        method: 'POST',
-	        headers: { Authorization: `Bearer ${this.props.token}`, 'content-type': 'application/json'},
+	        headers: { Authorization: `${this.props.token}`, 'content-type': 'application/json'},
 	        body: bodyContent
         });
         //重新获取数据并渲染
@@ -87,7 +87,6 @@ export class MyMessageWindow extends React.Component<MyMessageWindowProps, MyMes
     };
 
 	render() {
-        console.log('开始render');
         return (<div className="mymessage-message-window">
                     <div className="mymessage-message-wHeader">
                         <div className="mymessage-message-wReport"></div>

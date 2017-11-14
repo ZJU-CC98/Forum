@@ -16,24 +16,17 @@ import {
 export class MyMessage extends React.Component<{}, AppState> {
     
     render() {
-        const url = sendRequest();
-        const token = location.href.match(/access_token=(\S+)&token_type/);
-        let accessToken: string;
-        if (token) {
-            accessToken = token[1];
-        }
         return (<div className="mymessage-root">
                     <div className="mymessage">
-                            <div className="mymessage-login"><a href={url}>登陆</a></div>
                             <div className="mymessage-title">我的消息</div>
                             <Router>
                                 <div className="mymessage-content">
                                     <div className="mymessage-nav">
-                                        <div id="response"><NavLink to={`/mymessage/response?access_token=${accessToken}`}>回复我的</NavLink></div>
-                                        <div id="attme"><NavLink to={`/mymessage/attme?access_token=${accessToken}`}>@我的</NavLink></div>
-                                        <div id="likes"><NavLink to={`/mymessage/likes?access_token=${accessToken}`}>收到的赞</NavLink></div>
-                                        <div id="system"><NavLink to={`/mymessage/system?access_token=${accessToken}`}>系统通知</NavLink></div>
-                                        <div id="message"><NavLink to={`/mymessage/message?access_token=${accessToken}`}>我的私信</NavLink></div>
+                                        <div id="response"><NavLink to={`/mymessage/response`}>回复我的</NavLink></div>
+                                        <div id="attme"><NavLink to={`/mymessage/attme`}>@我的</NavLink></div>
+                                        <div id="likes"><NavLink to={`/mymessage/likes`}>收到的赞</NavLink></div>
+                                        <div id="system"><NavLink to={`/mymessage/system`}>系统通知</NavLink></div>
+                                        <div id="message"><NavLink to={`/mymessage/message`}>我的私信</NavLink></div>
                                     </div>
                                     <Route path="/mymessage/response" component={MyMessageResponse} />
                                     <Route path="/mymessage/attme" component={MyMessageAttme} />
@@ -60,18 +53,4 @@ export class Likes extends React.Component {
         changeNav('#likes');
         return <div>这里是我收到的赞</div>;
     }
-}
-
-function sendRequest() {
-    //申请到的appID
-    const appId = '457bfed1-ab0b-4606-a346-05afac262d5a';
-    //申请后的回调地址
-    const c = `${location.origin}/mymessage`;
-    const redirectURI = encodeURI(c);
-    //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
-    const path = 'https://login.cc98.org/OAuth/Authorize?';
-    const queryParams = ['client_id=' + appId, 'response_type=token', 'scope=all', 'redirect_uri=' + redirectURI];
-    const query = queryParams.join('&');
-    const url = path + query;
-    return url;
 }

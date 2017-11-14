@@ -5,6 +5,7 @@ import * as React from 'react';
 import { MyMessageResponseState } from '../States/MyMessageResponseState';
 import { MyMessageProps } from '../Props/MyMessageProps';
 import { MyMessageResponsebox } from './MyMessageResponsebox';
+import * as Utility from '../Utility';
 
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
@@ -19,11 +20,7 @@ export class MyMessageAttme extends React.Component<{}, MyMessageResponseState> 
     }
 
     async componentWillMount() {
-        const token = location.href.match(/access_token=(\S+)/);
-        let accessToken: string;
-        if (token) {
-            accessToken = token[1];
-        };
+        let token = Utility.getLocalStorage("accessToken");
 
         //创建一个数组存储回复信息
         const people: MyMessageProps[] = [];
@@ -36,7 +33,7 @@ export class MyMessageAttme extends React.Component<{}, MyMessageResponseState> 
             const response = await fetch('https://api.cc98.org/Message?filter=receive', {
 	            headers: {
 		            Range: `bytes=${startPage}-${startPage + 49}`,
-		            Authorization: `Bearer ${accessToken}`
+		            Authorization: `Bearer ${token}`
 	            }
             });
             data = await response.json();

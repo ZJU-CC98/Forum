@@ -2,7 +2,7 @@
   "_args": [
     [
       "font-awesome@4.7.0",
-      "d:\\Users\\guoyang.COER\\Source\\Repos\\Forum\\CC98.Forum\\CC98.Forum"
+      "C:\\Users\\user\\source\\repos\\Forum\\CC98.Forum\\CC98.Forum"
     ]
   ],
   "_from": "font-awesome@4.7.0",
@@ -35,7 +35,7 @@
   "_shasum": "8fa8cf0411a1a31afd07b06d2902bb9fc815a133",
   "_shrinkwrap": null,
   "_spec": "font-awesome@4.7.0",
-  "_where": "d:\\Users\\guoyang.COER\\Source\\Repos\\Forum\\CC98.Forum\\CC98.Forum",
+  "_where": "C:\\Users\\user\\source\\repos\\Forum\\CC98.Forum\\CC98.Forum",
   "author": {
     "email": "dave@fontawesome.io",
     "name": "Dave Gandy",

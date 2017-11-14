@@ -1438,13 +1438,12 @@ exports.changeNav = changeNav;
  */
 function getAllNewPost(curPage) {
     return __awaiter(this, void 0, void 0, function () {
-        var startPage, endPage, size, token, newTopics0, newTopics1, _a, _b, _i, i, userInfo0, userInfo1, boardInfo0, boardInfo1;
+        var startPage, size, token, newTopics0, newTopics1, _a, _b, _i, i, userInfo0, userInfo1, userFan0, userFan1, boardInfo0, boardInfo1;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
                     startPage = (curPage - 1) * 20 + 1;
-                    endPage = curPage * 20;
-                    size = endPage - startPage;
+                    size = 20;
                     token = getLocalStorage("accessToken");
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/New?from=" + startPage + "&size=" + size, { headers: { 'Authorization': token } })];
                 case 1:
@@ -1452,18 +1451,19 @@ function getAllNewPost(curPage) {
                     return [4 /*yield*/, newTopics0.json()];
                 case 2:
                     newTopics1 = _c.sent();
+                    console.log(newTopics1);
                     _a = [];
                     for (_b in newTopics1)
                         _a.push(_b);
                     _i = 0;
                     _c.label = 3;
                 case 3:
-                    if (!(_i < _a.length)) return [3 /*break*/, 11];
+                    if (!(_i < _a.length)) return [3 /*break*/, 12];
                     i = _a[_i];
                     if (!(newTopics1[i].userName == null)) return [3 /*break*/, 4];
                     newTopics1[i].userName = '匿名';
                     newTopics1[i].portraitUrl = 'https://www.cc98.org/pic/anonymous.gif';
-                    return [3 /*break*/, 7];
+                    return [3 /*break*/, 8];
                 case 4: return [4 /*yield*/, fetch("http://apitest.niconi.cc/User/" + newTopics1[i].userId)];
                 case 5:
                     userInfo0 = _c.sent();
@@ -1471,25 +1471,26 @@ function getAllNewPost(curPage) {
                 case 6:
                     userInfo1 = _c.sent();
                     newTopics1[i].portraitUrl = userInfo1.portraitUrl;
-                    _c.label = 7;
-                case 7: return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + newTopics1[i].boardId)];
-                case 8:
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/User/Follow/FanCount?userid=" + newTopics1[i].userId)];
+                case 7:
+                    userFan0 = _c.sent();
+                    userFan1 = userFan0.json();
+                    console.log(userFan0);
+                    console.log(userFan1);
+                    newTopics1[i].fanCount = 28;
+                    _c.label = 8;
+                case 8: return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + newTopics1[i].boardId)];
+                case 9:
                     boardInfo0 = _c.sent();
                     return [4 /*yield*/, boardInfo0.json()];
-                case 9:
+                case 10:
                     boardInfo1 = _c.sent();
                     newTopics1[i].boardName = boardInfo1.name;
-                    /**
-                    *这些数据是伪造的
-                    */
-                    newTopics1[i].likeCount = 6;
-                    newTopics1[i].dislikeCount = 3;
-                    newTopics1[i].fanCount = 28;
-                    _c.label = 10;
-                case 10:
+                    _c.label = 11;
+                case 11:
                     _i++;
                     return [3 /*break*/, 3];
-                case 11: 
+                case 12: 
                 /**
                  * 将补充完善的数据赋值给newTopics，以便后续进行可视化
                  */
@@ -7098,30 +7099,22 @@ var MyMessage = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     MyMessage.prototype.render = function () {
-        var url = sendRequest();
-        var token = location.href.match(/access_token=(\S+)&token_type/);
-        var accessToken;
-        if (token) {
-            accessToken = token[1];
-        }
         return (React.createElement("div", { className: "mymessage-root" },
             React.createElement("div", { className: "mymessage" },
-                React.createElement("div", { className: "mymessage-login" },
-                    React.createElement("a", { href: url }, "\u767B\u9646")),
                 React.createElement("div", { className: "mymessage-title" }, "\u6211\u7684\u6D88\u606F"),
                 React.createElement(react_router_dom_1.BrowserRouter, null,
                     React.createElement("div", { className: "mymessage-content" },
                         React.createElement("div", { className: "mymessage-nav" },
                             React.createElement("div", { id: "response" },
-                                React.createElement(react_router_dom_1.NavLink, { to: "/mymessage/response?access_token=" + accessToken }, "\u56DE\u590D\u6211\u7684")),
+                                React.createElement(react_router_dom_1.NavLink, { to: "/mymessage/response" }, "\u56DE\u590D\u6211\u7684")),
                             React.createElement("div", { id: "attme" },
-                                React.createElement(react_router_dom_1.NavLink, { to: "/mymessage/attme?access_token=" + accessToken }, "@\u6211\u7684")),
+                                React.createElement(react_router_dom_1.NavLink, { to: "/mymessage/attme" }, "@\u6211\u7684")),
                             React.createElement("div", { id: "likes" },
-                                React.createElement(react_router_dom_1.NavLink, { to: "/mymessage/likes?access_token=" + accessToken }, "\u6536\u5230\u7684\u8D5E")),
+                                React.createElement(react_router_dom_1.NavLink, { to: "/mymessage/likes" }, "\u6536\u5230\u7684\u8D5E")),
                             React.createElement("div", { id: "system" },
-                                React.createElement(react_router_dom_1.NavLink, { to: "/mymessage/system?access_token=" + accessToken }, "\u7CFB\u7EDF\u901A\u77E5")),
+                                React.createElement(react_router_dom_1.NavLink, { to: "/mymessage/system" }, "\u7CFB\u7EDF\u901A\u77E5")),
                             React.createElement("div", { id: "message" },
-                                React.createElement(react_router_dom_1.NavLink, { to: "/mymessage/message?access_token=" + accessToken }, "\u6211\u7684\u79C1\u4FE1"))),
+                                React.createElement(react_router_dom_1.NavLink, { to: "/mymessage/message" }, "\u6211\u7684\u79C1\u4FE1"))),
                         React.createElement(react_router_dom_1.Route, { path: "/mymessage/response", component: MyMessageResponse_1.MyMessageResponse }),
                         React.createElement(react_router_dom_1.Route, { path: "/mymessage/attme", component: MyMessageAttme_1.MyMessageAttme }),
                         React.createElement(react_router_dom_1.Route, { path: "/mymessage/likes", component: Likes }),
@@ -7149,19 +7142,6 @@ var Likes = /** @class */ (function (_super) {
     return Likes;
 }(React.Component));
 exports.Likes = Likes;
-function sendRequest() {
-    //申请到的appID
-    var appId = '457bfed1-ab0b-4606-a346-05afac262d5a';
-    //申请后的回调地址
-    var c = location.origin + "/mymessage";
-    var redirectURI = encodeURI(c);
-    //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
-    var path = 'https://login.cc98.org/OAuth/Authorize?';
-    var queryParams = ['client_id=' + appId, 'response_type=token', 'scope=all', 'redirect_uri=' + redirectURI];
-    var query = queryParams.join('&');
-    var url = path + query;
-    return url;
-}
 
 
 /***/ }),
@@ -7222,6 +7202,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var MyMessagePerson_1 = __webpack_require__(59);
 var MyMessageWindow_1 = __webpack_require__(60);
+var Utility = __webpack_require__(3);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -7253,19 +7234,15 @@ var MyMessageMessage = /** @class */ (function (_super) {
     }
     MyMessageMessage.prototype.componentWillMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var personNumber, token, accessToken, response1, myInfo, people, startPage, response2, data, i, _a, _b, _i, i, response, person;
+            var personNumber, token, response1, myInfo, people, startPage, response2, data, i, _a, _b, _i, i, response, person;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        personNumber = 40;
-                        token = location.href.match(/access_token=(\S+)/);
-                        if (token) {
-                            accessToken = token[1];
-                        }
-                        ;
+                        personNumber = 10;
+                        token = Utility.getLocalStorage("accessToken");
                         return [4 /*yield*/, fetch('https://api.cc98.org/me', {
                                 headers: {
-                                    Authorization: "Bearer " + accessToken
+                                    Authorization: "" + token
                                 }
                             })];
                     case 1:
@@ -7274,20 +7251,19 @@ var MyMessageMessage = /** @class */ (function (_super) {
                     case 2:
                         myInfo = _c.sent();
                         people = [];
-                        startPage = -49;
-                        _c.label = 3;
-                    case 3:
-                        startPage += 49;
-                        return [4 /*yield*/, fetch('https://api.cc98.org/Message?filter=both', {
+                        startPage = -25;
+                        //do {
+                        startPage += 25;
+                        return [4 /*yield*/, fetch('https://api.cc98.org/Message?userName=&filter=both', {
                                 headers: {
-                                    Range: "bytes=" + startPage + "-" + (startPage + 49),
-                                    Authorization: "Bearer " + accessToken
+                                    Range: "bytes=" + startPage + "-" + (startPage + 24),
+                                    Authorization: "" + token
                                 }
                             })];
-                    case 4:
+                    case 3:
                         response2 = _c.sent();
                         return [4 /*yield*/, response2.json()];
-                    case 5:
+                    case 4:
                         data = _c.sent();
                         //从最近50条收发短信中获取最多n位联系人，并存储在people中
                         for (i in data) {
@@ -7308,32 +7284,27 @@ var MyMessageMessage = /** @class */ (function (_super) {
                                 break;
                             }
                         }
-                        _c.label = 6;
-                    case 6:
-                        if (people.length < personNumber) return [3 /*break*/, 3];
-                        _c.label = 7;
-                    case 7:
                         _a = [];
                         for (_b in people)
                             _a.push(_b);
                         _i = 0;
-                        _c.label = 8;
-                    case 8:
-                        if (!(_i < _a.length)) return [3 /*break*/, 12];
+                        _c.label = 5;
+                    case 5:
+                        if (!(_i < _a.length)) return [3 /*break*/, 9];
                         i = _a[_i];
                         return [4 /*yield*/, fetch("https://api.cc98.org/User/Name/" + people[i].name)];
-                    case 9:
+                    case 6:
                         response = _c.sent();
                         return [4 /*yield*/, response.json()];
-                    case 10:
+                    case 7:
                         person = _c.sent();
                         people[i].portraitUrl = person.portraitUrl;
-                        _c.label = 11;
-                    case 11:
+                        _c.label = 8;
+                    case 8:
                         _i++;
-                        return [3 /*break*/, 8];
-                    case 12:
-                        this.setState({ data: people, chatName: people[0].name, chatPortraitUrl: people[0].portraitUrl, myName: myInfo.name, myPortraitUrl: myInfo.portraitUrl, token: accessToken });
+                        return [3 /*break*/, 5];
+                    case 9:
+                        this.setState({ data: people, chatName: people[0].name, chatPortraitUrl: people[0].portraitUrl, myName: myInfo.name, myPortraitUrl: myInfo.portraitUrl, token: token });
                         //默认选中第一个联系人
                         $("#" + people[0].name).addClass('mymessage-message-pFocus');
                         return [2 /*return*/];
@@ -7485,7 +7456,7 @@ var MyMessageWindow = /** @class */ (function (_super) {
             var bodyContent = JSON.stringify(bodyObj);
             var messageId = fetch('https://api.cc98.org/Message', {
                 method: 'POST',
-                headers: { Authorization: "Bearer " + _this.props.token, 'content-type': 'application/json' },
+                headers: { Authorization: "" + _this.props.token, 'content-type': 'application/json' },
                 body: bodyContent
             });
             //重新获取数据并渲染
@@ -7531,10 +7502,10 @@ var MyMessageWindow = /** @class */ (function (_super) {
                         _a.label = 1;
                     case 1:
                         startPage += 50;
-                        return [4 /*yield*/, fetch("https://api.cc98.org/Message?userName=" + item.chatName + "&filter=both", {
+                        return [4 /*yield*/, fetch("https://api.cc98.org/Message?userName=" + item.chatName + "&filter=Both", {
                                 headers: {
                                     Range: "bytes=" + startPage + "-" + (startPage + 49),
-                                    Authorization: "Bearer " + item.token
+                                    Authorization: "" + item.token
                                 }
                             })];
                     case 2:
@@ -7565,7 +7536,6 @@ var MyMessageWindow = /** @class */ (function (_super) {
         });
     };
     MyMessageWindow.prototype.render = function () {
-        console.log('开始render');
         return (React.createElement("div", { className: "mymessage-message-window" },
             React.createElement("div", { className: "mymessage-message-wHeader" },
                 React.createElement("div", { className: "mymessage-message-wReport" }),
@@ -7922,6 +7892,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
 var MyMessageResponsebox_1 = __webpack_require__(14);
+var Utility = __webpack_require__(3);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -7939,15 +7910,11 @@ var MyMessageAttme = /** @class */ (function (_super) {
     }
     MyMessageAttme.prototype.componentWillMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, accessToken, people, data, startPage, response, i, _a, _b, _i, i, response, person;
+            var token, people, data, startPage, response, i, _a, _b, _i, i, response, person;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        token = location.href.match(/access_token=(\S+)/);
-                        if (token) {
-                            accessToken = token[1];
-                        }
-                        ;
+                        token = Utility.getLocalStorage("accessToken");
                         people = [];
                         data = [];
                         startPage = -49;
@@ -7957,7 +7924,7 @@ var MyMessageAttme = /** @class */ (function (_super) {
                         return [4 /*yield*/, fetch('https://api.cc98.org/Message?filter=receive', {
                                 headers: {
                                     Range: "bytes=" + startPage + "-" + (startPage + 49),
-                                    Authorization: "Bearer " + accessToken
+                                    Authorization: "Bearer " + token
                                 }
                             })];
                     case 2:
@@ -8081,6 +8048,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
 var MyMessageSystembox_1 = __webpack_require__(66);
+var Utility = __webpack_require__(3);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -8098,15 +8066,11 @@ var MyMessageSystem = /** @class */ (function (_super) {
     }
     MyMessageSystem.prototype.componentWillMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, accessToken, people, data, startPage, response, i, _a, _b, _i, i, response, person;
+            var token, people, data, startPage, response, i, _a, _b, _i, i, response, person;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        token = location.href.match(/access_token=(\S+)/);
-                        if (token) {
-                            accessToken = token[1];
-                        }
-                        ;
+                        token = Utility.getLocalStorage("accessToken");
                         people = [];
                         data = [];
                         startPage = -49;
@@ -8116,7 +8080,7 @@ var MyMessageSystem = /** @class */ (function (_super) {
                         return [4 /*yield*/, fetch('https://api.cc98.org/Message?filter=receive', {
                                 headers: {
                                     Range: "bytes=" + startPage + "-" + (startPage + 49),
-                                    Authorization: "Bearer " + accessToken
+                                    Authorization: token
                                 }
                             })];
                     case 2:
