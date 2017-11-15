@@ -14,7 +14,7 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
     async componentDidMount() {
         if (Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName")) {
             let userName = Utility.getLocalStorage("userName");
-            let response = await fetch(`http://api.cc98.org/User/Name/${userName}`);
+            let response = await fetch(`http://apitest.niconi.cc/User/Name/${userName}`);
             let data = await response.json();
             let userImgUrl = data.portraitUrl;
             this.setState({ userName: userName, userImgUrl: userImgUrl });

@@ -99,6 +99,24 @@ export async function getTopicContent(topicid: number, curPage: number) {
     }
     return post;
 }
+export async function getHotReplyContent(topicid: number) {
+    let token = getLocalStorage("accessToken");
+    const response = await fetch(`http://apitest.niconi.cc/Post/Topic/Hot/${topicid}`, { headers: { 'Authorization': token } });
+    const content = await response.json();
+    const post: State.ContentState[] = [];
+    let topicNumberInPage: number=content.length;
+    for (let i = 0; i < topicNumberInPage; i++) {
+        if (content[i].userName != null) {
+            const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
+            const userMesJson = await userMesResponse.json();
+            post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege);
+        } else {
+            let purl = 'https://www.cc98.org/pic/anonymous.gif';
+            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null,"匿名用户");
+        }
+    }
+    return post;
+}
 export function convertHotTopic(item: State.TopicTitleAndContentState) {
     return <TopicTitleAndContent title={item.title} authorName={item.userName} id={item.id} authorId={item.userId} lastPostTime={item.lastPostTime} lastPostUserName={item.lastPostUser} />
         ;

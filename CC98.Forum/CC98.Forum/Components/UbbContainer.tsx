@@ -39,7 +39,7 @@ export class UbbContainer extends React.Component<UbbContainerProps, {}> {
 
 		//打开回车与空格00
 		const style = {
-			whiteSpace: 'pre-line',
+			whiteSpace: 'pre-wrap',
             width: "100%"
 		};
 
