@@ -1227,6 +1227,47 @@ function getTopicContent(topicid, curPage) {
     });
 }
 exports.getTopicContent = getTopicContent;
+function getHotReplyContent(topicid) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, response, content, post, topicNumberInPage, i, userMesResponse, userMesJson, purl;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Post/Topic/Hot/" + topicid, { headers: { 'Authorization': token } })];
+                case 1:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    content = _a.sent();
+                    post = [];
+                    topicNumberInPage = content.length;
+                    i = 0;
+                    _a.label = 3;
+                case 3:
+                    if (!(i < topicNumberInPage)) return [3 /*break*/, 8];
+                    if (!(content[i].userName != null)) return [3 /*break*/, 6];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + content[i].userName)];
+                case 4:
+                    userMesResponse = _a.sent();
+                    return [4 /*yield*/, userMesResponse.json()];
+                case 5:
+                    userMesJson = _a.sent();
+                    post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege);
+                    return [3 /*break*/, 7];
+                case 6:
+                    purl = 'https://www.cc98.org/pic/anonymous.gif';
+                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户");
+                    _a.label = 7;
+                case 7:
+                    i++;
+                    return [3 /*break*/, 3];
+                case 8: return [2 /*return*/, post];
+            }
+        });
+    });
+}
+exports.getHotReplyContent = getHotReplyContent;
 function convertHotTopic(item) {
     return React.createElement(List_1.TopicTitleAndContent, { title: item.title, authorName: item.userName, id: item.id, authorId: item.userId, lastPostTime: item.lastPostTime, lastPostUserName: item.lastPostUser });
 }
@@ -3289,6 +3330,7 @@ var Post = /** @class */ (function (_super) {
                 React.createElement(Category, { topicid: this.state.topicid }),
                 React.createElement(TopicPager, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage })),
             topic,
+            React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: HotReply }),
             React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: Reply }),
             React.createElement(TopicPagerDown, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
             React.createElement(SendTopic_1.SendTopic, { onChange: this.handleChange, topicid: this.state.topicid }));
@@ -3390,6 +3432,125 @@ var Reply = /** @class */ (function (_super) {
     return Reply;
 }(RouteComponent));
 exports.Reply = Reply;
+var HotReply = /** @class */ (function (_super) {
+    __extends(HotReply, _super);
+    function HotReply(props, content) {
+        var _this = _super.call(this, props, content) || this;
+        _this.state = {
+            contents: [],
+        };
+        return _this;
+    }
+    HotReply.prototype.componentWillReceiveProps = function (newProps) {
+        return __awaiter(this, void 0, void 0, function () {
+            var page, realContents;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        page = newProps.match.params.page || 1;
+                        if (!(page == 1)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, Utility.getHotReplyContent(newProps.match.params.topicid)];
+                    case 1:
+                        realContents = _a.sent();
+                        this.setState({ contents: realContents });
+                        _a.label = 2;
+                    case 2: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    HotReply.prototype.generateContents = function (item) {
+        return React.createElement("div", { className: "reply" },
+            React.createElement("div", { style: { marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" } },
+                React.createElement(HotReplier, { key: item.id, userId: item.userId, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber, privilege: item.privilege }),
+                React.createElement(ReplyContent, { key: item.content, content: item.content, signature: item.signature })));
+    };
+    HotReply.prototype.render = function () {
+        return React.createElement("div", { className: "center", style: { width: "100%" } }, this.state.contents.map(this.generateContents));
+    };
+    return HotReply;
+}(RouteComponent));
+exports.HotReply = HotReply;
+var HotReplier = /** @class */ (function (_super) {
+    __extends(HotReplier, _super);
+    function HotReplier(props, content) {
+        var _this = _super.call(this, props, content) || this;
+        _this.state = {};
+        return _this;
+    }
+    HotReplier.prototype.render = function () {
+        var url = "/user/" + this.props.userId;
+        var realUrl = encodeURIComponent(url);
+        var curUserPostUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userId;
+        $(document).ready(function () {
+            $(".authorImg").mouseenter(function (event) {
+                var currentImage = event.currentTarget;
+                $(currentImage).next(".userDetails").show();
+            });
+            $(".mouse-userDetails").mouseleave(function (event) {
+                var currentImage = event.currentTarget;
+                $(currentImage).find(".userDetails").hide();
+            });
+        });
+        var topicNumber = '帖数';
+        if (!this.props.userId) {
+            topicNumber = '';
+        }
+        var userDetails;
+        if (this.props.userName != '匿名') {
+            userDetails = React.createElement(UserDetails, { userName: this.props.userName });
+        }
+        else {
+            userDetails = null;
+        }
+        var userName;
+        if (this.props.privilege === "超级版主") {
+            userName = React.createElement("a", { style: { color: "pink" }, href: url }, this.props.userName);
+        }
+        else if (this.props.privilege === "全站贵宾") {
+            userName = React.createElement("a", { style: { color: "blue" }, href: url }, this.props.userName);
+        }
+        else if (this.props.privilege === "注册用户" || this.props.privilege == "匿名" || this.props.privilege === "匿名用户") {
+            userName = React.createElement("a", { style: { color: "black" }, href: url }, this.props.userName);
+        }
+        else if (this.props.privilege === "管理员") {
+            userName = React.createElement("a", { style: { color: "red" }, href: url }, this.props.userName);
+        }
+        return React.createElement("div", { className: "replyRoot" },
+            React.createElement("div", { className: "row", style: { width: "100%", display: "flex", marginBottom: "0.625rem" } },
+                React.createElement("div", { className: "row mouse-userDetails", style: { height: "15.625rem" } },
+                    React.createElement("div", { className: "authorImg" },
+                        React.createElement("a", { href: realUrl },
+                            React.createElement("img", { src: this.props.userImgUrl }))),
+                    React.createElement("div", { className: "userDetails", style: { display: "none", position: "absolute", zindedx: "1" } }, userDetails)),
+                React.createElement("div", { className: "column", id: "rpymes" },
+                    React.createElement("div", { className: "row", id: "replierMes" },
+                        React.createElement("div", { style: { color: "red", marginLeft: "1rem" } },
+                            React.createElement("span", null, "\u6700\u70ED\u56DE\u590D"),
+                            React.createElement("span", null, "(\u7B2C"),
+                            React.createElement("span", null, this.props.floor),
+                            React.createElement("span", null, "\u697C)")),
+                        React.createElement("div", { className: "rpyClr", style: { marginLeft: "0.625rem" } }, userName),
+                        React.createElement("div", { id: "topicsNumber", style: { marginLeft: "0.625rem", display: "flex", flexWrap: "nowrap", wordBreak: "keepAll", marginRight: "0.75rem" } },
+                            topicNumber,
+                            "\u00A0",
+                            React.createElement("span", { style: { color: "red" } }, this.props.sendTopicNumber),
+                            " ")),
+                    React.createElement("div", { className: "row", style: { display: "flex", flexWrap: "nowrap" } },
+                        React.createElement("div", { id: "clockimg", style: { marginLeft: "0.375rem" } },
+                            React.createElement("i", { className: "fa fa-clock-o fa-lg fa-fw" })),
+                        React.createElement("div", null,
+                            React.createElement("span", { className: "timeProp" }, moment(this.props.replyTime).format('YYYY-MM-DD HH:mm:ss'))))),
+                React.createElement("div", { id: "operation" },
+                    React.createElement("button", { className: "operation" }, "\u5F15\u7528"),
+                    React.createElement("button", { className: "operation" }, "\u7F16\u8F91"),
+                    React.createElement("button", { className: "operation" }, "\u79C1\u4FE1"),
+                    React.createElement("button", { className: "operation" }, "\u4E3E\u62A5"),
+                    React.createElement(react_router_dom_1.Link, { className: "operation", to: curUserPostUrl }, "\u53EA\u770B\u6B64\u7528\u6237"))));
+    };
+    return HotReplier;
+}(RouteComponent));
+exports.HotReplier = HotReplier;
 var Replier = /** @class */ (function (_super) {
     __extends(Replier, _super);
     function Replier(props, content) {
@@ -8537,7 +8698,7 @@ var DropDown = /** @class */ (function (_super) {
                     case 0:
                         if (!(Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName"))) return [3 /*break*/, 3];
                         userName = Utility.getLocalStorage("userName");
-                        return [4 /*yield*/, fetch("http://api.cc98.org/User/Name/" + userName)];
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/User/Name/" + userName)];
                     case 1:
                         response = _a.sent();
                         return [4 /*yield*/, response.json()];
@@ -8944,7 +9105,7 @@ var HotTopicComponent = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         mainPageTopics = [];
-                        return [4 /*yield*/, fetch('http://api.cc98.org/Topic/Hot')];
+                        return [4 /*yield*/, fetch('http://apitest.niconi.cc/Topic/Hot')];
                     case 1:
                         response = _a.sent();
                         return [4 /*yield*/, response.json()];
@@ -9012,7 +9173,7 @@ var Shixijianzhi = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         mainPageTopics = [];
-                        url = 'http://api.cc98.org/Topic/Board/459';
+                        url = 'http://apitest.niconi.cc/Topic/Board/459';
                         return [4 /*yield*/, fetch(url, { headers: { Range: 'bytes=0-9' } })];
                     case 1:
                         response = _a.sent();
