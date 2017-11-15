@@ -16,7 +16,7 @@ export class AllNewTopic extends React.Component {
 		return (
 			<div className="focus-root">
 				<div className="focus" >
-                    <div className="focus-allNewPost"><i className="fa fa-home" aria-hidden="true"></i>首页/全站新帖</div>
+                    <div className="focus-allNewTopic"><i className="fa fa-home" aria-hidden="true"></i>首页/全站新帖</div>
                     <AllNewTopicArea />
 				</div>
 			</div>);

@@ -266,45 +266,73 @@ export async function getAllNewTopic(curPage: number) {
     /**
      * 一次性可以获取20个主题
      */
-    const startPage: number = (curPage - 1) * 20 + 1;
+    const startPage: number = (curPage - 1) * 20;
     const size = 20;
     let token = getLocalStorage("accessToken");
     /**
-     * 通过api获取到主题之后转成json格式，但此时没有作者头像的图片地址和版面名称
+     * 通过api获取到主题之后转成json格式
      */
-    const newTopics0 = await fetch(`http://apitest.niconi.cc/Topic/New?from=${startPage}&size=${size}`, { headers: { 'Authorization': token } });
-    const newTopics1 = await newTopics0.json();
-    console.log(newTopics1);
-    for (let i in newTopics1) {
-        /**
-        *根据作者名字获取作者头像的图片地址
-        */
-
-        if (newTopics1[i].userName == null) {
-            newTopics1[i].userName = '匿名';
-            newTopics1[i].portraitUrl = 'https://www.cc98.org/pic/anonymous.gif';
+    const response = await fetch(`http://apitest.niconi.cc/topic/new?from=${startPage}&size=${size}`, { headers: { 'Authorization': `${token}` } });
+    const newTopic = await response.json();
+    for (let i in newTopic) {
+        if(newTopic[i].userId) {
+            let userFan0 = await fetch(`http://apitest.niconi.cc/user/follow/fanCount?userid=${newTopic[i].userId}`);
+            let userFan1 = await userFan0.json();
+            newTopic[i].fanCount = userFan1;
+            let userInfo0 = await fetch(`http://apitest.niconi.cc/user/${newTopic[i].userId}`, { headers: { Authorization: `${token}` } });
+            let userInfo1 = await userInfo0.json();
+            newTopic[i].portraitUrl = userInfo1.portraitUrl;
         }
         else {
-            const userInfo0 = await fetch(`http://apitest.niconi.cc/User/${newTopics1[i].userId}`);
-            const userInfo1 = await userInfo0.json();
-            newTopics1[i].portraitUrl = userInfo1.portraitUrl;
-            const userFan0 = await fetch(`http://apitest.niconi.cc/User/Follow/FanCount?userid=${newTopics1[i].userId}`);
-            const userFan1 = await userFan0.json();
-            newTopics1[i].fanCount = userFan1;
+            newTopic[i].fanCount = 999;
         }
-        /**
-         * 根据版面id获取版面名称
-         */
-        const boardInfo0 = await fetch(`http://apitest.niconi.cc/Board/${newTopics1[i].boardId}`);
-        const boardInfo1 = await boardInfo0.json();
-        newTopics1[i].boardName = boardInfo1.name;
+        newTopic[i].likeCount = 999;
+        newTopic[i].dislikeCount = 999;
     }
-    /**
-     * 将补充完善的数据赋值给newTopics，以便后续进行可视化
-     */
-    //const newTopics: FocusPost[] = newTopics1;
-    return newTopics1;
+    let data: FocusTopic[] = newTopic;
+    return data;
 }
+
+/**
+ * 获取关注版面新帖
+ * @param curPage
+ */
+export async function getFocusTopic(curPage: number) {
+    /**
+     * 一次性可以获取20个主题
+     */
+    const startPage: number = (curPage - 1) * 20;
+    const size = 20;
+    let token = getLocalStorage("accessToken");
+    /**
+     * 通过api获取到主题之后转成json格式
+     */
+    const response = await fetch(`http://apitest.niconi.cc/topic/customboards/new?from=${startPage}&size=${size}`, { headers: { 'Authorization': `${token}` } });
+    const newTopic = await response.json();
+    console.log("获取之后：");
+    console.log(newTopic);
+    for (let i in newTopic) {
+        if (newTopic[i].userId) {
+            console.log(newTopic[i].name);
+            let userFan0 = await fetch(`http://apitest.niconi.cc/user/follow/fanCount?userid=${newTopic[i].userId}`);
+            let userFan1 = await userFan0.json();
+            newTopic[i].fanCount = userFan1;
+            let userInfo0 = await fetch(`http://apitest.niconi.cc/user/${newTopic[i].userId}`, { headers: { Authorization: `${token}` } });
+            let userInfo1 = await userInfo0.json();
+            newTopic[i].portraitUrl = userInfo1.portraitUrl;
+        }
+        else {
+            newTopic[i].fanCount = 999;
+        }
+        newTopic[i].likeCount = 999;
+        newTopic[i].dislikeCount = 999;
+    }
+    let data: FocusTopic[] = newTopic;
+    return data;
+}
+
+
+//与缓存相关的函数
 export function setStorage(key, value) {
     let v = value;
     if (typeof v == 'object') {
@@ -315,6 +343,7 @@ export function setStorage(key, value) {
     }
     sessionStorage.setItem(key, v);
 }
+
 export function getStorage(key) {
     let v = sessionStorage.getItem(key);
     if (!v) {

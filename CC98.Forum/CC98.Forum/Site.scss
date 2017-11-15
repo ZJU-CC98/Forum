@@ -1696,12 +1696,12 @@ body {
 
 .focus-board-area {
     display: flex;
-    margin-top: 20px;
+    flex-wrap: wrap;
     min-height: 30px;
 
     .focus-board {
-        width: 56px;
         height: 14px;
+        flex-shrink: 0;
 
         border: {
             style: solid;
@@ -1714,20 +1714,21 @@ body {
         color: $color-board;
         padding: 4px 11px 10px;
         margin-right: 20px;
+        margin-top: 20px;
     }
 }
 
-.focus-post-area {
+.focus-topic-area {
     display: flex;
     flex-direction: column;
     margin-top: 0.625rem;
 
-    .focus-post-topicArea {
+    .focus-topic-topicArea {
         display: flex;
         flex-direction: column;
     }
 
-    .focus-post-loading {
+    .focus-topic-loading {
         margin-top: 20px;
         text-align: center;
 
@@ -1737,7 +1738,7 @@ body {
         }
     }
 
-    .focus-post-loaddone {
+    .focus-topic-loaddone {
         margin-top: 20px;
         text-align: center;
         font-size: 16px;
@@ -1746,7 +1747,7 @@ body {
 }
 
 
-.focus-post {
+.focus-topic {
     display: flex;
     min-height: 98px;
     border: 1px solid $color-border;
@@ -1755,7 +1756,7 @@ body {
     overflow: hidden;
 }
 
-.focus-post-portraitUrl {
+.focus-topic-portraitUrl {
     display: inline-block;
     width: 60px;
     height: 60px;
@@ -1763,19 +1764,19 @@ body {
     border-radius: 50%;
 }
 
-.focus-post-info1 {
+.focus-topic-info1 {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
 
-    .focus-post-authorInfo {
+    .focus-topic-authorInfo {
         display: flex;
         height: 12px;
         margin: 30px 0px 0px 2px;
         font-size: 12px;
     }
 
-    .focus-post-title {
+    .focus-topic-title {
         height: 12px;
         margin: 14px 0px 30px 2px;
         font-size: 12px;
@@ -1783,18 +1784,18 @@ body {
     }
 }
 
-.focus-post-info2 {
+.focus-topic-info2 {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     font-size: 12px;
     color: $color-thinBlack;
 
-    .focus-post-board {
+    .focus-topic-board {
         margin: 30px 18px 0px;
     }
 
-    .focus-post-response {
+    .focus-topic-response {
         display: flex;
         justify-content: flex-end;
         margin: 14px 18px 30px;
@@ -1815,20 +1816,20 @@ body {
 }
 
 
-.focus-post-blackText {
+.focus-topic-blackText {
     color: $color-thinBlack;
     min-height: 12px;
     flex-basis: 90px;
 }
 
-.focus-post-redText {
+.focus-topic-redText {
     color: $color-red;
     flex-basis: 26px;
     min-height: 12px;
 }
 
 
-.focus-allNewPost {
+.focus-allNewTopic {
     color: $color-thinBlack;
     min-height: 12px;
     font-size: 12px;
@@ -2540,7 +2541,7 @@ body {
     -o-user-select: none; /* 以上两个属性目前并未支持，写在这里为了减少风险 */
 }
 /*
-    登陆页用
+    登录页用
 */
 .login {
     display: flex;

@@ -7,7 +7,7 @@ import { FocusTopicSingle } from './FocusTopicSingle';
 import { FocusTopicAreaState } from '../States/FocusTopicAreaState';
 import * as Utility from '../Utility';
 /**
- * 表示我关注的某个版面的主题列表
+ * 表示全站最新主题列表
  */
 export class AllNewTopicArea extends React.Component<{}, FocusTopicAreaState> {
 
@@ -29,7 +29,7 @@ export class AllNewTopicArea extends React.Component<{}, FocusTopicAreaState> {
      * 进入立即获取20条新帖的数据，同时为滚动条添加监听事件
      */
     async componentDidMount() {
-        const data = await Utility.getAllNewTopic(this.state.curPage);
+        let data = await Utility.getAllNewTopic(this.state.curPage);
         this.setState({ data: data });
         document.addEventListener('scroll', this.handleScroll);
     }
@@ -50,8 +50,8 @@ export class AllNewTopicArea extends React.Component<{}, FocusTopicAreaState> {
             *查看新帖数目大于100条时不再继续加载
             */
             if (this.state.curPage >= 5) {
-                $('#focus-post-loading').addClass('displaynone');
-                $('#focus-post-loaddone').removeClass('displaynone');
+                $('#focus-topic-loading').addClass('displaynone');
+                $('#focus-topic-loaddone').removeClass('displaynone');
                 return;
             }
             /**
@@ -77,10 +77,10 @@ export class AllNewTopicArea extends React.Component<{}, FocusTopicAreaState> {
      * 将主题排列好
      */
     render() {
-        return <div className="focus-post-area">
-            <div className="focus-post-topicArea">{this.state.data.map(coverFocusPost)}</div>
-            <div className="focus-post-loading" id="focus-post-loading"><img src="http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif"></img></div>
-            <div className="focus-post-loaddone displaynone" id="focus-post-loaddone">---------------------- 已加载100条新帖，无法加载更多 ----------------------</div>
+        return <div className="focus-topic-area">
+            <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
+            <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif"></img></div>
+            <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">---------------------- 已加载100条新帖，无法加载更多 ----------------------</div>
         </div>;
     }
 
