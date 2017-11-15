@@ -4,17 +4,13 @@
 import * as React from 'react';
 import { MyMessageProps } from '../Props/MyMessageProps';
 import { UbbContainer } from './UbbContainer';
+import * as moment from 'moment';
 
 export class MyMessageReceiver extends React.Component<MyMessageProps> {
-    /*
-    componentDidMount() {
-        document.getElementById(String(this.props.id)).innerHTML = '修改后的内容';//UBBCode(this.props.cotent,'')
-    }
-    */
 
     render() {
         return (<div className="mymessage-message-wc">
-                    <div className="mymessage-message-wcTime">{this.props.sendTime}</div>
+                <div className="mymessage-message-wcTime">{moment(this.props.sendTime).format('YYYY-MM-DD HH:mm:ss')}</div>
                     <div className="mymessage-message-wcReceiver">
                         <img className="mymessage-message-wcPortraitUrl" src={this.props.chatPortraitUrl} />
                         <div className="mymessage-message-wcContent">

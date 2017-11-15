@@ -1458,12 +1458,12 @@ function getAllNewPost(curPage) {
                     _i = 0;
                     _c.label = 3;
                 case 3:
-                    if (!(_i < _a.length)) return [3 /*break*/, 12];
+                    if (!(_i < _a.length)) return [3 /*break*/, 13];
                     i = _a[_i];
                     if (!(newTopics1[i].userName == null)) return [3 /*break*/, 4];
                     newTopics1[i].userName = '匿名';
                     newTopics1[i].portraitUrl = 'https://www.cc98.org/pic/anonymous.gif';
-                    return [3 /*break*/, 8];
+                    return [3 /*break*/, 9];
                 case 4: return [4 /*yield*/, fetch("http://apitest.niconi.cc/User/" + newTopics1[i].userId)];
                 case 5:
                     userInfo0 = _c.sent();
@@ -1474,23 +1474,23 @@ function getAllNewPost(curPage) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/User/Follow/FanCount?userid=" + newTopics1[i].userId)];
                 case 7:
                     userFan0 = _c.sent();
-                    userFan1 = userFan0.json();
-                    console.log(userFan0);
-                    console.log(userFan1);
-                    newTopics1[i].fanCount = 28;
-                    _c.label = 8;
-                case 8: return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + newTopics1[i].boardId)];
-                case 9:
+                    return [4 /*yield*/, userFan0.json()];
+                case 8:
+                    userFan1 = _c.sent();
+                    newTopics1[i].fanCount = userFan1;
+                    _c.label = 9;
+                case 9: return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + newTopics1[i].boardId)];
+                case 10:
                     boardInfo0 = _c.sent();
                     return [4 /*yield*/, boardInfo0.json()];
-                case 10:
+                case 11:
                     boardInfo1 = _c.sent();
                     newTopics1[i].boardName = boardInfo1.name;
-                    _c.label = 11;
-                case 11:
+                    _c.label = 12;
+                case 12:
                     _i++;
                     return [3 /*break*/, 3];
-                case 12: 
+                case 13: 
                 /**
                  * 将补充完善的数据赋值给newTopics，以便后续进行可视化
                  */

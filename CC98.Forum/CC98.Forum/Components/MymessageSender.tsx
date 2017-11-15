@@ -4,11 +4,12 @@
 import * as React from 'react';
 import { MyMessageProps } from '../Props/MyMessageProps';
 import { UbbContainer } from './UbbContainer'
+import * as moment from 'moment';
 
 export class MyMessageSender extends React.Component<MyMessageProps> {
     render() {
         return (<div className="mymessage-message-wc">
-                    <div className="mymessage-message-wcTime">{this.props.sendTime}</div>
+                <div className="mymessage-message-wcTime">{moment(this.props.sendTime).format('YYYY-MM-DD HH:mm:ss')}</div>
                     <div className="mymessage-message-wcSender">
                         <img className="mymessage-message-wcPortraitUrl" src={this.props.myPortraitUrl} />
                         <div className="mymessage-message-wcContent">

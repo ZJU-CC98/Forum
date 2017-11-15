@@ -289,10 +289,8 @@ export async function getAllNewPost(curPage: number) {
             const userInfo1 = await userInfo0.json();
             newTopics1[i].portraitUrl = userInfo1.portraitUrl;
             const userFan0 = await fetch(`http://apitest.niconi.cc/User/Follow/FanCount?userid=${newTopics1[i].userId}`);
-            const userFan1 = userFan0.json();
-            console.log(userFan0);
-            console.log(userFan1);
-            newTopics1[i].fanCount = 28;
+            const userFan1 = await userFan0.json();
+            newTopics1[i].fanCount = userFan1;
         }
         /**
          * 根据版面id获取版面名称
