@@ -1905,7 +1905,7 @@ var UbbContainer = /** @class */ (function (_super) {
         var ubbHtml = engine.exec(this.props.code || '', options);
         //打开回车与空格00
         var style = {
-            whiteSpace: 'pre-line',
+            whiteSpace: 'pre-wrap',
             width: "100%"
         };
         // 注意兼容性设置， HTML4 不支持 article 标签
@@ -3152,15 +3152,17 @@ var Post = /** @class */ (function (_super) {
     };
     Post.prototype.render = function () {
         var topic = null;
+        var hotReply = null;
         if (this.state.page == 1) {
             topic = React.createElement(PostTopic, { imgUrl: "/images/ads.jpg", page: this.state.page, topicid: this.state.topicid });
+            hotReply = React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: HotReply });
         }
         return React.createElement("div", { className: "center", style: { width: "80%" } },
             React.createElement("div", { className: "row", style: { width: "100%", justifyContent: 'space-between', borderBottom: '#EAEAEA solid thin', alignItems: "center" } },
                 React.createElement(Category, { topicid: this.state.topicid }),
                 React.createElement(TopicPager, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage })),
+            hotReply,
             topic,
-            React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: HotReply }),
             React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: Reply }),
             React.createElement(TopicPagerDown, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
             React.createElement(SendTopic_1.SendTopic, { onChange: this.handleChange, topicid: this.state.topicid }));

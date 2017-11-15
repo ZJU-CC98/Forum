@@ -75,16 +75,19 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
     }
     render() {
         let topic = null;
+        let hotReply = null;
         if (this.state.page == 1) {
             topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} />;
+            hotReply = <Route path="/topic/:topicid/:page?" component={HotReply} />;
         }
         return <div className="center" style={{ width: "80%" }} >
             <div className="row" style={{ width: "100%", justifyContent: 'space-between', borderBottom: '#EAEAEA solid thin', alignItems: "center" }}>
                 <Category topicid={this.state.topicid} />
                 <TopicPager page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} /></div>
-
             {topic}
-            <Route path="/topic/:topicid/:page?" component={HotReply} />
+            {hotReply}
+         
+            
             <Route path="/topic/:topicid/:page?" component={Reply} />
             <TopicPagerDown page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
             <SendTopic onChange={this.handleChange} topicid={this.state.topicid} />
