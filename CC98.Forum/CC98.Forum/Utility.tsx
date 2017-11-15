@@ -8,7 +8,7 @@ import {
     Link
 } from 'react-router-dom';
 import * as $ from 'jquery';
-import { FocusPost } from './Props/FocusPost';
+import { FocusTopic } from './Props/FocusTopic';
 
 
 
@@ -262,7 +262,7 @@ export function changeNav(id) {
  * 获取全站新帖
  * @param curPage
  */
-export async function getAllNewPost(curPage: number) {
+export async function getAllNewTopic(curPage: number) {
     /**
      * 一次性可以获取20个主题
      */

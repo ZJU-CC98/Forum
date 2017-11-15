@@ -1074,7 +1074,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var State = __webpack_require__(4);
 var React = __webpack_require__(0);
 var List_1 = __webpack_require__(9);
-var $ = __webpack_require__(6);
+var $ = __webpack_require__(7);
 function getBoardTopicAsync(curPage, boardid) {
     return __awaiter(this, void 0, void 0, function () {
         var token, startPage, endPage, boardtopics, url, response, data, totalTopicCountResponse, totalTopicCountJson, totalTopicCount, topicNumberInPage, i;
@@ -1436,7 +1436,7 @@ exports.changeNav = changeNav;
  * 获取全站新帖
  * @param curPage
  */
-function getAllNewPost(curPage) {
+function getAllNewTopic(curPage) {
     return __awaiter(this, void 0, void 0, function () {
         var startPage, size, token, newTopics0, newTopics1, _a, _b, _i, i, userInfo0, userInfo1, userFan0, userFan1, boardInfo0, boardInfo1;
         return __generator(this, function (_c) {
@@ -1500,7 +1500,7 @@ function getAllNewPost(curPage) {
         });
     });
 }
-exports.getAllNewPost = getAllNewPost;
+exports.getAllNewTopic = getAllNewTopic;
 function setStorage(key, value) {
     var v = value;
     if (typeof v == 'object') {
@@ -1813,6 +1813,12 @@ exports.UserFanInfo = UserFanInfo;
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports) {
+
+module.exports = moment;
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1875,13 +1881,13 @@ exports.UbbContainer = UbbContainer;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports) {
 
 module.exports = $;
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1924,12 +1930,6 @@ var UserCenterExactActivitiesPost = /** @class */ (function (_super) {
 }(React.Component));
 exports.UserCenterExactActivitiesPost = UserCenterExactActivitiesPost;
 
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-module.exports = moment;
 
 /***/ }),
 /* 9 */
@@ -1985,8 +1985,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(3);
-var moment = __webpack_require__(8);
-var UbbContainer_1 = __webpack_require__(5);
+var moment = __webpack_require__(5);
+var UbbContainer_1 = __webpack_require__(6);
 var react_router_dom_1 = __webpack_require__(2);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
@@ -2549,7 +2549,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UbbContainer_1 = __webpack_require__(5);
+var UbbContainer_1 = __webpack_require__(6);
 /**
  * 用户中心主页个人资料组件
  */
@@ -2787,221 +2787,50 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 // A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusPostComponent_1 = __webpack_require__(68);
-var Utility = __webpack_require__(3);
+var moment = __webpack_require__(5);
 /**
- * 表示我关注的某个版面的主题列表
+ * 我关注的某个版面的单个主题
  */
-var FocusPostAreaComponent = /** @class */ (function (_super) {
-    __extends(FocusPostAreaComponent, _super);
-    /**
-     * 构造函数
-     * @param props
-     */
-    function FocusPostAreaComponent(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = {
-            data: [],
-            curPage: 1,
-            loading: true
-        };
-        _this.handleScroll = _this.handleScroll.bind(_this);
-        return _this;
+var FocusTopicSingle = /** @class */ (function (_super) {
+    __extends(FocusTopicSingle, _super);
+    function FocusTopicSingle() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    /**
-     * 进入立即获取20条新帖的数据，同时为滚动条添加监听事件
-     */
-    FocusPostAreaComponent.prototype.componentDidMount = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var data;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getAllNewPost(this.state.curPage)];
-                    case 1:
-                        data = _a.sent();
-                        this.setState({ data: data });
-                        document.addEventListener('scroll', this.handleScroll);
-                        return [2 /*return*/];
-                }
-            });
-        });
+    FocusTopicSingle.prototype.render = function () {
+        var topicUrl = "/topic/" + this.props.id;
+        return (React.createElement("div", { className: "focus-post" },
+            React.createElement("img", { className: "focus-post-portraitUrl", src: this.props.portraitUrl }),
+            React.createElement("div", { className: "focus-post-info1" },
+                React.createElement("div", { className: "focus-post-authorInfo" },
+                    React.createElement("div", { className: "focus-post-blackText" }, this.props.userName),
+                    React.createElement("div", { className: "focus-post-redText" }, this.props.fanCount),
+                    React.createElement("div", { className: "focus-post-blackText" }, "\u7C89\u4E1D")),
+                React.createElement("div", { className: "focus-post-title" },
+                    React.createElement("a", { href: topicUrl }, this.props.title))),
+            React.createElement("div", { className: "focus-post-info2" },
+                React.createElement("div", { className: "focus-post-board" },
+                    this.props.boardName,
+                    " / ",
+                    moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')),
+                React.createElement("div", { className: "focus-post-response" },
+                    React.createElement("div", null,
+                        React.createElement("i", { className: "fa fa-thumbs-o-up", "aria-hidden": "true" }),
+                        this.props.likeCount),
+                    React.createElement("div", null,
+                        React.createElement("i", { className: "fa fa-eye", "aria-hidden": "true" }),
+                        this.props.hitCount),
+                    React.createElement("div", null,
+                        React.createElement("i", { className: "fa fa-commenting-o", "aria-hidden": "true" }),
+                        this.props.replyCount)))));
     };
-    /**
-     * 移除DOM时，为滚动条移除监听事件
-     */
-    FocusPostAreaComponent.prototype.componentWillUnmount = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                document.removeEventListener('scroll', this.handleScroll);
-                return [2 /*return*/];
-            });
-        });
-    };
-    /**
-     * 处理滚动的函数
-     */
-    FocusPostAreaComponent.prototype.handleScroll = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var newData, err_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!(isBottom() && this.state.loading)) return [3 /*break*/, 5];
-                        /**
-                        *查看新帖数目大于100条时不再继续加载
-                        */
-                        if (this.state.curPage >= 5) {
-                            $('#focus-post-loading').addClass('displaynone');
-                            $('#focus-post-loaddone').removeClass('displaynone');
-                            return [2 /*return*/];
-                        }
-                        /**
-                        *发出第一条fetch请求前将this.state.loading设置为false，防止后面重复发送fetch请求
-                        */
-                        this.setState({ loading: false });
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, Utility.getAllNewPost(this.state.curPage + 1)];
-                    case 2:
-                        newData = _a.sent();
-                        return [3 /*break*/, 4];
-                    case 3:
-                        err_1 = _a.sent();
-                        /**
-                        *如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
-                        */
-                        this.setState({ loading: true });
-                        return [2 /*return*/];
-                    case 4:
-                        /**
-                        *如果正确获取到数据，则添加新数据，翻页+1，同时this.state.loading设置为true，后续才可以再次发送fetch请求
-                        */
-                        this.setState({ data: this.state.data.concat(newData), curPage: this.state.curPage + 1, loading: true });
-                        _a.label = 5;
-                    case 5: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    /**
-     * 将主题排列好
-     */
-    FocusPostAreaComponent.prototype.render = function () {
-        return React.createElement("div", { className: "focus-post-area" },
-            React.createElement("div", { className: "focus-post-topicArea" }, this.state.data.map(coverFocusPost)),
-            React.createElement("div", { className: "focus-post-loading", id: "focus-post-loading" },
-                React.createElement("img", { src: "http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif" })),
-            React.createElement("div", { className: "focus-post-loaddone displaynone", id: "focus-post-loaddone" }, "---------------------- \u5DF2\u52A0\u8F7D100\u6761\u65B0\u5E16\uFF0C\u65E0\u6CD5\u52A0\u8F7D\u66F4\u591A ----------------------"));
-    };
-    return FocusPostAreaComponent;
+    return FocusTopicSingle;
 }(React.Component));
-exports.FocusPostAreaComponent = FocusPostAreaComponent;
-/**
-* 单个主题数据转换成单个主题组件
-*/
-function coverFocusPost(item) {
-    return React.createElement(FocusPostComponent_1.FocusPostComponent, { title: item.title, hitCount: item.hitCount, id: item.id, boardId: item.boardId, boardName: item.boardName, replyCount: item.replyCount, userName: item.userName, portraitUrl: item.portraitUrl, time: item.time, likeCount: item.likeCount, dislikeCount: item.dislikeCount, fanCount: item.fanCount });
-}
-/**
-*滚动条在Y轴上的滚动距离
-*/
-function getScrollTop() {
-    var scrollTop = 0;
-    var bodyScrollTop = 0;
-    var documentScrollTop = 0;
-    if (document.body) {
-        bodyScrollTop = document.body.scrollTop;
-    }
-    if (document.documentElement) {
-        documentScrollTop = document.documentElement.scrollTop;
-    }
-    scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
-    return scrollTop;
-}
-/**
-*文档的总高度
-*/
-function getScrollHeight() {
-    var scrollHeight = 0;
-    var bodyScrollHeight = 0;
-    var documentScrollHeight = 0;
-    if (document.body) {
-        bodyScrollHeight = document.body.scrollHeight;
-    }
-    if (document.documentElement) {
-        documentScrollHeight = document.documentElement.scrollHeight;
-    }
-    scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
-    return scrollHeight;
-}
-/**
-*浏览器视口的高度
-*/
-function getWindowHeight() {
-    var windowHeight = 0;
-    if (document.compatMode == 'CSS1Compat') {
-        windowHeight = document.documentElement.clientHeight;
-    }
-    else {
-        windowHeight = document.body.clientHeight;
-    }
-    return windowHeight;
-}
-/**
-*判断滚动条是否滚动到底部
-*/
-function isBottom() {
-    /*
-    *预留100px给“正在加载”的提示标志
-    */
-    if (getScrollTop() + getWindowHeight() + 100 > getScrollHeight()) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
+exports.FocusTopicSingle = FocusTopicSingle;
 
 
 /***/ }),
@@ -3009,7 +2838,7 @@ function isBottom() {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(17);
-module.exports = __webpack_require__(82);
+module.exports = __webpack_require__(83);
 
 
 /***/ }),
@@ -3057,14 +2886,14 @@ var CurUserPost_1 = __webpack_require__(38);
 var BoardList_1 = __webpack_require__(39);
 var UserCenter_1 = __webpack_require__(40);
 var MyMessage_1 = __webpack_require__(57);
-var AllNewPost_1 = __webpack_require__(67);
-var MyFocusBoard_1 = __webpack_require__(69);
-var Header_1 = __webpack_require__(72);
-var Footer_1 = __webpack_require__(73);
-var MainPage_1 = __webpack_require__(74);
-var User_1 = __webpack_require__(75);
-var LogOn_1 = __webpack_require__(78);
-var CreateTopic_1 = __webpack_require__(81);
+var AllNewTopic_1 = __webpack_require__(67);
+var Focus_1 = __webpack_require__(69);
+var Header_1 = __webpack_require__(73);
+var Footer_1 = __webpack_require__(74);
+var MainPage_1 = __webpack_require__(75);
+var User_1 = __webpack_require__(76);
+var LogOn_1 = __webpack_require__(79);
+var CreateTopic_1 = __webpack_require__(82);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -3092,8 +2921,8 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/boardlist", component: BoardList_1.BoardList }),
                     React.createElement(react_router_dom_1.Route, { path: "/usercenter", component: UserCenter_1.UserCenter }),
                     React.createElement(react_router_dom_1.Route, { path: "/mymessage", component: MyMessage_1.MyMessage }),
-                    React.createElement(react_router_dom_1.Route, { path: "/focus", component: MyFocusBoard_1.MyFocusBoard }),
-                    React.createElement(react_router_dom_1.Route, { path: "/newtopics", component: AllNewPost_1.AllNewPost }),
+                    React.createElement(react_router_dom_1.Route, { path: "/focus", component: Focus_1.Focus }),
+                    React.createElement(react_router_dom_1.Route, { path: "/newtopics", component: AllNewTopic_1.AllNewTopic }),
                     React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }),
                     React.createElement(react_router_dom_1.Route, { path: "/logon", component: LogOn_1.LogOn }),
                     React.createElement(react_router_dom_1.Route, { path: "/createtopic", component: CreateTopic_1.CreateTopic }),
@@ -3158,11 +2987,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(3);
-var $ = __webpack_require__(6);
+var $ = __webpack_require__(7);
 var react_router_dom_1 = __webpack_require__(2);
-var UbbContainer_1 = __webpack_require__(5);
+var UbbContainer_1 = __webpack_require__(6);
 var SendTopic_1 = __webpack_require__(37);
-var moment = __webpack_require__(8);
+var moment = __webpack_require__(5);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -5024,9 +4853,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(3);
-var UbbContainer_1 = __webpack_require__(5);
+var UbbContainer_1 = __webpack_require__(6);
 var react_router_dom_1 = __webpack_require__(2);
-var moment = __webpack_require__(8);
+var moment = __webpack_require__(5);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -6094,7 +5923,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(2);
-var $ = __webpack_require__(6);
+var $ = __webpack_require__(7);
 /**
  * 用户中心侧边栏导航组件
  */
@@ -6393,7 +6222,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPost_1 = __webpack_require__(7);
+var UserCenterExactActivitiesPost_1 = __webpack_require__(8);
 var AppState_1 = __webpack_require__(4);
 //用户中心主页帖子动态组件
 var UserCenterExactActivitiesPosts = /** @class */ (function (_super) {
@@ -6477,7 +6306,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPost_1 = __webpack_require__(7);
+var UserCenterExactActivitiesPost_1 = __webpack_require__(8);
 var AppState_1 = __webpack_require__(4);
 //用户中心主页最近回复组件
 var UserCenterExactActivitiesReplies = /** @class */ (function (_super) {
@@ -6689,7 +6518,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPost_1 = __webpack_require__(7);
+var UserCenterExactActivitiesPost_1 = __webpack_require__(8);
 var AppState_1 = __webpack_require__(4);
 var UserCenterMyPostsExact = /** @class */ (function (_super) {
     __extends(UserCenterMyPostsExact, _super);
@@ -6742,7 +6571,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPost_1 = __webpack_require__(7);
+var UserCenterExactActivitiesPost_1 = __webpack_require__(8);
 var AppState_1 = __webpack_require__(4);
 //用户中心主页最近回复组件
 var UserCenterMyPostsReplies = /** @class */ (function (_super) {
@@ -6849,7 +6678,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPost_1 = __webpack_require__(7);
+var UserCenterExactActivitiesPost_1 = __webpack_require__(8);
 var AppState_1 = __webpack_require__(4);
 var UserCenterMyFavoritesPosts = /** @class */ (function (_super) {
     __extends(UserCenterMyFavoritesPosts, _super);
@@ -7600,7 +7429,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var UbbContainer_1 = __webpack_require__(5);
+var UbbContainer_1 = __webpack_require__(6);
+var moment = __webpack_require__(5);
 var MyMessageSender = /** @class */ (function (_super) {
     __extends(MyMessageSender, _super);
     function MyMessageSender() {
@@ -7608,7 +7438,7 @@ var MyMessageSender = /** @class */ (function (_super) {
     }
     MyMessageSender.prototype.render = function () {
         return (React.createElement("div", { className: "mymessage-message-wc" },
-            React.createElement("div", { className: "mymessage-message-wcTime" }, this.props.sendTime),
+            React.createElement("div", { className: "mymessage-message-wcTime" }, moment(this.props.sendTime).format('YYYY-MM-DD HH:mm:ss')),
             React.createElement("div", { className: "mymessage-message-wcSender" },
                 React.createElement("img", { className: "mymessage-message-wcPortraitUrl", src: this.props.myPortraitUrl }),
                 React.createElement("div", { className: "mymessage-message-wcContent" },
@@ -7646,20 +7476,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var UbbContainer_1 = __webpack_require__(5);
+var UbbContainer_1 = __webpack_require__(6);
+var moment = __webpack_require__(5);
 var MyMessageReceiver = /** @class */ (function (_super) {
     __extends(MyMessageReceiver, _super);
     function MyMessageReceiver() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    /*
-    componentDidMount() {
-        document.getElementById(String(this.props.id)).innerHTML = '修改后的内容';//UBBCode(this.props.cotent,'')
-    }
-    */
     MyMessageReceiver.prototype.render = function () {
         return (React.createElement("div", { className: "mymessage-message-wc" },
-            React.createElement("div", { className: "mymessage-message-wcTime" }, this.props.sendTime),
+            React.createElement("div", { className: "mymessage-message-wcTime" }, moment(this.props.sendTime).format('YYYY-MM-DD HH:mm:ss')),
             React.createElement("div", { className: "mymessage-message-wcReceiver" },
                 React.createElement("img", { className: "mymessage-message-wcPortraitUrl", src: this.props.chatPortraitUrl }),
                 React.createElement("div", { className: "mymessage-message-wcContent" },
@@ -8209,29 +8035,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusPostAreaComponent_1 = __webpack_require__(15);
+var AllNewTopicArea_1 = __webpack_require__(68);
 /**
  * 网站的主页面对象。
  */
-var AllNewPost = /** @class */ (function (_super) {
-    __extends(AllNewPost, _super);
-    function AllNewPost() {
+var AllNewTopic = /** @class */ (function (_super) {
+    __extends(AllNewTopic, _super);
+    function AllNewTopic() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      * 全站新帖列表
      */
-    AllNewPost.prototype.render = function () {
+    AllNewTopic.prototype.render = function () {
         return (React.createElement("div", { className: "focus-root" },
             React.createElement("div", { className: "focus" },
                 React.createElement("div", { className: "focus-allNewPost" },
                     React.createElement("i", { className: "fa fa-home", "aria-hidden": "true" }),
                     "\u9996\u9875/\u5168\u7AD9\u65B0\u5E16"),
-                React.createElement(FocusPostAreaComponent_1.FocusPostAreaComponent, null))));
+                React.createElement(AllNewTopicArea_1.AllNewTopicArea, null))));
     };
-    return AllNewPost;
+    return AllNewTopic;
 }(React.Component));
-exports.AllNewPost = AllNewPost;
+exports.AllNewTopic = AllNewTopic;
 
 
 /***/ }),
@@ -8250,50 +8076,221 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 // A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var moment = __webpack_require__(8);
+var FocusTopicSingle_1 = __webpack_require__(15);
+var Utility = __webpack_require__(3);
 /**
- * 我关注的某个版面的单个主题
+ * 表示我关注的某个版面的主题列表
  */
-var FocusPostComponent = /** @class */ (function (_super) {
-    __extends(FocusPostComponent, _super);
-    function FocusPostComponent() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var AllNewTopicArea = /** @class */ (function (_super) {
+    __extends(AllNewTopicArea, _super);
+    /**
+     * 构造函数
+     * @param props
+     */
+    function AllNewTopicArea(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            data: [],
+            curPage: 1,
+            loading: true
+        };
+        _this.handleScroll = _this.handleScroll.bind(_this);
+        return _this;
     }
-    FocusPostComponent.prototype.render = function () {
-        var topicUrl = "/topic/" + this.props.id;
-        return (React.createElement("div", { className: "focus-post" },
-            React.createElement("img", { className: "focus-post-portraitUrl", src: this.props.portraitUrl }),
-            React.createElement("div", { className: "focus-post-info1" },
-                React.createElement("div", { className: "focus-post-authorInfo" },
-                    React.createElement("div", { className: "focus-post-blackText" }, this.props.userName),
-                    React.createElement("div", { className: "focus-post-redText" }, this.props.fanCount),
-                    React.createElement("div", { className: "focus-post-blackText" }, "\u7C89\u4E1D")),
-                React.createElement("div", { className: "focus-post-title" },
-                    React.createElement("a", { href: topicUrl }, this.props.title))),
-            React.createElement("div", { className: "focus-post-info2" },
-                React.createElement("div", { className: "focus-post-board" },
-                    this.props.boardName,
-                    " / ",
-                    moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')),
-                React.createElement("div", { className: "focus-post-response" },
-                    React.createElement("div", null,
-                        React.createElement("i", { className: "fa fa-thumbs-o-up", "aria-hidden": "true" }),
-                        this.props.likeCount),
-                    React.createElement("div", null,
-                        React.createElement("i", { className: "fa fa-eye", "aria-hidden": "true" }),
-                        this.props.hitCount),
-                    React.createElement("div", null,
-                        React.createElement("i", { className: "fa fa-commenting-o", "aria-hidden": "true" }),
-                        this.props.replyCount)))));
+    /**
+     * 进入立即获取20条新帖的数据，同时为滚动条添加监听事件
+     */
+    AllNewTopicArea.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Utility.getAllNewTopic(this.state.curPage)];
+                    case 1:
+                        data = _a.sent();
+                        this.setState({ data: data });
+                        document.addEventListener('scroll', this.handleScroll);
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
-    return FocusPostComponent;
+    /**
+     * 移除DOM时，为滚动条移除监听事件
+     */
+    AllNewTopicArea.prototype.componentWillUnmount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                document.removeEventListener('scroll', this.handleScroll);
+                return [2 /*return*/];
+            });
+        });
+    };
+    /**
+     * 处理滚动的函数
+     */
+    AllNewTopicArea.prototype.handleScroll = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var newData, err_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(isBottom() && this.state.loading)) return [3 /*break*/, 5];
+                        /**
+                        *查看新帖数目大于100条时不再继续加载
+                        */
+                        if (this.state.curPage >= 5) {
+                            $('#focus-post-loading').addClass('displaynone');
+                            $('#focus-post-loaddone').removeClass('displaynone');
+                            return [2 /*return*/];
+                        }
+                        /**
+                        *发出第一条fetch请求前将this.state.loading设置为false，防止后面重复发送fetch请求
+                        */
+                        this.setState({ loading: false });
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, Utility.getAllNewTopic(this.state.curPage + 1)];
+                    case 2:
+                        newData = _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        err_1 = _a.sent();
+                        /**
+                        *如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
+                        */
+                        this.setState({ loading: true });
+                        return [2 /*return*/];
+                    case 4:
+                        /**
+                        *如果正确获取到数据，则添加新数据，翻页+1，同时this.state.loading设置为true，后续才可以再次发送fetch请求
+                        */
+                        this.setState({ data: this.state.data.concat(newData), curPage: this.state.curPage + 1, loading: true });
+                        _a.label = 5;
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * 将主题排列好
+     */
+    AllNewTopicArea.prototype.render = function () {
+        return React.createElement("div", { className: "focus-post-area" },
+            React.createElement("div", { className: "focus-post-topicArea" }, this.state.data.map(coverFocusPost)),
+            React.createElement("div", { className: "focus-post-loading", id: "focus-post-loading" },
+                React.createElement("img", { src: "http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif" })),
+            React.createElement("div", { className: "focus-post-loaddone displaynone", id: "focus-post-loaddone" }, "---------------------- \u5DF2\u52A0\u8F7D100\u6761\u65B0\u5E16\uFF0C\u65E0\u6CD5\u52A0\u8F7D\u66F4\u591A ----------------------"));
+    };
+    return AllNewTopicArea;
 }(React.Component));
-exports.FocusPostComponent = FocusPostComponent;
+exports.AllNewTopicArea = AllNewTopicArea;
+/**
+* 单个主题数据转换成单个主题组件
+*/
+function coverFocusPost(item) {
+    return React.createElement(FocusTopicSingle_1.FocusTopicSingle, { title: item.title, hitCount: item.hitCount, id: item.id, boardId: item.boardId, boardName: item.boardName, replyCount: item.replyCount, userName: item.userName, portraitUrl: item.portraitUrl, time: item.time, likeCount: item.likeCount, dislikeCount: item.dislikeCount, fanCount: item.fanCount });
+}
+/**
+*滚动条在Y轴上的滚动距离
+*/
+function getScrollTop() {
+    var scrollTop = 0;
+    var bodyScrollTop = 0;
+    var documentScrollTop = 0;
+    if (document.body) {
+        bodyScrollTop = document.body.scrollTop;
+    }
+    if (document.documentElement) {
+        documentScrollTop = document.documentElement.scrollTop;
+    }
+    scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
+    return scrollTop;
+}
+/**
+*文档的总高度
+*/
+function getScrollHeight() {
+    var scrollHeight = 0;
+    var bodyScrollHeight = 0;
+    var documentScrollHeight = 0;
+    if (document.body) {
+        bodyScrollHeight = document.body.scrollHeight;
+    }
+    if (document.documentElement) {
+        documentScrollHeight = document.documentElement.scrollHeight;
+    }
+    scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
+    return scrollHeight;
+}
+/**
+*浏览器视口的高度
+*/
+function getWindowHeight() {
+    var windowHeight = 0;
+    if (document.compatMode == 'CSS1Compat') {
+        windowHeight = document.documentElement.clientHeight;
+    }
+    else {
+        windowHeight = document.body.clientHeight;
+    }
+    return windowHeight;
+}
+/**
+*判断滚动条是否滚动到底部
+*/
+function isBottom() {
+    /*
+    *预留100px给“正在加载”的提示标志
+    */
+    if (getScrollTop() + getWindowHeight() + 100 > getScrollHeight()) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 
 
 /***/ }),
@@ -8317,26 +8314,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusBoardAreaComponent_1 = __webpack_require__(70);
-var FocusPostAreaComponent_1 = __webpack_require__(15);
-var MyFocusBoard = /** @class */ (function (_super) {
-    __extends(MyFocusBoard, _super);
-    function MyFocusBoard() {
+var FocusBoardArea_1 = __webpack_require__(70);
+var FocusTopicArea_1 = __webpack_require__(72);
+var Focus = /** @class */ (function (_super) {
+    __extends(Focus, _super);
+    function Focus() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      * 从上往下分别为：页面标题、关注版面列表区域、选中版面的主题列表区域，分别用三个组件表示
      */
-    MyFocusBoard.prototype.render = function () {
+    Focus.prototype.render = function () {
         return (React.createElement("div", { className: "focus-root" },
             React.createElement("div", { className: "focus" },
                 React.createElement("div", { className: "focus-title" }, "\u6211\u7684\u5173\u6CE8\u7248\u9762"),
-                React.createElement(FocusBoardAreaComponent_1.FocusBoardAreaComponent, null),
-                React.createElement(FocusPostAreaComponent_1.FocusPostAreaComponent, null))));
+                React.createElement(FocusBoardArea_1.FocusBoardArea, null),
+                React.createElement(FocusTopicArea_1.FocusTopicArea, null))));
     };
-    return MyFocusBoard;
+    return Focus;
 }(React.Component));
-exports.MyFocusBoard = MyFocusBoard;
+exports.Focus = Focus;
 
 
 /***/ }),
@@ -8360,17 +8357,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusBoardComponent_1 = __webpack_require__(71);
+var FocusBoardSingle_1 = __webpack_require__(71);
 /**
  * 表示我关注的版面列表区域
  */
-var FocusBoardAreaComponent = /** @class */ (function (_super) {
-    __extends(FocusBoardAreaComponent, _super);
+var FocusBoardArea = /** @class */ (function (_super) {
+    __extends(FocusBoardArea, _super);
     /**
      * 构造函数，同时构造假的版面列表数据
      * @param props
      */
-    function FocusBoardAreaComponent(props) {
+    function FocusBoardArea(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
             data: [{ id: 100, name: '校园信息' }, { id: 459, name: '实习兼职' }, { id: 135, name: '开怀一笑' }, { id: 758, name: '似水流年' }]
@@ -8380,14 +8377,14 @@ var FocusBoardAreaComponent = /** @class */ (function (_super) {
     /**
      * 将我关注的版面排列好
      */
-    FocusBoardAreaComponent.prototype.render = function () {
+    FocusBoardArea.prototype.render = function () {
         return React.createElement("div", { className: "focus-board-area" }, this.state.data.map(coverFocusBoard));
     };
-    return FocusBoardAreaComponent;
+    return FocusBoardArea;
 }(React.Component));
-exports.FocusBoardAreaComponent = FocusBoardAreaComponent;
+exports.FocusBoardArea = FocusBoardArea;
 function coverFocusBoard(item) {
-    return React.createElement(FocusBoardComponent_1.FocusBoardComponent, { id: item.id, name: item.name });
+    return React.createElement(FocusBoardSingle_1.FocusBoardSingle, { id: item.id, name: item.name });
 }
 
 
@@ -8415,17 +8412,17 @@ var React = __webpack_require__(0);
 /**
  * 我关注的版面（单个版面的样式）
  */
-var FocusBoardComponent = /** @class */ (function (_super) {
-    __extends(FocusBoardComponent, _super);
-    function FocusBoardComponent() {
+var FocusBoardSingle = /** @class */ (function (_super) {
+    __extends(FocusBoardSingle, _super);
+    function FocusBoardSingle() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    FocusBoardComponent.prototype.render = function () {
+    FocusBoardSingle.prototype.render = function () {
         return React.createElement("div", { className: "focus-board" }, this.props.name);
     };
-    return FocusBoardComponent;
+    return FocusBoardSingle;
 }(React.Component));
-exports.FocusBoardComponent = FocusBoardComponent;
+exports.FocusBoardSingle = FocusBoardSingle;
 
 
 /***/ }),
@@ -8480,9 +8477,242 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var React = __webpack_require__(0);
+var FocusTopicSingle_1 = __webpack_require__(15);
+var Utility = __webpack_require__(3);
+/**
+ * 表示我关注的某个版面的主题列表
+ */
+var FocusTopicArea = /** @class */ (function (_super) {
+    __extends(FocusTopicArea, _super);
+    /**
+     * 构造函数
+     * @param props
+     */
+    function FocusTopicArea(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            data: [],
+            curPage: 1,
+            loading: true
+        };
+        _this.handleScroll = _this.handleScroll.bind(_this);
+        return _this;
+    }
+    /**
+     * 进入立即获取20条新帖的数据，同时为滚动条添加监听事件
+     */
+    FocusTopicArea.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Utility.getAllNewTopic(this.state.curPage)];
+                    case 1:
+                        data = _a.sent();
+                        this.setState({ data: data });
+                        document.addEventListener('scroll', this.handleScroll);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * 移除DOM时，为滚动条移除监听事件
+     */
+    FocusTopicArea.prototype.componentWillUnmount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                document.removeEventListener('scroll', this.handleScroll);
+                return [2 /*return*/];
+            });
+        });
+    };
+    /**
+     * 处理滚动的函数
+     */
+    FocusTopicArea.prototype.handleScroll = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var newData, err_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(isBottom() && this.state.loading)) return [3 /*break*/, 5];
+                        /**
+                        *查看新帖数目大于100条时不再继续加载
+                        */
+                        if (this.state.curPage >= 5) {
+                            $('#focus-post-loading').addClass('displaynone');
+                            $('#focus-post-loaddone').removeClass('displaynone');
+                            return [2 /*return*/];
+                        }
+                        /**
+                        *发出第一条fetch请求前将this.state.loading设置为false，防止后面重复发送fetch请求
+                        */
+                        this.setState({ loading: false });
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, Utility.getAllNewTopic(this.state.curPage + 1)];
+                    case 2:
+                        newData = _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        err_1 = _a.sent();
+                        /**
+                        *如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
+                        */
+                        this.setState({ loading: true });
+                        return [2 /*return*/];
+                    case 4:
+                        /**
+                        *如果正确获取到数据，则添加新数据，翻页+1，同时this.state.loading设置为true，后续才可以再次发送fetch请求
+                        */
+                        this.setState({ data: this.state.data.concat(newData), curPage: this.state.curPage + 1, loading: true });
+                        _a.label = 5;
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * 将主题排列好
+     */
+    FocusTopicArea.prototype.render = function () {
+        return React.createElement("div", { className: "focus-post-area" },
+            React.createElement("div", { className: "focus-post-topicArea" }, this.state.data.map(coverFocusPost)),
+            React.createElement("div", { className: "focus-post-loading", id: "focus-post-loading" },
+                React.createElement("img", { src: "http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif" })),
+            React.createElement("div", { className: "focus-post-loaddone displaynone", id: "focus-post-loaddone" }, "---------------------- \u5DF2\u52A0\u8F7D100\u6761\u65B0\u5E16\uFF0C\u65E0\u6CD5\u52A0\u8F7D\u66F4\u591A ----------------------"));
+    };
+    return FocusTopicArea;
+}(React.Component));
+exports.FocusTopicArea = FocusTopicArea;
+/**
+* 单个主题数据转换成单个主题组件
+*/
+function coverFocusPost(item) {
+    return React.createElement(FocusTopicSingle_1.FocusTopicSingle, { title: item.title, hitCount: item.hitCount, id: item.id, boardId: item.boardId, boardName: item.boardName, replyCount: item.replyCount, userName: item.userName, portraitUrl: item.portraitUrl, time: item.time, likeCount: item.likeCount, dislikeCount: item.dislikeCount, fanCount: item.fanCount });
+}
+/**
+*滚动条在Y轴上的滚动距离
+*/
+function getScrollTop() {
+    var scrollTop = 0;
+    var bodyScrollTop = 0;
+    var documentScrollTop = 0;
+    if (document.body) {
+        bodyScrollTop = document.body.scrollTop;
+    }
+    if (document.documentElement) {
+        documentScrollTop = document.documentElement.scrollTop;
+    }
+    scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
+    return scrollTop;
+}
+/**
+*文档的总高度
+*/
+function getScrollHeight() {
+    var scrollHeight = 0;
+    var bodyScrollHeight = 0;
+    var documentScrollHeight = 0;
+    if (document.body) {
+        bodyScrollHeight = document.body.scrollHeight;
+    }
+    if (document.documentElement) {
+        documentScrollHeight = document.documentElement.scrollHeight;
+    }
+    scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
+    return scrollHeight;
+}
+/**
+*浏览器视口的高度
+*/
+function getWindowHeight() {
+    var windowHeight = 0;
+    if (document.compatMode == 'CSS1Compat') {
+        windowHeight = document.documentElement.clientHeight;
+    }
+    else {
+        windowHeight = document.body.clientHeight;
+    }
+    return windowHeight;
+}
+/**
+*判断滚动条是否滚动到底部
+*/
+function isBottom() {
+    /*
+    *预留100px给“正在加载”的提示标志
+    */
+    if (getScrollTop() + getWindowHeight() + 100 > getScrollHeight()) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(3);
-var $ = __webpack_require__(6);
+var $ = __webpack_require__(7);
 var DropDown = /** @class */ (function (_super) {
     __extends(DropDown, _super);
     function DropDown(props, context) {
@@ -8703,7 +8933,7 @@ exports.Header = Header;
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8755,7 +8985,7 @@ exports.Footer = Footer;
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8807,7 +9037,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var $ = __webpack_require__(6);
+var $ = __webpack_require__(7);
 var Utility = __webpack_require__(3);
 /**
  * 推荐阅读组件
@@ -9256,7 +9486,7 @@ exports.MainPage = MainPage;
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9277,8 +9507,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(2);
-var UserNavigation_1 = __webpack_require__(76);
-var UserRouter_1 = __webpack_require__(77);
+var UserNavigation_1 = __webpack_require__(77);
+var UserRouter_1 = __webpack_require__(78);
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
@@ -9300,7 +9530,7 @@ exports.User = User;
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9359,7 +9589,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9484,7 +9714,7 @@ var UserExact = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9505,8 +9735,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(2);
-var LogOnExact_1 = __webpack_require__(79);
-var Logoff_1 = __webpack_require__(80);
+var LogOnExact_1 = __webpack_require__(80);
+var Logoff_1 = __webpack_require__(81);
 /**
  * 用户中心页面
  */
@@ -9527,7 +9757,7 @@ exports.LogOn = LogOn;
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9582,7 +9812,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var $ = __webpack_require__(6);
+var $ = __webpack_require__(7);
 var Utility = __webpack_require__(3);
 var LogOnExact = /** @class */ (function (_super) {
     __extends(LogOnExact, _super);
@@ -9735,7 +9965,7 @@ var LogOnState = /** @class */ (function () {
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9787,7 +10017,7 @@ exports.LogOff = LogOff;
 
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10005,7 +10235,7 @@ exports.CreateTopicContent = CreateTopicContent;
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

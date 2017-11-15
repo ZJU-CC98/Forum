@@ -4,7 +4,7 @@
 /**
  * 表示我关注的某个版面的某个帖子
  */
-export class FocusPost {
+export class FocusTopic {
     /**
     *主题的标题
     */

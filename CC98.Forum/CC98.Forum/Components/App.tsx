@@ -10,8 +10,8 @@ import { CurUserPost } from './CurUserPost';
 import { BoardList } from './BoardList';
 import { UserCenter } from './UserCenter';
 import { MyMessage } from './MyMessage';
-import { AllNewPost } from './AllNewPost';
-import { MyFocusBoard } from './MyFocusBoard';
+import { AllNewTopic } from './AllNewTopic';
+import { Focus } from './Focus';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { MainPage } from './MainPage';
@@ -44,8 +44,8 @@ export class App extends React.Component<{}, AppState> {
 					<Route exact path="/boardlist" component={BoardList} />
 					<Route path="/usercenter" component={UserCenter} />
                     <Route path="/mymessage" component={MyMessage} />
-                    <Route path="/focus" component={MyFocusBoard} />
-					<Route path="/newtopics" component={AllNewPost} />
+                    <Route path="/focus" component={Focus} />
+					<Route path="/newtopics" component={AllNewTopic} />
 					<Route path="/user" component={User} />
                     <Route path="/logon" component={LogOn} />
                     <Route path="/createtopic" component={CreateTopic} />
