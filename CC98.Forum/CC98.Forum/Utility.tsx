@@ -8,7 +8,7 @@ import {
     Link
 } from 'react-router-dom';
 import * as $ from 'jquery';
-import { FocusPost } from './Props/FocusPost';
+import { FocusTopic } from './Props/FocusTopic';
 
 
 
@@ -273,26 +273,26 @@ export function responseRequest() {
     return url;
 }
 export function changeNav(id) {
-    $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
-    $(id).addClass('mymessage-nav-focus');
+    $('.message-nav > div').removeClass('message-nav-focus');
+    $(id).addClass('message-nav-focus');
 }
 /**
  * 获取全站新帖
  * @param curPage
  */
-export async function getAllNewPost(curPage: number) {
+export async function getAllNewTopic(curPage: number) {
     /**
      * 一次性可以获取20个主题
      */
     const startPage: number = (curPage - 1) * 20 + 1;
-    const endPage: number = curPage * 20;
-    const size = endPage - startPage;
+    const size = 20;
     let token = getLocalStorage("accessToken");
     /**
      * 通过api获取到主题之后转成json格式，但此时没有作者头像的图片地址和版面名称
      */
     const newTopics0 = await fetch(`http://apitest.niconi.cc/Topic/New?from=${startPage}&size=${size}`, { headers: { 'Authorization': token } });
     const newTopics1 = await newTopics0.json();
+    console.log(newTopics1);
     for (let i in newTopics1) {
         /**
         *根据作者名字获取作者头像的图片地址
@@ -306,6 +306,9 @@ export async function getAllNewPost(curPage: number) {
             const userInfo0 = await fetch(`http://apitest.niconi.cc/User/${newTopics1[i].userId}`);
             const userInfo1 = await userInfo0.json();
             newTopics1[i].portraitUrl = userInfo1.portraitUrl;
+            const userFan0 = await fetch(`http://apitest.niconi.cc/User/Follow/FanCount?userid=${newTopics1[i].userId}`);
+            const userFan1 = await userFan0.json();
+            newTopics1[i].fanCount = userFan1;
         }
         /**
          * 根据版面id获取版面名称
@@ -313,12 +316,6 @@ export async function getAllNewPost(curPage: number) {
         const boardInfo0 = await fetch(`http://apitest.niconi.cc/Board/${newTopics1[i].boardId}`);
         const boardInfo1 = await boardInfo0.json();
         newTopics1[i].boardName = boardInfo1.name;
-        /**
-        *这些数据是伪造的
-        */
-        newTopics1[i].likeCount = 6;
-        newTopics1[i].dislikeCount = 3;
-        newTopics1[i].fanCount = 28;
     }
     /**
      * 将补充完善的数据赋值给newTopics，以便后续进行可视化

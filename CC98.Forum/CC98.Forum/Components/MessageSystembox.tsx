@@ -2,9 +2,9 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
-import { MyMessageProps } from '../Props/MyMessageProps';
+import { MessageProps } from '../Props/MessageProps';
 
-export class MyMessageSystembox extends React.Component<MyMessageProps> {
+export class MessageSystembox extends React.Component<MessageProps> {
     /*
     componentDidMount() {
         document.getElementById(String(this.props.id)).innerHTML = '修改后的内容';//UBBCode(this.props.cotent,'')
@@ -12,14 +12,14 @@ export class MyMessageSystembox extends React.Component<MyMessageProps> {
     */
 
     render() {
-        return (<div className="mymessage-system-box">
-            <div className="mymessage-system-box-title">
+        return (<div className="message-system-box">
+            <div className="message-system-box-title">
                 {this.props.title}
             </div>
-            <div className="mymessage-system-box-date" >
+            <div className="message-system-box-date" >
                 {this.props.sendTime}
             </div>
-            <div className="mymessage-system-box-content">
+            <div className="message-system-box-content">
                 {this.props.content}
             </div>
         </div>

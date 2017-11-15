@@ -2,15 +2,16 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
-import { MyMessageMessageState } from '../States/MyMessageMessageState';
-import { MyMessagePersonProps } from '../Props/MyMessagePersonProps';
-import { MyMessagePerson } from './MyMessagePerson';
-import { MyMessageWindow } from './MyMessageWindow';
+import { MessageMessageState } from '../States/MessageMessageState';
+import { MessagePersonProps } from '../Props/MessagePersonProps';
+import { MessagePerson } from './MessagePerson';
+import { MessageWindow } from './MessageWindow';
+import * as Utility from '../Utility';
 
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
-export class MyMessageMessage extends React.Component<{}, MyMessageMessageState> {
+export class MessageMessage extends React.Component<{}, MessageMessageState> {
 
     constructor(props) {
         super(props);
@@ -22,37 +23,34 @@ export class MyMessageMessage extends React.Component<{}, MyMessageMessageState>
             myPortraitUrl: 'http://file.cc98.org/uploadface/40994.gif',
             token: 'testAccessToken'
         };
-        //如果没有设置默认的state，render第一次渲染的时候state为空，MyMessageWindow组件会报错
+        //如果没有设置默认的state，render第一次渲染的时候state为空，MessageWindow组件会报错
     }
 
     async componentWillMount() {
-        let personNumber = 40;
+        let personNumber = 10;
         
-        let token = location.href.match(/access_token=(\S+)/);
-        let accessToken: string;
-        if (token) {
-            accessToken = token[1];
-        };
+        let token = Utility.getLocalStorage("accessToken");
+        
         
         //获取到本人信息
         let response1 = await fetch('https://api.cc98.org/me', {
             headers: {
-                Authorization: `Bearer ${accessToken}`
+                Authorization: `${token}` 
             }
         });
         let myInfo = await response1.json(); 
 
         //创建一个数组存储联系人信息
-        let people: MyMessagePersonProps[] = [];
+        let people: MessagePersonProps[] = [];
 
-        let startPage = -49;
-        do {
-            startPage += 49;
-            //获取到最近50条收发短信信息
-            let response2 = await fetch('https://api.cc98.org/Message?filter=both', {
+        let startPage = -25;
+        //do {
+            startPage += 25;
+            //获取到最近25条收发短信信息
+            let response2 = await fetch('https://api.cc98.org/Message?userName=&filter=both', {
                 headers: {
-                    Range: `bytes=${startPage}-${startPage + 49}`,
-                    Authorization: `Bearer ${accessToken}`
+                    Range: `bytes=${startPage}-${startPage + 24}`,
+                    Authorization: `${token}`
                 }
             });
             let data = await response2.json();
@@ -77,7 +75,7 @@ export class MyMessageMessage extends React.Component<{}, MyMessageMessageState>
                     break;
                 }
             }
-        } while (people.length < personNumber);
+        //} while (people.length < personNumber);
 
         
         //通过联系人姓名查询到联系人头像并存储到people中
@@ -86,34 +84,34 @@ export class MyMessageMessage extends React.Component<{}, MyMessageMessageState>
             let person = await response.json();
             people[i].portraitUrl = person.portraitUrl;
         }
-        this.setState({ data: people, chatName: people[0].name, chatPortraitUrl: people[0].portraitUrl, myName: myInfo.name, myPortraitUrl: myInfo.portraitUrl, token: accessToken });
+        this.setState({ data: people, chatName: people[0].name, chatPortraitUrl: people[0].portraitUrl, myName: myInfo.name, myPortraitUrl: myInfo.portraitUrl, token: token });
         //默认选中第一个联系人
-        $(`#${people[0].name}`).addClass('mymessage-message-pFocus');
+        $(`#${people[0].name}`).addClass('message-message-pFocus');
     }
 
     //对this.stata.data进行批量化转化为JSX的函数，每个JSX可点击改变state里聊天对象的信息
-    coverMessagePerson = (item: MyMessagePersonProps) => {
+    coverMessagePerson = (item: MessagePersonProps) => {
 	    const changeChatName = () => { 
 		    this.setState({ chatName: item.name, chatPortraitUrl: item.portraitUrl });
 
 		    //给选中的聊天对象添加选中效果
-		    $('.mymessage-message-pList > div').removeClass('mymessage-message-pFocus');
-		    $(`#${item.name}`).addClass('mymessage-message-pFocus');
+		    $('.message-message-pList > div').removeClass('message-message-pFocus');
+		    $(`#${item.name}`).addClass('message-message-pFocus');
 	    };
-	    return <div onClick={changeChatName} id={`${item.name}`}><MyMessagePerson name={item.name} portraitUrl={item.portraitUrl} title={item.title} content={item.content} /></div>;
+	    return <div onClick={changeChatName} id={`${item.name}`}><MessagePerson name={item.name} portraitUrl={item.portraitUrl} title={item.title} content={item.content} /></div>;
 	};
 
 	render() {
         //给我的私信添加选中样式
-        $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
-        $('#message').addClass('mymessage-nav-focus'); 
+        $('.message-nav > div').removeClass('message-nav-focus');
+        $('#message').addClass('message-nav-focus'); 
         return (
-            <div className="mymessage-message">
-                <div className="mymessage-message-people">
-                    <div className="mymessage-message-pTitle">近期私信</div>
-                    <div className="mymessage-message-pList">{this.state.data.map(this.coverMessagePerson)}</div>
+            <div className="message-message">
+                <div className="message-message-people">
+                    <div className="message-message-pTitle">近期私信</div>
+                    <div className="message-message-pList">{this.state.data.map(this.coverMessagePerson)}</div>
                 </div>
-                <MyMessageWindow chatName={this.state.chatName} chatPortraitUrl={this.state.chatPortraitUrl} myName={this.state.myName} myPortraitUrl={this.state.myPortraitUrl} token={this.state.token} />
+                <MessageWindow chatName={this.state.chatName} chatPortraitUrl={this.state.chatPortraitUrl} myName={this.state.myName} myPortraitUrl={this.state.myPortraitUrl} token={this.state.token} />
             </div>
             );
     }

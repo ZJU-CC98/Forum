@@ -2,14 +2,14 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
-import { FocusPost } from '../Props/FocusPost';
-import { FocusPostComponent } from './FocusPostComponent';
-import { FocusPostAreaState } from '../States/FocusPostAreaState';
+import { FocusTopic } from '../Props/FocusTopic';
+import { FocusTopicSingle } from './FocusTopicSingle';
+import { FocusTopicAreaState } from '../States/FocusTopicAreaState';
 import * as Utility from '../Utility';
 /**
  * 表示我关注的某个版面的主题列表
  */
-export class FocusPostAreaComponent extends React.Component<{}, FocusPostAreaState> {
+export class FocusTopicArea extends React.Component<{}, FocusTopicAreaState> {
     
     /**
      * 构造函数
@@ -29,7 +29,7 @@ export class FocusPostAreaComponent extends React.Component<{}, FocusPostAreaSta
      * 进入立即获取20条新帖的数据，同时为滚动条添加监听事件
      */
     async componentDidMount() {
-        const data = await Utility.getAllNewPost(this.state.curPage);
+        const data = await Utility.getAllNewTopic(this.state.curPage);
         this.setState({ data: data });
         document.addEventListener('scroll', this.handleScroll);
     }
@@ -59,7 +59,7 @@ export class FocusPostAreaComponent extends React.Component<{}, FocusPostAreaSta
             */
             this.setState({ loading: false });
             try {
-                var newData = await Utility.getAllNewPost(this.state.curPage + 1);
+                var newData = await Utility.getAllNewTopic(this.state.curPage + 1);
             } catch (err) {
                 /**
                 *如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
@@ -89,8 +89,8 @@ export class FocusPostAreaComponent extends React.Component<{}, FocusPostAreaSta
 /**
 * 单个主题数据转换成单个主题组件
 */
-function coverFocusPost(item: FocusPost) {
-    return <FocusPostComponent title={item.title} hitCount={item.hitCount} id={item.id} boardId={item.boardId} boardName={item.boardName} replyCount={item.replyCount} userName={item.userName} portraitUrl={item.portraitUrl} time={item.time} likeCount={item.likeCount} dislikeCount={item.dislikeCount} fanCount={item.fanCount}/>;
+function coverFocusPost(item: FocusTopic) {
+    return <FocusTopicSingle title={item.title} hitCount={item.hitCount} id={item.id} boardId={item.boardId} boardName={item.boardName} replyCount={item.replyCount} userName={item.userName} portraitUrl={item.portraitUrl} time={item.time} likeCount={item.likeCount} dislikeCount={item.dislikeCount} fanCount={item.fanCount}/>;
 }
 
 

@@ -15,8 +15,8 @@
 
   <ItemGroup>
     <None Remove="CC98.Forum.rar" />
+    <None Remove="Components\AllNewTopicArea.tsx" />
     <None Remove="Components\Category.tsx" />
-    <None Remove="Components\file.tsx" />
     <None Remove="Components\Footer.tsx" />
     <None Remove="Components\UbbContainer.tsx" />
     <None Remove="Components\UserCenterConfig.tsx" />
@@ -55,8 +55,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="Components\AllNewTopicArea.tsx" />
     <TypeScriptCompile Include="Components\Category.tsx" />
-    <TypeScriptCompile Include="Components\file.tsx" />
     <TypeScriptCompile Include="Components\Footer.tsx" />
     <TypeScriptCompile Include="Components\LogOn.tsx" />
     <TypeScriptCompile Include="Components\LogOnExact.tsx" />

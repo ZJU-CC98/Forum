@@ -7,7 +7,7 @@ import { FocusBoard } from '../Props/FocusBoard';
 /**
  * 我关注的版面（单个版面的样式）
  */
-export class FocusBoardComponent extends React.Component<FocusBoard>{
+export class FocusBoardSingle extends React.Component<FocusBoard>{
 
     render() {
         return <div className="focus-board">{this.props.name}</div>;

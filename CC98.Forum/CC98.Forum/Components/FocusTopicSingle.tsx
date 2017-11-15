@@ -2,12 +2,12 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
-import { FocusPost } from '../Props/FocusPost';
+import { FocusTopic } from '../Props/FocusTopic';
 import * as moment from 'moment';
 /**
  * 我关注的某个版面的单个主题
  */
-export class FocusPostComponent extends React.Component<FocusPost> {
+export class FocusTopicSingle extends React.Component<FocusTopic> {
    
     render() {
  var topicUrl = `/topic/${this.props.id}`;

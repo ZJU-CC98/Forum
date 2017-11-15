@@ -1116,12 +1116,12 @@ body {
 
 
 /*****************************************以下为我的消息的样式*********************************/
-.mymessage-root {
+.message-root {
     display: flex;
     justify-content: center;
 }
 
-.mymessage {
+.message {
     display: flex;
     flex-direction: column;
     width: 1140px;
@@ -1129,13 +1129,13 @@ body {
     margin-bottom: 60px;
 }
 
-.mymessage-title {
+.message-title {
     margin-top: 30px;
     font-size: 14px;
     color: $color-thinBlack;
 }
 
-.mymessage-content {
+.message-content {
     display: flex;
 
     margin: {
@@ -1144,7 +1144,7 @@ body {
     }
 }
 
-.mymessage-nav {
+.message-nav {
     flex-shrink: 0;
     width: 198px;
     height: 674px;
@@ -1154,7 +1154,7 @@ body {
     flex-direction: column;
     background-color: $color-post;
 
-    .mymessage-nav-focus {
+    .message-nav-focus {
         a {
             color: $color-red;
         }
@@ -1177,27 +1177,27 @@ body {
     }
 }
 
-.mymessage-login {
+.message-login {
     position: absolute;
     top: 250px;
     left: 50%;
     font-size: 20px;
 }
 
-.mymessage-message {
+.message-message {
     display: flex;
     flex-grow: 1;
 }
 
 
-.mymessage-message-people {
+.message-message-people {
     display: flex;
     flex-direction: column;
     width: 198px;
     border: 1px solid $color-border;
     font-size: 14px;
 
-    .mymessage-message-pTitle {
+    .message-message-pTitle {
         color: $color-thinBlack;
         background-color: $color-body;
         height: 14px;
@@ -1205,7 +1205,7 @@ body {
         border-bottom: 1px solid $color-border;
     }
 
-    .mymessage-message-pList {
+    .message-message-pList {
         flex-grow: 1;
         display: flex;
         flex-direction: column;
@@ -1217,21 +1217,21 @@ body {
             color: $color-black;
         }
 
-        .mymessage-message-pFocus {
+        .message-message-pFocus {
             background-color: $color-focus;
         }
 
-        .mymessage-message-person {
+        .message-message-person {
             flex-shrink: 0;
             display: flex;
             min-height: 80px;
             border-bottom: 1px dashed lightgray;
 
             &:hover {
-                @extend .mymessage-message-pFocus;
+                @extend .message-message-pFocus;
             }
 
-            .mymessage-message-pPortraitUrl {
+            .message-message-pPortraitUrl {
                 display: inline-block;
                 width: 40px;
                 height: 40px;
@@ -1239,21 +1239,21 @@ body {
                 border-radius: 50%;
             }
 
-            .mymessage-message-pInfo {
+            .message-message-pInfo {
                 flex-grow: 1;
                 height: 40px;
                 margin: 20px 0px;
                 display: flex;
                 flex-direction: column;
 
-                .mymessage-message-pName {
+                .message-message-pName {
                     height: 14px;
                     font-size: 14px;
                     color: $color-black;
                     padding-bottom: 10px;
                 }
 
-                .mymessage-message-pMessage {
+                .message-message-pMessage {
                     height: 10px;
                     width: 110px;
                     display: inline-block;
@@ -1269,19 +1269,19 @@ body {
     }
 }
 
-.mymessage-message-window {
+.message-message-window {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     background-color: $color-post;
 
-    .mymessage-message-wHeader {
+    .message-message-wHeader {
         flex-basis: 39px;
         border-top: 1px solid $color-border;
         border-right: 1px solid $color-border;
         display: flex;
 
-        .mymessage-message-wReport {
+        .message-message-wReport {
             flex-basis: 62px;
             color: $color-thinBlack;
             display: flex;
@@ -1318,7 +1318,7 @@ body {
             }
         }
 
-        .mymessage-message-wTitle {
+        .message-message-wTitle {
             flex-grow: 1;
             color: $color-black;
             font-size: 14px;
@@ -1328,7 +1328,7 @@ body {
         }
     }
 
-    .mymessage-message-wContent {
+    .message-message-wContent {
         flex-basis: 479px;
         border-top: 1px solid $color-border;
         border-right: 1px solid $color-border;
@@ -1337,13 +1337,13 @@ body {
         overflow-y: auto;
         overflow-x: hidden;
 
-        .mymessage-message-wc {
+        .message-message-wc {
             flex-shrink: 0;
             display: flex;
             flex-direction: column;
             margin: 20px 0px 20px 0px;
 
-            .mymessage-message-wcTime {
+            .message-message-wcTime {
                 height: 10px;
                 font-size: 10px;
                 color: $color-thinBlack;
@@ -1351,12 +1351,12 @@ body {
                 padding: 10px 0px 21px 0px;
             }
 
-            .mymessage-message-wcSender {
+            .message-message-wcSender {
                 display: flex;
                 flex-direction: row-reverse;
                 position: relative;
 
-                .mymessage-message-wcPortraitUrl {
+                .message-message-wcPortraitUrl {
                     width: 60px;
                     height: 60px;
                     border-radius: 50%;
@@ -1364,7 +1364,7 @@ body {
                     margin-right: 10px;
                 }
 
-                .mymessage-message-wcContent:before {
+                .message-message-wcContent:before {
                     content: '';
                     position: absolute;
                     width: 0;
@@ -1375,7 +1375,7 @@ body {
                     border-color: transparent transparent transparent $color-border;
                 }
 
-                .mymessage-message-wcContent:after {
+                .message-message-wcContent:after {
                     content: '';
                     position: absolute;
                     width: 0;
@@ -1387,12 +1387,12 @@ body {
                 }
             }
 
-            .mymessage-message-wcReceiver {
+            .message-message-wcReceiver {
                 display: flex;
                 flex-direction: row;
                 position: relative;
 
-                .mymessage-message-wcPortraitUrl {
+                .message-message-wcPortraitUrl {
                     width: 60px;
                     height: 60px;
                     border-radius: 50%;
@@ -1400,7 +1400,7 @@ body {
                     margin-left: 10px;
                 }
 
-                .mymessage-message-wcContent:before {
+                .message-message-wcContent:before {
                     content: '';
                     position: absolute;
                     width: 0;
@@ -1411,7 +1411,7 @@ body {
                     border-color: transparent $color-border transparent transparent;
                 }
 
-                .mymessage-message-wcContent:after {
+                .message-message-wcContent:after {
                     content: '';
                     position: absolute;
                     width: 0;
@@ -1423,7 +1423,7 @@ body {
                 }
             }
 
-            .mymessage-message-wcContent {
+            .message-message-wcContent {
                 background-color: $color-body;
                 border: 1px solid $color-border;
                 border-radius: 3px;
@@ -1433,7 +1433,7 @@ body {
                 margin-top: 8px;
                 margin-bottom: 10px;
 
-                .mymessage-message-wcText {
+                .message-message-wcText {
                     font-size: 12px;
                     color: $color-thinBlack;
                     margin: 15px 20px 15px 20px;
@@ -1442,13 +1442,13 @@ body {
                 }
             }
 
-            .mymessage-message-wcRead1 {
+            .message-message-wcRead1 {
                 flex-basis: 50px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
 
-                .mymessage-message-wcRead2 {
+                .message-message-wcRead2 {
                     font-size: 12px;
                     color: $color-thinBlack;
                     flex-basis: 12px;
@@ -1459,7 +1459,7 @@ body {
         }
     }
 
-    .mymessage-message-wPost {
+    .message-message-wPost {
         flex-basis: 160px;
         border-top: 1px solid $color-border;
         border-right: 1px solid $color-border;
@@ -1468,7 +1468,7 @@ body {
         flex-direction: column;
         background-color: rgb(245, 245, 245);
 
-        .mymessage-message-wPostArea {
+        .message-message-wPostArea {
             width: 648px;
             height: 78px;
             line-height: 22px;
@@ -1478,7 +1478,7 @@ body {
             background-color: $color-post;
         }
 
-        .mymessage-message-wPostBtn {
+        .message-message-wPostBtn {
             width: 100px;
             height: 30px;
             background-color: $color-board;
@@ -1503,7 +1503,7 @@ body {
     }
 }
 
-.mymessage-system {
+.message-system {
     display: flex;
     flex-direction: column;
     max-width: 910px;
@@ -1511,7 +1511,7 @@ body {
     font-family: 微软雅黑;
     border: 1px solid $color-border;
 
-    .mymessage-system-box { /*一个系统消息的框框*/
+    .message-system-box { /*一个系统消息的框框*/
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
@@ -1520,7 +1520,7 @@ body {
         border-bottom: 1px dashed lightgray;
     }
 
-    .mymessage-system-box-title { /*一个系统消息标题*/
+    .message-system-box-title { /*一个系统消息标题*/
         height: 50px;
         max-width: 200px;
         font-size: 15px;
@@ -1529,7 +1529,7 @@ body {
         margin-left: 30px;
     }
 
-    .mymessage-system-box-date { /*一个系统消息日期*/
+    .message-system-box-date { /*一个系统消息日期*/
         height: 50px;
         width: 650px;
         font-size: 13px;
@@ -1538,7 +1538,7 @@ body {
         margin-left: 10px;
     }
 
-    .mymessage-system-box-content { /*一个系统消息内容*/
+    .message-system-box-content { /*一个系统消息内容*/
         height: 70px;
         width: 910px;
         font-size: 14px;
@@ -1547,7 +1547,7 @@ body {
     }
 }
 
-.mymessage-response {
+.message-response {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -1555,31 +1555,31 @@ body {
     overflow-y: auto;
     background-color: $color-post;
 
-    .mymessage-response-box { /*一个消息的框框*/
+    .message-response-box { /*一个消息的框框*/
         flex-shrink: 0;
         display: flex;
         min-height: 120px;
         border-bottom: 1px dashed lightgray;
     }
 
-    .mymessage-response-img { /*头像*/
+    .message-response-img { /*头像*/
         margin: 30px 20px;
         border-radius: 50%;
         width: 60px;
         height: 60px;
     }
 
-    .mymessage-response-box-left { /*一个消息框的左边-头像*/
+    .message-response-box-left { /*一个消息框的左边-头像*/
         flex-basis: 100px;
     }
 
-    .mymessage-response-box-middle { /*消息框的中间-文字*/
+    .message-response-box-middle { /*消息框的中间-文字*/
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         flex-basis: 750px;
 
-        .mymessage-response-box-middle-name { /*消息框文字第一行 用户名*/
+        .message-response-box-middle-name { /*消息框文字第一行 用户名*/
             height: 30px;
             flex-basis: 90px;
             font-size: 14px;
@@ -1588,7 +1588,7 @@ body {
             margin-top: 20px;
         }
 
-        .mymessage-response-box-middle-title { /*消息框文字第一行 学术信息*/
+        .message-response-box-middle-title { /*消息框文字第一行 学术信息*/
             height: 30px;
             flex-basis: 70px;
             font-size: 14px;
@@ -1597,7 +1597,7 @@ body {
             margin-top: 20px;
         }
 
-        .mymessage-response-box-middle-date { /*消息框文字第一行日期*/
+        .message-response-box-middle-date { /*消息框文字第一行日期*/
             height: 30px;
             flex-basis: 300px;
             font-size: 12px;
@@ -1606,7 +1606,7 @@ body {
             margin-top: 20px;
         }
 
-        .mymessage-response-content { /*消息框文字第二行-主体内容*/
+        .message-response-content { /*消息框文字第二行-主体内容*/
             height: 30px;
             flex-basis: 750px;
             font-size: 16px;
@@ -1617,7 +1617,7 @@ body {
         }
     }
 
-    .mymessage-response-box-right { /*查看*/
+    .message-response-box-right { /*查看*/
         flex-basis: 60px;
         line-height: 120px;
         font-size: 14px;
@@ -1626,7 +1626,7 @@ body {
     }
 }
 
-.mymessage-system {
+.message-system {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -1634,7 +1634,7 @@ body {
     overflow-y: auto;
     background-color: $color-post;
 
-    .mymessage-system-box { /*一个系统消息的框框*/
+    .message-system-box { /*一个系统消息的框框*/
         flex-shrink: 0;
         display: flex;
         flex-direction: row;
@@ -1642,7 +1642,7 @@ body {
         min-height: 120px;
         border-bottom: 1px dashed lightgray;
 
-        .mymessage-system-box-title { /*一个系统消息标题*/
+        .message-system-box-title { /*一个系统消息标题*/
             height: 50px;
             max-width: 200px;
             font-size: 16px;
@@ -1651,7 +1651,7 @@ body {
             margin-left: 30px;
         }
 
-        .mymessage-system-box-date { /*一个系统消息日期*/
+        .message-system-box-date { /*一个系统消息日期*/
             height: 50px;
             width: 650px;
             font-size: 12px;
@@ -1660,7 +1660,7 @@ body {
             margin-left: 10px;
         }
 
-        .mymessage-system-box-content { /*一个系统消息内容*/
+        .message-system-box-content { /*一个系统消息内容*/
             height: 70px;
             width: 840px;
             font-size: 14px;

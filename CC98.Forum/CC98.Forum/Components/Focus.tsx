@@ -2,10 +2,10 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
-import { FocusBoardAreaComponent } from './FocusBoardAreaComponent';
-import { FocusPostAreaComponent } from './FocusPostAreaComponent';
+import { FocusBoardArea } from './FocusBoardArea';
+import { FocusTopicArea } from './FocusTopicArea';
 
-export class MyFocusBoard extends React.Component {
+export class Focus extends React.Component {
 
     /**
      * 从上往下分别为：页面标题、关注版面列表区域、选中版面的主题列表区域，分别用三个组件表示
@@ -14,8 +14,8 @@ export class MyFocusBoard extends React.Component {
         return (<div className="focus-root">
                     <div className="focus">
                             <div className="focus-title">我的关注版面</div>
-                            <FocusBoardAreaComponent />
-                            <FocusPostAreaComponent />
+                            <FocusBoardArea />
+                            <FocusTopicArea />
                     </div>
                 </div>);
     }

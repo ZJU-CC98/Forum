@@ -4,11 +4,11 @@
 import * as React from 'react';
 import { FocusBoard } from '../Props/FocusBoard';
 import { FocusBoardAreaState } from '../States/FocusBoardAreaState';
-import { FocusBoardComponent } from './FocusBoardComponent';
+import { FocusBoardSingle } from './FocusBoardSingle';
 /**
  * 表示我关注的版面列表区域
  */
-export class FocusBoardAreaComponent extends React.Component<{}, FocusBoardAreaState> {
+export class FocusBoardArea extends React.Component<{}, FocusBoardAreaState> {
     /**
      * 构造函数，同时构造假的版面列表数据
      * @param props
@@ -28,5 +28,5 @@ export class FocusBoardAreaComponent extends React.Component<{}, FocusBoardAreaS
 }
 
 function coverFocusBoard(item: FocusBoard) {
-    return <FocusBoardComponent id={item.id} name={item.name} />;
+    return <FocusBoardSingle id={item.id} name={item.name} />;
 }
