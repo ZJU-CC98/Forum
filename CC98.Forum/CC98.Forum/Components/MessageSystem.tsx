@@ -2,15 +2,15 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
-import { MyMessageResponseState } from '../States/MyMessageResponseState';
-import { MyMessageProps } from '../Props/MyMessageProps';
-import { MyMessageSystembox } from './MyMessageSystembox';
+import { MessageResponseState } from '../States/MessageResponseState';
+import { MessageProps } from '../Props/MessageProps';
+import { MessageSystembox } from './MessageSystembox';
 import * as Utility from '../Utility';
 
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
-export class MyMessageSystem extends React.Component<{}, MyMessageResponseState> {
+export class MessageSystem extends React.Component<{}, MessageResponseState> {
 
     constructor(props) {
         super(props);
@@ -23,7 +23,7 @@ export class MyMessageSystem extends React.Component<{}, MyMessageResponseState>
         let token = Utility.getLocalStorage("accessToken");
 
         //创建一个数组存储回复信息
-        const people: MyMessageProps[] = [];
+        const people: MessageProps[] = [];
         let data = [];
 
         let startPage = -49;
@@ -55,15 +55,15 @@ export class MyMessageSystem extends React.Component<{}, MyMessageResponseState>
         this.setState({ data: people });
     }
 
-    coverMessageSystem = (item: MyMessageProps) => {
-        return <MyMessageSystembox id={item.id} senderName={item.senderName} receiverName={item.receiverName} title={item.title} content={item.content} isRead={item.isRead} sendTime={item.sendTime} chatPortraitUrl={item.chatPortraitUrl} myPortraitUrl={item.myPortraitUrl} />;
+    coverMessageSystem = (item: MessageProps) => {
+        return <MessageSystembox id={item.id} senderName={item.senderName} receiverName={item.receiverName} title={item.title} content={item.content} isRead={item.isRead} sendTime={item.sendTime} chatPortraitUrl={item.chatPortraitUrl} myPortraitUrl={item.myPortraitUrl} />;
     };
 
 	render() {
         //给我的回复添加选中样式
-        $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
-        $('#system').addClass('mymessage-nav-focus');
-        return <div className="mymessage-system">{this.state.data.map(this.coverMessageSystem)}</div>;
+        $('.message-nav > div').removeClass('message-nav-focus');
+        $('#system').addClass('message-nav-focus');
+        return <div className="message-system">{this.state.data.map(this.coverMessageSystem)}</div>;
     }
 }
 

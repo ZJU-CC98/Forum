@@ -255,8 +255,8 @@ export function responseRequest() {
     return url;
 }
 export function changeNav(id) {
-    $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
-    $(id).addClass('mymessage-nav-focus');
+    $('.message-nav > div').removeClass('message-nav-focus');
+    $(id).addClass('message-nav-focus');
 }
 /**
  * 获取全站新帖

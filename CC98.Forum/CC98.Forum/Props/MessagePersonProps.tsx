@@ -4,7 +4,7 @@
 /**
 *私信聊天时显示的单个用户信息
 */
-export class MyMessagePersonProps {
+export class MessagePersonProps {
     /**
     *用户名
     */

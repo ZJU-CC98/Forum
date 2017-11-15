@@ -5,7 +5,7 @@
 /**
  * 一条站短消息
  */
-export class MyMessageProps {
+export class MessageProps {
     /**
     * 消息的标识
     */

@@ -1428,8 +1428,8 @@ function responseRequest() {
 }
 exports.responseRequest = responseRequest;
 function changeNav(id) {
-    $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
-    $(id).addClass('mymessage-nav-focus');
+    $('.message-nav > div').removeClass('message-nav-focus');
+    $(id).addClass('message-nav-focus');
 }
 exports.changeNav = changeNav;
 /**
@@ -2745,9 +2745,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MyMessageResponsebox = /** @class */ (function (_super) {
-    __extends(MyMessageResponsebox, _super);
-    function MyMessageResponsebox() {
+var MessageResponsebox = /** @class */ (function (_super) {
+    __extends(MessageResponsebox, _super);
+    function MessageResponsebox() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     /*
@@ -2755,20 +2755,20 @@ var MyMessageResponsebox = /** @class */ (function (_super) {
         document.getElementById(String(this.props.id)).innerHTML = '修改后的内容';//UBBCode(this.props.cotent,'')
     }
     */
-    MyMessageResponsebox.prototype.render = function () {
-        return (React.createElement("div", { className: "mymessage-response-box" },
-            React.createElement("div", { className: "mymessage-response-box-left" },
-                React.createElement("img", { className: "mymessage-response-img", src: this.props.chatPortraitUrl })),
-            React.createElement("div", { className: "mymessage-response-box-middle" },
-                React.createElement("div", { className: "mymessage-response-box-middle-name" }, this.props.senderName),
-                React.createElement("div", { className: "mymessage-response-box-middle-title" }, this.props.title),
-                React.createElement("div", { className: "mymessage-response-box-middle-date" }, this.props.sendTime),
-                React.createElement("div", { className: "mymessage-response-box-middle-content" }, this.props.content)),
-            React.createElement("div", { className: "mymessage-response-box-right" }, "\u67E5\u770B")));
+    MessageResponsebox.prototype.render = function () {
+        return (React.createElement("div", { className: "message-response-box" },
+            React.createElement("div", { className: "message-response-box-left" },
+                React.createElement("img", { className: "message-response-img", src: this.props.chatPortraitUrl })),
+            React.createElement("div", { className: "message-response-box-middle" },
+                React.createElement("div", { className: "message-response-box-middle-name" }, this.props.senderName),
+                React.createElement("div", { className: "message-response-box-middle-title" }, this.props.title),
+                React.createElement("div", { className: "message-response-box-middle-date" }, this.props.sendTime),
+                React.createElement("div", { className: "message-response-box-middle-content" }, this.props.content)),
+            React.createElement("div", { className: "message-response-box-right" }, "\u67E5\u770B")));
     };
-    return MyMessageResponsebox;
+    return MessageResponsebox;
 }(React.Component));
-exports.MyMessageResponsebox = MyMessageResponsebox;
+exports.MessageResponsebox = MessageResponsebox;
 
 
 /***/ }),
@@ -2885,7 +2885,7 @@ var List_1 = __webpack_require__(9);
 var CurUserPost_1 = __webpack_require__(38);
 var BoardList_1 = __webpack_require__(39);
 var UserCenter_1 = __webpack_require__(40);
-var MyMessage_1 = __webpack_require__(57);
+var Message_1 = __webpack_require__(57);
 var AllNewTopic_1 = __webpack_require__(67);
 var Focus_1 = __webpack_require__(69);
 var Header_1 = __webpack_require__(73);
@@ -2920,7 +2920,7 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { path: "/list/:boardid/:page?", component: List_1.List }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/boardlist", component: BoardList_1.BoardList }),
                     React.createElement(react_router_dom_1.Route, { path: "/usercenter", component: UserCenter_1.UserCenter }),
-                    React.createElement(react_router_dom_1.Route, { path: "/mymessage", component: MyMessage_1.MyMessage }),
+                    React.createElement(react_router_dom_1.Route, { path: "/mymessage", component: Message_1.Message }),
                     React.createElement(react_router_dom_1.Route, { path: "/focus", component: Focus_1.Focus }),
                     React.createElement(react_router_dom_1.Route, { path: "/newtopics", component: AllNewTopic_1.AllNewTopic }),
                     React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }),
@@ -6914,49 +6914,49 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var MyMessageMessage_1 = __webpack_require__(58);
-var MyMessageResponse_1 = __webpack_require__(63);
-var MyMessageAttme_1 = __webpack_require__(64);
-var MyMessageSystem_1 = __webpack_require__(65);
+var MessageMessage_1 = __webpack_require__(58);
+var MessageResponse_1 = __webpack_require__(63);
+var MessageAttme_1 = __webpack_require__(64);
+var MessageSystem_1 = __webpack_require__(65);
 var react_router_dom_1 = __webpack_require__(2);
 /**
  * 网站的主页面对象。
  */
-var MyMessage = /** @class */ (function (_super) {
-    __extends(MyMessage, _super);
-    function MyMessage() {
+var Message = /** @class */ (function (_super) {
+    __extends(Message, _super);
+    function Message() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    MyMessage.prototype.render = function () {
-        return (React.createElement("div", { className: "mymessage-root" },
-            React.createElement("div", { className: "mymessage" },
-                React.createElement("div", { className: "mymessage-title" }, "\u6211\u7684\u6D88\u606F"),
+    Message.prototype.render = function () {
+        return (React.createElement("div", { className: "message-root" },
+            React.createElement("div", { className: "message" },
+                React.createElement("div", { className: "message-title" }, "\u6211\u7684\u6D88\u606F"),
                 React.createElement(react_router_dom_1.BrowserRouter, null,
-                    React.createElement("div", { className: "mymessage-content" },
-                        React.createElement("div", { className: "mymessage-nav" },
+                    React.createElement("div", { className: "message-content" },
+                        React.createElement("div", { className: "message-nav" },
                             React.createElement("div", { id: "response" },
-                                React.createElement(react_router_dom_1.NavLink, { to: "/mymessage/response" }, "\u56DE\u590D\u6211\u7684")),
+                                React.createElement(react_router_dom_1.NavLink, { to: "/message/response" }, "\u56DE\u590D\u6211\u7684")),
                             React.createElement("div", { id: "attme" },
-                                React.createElement(react_router_dom_1.NavLink, { to: "/mymessage/attme" }, "@\u6211\u7684")),
+                                React.createElement(react_router_dom_1.NavLink, { to: "/message/attme" }, "@\u6211\u7684")),
                             React.createElement("div", { id: "likes" },
-                                React.createElement(react_router_dom_1.NavLink, { to: "/mymessage/likes" }, "\u6536\u5230\u7684\u8D5E")),
+                                React.createElement(react_router_dom_1.NavLink, { to: "/message/likes" }, "\u6536\u5230\u7684\u8D5E")),
                             React.createElement("div", { id: "system" },
-                                React.createElement(react_router_dom_1.NavLink, { to: "/mymessage/system" }, "\u7CFB\u7EDF\u901A\u77E5")),
+                                React.createElement(react_router_dom_1.NavLink, { to: "/message/system" }, "\u7CFB\u7EDF\u901A\u77E5")),
                             React.createElement("div", { id: "message" },
-                                React.createElement(react_router_dom_1.NavLink, { to: "/mymessage/message" }, "\u6211\u7684\u79C1\u4FE1"))),
-                        React.createElement(react_router_dom_1.Route, { path: "/mymessage/response", component: MyMessageResponse_1.MyMessageResponse }),
-                        React.createElement(react_router_dom_1.Route, { path: "/mymessage/attme", component: MyMessageAttme_1.MyMessageAttme }),
-                        React.createElement(react_router_dom_1.Route, { path: "/mymessage/likes", component: Likes }),
-                        React.createElement(react_router_dom_1.Route, { path: "/mymessage/system", component: MyMessageSystem_1.MyMessageSystem }),
-                        React.createElement(react_router_dom_1.Route, { path: "/mymessage/message", component: MyMessageMessage_1.MyMessageMessage }))))));
+                                React.createElement(react_router_dom_1.NavLink, { to: "/message/message" }, "\u6211\u7684\u79C1\u4FE1"))),
+                        React.createElement(react_router_dom_1.Route, { path: "/message/response", component: MessageResponse_1.MessageResponse }),
+                        React.createElement(react_router_dom_1.Route, { path: "/message/attme", component: MessageAttme_1.MessageAttme }),
+                        React.createElement(react_router_dom_1.Route, { path: "/message/likes", component: Likes }),
+                        React.createElement(react_router_dom_1.Route, { path: "/message/system", component: MessageSystem_1.MessageSystem }),
+                        React.createElement(react_router_dom_1.Route, { path: "/message/message", component: MessageMessage_1.MessageMessage }))))));
     };
-    return MyMessage;
+    return Message;
 }(React.Component));
-exports.MyMessage = MyMessage;
+exports.Message = Message;
 //选中效果
 function changeNav(id) {
-    $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
-    $(id).addClass('mymessage-nav-focus');
+    $('.message-nav > div').removeClass('message-nav-focus');
+    $(id).addClass('message-nav-focus');
 }
 exports.changeNav = changeNav;
 var Likes = /** @class */ (function (_super) {
@@ -7029,26 +7029,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MyMessagePerson_1 = __webpack_require__(59);
-var MyMessageWindow_1 = __webpack_require__(60);
+var MessagePerson_1 = __webpack_require__(59);
+var MessageWindow_1 = __webpack_require__(60);
 var Utility = __webpack_require__(3);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
-var MyMessageMessage = /** @class */ (function (_super) {
-    __extends(MyMessageMessage, _super);
-    function MyMessageMessage(props) {
+var MessageMessage = /** @class */ (function (_super) {
+    __extends(MessageMessage, _super);
+    function MessageMessage(props) {
         var _this = _super.call(this, props) || this;
         //对this.stata.data进行批量化转化为JSX的函数，每个JSX可点击改变state里聊天对象的信息
         _this.coverMessagePerson = function (item) {
             var changeChatName = function () {
                 _this.setState({ chatName: item.name, chatPortraitUrl: item.portraitUrl });
                 //给选中的聊天对象添加选中效果
-                $('.mymessage-message-pList > div').removeClass('mymessage-message-pFocus');
-                $("#" + item.name).addClass('mymessage-message-pFocus');
+                $('.message-message-pList > div').removeClass('message-message-pFocus');
+                $("#" + item.name).addClass('message-message-pFocus');
             };
             return React.createElement("div", { onClick: changeChatName, id: "" + item.name },
-                React.createElement(MyMessagePerson_1.MyMessagePerson, { name: item.name, portraitUrl: item.portraitUrl, title: item.title, content: item.content }));
+                React.createElement(MessagePerson_1.MessagePerson, { name: item.name, portraitUrl: item.portraitUrl, title: item.title, content: item.content }));
         };
         _this.state = {
             data: [],
@@ -7059,9 +7059,9 @@ var MyMessageMessage = /** @class */ (function (_super) {
             token: 'testAccessToken'
         };
         return _this;
-        //如果没有设置默认的state，render第一次渲染的时候state为空，MyMessageWindow组件会报错
+        //如果没有设置默认的state，render第一次渲染的时候state为空，MessageWindow组件会报错
     }
-    MyMessageMessage.prototype.componentWillMount = function () {
+    MessageMessage.prototype.componentWillMount = function () {
         return __awaiter(this, void 0, void 0, function () {
             var personNumber, token, response1, myInfo, people, startPage, response2, data, i, _a, _b, _i, i, response, person;
             return __generator(this, function (_c) {
@@ -7135,25 +7135,25 @@ var MyMessageMessage = /** @class */ (function (_super) {
                     case 9:
                         this.setState({ data: people, chatName: people[0].name, chatPortraitUrl: people[0].portraitUrl, myName: myInfo.name, myPortraitUrl: myInfo.portraitUrl, token: token });
                         //默认选中第一个联系人
-                        $("#" + people[0].name).addClass('mymessage-message-pFocus');
+                        $("#" + people[0].name).addClass('message-message-pFocus');
                         return [2 /*return*/];
                 }
             });
         });
     };
-    MyMessageMessage.prototype.render = function () {
+    MessageMessage.prototype.render = function () {
         //给我的私信添加选中样式
-        $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
-        $('#message').addClass('mymessage-nav-focus');
-        return (React.createElement("div", { className: "mymessage-message" },
-            React.createElement("div", { className: "mymessage-message-people" },
-                React.createElement("div", { className: "mymessage-message-pTitle" }, "\u8FD1\u671F\u79C1\u4FE1"),
-                React.createElement("div", { className: "mymessage-message-pList" }, this.state.data.map(this.coverMessagePerson))),
-            React.createElement(MyMessageWindow_1.MyMessageWindow, { chatName: this.state.chatName, chatPortraitUrl: this.state.chatPortraitUrl, myName: this.state.myName, myPortraitUrl: this.state.myPortraitUrl, token: this.state.token })));
+        $('.message-nav > div').removeClass('message-nav-focus');
+        $('#message').addClass('message-nav-focus');
+        return (React.createElement("div", { className: "message-message" },
+            React.createElement("div", { className: "message-message-people" },
+                React.createElement("div", { className: "message-message-pTitle" }, "\u8FD1\u671F\u79C1\u4FE1"),
+                React.createElement("div", { className: "message-message-pList" }, this.state.data.map(this.coverMessagePerson))),
+            React.createElement(MessageWindow_1.MessageWindow, { chatName: this.state.chatName, chatPortraitUrl: this.state.chatPortraitUrl, myName: this.state.myName, myPortraitUrl: this.state.myPortraitUrl, token: this.state.token })));
     };
-    return MyMessageMessage;
+    return MessageMessage;
 }(React.Component));
-exports.MyMessageMessage = MyMessageMessage;
+exports.MessageMessage = MessageMessage;
 //查找数组arr中是否存在元素的名字为obj
 function contains(arr, obj) {
     var i = arr.length;
@@ -7187,25 +7187,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MyMessagePerson = /** @class */ (function (_super) {
-    __extends(MyMessagePerson, _super);
-    function MyMessagePerson() {
+var MessagePerson = /** @class */ (function (_super) {
+    __extends(MessagePerson, _super);
+    function MessagePerson() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    MyMessagePerson.prototype.render = function () {
-        return (React.createElement("div", { className: "mymessage-message-person" },
-            React.createElement("img", { className: "mymessage-message-pPortraitUrl", src: this.props.portraitUrl }),
-            React.createElement("div", { className: "mymessage-message-pInfo" },
-                React.createElement("div", { className: "mymessage-message-pName" }, this.props.name),
-                React.createElement("div", { className: "mymessage-message-pMessage" },
+    MessagePerson.prototype.render = function () {
+        return (React.createElement("div", { className: "message-message-person" },
+            React.createElement("img", { className: "message-message-pPortraitUrl", src: this.props.portraitUrl }),
+            React.createElement("div", { className: "message-message-pInfo" },
+                React.createElement("div", { className: "message-message-pName" }, this.props.name),
+                React.createElement("div", { className: "message-message-pMessage" },
                     "[",
                     this.props.title,
                     "]",
                     this.props.content))));
     };
-    return MyMessagePerson;
+    return MessagePerson;
 }(React.Component));
-exports.MyMessagePerson = MyMessagePerson;
+exports.MessagePerson = MessagePerson;
 
 
 /***/ }),
@@ -7264,20 +7264,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MyMessageSender_1 = __webpack_require__(61);
-var MyMessageReceiver_1 = __webpack_require__(62);
-var MyMessageWindow = /** @class */ (function (_super) {
-    __extends(MyMessageWindow, _super);
-    function MyMessageWindow(props) {
+var MessageSender_1 = __webpack_require__(61);
+var MessageReceiver_1 = __webpack_require__(62);
+var MessageWindow = /** @class */ (function (_super) {
+    __extends(MessageWindow, _super);
+    function MessageWindow(props) {
         var _this = _super.call(this, props) || this;
-        _this.coverMyMessageProps = function (item) {
+        _this.coverMessageProps = function (item) {
             if (item.title == '回复提示' || item.title == '@提示' || item.title == '转账通知' || item.title == '系统消息' || item.title == "\u7528\u6237\uFF1A" + _this.props.myName + " \u5728\u5E16\u5B50\u4E2D\u56DE\u590D\u4E86\u4F60") {
             }
             else if (item.senderName == _this.props.chatName) {
-                return React.createElement(MyMessageReceiver_1.MyMessageReceiver, { id: item.id, senderName: item.senderName, receiverName: item.receiverName, title: item.title, content: item.content, isRead: item.isRead, sendTime: item.sendTime, chatPortraitUrl: item.chatPortraitUrl, myPortraitUrl: item.myPortraitUrl });
+                return React.createElement(MessageReceiver_1.MessageReceiver, { id: item.id, senderName: item.senderName, receiverName: item.receiverName, title: item.title, content: item.content, isRead: item.isRead, sendTime: item.sendTime, chatPortraitUrl: item.chatPortraitUrl, myPortraitUrl: item.myPortraitUrl });
             }
             else {
-                return React.createElement(MyMessageSender_1.MyMessageSender, { id: item.id, senderName: item.senderName, receiverName: item.receiverName, title: item.title, content: item.content, isRead: item.isRead, sendTime: item.sendTime, chatPortraitUrl: item.chatPortraitUrl, myPortraitUrl: item.myPortraitUrl });
+                return React.createElement(MessageSender_1.MessageSender, { id: item.id, senderName: item.senderName, receiverName: item.receiverName, title: item.title, content: item.content, isRead: item.isRead, sendTime: item.sendTime, chatPortraitUrl: item.chatPortraitUrl, myPortraitUrl: item.myPortraitUrl });
             }
         };
         _this.postMessage = function () {
@@ -7303,7 +7303,7 @@ var MyMessageWindow = /** @class */ (function (_super) {
         _this.getMessageData = _this.getMessageData.bind(_this);
         return _this;
     }
-    MyMessageWindow.prototype.componentDidMount = function () {
+    MessageWindow.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 this.getMessageData(this.props);
@@ -7311,7 +7311,7 @@ var MyMessageWindow = /** @class */ (function (_super) {
             });
         });
     };
-    MyMessageWindow.prototype.componentWillReceiveProps = function (nextProps) {
+    MessageWindow.prototype.componentWillReceiveProps = function (nextProps) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 this.getMessageData(nextProps);
@@ -7319,7 +7319,7 @@ var MyMessageWindow = /** @class */ (function (_super) {
             });
         });
     };
-    MyMessageWindow.prototype.getMessageData = function (item) {
+    MessageWindow.prototype.getMessageData = function (item) {
         return __awaiter(this, void 0, void 0, function () {
             var data, startPage, response, nowData, i, i;
             return __generator(this, function (_a) {
@@ -7364,24 +7364,24 @@ var MyMessageWindow = /** @class */ (function (_super) {
             });
         });
     };
-    MyMessageWindow.prototype.render = function () {
-        return (React.createElement("div", { className: "mymessage-message-window" },
-            React.createElement("div", { className: "mymessage-message-wHeader" },
-                React.createElement("div", { className: "mymessage-message-wReport" }),
-                React.createElement("div", { className: "mymessage-message-wTitle" },
+    MessageWindow.prototype.render = function () {
+        return (React.createElement("div", { className: "message-message-window" },
+            React.createElement("div", { className: "message-message-wHeader" },
+                React.createElement("div", { className: "message-message-wReport" }),
+                React.createElement("div", { className: "message-message-wTitle" },
                     "\u4E0E ",
                     this.props.chatName,
                     " \u7684\u79C1\u4FE1"),
-                React.createElement("div", { className: "mymessage-message-wReport" },
+                React.createElement("div", { className: "message-message-wReport" },
                     React.createElement("button", { onClick: this.report }, "\u4E3E\u62A5"))),
-            React.createElement("div", { className: "mymessage-message-wContent" }, this.state.data.map(this.coverMyMessageProps)),
-            React.createElement("div", { className: "mymessage-message-wPost" },
-                React.createElement("textarea", { className: "mymessage-message-wPostArea", id: "myMessageContent" }),
-                React.createElement("button", { className: "mymessage-message-wPostBtn", onClick: this.postMessage }, "\u56DE\u590D"))));
+            React.createElement("div", { className: "message-message-wContent" }, this.state.data.map(this.coverMessageProps)),
+            React.createElement("div", { className: "message-message-wPost" },
+                React.createElement("textarea", { className: "message-message-wPostArea", id: "myMessageContent" }),
+                React.createElement("button", { className: "message-message-wPostBtn", onClick: this.postMessage }, "\u56DE\u590D"))));
     };
-    return MyMessageWindow;
+    return MessageWindow;
 }(React.Component));
-exports.MyMessageWindow = MyMessageWindow;
+exports.MessageWindow = MessageWindow;
 function sortArr(arr) {
     var s = -1;
     var e = -1;
@@ -7431,28 +7431,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var UbbContainer_1 = __webpack_require__(6);
 var moment = __webpack_require__(5);
-var MyMessageSender = /** @class */ (function (_super) {
-    __extends(MyMessageSender, _super);
-    function MyMessageSender() {
+var MessageSender = /** @class */ (function (_super) {
+    __extends(MessageSender, _super);
+    function MessageSender() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    MyMessageSender.prototype.render = function () {
-        return (React.createElement("div", { className: "mymessage-message-wc" },
-            React.createElement("div", { className: "mymessage-message-wcTime" }, moment(this.props.sendTime).format('YYYY-MM-DD HH:mm:ss')),
-            React.createElement("div", { className: "mymessage-message-wcSender" },
-                React.createElement("img", { className: "mymessage-message-wcPortraitUrl", src: this.props.myPortraitUrl }),
-                React.createElement("div", { className: "mymessage-message-wcContent" },
-                    React.createElement("div", { id: String(this.props.id), className: "mymessage-message-wcText" },
+    MessageSender.prototype.render = function () {
+        return (React.createElement("div", { className: "message-message-wc" },
+            React.createElement("div", { className: "message-message-wcTime" }, moment(this.props.sendTime).format('YYYY-MM-DD HH:mm:ss')),
+            React.createElement("div", { className: "message-message-wcSender" },
+                React.createElement("img", { className: "message-message-wcPortraitUrl", src: this.props.myPortraitUrl }),
+                React.createElement("div", { className: "message-message-wcContent" },
+                    React.createElement("div", { id: String(this.props.id), className: "message-message-wcText" },
                         "\u3010",
                         this.props.title,
                         "\u3011",
                         React.createElement(UbbContainer_1.UbbContainer, { code: this.props.content }))),
-                React.createElement("div", { className: "mymessage-message-wcRead1" },
-                    React.createElement("div", { className: "mymessage-message-wcRead2" }, this.props.isRead ? '已读' : '未读')))));
+                React.createElement("div", { className: "message-message-wcRead1" },
+                    React.createElement("div", { className: "message-message-wcRead2" }, this.props.isRead ? '已读' : '未读')))));
     };
-    return MyMessageSender;
+    return MessageSender;
 }(React.Component));
-exports.MyMessageSender = MyMessageSender;
+exports.MessageSender = MessageSender;
 
 
 /***/ }),
@@ -7478,28 +7478,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var UbbContainer_1 = __webpack_require__(6);
 var moment = __webpack_require__(5);
-var MyMessageReceiver = /** @class */ (function (_super) {
-    __extends(MyMessageReceiver, _super);
-    function MyMessageReceiver() {
+var MessageReceiver = /** @class */ (function (_super) {
+    __extends(MessageReceiver, _super);
+    function MessageReceiver() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    MyMessageReceiver.prototype.render = function () {
-        return (React.createElement("div", { className: "mymessage-message-wc" },
-            React.createElement("div", { className: "mymessage-message-wcTime" }, moment(this.props.sendTime).format('YYYY-MM-DD HH:mm:ss')),
-            React.createElement("div", { className: "mymessage-message-wcReceiver" },
-                React.createElement("img", { className: "mymessage-message-wcPortraitUrl", src: this.props.chatPortraitUrl }),
-                React.createElement("div", { className: "mymessage-message-wcContent" },
-                    React.createElement("div", { className: "mymessage-message-wcText", id: String(this.props.id) },
+    MessageReceiver.prototype.render = function () {
+        return (React.createElement("div", { className: "message-message-wc" },
+            React.createElement("div", { className: "message-message-wcTime" }, moment(this.props.sendTime).format('YYYY-MM-DD HH:mm:ss')),
+            React.createElement("div", { className: "message-message-wcReceiver" },
+                React.createElement("img", { className: "message-message-wcPortraitUrl", src: this.props.chatPortraitUrl }),
+                React.createElement("div", { className: "message-message-wcContent" },
+                    React.createElement("div", { className: "message-message-wcText", id: String(this.props.id) },
                         "\u3010",
                         this.props.title,
                         "\u3011",
                         React.createElement(UbbContainer_1.UbbContainer, { code: this.props.content }))),
-                React.createElement("div", { className: "mymessage-message-wcRead1" },
-                    React.createElement("div", { className: "mymessage-message-wcRead2" }, this.props.isRead ? '已读' : '未读')))));
+                React.createElement("div", { className: "message-message-wcRead1" },
+                    React.createElement("div", { className: "message-message-wcRead2" }, this.props.isRead ? '已读' : '未读')))));
     };
-    return MyMessageReceiver;
+    return MessageReceiver;
 }(React.Component));
-exports.MyMessageReceiver = MyMessageReceiver;
+exports.MessageReceiver = MessageReceiver;
 
 
 /***/ }),
@@ -7558,23 +7558,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MyMessageResponsebox_1 = __webpack_require__(14);
+var MessageResponsebox_1 = __webpack_require__(14);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
-var MyMessageResponse = /** @class */ (function (_super) {
-    __extends(MyMessageResponse, _super);
-    function MyMessageResponse(props) {
+var MessageResponse = /** @class */ (function (_super) {
+    __extends(MessageResponse, _super);
+    function MessageResponse(props) {
         var _this = _super.call(this, props) || this;
         _this.coverMessageResponse = function (item) {
-            return React.createElement(MyMessageResponsebox_1.MyMessageResponsebox, { id: item.id, senderName: item.senderName, receiverName: item.receiverName, title: item.title, content: item.content, isRead: item.isRead, sendTime: item.sendTime, chatPortraitUrl: item.chatPortraitUrl, myPortraitUrl: item.myPortraitUrl });
+            return React.createElement(MessageResponsebox_1.MessageResponsebox, { id: item.id, senderName: item.senderName, receiverName: item.receiverName, title: item.title, content: item.content, isRead: item.isRead, sendTime: item.sendTime, chatPortraitUrl: item.chatPortraitUrl, myPortraitUrl: item.myPortraitUrl });
         };
         _this.state = {
             data: [],
         };
         return _this;
     }
-    MyMessageResponse.prototype.componentWillMount = function () {
+    MessageResponse.prototype.componentWillMount = function () {
         return __awaiter(this, void 0, void 0, function () {
             var token, accessToken, people, data, startPage, response, i, _a, _b, _i, i, response, person;
             return __generator(this, function (_c) {
@@ -7640,15 +7640,15 @@ var MyMessageResponse = /** @class */ (function (_super) {
             });
         });
     };
-    MyMessageResponse.prototype.render = function () {
+    MessageResponse.prototype.render = function () {
         //给我的回复添加选中样式
-        $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
-        $('#response').addClass('mymessage-nav-focus');
-        return React.createElement("div", { className: "mymessage-response" }, this.state.data.map(this.coverMessageResponse));
+        $('.message-nav > div').removeClass('message-nav-focus');
+        $('#response').addClass('message-nav-focus');
+        return React.createElement("div", { className: "message-response" }, this.state.data.map(this.coverMessageResponse));
     };
-    return MyMessageResponse;
+    return MessageResponse;
 }(React.Component));
-exports.MyMessageResponse = MyMessageResponse;
+exports.MessageResponse = MessageResponse;
 //查找数组arr中是否存在元素的名字为obj
 function contains(arr, obj) {
     var i = arr.length;
@@ -7717,24 +7717,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MyMessageResponsebox_1 = __webpack_require__(14);
+var MessageResponsebox_1 = __webpack_require__(14);
 var Utility = __webpack_require__(3);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
-var MyMessageAttme = /** @class */ (function (_super) {
-    __extends(MyMessageAttme, _super);
-    function MyMessageAttme(props) {
+var MessageAttme = /** @class */ (function (_super) {
+    __extends(MessageAttme, _super);
+    function MessageAttme(props) {
         var _this = _super.call(this, props) || this;
         _this.coverMessageResponse = function (item) {
-            return React.createElement(MyMessageResponsebox_1.MyMessageResponsebox, { id: item.id, senderName: item.senderName, receiverName: item.receiverName, title: item.title, content: item.content, isRead: item.isRead, sendTime: item.sendTime, chatPortraitUrl: item.chatPortraitUrl, myPortraitUrl: item.myPortraitUrl });
+            return React.createElement(MessageResponsebox_1.MessageResponsebox, { id: item.id, senderName: item.senderName, receiverName: item.receiverName, title: item.title, content: item.content, isRead: item.isRead, sendTime: item.sendTime, chatPortraitUrl: item.chatPortraitUrl, myPortraitUrl: item.myPortraitUrl });
         };
         _this.state = {
             data: [],
         };
         return _this;
     }
-    MyMessageAttme.prototype.componentWillMount = function () {
+    MessageAttme.prototype.componentWillMount = function () {
         return __awaiter(this, void 0, void 0, function () {
             var token, people, data, startPage, response, i, _a, _b, _i, i, response, person;
             return __generator(this, function (_c) {
@@ -7796,15 +7796,15 @@ var MyMessageAttme = /** @class */ (function (_super) {
             });
         });
     };
-    MyMessageAttme.prototype.render = function () {
+    MessageAttme.prototype.render = function () {
         //给我的回复添加选中样式
-        $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
-        $('#attme').addClass('mymessage-nav-focus');
-        return React.createElement("div", { className: "mymessage-response" }, this.state.data.map(this.coverMessageResponse));
+        $('.message-nav > div').removeClass('message-nav-focus');
+        $('#attme').addClass('message-nav-focus');
+        return React.createElement("div", { className: "message-response" }, this.state.data.map(this.coverMessageResponse));
     };
-    return MyMessageAttme;
+    return MessageAttme;
 }(React.Component));
-exports.MyMessageAttme = MyMessageAttme;
+exports.MessageAttme = MessageAttme;
 //查找数组arr中是否存在元素的名字为obj
 function contains(arr, obj) {
     var i = arr.length;
@@ -7873,24 +7873,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MyMessageSystembox_1 = __webpack_require__(66);
+var MessageSystembox_1 = __webpack_require__(66);
 var Utility = __webpack_require__(3);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
-var MyMessageSystem = /** @class */ (function (_super) {
-    __extends(MyMessageSystem, _super);
-    function MyMessageSystem(props) {
+var MessageSystem = /** @class */ (function (_super) {
+    __extends(MessageSystem, _super);
+    function MessageSystem(props) {
         var _this = _super.call(this, props) || this;
         _this.coverMessageSystem = function (item) {
-            return React.createElement(MyMessageSystembox_1.MyMessageSystembox, { id: item.id, senderName: item.senderName, receiverName: item.receiverName, title: item.title, content: item.content, isRead: item.isRead, sendTime: item.sendTime, chatPortraitUrl: item.chatPortraitUrl, myPortraitUrl: item.myPortraitUrl });
+            return React.createElement(MessageSystembox_1.MessageSystembox, { id: item.id, senderName: item.senderName, receiverName: item.receiverName, title: item.title, content: item.content, isRead: item.isRead, sendTime: item.sendTime, chatPortraitUrl: item.chatPortraitUrl, myPortraitUrl: item.myPortraitUrl });
         };
         _this.state = {
             data: [],
         };
         return _this;
     }
-    MyMessageSystem.prototype.componentWillMount = function () {
+    MessageSystem.prototype.componentWillMount = function () {
         return __awaiter(this, void 0, void 0, function () {
             var token, people, data, startPage, response, i, _a, _b, _i, i, response, person;
             return __generator(this, function (_c) {
@@ -7951,15 +7951,15 @@ var MyMessageSystem = /** @class */ (function (_super) {
             });
         });
     };
-    MyMessageSystem.prototype.render = function () {
+    MessageSystem.prototype.render = function () {
         //给我的回复添加选中样式
-        $('.mymessage-nav > div').removeClass('mymessage-nav-focus');
-        $('#system').addClass('mymessage-nav-focus');
-        return React.createElement("div", { className: "mymessage-system" }, this.state.data.map(this.coverMessageSystem));
+        $('.message-nav > div').removeClass('message-nav-focus');
+        $('#system').addClass('message-nav-focus');
+        return React.createElement("div", { className: "message-system" }, this.state.data.map(this.coverMessageSystem));
     };
-    return MyMessageSystem;
+    return MessageSystem;
 }(React.Component));
-exports.MyMessageSystem = MyMessageSystem;
+exports.MessageSystem = MessageSystem;
 //查找数组arr中是否存在元素的名字为obj
 function contains(arr, obj) {
     var i = arr.length;
@@ -7993,9 +7993,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MyMessageSystembox = /** @class */ (function (_super) {
-    __extends(MyMessageSystembox, _super);
-    function MyMessageSystembox() {
+var MessageSystembox = /** @class */ (function (_super) {
+    __extends(MessageSystembox, _super);
+    function MessageSystembox() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     /*
@@ -8003,15 +8003,15 @@ var MyMessageSystembox = /** @class */ (function (_super) {
         document.getElementById(String(this.props.id)).innerHTML = '修改后的内容';//UBBCode(this.props.cotent,'')
     }
     */
-    MyMessageSystembox.prototype.render = function () {
-        return (React.createElement("div", { className: "mymessage-system-box" },
-            React.createElement("div", { className: "mymessage-system-box-title" }, this.props.title),
-            React.createElement("div", { className: "mymessage-system-box-date" }, this.props.sendTime),
-            React.createElement("div", { className: "mymessage-system-box-content" }, this.props.content)));
+    MessageSystembox.prototype.render = function () {
+        return (React.createElement("div", { className: "message-system-box" },
+            React.createElement("div", { className: "message-system-box-title" }, this.props.title),
+            React.createElement("div", { className: "message-system-box-date" }, this.props.sendTime),
+            React.createElement("div", { className: "message-system-box-content" }, this.props.content)));
     };
-    return MyMessageSystembox;
+    return MessageSystembox;
 }(React.Component));
-exports.MyMessageSystembox = MyMessageSystembox;
+exports.MessageSystembox = MessageSystembox;
 
 
 /***/ }),
