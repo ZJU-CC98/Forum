@@ -387,6 +387,14 @@
             }
         }
 
+        .user-center-myfans {
+            .user-center-myfollowings-user{
+                button {
+                    display: none;
+                }
+            }
+        }
+
         .user-center-config {
             button {
                 background-color: rgb(240,240,240);
