@@ -1,8 +1,16 @@
 {
   "_args": [
     [
-      "moment@2.18.1",
-      "C:\\Users\\user.ZSQ-PC\\source\\repos\\Forum\\CC98.Forum\\CC98.Forum"
+      {
+        "raw": "moment@2.18.1",
+        "scope": null,
+        "escapedName": "moment",
+        "name": "moment",
+        "rawSpec": "2.18.1",
+        "spec": "2.18.1",
+        "type": "version"
+      },
+      "C:\\Users\\AsukaSong\\sourse\\Forum\\CC98.Forum\\CC98.Forum"
     ]
   ],
   "_from": "moment@2.18.1",
@@ -15,16 +23,17 @@
     "tmp": "tmp/moment-2.18.1.tgz_1490137132553_0.33630239870399237"
   },
   "_npmUser": {
-    "email": "iskren.chernev@gmail.com",
-    "name": "ichernev"
+    "name": "ichernev",
+    "email": "iskren.chernev@gmail.com"
   },
   "_npmVersion": "3.10.3",
   "_phantomChildren": {},
   "_requested": {
-    "name": "moment",
     "raw": "moment@2.18.1",
-    "rawSpec": "2.18.1",
     "scope": null,
+    "escapedName": "moment",
+    "name": "moment",
+    "rawSpec": "2.18.1",
     "spec": "2.18.1",
     "type": "version"
   },
@@ -35,10 +44,10 @@
   "_shasum": "c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f",
   "_shrinkwrap": null,
   "_spec": "moment@2.18.1",
-  "_where": "C:\\Users\\user.ZSQ-PC\\source\\repos\\Forum\\CC98.Forum\\CC98.Forum",
+  "_where": "C:\\Users\\AsukaSong\\sourse\\Forum\\CC98.Forum\\CC98.Forum",
   "author": {
-    "email": "iskren.chernev@gmail.com",
     "name": "Iskren Ivov Chernev",
+    "email": "iskren.chernev@gmail.com",
     "url": "https://github.com/ichernev"
   },
   "bugs": {
@@ -116,31 +125,30 @@
     "node": "*"
   },
   "homepage": "http://momentjs.com",
-  "installable": true,
   "jsnext:main": "./src/moment.js",
   "jspm": {
-    "buildConfig": {
-      "uglify": true
-    },
     "files": [
-      "locale",
+      "moment.js",
       "moment.d.ts",
-      "moment.js"
+      "locale"
     ],
     "map": {
       "moment": "./moment"
+    },
+    "buildConfig": {
+      "uglify": true
     }
   },
   "keywords": [
+    "moment",
     "date",
-    "ender",
+    "time",
+    "parse",
     "format",
+    "validate",
     "i18n",
     "l10n",
-    "moment",
-    "parse",
-    "time",
-    "validate"
+    "ender"
   ],
   "license": "MIT",
   "main": "./moment.js",
@@ -164,6 +172,7 @@
   ],
   "name": "moment",
   "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/moment/moment.git"

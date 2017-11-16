@@ -6646,6 +6646,41 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var AppState_1 = __webpack_require__(4);
@@ -6656,12 +6691,73 @@ var UserCenterMyFans = /** @class */ (function (_super) {
     function UserCenterMyFans(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
-            //临时填充信息
-            userFans: [userFanInfo, userFanInfo, userFanInfo]
+            userFans: []
         };
         return _this;
     }
+    UserCenterMyFans.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var token, url, res, data, fans, userFanInfo, i, data2, userid;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        token = window.localStorage.accessToken.slice(4);
+                        url = 'http://apitest.niconi.cc/user/follow/fan?from=0&size=10';
+                        return [4 /*yield*/, fetch(url, {
+                                headers: {
+                                    'Authorization': token
+                                }
+                            })];
+                    case 1:
+                        res = _a.sent();
+                        return [4 /*yield*/, res.json()];
+                    case 2:
+                        data = _a.sent();
+                        //没有粉丝
+                        if (!data || !data.length) {
+                            return [2 /*return*/, false];
+                        }
+                        fans = [];
+                        userFanInfo = new AppState_1.UserFanInfo();
+                        i = data.length;
+                        _a.label = 3;
+                    case 3:
+                        if (!i--) return [3 /*break*/, 8];
+                        userid = data[i];
+                        url = "http://apitest.niconi.cc/user/" + userid;
+                        return [4 /*yield*/, fetch(url)];
+                    case 4:
+                        res = _a.sent();
+                        return [4 /*yield*/, res.json()];
+                    case 5:
+                        data2 = _a.sent();
+                        userFanInfo.name = data2.name;
+                        userFanInfo.avatarImgURL = data2.portraitUrl;
+                        userFanInfo.posts = data2.postCount;
+                        url = "http://apitest.niconi.cc/user/follow/fancount?userid=" + userid;
+                        return [4 /*yield*/, fetch(url)];
+                    case 6:
+                        res = _a.sent();
+                        return [4 /*yield*/, res.json()];
+                    case 7:
+                        data2 = _a.sent();
+                        userFanInfo.fans = data2;
+                        fans.push(userFanInfo);
+                        return [3 /*break*/, 3];
+                    case 8:
+                        console.log(fans);
+                        this.setState({
+                            userFans: fans
+                        });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     UserCenterMyFans.prototype.render = function () {
+        if (this.state.userFans.length === 0) {
+            return (React.createElement("div", { className: "user-center-myfans" }, "\u6CA1\u6709\u7C89\u4E1D"));
+        }
         //state转换为JSX
         var userFans = this.state.userFans.map(function (item) { return (React.createElement(UserCenterMyFollowingsUser_1.UserCenterMyFollowingsUser, { userFanInfo: item })); });
         //添加分隔线
@@ -6673,12 +6769,6 @@ var UserCenterMyFans = /** @class */ (function (_super) {
     return UserCenterMyFans;
 }(React.Component));
 exports.UserCenterMyFans = UserCenterMyFans;
-//临时填充信息
-var userFanInfo = new AppState_1.UserFanInfo();
-userFanInfo.avatarImgURL = '../img/001.jpg';
-userFanInfo.fans = 666;
-userFanInfo.posts = 233;
-userFanInfo.name = '董松松松';
 
 
 /***/ }),
