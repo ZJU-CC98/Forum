@@ -28,6 +28,7 @@
     <None Remove="Reducer.tsx" />
     <None Remove="Store.tsx" />
     <None Remove="UbbCode.tsx" />
+    <None Remove="Ubb\AlignTagHandler.tsx" />
     <None Remove="Ubb\BTagHandler.tsx" />
     <None Remove="Ubb\CodeTagHandler.tsx" />
     <None Remove="Ubb\ColorTagHandler.tsx" />
@@ -71,6 +72,7 @@
     <TypeScriptCompile Include="Components\UserCenterConfigSignature.tsx" />
     <TypeScriptCompile Include="Components\UserCenterPageCount.tsx" />
     <TypeScriptCompile Include="Props\FocusBoardProps.tsx" />
+    <TypeScriptCompile Include="Ubb\AlignTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\BTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\CodeTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\ColorTagHandler.tsx" />
