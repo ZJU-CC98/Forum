@@ -39,7 +39,7 @@ export class TopicTitleState {
     isNotice: boolean;
     tag: string;
     likeNumber: number;
-    unlikeNumber: number;
+    dislikeNumber: number;
     time: string;
     viewTimes: number;
 }
@@ -61,7 +61,10 @@ export class ContentState {
         userImgUrl: string,
         signature: string,
         userId: number,
-        privilege:string
+        privilege: string,
+        likeNumber: number,
+        dislikeNumber: number,
+        postid:number,
     ) {
         this.userName = userName;
         this.id = id;
@@ -77,7 +80,10 @@ export class ContentState {
         this.userImgUrl = userImgUrl;
         this.signature = signature;
         this.userId = userId;
-        this.privilege=privilege;
+        this.privilege = privilege;
+        this.likeNumber = likeNumber;
+        this.dislikeNumber = dislikeNumber;
+        this.postid = postid;
     }
     id: number;
     content: string;
@@ -93,7 +99,10 @@ export class ContentState {
     userImgUrl: string;
     signature: string;
     userId: number;
-    privilege:string;
+    privilege: string;
+    likeNumber: number;
+    dislikeNumber: number;
+    postid: number;
 }
 /**
  * 点赞信息状态
@@ -158,7 +167,7 @@ export class TopicTitleAndContentState {
 		  this.lastReply = lastReply;
 		    this.title = title;
 	  }*/
-    constructor(title, userName, topicid, userId, lastPostUser,lastPostTime) {
+    constructor(title, userName, topicid, userId, lastPostUser, lastPostTime) {
         this.userName = userName;
         this.title = title;
         this.id = topicid;
@@ -202,7 +211,10 @@ export class TopicState {
         signature: string,
         userImgUrl: string,
         hitCount: number,
-        userId: number
+        userId: number,
+        likeNumber: number,
+        dislikeNumber: number,
+        postid: number
     ) {
         this.userName = userName;
         this.time = time;
@@ -212,6 +224,9 @@ export class TopicState {
         this.userImgUrl = userImgUrl;
         this.hitCount = hitCount;
         this.userId = userId;
+        this.likeNumber = likeNumber;
+        this.dislikeNumber = dislikeNumber;
+        this.postid = postid;
     }
     userName: string;
     title: string;
@@ -221,6 +236,9 @@ export class TopicState {
     userImgUrl: string;
     hitCount: number;
     userId: number;
+    likeNumber: number;
+    dislikeNumber: number;
+    postid: number;
 }
 
 /**

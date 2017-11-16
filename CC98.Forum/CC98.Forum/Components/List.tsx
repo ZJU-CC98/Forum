@@ -34,7 +34,8 @@ export class List extends RouteComponent<{}, {bigPaper:string, page: number, tot
         const token = Utility.getLocalStorage("accessToken");
         const totalTopicCountResponse = await fetch(`http://apitest.niconi.cc/Board/${boardid}`, { headers: {'Authorization':token}});
 		const totalTopicCountJson = await totalTopicCountResponse.json();
-		const totalTopicCount = totalTopicCountJson.postCount;
+        const totalTopicCount = totalTopicCountJson.topicCount;
+        console.log("count" + totalTopicCount);
 		return (totalTopicCount - totalTopicCount % 20) / 20 + 1;
 	}
 	async componentWillReceiveProps(newProps) {
@@ -48,7 +49,8 @@ export class List extends RouteComponent<{}, {bigPaper:string, page: number, tot
 		else { page = parseInt(newProps.match.params.page); }
 		const boardid = this.match.params.boardid;
 		const totalPage = await this.getTotalListPage(boardid);
-		// 设置状态
+        // 设置状态
+
 		this.setState({ page: page, totalPage: totalPage, boardid: boardid });
 	}
     async componentDidMount() {
