@@ -1479,7 +1479,7 @@ exports.changeNav = changeNav;
  */
 function getAllNewTopic(curPage) {
     return __awaiter(this, void 0, void 0, function () {
-        var startPage, size, token, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, data;
+        var startPage, size, token, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, boardName0, boardName1;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
@@ -1498,9 +1498,9 @@ function getAllNewTopic(curPage) {
                     _i = 0;
                     _c.label = 3;
                 case 3:
-                    if (!(_i < _a.length)) return [3 /*break*/, 11];
+                    if (!(_i < _a.length)) return [3 /*break*/, 13];
                     i = _a[_i];
-                    if (!newTopic[i].userId) return [3 /*break*/, 8];
+                    if (!newTopic[i].userId) return [3 /*break*/, 11];
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/follow/fanCount?userid=" + newTopic[i].userId)];
                 case 4:
                     userFan0 = _c.sent();
@@ -1515,20 +1515,28 @@ function getAllNewTopic(curPage) {
                 case 7:
                     userInfo1 = _c.sent();
                     newTopic[i].portraitUrl = userInfo1.portraitUrl;
-                    return [3 /*break*/, 9];
+                    //获取所在版面名称
+                    newTopic[i].boardName = getLocalStorage("boardId_" + newTopic[i].boardId);
+                    if (!!newTopic[i].boardName) return [3 /*break*/, 10];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/board/" + newTopic[i].boardId)];
                 case 8:
-                    newTopic[i].fanCount = 999;
-                    _c.label = 9;
+                    boardName0 = _c.sent();
+                    return [4 /*yield*/, boardName0.json()];
                 case 9:
-                    newTopic[i].likeCount = 999;
-                    newTopic[i].dislikeCount = 999;
+                    boardName1 = _c.sent();
+                    newTopic[i].boardName = boardName1.name;
+                    setLocalStorage("boardId_" + newTopic[i].boardId, boardName1.name);
                     _c.label = 10;
-                case 10:
+                case 10: return [3 /*break*/, 12];
+                case 11:
+                    newTopic[i].fanCount = 999;
+                    newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+                    newTopic[i].boardName = "心灵之约";
+                    _c.label = 12;
+                case 12:
                     _i++;
                     return [3 /*break*/, 3];
-                case 11:
-                    data = newTopic;
-                    return [2 /*return*/, data];
+                case 13: return [2 /*return*/, newTopic];
             }
         });
     });
@@ -1540,7 +1548,7 @@ exports.getAllNewTopic = getAllNewTopic;
  */
 function getFocusTopic(curPage) {
     return __awaiter(this, void 0, void 0, function () {
-        var startPage, size, token, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, data;
+        var startPage, size, token, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, boardName0, boardName1;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
@@ -1553,18 +1561,15 @@ function getFocusTopic(curPage) {
                     return [4 /*yield*/, response.json()];
                 case 2:
                     newTopic = _c.sent();
-                    console.log("获取之后：");
-                    console.log(newTopic);
                     _a = [];
                     for (_b in newTopic)
                         _a.push(_b);
                     _i = 0;
                     _c.label = 3;
                 case 3:
-                    if (!(_i < _a.length)) return [3 /*break*/, 11];
+                    if (!(_i < _a.length)) return [3 /*break*/, 13];
                     i = _a[_i];
-                    if (!newTopic[i].userId) return [3 /*break*/, 8];
-                    console.log(newTopic[i].name);
+                    if (!newTopic[i].userId) return [3 /*break*/, 11];
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/follow/fanCount?userid=" + newTopic[i].userId)];
                 case 4:
                     userFan0 = _c.sent();
@@ -1579,20 +1584,29 @@ function getFocusTopic(curPage) {
                 case 7:
                     userInfo1 = _c.sent();
                     newTopic[i].portraitUrl = userInfo1.portraitUrl;
-                    return [3 /*break*/, 9];
+                    //获取所在版面名称
+                    newTopic[i].boardName = getLocalStorage("boardId_" + newTopic[i].boardId);
+                    if (!!newTopic[i].boardName) return [3 /*break*/, 10];
+                    console.log("\u7F13\u5B58" + newTopic[i].boardId);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/board/" + newTopic[i].boardId)];
                 case 8:
-                    newTopic[i].fanCount = 999;
-                    _c.label = 9;
+                    boardName0 = _c.sent();
+                    return [4 /*yield*/, boardName0.json()];
                 case 9:
-                    newTopic[i].likeCount = 999;
-                    newTopic[i].dislikeCount = 999;
+                    boardName1 = _c.sent();
+                    newTopic[i].boardName = boardName1.name;
+                    setLocalStorage("boardId_" + newTopic[i].boardId, boardName1.name);
                     _c.label = 10;
-                case 10:
+                case 10: return [3 /*break*/, 12];
+                case 11:
+                    newTopic[i].fanCount = 999;
+                    newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+                    newTopic[i].boardName = "心灵之约";
+                    _c.label = 12;
+                case 12:
                     _i++;
                     return [3 /*break*/, 3];
-                case 11:
-                    data = newTopic;
-                    return [2 /*return*/, data];
+                case 13: return [2 /*return*/, newTopic];
             }
         });
     });
@@ -2909,7 +2923,7 @@ var FocusTopicSingle = /** @class */ (function (_super) {
                     React.createElement("div", { className: "focus-topic-redText" }, this.props.fanCount),
                     React.createElement("div", { className: "focus-topic-blackText" }, "\u7C89\u4E1D")),
                 React.createElement("div", { className: "focus-topic-title" },
-                    React.createElement("a", { href: topicUrl }, this.props.title))),
+                    React.createElement("a", { href: topicUrl, target: "_blank" }, this.props.title))),
             React.createElement("div", { className: "focus-topic-info2" },
                 React.createElement("div", { className: "focus-topic-board" },
                     this.props.boardName,
@@ -3218,8 +3232,8 @@ var Post = /** @class */ (function (_super) {
             React.createElement("div", { className: "row", style: { width: "100%", justifyContent: 'space-between', borderBottom: '#EAEAEA solid thin', alignItems: "center" } },
                 React.createElement(Category, { topicid: this.state.topicid }),
                 React.createElement(TopicPager, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage })),
-            hotReply,
             topic,
+            hotReply,
             React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: Reply }),
             React.createElement(TopicPagerDown, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
             React.createElement(SendTopic_1.SendTopic, { onChange: this.handleChange, topicid: this.state.topicid }));
@@ -5936,8 +5950,8 @@ var BoardList = /** @class */ (function (_super) {
                         Utility.setStorage('boardList', boardNameList);
                         return [3 /*break*/, 4];
                     case 3:
+                        boardNameList = Utility.getStorage('boardList');
                         for (i = 0; i < 20; i++) {
-                            boardNameList = Utility.getStorage('boardList');
                             board[i] = Utility.getStorage(boardNameList[i]);
                         }
                         _a.label = 4;
@@ -8587,11 +8601,12 @@ var Focus = /** @class */ (function (_super) {
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        data = Utility.getStorage("focusBoard");
+                        data = Utility.getStorage("focusBoardList");
                         if (!data) return [3 /*break*/, 1];
                         this.setState({ data: data });
                         return [3 /*break*/, 7];
                     case 1:
+                        console.log("版面区域没有获取到版面列表缓存数据");
                         data = [];
                         token = Utility.getLocalStorage("accessToken");
                         userInfo = Utility.getLocalStorage("userInfo");
@@ -8622,7 +8637,7 @@ var Focus = /** @class */ (function (_super) {
                     case 6:
                         this.setState({ data: data });
                         //存到缓存里
-                        Utility.setStorage("focusBoard", data);
+                        Utility.setStorage("focusBoardList", data);
                         _c.label = 7;
                     case 7: return [2 /*return*/];
                 }
@@ -8637,7 +8652,7 @@ var Focus = /** @class */ (function (_super) {
             React.createElement("div", { className: "focus" },
                 React.createElement("div", { className: "focus-title" }, "\u6211\u7684\u5173\u6CE8\u7248\u9762"),
                 React.createElement(FocusBoardArea_1.FocusBoardArea, { data: this.state.data }),
-                React.createElement(FocusTopicArea_1.FocusTopicArea, null))));
+                React.createElement(FocusTopicArea_1.FocusTopicArea, { data: this.state.data }))));
     };
     return Focus;
 }(React.Component));
@@ -8814,6 +8829,7 @@ var FocusTopicArea = /** @class */ (function (_super) {
                     case 1:
                         data = _a.sent();
                         this.setState({ data: data });
+                        //滚动条监听
                         document.addEventListener('scroll', this.handleScroll);
                         return [2 /*return*/];
                 }

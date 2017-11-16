@@ -26,8 +26,8 @@ export class BoardList extends React.Component<{}, { thisBoardState: Board[] }> 
             }
             Utility.setStorage('boardList', boardNameList);
         } else {
+            boardNameList = Utility.getStorage('boardList');
             for (let i = 0; i < 20; i++) {
-                boardNameList = Utility.getStorage('boardList');
                 board[i] = Utility.getStorage(boardNameList[i]);
             }
         }

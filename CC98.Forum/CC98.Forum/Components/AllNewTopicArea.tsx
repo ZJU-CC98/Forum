@@ -31,6 +31,7 @@ export class AllNewTopicArea extends React.Component<{}, FocusTopicAreaState> {
     async componentDidMount() {
         let data = await Utility.getAllNewTopic(this.state.curPage);
         this.setState({ data: data });
+
         document.addEventListener('scroll', this.handleScroll);
     }
 

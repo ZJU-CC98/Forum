@@ -19,12 +19,13 @@ export class Focus extends React.Component<{}, FocusBoardProps> {
 
     async componentDidMount() {
         //先看缓存里有没有关注版面列表的数据
-        let data: FocusBoard[] = Utility.getStorage("focusBoard");
+        let data: FocusBoard[] = Utility.getStorage("focusBoardList");
         if(data) {
             this.setState({ data: data });
         }
         //没有就自己去服务器获取
         else { 
+            console.log("版面区域没有获取到版面列表缓存数据");
             data = [];
             let token = Utility.getLocalStorage("accessToken");
             //获取关注版面的id列表
@@ -41,7 +42,7 @@ export class Focus extends React.Component<{}, FocusBoardProps> {
             }
             this.setState({ data: data });
             //存到缓存里
-            Utility.setStorage("focusBoard", data);
+            Utility.setStorage("focusBoardList", data);
         }
     }
 
@@ -53,7 +54,7 @@ export class Focus extends React.Component<{}, FocusBoardProps> {
                     <div className="focus">
                          <div className="focus-title">我的关注版面</div>
                          <FocusBoardArea data={this.state.data}/>
-                         <FocusTopicArea />
+                         <FocusTopicArea data={this.state.data}/>
                     </div>
                 </div>);
     }

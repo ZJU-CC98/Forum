@@ -4,12 +4,13 @@
 import * as React from 'react';
 import { FocusTopic } from '../Props/FocusTopic';
 import { FocusTopicSingle } from './FocusTopicSingle';
+import { FocusBoardProps } from '../Props/FocusBoardProps'
 import { FocusTopicAreaState } from '../States/FocusTopicAreaState';
 import * as Utility from '../Utility';
 /**
  * 表示我关注的版面的主题列表
  */
-export class FocusTopicArea extends React.Component<{}, FocusTopicAreaState> {
+export class FocusTopicArea extends React.Component<FocusBoardProps, FocusTopicAreaState> {
     
     /**
      * 构造函数
@@ -31,6 +32,8 @@ export class FocusTopicArea extends React.Component<{}, FocusTopicAreaState> {
     async componentDidMount() {
         const data = await Utility.getFocusTopic(this.state.curPage);
         this.setState({ data: data });
+
+        //滚动条监听
         document.addEventListener('scroll', this.handleScroll);
     }
 

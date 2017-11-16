@@ -8,7 +8,6 @@ import {
     Link
 } from 'react-router-dom';
 import * as $ from 'jquery';
-import { FocusTopic } from './Props/FocusTopic';
 
 
 
@@ -293,22 +292,32 @@ export async function getAllNewTopic(curPage: number) {
     const response = await fetch(`http://apitest.niconi.cc/topic/new?from=${startPage}&size=${size}`, { headers: { 'Authorization': `${token}` } });
     const newTopic = await response.json();
     for (let i in newTopic) {
-        if(newTopic[i].userId) {
+        if (newTopic[i].userId) {
+            //获取作者粉丝数目
             let userFan0 = await fetch(`http://apitest.niconi.cc/user/follow/fanCount?userid=${newTopic[i].userId}`);
             let userFan1 = await userFan0.json();
             newTopic[i].fanCount = userFan1;
+            //获取作者头像地址
             let userInfo0 = await fetch(`http://apitest.niconi.cc/user/${newTopic[i].userId}`, { headers: { Authorization: `${token}` } });
             let userInfo1 = await userInfo0.json();
             newTopic[i].portraitUrl = userInfo1.portraitUrl;
+            //获取所在版面名称
+            newTopic[i].boardName = getLocalStorage(`boardId_${newTopic[i].boardId}`);
+            if (!newTopic[i].boardName) {
+                let boardName0 = await fetch(`http://apitest.niconi.cc/board/${newTopic[i].boardId}`);
+                let boardName1 = await boardName0.json();
+                newTopic[i].boardName = boardName1.name;
+                setLocalStorage(`boardId_${newTopic[i].boardId}`, boardName1.name);
+            }
         }
+        //匿名时粉丝数显示999
         else {
             newTopic[i].fanCount = 999;
+            newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+            newTopic[i].boardName = "心灵之约";
         }
-        newTopic[i].likeCount = 999;
-        newTopic[i].dislikeCount = 999;
     }
-    let data: FocusTopic[] = newTopic;
-    return data;
+    return newTopic;
 }
 
 /**
@@ -327,26 +336,34 @@ export async function getFocusTopic(curPage: number) {
      */
     const response = await fetch(`http://apitest.niconi.cc/topic/customboards/new?from=${startPage}&size=${size}`, { headers: { 'Authorization': `${token}` } });
     const newTopic = await response.json();
-    console.log("获取之后：");
-    console.log(newTopic);
     for (let i in newTopic) {
         if (newTopic[i].userId) {
-            console.log(newTopic[i].name);
+            //获取作者粉丝数目
             let userFan0 = await fetch(`http://apitest.niconi.cc/user/follow/fanCount?userid=${newTopic[i].userId}`);
             let userFan1 = await userFan0.json();
             newTopic[i].fanCount = userFan1;
+            //获取作者头像地址
             let userInfo0 = await fetch(`http://apitest.niconi.cc/user/${newTopic[i].userId}`, { headers: { Authorization: `${token}` } });
             let userInfo1 = await userInfo0.json();
             newTopic[i].portraitUrl = userInfo1.portraitUrl;
+            //获取所在版面名称
+            newTopic[i].boardName = getLocalStorage(`boardId_${newTopic[i].boardId}`);
+            if (!newTopic[i].boardName) {
+                console.log(`缓存${newTopic[i].boardId}`);
+                let boardName0 = await fetch(`http://apitest.niconi.cc/board/${newTopic[i].boardId}`);
+                let boardName1 = await boardName0.json();
+                newTopic[i].boardName = boardName1.name;
+                setLocalStorage(`boardId_${newTopic[i].boardId}`, boardName1.name);
+            }
         }
+        //匿名时粉丝数显示999
         else {
             newTopic[i].fanCount = 999;
+            newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+            newTopic[i].boardName = "心灵之约";
         }
-        newTopic[i].likeCount = 999;
-        newTopic[i].dislikeCount = 999;
     }
-    let data: FocusTopic[] = newTopic;
-    return data;
+    return newTopic;
 }
 
 

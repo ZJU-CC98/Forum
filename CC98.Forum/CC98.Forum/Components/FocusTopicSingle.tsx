@@ -10,7 +10,7 @@ import * as moment from 'moment';
 export class FocusTopicSingle extends React.Component<FocusTopic> {
    
     render() {
- var topicUrl = `/topic/${this.props.id}`;
+        var topicUrl = `/topic/${this.props.id}`;
         return (<div className="focus-topic">
                     <img className="focus-topic-portraitUrl" src={this.props.portraitUrl}></img>
                     <div className="focus-topic-info1">
@@ -19,7 +19,7 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
                             <div className="focus-topic-redText">{this.props.fanCount}</div>
                             <div className="focus-topic-blackText">粉丝</div>
                         </div>
-                        <div className="focus-topic-title"><a href={topicUrl}>{this.props.title}</a></div>
+                        <div className="focus-topic-title"><a href={topicUrl} target="_blank">{this.props.title}</a></div>
                     </div>
                     <div className="focus-topic-info2">
                 <div className="focus-topic-board">{this.props.boardName} / {moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')}</div>
