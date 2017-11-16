@@ -20,6 +20,7 @@ export class SizeTagHandler extends Ubb.RecursiveTagHandler {
         }
 
         size = size > 7 ? 3.5 : (size / 2);
+        size /= 1.5;    //这里可能需要调整
 
         const style = {
             fontSize: `${size}rem`
