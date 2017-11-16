@@ -20,6 +20,7 @@ import { CodeTagHandler } from './CodeTagHandler';
 import { UnresolvedTagHandler } from './UnresolvedTagHandler';
 import { FontTagHandler } from './FontTagHandler';
 import { AlignTagHandler } from './AlignTagHandler';
+import { UploadTagHandler } from './UploadTagHandler';
 
 /**
  * 创建一个具有所有功能的默认引擎。
@@ -45,6 +46,7 @@ export function createEngine(): Ubb.UbbCodeEngine {
     engine.tagHandlers.register(CodeTagHandler);
     engine.tagHandlers.register(FontTagHandler);
     engine.tagHandlers.register(AlignTagHandler);
+    engine.tagHandlers.register(UploadTagHandler);
 
 
 	// 以下是未命名标签处理程序，注意未命名标签处理程序的命中和注册顺序有关
