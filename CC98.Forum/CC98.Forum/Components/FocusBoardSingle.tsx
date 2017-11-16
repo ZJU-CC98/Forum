@@ -10,6 +10,9 @@ import { FocusBoard } from '../Props/FocusBoard';
 export class FocusBoardSingle extends React.Component<FocusBoard>{
 
     render() {
-        return <div className="focus-board">{this.props.name}</div>;
+
+        //点击版面名称会进入相应版面
+        let boardUrl = `/list/${this.props.id}`;
+        return <a href={boardUrl}><div className="focus-board">{this.props.name}</div></a>;
     }
 }

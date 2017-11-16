@@ -387,6 +387,22 @@
             }
         }
 
+        .user-center-myfans {
+            display: flex;
+            flex-direction: column;
+
+            .user-center-myfans-exact {
+                flex-grow: 1;
+                min-height: 27rem;
+            }
+
+            .user-center-myfollowings-user {
+                button {
+                    display: none;
+                }
+            }
+        }
+
         .user-center-config {
             button {
                 background-color: rgb(240,240,240);
@@ -509,6 +525,42 @@
             button {
                 width: 100px;
                 height: 25px;
+            }
+        }
+
+        #userCenterPageCount {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            flex-grow: 0;
+
+            ul {
+                list-style-type: none;
+                display: flex;
+            }
+
+            li {
+                margin: 0.5rem;
+            }
+
+            button {
+                width: 2.5rem;
+                height: 2.5rem;
+                border-radius: 0.5rem;
+                background-color: #fff;
+                border: #ccc 1px solid;
+
+                &:hover {
+                    background-color: #eee;
+                }
+
+                &:active {
+                    background-color: #ccc;
+                }
+
+                &:focus {
+                    outline: none;
+                }
             }
         }
     }
