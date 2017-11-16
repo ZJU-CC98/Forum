@@ -43,7 +43,7 @@ export class LogOnExact extends React.Component<null, LogOnState> {
         //阻止表单提交
         e.preventDefault();
 
-        //如果在登陆中则无视提交
+        //如果在登录中则无视提交
         if (this.state.isLogining) {
             return false;
         }
@@ -65,9 +65,9 @@ export class LogOnExact extends React.Component<null, LogOnState> {
             return false;
         }
 
-        //登陆
+        //登录
         this.setState({
-            loginMessage: '登陆中',
+            loginMessage: '登录中',
             isLogining: true
         });
 
@@ -97,7 +97,7 @@ export class LogOnExact extends React.Component<null, LogOnState> {
         //请求是否成功
         if (response.status !== 200) {
             this.setState({
-                loginMessage: `登陆失败 ${response.status}`,
+                loginMessage: `登录失败 ${response.status}`,
                 isLogining: false
             });
             return false;
@@ -107,12 +107,21 @@ export class LogOnExact extends React.Component<null, LogOnState> {
         const token = "Bearer " + encodeURIComponent(data.access_token);
         console.log("after logon token=" + token);
 
-        //缓存token
+        //缓存数据
         Utility.setLocalStorage("accessToken", token);
         Utility.setLocalStorage("userName", this.state.loginName);
 
+        //缓存用户其他数据
+        let response1 = await fetch(`http://apitest.niconi.cc/user/name/${this.state.loginName}`, {
+            headers: {
+                Authorization: `${token}`
+            }
+        });
+        let userInfo = await response1.json();
+        Utility.setLocalStorage("userInfo", userInfo)
+
         this.setState({
-            loginMessage: '登陆成功 正在返回首页',
+            loginMessage: '登录成功 正在返回首页',
             isLogining: false
         });
 
@@ -125,7 +134,7 @@ export class LogOnExact extends React.Component<null, LogOnState> {
         //alert(e.error);     这行好像没什么用……暂时还不会处理不同的error……
         console.log("Oops, error", e);
         this.setState({
-            loginMessage: `登陆失败`,
+            loginMessage: `登录失败`,
             isLogining: false
         });
     }
@@ -145,7 +154,7 @@ export class LogOnExact extends React.Component<null, LogOnState> {
                                 <p>密码</p><input type="password" id="loginPassword" onChange={this.handlePasswordChange} />
                             </div>
                             <p id="loginMessage">{this.state.loginMessage}</p>
-                            <button type="submit" disabled={this.state.isLogining}>登陆账号</button>
+                            <button type="submit" disabled={this.state.isLogining}>登录账号</button>
                         </form>
                         <p><span>还没账号？我要 <a href="">注册</a></span></p>
                     </div>
@@ -156,7 +165,7 @@ export class LogOnExact extends React.Component<null, LogOnState> {
 }
 
 /**
- * 登陆页状态
+ * 登录页状态
  */
 class LogOnState {
     /**
@@ -168,11 +177,11 @@ class LogOnState {
     */
     loginPassword: string;
     /**
-    * 登陆信息
+    * 登录信息
     */
     loginMessage: string;
     /**
-    * 登陆状态
+    * 登录状态
     */
     isLogining: boolean;
 }

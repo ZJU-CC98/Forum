@@ -36,7 +36,7 @@ export class UserCenterExact extends React.Component<null, UserCenterExactState>
                 <UserCenterExactActivities />
             </div>);
         } else if (this.state !== null && this.state.responseState === 401) {
-            element = <p>请重新登陆</p>;
+            element = <p>请重新登录</p>;
         } else {
             element = <p>加载中</p>;
         }

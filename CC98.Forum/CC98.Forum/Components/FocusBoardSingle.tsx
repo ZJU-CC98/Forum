@@ -7,9 +7,12 @@ import { FocusBoard } from '../Props/FocusBoard';
 /**
  * 我关注的版面（单个版面的样式）
  */
-export class FocusBoardComponent extends React.Component<FocusBoard>{
+export class FocusBoardSingle extends React.Component<FocusBoard>{
 
     render() {
-        return <div className="focus-board">{this.props.name}</div>;
+
+        //点击版面名称会进入相应版面
+        let boardUrl = `/list/${this.props.id}`;
+        return <a href={boardUrl}><div className="focus-board">{this.props.name}</div></a>;
     }
 }

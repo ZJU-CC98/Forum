@@ -2,14 +2,15 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
-import { FocusPost } from '../Props/FocusPost';
-import { FocusPostComponent } from './FocusPostComponent';
-import { FocusPostAreaState } from '../States/FocusPostAreaState';
+import { FocusTopic } from '../Props/FocusTopic';
+import { FocusTopicSingle } from './FocusTopicSingle';
+import { FocusBoardProps } from '../Props/FocusBoardProps'
+import { FocusTopicAreaState } from '../States/FocusTopicAreaState';
 import * as Utility from '../Utility';
 /**
- * 表示我关注的某个版面的主题列表
+ * 表示我关注的版面的主题列表
  */
-export class FocusPostAreaComponent extends React.Component<{}, FocusPostAreaState> {
+export class FocusTopicArea extends React.Component<FocusBoardProps, FocusTopicAreaState> {
     
     /**
      * 构造函数
@@ -29,8 +30,10 @@ export class FocusPostAreaComponent extends React.Component<{}, FocusPostAreaSta
      * 进入立即获取20条新帖的数据，同时为滚动条添加监听事件
      */
     async componentDidMount() {
-        const data = await Utility.getAllNewPost(this.state.curPage);
+        const data = await Utility.getFocusTopic(this.state.curPage);
         this.setState({ data: data });
+
+        //滚动条监听
         document.addEventListener('scroll', this.handleScroll);
     }
 
@@ -50,8 +53,8 @@ export class FocusPostAreaComponent extends React.Component<{}, FocusPostAreaSta
             *查看新帖数目大于100条时不再继续加载
             */
             if (this.state.curPage >= 5) {
-                $('#focus-post-loading').addClass('displaynone');
-                $('#focus-post-loaddone').removeClass('displaynone');
+                $('#focus-topic-loading').addClass('displaynone');
+                $('#focus-topic-loaddone').removeClass('displaynone');
                 return;
             }
             /**
@@ -59,7 +62,7 @@ export class FocusPostAreaComponent extends React.Component<{}, FocusPostAreaSta
             */
             this.setState({ loading: false });
             try {
-                var newData = await Utility.getAllNewPost(this.state.curPage + 1);
+                var newData = await Utility.getAllNewTopic(this.state.curPage + 1);
             } catch (err) {
                 /**
                 *如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
@@ -77,10 +80,10 @@ export class FocusPostAreaComponent extends React.Component<{}, FocusPostAreaSta
      * 将主题排列好
      */
     render() {
-        return <div className="focus-post-area">
-                    <div className="focus-post-topicArea">{this.state.data.map(coverFocusPost)}</div>
-                    <div className="focus-post-loading" id="focus-post-loading"><img src="http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif"></img></div>
-                    <div className="focus-post-loaddone displaynone" id="focus-post-loaddone">---------------------- 已加载100条新帖，无法加载更多 ----------------------</div>
+        return <div className="focus-topic-area">
+                    <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
+                    <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif"></img></div>
+                    <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">---------------------- 已加载100条新帖，无法加载更多 ----------------------</div>
                </div>;
     }
     
@@ -89,8 +92,8 @@ export class FocusPostAreaComponent extends React.Component<{}, FocusPostAreaSta
 /**
 * 单个主题数据转换成单个主题组件
 */
-function coverFocusPost(item: FocusPost) {
-    return <FocusPostComponent title={item.title} hitCount={item.hitCount} id={item.id} boardId={item.boardId} boardName={item.boardName} replyCount={item.replyCount} userName={item.userName} portraitUrl={item.portraitUrl} time={item.time} likeCount={item.likeCount} dislikeCount={item.dislikeCount} fanCount={item.fanCount}/>;
+function coverFocusPost(item: FocusTopic) {
+    return <FocusTopicSingle title={item.title} hitCount={item.hitCount} id={item.id} boardId={item.boardId} boardName={item.boardName} replyCount={item.replyCount} userId={item.userId} userName={item.userName} portraitUrl={item.portraitUrl} time={item.time} likeCount={item.likeCount} dislikeCount={item.dislikeCount} fanCount={item.fanCount} />;
 }
 
 

@@ -4,7 +4,7 @@
 /**
  * 表示我关注的某个版面的某个帖子
  */
-export class FocusPost {
+export class FocusTopic {
     /**
     *主题的标题
     */
@@ -29,6 +29,10 @@ export class FocusPost {
     *主题的回复数（不包括第一次发言）
     */
     replyCount: number;
+    /**
+    *主题作者的id。如果主题为匿名主题，则该参数为 null
+    */
+    userId: number;
     /**
     *主题作者的用户名。如果主题为匿名主题，则该参数为 null
     */

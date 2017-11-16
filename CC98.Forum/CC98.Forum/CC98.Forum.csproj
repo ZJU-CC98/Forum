@@ -15,14 +15,16 @@
 
   <ItemGroup>
     <None Remove="CC98.Forum.rar" />
+    <None Remove="Components\AllNewTopicArea.tsx" />
     <None Remove="Components\Category.tsx" />
-    <None Remove="Components\file.tsx" />
     <None Remove="Components\Footer.tsx" />
     <None Remove="Components\UbbContainer.tsx" />
     <None Remove="Components\UserCenterConfig.tsx" />
     <None Remove="Components\UserCenterConfigAvatar.tsx" />
     <None Remove="Components\UsercenterConfigPassword.tsx" />
     <None Remove="Components\UserCenterConfigSignature.tsx" />
+    <None Remove="Components\UserCenterPageCount.tsx" />
+    <None Remove="Props\FocusBoardProps.tsx" />
     <None Remove="Reducer.tsx" />
     <None Remove="Store.tsx" />
     <None Remove="UbbCode.tsx" />
@@ -55,8 +57,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="Components\AllNewTopicArea.tsx" />
     <TypeScriptCompile Include="Components\Category.tsx" />
-    <TypeScriptCompile Include="Components\file.tsx" />
     <TypeScriptCompile Include="Components\Footer.tsx" />
     <TypeScriptCompile Include="Components\LogOn.tsx" />
     <TypeScriptCompile Include="Components\LogOnExact.tsx" />
@@ -67,6 +69,8 @@
     <TypeScriptCompile Include="Components\UserCenterConfigAvatar.tsx" />
     <TypeScriptCompile Include="Components\UsercenterConfigPassword.tsx" />
     <TypeScriptCompile Include="Components\UserCenterConfigSignature.tsx" />
+    <TypeScriptCompile Include="Components\UserCenterPageCount.tsx" />
+    <TypeScriptCompile Include="Props\FocusBoardProps.tsx" />
     <TypeScriptCompile Include="Ubb\BTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\CodeTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\ColorTagHandler.tsx" />

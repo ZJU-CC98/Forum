@@ -140,7 +140,7 @@ export class HotTopicComponent extends React.Component<{}, MainPageTopicState> {
 
     async getTopicInfo() {
         const mainPageTopics: MainPageTopic[] = [];
-        const response = await fetch('http://api.cc98.org/Topic/Hot');
+        const response = await fetch('http://apitest.niconi.cc/Topic/Hot');
         const data = await response.json();
         for (let i = 0; i < 10; i++) {
             mainPageTopics[i] = new MainPageTopic(data[i].title, data[i].id, data[i].boardName, data[i].boardId);
@@ -184,7 +184,7 @@ export class Shixijianzhi extends React.Component<{}, MainPageTopicState>{
 
     async getTopicInfo() {
         const mainPageTopics: MainPageTopic[] = [];
-        const url = 'http://api.cc98.org/Topic/Board/459';
+        const url = 'http://apitest.niconi.cc/Topic/Board/459';
         const response = await fetch(url,
             { headers: { Range: 'bytes=0-9' } });   //该api要求提供返回主题的数量，这里需要返回10条
         const data = await response.json();
