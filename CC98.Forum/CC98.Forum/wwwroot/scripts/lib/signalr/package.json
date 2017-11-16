@@ -2,7 +2,7 @@
   "_args": [
     [
       "signalr@2.2.2",
-      "d:\\Users\\guoyang\\Source\\Repos\\Forum\\CC98.Forum\\CC98.Forum"
+      "C:\\Users\\an\\Source\\Repos2\\Forum\\CC98.Forum\\CC98.Forum"
     ]
   ],
   "_from": "signalr@2.2.2",
@@ -35,7 +35,7 @@
   "_shasum": "ba07915eb5e08cfbc87765047ec6972694d008e2",
   "_shrinkwrap": null,
   "_spec": "signalr@2.2.2",
-  "_where": "d:\\Users\\guoyang\\Source\\Repos\\Forum\\CC98.Forum\\CC98.Forum",
+  "_where": "C:\\Users\\an\\Source\\Repos2\\Forum\\CC98.Forum\\CC98.Forum",
   "author": {
     "name": "Microsoft"
   },

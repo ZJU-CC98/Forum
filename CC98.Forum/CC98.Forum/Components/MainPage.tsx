@@ -3,6 +3,35 @@ import { AppState } from '../States/AppState';
 import { MainPageTopicState } from '../States/AppState';
 import * as $ from 'jquery';
 import * as Utility from '../Utility';
+import { UbbContainer } from './UbbContainer';
+
+/**
+ * 全站公告组件
+ **/
+export class Announcement extends React.Component<{}, { announcementContent: string }> {
+
+    constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
+        super(props);       //super 表示调用基类（Component系统类型）构造方法
+        this.state = {
+            announcementContent: '加载中……'
+        };
+    }
+    async getAnnouncement() {
+        const response = await fetch('http://apitest.niconi.cc/config/global');
+        const data = await response.json();
+        const announcement: string = data.announcement;
+        return announcement;
+    }
+    async componentDidMount() {
+        const x = await this.getAnnouncement();
+        this.setState({
+            announcementContent: x,
+        });
+    }
+    render() {
+        return <div className="announcementContent"><UbbContainer code={this.state.announcementContent} /></div>
+    }
+}
 
 /**
  * 推荐阅读组件
@@ -187,28 +216,9 @@ export class Shixijianzhi extends React.Component<{}, MainPageTopicState>{
  测试用组件~
  */
 export class Test extends React.Component<{}, AppState>{
-    async logon() {
-
-        let url = "http://openid.cc98.org/connect/authorize";
-        const requestBody = {
-            'client_id': '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
-            'redirect_uri': 'http://localhost:53004',
-            'response_type': 'token',
-            'scope': 'cc98-api openid',
-        }
-        let response = await fetch(url, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',//在fetch API里这不是默认值，需要手动添加
-            },
-            body: $.param(requestBody)
-
-        });
-        return await response.json();
-    }
 
     async test() {
-        let url = `http://apitest.niconi.cc/topic/test`;
+        let url = 'http://apitest.niconi.cc/user/follow/fancount?userid=5298';
         let token = Utility.getLocalStorage("accessToken");
         console.log(token);
         let myHeaders = new Headers();
@@ -220,6 +230,7 @@ export class Test extends React.Component<{}, AppState>{
             body: { 'token': token }
         });
         let data = await response.json();
+        data += 1;
         console.log(data);
     }
     render() {
@@ -239,14 +250,7 @@ export class MainPage extends React.Component<{}, AppState> {
                     <div className="blueBar1">
                         <div className="listName">论坛公告</div>
                     </div>
-                    <div className="announcementContent">
-                        <div className="row"><div className="announcementDate">[2017.08.17]</div><div className="announcementText">公告1</div><div className="announcementLink1">★详情点击★</div></div>
-                        <div className="row"><div className="announcementDate">[2017.08.17]</div><div className="announcementText">公告2</div><div className="announcementLink1">★详情点击★</div></div>
-                        <div className="row"><div className="announcementDate">[2017.08.17]</div><div className="announcementText">公告3</div><div className="announcementLink1">★详情点击★</div></div>
-                        <div className="row">
-
-                        </div>
-                    </div>
+                    <Announcement />
                 </div>
                 <Recommended1 />
                 <div className="row">

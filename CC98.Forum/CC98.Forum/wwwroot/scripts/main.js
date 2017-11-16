@@ -8845,6 +8845,59 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var $ = __webpack_require__(6);
 var Utility = __webpack_require__(3);
+var UbbContainer_1 = __webpack_require__(5);
+/**
+ * 全站公告组件
+ **/
+var Announcement = /** @class */ (function (_super) {
+    __extends(Announcement, _super);
+    function Announcement(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            announcementContent: '加载中……'
+        };
+        return _this;
+    }
+    Announcement.prototype.getAnnouncement = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, data, announcement;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, fetch('http://apitest.niconi.cc/config/global')];
+                    case 1:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 2:
+                        data = _a.sent();
+                        announcement = data.announcement;
+                        return [2 /*return*/, announcement];
+                }
+            });
+        });
+    };
+    Announcement.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var x;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getAnnouncement()];
+                    case 1:
+                        x = _a.sent();
+                        this.setState({
+                            announcementContent: x,
+                        });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Announcement.prototype.render = function () {
+        return React.createElement("div", { className: "announcementContent" },
+            React.createElement(UbbContainer_1.UbbContainer, { code: this.state.announcementContent }));
+    };
+    return Announcement;
+}(React.Component));
+exports.Announcement = Announcement;
 /**
  * 推荐阅读组件
  **/
@@ -9063,41 +9116,13 @@ var Test = /** @class */ (function (_super) {
     function Test() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Test.prototype.logon = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var url, requestBody, response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        url = "http://openid.cc98.org/connect/authorize";
-                        requestBody = {
-                            'client_id': '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
-                            'redirect_uri': 'http://localhost:53004',
-                            'response_type': 'token',
-                            'scope': 'cc98-api openid',
-                        };
-                        return [4 /*yield*/, fetch(url, {
-                                method: "POST",
-                                headers: {
-                                    'Content-Type': 'application/x-www-form-urlencoded',
-                                },
-                                body: $.param(requestBody)
-                            })];
-                    case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.json()];
-                    case 2: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
     Test.prototype.test = function () {
         return __awaiter(this, void 0, void 0, function () {
             var url, token, myHeaders, response, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        url = "http://apitest.niconi.cc/topic/test";
+                        url = 'http://apitest.niconi.cc/user/follow/fancount?userid=5298';
                         token = Utility.getLocalStorage("accessToken");
                         console.log(token);
                         myHeaders = new Headers();
@@ -9113,6 +9138,7 @@ var Test = /** @class */ (function (_super) {
                         return [4 /*yield*/, response.json()];
                     case 2:
                         data = _a.sent();
+                        data += 1;
                         console.log(data);
                         return [2 /*return*/];
                 }
@@ -9139,20 +9165,7 @@ var MainPage = /** @class */ (function (_super) {
                 React.createElement("div", { className: "announcement" },
                     React.createElement("div", { className: "blueBar1" },
                         React.createElement("div", { className: "listName" }, "\u8BBA\u575B\u516C\u544A")),
-                    React.createElement("div", { className: "announcementContent" },
-                        React.createElement("div", { className: "row" },
-                            React.createElement("div", { className: "announcementDate" }, "[2017.08.17]"),
-                            React.createElement("div", { className: "announcementText" }, "\u516C\u544A1"),
-                            React.createElement("div", { className: "announcementLink1" }, "\u2605\u8BE6\u60C5\u70B9\u51FB\u2605")),
-                        React.createElement("div", { className: "row" },
-                            React.createElement("div", { className: "announcementDate" }, "[2017.08.17]"),
-                            React.createElement("div", { className: "announcementText" }, "\u516C\u544A2"),
-                            React.createElement("div", { className: "announcementLink1" }, "\u2605\u8BE6\u60C5\u70B9\u51FB\u2605")),
-                        React.createElement("div", { className: "row" },
-                            React.createElement("div", { className: "announcementDate" }, "[2017.08.17]"),
-                            React.createElement("div", { className: "announcementText" }, "\u516C\u544A3"),
-                            React.createElement("div", { className: "announcementLink1" }, "\u2605\u8BE6\u60C5\u70B9\u51FB\u2605")),
-                        React.createElement("div", { className: "row" }))),
+                    React.createElement(Announcement, null)),
                 React.createElement(Recommended1, null),
                 React.createElement("div", { className: "row" },
                     React.createElement("div", { className: "list1" },
