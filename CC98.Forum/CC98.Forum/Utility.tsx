@@ -360,6 +360,7 @@ export async function getFocusTopic(curPage: number) {
         else {
             newTopic[i].fanCount = 999;
             newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+            newTopic[i].userName = "心灵之约";
             newTopic[i].boardName = "心灵之约";
         }
     }

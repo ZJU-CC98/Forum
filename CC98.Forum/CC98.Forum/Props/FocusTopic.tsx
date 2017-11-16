@@ -30,6 +30,10 @@ export class FocusTopic {
     */
     replyCount: number;
     /**
+    *主题作者的id。如果主题为匿名主题，则该参数为 null
+    */
+    userId: number;
+    /**
     *主题作者的用户名。如果主题为匿名主题，则该参数为 null
     */
     userName: string;

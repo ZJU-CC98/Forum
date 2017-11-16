@@ -1601,6 +1601,7 @@ function getFocusTopic(curPage) {
                 case 11:
                     newTopic[i].fanCount = 999;
                     newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+                    newTopic[i].userName = "心灵之约";
                     newTopic[i].boardName = "心灵之约";
                     _c.label = 12;
                 case 12:
@@ -2915,8 +2916,9 @@ var FocusTopicSingle = /** @class */ (function (_super) {
     }
     FocusTopicSingle.prototype.render = function () {
         var topicUrl = "/topic/" + this.props.id;
+        var boardUrl = "/list/" + this.props.boardId;
         return (React.createElement("div", { className: "focus-topic" },
-            React.createElement("img", { className: "focus-topic-portraitUrl", src: this.props.portraitUrl }),
+            React.createElement(PortaritrUrl, { userId: this.props.userId, portraitUrl: this.props.portraitUrl }),
             React.createElement("div", { className: "focus-topic-info1" },
                 React.createElement("div", { className: "focus-topic-authorInfo" },
                     React.createElement("div", { className: "focus-topic-blackText" }, this.props.userName),
@@ -2926,8 +2928,8 @@ var FocusTopicSingle = /** @class */ (function (_super) {
                     React.createElement("a", { href: topicUrl, target: "_blank" }, this.props.title))),
             React.createElement("div", { className: "focus-topic-info2" },
                 React.createElement("div", { className: "focus-topic-board" },
-                    this.props.boardName,
-                    " / ",
+                    React.createElement("a", { href: boardUrl, target: "_blank" }, this.props.boardName),
+                    "\u00A0\u00A0/\u00A0\u00A0",
                     moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')),
                 React.createElement("div", { className: "focus-topic-response" },
                     React.createElement("div", null,
@@ -2943,6 +2945,31 @@ var FocusTopicSingle = /** @class */ (function (_super) {
     return FocusTopicSingle;
 }(React.Component));
 exports.FocusTopicSingle = FocusTopicSingle;
+//返回可点击或者不可点击的头像
+var PortaritrUrl = /** @class */ (function (_super) {
+    __extends(PortaritrUrl, _super);
+    function PortaritrUrl() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    PortaritrUrl.prototype.render = function () {
+        if (this.props.userId) {
+            var userUrl = "/user/" + this.props.userId;
+            return (React.createElement("a", { href: userUrl, target: "_blank" },
+                React.createElement("img", { className: "focus-topic-portraitUrl", src: this.props.portraitUrl })));
+        }
+        else {
+            return React.createElement("img", { className: "focus-topic-portraitUrl", src: this.props.portraitUrl });
+        }
+    };
+    return PortaritrUrl;
+}(React.Component));
+exports.PortaritrUrl = PortaritrUrl;
+var PortaritrUrlProps = /** @class */ (function () {
+    function PortaritrUrlProps() {
+    }
+    return PortaritrUrlProps;
+}());
+exports.PortaritrUrlProps = PortaritrUrlProps;
 
 
 /***/ }),
@@ -8554,7 +8581,7 @@ exports.AllNewTopicArea = AllNewTopicArea;
 * 单个主题数据转换成单个主题组件
 */
 function coverFocusPost(item) {
-    return React.createElement(FocusTopicSingle_1.FocusTopicSingle, { title: item.title, hitCount: item.hitCount, id: item.id, boardId: item.boardId, boardName: item.boardName, replyCount: item.replyCount, userName: item.userName, portraitUrl: item.portraitUrl, time: item.time, likeCount: item.likeCount, dislikeCount: item.dislikeCount, fanCount: item.fanCount });
+    return React.createElement(FocusTopicSingle_1.FocusTopicSingle, { title: item.title, hitCount: item.hitCount, id: item.id, boardId: item.boardId, boardName: item.boardName, replyCount: item.replyCount, userId: item.userId, userName: item.userName, portraitUrl: item.portraitUrl, time: item.time, likeCount: item.likeCount, dislikeCount: item.dislikeCount, fanCount: item.fanCount });
 }
 /**
 *滚动条在Y轴上的滚动距离
@@ -8823,7 +8850,10 @@ var FocusBoardSingle = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     FocusBoardSingle.prototype.render = function () {
-        return React.createElement("div", { className: "focus-board" }, this.props.name);
+        //点击版面名称会进入相应版面
+        var boardUrl = "/list/" + this.props.id;
+        return React.createElement("a", { href: boardUrl },
+            React.createElement("div", { className: "focus-board" }, this.props.name));
     };
     return FocusBoardSingle;
 }(React.Component));
@@ -9001,7 +9031,7 @@ exports.FocusTopicArea = FocusTopicArea;
 * 单个主题数据转换成单个主题组件
 */
 function coverFocusPost(item) {
-    return React.createElement(FocusTopicSingle_1.FocusTopicSingle, { title: item.title, hitCount: item.hitCount, id: item.id, boardId: item.boardId, boardName: item.boardName, replyCount: item.replyCount, userName: item.userName, portraitUrl: item.portraitUrl, time: item.time, likeCount: item.likeCount, dislikeCount: item.dislikeCount, fanCount: item.fanCount });
+    return React.createElement(FocusTopicSingle_1.FocusTopicSingle, { title: item.title, hitCount: item.hitCount, id: item.id, boardId: item.boardId, boardName: item.boardName, replyCount: item.replyCount, userId: item.userId, userName: item.userName, portraitUrl: item.portraitUrl, time: item.time, likeCount: item.likeCount, dislikeCount: item.dislikeCount, fanCount: item.fanCount });
 }
 /**
 *滚动条在Y轴上的滚动距离
