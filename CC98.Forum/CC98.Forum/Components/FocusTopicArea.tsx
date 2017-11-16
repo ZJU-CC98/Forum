@@ -4,12 +4,13 @@
 import * as React from 'react';
 import { FocusTopic } from '../Props/FocusTopic';
 import { FocusTopicSingle } from './FocusTopicSingle';
+import { FocusBoardProps } from '../Props/FocusBoardProps'
 import { FocusTopicAreaState } from '../States/FocusTopicAreaState';
 import * as Utility from '../Utility';
 /**
  * 表示我关注的版面的主题列表
  */
-export class FocusTopicArea extends React.Component<{}, FocusTopicAreaState> {
+export class FocusTopicArea extends React.Component<FocusBoardProps, FocusTopicAreaState> {
     
     /**
      * 构造函数
@@ -31,6 +32,8 @@ export class FocusTopicArea extends React.Component<{}, FocusTopicAreaState> {
     async componentDidMount() {
         const data = await Utility.getFocusTopic(this.state.curPage);
         this.setState({ data: data });
+
+        //滚动条监听
         document.addEventListener('scroll', this.handleScroll);
     }
 
@@ -90,7 +93,7 @@ export class FocusTopicArea extends React.Component<{}, FocusTopicAreaState> {
 * 单个主题数据转换成单个主题组件
 */
 function coverFocusPost(item: FocusTopic) {
-    return <FocusTopicSingle title={item.title} hitCount={item.hitCount} id={item.id} boardId={item.boardId} boardName={item.boardName} replyCount={item.replyCount} userName={item.userName} portraitUrl={item.portraitUrl} time={item.time} likeCount={item.likeCount} dislikeCount={item.dislikeCount} fanCount={item.fanCount}/>;
+    return <FocusTopicSingle title={item.title} hitCount={item.hitCount} id={item.id} boardId={item.boardId} boardName={item.boardName} replyCount={item.replyCount} userId={item.userId} userName={item.userName} portraitUrl={item.portraitUrl} time={item.time} likeCount={item.likeCount} dislikeCount={item.dislikeCount} fanCount={item.fanCount} />;
 }
 
 
