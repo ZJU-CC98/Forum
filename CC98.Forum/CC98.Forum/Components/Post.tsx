@@ -63,7 +63,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         const replyCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers: { 'Authorization': token } });
         const replyCountJson = await replyCountResponse.json();
         const replyCount = replyCountJson.replyCount;
-        if (replyCount > 10) {
+        if (replyCount >= 10) {
             return (replyCount - replyCount % 10) / 10 + 1;
         } else {
             return 1;
@@ -146,7 +146,7 @@ export class Reply extends RouteComponent<{}, { contents }, { page, topicid, use
     private generateContents(item: State.ContentState) {
         return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
             <Replier key={item.id} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} />
-            <ReplyContent key={item.content} content={item.content} signature={item.signature} />
+            <ReplyContent key={item.content} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postid} />
         </div>
         </div>;
     }
@@ -178,7 +178,7 @@ export class HotReply extends RouteComponent<{}, { contents }, { page, topicid }
     private generateContents(item: State.ContentState) {
         return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
             <HotReplier key={item.id} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} />
-            <ReplyContent key={item.content} content={item.content} signature={item.signature} />
+            <ReplyContent key={item.content} content={item.content} signature={item.signature}  topicid={item.topicId} postid={item.id} />
         </div>
         </div>;
     }
@@ -354,7 +354,7 @@ export class UserDetails extends RouteComponent<{ userName }, { portraitUrl, use
     }
     render() {
         let url = `/user/name/${this.props.userName}`;
-        let userUrl = encodeURIComponent(url);
+        let userUrl = encodeURI(url);
         if (this.props.userName != '匿名') {
             return <div className='popup'>
                 <div className='popup_title'>
@@ -382,26 +382,27 @@ export class UserDetails extends RouteComponent<{ userName }, { portraitUrl, use
         }
     }
 }
-export class PostTopic extends RouteComponent<{ imgUrl, page, topicid }, { topicMessage }, {}> {
+export class PostTopic extends RouteComponent<{ imgUrl, page, topicid }, { topicMessage,likeState }, {}> {
     constructor(props, content) {
         super(props, content);
         this.state = {
-            topicMessage: { title: "加载中...", time: "", content: "", signature: "" }
+            topicMessage: { title: "加载中...", time: "", content: "", signature: "" ,postid:0}
+            , likeState:0
         }
     }
     async componentDidMount() {
         let topicMessage = await Utility.getTopic(this.props.topicid);
-        this.setState({ topicMessage: topicMessage });
+        this.setState({ topicMessage: topicMessage});
     }
     render() {
         return <div className="root">
             <div className="essay">
                 <AuthorMessage authorId={this.state.topicMessage.userId} authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} />
-                <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount} />
+                <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount}  />
                 <div id="ads"><img width="100%" src={this.props.imgUrl}></img></div>
             </div>
 
-            <TopicContent content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} topicid={this.props.topicid} userId={this.state.topicMessage.userId} />
+            <TopicContent postid={this.state.topicMessage.postid} content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} topicid={this.props.topicid} userId={this.state.topicMessage.userId} />
             <TopicGood />
             <TopicVote />
         </div>;
@@ -446,11 +447,12 @@ export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.
             title: "这是一个长长啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊的标题",
             tag: "女装/开车",
             time: "2017.8.12",
-            likeNumber: 666,
-            unlikeNumber: 233,
+            likeNumber: 1,
+            dislikeNumber: 1,
             viewTimes: 2366
         }
     }
+
     returnProps(isTop, isNotice, title) {
         if (isTop == true && isNotice == false) {
             return <div id="title1" className="row" style={{ justifyContent: "flex-start" }}>
@@ -490,13 +492,76 @@ export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.
         </div>;
     }
 }
-export class TopicContent extends RouteComponent<{ topicid: number, content: string, signature: string, userId: number }, { likeNumber: number, dislikeNumber: number }, {}> {
+export class TopicContent extends RouteComponent<{ postid,topicid: number, content: string, signature: string, userId: number, }, {likeState:number, likeNumber: number, dislikeNumber: number }, {}> {
     constructor(props, content) {
         super(props, content);
         this.state = {
             likeNumber: 666,
             dislikeNumber: 233,
+            likeState:0
         }
+    }
+    async componentDidMount() {
+        const token = Utility.getLocalStorage("accessToken");
+        const topic = await Utility.getTopic(this.props.topicid);
+        const postid = topic.postid;
+       const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${postid}`, {headers:{"Authorization":token}});
+        const data = await response.json();
+        if (data.likeState === 1) {
+            $("#commentliked").css("color", "red");
+        }
+        else if (data.likeState === 2) {
+            $("#commentdisliked").css("color", "red");
+        }
+
+        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
+    }
+    async like() {
+        //取消赞
+        if (this.state.likeState === 1) {
+            await Utility.like(this.props.topicid, this.props.postid);
+            $("#commentliked").css("color", "black");
+        }
+        //踩改赞
+        else if (this.state.likeState === 2) {
+            await Utility.dislike(this.props.topicid, this.props.postid);
+            await Utility.like(this.props.topicid, this.props.postid);
+            $("#commentliked").css("color", "red");
+            $("#commentdisliked").css("color", "black");
+        }
+        //单纯赞
+        else{
+            await Utility.like(this.props.topicid, this.props.postid);
+            $("#commentliked").css("color", "red");
+        }
+         const token = Utility.getLocalStorage("accessToken");
+        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${this.props.postid}`, {headers:{"Authorization":token}});
+        const data = await response.json();
+     
+        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
+    }
+    async dislike() {
+        //取消踩
+        if (this.state.likeState === 2) {
+            await Utility.dislike(this.props.topicid, this.props.postid);
+            $("#commentdisliked").css("color", "black");
+        }
+        //赞改踩
+        else if (this.state.likeState === 1) {
+            await Utility.like(this.props.topicid, this.props.postid);
+            await Utility.dislike(this.props.topicid, this.props.postid);
+            $("#commentliked").css("color", "black");
+            $("#commentdisliked").css("color", "red");
+        }
+        //单纯踩
+        else {
+            await Utility.dislike(this.props.topicid, this.props.postid);
+            $("#commentdisliked").css("color", "red");
+        }
+         const token = Utility.getLocalStorage("accessToken");
+        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${this.props.postid}`, {headers:{"Authorization":token}});
+        const data = await response.json();
+        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
     //<div className="signature">{this.state.Signature}</div>
     render() {
@@ -505,9 +570,9 @@ export class TopicContent extends RouteComponent<{ topicid: number, content: str
             return <div className="content">
                 <div className="substance"><UbbContainer code={this.props.content} /> </div>
                 <div className="comment1">
-                    <div id="commentlike" className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg"></i></button>   收藏文章 </div>
-                    <div id="commentliked"><i className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
-                    <div id="commentunliked"><i className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
+                    <div id="commentlike" className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg" ></i></button>   收藏文章 </div>
+                    <div id="commentliked" className="upup" style={{ marginRight: "0.7rem"}} ><i onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
+                    <div id="commentdisliked" className="downdown" ><i onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
                     <div id="commentlike" className="buttonFont row"> <div className="commentbutton">   评分</div><div className="commentbutton">   编辑</div></div>
 
                     <div className="operation1">引用</div>
@@ -520,9 +585,9 @@ export class TopicContent extends RouteComponent<{ topicid: number, content: str
                 <div className="substance"><UbbContainer code={this.props.content} /> </div>
                 <div className="signature"><UbbContainer code={this.props.signature} /></div>
                 <div className="comment">
-                    <div id="commentlike" className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg"></i></button>   收藏文章 </div>
-                    <div id="commentliked"><i className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
-                    <div id="commentunliked"><i className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
+                    <div id="commentlike" style={{ marginRight: "0.7rem" }} className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg"></i></button>   收藏文章 </div>
+                    <div id="commentliked" className="upup"style={{ marginRight: "0.7rem"}}><i onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
+                    <div id="commentdisliked" className="downdown"><i onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
                     <div id="commentlike" className="buttonFont row"> <div className="commentbutton">   评分</div><div className="commentbutton">   编辑</div></div>
 
                     <div className="operation1">引用</div>
@@ -533,16 +598,84 @@ export class TopicContent extends RouteComponent<{ topicid: number, content: str
         }
     }
 }
-export class ReplyContent extends RouteComponent<{ content, signature }, { likeNumber, dislikeNumber }, {}> {
+export class ReplyContent extends RouteComponent<{ content, signature ,topicid,postid}, { likeNumber, dislikeNumber,likeState }, {}> {
     constructor(props, content) {
         super(props, content);
         this.state = {
-            likeNumber: 2424,
-            dislikeNumber: 4433,
+            likeNumber: 1,
+            dislikeNumber: 1,
+            likeState:0
         }
     }
-
+    async componentDidMount() {
+        const idLike = `#like${this.props.postid}`;
+        const idDislike = `#dislike${this.props.postid}`;
+       const token = Utility.getLocalStorage("accessToken");
+        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${this.props.postid}`, {headers:{"Authorization":token}});
+        const data = await response.json();
+        if (data.likeState === 1) {
+            $(idLike).css("color", "red");
+        }
+        else if (data.likeState === 2) {
+            $(idDislike).css("color", "red");
+        }
+        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
+    }
+    async like() {
+        const idLike = `#like${this.props.postid}`;
+        const idDislike = `#dislike${this.props.postid}`;
+        //取消赞
+        if (this.state.likeState === 1) {
+            await Utility.like(this.props.topicid, this.props.postid);
+            $(idLike).css("color", "black");
+        }
+        //踩改赞
+        else if (this.state.likeState === 2) {
+            await Utility.dislike(this.props.topicid, this.props.postid);
+            await Utility.like(this.props.topicid, this.props.postid);
+            $(idLike).css("color", "red");
+            $(idDislike).css("color", "black");
+        }
+        //单纯赞
+        else {
+            await Utility.like(this.props.topicid, this.props.postid);
+            $(idLike).css("color", "red");
+        }
+         const token = Utility.getLocalStorage("accessToken");
+        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${this.props.postid}`, {headers:{"Authorization":token}});
+        const data = await response.json();
+        console.log(this.state.likeState);
+        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
+    }
+    async dislike() {
+        const idLike = `#like${this.props.postid}`;
+        const idDislike = `#dislike${this.props.postid}`;
+        console.log(this.state.likeState);
+        //取消踩
+        if (this.state.likeState === 2) {
+            await Utility.dislike(this.props.topicid, this.props.postid);
+            $(idDislike).css("color", "black");
+        }
+        //赞改踩
+        else if (this.state.likeState === 1) {
+            await Utility.like(this.props.topicid, this.props.postid);
+            await Utility.dislike(this.props.topicid, this.props.postid);
+            $(idLike).css("color", "black");
+            $(idDislike).css("color", "red");
+        }
+        //单纯踩
+        else {
+            await Utility.dislike(this.props.topicid, this.props.postid);
+            $(idDislike).css("color", "red");
+        }
+        const token = Utility.getLocalStorage("accessToken");
+        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${this.props.postid}`, {headers:{"Authorization":token}});
+        const data = await response.json();
+        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
+    }
     render() {
+        const idLike = `like${this.props.postid}`;
+        const idDislike = `dislike${this.props.postid}`;
         if (this.props.signature == "") {
             return <div className="root" style={{ marginTop: "-170px" }}>
                 <div className="reply-content">
@@ -550,8 +683,8 @@ export class ReplyContent extends RouteComponent<{ content, signature }, { likeN
 
                     <div className="comment1">
 
-                        <div id="commentliked"><i className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
-                        <div id="commentunliked"><i className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
+                        <div id={idLike} className="upup" style={{ marginRight: "0.7rem", pointer: "cursor", title: "赞"}}><i onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
+                        <div id={idDislike} className="downdown"  ><i onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
                         <div id="commentlike"> <div className="commentbutton">   评分</div></div>
                     </div>
                 </div></div>;
@@ -562,8 +695,8 @@ export class ReplyContent extends RouteComponent<{ content, signature }, { likeN
                     <div className="substance"><UbbContainer code={this.props.content} /></div>
                     <div className="comment">
 
-                        <div id="commentliked"><i className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
-                        <div id="commentunliked"><i className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
+                        <div id={idLike} className="upup" style={{ marginRight: "0.7rem", }}><i onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
+                        <div id={idDislike} className="downdown" ><i onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
                         <div id="commentlike"> <div className="commentbutton">   评分</div></div>
                     </div>
                     <div className="signature"><UbbContainer code={this.props.signature} /></div>
