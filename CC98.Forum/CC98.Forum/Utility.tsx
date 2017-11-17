@@ -279,17 +279,19 @@ export function changeNav(id) {
  * 获取全站新帖
  * @param curPage
  */
-export async function getAllNewTopic(curPage: number) {
+export async function getAllNewTopic(curNum: number) {
     /**
      * 一次性可以获取20个主题
      */
-    const startPage: number = (curPage - 1) * 20;
-    const size = 20;
+    var size = 20;
+    if(curNum > 80) {
+        size = 100 - curNum;
+    }
     let token = getLocalStorage("accessToken");
     /**
      * 通过api获取到主题之后转成json格式
      */
-    const response = await fetch(`http://apitest.niconi.cc/topic/new?from=${startPage}&size=${size}`, { headers: { 'Authorization': `${token}` } });
+    const response = await fetch(`http://apitest.niconi.cc/topic/new?from=${curNum}&size=${size}`, { headers: { 'Authorization': `${token}` } });
     const newTopic = await response.json();
     for (let i in newTopic) {
         if (newTopic[i].userId) {
@@ -314,6 +316,7 @@ export async function getAllNewTopic(curPage: number) {
         else {
             newTopic[i].fanCount = 999;
             newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+            newTopic[i].userName = "匿名";
             newTopic[i].boardName = "心灵之约";
         }
     }
@@ -324,17 +327,19 @@ export async function getAllNewTopic(curPage: number) {
  * 获取关注版面新帖
  * @param curPage
  */
-export async function getFocusTopic(curPage: number) {
+export async function getFocusTopic(curNum: number) {
     /**
      * 一次性可以获取20个主题
      */
-    const startPage: number = (curPage - 1) * 20;
-    const size = 20;
+    var size = 20;
+    if(curNum > 80) {
+        size = 100 - curNum;
+    }
     let token = getLocalStorage("accessToken");
     /**
      * 通过api获取到主题之后转成json格式
      */
-    const response = await fetch(`http://apitest.niconi.cc/topic/customboards/new?from=${startPage}&size=${size}`, { headers: { 'Authorization': `${token}` } });
+    const response = await fetch(`http://apitest.niconi.cc/topic/customboards/new?from=${curNum}&size=${size}`, { headers: { 'Authorization': `${token}` } });
     const newTopic = await response.json();
     for (let i in newTopic) {
         if (newTopic[i].userId) {
@@ -349,7 +354,6 @@ export async function getFocusTopic(curPage: number) {
             //获取所在版面名称
             newTopic[i].boardName = getLocalStorage(`boardId_${newTopic[i].boardId}`);
             if (!newTopic[i].boardName) {
-                console.log(`缓存${newTopic[i].boardId}`);
                 let boardName0 = await fetch(`http://apitest.niconi.cc/board/${newTopic[i].boardId}`);
                 let boardName1 = await boardName0.json();
                 newTopic[i].boardName = boardName1.name;
@@ -360,7 +364,7 @@ export async function getFocusTopic(curPage: number) {
         else {
             newTopic[i].fanCount = 999;
             newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-            newTopic[i].userName = "心灵之约";
+            newTopic[i].userName = "匿名";
             newTopic[i].boardName = "心灵之约";
         }
     }

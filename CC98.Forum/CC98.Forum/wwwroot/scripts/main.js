@@ -1477,16 +1477,18 @@ exports.changeNav = changeNav;
  * 获取全站新帖
  * @param curPage
  */
-function getAllNewTopic(curPage) {
+function getAllNewTopic(curNum) {
     return __awaiter(this, void 0, void 0, function () {
-        var startPage, size, token, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, boardName0, boardName1;
+        var size, token, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, boardName0, boardName1;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
-                    startPage = (curPage - 1) * 20;
                     size = 20;
+                    if (curNum > 80) {
+                        size = 100 - curNum;
+                    }
                     token = getLocalStorage("accessToken");
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/new?from=" + startPage + "&size=" + size, { headers: { 'Authorization': "" + token } })];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/new?from=" + curNum + "&size=" + size, { headers: { 'Authorization': "" + token } })];
                 case 1:
                     response = _c.sent();
                     return [4 /*yield*/, response.json()];
@@ -1531,6 +1533,7 @@ function getAllNewTopic(curPage) {
                 case 11:
                     newTopic[i].fanCount = 999;
                     newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+                    newTopic[i].userName = "匿名";
                     newTopic[i].boardName = "心灵之约";
                     _c.label = 12;
                 case 12:
@@ -1546,16 +1549,18 @@ exports.getAllNewTopic = getAllNewTopic;
  * 获取关注版面新帖
  * @param curPage
  */
-function getFocusTopic(curPage) {
+function getFocusTopic(curNum) {
     return __awaiter(this, void 0, void 0, function () {
-        var startPage, size, token, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, boardName0, boardName1;
+        var size, token, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, boardName0, boardName1;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
-                    startPage = (curPage - 1) * 20;
                     size = 20;
+                    if (curNum > 80) {
+                        size = 100 - curNum;
+                    }
                     token = getLocalStorage("accessToken");
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/customboards/new?from=" + startPage + "&size=" + size, { headers: { 'Authorization': "" + token } })];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/customboards/new?from=" + curNum + "&size=" + size, { headers: { 'Authorization': "" + token } })];
                 case 1:
                     response = _c.sent();
                     return [4 /*yield*/, response.json()];
@@ -1587,7 +1592,6 @@ function getFocusTopic(curPage) {
                     //获取所在版面名称
                     newTopic[i].boardName = getLocalStorage("boardId_" + newTopic[i].boardId);
                     if (!!newTopic[i].boardName) return [3 /*break*/, 10];
-                    console.log("\u7F13\u5B58" + newTopic[i].boardId);
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/board/" + newTopic[i].boardId)];
                 case 8:
                     boardName0 = _c.sent();
@@ -1601,7 +1605,7 @@ function getFocusTopic(curPage) {
                 case 11:
                     newTopic[i].fanCount = 999;
                     newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-                    newTopic[i].userName = "心灵之约";
+                    newTopic[i].userName = "匿名";
                     newTopic[i].boardName = "心灵之约";
                     _c.label = 12;
                 case 12:
@@ -8480,9 +8484,14 @@ var AllNewTopicArea = /** @class */ (function (_super) {
      */
     function AllNewTopicArea(props) {
         var _this = _super.call(this, props) || this;
+        //先看一下有没有缓存的帖子数据
+        var data = Utility.getStorage("AllNewTopic");
+        if (!data) {
+            data = [];
+        }
         _this.state = {
-            data: [],
-            curPage: 1,
+            data: data,
+            curNum: 0,
             loading: true
         };
         _this.handleScroll = _this.handleScroll.bind(_this);
@@ -8493,13 +8502,31 @@ var AllNewTopicArea = /** @class */ (function (_super) {
      */
     AllNewTopicArea.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var data;
+            var data, oldData, i;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getAllNewTopic(this.state.curPage)];
+                    case 0: return [4 /*yield*/, Utility.getAllNewTopic(this.state.curNum)];
                     case 1:
                         data = _a.sent();
-                        this.setState({ data: data });
+                        oldData = Utility.getStorage("AllNewTopic");
+                        if (oldData) {
+                            for (i = 0; i < data.length; i++) {
+                                //最新的20条数据跟之前的有重合就组合起来
+                                if (data[i].id = oldData[0].id) {
+                                    data = data.slice(0, i).concat(oldData);
+                                    break;
+                                    console.log("拼接数据了");
+                                }
+                            }
+                        }
+                        //最多100条新帖
+                        if (data.length > 100) {
+                            data = data.slice(0, 100);
+                        }
+                        //缓存获取到的数据
+                        Utility.setStorage("AllNewTopic", data);
+                        this.setState({ data: data, curNum: data.length });
+                        //滚动条监听
                         document.addEventListener('scroll', this.handleScroll);
                         return [2 /*return*/];
                 }
@@ -8522,7 +8549,7 @@ var AllNewTopicArea = /** @class */ (function (_super) {
      */
     AllNewTopicArea.prototype.handleScroll = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var newData, err_1;
+            var newData, err_1, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -8530,7 +8557,7 @@ var AllNewTopicArea = /** @class */ (function (_super) {
                         /**
                         *查看新帖数目大于100条时不再继续加载
                         */
-                        if (this.state.curPage >= 5) {
+                        if (this.state.curNum >= 99) {
                             $('#focus-topic-loading').addClass('displaynone');
                             $('#focus-topic-loaddone').removeClass('displaynone');
                             return [2 /*return*/];
@@ -8542,7 +8569,7 @@ var AllNewTopicArea = /** @class */ (function (_super) {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, Utility.getAllNewTopic(this.state.curPage + 1)];
+                        return [4 /*yield*/, Utility.getAllNewTopic(this.state.curNum)];
                     case 2:
                         newData = _a.sent();
                         return [3 /*break*/, 4];
@@ -8554,10 +8581,9 @@ var AllNewTopicArea = /** @class */ (function (_super) {
                         this.setState({ loading: true });
                         return [2 /*return*/];
                     case 4:
-                        /**
-                        *如果正确获取到数据，则添加新数据，翻页+1，同时this.state.loading设置为true，后续才可以再次发送fetch请求
-                        */
-                        this.setState({ data: this.state.data.concat(newData), curPage: this.state.curPage + 1, loading: true });
+                        data = this.state.data.concat(newData);
+                        this.setState({ data: data, curNum: data.length, loading: true });
+                        Utility.setStorage("AllNewTopic", data);
                         _a.label = 5;
                     case 5: return [2 /*return*/];
                 }
@@ -8568,6 +8594,7 @@ var AllNewTopicArea = /** @class */ (function (_super) {
      * 将主题排列好
      */
     AllNewTopicArea.prototype.render = function () {
+        console.log("AllNewTopic开始render了");
         return React.createElement("div", { className: "focus-topic-area" },
             React.createElement("div", { className: "focus-topic-topicArea" }, this.state.data.map(coverFocusPost)),
             React.createElement("div", { className: "focus-topic-loading", id: "focus-topic-loading" },
@@ -8723,7 +8750,6 @@ var Focus = /** @class */ (function (_super) {
                         this.setState({ data: data });
                         return [3 /*break*/, 7];
                     case 1:
-                        console.log("版面区域没有获取到版面列表缓存数据");
                         data = [];
                         token = Utility.getLocalStorage("accessToken");
                         userInfo = Utility.getLocalStorage("userInfo");
@@ -8929,9 +8955,14 @@ var FocusTopicArea = /** @class */ (function (_super) {
      */
     function FocusTopicArea(props) {
         var _this = _super.call(this, props) || this;
+        //先看一下有没有缓存的帖子数据
+        var data = Utility.getStorage("focusBoardTopic");
+        if (!data) {
+            data = [];
+        }
         _this.state = {
-            data: [],
-            curPage: 1,
+            data: data,
+            curNum: 0,
             loading: true
         };
         _this.handleScroll = _this.handleScroll.bind(_this);
@@ -8942,13 +8973,29 @@ var FocusTopicArea = /** @class */ (function (_super) {
      */
     FocusTopicArea.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var data;
+            var data, oldData, i;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getFocusTopic(this.state.curPage)];
+                    case 0: return [4 /*yield*/, Utility.getFocusTopic(this.state.curNum)];
                     case 1:
                         data = _a.sent();
-                        this.setState({ data: data });
+                        oldData = Utility.getStorage("focusBoardTopic");
+                        if (oldData) {
+                            for (i = 0; i < data.length; i++) {
+                                //最新的20条数据跟之前的有重合就组合起来
+                                if (data[i].id = oldData[0].id) {
+                                    data = data.slice(0, i).concat(oldData);
+                                    break;
+                                }
+                            }
+                        }
+                        //最多100条新帖
+                        if (data.length > 100) {
+                            data = data.slice(0, 100);
+                        }
+                        this.setState({ data: data, curNum: data.length });
+                        //缓存获取到的数据
+                        Utility.setStorage("focusBoardTopic", data);
                         //滚动条监听
                         document.addEventListener('scroll', this.handleScroll);
                         return [2 /*return*/];
@@ -8972,7 +9019,7 @@ var FocusTopicArea = /** @class */ (function (_super) {
      */
     FocusTopicArea.prototype.handleScroll = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var newData, err_1;
+            var newData, err_1, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -8980,7 +9027,7 @@ var FocusTopicArea = /** @class */ (function (_super) {
                         /**
                         *查看新帖数目大于100条时不再继续加载
                         */
-                        if (this.state.curPage >= 5) {
+                        if (this.state.curNum >= 99) {
                             $('#focus-topic-loading').addClass('displaynone');
                             $('#focus-topic-loaddone').removeClass('displaynone');
                             return [2 /*return*/];
@@ -8992,7 +9039,7 @@ var FocusTopicArea = /** @class */ (function (_super) {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, Utility.getAllNewTopic(this.state.curPage + 1)];
+                        return [4 /*yield*/, Utility.getFocusTopic(this.state.curNum)];
                     case 2:
                         newData = _a.sent();
                         return [3 /*break*/, 4];
@@ -9004,10 +9051,9 @@ var FocusTopicArea = /** @class */ (function (_super) {
                         this.setState({ loading: true });
                         return [2 /*return*/];
                     case 4:
-                        /**
-                        *如果正确获取到数据，则添加新数据，翻页+1，同时this.state.loading设置为true，后续才可以再次发送fetch请求
-                        */
-                        this.setState({ data: this.state.data.concat(newData), curPage: this.state.curPage + 1, loading: true });
+                        data = this.state.data.concat(newData);
+                        this.setState({ data: data, curNum: data.length, loading: true });
+                        Utility.setStorage("focusBoardTopic", data);
                         _a.label = 5;
                     case 5: return [2 /*return*/];
                 }
