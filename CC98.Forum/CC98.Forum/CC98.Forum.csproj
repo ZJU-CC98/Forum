@@ -23,10 +23,12 @@
     <None Remove="Components\UserCenterConfigAvatar.tsx" />
     <None Remove="Components\UsercenterConfigPassword.tsx" />
     <None Remove="Components\UserCenterConfigSignature.tsx" />
+    <None Remove="Components\UserCenterPageCount.tsx" />
     <None Remove="Props\FocusBoardProps.tsx" />
     <None Remove="Reducer.tsx" />
     <None Remove="Store.tsx" />
     <None Remove="UbbCode.tsx" />
+    <None Remove="Ubb\AlignTagHandler.tsx" />
     <None Remove="Ubb\BTagHandler.tsx" />
     <None Remove="Ubb\CodeTagHandler.tsx" />
     <None Remove="Ubb\ColorTagHandler.tsx" />
@@ -38,6 +40,7 @@
     <None Remove="Ubb\MP3TagHandler.tsx" />
     <None Remove="Ubb\NoUbbTagHandler.tsx" />
     <None Remove="Ubb\UnresolvedTagHandler.tsx" />
+    <None Remove="Ubb\UploadTagHandler.tsx" />
     <None Remove="Ubb\URLTagHandler.tsx" />
     <None Remove="Ubb\UserTagHandler.tsx" />
     <None Remove="Ubb\UTagHandler.tsx" />
@@ -68,7 +71,9 @@
     <TypeScriptCompile Include="Components\UserCenterConfigAvatar.tsx" />
     <TypeScriptCompile Include="Components\UsercenterConfigPassword.tsx" />
     <TypeScriptCompile Include="Components\UserCenterConfigSignature.tsx" />
+    <TypeScriptCompile Include="Components\UserCenterPageCount.tsx" />
     <TypeScriptCompile Include="Props\FocusBoardProps.tsx" />
+    <TypeScriptCompile Include="Ubb\AlignTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\BTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\CodeTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\ColorTagHandler.tsx" />
@@ -80,6 +85,7 @@
     <TypeScriptCompile Include="Ubb\MP3TagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\NoUbbTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\UnresolvedTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\UploadTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\UrlTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\UserTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\UTagHandler.tsx" />

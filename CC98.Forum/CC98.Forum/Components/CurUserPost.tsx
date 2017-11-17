@@ -255,11 +255,12 @@ export class PostTopic extends RouteComponent<{ imgUrl, page, topicid, userId },
             return <div className="root">
                 <div className="essay">
                     <AuthorMessage authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} />
-                    <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount} />
+                    <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount} likeNumber={this.state.topicMessage.likeCount} dislikeNumber={this.state.topicMessage.dislikeCount}  />
                     <div id="ads"><img src={this.props.imgUrl}></img></div>
                 </div>
 
-                <TopicContent content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} />
+
+                <TopicContent content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} likeNumber={this.state.topicMessage.likeCount} dislikeNumber={this.state.topicMessage.dislikeCount} />
                 <TopicGood />
                 <TopicVote />
             </div>;
@@ -298,7 +299,7 @@ export class AuthorMessage extends RouteComponent<{ authorName: string, authorIm
         </div>;
     }
 }
-export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.TopicTitleState, {}> {
+export class TopicTitle extends RouteComponent<{ likeNumber, dislikeNumber, Title, Time, HitCount }, State.TopicTitleState, {}> {
     constructor(props, content) {
         super(props, content);
         this.state = {
@@ -307,10 +308,13 @@ export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.
             title: "这是一个长长啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊的标题",
             tag: "女装/开车",
             time: "2017.8.12",
-            likeNumber: 666,
-            unlikeNumber: 233,
+            likeNumber: this.props.likeNumber,
+            dislikeNumber: this.props.dislikeNumber,
             viewTimes: 2366
         }
+    }
+    componentDidMount() {
+        this.setState({ likeNumber: this.props.likeNumber, dislikeNumber: this.props.dislikeNumber });
     }
     returnProps(isTop, isNotice, title) {
         if (isTop == true && isNotice == false) {
@@ -351,13 +355,16 @@ export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.
         </div>;
     }
 }
-export class TopicContent extends RouteComponent<{ content: string, signature: string }, { likeNumber: number, dislikeNumber: number }, {}> {
+export class TopicContent extends RouteComponent<{ content: string, signature: string, likeNumber: number, dislikeNumber: number   }, { likeNumber: number, dislikeNumber: number }, {}> {
     constructor(props, content) {
         super(props, content);
         this.state = {
             likeNumber: 666,
             dislikeNumber: 233,
         }
+    }
+    componentDidMount() {
+        this.setState({ likeNumber: this.props.likeNumber, dislikeNumber: this.props.dislikeNumber });
     }
     //<div className="signature">{this.state.Signature}</div>
     render() {
