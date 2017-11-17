@@ -12,7 +12,7 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
         super(props);
         //临时填充数据
         this.state = {
-            userRecentPosts: new Array(10).fill(userRecentPost),
+            userRecentPosts: [],
             isLoading: false
         };
         this.scrollHandler = this.scrollHandler.bind(this);
@@ -22,8 +22,20 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
         let pageYLeft = document.body.scrollHeight - window.pageYOffset;
         
         if (pageYLeft < 1500 && this.state.isLoading === false) {
-            this.setState((prevState) => {
+            this.setState(async (prevState) => {
                 this.setState({isLoading: true});
+
+                const url = `http://apitest.niconi.cc/me/recenttopics?from=0&size=10`
+                const token = window.localStorage.accessToken.slice(4);
+
+                let res = await fetch(url, {
+                    headers: {
+                        'Authorization': token
+                    }
+                });
+
+                let data = await res.json();
+                console.log(data);
 
                 let posts = prevState.userRecentPosts;
                 posts = posts.concat(new Array(10).fill(userRecentPost));
@@ -36,6 +48,21 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
     }
 
     async componentDidMount() {
+        const url = `http://apitest.niconi.cc/me/recenttopics?from=0&size=10`
+        const token = window.localStorage.accessToken.slice(4);
+
+        let res = await fetch(url, {
+            headers: {
+                'Authorization': token
+            }
+        });
+
+        let data = await res.json();
+
+        this.setState({
+            userRecentPosts: data
+        });
+
         window.addEventListener('scroll', this.scrollHandler);
     }
 

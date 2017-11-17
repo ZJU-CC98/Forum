@@ -13,19 +13,7 @@ import { UserCenterMyPostsReplies } from './UserCenterMyPostsReplies';
 export class UserCenterMyPosts extends React.Component {
     render() {
         return (
-            <Router>
-                <div className="user-center-myposts">
-                    <CustomLink to="/usercenter/myposts" label="主题" activeOnlyWhenExact={true} /> | <CustomLink to="/usercenter/myposts/replies" label="回复" activeOnlyWhenExact={false} />
-                    <Route exact path="/usercenter/myposts" component={UserCenterMyPostsExact} />
-                    <Route path="/usercenter/myposts/replies" component={UserCenterMyPostsReplies} />
-                </div>
-            </Router>
+            <UserCenterMyPostsExact />
         );
     }
 }
-
-const CustomLink = ({ label, to, activeOnlyWhenExact }) => (
-    <Route path={to} exact={activeOnlyWhenExact} children={({ match }) => (
-        <Link className={match ? 'user-activities-active' : ''} to={to}>{label}</Link>
-    )} />
-);
