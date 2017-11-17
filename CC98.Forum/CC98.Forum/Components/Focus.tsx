@@ -25,13 +25,12 @@ export class Focus extends React.Component<{}, FocusBoardProps> {
         }
         //没有就自己去服务器获取
         else { 
-            console.log("版面区域没有获取到版面列表缓存数据");
             data = [];
             let token = Utility.getLocalStorage("accessToken");
             //获取关注版面的id列表
             let userInfo = Utility.getLocalStorage("userInfo");
             let boardid = userInfo.customBoards;
-            for (var i in boardid) {
+            for (let i in boardid) {
                 let response = await fetch(`http://apitest.niconi.cc/board/${boardid[i]}`, {
                     headers: {
                         Authorization: `${token}`

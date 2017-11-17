@@ -1147,10 +1147,10 @@ function getTopic(topicid) {
                     return [4 /*yield*/, userMesResponse.json()];
                 case 6:
                     userMesJson = _a.sent();
-                    topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId);
+                    topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id);
                     return [3 /*break*/, 8];
                 case 7:
-                    topicMessage = new State.TopicState('匿名', data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null);
+                    topicMessage = new State.TopicState('匿名', data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id);
                     _a.label = 8;
                 case 8: return [2 /*return*/, topicMessage];
             }
@@ -1212,11 +1212,12 @@ function getTopicContent(topicid, curPage) {
                     return [4 /*yield*/, userMesResponse.json()];
                 case 10:
                     userMesJson = _b.sent();
-                    post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege);
+                    post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount, content[i].id);
                     return [3 /*break*/, 12];
                 case 11:
                     purl = 'https://www.cc98.org/pic/anonymous.gif';
-                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户");
+                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id);
+                    console.log(content[i]);
                     _b.label = 12;
                 case 12:
                     i++;
@@ -1227,6 +1228,66 @@ function getTopicContent(topicid, curPage) {
     });
 }
 exports.getTopicContent = getTopicContent;
+function like(topicid, postid) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, response, data;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/userlike?topicid=" + topicid + "&postid=" + postid, { method: "POST", headers: { "Authorization": token } })];
+                case 1:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    data = _a.sent();
+                    return [2 /*return*/, data];
+            }
+        });
+    });
+}
+exports.like = like;
+function dislike(topicid, postid) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, response, data;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/userdislike?topicid=" + topicid + "&postid=" + postid, { method: "POST", headers: { "Authorization": token } })];
+                case 1:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    data = _a.sent();
+                    return [2 /*return*/, data];
+            }
+        });
+    });
+}
+exports.dislike = dislike;
+function getLikeStateAndCount(topicid, postid) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, response, data;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Post/Topic/" + topicid + "?from=0&size=10", { headers: { 'Authorization': token } })];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/likeState?topicid=" + topicid + "&postid=" + postid, { headers: { "Authorization": token } })];
+                case 2:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 3:
+                    data = _a.sent();
+                    return [2 /*return*/, data];
+            }
+        });
+    });
+}
+exports.getLikeStateAndCount = getLikeStateAndCount;
 function getHotReplyContent(topicid) {
     return __awaiter(this, void 0, void 0, function () {
         var token, response, content, post, topicNumberInPage, i, userMesResponse, userMesJson, purl;
@@ -1253,11 +1314,11 @@ function getHotReplyContent(topicid) {
                     return [4 /*yield*/, userMesResponse.json()];
                 case 5:
                     userMesJson = _a.sent();
-                    post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege);
+                    post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount, content[i].id);
                     return [3 /*break*/, 7];
                 case 6:
                     purl = 'https://www.cc98.org/pic/anonymous.gif';
-                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户");
+                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id);
                     _a.label = 7;
                 case 7:
                     i++;
@@ -1411,11 +1472,11 @@ function getCurUserTopicContent(topicid, curPage, userName, userId) {
                     return [4 /*yield*/, userMesResponse.json()];
                 case 6:
                     userMesJson = _a.sent();
-                    post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege);
+                    post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount, content[i].id);
                     return [3 /*break*/, 8];
                 case 7:
                     purl = 'https://www.cc98.org/pic/anonymous.gif';
-                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户");
+                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id);
                     _a.label = 8;
                 case 8:
                     i++;
@@ -1477,16 +1538,18 @@ exports.changeNav = changeNav;
  * 获取全站新帖
  * @param curPage
  */
-function getAllNewTopic(curPage) {
+function getAllNewTopic(curNum) {
     return __awaiter(this, void 0, void 0, function () {
-        var startPage, size, token, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, boardName0, boardName1;
+        var size, token, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, boardName0, boardName1;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
-                    startPage = (curPage - 1) * 20;
                     size = 20;
+                    if (curNum > 80) {
+                        size = 100 - curNum;
+                    }
                     token = getLocalStorage("accessToken");
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/new?from=" + startPage + "&size=" + size, { headers: { 'Authorization': "" + token } })];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/new?from=" + curNum + "&size=" + size, { headers: { 'Authorization': "" + token } })];
                 case 1:
                     response = _c.sent();
                     return [4 /*yield*/, response.json()];
@@ -1531,6 +1594,7 @@ function getAllNewTopic(curPage) {
                 case 11:
                     newTopic[i].fanCount = 999;
                     newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+                    newTopic[i].userName = "匿名";
                     newTopic[i].boardName = "心灵之约";
                     _c.label = 12;
                 case 12:
@@ -1546,16 +1610,18 @@ exports.getAllNewTopic = getAllNewTopic;
  * 获取关注版面新帖
  * @param curPage
  */
-function getFocusTopic(curPage) {
+function getFocusTopic(curNum) {
     return __awaiter(this, void 0, void 0, function () {
-        var startPage, size, token, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, boardName0, boardName1;
+        var size, token, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, boardName0, boardName1;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
-                    startPage = (curPage - 1) * 20;
                     size = 20;
+                    if (curNum > 80) {
+                        size = 100 - curNum;
+                    }
                     token = getLocalStorage("accessToken");
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/customboards/new?from=" + startPage + "&size=" + size, { headers: { 'Authorization': "" + token } })];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/customboards/new?from=" + curNum + "&size=" + size, { headers: { 'Authorization': "" + token } })];
                 case 1:
                     response = _c.sent();
                     return [4 /*yield*/, response.json()];
@@ -1587,7 +1653,6 @@ function getFocusTopic(curPage) {
                     //获取所在版面名称
                     newTopic[i].boardName = getLocalStorage("boardId_" + newTopic[i].boardId);
                     if (!!newTopic[i].boardName) return [3 /*break*/, 10];
-                    console.log("\u7F13\u5B58" + newTopic[i].boardId);
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/board/" + newTopic[i].boardId)];
                 case 8:
                     boardName0 = _c.sent();
@@ -1601,7 +1666,7 @@ function getFocusTopic(curPage) {
                 case 11:
                     newTopic[i].fanCount = 999;
                     newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-                    newTopic[i].userName = "心灵之约";
+                    newTopic[i].userName = "匿名";
                     newTopic[i].boardName = "心灵之约";
                     _c.label = 12;
                 case 12:
@@ -1734,7 +1799,7 @@ exports.TopicTitleState = TopicTitleState;
  * 文章内容
  */
 var ContentState = /** @class */ (function () {
-    function ContentState(id, content, time, isDelete, floor, isAnonymous, lastUpdateAuthor, lastUpdateTime, topicId, userName, sendTopicNumber, userImgUrl, signature, userId, privilege) {
+    function ContentState(id, content, time, isDelete, floor, isAnonymous, lastUpdateAuthor, lastUpdateTime, topicId, userName, sendTopicNumber, userImgUrl, signature, userId, privilege, likeNumber, dislikeNumber, postid) {
         this.userName = userName;
         this.id = id;
         this.content = content;
@@ -1750,6 +1815,9 @@ var ContentState = /** @class */ (function () {
         this.signature = signature;
         this.userId = userId;
         this.privilege = privilege;
+        this.likeNumber = likeNumber;
+        this.dislikeNumber = dislikeNumber;
+        this.postid = postid;
     }
     return ContentState;
 }());
@@ -1843,7 +1911,7 @@ var PagerState = /** @class */ (function () {
 }());
 exports.PagerState = PagerState;
 var TopicState = /** @class */ (function () {
-    function TopicState(userName, title, content, time, signature, userImgUrl, hitCount, userId) {
+    function TopicState(userName, title, content, time, signature, userImgUrl, hitCount, userId, likeNumber, dislikeNumber, postid) {
         this.userName = userName;
         this.time = time;
         this.title = title;
@@ -1852,6 +1920,9 @@ var TopicState = /** @class */ (function () {
         this.userImgUrl = userImgUrl;
         this.hitCount = hitCount;
         this.userId = userId;
+        this.likeNumber = likeNumber;
+        this.dislikeNumber = dislikeNumber;
+        this.postid = postid;
     }
     return TopicState;
 }());
@@ -2137,7 +2208,8 @@ var List = /** @class */ (function (_super) {
                         return [4 /*yield*/, totalTopicCountResponse.json()];
                     case 2:
                         totalTopicCountJson = _a.sent();
-                        totalTopicCount = totalTopicCountJson.postCount;
+                        totalTopicCount = totalTopicCountJson.topicCount;
+                        console.log("count" + totalTopicCount);
                         return [2 /*return*/, (totalTopicCount - totalTopicCount % 20) / 20 + 1];
                 }
             });
@@ -2803,7 +2875,7 @@ var Post = /** @class */ (function (_super) {
                     case 2:
                         replyCountJson = _a.sent();
                         replyCount = replyCountJson.replyCount;
-                        if (replyCount > 10) {
+                        if (replyCount >= 10) {
                             return [2 /*return*/, (replyCount - replyCount % 10) / 10 + 1];
                         }
                         else {
@@ -2923,7 +2995,7 @@ var Reply = /** @class */ (function (_super) {
         return React.createElement("div", { className: "reply" },
             React.createElement("div", { style: { marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" } },
                 React.createElement(Replier, { key: item.id, userId: item.userId, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber, privilege: item.privilege }),
-                React.createElement(ReplyContent, { key: item.content, content: item.content, signature: item.signature })));
+                React.createElement(ReplyContent, { key: item.content, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.postid })));
     };
     Reply.prototype.render = function () {
         return React.createElement("div", { className: "center", style: { width: "100%" } }, this.state.contents.map(this.generateContents));
@@ -2962,7 +3034,7 @@ var HotReply = /** @class */ (function (_super) {
         return React.createElement("div", { className: "reply" },
             React.createElement("div", { style: { marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" } },
                 React.createElement(HotReplier, { key: item.id, userId: item.userId, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber, privilege: item.privilege }),
-                React.createElement(ReplyContent, { key: item.content, content: item.content, signature: item.signature })));
+                React.createElement(ReplyContent, { key: item.content, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.id })));
     };
     HotReply.prototype.render = function () {
         return React.createElement("div", { className: "center", style: { width: "100%" } }, this.state.contents.map(this.generateContents));
@@ -3159,7 +3231,7 @@ var UserDetails = /** @class */ (function (_super) {
     };
     UserDetails.prototype.render = function () {
         var url = "/user/name/" + this.props.userName;
-        var userUrl = encodeURIComponent(url);
+        var userUrl = encodeURI(url);
         if (this.props.userName != '匿名') {
             return React.createElement("div", { className: 'popup' },
                 React.createElement("div", { className: 'popup_title' },
@@ -3192,7 +3264,8 @@ var PostTopic = /** @class */ (function (_super) {
     function PostTopic(props, content) {
         var _this = _super.call(this, props, content) || this;
         _this.state = {
-            topicMessage: { title: "加载中...", time: "", content: "", signature: "" }
+            topicMessage: { title: "加载中...", time: "", content: "", signature: "", postid: 0 },
+            likeState: 0
         };
         return _this;
     }
@@ -3217,7 +3290,7 @@ var PostTopic = /** @class */ (function (_super) {
                 React.createElement(TopicTitle, { Title: this.state.topicMessage.title, Time: this.state.topicMessage.time, HitCount: this.state.topicMessage.hitCount }),
                 React.createElement("div", { id: "ads" },
                     React.createElement("img", { width: "100%", src: this.props.imgUrl }))),
-            React.createElement(TopicContent, { content: this.state.topicMessage.content, signature: this.state.topicMessage.signature, topicid: this.props.topicid, userId: this.state.topicMessage.userId }),
+            React.createElement(TopicContent, { postid: this.state.topicMessage.postid, content: this.state.topicMessage.content, signature: this.state.topicMessage.signature, topicid: this.props.topicid, userId: this.state.topicMessage.userId }),
             React.createElement(TopicGood, null),
             React.createElement(TopicVote, null));
     };
@@ -3266,8 +3339,8 @@ var TopicTitle = /** @class */ (function (_super) {
             title: "这是一个长长啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊的标题",
             tag: "女装/开车",
             time: "2017.8.12",
-            likeNumber: 666,
-            unlikeNumber: 233,
+            likeNumber: 1,
+            dislikeNumber: 1,
             viewTimes: 2366
         };
         return _this;
@@ -3324,9 +3397,123 @@ var TopicContent = /** @class */ (function (_super) {
         _this.state = {
             likeNumber: 666,
             dislikeNumber: 233,
+            likeState: 0
         };
         return _this;
     }
+    TopicContent.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var token, topic, postid, response, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        token = Utility.getLocalStorage("accessToken");
+                        return [4 /*yield*/, Utility.getTopic(this.props.topicid)];
+                    case 1:
+                        topic = _a.sent();
+                        postid = topic.postid;
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/likestate?topicid=" + this.props.topicid + "&postid=" + postid, { headers: { "Authorization": token } })];
+                    case 2:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 3:
+                        data = _a.sent();
+                        if (data.likeState === 1) {
+                            $("#commentliked").css("color", "red");
+                        }
+                        else if (data.likeState === 2) {
+                            $("#commentdisliked").css("color", "red");
+                        }
+                        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    TopicContent.prototype.like = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var token, response, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(this.state.likeState === 1)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, Utility.like(this.props.topicid, this.props.postid)];
+                    case 1:
+                        _a.sent();
+                        $("#commentliked").css("color", "black");
+                        return [3 /*break*/, 7];
+                    case 2:
+                        if (!(this.state.likeState === 2)) return [3 /*break*/, 5];
+                        return [4 /*yield*/, Utility.dislike(this.props.topicid, this.props.postid)];
+                    case 3:
+                        _a.sent();
+                        return [4 /*yield*/, Utility.like(this.props.topicid, this.props.postid)];
+                    case 4:
+                        _a.sent();
+                        $("#commentliked").css("color", "red");
+                        $("#commentdisliked").css("color", "black");
+                        return [3 /*break*/, 7];
+                    case 5: return [4 /*yield*/, Utility.like(this.props.topicid, this.props.postid)];
+                    case 6:
+                        _a.sent();
+                        $("#commentliked").css("color", "red");
+                        _a.label = 7;
+                    case 7:
+                        token = Utility.getLocalStorage("accessToken");
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/likestate?topicid=" + this.props.topicid + "&postid=" + this.props.postid, { headers: { "Authorization": token } })];
+                    case 8:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 9:
+                        data = _a.sent();
+                        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    TopicContent.prototype.dislike = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var token, response, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(this.state.likeState === 2)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, Utility.dislike(this.props.topicid, this.props.postid)];
+                    case 1:
+                        _a.sent();
+                        $("#commentdisliked").css("color", "black");
+                        return [3 /*break*/, 7];
+                    case 2:
+                        if (!(this.state.likeState === 1)) return [3 /*break*/, 5];
+                        return [4 /*yield*/, Utility.like(this.props.topicid, this.props.postid)];
+                    case 3:
+                        _a.sent();
+                        return [4 /*yield*/, Utility.dislike(this.props.topicid, this.props.postid)];
+                    case 4:
+                        _a.sent();
+                        $("#commentliked").css("color", "black");
+                        $("#commentdisliked").css("color", "red");
+                        return [3 /*break*/, 7];
+                    case 5: return [4 /*yield*/, Utility.dislike(this.props.topicid, this.props.postid)];
+                    case 6:
+                        _a.sent();
+                        $("#commentdisliked").css("color", "red");
+                        _a.label = 7;
+                    case 7:
+                        token = Utility.getLocalStorage("accessToken");
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/likestate?topicid=" + this.props.topicid + "&postid=" + this.props.postid, { headers: { "Authorization": token } })];
+                    case 8:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 9:
+                        data = _a.sent();
+                        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     //<div className="signature">{this.state.Signature}</div>
     TopicContent.prototype.render = function () {
         var curUserPostUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userId;
@@ -3340,13 +3527,13 @@ var TopicContent = /** @class */ (function (_super) {
                         React.createElement("button", { className: "commentbutton" },
                             React.createElement("i", { className: "fa fa-star-o fa-lg" })),
                         "   \u6536\u85CF\u6587\u7AE0 "),
-                    React.createElement("div", { id: "commentliked" },
-                        React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
+                    React.createElement("div", { id: "commentliked", className: "upup", style: { marginRight: "0.7rem" } },
+                        React.createElement("i", { onClick: this.like.bind(this), className: "fa fa-thumbs-o-up fa-lg" }),
                         React.createElement("span", { className: "commentProp" },
                             " ",
                             this.state.likeNumber)),
-                    React.createElement("div", { id: "commentunliked" },
-                        React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg" }),
+                    React.createElement("div", { id: "commentdisliked", className: "downdown" },
+                        React.createElement("i", { onClick: this.dislike.bind(this), className: "fa fa-thumbs-o-down fa-lg" }),
                         React.createElement("span", { className: "commentProp" },
                             " ",
                             this.state.dislikeNumber)),
@@ -3365,17 +3552,17 @@ var TopicContent = /** @class */ (function (_super) {
                 React.createElement("div", { className: "signature" },
                     React.createElement(UbbContainer_1.UbbContainer, { code: this.props.signature })),
                 React.createElement("div", { className: "comment" },
-                    React.createElement("div", { id: "commentlike", className: "buttonFont" },
+                    React.createElement("div", { id: "commentlike", style: { marginRight: "0.7rem" }, className: "buttonFont" },
                         React.createElement("button", { className: "commentbutton" },
                             React.createElement("i", { className: "fa fa-star-o fa-lg" })),
                         "   \u6536\u85CF\u6587\u7AE0 "),
-                    React.createElement("div", { id: "commentliked" },
-                        React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
+                    React.createElement("div", { id: "commentliked", className: "upup", style: { marginRight: "0.7rem" } },
+                        React.createElement("i", { onClick: this.like.bind(this), className: "fa fa-thumbs-o-up fa-lg" }),
                         React.createElement("span", { className: "commentProp" },
                             " ",
                             this.state.likeNumber)),
-                    React.createElement("div", { id: "commentunliked" },
-                        React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg" }),
+                    React.createElement("div", { id: "commentdisliked", className: "downdown" },
+                        React.createElement("i", { onClick: this.dislike.bind(this), className: "fa fa-thumbs-o-down fa-lg" }),
                         React.createElement("span", { className: "commentProp" },
                             " ",
                             this.state.dislikeNumber)),
@@ -3395,25 +3582,145 @@ var ReplyContent = /** @class */ (function (_super) {
     function ReplyContent(props, content) {
         var _this = _super.call(this, props, content) || this;
         _this.state = {
-            likeNumber: 2424,
-            dislikeNumber: 4433,
+            likeNumber: 1,
+            dislikeNumber: 1,
+            likeState: 0
         };
         return _this;
     }
+    ReplyContent.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var idLike, idDislike, token, response, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        idLike = "#like" + this.props.postid;
+                        idDislike = "#dislike" + this.props.postid;
+                        token = Utility.getLocalStorage("accessToken");
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/likestate?topicid=" + this.props.topicid + "&postid=" + this.props.postid, { headers: { "Authorization": token } })];
+                    case 1:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 2:
+                        data = _a.sent();
+                        if (data.likeState === 1) {
+                            $(idLike).css("color", "red");
+                        }
+                        else if (data.likeState === 2) {
+                            $(idDislike).css("color", "red");
+                        }
+                        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ReplyContent.prototype.like = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var idLike, idDislike, token, response, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        idLike = "#like" + this.props.postid;
+                        idDislike = "#dislike" + this.props.postid;
+                        if (!(this.state.likeState === 1)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, Utility.like(this.props.topicid, this.props.postid)];
+                    case 1:
+                        _a.sent();
+                        $(idLike).css("color", "black");
+                        return [3 /*break*/, 7];
+                    case 2:
+                        if (!(this.state.likeState === 2)) return [3 /*break*/, 5];
+                        return [4 /*yield*/, Utility.dislike(this.props.topicid, this.props.postid)];
+                    case 3:
+                        _a.sent();
+                        return [4 /*yield*/, Utility.like(this.props.topicid, this.props.postid)];
+                    case 4:
+                        _a.sent();
+                        $(idLike).css("color", "red");
+                        $(idDislike).css("color", "black");
+                        return [3 /*break*/, 7];
+                    case 5: return [4 /*yield*/, Utility.like(this.props.topicid, this.props.postid)];
+                    case 6:
+                        _a.sent();
+                        $(idLike).css("color", "red");
+                        _a.label = 7;
+                    case 7:
+                        token = Utility.getLocalStorage("accessToken");
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/likestate?topicid=" + this.props.topicid + "&postid=" + this.props.postid, { headers: { "Authorization": token } })];
+                    case 8:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 9:
+                        data = _a.sent();
+                        console.log(this.state.likeState);
+                        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ReplyContent.prototype.dislike = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var idLike, idDislike, token, response, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        idLike = "#like" + this.props.postid;
+                        idDislike = "#dislike" + this.props.postid;
+                        console.log(this.state.likeState);
+                        if (!(this.state.likeState === 2)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, Utility.dislike(this.props.topicid, this.props.postid)];
+                    case 1:
+                        _a.sent();
+                        $(idDislike).css("color", "black");
+                        return [3 /*break*/, 7];
+                    case 2:
+                        if (!(this.state.likeState === 1)) return [3 /*break*/, 5];
+                        return [4 /*yield*/, Utility.like(this.props.topicid, this.props.postid)];
+                    case 3:
+                        _a.sent();
+                        return [4 /*yield*/, Utility.dislike(this.props.topicid, this.props.postid)];
+                    case 4:
+                        _a.sent();
+                        $(idLike).css("color", "black");
+                        $(idDislike).css("color", "red");
+                        return [3 /*break*/, 7];
+                    case 5: return [4 /*yield*/, Utility.dislike(this.props.topicid, this.props.postid)];
+                    case 6:
+                        _a.sent();
+                        $(idDislike).css("color", "red");
+                        _a.label = 7;
+                    case 7:
+                        token = Utility.getLocalStorage("accessToken");
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/likestate?topicid=" + this.props.topicid + "&postid=" + this.props.postid, { headers: { "Authorization": token } })];
+                    case 8:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 9:
+                        data = _a.sent();
+                        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     ReplyContent.prototype.render = function () {
+        var idLike = "like" + this.props.postid;
+        var idDislike = "dislike" + this.props.postid;
         if (this.props.signature == "") {
             return React.createElement("div", { className: "root", style: { marginTop: "-170px" } },
                 React.createElement("div", { className: "reply-content" },
                     React.createElement("div", { className: "substance" },
                         React.createElement(UbbContainer_1.UbbContainer, { code: this.props.content })),
                     React.createElement("div", { className: "comment1" },
-                        React.createElement("div", { id: "commentliked" },
-                            React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
+                        React.createElement("div", { id: idLike, className: "upup", style: { marginRight: "0.7rem", pointer: "cursor", title: "赞" } },
+                            React.createElement("i", { onClick: this.like.bind(this), className: "fa fa-thumbs-o-up fa-lg" }),
                             React.createElement("span", { className: "commentProp" },
                                 " ",
                                 this.state.likeNumber)),
-                        React.createElement("div", { id: "commentunliked" },
-                            React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg" }),
+                        React.createElement("div", { id: idDislike, className: "downdown" },
+                            React.createElement("i", { onClick: this.dislike.bind(this), className: "fa fa-thumbs-o-down fa-lg" }),
                             React.createElement("span", { className: "commentProp" },
                                 " ",
                                 this.state.dislikeNumber)),
@@ -3427,13 +3734,13 @@ var ReplyContent = /** @class */ (function (_super) {
                     React.createElement("div", { className: "substance" },
                         React.createElement(UbbContainer_1.UbbContainer, { code: this.props.content })),
                     React.createElement("div", { className: "comment" },
-                        React.createElement("div", { id: "commentliked" },
-                            React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
+                        React.createElement("div", { id: idLike, className: "upup", style: { marginRight: "0.7rem", } },
+                            React.createElement("i", { onClick: this.like.bind(this), className: "fa fa-thumbs-o-up fa-lg" }),
                             React.createElement("span", { className: "commentProp" },
                                 " ",
                                 this.state.likeNumber)),
-                        React.createElement("div", { id: "commentunliked" },
-                            React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg" }),
+                        React.createElement("div", { id: idDislike, className: "downdown" },
+                            React.createElement("i", { onClick: this.dislike.bind(this), className: "fa fa-thumbs-o-down fa-lg" }),
                             React.createElement("span", { className: "commentProp" },
                                 " ",
                                 this.state.dislikeNumber)),
@@ -4039,10 +4346,10 @@ var PostTopic = /** @class */ (function (_super) {
             return React.createElement("div", { className: "root" },
                 React.createElement("div", { className: "essay" },
                     React.createElement(AuthorMessage, { authorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl }),
-                    React.createElement(TopicTitle, { Title: this.state.topicMessage.title, Time: this.state.topicMessage.time, HitCount: this.state.topicMessage.hitCount }),
+                    React.createElement(TopicTitle, { Title: this.state.topicMessage.title, Time: this.state.topicMessage.time, HitCount: this.state.topicMessage.hitCount, likeNumber: this.state.topicMessage.likeCount, dislikeNumber: this.state.topicMessage.dislikeCount }),
                     React.createElement("div", { id: "ads" },
                         React.createElement("img", { src: this.props.imgUrl }))),
-                React.createElement(TopicContent, { content: this.state.topicMessage.content, signature: this.state.topicMessage.signature }),
+                React.createElement(TopicContent, { content: this.state.topicMessage.content, signature: this.state.topicMessage.signature, likeNumber: this.state.topicMessage.likeCount, dislikeNumber: this.state.topicMessage.dislikeCount }),
                 React.createElement(TopicGood, null),
                 React.createElement(TopicVote, null));
         }
@@ -4095,12 +4402,15 @@ var TopicTitle = /** @class */ (function (_super) {
             title: "这是一个长长啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊的标题",
             tag: "女装/开车",
             time: "2017.8.12",
-            likeNumber: 666,
-            unlikeNumber: 233,
+            likeNumber: _this.props.likeNumber,
+            dislikeNumber: _this.props.dislikeNumber,
             viewTimes: 2366
         };
         return _this;
     }
+    TopicTitle.prototype.componentDidMount = function () {
+        this.setState({ likeNumber: this.props.likeNumber, dislikeNumber: this.props.dislikeNumber });
+    };
     TopicTitle.prototype.returnProps = function (isTop, isNotice, title) {
         if (isTop == true && isNotice == false) {
             return React.createElement("div", { id: "title1", className: "row", style: { justifyContent: "flex-start" } },
@@ -4156,6 +4466,9 @@ var TopicContent = /** @class */ (function (_super) {
         };
         return _this;
     }
+    TopicContent.prototype.componentDidMount = function () {
+        this.setState({ likeNumber: this.props.likeNumber, dislikeNumber: this.props.dislikeNumber });
+    };
     //<div className="signature">{this.state.Signature}</div>
     TopicContent.prototype.render = function () {
         if (this.props.signature == "") {
@@ -5294,7 +5607,6 @@ var Focus = /** @class */ (function (_super) {
                         this.setState({ data: data });
                         return [3 /*break*/, 7];
                     case 1:
-                        console.log("版面区域没有获取到版面列表缓存数据");
                         data = [];
                         token = Utility.getLocalStorage("accessToken");
                         userInfo = Utility.getLocalStorage("userInfo");
@@ -9559,9 +9871,14 @@ var AllNewTopicArea = /** @class */ (function (_super) {
      */
     function AllNewTopicArea(props) {
         var _this = _super.call(this, props) || this;
+        //先看一下有没有缓存的帖子数据
+        var data = Utility.getStorage("AllNewTopic");
+        if (!data) {
+            data = [];
+        }
         _this.state = {
-            data: [],
-            curPage: 1,
+            data: data,
+            curNum: 0,
             loading: true
         };
         _this.handleScroll = _this.handleScroll.bind(_this);
@@ -9572,13 +9889,30 @@ var AllNewTopicArea = /** @class */ (function (_super) {
      */
     AllNewTopicArea.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var data;
+            var data, oldData, i;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getAllNewTopic(this.state.curPage)];
+                    case 0: return [4 /*yield*/, Utility.getAllNewTopic(this.state.curNum)];
                     case 1:
                         data = _a.sent();
-                        this.setState({ data: data });
+                        oldData = Utility.getStorage("AllNewTopic");
+                        if (oldData) {
+                            for (i = 0; i < data.length; i++) {
+                                //最新的20条数据跟之前的有重合就组合起来
+                                if (data[i].id == oldData[0].id) {
+                                    data = data.slice(0, i).concat(oldData);
+                                    break;
+                                }
+                            }
+                        }
+                        //最多100条新帖
+                        if (data.length > 100) {
+                            data = data.slice(0, 100);
+                        }
+                        //缓存获取到的数据                      
+                        Utility.setStorage("AllNewTopic", data);
+                        this.setState({ data: data, curNum: data.length });
+                        //滚动条监听
                         document.addEventListener('scroll', this.handleScroll);
                         return [2 /*return*/];
                 }
@@ -9601,7 +9935,7 @@ var AllNewTopicArea = /** @class */ (function (_super) {
      */
     AllNewTopicArea.prototype.handleScroll = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var newData, err_1;
+            var newData, err_1, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -9609,7 +9943,7 @@ var AllNewTopicArea = /** @class */ (function (_super) {
                         /**
                         *查看新帖数目大于100条时不再继续加载
                         */
-                        if (this.state.curPage >= 5) {
+                        if (this.state.curNum >= 99) {
                             $('#focus-topic-loading').addClass('displaynone');
                             $('#focus-topic-loaddone').removeClass('displaynone');
                             return [2 /*return*/];
@@ -9621,7 +9955,7 @@ var AllNewTopicArea = /** @class */ (function (_super) {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, Utility.getAllNewTopic(this.state.curPage + 1)];
+                        return [4 /*yield*/, Utility.getAllNewTopic(this.state.curNum)];
                     case 2:
                         newData = _a.sent();
                         return [3 /*break*/, 4];
@@ -9633,10 +9967,9 @@ var AllNewTopicArea = /** @class */ (function (_super) {
                         this.setState({ loading: true });
                         return [2 /*return*/];
                     case 4:
-                        /**
-                        *如果正确获取到数据，则添加新数据，翻页+1，同时this.state.loading设置为true，后续才可以再次发送fetch请求
-                        */
-                        this.setState({ data: this.state.data.concat(newData), curPage: this.state.curPage + 1, loading: true });
+                        data = this.state.data.concat(newData);
+                        this.setState({ data: data, curNum: data.length, loading: true });
+                        Utility.setStorage("AllNewTopic", data);
                         _a.label = 5;
                     case 5: return [2 /*return*/];
                 }
@@ -9876,9 +10209,14 @@ var FocusTopicArea = /** @class */ (function (_super) {
      */
     function FocusTopicArea(props) {
         var _this = _super.call(this, props) || this;
+        //先看一下有没有缓存的帖子数据
+        var data = Utility.getStorage("focusBoardTopic");
+        if (!data) {
+            data = [];
+        }
         _this.state = {
-            data: [],
-            curPage: 1,
+            data: data,
+            curNum: 0,
             loading: true
         };
         _this.handleScroll = _this.handleScroll.bind(_this);
@@ -9889,13 +10227,30 @@ var FocusTopicArea = /** @class */ (function (_super) {
      */
     FocusTopicArea.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var data;
+            var data, oldData, i;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getFocusTopic(this.state.curPage)];
+                    case 0: return [4 /*yield*/, Utility.getFocusTopic(this.state.curNum)];
                     case 1:
                         data = _a.sent();
-                        this.setState({ data: data });
+                        oldData = Utility.getStorage("focusBoardTopic");
+                        if (oldData) {
+                            for (i = 0; i < data.length; i++) {
+                                // 最新的20 条数据跟之前的有重合就组合起来
+                                if (data[i].id == oldData[0].id) {
+                                    data = data.slice(0, i).concat(oldData);
+                                    console.log(data);
+                                    break;
+                                }
+                            }
+                        }
+                        //最多100条新帖
+                        if (data.length > 100) {
+                            data = data.slice(0, 100);
+                        }
+                        this.setState({ data: data, curNum: data.length });
+                        //缓存获取到的数据
+                        Utility.setStorage("focusBoardTopic", data);
                         //滚动条监听
                         document.addEventListener('scroll', this.handleScroll);
                         return [2 /*return*/];
@@ -9919,7 +10274,7 @@ var FocusTopicArea = /** @class */ (function (_super) {
      */
     FocusTopicArea.prototype.handleScroll = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var newData, err_1;
+            var newData, err_1, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -9927,7 +10282,7 @@ var FocusTopicArea = /** @class */ (function (_super) {
                         /**
                         *查看新帖数目大于100条时不再继续加载
                         */
-                        if (this.state.curPage >= 5) {
+                        if (this.state.curNum >= 99) {
                             $('#focus-topic-loading').addClass('displaynone');
                             $('#focus-topic-loaddone').removeClass('displaynone');
                             return [2 /*return*/];
@@ -9939,7 +10294,7 @@ var FocusTopicArea = /** @class */ (function (_super) {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, Utility.getAllNewTopic(this.state.curPage + 1)];
+                        return [4 /*yield*/, Utility.getFocusTopic(this.state.curNum)];
                     case 2:
                         newData = _a.sent();
                         return [3 /*break*/, 4];
@@ -9951,10 +10306,9 @@ var FocusTopicArea = /** @class */ (function (_super) {
                         this.setState({ loading: true });
                         return [2 /*return*/];
                     case 4:
-                        /**
-                        *如果正确获取到数据，则添加新数据，翻页+1，同时this.state.loading设置为true，后续才可以再次发送fetch请求
-                        */
-                        this.setState({ data: this.state.data.concat(newData), curPage: this.state.curPage + 1, loading: true });
+                        data = this.state.data.concat(newData);
+                        this.setState({ data: data, curNum: data.length, loading: true });
+                        Utility.setStorage("focusBoardTopic", data);
                         _a.label = 5;
                     case 5: return [2 /*return*/];
                 }
