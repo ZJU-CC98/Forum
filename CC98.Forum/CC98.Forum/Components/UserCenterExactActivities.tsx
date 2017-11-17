@@ -17,9 +17,6 @@ export class UserCenterExactActivities extends React.Component {
             <div className="user-activities">
                 <p>近期动态</p>
                 <UserCenterExactActivitiesPosts />
-                <div className="user-activities-nomore">
-                    <p>没有更多啦</p>
-                </div>
             </div>
         );
     }

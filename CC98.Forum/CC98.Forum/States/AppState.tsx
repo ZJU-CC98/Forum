@@ -328,6 +328,22 @@ export class UserRecentPost {
     */
     title: string;
     /**
+    * 用户名
+    */
+    name: string;
+    /**
+    * 用户名
+    */
+    isAnonymous: boolean;
+    /**
+    * 帖子id
+    */
+    id: number;
+    /**
+    * 帖子版面id
+    */
+    boardId: number;
+    /**
     * 帖子内容
     */
     content: string;
@@ -339,6 +355,7 @@ export class UserRecentPost {
     * 获得踩数
     */
     disapproval: number;
+
 }
 
 /**
