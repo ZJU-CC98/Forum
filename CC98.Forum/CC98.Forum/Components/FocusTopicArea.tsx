@@ -10,7 +10,7 @@ import * as Utility from '../Utility';
 /**
  * 表示我关注的版面的主题列表
  */
-export class FocusTopicArea extends React.Component<FocusBoardProps, FocusTopicAreaState> {
+export class FocusTopicArea extends React.Component<{}, FocusTopicAreaState> {
     
     /**
      * 构造函数
@@ -44,7 +44,6 @@ export class FocusTopicArea extends React.Component<FocusBoardProps, FocusTopicA
                 // 最新的20 条数据跟之前的有重合就组合起来
                 if (data[i].id == oldData[0].id) {
                     data = data.slice(0,i).concat(oldData);
-                    console.log(data);
                     break;
                 }
             }

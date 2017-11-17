@@ -334,7 +334,7 @@ export async function getAllNewTopic(curNum: number) {
         }
         //匿名时粉丝数显示999
         else {
-            newTopic[i].fanCount = 999;
+            newTopic[i].fanCount = -98;
             newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
             newTopic[i].userName = "匿名";
             newTopic[i].boardName = "心灵之约";
@@ -382,7 +382,7 @@ export async function getFocusTopic(curNum: number) {
         }
         //匿名时粉丝数显示999
         else {
-            newTopic[i].fanCount = 999;
+            newTopic[i].fanCount = -98;
             newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
             newTopic[i].userName = "匿名";
             newTopic[i].boardName = "心灵之约";
