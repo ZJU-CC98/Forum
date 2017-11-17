@@ -39,11 +39,10 @@ export class AllNewTopicArea extends React.Component<{}, FocusTopicAreaState> {
         //先看一下有没有缓存的数据，如果有的话新数据跟缓存数据组合一下
         let oldData =  Utility.getStorage("AllNewTopic");
         if(oldData) {
-            for(var i=0; i<data.length; i++) {
+            for (var i = 0; i < data.length; i++) {
                 //最新的20条数据跟之前的有重合就组合起来
-                if(data[i].id = oldData[0].id) {
+                if (data[i].id == oldData[0].id) {
                     data = data.slice(0,i).concat(oldData);
-                    console.log("拼接数据了");
                     break;
                 }
             }
@@ -53,9 +52,8 @@ export class AllNewTopicArea extends React.Component<{}, FocusTopicAreaState> {
         if(data.length > 100) {
             data = data.slice(0,100);
         }
-
-
-        //缓存获取到的数据
+                    
+        //缓存获取到的数据                      
         Utility.setStorage("AllNewTopic", data);
         this.setState({ data: data, curNum: data.length });
 
@@ -108,7 +106,6 @@ export class AllNewTopicArea extends React.Component<{}, FocusTopicAreaState> {
      * 将主题排列好
      */
     render() {
-        console.log("AllNewTopic开始render了");
         return <div className="focus-topic-area">
                     <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
                     <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif"></img></div>
