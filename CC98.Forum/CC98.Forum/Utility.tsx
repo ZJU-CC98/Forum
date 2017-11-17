@@ -334,7 +334,7 @@ export async function getAllNewTopic(curNum: number) {
         }
         //匿名时粉丝数显示999
         else {
-            newTopic[i].fanCount = 999;
+            newTopic[i].fanCount = -98;
             newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
             newTopic[i].userName = "匿名";
             newTopic[i].boardName = "心灵之约";
@@ -382,7 +382,7 @@ export async function getFocusTopic(curNum: number) {
         }
         //匿名时粉丝数显示999
         else {
-            newTopic[i].fanCount = 999;
+            newTopic[i].fanCount = -98;
             newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
             newTopic[i].userName = "匿名";
             newTopic[i].boardName = "心灵之约";
@@ -445,4 +445,35 @@ export function removeLocalStorage(key) {
 export function removeStorage(key) {
     sessionStorage.removeItem(key);
     return;
+}
+
+/*
+* 根据boardId返回boardName
+*/
+export async function getBoardName(boardId: number) {
+    let boardName: string;
+
+    boardName = getLocalStorage(`boardId_${boardId}`);
+
+    if (!boardName) {
+        const url = `http://apitest.niconi.cc/board/${boardId}`;
+        let res = await fetch(url);
+        let data = await res.json();
+
+        boardName = data.name;
+    }
+
+    setLocalStorage(`boardId_${boardId}`, boardName);
+
+    return boardName;
+}
+
+/*
+* 返回用户是否登陆
+*/
+
+export function isLogOn(): boolean {
+    const token = getLocalStorage("accessToken");
+
+    return !!token;
 }

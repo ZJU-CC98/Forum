@@ -6,6 +6,9 @@ import * as React from 'react';
 import {
     Route
 } from 'react-router-dom';
+
+import * as Utility from '../Utility';
+
 import { UserCenterExact } from './UserCenterExact';
 import { UserCenterMyFollowings } from './UserCenterMyFollowings';
 import { UserCenterMyFans } from './UserCenterMyFans';
@@ -18,6 +21,10 @@ import { UserCenterConfig } from './UserCenterConfig';
  */
 export class UserCenterRouter extends React.Component {
     render() {
+        if (!Utility.isLogOn()) {
+            return <div className="user-center-router">请先登录</div>;
+        }
+
         return (<div className="user-center-router">
             <Route exact path="/usercenter/" component={UserCenterExact} />
             <Route path="/usercenter/myfollowings" component={UserCenterMyFollowings} />

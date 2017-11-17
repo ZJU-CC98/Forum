@@ -3,6 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
+import * as Utility from '../Utility';
 
 export class LogOff extends React.Component<null, LogOffState> {
     constructor(props) {
@@ -14,8 +15,8 @@ export class LogOff extends React.Component<null, LogOffState> {
     }
 
     componentDidMount() {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('userName');
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("userName");
 
         this.setState({
             logOffInfo: '登出成功 正在前往登录页'
