@@ -7,6 +7,7 @@ import { UserInfo } from '../States/AppState';
 import { UserCenterExactProfile } from './UserCenterExactProfile';
 import { UserCenterExactActivities } from './UserCenterExactActivities';
 import { UserCenterExactAvatar } from './UserCenterExactAvatar'
+import * as Utility from '../Utility';
 
 /**
  * 用户中心主页
@@ -14,29 +15,24 @@ import { UserCenterExactAvatar } from './UserCenterExactAvatar'
 export class UserCenterExact extends React.Component<null, UserCenterExactState> {
 
     async componentDidMount() {
-        const response = await fetch('https://api.cc98.org/Me/', {
-	        headers: {
-		        'Authorization': 'bearer' + ' ' + window.localStorage.token
-	        }
-        });
-        const data = await response.json();
+        let userInfo = Utility.getLocalStorage('userInfo');
+
+        console.log(userInfo);
+
         this.setState({
-            userInfo: data,
-            userAvatarImgURL: data.portraitUrl,
-            responseState: response.status
+            userInfo: userInfo,
+            userAvatarImgURL: userInfo.portraitUrl
         });
     }
 
     render() {
         let element;
-        if (this.state !== null && this.state.responseState === 200) {
+        if (this.state !== null) {
             element = (<div className="user-center-exact">
                 <UserCenterExactAvatar userAvatarImgURL={this.state.userAvatarImgURL} />
                 <UserCenterExactProfile userInfo={this.state.userInfo} />
                 <UserCenterExactActivities />
             </div>);
-        } else if (this.state !== null && this.state.responseState === 401) {
-            element = <p>请重新登录</p>;
         } else {
             element = <p>加载中</p>;
         }

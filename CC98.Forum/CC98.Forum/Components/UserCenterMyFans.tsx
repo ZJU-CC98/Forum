@@ -100,7 +100,7 @@ export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState
             <div className="user-center-myfans-exact">
                 {userFans}
             </div>
-            <UserCenterPageCount currentPage={page} totalPage={this.state.totalPage} href="/usercenter/myfans/" />
+            <UserCenterPageCount currentPage={parseInt(page)} totalPage={this.state.totalPage} href="/usercenter/myfans/" />
         </div>);
     }
 }
