@@ -1699,7 +1699,8 @@ function getStorage(key) {
     }
 }
 exports.getStorage = getStorage;
-function setLocalStorage(key, value) {
+function setLocalStorage(key, value, expireIn) {
+    if (expireIn === void 0) { expireIn = 0; }
     var v = value;
     if (typeof v == 'object') {
         v = JSON.stringify(v);
@@ -1709,10 +1710,26 @@ function setLocalStorage(key, value) {
         v = "str-" + v;
     }
     localStorage.setItem(key, v);
+    if (expireIn) {
+        var now = new Date().getTime();
+        var expirationTime = now + expireIn * 1000;
+        localStorage.setItem(key + "_expirationTime", expirationTime.toString().slice(0, expirationTime.toString().length - 3));
+    }
 }
 exports.setLocalStorage = setLocalStorage;
 function getLocalStorage(key) {
     var v = localStorage.getItem(key);
+    var expirationTime = localStorage.getItem(key + "_expirationTime");
+    if (expirationTime) {
+        var now = new Date().getTime();
+        var time = Number.parseInt(expirationTime) * 1000;
+        console.log(now);
+        console.log(time);
+        if (now > time) {
+            localStorage.removeItem(key);
+            return;
+        }
+    }
     if (!v) {
         return;
     }
@@ -2734,13 +2751,6 @@ var UserCenterExactActivitiesPost = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     UserCenterExactActivitiesPost.prototype.render = function () {
-        var element;
-        console.log(this.props.userRecentPost.isAnonymous);
-        if (this.props.userRecentPost.name !== localStorage.getItem("userName").slice(4) && !this.props.userRecentPost.isAnonymous) {
-            element = (React.createElement("div", null,
-                React.createElement("a", { className: "fa-thumbs-o-up" }, " " + this.props.userRecentPost.approval),
-                React.createElement("a", { className: "fa-thumbs-o-down" }, " " + this.props.userRecentPost.disapproval)));
-        }
         return (React.createElement("div", { className: "user-post" },
             React.createElement("div", { className: "user-post-info" },
                 React.createElement("a", { className: "user-post-board", href: "/list/" + this.props.userRecentPost.boardId }, this.props.userRecentPost.board),
@@ -2749,7 +2759,8 @@ var UserCenterExactActivitiesPost = /** @class */ (function (_super) {
             React.createElement("div", { className: "user-post-content" },
                 React.createElement("p", null,
                     React.createElement("a", { href: "/topic/" + this.props.userRecentPost.id }, this.props.userRecentPost.content)),
-                element)));
+                React.createElement("a", { className: "fa-thumbs-o-up" }, " " + this.props.userRecentPost.approval),
+                React.createElement("a", { className: "fa-thumbs-o-down" }, " " + this.props.userRecentPost.disapproval))));
     };
     return UserCenterExactActivitiesPost;
 }(React.Component));
@@ -7003,68 +7014,36 @@ var ImageTagHandler = /** @class */ (function (_super) {
     ImageTagHandler.prototype.execCore = function (content, tagData, context) {
         var imageUri = content;
         var title = tagData.value('title');
-        var isShowedValue = parseInt(tagData.value('img'));
+        var isShowed = parseInt(tagData.value('img'));
         // 不允许显示图像
         if (!context.options.allowImage) {
-            return React.createElement(Image, { imageUri: imageUri, title: title, isShowed: false });
+            return content;
         }
+        var imageTag = React.createElement("img", { src: imageUri, alt: title });
         //[img=1]默认不显示图片，[img]或[img=0]默认显示图片
         // HTML5 模式下，使用 figure 表示插图
         if (context.options.compatibility === Ubb.UbbCompatiblityMode.EnforceMorden) {
-            if (isShowedValue === 1) {
-                return React.createElement(Image, { imageUri: imageUri, title: title, isShowed: false });
+            if (isShowed === 1) {
+                return content;
             }
             else {
                 return React.createElement("figure", null,
-                    React.createElement(Image, { imageUri: imageUri, title: title, isShowed: true }),
+                    imageTag,
                     React.createElement("figcaption", null, title));
             }
         }
         else {
-            if (isShowedValue === 1) {
-                return React.createElement(Image, { imageUri: imageUri, title: title, isShowed: false });
+            if (isShowed === 1) {
+                return content;
             }
             else {
-                return React.createElement(Image, { imageUri: imageUri, title: title, isShowed: true });
+                return imageTag;
             }
         }
     };
     return ImageTagHandler;
 }(Ubb.TextTagHandler));
 exports.ImageTagHandler = ImageTagHandler;
-/*
- *图片组件
- *用于控制图片是否默认显示
- */
-var Image = /** @class */ (function (_super) {
-    __extends(Image, _super);
-    function Image(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = {
-            isShowed: _this.props.isShowed
-        };
-        _this.toggleIsShowed = _this.toggleIsShowed.bind(_this); //别再忘了bind了！！  “bind一般放在构造过程中” ——樱桃
-        return _this;
-    }
-    Image.prototype.toggleIsShowed = function () {
-        console.log("显示图片！");
-        this.setState(function (prevState) { return ({
-            isShowed: !prevState.isShowed //setState() 可以接收一个函数，这个函数接受两个参数，第一个参数prevState表示上一个状态值，第二个参数props表示当前的props
-        }); });
-    };
-    Image.prototype.render = function () {
-        if (this.state.isShowed) {
-            return React.createElement("img", { src: this.props.imageUri, alt: this.props.title });
-        }
-        else {
-            return React.createElement("div", { onClick: this.toggleIsShowed },
-                "[\u70B9\u51FB\u67E5\u770B\u56FE\u7247]",
-                this.props.imageUri);
-        }
-    };
-    return Image;
-}(React.Component));
-exports.Image = Image;
 
 
 /***/ }),
@@ -8311,6 +8290,8 @@ var UserCenterRouter = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     UserCenterRouter.prototype.render = function () {
+        var logOnState = Utility.isLogOn();
+        console.log(logOnState);
         if (!Utility.isLogOn()) {
             return React.createElement("div", { className: "user-center-router" }, "\u8BF7\u5148\u767B\u5F55");
         }
@@ -8400,7 +8381,6 @@ var UserCenterExact = /** @class */ (function (_super) {
             var userInfo;
             return __generator(this, function (_a) {
                 userInfo = Utility.getLocalStorage('userInfo');
-                console.log(userInfo);
                 this.setState({
                     userInfo: userInfo,
                     userAvatarImgURL: userInfo.portraitUrl
@@ -8500,50 +8480,49 @@ var UserCenterExactActivitiesPosts = /** @class */ (function (_super) {
         return _this;
     }
     UserCenterExactActivitiesPosts.prototype.scrollHandler = function (e) {
-        var _this = this;
-        var pageYLeft = document.body.scrollHeight - window.pageYOffset;
-        if (pageYLeft < 1500 && this.state.isLoading === false) {
-            this.setState(function (prevState) { return __awaiter(_this, void 0, void 0, function () {
-                var url, token, res, data, posts, i, post;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            this.setState({ isLoading: true });
-                            url = "http://apitest.niconi.cc/me/recenttopics?from=" + this.state.userRecentPosts.length + "&size=10";
-                            token = window.localStorage.accessToken.slice(4);
-                            return [4 /*yield*/, fetch(url, {
-                                    headers: {
-                                        'Authorization': token
-                                    }
-                                })];
-                        case 1:
-                            res = _a.sent();
-                            return [4 /*yield*/, res.json()];
-                        case 2:
-                            data = _a.sent();
-                            if (data.length < 10) {
-                                window.removeEventListener('scroll', this.scrollHandler);
-                            }
-                            posts = prevState.userRecentPosts;
-                            i = data.length;
-                            _a.label = 3;
-                        case 3:
-                            if (!i--) return [3 /*break*/, 5];
-                            return [4 /*yield*/, this.item2post(data[i])];
-                        case 4:
-                            post = _a.sent();
-                            posts.push(post);
-                            return [3 /*break*/, 3];
-                        case 5:
-                            this.setState({
-                                userRecentPosts: posts,
-                                isLoading: false
-                            });
-                            return [2 /*return*/];
-                    }
-                });
-            }); });
-        }
+        return __awaiter(this, void 0, void 0, function () {
+            var pageYLeft, url, token, res, data, posts, i, post;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        pageYLeft = document.body.scrollHeight - window.pageYOffset;
+                        if (!(pageYLeft < 1500 && this.state.isLoading === false)) return [3 /*break*/, 6];
+                        this.setState({ isLoading: true });
+                        url = "http://apitest.niconi.cc/me/recenttopics?from=" + this.state.userRecentPosts.length + "&size=10";
+                        token = window.localStorage.accessToken.slice(4);
+                        return [4 /*yield*/, fetch(url, {
+                                headers: {
+                                    'Authorization': token
+                                }
+                            })];
+                    case 1:
+                        res = _a.sent();
+                        return [4 /*yield*/, res.json()];
+                    case 2:
+                        data = _a.sent();
+                        if (data.length < 10) {
+                            window.removeEventListener('scroll', this.scrollHandler);
+                        }
+                        posts = this.state.userRecentPosts;
+                        i = data.length;
+                        _a.label = 3;
+                    case 3:
+                        if (!i--) return [3 /*break*/, 5];
+                        return [4 /*yield*/, this.item2post(data[i])];
+                    case 4:
+                        post = _a.sent();
+                        posts.push(post);
+                        return [3 /*break*/, 3];
+                    case 5:
+                        this.setState({
+                            userRecentPosts: posts,
+                            isLoading: false
+                        });
+                        _a.label = 6;
+                    case 6: return [2 /*return*/];
+                }
+            });
+        });
     };
     UserCenterExactActivitiesPosts.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -8563,7 +8542,6 @@ var UserCenterExactActivitiesPosts = /** @class */ (function (_super) {
                         return [4 /*yield*/, res.json()];
                     case 2:
                         data = _a.sent();
-                        console.log(data);
                         posts = [], i = data.length;
                         _a.label = 3;
                     case 3:
@@ -10980,11 +10958,13 @@ var LogOnExact = /** @class */ (function (_super) {
                         return [4 /*yield*/, response.json()];
                     case 2:
                         data = _a.sent();
+                        console.log(data);
                         token = "Bearer " + encodeURIComponent(data.access_token);
                         console.log("after logon token=" + token);
                         //缓存数据
-                        Utility.setLocalStorage("accessToken", token);
+                        Utility.setLocalStorage("accessToken", token, data.expires_in);
                         Utility.setLocalStorage("userName", this.state.loginName);
+                        Utility.getLocalStorage("accessToken");
                         return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + this.state.loginName, {
                                 headers: {
                                     Authorization: "" + token

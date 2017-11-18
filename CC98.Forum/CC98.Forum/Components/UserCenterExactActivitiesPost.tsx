@@ -10,16 +10,6 @@ import { UserRecentPost } from '../States/AppState';
  */
 export class UserCenterExactActivitiesPost extends React.Component<UserCenterExactActivitiesPostProps> {
     render() {
-        let element;
-        console.log(this.props.userRecentPost.isAnonymous);
-        if (this.props.userRecentPost.name !== localStorage.getItem("userName").slice(4) && !this.props.userRecentPost.isAnonymous) {
-            element = (<div>
-                <a className="fa-thumbs-o-up">{` ${this.props.userRecentPost.approval}`}</a>
-                <a className="fa-thumbs-o-down">{` ${this.props.userRecentPost.disapproval}`}</a>
-                </div>);
-        }
-
-
         return (
             <div className="user-post">
                 <div className="user-post-info">
@@ -29,7 +19,8 @@ export class UserCenterExactActivitiesPost extends React.Component<UserCenterExa
                 </div>
                 <div className="user-post-content">
                     <p><a href={`/topic/${this.props.userRecentPost.id}`}>{this.props.userRecentPost.content}</a></p>
-                    {element}
+                    <a className="fa-thumbs-o-up">{` ${this.props.userRecentPost.approval}`}</a>
+                    <a className="fa-thumbs-o-down">{` ${this.props.userRecentPost.disapproval}`}</a>
                 </div>
             </div>    
         );

@@ -43,7 +43,7 @@ const config: webpack.Configuration = {
 		'jquery': '$',
         'signalr': '$.connection',
         'moment' : 'moment',
-
+        'editor.md':'editorMd'
 	},
 	plugins: [
 		new webpack.optimize.UglifyJsPlugin(), // 简化 JS
@@ -62,7 +62,8 @@ const config: webpack.Configuration = {
 			{ from: 'node_modules/bootstrap/dist', to: 'scripts/lib/bootstrap' },
 			{ from: 'node_modules/es6-promise/dist', to: 'scripts/lib/es6-promise' },
             { from: 'node_modules/font-awesome', to: 'content/font-awesome' },
-            { from: 'node_modules/moment', to: 'scripts/moment' }
+            { from: 'node_modules/moment', to: 'scripts/lib/moment' },
+            {from:'node_modules/editor.md',to:'scripts/lib/editor.md/'},
 		]),
 		new ExtractTextPlugin('content/site.min.css')
 	]
