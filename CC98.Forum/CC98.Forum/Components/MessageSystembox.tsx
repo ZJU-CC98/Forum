@@ -12,7 +12,8 @@ export class MessageSystembox extends React.Component<MessageProps> {
     */
 
     render() {
-        return (<div className="message-system-box">
+        return <div></div>;
+        /*return (<div className="message-system-box">
             <div className="message-system-box-title">
                 {this.props.title}
             </div>
@@ -23,6 +24,6 @@ export class MessageSystembox extends React.Component<MessageProps> {
                 {this.props.content}
             </div>
         </div>
-        );
+        );*/
     }
 }

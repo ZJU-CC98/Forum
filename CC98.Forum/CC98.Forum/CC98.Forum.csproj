@@ -25,7 +25,9 @@
     <None Remove="Components\UserCenterConfigSignature.tsx" />
     <None Remove="Components\UserCenterPageCount.tsx" />
     <None Remove="Props\FocusBoardProps.tsx" />
+    <None Remove="Props\MessageSendReceiveProps.tsx" />
     <None Remove="Reducer.tsx" />
+    <None Remove="States\MessageWindowState.tsx" />
     <None Remove="Store.tsx" />
     <None Remove="UbbCode.tsx" />
     <None Remove="Ubb\AlignTagHandler.tsx" />
@@ -76,6 +78,9 @@
     <TypeScriptCompile Include="Components\UserCenterConfigSignature.tsx" />
     <TypeScriptCompile Include="Components\UserCenterPageCount.tsx" />
     <TypeScriptCompile Include="Props\FocusBoardProps.tsx" />
+    <TypeScriptCompile Include="Props\MessagePersonProps.tsx" />
+    <TypeScriptCompile Include="Props\MessageSendReceiveProps.tsx" />
+    <TypeScriptCompile Include="States\MessageWindowState.tsx" />
     <TypeScriptCompile Include="Ubb\AlignTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\BTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\CenterTagHandler.tsx" />

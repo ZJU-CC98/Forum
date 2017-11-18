@@ -12,7 +12,10 @@ import * as Utility from '../Utility';
  */
 export class MessageSystem extends React.Component<{}, MessageResponseState> {
 
-    constructor(props) {
+    render() {
+        return <div>这里是系统消息</div>;
+    }
+    /*constructor(props) {
         super(props);
         this.state = {
             data: [],
@@ -76,4 +79,5 @@ function contains(arr, obj) {
         }
     }
     return false;
+    */
 }

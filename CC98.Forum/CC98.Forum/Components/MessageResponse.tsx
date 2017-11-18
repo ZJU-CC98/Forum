@@ -11,6 +11,11 @@ import { MessageResponsebox } from './MessageResponsebox';
  */
 export class MessageResponse extends React.Component<{}, MessageResponseState> {
 
+
+    render() {
+        return <div>这里是我的回复</div>;
+    }
+    /*
     constructor(props) {
         super(props);
         this.state = {
@@ -68,7 +73,7 @@ export class MessageResponse extends React.Component<{}, MessageResponseState> {
         $('.message-nav > div').removeClass('message-nav-focus');
         $('#response').addClass('message-nav-focus');
         return <div className="message-response">{this.state.data.map(this.coverMessageResponse)}</div>;
-    }
+    }*/
 }
 
 //查找数组arr中是否存在元素的名字为obj
