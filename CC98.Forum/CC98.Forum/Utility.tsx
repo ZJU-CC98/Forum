@@ -301,17 +301,19 @@ export function changeNav(id) {
  * 获取全站新帖
  * @param curPage
  */
-export async function getAllNewTopic(curPage: number) {
+export async function getAllNewTopic(curNum: number) {
     /**
      * 一次性可以获取20个主题
      */
-    const startPage: number = (curPage - 1) * 20;
-    const size = 20;
+    var size = 20;
+    if(curNum > 80) {
+        size = 100 - curNum;
+    }
     let token = getLocalStorage("accessToken");
     /**
      * 通过api获取到主题之后转成json格式
      */
-    const response = await fetch(`http://apitest.niconi.cc/topic/new?from=${startPage}&size=${size}`, { headers: { 'Authorization': `${token}` } });
+    const response = await fetch(`http://apitest.niconi.cc/topic/new?from=${curNum}&size=${size}`, { headers: { 'Authorization': `${token}` } });
     const newTopic = await response.json();
     for (let i in newTopic) {
         if (newTopic[i].userId) {
@@ -334,8 +336,9 @@ export async function getAllNewTopic(curPage: number) {
         }
         //匿名时粉丝数显示999
         else {
-            newTopic[i].fanCount = 999;
+            newTopic[i].fanCount = -98;
             newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+            newTopic[i].userName = "匿名";
             newTopic[i].boardName = "心灵之约";
         }
     }
@@ -346,17 +349,19 @@ export async function getAllNewTopic(curPage: number) {
  * 获取关注版面新帖
  * @param curPage
  */
-export async function getFocusTopic(curPage: number) {
+export async function getFocusTopic(curNum: number) {
     /**
      * 一次性可以获取20个主题
      */
-    const startPage: number = (curPage - 1) * 20;
-    const size = 20;
+    var size = 20;
+    if(curNum > 80) {
+        size = 100 - curNum;
+    }
     let token = getLocalStorage("accessToken");
     /**
      * 通过api获取到主题之后转成json格式
      */
-    const response = await fetch(`http://apitest.niconi.cc/topic/customboards/new?from=${startPage}&size=${size}`, { headers: { 'Authorization': `${token}` } });
+    const response = await fetch(`http://apitest.niconi.cc/topic/customboards/new?from=${curNum}&size=${size}`, { headers: { 'Authorization': `${token}` } });
     const newTopic = await response.json();
     for (let i in newTopic) {
         if (newTopic[i].userId) {
@@ -380,9 +385,9 @@ export async function getFocusTopic(curPage: number) {
         }
         //匿名时粉丝数显示999
         else {
-            newTopic[i].fanCount = 999;
+            newTopic[i].fanCount = -98;
             newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-            newTopic[i].userName = "心灵之约";
+            newTopic[i].userName = "匿名";
             newTopic[i].boardName = "心灵之约";
         }
     }
@@ -414,7 +419,7 @@ export function getStorage(key) {
         return v.slice(4);
     }
 }
-export function setLocalStorage(key, value) {
+export function setLocalStorage(key, value, expireIn = 0) {
     let v = value;
     if (typeof v == 'object') {
         v = JSON.stringify(v);
@@ -423,9 +428,28 @@ export function setLocalStorage(key, value) {
         v = `str-${v}`;
     }
     localStorage.setItem(key, v);
+    if (expireIn) {
+        const now = new Date().getTime();
+        let expirationTime = now + expireIn * 1000;
+        localStorage.setItem(`${key}_expirationTime`, expirationTime.toString().slice(0, expirationTime.toString().length - 3));
+    }
 }
 export function getLocalStorage(key) {
     let v = localStorage.getItem(key);
+    let expirationTime = localStorage.getItem(`${key}_expirationTime`);
+    if (expirationTime) {
+        const now = new Date().getTime();
+        const time = Number.parseInt(expirationTime)*1000;
+
+        console.log(now);
+        console.log(time);
+
+        if (now > time) {
+            localStorage.removeItem(key);
+            return;
+        }
+    }
+
     if (!v) {
         return;
     }
@@ -443,4 +467,35 @@ export function removeLocalStorage(key) {
 export function removeStorage(key) {
     sessionStorage.removeItem(key);
     return;
+}
+
+/*
+* 根据boardId返回boardName
+*/
+export async function getBoardName(boardId: number) {
+    let boardName: string;
+
+    boardName = getLocalStorage(`boardId_${boardId}`);
+
+    if (!boardName) {
+        const url = `http://apitest.niconi.cc/board/${boardId}`;
+        let res = await fetch(url);
+        let data = await res.json();
+
+        boardName = data.name;
+    }
+
+    setLocalStorage(`boardId_${boardId}`, boardName);
+
+    return boardName;
+}
+
+/*
+* 返回用户是否登陆
+*/
+
+export function isLogOn(): boolean {
+    const token = getLocalStorage("accessToken");
+
+    return !!token;
 }

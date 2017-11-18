@@ -104,12 +104,13 @@ export class LogOnExact extends React.Component<null, LogOnState> {
         }
 
         let data = await response.json();
+        console.log(data);
         const token = "Bearer " + encodeURIComponent(data.access_token);
         console.log("after logon token=" + token);
 
         //缓存数据
-        Utility.setLocalStorage("accessToken", token);
-        Utility.setLocalStorage("userName", this.state.loginName);
+        Utility.setLocalStorage("accessToken", token, data.expires_in);
+        Utility.setLocalStorage("userName", this.state.loginName, data.expires_in);
 
         //缓存用户其他数据
         let response1 = await fetch(`http://apitest.niconi.cc/user/name/${this.state.loginName}`, {
@@ -118,7 +119,7 @@ export class LogOnExact extends React.Component<null, LogOnState> {
             }
         });
         let userInfo = await response1.json();
-        Utility.setLocalStorage("userInfo", userInfo)
+        Utility.setLocalStorage("userInfo", userInfo, data.expires_in)
 
         this.setState({
             loginMessage: '登录成功 正在返回首页',
@@ -128,7 +129,7 @@ export class LogOnExact extends React.Component<null, LogOnState> {
         //跳转至首页
         setTimeout(() => {
         location.pathname = "/";
-        }, 2000); 
+        }, 1000); 
 
     } catch(e) {    //捕捉到例外，开始执行catch语句，否则跳过
         //alert(e.error);     这行好像没什么用……暂时还不会处理不同的error……
