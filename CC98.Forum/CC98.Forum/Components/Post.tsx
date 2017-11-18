@@ -10,8 +10,9 @@ import {
 
 import { match } from "react-router";
 import { UbbContainer } from './UbbContainer';
-import { SendTopic } from './SendTopic';
 import * as moment from 'moment';
+declare let testEditor: any;
+declare let editormd: any;
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
 
     constructor(props?, context?) {
@@ -22,13 +23,16 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
     }
 }
 
-export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName }, { topicid, page, userName }> {
+export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName}, { topicid, page, userName }> {
     constructor(props, context) {
         super(props, context);
+      
         this.handleChange = this.handleChange.bind(this);
-        this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null };
+        this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null  };
     }
+
     async handleChange() {
+
         let page: number;
         if (!this.match.params.page) {
             page = 1;
@@ -48,7 +52,9 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         const totalPage = await this.getTotalPage(this.match.params.topicid);
         this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName });
     }
+  
     async componentDidMount() {
+  
         let page: number;
         if (!this.match.params.page) {
             page = 1;
@@ -74,6 +80,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
 
     }
     render() {
+   
         let topic = null;
         let hotReply = null;
         if (this.state.page == 1) {
@@ -86,8 +93,8 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
                 <TopicPager page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} /></div>
             {topic}
             {hotReply}
-         
-            
+
+
             <Route path="/topic/:topicid/:page?" component={Reply} />
             <TopicPagerDown page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
             <SendTopic onChange={this.handleChange} topicid={this.state.topicid} />
@@ -144,13 +151,15 @@ export class Reply extends RouteComponent<{}, { contents }, { page, topicid, use
 
     }
     private generateContents(item: State.ContentState) {
+       
         return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
-            <Replier key={item.id} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} />
-            <ReplyContent key={item.content} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postid} />
+            <Replier key={item.postid} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} />
+            <ReplyContent key={item.content} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postid} contentType={item.contentType}/>
         </div>
         </div>;
     }
     render() {
+        
         return <div className="center" style={{ width: "100%" }}>
             {this.state.contents.map(this.generateContents)}
         </div>
@@ -171,27 +180,28 @@ export class HotReply extends RouteComponent<{}, { contents }, { page, topicid }
         if (page == 1) {
             const realContents = await Utility.getHotReplyContent(newProps.match.params.topicid);
             this.setState({ contents: realContents });
-        } 
+        }
 
 
     }
     private generateContents(item: State.ContentState) {
         return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
-            <HotReplier key={item.id} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} />
-            <ReplyContent key={item.content} content={item.content} signature={item.signature}  topicid={item.topicId} postid={item.id} />
+            <HotReplier key={item.id} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isAnonymous={item.isAnonymous} />
+            <ReplyContent key={item.content} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.id} contentType={item.contentType} />
         </div>
         </div>;
     }
+    
     render() {
 
-            return <div className="center" style={{ width: "100%" }}>
-                {this.state.contents.map(this.generateContents)}
-            </div>
-                ;
- 
+        return <div className="center" style={{ width: "100%" }}>
+            {this.state.contents.map(this.generateContents)}
+        </div>
+            ;
+
     }
 }
-export class HotReplier extends RouteComponent<{floor, userId, topicid, userName, replyTime,  userImgUrl, sendTopicNumber, privilege }, {}, { topicid }>{
+export class HotReplier extends RouteComponent<{ floor, userId, topicid, userName, replyTime, userImgUrl, sendTopicNumber, privilege, isAnonymous }, {}, { topicid }>{
     constructor(props, content) {
         super(props, content);
         this.state = {
@@ -220,7 +230,7 @@ export class HotReplier extends RouteComponent<{floor, userId, topicid, userName
         }
         let userDetails;
         if (this.props.userName != '匿名') {
-            userDetails = <UserDetails userName={this.props.userName} />;
+            userDetails = <UserDetails userName={this.props.userName} isAnonymous={this.props.isAnonymous} />;
         } else {
             userDetails = null;
         }
@@ -246,7 +256,7 @@ export class HotReplier extends RouteComponent<{floor, userId, topicid, userName
                 </div>
                 <div className="column" id="rpymes" >
                     <div className="row" id="replierMes">
-                        <div style={{ color: "red" ,marginLeft:"1rem"}}><span>最热回复</span><span>(第</span><span>{this.props.floor}</span><span>楼)</span></div>
+                        <div style={{ color: "red", marginLeft: "1rem" }}><span>最热回复</span><span>(第</span><span>{this.props.floor}</span><span>楼)</span></div>
                         <div className="rpyClr" style={{ marginLeft: "0.625rem" }}>{userName}</div>
                         <div id="topicsNumber" style={{ marginLeft: "0.625rem", display: "flex", flexWrap: "nowrap", wordBreak: "keepAll", marginRight: "0.75rem" }}>{topicNumber}&nbsp;<span style={{ color: "red" }}>{this.props.sendTopicNumber}</span> </div>
                     </div>
@@ -265,7 +275,7 @@ export class HotReplier extends RouteComponent<{floor, userId, topicid, userName
             </div></div>;
     }
 }
-export class Replier extends RouteComponent<{ userId, topicid, userName, replyTime, floor, userImgUrl, sendTopicNumber, privilege }, {}, { topicid }>{
+export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, userName, replyTime, floor, userImgUrl, sendTopicNumber, privilege }, {}, { topicid }>{
     constructor(props, content) {
         super(props, content);
         this.state = {
@@ -276,6 +286,10 @@ export class Replier extends RouteComponent<{ userId, topicid, userName, replyTi
     render() {
         let url = `/user/${this.props.userId}`;
         let realUrl = encodeURIComponent(url);
+        let urlHtml = <a href={realUrl}><img src={this.props.userImgUrl}></img></a>;
+        if (this.props.isAnonymous == true) {
+            urlHtml = <img src={this.props.userImgUrl}></img>;
+        }
         let curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userId}`;
         $(document).ready(function () {
             $(".authorImg").mouseenter(function (event: JQuery.Event) {
@@ -294,7 +308,7 @@ export class Replier extends RouteComponent<{ userId, topicid, userName, replyTi
         }
         let userDetails;
         if (this.props.userName != '匿名') {
-            userDetails = <UserDetails userName={this.props.userName} />;
+            userDetails = <UserDetails userName={this.props.userName} isAnonymous={this.props.isAnonymous} />;
         } else {
             userDetails = null;
         }
@@ -312,7 +326,7 @@ export class Replier extends RouteComponent<{ userId, topicid, userName, replyTi
             <div className="row" style={{ width: "100%", display: "flex", marginBottom: "0.625rem" }}>
 
                 <div className="row mouse-userDetails" style={{ height: "15.625rem" }} >
-                    <div className="authorImg" ><a href={realUrl}><img src={this.props.userImgUrl}></img></a></div>
+                    <div className="authorImg" >{urlHtml}</div>
                     <div className="userDetails" style={{ display: "none", position: "absolute", zindedx: "1" }}>
                         {userDetails}
                     </div>
@@ -339,7 +353,7 @@ export class Replier extends RouteComponent<{ userId, topicid, userName, replyTi
             </div></div>;
     }
 }
-export class UserDetails extends RouteComponent<{ userName }, { portraitUrl, userName }, {}>{
+export class UserDetails extends RouteComponent<{ isAnonymous, userName }, { portraitUrl, userName }, {}>{
     constructor(props) {
         super(props);
         this.state = ({ portraitUrl: null, userName: null });
@@ -355,12 +369,16 @@ export class UserDetails extends RouteComponent<{ userName }, { portraitUrl, use
     render() {
         let url = `/user/name/${this.props.userName}`;
         let userUrl = encodeURI(url);
+        let urlHtml = <a href={userUrl}> <img src={this.state.portraitUrl}></img></a>;
+        if (this.props.isAnonymous == true) {
+            urlHtml = <img src={this.state.portraitUrl}></img>;
+        }
         if (this.props.userName != '匿名') {
             return <div className='popup'>
                 <div className='popup_title'>
                     <div className="row">
                         <div className="row authorImg" style={{ marginLeft: "10px", marginTop: "10px" }}>
-                            <a href={userUrl}> <img src={this.state.portraitUrl}></img></a>
+                            {urlHtml}
                         </div>
                         <div className="column" style={{ marginLeft: "25px", marginTop: "30px" }}>
                             <div className="row">
@@ -382,27 +400,28 @@ export class UserDetails extends RouteComponent<{ userName }, { portraitUrl, use
         }
     }
 }
-export class PostTopic extends RouteComponent<{ imgUrl, page, topicid }, { topicMessage,likeState }, {}> {
+export class PostTopic extends RouteComponent<{ imgUrl, page, topicid }, { topicMessage, likeState }, {}> {
     constructor(props, content) {
         super(props, content);
         this.state = {
-            topicMessage: { title: "加载中...", time: "", content: "", signature: "" ,postid:0}
-            , likeState:0
+            topicMessage: { title: "加载中...", time: "", content: "", signature: "", postid: 0 }
+            , likeState: 0
         }
     }
     async componentDidMount() {
         let topicMessage = await Utility.getTopic(this.props.topicid);
-        this.setState({ topicMessage: topicMessage});
+        this.setState({ topicMessage: topicMessage });
     }
     render() {
         return <div className="root">
             <div className="essay">
-                <AuthorMessage authorId={this.state.topicMessage.userId} authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} />
-                <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount}  />
+                <AuthorMessage authorId={this.state.topicMessage.userId} authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} isAnonymous={this.state.topicMessage.isAnonymous} />
+                <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount} />
                 <div id="ads"><img width="100%" src={this.props.imgUrl}></img></div>
             </div>
 
-            <TopicContent postid={this.state.topicMessage.postid} content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} topicid={this.props.topicid} userId={this.state.topicMessage.userId} />
+            <TopicContent postid={this.state.topicMessage.postid} content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} topicid={this.props.topicid} userId={this.state.topicMessage.userId}
+                contentType={this.state.topicMessage.contentType} />
             <TopicGood />
             <TopicVote />
         </div>;
@@ -410,7 +429,7 @@ export class PostTopic extends RouteComponent<{ imgUrl, page, topicid }, { topic
 }
 
 
-export class AuthorMessage extends RouteComponent<{ authorName: string, authorId: number, authorImgUrl: string }, State.AuthorMessageState, {}> {
+export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, authorName: string, authorId: number, authorImgUrl: string }, State.AuthorMessageState, {}> {
     constructor(props, content) {
         super(props, content);
         this.state = {
@@ -420,10 +439,15 @@ export class AuthorMessage extends RouteComponent<{ authorName: string, authorId
         };
     }
     render() {
+
         const url = `/user/${this.props.authorId}`;
+        let urlHtml = <a href={url}><img src={this.props.authorImgUrl}></img></a>;
+        if (this.props.isAnonymous == true) {
+            urlHtml = <img src={this.props.authorImgUrl}></img>;
+        }
         return <div className="row" id="authormes">
 
-            <div className="authorImg" ><a href={url}><img src={this.props.authorImgUrl}></img></a></div>
+            <div className="authorImg" >{urlHtml}</div>
             <div className="column" style={{ marginRight: "1rem" }}>
                 <div className="row authorFans" style={{ justifyContent: "space-between" }}>
                     <div id="authorName"><p><a href={url}>{this.props.authorName}</a></p></div>
@@ -492,23 +516,24 @@ export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.
         </div>;
     }
 }
-export class TopicContent extends RouteComponent<{ postid,topicid: number, content: string, signature: string, userId: number, }, {likeState:number, likeNumber: number, dislikeNumber: number }, {}> {
+export class TopicContent extends RouteComponent<{ postid: number, topicid: number, content: string, signature: string, userId: number, contentType: number }, { likeState: number, likeNumber: number, dislikeNumber: number }, {}> {
     constructor(props, content) {
         super(props, content);
         this.state = {
             likeNumber: 666,
             dislikeNumber: 233,
-            likeState:0
+            likeState: 0
         }
     }
     async componentDidMount() {
         const token = Utility.getLocalStorage("accessToken");
         const topic = await Utility.getTopic(this.props.topicid);
         const postid = topic.postid;
-       const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${postid}`, {headers:{"Authorization":token}});
+        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${postid}`, { headers: { "Authorization": token } });
         const data = await response.json();
         if (data.likeState === 1) {
             $("#commentliked").css("color", "red");
+            console.log("turnred");
         }
         else if (data.likeState === 2) {
             $("#commentdisliked").css("color", "red");
@@ -530,14 +555,14 @@ export class TopicContent extends RouteComponent<{ postid,topicid: number, conte
             $("#commentdisliked").css("color", "black");
         }
         //单纯赞
-        else{
+        else {
             await Utility.like(this.props.topicid, this.props.postid);
             $("#commentliked").css("color", "red");
         }
-         const token = Utility.getLocalStorage("accessToken");
-        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${this.props.postid}`, {headers:{"Authorization":token}});
+        const token = Utility.getLocalStorage("accessToken");
+        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${this.props.postid}`, { headers: { "Authorization": token } });
         const data = await response.json();
-     
+
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
     async dislike() {
@@ -558,21 +583,46 @@ export class TopicContent extends RouteComponent<{ postid,topicid: number, conte
             await Utility.dislike(this.props.topicid, this.props.postid);
             $("#commentdisliked").css("color", "red");
         }
-         const token = Utility.getLocalStorage("accessToken");
-        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${this.props.postid}`, {headers:{"Authorization":token}});
+        const token = Utility.getLocalStorage("accessToken");
+        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${this.props.postid}`, { headers: { "Authorization": token } });
         const data = await response.json();
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
     //<div className="signature">{this.state.Signature}</div>
     render() {
+        const divid = `doc-content${this.props.postid}`;
         let curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userId}`;
+        console.log("aa");
+        console.log(this.props.content);
+        const ubbMode = <UbbContainer code={this.props.content} />;
+        const mdMode = <div id={divid}>
+            <textarea name="editormd-markdown-doc" style={{ display: 'none' }}>{this.props.content}</textarea>
+            
+        </div>;
+        editormd.markdownToHTML(divid, {
+            htmlDecode: "style,script,iframe",
+            emoji: true,
+            taskList: true,
+            tex: true,
+            flowChart: true,
+            sequenceDiagram: true,
+            codeFold: true,
+        });
+        let content = ubbMode;
+        //ubb
+
+        if (this.props.contentType === 1) {
+       
+            content = mdMode;
+        
+        }
         if (this.props.signature == "") {
             return <div className="content">
-                <div className="substance"><UbbContainer code={this.props.content} /> </div>
+                <div className="substance">{content}</div>
                 <div className="comment1">
                     <div id="commentlike" className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg" ></i></button>   收藏文章 </div>
-                    <div id="commentliked" className="upup" style={{ marginRight: "0.7rem"}} ><i onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
-                    <div id="commentdisliked" className="downdown" ><i onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
+                    <div id="commentliked" className="upup" style={{ marginRight: "0.7rem" }} ><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
+                    <div id="commentdisliked" className="downdown" ><i title="踩" onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
                     <div id="commentlike" className="buttonFont row"> <div className="commentbutton">   评分</div><div className="commentbutton">   编辑</div></div>
 
                     <div className="operation1">引用</div>
@@ -582,12 +632,12 @@ export class TopicContent extends RouteComponent<{ postid,topicid: number, conte
             </div>;
         } else {
             return <div className="content">
-                <div className="substance"><UbbContainer code={this.props.content} /> </div>
+                <div className="substance">{content} </div>
                 <div className="signature"><UbbContainer code={this.props.signature} /></div>
                 <div className="comment">
                     <div id="commentlike" style={{ marginRight: "0.7rem" }} className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg"></i></button>   收藏文章 </div>
-                    <div id="commentliked" className="upup"style={{ marginRight: "0.7rem"}}><i onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
-                    <div id="commentdisliked" className="downdown"><i onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
+                    <div id="commentliked" className="upup" style={{ marginRight: "0.7rem" }}><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
+                    <div id="commentdisliked" className="downdown"><i title="踩" onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
                     <div id="commentlike" className="buttonFont row"> <div className="commentbutton">   评分</div><div className="commentbutton">   编辑</div></div>
 
                     <div className="operation1">引用</div>
@@ -598,20 +648,21 @@ export class TopicContent extends RouteComponent<{ postid,topicid: number, conte
         }
     }
 }
-export class ReplyContent extends RouteComponent<{ content, signature ,topicid,postid}, { likeNumber, dislikeNumber,likeState }, {}> {
+export class ReplyContent extends RouteComponent<{ content, signature, topicid, postid, contentType }, { likeNumber, dislikeNumber, likeState }, {}> {
     constructor(props, content) {
         super(props, content);
         this.state = {
             likeNumber: 1,
             dislikeNumber: 1,
-            likeState:0
+            likeState: 0
         }
     }
     async componentDidMount() {
+   
         const idLike = `#like${this.props.postid}`;
         const idDislike = `#dislike${this.props.postid}`;
-       const token = Utility.getLocalStorage("accessToken");
-        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${this.props.postid}`, {headers:{"Authorization":token}});
+        const token = Utility.getLocalStorage("accessToken");
+        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${this.props.postid}`, { headers: { "Authorization": token } });
         const data = await response.json();
         if (data.likeState === 1) {
             $(idLike).css("color", "red");
@@ -641,16 +692,16 @@ export class ReplyContent extends RouteComponent<{ content, signature ,topicid,p
             await Utility.like(this.props.topicid, this.props.postid);
             $(idLike).css("color", "red");
         }
-         const token = Utility.getLocalStorage("accessToken");
-        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${this.props.postid}`, {headers:{"Authorization":token}});
+        const token = Utility.getLocalStorage("accessToken");
+        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${this.props.postid}`, { headers: { "Authorization": token } });
         const data = await response.json();
-        console.log(this.state.likeState);
+
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
     async dislike() {
         const idLike = `#like${this.props.postid}`;
         const idDislike = `#dislike${this.props.postid}`;
-        console.log(this.state.likeState);
+
         //取消踩
         if (this.state.likeState === 2) {
             await Utility.dislike(this.props.topicid, this.props.postid);
@@ -669,22 +720,46 @@ export class ReplyContent extends RouteComponent<{ content, signature ,topicid,p
             $(idDislike).css("color", "red");
         }
         const token = Utility.getLocalStorage("accessToken");
-        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${this.props.postid}`, {headers:{"Authorization":token}});
+        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${this.props.postid}`, { headers: { "Authorization": token } });
         const data = await response.json();
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
     render() {
         const idLike = `like${this.props.postid}`;
         const idDislike = `dislike${this.props.postid}`;
+        const divid = `doc-content${this.props.postid}`;
+        const ubbMode = <UbbContainer code={this.props.content} />;
+        const mdMode = <div id={divid}>
+            <textarea name="editormd-markdown-doc" style={{ display: 'none' }}>{this.props.content}</textarea>
+        </div>;
+    
+            editormd.markdownToHTML(divid, {
+                htmlDecode: "style,script,iframe",
+                emoji: true,
+                taskList: true,
+                tex: true,
+                flowChart: true,
+                sequenceDiagram: true,
+                codeFold: true,
+            });
+       
+        let content;
+        //ubb      
+        content = ubbMode;
+        //md
+        if (this.props.contentType === 1) {
+            content = mdMode;
+
+        }
         if (this.props.signature == "") {
             return <div className="root" style={{ marginTop: "-170px" }}>
                 <div className="reply-content">
-                    <div className="substance"><UbbContainer code={this.props.content} /></div>
+                    <div className="substance">{content}</div>
 
                     <div className="comment1">
 
-                        <div id={idLike} className="upup" style={{ marginRight: "0.7rem", pointer: "cursor", title: "赞"}}><i onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
-                        <div id={idDislike} className="downdown"  ><i onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
+                        <div id={idLike} className="upup" style={{ marginRight: "0.7rem" }}><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
+                        <div id={idDislike} className="downdown"  ><i title="踩" onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
                         <div id="commentlike"> <div className="commentbutton">   评分</div></div>
                     </div>
                 </div></div>;
@@ -692,11 +767,11 @@ export class ReplyContent extends RouteComponent<{ content, signature ,topicid,p
         else {
             return <div className="root" style={{ marginTop: "-170px" }}>
                 <div className="reply-content">
-                    <div className="substance"><UbbContainer code={this.props.content} /></div>
+                    <div className="substance">{content}</div>
                     <div className="comment">
 
-                        <div id={idLike} className="upup" style={{ marginRight: "0.7rem", }}><i onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
-                        <div id={idDislike} className="downdown" ><i onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
+                        <div id={idLike} className="upup" style={{ marginRight: "0.7rem", }}><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
+                        <div id={idDislike} className="downdown" ><i title="踩" onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
                         <div id="commentlike"> <div className="commentbutton">   评分</div></div>
                     </div>
                     <div className="signature"><UbbContainer code={this.props.signature} /></div>
@@ -857,5 +932,95 @@ export class PageModel extends React.Component<{ pageNumber, topicid, curPage, t
 export class UserMessageBox extends React.Component<{ userName, userFans }, {}>{
     render() {
         return <div id="userMessageBox">{this.props.userName}</div>;
+    }
+}
+export class SendTopic extends RouteComponent<{ topicid, onChange }, { content: string }, {}>{
+    constructor(props) {
+        super(props);
+        var testEditor = editormd("test-editormd", {
+            width: "100%",
+            height: 640,
+            path: "/scripts/lib/editor.md/lib/",
+            saveHTMLToTextarea: false
+        });
+        this.state = ({ content: '' });
+    }
+
+    async sendMdTopic() {     
+        let url = `http://apitest.niconi.cc/post/topic/${this.props.topicid}`;
+        let c = testEditor.getMarkdown();
+        let content = {
+            content: c,
+            contentType: 1,
+            title: ""
+        }
+        let contentJson = JSON.stringify(content);
+        let token = Utility.getLocalStorage("accessToken");
+        let myHeaders = new Headers();
+        myHeaders.append("Authorization", token);
+        myHeaders.append("Content-Type", 'application/json');
+        let mes = await fetch(url, {
+            method: 'POST',
+            headers: myHeaders,
+            body: contentJson
+        }
+        )
+        testEditor.setMarkdown("");
+        this.props.onChange();
+        this.setState({ content: "" });
+
+    }
+    getInitialState() {
+        return { value: '' };
+    }
+    handleChange(event) {
+     
+        this.setState({ content: event.target.value });
+    }
+    render() {
+        var testEditor = editormd("test-editormd", {
+            width: "100%",
+            height: 640,
+            path: "/scripts/lib/editor.md/lib/",
+            saveHTMLToTextarea: false
+        });
+        /*  <div id="sendTopic-options">
+                        <ul className="editor__menu clearfix" id="wmd-button-row" >
+                            <li title="加粗 <strong> Ctrl+B" className="wmd-button" id="wmd-bold-button" ><a className="editor__menu--bold" style={{ backgroundPosition: "0px 0px" }}></a></li>
+                            <li title="斜体 <em> Ctrl+I" className="wmd-button" id="wmd-italic-button" style={{ left: " 25px" }}><a className="editor__menu--bold" style={{ backgroundPosition: " -20px 0px" }}></a></li>
+                            <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer1"></li>
+        
+                            <li title="链接 <a> Ctrl+L" className="wmd-button" id="wmd-link-button" style={{ left: "75px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-40px 0px" }}></a></li>
+                            <li title="引用 <blockquote> Ctrl+Q" className="wmd-button" id="wmd-quote-button" style={{ left: " 100px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-60px 0px" }}></a></li>
+                            <li title="代码 <pre><code> Ctrl+K" className="wmd-button" id="wmd-code-button" style={{ left: " 125px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-80px 0px" }}></a></li>
+                            <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer2"></li>
+                            <li title="图片 <img> Ctrl+G" className="wmd-button" id="wmd-image-button" style={{ left: "150px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-100px 0px" }}></a></li>
+                            <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer2"></li>
+                            <li title="数字列表 <ol> Ctrl+O" className="wmd-button" id="wmd-olist-button" style={{ left: " 200px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-120px 0px" }}></a></li>
+                            <li title="普通列表 <ul> Ctrl+U" className="wmd-button" id="wmd-ulist-button" style={{ left: "225px" }}><a className="editor__menu--bold" style={{ backgroundPosition: " -140px 0px" }}></a></li>
+                            <li title="标题 <h1>/<h2> Ctrl+H" className="wmd-button" id="wmd-heading-button" style={{ left: "250px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-160px 0px" }}></a></li>
+                            <li title="分割线 <hr> Ctrl+R" className="wmd-button" id="wmd-hr-button" style={{ left: "275px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-180px 0px" }}></a></li>
+                            <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer3"></li>
+                            <li title="撤销 - Ctrl+Z" className="wmd-button" id="wmd-undo-button" style={{ left: "325px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-200px 0px" }}></a></li>
+                            <li title="重做 - Ctrl+Y" className="wmd-button" id="wmd-redo-button" style={{ left: "350px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-220px -20px" }}></a></li>
+                            <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer4"></li>
+                            <li title="Markdown 语法" className="wmd-button" id="wmd-help-button" style={{ left: " 400px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-300px 0px" }}></a></li>
+                        </ul>
+                    </div>  <form>
+                        <div >
+                            <textarea id="sendTopic-input" name="sendTopic-input" value={this.state.content} onChange={this.handleChange.bind(this)} />
+                        </div>
+                    </form><textarea name="content" value={this.state.content} onChange={this.handleChange.bind(this)} style={{display:"none"}}></textarea>  */
+        return <div style={{ width: "100%", display: "flex", flexDirection: "column" }}><div id="sendTopic">
+            <form>
+                <div id="test-editormd" className="editormd">
+                 <textarea className="editormd-markdown-textarea" name="test-editormd-markdown-doc" value={this.state.content}  ></textarea>
+                </div>   
+                </form>
+            <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
+                <div id="post-topic-button" onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复</div>
+            </div>
+  </div>
+        </div>;
     }
 }

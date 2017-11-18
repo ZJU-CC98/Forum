@@ -16,15 +16,11 @@ export async function getBoardTopicAsync(curPage, boardid) {
     const token = getLocalStorage("accessToken");
     const startPage = (curPage - 1) * 20;
     const endPage = curPage * 20 - 1;
-    const boardtopics: State.TopicTitleAndContentState[] = [];
-    const url = `http://apitest.niconi.cc/Topic/Board/${boardid}?from=${startPage}&size=20`;
-    const response = await fetch(url,
-        { headers: { 'Authorization': token } });
-    const data: State.TopicTitleAndContentState[] = await response.json();
+    
     const totalTopicCountResponse = await fetch(`http://apitest.niconi.cc/Board/${boardid}`);
     const totalTopicCountJson = await totalTopicCountResponse.json();
 
-    const totalTopicCount = totalTopicCountJson.postCount;
+    const totalTopicCount = totalTopicCountJson.topicCount;
     let topicNumberInPage;
     if (curPage * 20 <= totalTopicCount) {
         topicNumberInPage = 20;
@@ -33,6 +29,12 @@ export async function getBoardTopicAsync(curPage, boardid) {
     } else {
         topicNumberInPage = (totalTopicCount - (curPage - 1) * 20);
     }
+
+const boardtopics: State.TopicTitleAndContentState[] = [];
+    const url = `http://apitest.niconi.cc/Topic/Board/${boardid}?from=${startPage}&size=${topicNumberInPage}`;
+    const response = await fetch(url,
+        { headers: { 'Authorization': token } });
+    const data: State.TopicTitleAndContentState[] = await response.json();
     for (let i = 0; i < topicNumberInPage; i++) {
         boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName || '匿名', data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime);
     }
@@ -51,12 +53,12 @@ export async function getTopic(topicid: number) {
     const hitCountJson = await hitCountResponse.json();
     const hitCount = hitCountJson.hitCount;
     let topicMessage = null;
-    if (data[0].userId != null) {
+    if (data[0].isAnonymous != true) {
         const userMesResponse = await fetch(`http://apitest.niconi.cc/User/${data[0].userId}`);
         const userMesJson = await userMesResponse.json();
-        topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount,data[0].id);
+        topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous,data[0].contentType);
     } else {
-        topicMessage = new State.TopicState('匿名', data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id);
+        topicMessage = new State.TopicState('匿名', data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous,data[0].contentType);
     }
 
 
@@ -90,11 +92,11 @@ export async function getTopicContent(topicid: number, curPage: number) {
 
             const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
             const userMesJson = await userMesResponse.json();
-            post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount,content[i].id);
+            post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount,content[i].id,content[i].contentType);
         } else {
             let purl = 'https://www.cc98.org/pic/anonymous.gif';
-            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id);
-        console.log(content[i]);
+            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id,content[i].contentType);
+       
         }
     }
     return post;
@@ -128,10 +130,10 @@ export async function getHotReplyContent(topicid: number) {
         if (content[i].userName != null) {
             const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
             const userMesJson = await userMesResponse.json();
-            post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount, content[i].id);
+            post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount, content[i].id,content[i].contentType);
         } else {
             let purl = 'https://www.cc98.org/pic/anonymous.gif';
-            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id);
+            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id,content[i].contentType);
         }
     }
     return post;
@@ -240,11 +242,11 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
             const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
             const userMesJson = await userMesResponse.json();
 
-            post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount, content[i].id);
+            post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
 
         } else {
             let purl = 'https://www.cc98.org/pic/anonymous.gif';
-            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id);
+            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id,content[i].contentType);
         }
     }
 
@@ -369,7 +371,7 @@ export async function getFocusTopic(curPage: number) {
             //获取所在版面名称
             newTopic[i].boardName = getLocalStorage(`boardId_${newTopic[i].boardId}`);
             if (!newTopic[i].boardName) {
-                console.log(`缓存${newTopic[i].boardId}`);
+               
                 let boardName0 = await fetch(`http://apitest.niconi.cc/board/${newTopic[i].boardId}`);
                 let boardName1 = await boardName0.json();
                 newTopic[i].boardName = boardName1.name;
