@@ -24,7 +24,7 @@ export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState
         // bugtest 550524
         // 董松松松 569380
 
-        const token = window.localStorage.accessToken.slice(4);
+        const token = Utility.getLocalStorage("accessToken");
         const page = this.match.params.page || 1;
         let url = `http://apitest.niconi.cc/user/follow/fan?from=${(page-1)*10}&size=10`;
 

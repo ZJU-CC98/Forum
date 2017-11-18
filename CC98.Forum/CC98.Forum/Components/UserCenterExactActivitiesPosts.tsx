@@ -19,40 +19,38 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
         this.scrollHandler = this.scrollHandler.bind(this);
     }
 
-    scrollHandler(e) {
+    async scrollHandler(e) {
         let pageYLeft = document.body.scrollHeight - window.pageYOffset;
         
         if (pageYLeft < 1500 && this.state.isLoading === false) {
-            this.setState(async (prevState) => {
-                this.setState({isLoading: true});
+            this.setState({isLoading: true});
 
-                const url = `http://apitest.niconi.cc/me/recenttopics?from=${this.state.userRecentPosts.length}&size=10`
-                const token = window.localStorage.accessToken.slice(4);
+            const url = `http://apitest.niconi.cc/me/recenttopics?from=${this.state.userRecentPosts.length}&size=10`
+            const token = Utility.getLocalStorage("accessToken");
 
-                let res = await fetch(url, {
-                    headers: {
-                        'Authorization': token
-                    }
-                });
-
-                let data: itemType[] = await res.json();
-
-                if (data.length < 10) {
-                    window.removeEventListener('scroll', this.scrollHandler);
+            let res = await fetch(url, {
+                headers: {
+                    'Authorization': token
                 }
+            });
 
-                let posts = prevState.userRecentPosts;
-                let i = data.length;
+            let data: itemType[] = await res.json();
 
-                while (i--) {
-                    let post = await this.item2post(data[i]);
-                    posts.push(post);
-                }
+            if (data.length < 10) {
+                window.removeEventListener('scroll', this.scrollHandler);
+            }
 
-                this.setState( {
-                    userRecentPosts: posts,
-                    isLoading: false
-                });
+            let posts = this.state.userRecentPosts;
+            let i = data.length;
+
+            while (i--) {
+                let post = await this.item2post(data[i]);
+                posts.push(post);
+            }
+
+            this.setState( {
+                userRecentPosts: posts,
+                isLoading: false
             });
         }
     }
@@ -67,7 +65,7 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
         });
         let data = await res.json();
 
-        console.log(data);
+        //console.log(data);
 
         let posts: UserRecentPost[] = [],
             i = data.length;
@@ -133,7 +131,6 @@ interface UserCenterExactActivitiesPostsState {
     isLoading: boolean;
 }
 
-//临时填充数据
 interface itemType {
     boardId: number;
     dislikeCount: number;

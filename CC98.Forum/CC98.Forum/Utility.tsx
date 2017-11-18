@@ -416,7 +416,7 @@ export function getStorage(key) {
         return v.slice(4);
     }
 }
-export function setLocalStorage(key, value) {
+export function setLocalStorage(key, value, expireIn = 0) {
     let v = value;
     if (typeof v == 'object') {
         v = JSON.stringify(v);
@@ -425,9 +425,28 @@ export function setLocalStorage(key, value) {
         v = `str-${v}`;
     }
     localStorage.setItem(key, v);
+    if (expireIn) {
+        const now = new Date().getTime();
+        let expirationTime = now + expireIn * 1000;
+        localStorage.setItem(`${key}_expirationTime`, expirationTime.toString().slice(0, expirationTime.toString().length - 3));
+    }
 }
 export function getLocalStorage(key) {
     let v = localStorage.getItem(key);
+    let expirationTime = localStorage.getItem(`${key}_expirationTime`);
+    if (expirationTime) {
+        const now = new Date().getTime();
+        const time = Number.parseInt(expirationTime)*1000;
+
+        console.log(now);
+        console.log(time);
+
+        if (now > time) {
+            localStorage.removeItem(key);
+            return;
+        }
+    }
+
     if (!v) {
         return;
     }

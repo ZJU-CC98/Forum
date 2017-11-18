@@ -290,12 +290,8 @@
         .user-posts {
             margin-top: 1rem;
 
-            & > div {
-                margin: 2rem 0;
-
-                & > div {
-                    margin: 1rem 0;
-                }
+            div {
+                margin: 1rem 0;
             }
 
             hr {
