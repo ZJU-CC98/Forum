@@ -64,7 +64,8 @@ export class ContentState {
         privilege: string,
         likeNumber: number,
         dislikeNumber: number,
-        postid:number,
+        postid: number,
+        contentType:number
     ) {
         this.userName = userName;
         this.id = id;
@@ -84,6 +85,7 @@ export class ContentState {
         this.likeNumber = likeNumber;
         this.dislikeNumber = dislikeNumber;
         this.postid = postid;
+        this.contentType = contentType;
     }
     id: number;
     content: string;
@@ -103,6 +105,7 @@ export class ContentState {
     likeNumber: number;
     dislikeNumber: number;
     postid: number;
+    contentType: number;
 }
 /**
  * 点赞信息状态
@@ -214,7 +217,9 @@ export class TopicState {
         userId: number,
         likeNumber: number,
         dislikeNumber: number,
-        postid: number
+        postid: number,
+        isAnonymous: boolean,
+        contentType:number
     ) {
         this.userName = userName;
         this.time = time;
@@ -227,6 +232,8 @@ export class TopicState {
         this.likeNumber = likeNumber;
         this.dislikeNumber = dislikeNumber;
         this.postid = postid;
+        this.isAnonymous = isAnonymous;
+        this.contentType = contentType;
     }
     userName: string;
     title: string;
@@ -239,6 +246,8 @@ export class TopicState {
     likeNumber: number;
     dislikeNumber: number;
     postid: number;
+    isAnonymous: boolean;
+    contentType: number;
 }
 
 /**

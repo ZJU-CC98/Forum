@@ -35,7 +35,7 @@ export class List extends RouteComponent<{}, {bigPaper:string, page: number, tot
         const totalTopicCountResponse = await fetch(`http://apitest.niconi.cc/Board/${boardid}`, { headers: {'Authorization':token}});
 		const totalTopicCountJson = await totalTopicCountResponse.json();
         const totalTopicCount = totalTopicCountJson.topicCount;
-        console.log("count" + totalTopicCount);
+      
 		return (totalTopicCount - totalTopicCount % 20) / 20 + 1;
 	}
 	async componentWillReceiveProps(newProps) {
@@ -313,11 +313,11 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
     async componentDidMount() {
    
         const data = await Utility.getBoardTopicAsync(1, this.match.params.boardid);
-        console.log(data);
+       
 		this.setState({ items: data });
 	}
 	private convertTopicToElement(item: TopicTitleAndContentState) {
-        return <TopicTitleAndContent key={item.title}
+        return <TopicTitleAndContent key={item.id}
             title={item.title}
             authorName={item.userName}
             id={item.id}
@@ -350,7 +350,7 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
 					<div className="listContentTag">最热</div>
 				</div>
 				<div className="row" style={{ alignItems: 'center' }}>
-					<div style={{ marginRight: '17rem' }}><span>作者</span></div>
+					<div style={{ marginRight: '18.5rem' }}><span>作者</span></div>
 					<div style={{ marginRight: '7.6875rem'}}><span>最后发表</span></div>
 				</div>
 			</div>
@@ -402,7 +402,7 @@ export class TopicTitleAndContent extends React.Component<HotTopic, { title, aut
 
                 <Link to={url}><div style={{ marginLeft: '1.25rem', }}> <span >{this.state.title}</span></div></Link>
 
-                <div className="row" style={{ width: "44%", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" }}>
+                <div className="row" style={{ width: "50%", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" }}>
 
                     <div style={{ width:"15rem", marginRight: '0.625rem', marginLeft: '1rem' }}> <span ><a >{this.state.authorName}</a></span></div>
 

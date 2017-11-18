@@ -12,16 +12,18 @@ export class QuoteTagHandler extends Ubb.RecursiveTagHandler {
 
 	get supportedTagNames(): string[] { return ['quote', 'quotex'] };
 
-	execCore(innerContent: React.ReactNode, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
+    execCore(innerContent: React.ReactNode, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
+ 
 		const style = {
 
 			padding: '13px 19px 13px 17px',
 			backgroundColor: '#F5FAFF',
 			border: '1px solid rgb(204,204,204)',
 			margin: '30px',
-			maxHeight: '800px'
-		};
+            maxHeight: '800px',
+            overflowY:'auto' as 'auto'
+            };
 
-		return <div style={style}>{innerContent}</div>;
+		return <div  style={style}>{innerContent}</div>;
 	}
 }
