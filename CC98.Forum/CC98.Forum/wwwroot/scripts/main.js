@@ -7354,7 +7354,8 @@ var QuoteTagHandler = /** @class */ (function (_super) {
             backgroundColor: '#F5FAFF',
             border: '1px solid rgb(204,204,204)',
             margin: '30px',
-            maxHeight: '800px'
+            maxHeight: '800px',
+            overflowY: 'auto'
         };
         return React.createElement("div", { style: style }, innerContent);
     };
