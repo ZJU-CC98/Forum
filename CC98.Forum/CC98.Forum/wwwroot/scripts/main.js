@@ -7003,24 +7003,68 @@ var ImageTagHandler = /** @class */ (function (_super) {
     ImageTagHandler.prototype.execCore = function (content, tagData, context) {
         var imageUri = content;
         var title = tagData.value('title');
+        var isShowedValue = parseInt(tagData.value('img'));
         // 不允许显示图像
         if (!context.options.allowImage) {
-            return content;
+            return React.createElement(Image, { imageUri: imageUri, title: title, isShowed: false });
         }
-        var imageTag = React.createElement("img", { src: imageUri, alt: title });
+        //[img=1]默认不显示图片，[img]或[img=0]默认显示图片
         // HTML5 模式下，使用 figure 表示插图
         if (context.options.compatibility === Ubb.UbbCompatiblityMode.EnforceMorden) {
-            return React.createElement("figure", null,
-                imageTag,
-                React.createElement("figcaption", null, title));
+            if (isShowedValue === 1) {
+                return React.createElement(Image, { imageUri: imageUri, title: title, isShowed: false });
+            }
+            else {
+                return React.createElement("figure", null,
+                    React.createElement(Image, { imageUri: imageUri, title: title, isShowed: true }),
+                    React.createElement("figcaption", null, title));
+            }
         }
         else {
-            return imageTag;
+            if (isShowedValue === 1) {
+                return React.createElement(Image, { imageUri: imageUri, title: title, isShowed: false });
+            }
+            else {
+                return React.createElement(Image, { imageUri: imageUri, title: title, isShowed: true });
+            }
         }
     };
     return ImageTagHandler;
 }(Ubb.TextTagHandler));
 exports.ImageTagHandler = ImageTagHandler;
+/*
+ *图片组件
+ *用于控制图片是否默认显示
+ */
+var Image = /** @class */ (function (_super) {
+    __extends(Image, _super);
+    function Image(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            isShowed: _this.props.isShowed
+        };
+        _this.toggleIsShowed = _this.toggleIsShowed.bind(_this); //别再忘了bind了！！  “bind一般放在构造过程中” ——樱桃
+        return _this;
+    }
+    Image.prototype.toggleIsShowed = function () {
+        console.log("显示图片！");
+        this.setState(function (prevState) { return ({
+            isShowed: !prevState.isShowed //setState() 可以接收一个函数，这个函数接受两个参数，第一个参数prevState表示上一个状态值，第二个参数props表示当前的props
+        }); });
+    };
+    Image.prototype.render = function () {
+        if (this.state.isShowed) {
+            return React.createElement("img", { src: this.props.imageUri, alt: this.props.title });
+        }
+        else {
+            return React.createElement("div", { onClick: this.toggleIsShowed },
+                "[\u70B9\u51FB\u67E5\u770B\u56FE\u7247]",
+                this.props.imageUri);
+        }
+    };
+    return Image;
+}(React.Component));
+exports.Image = Image;
 
 
 /***/ }),
@@ -10956,10 +11000,6 @@ var LogOnExact = /** @class */ (function (_super) {
                             loginMessage: '登录成功 正在返回首页',
                             isLogining: false
                         });
-                        //跳转至首页
-                        setTimeout(function () {
-                            location.pathname = "/";
-                        }, 2000);
                         return [2 /*return*/];
                 }
             });
