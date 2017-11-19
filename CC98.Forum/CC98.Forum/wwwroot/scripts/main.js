@@ -1599,6 +1599,7 @@ function getFocusTopic(curNum) {
                 case 9:
                     newTopic[i].fanCount = 0;
                     newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+                    newTopic[i].userName = "匿名";
                     newTopic[i].boardName = "心灵之约";
                     _d.label = 10;
                 case 10:
@@ -1733,8 +1734,8 @@ function getRecentContact(from, size) {
             switch (_d.label) {
                 case 0:
                     token = getLocalStorage("accessToken");
-                    recentContact = getLocalStorage("recentContact");
-                    if (!!recentContact) return [3 /*break*/, 8];
+                    recentContact = getStorage("recentContact");
+                    if (!!recentContact) return [3 /*break*/, 9];
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/message/recentcontactusers?from=" + from + "&size=" + size, { headers: { 'Authorization': "" + token } })];
                 case 1:
                     response = _d.sent();
@@ -1765,14 +1766,17 @@ function getRecentContact(from, size) {
                     if (!(_i < _a.length)) return [3 /*break*/, 8];
                     i = _a[_i];
                     _c = recentContact[i];
-                    return [4 /*yield*/, getRecentMessage(recentContact[i].id, 0, 20)];
+                    return [4 /*yield*/, getRecentMessage(recentContact[i].id, 0, 10)];
                 case 6:
                     _c.message = _d.sent();
                     _d.label = 7;
                 case 7:
                     _i++;
                     return [3 /*break*/, 5];
-                case 8: return [2 /*return*/, recentContact];
+                case 8:
+                    setStorage("recentContact", recentContact);
+                    _d.label = 9;
+                case 9: return [2 /*return*/, recentContact];
             }
         });
     });
@@ -9120,17 +9124,22 @@ var MessageMessage = /** @class */ (function (_super) {
             return React.createElement("div", { onClick: changeChatName, id: "" + item.name },
                 React.createElement(MessagePerson_1.MessagePerson, { data: item }));
         };
-        _this.state = {
-            data: [{
-                    id: 5298, name: '系统', portraitUrl: 'http://www.cc98.org/pic/anonymous.gif', message: [{
-                            id: 5298, senderId: 5298, receiverId: 533688, content: "默认内容", isRead: true, time: new Date(),
-                        }]
-                }],
-            chatObj: {
-                id: 5298, name: '系统', portraitUrl: 'http://www.cc98.org/pic/anonymous.gif', message: [{
-                        id: 5298, senderId: 5298, receiverId: 533688, content: "默认内容", isRead: true, time: new Date(),
+        var defaultData = [{
+                id: null,
+                name: '系统',
+                portraitUrl: 'http://www.cc98.org/pic/anonymous.gif',
+                message: [{
+                        id: 9898,
+                        senderId: 9898,
+                        receiverId: 9898,
+                        content: "默认内容",
+                        isRead: true,
+                        time: new Date(),
                     }]
-            }
+            }];
+        _this.state = {
+            data: defaultData,
+            chatObj: defaultData[0]
         };
         return _this;
         //如果没有设置默认的state，render第一次渲染的时候state为空，MessageWindow组件会报错
@@ -9146,10 +9155,12 @@ var MessageMessage = /** @class */ (function (_super) {
                         return [4 /*yield*/, Utility.getRecentContact(0, 6)];
                     case 1:
                         recentContact = _a.sent();
-                        //默认第一个人为聊天对象
-                        this.setState({ data: recentContact, chatObj: recentContact[0] });
+                        if (recentContact) {
+                            //默认第一个人为聊天对象
+                            this.setState({ data: recentContact, chatObj: recentContact[0] });
+                        }
                         //默认选中第一个联系人
-                        $("#" + recentContact[0].name).addClass('message-message-pFocus');
+                        $("#" + this.state.chatObj.name).addClass('message-message-pFocus');
                         return [2 /*return*/];
                 }
             });
@@ -9160,6 +9171,7 @@ var MessageMessage = /** @class */ (function (_super) {
         $('.message-nav > div').removeClass('message-nav-focus');
         $('#message').addClass('message-nav-focus');
         //创建联系人列表和聊天窗口
+        console.log("重新渲染");
         return (React.createElement("div", { className: "message-message" },
             React.createElement("div", { className: "message-message-people" },
                 React.createElement("div", { className: "message-message-pTitle" }, "\u8FD1\u671F\u79C1\u4FE1"),
@@ -9285,17 +9297,25 @@ var MessageWindow = /** @class */ (function (_super) {
     __extends(MessageWindow, _super);
     function MessageWindow(props) {
         var _this = _super.call(this, props) || this;
+        /**
+        *单条私信的的样式
+        */
         _this.coverMessageProps = function (item) {
             console.log("5");
             var userInfo = Utility.getLocalStorage("userInfo");
             var data = _this.props.data;
             if (item.receiverId == userInfo.id) {
+                //如果我是接收者调用这个样式，处于左边
                 return React.createElement(MessageReceiver_1.MessageReceiver, { id: item.id, senderName: data.name, receiverName: userInfo.name, senderPortraitUrl: data.portraitUrl, receiverPortraitUrl: userInfo.portraitUrl, content: item.content, isRead: item.isRead, time: item.time });
             }
             else {
+                //如果我是发送者调用这个样式，处于右边
                 return React.createElement(MessageSender_1.MessageSender, { id: item.id, senderName: userInfo.name, receiverName: data.name, senderPortraitUrl: userInfo.portraitUrl, receiverPortraitUrl: data.portraitUrl, content: item.content, isRead: item.isRead, time: item.time });
             }
         };
+        /**
+        *发送私信内容的函数
+        */
         _this.postMessage = function () {
             /*const bodyObj = { receiverName: this.props.chatName, title: '你好', content: $('#myMessageContent').val() };
             const bodyContent = JSON.stringify(bodyObj);
@@ -9317,31 +9337,58 @@ var MessageWindow = /** @class */ (function (_super) {
             alert('举报他人恶意私信请到【论坛事务】按照格式发帖投诉，记得截图保留证据，管理员会及时进行处理！感谢您对CC98的支持！');
         };
         _this.state = { data: [] };
-        _this.getMessageData = _this.getMessageData.bind(_this);
+        _this.handleScroll = _this.handleScroll.bind(_this);
         return _this;
     }
     MessageWindow.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                console.log(this.props.data);
                 this.setState({ data: this.props.data.message });
-                this.getMessageData(this.props);
+                document.getElementById('messageContent').addEventListener('scroll', this.handleScroll);
                 return [2 /*return*/];
             });
         });
     };
+    /**
+     * 父控件props刷新后调用这个展现新的联系人的私信内容
+     * @param nextProps
+     */
     MessageWindow.prototype.componentWillReceiveProps = function (nextProps) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                this.getMessageData(nextProps);
+                this.setState({ data: nextProps.data.message });
                 return [2 /*return*/];
             });
         });
     };
-    MessageWindow.prototype.getMessageData = function (item) {
+    MessageWindow.prototype.handleScroll = function () {
         return __awaiter(this, void 0, void 0, function () {
+            var scrollTop, data, newData, recentContact, i;
             return __generator(this, function (_a) {
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0:
+                        scrollTop = $('messageContent').scrollTop();
+                        console.log(screenTop);
+                        if (!(scrollTop == 0)) return [3 /*break*/, 2];
+                        console.log("到顶啦");
+                        data = this.state.data;
+                        return [4 /*yield*/, Utility.getRecentMessage(this.props.data.id, data.length, 10)];
+                    case 1:
+                        newData = _a.sent();
+                        //跟之前的拼接一下
+                        data = data.concat(newData);
+                        this.setState({ data: data });
+                        recentContact = Utility.getStorage("recentContact");
+                        for (i in recentContact) {
+                            if (recentContact[i].id == this.props.data.id) {
+                                recentContact[i].message = data;
+                                break;
+                            }
+                        }
+                        Utility.setStorage("recentContact", recentContact);
+                        _a.label = 2;
+                    case 2: return [2 /*return*/];
+                }
             });
         });
     };
@@ -9357,7 +9404,10 @@ var MessageWindow = /** @class */ (function (_super) {
                     " \u7684\u79C1\u4FE1"),
                 React.createElement("div", { className: "message-message-wReport" },
                     React.createElement("button", { onClick: this.report }, "\u4E3E\u62A5"))),
-            React.createElement("div", { className: "message-message-wContent" }, this.state.data.map(this.coverMessageProps)),
+            React.createElement("div", { className: "message-message-wContent", id: "messageContent" },
+                this.state.data.map(this.coverMessageProps),
+                React.createElement("div", { className: "message-message-wcLoading" },
+                    React.createElement("img", { src: "http://file.cc98.org/uploadfile/2017/11/19/2348481046.gif" }))),
             React.createElement("div", { className: "message-message-wPost" },
                 React.createElement("textarea", { className: "message-message-wPostArea", id: "myMessageContent" }),
                 React.createElement("button", { className: "message-message-wPostBtn", onClick: this.postMessage }, "\u56DE\u590D"))));
@@ -9467,12 +9517,10 @@ var MessageReceiver = /** @class */ (function (_super) {
         return (React.createElement("div", { className: "message-message-wc" },
             React.createElement("div", { className: "message-message-wcTime" }, moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')),
             React.createElement("div", { className: "message-message-wcReceiver" },
-                React.createElement("img", { className: "message-message-wcPortraitUrl", src: this.props.receiverPortraitUrl }),
+                React.createElement("img", { className: "message-message-wcPortraitUrl", src: this.props.senderPortraitUrl }),
                 React.createElement("div", { className: "message-message-wcContent" },
                     React.createElement("div", { className: "message-message-wcText", id: String(this.props.id) },
-                        React.createElement(UbbContainer_1.UbbContainer, { code: this.props.content }))),
-                React.createElement("div", { className: "message-message-wcRead1" },
-                    React.createElement("div", { className: "message-message-wcRead2" }, this.props.isRead ? '已读' : '未读')))));
+                        React.createElement(UbbContainer_1.UbbContainer, { code: this.props.content }))))));
     };
     return MessageReceiver;
 }(React.Component));

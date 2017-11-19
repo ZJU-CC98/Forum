@@ -14,61 +14,66 @@ export class MessageWindow extends React.Component<MessagePersonProps, MessageWi
     constructor(props) {
         super(props);
         this.state = { data: [] };
-        this.getMessageData = this.getMessageData.bind(this);
+        this.handleScroll = this.handleScroll.bind(this);
     }
 
     async componentDidMount() {
-        console.log(this.props.data);
         this.setState({ data: this.props.data.message });
-        this.getMessageData(this.props);
+        document.getElementById('messageContent').addEventListener('scroll', this.handleScroll);
     }
 
+    /**
+     * 父控件props刷新后调用这个展现新的联系人的私信内容
+     * @param nextProps
+     */
     async componentWillReceiveProps(nextProps) {
-        this.getMessageData(nextProps);
+        this.setState({ data: nextProps.data.message });
     }
 
-    async getMessageData(item: MessagePersonProps) {
-        /*if (item.chatName != '系统') {
-            const data = [];
-            let startPage = -50;
-            //循环取站短消息，一次性50条，直到全部取完
-            do {
-                startPage += 50;
-                const response = await fetch(`https://api.cc98.org/Message?userName=${item.chatName}&filter=Both`, {
-	                headers: {
-		                Range: `bytes=${startPage}-${startPage + 49}`,
-		                Authorization: `${item.token}`
-	                }
-                });
-                const nowData = await response.json();
-                for (let i in nowData) {
-                    data.push(nowData[i]);
-                }
-            } while (data.length % 50 == 0);
-            //给每个数据都加上我和正在聊天者的头像的图片地址
-            for (let i in data) {
-                data[i].chatPortraitUrl = item.chatPortraitUrl;
-                data[i].myPortraitUrl = item.myPortraitUrl;
-            }
-            //因为服务器上存储每条消息的时间只精确到分，所以同一分钟内的所有消息顺序正好是反的，所以需要重新排一下顺序，等樱桃把服务器上消息发送时间精确到秒之后就可以把这个步骤去掉了
-            //sortArr(data);
-            
+    async handleScroll() {
+        let scrollTop = $('messageContent').scrollTop(); //滚动到的当前位置
+        console.log(screenTop);
+        if (scrollTop == 0) {
+            console.log("到顶啦");
+            let data = this.state.data; 
+            //到顶了就继续获取10条私信
+            let newData = await Utility.getRecentMessage(this.props.data.id, data.length, 10);
+            //跟之前的拼接一下
+            data = data.concat(newData);
             this.setState({ data: data });
-        }*/
+            //取出联系人缓存，更新对应的联系人的数据并缓存
+            let recentContact = Utility.getStorage("recentContact");
+            for (let i in recentContact) {
+                if (recentContact[i].id == this.props.data.id) {
+                    recentContact[i].message = data;
+                    break;
+                }
+            }
+            Utility.setStorage("recentContact", recentContact);
+        }
     }
 
+
+    /**
+    *单条私信的的样式
+    */
     coverMessageProps = (item: MessageProps) => {
         console.log("5");
         let userInfo = Utility.getLocalStorage("userInfo");
         let data = this.props.data;
         if (item.receiverId == userInfo.id) {
+            //如果我是接收者调用这个样式，处于左边
             return <MessageReceiver id={item.id} senderName={data.name} receiverName={userInfo.name} senderPortraitUrl={data.portraitUrl} receiverPortraitUrl={userInfo.portraitUrl} content={item.content} isRead={item.isRead} time={item.time}/>;
         }
         else {
+            //如果我是发送者调用这个样式，处于右边
             return <MessageSender id={item.id} senderName={userInfo.name} receiverName={data.name} senderPortraitUrl={userInfo.portraitUrl} receiverPortraitUrl={data.portraitUrl} content={item.content} isRead={item.isRead} time={item.time} />;
         }
     };
 
+    /**
+    *发送私信内容的函数
+    */
 	postMessage = () => {
         /*const bodyObj = { receiverName: this.props.chatName, title: '你好', content: $('#myMessageContent').val() };
         const bodyContent = JSON.stringify(bodyObj);
@@ -100,7 +105,7 @@ export class MessageWindow extends React.Component<MessagePersonProps, MessageWi
                         <div className="message-message-wTitle">与 {data.name} 的私信</div>
                         <div className="message-message-wReport"><button onClick={this.report}>举报</button></div>
                     </div>
-                    <div className="message-message-wContent">{this.state.data.map(this.coverMessageProps)}</div>
+                    <div className="message-message-wContent" id="messageContent">{this.state.data.map(this.coverMessageProps)}<div className="message-message-wcLoading"><img src="http://file.cc98.org/uploadfile/2017/11/19/2348481046.gif"></img></div></div>
                     <div className="message-message-wPost">
                         <textarea className="message-message-wPostArea" id="myMessageContent"></textarea>
                         <button className="message-message-wPostBtn" onClick={this.postMessage}>回复</button>

@@ -15,17 +15,22 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
 
     constructor(props) {
         super(props);
+        let defaultData = [{
+            id: null,
+            name: '系统',
+            portraitUrl: 'http://www.cc98.org/pic/anonymous.gif',
+            message: [{
+                id: 9898,
+                senderId: 9898,
+                receiverId: 9898,
+                content: "默认内容",
+                isRead: true,
+                time: new Date(),
+            }]
+        }];
         this.state = {
-            data: [{
-                id: 5298, name: '系统', portraitUrl: 'http://www.cc98.org/pic/anonymous.gif', message: [{
-                    id: 5298, senderId: 5298, receiverId: 533688, content: "默认内容", isRead: true, time: new Date(),
-                }]
-            }],
-            chatObj: {
-                id: 5298, name: '系统', portraitUrl: 'http://www.cc98.org/pic/anonymous.gif', message: [{
-                    id: 5298, senderId: 5298, receiverId: 533688, content: "默认内容", isRead: true, time: new Date(),
-                }]
-            }
+            data: defaultData,
+            chatObj: defaultData[0]
         };
         //如果没有设置默认的state，render第一次渲染的时候state为空，MessageWindow组件会报错
     }
@@ -39,10 +44,12 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
         //创建一个数组存储联系人信息
         let recentContact = await Utility.getRecentContact(0, 6);
 
-        //默认第一个人为聊天对象
-        this.setState({ data: recentContact, chatObj: recentContact[0] });
+        if (recentContact) {
+            //默认第一个人为聊天对象
+            this.setState({ data: recentContact, chatObj: recentContact[0] });
+        }
         //默认选中第一个联系人
-        $(`#${recentContact[0].name}`).addClass('message-message-pFocus');
+        $(`#${this.state.chatObj.name}`).addClass('message-message-pFocus');
     }
 
     //对this.stata.data进行批量化转化为JSX的函数，每个JSX可点击改变state里聊天对象的信息
@@ -61,6 +68,7 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
         $('.message-nav > div').removeClass('message-nav-focus');
         $('#message').addClass('message-nav-focus');
         //创建联系人列表和聊天窗口
+        console.log("重新渲染");
         return (<div className="message-message">
                 <div className="message-message-people">
                     <div className="message-message-pTitle">近期私信</div>

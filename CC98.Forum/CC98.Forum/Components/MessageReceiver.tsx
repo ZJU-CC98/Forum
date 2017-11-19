@@ -12,14 +12,9 @@ export class MessageReceiver extends React.Component<MessageSendReceiveProps> {
         return (<div className="message-message-wc">
                 <div className="message-message-wcTime">{moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')}</div>
                     <div className="message-message-wcReceiver">
-                        <img className="message-message-wcPortraitUrl" src={this.props.receiverPortraitUrl} />
+                        <img className="message-message-wcPortraitUrl" src={this.props.senderPortraitUrl} />
                         <div className="message-message-wcContent">
                             <div className="message-message-wcText" id={String(this.props.id)}><UbbContainer code={this.props.content}/></div>
-                        </div>
-                        <div className="message-message-wcRead1">
-                            <div className="message-message-wcRead2">
-                                {this.props.isRead ? '已读' : '未读'}
-                            </div>
                         </div>
                     </div>
                 </div>);
