@@ -383,9 +383,6 @@ export function getLocalStorage(key) {
         const now = new Date().getTime();
         const time = Number.parseInt(expirationTime)*1000;
 
-        console.log(now);
-        console.log(time);
-
         if (now > time) {
             localStorage.removeItem(key);
             return;

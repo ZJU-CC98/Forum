@@ -5,8 +5,8 @@
 import * as React from 'react';
 import { UserFanInfo } from '../States/AppState';
 import { UserCenterMyFollowingsUser } from './UserCenterMyFollowingsUser';
-import { RouteComponent } from './app'
-import { UserCenterPageCount } from './UserCenterPageCount'
+import { RouteComponent } from './app';
+import { UserCenterPageCount } from './UserCenterPageCount';
 
 import * as Utility from '../Utility';
 
@@ -57,8 +57,9 @@ export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState
             userFanInfo.name = data2.name;
             userFanInfo.avatarImgURL = data2.portraitUrl;
             userFanInfo.posts = data2.postCount;
+            userFanInfo.id = userid;
 
-            url = `http://apitest.niconi.cc/user/follow/fancount?userid=${userid}`
+            url = `http://apitest.niconi.cc/user/follow/fancount?userid=${userid}`;
             res = await fetch(url);
             data2 = await res.json();
 

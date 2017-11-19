@@ -12,7 +12,7 @@ import * as Utility from '../Utility';
 import { UserCenterExact } from './UserCenterExact';
 import { UserCenterMyFollowings } from './UserCenterMyFollowings';
 import { UserCenterMyFans } from './UserCenterMyFans';
-import { UserCenterMyPosts } from './UserCenterMyPosts';
+import { UserCenterMyPostsExact } from './UserCenterMyPostsExact';
 import { UserCenterMyFavorites } from './UserCenterMyFavorites'; 
 import { UserCenterConfig } from './UserCenterConfig';
 
@@ -22,16 +22,15 @@ import { UserCenterConfig } from './UserCenterConfig';
 export class UserCenterRouter extends React.Component {
     render() {
         let logOnState = Utility.isLogOn();
-        console.log(logOnState);
         if (!Utility.isLogOn()) {
             return <div className="user-center-router">请先登录</div>;
         }
 
         return (<div className="user-center-router">
             <Route exact path="/usercenter/" component={UserCenterExact} />
-            <Route path="/usercenter/myfollowings" component={UserCenterMyFollowings} />
+            <Route path="/usercenter/myfollowings/:page?" component={UserCenterMyFollowings} />
             <Route path="/usercenter/myfans/:page?" component={UserCenterMyFans} />
-            <Route path="/usercenter/myposts" component={UserCenterMyPosts} />
+            <Route path="/usercenter/myposts/:page?" component={UserCenterMyPostsExact} />
             <Route path="/usercenter/myfavorites" component={UserCenterMyFavorites} />
             <Route path="/usercenter/config" component={UserCenterConfig} />
         </div>);

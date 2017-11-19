@@ -387,4 +387,8 @@ export class UserFanInfo {
     * 用户粉丝总数
     */
     fans: number;
+    /**
+    * 用户id
+    */
+    id: number;
 }
