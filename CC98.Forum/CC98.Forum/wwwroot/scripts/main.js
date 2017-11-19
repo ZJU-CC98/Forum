@@ -7074,9 +7074,9 @@ var UserCenterMyFollowingsUser = /** @class */ (function (_super) {
                         });
                         token = Utility.getLocalStorage("accessToken");
                         userId = this.props.userFanInfo.id;
-                        url = "http://apitest.niconi.cc/unfollow/" + userId;
+                        url = "http://apitest.niconi.cc/user/unfollow/" + userId;
                         return [4 /*yield*/, fetch(url, {
-                                method: 'POST',
+                                method: 'DELETE',
                                 headers: {
                                     'Authorization': token
                                 }
@@ -7413,36 +7413,68 @@ var ImageTagHandler = /** @class */ (function (_super) {
     ImageTagHandler.prototype.execCore = function (content, tagData, context) {
         var imageUri = content;
         var title = tagData.value('title');
-        var isShowed = parseInt(tagData.value('img'));
+        var isShowedValue = parseInt(tagData.value('img'));
         // 不允许显示图像
         if (!context.options.allowImage) {
-            return content;
+            return React.createElement(Image, { imageUri: imageUri, title: title, isShowed: false });
         }
-        var imageTag = React.createElement("img", { src: imageUri, alt: title });
         //[img=1]默认不显示图片，[img]或[img=0]默认显示图片
         // HTML5 模式下，使用 figure 表示插图
         if (context.options.compatibility === Ubb.UbbCompatiblityMode.EnforceMorden) {
-            if (isShowed === 1) {
-                return content;
+            if (isShowedValue === 1) {
+                return React.createElement(Image, { imageUri: imageUri, title: title, isShowed: false });
             }
             else {
                 return React.createElement("figure", null,
-                    imageTag,
+                    React.createElement(Image, { imageUri: imageUri, title: title, isShowed: true }),
                     React.createElement("figcaption", null, title));
             }
         }
         else {
-            if (isShowed === 1) {
-                return content;
+            if (isShowedValue === 1) {
+                return React.createElement(Image, { imageUri: imageUri, title: title, isShowed: false });
             }
             else {
-                return imageTag;
+                return React.createElement(Image, { imageUri: imageUri, title: title, isShowed: true });
             }
         }
     };
     return ImageTagHandler;
 }(Ubb.TextTagHandler));
 exports.ImageTagHandler = ImageTagHandler;
+/*
+ *图片组件
+ *用于控制图片是否默认显示
+ */
+var Image = /** @class */ (function (_super) {
+    __extends(Image, _super);
+    function Image(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            isShowed: _this.props.isShowed
+        };
+        _this.toggleIsShowed = _this.toggleIsShowed.bind(_this); //别再忘了bind了！！  “bind一般放在构造过程中” ——樱桃
+        return _this;
+    }
+    Image.prototype.toggleIsShowed = function () {
+        console.log("显示图片！");
+        this.setState(function (prevState) { return ({
+            isShowed: !prevState.isShowed //setState() 可以接收一个函数，这个函数接受两个参数，第一个参数prevState表示上一个状态值，第二个参数props表示当前的props
+        }); });
+    };
+    Image.prototype.render = function () {
+        if (this.state.isShowed) {
+            return React.createElement("img", { src: this.props.imageUri, alt: this.props.title });
+        }
+        else {
+            return React.createElement("div", { onClick: this.toggleIsShowed },
+                "[\u70B9\u51FB\u67E5\u770B\u56FE\u7247]",
+                this.props.imageUri);
+        }
+    };
+    return Image;
+}(React.Component));
+exports.Image = Image;
 
 
 /***/ }),
@@ -8433,7 +8465,7 @@ var UserCenterNavigation = /** @class */ (function (_super) {
             this.setState({
                 isScroll: true,
                 buttonClassName: 'btn-show',
-                navigationClassName: 'user-center-navigation user-center-navigation-fixed'
+                navigationClassName: 'user-center-navigation'
             });
         }
         if (window.pageYOffset < 234 && this.state.isScroll) {
@@ -8447,7 +8479,7 @@ var UserCenterNavigation = /** @class */ (function (_super) {
                     return {
                         isScroll: false,
                         buttonClassName: 'btn-disappare',
-                        navigationClassName: 'user-center-navigation user-center-navigation-unfixed'
+                        navigationClassName: 'user-center-navigation'
                     };
                 }
             });
@@ -10940,12 +10972,10 @@ var UserCenterMyPostsExact = /** @class */ (function (_super) {
     __extends(UserCenterMyPostsExact, _super);
     function UserCenterMyPostsExact(props, contest) {
         var _this = _super.call(this, props, contest) || this;
-        console.log(Utility.getLocalStorage('userInfo'));
         var postCount = Utility.getLocalStorage('userInfo').postCount;
-        console.log(Math.floor((postCount / 10)) + 1);
         _this.state = {
             userRecentPosts: [],
-            totalPage: Math.floor((postCount / 10)) + 1
+            totalPage: _this.match.params.page || 1
         };
         return _this;
     }
@@ -10957,7 +10987,7 @@ var UserCenterMyPostsExact = /** @class */ (function (_super) {
                     case 0:
                         page = this.match.params.page || 1;
                         url = "http://apitest.niconi.cc/me/recenttopics?from=" + (page - 1) * 10 + "&size=10";
-                        token = window.localStorage.accessToken.slice(4);
+                        token = Utility.getLocalStorage("accessToken");
                         return [4 /*yield*/, fetch(url, {
                                 headers: {
                                     'Authorization': token
@@ -10969,6 +10999,16 @@ var UserCenterMyPostsExact = /** @class */ (function (_super) {
                     case 2:
                         data = _a.sent();
                         posts = [], i = data.length;
+                        if (i !== 10) {
+                            this.setState({
+                                totalPage: page
+                            });
+                        }
+                        else {
+                            this.setState({
+                                totalPage: page + 1
+                            });
+                        }
                         _a.label = 3;
                     case 3:
                         if (!i--) return [3 /*break*/, 5];

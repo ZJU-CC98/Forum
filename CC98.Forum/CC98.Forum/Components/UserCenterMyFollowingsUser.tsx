@@ -25,10 +25,10 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
         });
         const token = Utility.getLocalStorage("accessToken");
         const userId = this.props.userFanInfo.id;
-        const url = `http://apitest.niconi.cc/unfollow/${userId}`;
+        const url = `http://apitest.niconi.cc/user/unfollow/${userId}`;
 
         let res = await fetch(url, {
-            method: 'POST',
+            method: 'DELETE',
             headers: {
                 'Authorization': token
             }

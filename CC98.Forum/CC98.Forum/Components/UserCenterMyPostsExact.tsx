@@ -7,26 +7,23 @@ import { UserCenterExactActivitiesPost } from './UserCenterExactActivitiesPost';
 import { UserRecentPost } from '../States/AppState';
 import { RouteComponent } from './app';
 import { UserCenterPageCount } from './UserCenterPageCount';
-
 import * as Utility from '../Utility';
 
 
 export class UserCenterMyPostsExact extends RouteComponent<null, UserCenterMyPostsExactState, {page}> {
     constructor(props, contest) {
         super(props, contest);
-        console.log(Utility.getLocalStorage('userInfo'));
         const postCount = Utility.getLocalStorage('userInfo').postCount;
-        console.log(Math.floor((postCount / 10)) + 1);
         this.state = {
             userRecentPosts: [],
-            totalPage: Math.floor((postCount / 10)) + 1
+            totalPage: this.match.params.page || 1
         };
     }
 
     async componentDidMount() {
         const page = this.match.params.page || 1;
         const url = `http://apitest.niconi.cc/me/recenttopics?from=${(page-1)*10}&size=10`
-        const token = window.localStorage.accessToken.slice(4);
+        const token = Utility.getLocalStorage("accessToken");
         let res = await fetch(url, {
             headers: {
                 'Authorization': token
@@ -35,6 +32,17 @@ export class UserCenterMyPostsExact extends RouteComponent<null, UserCenterMyPos
         let data = await res.json();
         let posts: UserRecentPost[] = [],
             i = data.length;
+
+        if (i !== 10) {
+            this.setState({
+                totalPage: page
+            });
+        } else {
+            this.setState({
+                totalPage: page + 1
+            });
+        }
+
         while (i--) {
             let post = await this.item2post(data[i]);
             posts.unshift(post);
