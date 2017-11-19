@@ -28,7 +28,7 @@ export class UserCenterNavigation extends React.Component<null, UserCenterNaviga
             this.setState({
                 isScroll: true,
                 buttonClassName: 'btn-show',
-                navigationClassName: 'user-center-navigation user-center-navigation-fixed'
+                navigationClassName: 'user-center-navigation'
             });
         }
 
@@ -42,7 +42,7 @@ export class UserCenterNavigation extends React.Component<null, UserCenterNaviga
                     return {
                         isScroll: false,
                         buttonClassName: 'btn-disappare',
-                        navigationClassName: 'user-center-navigation user-center-navigation-unfixed'
+                        navigationClassName: 'user-center-navigation'
                     }
                 }
             });

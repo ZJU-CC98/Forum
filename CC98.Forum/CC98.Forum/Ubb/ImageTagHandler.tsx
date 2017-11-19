@@ -14,32 +14,60 @@ export class ImageTagHandler extends Ubb.TextTagHandler {
 
         const imageUri = content;
         const title = tagData.value('title');
-        const isShowed = parseInt(tagData.value('img'));
+        const isShowedValue = parseInt(tagData.value('img'));
 
         // 不允许显示图像
         if (!context.options.allowImage) {
-            return content;
+            return <Image imageUri={imageUri} title={title} isShowed={false} />
         }
-
-        const imageTag = <img src={imageUri} alt={title} />;
 
         //[img=1]默认不显示图片，[img]或[img=0]默认显示图片
         // HTML5 模式下，使用 figure 表示插图
         if (context.options.compatibility === Ubb.UbbCompatiblityMode.EnforceMorden) {
-            if (isShowed === 1) {
-                return content;
+            if (isShowedValue === 1) {
+                return <Image imageUri={imageUri} title={title} isShowed={false} />
             } else {
                 return <figure>
-                    {imageTag}
+                    <Image imageUri={imageUri} title={title} isShowed={true} />
                     <figcaption>{title}</figcaption>
                 </figure>;
             }
         } else {
-            if (isShowed === 1) {
-                return content;
+            if (isShowedValue === 1) {
+                return <Image imageUri={imageUri} title={title} isShowed={false} />
             } else {
-                return imageTag;
+                return <Image imageUri={imageUri} title={title} isShowed={true} />
             }
+        }
+    }
+}
+
+/*
+ *图片组件
+ *用于控制图片是否默认显示
+ */
+export class Image extends React.Component<{ imageUri, title, isShowed: boolean }, { isShowed: boolean }> {
+
+    constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
+        super(props);       //super 表示调用基类（Component系统类型）构造方法
+        this.state = {
+            isShowed: this.props.isShowed
+        };
+        this.toggleIsShowed = this.toggleIsShowed.bind(this);//别再忘了bind了！！  “bind一般放在构造过程中” ——樱桃
+    }
+
+    toggleIsShowed() {
+        console.log("显示图片！")
+        this.setState(prevState => ({
+            isShowed: !prevState.isShowed   //setState() 可以接收一个函数，这个函数接受两个参数，第一个参数prevState表示上一个状态值，第二个参数props表示当前的props
+        }));
+    }
+
+    render() {
+        if (this.state.isShowed) {
+            return <img src={this.props.imageUri} alt={this.props.title} />
+        } else {
+            return <div onClick={this.toggleIsShowed}>[点击查看图片]{this.props.imageUri}</div>
         }
     }
 }
