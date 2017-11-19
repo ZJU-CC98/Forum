@@ -7,12 +7,15 @@ import { MessagePersonProps } from '../Props/MessagePersonProps';
 export class MessagePerson extends React.Component<MessagePersonProps> {
     
     render() {
+        let data = this.props.data;
+        console.log("3");
+        console.log(data);
         return (<div className="message-message-person">
-            <img className="message-message-pPortraitUrl" src={this.props.portraitUrl} />
-            <div className="message-message-pInfo">
-                <div className="message-message-pName">{this.props.name}</div>
-                <div className="message-message-pMessage">[{this.props.title}]{this.props.content}</div>
-                     </div>
+                <img className="message-message-pPortraitUrl" src={data.portraitUrl} />
+                        <div className="message-message-pInfo">
+                            <div className="message-message-pName">{data.name}</div>
+                            <div className="message-message-pMessage">{data.message[0].content}</div>
+                        </div>
                 </div>);
     }
 }

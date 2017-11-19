@@ -5,7 +5,7 @@
 /**
  * 一条站短消息
  */
-export class MessageProps {
+export class MessageSendReceiveProps {
     /**
     * 消息的标识
     */
@@ -13,11 +13,19 @@ export class MessageProps {
     /**
     * 消息的发送者的id
     */
-    senderId: number;
+    senderName: string;
     /**
     * 消息的接收者的id
     */
-    receiverId: number;
+    receiverName: string;
+    /**
+   * 消息的发送者的头像地址
+   */
+    senderPortraitUrl: string;
+    /**
+    * 消息的接收者的头像地址
+    */
+    receiverPortraitUrl: string;
     /**
     * 消息的正文
     */

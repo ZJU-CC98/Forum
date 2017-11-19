@@ -12,7 +12,8 @@ export class MessageResponsebox extends React.Component<MessageProps> {
     */
 
     render() {
-        return (<div className="message-response-box">
+        return <div></div>;
+        /*return (<div className="message-response-box">
                     <div className="message-response-box-left">
                         <img className="message-response-img" src={this.props.chatPortraitUrl} />
                     </div>
@@ -32,6 +33,6 @@ export class MessageResponsebox extends React.Component<MessageProps> {
                     </div>
                     <div className="message-response-box-right">查看</div>
                 </div>
-        );
+        );*/
     }
 }

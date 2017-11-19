@@ -252,51 +252,7 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
 
     return post;
 }
-export function sendRequest() {
-    //申请到的appID
-    const appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
-    //申请后的回调地址
-    const c = 'http://localhost:58187/messagebox/message';
-    const redirectUri = encodeURI(c);
-    //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
-    const path = 'https://login.cc98.org/OAuth/Authorize?';
-    const queryParams = [`client_id=${appId}`, 'response_type=token', 'scope=all', `redirect_uri=${redirectUri}`];
-    const query = queryParams.join('&');
-    const url = path + query;
-    return url;
-}
 
-export function systemRequest() {
-    //申请到的appID
-    const appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
-    //申请后的回调地址
-    const c = 'http://localhost:58187/messagebox/system';
-    const redirectUri = encodeURI(c);
-    //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
-    const path = 'https://login.cc98.org/OAuth/Authorize?';
-    const queryParams = [`client_id=${appId}`, 'response_type=token', 'scope=all', `redirect_uri=${redirectUri}`];
-    const query = queryParams.join('&');
-    const url = path + query;
-    return url;
-}
-
-export function responseRequest() {
-    //申请到的appID
-    const appId = '89084063-b0b2-45a3-87c5-a19db2ac3038';
-    //申请后的回调地址
-    const c = 'http://localhost:58187/messagebox/response';
-    const redirectUri = encodeURI(c);
-    //构造请求，请求网址为授权地址，响应类型为token，请求所有操作信息根据98api为all，重定向地址即为回调地址
-    const path = 'https://login.cc98.org/OAuth/Authorize?';
-    const queryParams = [`client_id=${appId}`, 'response_type=token', 'scope=all', `redirect_uri=${redirectUri}`];
-    const query = queryParams.join('&');
-    const url = path + query;
-    return url;
-}
-export function changeNav(id) {
-    $('.message-nav > div').removeClass('message-nav-focus');
-    $(id).addClass('message-nav-focus');
-}
 /**
  * 获取全站新帖
  * @param curPage
@@ -306,7 +262,7 @@ export async function getAllNewTopic(curNum: number) {
      * 一次性可以获取20个主题
      */
     var size = 20;
-    if(curNum > 80) {
+    if (curNum > 80) {
         size = 100 - curNum;
     }
     let token = getLocalStorage("accessToken");
@@ -322,21 +278,15 @@ export async function getAllNewTopic(curNum: number) {
             let userFan1 = await userFan0.json();
             newTopic[i].fanCount = userFan1;
             //获取作者头像地址
-            let userInfo0 = await fetch(`http://apitest.niconi.cc/user/${newTopic[i].userId}`, { headers: { Authorization: `${token}` } });
+            let userInfo0 = await fetch(`http://apitest.niconi.cc/user/basic/${newTopic[i].userId}`);
             let userInfo1 = await userInfo0.json();
             newTopic[i].portraitUrl = userInfo1.portraitUrl;
             //获取所在版面名称
-            newTopic[i].boardName = getLocalStorage(`boardId_${newTopic[i].boardId}`);
-            if (!newTopic[i].boardName) {
-                let boardName0 = await fetch(`http://apitest.niconi.cc/board/${newTopic[i].boardId}`);
-                let boardName1 = await boardName0.json();
-                newTopic[i].boardName = boardName1.name;
-                setLocalStorage(`boardId_${newTopic[i].boardId}`, boardName1.name);
-            }
+            newTopic[i].boardName = await getBoardName(newTopic[i].boardId);
         }
-        //匿名时粉丝数显示999
+        //匿名时粉丝数显示0
         else {
-            newTopic[i].fanCount = -98;
+            newTopic[i].fanCount = 0;
             newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
             newTopic[i].userName = "匿名";
             newTopic[i].boardName = "心灵之约";
@@ -354,7 +304,7 @@ export async function getFocusTopic(curNum: number) {
      * 一次性可以获取20个主题
      */
     var size = 20;
-    if(curNum > 80) {
+    if (curNum > 80) {
         size = 100 - curNum;
     }
     let token = getLocalStorage("accessToken");
@@ -370,24 +320,16 @@ export async function getFocusTopic(curNum: number) {
             let userFan1 = await userFan0.json();
             newTopic[i].fanCount = userFan1;
             //获取作者头像地址
-            let userInfo0 = await fetch(`http://apitest.niconi.cc/user/${newTopic[i].userId}`, { headers: { Authorization: `${token}` } });
+            let userInfo0 = await fetch(`http://apitest.niconi.cc/user/basic/${newTopic[i].userId}`);
             let userInfo1 = await userInfo0.json();
             newTopic[i].portraitUrl = userInfo1.portraitUrl;
             //获取所在版面名称
-            newTopic[i].boardName = getLocalStorage(`boardId_${newTopic[i].boardId}`);
-            if (!newTopic[i].boardName) {
-               
-                let boardName0 = await fetch(`http://apitest.niconi.cc/board/${newTopic[i].boardId}`);
-                let boardName1 = await boardName0.json();
-                newTopic[i].boardName = boardName1.name;
-                setLocalStorage(`boardId_${newTopic[i].boardId}`, boardName1.name);
-            }
+            newTopic[i].boardName = await getBoardName(newTopic[i].boardId);
         }
-        //匿名时粉丝数显示999
+        //匿名时粉丝数显示0
         else {
-            newTopic[i].fanCount = -98;
+            newTopic[i].fanCount = 0;
             newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-            newTopic[i].userName = "匿名";
             newTopic[i].boardName = "心灵之约";
         }
     }
@@ -441,9 +383,6 @@ export function getLocalStorage(key) {
         const now = new Date().getTime();
         const time = Number.parseInt(expirationTime)*1000;
 
-        console.log(now);
-        console.log(time);
-
         if (now > time) {
             localStorage.removeItem(key);
             return;
@@ -481,11 +420,10 @@ export async function getBoardName(boardId: number) {
         const url = `http://apitest.niconi.cc/board/${boardId}`;
         let res = await fetch(url);
         let data = await res.json();
-
         boardName = data.name;
+        setLocalStorage(`boardId_${boardId}`, boardName);
     }
 
-    setLocalStorage(`boardId_${boardId}`, boardName);
 
     return boardName;
 }
@@ -498,4 +436,42 @@ export function isLogOn(): boolean {
     const token = getLocalStorage("accessToken");
 
     return !!token;
+}
+
+/*
+* 获取最近N个联系人的信息
+*/
+export async function getRecentContact(from: number, size: number) {
+    let token = getLocalStorage("accessToken");
+    let recentContact = getLocalStorage("recentContact");
+    if (!recentContact) {
+        let response = await fetch(`http://apitest.niconi.cc/message/recentcontactusers?from=${from}&size=${size}`, { headers: { 'Authorization': `${token}` } });
+        let recentContactId = await response.json();
+        let url = "http://apitest.niconi.cc/user/basic"
+        for (let i in recentContactId) {
+            if (i == "0") {
+                url = `${url}?id=${recentContactId[i]}`;
+            }
+            else {
+                url = `${url}&id=${recentContactId[i]}`;
+            }
+        }
+        let response1 = await fetch(url);
+        recentContact = await response1.json();
+        for (let i in recentContact) {
+            recentContact[i].message = await getRecentMessage(recentContact[i].id, 0, 20);
+        }
+        //setLocalStorage("recentContact", recentContact);
+    }
+    return recentContact;
+}
+
+/*
+* 获取最近N个联系人的信息
+*/
+export async function getRecentMessage(userId: number, from: number, size: number) {
+    let token = getLocalStorage("accessToken");
+    let response = await fetch(`http://apitest.niconi.cc/message/${userId}?from=${from}&size=${size}`, { headers: { 'Authorization': `${token}` } });
+    let recentMessage = await response.json();
+    return recentMessage;
 }

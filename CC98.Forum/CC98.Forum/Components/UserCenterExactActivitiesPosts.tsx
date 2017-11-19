@@ -104,9 +104,13 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
 
     render() {
         //console.log(this.state.userRecentPosts);
-        if (!this.state.userRecentPosts) {
+        if (this.state.userRecentPosts.length === 0) {
+            const style = {
+                marginLeft: '2rem'
+            }
+
             return (
-                <div className="user-posts">
+                <div className="user-posts" style={style}>
                     没有主题
                 </div>
             );
