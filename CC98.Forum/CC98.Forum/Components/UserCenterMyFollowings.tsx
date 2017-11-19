@@ -15,7 +15,8 @@ export class UserCenterMyFollowings extends RouteComponent<null, UserCenterMyFol
         super(props, context);
         this.state = {
             userFollowings: [],
-            totalPage: 2
+            totalPage: 2,
+            info: '加载中'
         };
     }
 
@@ -30,45 +31,40 @@ export class UserCenterMyFollowings extends RouteComponent<null, UserCenterMyFol
                 'Authorization': token
             }
         });
-
         let data = await res.json();
-
 
         //没有关注
 
         if (!data || !data.length) {
+            this.setState({
+                info: '没有关注'
+            });
             return false;
         }
 
         let fans: UserFanInfo[] = [];
-        let userFanInfo = new UserFanInfo();
+        
         let i = data.length, data2;
 
         while (i--) {
             let userid = data[i];
-
+            let userFanInfo = new UserFanInfo();
             url = `http://apitest.niconi.cc/user/${userid}`;
             res = await fetch(url);
             data2 = await res.json();
-
             userFanInfo.name = data2.name;
             userFanInfo.avatarImgURL = data2.portraitUrl;
             userFanInfo.posts = data2.postCount;
             userFanInfo.id = userid;
-
-            url = `http://apitest.niconi.cc/user/follow/fancount?userid=${userid}`;
-            res = await fetch(url);
-            data2 = await res.json();
-
-            userFanInfo.fans = data2;
+            userFanInfo.fans = data2.fanCount;
 
             fans.push(userFanInfo);
         }
-
+        
 
         const userid = Utility.getLocalStorage('userInfo').id;
 
-        url = `http://apitest.niconi.cc/user/follow/fancount?userid=${userid}`
+        url = `http://apitest.niconi.cc/user/follow/followcount?userid=${userid}`
         res = await fetch(url);
         data2 = await res.json();
 
@@ -82,7 +78,7 @@ export class UserCenterMyFollowings extends RouteComponent<null, UserCenterMyFol
         if (this.state.userFollowings.length === 0) {
             return (
                 <div className="user-center-myfollowings">
-                    没有关注
+                    {this.state.info}
                 </div>
                 );
         }
@@ -96,7 +92,9 @@ export class UserCenterMyFollowings extends RouteComponent<null, UserCenterMyFol
         const page = this.match.params.page || 1;
 
         return (<div className="user-center-myfollowings">
-            {userFollowings}
+            <div className="user-center-myfollowings-exact">
+                {userFollowings}
+            </div>
             <UserCenterPageCount currentPage={page} totalPage={this.state.totalPage} href="/usercenter/myfollowings/" />
         </div>);
     }
@@ -105,4 +103,5 @@ export class UserCenterMyFollowings extends RouteComponent<null, UserCenterMyFol
 interface UserCenterMyFollowingsState {
     userFollowings: UserFanInfo[];
     totalPage: number;
+    info: string;
 }
