@@ -14,9 +14,9 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
     constructor(props) {
         super(props);
         this.state = {
-            isFollowing: false,
+            isFollowing: this.props.userInfo.isFollowing,
             buttonIsDisabled: false,
-            buttonInfo: '关注'
+            buttonInfo: this.props.userInfo.isFollowing ? '取消关注' :'关注'
         }
         this.unfollow = this.unfollow.bind(this);
         this.follow = this.follow.bind(this);
@@ -91,7 +91,7 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
                 <div id="userId">
                     <p>{this.props.userInfo.name}</p>
                     <button type="button">私信</button>
-                    <button type="button" onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
+                    <button type="button" id={this.state.isFollowing ? 'unfollow' : ''} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
                 </div>
                 <div id="userGenderAndBirthday">
                     <p>性别  {(this.props.userInfo.gender === 1) ? '男' : '女'} </p>

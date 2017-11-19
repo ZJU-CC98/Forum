@@ -244,6 +244,23 @@
                     }
                 }
 
+                #unfollow {
+                    background-color: rgb(230,230,230);
+                    color: rgb(160,160,160);
+
+                    &:hover {
+                        background-color: rgb(210,210,210);
+                    }
+
+                    &:active {
+                        background-color: rgb(200,200,200);
+                    }
+
+                    &:focus {
+                        outline: none;
+                    }
+                }
+
                 #userGenderAndBirthday {
                     display: flex;
 
@@ -364,6 +381,7 @@
                 }
 
                 button {
+                    transition-duration: .4s;
                     width: 70px;
                     height: 26px;
                     font-size: 12px;

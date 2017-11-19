@@ -10533,9 +10533,9 @@ var UserExactProfile = /** @class */ (function (_super) {
     function UserExactProfile(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
-            isFollowing: false,
+            isFollowing: _this.props.userInfo.isFollowing,
             buttonIsDisabled: false,
-            buttonInfo: '关注'
+            buttonInfo: _this.props.userInfo.isFollowing ? '取消关注' : '关注'
         };
         _this.unfollow = _this.unfollow.bind(_this);
         _this.follow = _this.follow.bind(_this);
@@ -10629,7 +10629,7 @@ var UserExactProfile = /** @class */ (function (_super) {
             React.createElement("div", { id: "userId" },
                 React.createElement("p", null, this.props.userInfo.name),
                 React.createElement("button", { type: "button" }, "\u79C1\u4FE1"),
-                React.createElement("button", { type: "button", onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo)),
+                React.createElement("button", { type: "button", id: this.state.isFollowing ? 'unfollow' : '', onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo)),
             React.createElement("div", { id: "userGenderAndBirthday" },
                 React.createElement("p", null,
                     "\u6027\u522B  ",
