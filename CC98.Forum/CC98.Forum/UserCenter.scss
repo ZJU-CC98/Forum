@@ -233,6 +233,7 @@
                     height: 2rem;
                     margin: 0;
                     border-radius: 3px;
+                    margin-left: 2rem;
 
                     &:hover {
                         background-color: rgb(41,174,223);
@@ -341,6 +342,11 @@
                 border-top: 1px dashed rgb(204,204,204);
             }
 
+            .user-center-myfollowings-exact {
+                flex-grow: 1;
+                min-height: 40rem;
+            }
+
             .user-center-myfollowings-user {
                 display: flex;
                 align-items: center;
@@ -364,6 +370,27 @@
                     border-radius: 3px;
                     background-color: rgb(230,230,230);
                     color: rgb(160,160,160);
+
+                    &:hover {
+                        background-color: rgb(210,210,210);
+                    }
+
+                    &:active {
+                        background-color: rgb(200,200,200);
+                    }
+                }
+
+                #follow {
+                    background-color: #68b3ff;
+                    color: #fff;
+
+                    &:hover {
+                        background-color: rgb(41,174,223);
+                    }
+
+                    &:active {
+                        background-color: rgb(38,154,196);
+                    }
                 }
 
                 .user-center-myfollowings-user-id {
@@ -388,7 +415,7 @@
 
             .user-center-myfans-exact {
                 flex-grow: 1;
-                min-height: 27rem;
+                min-height: 40rem;
             }
 
             .user-center-myfollowings-user {

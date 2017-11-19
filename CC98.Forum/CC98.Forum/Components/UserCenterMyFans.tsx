@@ -16,7 +16,8 @@ export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState
         super(props, contest);
         this.state = {
             userFans: [],
-            totalPage: 2
+            totalPage: 2,
+            info: '加载中'
         };
     }
 
@@ -40,16 +41,19 @@ export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState
         //没有粉丝
 
         if (!data || !data.length) {
+            this.setState({
+                info: '没有粉丝'
+            });
             return false;
         }
 
         let fans: UserFanInfo[] = [];
-        let userFanInfo = new UserFanInfo();
+        
         let i = data.length, data2;
 
         while (i--) {
             let userid = data[i];
-
+            let userFanInfo = new UserFanInfo();
             url = `http://apitest.niconi.cc/user/${userid}`;
             res = await fetch(url);
             data2 = await res.json();
@@ -58,12 +62,7 @@ export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState
             userFanInfo.avatarImgURL = data2.portraitUrl;
             userFanInfo.posts = data2.postCount;
             userFanInfo.id = userid;
-
-            url = `http://apitest.niconi.cc/user/follow/fancount?userid=${userid}`;
-            res = await fetch(url);
-            data2 = await res.json();
-
-            userFanInfo.fans = data2;
+            userFanInfo.fans = data2.fanCount;
 
             fans.push(userFanInfo);
         }
@@ -86,7 +85,7 @@ export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState
 
         if (this.state.userFans.length === 0) {
             return (<div className="user-center-myfans">
-                没有粉丝
+                {this.state.info}
             </div>);
         }
 
@@ -109,4 +108,5 @@ export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState
 interface UserCenterMyFansState {
     userFans: UserFanInfo[];
     totalPage: number;
+    info: string;
 }

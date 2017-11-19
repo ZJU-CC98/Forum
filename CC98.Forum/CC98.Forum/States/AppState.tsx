@@ -317,7 +317,11 @@ export class UserInfo {
     /**
     * 用户个性签名
     */
-    signatureCode: string
+    signatureCode: string;
+    /**
+    * id
+    */
+    id: string;
 }
 
 /**

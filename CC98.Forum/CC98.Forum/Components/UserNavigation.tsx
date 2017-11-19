@@ -4,27 +4,7 @@ import {
     Route
 } from 'react-router-dom';
 
-export class UserNavigation extends React.Component {
-    handleScroll(e) {
-        let navigation = document.getElementById('userCenterNavigation');
-
-        if (window.pageYOffset > 234 && navigation.style.position !== 'fixed') {
-            navigation.style.position = 'fixed';
-        }
-
-        if (window.pageYOffset < 234 && navigation.style.position && navigation.style.position !== 'inherit') {
-            navigation.style.position = 'inherit';
-        }
-    }
-
-    componentDidMount() {
-        document.addEventListener('scroll', this.handleScroll);
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('scroll', this.handleScroll);
-    }
-
+export class UserNavigation extends React.Component {    
     render() {
         return (<div className="user-center-navigation" id="userCenterNavigation">
             <ul>
