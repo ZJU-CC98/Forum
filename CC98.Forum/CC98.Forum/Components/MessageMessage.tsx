@@ -112,6 +112,9 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
     async onChange() {
         let recentContact = Utility.getStorage("recentContact");
         this.setState({ data: recentContact, chatObj: recentContact[0] });
+        //选中第一个联系人
+        $('.message-message-pList > div').removeClass('message-message-pFocus');
+        $(`#${this.state.chatObj.name}`).addClass('message-message-pFocus');
     }
 
 	render() {
