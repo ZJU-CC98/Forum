@@ -444,7 +444,7 @@ export function isLogOn(): boolean {
 */
 export async function getRecentContact(from: number, size: number) {
     let token = getLocalStorage("accessToken");
-    let recentContact = getStorage("recentContact");
+    let recentContact = getLocalStorage("recentContact");
     if (!recentContact) {
         let response = await fetch(`http://apitest.niconi.cc/message/recentcontactusers?from=${from}&size=${size}`, { headers: { 'Authorization': `${token}` } });
         let recentContactId = await response.json();
@@ -462,7 +462,7 @@ export async function getRecentContact(from: number, size: number) {
         for (let i in recentContact) {
             recentContact[i].message = await getRecentMessage(recentContact[i].id, 0, 10);
         }
-        setStorage("recentContact", recentContact);
+        setLocalStorage("recentContact", recentContact);
     }
     return recentContact;
 }

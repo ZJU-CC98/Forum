@@ -15,6 +15,8 @@ export class MessageWindow extends React.Component<MessagePersonProps, MessageWi
         super(props);
         this.state = { data: [] };
         this.handleScroll = this.handleScroll.bind(this);
+        this.getNewMessage = this.getNewMessage.bind(this);
+        this.postMessage = this.postMessage.bind(this);
     }
 
     async componentDidMount() {
@@ -30,27 +32,80 @@ export class MessageWindow extends React.Component<MessagePersonProps, MessageWi
         this.setState({ data: nextProps.data.message });
     }
 
+    /*
+    *处理聊天窗口滚动栏的函数，滚到顶部继续加载私信内容
+    */
     async handleScroll() {
-        let scrollTop = $('messageContent').scrollTop(); //滚动到的当前位置
-        console.log(screenTop);
+        let scrollTop = $('#messageContent')[0].scrollTop; //滚动到的当前位置
+        console.log(scrollTop);
         if (scrollTop == 0) {
             console.log("到顶啦");
-            let data = this.state.data; 
+            $('#wcLoadingImg').removeClass("displaynone");
+            let oldData = this.state.data;
             //到顶了就继续获取10条私信
-            let newData = await Utility.getRecentMessage(this.props.data.id, data.length, 10);
+            let newData = await Utility.getRecentMessage(this.props.data.id, oldData.length, 10);
             //跟之前的拼接一下
-            data = data.concat(newData);
-            this.setState({ data: data });
-            //取出联系人缓存，更新对应的联系人的数据并缓存
-            let recentContact = Utility.getStorage("recentContact");
-            for (let i in recentContact) {
+            if (newData.length > 0) {
+                let data = oldData.concat(newData);
+                this.setState({ data: data });
+                //取出联系人缓存，更新对应的联系人的数据并缓存
+                let recentContact = Utility.getLocalStorage("recentContact");
+                if (recentContact) {
+                    for (let i in recentContact) {
+                        if (recentContact[i].id == this.props.data.id) {
+                            recentContact[i].message = data;
+                            break;
+                        }
+                    }
+                    Utility.setLocalStorage("recentContact", recentContact);
+                }
+            }
+            else {
+                console.log("没有");
+                $('#wcLoadingImg').addClass("displaynone");
+                $('#wcLoadingText').removeClass("displaynone");
+            }
+        }
+    }
+
+    /**
+    *点击发送私信后，获取私信内容并刷新聊天界面
+    */
+    async getNewMessage() {
+        //获取新私信信息
+        let data = await Utility.getRecentMessage(this.props.data.id, 0, 10);
+
+        //先看一下缓存里的旧私信信息
+        let oldData = [];
+        let recentContact = Utility.getLocalStorage("recentContact");
+        if (recentContact) {
+            for (var i=0; i<recentContact.length; i++) {
                 if (recentContact[i].id == this.props.data.id) {
+                    oldData = recentContact[i].message;
+                    //新旧私信信息拼接一下
+                    if(oldData != []) {
+                        for (var j = 0; j < data.length; j++) {
+                            if (data[j].id == oldData[0].id) {
+                                data = data.slice(0, j).concat(oldData);
+                                console.log("获取到了新私信");
+                                break;
+                            }
+                        }
+                    }
+                    //更新缓存
                     recentContact[i].message = data;
                     break;
                 }
             }
-            Utility.setStorage("recentContact", recentContact);
+            if(i == recentContact.length) {
+                let chatMan = [this.props.data];
+                chatMan[0].message = data;
+                recentContact = chatMan.concat(recentContact);
+            }
         }
+        //刷新状态
+        this.setState({ data: data });
+        Utility.setLocalStorage("recentContact", recentContact);
     }
 
 
@@ -58,14 +113,15 @@ export class MessageWindow extends React.Component<MessagePersonProps, MessageWi
     *单条私信的的样式
     */
     coverMessageProps = (item: MessageProps) => {
-        console.log("5");
+        console.log("windowd的私信转化函数里了");
+        console.log(item);
         let userInfo = Utility.getLocalStorage("userInfo");
         let data = this.props.data;
         if (item.receiverId == userInfo.id) {
             //如果我是接收者调用这个样式，处于左边
             return <MessageReceiver id={item.id} senderName={data.name} receiverName={userInfo.name} senderPortraitUrl={data.portraitUrl} receiverPortraitUrl={userInfo.portraitUrl} content={item.content} isRead={item.isRead} time={item.time}/>;
         }
-        else {
+        else if(item.senderId == userInfo.id) {
             //如果我是发送者调用这个样式，处于右边
             return <MessageSender id={item.id} senderName={userInfo.name} receiverName={data.name} senderPortraitUrl={userInfo.portraitUrl} receiverPortraitUrl={data.portraitUrl} content={item.content} isRead={item.isRead} time={item.time} />;
         }
@@ -74,24 +130,24 @@ export class MessageWindow extends React.Component<MessagePersonProps, MessageWi
     /**
     *发送私信内容的函数
     */
-	postMessage = () => {
-        /*const bodyObj = { receiverName: this.props.chatName, title: '你好', content: $('#myMessageContent').val() };
-        const bodyContent = JSON.stringify(bodyObj);
-        const messageId = fetch('https://api.cc98.org/Message', {
+    async postMessage() {
+        let token = Utility.getLocalStorage("accessToken");
+        let bodyObj = { receiverId: this.props.data.id, content: $('#postContent').val() };
+        let bodyContent = JSON.stringify(bodyObj);
+        let messageId = await fetch('http://apitest.niconi.cc/message/send', {
 	        method: 'POST',
-	        headers: { Authorization: `${this.props.token}`, 'content-type': 'application/json'},
+	        headers: { Authorization: `${token}`, 'content-type': 'application/json'},
 	        body: bodyContent
         });
-        //重新获取数据并渲染
-        console.log($('#myMessageContent').val());
-        //这里写法有点奇怪，但是这样写才能暂停0.2秒再执行this.getMessageData，不能在setTimeout的第一个函数里直接调用this.getMessageData,那样会立即执行
-        const self = this;
-        setTimeout(function () { self.getMessageData(self.props) }, 200);
+        //暂停0.2秒再执行
+        setTimeout(this.getNewMessage, 200);
         //清空输入框
-        $('#myMessageContent').val('');
-        */
+        $('#postContent').val('');
     };
 
+    /*
+    *举报按钮
+    */
 	report = () => {
         alert('举报他人恶意私信请到【论坛事务】按照格式发帖投诉，记得截图保留证据，管理员会及时进行处理！感谢您对CC98的支持！');
     };
@@ -105,9 +161,15 @@ export class MessageWindow extends React.Component<MessagePersonProps, MessageWi
                         <div className="message-message-wTitle">与 {data.name} 的私信</div>
                         <div className="message-message-wReport"><button onClick={this.report}>举报</button></div>
                     </div>
-                    <div className="message-message-wContent" id="messageContent">{this.state.data.map(this.coverMessageProps)}<div className="message-message-wcLoading"><img src="http://file.cc98.org/uploadfile/2017/11/19/2348481046.gif"></img></div></div>
+                    <div className="message-message-wContent" id="messageContent">
+                        {this.state.data.map(this.coverMessageProps)}
+                        <div className="message-message-wcLoading">
+                            <img src="http://file.cc98.org/uploadfile/2017/11/19/2348481046.gif" id="wcLoadingImg" className="displaynone"></img>
+                            <div id="wcLoadingText" className="message-message-wcLoadingText displaynone">-----------已加载全部私信-----------</div>
+                        </div>
+                    </div>
                     <div className="message-message-wPost">
-                        <textarea className="message-message-wPostArea" id="myMessageContent"></textarea>
+                        <textarea className="message-message-wPostArea" id="postContent"></textarea>
                         <button className="message-message-wPostBtn" onClick={this.postMessage}>回复</button>
                     </div>
                 </div>);

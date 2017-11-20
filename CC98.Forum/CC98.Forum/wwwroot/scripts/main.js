@@ -1734,7 +1734,7 @@ function getRecentContact(from, size) {
             switch (_d.label) {
                 case 0:
                     token = getLocalStorage("accessToken");
-                    recentContact = getStorage("recentContact");
+                    recentContact = getLocalStorage("recentContact");
                     if (!!recentContact) return [3 /*break*/, 9];
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/message/recentcontactusers?from=" + from + "&size=" + size, { headers: { 'Authorization': "" + token } })];
                 case 1:
@@ -1774,7 +1774,7 @@ function getRecentContact(from, size) {
                     _i++;
                     return [3 /*break*/, 5];
                 case 8:
-                    setStorage("recentContact", recentContact);
+                    setLocalStorage("recentContact", recentContact);
                     _d.label = 9;
                 case 9: return [2 /*return*/, recentContact];
             }
@@ -2843,7 +2843,7 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { path: "/list/:boardid/:page?", component: List_1.List }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/boardlist", component: BoardList_1.BoardList }),
                     React.createElement(react_router_dom_1.Route, { path: "/usercenter", component: UserCenter_1.UserCenter }),
-                    React.createElement(react_router_dom_1.Route, { path: "/mymessage", component: Message_1.Message }),
+                    React.createElement(react_router_dom_1.Route, { path: "/message", component: Message_1.Message }),
                     React.createElement(react_router_dom_1.Route, { path: "/focus", component: Focus_1.Focus }),
                     React.createElement(react_router_dom_1.Route, { path: "/newtopics", component: AllNewTopic_1.AllNewTopic }),
                     React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }),
@@ -5932,7 +5932,7 @@ var DropDown = /** @class */ (function (_super) {
                         React.createElement("a", { href: "/userCenter" },
                             " ",
                             React.createElement("li", null, "\u4E2A\u4EBA\u4E2D\u5FC3")),
-                        React.createElement("a", { href: "/myMessage" },
+                        React.createElement("a", { href: "/message" },
                             React.createElement("li", null, "\u6D88\u606F")),
                         React.createElement("li", { onClick: this.logOff }, "\u6CE8\u9500"))));
         }
@@ -7187,7 +7187,7 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { path: "/list/:boardid/:page?", component: List_1.List }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/boardlist", component: BoardList_1.BoardList }),
                     React.createElement(react_router_dom_1.Route, { path: "/usercenter", component: UserCenter_1.UserCenter }),
-                    React.createElement(react_router_dom_1.Route, { path: "/mymessage", component: Message_1.Message }),
+                    React.createElement(react_router_dom_1.Route, { path: "/message", component: Message_1.Message }),
                     React.createElement(react_router_dom_1.Route, { path: "/focus", component: Focus_1.Focus }),
                     React.createElement(react_router_dom_1.Route, { path: "/newtopics", component: AllNewTopic_1.AllNewTopic }),
                     React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }),
@@ -9129,7 +9129,7 @@ var MessageMessage = /** @class */ (function (_super) {
                         id: 9898,
                         senderId: 9898,
                         receiverId: 9898,
-                        content: "默认内容",
+                        content: "",
                         isRead: true,
                         time: new Date(),
                     }]
@@ -9141,17 +9141,42 @@ var MessageMessage = /** @class */ (function (_super) {
         return _this;
         //如果没有设置默认的state，render第一次渲染的时候state为空，MessageWindow组件会报错
     }
-    MessageMessage.prototype.componentWillMount = function () {
+    MessageMessage.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, myInfo, recentContact;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var token, myInfo, recentContact, urlMessage, chatManId, response, chatMan, _a, chatContact;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         token = Utility.getLocalStorage("accessToken");
                         myInfo = Utility.getLocalStorage("userInfo");
                         return [4 /*yield*/, Utility.getRecentContact(0, 6)];
                     case 1:
-                        recentContact = _a.sent();
+                        recentContact = _b.sent();
+                        //看url中是否携带id信息，如果有的话就作为第一个联系人
+                        console.log(location.href);
+                        urlMessage = location.href.match(/id=(\S+)/);
+                        console.log("\u643A\u5E26\u4FE1\u606F" + urlMessage);
+                        if (!urlMessage) return [3 /*break*/, 5];
+                        chatManId = parseInt(urlMessage[1]);
+                        console.log(chatManId);
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/basic/" + chatManId)];
+                    case 2:
+                        response = _b.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 3:
+                        chatMan = _b.sent();
+                        console.log(chatMan);
+                        _a = chatMan;
+                        return [4 /*yield*/, Utility.getRecentMessage(chatManId, 0, 10)];
+                    case 4:
+                        _a.message = _b.sent();
+                        chatContact = [chatMan];
+                        console.log(chatContact);
+                        recentContact = chatContact.concat(recentContact);
+                        console.log(recentContact);
+                        _b.label = 5;
+                    case 5:
+                        console.log(recentContact);
                         if (recentContact) {
                             //默认第一个人为聊天对象
                             this.setState({ data: recentContact, chatObj: recentContact[0] });
@@ -9218,8 +9243,19 @@ var MessagePerson = /** @class */ (function (_super) {
     }
     MessagePerson.prototype.render = function () {
         var data = this.props.data;
-        console.log("3");
-        console.log(data);
+        console.log("开始联系人列表render了");
+        console.log(data.message);
+        if (data.message.length == 0) {
+            console.log("这家伙没内容");
+            data.message = [{
+                    id: 9898,
+                    senderId: 9898,
+                    receiverId: 9898,
+                    content: "",
+                    isRead: true,
+                    time: new Date(),
+                }];
+        }
         return (React.createElement("div", { className: "message-message-person" },
             React.createElement("img", { className: "message-message-pPortraitUrl", src: data.portraitUrl }),
             React.createElement("div", { className: "message-message-pInfo" },
@@ -9298,43 +9334,29 @@ var MessageWindow = /** @class */ (function (_super) {
         *单条私信的的样式
         */
         _this.coverMessageProps = function (item) {
-            console.log("5");
+            console.log("windowd的私信转化函数里了");
+            console.log(item);
             var userInfo = Utility.getLocalStorage("userInfo");
             var data = _this.props.data;
             if (item.receiverId == userInfo.id) {
                 //如果我是接收者调用这个样式，处于左边
                 return React.createElement(MessageReceiver_1.MessageReceiver, { id: item.id, senderName: data.name, receiverName: userInfo.name, senderPortraitUrl: data.portraitUrl, receiverPortraitUrl: userInfo.portraitUrl, content: item.content, isRead: item.isRead, time: item.time });
             }
-            else {
+            else if (item.senderId == userInfo.id) {
                 //如果我是发送者调用这个样式，处于右边
                 return React.createElement(MessageSender_1.MessageSender, { id: item.id, senderName: userInfo.name, receiverName: data.name, senderPortraitUrl: userInfo.portraitUrl, receiverPortraitUrl: data.portraitUrl, content: item.content, isRead: item.isRead, time: item.time });
             }
         };
-        /**
-        *发送私信内容的函数
+        /*
+        *举报按钮
         */
-        _this.postMessage = function () {
-            /*const bodyObj = { receiverName: this.props.chatName, title: '你好', content: $('#myMessageContent').val() };
-            const bodyContent = JSON.stringify(bodyObj);
-            const messageId = fetch('https://api.cc98.org/Message', {
-                method: 'POST',
-                headers: { Authorization: `${this.props.token}`, 'content-type': 'application/json'},
-                body: bodyContent
-            });
-            //重新获取数据并渲染
-            console.log($('#myMessageContent').val());
-            //这里写法有点奇怪，但是这样写才能暂停0.2秒再执行this.getMessageData，不能在setTimeout的第一个函数里直接调用this.getMessageData,那样会立即执行
-            const self = this;
-            setTimeout(function () { self.getMessageData(self.props) }, 200);
-            //清空输入框
-            $('#myMessageContent').val('');
-            */
-        };
         _this.report = function () {
             alert('举报他人恶意私信请到【论坛事务】按照格式发帖投诉，记得截图保留证据，管理员会及时进行处理！感谢您对CC98的支持！');
         };
         _this.state = { data: [] };
         _this.handleScroll = _this.handleScroll.bind(_this);
+        _this.getNewMessage = _this.getNewMessage.bind(_this);
+        _this.postMessage = _this.postMessage.bind(_this);
         return _this;
     }
     MessageWindow.prototype.componentDidMount = function () {
@@ -9358,37 +9380,125 @@ var MessageWindow = /** @class */ (function (_super) {
             });
         });
     };
+    /*
+    *处理聊天窗口滚动栏的函数，滚到顶部继续加载私信内容
+    */
     MessageWindow.prototype.handleScroll = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var scrollTop, data, newData, recentContact, i;
+            var scrollTop, oldData, newData, data, recentContact, i;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        scrollTop = $('messageContent').scrollTop();
-                        console.log(screenTop);
+                        scrollTop = $('#messageContent')[0].scrollTop;
+                        console.log(scrollTop);
                         if (!(scrollTop == 0)) return [3 /*break*/, 2];
                         console.log("到顶啦");
-                        data = this.state.data;
-                        return [4 /*yield*/, Utility.getRecentMessage(this.props.data.id, data.length, 10)];
+                        $('#wcLoadingImg').removeClass("displaynone");
+                        oldData = this.state.data;
+                        return [4 /*yield*/, Utility.getRecentMessage(this.props.data.id, oldData.length, 10)];
                     case 1:
                         newData = _a.sent();
                         //跟之前的拼接一下
-                        data = data.concat(newData);
-                        this.setState({ data: data });
-                        recentContact = Utility.getStorage("recentContact");
-                        for (i in recentContact) {
-                            if (recentContact[i].id == this.props.data.id) {
-                                recentContact[i].message = data;
-                                break;
+                        if (newData.length > 0) {
+                            data = oldData.concat(newData);
+                            this.setState({ data: data });
+                            recentContact = Utility.getLocalStorage("recentContact");
+                            if (recentContact) {
+                                for (i in recentContact) {
+                                    if (recentContact[i].id == this.props.data.id) {
+                                        recentContact[i].message = data;
+                                        break;
+                                    }
+                                }
+                                Utility.setLocalStorage("recentContact", recentContact);
                             }
                         }
-                        Utility.setStorage("recentContact", recentContact);
+                        else {
+                            console.log("没有");
+                            $('#wcLoadingImg').addClass("displaynone");
+                            $('#wcLoadingText').removeClass("displaynone");
+                        }
                         _a.label = 2;
                     case 2: return [2 /*return*/];
                 }
             });
         });
     };
+    /**
+    *点击发送私信后，获取私信内容并刷新聊天界面
+    */
+    MessageWindow.prototype.getNewMessage = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var data, oldData, recentContact, i, j, chatMan;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Utility.getRecentMessage(this.props.data.id, 0, 10)];
+                    case 1:
+                        data = _a.sent();
+                        oldData = [];
+                        recentContact = Utility.getLocalStorage("recentContact");
+                        if (recentContact) {
+                            for (i = 0; i < recentContact.length; i++) {
+                                if (recentContact[i].id == this.props.data.id) {
+                                    oldData = recentContact[i].message;
+                                    //新旧私信信息拼接一下
+                                    if (oldData != []) {
+                                        for (j = 0; j < data.length; j++) {
+                                            if (data[j].id == oldData[0].id) {
+                                                data = data.slice(0, j).concat(oldData);
+                                                console.log("获取到了新私信");
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    //更新缓存
+                                    recentContact[i].message = data;
+                                    break;
+                                }
+                            }
+                            if (i == recentContact.length) {
+                                chatMan = [this.props.data];
+                                chatMan[0].message = data;
+                                recentContact = chatMan.concat(recentContact);
+                            }
+                        }
+                        //刷新状态
+                        this.setState({ data: data });
+                        Utility.setLocalStorage("recentContact", recentContact);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+    *发送私信内容的函数
+    */
+    MessageWindow.prototype.postMessage = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var token, bodyObj, bodyContent, messageId;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        token = Utility.getLocalStorage("accessToken");
+                        bodyObj = { receiverId: this.props.data.id, content: $('#postContent').val() };
+                        bodyContent = JSON.stringify(bodyObj);
+                        return [4 /*yield*/, fetch('http://apitest.niconi.cc/message/send', {
+                                method: 'POST',
+                                headers: { Authorization: "" + token, 'content-type': 'application/json' },
+                                body: bodyContent
+                            })];
+                    case 1:
+                        messageId = _a.sent();
+                        //暂停0.2秒再执行
+                        setTimeout(this.getNewMessage, 200);
+                        //清空输入框
+                        $('#postContent').val('');
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ;
     MessageWindow.prototype.render = function () {
         console.log("4");
         var data = this.props.data;
@@ -9404,9 +9514,10 @@ var MessageWindow = /** @class */ (function (_super) {
             React.createElement("div", { className: "message-message-wContent", id: "messageContent" },
                 this.state.data.map(this.coverMessageProps),
                 React.createElement("div", { className: "message-message-wcLoading" },
-                    React.createElement("img", { src: "http://file.cc98.org/uploadfile/2017/11/19/2348481046.gif" }))),
+                    React.createElement("img", { src: "http://file.cc98.org/uploadfile/2017/11/19/2348481046.gif", id: "wcLoadingImg", className: "displaynone" }),
+                    React.createElement("div", { id: "wcLoadingText", className: "message-message-wcLoadingText displaynone" }, "-----------\u5DF2\u52A0\u8F7D\u5168\u90E8\u79C1\u4FE1-----------"))),
             React.createElement("div", { className: "message-message-wPost" },
-                React.createElement("textarea", { className: "message-message-wPostArea", id: "myMessageContent" }),
+                React.createElement("textarea", { className: "message-message-wPostArea", id: "postContent" }),
                 React.createElement("button", { className: "message-message-wPostBtn", onClick: this.postMessage }, "\u56DE\u590D"))));
     };
     return MessageWindow;
@@ -9827,7 +9938,7 @@ var AllNewTopicArea = /** @class */ (function (_super) {
             React.createElement("div", { className: "focus-topic-topicArea" }, this.state.data.map(coverFocusPost)),
             React.createElement("div", { className: "focus-topic-loading", id: "focus-topic-loading" },
                 React.createElement("img", { src: "http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif" })),
-            React.createElement("div", { className: "focus-topic-loaddone displaynone", id: "focus-topic-loaddone" }, "---------------------- \u5DF2\u52A0\u8F7D100\u6761\u65B0\u5E16\uFF0C\u65E0\u6CD5\u52A0\u8F7D\u66F4\u591A ----------------------"));
+            React.createElement("div", { className: "focus-topic-loaddone displaynone", id: "focus-topic-loaddone" }, "---------------------- \u5DF2\u52A0\u8F7D100\u6761\u5E16\u5B50\uFF0C\u65E0\u6CD5\u52A0\u8F7D\u66F4\u591A ----------------------"));
     };
     return AllNewTopicArea;
 }(React.Component));
@@ -9890,7 +10001,7 @@ function isBottom() {
     /*
     *预留100px给“正在加载”的提示标志
     */
-    if (getScrollTop() + getWindowHeight() + 100 > getScrollHeight()) {
+    if (getScrollTop() + getWindowHeight() + 300 > getScrollHeight()) {
         return true;
     }
     else {
@@ -10326,7 +10437,7 @@ function isBottom() {
     /*
     *预留100px给“正在加载”的提示标志
     */
-    if (getScrollTop() + getWindowHeight() + 100 > getScrollHeight()) {
+    if (getScrollTop() + getWindowHeight() + 300 > getScrollHeight()) {
         return true;
     }
     else {
