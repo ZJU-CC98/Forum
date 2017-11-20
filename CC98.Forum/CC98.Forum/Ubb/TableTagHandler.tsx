@@ -14,6 +14,6 @@ export class TableTagHandler extends Ubb.RecursiveTagHandler {
 
     execCore(innerContent: React.ReactNode, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
 
-        return <table>{innerContent}</table>;
+        return <table className="UBBTableTag">{innerContent}</table>;
     }
 }
