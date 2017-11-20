@@ -89,6 +89,10 @@
     display: flex;
     margin-bottom: 3rem;
 
+    *:focus {
+        outline: none;
+    }
+
     .user-center-navigation-fixed {
         animation-name: fixnavigation;
         animation-duration: 500ms;
@@ -276,6 +280,8 @@
                 .user-description {
                     display: flex;
                     flex-wrap: wrap;
+                    max-width: 580px;
+                    overflow-x: hidden;
 
                     & > p {
                         width: 100%;

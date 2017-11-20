@@ -90,7 +90,7 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
             <div className="user-profile">
                 <div id="userId">
                     <p>{this.props.userInfo.name}</p>
-                    <button type="button">私信</button>
+                    <button type="button" onClick={() => { location.href = `/message/message?id=${this.props.userInfo.id}`; }}>私信</button>
                     <button type="button" id={this.state.isFollowing ? 'unfollow' : ''} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
                 </div>
                 <div id="userGenderAndBirthday">
