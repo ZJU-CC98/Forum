@@ -67,7 +67,7 @@ export class Image extends React.Component<{ imageUri, title, isShowed: boolean 
         if (this.state.isShowed) {
             return <img src={this.props.imageUri} alt={this.props.title} />
         } else {
-            return <div onClick={this.toggleIsShowed}>[点击查看图片]{this.props.imageUri}</div>
+            return <div className="hiddenImage" onClick={this.toggleIsShowed}>点击查看图片</div>
         }
     }
 }
