@@ -94,10 +94,6 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
                     }
                     //更新与该聊天对象的message
                     recentContact[i].message = data;
-                    //该聊天对象提至联系人列表的最上方
-                    let indexData = recentContact[i];
-                    recentContact.splice(i, 1);
-                    recentContact.unshift(indexData);
                     break;
                 }
             }
@@ -106,10 +102,23 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
                 chatMan[0].message = data;
                 recentContact = chatMan.concat(recentContact);
             }
+            //聊天对象是联系人列表第一个，只需要刷新聊天窗口
+            if (i == 0) {
+                //刷新状态
+                Utility.setStorage("recentContact", recentContact);
+                this.setState({ data: data });
+            }
+            else {
+                //聊天对象不是联系人列表第一个，将该聊天对象提至联系人列表的最上方并刷新父级（同时刷新联系人列表和聊天窗口）
+                let indexData = recentContact[i];
+                recentContact.splice(i, 1);
+                recentContact.unshift(indexData);
+
+                //刷新状态
+                Utility.setStorage("recentContact", recentContact);
+                this.props.onChange();
+            }
         }
-        //刷新状态
-        Utility.setStorage("recentContact", recentContact);
-        this.props.onChange();
     }
 
 

@@ -9186,6 +9186,9 @@ var MessageMessage = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 recentContact = Utility.getStorage("recentContact");
                 this.setState({ data: recentContact, chatObj: recentContact[0] });
+                //选中第一个联系人
+                $('.message-message-pList > div').removeClass('message-message-pFocus');
+                $("#" + this.state.chatObj.name).addClass('message-message-pFocus');
                 return [2 /*return*/];
             });
         });
@@ -9432,7 +9435,7 @@ var MessageWindow = /** @class */ (function (_super) {
     */
     MessageWindow.prototype.getNewMessage = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var data, oldData, recentContact, i, j, indexData, chatMan;
+            var data, oldData, recentContact, i, j, chatMan, indexData;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, Utility.getRecentMessage(this.props.data.id, 0, 10)];
@@ -9456,9 +9459,6 @@ var MessageWindow = /** @class */ (function (_super) {
                                     }
                                     //更新与该聊天对象的message
                                     recentContact[i].message = data;
-                                    indexData = recentContact[i];
-                                    recentContact.splice(i, 1);
-                                    recentContact.unshift(indexData);
                                     break;
                                 }
                             }
@@ -9467,11 +9467,21 @@ var MessageWindow = /** @class */ (function (_super) {
                                 chatMan[0].message = data;
                                 recentContact = chatMan.concat(recentContact);
                             }
+                            //聊天对象是联系人列表第一个，只需要刷新聊天窗口
+                            if (i == 0) {
+                                //刷新状态
+                                Utility.setStorage("recentContact", recentContact);
+                                this.setState({ data: data });
+                            }
+                            else {
+                                indexData = recentContact[i];
+                                recentContact.splice(i, 1);
+                                recentContact.unshift(indexData);
+                                //刷新状态
+                                Utility.setStorage("recentContact", recentContact);
+                                this.props.onChange();
+                            }
                         }
-                        //刷新状态
-                        Utility.setStorage("recentContact", recentContact);
-                        //this.setState({ data: data });
-                        this.props.onChange();
                         return [2 /*return*/];
                 }
             });
