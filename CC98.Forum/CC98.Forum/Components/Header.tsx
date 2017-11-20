@@ -12,20 +12,65 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
         });
     }
     async componentDidMount() {
-
-        if (Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName")) {
+        if (Utility.getLocalStorage("accessToken")) {
             let userName = Utility.getLocalStorage("userName");
             let response = await fetch(`http://apitest.niconi.cc/User/Name/${userName}`);
             let data = await response.json();
             let userImgUrl = data.portraitUrl;
             this.setState({ userName: userName, userImgUrl: userImgUrl });
-        }    
+        } else if (Utility.getLocalStorage("userName")) {   //如果缓存中没有token但是存在userName，说明token已过期，尝试自动刷新token
+            this.reLogOn();
+            //刷新token成功，改变state
+            let userName = Utility.getLocalStorage("userName");
+            let response = await fetch(`http://apitest.niconi.cc/User/Name/${userName}`);
+            let data = await response.json();
+            let userImgUrl = data.portraitUrl;
+            this.setState({ userName: userName, userImgUrl: userImgUrl });
+        }
+    }
+
+    async reLogOn() {
+        let url = 'https://openid.cc98.org/connect/token';
+        const requestBody = {
+            'client_id': '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
+            'client_secret': '8b53f727-08e2-4509-8857-e34bf92b27f2',
+            'grant_type': 'password',
+            'username': Utility.getLocalStorage("userName"),
+            'password': Utility.getLocalStorage("password"),
+            'scope': "cc98-api openid"
+        }
+
+        let reLogOnResponse = await fetch(url, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',//在fetch API里这不是默认值，需要手动添加
+            },
+            body: $.param(requestBody)
+
+        });
+        //请求是否成功
+        if (reLogOnResponse.status !== 200) {
+            console.log('自动刷新token失败，请重新登录');//因为logOff会刷新页面，所以这里可能看不到
+            this.logOff();
+        }
+
+        //缓存数据
+        let reLogOnData = await reLogOnResponse.json();
+        const token = "Bearer " + encodeURIComponent(reLogOnData.access_token);
+        Utility.setLocalStorage("accessToken", token, reLogOnData.expires_in);
+        console.log("刷新token成功");
+
+    } catch(e) {    //捕捉到例外，开始执行catch语句，否则跳过
+        console.log("Oops, error", e);
+        console.log('自动刷新token失败，请重新登录');//因为logOff会刷新页面，所以这里可能看不到
+        this.logOff();
     }
 
     logOff() {
         Utility.removeLocalStorage("accessToken");
         console.log("after remove token=" + Utility.getLocalStorage("accessToken"));
         Utility.removeLocalStorage("userName");
+        Utility.removeLocalStorage("password");
         Utility.removeLocalStorage("userInfo");
         Utility.removeLocalStorage("recentContact");
         Utility.removeStorage("focusBoardList");

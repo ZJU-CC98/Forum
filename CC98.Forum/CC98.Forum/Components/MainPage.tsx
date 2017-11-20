@@ -218,8 +218,8 @@ export class Shixijianzhi extends React.Component<{}, MainPageTopicState>{
 export class Test extends React.Component<{}, AppState>{
 
     async test() {
-        let url = 'http://apitest.niconi.cc/user/follow/fancount?userid=5298';
-        let token = Utility.getLocalStorage("accessToken");
+        const url = 'http://apitest.niconi.cc/topic/test';
+        const token = Utility.getLocalStorage("accessToken");
         console.log(token);
         let myHeaders = new Headers();
         myHeaders.append("Content-Type", 'application/x-www-form-urlencoded');
@@ -229,8 +229,7 @@ export class Test extends React.Component<{}, AppState>{
             headers: myHeaders,
             body: { 'token': token }
         });
-        let data = await response.json();
-        data += 1;
+        const data = await response.json();
         console.log(data);
     }
     render() {
