@@ -33,35 +33,37 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
             chatObj: defaultData[0]
         };
         //如果没有设置默认的state，render第一次渲染的时候state为空，MessageWindow组件会报错
+        this.getMoreContact = this.getMoreContact.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
 
     async componentDidMount() {
         let token = Utility.getLocalStorage("accessToken");
+        console.log(token);
 
         //获取到本人信息
         let myInfo = Utility.getLocalStorage("userInfo");
 
         //创建一个数组存储联系人信息
-        let recentContact = await Utility.getRecentContact(0, 6);
-
-        //看url中是否携带id信息，如果有的话就作为第一个联系人
-        console.log(location.href);
-        let urlMessage = location.href.match(/id=(\S+)/);
-        console.log(`携带信息${urlMessage}`);
-        if (urlMessage) {
-            let chatManId = parseInt(urlMessage[1]);
-            console.log(chatManId);
-            let response = await fetch(`http://apitest.niconi.cc/user/basic/${chatManId}`);
-            let chatMan = await response.json();
-            console.log(chatMan);
-            chatMan.message = await Utility.getRecentMessage(chatManId, 0, 10);
-            let chatContact = [chatMan];
-            console.log(chatContact);
-            recentContact = chatContact.concat(recentContact);
+        let recentContact = Utility.getStorage("recentContact");
+        if (!recentContact) {
+            recentContact = await Utility.getRecentContact(0, 7);
+            console.log("获取到的联系人");
             console.log(recentContact);
+            Utility.setStorage("recentContact", recentContact);
         }
 
-        console.log(recentContact);
+        //看url中是否携带id信息，如果有的话就作为第一个联系人
+        let urlMessage = location.href.match(/id=(\S+)/);
+        if (urlMessage) {
+            let chatManId = parseInt(urlMessage[1]);
+            let response = await fetch(`http://apitest.niconi.cc/user/basic/${chatManId}`);
+            let chatMan = await response.json();
+            chatMan.message = await Utility.getRecentMessage(chatManId, 0, 10);
+            let chatContact = [chatMan];
+            recentContact = chatContact.concat(recentContact);
+        }
+        
         if (recentContact) {
             //默认第一个人为聊天对象
             this.setState({ data: recentContact, chatObj: recentContact[0] });
@@ -79,7 +81,38 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
 		    $(`#${item.name}`).addClass('message-message-pFocus');
         };
         return <div onClick={changeChatName} id={`${item.name}`}><MessagePerson data={item} /></div>;
-	};
+    };
+
+    /**
+    *点击获取更多联系人
+    */
+    async getMoreContact() {
+        if ($('#moreDone').css('display') == 'none') {
+            $('#moreImg').removeClass('displaynone');
+            $('#moreDot').addClass('displaynone');
+            $('#moreShow').addClass('displaynone');
+            let recentContact = this.state.data;
+            let newContact = await Utility.getRecentContact(recentContact.length, 7);
+            recentContact = recentContact.concat(newContact);
+            this.setState({ data: recentContact });
+            Utility.setStorage("recentContact", recentContact);
+
+            if (newContact.length < 7) {
+                $('#moreImg').addClass('displaynone');
+                $('#moreDone').removeClass('displaynone');
+            }
+            else {
+                $('#moreImg').addClass('displaynone');
+                $('#moreDot').removeClass('displaynone');
+                $('#moreShow').removeClass('displaynone');
+            }
+        }
+    }
+
+    async onChange() {
+        let recentContact = Utility.getStorage("recentContact");
+        this.setState({ data: recentContact, chatObj: recentContact[0] });
+    }
 
 	render() {
         //给我的私信添加选中样式
@@ -90,9 +123,17 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
         return (<div className="message-message">
                 <div className="message-message-people">
                     <div className="message-message-pTitle">近期私信</div>
-                    <div className="message-message-pList">{this.state.data.map(this.coverMessagePerson)}</div>
+                    <div className="message-message-pList">
+                    {this.state.data.map(this.coverMessagePerson)}
+                    <div className="message-message-plMore" onClick={this.getMoreContact}>
+                            <img id="moreImg" src="http://file.cc98.org/uploadfile/2017/11/19/2348481046.gif" className="displaynone"></img>
+                            <div id="moreDot">...</div>
+                            <div id="moreShow">点此显示更多</div>
+                            <div id="moreDone" className="displaynone">已全部显示</div>
+                        </div>
+                    </div>
                 </div>
-                <MessageWindow data={this.state.chatObj} />
+                <MessageWindow data={this.state.chatObj} onChange={this.onChange} />
             </div>);
     }
 }

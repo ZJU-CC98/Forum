@@ -269,7 +269,9 @@ export async function getAllNewTopic(curNum: number) {
     /**
      * 通过api获取到主题之后转成json格式
      */
-    const response = await fetch(`http://apitest.niconi.cc/topic/new?from=${curNum}&size=${size}`, { headers: { 'Authorization': `${token}` } });
+    let myHeaders = new Headers();
+    myHeaders.append("Authorization", token);
+    const response = await fetch(`http://apitest.niconi.cc/topic/new?from=${curNum}&size=${size}`, { headers: myHeaders });
     const newTopic = await response.json();
     for (let i in newTopic) {
         if (newTopic[i].userId) {
@@ -311,7 +313,9 @@ export async function getFocusTopic(curNum: number) {
     /**
      * 通过api获取到主题之后转成json格式
      */
-    const response = await fetch(`http://apitest.niconi.cc/topic/customboards/new?from=${curNum}&size=${size}`, { headers: { 'Authorization': `${token}` } });
+    let myHeaders = new Headers();
+    myHeaders.append("Authorization", token);
+    const response = await fetch(`http://apitest.niconi.cc/topic/customboards/new?from=${curNum}&size=${size}`, { headers: myHeaders });
     const newTopic = await response.json();
     for (let i in newTopic) {
         if (newTopic[i].userId) {
@@ -444,26 +448,24 @@ export function isLogOn(): boolean {
 */
 export async function getRecentContact(from: number, size: number) {
     let token = getLocalStorage("accessToken");
-    let recentContact = getLocalStorage("recentContact");
-    if (!recentContact) {
-        let response = await fetch(`http://apitest.niconi.cc/message/recentcontactusers?from=${from}&size=${size}`, { headers: { 'Authorization': `${token}` } });
-        let recentContactId = await response.json();
-        let url = "http://apitest.niconi.cc/user/basic"
-        for (let i in recentContactId) {
-            if (i == "0") {
-                url = `${url}?id=${recentContactId[i]}`;
-            }
-            else {
-                url = `${url}&id=${recentContactId[i]}`;
-            }
+    let myHeaders = new Headers();
+    myHeaders.append("Authorization", token);
+    let response = await fetch(`http://apitest.niconi.cc/message/recentcontactusers?from=${from}&size=${size}`, { headers: myHeaders });
+    let recentContactId = await response.json();
+    let url = "http://apitest.niconi.cc/user/basic"
+    for (let i in recentContactId) {
+        if (i == "0") {
+            url = `${url}?id=${recentContactId[i]}`;
         }
-        let response1 = await fetch(url);
-        recentContact = await response1.json();
-        for (let i in recentContact) {
-            recentContact[i].message = await getRecentMessage(recentContact[i].id, 0, 10);
+        else {
+            url = `${url}&id=${recentContactId[i]}`;
         }
-        setLocalStorage("recentContact", recentContact);
     }
+    let response1 = await fetch(url);
+    let recentContact = await response1.json();
+    for (let i in recentContact) {
+        recentContact[i].message = await getRecentMessage(recentContact[i].id, 0, 10);
+    }   
     return recentContact;
 }
 
@@ -472,7 +474,9 @@ export async function getRecentContact(from: number, size: number) {
 */
 export async function getRecentMessage(userId: number, from: number, size: number) {
     let token = getLocalStorage("accessToken");
-    let response = await fetch(`http://apitest.niconi.cc/message/${userId}?from=${from}&size=${size}`, { headers: { 'Authorization': `${token}` } });
+    let myHeaders = new Headers();
+    myHeaders.append("Authorization", token);
+    let response = await fetch(`http://apitest.niconi.cc/message/${userId}?from=${from}&size=${size}`, { headers: myHeaders });
     let recentMessage = await response.json();
     return recentMessage;
 }

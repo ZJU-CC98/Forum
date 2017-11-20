@@ -13,6 +13,9 @@ export class MessageResponse extends React.Component<{}, MessageResponseState> {
 
 
     render() {
+        //给我的回复添加选中样式
+        $('.message-nav > div').removeClass('message-nav-focus');
+        $('#response').addClass('message-nav-focus');
         return <div>这里是我的回复</div>;
     }
     /*

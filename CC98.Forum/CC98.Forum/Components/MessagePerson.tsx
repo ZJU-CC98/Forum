@@ -8,10 +8,7 @@ export class MessagePerson extends React.Component<MessagePersonProps> {
     
     render() {
         let data = this.props.data;
-        console.log("开始联系人列表render了");
-        console.log(data.message);
         if (data.message.length == 0) {
-            console.log("这家伙没内容");
             data.message = [{
                 id: 9898,
                 senderId: 9898,
