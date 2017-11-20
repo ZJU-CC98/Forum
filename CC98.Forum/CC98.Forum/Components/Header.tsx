@@ -30,6 +30,7 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
         Utility.removeLocalStorage("recentContact");
         Utility.removeStorage("focusBoardList");
         Utility.removeStorage("focusBoardTopic");
+        Utility.removeStorage("recentContact");
         location = window.location;     //刷新当前页面
     }
 

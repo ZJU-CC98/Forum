@@ -13,6 +13,9 @@ import * as Utility from '../Utility';
 export class MessageAttme extends React.Component<{}, MessageResponseState> {
 
     render() {
+        //给我的回复添加选中样式
+        $('.message-nav > div').removeClass('message-nav-focus');
+        $('#attme').addClass('message-nav-focus');
         return <div>这里是@我的消息</div>;
     }
 

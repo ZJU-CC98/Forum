@@ -6,10 +6,10 @@ import { MessageProps } from '../Props/MessageProps';
 import { MessageWindowState } from '../States/MessageWindowState';
 import { MessageSender } from './MessageSender';
 import { MessageReceiver } from './MessageReceiver';
-import { MessagePersonProps } from '../Props/MessagePersonProps';
+import { MessageWindowProps } from '../Props/MessageWindowProps';
 import * as Utility from '../Utility';
 
-export class MessageWindow extends React.Component<MessagePersonProps, MessageWindowState>{
+export class MessageWindow extends React.Component<MessageWindowProps, MessageWindowState>{
 
     constructor(props) {
         super(props);
@@ -49,7 +49,7 @@ export class MessageWindow extends React.Component<MessagePersonProps, MessageWi
                 let data = oldData.concat(newData);
                 this.setState({ data: data });
                 //取出联系人缓存，更新对应的联系人的数据并缓存
-                let recentContact = Utility.getLocalStorage("recentContact");
+                let recentContact = Utility.getStorage("recentContact");
                 if (recentContact) {
                     for (let i in recentContact) {
                         if (recentContact[i].id == this.props.data.id) {
@@ -57,7 +57,7 @@ export class MessageWindow extends React.Component<MessagePersonProps, MessageWi
                             break;
                         }
                     }
-                    Utility.setLocalStorage("recentContact", recentContact);
+                    Utility.setStorage("recentContact", recentContact);
                 }
             }
             else {
@@ -77,7 +77,7 @@ export class MessageWindow extends React.Component<MessagePersonProps, MessageWi
 
         //先看一下缓存里的旧私信信息
         let oldData = [];
-        let recentContact = Utility.getLocalStorage("recentContact");
+        let recentContact = Utility.getStorage("recentContact");
         if (recentContact) {
             for (var i=0; i<recentContact.length; i++) {
                 if (recentContact[i].id == this.props.data.id) {
@@ -92,8 +92,12 @@ export class MessageWindow extends React.Component<MessagePersonProps, MessageWi
                             }
                         }
                     }
-                    //更新缓存
+                    //更新与该聊天对象的message
                     recentContact[i].message = data;
+                    //该聊天对象提至联系人列表的最上方
+                    let indexData = recentContact[i];
+                    recentContact.splice(i, 1);
+                    recentContact.unshift(indexData);
                     break;
                 }
             }
@@ -104,8 +108,8 @@ export class MessageWindow extends React.Component<MessagePersonProps, MessageWi
             }
         }
         //刷新状态
-        this.setState({ data: data });
-        Utility.setLocalStorage("recentContact", recentContact);
+        Utility.setStorage("recentContact", recentContact);
+        this.props.onChange();
     }
 
 
@@ -113,8 +117,6 @@ export class MessageWindow extends React.Component<MessagePersonProps, MessageWi
     *单条私信的的样式
     */
     coverMessageProps = (item: MessageProps) => {
-        console.log("windowd的私信转化函数里了");
-        console.log(item);
         let userInfo = Utility.getLocalStorage("userInfo");
         let data = this.props.data;
         if (item.receiverId == userInfo.id) {
@@ -134,9 +136,12 @@ export class MessageWindow extends React.Component<MessagePersonProps, MessageWi
         let token = Utility.getLocalStorage("accessToken");
         let bodyObj = { receiverId: this.props.data.id, content: $('#postContent').val() };
         let bodyContent = JSON.stringify(bodyObj);
+        let myHeaders = new Headers();
+        myHeaders.append('Authorization', token);
+        myHeaders.append('content-type', 'application/json');
         let messageId = await fetch('http://apitest.niconi.cc/message/send', {
-	        method: 'POST',
-	        headers: { Authorization: `${token}`, 'content-type': 'application/json'},
+            method: 'POST',
+            headers: myHeaders,
 	        body: bodyContent
         });
         //暂停0.2秒再执行
