@@ -13,28 +13,22 @@ import * as Utility from '../Utility';
  * 用户中心主页
  */
 export class UserCenterExact extends React.Component<null, UserCenterExactState> {
+    constructor(props) {
+        super(props);
 
-    async componentDidMount() {
-        let userInfo = Utility.getLocalStorage('userInfo');
-        
-        this.setState({
+        const userInfo = Utility.getLocalStorage('userInfo');
+        this.state = {
             userInfo: userInfo,
             userAvatarImgURL: userInfo.portraitUrl
-        });
+        };
     }
 
-    render() {
-        let element;
-        if (this.state !== null) {
-            element = (<div className="user-center-exact">
-                <UserCenterExactAvatar userAvatarImgURL={this.state.userAvatarImgURL} />
-                <UserCenterExactProfile userInfo={this.state.userInfo} />
-                <UserCenterExactActivities />
-            </div>);
-        } else {
-            element = <p>加载中</p>;
-        }
-        return element;
+    render() {        
+        return (<div className="user-center-exact">
+            <UserCenterExactAvatar userAvatarImgURL={this.state.userAvatarImgURL} />
+            <UserCenterExactProfile userInfo={this.state.userInfo} />
+            <UserCenterExactActivities />
+        </div>);
     }
 }
 
@@ -47,8 +41,4 @@ interface UserCenterExactState {
     * 用户头像链接地址
     */
     userAvatarImgURL: string;
-    /**
-    * 加载状态
-    */
-    responseState: number;
 }

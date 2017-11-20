@@ -109,7 +109,7 @@ export class AllNewTopicArea extends React.Component<{}, FocusTopicAreaState> {
         return <div className="focus-topic-area">
                     <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
                     <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif"></img></div>
-                    <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">---------------------- 已加载100条新帖，无法加载更多 ----------------------</div>
+                    <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">---------------------- 已加载100条帖子，无法加载更多 ----------------------</div>
                </div>;
     }
     
@@ -178,7 +178,7 @@ function isBottom() {
     /*
     *预留100px给“正在加载”的提示标志
     */
-    if (getScrollTop() + getWindowHeight() + 100 > getScrollHeight()) {
+    if (getScrollTop() + getWindowHeight() + 300 > getScrollHeight()) {
         return true;
     }
     else {

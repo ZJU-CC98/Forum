@@ -317,7 +317,15 @@ export class UserInfo {
     /**
     * 用户个性签名
     */
-    signatureCode: string
+    signatureCode: string;
+    /**
+    * id
+    */
+    id: string;
+    /**
+    * 当前用户是否关注了该用户
+    */
+    isFollowing: boolean;
 }
 
 /**

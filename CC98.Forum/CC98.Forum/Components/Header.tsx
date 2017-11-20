@@ -77,7 +77,7 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
                 <div className="dropDownSubBox">
                     <ul className="dropDownSub">
                         <a href="/userCenter"> <li>个人中心</li></a>
-                        <a href="/myMessage"><li>消息</li></a>
+                        <a href="/message"><li>消息</li></a>
                         <li onClick={this.logOff}>注销</li>
                     </ul>
                 </div>

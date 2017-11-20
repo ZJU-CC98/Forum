@@ -16,6 +16,7 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
             isFollowing: true
         }
         this.unfollow = this.unfollow.bind(this);
+        this.follow = this.follow.bind(this);
     }
 
     async unfollow() {
@@ -25,15 +26,14 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
         });
         const token = Utility.getLocalStorage("accessToken");
         const userId = this.props.userFanInfo.id;
-        const url = `http://apitest.niconi.cc/unfollow/${userId}`;
+        const url = `http://apitest.niconi.cc/user/unfollow/${userId}`;
 
         let res = await fetch(url, {
-            method: 'POST',
+            method: 'DELETE',
             headers: {
                 'Authorization': token
             }
         });
-        console.log(res);
         if (res.status === 200) {
             this.setState({
                 buttonIsDisabled: false,
@@ -57,7 +57,7 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
         const token = Utility.getLocalStorage("accessToken");
 
         const userId = this.props.userFanInfo.id;
-        const url = `http://apitest.niconi.cc/follow/${userId}`;
+        const url = `http://apitest.niconi.cc/user/follow/${userId}`;
         let res = await fetch(url, {
             method: 'POST',
             headers: {
@@ -85,7 +85,7 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
                     粉丝
                     <span className="user-center-myfollowings-user-fans">{this.props.userFanInfo.fans}</span>
                 </p>
-                <button type="button" onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
+                <button type="button" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
             </div>
         );
     }

@@ -1343,6 +1343,23 @@ body {
         overflow-y: auto;
         overflow-x: hidden;
 
+        .message-message-wcLoading {
+            flex-shrink: 0;
+            flex-grow: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+
+           .message-message-wcLoadingText {
+                height: 10px;
+                font-size: 10px;
+                color: $color-thinBlack;
+                text-align: center;
+                padding: 10px 0px 21px 0px;
+            }
+        }
+
         .message-message-wc {
             flex-shrink: 0;
             display: flex;
@@ -1819,7 +1836,7 @@ body {
         min-width: 240px;
 
         div {
-            flex-basis: 54px;
+            flex-basis: 64px;
             display: inline-flex;
             justify-content: flex-end;
             align-items: baseline;

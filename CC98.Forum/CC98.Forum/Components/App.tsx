@@ -43,7 +43,7 @@ export class App extends React.Component<{}, AppState> {
 					<Route path="/list/:boardid/:page?" component={List} />
 					<Route exact path="/boardlist" component={BoardList} />
 					<Route path="/usercenter" component={UserCenter} />
-                    <Route path="/mymessage" component={Message} />
+                    <Route path="/message" component={Message} />
                     <Route path="/focus" component={Focus} />
 					<Route path="/newtopics" component={AllNewTopic} />
 					<Route path="/user" component={User} />

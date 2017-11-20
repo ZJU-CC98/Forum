@@ -330,6 +330,7 @@ export async function getFocusTopic(curNum: number) {
         else {
             newTopic[i].fanCount = 0;
             newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+            newTopic[i].userName = "匿名";
             newTopic[i].boardName = "心灵之约";
         }
     }
@@ -459,9 +460,9 @@ export async function getRecentContact(from: number, size: number) {
         let response1 = await fetch(url);
         recentContact = await response1.json();
         for (let i in recentContact) {
-            recentContact[i].message = await getRecentMessage(recentContact[i].id, 0, 20);
+            recentContact[i].message = await getRecentMessage(recentContact[i].id, 0, 10);
         }
-        //setLocalStorage("recentContact", recentContact);
+        setLocalStorage("recentContact", recentContact);
     }
     return recentContact;
 }

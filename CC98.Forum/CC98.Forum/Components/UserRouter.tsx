@@ -7,9 +7,10 @@ import {
     Route
 } from 'react-router-dom';
 import { UserInfo } from '../States/AppState';
-import { UserCenterExactProfile } from './UserCenterExactProfile';
+import { UserExactProfile } from './UserExactProfile';
 import { UserCenterExactActivities } from './UserCenterExactActivities';
 import { UserCenterExactAvatar } from './UserCenterExactAvatar'
+import * as Utility from '../Utility';
 
 export class UserRouter extends React.Component {
     render() {
@@ -22,16 +23,28 @@ export class UserRouter extends React.Component {
 class UserExact extends React.Component<null, UserCenterExactState> {
 
     async componentDidMount() {
+        let myHeaders;
+        if (Utility.isLogOn()) {
+            myHeaders = {
+                'Authorization': Utility.getLocalStorage("accessToken")
+            };
+        }
+
         let response;
         if (!location.pathname.split('/')[2]) {
             return 0;
         } 
         if(location.pathname.split('/')[2] === 'name') {
-            response = await fetch(`https://api.cc98.org/User/Name/${location.pathname.split('/')[3]}`);
+            response = await fetch(`http://apitest.niconi.cc/User/Name/${location.pathname.split('/')[3]}`,{
+                headers: myHeaders
+            });
         } else {
-            response = await fetch(`https://api.cc98.org/User/${location.pathname.split('/')[2]}`);
+            response = await fetch(`http://apitest.niconi.cc/User/${location.pathname.split('/')[2]}`,{
+                headers: myHeaders
+            });
         }
         const data = await response.json();
+        console.log(data);
         this.setState({
             userInfo: data,
             userAvatarImgURL: data.portraitUrl,
@@ -44,7 +57,7 @@ class UserExact extends React.Component<null, UserCenterExactState> {
         if (this.state !== null && this.state.responseState === 200) {
             element = (<div className="user-center-exact">
                 <UserCenterExactAvatar userAvatarImgURL={this.state.userAvatarImgURL} />
-                <UserCenterExactProfile userInfo={this.state.userInfo} />
+                <UserExactProfile userInfo={this.state.userInfo} />
                 <UserCenterExactActivities />
             </div>);
         } else {

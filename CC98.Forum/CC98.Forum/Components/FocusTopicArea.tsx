@@ -46,7 +46,7 @@ export class FocusTopicArea extends React.Component<{}, FocusTopicAreaState> {
                     data = data.slice(0,i).concat(oldData);
                     break;
                 }
-            }
+             }
         } 
 
         //最多100条新帖
@@ -179,7 +179,7 @@ function isBottom() {
     /*
     *预留100px给“正在加载”的提示标志
     */
-    if (getScrollTop() + getWindowHeight() + 100 > getScrollHeight()) {
+    if (getScrollTop() + getWindowHeight() + 300 > getScrollHeight()) {
         return true;
     }
     else {
