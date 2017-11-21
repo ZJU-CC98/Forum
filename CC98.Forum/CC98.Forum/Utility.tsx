@@ -393,10 +393,13 @@ export function setLocalStorage(key, value, expireIn = 0) {
         v = `str-${v}`;
     }
     localStorage.setItem(key, v);
-    if (expireIn) {
+    
+    if (expireIn !== 0) {
         const now = new Date().getTime();
         let expirationTime = now + expireIn * 1000;
         localStorage.setItem(`${key}_expirationTime`, expirationTime.toString().slice(0, expirationTime.toString().length - 3));
+    } else {
+        localStorage.removeItem(`${key}_expirationTime`);
     }
 }
 export function getLocalStorage(key) {
