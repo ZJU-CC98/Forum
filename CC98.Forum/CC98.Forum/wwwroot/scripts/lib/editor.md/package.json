@@ -1,16 +1,8 @@
 {
   "_args": [
     [
-      {
-        "raw": "editor.md@1.5.0",
-        "scope": null,
-        "escapedName": "editor.md",
-        "name": "editor.md",
-        "rawSpec": "1.5.0",
-        "spec": "1.5.0",
-        "type": "version"
-      },
-      "C:\\Users\\dongy\\source\\Forum\\CC98.Forum\\CC98.Forum"
+      "editor.md@1.5.0",
+      "C:\\Users\\user.ZSQ-PC\\source\\repos\\Forum\\CC98.Forum\\CC98.Forum"
     ]
   ],
   "_from": "editor.md@1.5.0",
@@ -19,17 +11,16 @@
   "_location": "/editor.md",
   "_nodeVersion": "0.12.2",
   "_npmUser": {
-    "name": "pandao",
-    "email": "272383090@qq.com"
+    "email": "272383090@qq.com",
+    "name": "pandao"
   },
   "_npmVersion": "2.9.1",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "editor.md@1.5.0",
-    "scope": null,
-    "escapedName": "editor.md",
     "name": "editor.md",
+    "raw": "editor.md@1.5.0",
     "rawSpec": "1.5.0",
+    "scope": null,
     "spec": "1.5.0",
     "type": "version"
   },
@@ -40,7 +31,7 @@
   "_shasum": "6fe636a88a39b85613f53eee6ecb7b7348ab23bf",
   "_shrinkwrap": null,
   "_spec": "editor.md@1.5.0",
-  "_where": "C:\\Users\\dongy\\source\\Forum\\CC98.Forum\\CC98.Forum",
+  "_where": "C:\\Users\\user.ZSQ-PC\\source\\repos\\Forum\\CC98.Forum\\CC98.Forum",
   "author": {
     "name": "Pandao"
   },
@@ -74,10 +65,11 @@
   },
   "gitHead": "af08536772e34f6ef95870bb4cfd85d09bf1c932",
   "homepage": "https://github.com/pandao/editor.md",
+  "installable": true,
   "keywords": [
+    "editor",
     "editor.md",
-    "markdown",
-    "editor"
+    "markdown"
   ],
   "license": "MIT",
   "maintainers": [
@@ -88,10 +80,9 @@
   ],
   "name": "editor.md",
   "optionalDependencies": {},
-  "readme": "ERROR: No README data found!",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pandao/editor.md.git"
+    "url": "https://github.com/pandao/editor.md.git"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
