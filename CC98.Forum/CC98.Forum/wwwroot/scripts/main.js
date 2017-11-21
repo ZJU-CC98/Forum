@@ -5798,15 +5798,13 @@ var DropDown = /** @class */ (function (_super) {
         });
         return _this;
     }
-    DropDown.prototype.componentDidMount = function () {
+    DropDown.prototype.componentWillMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var userName, response, data, userImgUrl, userName, response, data, userImgUrl;
+            var userName, response, data, userImgUrl;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log(Utility.getLocalStorage("accessToken"));
-                        console.log(Utility.getLocalStorage("userName"));
-                        if (!(Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName"))) return [3 /*break*/, 3];
+                        if (!Utility.getLocalStorage("accessToken")) return [3 /*break*/, 3];
                         console.log("token未过期");
                         userName = Utility.getLocalStorage("userName");
                         return [4 /*yield*/, fetch("http://apitest.niconi.cc/User/Name/" + userName)];
@@ -5817,29 +5815,21 @@ var DropDown = /** @class */ (function (_super) {
                         data = _a.sent();
                         userImgUrl = data.portraitUrl;
                         this.setState({ userName: userName, userImgUrl: userImgUrl });
-                        return [3 /*break*/, 6];
+                        return [3 /*break*/, 4];
                     case 3:
-                        if (!Utility.getLocalStorage("userName")) return [3 /*break*/, 6];
-                        console.log("token已过期，正在重新获取");
-                        this.reLogOn();
-                        userName = Utility.getLocalStorage("userName");
-                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/User/Name/" + userName)];
-                    case 4:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.json()];
-                    case 5:
-                        data = _a.sent();
-                        userImgUrl = data.portraitUrl;
-                        this.setState({ userName: userName, userImgUrl: userImgUrl });
-                        _a.label = 6;
-                    case 6: return [2 /*return*/];
+                        if (Utility.getLocalStorage("userName")) {
+                            console.log("token已过期，正在重新获取");
+                            this.reLogOn();
+                        }
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
                 }
             });
         });
     };
     DropDown.prototype.reLogOn = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var url, requestBody, headers, reLogOnResponse, reLogOnData, token;
+            var url, requestBody, headers, reLogOnResponse, reLogOnData, token, userName, response, data, userImgUrl;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -5872,6 +5862,15 @@ var DropDown = /** @class */ (function (_super) {
                         token = "Bearer " + encodeURIComponent(reLogOnData.access_token);
                         Utility.setLocalStorage("accessToken", token, reLogOnData.expires_in);
                         console.log("刷新token成功");
+                        userName = Utility.getLocalStorage("userName");
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/User/Name/" + userName)];
+                    case 3:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 4:
+                        data = _a.sent();
+                        userImgUrl = data.portraitUrl;
+                        this.setState({ userName: userName, userImgUrl: userImgUrl });
                         return [2 /*return*/];
                 }
             });
