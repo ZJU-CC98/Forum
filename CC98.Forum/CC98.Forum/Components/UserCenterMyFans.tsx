@@ -72,11 +72,10 @@ export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState
 
         url = `http://apitest.niconi.cc/user/follow/fancount?userid=${userid}`
         res = await fetch(url);
-        data2 = await res.json();
-
+        let fanCounts: number = await res.json();
         this.setState({
             userFans: fans,
-            totalPage: Math.floor((data2 / 10)) + 1
+            totalPage: fanCounts % 10 === 0 ? fanCounts/10 : Math.floor((fanCounts / 10)) + 1
         });
     }
 
