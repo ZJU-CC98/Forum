@@ -22,6 +22,7 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
     async componentDidMount() {
         this.setState({ data: this.props.data.message });
         document.getElementById('messageContent').addEventListener('scroll', this.handleScroll);
+        $('#messageContent')[0].scrollTop = 3000;
     }
 
     /**
@@ -29,6 +30,8 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
      * @param nextProps
      */
     async componentWillReceiveProps(nextProps) {
+        //把聊天窗口滚动栏拉到最底部
+        document.getElementById("quickToTheBottom").scrollIntoView();
         this.setState({ data: nextProps.data.message });
     }
 
@@ -37,7 +40,6 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
     */
     async handleScroll() {
         let scrollTop = $('#messageContent')[0].scrollTop; //滚动到的当前位置
-        console.log(scrollTop);
         if (scrollTop == 0) {
             console.log("到顶啦");
             $('#wcLoadingImg').removeClass("displaynone");
@@ -72,6 +74,8 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
     *点击发送私信后，获取私信内容并刷新聊天界面
     */
     async getNewMessage() {
+        //把聊天窗口滚动栏拉到最底部
+        document.getElementById("quickToTheBottom").scrollIntoView();
         //获取新私信信息
         let data = await Utility.getRecentMessage(this.props.data.id, 0, 10);
 
@@ -212,6 +216,7 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
                         <div className="message-message-wReport"><button onClick={this.report}>举报</button></div>
                     </div>
                     <div className="message-message-wContent" id="messageContent">
+                        <div id="quickToTheBottom" className="quickToTheBottom"></div>
                         {this.state.data.map(this.coverMessageProps)}
                         <div className="message-message-wcLoading">
                             <img src="http://file.cc98.org/uploadfile/2017/11/19/2348481046.gif" id="wcLoadingImg" className="displaynone"></img>

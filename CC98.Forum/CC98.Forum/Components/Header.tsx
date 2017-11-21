@@ -23,6 +23,23 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
             console.log("token已过期，正在重新获取");
             this.reLogOn();
         }
+
+        //以下是明一写的signalr，有锅找他
+        var chat = $.connection.messageHub;
+        console.log("signal通知测试");
+        $.connection.hub.url = "http://apitest.niconi.cc/signalr";
+        var token = Utility.getLocalStorage("accessToken");
+        console.log(`signalr的${token}`);
+        $.connection.hub.qs = {
+            'Authorization': token
+        };
+        $.connection.hub.logging = "true";
+        chat.client.newUserMessage = view;
+        console.log($.connection);
+        console.log($.connection.hub);
+        console.log($.connection.hub.start());
+        $.connection.hub.start();
+        console.log("signal测试完毕");
     }
     async reLogOn() {
         let url = 'https://openid.cc98.org/connect/token';

@@ -10983,6 +10983,7 @@ var MessageWindow = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 this.setState({ data: this.props.data.message });
                 document.getElementById('messageContent').addEventListener('scroll', this.handleScroll);
+                $('#messageContent')[0].scrollTop = 3000;
                 return [2 /*return*/];
             });
         });
@@ -10994,6 +10995,8 @@ var MessageWindow = /** @class */ (function (_super) {
     MessageWindow.prototype.componentWillReceiveProps = function (nextProps) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
+                //把聊天窗口滚动栏拉到最底部
+                document.getElementById("quickToTheBottom").scrollIntoView();
                 this.setState({ data: nextProps.data.message });
                 return [2 /*return*/];
             });
@@ -11009,7 +11012,6 @@ var MessageWindow = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         scrollTop = $('#messageContent')[0].scrollTop;
-                        console.log(scrollTop);
                         if (!(scrollTop == 0)) return [3 /*break*/, 2];
                         console.log("到顶啦");
                         $('#wcLoadingImg').removeClass("displaynone");
@@ -11051,7 +11053,10 @@ var MessageWindow = /** @class */ (function (_super) {
             var data, oldData, recentContact, i, j, chatMan, indexData;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getRecentMessage(this.props.data.id, 0, 10)];
+                    case 0:
+                        //把聊天窗口滚动栏拉到最底部
+                        document.getElementById("quickToTheBottom").scrollIntoView();
+                        return [4 /*yield*/, Utility.getRecentMessage(this.props.data.id, 0, 10)];
                     case 1:
                         data = _a.sent();
                         oldData = [];
@@ -11187,6 +11192,7 @@ var MessageWindow = /** @class */ (function (_super) {
                 React.createElement("div", { className: "message-message-wReport" },
                     React.createElement("button", { onClick: this.report }, "\u4E3E\u62A5"))),
             React.createElement("div", { className: "message-message-wContent", id: "messageContent" },
+                React.createElement("div", { id: "quickToTheBottom", className: "quickToTheBottom" }),
                 this.state.data.map(this.coverMessageProps),
                 React.createElement("div", { className: "message-message-wcLoading" },
                     React.createElement("img", { src: "http://file.cc98.org/uploadfile/2017/11/19/2348481046.gif", id: "wcLoadingImg", className: "displaynone" }),
@@ -12626,7 +12632,7 @@ var LogOnExact = /** @class */ (function (_super) {
                         data = _a.sent();
                         token = "Bearer " + encodeURIComponent(data.access_token);
                         //缓存数据
-                        Utility.setLocalStorage("accessToken", token, 30);
+                        Utility.setLocalStorage("accessToken", token, data.expires_in);
                         Utility.setLocalStorage("userName", this.state.loginName);
                         Utility.setLocalStorage("password", this.state.loginPassword);
                         headers1 = new Headers();
@@ -12640,11 +12646,14 @@ var LogOnExact = /** @class */ (function (_super) {
                     case 4:
                         userInfo = _a.sent();
                         Utility.setLocalStorage("userInfo", userInfo, data.expires_in);
-                        console.log(userInfo);
                         this.setState({
                             loginMessage: '登录成功 正在返回首页',
                             isLogining: false
                         });
+                        //跳转至首页
+                        setTimeout(function () {
+                            location.pathname = "/";
+                        }, 1000);
                         return [2 /*return*/];
                 }
             });
