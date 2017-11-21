@@ -7298,7 +7298,7 @@ exports.UserCenterMyFollowingsUser = UserCenterMyFollowingsUser;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(30);
-module.exports = __webpack_require__(90);
+module.exports = __webpack_require__(91);
 
 
 /***/ }),
@@ -8873,7 +8873,7 @@ var UserCenterMyFollowings_1 = __webpack_require__(64);
 var UserCenterMyFans_1 = __webpack_require__(82);
 var UserCenterMyPostsExact_1 = __webpack_require__(83);
 var UserCenterMyFavorites_1 = __webpack_require__(84);
-var UserCenterConfig_1 = __webpack_require__(86);
+var UserCenterConfig_1 = __webpack_require__(87);
 /**
  * 用户中心主体
  */
@@ -9833,16 +9833,13 @@ var MessageWindow = /** @class */ (function (_super) {
                                     break;
                                 }
                             }
-                            //联系对象不在联系人列表里，说明是从别的页面发起的私信聊天，聊天对象已经在联系人列表最上面了，只需存缓存并刷新聊天窗口
                             if (i == recentContact.length) {
                                 chatMan = [this.props.data];
                                 chatMan[0].message = data;
                                 recentContact = chatMan.concat(recentContact);
-                                //刷新状态
-                                Utility.setStorage("recentContact", recentContact);
-                                this.setState({ data: data });
                             }
-                            else if (i == 0) {
+                            //聊天对象是联系人列表第一个，只需要刷新聊天窗口
+                            if (i == 0) {
                                 //刷新状态
                                 Utility.setStorage("recentContact", recentContact);
                                 this.setState({ data: data });
@@ -11564,7 +11561,7 @@ var UserCenterMyFans = /** @class */ (function (_super) {
     }
     UserCenterMyFans.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, page, url, res, data, fans, i, data2, userid_1, userFanInfo, userid;
+            var token, page, url, res, data, fans, i, data2, userid_1, userFanInfo, userid, fanCounts;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -11617,10 +11614,10 @@ var UserCenterMyFans = /** @class */ (function (_super) {
                         res = _a.sent();
                         return [4 /*yield*/, res.json()];
                     case 8:
-                        data2 = _a.sent();
+                        fanCounts = _a.sent();
                         this.setState({
                             userFans: fans,
-                            totalPage: Math.floor((data2 / 10)) + 1
+                            totalPage: fanCounts % 10 === 0 ? fanCounts / 10 : Math.floor((fanCounts / 10)) + 1
                         });
                         return [2 /*return*/];
                 }
@@ -11832,6 +11829,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
 var UserCenterMyFavoritesPosts_1 = __webpack_require__(85);
+var UserCenterMyFavoritesBoards_1 = __webpack_require__(86);
 //import { UserCenterMyFavoritesPostsBoards } from './UserCenterMyFavoritesPostsBoards';
 //<Route path='/usercenter/myfavorites/boards' component={UserCenterMyFavoritesPostsBoards} />
 /**
@@ -11848,7 +11846,8 @@ var UserCenterMyFavorites = /** @class */ (function (_super) {
                 React.createElement(CustomLink, { to: "/usercenter/myfavorites", label: "文章", activeOnlyWhenExact: true }),
                 " | ",
                 React.createElement(CustomLink, { to: "/usercenter/myfavorites/boards", label: "版面", activeOnlyWhenExact: false }),
-                React.createElement(react_router_dom_1.Route, { exact: true, path: "/usercenter/myfavorites", component: UserCenterMyFavoritesPosts_1.UserCenterMyFavoritesPosts }))));
+                React.createElement(react_router_dom_1.Route, { exact: true, path: "/usercenter/myfavorites", component: UserCenterMyFavoritesPosts_1.UserCenterMyFavoritesPosts }),
+                React.createElement(react_router_dom_1.Route, { path: "/usercenter/myfavorites/boards", component: UserCenterMyFavoritesBoards_1.UserCenterMyFavoritesBoards }))));
     };
     return UserCenterMyFavorites;
 }(React.Component));
@@ -11881,10 +11880,46 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var UserCenterExactActivitiesPost_1 = __webpack_require__(9);
 var AppState_1 = __webpack_require__(5);
+var Utility = __webpack_require__(2);
 var UserCenterMyFavoritesPosts = /** @class */ (function (_super) {
     __extends(UserCenterMyFavoritesPosts, _super);
     function UserCenterMyFavoritesPosts(props) {
@@ -11893,6 +11928,31 @@ var UserCenterMyFavoritesPosts = /** @class */ (function (_super) {
         _this.state = { userRecentPosts: [userRecentPost, userRecentPost, userRecentPost, userRecentPost] };
         return _this;
     }
+    UserCenterMyFavoritesPosts.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var token, userName, url, myHeaders, res, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        token = Utility.getLocalStorage('accessToken');
+                        userName = Utility.getLocalStorage('userName');
+                        url = "http://apitest.niconi.cc/topic/customboards/new?from=0&size=10";
+                        myHeaders = new Headers();
+                        myHeaders.append('Authorization', token);
+                        return [4 /*yield*/, fetch(url, {
+                                headers: myHeaders
+                            })];
+                    case 1:
+                        res = _a.sent();
+                        return [4 /*yield*/, res.json()];
+                    case 2:
+                        data = _a.sent();
+                        console.log(data);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     UserCenterMyFavoritesPosts.prototype.render = function () {
         //state转换为JSX
         var userRecentPosts = this.state.userRecentPosts.map(function (item) { return (React.createElement(UserCenterExactActivitiesPost_1.UserCenterExactActivitiesPost, { userRecentPost: item })); });
@@ -11934,11 +11994,110 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterConfigAvatar_1 = __webpack_require__(87);
-var UserCenterConfigSignature_1 = __webpack_require__(88);
-var UsercenterConfigPassword_1 = __webpack_require__(89);
+var Utility = __webpack_require__(2);
+var UserCenterMyFavoritesBoards = /** @class */ (function (_super) {
+    __extends(UserCenterMyFavoritesBoards, _super);
+    function UserCenterMyFavoritesBoards() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserCenterMyFavoritesBoards.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var token, customBoardsId, query, url, myHeaders, res, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        token = Utility.getLocalStorage('accessToken');
+                        customBoardsId = Utility.getLocalStorage('userInfo').customBoards;
+                        if (customBoardsId.length === 0) {
+                            return [2 /*return*/];
+                        }
+                        query = customBoardsId.join('&id=');
+                        url = "http://apitest.niconi.cc/board/?id=" + query;
+                        myHeaders = new Headers();
+                        myHeaders.append('Authorization', token);
+                        return [4 /*yield*/, fetch(url, {
+                                headers: myHeaders
+                            })];
+                    case 1:
+                        res = _a.sent();
+                        return [4 /*yield*/, res.json()];
+                    case 2:
+                        data = _a.sent();
+                        console.log(data);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    UserCenterMyFavoritesBoards.prototype.render = function () {
+        return (React.createElement("div", null));
+    };
+    return UserCenterMyFavoritesBoards;
+}(React.Component));
+exports.UserCenterMyFavoritesBoards = UserCenterMyFavoritesBoards;
+
+
+/***/ }),
+/* 87 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var UserCenterConfigAvatar_1 = __webpack_require__(88);
+var UserCenterConfigSignature_1 = __webpack_require__(89);
+var UsercenterConfigPassword_1 = __webpack_require__(90);
 var UserCenterConfig = /** @class */ (function (_super) {
     __extends(UserCenterConfig, _super);
     function UserCenterConfig() {
@@ -11958,7 +12117,7 @@ exports.UserCenterConfig = UserCenterConfig;
 
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11998,7 +12157,7 @@ exports.UserCenterConfigAvatar = UserCenterConfigAvatar;
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12058,7 +12217,7 @@ var UserCenterConfigSignatureState = /** @class */ (function () {
 
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12102,7 +12261,7 @@ exports.UserCenterConfigPassword = UserCenterConfigPassword;
 
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

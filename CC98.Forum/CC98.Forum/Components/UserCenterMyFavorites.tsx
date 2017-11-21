@@ -8,6 +8,7 @@ import {
     Route, Link
 } from 'react-router-dom';
 import { UserCenterMyFavoritesPosts } from './UserCenterMyFavoritesPosts';
+import { UserCenterMyFavoritesBoards } from './UserCenterMyFavoritesBoards';
 //import { UserCenterMyFavoritesPostsBoards } from './UserCenterMyFavoritesPostsBoards';
 
 //<Route path='/usercenter/myfavorites/boards' component={UserCenterMyFavoritesPostsBoards} />
@@ -21,6 +22,7 @@ export class UserCenterMyFavorites extends React.Component {
                 <div className="user-center-myfavorites">
                     <CustomLink to="/usercenter/myfavorites" label="文章" activeOnlyWhenExact={true} /> | <CustomLink to="/usercenter/myfavorites/boards" label="版面" activeOnlyWhenExact={false} />
                     <Route exact path="/usercenter/myfavorites" component={UserCenterMyFavoritesPosts} />
+                    <Route path="/usercenter/myfavorites/boards" component={UserCenterMyFavoritesBoards} />
                 </div>
             </Router>
         );

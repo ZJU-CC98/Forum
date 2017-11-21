@@ -23,6 +23,7 @@
     <None Remove="Components\UserCenterConfigAvatar.tsx" />
     <None Remove="Components\UsercenterConfigPassword.tsx" />
     <None Remove="Components\UserCenterConfigSignature.tsx" />
+    <None Remove="Components\UserCenterMyFavoritesBoards.tsx" />
     <None Remove="Components\UserCenterPageCount.tsx" />
     <None Remove="Components\UserExactProfile.tsx" />
     <None Remove="Props\FocusBoardProps.tsx" />
@@ -82,6 +83,7 @@
     <TypeScriptCompile Include="Components\UserCenterConfigAvatar.tsx" />
     <TypeScriptCompile Include="Components\UsercenterConfigPassword.tsx" />
     <TypeScriptCompile Include="Components\UserCenterConfigSignature.tsx" />
+    <TypeScriptCompile Include="Components\UserCenterMyFavoritesBoards.tsx" />
     <TypeScriptCompile Include="Components\UserCenterPageCount.tsx" />
     <TypeScriptCompile Include="Components\UserExactProfile.tsx" />
     <TypeScriptCompile Include="Props\FocusBoardProps.tsx" />
