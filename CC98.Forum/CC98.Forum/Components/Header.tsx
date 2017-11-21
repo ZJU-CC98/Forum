@@ -11,7 +11,7 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
             userImgUrl: "/images/unLoggedOn.png"
         });
     }
-    async componentWillMount() {
+    async componentDidMount() {
         if (Utility.getLocalStorage("accessToken")) {
             console.log("token未过期");
             let userName = Utility.getLocalStorage("userName");
@@ -24,7 +24,6 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
             this.reLogOn();
         }
     }
-
     async reLogOn() {
         let url = 'https://openid.cc98.org/connect/token';
         const requestBody = {

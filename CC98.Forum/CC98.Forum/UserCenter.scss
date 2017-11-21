@@ -316,7 +316,7 @@
             margin-top: 1rem;
 
             div {
-                margin: 1rem 0;
+                margin: 0 0 2rem 0;
             }
 
             hr {
@@ -342,6 +342,7 @@
 
                 p {
                     flex-grow: 1;
+                    margin: 0;
                 }
 
                 .fa-thumbs-o-up {
@@ -627,8 +628,30 @@
     }
 
     button {
+        transition-duration: .4s;
         width: 6rem;
         height: 2rem;
         border-radius: 0.5rem;
+
+        &:hover {
+            background-color: rgb(210,210,210);
+        }
+
+        &:active {
+            background-color: rgb(200,200,200);
+        }
+    }
+
+    .follow {
+        background-color: #68b3ff;
+        color: #FFFFFF;
+
+        &:hover {
+            background-color: rgb(41,174,223);
+        }
+
+        &:active {
+            background-color: rgb(38,154,196);
+        }
     }
 }

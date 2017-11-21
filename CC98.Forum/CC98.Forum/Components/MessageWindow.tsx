@@ -169,6 +169,9 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
     *发送私信内容的函数
     */
     async postMessage() {
+        if ($('#postContent').val() == '') {
+            return;
+        }
         let token = Utility.getLocalStorage("accessToken");
         let bodyObj = { receiverId: this.props.data.id, content: $('#postContent').val() };
         let bodyContent = JSON.stringify(bodyObj);
@@ -181,6 +184,7 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
                 body: bodyContent
         });
         if (response.status == 403) {
+            $('#postContent').val('');
             $('#wPostError').removeClass('displaynone');
             return;
         }
@@ -223,29 +227,3 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
                 </div>);
     }
 }
-
-
-/*function sortArr(arr: MessageProps[]) {
-    let s: number = -1;
-    let e: number = -1;
-    for (let i = 0; i < arr.length-1; i++) {
-        if (arr[i].sendTime == arr[i + 1].sendTime && s == -1) {
-            s = i;
-        }
-        else if (arr[i].sendTime != arr[i + 1].sendTime && s != -1) {
-            e = i;
-        }
-        if (s != -1 && e != -1) {
-            reverseArr(arr, s, e);
-            s = -1;
-            e = -1;
-        }
-    }
-}
-
-function reverseArr(arr: MessageProps[], s: number, e: number) {
-    for (let i = s; i < e; i++) {
-        [arr[i], arr[e]] = [arr[e], arr[i]];
-        e--;
-    }
-}*/
