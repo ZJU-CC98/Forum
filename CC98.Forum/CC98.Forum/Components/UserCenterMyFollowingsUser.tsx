@@ -27,12 +27,11 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
         const token = Utility.getLocalStorage("accessToken");
         const userId = this.props.userFanInfo.id;
         const url = `http://apitest.niconi.cc/user/unfollow/${userId}`;
-
+        const headers = new Headers();
+        headers.append('Authorization', token);
         let res = await fetch(url, {
             method: 'DELETE',
-            headers: {
-                'Authorization': token
-            }
+            headers
         });
         if (res.status === 200) {
             this.setState({
@@ -58,11 +57,11 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
 
         const userId = this.props.userFanInfo.id;
         const url = `http://apitest.niconi.cc/user/follow/${userId}`;
+        const headers = new Headers();
+        headers.append('Authorization', token);
         let res = await fetch(url, {
             method: 'POST',
-            headers: {
-                'Authorization': token
-            }
+            headers
         });
         console.log(res);
         if (res.status === 200) {

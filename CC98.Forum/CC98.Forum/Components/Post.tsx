@@ -289,7 +289,7 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
         }
         let userDetails;
         if (this.props.isAnonymous != true) {
-            userDetails = <UserDetails userName={this.props.userName}  />;
+            userDetails = <UserDetails userName={this.props.userName} />;
         } else {
             userDetails = null;
         }
@@ -298,8 +298,10 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
             userName = <a style={{ color: "pink" }} href={url}>{this.props.userName}</a>;
         } else if (this.props.privilege === "全站贵宾") {
             userName = <a style={{ color: "blue" }} href={url}>{this.props.userName}</a>;
-        } else if (this.props.privilege === "注册用户" || this.props.privilege == "匿名" || this.props.privilege === "匿名用户") {
+        } else if (this.props.privilege === "注册用户") {
             userName = <a style={{ color: "black" }} href={url}>{this.props.userName}</a>;
+        } else if (this.props.privilege == "匿名" || this.props.privilege === "匿名用户") {
+            userName = <div style={{ color: "black" }} >{this.props.userName}</div>;
         } else if (this.props.privilege === "管理员") {
             userName = <a style={{ color: "red" }} href={url}>{this.props.userName}</a>;
         }
@@ -443,15 +445,18 @@ export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, author
         const email = `/message/message/${this.props.authorId}`;
         const url = `/user/${this.props.authorId}`;
         let urlHtml = <a href={url}><img src={this.props.authorImgUrl}></img></a>;
+        let userHtml = <div id="authorName"><p><a href={url}>{this.props.authorName}</a></p></div>;
         if (this.props.isAnonymous == true) {
             urlHtml = <img src={this.props.authorImgUrl}></img>;
+            userHtml = <div id="authorName"><p>{this.props.authorName}</p></div>
         }
         return <div className="row" id="authormes">
 
             <div className="authorImg" >{urlHtml}</div>
             <div className="column" style={{ marginRight: "1rem" }}>
                 <div className="row authorFans" style={{ justifyContent: "space-between" }}>
-                    <div id="authorName"><p><a href={url}>{this.props.authorName}</a></p></div>
+                    {userHtml}
+
                     <div id="fans" className="row"><div style={{ marginRight: "0.1875rem" }}>粉丝</div><div style={{ color: "#EE0000" }}>{this.state.fansNumber}</div></div>
                 </div>
 
