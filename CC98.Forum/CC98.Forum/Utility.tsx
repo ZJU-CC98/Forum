@@ -468,25 +468,21 @@ export async function getRecentContact(from: number, size: number) {
     let token = getLocalStorage("accessToken");
     const headers = new Headers();
     headers.append('Authorization', token);
-    let recentContact = getLocalStorage("recentContact");
-    if (!recentContact) {
-        let response = await fetch(`http://apitest.niconi.cc/message/recentcontactusers?from=${from}&size=${size}`, { headers });
-        let recentContactId = await response.json();
-        let url = "http://apitest.niconi.cc/user/basic"
-        for (let i in recentContactId) {
-            if (i == "0") {
-                url = `${url}?id=${recentContactId[i]}`;
-            }
-            else {
-                url = `${url}&id=${recentContactId[i]}`;
-            }
+    let response = await fetch(`http://apitest.niconi.cc/message/recentcontactusers?from=${from}&size=${size}`, { headers });
+    let recentContactId = await response.json();
+    let url = "http://apitest.niconi.cc/user/basic"
+    for (let i in recentContactId) {
+        if (i == "0") {
+            url = `${url}?id=${recentContactId[i]}`;
         }
-        let response1 = await fetch(url);
-        recentContact = await response1.json();
-        for (let i in recentContact) {
-            recentContact[i].message = await getRecentMessage(recentContact[i].id, 0, 10);
+        else {
+            url = `${url}&id=${recentContactId[i]}`;
         }
-        setLocalStorage("recentContact", recentContact);
+    }
+    let response1 = await fetch(url);
+    let recentContact = await response1.json();
+    for (let i in recentContact) {
+        recentContact[i].message = await getRecentMessage(recentContact[i].id, 0, 10);
     }
     return recentContact;
 }
@@ -502,6 +498,7 @@ export async function getRecentMessage(userId: number, from: number, size: numbe
     let recentMessage = await response.json();
     return recentMessage;
 }
+
 export async function getTotalReplyCount(topicid){
     let token = getLocalStorage("accessToken");
     const headers = new Headers();

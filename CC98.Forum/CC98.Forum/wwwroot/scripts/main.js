@@ -1751,15 +1751,13 @@ exports.isLogOn = isLogOn;
 */
 function getRecentContact(from, size) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, headers, recentContact, response, recentContactId, url, i, response1, _a, _b, _i, i, _c;
+        var token, headers, response, recentContactId, url, i, response1, recentContact, _a, _b, _i, i, _c;
         return __generator(this, function (_d) {
             switch (_d.label) {
                 case 0:
                     token = getLocalStorage("accessToken");
                     headers = new Headers();
                     headers.append('Authorization', token);
-                    recentContact = getLocalStorage("recentContact");
-                    if (!!recentContact) return [3 /*break*/, 9];
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/message/recentcontactusers?from=" + from + "&size=" + size, { headers: headers })];
                 case 1:
                     response = _d.sent();
@@ -1797,10 +1795,7 @@ function getRecentContact(from, size) {
                 case 7:
                     _i++;
                     return [3 /*break*/, 5];
-                case 8:
-                    setLocalStorage("recentContact", recentContact);
-                    _d.label = 9;
-                case 9: return [2 /*return*/, recentContact];
+                case 8: return [2 /*return*/, recentContact];
             }
         });
     });
@@ -9343,7 +9338,7 @@ var UserCenterMyFollowings = /** @class */ (function (_super) {
                         data2 = _a.sent();
                         this.setState({
                             userFollowings: fans,
-                            totalPage: Math.floor((data2 / 10)) + 1
+                            totalPage: data2 % 10 === 0 ? data2 / 10 : Math.floor((data2 / 10)) + 1
                         });
                         return [2 /*return*/];
                 }
@@ -9471,9 +9466,9 @@ var MessageMessage = /** @class */ (function (_super) {
     }
     MessageMessage.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, myInfo, recentContact, urlMessage, chatManId, response, chatMan, _a, chatContact;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var token, myInfo, recentContact, urlId, chatManId, response, chatMan, _a, chatContact, urlName, chatManName, response0, response1, chatMan, _b, chatContact;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
                         token = Utility.getLocalStorage("accessToken");
                         console.log(token);
@@ -9482,29 +9477,50 @@ var MessageMessage = /** @class */ (function (_super) {
                         if (!!recentContact) return [3 /*break*/, 2];
                         return [4 /*yield*/, Utility.getRecentContact(0, 7)];
                     case 1:
-                        recentContact = _b.sent();
+                        recentContact = _c.sent();
                         console.log("获取到的联系人");
                         console.log(recentContact);
                         Utility.setStorage("recentContact", recentContact);
-                        _b.label = 2;
+                        _c.label = 2;
                     case 2:
-                        urlMessage = location.href.match(/id=(\S+)/);
-                        if (!urlMessage) return [3 /*break*/, 6];
-                        chatManId = parseInt(urlMessage[1]);
+                        urlId = location.href.match(/id=(\S+)/);
+                        if (!urlId) return [3 /*break*/, 6];
+                        chatManId = parseInt(urlId[1]);
                         return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/basic/" + chatManId)];
                     case 3:
-                        response = _b.sent();
+                        response = _c.sent();
                         return [4 /*yield*/, response.json()];
                     case 4:
-                        chatMan = _b.sent();
+                        chatMan = _c.sent();
                         _a = chatMan;
                         return [4 /*yield*/, Utility.getRecentMessage(chatManId, 0, 10)];
                     case 5:
-                        _a.message = _b.sent();
+                        _a.message = _c.sent();
                         chatContact = [chatMan];
                         recentContact = chatContact.concat(recentContact);
-                        _b.label = 6;
+                        return [3 /*break*/, 10];
                     case 6:
+                        urlName = location.href.match(/name=(\S+)/);
+                        if (!urlName) return [3 /*break*/, 10];
+                        chatManName = urlName[1];
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + chatManName)];
+                    case 7:
+                        response0 = _c.sent();
+                        return [4 /*yield*/, response0.json()];
+                    case 8:
+                        response1 = _c.sent();
+                        chatMan = { id: null, name: '', portraitUrl: '', message: [] };
+                        chatMan.id = response1.id;
+                        chatMan.name = response1.name;
+                        chatMan.portraitUrl = response1.portraitUrl;
+                        _b = chatMan;
+                        return [4 /*yield*/, Utility.getRecentMessage(chatMan.id, 0, 10)];
+                    case 9:
+                        _b.message = _c.sent();
+                        chatContact = [chatMan];
+                        recentContact = chatContact.concat(recentContact);
+                        _c.label = 10;
+                    case 10:
                         if (recentContact) {
                             //默认第一个人为聊天对象
                             this.setState({ data: recentContact, chatObj: recentContact[0] });
@@ -9529,7 +9545,7 @@ var MessageMessage = /** @class */ (function (_super) {
                         $('#moreImg').removeClass('displaynone');
                         $('#moreDot').addClass('displaynone');
                         $('#moreShow').addClass('displaynone');
-                        recentContact = this.state.data;
+                        recentContact = Utility.getStorage("recentContact");
                         return [4 /*yield*/, Utility.getRecentContact(recentContact.length, 7)];
                     case 1:
                         newContact = _a.sent();
@@ -9551,6 +9567,7 @@ var MessageMessage = /** @class */ (function (_super) {
             });
         });
     };
+    //传递到MessageWindow里的方法，在MessageWindow里控制MessageMessage刷新界面
     MessageMessage.prototype.onChange = function () {
         return __awaiter(this, void 0, void 0, function () {
             var recentContact;
@@ -9833,13 +9850,16 @@ var MessageWindow = /** @class */ (function (_super) {
                                     break;
                                 }
                             }
+                            //联系对象不在联系人列表里，说明是从别的页面发起的私信聊天，聊天对象已经在联系人列表最上面了，只需存缓存并刷新聊天窗口
                             if (i == recentContact.length) {
                                 chatMan = [this.props.data];
                                 chatMan[0].message = data;
                                 recentContact = chatMan.concat(recentContact);
+                                //刷新状态
+                                Utility.setStorage("recentContact", recentContact);
+                                this.setState({ data: data });
                             }
-                            //聊天对象是联系人列表第一个，只需要刷新聊天窗口
-                            if (i == 0) {
+                            else if (i == 0) {
                                 //刷新状态
                                 Utility.setStorage("recentContact", recentContact);
                                 this.setState({ data: data });
