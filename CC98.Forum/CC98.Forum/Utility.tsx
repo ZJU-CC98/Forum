@@ -573,6 +573,9 @@ export async function getRecentContact(from: number, size: number) {
         recentContact[i].message = await getRecentMessage(recentContact[i].id, 0, 10);
     }
     return recentContact;
+    } catch (e) {
+        alert("网络中断");
+    }
 }
 
 /*
@@ -580,15 +583,19 @@ export async function getRecentContact(from: number, size: number) {
 */
 export async function getRecentMessage(userId: number, from: number, size: number) {
     try {
-    let token = getLocalStorage("accessToken");
-    const headers = new Headers();
-    headers.append('Authorization', token);
-    let response = await fetch(`http://apitest.niconi.cc/message/${userId}?from=${from}&size=${size}`, { headers });
-    let recentMessage = await response.json();
-    return recentMessage;
+        let token = getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        let response = await fetch(`http://apitest.niconi.cc/message/${userId}?from=${from}&size=${size}`, { headers });
+        let recentMessage = await response.json();
+        return recentMessage;
+    } catch (e) {
+        alert("网络中断");
+    }
 }
 
-export async function getTotalReplyCount(topicid){
+export async function getTotalReplyCount(topicid) {
+        try {
     let token = getLocalStorage("accessToken");
     const headers = new Headers();
     headers.append('Authorization', token);
