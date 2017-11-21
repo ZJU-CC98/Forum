@@ -12,9 +12,7 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
         });
     }
     async componentDidMount() {
-        console.log(Utility.getLocalStorage("accessToken"));
-        console.log(Utility.getLocalStorage("userName"));
-        if (Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName")) {
+        if (Utility.getLocalStorage("accessToken")) {
             console.log("token未过期");
             let userName = Utility.getLocalStorage("userName");
             let response = await fetch(`http://apitest.niconi.cc/User/Name/${userName}`);
