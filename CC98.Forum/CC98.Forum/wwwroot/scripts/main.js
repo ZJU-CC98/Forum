@@ -5436,8 +5436,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserCenterNavigation_1 = __webpack_require__(55);
-var UserCenterRouter_1 = __webpack_require__(56);
+var UserCenterNavigation_1 = __webpack_require__(59);
+var UserCenterRouter_1 = __webpack_require__(60);
 /**
  * 用户中心页面
  */
@@ -5482,7 +5482,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPosts_1 = __webpack_require__(59);
+var UserCenterExactActivitiesPosts_1 = __webpack_require__(63);
 /**
  * 用户中心主页近期动态组件
  */
@@ -5556,10 +5556,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var MessageMessage_1 = __webpack_require__(61);
-var MessageResponse_1 = __webpack_require__(66);
-var MessageAttme_1 = __webpack_require__(67);
-var MessageSystem_1 = __webpack_require__(68);
+var MessageMessage_1 = __webpack_require__(65);
+var MessageResponse_1 = __webpack_require__(70);
+var MessageAttme_1 = __webpack_require__(71);
+var MessageSystem_1 = __webpack_require__(72);
 var react_router_dom_1 = __webpack_require__(3);
 /**
  * 网站的主页面对象。
@@ -5636,7 +5636,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var AllNewTopicArea_1 = __webpack_require__(69);
+var AllNewTopicArea_1 = __webpack_require__(73);
 /**
  * 网站的主页面对象。
  */
@@ -5770,8 +5770,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusBoardArea_1 = __webpack_require__(70);
-var FocusTopicArea_1 = __webpack_require__(72);
+var FocusBoardArea_1 = __webpack_require__(74);
+var FocusTopicArea_1 = __webpack_require__(76);
 var Focus = /** @class */ (function (_super) {
     __extends(Focus, _super);
     function Focus() {
@@ -5859,11 +5859,14 @@ var DropDown = /** @class */ (function (_super) {
     }
     DropDown.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var userName, response, data, userImgUrl;
+            var userName, response, data, userImgUrl, userName, response, data, userImgUrl;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        console.log(Utility.getLocalStorage("accessToken"));
+                        console.log(Utility.getLocalStorage("userName"));
                         if (!(Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName"))) return [3 /*break*/, 3];
+                        console.log("token未过期");
                         userName = Utility.getLocalStorage("userName");
                         return [4 /*yield*/, fetch("http://apitest.niconi.cc/User/Name/" + userName)];
                     case 1:
@@ -5873,16 +5876,76 @@ var DropDown = /** @class */ (function (_super) {
                         data = _a.sent();
                         userImgUrl = data.portraitUrl;
                         this.setState({ userName: userName, userImgUrl: userImgUrl });
-                        _a.label = 3;
-                    case 3: return [2 /*return*/];
+                        return [3 /*break*/, 6];
+                    case 3:
+                        if (!Utility.getLocalStorage("userName")) return [3 /*break*/, 6];
+                        console.log("token已过期，正在重新获取");
+                        this.reLogOn();
+                        userName = Utility.getLocalStorage("userName");
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/User/Name/" + userName)];
+                    case 4:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 5:
+                        data = _a.sent();
+                        userImgUrl = data.portraitUrl;
+                        this.setState({ userName: userName, userImgUrl: userImgUrl });
+                        _a.label = 6;
+                    case 6: return [2 /*return*/];
                 }
             });
         });
+    };
+    DropDown.prototype.reLogOn = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var url, requestBody, reLogOnResponse, reLogOnData, token;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        url = 'https://openid.cc98.org/connect/token';
+                        requestBody = {
+                            'client_id': '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
+                            'client_secret': '8b53f727-08e2-4509-8857-e34bf92b27f2',
+                            'grant_type': 'password',
+                            'username': Utility.getLocalStorage("userName"),
+                            'password': Utility.getLocalStorage("password"),
+                            'scope': "cc98-api openid"
+                        };
+                        return [4 /*yield*/, fetch(url, {
+                                method: "POST",
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded',
+                                },
+                                body: $.param(requestBody)
+                            })];
+                    case 1:
+                        reLogOnResponse = _a.sent();
+                        //请求是否成功
+                        if (reLogOnResponse.status !== 200) {
+                            console.log('自动刷新token失败，请重新登录'); //因为logOff会刷新页面，所以这里可能看不到
+                            this.logOff();
+                        }
+                        return [4 /*yield*/, reLogOnResponse.json()];
+                    case 2:
+                        reLogOnData = _a.sent();
+                        token = "Bearer " + encodeURIComponent(reLogOnData.access_token);
+                        Utility.setLocalStorage("accessToken", token, reLogOnData.expires_in);
+                        console.log("刷新token成功");
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    DropDown.prototype.catch = function (e) {
+        console.log("Oops, error", e);
+        console.log('自动刷新token失败，请重新登录'); //因为logOff会刷新页面，所以这里可能看不到
+        this.logOff();
     };
     DropDown.prototype.logOff = function () {
         Utility.removeLocalStorage("accessToken");
         console.log("after remove token=" + Utility.getLocalStorage("accessToken"));
         Utility.removeLocalStorage("userName");
+        Utility.removeLocalStorage("password");
         Utility.removeLocalStorage("userInfo");
         Utility.removeLocalStorage("recentContact");
         Utility.removeStorage("focusBoardList");
@@ -6455,7 +6518,7 @@ var Test = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        url = 'http://apitest.niconi.cc/user/follow/fancount?userid=5298';
+                        url = 'http://apitest.niconi.cc/topic/test';
                         token = Utility.getLocalStorage("accessToken");
                         console.log(token);
                         myHeaders = new Headers();
@@ -6471,7 +6534,6 @@ var Test = /** @class */ (function (_super) {
                         return [4 /*yield*/, response.json()];
                     case 2:
                         data = _a.sent();
-                        data += 1;
                         console.log(data);
                         return [2 /*return*/];
                 }
@@ -6659,8 +6721,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserNavigation_1 = __webpack_require__(73);
-var UserRouter_1 = __webpack_require__(74);
+var UserNavigation_1 = __webpack_require__(77);
+var UserRouter_1 = __webpack_require__(78);
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
@@ -6703,8 +6765,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var LogOnExact_1 = __webpack_require__(76);
-var Logoff_1 = __webpack_require__(77);
+var LogOnExact_1 = __webpack_require__(80);
+var Logoff_1 = __webpack_require__(81);
 /**
  * 用户中心页面
  */
@@ -7109,7 +7171,7 @@ exports.UserCenterMyFollowingsUser = UserCenterMyFollowingsUser;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(30);
-module.exports = __webpack_require__(86);
+module.exports = __webpack_require__(90);
 
 
 /***/ }),
@@ -7239,6 +7301,10 @@ var UploadTagHandler_1 = __webpack_require__(51);
 var LeftTagHandler_1 = __webpack_require__(52);
 var CenterTagHandler_1 = __webpack_require__(53);
 var RightTagHandler_1 = __webpack_require__(54);
+var TableTagHandler_1 = __webpack_require__(55);
+var TdTagHandler_1 = __webpack_require__(56);
+var ThTagHandler_1 = __webpack_require__(57);
+var TrTagHandler_1 = __webpack_require__(58);
 /**
  * 创建一个具有所有功能的默认引擎。
  */
@@ -7265,6 +7331,10 @@ function createEngine() {
     engine.tagHandlers.register(LeftTagHandler_1.LeftTagHandler);
     engine.tagHandlers.register(CenterTagHandler_1.CenterTagHandler);
     engine.tagHandlers.register(RightTagHandler_1.RightTagHandler);
+    engine.tagHandlers.register(TableTagHandler_1.TableTagHandler);
+    engine.tagHandlers.register(TdTagHandler_1.TdTagHandler);
+    engine.tagHandlers.register(ThTagHandler_1.ThTagHandler);
+    engine.tagHandlers.register(TrTagHandler_1.TrTagHandler);
     // 以下是未命名标签处理程序，注意未命名标签处理程序的命中和注册顺序有关
     engine.tagHandlers.register(UnresolvedTagHandler_1.UnresolvedTagHandler);
     return engine;
@@ -7417,9 +7487,7 @@ var Image = /** @class */ (function (_super) {
             return React.createElement("img", { src: this.props.imageUri, alt: this.props.title });
         }
         else {
-            return React.createElement("div", { onClick: this.toggleIsShowed },
-                "[\u70B9\u51FB\u67E5\u770B\u56FE\u7247]",
-                this.props.imageUri);
+            return React.createElement("div", { className: "hiddenImage", onClick: this.toggleIsShowed }, "\u70B9\u51FB\u67E5\u770B\u56FE\u7247");
         }
     };
     return Image;
@@ -8393,6 +8461,182 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
+var Ubb = __webpack_require__(1);
+/**
+ * 处理 [table] 标签的处理器。
+ */
+var TableTagHandler = /** @class */ (function (_super) {
+    __extends(TableTagHandler, _super);
+    function TableTagHandler() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(TableTagHandler.prototype, "supportedTagNames", {
+        get: function () { return 'table'; },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    TableTagHandler.prototype.execCore = function (innerContent, tagData, context) {
+        return React.createElement("table", { className: "UBBTableTag" }, innerContent);
+    };
+    return TableTagHandler;
+}(Ubb.RecursiveTagHandler));
+exports.TableTagHandler = TableTagHandler;
+
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var Ubb = __webpack_require__(1);
+/**
+ * 处理 [td] 标签的处理器。
+ */
+var TdTagHandler = /** @class */ (function (_super) {
+    __extends(TdTagHandler, _super);
+    function TdTagHandler() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(TdTagHandler.prototype, "supportedTagNames", {
+        get: function () { return 'td'; },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    TdTagHandler.prototype.execCore = function (innerContent, tagData, context) {
+        return React.createElement("td", null, innerContent);
+    };
+    return TdTagHandler;
+}(Ubb.RecursiveTagHandler));
+exports.TdTagHandler = TdTagHandler;
+
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var Ubb = __webpack_require__(1);
+/**
+ * 处理 [th] 标签的处理器。
+ */
+var ThTagHandler = /** @class */ (function (_super) {
+    __extends(ThTagHandler, _super);
+    function ThTagHandler() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(ThTagHandler.prototype, "supportedTagNames", {
+        get: function () { return 'th'; },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    ThTagHandler.prototype.execCore = function (innerContent, tagData, context) {
+        return React.createElement("th", null, innerContent);
+    };
+    return ThTagHandler;
+}(Ubb.RecursiveTagHandler));
+exports.ThTagHandler = ThTagHandler;
+
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var Ubb = __webpack_require__(1);
+/**
+ * 处理 [tr] 标签的处理器。
+ */
+var TrTagHandler = /** @class */ (function (_super) {
+    __extends(TrTagHandler, _super);
+    function TrTagHandler() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(TrTagHandler.prototype, "supportedTagNames", {
+        get: function () { return 'tr'; },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    TrTagHandler.prototype.execCore = function (innerContent, tagData, context) {
+        return React.createElement("tr", null, innerContent);
+    };
+    return TrTagHandler;
+}(Ubb.RecursiveTagHandler));
+exports.TrTagHandler = TrTagHandler;
+
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
 var $ = __webpack_require__(7);
 /**
@@ -8475,7 +8719,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 56 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8497,12 +8741,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
 var Utility = __webpack_require__(2);
-var UserCenterExact_1 = __webpack_require__(57);
-var UserCenterMyFollowings_1 = __webpack_require__(60);
-var UserCenterMyFans_1 = __webpack_require__(78);
-var UserCenterMyPostsExact_1 = __webpack_require__(79);
-var UserCenterMyFavorites_1 = __webpack_require__(80);
-var UserCenterConfig_1 = __webpack_require__(82);
+var UserCenterExact_1 = __webpack_require__(61);
+var UserCenterMyFollowings_1 = __webpack_require__(64);
+var UserCenterMyFans_1 = __webpack_require__(82);
+var UserCenterMyPostsExact_1 = __webpack_require__(83);
+var UserCenterMyFavorites_1 = __webpack_require__(84);
+var UserCenterConfig_1 = __webpack_require__(86);
 /**
  * 用户中心主体
  */
@@ -8530,7 +8774,7 @@ exports.UserCenterRouter = UserCenterRouter;
 
 
 /***/ }),
-/* 57 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8550,7 +8794,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactProfile_1 = __webpack_require__(58);
+var UserCenterExactProfile_1 = __webpack_require__(62);
 var UserCenterExactActivities_1 = __webpack_require__(16);
 var UserCenterExactAvatar_1 = __webpack_require__(17);
 var Utility = __webpack_require__(2);
@@ -8580,7 +8824,7 @@ exports.UserCenterExact = UserCenterExact;
 
 
 /***/ }),
-/* 58 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8638,7 +8882,7 @@ exports.UserCenterExactProfile = UserCenterExactProfile;
 
 
 /***/ }),
-/* 59 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8842,7 +9086,7 @@ exports.UserCenterExactActivitiesPosts = UserCenterExactActivitiesPosts;
 
 
 /***/ }),
-/* 60 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9000,7 +9244,7 @@ exports.UserCenterMyFollowings = UserCenterMyFollowings;
 
 
 /***/ }),
-/* 61 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9055,8 +9299,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MessagePerson_1 = __webpack_require__(62);
-var MessageWindow_1 = __webpack_require__(63);
+var MessagePerson_1 = __webpack_require__(66);
+var MessageWindow_1 = __webpack_require__(67);
 var Utility = __webpack_require__(2);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
@@ -9227,7 +9471,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 62 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9276,7 +9520,7 @@ exports.MessagePerson = MessagePerson;
 
 
 /***/ }),
-/* 63 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9331,8 +9575,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MessageSender_1 = __webpack_require__(64);
-var MessageReceiver_1 = __webpack_require__(65);
+var MessageSender_1 = __webpack_require__(68);
+var MessageReceiver_1 = __webpack_require__(69);
 var Utility = __webpack_require__(2);
 var MessageWindow = /** @class */ (function (_super) {
     __extends(MessageWindow, _super);
@@ -9570,7 +9814,7 @@ function reverseArr(arr: MessageProps[], s: number, e: number) {
 
 
 /***/ }),
-/* 64 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9614,7 +9858,7 @@ exports.MessageSender = MessageSender;
 
 
 /***/ }),
-/* 65 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9656,7 +9900,7 @@ exports.MessageReceiver = MessageReceiver;
 
 
 /***/ }),
-/* 66 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9706,7 +9950,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 67 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9746,7 +9990,7 @@ exports.MessageAttme = MessageAttme;
 
 
 /***/ }),
-/* 68 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9786,7 +10030,7 @@ exports.MessageSystem = MessageSystem;
 
 
 /***/ }),
-/* 69 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10040,7 +10284,7 @@ function isBottom() {
 
 
 /***/ }),
-/* 70 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10095,7 +10339,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusBoardSingle_1 = __webpack_require__(71);
+var FocusBoardSingle_1 = __webpack_require__(75);
 var Utility = __webpack_require__(2);
 /**
  * 表示我关注的版面列表区域
@@ -10182,7 +10426,7 @@ function coverFocusBoard(item) {
 
 
 /***/ }),
-/* 71 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10222,7 +10466,7 @@ exports.FocusBoardSingle = FocusBoardSingle;
 
 
 /***/ }),
-/* 72 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10476,7 +10720,7 @@ function isBottom() {
 
 
 /***/ }),
-/* 73 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10520,7 +10764,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 74 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10576,7 +10820,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserExactProfile_1 = __webpack_require__(75);
+var UserExactProfile_1 = __webpack_require__(79);
 var UserCenterExactActivities_1 = __webpack_require__(16);
 var UserCenterExactAvatar_1 = __webpack_require__(17);
 var Utility = __webpack_require__(2);
@@ -10656,7 +10900,7 @@ var UserExact = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 75 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10843,7 +11087,7 @@ exports.UserExactProfile = UserExactProfile;
 
 
 /***/ }),
-/* 76 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10996,7 +11240,9 @@ var LogOnExact = /** @class */ (function (_super) {
                         console.log("after logon token=" + token);
                         //缓存数据
                         Utility.setLocalStorage("accessToken", token, data.expires_in);
-                        Utility.setLocalStorage("userName", this.state.loginName, data.expires_in);
+                        Utility.setLocalStorage("userName", this.state.loginName);
+                        Utility.setLocalStorage("password", this.state.loginPassword);
+                        console.log(Utility.getLocalStorage("userName"));
                         return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + this.state.loginName, {
                                 headers: {
                                     Authorization: "" + token
@@ -11012,10 +11258,6 @@ var LogOnExact = /** @class */ (function (_super) {
                             loginMessage: '登录成功 正在返回首页',
                             isLogining: false
                         });
-                        //跳转至首页
-                        setTimeout(function () {
-                            location.pathname = "/";
-                        }, 1000);
                         return [2 /*return*/];
                 }
             });
@@ -11063,7 +11305,7 @@ var LogOnState = /** @class */ (function () {
 
 
 /***/ }),
-/* 77 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11115,7 +11357,7 @@ exports.LogOff = LogOff;
 
 
 /***/ }),
-/* 78 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11273,7 +11515,7 @@ exports.UserCenterMyFans = UserCenterMyFans;
 
 
 /***/ }),
-/* 79 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11435,7 +11677,7 @@ exports.UserCenterMyPostsExact = UserCenterMyPostsExact;
 
 
 /***/ }),
-/* 80 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11456,7 +11698,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserCenterMyFavoritesPosts_1 = __webpack_require__(81);
+var UserCenterMyFavoritesPosts_1 = __webpack_require__(85);
 //import { UserCenterMyFavoritesPostsBoards } from './UserCenterMyFavoritesPostsBoards';
 //<Route path='/usercenter/myfavorites/boards' component={UserCenterMyFavoritesPostsBoards} />
 /**
@@ -11488,7 +11730,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 81 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11541,7 +11783,7 @@ userRecentPost.title = '这是帖子标题';
 
 
 /***/ }),
-/* 82 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11561,9 +11803,9 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterConfigAvatar_1 = __webpack_require__(83);
-var UserCenterConfigSignature_1 = __webpack_require__(84);
-var UsercenterConfigPassword_1 = __webpack_require__(85);
+var UserCenterConfigAvatar_1 = __webpack_require__(87);
+var UserCenterConfigSignature_1 = __webpack_require__(88);
+var UsercenterConfigPassword_1 = __webpack_require__(89);
 var UserCenterConfig = /** @class */ (function (_super) {
     __extends(UserCenterConfig, _super);
     function UserCenterConfig() {
@@ -11583,7 +11825,7 @@ exports.UserCenterConfig = UserCenterConfig;
 
 
 /***/ }),
-/* 83 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11623,7 +11865,7 @@ exports.UserCenterConfigAvatar = UserCenterConfigAvatar;
 
 
 /***/ }),
-/* 84 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11683,7 +11925,7 @@ var UserCenterConfigSignatureState = /** @class */ (function () {
 
 
 /***/ }),
-/* 85 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11727,7 +11969,7 @@ exports.UserCenterConfigPassword = UserCenterConfigPassword;
 
 
 /***/ }),
-/* 86 */
+/* 90 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

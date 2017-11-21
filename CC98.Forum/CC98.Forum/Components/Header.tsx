@@ -12,13 +12,17 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
         });
     }
     async componentDidMount() {
-        if (Utility.getLocalStorage("accessToken")) {
+        console.log(Utility.getLocalStorage("accessToken"));
+        console.log(Utility.getLocalStorage("userName"));
+        if (Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName")) {
+            console.log("token未过期");
             let userName = Utility.getLocalStorage("userName");
             let response = await fetch(`http://apitest.niconi.cc/User/Name/${userName}`);
             let data = await response.json();
             let userImgUrl = data.portraitUrl;
             this.setState({ userName: userName, userImgUrl: userImgUrl });
         } else if (Utility.getLocalStorage("userName")) {   //如果缓存中没有token但是存在userName，说明token已过期，尝试自动刷新token
+            console.log("token已过期，正在重新获取");
             this.reLogOn();
             //刷新token成功，改变state
             let userName = Utility.getLocalStorage("userName");

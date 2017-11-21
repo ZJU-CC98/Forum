@@ -112,6 +112,7 @@ export class LogOnExact extends React.Component<null, LogOnState> {
         Utility.setLocalStorage("accessToken", token, data.expires_in);
         Utility.setLocalStorage("userName", this.state.loginName);
         Utility.setLocalStorage("password", this.state.loginPassword);
+        console.log(Utility.getLocalStorage("userName"));
 
         //缓存用户其他数据
         let response1 = await fetch(`http://apitest.niconi.cc/user/name/${this.state.loginName}`, {
@@ -128,9 +129,9 @@ export class LogOnExact extends React.Component<null, LogOnState> {
         });
 
         //跳转至首页
-        setTimeout(() => {
-        location.pathname = "/";
-        }, 1000); 
+        //setTimeout(() => {
+        //location.pathname = "/";
+        //}, 1000); 
 
     } catch(e) {    //捕捉到例外，开始执行catch语句，否则跳过
         //alert(e.error);     这行好像没什么用……暂时还不会处理不同的error……
