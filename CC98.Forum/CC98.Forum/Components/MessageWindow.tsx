@@ -143,29 +143,6 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
     };
 
     /**
-    *处理文本输入框聚焦的函数，聚焦时移除提示文字
-    */
-    async handleFocus() {
-        $('#wPostNotice').addClass('displaynone');
-        $('#wPostError').addClass('displaynone');
-        $('#postContent')[0].focus();
-    }
-
-    /**
-    *处理鼠标移出文本输入框的函数，移出时显示文字提示
-    */
-    async handleBlur() {
-        if ($('#postContent').val() == '') {
-            if ($('#wPostNotice').css('display') == 'none') {
-                $('#wPostNotice').removeClass('displaynone');
-            }
-            else {
-                $('#wPostNotice').addClass('displaynone');
-            }
-        }
-    }
-
-    /**
     *发送私信内容的函数
     */
     async postMessage() {
@@ -175,16 +152,11 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
         let myHeaders = new Headers();
         myHeaders.append('Authorization', token);
         myHeaders.append('content-type', 'application/json');
-        let response = await fetch('http://apitest.niconi.cc/message/send', {
-                method: 'POST',
-                headers: myHeaders,
-                body: bodyContent
+        let messageId = await fetch('http://apitest.niconi.cc/message/send', {
+            method: 'POST',
+            headers: myHeaders,
+	        body: bodyContent
         });
-        if (response.status == 403) {
-            $('#wPostError').removeClass('displaynone');
-            return;
-        }
-        
         //暂停0.2秒再执行
         setTimeout(this.getNewMessage, 200);
         //清空输入框
@@ -215,9 +187,7 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
                         </div>
                     </div>
                     <div className="message-message-wPost">
-                        <textarea className="message-message-wPostArea" id="postContent" onFocus={this.handleFocus} onBlur={this.handleBlur}></textarea>
-                        <div id="wPostNotice" className="message-message-wPostNotice" onClick={this.handleFocus}>请在这里填入您要发送的私信内容</div>
-                        <div id="wPostError" className="message-message-wPostError displaynone" onClick={this.handleFocus}>您的发送过于频繁，请稍作歇息</div>
+                        <textarea className="message-message-wPostArea" id="postContent"></textarea>
                         <button className="message-message-wPostBtn" onClick={this.postMessage}>回复</button>
                     </div>
                 </div>);

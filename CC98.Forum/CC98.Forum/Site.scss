@@ -1373,7 +1373,7 @@ body {
             align-items: center;
 
 
-            .message-message-wcLoadingText {
+           .message-message-wcLoadingText {
                 height: 10px;
                 font-size: 10px;
                 color: $color-thinBlack;
@@ -1512,7 +1512,6 @@ body {
         display: flex;
         flex-direction: column;
         background-color: rgb(245, 245, 245);
-        position: relative;
 
         .message-message-wPostArea {
             width: 648px;
@@ -1522,26 +1521,6 @@ body {
             border: 1px solid $color-border;
             margin: 19px 29px 10px 29px;
             background-color: $color-post;
-        }
-
-        .message-message-wPostNotice {
-            position: absolute;
-            line-height: 20px;
-            margin-top: 22px;
-            margin-left: 34px;
-            color: #777;
-            font-size: 14px;
-            cursor: inherit;
-        }
-
-        .message-message-wPostError {
-            position: absolute;
-            line-height: 20px;
-            margin-top: 22px;
-            margin-left: 34px;
-            color: red;
-            font-size: 14px;
-            cursor: inherit;
         }
 
         .message-message-wPostBtn {
