@@ -330,14 +330,14 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
             </div></div>;
     }
 }
-export class UserDetails extends RouteComponent<{  userName }, { portraitUrl, userName,fanCount,displayTitle }, {}>{
+export class UserDetails extends RouteComponent<{  userName }, { portraitUrl, userName,fanCount,displayTitle,birthday,gender,prestige }, {}>{
     constructor(props) {
         super(props);
-        this.state = ({ portraitUrl: null, userName: null, fanCount: null, displayTitle:null });
+        this.state = ({ portraitUrl: null, userName: null, fanCount: null, displayTitle: null, birthday: null, gender: null, prestige:null });
     }
     async componentDidMount() {
         const data = await Utility.getUserDetails(this.props.userName);
-        this.setState({ portraitUrl: data.portraitUrl, userName: data.userName, fanCount: data.fanCount, displayTitle: data.displayTitle });
+        this.setState({ portraitUrl: data.portraitUrl, userName: data.userName, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige,gender:data.gender });
     }
     render() {
         const url = `/user/name/${this.props.userName}`;
@@ -361,7 +361,9 @@ export class UserDetails extends RouteComponent<{  userName }, { portraitUrl, us
                             <button id="watch" style={{ width: "5rem", backgroundColor: "#FF6A6A", marginRight: "0.63rem", marginLeft: "1.6rem", marginTop: "2rem", height: "2rem" }}>关注</button>
                         </div>
                     </div>
-
+                    <div className="row">
+                        <div></div><div></div><div></div>
+                        </div>
                 </div>
             </div>;
     }

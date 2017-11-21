@@ -533,7 +533,7 @@ export async function getUserDetails(userName) {
         let url = `http://apitest.niconi.cc/user/name/${userName}`;
         let message = await fetch(url);
         let data = await message.json();
-        const body = { portraitUrl: data.portraitUrl, userName: data.name ,fanCount:data.fanCount,displayTitle:data.displayTitle}
+        const body = { portraitUrl: data.portraitUrl, userName: data.name ,fanCount:data.fanCount,displayTitle:data.displayTitle,birthday:data.birthday,prestige:data.prestige,gender:data.gender}
         return body;
 }
 export async function getLikeState(topicid) {
