@@ -10653,7 +10653,7 @@ var MessageMessage = /** @class */ (function (_super) {
     }
     MessageMessage.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, myInfo, recentContact, urlId, chatManId, response, chatMan, _a, chatContact, urlName, chatManName, response0, response1, chatMan, _b, chatContact;
+            var token, myInfo, recentContact, urlId, chatManId, response, chatMan, flag, e_1, _a, chatContact, urlName, chatManName, response0, response1, flag, e_2, chatMan, _b, chatContact;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -10671,43 +10671,72 @@ var MessageMessage = /** @class */ (function (_super) {
                         _c.label = 2;
                     case 2:
                         urlId = location.href.match(/id=(\S+)/);
-                        if (!urlId) return [3 /*break*/, 6];
+                        if (!urlId) return [3 /*break*/, 10];
                         chatManId = parseInt(urlId[1]);
-                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/basic/" + chatManId)];
+                        response = void 0;
+                        chatMan = void 0;
+                        flag = 1;
+                        _c.label = 3;
                     case 3:
+                        _c.trys.push([3, 6, , 7]);
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/basic/" + chatManId)];
+                    case 4:
                         response = _c.sent();
                         return [4 /*yield*/, response.json()];
-                    case 4:
+                    case 5:
                         chatMan = _c.sent();
+                        return [3 /*break*/, 7];
+                    case 6:
+                        e_1 = _c.sent();
+                        alert("用户不存在，无法发起私信");
+                        flag = 0;
+                        return [3 /*break*/, 7];
+                    case 7:
+                        if (!(flag == 1)) return [3 /*break*/, 9];
                         _a = chatMan;
                         return [4 /*yield*/, Utility.getRecentMessage(chatManId, 0, 10)];
-                    case 5:
+                    case 8:
                         _a.message = _c.sent();
                         chatContact = [chatMan];
                         recentContact = chatContact.concat(recentContact);
-                        return [3 /*break*/, 10];
-                    case 6:
+                        _c.label = 9;
+                    case 9: return [3 /*break*/, 17];
+                    case 10:
                         urlName = location.href.match(/name=(\S+)/);
-                        if (!urlName) return [3 /*break*/, 10];
+                        if (!urlName) return [3 /*break*/, 17];
                         chatManName = urlName[1];
+                        response0 = void 0;
+                        response1 = void 0;
+                        flag = 1;
+                        _c.label = 11;
+                    case 11:
+                        _c.trys.push([11, 14, , 15]);
                         return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + chatManName)];
-                    case 7:
+                    case 12:
                         response0 = _c.sent();
                         return [4 /*yield*/, response0.json()];
-                    case 8:
+                    case 13:
                         response1 = _c.sent();
+                        return [3 /*break*/, 15];
+                    case 14:
+                        e_2 = _c.sent();
+                        alert("用户不存在，无法发起私信");
+                        flag = 0;
+                        return [3 /*break*/, 15];
+                    case 15:
+                        if (!(flag == 1)) return [3 /*break*/, 17];
                         chatMan = { id: null, name: '', portraitUrl: '', message: [] };
                         chatMan.id = response1.id;
                         chatMan.name = response1.name;
                         chatMan.portraitUrl = response1.portraitUrl;
                         _b = chatMan;
                         return [4 /*yield*/, Utility.getRecentMessage(chatMan.id, 0, 10)];
-                    case 9:
+                    case 16:
                         _b.message = _c.sent();
                         chatContact = [chatMan];
                         recentContact = chatContact.concat(recentContact);
-                        _c.label = 10;
-                    case 10:
+                        _c.label = 17;
+                    case 17:
                         if (recentContact) {
                             //默认第一个人为聊天对象
                             this.setState({ data: recentContact, chatObj: recentContact[0] });
@@ -11066,11 +11095,42 @@ var MessageWindow = /** @class */ (function (_super) {
         });
     };
     /**
+    *处理文本输入框聚焦的函数，聚焦时移除提示文字
+    */
+    MessageWindow.prototype.handleFocus = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                $('#wPostNotice').addClass('displaynone');
+                $('#wPostError').addClass('displaynone');
+                $('#postContent')[0].focus();
+                return [2 /*return*/];
+            });
+        });
+    };
+    /**
+    *处理鼠标移出文本输入框的函数，移出时显示文字提示
+    */
+    MessageWindow.prototype.handleBlur = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                if ($('#postContent').val() == '') {
+                    if ($('#wPostNotice').css('display') == 'none') {
+                        $('#wPostNotice').removeClass('displaynone');
+                    }
+                    else {
+                        $('#wPostNotice').addClass('displaynone');
+                    }
+                }
+                return [2 /*return*/];
+            });
+        });
+    };
+    /**
     *发送私信内容的函数
     */
     MessageWindow.prototype.postMessage = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, bodyObj, bodyContent, myHeaders, messageId;
+            var token, bodyObj, bodyContent, myHeaders, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -11086,7 +11146,11 @@ var MessageWindow = /** @class */ (function (_super) {
                                 body: bodyContent
                             })];
                     case 1:
-                        messageId = _a.sent();
+                        response = _a.sent();
+                        if (response.status == 403) {
+                            $('#wPostError').removeClass('displaynone');
+                            return [2 /*return*/];
+                        }
                         //暂停0.2秒再执行
                         setTimeout(this.getNewMessage, 200);
                         //清空输入框
@@ -11115,7 +11179,9 @@ var MessageWindow = /** @class */ (function (_super) {
                     React.createElement("img", { src: "http://file.cc98.org/uploadfile/2017/11/19/2348481046.gif", id: "wcLoadingImg", className: "displaynone" }),
                     React.createElement("div", { id: "wcLoadingText", className: "message-message-wcLoadingText displaynone" }, "-----------\u5DF2\u52A0\u8F7D\u5168\u90E8\u79C1\u4FE1-----------"))),
             React.createElement("div", { className: "message-message-wPost" },
-                React.createElement("textarea", { className: "message-message-wPostArea", id: "postContent" }),
+                React.createElement("textarea", { className: "message-message-wPostArea", id: "postContent", onFocus: this.handleFocus, onBlur: this.handleBlur }),
+                React.createElement("div", { id: "wPostNotice", className: "message-message-wPostNotice", onClick: this.handleFocus }, "\u8BF7\u5728\u8FD9\u91CC\u586B\u5165\u60A8\u8981\u53D1\u9001\u7684\u79C1\u4FE1\u5185\u5BB9"),
+                React.createElement("div", { id: "wPostError", className: "message-message-wPostError displaynone", onClick: this.handleFocus }, "\u60A8\u7684\u53D1\u9001\u8FC7\u4E8E\u9891\u7E41\uFF0C\u8BF7\u7A0D\u4F5C\u6B47\u606F"),
                 React.createElement("button", { className: "message-message-wPostBtn", onClick: this.postMessage }, "\u56DE\u590D"))));
     };
     return MessageWindow;

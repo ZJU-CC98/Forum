@@ -75,7 +75,6 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
         Utility.removeLocalStorage("userName");
         Utility.removeLocalStorage("password");
         Utility.removeLocalStorage("userInfo");
-        Utility.removeLocalStorage("recentContact");
         Utility.removeStorage("focusBoardList");
         Utility.removeStorage("focusBoardTopic");
         Utility.removeStorage("recentContact");
