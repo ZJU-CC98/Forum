@@ -18,7 +18,7 @@ import { MainPage } from './MainPage';
 import { User } from './User';
 import { LogOn } from './LogOn';
 import { CreateTopic } from './CreateTopic';
-
+import * as Status from './Status';
 import { UbbContainer } from './UbbContainer';
 
 
@@ -49,7 +49,11 @@ export class App extends React.Component<{}, AppState> {
 					<Route path="/user" component={User} />
                     <Route path="/logon" component={LogOn} />
                     <Route path="/createtopic" component={CreateTopic} />
-
+                    <Route path="/status/logout" component={Status.LogOut} />
+                    <Route path="/status/UnauthorizedBoard" component={Status.UnauthorizedBoard} />
+                    <Route path="/status/UnauthorizedTopic" component={Status.UnauthorizedTopic} />
+                    <Route path="/status/NotFoundTopic" component={Status.NotFoundTopic} />
+                    <Route path="/status/NotFoundBoard" component={Status.NotFoundBoard} />
                     <Footer />
 				</div>
 			</Router></div>;

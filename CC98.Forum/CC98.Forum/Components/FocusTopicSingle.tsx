@@ -3,7 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
 import { FocusTopic } from '../Props/FocusTopic';
-import * as moment from 'moment';
+declare let moment: any;
 /**
  * 我关注的某个版面的单个主题
  */

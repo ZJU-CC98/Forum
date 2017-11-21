@@ -1671,10 +1671,13 @@ function setLocalStorage(key, value, expireIn) {
         v = "str-" + v;
     }
     localStorage.setItem(key, v);
-    if (expireIn) {
+    if (expireIn !== 0) {
         var now = new Date().getTime();
         var expirationTime = now + expireIn * 1000;
         localStorage.setItem(key + "_expirationTime", expirationTime.toString().slice(0, expirationTime.toString().length - 3));
+    }
+    else {
+        localStorage.removeItem(key + "_expirationTime");
     }
 }
 exports.setLocalStorage = setLocalStorage;
@@ -11454,6 +11457,7 @@ var LogOnExact = /** @class */ (function (_super) {
                         //缓存数据
                         Utility.setLocalStorage("accessToken", token, data.expires_in);
                         Utility.setLocalStorage("userName", this.state.loginName);
+                        console.log(Utility.getLocalStorage("userName"));
                         Utility.setLocalStorage("password", this.state.loginPassword);
                         return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + this.state.loginName, {
                                 headers: {
@@ -11470,10 +11474,6 @@ var LogOnExact = /** @class */ (function (_super) {
                             loginMessage: '登录成功 正在返回首页',
                             isLogining: false
                         });
-                        //跳转至首页
-                        setTimeout(function () {
-                            location.pathname = "/";
-                        }, 1000);
                         return [2 /*return*/];
                 }
             });

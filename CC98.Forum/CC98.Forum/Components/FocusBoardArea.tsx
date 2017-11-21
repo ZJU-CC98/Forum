@@ -45,11 +45,11 @@ export class FocusBoardArea extends React.Component<{}, FocusBoardProps> {
             //获取关注版面的id列表
             let userInfo = Utility.getLocalStorage("userInfo");
             let boardid = userInfo.customBoards;
+            const headers = new Headers();
+            headers.append('Authorization', token);
             for (let i in boardid) {
                 let response = await fetch(`http://apitest.niconi.cc/board/${boardid[i]}`, {
-                    headers: {
-                        Authorization: `${token}`
-                    }
+                    headers
                 });
                 let boardInfo = await response.json();
                 data.push({ id: boardid[i], name: boardInfo.name });
