@@ -57,25 +57,46 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
         let urlId = location.href.match(/id=(\S+)/);
         if (urlId) {
             let chatManId = parseInt(urlId[1]);
-            let response = await fetch(`http://apitest.niconi.cc/user/basic/${chatManId}`);
-            let chatMan = await response.json();
-            chatMan.message = await Utility.getRecentMessage(chatManId, 0, 10);
-            let chatContact = [chatMan];
-            recentContact = chatContact.concat(recentContact);
+            let response;
+            let chatMan;
+            let flag = 1;
+            try {
+                response = await fetch(`http://apitest.niconi.cc/user/basic/${chatManId}`);
+                chatMan = await response.json();
+            }
+            catch (e) {
+                alert("用户不存在，无法发起私信");
+                flag = 0;
+            }
+            if (flag == 1) {
+                chatMan.message = await Utility.getRecentMessage(chatManId, 0, 10);
+                let chatContact = [chatMan];
+                recentContact = chatContact.concat(recentContact);
+            }
         }
         else { //看url中是否携带name信息，如果有的话就作为第一个联系人
             let urlName = location.href.match(/name=(\S+)/);
             if (urlName) {
                 let chatManName = urlName[1];
-                let response0 = await fetch(`http://apitest.niconi.cc/user/name/${chatManName}`);
-                let response1 = await response0.json();
-                let chatMan = { id: null, name: '', portraitUrl: '', message: [] };
-                chatMan.id = response1.id;
-                chatMan.name = response1.name;
-                chatMan.portraitUrl = response1.portraitUrl;
-                chatMan.message = await Utility.getRecentMessage(chatMan.id, 0, 10);
-                let chatContact = [chatMan];
-                recentContact = chatContact.concat(recentContact);
+                let response0;
+                let response1;
+                let flag = 1;
+                try {
+                    response0 = await fetch(`http://apitest.niconi.cc/user/name/${chatManName}`);
+                    response1 = await response0.json();
+                } catch (e) {
+                    alert("用户不存在，无法发起私信");
+                    flag = 0;
+                }
+                if (flag == 1) {
+                    let chatMan = { id: null, name: '', portraitUrl: '', message: [] };
+                    chatMan.id = response1.id;
+                    chatMan.name = response1.name;
+                    chatMan.portraitUrl = response1.portraitUrl;
+                    chatMan.message = await Utility.getRecentMessage(chatMan.id, 0, 10);
+                    let chatContact = [chatMan];
+                    recentContact = chatContact.concat(recentContact);
+                }
             }
         }
         
