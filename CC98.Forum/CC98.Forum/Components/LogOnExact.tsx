@@ -84,12 +84,11 @@ export class LogOnExact extends React.Component<null, LogOnState> {
             'password': this.state.loginPassword,
             'scope':"cc98-api openid"
         }
-
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
         let response = await fetch(url, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',//在fetch API里这不是默认值，需要手动添加
-            },
+            method: "POST",          
+            headers,
             body: $.param(requestBody)
 
         });
@@ -104,21 +103,17 @@ export class LogOnExact extends React.Component<null, LogOnState> {
         }
 
         let data = await response.json();
-        console.log(data);
         const token = "Bearer " + encodeURIComponent(data.access_token);
-        console.log("after logon token=" + token);
 
         //缓存数据
         Utility.setLocalStorage("accessToken", token, data.expires_in);
         Utility.setLocalStorage("userName", this.state.loginName);
         Utility.setLocalStorage("password", this.state.loginPassword);
-        console.log(Utility.getLocalStorage("userName"));
-
+        const headers1 = new Headers();
+        headers.append("Authorization", token);
         //缓存用户其他数据
         let response1 = await fetch(`http://apitest.niconi.cc/user/name/${this.state.loginName}`, {
-            headers: {
-                Authorization: `${token}`
-            }
+            headers: headers1
         });
         let userInfo = await response1.json();
         Utility.setLocalStorage("userInfo", userInfo, data.expires_in)
@@ -129,9 +124,9 @@ export class LogOnExact extends React.Component<null, LogOnState> {
         });
 
         //跳转至首页
-        //setTimeout(() => {
-        //location.pathname = "/";
-        //}, 1000); 
+        setTimeout(() => {
+        location.pathname = "/";
+        }, 1000); 
 
     } catch(e) {    //捕捉到例外，开始执行catch语句，否则跳过
         //alert(e.error);     这行好像没什么用……暂时还不会处理不同的error……

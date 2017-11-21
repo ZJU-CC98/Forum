@@ -136,11 +136,11 @@ $color-black: rgb(32,32,32);
     font-size: 0.75rem;
     font-family: 微软雅黑;
     letter-spacing: 0.1875rem;
-    padding-left: 0.625rem;
     border-radius: 0.3125rem;
     background: red;
     border: 1px solid #B22222;
     color: #fff;
+    text-align:center;
 }
 
 #email {
@@ -148,11 +148,11 @@ $color-black: rgb(32,32,32);
     font-size: 0.75rem;
     font-family: 微软雅黑;
     letter-spacing: 0.1875rem;
-    padding-left: 0.625rem;
     border-radius: 0.3125rem;
     background: #67B3FF;
     border: 1px solid #2576A8;
     color: #fff;
+    text-align: center;
 }
 
 #title {
@@ -2566,7 +2566,7 @@ body {
     弹出用户悬浮窗
 */
 .popup {
-    width: 23.75rem;
+    width: 25rem;
     height: 15.625rem; /*高度自由，因为不确定，内容多少。*/
     border: 1px solid #D5D5D5;
     background: #fff; /*窗口内容不透明，背景为白色*/
@@ -2800,4 +2800,7 @@ body {
 
 #quoteOverflow{
     overflow-y:auto;
+}
+.userDetails{
+    z-index:1;
 }

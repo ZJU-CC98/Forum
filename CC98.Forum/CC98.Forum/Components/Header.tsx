@@ -43,12 +43,11 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
             'password': Utility.getLocalStorage("password"),
             'scope': "cc98-api openid"
         }
-
+        const headers = new Headers();
+        headers.append('Content-Type','application/x-www-form-urlencoded');
         let reLogOnResponse = await fetch(url, {
             method: "POST",
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',//在fetch API里这不是默认值，需要手动添加
-            },
+            headers,
             body: $.param(requestBody)
 
         });

@@ -219,7 +219,7 @@ export class TopicState {
         dislikeNumber: number,
         postid: number,
         isAnonymous: boolean,
-        contentType:number
+        contentType: number,
     ) {
         this.userName = userName;
         this.time = time;

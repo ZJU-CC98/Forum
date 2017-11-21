@@ -70,7 +70,7 @@ export class UserCenterMyFollowings extends RouteComponent<null, UserCenterMyFol
 
         this.setState({
             userFollowings: fans,
-            totalPage: Math.floor((data2 / 10)) + 1
+            totalPage: data2 % 10 === 0 ? data2 / 10 : Math.floor((data2 / 10)) + 1
         });
     }
 

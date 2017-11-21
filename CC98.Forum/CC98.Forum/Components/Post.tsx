@@ -10,7 +10,7 @@ import {
 
 import { match } from "react-router";
 import { UbbContainer } from './UbbContainer';
-import * as moment from 'moment';
+declare let moment: any;
 declare let testEditor: any;
 declare let editormd: any;
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
@@ -23,16 +23,15 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
     }
 }
 
-export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName}, { topicid, page, userName }> {
+export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName }, { topicid, page, userName }> {
     constructor(props, context) {
         super(props, context);
-      
+
         this.handleChange = this.handleChange.bind(this);
-        this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null  };
+        this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null };
     }
 
     async handleChange() {
-
         let page: number;
         if (!this.match.params.page) {
             page = 1;
@@ -52,9 +51,9 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         const totalPage = await this.getTotalPage(this.match.params.topicid);
         this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName });
     }
-  
+
     async componentDidMount() {
-  
+
         let page: number;
         if (!this.match.params.page) {
             page = 1;
@@ -65,36 +64,25 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName });
     }
     async getTotalPage(topicid) {
-        let token = Utility.getLocalStorage("accessToken");
-        const replyCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers: { 'Authorization': token } });
-        const replyCountJson = await replyCountResponse.json();
-        const replyCount = replyCountJson.replyCount;
-        if (replyCount >= 10) {
-            return (replyCount - replyCount % 10) / 10 + 1;
-        } else {
-            return 1;
-        }
+        return Utility.getTotalReplyCount(topicid);
     }
     returnTopic() {
-        return <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} />;
+        return <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} />;
 
     }
     render() {
-   
         let topic = null;
         let hotReply = null;
-        if (this.state.page == 1) {
-            topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} />;
+        if (this.state.page === 1) {
+            topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} />;
             hotReply = <Route path="/topic/:topicid/:page?" component={HotReply} />;
         }
         return <div className="center" style={{ width: "80%" }} >
             <div className="row" style={{ width: "100%", justifyContent: 'space-between', borderBottom: '#EAEAEA solid thin', alignItems: "center" }}>
-                <Category topicid={this.state.topicid} />
+                <Category topicId={this.state.topicid} />
                 <TopicPager page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} /></div>
             {topic}
             {hotReply}
-
-
             <Route path="/topic/:topicid/:page?" component={Reply} />
             <TopicPagerDown page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
             <SendTopic onChange={this.handleChange} topicid={this.state.topicid} />
@@ -104,21 +92,14 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
     }
 
 }
-export class Category extends React.Component<{ topicid }, { boardId, topicId, boardName, title }>{
+export class Category extends React.Component<{ topicId }, { boardId, topicId, boardName, title }>{
     constructor(props) {
         super(props);
         this.state = ({ boardId: "", topicId: "", boardName: "", title: "" });
     }
     async componentDidMount() {
-        let token = Utility.getLocalStorage("accessToken");
-        const response = await fetch(`http://apitest.niconi.cc/Topic/${this.props.topicid}`, { headers: { 'Authorization': token } });
-        const data = await response.json();
-        const topicName = data.title;
-        const boardId = data.boardId;
-        const boardResponse = await fetch(`http://apitest.niconi.cc/Board/${boardId}`, { headers: { 'Authorization': token } });
-        const boardData = await boardResponse.json();
-        const boardName = boardData.name;
-        this.setState({ boardId: boardId, topicId: this.props.topicid, boardName: boardName, title: topicName });
+        const body = await Utility.getCategory(this.props.topicId);
+        this.setState({ boardId: body.boardId, topicId: body.topicId, boardName: body.boardName, title: body.title });
     }
     render() {
         const listUrl = `/list/${this.state.boardId}`;
@@ -151,15 +132,14 @@ export class Reply extends RouteComponent<{}, { contents }, { page, topicid, use
 
     }
     private generateContents(item: State.ContentState) {
-       
         return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
             <Replier key={item.postid} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} />
-            <ReplyContent key={item.content} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postid} contentType={item.contentType}/>
+            <ReplyContent key={item.content} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postid} contentType={item.contentType} />
         </div>
         </div>;
     }
     render() {
-        
+
         return <div className="center" style={{ width: "100%" }}>
             {this.state.contents.map(this.generateContents)}
         </div>
@@ -176,6 +156,7 @@ export class HotReply extends RouteComponent<{}, { contents }, { page, topicid }
     }
 
     async componentWillReceiveProps(newProps) {
+        
         const page = newProps.match.params.page || 1;
         if (page == 1) {
             const realContents = await Utility.getHotReplyContent(newProps.match.params.topicid);
@@ -185,15 +166,16 @@ export class HotReply extends RouteComponent<{}, { contents }, { page, topicid }
 
     }
     private generateContents(item: State.ContentState) {
-        return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
+        const floor = (item.floor % 10).toString();
+        return <div className="reply" id={floor}><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
             <HotReplier key={item.id} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isAnonymous={item.isAnonymous} />
             <ReplyContent key={item.content} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.id} contentType={item.contentType} />
         </div>
         </div>;
     }
-    
-    render() {
 
+    render() {
+        $(".header").scrollTop();
         return <div className="center" style={{ width: "100%" }}>
             {this.state.contents.map(this.generateContents)}
         </div>
@@ -210,9 +192,10 @@ export class HotReplier extends RouteComponent<{ floor, userId, topicid, userNam
     }
 
     render() {
-        let url = `/user/${this.props.userId}`;
-        let realUrl = encodeURIComponent(url);
-        let curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userId}`;
+        const url = `/user/${this.props.userId}`;
+        const realUrl = encodeURIComponent(url);
+        const curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userId}`;
+        const email = `/message/message/${this.props.userId}`;
         $(document).ready(function () {
             $(".authorImg").mouseenter(function (event: JQuery.Event) {
                 const currentImage = event.currentTarget;
@@ -229,8 +212,8 @@ export class HotReplier extends RouteComponent<{ floor, userId, topicid, userNam
             topicNumber = '';
         }
         let userDetails;
-        if (this.props.userName != '匿名') {
-            userDetails = <UserDetails userName={this.props.userName} isAnonymous={this.props.isAnonymous} />;
+        if (this.props.isAnonymous != true) {
+            userDetails = <UserDetails userName={this.props.userName}  />;
         } else {
             userDetails = null;
         }
@@ -266,10 +249,10 @@ export class HotReplier extends RouteComponent<{ floor, userId, topicid, userNam
                     </div>
                 </div>
                 <div id="operation"  >
-                    <button className="operation">引用</button>
-                    <button className="operation">编辑</button>
-                    <button className="operation">私信</button>
-                    <button className="operation">举报</button>
+                    <Link className="operation" to="">引用</Link>
+                    <Link className="operation" to="">编辑</Link>
+                    <Link className="operation" to={email}>私信</Link>
+                    <Link className="operation" to="">举报</Link>
                     <Link className="operation" to={curUserPostUrl}>只看此用户</Link>
                 </div>
             </div></div>;
@@ -278,19 +261,17 @@ export class HotReplier extends RouteComponent<{ floor, userId, topicid, userNam
 export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, userName, replyTime, floor, userImgUrl, sendTopicNumber, privilege }, {}, { topicid }>{
     constructor(props, content) {
         super(props, content);
-        this.state = {
-
-        }
     }
 
     render() {
-        let url = `/user/${this.props.userId}`;
-        let realUrl = encodeURIComponent(url);
+        const url = `/user/${this.props.userId}`;
+        const realUrl = encodeURIComponent(url);
+        const email = `/message/message/${this.props.userId}`;
         let urlHtml = <a href={realUrl}><img src={this.props.userImgUrl}></img></a>;
         if (this.props.isAnonymous == true) {
             urlHtml = <img src={this.props.userImgUrl}></img>;
         }
-        let curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userId}`;
+        const curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userId}`;
         $(document).ready(function () {
             $(".authorImg").mouseenter(function (event: JQuery.Event) {
                 const currentImage = event.currentTarget;
@@ -307,8 +288,8 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
             topicNumber = '';
         }
         let userDetails;
-        if (this.props.userName != '匿名') {
-            userDetails = <UserDetails userName={this.props.userName} isAnonymous={this.props.isAnonymous} />;
+        if (this.props.isAnonymous != true) {
+            userDetails = <UserDetails userName={this.props.userName}  />;
         } else {
             userDetails = null;
         }
@@ -327,7 +308,7 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
 
                 <div className="row mouse-userDetails" style={{ height: "15.625rem" }} >
                     <div className="authorImg" >{urlHtml}</div>
-                    <div className="userDetails" style={{ display: "none", position: "absolute", zindedx: "1" }}>
+                    <div className="userDetails" style={{ display: "none", position: "absolute" }}>
                         {userDetails}
                     </div>
 
@@ -344,63 +325,78 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
                     </div>
                 </div>
                 <div id="operation"  >
-                    <button className="operation">引用</button>
-                    <button className="operation">编辑</button>
-                    <button className="operation">私信</button>
-                    <button className="operation">举报</button>
+                    <Link className="operation" to="">引用</Link>
+                    <Link className="operation" to="">编辑</Link>
+                    <Link className="operation" to={email}>私信</Link>
+                    <Link className="operation" to="">举报</Link>
                     <Link className="operation" to={curUserPostUrl}>只看此用户</Link>
                 </div>
             </div></div>;
     }
 }
-export class UserDetails extends RouteComponent<{ isAnonymous, userName }, { portraitUrl, userName }, {}>{
+export class UserDetails extends RouteComponent<{  userName }, { portraitUrl, userName,fanCount,displayTitle,birthday,gender,prestige,levelTitle }, {}>{
     constructor(props) {
         super(props);
-        this.state = ({ portraitUrl: null, userName: null });
+        this.state = ({ portraitUrl: null, userName: null, fanCount: null, displayTitle: null, birthday: null, gender: null, prestige: null, levelTitle:null });
     }
     async componentDidMount() {
-        if (this.props.userName != '匿名') {
-            let url = `http://apitest.niconi.cc/user/name/${this.props.userName}`;
-            let message = await fetch(url);
-            let data = await message.json();
-            this.setState({ portraitUrl: data.portraitUrl, userName: data.name });
-        }
+        const data = await Utility.getUserDetails(this.props.userName);
+        this.setState({ portraitUrl: data.portraitUrl, userName: data.userName, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige,gender:data.gender,levelTitle:data.levelTitle });
     }
     render() {
-        let url = `/user/name/${this.props.userName}`;
-        let userUrl = encodeURI(url);
-        let urlHtml = <a href={userUrl}> <img src={this.state.portraitUrl}></img></a>;
-        if (this.props.isAnonymous == true) {
-            urlHtml = <img src={this.state.portraitUrl}></img>;
+        let title = this.state.displayTitle;
+        if (this.state.displayTitle === null) {
+            title = this.state.levelTitle;
         }
-        if (this.props.userName != '匿名') {
+        const year = moment(this.state.birthday).format("YYYY");
+        let birthday;
+        if (year === "9999") {
+            birthday = moment(this.state.birthday).format("MM-DD");
+        } else {
+            birthday = moment(this.state.birthday).format("YYYY-MM-DD");
+        }
+        if (this.state.birthday == null) {
+            birthday = '保密';
+        }
+        let gender;
+        if (this.state.gender === 0) {
+            gender = <i style={{ color: "pink" }} className="fa fa-venus fa-lg fa-fw"></i>;
+        } else {
+            gender = <i style={{ color: "blue" }} className="fa fa-mars fa-lg fa-fw"></i>;
+        }
+        const url = `/user/name/${this.props.userName}`;
+        const userUrl = encodeURI(url);
+        const urlHtml = <a href={userUrl}> <img src={this.state.portraitUrl}></img></a>;
             return <div className='popup'>
                 <div className='popup_title'>
                     <div className="row">
                         <div className="row authorImg" style={{ marginLeft: "10px", marginTop: "10px" }}>
                             {urlHtml}
                         </div>
-                        <div className="column" style={{ marginLeft: "25px", marginTop: "30px" }}>
+                        <div className="column" style={{ marginLeft: "1.6rem", marginTop: "2rem" }}>
                             <div className="row">
-                                <div style={{ fontFamily: "微软雅黑", color: "blue", marginRight: "10px" }}> {this.state.userName}</div>   <div style={{ marginRight: "10px", fontSize: "14px" }}>   粉丝  </div><div style={{ color: "red", fontSize: "12px" }}>2333</div>
+                                <div style={{ fontFamily: "微软雅黑", color: "blue", marginRight: "0.63rem" }}> {this.state.userName}</div>   <div style={{ marginRight: "0.63rem" }}>   粉丝  </div><div style={{ color: "red"}}>{this.state.fanCount}</div>
                             </div>
-                            <div className="row" style={{ marginTop: "10px", fontSize: "14px" }}>
-                                技术组组长
-						</div>
+                            <div className="row" style={{ marginTop: "0.63rem", fontSize: "0.87rem" }}>
+                                {title}
+                            </div>
+                          
                         </div>
+
                         <div>
-                            <button id="watch" style={{ width: "80px", backgroundColor: "#FF6A6A", marginRight: "10px", marginLeft: "25px", marginTop: "50px", height: "30px" }}>关注</button>
+                            <div id="watch" style={{ width: "5rem", backgroundColor: "#FF6A6A", marginRight: "0.63rem", marginLeft: "1.6rem", marginTop: "2rem", height: "2rem" }}>关注</div>
+                       
                         </div>
                     </div>
-
+                    <div className="row" style={{ fontSize:"0.87rem" }}>
+                        <div style={{ marginLeft: "7.2rem" }}>威望&nbsp;{this.state.prestige}</div><div style={{ marginLeft: "1rem" }}>生日&nbsp;{birthday}</div>
+                        <div style={{ marginLeft: "1rem" }}>{gender}</div>
+                        </div>
                 </div>
             </div>;
-        } else {
-            return;
-        }
     }
 }
-export class PostTopic extends RouteComponent<{ imgUrl, page, topicid }, { topicMessage, likeState }, {}> {
+export class PostTopic extends RouteComponent<{userId, imgUrl, page, topicid }, { topicMessage, likeState }, {}> {
     constructor(props, content) {
         super(props, content);
         this.state = {
@@ -413,18 +409,23 @@ export class PostTopic extends RouteComponent<{ imgUrl, page, topicid }, { topic
         this.setState({ topicMessage: topicMessage });
     }
     render() {
-        return <div className="root">
-            <div className="essay">
-                <AuthorMessage authorId={this.state.topicMessage.userId} authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} isAnonymous={this.state.topicMessage.isAnonymous} />
-                <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount} />
-                <div id="ads"><img width="100%" src={this.props.imgUrl}></img></div>
-            </div>
+        if (this.state.topicMessage.userId == this.props.userId || this.props.userId == null) {
+            return <div className="root" id="1">
+                <div className="essay">
+                    <AuthorMessage authorId={this.state.topicMessage.userId} authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} isAnonymous={this.state.topicMessage.isAnonymous} />
+                    <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount} />
+                    <div id="ads"><img width="100%" src={this.props.imgUrl}></img></div>
+                </div>
 
-            <TopicContent postid={this.state.topicMessage.postid} content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} topicid={this.props.topicid} userId={this.state.topicMessage.userId}
-                contentType={this.state.topicMessage.contentType} />
-            <TopicGood />
-            <TopicVote />
-        </div>;
+                <TopicContent postid={this.state.topicMessage.postid} content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} topicid={this.props.topicid} userId={this.state.topicMessage.userId}
+                    contentType={this.state.topicMessage.contentType} />
+                <TopicGood />
+                <TopicVote />
+            </div>;
+        }
+        else {
+            return null;
+        }
     }
 }
 
@@ -439,7 +440,7 @@ export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, author
         };
     }
     render() {
-
+        const email = `/message/message/${this.props.authorId}`;
         const url = `/user/${this.props.authorId}`;
         let urlHtml = <a href={url}><img src={this.props.authorImgUrl}></img></a>;
         if (this.props.isAnonymous == true) {
@@ -455,8 +456,8 @@ export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, author
                 </div>
 
                 <div className="row">
-                    <button id="watch" style={{ marginLeft: "1rem" }}>关注</button>
-                    <button id="email" style={{ marginLeft: "1rem" }}>私信</button>
+                    <div id="watch" style={{ marginLeft: "1rem" }}>关注</div>
+                    <a id="email" href={email} style={{ marginLeft: "1rem" }}>私信</a>
                 </div>
             </div>
         </div>;
@@ -526,14 +527,9 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
         }
     }
     async componentDidMount() {
-        const token = Utility.getLocalStorage("accessToken");
-        const topic = await Utility.getTopic(this.props.topicid);
-        const postid = topic.postid;
-        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${postid}`, { headers: { "Authorization": token } });
-        const data = await response.json();
+        const data = await Utility.getLikeState(this.props.topicid);
         if (data.likeState === 1) {
             $("#commentliked").css("color", "red");
-            console.log("turnred");
         }
         else if (data.likeState === 2) {
             $("#commentdisliked").css("color", "red");
@@ -559,9 +555,7 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
             await Utility.like(this.props.topicid, this.props.postid);
             $("#commentliked").css("color", "red");
         }
-        const token = Utility.getLocalStorage("accessToken");
-        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${this.props.postid}`, { headers: { "Authorization": token } });
-        const data = await response.json();
+        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid);
 
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
@@ -583,21 +577,16 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
             await Utility.dislike(this.props.topicid, this.props.postid);
             $("#commentdisliked").css("color", "red");
         }
-        const token = Utility.getLocalStorage("accessToken");
-        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${this.props.postid}`, { headers: { "Authorization": token } });
-        const data = await response.json();
+        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid);
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
-    //<div className="signature">{this.state.Signature}</div>
     render() {
         const divid = `doc-content${this.props.postid}`;
         let curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userId}`;
-        console.log("aa");
-        console.log(this.props.content);
         const ubbMode = <UbbContainer code={this.props.content} />;
         const mdMode = <div id={divid}>
             <textarea name="editormd-markdown-doc" style={{ display: 'none' }}>{this.props.content}</textarea>
-            
+
         </div>;
         editormd.markdownToHTML(divid, {
             htmlDecode: "style,script,iframe",
@@ -612,9 +601,9 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
         //ubb
 
         if (this.props.contentType === 1) {
-       
+
             content = mdMode;
-        
+
         }
         if (this.props.signature == "") {
             return <div className="content">
@@ -658,12 +647,10 @@ export class ReplyContent extends RouteComponent<{ content, signature, topicid, 
         }
     }
     async componentDidMount() {
-   
+
         const idLike = `#like${this.props.postid}`;
         const idDislike = `#dislike${this.props.postid}`;
-        const token = Utility.getLocalStorage("accessToken");
-        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${this.props.postid}`, { headers: { "Authorization": token } });
-        const data = await response.json();
+        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid);
         if (data.likeState === 1) {
             $(idLike).css("color", "red");
         }
@@ -692,9 +679,7 @@ export class ReplyContent extends RouteComponent<{ content, signature, topicid, 
             await Utility.like(this.props.topicid, this.props.postid);
             $(idLike).css("color", "red");
         }
-        const token = Utility.getLocalStorage("accessToken");
-        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${this.props.postid}`, { headers: { "Authorization": token } });
-        const data = await response.json();
+        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid);
 
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
@@ -719,9 +704,7 @@ export class ReplyContent extends RouteComponent<{ content, signature, topicid, 
             await Utility.dislike(this.props.topicid, this.props.postid);
             $(idDislike).css("color", "red");
         }
-        const token = Utility.getLocalStorage("accessToken");
-        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${this.props.topicid}&postid=${this.props.postid}`, { headers: { "Authorization": token } });
-        const data = await response.json();
+        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid);
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
     render() {
@@ -732,17 +715,17 @@ export class ReplyContent extends RouteComponent<{ content, signature, topicid, 
         const mdMode = <div id={divid}>
             <textarea name="editormd-markdown-doc" style={{ display: 'none' }}>{this.props.content}</textarea>
         </div>;
-    
-            editormd.markdownToHTML(divid, {
-                htmlDecode: "style,script,iframe",
-                emoji: true,
-                taskList: true,
-                tex: true,
-                flowChart: true,
-                sequenceDiagram: true,
-                codeFold: true,
-            });
-       
+
+        editormd.markdownToHTML(divid, {
+            htmlDecode: "style,script,iframe",
+            emoji: true,
+            taskList: true,
+            tex: true,
+            flowChart: true,
+            sequenceDiagram: true,
+            codeFold: true,
+        });
+
         let content;
         //ubb      
         content = ubbMode;
@@ -898,7 +881,7 @@ export class PageModel extends React.Component<{ pageNumber, topicid, curPage, t
     render() {
         let pageUrl: string;
         if (this.props.pageNumber > 0) {
-            pageUrl = `/topic/${this.props.topicid}/${this.props.pageNumber}#1`;
+            pageUrl = `/topic/${this.props.topicid}/${this.props.pageNumber}`;
             if (this.props.pageNumber != this.props.curPage) {
                 return <li className="page-item"><Link className="page-link" to={pageUrl}>{this.props.pageNumber}</Link></li>;
             } else {
@@ -907,22 +890,22 @@ export class PageModel extends React.Component<{ pageNumber, topicid, curPage, t
             }
 
         } else if (this.props.pageNumber == -1) {
-            pageUrl = `/topic/${this.props.topicid}/${this.props.curPage - 1}#1`;
+            pageUrl = `/topic/${this.props.topicid}/${this.props.curPage - 1}`;
 
             return <li className="page-item"><Link className="page-link" to={pageUrl}>&lsaquo;</Link></li>
                 ;
         } else if (this.props.pageNumber == -2) {
-            pageUrl = `/topic/${this.props.topicid}/${this.props.curPage + 1}#1`;
+            pageUrl = `/topic/${this.props.topicid}/${this.props.curPage + 1}`;
 
             return <li className="page-item"><Link className="page-link" to={pageUrl}>&rsaquo;</Link></li>
                 ;
         } else if (this.props.pageNumber == -3) {
-            pageUrl = `/topic/${this.props.topicid}#1`;
+            pageUrl = `/topic/${this.props.topicid}`;
 
             return <li className="page-item"><Link className="page-link" to={pageUrl}>&lsaquo;&lsaquo;</Link></li>
                 ;
         } else {
-            pageUrl = `/topic/${this.props.topicid}/${this.props.totalPage}#1`;
+            pageUrl = `/topic/${this.props.topicid}/${this.props.totalPage}`;
 
             return <li className="page-item"><Link className="page-link" to={pageUrl}>&rsaquo;&rsaquo;</Link></li>
                 ;
@@ -946,25 +929,8 @@ export class SendTopic extends RouteComponent<{ topicid, onChange }, { content: 
         this.state = ({ content: '' });
     }
 
-    async sendMdTopic() {     
-        let url = `http://apitest.niconi.cc/post/topic/${this.props.topicid}`;
-        let c = testEditor.getMarkdown();
-        let content = {
-            content: c,
-            contentType: 1,
-            title: ""
-        }
-        let contentJson = JSON.stringify(content);
-        let token = Utility.getLocalStorage("accessToken");
-        let myHeaders = new Headers();
-        myHeaders.append("Authorization", token);
-        myHeaders.append("Content-Type", 'application/json');
-        let mes = await fetch(url, {
-            method: 'POST',
-            headers: myHeaders,
-            body: contentJson
-        }
-        )
+    async sendMdTopic() {
+     
         testEditor.setMarkdown("");
         this.props.onChange();
         this.setState({ content: "" });
@@ -974,7 +940,7 @@ export class SendTopic extends RouteComponent<{ topicid, onChange }, { content: 
         return { value: '' };
     }
     handleChange(event) {
-     
+
         this.setState({ content: event.target.value });
     }
     render() {
@@ -1014,13 +980,13 @@ export class SendTopic extends RouteComponent<{ topicid, onChange }, { content: 
         return <div style={{ width: "100%", display: "flex", flexDirection: "column" }}><div id="sendTopic">
             <form>
                 <div id="test-editormd" className="editormd">
-                 <textarea className="editormd-markdown-textarea" name="test-editormd-markdown-doc" value={this.state.content}  ></textarea>
-                </div>   
-                </form>
+                    <textarea className="editormd-markdown-textarea" name="test-editormd-markdown-doc" value={this.state.content}  ></textarea>
+                </div>
+            </form>
             <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
                 <div id="post-topic-button" onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复</div>
             </div>
-  </div>
+        </div>
         </div>;
     }
 }

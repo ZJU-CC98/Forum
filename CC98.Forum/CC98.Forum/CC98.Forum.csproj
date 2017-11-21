@@ -18,11 +18,13 @@
     <None Remove="Components\AllNewTopicArea.tsx" />
     <None Remove="Components\Category.tsx" />
     <None Remove="Components\Footer.tsx" />
+    <None Remove="Components\Status.tsx" />
     <None Remove="Components\UbbContainer.tsx" />
     <None Remove="Components\UserCenterConfig.tsx" />
     <None Remove="Components\UserCenterConfigAvatar.tsx" />
     <None Remove="Components\UsercenterConfigPassword.tsx" />
     <None Remove="Components\UserCenterConfigSignature.tsx" />
+    <None Remove="Components\UserCenterMyFavoritesBoards.tsx" />
     <None Remove="Components\UserCenterPageCount.tsx" />
     <None Remove="Components\UserExactProfile.tsx" />
     <None Remove="Props\FocusBoardProps.tsx" />
@@ -77,11 +79,13 @@
     <TypeScriptCompile Include="Components\LogOnExact.tsx" />
     <TypeScriptCompile Include="Components\LogOff.tsx" />
     <TypeScriptCompile Include="Components\SendTopic.tsx" />
+    <TypeScriptCompile Include="Components\Status.tsx" />
     <TypeScriptCompile Include="Components\UbbContainer.tsx" />
     <TypeScriptCompile Include="Components\UserCenterConfig.tsx" />
     <TypeScriptCompile Include="Components\UserCenterConfigAvatar.tsx" />
     <TypeScriptCompile Include="Components\UsercenterConfigPassword.tsx" />
     <TypeScriptCompile Include="Components\UserCenterConfigSignature.tsx" />
+    <TypeScriptCompile Include="Components\UserCenterMyFavoritesBoards.tsx" />
     <TypeScriptCompile Include="Components\UserCenterPageCount.tsx" />
     <TypeScriptCompile Include="Components\UserExactProfile.tsx" />
     <TypeScriptCompile Include="Props\FocusBoardProps.tsx" />

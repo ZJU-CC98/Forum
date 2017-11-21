@@ -54,14 +54,29 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
         }
 
         //看url中是否携带id信息，如果有的话就作为第一个联系人
-        let urlMessage = location.href.match(/id=(\S+)/);
-        if (urlMessage) {
-            let chatManId = parseInt(urlMessage[1]);
+        let urlId = location.href.match(/id=(\S+)/);
+        if (urlId) {
+            let chatManId = parseInt(urlId[1]);
             let response = await fetch(`http://apitest.niconi.cc/user/basic/${chatManId}`);
             let chatMan = await response.json();
             chatMan.message = await Utility.getRecentMessage(chatManId, 0, 10);
             let chatContact = [chatMan];
             recentContact = chatContact.concat(recentContact);
+        }
+        else { //看url中是否携带name信息，如果有的话就作为第一个联系人
+            let urlName = location.href.match(/name=(\S+)/);
+            if (urlName) {
+                let chatManName = urlName[1];
+                let response0 = await fetch(`http://apitest.niconi.cc/user/name/${chatManName}`);
+                let response1 = await response0.json();
+                let chatMan = { id: null, name: '', portraitUrl: '', message: [] };
+                chatMan.id = response1.id;
+                chatMan.name = response1.name;
+                chatMan.portraitUrl = response1.portraitUrl;
+                chatMan.message = await Utility.getRecentMessage(chatMan.id, 0, 10);
+                let chatContact = [chatMan];
+                recentContact = chatContact.concat(recentContact);
+            }
         }
         
         if (recentContact) {
@@ -91,7 +106,7 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
             $('#moreImg').removeClass('displaynone');
             $('#moreDot').addClass('displaynone');
             $('#moreShow').addClass('displaynone');
-            let recentContact = this.state.data;
+            let recentContact = Utility.getStorage("recentContact");
             let newContact = await Utility.getRecentContact(recentContact.length, 7);
             recentContact = recentContact.concat(newContact);
             this.setState({ data: recentContact });
@@ -109,6 +124,7 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
         }
     }
 
+    //传递到MessageWindow里的方法，在MessageWindow里控制MessageMessage刷新界面
     async onChange() {
         let recentContact = Utility.getStorage("recentContact");
         this.setState({ data: recentContact, chatObj: recentContact[0] });

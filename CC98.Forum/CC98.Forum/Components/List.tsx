@@ -2,7 +2,6 @@
 import { HotTopic } from '../Props/AppProps'
 import * as State from '../States/AppState'
 import * as Utility from '../Utility'
-import * as moment from 'moment'; 
 import { UbbContainer } from './UbbContainer';
 import { match } from 'react-router';
 import {
@@ -10,7 +9,7 @@ import {
 	Link
 } from 'react-router-dom';
 import TopicTitleAndContentState = State.TopicTitleAndContentState;
-
+declare let moment: any;
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
 
@@ -22,21 +21,17 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
 	}
 }
 
-export class List extends RouteComponent<{}, {bigPaper:string, page: number, totalPage: number, boardid: number }, { page: string, boardid: number }>  {
+export class List extends RouteComponent<{}, {bigPaper:string, page: number, totalPage: number, boardId: number }, { page: string, boardId: number }>  {
 
 	constructor(props, context) {
 		super(props, context);
 
         // 默认页码
-        this.state = { page: 1, totalPage: 1, boardid: this.match.params.boardid, bigPaper:"" };
+        this.state = { page: 1, totalPage: 1, boardId: this.match.params.boardId, bigPaper:"" };
 	}
-    async getTotalListPage(boardid) {
-        const token = Utility.getLocalStorage("accessToken");
-        const totalTopicCountResponse = await fetch(`http://apitest.niconi.cc/Board/${boardid}`, { headers: {'Authorization':token}});
-		const totalTopicCountJson = await totalTopicCountResponse.json();
-        const totalTopicCount = totalTopicCountJson.topicCount;
-      
-		return (totalTopicCount - totalTopicCount % 20) / 20 + 1;
+    async getTotalListPage(boardId) {
+        const page = await Utility.getListTotalPage(boardId);
+        return page;
 	}
 	async componentWillReceiveProps(newProps) {
 		let page: number;
@@ -47,39 +42,26 @@ export class List extends RouteComponent<{}, {bigPaper:string, page: number, tot
 
 		// 转换类型
 		else { page = parseInt(newProps.match.params.page); }
-		const boardid = this.match.params.boardid;
-		const totalPage = await this.getTotalListPage(boardid);
+		const boardId = this.match.params.boardId;
+		const totalPage = await this.getTotalListPage(boardId);
         // 设置状态
 
-		this.setState({ page: page, totalPage: totalPage, boardid: boardid });
+		this.setState({ page: page, totalPage: totalPage, boardId: boardId });
 	}
     async componentDidMount() {
-   
-        const token = Utility.getLocalStorage("accessToken");
-        const response = await fetch(`http://apitest.niconi.cc/Board/${this.match.params.boardid}`, { headers: { 'Authorization': token } });
-        const json = await response.json();
-        let bigPaper:string = json.bigPaper;
-		let page: number;
-		// 未提供页码，防止出错不进行后续处理
-		if (!this.match.params.page) {
-			page = 1;
-		}
-		// 转换类型
-		else { page = parseInt(this.match.params.page); }
-		const boardid = this.match.params.boardid;
-		const totalPage = await this.getTotalListPage(boardid);
+        const data = await Utility.getBasicBoardMessage(this.match.params.boardId, this.match.params.page);
         // 设置状态
-        this.setState({ bigPaper: bigPaper,page: page, totalPage: totalPage, boardid: boardid});
+        this.setState({ bigPaper: data.bigPaper, page: data.page, totalPage: data.totalPage, boardId: this.match.params.boardId });
 	}
 	render() {
         return <div id="listRoot">
-            <Category boardId={this.state.boardid} />
-            <ListHead key={this.state.page} boardid={this.state.boardid} />
+            <Category boardId={this.state.boardId} />
+            <ListHead key={this.state.page} boardId={this.state.boardId} />
             <ListNotice bigPaper={this.state.bigPaper} />
-			<ListButtonAndPager page={this.state.page} totalPage={this.state.totalPage} boardid={this.state.boardid} />
+			<ListButtonAndPager page={this.state.page} totalPage={this.state.totalPage} boardid={this.state.boardId} />
 			<ListTag />
             <Route path="/list/:boardid/:page?" component={ListContent} />
-            <PagerDown page={this.state.page} totalPage={this.state.totalPage} boardid={this.state.boardid}/>
+            <PagerDown page={this.state.page} totalPage={this.state.totalPage} boardid={this.state.boardId}/>
 		</div>;
 	}
 }
@@ -89,10 +71,7 @@ export class Category extends React.Component<{boardId}, { boardId,  boardName }
         this.state = ({ boardId: "",boardName: "" });
     }
     async componentDidMount() {
-           let token=Utility.getLocalStorage("accessToken");
-        const boardResponse = await fetch(`http://apitest.niconi.cc/Board/${this.props.boardId}` ,{headers:{'Authorization':token}});
-        const boardData = await boardResponse.json();
-        const boardName = boardData.name;
+        const boardName = await Utility.getListCategory(this.props.boardId);
         this.setState({ boardId: this.props.boardId, boardName: boardName });
     }
     render() {
@@ -100,7 +79,7 @@ export class Category extends React.Component<{boardId}, { boardId,  boardName }
         return <div className="row" style={{width:"100%", justifyContent: "flex-start", color: "blue", fontSize: "0.75rem" }}>&rsaquo;&rsaquo;<a style={{ color: "blue", fontSize: "0.75rem" }} href="/">首页</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "0.75rem" }} href={listUrl} >{this.state.boardName}</a></div>;
     }
 }
-export class ListHead extends RouteComponent<{ boardid }, State.ListHeadState, {}> {
+export class ListHead extends RouteComponent<{ boardId }, State.ListHeadState, {}> {
 	constructor(props, content) {
 		super(props, content);
 		this.state = {
@@ -117,22 +96,15 @@ export class ListHead extends RouteComponent<{ boardid }, State.ListHeadState, {
 		};
 	}
     async componentDidMount() {
-        const token = Utility.getLocalStorage("accessToken");
-        const url = `http://apitest.niconi.cc/Board/${this.props.boardid}`;
-        const managersResponse = await fetch(url, { headers: {'Authorization':token} });
-		const managerJson = await managersResponse.json();
+        const data = await Utility.getBoardMessage(this.props.boardId);
 		this.setState({
-			listName: managerJson.name, todayTopics: managerJson.todayCount, totalTopics: managerJson.topicCount, listManager: managerJson.boardMasters
+			listName: data.name, todayTopics: data.todayCount, totalTopics: data.topicCount, listManager: data.boardMasters
 		});
 	}
 	async componentWillRecieveProps(newProps) {
-
-        const token = Utility.getLocalStorage("accessToken");
-        const url = `http://apitest.niconi.cc/Board/${this.props.boardid}`;
-        const managersResponse = await fetch(url, { headers: { 'Authorization': token } });
-        const managerJson = await managersResponse.json();
+        const data = await Utility.getBoardMessage(this.props.boardId);
         this.setState({
-            listName: managerJson.name, todayTopics: managerJson.todayCount, totalTopics: managerJson.topicCount, listManager: managerJson.boardMasters
+            listName: data.name, todayTopics: data.todayCount, totalTopics: data.topicCount, listManager: data.boardMasters
         });
 	}
 	generateMasters(item) {
