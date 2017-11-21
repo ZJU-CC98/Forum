@@ -67,14 +67,14 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         return Utility.getTotalReplyCount(topicid);
     }
     returnTopic() {
-        return <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} />;
+        return <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} />;
 
     }
     render() {
         let topic = null;
         let hotReply = null;
         if (this.state.page === 1) {
-            topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} />;
+            topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} />;
             hotReply = <Route path="/topic/:topicid/:page?" component={HotReply} />;
         }
         return <div className="center" style={{ width: "80%" }} >
@@ -156,6 +156,7 @@ export class HotReply extends RouteComponent<{}, { contents }, { page, topicid }
     }
 
     async componentWillReceiveProps(newProps) {
+        
         const page = newProps.match.params.page || 1;
         if (page == 1) {
             const realContents = await Utility.getHotReplyContent(newProps.match.params.topicid);
@@ -165,7 +166,8 @@ export class HotReply extends RouteComponent<{}, { contents }, { page, topicid }
 
     }
     private generateContents(item: State.ContentState) {
-        return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
+        const floor = (item.floor % 10).toString();
+        return <div className="reply" id={floor}><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
             <HotReplier key={item.id} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isAnonymous={item.isAnonymous} />
             <ReplyContent key={item.content} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.id} contentType={item.contentType} />
         </div>
@@ -173,7 +175,7 @@ export class HotReply extends RouteComponent<{}, { contents }, { page, topicid }
     }
 
     render() {
-
+        $(".header").scrollTop();
         return <div className="center" style={{ width: "100%" }}>
             {this.state.contents.map(this.generateContents)}
         </div>
@@ -190,9 +192,10 @@ export class HotReplier extends RouteComponent<{ floor, userId, topicid, userNam
     }
 
     render() {
-        let url = `/user/${this.props.userId}`;
-        let realUrl = encodeURIComponent(url);
-        let curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userId}`;
+        const url = `/user/${this.props.userId}`;
+        const realUrl = encodeURIComponent(url);
+        const curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userId}`;
+        const email = `/message/message/${this.props.userId}`;
         $(document).ready(function () {
             $(".authorImg").mouseenter(function (event: JQuery.Event) {
                 const currentImage = event.currentTarget;
@@ -246,10 +249,10 @@ export class HotReplier extends RouteComponent<{ floor, userId, topicid, userNam
                     </div>
                 </div>
                 <div id="operation"  >
-                    <button className="operation">引用</button>
-                    <button className="operation">编辑</button>
-                    <button className="operation">私信</button>
-                    <button className="operation">举报</button>
+                    <Link className="operation" to="">引用</Link>
+                    <Link className="operation" to="">编辑</Link>
+                    <Link className="operation" to={email}>私信</Link>
+                    <Link className="operation" to="">举报</Link>
                     <Link className="operation" to={curUserPostUrl}>只看此用户</Link>
                 </div>
             </div></div>;
@@ -263,6 +266,7 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
     render() {
         const url = `/user/${this.props.userId}`;
         const realUrl = encodeURIComponent(url);
+        const email = `/message/message/${this.props.userId}`;
         let urlHtml = <a href={realUrl}><img src={this.props.userImgUrl}></img></a>;
         if (this.props.isAnonymous == true) {
             urlHtml = <img src={this.props.userImgUrl}></img>;
@@ -304,7 +308,7 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
 
                 <div className="row mouse-userDetails" style={{ height: "15.625rem" }} >
                     <div className="authorImg" >{urlHtml}</div>
-                    <div className="userDetails" style={{ display: "none", position: "absolute", zindedx: "1" }}>
+                    <div className="userDetails" style={{ display: "none", position: "absolute" }}>
                         {userDetails}
                     </div>
 
@@ -321,25 +325,45 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
                     </div>
                 </div>
                 <div id="operation"  >
-                    <button className="operation">引用</button>
-                    <button className="operation">编辑</button>
-                    <button className="operation">私信</button>
-                    <button className="operation">举报</button>
+                    <Link className="operation" to="">引用</Link>
+                    <Link className="operation" to="">编辑</Link>
+                    <Link className="operation" to={email}>私信</Link>
+                    <Link className="operation" to="">举报</Link>
                     <Link className="operation" to={curUserPostUrl}>只看此用户</Link>
                 </div>
             </div></div>;
     }
 }
-export class UserDetails extends RouteComponent<{  userName }, { portraitUrl, userName,fanCount,displayTitle,birthday,gender,prestige }, {}>{
+export class UserDetails extends RouteComponent<{  userName }, { portraitUrl, userName,fanCount,displayTitle,birthday,gender,prestige,levelTitle }, {}>{
     constructor(props) {
         super(props);
-        this.state = ({ portraitUrl: null, userName: null, fanCount: null, displayTitle: null, birthday: null, gender: null, prestige:null });
+        this.state = ({ portraitUrl: null, userName: null, fanCount: null, displayTitle: null, birthday: null, gender: null, prestige: null, levelTitle:null });
     }
     async componentDidMount() {
         const data = await Utility.getUserDetails(this.props.userName);
-        this.setState({ portraitUrl: data.portraitUrl, userName: data.userName, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige,gender:data.gender });
+        this.setState({ portraitUrl: data.portraitUrl, userName: data.userName, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige,gender:data.gender,levelTitle:data.levelTitle });
     }
     render() {
+        let title = this.state.displayTitle;
+        if (this.state.displayTitle === null) {
+            title = this.state.levelTitle;
+        }
+        const year = moment(this.state.birthday).format("YYYY");
+        let birthday;
+        if (year === "9999") {
+            birthday = moment(this.state.birthday).format("MM-DD");
+        } else {
+            birthday = moment(this.state.birthday).format("YYYY-MM-DD");
+        }
+        if (this.state.birthday == null) {
+            birthday = '保密';
+        }
+        let gender;
+        if (this.state.gender === 0) {
+            gender = <i style={{ color: "pink" }} className="fa fa-venus fa-lg fa-fw"></i>;
+        } else {
+            gender = <i style={{ color: "blue" }} className="fa fa-mars fa-lg fa-fw"></i>;
+        }
         const url = `/user/name/${this.props.userName}`;
         const userUrl = encodeURI(url);
         const urlHtml = <a href={userUrl}> <img src={this.state.portraitUrl}></img></a>;
@@ -354,21 +378,25 @@ export class UserDetails extends RouteComponent<{  userName }, { portraitUrl, us
                                 <div style={{ fontFamily: "微软雅黑", color: "blue", marginRight: "0.63rem" }}> {this.state.userName}</div>   <div style={{ marginRight: "0.63rem" }}>   粉丝  </div><div style={{ color: "red"}}>{this.state.fanCount}</div>
                             </div>
                             <div className="row" style={{ marginTop: "0.63rem", fontSize: "0.87rem" }}>
-                                {this.state.displayTitle}
-						</div>
+                                {title}
+                            </div>
+                          
                         </div>
+
                         <div>
-                            <button id="watch" style={{ width: "5rem", backgroundColor: "#FF6A6A", marginRight: "0.63rem", marginLeft: "1.6rem", marginTop: "2rem", height: "2rem" }}>关注</button>
+                            <div id="watch" style={{ width: "5rem", backgroundColor: "#FF6A6A", marginRight: "0.63rem", marginLeft: "1.6rem", marginTop: "2rem", height: "2rem" }}>关注</div>
+                       
                         </div>
                     </div>
-                    <div className="row">
-                        <div></div><div></div><div></div>
+                    <div className="row" style={{ fontSize:"0.87rem" }}>
+                        <div style={{ marginLeft: "7.2rem" }}>威望&nbsp;{this.state.prestige}</div><div style={{ marginLeft: "1rem" }}>生日&nbsp;{birthday}</div>
+                        <div style={{ marginLeft: "1rem" }}>{gender}</div>
                         </div>
                 </div>
             </div>;
     }
 }
-export class PostTopic extends RouteComponent<{ imgUrl, page, topicid }, { topicMessage, likeState }, {}> {
+export class PostTopic extends RouteComponent<{userId, imgUrl, page, topicid }, { topicMessage, likeState }, {}> {
     constructor(props, content) {
         super(props, content);
         this.state = {
@@ -381,18 +409,23 @@ export class PostTopic extends RouteComponent<{ imgUrl, page, topicid }, { topic
         this.setState({ topicMessage: topicMessage });
     }
     render() {
-        return <div className="root">
-            <div className="essay">
-                <AuthorMessage authorId={this.state.topicMessage.userId} authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} isAnonymous={this.state.topicMessage.isAnonymous} />
-                <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount} />
-                <div id="ads"><img width="100%" src={this.props.imgUrl}></img></div>
-            </div>
+        if (this.state.topicMessage.userId == this.props.userId || this.props.userId == null) {
+            return <div className="root" id="1">
+                <div className="essay">
+                    <AuthorMessage authorId={this.state.topicMessage.userId} authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} isAnonymous={this.state.topicMessage.isAnonymous} />
+                    <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount} />
+                    <div id="ads"><img width="100%" src={this.props.imgUrl}></img></div>
+                </div>
 
-            <TopicContent postid={this.state.topicMessage.postid} content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} topicid={this.props.topicid} userId={this.state.topicMessage.userId}
-                contentType={this.state.topicMessage.contentType} />
-            <TopicGood />
-            <TopicVote />
-        </div>;
+                <TopicContent postid={this.state.topicMessage.postid} content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} topicid={this.props.topicid} userId={this.state.topicMessage.userId}
+                    contentType={this.state.topicMessage.contentType} />
+                <TopicGood />
+                <TopicVote />
+            </div>;
+        }
+        else {
+            return null;
+        }
     }
 }
 
@@ -407,7 +440,7 @@ export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, author
         };
     }
     render() {
-
+        const email = `/message/message/${this.props.authorId}`;
         const url = `/user/${this.props.authorId}`;
         let urlHtml = <a href={url}><img src={this.props.authorImgUrl}></img></a>;
         if (this.props.isAnonymous == true) {
@@ -423,8 +456,8 @@ export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, author
                 </div>
 
                 <div className="row">
-                    <button id="watch" style={{ marginLeft: "1rem" }}>关注</button>
-                    <button id="email" style={{ marginLeft: "1rem" }}>私信</button>
+                    <div id="watch" style={{ marginLeft: "1rem" }}>关注</div>
+                    <a id="email" href={email} style={{ marginLeft: "1rem" }}>私信</a>
                 </div>
             </div>
         </div>;
@@ -848,7 +881,7 @@ export class PageModel extends React.Component<{ pageNumber, topicid, curPage, t
     render() {
         let pageUrl: string;
         if (this.props.pageNumber > 0) {
-            pageUrl = `/topic/${this.props.topicid}/${this.props.pageNumber}#1`;
+            pageUrl = `/topic/${this.props.topicid}/${this.props.pageNumber}`;
             if (this.props.pageNumber != this.props.curPage) {
                 return <li className="page-item"><Link className="page-link" to={pageUrl}>{this.props.pageNumber}</Link></li>;
             } else {
@@ -857,22 +890,22 @@ export class PageModel extends React.Component<{ pageNumber, topicid, curPage, t
             }
 
         } else if (this.props.pageNumber == -1) {
-            pageUrl = `/topic/${this.props.topicid}/${this.props.curPage - 1}#1`;
+            pageUrl = `/topic/${this.props.topicid}/${this.props.curPage - 1}`;
 
             return <li className="page-item"><Link className="page-link" to={pageUrl}>&lsaquo;</Link></li>
                 ;
         } else if (this.props.pageNumber == -2) {
-            pageUrl = `/topic/${this.props.topicid}/${this.props.curPage + 1}#1`;
+            pageUrl = `/topic/${this.props.topicid}/${this.props.curPage + 1}`;
 
             return <li className="page-item"><Link className="page-link" to={pageUrl}>&rsaquo;</Link></li>
                 ;
         } else if (this.props.pageNumber == -3) {
-            pageUrl = `/topic/${this.props.topicid}#1`;
+            pageUrl = `/topic/${this.props.topicid}`;
 
             return <li className="page-item"><Link className="page-link" to={pageUrl}>&lsaquo;&lsaquo;</Link></li>
                 ;
         } else {
-            pageUrl = `/topic/${this.props.topicid}/${this.props.totalPage}#1`;
+            pageUrl = `/topic/${this.props.topicid}/${this.props.totalPage}`;
 
             return <li className="page-item"><Link className="page-link" to={pageUrl}>&rsaquo;&rsaquo;</Link></li>
                 ;

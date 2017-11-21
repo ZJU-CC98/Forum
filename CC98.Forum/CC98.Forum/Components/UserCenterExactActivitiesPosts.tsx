@@ -27,11 +27,10 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
 
             const url = `http://apitest.niconi.cc/me/recenttopics?from=${this.state.userRecentPosts.length}&size=10`
             const token = Utility.getLocalStorage("accessToken");
-
+            const headers = new Headers();
+            headers.append('Authorization', token);
             let res = await fetch(url, {
-                headers: {
-                    'Authorization': token
-                }
+                headers
             });
 
             let data: itemType[] = await res.json();
@@ -58,10 +57,10 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
     async componentDidMount() {
         const url = `http://apitest.niconi.cc/me/recenttopics?from=0&size=10`
         const token = window.localStorage.accessToken.slice(4);
+        const headers = new Headers();
+        headers.append('Authorization', token);
         let res = await fetch(url, {
-            headers: {
-                'Authorization': token
-            }
+            headers
         });
         let data = await res.json();
 
