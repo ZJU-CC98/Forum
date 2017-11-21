@@ -611,3 +611,24 @@
         }
     }
 }
+
+.user-center-myfavorite-board {
+    display: flex;
+    align-items: center;
+
+    img {
+        width: 260px;
+        height: 80px;
+        margin: 1rem 1rem 0 0;
+    }
+
+    .user-center-myfavorite-board-info {
+        flex-grow: 1;
+    }
+
+    button {
+        width: 6rem;
+        height: 2rem;
+        border-radius: 0.5rem;
+    }
+}

@@ -2628,6 +2628,15 @@ var UserFanInfo = /** @class */ (function () {
     return UserFanInfo;
 }());
 exports.UserFanInfo = UserFanInfo;
+/**
+* 用户收藏的版面信息
+*/
+var UserFavoritesBoardInfo = /** @class */ (function () {
+    function UserFavoritesBoardInfo() {
+    }
+    return UserFavoritesBoardInfo;
+}());
+exports.UserFavoritesBoardInfo = UserFavoritesBoardInfo;
 
 
 /***/ }),
@@ -5804,9 +5813,7 @@ var DropDown = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log(Utility.getLocalStorage("accessToken"));
-                        console.log(Utility.getLocalStorage("userName"));
-                        if (!(Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName"))) return [3 /*break*/, 3];
+                        if (!Utility.getLocalStorage("accessToken")) return [3 /*break*/, 3];
                         console.log("token未过期");
                         userName = Utility.getLocalStorage("userName");
                         return [4 /*yield*/, fetch("http://apitest.niconi.cc/User/Name/" + userName)];
@@ -7150,7 +7157,7 @@ exports.UserCenterMyFollowingsUser = UserCenterMyFollowingsUser;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(31);
-module.exports = __webpack_require__(93);
+module.exports = __webpack_require__(95);
 
 
 /***/ }),
@@ -10054,7 +10061,7 @@ var UserCenterMyFollowings_1 = __webpack_require__(66);
 var UserCenterMyFans_1 = __webpack_require__(84);
 var UserCenterMyPostsExact_1 = __webpack_require__(85);
 var UserCenterMyFavorites_1 = __webpack_require__(86);
-var UserCenterConfig_1 = __webpack_require__(89);
+var UserCenterConfig_1 = __webpack_require__(91);
 /**
  * 用户中心主体
  */
@@ -12640,7 +12647,7 @@ var LogOnExact = /** @class */ (function (_super) {
                         Utility.setLocalStorage("userName", this.state.loginName);
                         Utility.setLocalStorage("password", this.state.loginPassword);
                         headers1 = new Headers();
-                        headers.append("Authorization", token);
+                        headers1.append("Authorization", token);
                         return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + this.state.loginName, {
                                 headers: headers1
                             })];
@@ -12650,14 +12657,11 @@ var LogOnExact = /** @class */ (function (_super) {
                     case 4:
                         userInfo = _a.sent();
                         Utility.setLocalStorage("userInfo", userInfo, data.expires_in);
+                        console.log(userInfo);
                         this.setState({
                             loginMessage: '登录成功 正在返回首页',
                             isLogining: false
                         });
-                        //跳转至首页
-                        setTimeout(function () {
-                            location.pathname = "/";
-                        }, 1000);
                         return [2 /*return*/];
                 }
             });
@@ -13302,6 +13306,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(2);
+var UserCenterMyFavoritesBoard_1 = __webpack_require__(89);
+var AppState_1 = __webpack_require__(90);
 var UserCenterMyFavoritesBoards = /** @class */ (function (_super) {
     __extends(UserCenterMyFavoritesBoards, _super);
     function UserCenterMyFavoritesBoards() {
@@ -13309,17 +13315,14 @@ var UserCenterMyFavoritesBoards = /** @class */ (function (_super) {
     }
     UserCenterMyFavoritesBoards.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, customBoardsId, query, url, myHeaders, res, data;
+            var token, customBoardsId, url, myHeaders, res, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         token = Utility.getLocalStorage('accessToken');
+                        console.log(Utility.getLocalStorage('userInfo'));
                         customBoardsId = Utility.getLocalStorage('userInfo').customBoards;
-                        if (customBoardsId.length === 0) {
-                            return [2 /*return*/];
-                        }
-                        query = customBoardsId.join('&id=');
-                        url = "http://apitest.niconi.cc/board/?id=" + query;
+                        url = "http://apitest.niconi.cc/board/100";
                         myHeaders = new Headers();
                         myHeaders.append('Authorization', token);
                         return [4 /*yield*/, fetch(url, {
@@ -13337,11 +13340,26 @@ var UserCenterMyFavoritesBoards = /** @class */ (function (_super) {
         });
     };
     UserCenterMyFavoritesBoards.prototype.render = function () {
-        return (React.createElement("div", null));
+        return (React.createElement("div", null,
+            React.createElement(UserCenterMyFavoritesBoard_1.UserCenterMyFavoritesBoard, { UserFavoritesBoard: boardInfo }),
+            React.createElement("hr", null),
+            React.createElement(UserCenterMyFavoritesBoard_1.UserCenterMyFavoritesBoard, { UserFavoritesBoard: boardInfo }),
+            React.createElement("hr", null),
+            React.createElement(UserCenterMyFavoritesBoard_1.UserCenterMyFavoritesBoard, { UserFavoritesBoard: boardInfo }),
+            React.createElement("hr", null),
+            React.createElement(UserCenterMyFavoritesBoard_1.UserCenterMyFavoritesBoard, { UserFavoritesBoard: boardInfo }),
+            React.createElement("hr", null),
+            React.createElement(UserCenterMyFavoritesBoard_1.UserCenterMyFavoritesBoard, { UserFavoritesBoard: boardInfo })));
     };
     return UserCenterMyFavoritesBoards;
 }(React.Component));
 exports.UserCenterMyFavoritesBoards = UserCenterMyFavoritesBoards;
+var boardInfo = new AppState_1.UserFavoritesBoardInfo();
+boardInfo.boardMasters = ['aaa', 'bbbbb'];
+boardInfo.id = 100;
+boardInfo.name = '名字';
+boardInfo.todayCount = 233;
+boardInfo.topicCount = 666;
 
 
 /***/ }),
@@ -13365,9 +13383,318 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterConfigAvatar_1 = __webpack_require__(90);
-var UserCenterConfigSignature_1 = __webpack_require__(91);
-var UsercenterConfigPassword_1 = __webpack_require__(92);
+var UserCenterMyFavoritesBoard = /** @class */ (function (_super) {
+    __extends(UserCenterMyFavoritesBoard, _super);
+    function UserCenterMyFavoritesBoard() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserCenterMyFavoritesBoard.prototype.render = function () {
+        return (React.createElement("div", { className: 'user-center-myfavorite-board' },
+            React.createElement("img", null),
+            React.createElement("div", { className: 'user-center-myfavorite-board-info' },
+                React.createElement("p", null,
+                    "\u7248\u4E3B\uFF1A",
+                    this.props.UserFavoritesBoard.boardMasters.join(' ')),
+                React.createElement("p", null,
+                    "\u4ECA\u65E5\u4E3B\u9898 ",
+                    this.props.UserFavoritesBoard.todayCount,
+                    " / \u603B\u4E3B\u9898 ",
+                    this.props.UserFavoritesBoard.topicCount)),
+            React.createElement("button", { type: "button" }, "\u53D6\u6D88\u5173\u6CE8")));
+    };
+    return UserCenterMyFavoritesBoard;
+}(React.Component));
+exports.UserCenterMyFavoritesBoard = UserCenterMyFavoritesBoard;
+
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * 表示应用程序的状态。
+ */
+var AppState = /** @class */ (function () {
+    function AppState() {
+    }
+    return AppState;
+}());
+exports.AppState = AppState;
+/**
+ * 投票状态
+ */
+var TopicVoteState = /** @class */ (function () {
+    function TopicVoteState() {
+    }
+    return TopicVoteState;
+}());
+exports.TopicVoteState = TopicVoteState;
+/**
+ * 发帖内容状态
+ */
+var PostTopicState = /** @class */ (function () {
+    function PostTopicState() {
+    }
+    return PostTopicState;
+}());
+exports.PostTopicState = PostTopicState;
+/**
+ * 作者信息状态
+ */
+var AuthorMessageState = /** @class */ (function () {
+    function AuthorMessageState() {
+    }
+    return AuthorMessageState;
+}());
+exports.AuthorMessageState = AuthorMessageState;
+/**
+ * 题目信息状态
+ */
+var TopicTitleState = /** @class */ (function () {
+    function TopicTitleState() {
+    }
+    return TopicTitleState;
+}());
+exports.TopicTitleState = TopicTitleState;
+/**
+ * 文章内容
+ */
+var ContentState = /** @class */ (function () {
+    function ContentState(id, content, time, isDelete, floor, isAnonymous, lastUpdateAuthor, lastUpdateTime, topicId, userName, sendTopicNumber, userImgUrl, signature, userId, privilege, likeNumber, dislikeNumber, postid, contentType) {
+        this.userName = userName;
+        this.id = id;
+        this.content = content;
+        this.time = time;
+        this.isAnonymous = isAnonymous;
+        this.isDelete = isDelete;
+        this.floor = floor;
+        this.lastUpdateAuthor = lastUpdateAuthor;
+        this.lastUpdateTime = lastUpdateTime;
+        this.topicId = topicId;
+        this.sendTopicNumber = sendTopicNumber;
+        this.userImgUrl = userImgUrl;
+        this.signature = signature;
+        this.userId = userId;
+        this.privilege = privilege;
+        this.likeNumber = likeNumber;
+        this.dislikeNumber = dislikeNumber;
+        this.postid = postid;
+        this.contentType = contentType;
+    }
+    return ContentState;
+}());
+exports.ContentState = ContentState;
+/**
+ * 点赞信息状态
+ */
+var TopicGoodState = /** @class */ (function () {
+    function TopicGoodState() {
+    }
+    return TopicGoodState;
+}());
+exports.TopicGoodState = TopicGoodState;
+/**
+ * 回复者状态
+ */
+var ReplierState = /** @class */ (function () {
+    function ReplierState() {
+    }
+    return ReplierState;
+}());
+exports.ReplierState = ReplierState;
+/**
+ * 首页话题信息状态
+ * 拥有一个属性mainPageTopicState，为MainPageTopic类数组，用于存放组件所需的主题信息（一般为10条）
+ **/
+var MainPageTopicState = /** @class */ (function () {
+    function MainPageTopicState() {
+    }
+    return MainPageTopicState;
+}());
+exports.MainPageTopicState = MainPageTopicState;
+var ListHeadState = /** @class */ (function () {
+    function ListHeadState() {
+    }
+    return ListHeadState;
+}());
+exports.ListHeadState = ListHeadState;
+var ListNoticeState = /** @class */ (function () {
+    function ListNoticeState() {
+    }
+    return ListNoticeState;
+}());
+exports.ListNoticeState = ListNoticeState;
+var ListTagState = /** @class */ (function () {
+    function ListTagState() {
+    }
+    return ListTagState;
+}());
+exports.ListTagState = ListTagState;
+/**
+ * 内容列表页面的状态。
+ */
+var ListContentState = /** @class */ (function () {
+    function ListContentState() {
+    }
+    return ListContentState;
+}());
+exports.ListContentState = ListContentState;
+var TopicTitleAndContentState = /** @class */ (function () {
+    /*  constructor(title, authorName, lastReply) {
+          this.authorName = authorName;
+          this.lastReply = lastReply;
+            this.title = title;
+      }*/
+    function TopicTitleAndContentState(title, userName, topicid, userId, lastPostUser, lastPostTime) {
+        this.userName = userName;
+        this.title = title;
+        this.id = topicid;
+        this.userId = userId;
+        this.lastPostUser = lastPostUser;
+        this.lastPostTime = lastPostTime;
+    }
+    return TopicTitleAndContentState;
+}());
+exports.TopicTitleAndContentState = TopicTitleAndContentState;
+/**
+ * 定义页码列表组件的状态。
+ */
+var ListPagerState = /** @class */ (function () {
+    function ListPagerState() {
+    }
+    return ListPagerState;
+}());
+exports.ListPagerState = ListPagerState;
+var PagerState = /** @class */ (function () {
+    function PagerState(page) {
+        this.pageNumber = page;
+    }
+    return PagerState;
+}());
+exports.PagerState = PagerState;
+var TopicState = /** @class */ (function () {
+    function TopicState(userName, title, content, time, signature, userImgUrl, hitCount, userId, likeNumber, dislikeNumber, postid, isAnonymous, contentType) {
+        this.userName = userName;
+        this.time = time;
+        this.title = title;
+        this.content = content;
+        this.signature = signature;
+        this.userImgUrl = userImgUrl;
+        this.hitCount = hitCount;
+        this.userId = userId;
+        this.likeNumber = likeNumber;
+        this.dislikeNumber = dislikeNumber;
+        this.postid = postid;
+        this.isAnonymous = isAnonymous;
+        this.contentType = contentType;
+    }
+    return TopicState;
+}());
+exports.TopicState = TopicState;
+/**
+ * 登录状态
+ */
+var LoginState = /** @class */ (function () {
+    function LoginState() {
+    }
+    return LoginState;
+}());
+exports.LoginState = LoginState;
+/**
+ * 已登录状态
+ */
+var AlreadyLoginState = /** @class */ (function () {
+    function AlreadyLoginState() {
+    }
+    return AlreadyLoginState;
+}());
+exports.AlreadyLoginState = AlreadyLoginState;
+/**
+ * 版面类
+ */
+var Board = /** @class */ (function () {
+    //构造方法
+    function Board(name, todayPostCount, totalPostCount, boardID, master) {
+        this.name = name;
+        this.todayPostCount = todayPostCount;
+        this.totalPostCount = totalPostCount;
+        this.id = boardID;
+        this.masters = master;
+    }
+    return Board;
+}());
+exports.Board = Board;
+var BoardState = /** @class */ (function () {
+    function BoardState() {
+    }
+    return BoardState;
+}());
+exports.BoardState = BoardState;
+/**
+* 用户信息
+*/
+var UserInfo = /** @class */ (function () {
+    function UserInfo() {
+    }
+    return UserInfo;
+}());
+exports.UserInfo = UserInfo;
+/**
+* 表示用户最近帖子
+*/
+var UserRecentPost = /** @class */ (function () {
+    function UserRecentPost() {
+    }
+    return UserRecentPost;
+}());
+exports.UserRecentPost = UserRecentPost;
+/**
+ * 表示用户粉丝信息
+ */
+var UserFanInfo = /** @class */ (function () {
+    function UserFanInfo() {
+    }
+    return UserFanInfo;
+}());
+exports.UserFanInfo = UserFanInfo;
+/**
+* 用户收藏的版面信息
+*/
+var UserFavoritesBoardInfo = /** @class */ (function () {
+    function UserFavoritesBoardInfo() {
+    }
+    return UserFavoritesBoardInfo;
+}());
+exports.UserFavoritesBoardInfo = UserFavoritesBoardInfo;
+
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var UserCenterConfigAvatar_1 = __webpack_require__(92);
+var UserCenterConfigSignature_1 = __webpack_require__(93);
+var UserCenterConfigPassword_1 = __webpack_require__(94);
 var UserCenterConfig = /** @class */ (function (_super) {
     __extends(UserCenterConfig, _super);
     function UserCenterConfig() {
@@ -13379,7 +13706,7 @@ var UserCenterConfig = /** @class */ (function (_super) {
             React.createElement("hr", null),
             React.createElement(UserCenterConfigSignature_1.UserCenterConfigSignature, null),
             React.createElement("hr", null),
-            React.createElement(UsercenterConfigPassword_1.UserCenterConfigPassword, null)));
+            React.createElement(UserCenterConfigPassword_1.UserCenterConfigPassword, null)));
     };
     return UserCenterConfig;
 }(React.Component));
@@ -13387,7 +13714,7 @@ exports.UserCenterConfig = UserCenterConfig;
 
 
 /***/ }),
-/* 90 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13427,7 +13754,7 @@ exports.UserCenterConfigAvatar = UserCenterConfigAvatar;
 
 
 /***/ }),
-/* 91 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13487,7 +13814,7 @@ var UserCenterConfigSignatureState = /** @class */ (function () {
 
 
 /***/ }),
-/* 92 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13531,7 +13858,7 @@ exports.UserCenterConfigPassword = UserCenterConfigPassword;
 
 
 /***/ }),
-/* 93 */
+/* 95 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
