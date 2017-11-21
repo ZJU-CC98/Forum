@@ -6,7 +6,7 @@ import * as React from 'react';
 
 import { UserCenterConfigAvatar } from './UserCenterConfigAvatar';
 import { UserCenterConfigSignature } from './UserCenterConfigSignature';
-import { UserCenterConfigPassword } from './UsercenterConfigPassword';
+import { UserCenterConfigPassword } from './UserCenterConfigPassword';
 
 export class UserCenterConfig extends React.Component {
 

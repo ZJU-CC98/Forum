@@ -400,3 +400,28 @@ export class UserFanInfo {
     */
     id: number;
 }
+/**
+* 用户收藏的版面信息
+*/
+export class UserFavoritesBoardInfo {
+    /**
+    * 版主名数组
+    */
+    boardMasters: string[];
+    /**
+    * 今日主题
+    */
+    todayCount: number;
+    /**
+    * 总主题
+    */
+    topicCount: number;
+    /**
+    * ID
+    */
+    id: number;
+    /**
+    * 版面名
+    */
+    name: string;
+}

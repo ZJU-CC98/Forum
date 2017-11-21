@@ -22,15 +22,8 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
         } else if (Utility.getLocalStorage("userName")) {   //如果缓存中没有token但是存在userName，说明token已过期，尝试自动刷新token
             console.log("token已过期，正在重新获取");
             this.reLogOn();
-            //刷新token成功，改变state
-            let userName = Utility.getLocalStorage("userName");
-            let response = await fetch(`http://apitest.niconi.cc/User/Name/${userName}`);
-            let data = await response.json();
-            let userImgUrl = data.portraitUrl;
-            this.setState({ userName: userName, userImgUrl: userImgUrl });
         }
     }
-
     async reLogOn() {
         let url = 'https://openid.cc98.org/connect/token';
         const requestBody = {
@@ -61,6 +54,12 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
         Utility.setLocalStorage("accessToken", token, reLogOnData.expires_in);
         console.log("刷新token成功");
 
+        //刷新token成功，改变state
+        let userName = Utility.getLocalStorage("userName");
+        let response = await fetch(`http://apitest.niconi.cc/User/Name/${userName}`);
+        let data = await response.json();
+        let userImgUrl = data.portraitUrl;
+        this.setState({ userName: userName, userImgUrl: userImgUrl });
     } catch(e) {    //捕捉到例外，开始执行catch语句，否则跳过
         console.log("Oops, error", e);
         console.log('自动刷新token失败，请重新登录');//因为logOff会刷新页面，所以这里可能看不到
