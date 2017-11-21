@@ -25,7 +25,7 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
         }
 
         //以下是明一写的signalr，有锅找他
-        var chat = $.connection.messageHub;
+        /*var chat = $.connection.messageHub;
         console.log("signal通知测试");
         $.connection.hub.url = "http://apitest.niconi.cc/signalr";
         var token = Utility.getLocalStorage("accessToken");
@@ -39,7 +39,7 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
         console.log($.connection.hub);
         console.log($.connection.hub.start());
         $.connection.hub.start();
-        console.log("signal测试完毕");
+        console.log("signal测试完毕");*/
     }
     async reLogOn() {
         let url = 'https://openid.cc98.org/connect/token';

@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 30);
+/******/ 	return __webpack_require__(__webpack_require__.s = 29);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1114,7 +1114,7 @@ function getBoardTopicAsync(curPage, boardid) {
                 case 4:
                     data = _a.sent();
                     for (i = 0; i < topicNumberInPage; i++) {
-                        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName || '匿名', data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime);
+                        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime);
                     }
                     return [2 /*return*/, boardtopics];
                 case 5:
@@ -1133,7 +1133,7 @@ function getTopic(topicid) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 11, , 12]);
+                    _a.trys.push([0, 12, , 13]);
                     token = getLocalStorage("accessToken");
                     headers = new Headers();
                     headers.append('Authorization', token);
@@ -1142,12 +1142,15 @@ function getTopic(topicid) {
                         })];
                 case 1:
                     response = _a.sent();
-                    if (!(response.status == 404)) return [3 /*break*/, 3];
+                    if (!(response.status === 404)) return [3 /*break*/, 3];
+                    console.log("bbb");
                     return [4 /*yield*/, response.text()];
                 case 2:
                     str = _a.sent();
-                    console.log("text=" + str);
-                    _a.label = 3;
+                    console.log("aaa");
+                    console.log("ccc" + str);
+                    window.location.href = '/status/NotFoundTopic';
+                    return [3 /*break*/, 11];
                 case 3: return [4 /*yield*/, response.json()];
                 case 4:
                     data = _a.sent();
@@ -1155,8 +1158,10 @@ function getTopic(topicid) {
                 case 5:
                     hitCountResponse = _a.sent();
                     if (hitCountResponse.status == 404) {
+                        window.location.href = '/status/NotFoundTopic';
                     }
-                    if (hitCountResponse.status == 401) {
+                    else if (hitCountResponse.status == 401) {
+                        window.location.href = '/status/UnauthorizedTopic';
                     }
                     return [4 /*yield*/, hitCountResponse.json()];
                 case 6:
@@ -1173,14 +1178,15 @@ function getTopic(topicid) {
                     topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType);
                     return [3 /*break*/, 10];
                 case 9:
-                    topicMessage = new State.TopicState('匿名', data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType);
+                    topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType);
                     _a.label = 10;
                 case 10: return [2 /*return*/, topicMessage];
-                case 11:
+                case 11: return [3 /*break*/, 13];
+                case 12:
                     e_2 = _a.sent();
-                    this.context.router.history.push("/status/NotFountTopic");
-                    return [3 /*break*/, 12];
-                case 12: return [2 /*return*/];
+                    alert("网络3中断");
+                    return [3 /*break*/, 13];
+                case 13: return [2 /*return*/];
             }
         });
     });
@@ -1237,7 +1243,7 @@ function getTopicContent(topicid, curPage) {
                     _b.label = 8;
                 case 8:
                     if (!(i < topicNumberInPage)) return [3 /*break*/, 13];
-                    if (!(content[i].userName != null)) return [3 /*break*/, 11];
+                    if (!(content[i].isAnonymous != true)) return [3 /*break*/, 11];
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + content[i].userName)];
                 case 9:
                     userMesResponse = _b.sent();
@@ -1248,7 +1254,7 @@ function getTopicContent(topicid, curPage) {
                     return [3 /*break*/, 12];
                 case 11:
                     purl = 'https://www.cc98.org/pic/anonymous.gif';
-                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名' + content[i].userName.toUpperCase(), null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
                     _b.label = 12;
                 case 12:
                     i++;
@@ -1256,7 +1262,7 @@ function getTopicContent(topicid, curPage) {
                 case 13: return [2 /*return*/, post];
                 case 14:
                     e_3 = _b.sent();
-                    alert("网络中断");
+                    alert("网络1中断");
                     return [3 /*break*/, 15];
                 case 15: return [2 /*return*/];
             }
@@ -1370,7 +1376,7 @@ function getHotReplyContent(topicid) {
                     _a.label = 3;
                 case 3:
                     if (!(i < topicNumberInPage)) return [3 /*break*/, 8];
-                    if (!(content[i].userName != null)) return [3 /*break*/, 6];
+                    if (!(content[i].isAnonymous != true)) return [3 /*break*/, 6];
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + content[i].userName)];
                 case 4:
                     userMesResponse = _a.sent();
@@ -1381,7 +1387,7 @@ function getHotReplyContent(topicid) {
                     return [3 /*break*/, 7];
                 case 6:
                     purl = 'https://www.cc98.org/pic/anonymous.gif';
-                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名' + content[i].userName.toUpperCase(), null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
                     _a.label = 7;
                 case 7:
                     i++;
@@ -1494,7 +1500,7 @@ function getCurUserTopic(topicid, userId) {
                     return [2 /*return*/, data[0]];
                 case 5:
                     e_8 = _a.sent();
-                    alert("网络中断");
+                    alert("网络4中断");
                     return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];
             }
@@ -1556,7 +1562,7 @@ function getCurUserTopicContent(topicid, curPage, userName, userId) {
                     _a.label = 4;
                 case 4:
                     if (!(i < topicNumberInPage)) return [3 /*break*/, 9];
-                    if (!(content[i].userName != null)) return [3 /*break*/, 7];
+                    if (!(content[i].isAnonymous != true)) return [3 /*break*/, 7];
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + content[i].userName)];
                 case 5:
                     userMesResponse = _a.sent();
@@ -1567,7 +1573,7 @@ function getCurUserTopicContent(topicid, curPage, userName, userId) {
                     return [3 /*break*/, 8];
                 case 7:
                     purl = 'https://www.cc98.org/pic/anonymous.gif';
-                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名' + content[i].userName.toUpperCase(), null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
                     _a.label = 8;
                 case 8:
                     i++;
@@ -1640,7 +1646,6 @@ function getAllNewTopic(curNum) {
                 case 9:
                     newTopic[i].fanCount = 0;
                     newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-                    newTopic[i].userName = "匿名";
                     newTopic[i].boardName = "心灵之约";
                     _d.label = 10;
                 case 10:
@@ -1714,7 +1719,6 @@ function getFocusTopic(curNum) {
                 case 9:
                     newTopic[i].fanCount = 0;
                     newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-                    newTopic[i].userName = "匿名";
                     newTopic[i].boardName = "心灵之约";
                     _d.label = 10;
                 case 10:
@@ -1961,6 +1965,8 @@ function getTotalReplyCount(topicid) {
                     return [4 /*yield*/, replyCountResponse.json()];
                 case 2:
                     replyCountJson = _a.sent();
+                    console.log("reply");
+                    console.log(replyCountJson);
                     replyCount = replyCountJson.replyCount;
                     if (replyCount >= 10) {
                         return [2 /*return*/, (replyCount - replyCount % 10) / 10 + 1];
@@ -1971,7 +1977,7 @@ function getTotalReplyCount(topicid) {
                     return [3 /*break*/, 4];
                 case 3:
                     e_15 = _a.sent();
-                    alert("网络中断");
+                    alert("网络2中断");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -2296,7 +2302,7 @@ function getCurUserTotalReplyPage(topicId, userId) {
                     return [3 /*break*/, 4];
                 case 3:
                     e_25 = _a.sent();
-                    alert("网络中断");
+                    alert("网络5中断");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -2333,7 +2339,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(34);
+var Ubb = __webpack_require__(33);
 /**
  * 定义 UBBContainer 组件需要使用的属性。
  */
@@ -2670,15 +2676,15 @@ var CurUserPost_1 = __webpack_require__(13);
 var BoardList_1 = __webpack_require__(14);
 var UserCenter_1 = __webpack_require__(15);
 var Message_1 = __webpack_require__(18);
-var AllNewTopic_1 = __webpack_require__(20);
-var Focus_1 = __webpack_require__(22);
-var Header_1 = __webpack_require__(23);
-var Footer_1 = __webpack_require__(24);
-var MainPage_1 = __webpack_require__(25);
-var User_1 = __webpack_require__(26);
+var AllNewTopic_1 = __webpack_require__(19);
+var Focus_1 = __webpack_require__(21);
+var Header_1 = __webpack_require__(22);
+var Footer_1 = __webpack_require__(23);
+var MainPage_1 = __webpack_require__(24);
+var User_1 = __webpack_require__(25);
 var LogOn_1 = __webpack_require__(11);
-var CreateTopic_1 = __webpack_require__(27);
-var Status = __webpack_require__(28);
+var CreateTopic_1 = __webpack_require__(26);
+var Status = __webpack_require__(27);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -3446,8 +3452,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var LogOnExact_1 = __webpack_require__(82);
-var Logoff_1 = __webpack_require__(83);
+var LogOnExact_1 = __webpack_require__(81);
+var Logoff_1 = __webpack_require__(82);
 /**
  * 用户中心页面
  */
@@ -3888,8 +3894,11 @@ var Replier = /** @class */ (function (_super) {
         else if (this.props.privilege === "全站贵宾") {
             userName = React.createElement("a", { style: { color: "blue" }, href: url }, this.props.userName);
         }
-        else if (this.props.privilege === "注册用户" || this.props.privilege == "匿名" || this.props.privilege === "匿名用户") {
+        else if (this.props.privilege === "注册用户") {
             userName = React.createElement("a", { style: { color: "black" }, href: url }, this.props.userName);
+        }
+        else if (this.props.privilege == "匿名" || this.props.privilege === "匿名用户") {
+            userName = React.createElement("div", { style: { color: "black" } }, this.props.userName);
         }
         else if (this.props.privilege === "管理员") {
             userName = React.createElement("a", { style: { color: "red" }, href: url }, this.props.userName);
@@ -4061,16 +4070,19 @@ var AuthorMessage = /** @class */ (function (_super) {
         var url = "/user/" + this.props.authorId;
         var urlHtml = React.createElement("a", { href: url },
             React.createElement("img", { src: this.props.authorImgUrl }));
+        var userHtml = React.createElement("div", { id: "authorName" },
+            React.createElement("p", null,
+                React.createElement("a", { href: url }, this.props.authorName)));
         if (this.props.isAnonymous == true) {
             urlHtml = React.createElement("img", { src: this.props.authorImgUrl });
+            userHtml = React.createElement("div", { id: "authorName" },
+                React.createElement("p", null, this.props.authorName));
         }
         return React.createElement("div", { className: "row", id: "authormes" },
             React.createElement("div", { className: "authorImg" }, urlHtml),
             React.createElement("div", { className: "column", style: { marginRight: "1rem" } },
                 React.createElement("div", { className: "row authorFans", style: { justifyContent: "space-between" } },
-                    React.createElement("div", { id: "authorName" },
-                        React.createElement("p", null,
-                            React.createElement("a", { href: url }, this.props.authorName))),
+                    userHtml,
                     React.createElement("div", { id: "fans", className: "row" },
                         React.createElement("div", { style: { marginRight: "0.1875rem" } }, "\u7C89\u4E1D"),
                         React.createElement("div", { style: { color: "#EE0000" } }, this.state.fansNumber))),
@@ -4845,7 +4857,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(2);
 var react_router_dom_1 = __webpack_require__(3);
-var Post = __webpack_require__(60);
+var Post = __webpack_require__(59);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -5381,8 +5393,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserCenterNavigation_1 = __webpack_require__(61);
-var UserCenterRouter_1 = __webpack_require__(62);
+var UserCenterNavigation_1 = __webpack_require__(60);
+var UserCenterRouter_1 = __webpack_require__(61);
 /**
  * 用户中心页面
  */
@@ -5427,7 +5439,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPosts_1 = __webpack_require__(65);
+var UserCenterExactActivitiesPosts_1 = __webpack_require__(64);
 /**
  * 用户中心主页近期动态组件
  */
@@ -5501,10 +5513,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var MessageMessage_1 = __webpack_require__(67);
-var MessageResponse_1 = __webpack_require__(72);
-var MessageAttme_1 = __webpack_require__(73);
-var MessageSystem_1 = __webpack_require__(74);
+var MessageMessage_1 = __webpack_require__(66);
+var MessageResponse_1 = __webpack_require__(71);
+var MessageAttme_1 = __webpack_require__(72);
+var MessageSystem_1 = __webpack_require__(73);
 var react_router_dom_1 = __webpack_require__(3);
 /**
  * 网站的主页面对象。
@@ -5564,12 +5576,6 @@ exports.Likes = Likes;
 
 /***/ }),
 /* 19 */
-/***/ (function(module, exports) {
-
-module.exports = moment;
-
-/***/ }),
-/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5589,7 +5595,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var AllNewTopicArea_1 = __webpack_require__(75);
+var AllNewTopicArea_1 = __webpack_require__(74);
 /**
  * 网站的主页面对象。
  */
@@ -5615,7 +5621,7 @@ exports.AllNewTopic = AllNewTopic;
 
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5702,7 +5708,7 @@ exports.PortaritrUrlProps = PortaritrUrlProps;
 
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5722,8 +5728,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusBoardArea_1 = __webpack_require__(76);
-var FocusTopicArea_1 = __webpack_require__(78);
+var FocusBoardArea_1 = __webpack_require__(75);
+var FocusTopicArea_1 = __webpack_require__(77);
 var Focus = /** @class */ (function (_super) {
     __extends(Focus, _super);
     function Focus() {
@@ -5745,7 +5751,7 @@ exports.Focus = Focus;
 
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6085,7 +6091,7 @@ exports.Header = Header;
 
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6137,7 +6143,7 @@ exports.Footer = Footer;
 
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6652,7 +6658,7 @@ exports.MainPage = MainPage;
 
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6673,8 +6679,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserNavigation_1 = __webpack_require__(79);
-var UserRouter_1 = __webpack_require__(80);
+var UserNavigation_1 = __webpack_require__(78);
+var UserRouter_1 = __webpack_require__(79);
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
@@ -6696,7 +6702,7 @@ exports.User = User;
 
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6914,7 +6920,7 @@ exports.CreateTopicContent = CreateTopicContent;
 
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6994,7 +7000,7 @@ exports.NotFoundTopic = NotFoundTopic;
 
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7066,7 +7072,7 @@ var UserCenterMyFollowingsUser = /** @class */ (function (_super) {
     }
     UserCenterMyFollowingsUser.prototype.unfollow = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, userId, url, res;
+            var token, userId, url, headers, res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -7077,11 +7083,11 @@ var UserCenterMyFollowingsUser = /** @class */ (function (_super) {
                         token = Utility.getLocalStorage("accessToken");
                         userId = this.props.userFanInfo.id;
                         url = "http://apitest.niconi.cc/user/unfollow/" + userId;
+                        headers = new Headers();
+                        headers.append('Authorization', token);
                         return [4 /*yield*/, fetch(url, {
                                 method: 'DELETE',
-                                headers: {
-                                    'Authorization': token
-                                }
+                                headers: headers
                             })];
                     case 1:
                         res = _a.sent();
@@ -7106,7 +7112,7 @@ var UserCenterMyFollowingsUser = /** @class */ (function (_super) {
     };
     UserCenterMyFollowingsUser.prototype.follow = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, userId, url, res;
+            var token, userId, url, headers, res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -7117,11 +7123,11 @@ var UserCenterMyFollowingsUser = /** @class */ (function (_super) {
                         token = Utility.getLocalStorage("accessToken");
                         userId = this.props.userFanInfo.id;
                         url = "http://apitest.niconi.cc/user/follow/" + userId;
+                        headers = new Headers();
+                        headers.append('Authorization', token);
                         return [4 /*yield*/, fetch(url, {
                                 method: 'POST',
-                                headers: {
-                                    'Authorization': token
-                                }
+                                headers: headers
                             })];
                     case 1:
                         res = _a.sent();
@@ -7156,35 +7162,35 @@ exports.UserCenterMyFollowingsUser = UserCenterMyFollowingsUser;
 
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(31);
-module.exports = __webpack_require__(94);
+__webpack_require__(30);
+module.exports = __webpack_require__(93);
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var ReactDOM = __webpack_require__(32);
-var App_1 = __webpack_require__(33);
+var ReactDOM = __webpack_require__(31);
+var App_1 = __webpack_require__(32);
 // 显示应用程序核心内容
 ReactDOM.render(React.createElement(App_1.App, null), document.getElementById('root'));
 
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports) {
 
 module.exports = ReactDOM;
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7208,15 +7214,15 @@ var CurUserPost_1 = __webpack_require__(13);
 var BoardList_1 = __webpack_require__(14);
 var UserCenter_1 = __webpack_require__(15);
 var Message_1 = __webpack_require__(18);
-var AllNewTopic_1 = __webpack_require__(20);
-var Focus_1 = __webpack_require__(22);
-var Header_1 = __webpack_require__(23);
-var Footer_1 = __webpack_require__(24);
-var MainPage_1 = __webpack_require__(25);
-var User_1 = __webpack_require__(26);
+var AllNewTopic_1 = __webpack_require__(19);
+var Focus_1 = __webpack_require__(21);
+var Header_1 = __webpack_require__(22);
+var Footer_1 = __webpack_require__(23);
+var MainPage_1 = __webpack_require__(24);
+var User_1 = __webpack_require__(25);
 var LogOn_1 = __webpack_require__(11);
-var CreateTopic_1 = __webpack_require__(27);
-var Status = __webpack_require__(28);
+var CreateTopic_1 = __webpack_require__(26);
+var Status = __webpack_require__(27);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -7262,7 +7268,7 @@ exports.App = App;
 
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7275,31 +7281,31 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 var Ubb = __webpack_require__(1);
-var BTagHandler_1 = __webpack_require__(35);
-var ImageTagHandler_1 = __webpack_require__(36);
-var ITagHandler_1 = __webpack_require__(37);
-var SizeTagHandler_1 = __webpack_require__(38);
-var QuoteTagHandler_1 = __webpack_require__(39);
-var ColorTagHandler_1 = __webpack_require__(40);
-var URLTagHandler_1 = __webpack_require__(41);
-var UTagHandler_1 = __webpack_require__(42);
-var DelTagHandler_1 = __webpack_require__(43);
-var MP3TagHandler_1 = __webpack_require__(44);
-var CursorTagHandler_1 = __webpack_require__(45);
-var EnglishTagHandler_1 = __webpack_require__(46);
-var UserTagHandler_1 = __webpack_require__(47);
-var CodeTagHandler_1 = __webpack_require__(48);
-var UnresolvedTagHandler_1 = __webpack_require__(49);
-var FontTagHandler_1 = __webpack_require__(50);
-var AlignTagHandler_1 = __webpack_require__(51);
-var UploadTagHandler_1 = __webpack_require__(52);
-var LeftTagHandler_1 = __webpack_require__(53);
-var CenterTagHandler_1 = __webpack_require__(54);
-var RightTagHandler_1 = __webpack_require__(55);
-var TableTagHandler_1 = __webpack_require__(56);
-var TdTagHandler_1 = __webpack_require__(57);
-var ThTagHandler_1 = __webpack_require__(58);
-var TrTagHandler_1 = __webpack_require__(59);
+var BTagHandler_1 = __webpack_require__(34);
+var ImageTagHandler_1 = __webpack_require__(35);
+var ITagHandler_1 = __webpack_require__(36);
+var SizeTagHandler_1 = __webpack_require__(37);
+var QuoteTagHandler_1 = __webpack_require__(38);
+var ColorTagHandler_1 = __webpack_require__(39);
+var URLTagHandler_1 = __webpack_require__(40);
+var UTagHandler_1 = __webpack_require__(41);
+var DelTagHandler_1 = __webpack_require__(42);
+var MP3TagHandler_1 = __webpack_require__(43);
+var CursorTagHandler_1 = __webpack_require__(44);
+var EnglishTagHandler_1 = __webpack_require__(45);
+var UserTagHandler_1 = __webpack_require__(46);
+var CodeTagHandler_1 = __webpack_require__(47);
+var UnresolvedTagHandler_1 = __webpack_require__(48);
+var FontTagHandler_1 = __webpack_require__(49);
+var AlignTagHandler_1 = __webpack_require__(50);
+var UploadTagHandler_1 = __webpack_require__(51);
+var LeftTagHandler_1 = __webpack_require__(52);
+var CenterTagHandler_1 = __webpack_require__(53);
+var RightTagHandler_1 = __webpack_require__(54);
+var TableTagHandler_1 = __webpack_require__(55);
+var TdTagHandler_1 = __webpack_require__(56);
+var ThTagHandler_1 = __webpack_require__(57);
+var TrTagHandler_1 = __webpack_require__(58);
 /**
  * 创建一个具有所有功能的默认引擎。
  */
@@ -7340,7 +7346,7 @@ __export(__webpack_require__(1));
 
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7393,7 +7399,7 @@ exports.BTagHandler = BTagHandler;
 
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7491,7 +7497,7 @@ exports.Image = Image;
 
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7536,7 +7542,7 @@ exports.ITagHandler = ITagHandler;
 
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7590,7 +7596,7 @@ exports.SizeTagHandler = SizeTagHandler;
 
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7642,7 +7648,7 @@ exports.QuoteTagHandler = QuoteTagHandler;
 
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7691,7 +7697,7 @@ exports.ColorTagHandler = ColorTagHandler;
 
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7747,7 +7753,7 @@ exports.UrlTagHandler = UrlTagHandler;
 
 
 /***/ }),
-/* 42 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7800,7 +7806,7 @@ exports.UTagHandler = UTagHandler;
 
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7848,7 +7854,7 @@ exports.DelTagHandler = DelTagHandler;
 
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7902,7 +7908,7 @@ exports.MP3TagHandler = MP3TagHandler;
 
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7950,7 +7956,7 @@ exports.CursorTagHandler = CursorTagHandler;
 
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7998,7 +8004,7 @@ exports.EnglishTagHandler = EnglishTagHandler;
 
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8046,7 +8052,7 @@ exports.UserTagHandler = UserTagHandler;
 
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8094,7 +8100,7 @@ exports.CodeTagHandler = CodeTagHandler;
 
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8138,7 +8144,7 @@ exports.UnresolvedTagHandler = UnresolvedTagHandler;
 
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8186,7 +8192,7 @@ exports.FontTagHandler = FontTagHandler;
 
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8235,7 +8241,7 @@ exports.AlignTagHandler = AlignTagHandler;
 
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8292,7 +8298,7 @@ exports.UploadTagHandler = UploadTagHandler;
 
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8340,7 +8346,7 @@ exports.LeftTagHandler = LeftTagHandler;
 
 
 /***/ }),
-/* 54 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8388,7 +8394,7 @@ exports.CenterTagHandler = CenterTagHandler;
 
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8436,7 +8442,7 @@ exports.RightTagHandler = RightTagHandler;
 
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8480,7 +8486,7 @@ exports.TableTagHandler = TableTagHandler;
 
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8524,7 +8530,7 @@ exports.TdTagHandler = TdTagHandler;
 
 
 /***/ }),
-/* 58 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8568,7 +8574,7 @@ exports.ThTagHandler = ThTagHandler;
 
 
 /***/ }),
-/* 59 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8612,7 +8618,7 @@ exports.TrTagHandler = TrTagHandler;
 
 
 /***/ }),
-/* 60 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9032,8 +9038,11 @@ var Replier = /** @class */ (function (_super) {
         else if (this.props.privilege === "全站贵宾") {
             userName = React.createElement("a", { style: { color: "blue" }, href: url }, this.props.userName);
         }
-        else if (this.props.privilege === "注册用户" || this.props.privilege == "匿名" || this.props.privilege === "匿名用户") {
+        else if (this.props.privilege === "注册用户") {
             userName = React.createElement("a", { style: { color: "black" }, href: url }, this.props.userName);
+        }
+        else if (this.props.privilege == "匿名" || this.props.privilege === "匿名用户") {
+            userName = React.createElement("div", { style: { color: "black" } }, this.props.userName);
         }
         else if (this.props.privilege === "管理员") {
             userName = React.createElement("a", { style: { color: "red" }, href: url }, this.props.userName);
@@ -9205,16 +9214,19 @@ var AuthorMessage = /** @class */ (function (_super) {
         var url = "/user/" + this.props.authorId;
         var urlHtml = React.createElement("a", { href: url },
             React.createElement("img", { src: this.props.authorImgUrl }));
+        var userHtml = React.createElement("div", { id: "authorName" },
+            React.createElement("p", null,
+                React.createElement("a", { href: url }, this.props.authorName)));
         if (this.props.isAnonymous == true) {
             urlHtml = React.createElement("img", { src: this.props.authorImgUrl });
+            userHtml = React.createElement("div", { id: "authorName" },
+                React.createElement("p", null, this.props.authorName));
         }
         return React.createElement("div", { className: "row", id: "authormes" },
             React.createElement("div", { className: "authorImg" }, urlHtml),
             React.createElement("div", { className: "column", style: { marginRight: "1rem" } },
                 React.createElement("div", { className: "row authorFans", style: { justifyContent: "space-between" } },
-                    React.createElement("div", { id: "authorName" },
-                        React.createElement("p", null,
-                            React.createElement("a", { href: url }, this.props.authorName))),
+                    userHtml,
                     React.createElement("div", { id: "fans", className: "row" },
                         React.createElement("div", { style: { marginRight: "0.1875rem" } }, "\u7C89\u4E1D"),
                         React.createElement("div", { style: { color: "#EE0000" } }, this.state.fansNumber))),
@@ -9935,7 +9947,7 @@ exports.SendTopic = SendTopic;
 
 
 /***/ }),
-/* 61 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10037,7 +10049,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10059,12 +10071,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
 var Utility = __webpack_require__(2);
-var UserCenterExact_1 = __webpack_require__(63);
-var UserCenterMyFollowings_1 = __webpack_require__(66);
-var UserCenterMyFans_1 = __webpack_require__(84);
-var UserCenterMyPostsExact_1 = __webpack_require__(85);
-var UserCenterMyFavorites_1 = __webpack_require__(86);
-var UserCenterConfig_1 = __webpack_require__(90);
+var UserCenterExact_1 = __webpack_require__(62);
+var UserCenterMyFollowings_1 = __webpack_require__(65);
+var UserCenterMyFans_1 = __webpack_require__(83);
+var UserCenterMyPostsExact_1 = __webpack_require__(84);
+var UserCenterMyFavorites_1 = __webpack_require__(85);
+var UserCenterConfig_1 = __webpack_require__(89);
 /**
  * 用户中心主体
  */
@@ -10092,7 +10104,7 @@ exports.UserCenterRouter = UserCenterRouter;
 
 
 /***/ }),
-/* 63 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10112,7 +10124,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactProfile_1 = __webpack_require__(64);
+var UserCenterExactProfile_1 = __webpack_require__(63);
 var UserCenterExactActivities_1 = __webpack_require__(16);
 var UserCenterExactAvatar_1 = __webpack_require__(17);
 var Utility = __webpack_require__(2);
@@ -10142,7 +10154,7 @@ exports.UserCenterExact = UserCenterExact;
 
 
 /***/ }),
-/* 64 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10200,7 +10212,7 @@ exports.UserCenterExactProfile = UserCenterExactProfile;
 
 
 /***/ }),
-/* 65 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10404,7 +10416,7 @@ exports.UserCenterExactActivitiesPosts = UserCenterExactActivitiesPosts;
 
 
 /***/ }),
-/* 66 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10461,7 +10473,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var AppState_1 = __webpack_require__(5);
 var app_1 = __webpack_require__(7);
-var UserCenterMyFollowingsUser_1 = __webpack_require__(29);
+var UserCenterMyFollowingsUser_1 = __webpack_require__(28);
 var UserCenterPageCount_1 = __webpack_require__(8);
 var Utility = __webpack_require__(2);
 //用户中心我的关注组件
@@ -10478,17 +10490,17 @@ var UserCenterMyFollowings = /** @class */ (function (_super) {
     }
     UserCenterMyFollowings.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, page, url, res, data, fans, i, data2, userid_1, userFanInfo, userid;
+            var token, page, url, headers, res, data, fans, i, data2, userid_1, userFanInfo, userid;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         token = Utility.getLocalStorage("accessToken");
                         page = this.match.params.page || 1;
                         url = "http://apitest.niconi.cc/user/follow/follower?from=" + (page - 1) * 10 + "&size=10";
+                        headers = new Headers();
+                        headers.append('Authorization', token);
                         return [4 /*yield*/, fetch(url, {
-                                headers: {
-                                    'Authorization': token
-                                }
+                                headers: headers
                             })];
                     case 1:
                         res = _a.sent();
@@ -10562,7 +10574,7 @@ exports.UserCenterMyFollowings = UserCenterMyFollowings;
 
 
 /***/ }),
-/* 67 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10617,8 +10629,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MessagePerson_1 = __webpack_require__(68);
-var MessageWindow_1 = __webpack_require__(69);
+var MessagePerson_1 = __webpack_require__(67);
+var MessageWindow_1 = __webpack_require__(68);
 var Utility = __webpack_require__(2);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
@@ -10840,7 +10852,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 68 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10889,7 +10901,7 @@ exports.MessagePerson = MessagePerson;
 
 
 /***/ }),
-/* 69 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10944,8 +10956,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MessageSender_1 = __webpack_require__(70);
-var MessageReceiver_1 = __webpack_require__(71);
+var MessageSender_1 = __webpack_require__(69);
+var MessageReceiver_1 = __webpack_require__(70);
 var Utility = __webpack_require__(2);
 var MessageWindow = /** @class */ (function (_super) {
     __extends(MessageWindow, _super);
@@ -11209,7 +11221,7 @@ exports.MessageWindow = MessageWindow;
 
 
 /***/ }),
-/* 70 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11230,7 +11242,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
 var UbbContainer_1 = __webpack_require__(4);
-var moment = __webpack_require__(19);
 var MessageSender = /** @class */ (function (_super) {
     __extends(MessageSender, _super);
     function MessageSender() {
@@ -11253,7 +11264,7 @@ exports.MessageSender = MessageSender;
 
 
 /***/ }),
-/* 71 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11274,7 +11285,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
 var UbbContainer_1 = __webpack_require__(4);
-var moment = __webpack_require__(19);
 var MessageReceiver = /** @class */ (function (_super) {
     __extends(MessageReceiver, _super);
     function MessageReceiver() {
@@ -11295,7 +11305,7 @@ exports.MessageReceiver = MessageReceiver;
 
 
 /***/ }),
-/* 72 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11345,7 +11355,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 73 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11385,7 +11395,7 @@ exports.MessageAttme = MessageAttme;
 
 
 /***/ }),
-/* 74 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11425,7 +11435,7 @@ exports.MessageSystem = MessageSystem;
 
 
 /***/ }),
-/* 75 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11480,7 +11490,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusTopicSingle_1 = __webpack_require__(21);
+var FocusTopicSingle_1 = __webpack_require__(20);
 var Utility = __webpack_require__(2);
 /**
  * 表示全站最新主题列表
@@ -11679,7 +11689,7 @@ function isBottom() {
 
 
 /***/ }),
-/* 76 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11734,7 +11744,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusBoardSingle_1 = __webpack_require__(77);
+var FocusBoardSingle_1 = __webpack_require__(76);
 var Utility = __webpack_require__(2);
 /**
  * 表示我关注的版面列表区域
@@ -11821,7 +11831,7 @@ function coverFocusBoard(item) {
 
 
 /***/ }),
-/* 77 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11861,7 +11871,7 @@ exports.FocusBoardSingle = FocusBoardSingle;
 
 
 /***/ }),
-/* 78 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11916,7 +11926,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusTopicSingle_1 = __webpack_require__(21);
+var FocusTopicSingle_1 = __webpack_require__(20);
 var Utility = __webpack_require__(2);
 /**
  * 表示我关注的版面的主题列表
@@ -12115,7 +12125,7 @@ function isBottom() {
 
 
 /***/ }),
-/* 79 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12159,7 +12169,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12215,7 +12225,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserExactProfile_1 = __webpack_require__(81);
+var UserExactProfile_1 = __webpack_require__(80);
 var UserCenterExactActivities_1 = __webpack_require__(16);
 var UserCenterExactAvatar_1 = __webpack_require__(17);
 var Utility = __webpack_require__(2);
@@ -12295,7 +12305,7 @@ var UserExact = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 81 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12370,7 +12380,7 @@ var UserExactProfile = /** @class */ (function (_super) {
     }
     UserExactProfile.prototype.follow = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, userId, url, res;
+            var token, userId, url, headers, res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -12384,11 +12394,11 @@ var UserExactProfile = /** @class */ (function (_super) {
                         }
                         userId = this.props.userInfo.id;
                         url = "http://apitest.niconi.cc/user/follow/" + userId;
+                        headers = new Headers();
+                        headers.append('Authorization', token);
                         return [4 /*yield*/, fetch(url, {
                                 method: 'POST',
-                                headers: {
-                                    'Authorization': token
-                                }
+                                headers: headers
                             })];
                     case 1:
                         res = _a.sent();
@@ -12413,7 +12423,7 @@ var UserExactProfile = /** @class */ (function (_super) {
     };
     UserExactProfile.prototype.unfollow = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, userId, url, res;
+            var token, userId, url, headers, res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -12424,11 +12434,11 @@ var UserExactProfile = /** @class */ (function (_super) {
                         token = Utility.getLocalStorage("accessToken");
                         userId = this.props.userInfo.id;
                         url = "http://apitest.niconi.cc/user/unfollow/" + userId;
+                        headers = new Headers();
+                        headers.append('Authorization', token);
                         return [4 /*yield*/, fetch(url, {
                                 method: 'DELETE',
-                                headers: {
-                                    'Authorization': token
-                                }
+                                headers: headers
                             })];
                     case 1:
                         res = _a.sent();
@@ -12482,7 +12492,7 @@ exports.UserExactProfile = UserExactProfile;
 
 
 /***/ }),
-/* 82 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12701,7 +12711,7 @@ var LogOnState = /** @class */ (function () {
 
 
 /***/ }),
-/* 83 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12753,7 +12763,7 @@ exports.LogOff = LogOff;
 
 
 /***/ }),
-/* 84 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12809,7 +12819,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var AppState_1 = __webpack_require__(5);
-var UserCenterMyFollowingsUser_1 = __webpack_require__(29);
+var UserCenterMyFollowingsUser_1 = __webpack_require__(28);
 var app_1 = __webpack_require__(7);
 var UserCenterPageCount_1 = __webpack_require__(8);
 var Utility = __webpack_require__(2);
@@ -12827,17 +12837,17 @@ var UserCenterMyFans = /** @class */ (function (_super) {
     }
     UserCenterMyFans.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, page, url, res, data, fans, i, data2, userid_1, userFanInfo, userid, fanCounts;
+            var token, page, url, headers, res, data, fans, i, data2, userid_1, userFanInfo, userid, fanCounts;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         token = Utility.getLocalStorage("accessToken");
                         page = this.match.params.page || 1;
                         url = "http://apitest.niconi.cc/user/follow/fan?from=" + (page - 1) * 10 + "&size=10";
+                        headers = new Headers();
+                        headers.append('Authorization', token);
                         return [4 /*yield*/, fetch(url, {
-                                headers: {
-                                    'Authorization': token
-                                }
+                                headers: headers
                             })];
                     case 1:
                         res = _a.sent();
@@ -12911,7 +12921,7 @@ exports.UserCenterMyFans = UserCenterMyFans;
 
 
 /***/ }),
-/* 85 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12984,17 +12994,17 @@ var UserCenterMyPostsExact = /** @class */ (function (_super) {
     }
     UserCenterMyPostsExact.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var page, url, token, res, data, posts, i, post;
+            var page, url, token, headers, res, data, posts, i, post;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         page = this.match.params.page || 1;
                         url = "http://apitest.niconi.cc/me/recenttopics?from=" + (page - 1) * 10 + "&size=10";
                         token = Utility.getLocalStorage("accessToken");
+                        headers = new Headers();
+                        headers.append('Authorization', token);
                         return [4 /*yield*/, fetch(url, {
-                                headers: {
-                                    'Authorization': token
-                                }
+                                headers: headers
                             })];
                     case 1:
                         res = _a.sent();
@@ -13073,7 +13083,7 @@ exports.UserCenterMyPostsExact = UserCenterMyPostsExact;
 
 
 /***/ }),
-/* 86 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13094,8 +13104,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserCenterMyFavoritesPosts_1 = __webpack_require__(87);
-var UserCenterMyFavoritesBoards_1 = __webpack_require__(88);
+var UserCenterMyFavoritesPosts_1 = __webpack_require__(86);
+var UserCenterMyFavoritesBoards_1 = __webpack_require__(87);
 //import { UserCenterMyFavoritesPostsBoards } from './UserCenterMyFavoritesPostsBoards';
 //<Route path='/usercenter/myfavorites/boards' component={UserCenterMyFavoritesPostsBoards} />
 /**
@@ -13128,7 +13138,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 87 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13269,7 +13279,7 @@ exports.UserCenterMyFavoritesPosts = UserCenterMyFavoritesPosts;
 
 
 /***/ }),
-/* 88 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13325,7 +13335,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(2);
-var UserCenterMyFavoritesBoard_1 = __webpack_require__(89);
+var UserCenterMyFavoritesBoard_1 = __webpack_require__(88);
 var UserCenterMyFavoritesBoards = /** @class */ (function (_super) {
     __extends(UserCenterMyFavoritesBoards, _super);
     function UserCenterMyFavoritesBoards(props) {
@@ -13400,7 +13410,7 @@ exports.UserCenterMyFavoritesBoards = UserCenterMyFavoritesBoards;
 
 
 /***/ }),
-/* 89 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13564,7 +13574,7 @@ exports.UserCenterMyFavoritesBoard = UserCenterMyFavoritesBoard;
 
 
 /***/ }),
-/* 90 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13584,9 +13594,9 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterConfigAvatar_1 = __webpack_require__(91);
-var UserCenterConfigSignature_1 = __webpack_require__(92);
-var UserCenterConfigPassword_1 = __webpack_require__(93);
+var UserCenterConfigAvatar_1 = __webpack_require__(90);
+var UserCenterConfigSignature_1 = __webpack_require__(91);
+var UserCenterConfigPassword_1 = __webpack_require__(92);
 var UserCenterConfig = /** @class */ (function (_super) {
     __extends(UserCenterConfig, _super);
     function UserCenterConfig() {
@@ -13606,7 +13616,7 @@ exports.UserCenterConfig = UserCenterConfig;
 
 
 /***/ }),
-/* 91 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13646,7 +13656,7 @@ exports.UserCenterConfigAvatar = UserCenterConfigAvatar;
 
 
 /***/ }),
-/* 92 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13706,7 +13716,7 @@ var UserCenterConfigSignatureState = /** @class */ (function () {
 
 
 /***/ }),
-/* 93 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13750,7 +13760,7 @@ exports.UserCenterConfigPassword = UserCenterConfigPassword;
 
 
 /***/ }),
-/* 94 */
+/* 93 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
