@@ -60,3 +60,20 @@
 .createTopicContent {
     display: flex;
 }
+
+//ubb解析图片默认不显示的样式
+.hiddenImage {
+    border: #EAEAEA solid 2px;
+    border-radius: 5px;
+    padding: 2px;
+    width: 100px;
+}
+
+//ubb解析[table]标签时的默认样式
+.UBBTableTag {
+    border-collapse: collapse;
+}
+
+.UBBTableTag th, td {
+    border: 1px solid rgb(0,0,0);
+}

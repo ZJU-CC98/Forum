@@ -110,7 +110,8 @@ export class LogOnExact extends React.Component<null, LogOnState> {
 
         //缓存数据
         Utility.setLocalStorage("accessToken", token, data.expires_in);
-        Utility.setLocalStorage("userName", this.state.loginName, data.expires_in);
+        Utility.setLocalStorage("userName", this.state.loginName);
+        Utility.setLocalStorage("password", this.state.loginPassword);
 
         //缓存用户其他数据
         let response1 = await fetch(`http://apitest.niconi.cc/user/name/${this.state.loginName}`, {
