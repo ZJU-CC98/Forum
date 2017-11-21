@@ -9,8 +9,8 @@ import {
 } from 'react-router-dom';
 import * as $ from 'jquery';
 
-
-
+declare let editormd: any;
+declare let testEditor: any;
 
 export async function getBoardTopicAsync(curPage, boardid) {
     const token = getLocalStorage("accessToken");
@@ -32,8 +32,10 @@ export async function getBoardTopicAsync(curPage, boardid) {
 
 const boardtopics: State.TopicTitleAndContentState[] = [];
     const url = `http://apitest.niconi.cc/Topic/Board/${boardid}?from=${startPage}&size=${topicNumberInPage}`;
+    const headers = new Headers();
+    headers.append('Authorization', token);
     const response = await fetch(url,
-        { headers: { 'Authorization': token } });
+        { headers});
     const data: State.TopicTitleAndContentState[] = await response.json();
     for (let i = 0; i < topicNumberInPage; i++) {
         boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName || '匿名', data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime);
@@ -44,12 +46,14 @@ const boardtopics: State.TopicTitleAndContentState[] = [];
 }
 export async function getTopic(topicid: number) {
     let token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append('Authorization', token);
     const response = await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}?from=0&size=1`, {
 
-        headers: { 'Authorization': token }
+        headers
     });
     const data = await response.json();
-    const hitCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers: { 'Authorization': token } });
+    const hitCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers});
     const hitCountJson = await hitCountResponse.json();
     const hitCount = hitCountJson.hitCount;
     let topicMessage = null;
@@ -68,11 +72,13 @@ export async function getTopicContent(topicid: number, curPage: number) {
     const startPage = (curPage - 1) * 10;
     const endPage = curPage * 10 - 1;
     let token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append('Authorization', token);
     const topic = curPage !== 1
-        ? await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}?from=${startPage}&size=10`, { headers: { 'Authorization': token } })
-        : await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}?from=1&size=9`, { headers: { 'Authorization': token } });
+        ? await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}?from=${startPage}&size=10`, { headers })
+        : await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}?from=1&size=9`, { headers });
 
-    const replyCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers: { 'Authorization': token } });
+    const replyCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers});
     const replyCountJson = await replyCountResponse.json();
     const replyCount = replyCountJson.replyCount;
     const content = await topic.json();
@@ -103,26 +109,34 @@ export async function getTopicContent(topicid: number, curPage: number) {
 }
 export async function like(topicid,postid) {
     const token = getLocalStorage("accessToken");
-    const response = await fetch(`http://apitest.niconi.cc/post/userlike?topicid=${topicid}&postid=${postid}`, { method: "POST", headers: { "Authorization": token } });
+    const headers = new Headers();
+    headers.append('Authorization', token);
+    const response = await fetch(`http://apitest.niconi.cc/post/userlike?topicid=${topicid}&postid=${postid}`, { method: "POST", headers  });
     const data = await response.json();
     return data;
 }
 export async function dislike(topicid, postid) {
     const token = getLocalStorage("accessToken");
-    const response = await fetch(`http://apitest.niconi.cc/post/userdislike?topicid=${topicid}&postid=${postid}`, { method: "POST", headers: { "Authorization": token } });
+    const headers = new Headers();
+    headers.append('Authorization', token);
+    const response = await fetch(`http://apitest.niconi.cc/post/userdislike?topicid=${topicid}&postid=${postid}`, { method: "POST", headers });
     const data = await response.json();
     return data;
 }
 export async function getLikeStateAndCount(topicid, postid) {
     const token = getLocalStorage("accessToken");
-    await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}?from=0&size=10`, { headers: { 'Authorization': token } })
-    const response = await fetch(`http://apitest.niconi.cc/likeState?topicid=${topicid}&postid=${postid}`, { headers: { "Authorization": token } });
+    const headers = new Headers();
+    headers.append('Authorization', token);
+    await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}?from=0&size=10`, { headers })
+    const response = await fetch(`http://apitest.niconi.cc/likeState?topicid=${topicid}&postid=${postid}`, { headers });
     const data = await response.json();
     return data;
 }
 export async function getHotReplyContent(topicid: number) {
     let token = getLocalStorage("accessToken");
-    const response = await fetch(`http://apitest.niconi.cc/Post/Topic/Hot/${topicid}`, { headers: { 'Authorization': token } });
+    const headers = new Headers();
+    headers.append('Authorization', token);
+    const response = await fetch(`http://apitest.niconi.cc/Post/Topic/Hot/${topicid}`, { headers});
     const content = await response.json();
     const post: State.ContentState[] = [];
     let topicNumberInPage: number = content.length;
@@ -194,7 +208,9 @@ export function getPager(curPage, totalPage) {
 }
 export async function getCurUserTopic(topicid: number, userId: number) {
     let token = getLocalStorage("accessToken");
-    const response = await fetch(`http://apitest.niconi.cc/post/Topic/user?topicid=${topicid}&userid=${userId}&from=0&size=1`, { headers: { 'Authorization': token } });
+    const headers = new Headers();
+    headers.append('Authorization', token);
+    const response = await fetch(`http://apitest.niconi.cc/post/Topic/user?topicid=${topicid}&userid=${userId}&from=0&size=1`, { headers });
     const data = await response.json();
     const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${data[0].userName}`);
     const userMesJson = await userMesResponse.json();
@@ -217,7 +233,9 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
     }
 
     const token = getLocalStorage("accessToken");
-    const topic = await fetch(`http://apitest.niconi.cc/Post/Topic/user?topicid=${topicid}&userId=${userId}&from=${start}&size=10`, { headers: { 'Authorization': token } });
+    const headers = new Headers();
+    headers.append('Authorization', token);
+    const topic = await fetch(`http://apitest.niconi.cc/Post/Topic/user?topicid=${topicid}&userId=${userId}&from=${start}&size=10`, { headers});
     const content = await topic.json();
 
 
@@ -266,10 +284,12 @@ export async function getAllNewTopic(curNum: number) {
         size = 100 - curNum;
     }
     let token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append('Authorization', token);
     /**
      * 通过api获取到主题之后转成json格式
      */
-    const response = await fetch(`http://apitest.niconi.cc/topic/new?from=${curNum}&size=${size}`, { headers: { 'Authorization': `${token}` } });
+    const response = await fetch(`http://apitest.niconi.cc/topic/new?from=${curNum}&size=${size}`, { headers });
     const newTopic = await response.json();
     for (let i in newTopic) {
         if (newTopic[i].userId) {
@@ -308,10 +328,12 @@ export async function getFocusTopic(curNum: number) {
         size = 100 - curNum;
     }
     let token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append('Authorization', token);
     /**
      * 通过api获取到主题之后转成json格式
      */
-    const response = await fetch(`http://apitest.niconi.cc/topic/customboards/new?from=${curNum}&size=${size}`, { headers: { 'Authorization': `${token}` } });
+    const response = await fetch(`http://apitest.niconi.cc/topic/customboards/new?from=${curNum}&size=${size}`, { headers });
     const newTopic = await response.json();
     for (let i in newTopic) {
         if (newTopic[i].userId) {
@@ -444,9 +466,11 @@ export function isLogOn(): boolean {
 */
 export async function getRecentContact(from: number, size: number) {
     let token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append('Authorization', token);
     let recentContact = getLocalStorage("recentContact");
     if (!recentContact) {
-        let response = await fetch(`http://apitest.niconi.cc/message/recentcontactusers?from=${from}&size=${size}`, { headers: { 'Authorization': `${token}` } });
+        let response = await fetch(`http://apitest.niconi.cc/message/recentcontactusers?from=${from}&size=${size}`, { headers });
         let recentContactId = await response.json();
         let url = "http://apitest.niconi.cc/user/basic"
         for (let i in recentContactId) {
@@ -472,7 +496,128 @@ export async function getRecentContact(from: number, size: number) {
 */
 export async function getRecentMessage(userId: number, from: number, size: number) {
     let token = getLocalStorage("accessToken");
-    let response = await fetch(`http://apitest.niconi.cc/message/${userId}?from=${from}&size=${size}`, { headers: { 'Authorization': `${token}` } });
+    const headers = new Headers();
+    headers.append('Authorization', token);
+    let response = await fetch(`http://apitest.niconi.cc/message/${userId}?from=${from}&size=${size}`, { headers });
     let recentMessage = await response.json();
     return recentMessage;
 }
+export async function getTotalReplyCount(topicid){
+    let token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append('Authorization', token);
+    const replyCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers });
+    const replyCountJson = await replyCountResponse.json();
+    const replyCount = replyCountJson.replyCount;
+    if (replyCount >= 10) {
+        return (replyCount - replyCount % 10) / 10 + 1;
+    } else {
+        return 1;
+    }
+}
+export async function getCategory(topicid) {
+    let token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append('Authorization', token);
+    const response = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers });
+    const data = await response.json();
+    const topicName = data.title;
+    const boardId = data.boardId;
+    const boardResponse = await fetch(`http://apitest.niconi.cc/Board/${boardId}`, { headers });
+    const boardData = await boardResponse.json();
+    const boardName = boardData.name;
+    const body = { boardId: boardId, topicId: topicid, boardName: boardName, title: topicName}
+    return body;
+}
+export async function getUserDetails(userName) {
+        let url = `http://apitest.niconi.cc/user/name/${userName}`;
+        let message = await fetch(url);
+        let data = await message.json();
+        const body = { portraitUrl: data.portraitUrl, userName: data.name ,fanCount:data.fanCount,displayTitle:data.displayTitle}
+        return body;
+}
+export async function getLikeState(topicid) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append('Authorization', token);
+    const topic = await getTopic(topicid);
+    const postid = topic.postid;
+    const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${topicid}&postid=${postid}`, { headers });
+    const data = await response.json();
+    return data;
+}
+export async function refreshLikeState(topicId, postId) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append('Authorization', token);
+    const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${topicId}&postid=${postId}`, { headers });
+    const data = await response.json();
+    return data;
+}
+export async function sendTopic(topicId){
+    const url = `http://apitest.niconi.cc/post/topic/${topicId}`;
+    const c = testEditor.getMarkdown();
+    const content = {
+        content: c,
+        contentType: 1,
+        title: ""
+    }
+    const contentJson = JSON.stringify(content);
+    const token = getLocalStorage("accessToken");
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", token);
+    myHeaders.append("Content-Type", 'application/json');
+    const mes = await fetch(url, {
+        method: 'POST',
+        headers: myHeaders,
+        body: contentJson
+    }
+    )
+}
+export async function getListCategory(boardId) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append('Authorization', token);
+    const boardResponse = await fetch(`http://apitest.niconi.cc/Board/${boardId}`, { headers });
+    const boardData = await boardResponse.json();
+    const boardName = boardData.name;
+    return boardName;
+}
+export async function getBoardMessage(boardId) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append('Authorization', token);
+    const url = `http://apitest.niconi.cc/Board/${boardId}`;
+    const response = await fetch(url, { headers });
+    const data = await response.json();
+    return data;
+}
+export async function getListTotalPage(boardId) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append('Authorization', token);
+    const totalTopicCountResponse = await fetch(`http://apitest.niconi.cc/Board/${boardId}`, { headers });
+    const totalTopicCountJson = await totalTopicCountResponse.json();
+    const totalTopicCount = totalTopicCountJson.topicCount;
+
+    return (totalTopicCount - totalTopicCount % 20) / 20 + 1;
+}
+export async function getBasicBoardMessage(boardId,curPage) {
+    const token =getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append('Authorization', token);
+    const response = await fetch(`http://apitest.niconi.cc/Board/${boardId}`, { headers });
+    const json = await response.json();
+    const bigPaper: string = json.bigPaper;
+    let page: number;
+    // 未提供页码，防止出错不进行后续处理
+    if (!curPage) {
+        page = 1;
+    }
+    // 转换类型
+    else { page = parseInt(curPage); }
+    const boardid = boardId;
+    const totalPage = await getListTotalPage(boardid);
+    const data = { bigPaper: bigPaper, totalPage: totalPage, page: page };
+    return data;
+} 
