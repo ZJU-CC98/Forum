@@ -5514,6 +5514,8 @@ var Message = /** @class */ (function (_super) {
     function Message() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    Message.prototype.compontDidMount = function () {
+    };
     Message.prototype.render = function () {
         return (React.createElement("div", { className: "message-root" },
             React.createElement("div", { className: "message" },
@@ -5807,7 +5809,7 @@ var DropDown = /** @class */ (function (_super) {
         });
         return _this;
     }
-    DropDown.prototype.componentWillMount = function () {
+    DropDown.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
             var userName, response, data, userImgUrl;
             return __generator(this, function (_a) {
@@ -11141,6 +11143,9 @@ var MessageWindow = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        if ($('#postContent').val() == '') {
+                            return [2 /*return*/];
+                        }
                         token = Utility.getLocalStorage("accessToken");
                         bodyObj = { receiverId: this.props.data.id, content: $('#postContent').val() };
                         bodyContent = JSON.stringify(bodyObj);
@@ -11155,6 +11160,7 @@ var MessageWindow = /** @class */ (function (_super) {
                     case 1:
                         response = _a.sent();
                         if (response.status == 403) {
+                            $('#postContent').val('');
                             $('#wPostError').removeClass('displaynone');
                             return [2 /*return*/];
                         }
@@ -11194,30 +11200,6 @@ var MessageWindow = /** @class */ (function (_super) {
     return MessageWindow;
 }(React.Component));
 exports.MessageWindow = MessageWindow;
-/*function sortArr(arr: MessageProps[]) {
-    let s: number = -1;
-    let e: number = -1;
-    for (let i = 0; i < arr.length-1; i++) {
-        if (arr[i].sendTime == arr[i + 1].sendTime && s == -1) {
-            s = i;
-        }
-        else if (arr[i].sendTime != arr[i + 1].sendTime && s != -1) {
-            e = i;
-        }
-        if (s != -1 && e != -1) {
-            reverseArr(arr, s, e);
-            s = -1;
-            e = -1;
-        }
-    }
-}
-
-function reverseArr(arr: MessageProps[], s: number, e: number) {
-    for (let i = s; i < e; i++) {
-        [arr[i], arr[e]] = [arr[e], arr[i]];
-        e--;
-    }
-}*/ 
 
 
 /***/ }),
@@ -12644,7 +12626,7 @@ var LogOnExact = /** @class */ (function (_super) {
                         data = _a.sent();
                         token = "Bearer " + encodeURIComponent(data.access_token);
                         //缓存数据
-                        Utility.setLocalStorage("accessToken", token, data.expires_in);
+                        Utility.setLocalStorage("accessToken", token, 30);
                         Utility.setLocalStorage("userName", this.state.loginName);
                         Utility.setLocalStorage("password", this.state.loginPassword);
                         headers1 = new Headers();
