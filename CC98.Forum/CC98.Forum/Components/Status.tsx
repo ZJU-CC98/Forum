@@ -30,3 +30,8 @@ export class NotFoundTopic extends React.Component<{}, {}>{
         return <div>帖子不存在</div>;
     }
 }
+export class NotFoundUser extends React.Component<{}, {}>{
+    render() {
+        return <div>用户不存在</div>;
+    }
+}
