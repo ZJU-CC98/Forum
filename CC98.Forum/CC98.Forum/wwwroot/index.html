@@ -96,26 +96,13 @@
     <script src="/scripts/main.js"></script>
     <script type="text/javascript">
             $(document).ready(function() {
-            var testEditor = editormd("test-editormd", {
-            width: "100%",
-            height: 640,
-            path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false
-                });
-
-            var chat = $.connection.messageHub;
-            console.log("signal通知测试");
-            $.connection.hub.url = "http://apitest.niconi.cc/signalr";
-            var token = localStorage.getItem("accessToken");
-            console.log(`signalr的${token}`);
-            $.connection.hub.qs = {
-                'Authorization': token
-            };
-            $.connection.hub.logging = "true";
-            chat.client.newUserMessage = view;
-            await $.connection.hub.start();
-            console.log("signal测试完毕");
-            })
+                var testEditor = editormd("test-editormd", {
+                width: "100%",
+                height: 640,
+                path: "/scripts/lib/editor.md/lib/",
+                saveHTMLToTextarea: false
+                    });
+                })
     </script>
    
  

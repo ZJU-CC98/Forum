@@ -1082,10 +1082,8 @@ function getBoardTopicAsync(curPage, boardid) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + boardid)];
                 case 1:
                     totalTopicCountResponse = _a.sent();
-                    //找不到版面
                     if (totalTopicCountResponse.status == 404) {
-                    }
-                    if (totalTopicCountResponse.status === 500) {
+                        this.context.router.history.push('/status/NotFoundBoard');
                     }
                     return [4 /*yield*/, totalTopicCountResponse.json()];
                 case 2:
@@ -1108,13 +1106,9 @@ function getBoardTopicAsync(curPage, boardid) {
                     return [4 /*yield*/, fetch(url, { headers: headers })];
                 case 3:
                     response = _a.sent();
-                    //无权限进版面
-                    if (response.status === 401) {
+                    if (response.status == 401) {
                     }
-                    //版面不存在
-                    if (response.status === 404) {
-                    }
-                    if (response.status === 500) {
+                    if (response.status == 404) {
                     }
                     return [4 /*yield*/, response.json()];
                 case 4:
@@ -1125,7 +1119,7 @@ function getBoardTopicAsync(curPage, boardid) {
                     return [2 /*return*/, boardtopics];
                 case 5:
                     e_1 = _a.sent();
-                    alert("网络0中断");
+                    alert("网络中断");
                     return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];
             }
@@ -1135,11 +1129,11 @@ function getBoardTopicAsync(curPage, boardid) {
 exports.getBoardTopicAsync = getBoardTopicAsync;
 function getTopic(topicid) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, headers, response, data, hitCountResponse, hitCountJson, hitCount, topicMessage, userMesResponse, userMesJson, e_2;
+        var token, headers, response, str, data, hitCountResponse, hitCountJson, hitCount, topicMessage, userMesResponse, userMesJson, e_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 9, , 10]);
+                    _a.trys.push([0, 12, , 13]);
                     token = getLocalStorage("accessToken");
                     headers = new Headers();
                     headers.append('Authorization', token);
@@ -1148,46 +1142,51 @@ function getTopic(topicid) {
                         })];
                 case 1:
                     response = _a.sent();
-                    if (response.status === 404) {
-                    }
-                    if (response.status === 500) {
-                    }
-                    return [4 /*yield*/, response.json()];
+                    if (!(response.status === 404)) return [3 /*break*/, 3];
+                    console.log("bbb");
+                    return [4 /*yield*/, response.text()];
                 case 2:
+                    str = _a.sent();
+                    console.log("aaa");
+                    console.log("ccc" + str);
+                    window.location.href = '/status/NotFoundTopic';
+                    return [3 /*break*/, 11];
+                case 3: return [4 /*yield*/, response.json()];
+                case 4:
                     data = _a.sent();
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + topicid, { headers: headers })];
-                case 3:
+                case 5:
                     hitCountResponse = _a.sent();
-                    //两种情况 被删或者不存在
-                    if (hitCountResponse.status === 404) {
+                    if (hitCountResponse.status == 404) {
+                        window.location.href = '/status/NotFoundTopic';
                     }
-                    if (hitCountResponse.status === 401) {
+                    else if (hitCountResponse.status == 401) {
+                        window.location.href = '/status/UnauthorizedTopic';
                     }
                     return [4 /*yield*/, hitCountResponse.json()];
-                case 4:
+                case 6:
                     hitCountJson = _a.sent();
                     hitCount = hitCountJson.hitCount;
                     topicMessage = null;
-                    if (!(data[0].isAnonymous != true)) return [3 /*break*/, 7];
+                    if (!(data[0].isAnonymous != true)) return [3 /*break*/, 9];
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/User/" + data[0].userId)];
-                case 5:
+                case 7:
                     userMesResponse = _a.sent();
-                    if (userMesResponse.status === 404) {
-                    }
                     return [4 /*yield*/, userMesResponse.json()];
-                case 6:
+                case 8:
                     userMesJson = _a.sent();
                     topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType);
-                    return [3 /*break*/, 8];
-                case 7:
-                    topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType);
-                    _a.label = 8;
-                case 8: return [2 /*return*/, topicMessage];
-                case 9:
-                    e_2 = _a.sent();
-                    alert("网络1中断");
                     return [3 /*break*/, 10];
-                case 10: return [2 /*return*/];
+                case 9:
+                    topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType);
+                    _a.label = 10;
+                case 10: return [2 /*return*/, topicMessage];
+                case 11: return [3 /*break*/, 13];
+                case 12:
+                    e_2 = _a.sent();
+                    alert("网络3中断");
+                    return [3 /*break*/, 13];
+                case 13: return [2 /*return*/];
             }
         });
     });
@@ -1216,22 +1215,9 @@ function getTopicContent(topicid, curPage) {
                     _b.label = 4;
                 case 4:
                     topic = _a;
-                    if (topic.status === 401) {
-                    }
-                    //两种
-                    if (topic.status === 404) {
-                    }
-                    if (topic.status === 500) {
-                    }
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + topicid, { headers: headers })];
                 case 5:
                     replyCountResponse = _b.sent();
-                    if (replyCountResponse.status == 404) {
-                        window.location.href = '/status/NotFoundTopic';
-                    }
-                    if (replyCountResponse.status == 401) {
-                        window.location.href = '/status/UnauthorizedTopic';
-                    }
                     return [4 /*yield*/, replyCountResponse.json()];
                 case 6:
                     replyCountJson = _b.sent();
@@ -1261,9 +1247,6 @@ function getTopicContent(topicid, curPage) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + content[i].userName)];
                 case 9:
                     userMesResponse = _b.sent();
-                    if (userMesResponse.status === 404) {
-                        window.location.href = "/status/NotFoundUser";
-                    }
                     return [4 /*yield*/, userMesResponse.json()];
                 case 10:
                     userMesJson = _b.sent();
@@ -1279,7 +1262,7 @@ function getTopicContent(topicid, curPage) {
                 case 13: return [2 /*return*/, post];
                 case 14:
                     e_3 = _b.sent();
-                    alert("网络2中断");
+                    alert("网络1中断");
                     return [3 /*break*/, 15];
                 case 15: return [2 /*return*/];
             }
@@ -1300,21 +1283,13 @@ function like(topicid, postid) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/userlike?topicid=" + topicid + "&postid=" + postid, { method: "POST", headers: headers })];
                 case 1:
                     response = _a.sent();
-                    if (response.status === 401) {
-                    }
-                    if (response.status === 403) {
-                    }
-                    if (response.status === 404) {
-                    }
-                    if (response.status === 500) {
-                    }
                     return [4 /*yield*/, response.json()];
                 case 2:
                     data = _a.sent();
                     return [2 /*return*/, data];
                 case 3:
                     e_4 = _a.sent();
-                    alert("网络3中断");
+                    alert("网络中断");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -1335,21 +1310,13 @@ function dislike(topicid, postid) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/userdislike?topicid=" + topicid + "&postid=" + postid, { method: "POST", headers: headers })];
                 case 1:
                     response = _a.sent();
-                    if (response.status === 401) {
-                    }
-                    if (response.status === 403) {
-                    }
-                    if (response.status === 404) {
-                    }
-                    if (response.status === 500) {
-                    }
                     return [4 /*yield*/, response.json()];
                 case 2:
                     data = _a.sent();
                     return [2 /*return*/, data];
                 case 3:
                     e_5 = _a.sent();
-                    alert("网络4中断");
+                    alert("网络中断");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -1363,30 +1330,25 @@ function getLikeStateAndCount(topicid, postid) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 3, , 4]);
+                    _a.trys.push([0, 4, , 5]);
                     token = getLocalStorage("accessToken");
                     headers = new Headers();
                     headers.append('Authorization', token);
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/likeState?topicid=" + topicid + "&postid=" + postid, { headers: headers })];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Post/Topic/" + topicid + "?from=0&size=10", { headers: headers })];
                 case 1:
-                    response = _a.sent();
-                    if (response.status === 401) {
-                    }
-                    if (response.status === 403) {
-                    }
-                    if (response.status === 404) {
-                    }
-                    if (response.status === 500) {
-                    }
-                    return [4 /*yield*/, response.json()];
+                    _a.sent();
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/likeState?topicid=" + topicid + "&postid=" + postid, { headers: headers })];
                 case 2:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 3:
                     data = _a.sent();
                     return [2 /*return*/, data];
-                case 3:
+                case 4:
                     e_6 = _a.sent();
-                    alert("网络5中断");
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    alert("网络中断");
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/];
             }
         });
     });
@@ -1405,14 +1367,6 @@ function getHotReplyContent(topicid) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/Post/Topic/Hot/" + topicid, { headers: headers })];
                 case 1:
                     response = _a.sent();
-                    //帖子不存在
-                    if (response.status === 404) {
-                    }
-                    //无权限进版面
-                    if (response.status === 401) {
-                    }
-                    if (response.status === 500) {
-                    }
                     return [4 /*yield*/, response.json()];
                 case 2:
                     content = _a.sent();
@@ -1426,10 +1380,6 @@ function getHotReplyContent(topicid) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + content[i].userName)];
                 case 4:
                     userMesResponse = _a.sent();
-                    if (userMesResponse.status === 404) {
-                    }
-                    if (userMesResponse.status === 500) {
-                    }
                     return [4 /*yield*/, userMesResponse.json()];
                 case 5:
                     userMesJson = _a.sent();
@@ -1445,7 +1395,7 @@ function getHotReplyContent(topicid) {
                 case 8: return [2 /*return*/, post];
                 case 9:
                     e_7 = _a.sent();
-                    alert("网络6中断");
+                    alert("网络中断");
                     return [3 /*break*/, 10];
                 case 10: return [2 /*return*/];
             }
@@ -1537,22 +1487,12 @@ function getCurUserTopic(topicid, userId) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/Topic/user?topicid=" + topicid + "&userid=" + userId + "&from=0&size=1", { headers: headers })];
                 case 1:
                     response = _a.sent();
-                    if (response.status === 401) {
-                    }
-                    if (response.status === 404) {
-                    }
-                    if (response.status === 500) {
-                    }
                     return [4 /*yield*/, response.json()];
                 case 2:
                     data = _a.sent();
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + data[0].userName)];
                 case 3:
                     userMesResponse = _a.sent();
-                    if (userMesResponse.status === 404) {
-                    }
-                    if (userMesResponse.status === 500) {
-                    }
                     return [4 /*yield*/, userMesResponse.json()];
                 case 4:
                     userMesJson = _a.sent();
@@ -1560,7 +1500,7 @@ function getCurUserTopic(topicid, userId) {
                     return [2 /*return*/, data[0]];
                 case 5:
                     e_8 = _a.sent();
-                    alert("网络7中断");
+                    alert("网络4中断");
                     return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];
             }
@@ -1597,12 +1537,6 @@ function getCurUserTopicContent(topicid, curPage, userName, userId) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/Post/Topic/user?topicid=" + topicid + "&userId=" + userId + "&from=" + start + "&size=10", { headers: headers })];
                 case 2:
                     topic = _a.sent();
-                    if (topic.status === 401) {
-                    }
-                    if (topic.status === 404) {
-                    }
-                    if (topic.status === 500) {
-                    }
                     return [4 /*yield*/, topic.json()];
                 case 3:
                     content = _a.sent();
@@ -1632,8 +1566,6 @@ function getCurUserTopicContent(topicid, curPage, userName, userId) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + content[i].userName)];
                 case 5:
                     userMesResponse = _a.sent();
-                    if (userMesResponse.status === 404) {
-                    }
                     return [4 /*yield*/, userMesResponse.json()];
                 case 6:
                     userMesJson = _a.sent();
@@ -1649,7 +1581,7 @@ function getCurUserTopicContent(topicid, curPage, userName, userId) {
                 case 9: return [2 /*return*/, post];
                 case 10:
                     e_9 = _a.sent();
-                    alert("网络8中断");
+                    alert("网络中断");
                     return [3 /*break*/, 11];
                 case 11: return [2 /*return*/];
             }
@@ -1678,10 +1610,6 @@ function getAllNewTopic(curNum) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/new?from=" + curNum + "&size=" + size, { headers: headers })];
                 case 1:
                     response = _d.sent();
-                    if (response.status === 401) {
-                    }
-                    if (response.status === 500) {
-                    }
                     return [4 /*yield*/, response.json()];
                 case 2:
                     newTopic = _d.sent();
@@ -1697,10 +1625,6 @@ function getAllNewTopic(curNum) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/follow/fanCount?userid=" + newTopic[i].userId)];
                 case 4:
                     userFan0 = _d.sent();
-                    if (userFan0.status === 404) {
-                    }
-                    if (userFan0.status === 500) {
-                    }
                     return [4 /*yield*/, userFan0.json()];
                 case 5:
                     userFan1 = _d.sent();
@@ -1708,10 +1632,6 @@ function getAllNewTopic(curNum) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/basic/" + newTopic[i].userId)];
                 case 6:
                     userInfo0 = _d.sent();
-                    if (userInfo0.status === 404) {
-                    }
-                    if (userInfo0.status === 500) {
-                    }
                     return [4 /*yield*/, userInfo0.json()];
                 case 7:
                     userInfo1 = _d.sent();
@@ -1734,7 +1654,7 @@ function getAllNewTopic(curNum) {
                 case 11: return [2 /*return*/, newTopic];
                 case 12:
                     e_10 = _d.sent();
-                    alert("网络9中断");
+                    alert("网络中断");
                     return [3 /*break*/, 13];
                 case 13: return [2 /*return*/];
             }
@@ -1763,10 +1683,6 @@ function getFocusTopic(curNum) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/customboards/new?from=" + curNum + "&size=" + size, { headers: headers })];
                 case 1:
                     response = _d.sent();
-                    if (response.status === 401) {
-                    }
-                    if (response.status === 500) {
-                    }
                     return [4 /*yield*/, response.json()];
                 case 2:
                     newTopic = _d.sent();
@@ -1782,10 +1698,6 @@ function getFocusTopic(curNum) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/follow/fanCount?userid=" + newTopic[i].userId)];
                 case 4:
                     userFan0 = _d.sent();
-                    if (userFan0.status === 404) {
-                    }
-                    if (userFan0.status === 500) {
-                    }
                     return [4 /*yield*/, userFan0.json()];
                 case 5:
                     userFan1 = _d.sent();
@@ -1793,10 +1705,6 @@ function getFocusTopic(curNum) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/basic/" + newTopic[i].userId)];
                 case 6:
                     userInfo0 = _d.sent();
-                    if (userInfo0.status === 404) {
-                    }
-                    if (userInfo0.status === 500) {
-                    }
                     return [4 /*yield*/, userInfo0.json()];
                 case 7:
                     userInfo1 = _d.sent();
@@ -1819,7 +1727,7 @@ function getFocusTopic(curNum) {
                 case 11: return [2 /*return*/, newTopic];
                 case 12:
                     e_11 = _d.sent();
-                    alert("网络10中断");
+                    alert("网络中断");
                     return [3 /*break*/, 13];
                 case 13: return [2 /*return*/];
             }
@@ -1913,7 +1821,7 @@ exports.removeStorage = removeStorage;
 */
 function getBoardName(boardId) {
     return __awaiter(this, void 0, void 0, function () {
-        var boardName, token, headers, url, res, data, e_12;
+        var boardName, url, res, data, e_12;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1921,15 +1829,10 @@ function getBoardName(boardId) {
                     boardName = void 0;
                     boardName = getLocalStorage("boardId_" + boardId);
                     if (!!boardName) return [3 /*break*/, 3];
-                    token = getLocalStorage("accessToken");
-                    headers = new Headers();
-                    headers.append('Authorization', token);
                     url = "http://apitest.niconi.cc/board/" + boardId;
-                    return [4 /*yield*/, fetch(url, { headers: headers })];
+                    return [4 /*yield*/, fetch(url)];
                 case 1:
                     res = _a.sent();
-                    if (res.status === 404) {
-                    }
                     return [4 /*yield*/, res.json()];
                 case 2:
                     data = _a.sent();
@@ -1939,7 +1842,7 @@ function getBoardName(boardId) {
                 case 3: return [2 /*return*/, boardName];
                 case 4:
                     e_12 = _a.sent();
-                    alert("网络11中断");
+                    alert("网络中断");
                     return [3 /*break*/, 5];
                 case 5: return [2 /*return*/];
             }
@@ -1971,10 +1874,6 @@ function getRecentContact(from, size) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/message/recentcontactusers?from=" + from + "&size=" + size, { headers: headers })];
                 case 1:
                     response = _d.sent();
-                    if (response.status === 401) {
-                    }
-                    if (response.status === 500) {
-                    }
                     return [4 /*yield*/, response.json()];
                 case 2:
                     recentContactId = _d.sent();
@@ -1990,10 +1889,6 @@ function getRecentContact(from, size) {
                     return [4 /*yield*/, fetch(url)];
                 case 3:
                     response1 = _d.sent();
-                    if (response1.status === 404) {
-                    }
-                    if (response1.status === 500) {
-                    }
                     return [4 /*yield*/, response1.json()];
                 case 4:
                     recentContact = _d.sent();
@@ -2016,7 +1911,7 @@ function getRecentContact(from, size) {
                 case 8: return [2 /*return*/, recentContact];
                 case 9:
                     e_13 = _d.sent();
-                    alert("网络12中断");
+                    alert("网络中断");
                     return [3 /*break*/, 10];
                 case 10: return [2 /*return*/];
             }
@@ -2040,17 +1935,13 @@ function getRecentMessage(userId, from, size) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/message/" + userId + "?from=" + from + "&size=" + size, { headers: headers })];
                 case 1:
                     response = _a.sent();
-                    if (response.status === 401) {
-                    }
-                    if (response.status === 500) {
-                    }
                     return [4 /*yield*/, response.json()];
                 case 2:
                     recentMessage = _a.sent();
                     return [2 /*return*/, recentMessage];
                 case 3:
                     e_14 = _a.sent();
-                    alert("网络13中断");
+                    alert("网络中断");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -2071,15 +1962,11 @@ function getTotalReplyCount(topicid) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + topicid, { headers: headers })];
                 case 1:
                     replyCountResponse = _a.sent();
-                    if (replyCountResponse.status === 401) {
-                    }
-                    if (replyCountResponse.status === 404) {
-                    }
-                    if (replyCountResponse.status === 500) {
-                    }
                     return [4 /*yield*/, replyCountResponse.json()];
                 case 2:
                     replyCountJson = _a.sent();
+                    console.log("reply");
+                    console.log(replyCountJson);
                     replyCount = replyCountJson.replyCount;
                     if (replyCount >= 10) {
                         return [2 /*return*/, (replyCount - replyCount % 10) / 10 + 1];
@@ -2090,7 +1977,7 @@ function getTotalReplyCount(topicid) {
                     return [3 /*break*/, 4];
                 case 3:
                     e_15 = _a.sent();
-                    alert("网络14中断");
+                    alert("网络2中断");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -2111,12 +1998,6 @@ function getCategory(topicid) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + topicid, { headers: headers })];
                 case 1:
                     response = _a.sent();
-                    if (response.status === 401) {
-                    }
-                    if (response.status === 404) {
-                    }
-                    if (response.status === 500) {
-                    }
                     return [4 /*yield*/, response.json()];
                 case 2:
                     data = _a.sent();
@@ -2133,7 +2014,7 @@ function getCategory(topicid) {
                     return [2 /*return*/, body];
                 case 5:
                     e_16 = _a.sent();
-                    alert("网络15中断");
+                    alert("网络中断");
                     return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];
             }
@@ -2152,10 +2033,6 @@ function getUserDetails(userName) {
                     return [4 /*yield*/, fetch(url)];
                 case 1:
                     message = _a.sent();
-                    if (message.status === 404) {
-                    }
-                    if (message.status === 500) {
-                    }
                     return [4 /*yield*/, message.json()];
                 case 2:
                     data = _a.sent();
@@ -2163,7 +2040,7 @@ function getUserDetails(userName) {
                     return [2 /*return*/, body];
                 case 3:
                     e_17 = _a.sent();
-                    alert("网络16中断");
+                    alert("网络中断");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -2177,7 +2054,7 @@ function getLikeState(topicid) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 6, , 7]);
+                    _a.trys.push([0, 4, , 5]);
                     token = getLocalStorage("accessToken");
                     headers = new Headers();
                     headers.append('Authorization', token);
@@ -2188,24 +2065,15 @@ function getLikeState(topicid) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/likestate?topicid=" + topicid + "&postid=" + postid, { headers: headers })];
                 case 2:
                     response = _a.sent();
-                    if (response.status === 401) {
-                    }
-                    if (response.status === 403) {
-                    }
-                    if (response.status === 404) {
-                    }
-                    if (!(response.status === 500)) return [3 /*break*/, 3];
-                    return [3 /*break*/, 5];
-                case 3: return [4 /*yield*/, response.json()];
-                case 4:
+                    return [4 /*yield*/, response.json()];
+                case 3:
                     data = _a.sent();
                     return [2 /*return*/, data];
-                case 5: return [3 /*break*/, 7];
-                case 6:
+                case 4:
                     e_18 = _a.sent();
-                    alert("网络17中断");
-                    return [3 /*break*/, 7];
-                case 7: return [2 /*return*/];
+                    alert("网络中断");
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/];
             }
         });
     });
@@ -2224,21 +2092,13 @@ function refreshLikeState(topicId, postId) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/likestate?topicid=" + topicId + "&postid=" + postId, { headers: headers })];
                 case 1:
                     response = _a.sent();
-                    if (response.status === 401) {
-                    }
-                    if (response.status === 403) {
-                    }
-                    if (response.status === 404) {
-                    }
-                    if (response.status === 500) {
-                    }
                     return [4 /*yield*/, response.json()];
                 case 2:
                     data = _a.sent();
                     return [2 /*return*/, data];
                 case 3:
                     e_19 = _a.sent();
-                    alert("网络18中断");
+                    alert("网络中断");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -2272,20 +2132,10 @@ function sendTopic(topicId) {
                         })];
                 case 1:
                     mes = _a.sent();
-                    if (mes.status === 401) {
-                    }
-                    if (mes.status === 402) {
-                    }
-                    if (mes.status === 403) {
-                    }
-                    if (mes.status === 404) {
-                    }
-                    if (mes.status === 500) {
-                    }
                     return [3 /*break*/, 3];
                 case 2:
                     e_20 = _a.sent();
-                    alert("网络19中断");
+                    alert("网络中断");
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }
@@ -2306,10 +2156,6 @@ function getListCategory(boardId) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + boardId, { headers: headers })];
                 case 1:
                     boardResponse = _a.sent();
-                    if (boardResponse.status === 404) {
-                    }
-                    if (boardResponse.status === 500) {
-                    }
                     return [4 /*yield*/, boardResponse.json()];
                 case 2:
                     boardData = _a.sent();
@@ -2317,7 +2163,7 @@ function getListCategory(boardId) {
                     return [2 /*return*/, boardName];
                 case 3:
                     e_21 = _a.sent();
-                    alert("网络20中断");
+                    alert("网络中断");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -2339,17 +2185,13 @@ function getBoardMessage(boardId) {
                     return [4 /*yield*/, fetch(url, { headers: headers })];
                 case 1:
                     response = _a.sent();
-                    if (response.status === 404) {
-                    }
-                    if (response.status === 500) {
-                    }
                     return [4 /*yield*/, response.json()];
                 case 2:
                     data = _a.sent();
                     return [2 /*return*/, data];
                 case 3:
                     e_22 = _a.sent();
-                    alert("网络21中断");
+                    alert("网络中断");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -2370,10 +2212,6 @@ function getListTotalPage(boardId) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + boardId, { headers: headers })];
                 case 1:
                     totalTopicCountResponse = _a.sent();
-                    if (totalTopicCountResponse.status === 404) {
-                    }
-                    if (totalTopicCountResponse.status === 500) {
-                    }
                     return [4 /*yield*/, totalTopicCountResponse.json()];
                 case 2:
                     totalTopicCountJson = _a.sent();
@@ -2381,7 +2219,7 @@ function getListTotalPage(boardId) {
                     return [2 /*return*/, (totalTopicCount - totalTopicCount % 20) / 20 + 1];
                 case 3:
                     e_23 = _a.sent();
-                    alert("网络22中断");
+                    alert("网络中断");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -2395,17 +2233,15 @@ function getBasicBoardMessage(boardId, curPage) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 4, , 5]);
+                    _a.trys.push([0, 6, , 7]);
                     token = getLocalStorage("accessToken");
                     headers = new Headers();
                     headers.append('Authorization', token);
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + boardId, { headers: headers })];
                 case 1:
                     response = _a.sent();
-                    if (response.status === 404) {
-                    }
-                    if (response.status === 500) {
-                    }
+                    console.log("basic");
+                    if (!(response.status == 200)) return [3 /*break*/, 4];
                     return [4 /*yield*/, response.json()];
                 case 2:
                     json = _a.sent();
@@ -2425,10 +2261,16 @@ function getBasicBoardMessage(boardId, curPage) {
                     data = { bigPaper: bigPaper, totalPage: totalPage, page: page };
                     return [2 /*return*/, data];
                 case 4:
+                    if (response.status == 401) {
+                        alert("未登录或无权限");
+                    }
+                    _a.label = 5;
+                case 5: return [3 /*break*/, 7];
+                case 6:
                     e_24 = _a.sent();
-                    alert("网络23中断");
-                    return [3 /*break*/, 5];
-                case 5: return [2 /*return*/];
+                    alert("网络中断");
+                    return [3 /*break*/, 7];
+                case 7: return [2 /*return*/];
             }
         });
     });
@@ -2447,12 +2289,6 @@ function getCurUserTotalReplyPage(topicId, userId) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/topic/user?topicid=" + topicId + "&userid=" + userId + "&from=0&size=1", { headers: headers })];
                 case 1:
                     replyCountResponse = _a.sent();
-                    if (replyCountResponse.status === 401) {
-                    }
-                    if (replyCountResponse.status === 404) {
-                    }
-                    if (replyCountResponse.status === 500) {
-                    }
                     return [4 /*yield*/, replyCountResponse.json()];
                 case 2:
                     replyCountJson = _a.sent();
@@ -2466,7 +2302,7 @@ function getCurUserTotalReplyPage(topicId, userId) {
                     return [3 /*break*/, 4];
                 case 3:
                     e_25 = _a.sent();
-                    alert("网络24中断");
+                    alert("网络5中断");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -2886,7 +2722,6 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { path: "/status/UnauthorizedTopic", component: Status.UnauthorizedTopic }),
                     React.createElement(react_router_dom_1.Route, { path: "/status/NotFoundTopic", component: Status.NotFoundTopic }),
                     React.createElement(react_router_dom_1.Route, { path: "/status/NotFoundBoard", component: Status.NotFoundBoard }),
-                    React.createElement(react_router_dom_1.Route, { path: "/status/NotFoundUser", component: Status.NotFoundUser }),
                     React.createElement(Footer_1.Footer, null))));
     };
     return App;
@@ -7162,17 +6997,6 @@ var NotFoundTopic = /** @class */ (function (_super) {
     return NotFoundTopic;
 }(React.Component));
 exports.NotFoundTopic = NotFoundTopic;
-var NotFoundUser = /** @class */ (function (_super) {
-    __extends(NotFoundUser, _super);
-    function NotFoundUser() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    NotFoundUser.prototype.render = function () {
-        return React.createElement("div", null, "\u7528\u6237\u4E0D\u5B58\u5728");
-    };
-    return NotFoundUser;
-}(React.Component));
-exports.NotFoundUser = NotFoundUser;
 
 
 /***/ }),
@@ -7436,7 +7260,6 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { path: "/status/UnauthorizedTopic", component: Status.UnauthorizedTopic }),
                     React.createElement(react_router_dom_1.Route, { path: "/status/NotFoundTopic", component: Status.NotFoundTopic }),
                     React.createElement(react_router_dom_1.Route, { path: "/status/NotFoundBoard", component: Status.NotFoundBoard }),
-                    React.createElement(react_router_dom_1.Route, { path: "/status/NotFoundUser", component: Status.NotFoundUser }),
                     React.createElement(Footer_1.Footer, null))));
     };
     return App;
@@ -11172,6 +10995,7 @@ var MessageWindow = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 this.setState({ data: this.props.data.message });
                 document.getElementById('messageContent').addEventListener('scroll', this.handleScroll);
+                $('#messageContent')[0].scrollTop = 3000;
                 return [2 /*return*/];
             });
         });
@@ -11183,6 +11007,8 @@ var MessageWindow = /** @class */ (function (_super) {
     MessageWindow.prototype.componentWillReceiveProps = function (nextProps) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
+                //把聊天窗口滚动栏拉到最底部
+                document.getElementById("quickToTheBottom").scrollIntoView();
                 this.setState({ data: nextProps.data.message });
                 return [2 /*return*/];
             });
@@ -11198,7 +11024,6 @@ var MessageWindow = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         scrollTop = $('#messageContent')[0].scrollTop;
-                        console.log(scrollTop);
                         if (!(scrollTop == 0)) return [3 /*break*/, 2];
                         console.log("到顶啦");
                         $('#wcLoadingImg').removeClass("displaynone");
@@ -11240,7 +11065,10 @@ var MessageWindow = /** @class */ (function (_super) {
             var data, oldData, recentContact, i, j, chatMan, indexData;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getRecentMessage(this.props.data.id, 0, 10)];
+                    case 0:
+                        //把聊天窗口滚动栏拉到最底部
+                        document.getElementById("quickToTheBottom").scrollIntoView();
+                        return [4 /*yield*/, Utility.getRecentMessage(this.props.data.id, 0, 10)];
                     case 1:
                         data = _a.sent();
                         oldData = [];
@@ -11376,6 +11204,7 @@ var MessageWindow = /** @class */ (function (_super) {
                 React.createElement("div", { className: "message-message-wReport" },
                     React.createElement("button", { onClick: this.report }, "\u4E3E\u62A5"))),
             React.createElement("div", { className: "message-message-wContent", id: "messageContent" },
+                React.createElement("div", { id: "quickToTheBottom", className: "quickToTheBottom" }),
                 this.state.data.map(this.coverMessageProps),
                 React.createElement("div", { className: "message-message-wcLoading" },
                     React.createElement("img", { src: "http://file.cc98.org/uploadfile/2017/11/19/2348481046.gif", id: "wcLoadingImg", className: "displaynone" }),
