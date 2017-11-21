@@ -5798,7 +5798,7 @@ var DropDown = /** @class */ (function (_super) {
         });
         return _this;
     }
-    DropDown.prototype.componentWillMount = function () {
+    DropDown.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
             var userName, response, data, userImgUrl;
             return __generator(this, function (_a) {
@@ -12635,7 +12635,7 @@ var LogOnExact = /** @class */ (function (_super) {
                         data = _a.sent();
                         token = "Bearer " + encodeURIComponent(data.access_token);
                         //缓存数据
-                        Utility.setLocalStorage("accessToken", token, data.expires_in);
+                        Utility.setLocalStorage("accessToken", token, 30);
                         Utility.setLocalStorage("userName", this.state.loginName);
                         Utility.setLocalStorage("password", this.state.loginPassword);
                         headers1 = new Headers();
