@@ -97,13 +97,17 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
                     break;
                 }
             }
+            //联系对象不在联系人列表里，说明是从别的页面发起的私信聊天，聊天对象已经在联系人列表最上面了，只需存缓存并刷新聊天窗口
             if(i == recentContact.length) {
                 let chatMan = [this.props.data];
                 chatMan[0].message = data;
                 recentContact = chatMan.concat(recentContact);
+                //刷新状态
+                Utility.setStorage("recentContact", recentContact);
+                this.setState({ data: data });
             }
             //聊天对象是联系人列表第一个，只需要刷新聊天窗口
-            if (i == 0) {
+            else if (i == 0) {
                 //刷新状态
                 Utility.setStorage("recentContact", recentContact);
                 this.setState({ data: data });

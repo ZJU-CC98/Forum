@@ -5,6 +5,7 @@
 import * as React from 'react';
 import { UserCenterExactActivitiesPost } from './UserCenterExactActivitiesPost';
 import { UserRecentPost } from '../States/AppState';
+import * as Utility from '../Utility';
 
 
 export class UserCenterMyFavoritesPosts extends React.Component<null, UserCenterMyFavoritesPostsState> {
@@ -12,6 +13,22 @@ export class UserCenterMyFavoritesPosts extends React.Component<null, UserCenter
         super(props);
         //临时填充数据
         this.state = { userRecentPosts: [userRecentPost, userRecentPost, userRecentPost, userRecentPost] };
+    }
+
+    async componentDidMount() {
+        const token = Utility.getLocalStorage('accessToken');
+        const userName = Utility.getLocalStorage('userName');
+        const url = `http://apitest.niconi.cc/topic/customboards/new?from=0&size=10`;
+
+        let myHeaders = new Headers();
+        myHeaders.append('Authorization', token);
+
+        let res = await fetch(url, {
+            headers: myHeaders
+        });
+        let data = await res.json();
+
+        console.log(data);
     }
 
     render() {
