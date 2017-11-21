@@ -27,12 +27,11 @@ export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState
 
         const token = Utility.getLocalStorage("accessToken");
         const page = this.match.params.page || 1;
-        let url = `http://apitest.niconi.cc/user/follow/fan?from=${(page-1)*10}&size=10`;
-
+        let url = `http://apitest.niconi.cc/user/follow/fan?from=${(page - 1) * 10}&size=10`;
+        const headers = new Headers();
+        headers.append('Authorization', token);
         let res = await fetch(url, {
-            headers: {
-                'Authorization': token
-            }
+            headers
         });
 
         let data = await res.json();

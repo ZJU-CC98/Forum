@@ -50,7 +50,7 @@ export async function getBoardTopicAsync(curPage, boardid) {
         }
             const data: State.TopicTitleAndContentState[] = await response.json();
             for (let i = 0; i < topicNumberInPage; i++) {
-                boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName || '匿名', data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime);
+                boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName , data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime);
             }
 
             return boardtopics;
@@ -68,39 +68,40 @@ export async function getTopic(topicid: number) {
         const headers = new Headers();
         headers.append('Authorization', token);
         const response = await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}?from=0&size=1`, {
-
             headers
         });
-        if (response.status == 404) {
+        if (response.status === 404) {
+            console.log("bbb");
             const str = await response.text();
-            console.log("text=" + str);
-         
-        }
-        const data = await response.json();
-      
-        const hitCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers });
-        if (hitCountResponse.status == 404) {
-
-        }
-        if (hitCountResponse.status == 401) {
-
-        }
-        const hitCountJson = await hitCountResponse.json();
-        const hitCount = hitCountJson.hitCount;
-        let topicMessage = null;
-        if (data[0].isAnonymous != true) {
-            const userMesResponse = await fetch(`http://apitest.niconi.cc/User/${data[0].userId}`);
-            const userMesJson = await userMesResponse.json();
-            topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType);
+            console.log("aaa");
+            console.log("ccc" + str);
+            window.location.href = '/status/NotFoundTopic';
         } else {
-            topicMessage = new State.TopicState('匿名', data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType);
+            const data = await response.json();
+
+            const hitCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers });
+            if (hitCountResponse.status == 404) {
+                window.location.href = '/status/NotFoundTopic';  
+            }
+            else if (hitCountResponse.status == 401) {
+                window.location.href = '/status/UnauthorizedTopic';  
+            }
+            const hitCountJson = await hitCountResponse.json();
+            const hitCount = hitCountJson.hitCount;
+            let topicMessage = null;
+            if (data[0].isAnonymous != true) {
+                const userMesResponse = await fetch(`http://apitest.niconi.cc/User/${data[0].userId}`);
+                const userMesJson = await userMesResponse.json();
+                topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType);
+            } else {
+                topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType);
+            }
+
+
+            return topicMessage;
         }
-
-
-        return topicMessage;
     } catch (e) {
-         this.context.router.history.push("/status/NotFountTopic");
-       // window.location.href = "/status/NotFountTopic";
+        alert("网络3中断");
     }
 }
 export async function getTopicContent(topicid: number, curPage: number) {
@@ -131,20 +132,20 @@ export async function getTopicContent(topicid: number, curPage: number) {
             topicNumberInPage = (replyCount - (curPage - 1) * 10 + 1);
         }
         for (let i = 0; i < topicNumberInPage; i++) {
-            if (content[i].userName != null) {
+            if (content[i].isAnonymous != true) {
 
                 const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
                 const userMesJson = await userMesResponse.json();
                 post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
             } else {
                 let purl = 'https://www.cc98.org/pic/anonymous.gif';
-                post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+                post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名' + content[i].userName.toUpperCase(), null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
 
             }
         }
         return post;
     } catch (e) {
-        alert("网络中断");
+        alert("网络1中断");
     }
 }
 export async function like(topicid, postid) {
@@ -194,13 +195,13 @@ export async function getHotReplyContent(topicid: number) {
     const post: State.ContentState[] = [];
     let topicNumberInPage: number = content.length;
     for (let i = 0; i < topicNumberInPage; i++) {
-        if (content[i].userName != null) {
+        if (content[i].isAnonymous !=true) {
             const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
             const userMesJson = await userMesResponse.json();
             post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
         } else {
             let purl = 'https://www.cc98.org/pic/anonymous.gif';
-            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名' + content[i].userName.toUpperCase(), null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
         }
     }
         return post;
@@ -281,7 +282,7 @@ export async function getCurUserTopic(topicid: number, userId: number) {
     data[0].userImgUrl = userMesJson.portraitUrl;
         return data[0];
     } catch (e) {
-        alert("网络中断");
+        alert("网络4中断");
     }
 }
 export async function getCurUserTopicContent(topicid: number, curPage: number, userName: string, userId: number) {
@@ -324,7 +325,7 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
     }
 
     for (let i = 0; i < topicNumberInPage; i++) {
-        if (content[i].userName != null) {
+        if (content[i].isAnonymous !=true) {
             const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
             const userMesJson = await userMesResponse.json();
 
@@ -332,7 +333,7 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
 
         } else {
             let purl = 'https://www.cc98.org/pic/anonymous.gif';
-            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名' + content[i].userName.toUpperCase(), null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
         }
     }
 
@@ -380,7 +381,7 @@ export async function getAllNewTopic(curNum: number) {
         else {
             newTopic[i].fanCount = 0;
             newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-            newTopic[i].userName = "匿名";
+           
             newTopic[i].boardName = "心灵之约";
         }
     }
@@ -428,7 +429,7 @@ export async function getFocusTopic(curNum: number) {
         else {
             newTopic[i].fanCount = 0;
             newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-            newTopic[i].userName = "匿名";
+        
             newTopic[i].boardName = "心灵之约";
         }
     }
@@ -600,7 +601,9 @@ export async function getTotalReplyCount(topicid) {
     const headers = new Headers();
     headers.append('Authorization', token);
     const replyCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers });
-    const replyCountJson = await replyCountResponse.json();
+            const replyCountJson = await replyCountResponse.json();
+            console.log("reply");
+            console.log(replyCountJson);
     const replyCount = replyCountJson.replyCount;
     if (replyCount >= 10) {
         return (replyCount - replyCount % 10) / 10 + 1;
@@ -608,7 +611,7 @@ export async function getTotalReplyCount(topicid) {
         return 1;
         }
     } catch (e) {
-        alert("网络中断");
+        alert("网络2中断");
     }
 }
 export async function getCategory(topicid) {
@@ -772,6 +775,6 @@ export async function getCurUserTotalReplyPage(topicId, userId) {
         return 1;
         }
     } catch (e) {
-        alert("网络中断");
+        alert("网络5中断");
     }
 }

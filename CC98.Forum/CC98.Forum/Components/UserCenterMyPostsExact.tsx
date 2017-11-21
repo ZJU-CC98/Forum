@@ -24,10 +24,10 @@ export class UserCenterMyPostsExact extends RouteComponent<null, UserCenterMyPos
         const page = this.match.params.page || 1;
         const url = `http://apitest.niconi.cc/me/recenttopics?from=${(page-1)*10}&size=10`
         const token = Utility.getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append('Authorization', token);
         let res = await fetch(url, {
-            headers: {
-                'Authorization': token
-            }
+            headers
         });
         let data = await res.json();
         let posts: UserRecentPost[] = [],
