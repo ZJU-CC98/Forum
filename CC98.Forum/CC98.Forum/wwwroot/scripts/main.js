@@ -1070,7 +1070,7 @@ var React = __webpack_require__(0);
 var List_1 = __webpack_require__(8);
 function getBoardTopicAsync(curPage, boardid) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, startPage, endPage, totalTopicCountResponse, totalTopicCountJson, totalTopicCount, topicNumberInPage, boardtopics, url, response, data, i;
+        var token, startPage, endPage, totalTopicCountResponse, totalTopicCountJson, totalTopicCount, topicNumberInPage, boardtopics, url, headers, response, data, i;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1095,7 +1095,9 @@ function getBoardTopicAsync(curPage, boardid) {
                     }
                     boardtopics = [];
                     url = "http://apitest.niconi.cc/Topic/Board/" + boardid + "?from=" + startPage + "&size=" + topicNumberInPage;
-                    return [4 /*yield*/, fetch(url, { headers: { 'Authorization': token } })];
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch(url, { headers: headers })];
                 case 3:
                     response = _a.sent();
                     return [4 /*yield*/, response.json()];
@@ -1112,20 +1114,22 @@ function getBoardTopicAsync(curPage, boardid) {
 exports.getBoardTopicAsync = getBoardTopicAsync;
 function getTopic(topicid) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, response, data, hitCountResponse, hitCountJson, hitCount, topicMessage, userMesResponse, userMesJson;
+        var token, headers, response, data, hitCountResponse, hitCountJson, hitCount, topicMessage, userMesResponse, userMesJson;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append('Authorization', token);
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/Post/Topic/" + topicid + "?from=0&size=1", {
-                            headers: { 'Authorization': token }
+                            headers: headers
                         })];
                 case 1:
                     response = _a.sent();
                     return [4 /*yield*/, response.json()];
                 case 2:
                     data = _a.sent();
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + topicid, { headers: { 'Authorization': token } })];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + topicid, { headers: headers })];
                 case 3:
                     hitCountResponse = _a.sent();
                     return [4 /*yield*/, hitCountResponse.json()];
@@ -1153,25 +1157,27 @@ function getTopic(topicid) {
 exports.getTopic = getTopic;
 function getTopicContent(topicid, curPage) {
     return __awaiter(this, void 0, void 0, function () {
-        var startPage, endPage, token, topic, _a, replyCountResponse, replyCountJson, replyCount, content, post, topicNumberInPage, i, userMesResponse, userMesJson, purl;
+        var startPage, endPage, token, headers, topic, _a, replyCountResponse, replyCountJson, replyCount, content, post, topicNumberInPage, i, userMesResponse, userMesJson, purl;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     startPage = (curPage - 1) * 10;
                     endPage = curPage * 10 - 1;
                     token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append('Authorization', token);
                     if (!(curPage !== 1)) return [3 /*break*/, 2];
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Post/Topic/" + topicid + "?from=" + startPage + "&size=10", { headers: { 'Authorization': token } })];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Post/Topic/" + topicid + "?from=" + startPage + "&size=10", { headers: headers })];
                 case 1:
                     _a = _b.sent();
                     return [3 /*break*/, 4];
-                case 2: return [4 /*yield*/, fetch("http://apitest.niconi.cc/Post/Topic/" + topicid + "?from=1&size=9", { headers: { 'Authorization': token } })];
+                case 2: return [4 /*yield*/, fetch("http://apitest.niconi.cc/Post/Topic/" + topicid + "?from=1&size=9", { headers: headers })];
                 case 3:
                     _a = _b.sent();
                     _b.label = 4;
                 case 4:
                     topic = _a;
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + topicid, { headers: { 'Authorization': token } })];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + topicid, { headers: headers })];
                 case 5:
                     replyCountResponse = _b.sent();
                     return [4 /*yield*/, replyCountResponse.json()];
@@ -1222,12 +1228,14 @@ function getTopicContent(topicid, curPage) {
 exports.getTopicContent = getTopicContent;
 function like(topicid, postid) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, response, data;
+        var token, headers, response, data;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     token = getLocalStorage("accessToken");
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/userlike?topicid=" + topicid + "&postid=" + postid, { method: "POST", headers: { "Authorization": token } })];
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/userlike?topicid=" + topicid + "&postid=" + postid, { method: "POST", headers: headers })];
                 case 1:
                     response = _a.sent();
                     return [4 /*yield*/, response.json()];
@@ -1241,12 +1249,14 @@ function like(topicid, postid) {
 exports.like = like;
 function dislike(topicid, postid) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, response, data;
+        var token, headers, response, data;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     token = getLocalStorage("accessToken");
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/userdislike?topicid=" + topicid + "&postid=" + postid, { method: "POST", headers: { "Authorization": token } })];
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/userdislike?topicid=" + topicid + "&postid=" + postid, { method: "POST", headers: headers })];
                 case 1:
                     response = _a.sent();
                     return [4 /*yield*/, response.json()];
@@ -1260,15 +1270,17 @@ function dislike(topicid, postid) {
 exports.dislike = dislike;
 function getLikeStateAndCount(topicid, postid) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, response, data;
+        var token, headers, response, data;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     token = getLocalStorage("accessToken");
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Post/Topic/" + topicid + "?from=0&size=10", { headers: { 'Authorization': token } })];
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Post/Topic/" + topicid + "?from=0&size=10", { headers: headers })];
                 case 1:
                     _a.sent();
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/likeState?topicid=" + topicid + "&postid=" + postid, { headers: { "Authorization": token } })];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/likeState?topicid=" + topicid + "&postid=" + postid, { headers: headers })];
                 case 2:
                     response = _a.sent();
                     return [4 /*yield*/, response.json()];
@@ -1282,12 +1294,14 @@ function getLikeStateAndCount(topicid, postid) {
 exports.getLikeStateAndCount = getLikeStateAndCount;
 function getHotReplyContent(topicid) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, response, content, post, topicNumberInPage, i, userMesResponse, userMesJson, purl;
+        var token, headers, response, content, post, topicNumberInPage, i, userMesResponse, userMesJson, purl;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     token = getLocalStorage("accessToken");
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Post/Topic/Hot/" + topicid, { headers: { 'Authorization': token } })];
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Post/Topic/Hot/" + topicid, { headers: headers })];
                 case 1:
                     response = _a.sent();
                     return [4 /*yield*/, response.json()];
@@ -1386,12 +1400,14 @@ function getPager(curPage, totalPage) {
 exports.getPager = getPager;
 function getCurUserTopic(topicid, userId) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, response, data, userMesResponse, userMesJson;
+        var token, headers, response, data, userMesResponse, userMesJson;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     token = getLocalStorage("accessToken");
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/Topic/user?topicid=" + topicid + "&userid=" + userId + "&from=0&size=1", { headers: { 'Authorization': token } })];
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/Topic/user?topicid=" + topicid + "&userid=" + userId + "&from=0&size=1", { headers: headers })];
                 case 1:
                     response = _a.sent();
                     return [4 /*yield*/, response.json()];
@@ -1412,7 +1428,7 @@ function getCurUserTopic(topicid, userId) {
 exports.getCurUserTopic = getCurUserTopic;
 function getCurUserTopicContent(topicid, curPage, userName, userId) {
     return __awaiter(this, void 0, void 0, function () {
-        var topicMessage, start, isUserPoster, token, topic, content, post, topicNumberInPage, replyCount, i, userMesResponse, userMesJson, purl;
+        var topicMessage, start, isUserPoster, token, headers, topic, content, post, topicNumberInPage, replyCount, i, userMesResponse, userMesJson, purl;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, getTopic(topicid)];
@@ -1430,7 +1446,9 @@ function getCurUserTopicContent(topicid, curPage, userName, userId) {
                         start = (curPage - 1) * 10;
                     }
                     token = getLocalStorage("accessToken");
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Post/Topic/user?topicid=" + topicid + "&userId=" + userId + "&from=" + start + "&size=10", { headers: { 'Authorization': token } })];
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Post/Topic/user?topicid=" + topicid + "&userId=" + userId + "&from=" + start + "&size=10", { headers: headers })];
                 case 2:
                     topic = _a.sent();
                     return [4 /*yield*/, topic.json()];
@@ -1485,7 +1503,7 @@ exports.getCurUserTopicContent = getCurUserTopicContent;
  */
 function getAllNewTopic(curNum) {
     return __awaiter(this, void 0, void 0, function () {
-        var size, token, myHeaders, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, _c;
+        var size, token, headers, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, _c;
         return __generator(this, function (_d) {
             switch (_d.label) {
                 case 0:
@@ -1494,9 +1512,9 @@ function getAllNewTopic(curNum) {
                         size = 100 - curNum;
                     }
                     token = getLocalStorage("accessToken");
-                    myHeaders = new Headers();
-                    myHeaders.append("Authorization", token);
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/new?from=" + curNum + "&size=" + size, { headers: myHeaders })];
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/new?from=" + curNum + "&size=" + size, { headers: headers })];
                 case 1:
                     response = _d.sent();
                     return [4 /*yield*/, response.json()];
@@ -1553,7 +1571,7 @@ exports.getAllNewTopic = getAllNewTopic;
  */
 function getFocusTopic(curNum) {
     return __awaiter(this, void 0, void 0, function () {
-        var size, token, myHeaders, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, _c;
+        var size, token, headers, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, _c;
         return __generator(this, function (_d) {
             switch (_d.label) {
                 case 0:
@@ -1562,9 +1580,9 @@ function getFocusTopic(curNum) {
                         size = 100 - curNum;
                     }
                     token = getLocalStorage("accessToken");
-                    myHeaders = new Headers();
-                    myHeaders.append("Authorization", token);
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/customboards/new?from=" + curNum + "&size=" + size, { headers: myHeaders })];
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/customboards/new?from=" + curNum + "&size=" + size, { headers: headers })];
                 case 1:
                     response = _d.sent();
                     return [4 /*yield*/, response.json()];
@@ -1733,14 +1751,16 @@ exports.isLogOn = isLogOn;
 */
 function getRecentContact(from, size) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, myHeaders, response, recentContactId, url, i, response1, recentContact, _a, _b, _i, i, _c;
+        var token, headers, recentContact, response, recentContactId, url, i, response1, _a, _b, _i, i, _c;
         return __generator(this, function (_d) {
             switch (_d.label) {
                 case 0:
                     token = getLocalStorage("accessToken");
-                    myHeaders = new Headers();
-                    myHeaders.append("Authorization", token);
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/message/recentcontactusers?from=" + from + "&size=" + size, { headers: myHeaders })];
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    recentContact = getLocalStorage("recentContact");
+                    if (!!recentContact) return [3 /*break*/, 9];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/message/recentcontactusers?from=" + from + "&size=" + size, { headers: headers })];
                 case 1:
                     response = _d.sent();
                     return [4 /*yield*/, response.json()];
@@ -1777,7 +1797,10 @@ function getRecentContact(from, size) {
                 case 7:
                     _i++;
                     return [3 /*break*/, 5];
-                case 8: return [2 /*return*/, recentContact];
+                case 8:
+                    setLocalStorage("recentContact", recentContact);
+                    _d.label = 9;
+                case 9: return [2 /*return*/, recentContact];
             }
         });
     });
@@ -1788,14 +1811,14 @@ exports.getRecentContact = getRecentContact;
 */
 function getRecentMessage(userId, from, size) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, myHeaders, response, recentMessage;
+        var token, headers, response, recentMessage;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     token = getLocalStorage("accessToken");
-                    myHeaders = new Headers();
-                    myHeaders.append("Authorization", token);
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/message/" + userId + "?from=" + from + "&size=" + size, { headers: myHeaders })];
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/message/" + userId + "?from=" + from + "&size=" + size, { headers: headers })];
                 case 1:
                     response = _a.sent();
                     return [4 /*yield*/, response.json()];
@@ -1807,6 +1830,262 @@ function getRecentMessage(userId, from, size) {
     });
 }
 exports.getRecentMessage = getRecentMessage;
+function getTotalReplyCount(topicid) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, replyCountResponse, replyCountJson, replyCount;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + topicid, { headers: headers })];
+                case 1:
+                    replyCountResponse = _a.sent();
+                    return [4 /*yield*/, replyCountResponse.json()];
+                case 2:
+                    replyCountJson = _a.sent();
+                    replyCount = replyCountJson.replyCount;
+                    if (replyCount >= 10) {
+                        return [2 /*return*/, (replyCount - replyCount % 10) / 10 + 1];
+                    }
+                    else {
+                        return [2 /*return*/, 1];
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getTotalReplyCount = getTotalReplyCount;
+function getCategory(topicid) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, response, data, topicName, boardId, boardResponse, boardData, boardName, body;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + topicid, { headers: headers })];
+                case 1:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    data = _a.sent();
+                    topicName = data.title;
+                    boardId = data.boardId;
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + boardId, { headers: headers })];
+                case 3:
+                    boardResponse = _a.sent();
+                    return [4 /*yield*/, boardResponse.json()];
+                case 4:
+                    boardData = _a.sent();
+                    boardName = boardData.name;
+                    body = { boardId: boardId, topicId: topicid, boardName: boardName, title: topicName };
+                    return [2 /*return*/, body];
+            }
+        });
+    });
+}
+exports.getCategory = getCategory;
+function getUserDetails(userName) {
+    return __awaiter(this, void 0, void 0, function () {
+        var url, message, data, body;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    url = "http://apitest.niconi.cc/user/name/" + userName;
+                    return [4 /*yield*/, fetch(url)];
+                case 1:
+                    message = _a.sent();
+                    return [4 /*yield*/, message.json()];
+                case 2:
+                    data = _a.sent();
+                    body = { portraitUrl: data.portraitUrl, userName: data.name, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender };
+                    return [2 /*return*/, body];
+            }
+        });
+    });
+}
+exports.getUserDetails = getUserDetails;
+function getLikeState(topicid) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, topic, postid, response, data;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, getTopic(topicid)];
+                case 1:
+                    topic = _a.sent();
+                    postid = topic.postid;
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/likestate?topicid=" + topicid + "&postid=" + postid, { headers: headers })];
+                case 2:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 3:
+                    data = _a.sent();
+                    return [2 /*return*/, data];
+            }
+        });
+    });
+}
+exports.getLikeState = getLikeState;
+function refreshLikeState(topicId, postId) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, response, data;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/likestate?topicid=" + topicId + "&postid=" + postId, { headers: headers })];
+                case 1:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    data = _a.sent();
+                    return [2 /*return*/, data];
+            }
+        });
+    });
+}
+exports.refreshLikeState = refreshLikeState;
+function sendTopic(topicId) {
+    return __awaiter(this, void 0, void 0, function () {
+        var url, c, content, contentJson, token, myHeaders, mes;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    url = "http://apitest.niconi.cc/post/topic/" + topicId;
+                    c = testEditor.getMarkdown();
+                    content = {
+                        content: c,
+                        contentType: 1,
+                        title: ""
+                    };
+                    contentJson = JSON.stringify(content);
+                    token = getLocalStorage("accessToken");
+                    myHeaders = new Headers();
+                    myHeaders.append("Authorization", token);
+                    myHeaders.append("Content-Type", 'application/json');
+                    return [4 /*yield*/, fetch(url, {
+                            method: 'POST',
+                            headers: myHeaders,
+                            body: contentJson
+                        })];
+                case 1:
+                    mes = _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.sendTopic = sendTopic;
+function getListCategory(boardId) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, boardResponse, boardData, boardName;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + boardId, { headers: headers })];
+                case 1:
+                    boardResponse = _a.sent();
+                    return [4 /*yield*/, boardResponse.json()];
+                case 2:
+                    boardData = _a.sent();
+                    boardName = boardData.name;
+                    return [2 /*return*/, boardName];
+            }
+        });
+    });
+}
+exports.getListCategory = getListCategory;
+function getBoardMessage(boardId) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, url, response, data;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    url = "http://apitest.niconi.cc/Board/" + boardId;
+                    return [4 /*yield*/, fetch(url, { headers: headers })];
+                case 1:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    data = _a.sent();
+                    return [2 /*return*/, data];
+            }
+        });
+    });
+}
+exports.getBoardMessage = getBoardMessage;
+function getListTotalPage(boardId) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, totalTopicCountResponse, totalTopicCountJson, totalTopicCount;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + boardId, { headers: headers })];
+                case 1:
+                    totalTopicCountResponse = _a.sent();
+                    return [4 /*yield*/, totalTopicCountResponse.json()];
+                case 2:
+                    totalTopicCountJson = _a.sent();
+                    totalTopicCount = totalTopicCountJson.topicCount;
+                    return [2 /*return*/, (totalTopicCount - totalTopicCount % 20) / 20 + 1];
+            }
+        });
+    });
+}
+exports.getListTotalPage = getListTotalPage;
+function getBasicBoardMessage(boardId, curPage) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, response, json, bigPaper, page, boardid, totalPage, data;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + boardId, { headers: headers })];
+                case 1:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    json = _a.sent();
+                    bigPaper = json.bigPaper;
+                    // 未提供页码，防止出错不进行后续处理
+                    if (!curPage) {
+                        page = 1;
+                    }
+                    else {
+                        page = parseInt(curPage);
+                    }
+                    boardid = boardId;
+                    return [4 /*yield*/, getListTotalPage(boardid)];
+                case 3:
+                    totalPage = _a.sent();
+                    data = { bigPaper: bigPaper, totalPage: totalPage, page: page };
+                    return [2 /*return*/, data];
+            }
+        });
+    });
+}
+exports.getBasicBoardMessage = getBasicBoardMessage;
 
 
 /***/ }),
@@ -2137,13 +2416,13 @@ exports.UserFanInfo = UserFanInfo;
 /* 6 */
 /***/ (function(module, exports) {
 
-module.exports = moment;
+module.exports = $;
 
 /***/ }),
 /* 7 */
 /***/ (function(module, exports) {
 
-module.exports = $;
+module.exports = moment;
 
 /***/ }),
 /* 8 */
@@ -2199,7 +2478,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(2);
-var moment = __webpack_require__(6);
 var UbbContainer_1 = __webpack_require__(4);
 var react_router_dom_1 = __webpack_require__(3);
 var RouteComponent = /** @class */ (function (_super) {
@@ -2222,31 +2500,25 @@ var List = /** @class */ (function (_super) {
     function List(props, context) {
         var _this = _super.call(this, props, context) || this;
         // 默认页码
-        _this.state = { page: 1, totalPage: 1, boardid: _this.match.params.boardid, bigPaper: "" };
+        _this.state = { page: 1, totalPage: 1, boardId: _this.match.params.boardId, bigPaper: "" };
         return _this;
     }
-    List.prototype.getTotalListPage = function (boardid) {
+    List.prototype.getTotalListPage = function (boardId) {
         return __awaiter(this, void 0, void 0, function () {
-            var token, totalTopicCountResponse, totalTopicCountJson, totalTopicCount;
+            var page;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        token = Utility.getLocalStorage("accessToken");
-                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + boardid, { headers: { 'Authorization': token } })];
+                    case 0: return [4 /*yield*/, Utility.getListTotalPage(boardId)];
                     case 1:
-                        totalTopicCountResponse = _a.sent();
-                        return [4 /*yield*/, totalTopicCountResponse.json()];
-                    case 2:
-                        totalTopicCountJson = _a.sent();
-                        totalTopicCount = totalTopicCountJson.topicCount;
-                        return [2 /*return*/, (totalTopicCount - totalTopicCount % 20) / 20 + 1];
+                        page = _a.sent();
+                        return [2 /*return*/, page];
                 }
             });
         });
     };
     List.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
-            var page, boardid, totalPage;
+            var page, boardId, totalPage;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -2257,12 +2529,12 @@ var List = /** @class */ (function (_super) {
                         else {
                             page = parseInt(newProps.match.params.page);
                         }
-                        boardid = this.match.params.boardid;
-                        return [4 /*yield*/, this.getTotalListPage(boardid)];
+                        boardId = this.match.params.boardId;
+                        return [4 /*yield*/, this.getTotalListPage(boardId)];
                     case 1:
                         totalPage = _a.sent();
                         // 设置状态
-                        this.setState({ page: page, totalPage: totalPage, boardid: boardid });
+                        this.setState({ page: page, totalPage: totalPage, boardId: boardId });
                         return [2 /*return*/];
                 }
             });
@@ -2270,31 +2542,14 @@ var List = /** @class */ (function (_super) {
     };
     List.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, response, json, bigPaper, page, boardid, totalPage;
+            var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        token = Utility.getLocalStorage("accessToken");
-                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + this.match.params.boardid, { headers: { 'Authorization': token } })];
+                    case 0: return [4 /*yield*/, Utility.getBasicBoardMessage(this.match.params.boardId, this.match.params.page)];
                     case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.json()];
-                    case 2:
-                        json = _a.sent();
-                        bigPaper = json.bigPaper;
-                        // 未提供页码，防止出错不进行后续处理
-                        if (!this.match.params.page) {
-                            page = 1;
-                        }
-                        else {
-                            page = parseInt(this.match.params.page);
-                        }
-                        boardid = this.match.params.boardid;
-                        return [4 /*yield*/, this.getTotalListPage(boardid)];
-                    case 3:
-                        totalPage = _a.sent();
+                        data = _a.sent();
                         // 设置状态
-                        this.setState({ bigPaper: bigPaper, page: page, totalPage: totalPage, boardid: boardid });
+                        this.setState({ bigPaper: data.bigPaper, page: data.page, totalPage: data.totalPage, boardId: this.match.params.boardId });
                         return [2 /*return*/];
                 }
             });
@@ -2302,13 +2557,13 @@ var List = /** @class */ (function (_super) {
     };
     List.prototype.render = function () {
         return React.createElement("div", { id: "listRoot" },
-            React.createElement(Category, { boardId: this.state.boardid }),
-            React.createElement(ListHead, { key: this.state.page, boardid: this.state.boardid }),
+            React.createElement(Category, { boardId: this.state.boardId }),
+            React.createElement(ListHead, { key: this.state.page, boardId: this.state.boardId }),
             React.createElement(ListNotice, { bigPaper: this.state.bigPaper }),
-            React.createElement(ListButtonAndPager, { page: this.state.page, totalPage: this.state.totalPage, boardid: this.state.boardid }),
+            React.createElement(ListButtonAndPager, { page: this.state.page, totalPage: this.state.totalPage, boardid: this.state.boardId }),
             React.createElement(ListTag, null),
             React.createElement(react_router_dom_1.Route, { path: "/list/:boardid/:page?", component: ListContent }),
-            React.createElement(PagerDown, { page: this.state.page, totalPage: this.state.totalPage, boardid: this.state.boardid }));
+            React.createElement(PagerDown, { page: this.state.page, totalPage: this.state.totalPage, boardid: this.state.boardId }));
     };
     return List;
 }(RouteComponent));
@@ -2322,18 +2577,12 @@ var Category = /** @class */ (function (_super) {
     }
     Category.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, boardResponse, boardData, boardName;
+            var boardName;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        token = Utility.getLocalStorage("accessToken");
-                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + this.props.boardId, { headers: { 'Authorization': token } })];
+                    case 0: return [4 /*yield*/, Utility.getListCategory(this.props.boardId)];
                     case 1:
-                        boardResponse = _a.sent();
-                        return [4 /*yield*/, boardResponse.json()];
-                    case 2:
-                        boardData = _a.sent();
-                        boardName = boardData.name;
+                        boardName = _a.sent();
                         this.setState({ boardId: this.props.boardId, boardName: boardName });
                         return [2 /*return*/];
                 }
@@ -2371,20 +2620,14 @@ var ListHead = /** @class */ (function (_super) {
     }
     ListHead.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, url, managersResponse, managerJson;
+            var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        token = Utility.getLocalStorage("accessToken");
-                        url = "http://apitest.niconi.cc/Board/" + this.props.boardid;
-                        return [4 /*yield*/, fetch(url, { headers: { 'Authorization': token } })];
+                    case 0: return [4 /*yield*/, Utility.getBoardMessage(this.props.boardId)];
                     case 1:
-                        managersResponse = _a.sent();
-                        return [4 /*yield*/, managersResponse.json()];
-                    case 2:
-                        managerJson = _a.sent();
+                        data = _a.sent();
                         this.setState({
-                            listName: managerJson.name, todayTopics: managerJson.todayCount, totalTopics: managerJson.topicCount, listManager: managerJson.boardMasters
+                            listName: data.name, todayTopics: data.todayCount, totalTopics: data.topicCount, listManager: data.boardMasters
                         });
                         return [2 /*return*/];
                 }
@@ -2393,20 +2636,14 @@ var ListHead = /** @class */ (function (_super) {
     };
     ListHead.prototype.componentWillRecieveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
-            var token, url, managersResponse, managerJson;
+            var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        token = Utility.getLocalStorage("accessToken");
-                        url = "http://apitest.niconi.cc/Board/" + this.props.boardid;
-                        return [4 /*yield*/, fetch(url, { headers: { 'Authorization': token } })];
+                    case 0: return [4 /*yield*/, Utility.getBoardMessage(this.props.boardId)];
                     case 1:
-                        managersResponse = _a.sent();
-                        return [4 /*yield*/, managersResponse.json()];
-                    case 2:
-                        managerJson = _a.sent();
+                        data = _a.sent();
                         this.setState({
-                            listName: managerJson.name, todayTopics: managerJson.todayCount, totalTopics: managerJson.topicCount, listManager: managerJson.boardMasters
+                            listName: data.name, todayTopics: data.todayCount, totalTopics: data.topicCount, listManager: data.boardMasters
                         });
                         return [2 /*return*/];
                 }
@@ -3014,10 +3251,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(2);
-var $ = __webpack_require__(7);
+var $ = __webpack_require__(6);
 var react_router_dom_1 = __webpack_require__(3);
 var UbbContainer_1 = __webpack_require__(4);
-var moment = __webpack_require__(6);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -3109,26 +3345,8 @@ var Post = /** @class */ (function (_super) {
     };
     Post.prototype.getTotalPage = function (topicid) {
         return __awaiter(this, void 0, void 0, function () {
-            var token, replyCountResponse, replyCountJson, replyCount;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        token = Utility.getLocalStorage("accessToken");
-                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + topicid, { headers: { 'Authorization': token } })];
-                    case 1:
-                        replyCountResponse = _a.sent();
-                        return [4 /*yield*/, replyCountResponse.json()];
-                    case 2:
-                        replyCountJson = _a.sent();
-                        replyCount = replyCountJson.replyCount;
-                        if (replyCount >= 10) {
-                            return [2 /*return*/, (replyCount - replyCount % 10) / 10 + 1];
-                        }
-                        else {
-                            return [2 /*return*/, 1];
-                        }
-                        return [2 /*return*/];
-                }
+                return [2 /*return*/, Utility.getTotalReplyCount(topicid)];
             });
         });
     };
@@ -3138,13 +3356,13 @@ var Post = /** @class */ (function (_super) {
     Post.prototype.render = function () {
         var topic = null;
         var hotReply = null;
-        if (this.state.page == 1) {
+        if (this.state.page === 1) {
             topic = React.createElement(PostTopic, { imgUrl: "/images/ads.jpg", page: this.state.page, topicid: this.state.topicid });
             hotReply = React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: HotReply });
         }
         return React.createElement("div", { className: "center", style: { width: "80%" } },
             React.createElement("div", { className: "row", style: { width: "100%", justifyContent: 'space-between', borderBottom: '#EAEAEA solid thin', alignItems: "center" } },
-                React.createElement(Category, { topicid: this.state.topicid }),
+                React.createElement(Category, { topicId: this.state.topicid }),
                 React.createElement(TopicPager, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage })),
             topic,
             hotReply,
@@ -3164,27 +3382,13 @@ var Category = /** @class */ (function (_super) {
     }
     Category.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, response, data, topicName, boardId, boardResponse, boardData, boardName;
+            var body;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        token = Utility.getLocalStorage("accessToken");
-                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + this.props.topicid, { headers: { 'Authorization': token } })];
+                    case 0: return [4 /*yield*/, Utility.getCategory(this.props.topicId)];
                     case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.json()];
-                    case 2:
-                        data = _a.sent();
-                        topicName = data.title;
-                        boardId = data.boardId;
-                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + boardId, { headers: { 'Authorization': token } })];
-                    case 3:
-                        boardResponse = _a.sent();
-                        return [4 /*yield*/, boardResponse.json()];
-                    case 4:
-                        boardData = _a.sent();
-                        boardName = boardData.name;
-                        this.setState({ boardId: boardId, topicId: this.props.topicid, boardName: boardName, title: topicName });
+                        body = _a.sent();
+                        this.setState({ boardId: body.boardId, topicId: body.topicId, boardName: body.boardName, title: body.title });
                         return [2 /*return*/];
                 }
             });
@@ -3314,8 +3518,8 @@ var HotReplier = /** @class */ (function (_super) {
             topicNumber = '';
         }
         var userDetails;
-        if (this.props.userName != '匿名') {
-            userDetails = React.createElement(UserDetails, { userName: this.props.userName, isAnonymous: this.props.isAnonymous });
+        if (this.props.isAnonymous != true) {
+            userDetails = React.createElement(UserDetails, { userName: this.props.userName });
         }
         else {
             userDetails = null;
@@ -3371,9 +3575,7 @@ exports.HotReplier = HotReplier;
 var Replier = /** @class */ (function (_super) {
     __extends(Replier, _super);
     function Replier(props, content) {
-        var _this = _super.call(this, props, content) || this;
-        _this.state = {};
-        return _this;
+        return _super.call(this, props, content) || this;
     }
     Replier.prototype.render = function () {
         var url = "/user/" + this.props.userId;
@@ -3399,8 +3601,8 @@ var Replier = /** @class */ (function (_super) {
             topicNumber = '';
         }
         var userDetails;
-        if (this.props.userName != '匿名') {
-            userDetails = React.createElement(UserDetails, { userName: this.props.userName, isAnonymous: this.props.isAnonymous });
+        if (this.props.isAnonymous != true) {
+            userDetails = React.createElement(UserDetails, { userName: this.props.userName });
         }
         else {
             userDetails = null;
@@ -3454,26 +3656,19 @@ var UserDetails = /** @class */ (function (_super) {
     __extends(UserDetails, _super);
     function UserDetails(props) {
         var _this = _super.call(this, props) || this;
-        _this.state = ({ portraitUrl: null, userName: null });
+        _this.state = ({ portraitUrl: null, userName: null, fanCount: null, displayTitle: null, birthday: null, gender: null, prestige: null });
         return _this;
     }
     UserDetails.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var url, message, data;
+            var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        if (!(this.props.userName != '匿名')) return [3 /*break*/, 3];
-                        url = "http://apitest.niconi.cc/user/name/" + this.props.userName;
-                        return [4 /*yield*/, fetch(url)];
+                    case 0: return [4 /*yield*/, Utility.getUserDetails(this.props.userName)];
                     case 1:
-                        message = _a.sent();
-                        return [4 /*yield*/, message.json()];
-                    case 2:
                         data = _a.sent();
-                        this.setState({ portraitUrl: data.portraitUrl, userName: data.name });
-                        _a.label = 3;
-                    case 3: return [2 /*return*/];
+                        this.setState({ portraitUrl: data.portraitUrl, userName: data.userName, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender });
+                        return [2 /*return*/];
                 }
             });
         });
@@ -3484,29 +3679,25 @@ var UserDetails = /** @class */ (function (_super) {
         var urlHtml = React.createElement("a", { href: userUrl },
             " ",
             React.createElement("img", { src: this.state.portraitUrl }));
-        if (this.props.isAnonymous == true) {
-            urlHtml = React.createElement("img", { src: this.state.portraitUrl });
-        }
-        if (this.props.userName != '匿名') {
-            return React.createElement("div", { className: 'popup' },
-                React.createElement("div", { className: 'popup_title' },
-                    React.createElement("div", { className: "row" },
-                        React.createElement("div", { className: "row authorImg", style: { marginLeft: "10px", marginTop: "10px" } }, urlHtml),
-                        React.createElement("div", { className: "column", style: { marginLeft: "25px", marginTop: "30px" } },
-                            React.createElement("div", { className: "row" },
-                                React.createElement("div", { style: { fontFamily: "微软雅黑", color: "blue", marginRight: "10px" } },
-                                    " ",
-                                    this.state.userName),
-                                "   ",
-                                React.createElement("div", { style: { marginRight: "10px", fontSize: "14px" } }, "   \u7C89\u4E1D  "),
-                                React.createElement("div", { style: { color: "red", fontSize: "12px" } }, "2333")),
-                            React.createElement("div", { className: "row", style: { marginTop: "10px", fontSize: "14px" } }, "\u6280\u672F\u7EC4\u7EC4\u957F")),
-                        React.createElement("div", null,
-                            React.createElement("button", { id: "watch", style: { width: "80px", backgroundColor: "#FF6A6A", marginRight: "10px", marginLeft: "25px", marginTop: "50px", height: "30px" } }, "\u5173\u6CE8")))));
-        }
-        else {
-            return;
-        }
+        return React.createElement("div", { className: 'popup' },
+            React.createElement("div", { className: 'popup_title' },
+                React.createElement("div", { className: "row" },
+                    React.createElement("div", { className: "row authorImg", style: { marginLeft: "10px", marginTop: "10px" } }, urlHtml),
+                    React.createElement("div", { className: "column", style: { marginLeft: "1.6rem", marginTop: "2rem" } },
+                        React.createElement("div", { className: "row" },
+                            React.createElement("div", { style: { fontFamily: "微软雅黑", color: "blue", marginRight: "0.63rem" } },
+                                " ",
+                                this.state.userName),
+                            "   ",
+                            React.createElement("div", { style: { marginRight: "0.63rem" } }, "   \u7C89\u4E1D  "),
+                            React.createElement("div", { style: { color: "red" } }, this.state.fanCount)),
+                        React.createElement("div", { className: "row", style: { marginTop: "0.63rem", fontSize: "0.87rem" } }, this.state.displayTitle)),
+                    React.createElement("div", null,
+                        React.createElement("button", { id: "watch", style: { width: "5rem", backgroundColor: "#FF6A6A", marginRight: "0.63rem", marginLeft: "1.6rem", marginTop: "2rem", height: "2rem" } }, "\u5173\u6CE8"))),
+                React.createElement("div", { className: "row" },
+                    React.createElement("div", null),
+                    React.createElement("div", null),
+                    React.createElement("div", null))));
     };
     return UserDetails;
 }(RouteComponent));
@@ -3658,24 +3849,14 @@ var TopicContent = /** @class */ (function (_super) {
     }
     TopicContent.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, topic, postid, response, data;
+            var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        token = Utility.getLocalStorage("accessToken");
-                        return [4 /*yield*/, Utility.getTopic(this.props.topicid)];
+                    case 0: return [4 /*yield*/, Utility.getLikeState(this.props.topicid)];
                     case 1:
-                        topic = _a.sent();
-                        postid = topic.postid;
-                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/likestate?topicid=" + this.props.topicid + "&postid=" + postid, { headers: { "Authorization": token } })];
-                    case 2:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.json()];
-                    case 3:
                         data = _a.sent();
                         if (data.likeState === 1) {
                             $("#commentliked").css("color", "red");
-                            console.log("turnred");
                         }
                         else if (data.likeState === 2) {
                             $("#commentdisliked").css("color", "red");
@@ -3688,7 +3869,7 @@ var TopicContent = /** @class */ (function (_super) {
     };
     TopicContent.prototype.like = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, response, data;
+            var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -3714,13 +3895,8 @@ var TopicContent = /** @class */ (function (_super) {
                         _a.sent();
                         $("#commentliked").css("color", "red");
                         _a.label = 7;
-                    case 7:
-                        token = Utility.getLocalStorage("accessToken");
-                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/likestate?topicid=" + this.props.topicid + "&postid=" + this.props.postid, { headers: { "Authorization": token } })];
+                    case 7: return [4 /*yield*/, Utility.refreshLikeState(this.props.topicid, this.props.postid)];
                     case 8:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.json()];
-                    case 9:
                         data = _a.sent();
                         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
                         return [2 /*return*/];
@@ -3730,7 +3906,7 @@ var TopicContent = /** @class */ (function (_super) {
     };
     TopicContent.prototype.dislike = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, response, data;
+            var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -3756,13 +3932,8 @@ var TopicContent = /** @class */ (function (_super) {
                         _a.sent();
                         $("#commentdisliked").css("color", "red");
                         _a.label = 7;
-                    case 7:
-                        token = Utility.getLocalStorage("accessToken");
-                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/likestate?topicid=" + this.props.topicid + "&postid=" + this.props.postid, { headers: { "Authorization": token } })];
+                    case 7: return [4 /*yield*/, Utility.refreshLikeState(this.props.topicid, this.props.postid)];
                     case 8:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.json()];
-                    case 9:
                         data = _a.sent();
                         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
                         return [2 /*return*/];
@@ -3770,12 +3941,9 @@ var TopicContent = /** @class */ (function (_super) {
             });
         });
     };
-    //<div className="signature">{this.state.Signature}</div>
     TopicContent.prototype.render = function () {
         var divid = "doc-content" + this.props.postid;
         var curUserPostUrl = "/topic/" + this.props.topicid + "/user/" + this.props.userId;
-        console.log("aa");
-        console.log(this.props.content);
         var ubbMode = React.createElement(UbbContainer_1.UbbContainer, { code: this.props.content });
         var mdMode = React.createElement("div", { id: divid },
             React.createElement("textarea", { name: "editormd-markdown-doc", style: { display: 'none' } }, this.props.content));
@@ -3864,18 +4032,14 @@ var ReplyContent = /** @class */ (function (_super) {
     }
     ReplyContent.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var idLike, idDislike, token, response, data;
+            var idLike, idDislike, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         idLike = "#like" + this.props.postid;
                         idDislike = "#dislike" + this.props.postid;
-                        token = Utility.getLocalStorage("accessToken");
-                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/likestate?topicid=" + this.props.topicid + "&postid=" + this.props.postid, { headers: { "Authorization": token } })];
+                        return [4 /*yield*/, Utility.refreshLikeState(this.props.topicid, this.props.postid)];
                     case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.json()];
-                    case 2:
                         data = _a.sent();
                         if (data.likeState === 1) {
                             $(idLike).css("color", "red");
@@ -3891,7 +4055,7 @@ var ReplyContent = /** @class */ (function (_super) {
     };
     ReplyContent.prototype.like = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var idLike, idDislike, token, response, data;
+            var idLike, idDislike, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -3919,13 +4083,8 @@ var ReplyContent = /** @class */ (function (_super) {
                         _a.sent();
                         $(idLike).css("color", "red");
                         _a.label = 7;
-                    case 7:
-                        token = Utility.getLocalStorage("accessToken");
-                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/likestate?topicid=" + this.props.topicid + "&postid=" + this.props.postid, { headers: { "Authorization": token } })];
+                    case 7: return [4 /*yield*/, Utility.refreshLikeState(this.props.topicid, this.props.postid)];
                     case 8:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.json()];
-                    case 9:
                         data = _a.sent();
                         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
                         return [2 /*return*/];
@@ -3935,7 +4094,7 @@ var ReplyContent = /** @class */ (function (_super) {
     };
     ReplyContent.prototype.dislike = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var idLike, idDislike, token, response, data;
+            var idLike, idDislike, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -3963,13 +4122,8 @@ var ReplyContent = /** @class */ (function (_super) {
                         _a.sent();
                         $(idDislike).css("color", "red");
                         _a.label = 7;
-                    case 7:
-                        token = Utility.getLocalStorage("accessToken");
-                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/likestate?topicid=" + this.props.topicid + "&postid=" + this.props.postid, { headers: { "Authorization": token } })];
+                    case 7: return [4 /*yield*/, Utility.refreshLikeState(this.props.topicid, this.props.postid)];
                     case 8:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.json()];
-                    case 9:
                         data = _a.sent();
                         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
                         return [2 /*return*/];
@@ -4269,34 +4423,11 @@ var SendTopic = /** @class */ (function (_super) {
     }
     SendTopic.prototype.sendMdTopic = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var url, c, content, contentJson, token, myHeaders, mes;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        url = "http://apitest.niconi.cc/post/topic/" + this.props.topicid;
-                        c = testEditor.getMarkdown();
-                        content = {
-                            content: c,
-                            contentType: 1,
-                            title: ""
-                        };
-                        contentJson = JSON.stringify(content);
-                        token = Utility.getLocalStorage("accessToken");
-                        myHeaders = new Headers();
-                        myHeaders.append("Authorization", token);
-                        myHeaders.append("Content-Type", 'application/json');
-                        return [4 /*yield*/, fetch(url, {
-                                method: 'POST',
-                                headers: myHeaders,
-                                body: contentJson
-                            })];
-                    case 1:
-                        mes = _a.sent();
-                        testEditor.setMarkdown("");
-                        this.props.onChange();
-                        this.setState({ content: "" });
-                        return [2 /*return*/];
-                }
+                testEditor.setMarkdown("");
+                this.props.onChange();
+                this.setState({ content: "" });
+                return [2 /*return*/];
             });
         });
     };
@@ -4409,7 +4540,7 @@ var React = __webpack_require__(0);
 var Utility = __webpack_require__(2);
 var UbbContainer_1 = __webpack_require__(4);
 var react_router_dom_1 = __webpack_require__(3);
-var moment = __webpack_require__(6);
+var moment = __webpack_require__(7);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -5436,8 +5567,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserCenterNavigation_1 = __webpack_require__(55);
-var UserCenterRouter_1 = __webpack_require__(56);
+var UserCenterNavigation_1 = __webpack_require__(59);
+var UserCenterRouter_1 = __webpack_require__(60);
 /**
  * 用户中心页面
  */
@@ -5482,7 +5613,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPosts_1 = __webpack_require__(59);
+var UserCenterExactActivitiesPosts_1 = __webpack_require__(63);
 /**
  * 用户中心主页近期动态组件
  */
@@ -5556,10 +5687,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var MessageMessage_1 = __webpack_require__(61);
-var MessageResponse_1 = __webpack_require__(66);
-var MessageAttme_1 = __webpack_require__(67);
-var MessageSystem_1 = __webpack_require__(68);
+var MessageMessage_1 = __webpack_require__(65);
+var MessageResponse_1 = __webpack_require__(70);
+var MessageAttme_1 = __webpack_require__(71);
+var MessageSystem_1 = __webpack_require__(72);
 var react_router_dom_1 = __webpack_require__(3);
 /**
  * 网站的主页面对象。
@@ -5636,7 +5767,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var AllNewTopicArea_1 = __webpack_require__(69);
+var AllNewTopicArea_1 = __webpack_require__(73);
 /**
  * 网站的主页面对象。
  */
@@ -5682,7 +5813,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var moment = __webpack_require__(6);
+var moment = __webpack_require__(7);
 /**
  * 我关注的某个版面的单个主题
  */
@@ -5770,8 +5901,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusBoardArea_1 = __webpack_require__(70);
-var FocusTopicArea_1 = __webpack_require__(72);
+var FocusBoardArea_1 = __webpack_require__(74);
+var FocusTopicArea_1 = __webpack_require__(76);
 var Focus = /** @class */ (function (_super) {
     __extends(Focus, _super);
     function Focus() {
@@ -5846,7 +5977,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(2);
-var $ = __webpack_require__(7);
+var $ = __webpack_require__(6);
 var DropDown = /** @class */ (function (_super) {
     __extends(DropDown, _super);
     function DropDown(props, context) {
@@ -5859,11 +5990,11 @@ var DropDown = /** @class */ (function (_super) {
     }
     DropDown.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var userName, response, data, userImgUrl;
+            var userName, response, data, userImgUrl, userName, response, data, userImgUrl;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!(Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName"))) return [3 /*break*/, 3];
+                        if (!Utility.getLocalStorage("accessToken")) return [3 /*break*/, 3];
                         userName = Utility.getLocalStorage("userName");
                         return [4 /*yield*/, fetch("http://apitest.niconi.cc/User/Name/" + userName)];
                     case 1:
@@ -5873,16 +6004,75 @@ var DropDown = /** @class */ (function (_super) {
                         data = _a.sent();
                         userImgUrl = data.portraitUrl;
                         this.setState({ userName: userName, userImgUrl: userImgUrl });
-                        _a.label = 3;
-                    case 3: return [2 /*return*/];
+                        return [3 /*break*/, 6];
+                    case 3:
+                        if (!Utility.getLocalStorage("userName")) return [3 /*break*/, 6];
+                        this.reLogOn();
+                        userName = Utility.getLocalStorage("userName");
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/User/Name/" + userName)];
+                    case 4:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 5:
+                        data = _a.sent();
+                        userImgUrl = data.portraitUrl;
+                        this.setState({ userName: userName, userImgUrl: userImgUrl });
+                        _a.label = 6;
+                    case 6: return [2 /*return*/];
                 }
             });
         });
+    };
+    DropDown.prototype.reLogOn = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var url, requestBody, reLogOnResponse, reLogOnData, token;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        url = 'https://openid.cc98.org/connect/token';
+                        requestBody = {
+                            'client_id': '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
+                            'client_secret': '8b53f727-08e2-4509-8857-e34bf92b27f2',
+                            'grant_type': 'password',
+                            'username': Utility.getLocalStorage("userName"),
+                            'password': Utility.getLocalStorage("password"),
+                            'scope': "cc98-api openid"
+                        };
+                        return [4 /*yield*/, fetch(url, {
+                                method: "POST",
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded',
+                                },
+                                body: $.param(requestBody)
+                            })];
+                    case 1:
+                        reLogOnResponse = _a.sent();
+                        //请求是否成功
+                        if (reLogOnResponse.status !== 200) {
+                            console.log('自动刷新token失败，请重新登录'); //因为logOff会刷新页面，所以这里可能看不到
+                            this.logOff();
+                        }
+                        return [4 /*yield*/, reLogOnResponse.json()];
+                    case 2:
+                        reLogOnData = _a.sent();
+                        token = "Bearer " + encodeURIComponent(reLogOnData.access_token);
+                        Utility.setLocalStorage("accessToken", token, reLogOnData.expires_in);
+                        console.log("刷新token成功");
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    DropDown.prototype.catch = function (e) {
+        console.log("Oops, error", e);
+        console.log('自动刷新token失败，请重新登录'); //因为logOff会刷新页面，所以这里可能看不到
+        this.logOff();
     };
     DropDown.prototype.logOff = function () {
         Utility.removeLocalStorage("accessToken");
         console.log("after remove token=" + Utility.getLocalStorage("accessToken"));
         Utility.removeLocalStorage("userName");
+        Utility.removeLocalStorage("password");
         Utility.removeLocalStorage("userInfo");
         Utility.removeLocalStorage("recentContact");
         Utility.removeStorage("focusBoardList");
@@ -6176,7 +6366,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var $ = __webpack_require__(7);
+var $ = __webpack_require__(6);
 var Utility = __webpack_require__(2);
 var UbbContainer_1 = __webpack_require__(4);
 /**
@@ -6455,7 +6645,7 @@ var Test = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        url = 'http://apitest.niconi.cc/user/follow/fancount?userid=5298';
+                        url = 'http://apitest.niconi.cc/topic/test';
                         token = Utility.getLocalStorage("accessToken");
                         console.log(token);
                         myHeaders = new Headers();
@@ -6471,7 +6661,6 @@ var Test = /** @class */ (function (_super) {
                         return [4 /*yield*/, response.json()];
                     case 2:
                         data = _a.sent();
-                        data += 1;
                         console.log(data);
                         return [2 /*return*/];
                 }
@@ -6659,8 +6848,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserNavigation_1 = __webpack_require__(73);
-var UserRouter_1 = __webpack_require__(74);
+var UserNavigation_1 = __webpack_require__(77);
+var UserRouter_1 = __webpack_require__(78);
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
@@ -6703,8 +6892,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var LogOnExact_1 = __webpack_require__(76);
-var Logoff_1 = __webpack_require__(77);
+var LogOnExact_1 = __webpack_require__(80);
+var Logoff_1 = __webpack_require__(81);
 /**
  * 用户中心页面
  */
@@ -7109,7 +7298,7 @@ exports.UserCenterMyFollowingsUser = UserCenterMyFollowingsUser;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(30);
-module.exports = __webpack_require__(86);
+module.exports = __webpack_require__(90);
 
 
 /***/ }),
@@ -7239,6 +7428,10 @@ var UploadTagHandler_1 = __webpack_require__(51);
 var LeftTagHandler_1 = __webpack_require__(52);
 var CenterTagHandler_1 = __webpack_require__(53);
 var RightTagHandler_1 = __webpack_require__(54);
+var TableTagHandler_1 = __webpack_require__(55);
+var TdTagHandler_1 = __webpack_require__(56);
+var ThTagHandler_1 = __webpack_require__(57);
+var TrTagHandler_1 = __webpack_require__(58);
 /**
  * 创建一个具有所有功能的默认引擎。
  */
@@ -7265,6 +7458,10 @@ function createEngine() {
     engine.tagHandlers.register(LeftTagHandler_1.LeftTagHandler);
     engine.tagHandlers.register(CenterTagHandler_1.CenterTagHandler);
     engine.tagHandlers.register(RightTagHandler_1.RightTagHandler);
+    engine.tagHandlers.register(TableTagHandler_1.TableTagHandler);
+    engine.tagHandlers.register(TdTagHandler_1.TdTagHandler);
+    engine.tagHandlers.register(ThTagHandler_1.ThTagHandler);
+    engine.tagHandlers.register(TrTagHandler_1.TrTagHandler);
     // 以下是未命名标签处理程序，注意未命名标签处理程序的命中和注册顺序有关
     engine.tagHandlers.register(UnresolvedTagHandler_1.UnresolvedTagHandler);
     return engine;
@@ -7417,9 +7614,7 @@ var Image = /** @class */ (function (_super) {
             return React.createElement("img", { src: this.props.imageUri, alt: this.props.title });
         }
         else {
-            return React.createElement("div", { onClick: this.toggleIsShowed },
-                "[\u70B9\u51FB\u67E5\u770B\u56FE\u7247]",
-                this.props.imageUri);
+            return React.createElement("div", { className: "hiddenImage", onClick: this.toggleIsShowed }, "\u70B9\u51FB\u67E5\u770B\u56FE\u7247");
         }
     };
     return Image;
@@ -8393,8 +8588,184 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
+var Ubb = __webpack_require__(1);
+/**
+ * 处理 [table] 标签的处理器。
+ */
+var TableTagHandler = /** @class */ (function (_super) {
+    __extends(TableTagHandler, _super);
+    function TableTagHandler() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(TableTagHandler.prototype, "supportedTagNames", {
+        get: function () { return 'table'; },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    TableTagHandler.prototype.execCore = function (innerContent, tagData, context) {
+        return React.createElement("table", { className: "UBBTableTag" }, innerContent);
+    };
+    return TableTagHandler;
+}(Ubb.RecursiveTagHandler));
+exports.TableTagHandler = TableTagHandler;
+
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var Ubb = __webpack_require__(1);
+/**
+ * 处理 [td] 标签的处理器。
+ */
+var TdTagHandler = /** @class */ (function (_super) {
+    __extends(TdTagHandler, _super);
+    function TdTagHandler() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(TdTagHandler.prototype, "supportedTagNames", {
+        get: function () { return 'td'; },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    TdTagHandler.prototype.execCore = function (innerContent, tagData, context) {
+        return React.createElement("td", null, innerContent);
+    };
+    return TdTagHandler;
+}(Ubb.RecursiveTagHandler));
+exports.TdTagHandler = TdTagHandler;
+
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var Ubb = __webpack_require__(1);
+/**
+ * 处理 [th] 标签的处理器。
+ */
+var ThTagHandler = /** @class */ (function (_super) {
+    __extends(ThTagHandler, _super);
+    function ThTagHandler() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(ThTagHandler.prototype, "supportedTagNames", {
+        get: function () { return 'th'; },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    ThTagHandler.prototype.execCore = function (innerContent, tagData, context) {
+        return React.createElement("th", null, innerContent);
+    };
+    return ThTagHandler;
+}(Ubb.RecursiveTagHandler));
+exports.ThTagHandler = ThTagHandler;
+
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var Ubb = __webpack_require__(1);
+/**
+ * 处理 [tr] 标签的处理器。
+ */
+var TrTagHandler = /** @class */ (function (_super) {
+    __extends(TrTagHandler, _super);
+    function TrTagHandler() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(TrTagHandler.prototype, "supportedTagNames", {
+        get: function () { return 'tr'; },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    TrTagHandler.prototype.execCore = function (innerContent, tagData, context) {
+        return React.createElement("tr", null, innerContent);
+    };
+    return TrTagHandler;
+}(Ubb.RecursiveTagHandler));
+exports.TrTagHandler = TrTagHandler;
+
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var $ = __webpack_require__(7);
+var $ = __webpack_require__(6);
 /**
  * 用户中心侧边栏导航组件
  */
@@ -8475,7 +8846,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 56 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8497,12 +8868,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
 var Utility = __webpack_require__(2);
-var UserCenterExact_1 = __webpack_require__(57);
-var UserCenterMyFollowings_1 = __webpack_require__(60);
-var UserCenterMyFans_1 = __webpack_require__(78);
-var UserCenterMyPostsExact_1 = __webpack_require__(79);
-var UserCenterMyFavorites_1 = __webpack_require__(80);
-var UserCenterConfig_1 = __webpack_require__(82);
+var UserCenterExact_1 = __webpack_require__(61);
+var UserCenterMyFollowings_1 = __webpack_require__(64);
+var UserCenterMyFans_1 = __webpack_require__(82);
+var UserCenterMyPostsExact_1 = __webpack_require__(83);
+var UserCenterMyFavorites_1 = __webpack_require__(84);
+var UserCenterConfig_1 = __webpack_require__(86);
 /**
  * 用户中心主体
  */
@@ -8530,7 +8901,7 @@ exports.UserCenterRouter = UserCenterRouter;
 
 
 /***/ }),
-/* 57 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8550,7 +8921,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactProfile_1 = __webpack_require__(58);
+var UserCenterExactProfile_1 = __webpack_require__(62);
 var UserCenterExactActivities_1 = __webpack_require__(16);
 var UserCenterExactAvatar_1 = __webpack_require__(17);
 var Utility = __webpack_require__(2);
@@ -8580,7 +8951,7 @@ exports.UserCenterExact = UserCenterExact;
 
 
 /***/ }),
-/* 58 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8638,7 +9009,7 @@ exports.UserCenterExactProfile = UserCenterExactProfile;
 
 
 /***/ }),
-/* 59 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8842,7 +9213,7 @@ exports.UserCenterExactActivitiesPosts = UserCenterExactActivitiesPosts;
 
 
 /***/ }),
-/* 60 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9000,7 +9371,7 @@ exports.UserCenterMyFollowings = UserCenterMyFollowings;
 
 
 /***/ }),
-/* 61 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9055,8 +9426,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MessagePerson_1 = __webpack_require__(62);
-var MessageWindow_1 = __webpack_require__(63);
+var MessagePerson_1 = __webpack_require__(66);
+var MessageWindow_1 = __webpack_require__(67);
 var Utility = __webpack_require__(2);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
@@ -9227,7 +9598,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 62 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9276,7 +9647,7 @@ exports.MessagePerson = MessagePerson;
 
 
 /***/ }),
-/* 63 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9331,8 +9702,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MessageSender_1 = __webpack_require__(64);
-var MessageReceiver_1 = __webpack_require__(65);
+var MessageSender_1 = __webpack_require__(68);
+var MessageReceiver_1 = __webpack_require__(69);
 var Utility = __webpack_require__(2);
 var MessageWindow = /** @class */ (function (_super) {
     __extends(MessageWindow, _super);
@@ -9462,13 +9833,16 @@ var MessageWindow = /** @class */ (function (_super) {
                                     break;
                                 }
                             }
+                            //联系对象不在联系人列表里，说明是从别的页面发起的私信聊天，聊天对象已经在联系人列表最上面了，只需存缓存并刷新聊天窗口
                             if (i == recentContact.length) {
                                 chatMan = [this.props.data];
                                 chatMan[0].message = data;
                                 recentContact = chatMan.concat(recentContact);
+                                //刷新状态
+                                Utility.setStorage("recentContact", recentContact);
+                                this.setState({ data: data });
                             }
-                            //聊天对象是联系人列表第一个，只需要刷新聊天窗口
-                            if (i == 0) {
+                            else if (i == 0) {
                                 //刷新状态
                                 Utility.setStorage("recentContact", recentContact);
                                 this.setState({ data: data });
@@ -9570,7 +9944,7 @@ function reverseArr(arr: MessageProps[], s: number, e: number) {
 
 
 /***/ }),
-/* 64 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9591,7 +9965,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
 var UbbContainer_1 = __webpack_require__(4);
-var moment = __webpack_require__(6);
+var moment = __webpack_require__(7);
 var MessageSender = /** @class */ (function (_super) {
     __extends(MessageSender, _super);
     function MessageSender() {
@@ -9614,7 +9988,7 @@ exports.MessageSender = MessageSender;
 
 
 /***/ }),
-/* 65 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9635,7 +10009,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
 var UbbContainer_1 = __webpack_require__(4);
-var moment = __webpack_require__(6);
+var moment = __webpack_require__(7);
 var MessageReceiver = /** @class */ (function (_super) {
     __extends(MessageReceiver, _super);
     function MessageReceiver() {
@@ -9656,7 +10030,7 @@ exports.MessageReceiver = MessageReceiver;
 
 
 /***/ }),
-/* 66 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9706,7 +10080,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 67 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9746,7 +10120,7 @@ exports.MessageAttme = MessageAttme;
 
 
 /***/ }),
-/* 68 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9786,7 +10160,7 @@ exports.MessageSystem = MessageSystem;
 
 
 /***/ }),
-/* 69 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10040,7 +10414,7 @@ function isBottom() {
 
 
 /***/ }),
-/* 70 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10095,7 +10469,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusBoardSingle_1 = __webpack_require__(71);
+var FocusBoardSingle_1 = __webpack_require__(75);
 var Utility = __webpack_require__(2);
 /**
  * 表示我关注的版面列表区域
@@ -10182,7 +10556,7 @@ function coverFocusBoard(item) {
 
 
 /***/ }),
-/* 71 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10222,7 +10596,7 @@ exports.FocusBoardSingle = FocusBoardSingle;
 
 
 /***/ }),
-/* 72 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10476,7 +10850,7 @@ function isBottom() {
 
 
 /***/ }),
-/* 73 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10520,7 +10894,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 74 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10576,7 +10950,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserExactProfile_1 = __webpack_require__(75);
+var UserExactProfile_1 = __webpack_require__(79);
 var UserCenterExactActivities_1 = __webpack_require__(16);
 var UserCenterExactAvatar_1 = __webpack_require__(17);
 var Utility = __webpack_require__(2);
@@ -10656,7 +11030,7 @@ var UserExact = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 75 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10843,7 +11217,7 @@ exports.UserExactProfile = UserExactProfile;
 
 
 /***/ }),
-/* 76 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10898,7 +11272,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var $ = __webpack_require__(7);
+var $ = __webpack_require__(6);
 var Utility = __webpack_require__(2);
 var LogOnExact = /** @class */ (function (_super) {
     __extends(LogOnExact, _super);
@@ -10996,7 +11370,8 @@ var LogOnExact = /** @class */ (function (_super) {
                         console.log("after logon token=" + token);
                         //缓存数据
                         Utility.setLocalStorage("accessToken", token, data.expires_in);
-                        Utility.setLocalStorage("userName", this.state.loginName, data.expires_in);
+                        Utility.setLocalStorage("userName", this.state.loginName);
+                        Utility.setLocalStorage("password", this.state.loginPassword);
                         return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + this.state.loginName, {
                                 headers: {
                                     Authorization: "" + token
@@ -11063,7 +11438,7 @@ var LogOnState = /** @class */ (function () {
 
 
 /***/ }),
-/* 77 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11115,7 +11490,7 @@ exports.LogOff = LogOff;
 
 
 /***/ }),
-/* 78 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11273,7 +11648,7 @@ exports.UserCenterMyFans = UserCenterMyFans;
 
 
 /***/ }),
-/* 79 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11435,7 +11810,7 @@ exports.UserCenterMyPostsExact = UserCenterMyPostsExact;
 
 
 /***/ }),
-/* 80 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11456,7 +11831,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserCenterMyFavoritesPosts_1 = __webpack_require__(81);
+var UserCenterMyFavoritesPosts_1 = __webpack_require__(85);
 //import { UserCenterMyFavoritesPostsBoards } from './UserCenterMyFavoritesPostsBoards';
 //<Route path='/usercenter/myfavorites/boards' component={UserCenterMyFavoritesPostsBoards} />
 /**
@@ -11488,7 +11863,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 81 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11541,7 +11916,7 @@ userRecentPost.title = '这是帖子标题';
 
 
 /***/ }),
-/* 82 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11561,9 +11936,9 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterConfigAvatar_1 = __webpack_require__(83);
-var UserCenterConfigSignature_1 = __webpack_require__(84);
-var UsercenterConfigPassword_1 = __webpack_require__(85);
+var UserCenterConfigAvatar_1 = __webpack_require__(87);
+var UserCenterConfigSignature_1 = __webpack_require__(88);
+var UsercenterConfigPassword_1 = __webpack_require__(89);
 var UserCenterConfig = /** @class */ (function (_super) {
     __extends(UserCenterConfig, _super);
     function UserCenterConfig() {
@@ -11583,7 +11958,7 @@ exports.UserCenterConfig = UserCenterConfig;
 
 
 /***/ }),
-/* 83 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11623,7 +11998,7 @@ exports.UserCenterConfigAvatar = UserCenterConfigAvatar;
 
 
 /***/ }),
-/* 84 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11683,7 +12058,7 @@ var UserCenterConfigSignatureState = /** @class */ (function () {
 
 
 /***/ }),
-/* 85 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11727,7 +12102,7 @@ exports.UserCenterConfigPassword = UserCenterConfigPassword;
 
 
 /***/ }),
-/* 86 */
+/* 90 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
