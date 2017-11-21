@@ -5505,6 +5505,8 @@ var Message = /** @class */ (function (_super) {
     function Message() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    Message.prototype.compontDidMount = function () {
+    };
     Message.prototype.render = function () {
         return (React.createElement("div", { className: "message-root" },
             React.createElement("div", { className: "message" },
@@ -5804,9 +5806,7 @@ var DropDown = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log(Utility.getLocalStorage("accessToken"));
-                        console.log(Utility.getLocalStorage("userName"));
-                        if (!(Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName"))) return [3 /*break*/, 3];
+                        if (!Utility.getLocalStorage("accessToken")) return [3 /*break*/, 3];
                         console.log("token未过期");
                         userName = Utility.getLocalStorage("userName");
                         return [4 /*yield*/, fetch("http://apitest.niconi.cc/User/Name/" + userName)];
@@ -11133,6 +11133,9 @@ var MessageWindow = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        if ($('#postContent').val() == '') {
+                            return [2 /*return*/];
+                        }
                         token = Utility.getLocalStorage("accessToken");
                         bodyObj = { receiverId: this.props.data.id, content: $('#postContent').val() };
                         bodyContent = JSON.stringify(bodyObj);
@@ -11147,6 +11150,7 @@ var MessageWindow = /** @class */ (function (_super) {
                     case 1:
                         response = _a.sent();
                         if (response.status == 403) {
+                            $('#postContent').val('');
                             $('#wPostError').removeClass('displaynone');
                             return [2 /*return*/];
                         }
@@ -11186,30 +11190,6 @@ var MessageWindow = /** @class */ (function (_super) {
     return MessageWindow;
 }(React.Component));
 exports.MessageWindow = MessageWindow;
-/*function sortArr(arr: MessageProps[]) {
-    let s: number = -1;
-    let e: number = -1;
-    for (let i = 0; i < arr.length-1; i++) {
-        if (arr[i].sendTime == arr[i + 1].sendTime && s == -1) {
-            s = i;
-        }
-        else if (arr[i].sendTime != arr[i + 1].sendTime && s != -1) {
-            e = i;
-        }
-        if (s != -1 && e != -1) {
-            reverseArr(arr, s, e);
-            s = -1;
-            e = -1;
-        }
-    }
-}
-
-function reverseArr(arr: MessageProps[], s: number, e: number) {
-    for (let i = s; i < e; i++) {
-        [arr[i], arr[e]] = [arr[e], arr[i]];
-        e--;
-    }
-}*/ 
 
 
 /***/ }),
@@ -12640,7 +12620,7 @@ var LogOnExact = /** @class */ (function (_super) {
                         Utility.setLocalStorage("userName", this.state.loginName);
                         Utility.setLocalStorage("password", this.state.loginPassword);
                         headers1 = new Headers();
-                        headers.append("Authorization", token);
+                        headers1.append("Authorization", token);
                         return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + this.state.loginName, {
                                 headers: headers1
                             })];
