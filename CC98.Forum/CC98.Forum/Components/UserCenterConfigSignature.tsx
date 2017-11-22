@@ -3,12 +3,15 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
+import * as Utility from '../Utility';
 
 export class UserCenterConfigSignature extends React.Component<null, UserCenterConfigSignatureState> {
     constructor(props) {
         super(props);
+        const userInfo = Utility.getLocalStorage('userInfo');
+        console.log(userInfo);
         this.state = {
-            signature: '你还没有个性签名',
+            signature: userInfo.signatureCode,
             signatureExtends: null
         };
 
@@ -17,7 +20,6 @@ export class UserCenterConfigSignature extends React.Component<null, UserCenterC
 
     handleChange(event) {
         this.setState({ signature: event.target.value });
-        console.log(this.state.signature);
     }
 
     render() {

@@ -2474,6 +2474,145 @@ function getCurUserTotalReplyPage(topicId, userId) {
     });
 }
 exports.getCurUserTotalReplyPage = getCurUserTotalReplyPage;
+/**
+ * 对联系人列表重新排序，看是否有从其他页面发起的聊天
+ * @param recentContact
+ */
+function sortContactList(recentContact) {
+    return __awaiter(this, void 0, void 0, function () {
+        var urlId, chatManId, i, indexData, response, chatMan, flag, e_26, _a, chatContact, urlName, chatManName, i, indexData, response0, response1, flag, e_27, chatMan, _b, chatContact;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
+                case 0:
+                    urlId = location.href.match(/id=(\S+)/);
+                    if (!urlId) return [3 /*break*/, 10];
+                    chatManId = parseInt(urlId[1]);
+                    //先看一下该聊天对象在不在联系人列表里
+                    for (i = 0; i < recentContact.length; i++) {
+                        if (recentContact[i].id == chatManId) {
+                            break;
+                        }
+                    }
+                    if (!(i == 0)) return [3 /*break*/, 1];
+                    return [3 /*break*/, 9];
+                case 1:
+                    if (!(i < recentContact.length)) return [3 /*break*/, 2];
+                    indexData = recentContact[i];
+                    recentContact.splice(i, 1);
+                    recentContact.unshift(indexData);
+                    return [3 /*break*/, 9];
+                case 2:
+                    response = void 0;
+                    chatMan = void 0;
+                    flag = 1;
+                    _c.label = 3;
+                case 3:
+                    _c.trys.push([3, 6, , 7]);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/basic/" + chatManId)];
+                case 4:
+                    response = _c.sent();
+                    return [4 /*yield*/, response.json()];
+                case 5:
+                    chatMan = _c.sent();
+                    return [3 /*break*/, 7];
+                case 6:
+                    e_26 = _c.sent();
+                    alert("用户不存在，无法发起私信");
+                    flag = 0;
+                    return [3 /*break*/, 7];
+                case 7:
+                    if (!(flag == 1)) return [3 /*break*/, 9];
+                    _a = chatMan;
+                    return [4 /*yield*/, getRecentMessage(chatManId, 0, 10)];
+                case 8:
+                    _a.message = _c.sent();
+                    chatContact = [chatMan];
+                    recentContact = chatContact.concat(recentContact);
+                    _c.label = 9;
+                case 9: return [3 /*break*/, 19];
+                case 10:
+                    urlName = location.href.match(/name=(\S+)/);
+                    if (!urlName) return [3 /*break*/, 19];
+                    chatManName = urlName[1];
+                    //先看一下该聊天对象在不在联系人列表里
+                    for (i = 0; i < recentContact.length; i++) {
+                        if (recentContact[i].name == chatManName) {
+                            break;
+                        }
+                    }
+                    if (!(i == 0)) return [3 /*break*/, 11];
+                    return [3 /*break*/, 19];
+                case 11:
+                    if (!(i < recentContact.length)) return [3 /*break*/, 12];
+                    indexData = recentContact[i];
+                    recentContact.splice(i, 1);
+                    recentContact.unshift(indexData);
+                    return [3 /*break*/, 19];
+                case 12:
+                    response0 = void 0;
+                    response1 = void 0;
+                    flag = 1;
+                    _c.label = 13;
+                case 13:
+                    _c.trys.push([13, 16, , 17]);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + chatManName)];
+                case 14:
+                    response0 = _c.sent();
+                    return [4 /*yield*/, response0.json()];
+                case 15:
+                    response1 = _c.sent();
+                    return [3 /*break*/, 17];
+                case 16:
+                    e_27 = _c.sent();
+                    alert("用户不存在，无法发起私信");
+                    flag = 0;
+                    return [3 /*break*/, 17];
+                case 17:
+                    if (!(flag == 1)) return [3 /*break*/, 19];
+                    chatMan = { id: null, name: '', portraitUrl: '', message: [] };
+                    chatMan.id = response1.id;
+                    chatMan.name = response1.name;
+                    chatMan.portraitUrl = response1.portraitUrl;
+                    _b = chatMan;
+                    return [4 /*yield*/, getRecentMessage(chatMan.id, 0, 10)];
+                case 18:
+                    _b.message = _c.sent();
+                    chatContact = [chatMan];
+                    recentContact = chatContact.concat(recentContact);
+                    _c.label = 19;
+                case 19: return [2 /*return*/, recentContact];
+            }
+        });
+    });
+}
+exports.sortContactList = sortContactList;
+/**
+ * 发送私信的函数
+ * @param bodyContent
+ */
+function sendMessage(bodyContent) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, myHeaders, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    myHeaders = new Headers();
+                    myHeaders.append('Authorization', token);
+                    myHeaders.append('content-type', 'application/json');
+                    return [4 /*yield*/, fetch('http://apitest.niconi.cc/message/send', {
+                            method: 'POST',
+                            headers: myHeaders,
+                            body: bodyContent
+                        })];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/, response];
+            }
+        });
+    });
+}
+exports.sendMessage = sendMessage;
 
 
 /***/ }),
@@ -11122,9 +11261,9 @@ var MessageMessage = /** @class */ (function (_super) {
     }
     MessageMessage.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, myInfo, recentContact, urlId, chatManId, response, chatMan, flag, e_1, _a, chatContact, urlName, chatManName, response0, response1, flag, e_2, chatMan, _b, chatContact;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var token, myInfo, recentContact;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
                         token = Utility.getLocalStorage("accessToken");
                         console.log(token);
@@ -11133,79 +11272,15 @@ var MessageMessage = /** @class */ (function (_super) {
                         if (!!recentContact) return [3 /*break*/, 2];
                         return [4 /*yield*/, Utility.getRecentContact(0, 7)];
                     case 1:
-                        recentContact = _c.sent();
+                        recentContact = _a.sent();
                         console.log("获取到的联系人");
                         console.log(recentContact);
                         Utility.setStorage("recentContact", recentContact);
-                        _c.label = 2;
-                    case 2:
-                        urlId = location.href.match(/id=(\S+)/);
-                        if (!urlId) return [3 /*break*/, 10];
-                        chatManId = parseInt(urlId[1]);
-                        response = void 0;
-                        chatMan = void 0;
-                        flag = 1;
-                        _c.label = 3;
+                        _a.label = 2;
+                    case 2: return [4 /*yield*/, Utility.sortContactList(recentContact)];
                     case 3:
-                        _c.trys.push([3, 6, , 7]);
-                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/basic/" + chatManId)];
-                    case 4:
-                        response = _c.sent();
-                        return [4 /*yield*/, response.json()];
-                    case 5:
-                        chatMan = _c.sent();
-                        return [3 /*break*/, 7];
-                    case 6:
-                        e_1 = _c.sent();
-                        alert("用户不存在，无法发起私信");
-                        flag = 0;
-                        return [3 /*break*/, 7];
-                    case 7:
-                        if (!(flag == 1)) return [3 /*break*/, 9];
-                        _a = chatMan;
-                        return [4 /*yield*/, Utility.getRecentMessage(chatManId, 0, 10)];
-                    case 8:
-                        _a.message = _c.sent();
-                        chatContact = [chatMan];
-                        recentContact = chatContact.concat(recentContact);
-                        _c.label = 9;
-                    case 9: return [3 /*break*/, 17];
-                    case 10:
-                        urlName = location.href.match(/name=(\S+)/);
-                        if (!urlName) return [3 /*break*/, 17];
-                        chatManName = urlName[1];
-                        response0 = void 0;
-                        response1 = void 0;
-                        flag = 1;
-                        _c.label = 11;
-                    case 11:
-                        _c.trys.push([11, 14, , 15]);
-                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + chatManName)];
-                    case 12:
-                        response0 = _c.sent();
-                        return [4 /*yield*/, response0.json()];
-                    case 13:
-                        response1 = _c.sent();
-                        return [3 /*break*/, 15];
-                    case 14:
-                        e_2 = _c.sent();
-                        alert("用户不存在，无法发起私信");
-                        flag = 0;
-                        return [3 /*break*/, 15];
-                    case 15:
-                        if (!(flag == 1)) return [3 /*break*/, 17];
-                        chatMan = { id: null, name: '', portraitUrl: '', message: [] };
-                        chatMan.id = response1.id;
-                        chatMan.name = response1.name;
-                        chatMan.portraitUrl = response1.portraitUrl;
-                        _b = chatMan;
-                        return [4 /*yield*/, Utility.getRecentMessage(chatMan.id, 0, 10)];
-                    case 16:
-                        _b.message = _c.sent();
-                        chatContact = [chatMan];
-                        recentContact = chatContact.concat(recentContact);
-                        _c.label = 17;
-                    case 17:
+                        //对联系人列表重新排序，看是否有从其他页面发起的聊天
+                        recentContact = _a.sent();
                         if (recentContact) {
                             //默认第一个人为聊天对象
                             this.setState({ data: recentContact, chatObj: recentContact[0] });
@@ -11604,24 +11679,16 @@ var MessageWindow = /** @class */ (function (_super) {
     */
     MessageWindow.prototype.postMessage = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, bodyObj, bodyContent, myHeaders, response;
+            var bodyObj, bodyContent, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if ($('#postContent').val() == '') {
                             return [2 /*return*/];
                         }
-                        token = Utility.getLocalStorage("accessToken");
                         bodyObj = { receiverId: this.props.data.id, content: $('#postContent').val() };
                         bodyContent = JSON.stringify(bodyObj);
-                        myHeaders = new Headers();
-                        myHeaders.append('Authorization', token);
-                        myHeaders.append('content-type', 'application/json');
-                        return [4 /*yield*/, fetch('http://apitest.niconi.cc/message/send', {
-                                method: 'POST',
-                                headers: myHeaders,
-                                body: bodyContent
-                            })];
+                        return [4 /*yield*/, Utility.sendMessage(bodyContent)];
                     case 1:
                         response = _a.sent();
                         if (response.status == 403) {
@@ -11696,10 +11763,12 @@ var MessageSender = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     MessageSender.prototype.render = function () {
+        var userUrl = "/user/name/" + this.props.senderName;
         return (React.createElement("div", { className: "message-message-wc" },
             React.createElement("div", { className: "message-message-wcTime" }, moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')),
             React.createElement("div", { className: "message-message-wcSender" },
-                React.createElement("img", { className: "message-message-wcPortraitUrl", src: this.props.senderPortraitUrl }),
+                React.createElement("a", { href: userUrl, target: "_blank" },
+                    React.createElement("img", { className: "message-message-wcPortraitUrl", src: this.props.senderPortraitUrl })),
                 React.createElement("div", { className: "message-message-wcContent" },
                     React.createElement("div", { id: String(this.props.id), className: "message-message-wcText" },
                         React.createElement(UbbContainer_1.UbbContainer, { code: this.props.content }))),
@@ -11739,10 +11808,12 @@ var MessageReceiver = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     MessageReceiver.prototype.render = function () {
+        var userUrl = "/user/name/" + this.props.senderName;
         return (React.createElement("div", { className: "message-message-wc" },
             React.createElement("div", { className: "message-message-wcTime" }, moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')),
             React.createElement("div", { className: "message-message-wcReceiver" },
-                React.createElement("img", { className: "message-message-wcPortraitUrl", src: this.props.senderPortraitUrl }),
+                React.createElement("a", { href: userUrl, target: "_blank" },
+                    React.createElement("img", { className: "message-message-wcPortraitUrl", src: this.props.senderPortraitUrl })),
                 React.createElement("div", { className: "message-message-wcContent" },
                     React.createElement("div", { className: "message-message-wcText", id: String(this.props.id) },
                         React.createElement(UbbContainer_1.UbbContainer, { code: this.props.content }))))));

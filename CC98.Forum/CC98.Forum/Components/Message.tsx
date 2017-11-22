@@ -14,10 +14,6 @@ import {
  * 网站的主页面对象。
  */
 export class Message extends React.Component<{}, AppState> {
-
-    compontDidMount() {
-        
-    }
     
     render() {
         return (<div className="message-root">

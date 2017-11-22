@@ -117,7 +117,7 @@ export class LogOnExact extends React.Component<null, LogOnState> {
             headers: headers1
         });
         let userInfo = await response1.json();
-        Utility.setLocalStorage("userInfo", userInfo, data.expires_in)
+        Utility.setLocalStorage("userInfo", userInfo);
 
         this.setState({
             loginMessage: '登录成功 正在返回首页',

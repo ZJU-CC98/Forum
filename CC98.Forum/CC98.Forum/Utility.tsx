@@ -1046,3 +1046,108 @@ export async function getCurUserTotalReplyPage(topicId, userId) {
         alert("网络24中断");
     }
 }
+
+/**
+ * 对联系人列表重新排序，看是否有从其他页面发起的聊天
+ * @param recentContact
+ */
+export async function sortContactList(recentContact) {
+    //看url中是否携带id信息，如果有的话就作为第一个联系人
+    let urlId = location.href.match(/id=(\S+)/);
+    if (urlId) {
+        let chatManId = parseInt(urlId[1]);
+        //先看一下该聊天对象在不在联系人列表里
+        for (var i = 0; i < recentContact.length; i++) {
+            if (recentContact[i].id == chatManId) {
+                break;
+            }
+        }
+        //如果恰好是联系人列表第一那就什么都不做
+        if (i == 0) { }
+        //如果在列表里但不是第一个，就把他提到第一个
+        else if (i < recentContact.length) {
+            let indexData = recentContact[i];
+            recentContact.splice(i, 1);
+            recentContact.unshift(indexData);
+        }
+        //如果不在联系人列表里，那就查找该人信息并作为列表第一个
+        else {
+            let response;
+            let chatMan;
+            let flag = 1;
+            try {
+                response = await fetch(`http://apitest.niconi.cc/user/basic/${chatManId}`);
+                chatMan = await response.json();
+            }
+            catch (e) {
+                alert("用户不存在，无法发起私信");
+                flag = 0;
+            }
+            if (flag == 1) {
+                chatMan.message = await getRecentMessage(chatManId, 0, 10);
+                let chatContact = [chatMan];
+                recentContact = chatContact.concat(recentContact);
+            }
+        }
+    }
+    else { //看url中是否携带name信息，如果有的话就作为第一个联系人
+        let urlName = location.href.match(/name=(\S+)/);
+        if (urlName) {
+            let chatManName = urlName[1];
+            //先看一下该聊天对象在不在联系人列表里
+            for (var i = 0; i < recentContact.length; i++) {
+                if (recentContact[i].name == chatManName) {
+                    break;
+                }
+            }
+            //如果恰好是联系人列表第一那就什么都不做
+            if (i == 0) { }
+            //如果在列表里但不是第一个，就把他提到第一个
+            else if (i < recentContact.length) {
+                let indexData = recentContact[i];
+                recentContact.splice(i, 1);
+                recentContact.unshift(indexData);
+            }
+            //如果不在联系人列表里，那就查找该人信息并作为列表第一个
+            else {
+                let response0;
+                let response1;
+                let flag = 1;
+                try {
+                    response0 = await fetch(`http://apitest.niconi.cc/user/name/${chatManName}`);
+                    response1 = await response0.json();
+                } catch (e) {
+                    alert("用户不存在，无法发起私信");
+                    flag = 0;
+                }
+                if (flag == 1) {
+                    let chatMan = { id: null, name: '', portraitUrl: '', message: [] };
+                    chatMan.id = response1.id;
+                    chatMan.name = response1.name;
+                    chatMan.portraitUrl = response1.portraitUrl;
+                    chatMan.message = await getRecentMessage(chatMan.id, 0, 10);
+                    let chatContact = [chatMan];
+                    recentContact = chatContact.concat(recentContact);
+                }
+            }
+        }
+    }
+    return recentContact;
+}
+
+/**
+ * 发送私信的函数
+ * @param bodyContent
+ */
+export async function sendMessage(bodyContent: string) {
+    let token = getLocalStorage("accessToken");
+    let myHeaders = new Headers();
+    myHeaders.append('Authorization', token);
+    myHeaders.append('content-type', 'application/json');
+    let response = await fetch('http://apitest.niconi.cc/message/send', {
+        method: 'POST',
+        headers: myHeaders,
+        body: bodyContent
+    });
+    return response;
+}
