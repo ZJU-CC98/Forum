@@ -40,7 +40,7 @@ export class App extends React.Component<{}, AppState> {
 					<Route exact path="/" component={MainPage}></Route>
 					<Route exact path="/topic/:topicid/:page?" component={Post} />
 					<Route exact path="/topic/:topicid/user/:userId/:page?" component={CurUserPost} />
-					<Route path="/list/:boardid/:page?" component={List} />
+					<Route path="/list/:boardId/:page?" component={List} />
 					<Route exact path="/boardlist" component={BoardList} />
 					<Route path="/usercenter" component={UserCenter} />
                     <Route path="/message" component={Message} />
@@ -54,6 +54,7 @@ export class App extends React.Component<{}, AppState> {
                     <Route path="/status/UnauthorizedTopic" component={Status.UnauthorizedTopic} />
                     <Route path="/status/NotFoundTopic" component={Status.NotFoundTopic} />
                     <Route path="/status/NotFoundBoard" component={Status.NotFoundBoard} />
+                    <Route path="/status/NotFoundUser" component={Status.NotFoundUser} />
                     <Footer />
 				</div>
 			</Router></div>;

@@ -24,7 +24,7 @@ export class UserCenterMyFavoritesPosts extends RouteComponent<null, UserCenterM
     async componentDidMount() {
         const token = Utility.getLocalStorage('accessToken');
         const page = this.match.params.page || 1;
-        const url = `http://apitest.niconi.cc/topic/favorite?from=${(page-1)*10}&size=10`;
+        const url = `http://apitest.niconi.cc/topic/favorite?from=${(page-1)*10}&size=11`;
 
         let myHeaders = new Headers();
         myHeaders.append('Authorization', token);
@@ -47,6 +47,11 @@ export class UserCenterMyFavoritesPosts extends RouteComponent<null, UserCenterM
             this.setState({
                 totalPage: Number.parseInt(this.match.params.page) || 1
             });
+        } else {
+            i = 10;
+            this.setState({
+                totalPage: (Number.parseInt(this.match.params.page) || 1) + 1
+            });
         }
 
         while (i--) {
@@ -55,12 +60,12 @@ export class UserCenterMyFavoritesPosts extends RouteComponent<null, UserCenterM
             post.boardId = data[i].boardId;
             post.content = data[i].title;
             post.date = data[i].time.replace('T', ' ').slice(0, 19);
+            post.id = data[i].id;
             posts.unshift(post);
         }
 
         this.setState({
-            userRecentPosts: posts,
-            totalPage: (Number.parseInt(this.match.params.page) || 1) + 1
+            userRecentPosts: posts
         });
 
     }
