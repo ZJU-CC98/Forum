@@ -49,7 +49,7 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
         this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userId: userId });
     }
     async getTotalPage(topicId) {
-        return await Utility.getCurUserTotalReplyPage(topicId, this.match.params.userId);
+        return await Utility.getCurUserTotalReplyPage(topicId, this.match.params.userId, this.context.router);
     }
 
     render() {
@@ -93,7 +93,7 @@ export class Reply extends RouteComponent<{}, { contents }, { page, topicid, use
         const response = await fetch(url);
         const data = await response.json();
         const userName = data.name;
-        realContents = await Utility.getCurUserTopicContent(newProps.match.params.topicid, page, userName, newProps.match.params.userId);
+        realContents = await Utility.getCurUserTopicContent(newProps.match.params.topicid, page, userName, newProps.match.params.userId, this.context.router);
         this.setState({ contents: realContents });
 
     }

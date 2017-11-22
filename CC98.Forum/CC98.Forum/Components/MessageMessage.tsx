@@ -47,14 +47,14 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
         //创建一个数组存储联系人信息
         let recentContact = Utility.getStorage("recentContact");
         if (!recentContact) {
-            recentContact = await Utility.getRecentContact(0, 7);
+            recentContact = await Utility.getRecentContact(0, 7, this.context.router);
             console.log("获取到的联系人");
             console.log(recentContact);
             Utility.setStorage("recentContact", recentContact);
         }
 
         //对联系人列表重新排序，看是否有从其他页面发起的聊天
-        recentContact = await Utility.sortContactList(recentContact);
+        recentContact = await Utility.sortContactList(recentContact, this.context.router);
         
         if (recentContact) {
             //默认第一个人为聊天对象
@@ -84,7 +84,7 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
             $('#moreDot').addClass('displaynone');
             $('#moreShow').addClass('displaynone');
             let recentContact = Utility.getStorage("recentContact");
-            let newContact = await Utility.getRecentContact(recentContact.length, 7);
+            let newContact = await Utility.getRecentContact(recentContact.length, 7, this.context.router);
             recentContact = recentContact.concat(newContact);
             this.setState({ data: recentContact });
             Utility.setStorage("recentContact", recentContact);
