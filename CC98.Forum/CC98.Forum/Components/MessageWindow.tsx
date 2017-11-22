@@ -45,7 +45,7 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
             $('#wcLoadingImg').removeClass("displaynone");
             let oldData = this.state.data;
             //到顶了就继续获取10条私信
-            let newData = await Utility.getRecentMessage(this.props.data.id, oldData.length, 10);
+            let newData = await Utility.getRecentMessage(this.props.data.id, oldData.length, 10, this.context.router);
             //跟之前的拼接一下
             if (newData.length > 0) {
                 let data = oldData.concat(newData);
@@ -77,7 +77,7 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
         //把聊天窗口滚动栏拉到最底部
         document.getElementById("quickToTheBottom").scrollIntoView();
         //获取新私信信息
-        let data = await Utility.getRecentMessage(this.props.data.id, 0, 10);
+        let data = await Utility.getRecentMessage(this.props.data.id, 0, 10, this.context.router);
 
         //先看一下缓存里的旧私信信息
         let oldData = [];
@@ -178,7 +178,7 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
         }
         let bodyObj = { receiverId: this.props.data.id, content: $('#postContent').val() };
         let bodyContent = JSON.stringify(bodyObj);
-        let response = await Utility.sendMessage(bodyContent);
+        let response = await Utility.sendMessage(bodyContent, this.context.router);
         if (response.status == 403) {
             $('#postContent').val('');
             $('#wPostError').removeClass('displaynone');

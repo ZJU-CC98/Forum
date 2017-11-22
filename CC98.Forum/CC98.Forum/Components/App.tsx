@@ -55,7 +55,11 @@ export class App extends React.Component<{}, AppState> {
 					<Route path="/status/UnauthorizedTopic" component={Status.UnauthorizedTopic} />
 					<Route path="/status/NotFoundTopic" component={Status.NotFoundTopic} />
 					<Route path="/status/NotFoundBoard" component={Status.NotFoundBoard} />
-					<Route path="/status/NotFoundUser" component={Status.NotFoundUser} />
+                    <Route path="/status/NotFoundUser" component={Status.NotFoundUser} />
+                    <Route path="/status/ServerError" component={Status.ServerError} />
+                    <Route path="/status/OperationForbidden" component={Status.OperationForbidden} />
+                    <Route path="/status/Disconnected" component={Status.Disconnected} />
+                    <Route path="/status/TopicDeleted" component={Status.TopicDeleted} />
 					<Footer />
 				</div>
 			</Router></div>;

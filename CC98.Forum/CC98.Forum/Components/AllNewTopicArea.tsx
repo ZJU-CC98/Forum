@@ -34,7 +34,7 @@ export class AllNewTopicArea extends React.Component<{}, FocusTopicAreaState> {
      * 进入立即获取20条新帖的数据，同时为滚动条添加监听事件
      */
     async componentDidMount() {
-        let data = await Utility.getAllNewTopic(this.state.curNum);
+        let data = await Utility.getAllNewTopic(this.state.curNum, this.context.router);
 
         //先看一下有没有缓存的数据，如果有的话新数据跟缓存数据组合一下
         let oldData =  Utility.getStorage("AllNewTopic");
@@ -86,7 +86,7 @@ export class AllNewTopicArea extends React.Component<{}, FocusTopicAreaState> {
             */
             this.setState({ loading: false });
             try {
-                var newData = await Utility.getAllNewTopic(this.state.curNum);
+                var newData = await Utility.getAllNewTopic(this.state.curNum, this.context.router);
             } catch (err) {
                 /**
                 *如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求

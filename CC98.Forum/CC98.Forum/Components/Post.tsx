@@ -69,7 +69,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName });
     }
     async getTotalPage(topicid) {
-        return Utility.getTotalReplyCount(topicid);
+        return Utility.getTotalReplyCount(topicid, this.context.router);
     }
     returnTopic() {
         return <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} />;
@@ -103,7 +103,7 @@ export class Category extends React.Component<{ topicId }, { boardId, topicId, b
         this.state = ({ boardId: "", topicId: "", boardName: "", title: "" });
     }
     async componentDidMount() {
-        const body = await Utility.getCategory(this.props.topicId);
+        const body = await Utility.getCategory(this.props.topicId, this.context.router);
         this.setState({ boardId: body.boardId, topicId: body.topicId, boardName: body.boardName, title: body.title });
     }
     render() {
@@ -132,7 +132,7 @@ export class Reply extends RouteComponent<{}, { contents }, { page, topicid, use
          else {
              realContents = Utility.getStorage(storageId);
          }*/
-        realContents = await Utility.getTopicContent(newProps.match.params.topicid, page);
+        realContents = await Utility.getTopicContent(newProps.match.params.topicid, page, this.context.router);
         this.setState({ contents: realContents });
 
     }
@@ -164,7 +164,7 @@ export class HotReply extends RouteComponent<{}, { contents }, { page, topicid }
 
         const page = newProps.match.params.page || 1;
         if (page == 1) {
-            const realContents = await Utility.getHotReplyContent(newProps.match.params.topicid);
+            const realContents = await Utility.getHotReplyContent(newProps.match.params.topicid, this.context.router);
             this.setState({ contents: realContents });
         }
 
@@ -347,7 +347,7 @@ export class UserDetails extends RouteComponent<{ userName }, { portraitUrl, use
         this.state = ({ portraitUrl: null, userName: null, fanCount: null, displayTitle: null, birthday: null, gender: null, prestige: null, levelTitle: null });
     }
     async componentDidMount() {
-        const data = await Utility.getUserDetails(this.props.userName);
+        const data = await Utility.getUserDetails(this.props.userName, this.context.router);
         this.setState({ portraitUrl: data.portraitUrl, userName: data.userName, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle });
     }
     render() {
@@ -412,7 +412,7 @@ export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid },
         }
     }
     async componentDidMount() {
-        let topicMessage = await Utility.getTopic(this.props.topicid);
+        let topicMessage = await Utility.getTopic(this.props.topicid, this.context.router);
         this.setState({ topicMessage: topicMessage });
     }
     render() {
@@ -537,7 +537,7 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
         }
     }
     async componentDidMount() {
-        const data = await Utility.getLikeState(this.props.topicid);
+        const data = await Utility.getLikeState(this.props.topicid, this.context.router);
         if (data.likeState === 1) {
             $("#commentliked").css("color", "red");
         }
@@ -550,44 +550,44 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
     async like() {
         //取消赞
         if (this.state.likeState === 1) {
-            await Utility.like(this.props.topicid, this.props.postid);
+            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
             $("#commentliked").css("color", "black");
         }
         //踩改赞
         else if (this.state.likeState === 2) {
-            await Utility.dislike(this.props.topicid, this.props.postid);
-            await Utility.like(this.props.topicid, this.props.postid);
+            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
+            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
             $("#commentliked").css("color", "red");
             $("#commentdisliked").css("color", "black");
         }
         //单纯赞
         else {
-            await Utility.like(this.props.topicid, this.props.postid);
+            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
             $("#commentliked").css("color", "red");
         }
-        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid);
+        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
 
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
     async dislike() {
         //取消踩
         if (this.state.likeState === 2) {
-            await Utility.dislike(this.props.topicid, this.props.postid);
+            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
             $("#commentdisliked").css("color", "black");
         }
         //赞改踩
         else if (this.state.likeState === 1) {
-            await Utility.like(this.props.topicid, this.props.postid);
-            await Utility.dislike(this.props.topicid, this.props.postid);
+            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
+            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
             $("#commentliked").css("color", "black");
             $("#commentdisliked").css("color", "red");
         }
         //单纯踩
         else {
-            await Utility.dislike(this.props.topicid, this.props.postid);
+            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
             $("#commentdisliked").css("color", "red");
         }
-        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid);
+        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
     render() {
@@ -660,7 +660,7 @@ export class ReplyContent extends RouteComponent<{ content, signature, topicid, 
 
         const idLike = `#like${this.props.postid}`;
         const idDislike = `#dislike${this.props.postid}`;
-        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid);
+        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
         if (data.likeState === 1) {
             $(idLike).css("color", "red");
         }
@@ -674,22 +674,22 @@ export class ReplyContent extends RouteComponent<{ content, signature, topicid, 
         const idDislike = `#dislike${this.props.postid}`;
         //取消赞
         if (this.state.likeState === 1) {
-            await Utility.like(this.props.topicid, this.props.postid);
+            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
             $(idLike).css("color", "black");
         }
         //踩改赞
         else if (this.state.likeState === 2) {
-            await Utility.dislike(this.props.topicid, this.props.postid);
-            await Utility.like(this.props.topicid, this.props.postid);
+            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
+            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
             $(idLike).css("color", "red");
             $(idDislike).css("color", "black");
         }
         //单纯赞
         else {
-            await Utility.like(this.props.topicid, this.props.postid);
+            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
             $(idLike).css("color", "red");
         }
-        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid);
+        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
 
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
@@ -699,22 +699,22 @@ export class ReplyContent extends RouteComponent<{ content, signature, topicid, 
 
         //取消踩
         if (this.state.likeState === 2) {
-            await Utility.dislike(this.props.topicid, this.props.postid);
+            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
             $(idDislike).css("color", "black");
         }
         //赞改踩
         else if (this.state.likeState === 1) {
-            await Utility.like(this.props.topicid, this.props.postid);
-            await Utility.dislike(this.props.topicid, this.props.postid);
+            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
+            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
             $(idLike).css("color", "black");
             $(idDislike).css("color", "red");
         }
         //单纯踩
         else {
-            await Utility.dislike(this.props.topicid, this.props.postid);
+            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
             $(idDislike).css("color", "red");
         }
-        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid);
+        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
     render() {

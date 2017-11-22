@@ -30,19 +30,19 @@ export class List extends RouteComponent<{}, {bigPaper:string, page: number, tot
         this.state = { page: 1, totalPage: 1, boardId: null, bigPaper:"" };
 	}
     async getTotalListPage(boardId) {
-        const page = await Utility.getListTotalPage(boardId);
+        const page = await Utility.getListTotalPage(boardId, this.context.router);
         return page;
 	}
     async componentWillReceiveProps(newProps) {
 
-        const data = await Utility.getBasicBoardMessage(newProps.match.params.boardId, newProps.match.params.page);
+        const data = await Utility.getBasicBoardMessage(newProps.match.params.boardId, newProps.match.params.page, this.context.router);
      
         // 设置状态
         this.setState({ bigPaper: data.bigPaper, page: data.page, totalPage: data.totalPage, boardId: newProps.match.params.boardId });
 	}
     async componentDidMount() {
    
-        const data = await Utility.getBasicBoardMessage(this.match.params.boardId, this.match.params.page);
+        const data = await Utility.getBasicBoardMessage(this.match.params.boardId, this.match.params.page, this.context.router);
         // 设置状态
         this.setState({ bigPaper: data.bigPaper, page: data.page, totalPage: data.totalPage, boardId: this.match.params.boardId });
 	}
@@ -65,7 +65,7 @@ export class Category extends RouteComponent<{boardId }, { boardId, boardName },
     }
     async componentDidMount() {
         console.log("cate" + this.props.boardId);
-        const boardName = await Utility.getListCategory(this.props.boardId);
+        const boardName = await Utility.getListCategory(this.props.boardId, this.context.router);
         this.setState({ boardId: this.props.boardId, boardName: boardName });
     }
     render() {
@@ -90,13 +90,13 @@ export class ListHead extends RouteComponent<{ boardId }, State.ListHeadState, {
 		};
 	}
     async componentDidMount() {
-        const data = await Utility.getBoardMessage(this.props.boardId);
+        const data = await Utility.getBoardMessage(this.props.boardId, this.context.router);
 		this.setState({
 			listName: data.name, todayTopics: data.todayCount, totalTopics: data.topicCount, listManager: data.boardMasters
 		});
 	}
     async componentWillRecieveProps(newProps) {
-        const data = await Utility.getBoardMessage(newProps.boardId);
+        const data = await Utility.getBoardMessage(newProps.boardId, this.context.router);
         this.setState({
             listName: data.name, todayTopics: data.todayCount, totalTopics: data.topicCount, listManager: data.boardMasters
         });
@@ -280,7 +280,7 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
     async componentDidMount() {
    
         console.log("Did" + this.match.params.boardId);
-        const data = await Utility.getBoardTopicAsync(1, this.match.params.boardId);
+        const data = await Utility.getBoardTopicAsync(1, this.match.params.boardId, this.context.router);
        
 		this.setState({ items: data });
 	}
@@ -302,7 +302,7 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
 		}
 		// 转换类型
         else { page = parseInt(p); }
-        const data = await Utility.getBoardTopicAsync(page, newProps.match.params.boardId);
+        const data = await Utility.getBoardTopicAsync(page, newProps.match.params.boardId, this.context.router);
 		this.setState({ items: data });
 	}
 
