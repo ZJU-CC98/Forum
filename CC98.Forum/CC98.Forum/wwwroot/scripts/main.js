@@ -75,960 +75,6 @@ module.exports = React;
 
 "use strict";
 
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * 提供 UBB 处理上下文所需要的相关数据。
- */
-var UbbCodeContextData = /** @class */ (function () {
-    function UbbCodeContextData() {
-    }
-    return UbbCodeContextData;
-}());
-exports.UbbCodeContextData = UbbCodeContextData;
-/**
- * 处理 UBB 编码时可用于存储相关信息的上下文对象。
- */
-var UbbCodeContext = /** @class */ (function () {
-    /**
-     * 初始化一个上下文对象的新实例。
-     * @param engine 引擎对象。
-     * @param options 处理选项。
-     */
-    function UbbCodeContext(engine, options) {
-        this._engine = engine;
-        this._options = options;
-    }
-    Object.defineProperty(UbbCodeContext.prototype, "engine", {
-        /**
-         * 获取关联到本次处理上下文的处理引擎对象。
-         * @returns {UbbCodeEngine} 关联到本次处理上下文的处理引擎对象。
-         */
-        get: function () {
-            return this._engine;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(UbbCodeContext.prototype, "options", {
-        /**
-         * 获取处理 UBB 需要注意的选项。
-         * @returns {UbbCodeOptions} 处理 UBB 需要注意的选项。
-         */
-        get: function () {
-            return this._options;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(UbbCodeContext.prototype, "data", {
-        /**
-         * 获取上下文相关的数据。
-         * @returns {UbbCodeContextData} 上下文相关的数据。
-         */
-        get: function () {
-            return this._engine.data;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return UbbCodeContext;
-}());
-exports.UbbCodeContext = UbbCodeContext;
-/**
- * 控制 UBB 编码的选项。在 UBB 编码过程中，需要考虑这些选项。
- */
-var UbbCodeOptions = /** @class */ (function () {
-    function UbbCodeOptions() {
-        /**
-         * 是否自动检测 URL 并添加链接效果。
-         */
-        this.autoDetectUrl = true;
-        /**
-         * 是否允许外部链接。
-         */
-        this.allowExternalUrl = true;
-        /**
-         * 是否允许显示图像。
-         */
-        this.allowImage = true;
-        /**
-         * 是否允许多媒体资源，如视频，音频，Flash 等。
-         */
-        this.allowMediaContent = true;
-        /**
-         * 是否允许自动播放多媒体资源。
-         */
-        this.allowAutoPlay = true;
-        /**
-         * UBB 处理中的兼容性控制选项。
-         */
-        this.compatibility = UbbCompatiblityMode.Recommended;
-    }
-    return UbbCodeOptions;
-}());
-exports.UbbCodeOptions = UbbCodeOptions;
-/**
- * 定义 UBB 呈现时使用的兼容性模式。
- */
-var UbbCompatiblityMode;
-(function (UbbCompatiblityMode) {
-    /**
-     * 使用最低级别兼容性，尽可能保持 UBB 代码的原始含义，即使可能会带来显示效果问题。
-     */
-    UbbCompatiblityMode[UbbCompatiblityMode["Transitional"] = 0] = "Transitional";
-    /**
-     * 如果能在不改变语义的情况下使用较新的呈现技术，则使用新技术；如果不能保证语义一致则不进行更改。
-     */
-    UbbCompatiblityMode[UbbCompatiblityMode["Recommended"] = 1] = "Recommended";
-    /**
-     * 强制使用对现代浏览器更友好的新技术呈现，即使可能在一定程度上改变语义。
-     */
-    UbbCompatiblityMode[UbbCompatiblityMode["EnforceMorden"] = 2] = "EnforceMorden";
-})(UbbCompatiblityMode = exports.UbbCompatiblityMode || (exports.UbbCompatiblityMode = {}));
-/**
-         * 定义符号的类型。
-         */
-var TokenType;
-(function (TokenType) {
-    /**
-     * 一串文本。
-     */
-    TokenType[TokenType["String"] = 0] = "String";
-    /**
-     * 项目之间的分隔符。
-     */
-    TokenType[TokenType["ItemSeperator"] = 1] = "ItemSeperator";
-    /**
-     * 单个项目内名称和值的分隔符。
-     */
-    TokenType[TokenType["NameValueSeperator"] = 2] = "NameValueSeperator";
-})(TokenType || (TokenType = {}));
-/**
- * 表示一个符号。
- */
-var Token = /** @class */ (function () {
-    /**
-     * 初始化一个符号对象的新实例。
-     * @param type 符号的类型。
-     * @param value 符号的值。
-     */
-    function Token(type, value) {
-        this.type = type;
-        this.value = value;
-    }
-    /**
-     * 创建一个表示一串文本的符号。
-     * @param value 文本的值内容。
-     */
-    Token.stringValue = function (value) {
-        return new Token(TokenType.String, value);
-    };
-    /**
-     * 获取表示项目分隔符的符号。
-     */
-    Token.itemSeperator = new Token(TokenType.ItemSeperator, null);
-    /**
-     * 获取表示值分隔符的符号。
-     */
-    Token.nameValueSeperator = new Token(TokenType.NameValueSeperator, null);
-    return Token;
-}());
-/**
- * 定义 UBB 片段的类型。
- */
-var UbbSegmentType;
-(function (UbbSegmentType) {
-    /**
-     * 纯文字片段。
-     */
-    UbbSegmentType[UbbSegmentType["Text"] = 0] = "Text";
-    /**
-     * 标签片段。
-     */
-    UbbSegmentType[UbbSegmentType["Tag"] = 1] = "Tag";
-})(UbbSegmentType || (UbbSegmentType = {}));
-/**
- * 表示 UBB 内容的一个片段。
- */
-var UbbSegment = /** @class */ (function () {
-    /**
-     * 初始化一个 UBB 片段的新实例。
-     * @param parent 新片段的上级。
-     */
-    function UbbSegment(parent) {
-        this._parent = parent;
-    }
-    Object.defineProperty(UbbSegment.prototype, "parent", {
-        /**
-         * 获取该对象的上级片段。
-         * @returns {UbbSegment} 该对象的上级片段。
-         */
-        get: function () { return this._parent; },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    return UbbSegment;
-}());
-/**
- * 表示 UBB 的文字片段。
- */
-var UbbTextSegment = /** @class */ (function (_super) {
-    __extends(UbbTextSegment, _super);
-    /**
-     * 创建一个新的 UbbTextSegment 对象。
-     * @param text 新片段包含的文字。
-     */
-    function UbbTextSegment(text, parent) {
-        var _this = _super.call(this, parent) || this;
-        _this._text = text;
-        return _this;
-    }
-    Object.defineProperty(UbbTextSegment.prototype, "type", {
-        get: function () { return UbbSegmentType.Text; },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(UbbTextSegment.prototype, "text", {
-        /**
-         * 获取片段中包含的文字。
-         * @returns {string} 片段中包含的文字。
-         */
-        get: function () { return this._text; },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    UbbTextSegment.prototype.clone = function (newParent) {
-        return new UbbTextSegment(this._text, newParent);
-    };
-    return UbbTextSegment;
-}(UbbSegment));
-/**
- * 表示 UBB 的标签片段。
- */
-var UbbTagSegment = /** @class */ (function (_super) {
-    __extends(UbbTagSegment, _super);
-    function UbbTagSegment(tagData, parent) {
-        var _this = _super.call(this, parent) || this;
-        /**
-         * 标签片段是否关闭。
-         */
-        _this._isClosed = false;
-        /**
-         * 标签中包含的子标签数据。
-         */
-        _this._subSegments = [];
-        _this._tagData = tagData;
-        return _this;
-    }
-    Object.defineProperty(UbbTagSegment.prototype, "type", {
-        get: function () { return UbbSegmentType.Tag; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(UbbTagSegment.prototype, "isClosed", {
-        /**
-         * 获取一个值，指示标签是否关闭。
-         * @returns {boolean}
-         */
-        get: function () { return this._isClosed; },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(UbbTagSegment.prototype, "tagData", {
-        get: function () { return this._tagData; },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(UbbTagSegment.prototype, "subSegments", {
-        get: function () { return this._subSegments; },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    /**
-     * 强制关闭一个标签，并将标签挂接到新的上级标签。
-     * @param segment 要关闭的标签。
-     * @param newParent 新的上级标签。
-     * @returns {UbbSegment[]} 产生的新的标签的集合。
-     */
-    UbbTagSegment.forceClose = function (segment, newParent) {
-        // 文字标签无需关闭
-        if (segment.type === UbbSegmentType.Text) {
-            newParent._subSegments.push(segment.clone(newParent));
-        }
-        else {
-            // 已经关闭的标签也无需关闭
-            var seg = segment;
-            if (seg.isClosed) {
-                newParent._subSegments.push(segment.clone(newParent));
-            }
-            else {
-                console.warn('标签 %s 没有正确关闭，已经被转换为纯文字。', seg.tagData.tagName);
-                // 未关闭标签，自己将被转换为纯文字
-                newParent._subSegments.push(new UbbTextSegment("[" + seg._tagData.orignalString + "]", segment.parent));
-                // 自己的下级将被递归强制关闭，并提升为和自己同级
-                for (var _i = 0, _a = seg._subSegments; _i < _a.length; _i++) {
-                    var sub = _a[_i];
-                    UbbTagSegment.forceClose(sub, newParent);
-                }
-            }
-        }
-    };
-    /**
-     * 关闭该标签，并强制处理所有未关闭的下级标签。
-     */
-    UbbTagSegment.prototype.close = function () {
-        // 复制自己的下级并清空数组。
-        var subs = this._subSegments;
-        this._subSegments = [];
-        for (var _i = 0, subs_1 = subs; _i < subs_1.length; _i++) {
-            var item = subs_1[_i];
-            UbbTagSegment.forceClose(item, this);
-        }
-        // 设置关闭状态
-        this._isClosed = true;
-    };
-    UbbTagSegment.prototype.clone = function (newParent) {
-        var result = new UbbTagSegment(this._tagData, newParent);
-        result._content = this._content;
-        result._isClosed = this._isClosed;
-        for (var _i = 0, _a = this._subSegments; _i < _a.length; _i++) {
-            var item = _a[_i];
-            result._subSegments.push(item.clone(result));
-        }
-        return result;
-    };
-    /**
-     * 获取标签的内部内容，不包括标签自身。
-     */
-    UbbTagSegment.prototype.getContentText = function () {
-        var subContents = [];
-        for (var _i = 0, _a = this._subSegments; _i < _a.length; _i++) {
-            var subItem = _a[_i];
-            if (subItem.type === UbbSegmentType.Text) {
-                subContents.push(subItem.text);
-            }
-            else {
-                subContents.push(subItem.getFullText());
-            }
-        }
-        return subContents.join('');
-    };
-    /**
-     * 获取标签的全部文字内容。
-     */
-    UbbTagSegment.prototype.getFullText = function () {
-        return this.tagData.startTagString + this.getContentText() + this.tagData.endTagString;
-    };
-    return UbbTagSegment;
-}(UbbSegment));
-/**
- * 定义 UBB 标签中包含的数据。
- */
-var UbbTagData = /** @class */ (function () {
-    function UbbTagData(orignalString, parameters) {
-        if (!parameters) {
-            throw new Error('参数不能为空。');
-        }
-        this._originalString = orignalString;
-        this._parameters = parameters;
-        // 填充命名参数
-        this._namedParameters = {};
-        for (var _i = 0, parameters_1 = parameters; _i < parameters_1.length; _i++) {
-            var item = parameters_1[_i];
-            if (item.name) {
-                this._namedParameters[item.name] = item.value;
-            }
-        }
-    }
-    Object.defineProperty(UbbTagData.prototype, "orignalString", {
-        /**
-         * 获取标签包含的原始文字。
-         * @returns {string} 标签包含的原始文字。
-         */
-        get: function () { return this._originalString; },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    UbbTagData.parse = function (tagString) {
-        // 空字符串处理
-        if (!tagString) {
-            return null;
-        }
-        var tokens = getAllTokens(tagString);
-        // 无法分割标签
-        if (tokens.length === 0) {
-            return null;
-        }
-        var result = convertTokens(tokens);
-        return new UbbTagData(tagString, result);
-        /**
-         * 提取字符串中的所有符号。
-         */
-        function getAllTokens(tokenString) {
-            var index = 0;
-            /**
-             * 从字符串中扫描获得下一个完整的语义符号。
-             * @returns {string} 下一个完整的语义符号。
-             */
-            function scanToken(lastTokenType) {
-                /**
-                 * 从当前位置开始扫描字符串，直到找到对应的结束字符。
-                 * @returns {string} 从当前位置开始到相同字符结束的字符串。
-                 */
-                function scanQuoted() {
-                    // 开始字符串。
-                    var quoteMark = tokenString[index];
-                    var endMarkLocation = tokenString.indexOf('"', index + 1);
-                    // 找不到结束符号
-                    if (endMarkLocation < 0) {
-                        console.error('UBB: 解析标签字符串 %s 时无法找到位置 %d 处 %s 对应的结束字符串。', tokenString, index, quoteMark);
-                        endMarkLocation = tokenString.length;
-                    }
-                    var start = index + 1;
-                    index = endMarkLocation + 1;
-                    return tokenString.substring(start, endMarkLocation);
-                }
-                while (true) {
-                    // 超过范围。
-                    if (index >= tokenString.length) {
-                        return null;
-                    }
-                    var c = tokenString[index];
-                    if (/\s/i.test(c)) {
-                        index++;
-                        continue;
-                    }
-                    else if (c === ',') {
-                        index++;
-                        return Token.itemSeperator;
-                    }
-                    else if (c === '=') {
-                        index++;
-                        return Token.nameValueSeperator;
-                    }
-                    else if (c === '"' || c === '\'') {
-                        return Token.stringValue(scanQuoted());
-                    }
-                    else {
-                        var start = index;
-                        // 根据最后一个标记的类型，本次标记的终止符会有所变化
-                        var matchExp = lastTokenType === TokenType.ItemSeperator ? /[=,]/i : /,/i;
-                        // 寻找下个分隔符
-                        var nextSeperator = tokenString.substring(index + 1).match(matchExp);
-                        if (nextSeperator) {
-                            // 结束位置
-                            var endMarkLocation = nextSeperator.index + index + 1;
-                            index = endMarkLocation;
-                            return Token.stringValue(tokenString.substring(start, endMarkLocation));
-                        }
-                        else {
-                            index = tokenString.length;
-                            return Token.stringValue(tokenString.substring(start));
-                        }
-                    }
-                }
-            }
-            var allTokens = [];
-            var lastTokenType = TokenType.ItemSeperator;
-            while (true) {
-                var newToken = scanToken(lastTokenType);
-                if (newToken) {
-                    allTokens.push(newToken);
-                    lastTokenType = newToken.type;
-                }
-                else {
-                    break;
-                }
-            }
-            return allTokens;
-        }
-        /**
-         * 将令牌转换为参数集合。
-         * @param tokens 要转换的令牌的数组。
-         */
-        function convertTokens(tokens) {
-            var parameters = [];
-            if (!tokens || tokens.length === 0) {
-                console.error('UBB: 无法将标签字符串 %s 解析为参数的集合。', tagString);
-                return parameters;
-            }
-            var lastName = null;
-            var lastValue = null;
-            var lastTokenType = TokenType.ItemSeperator;
-            for (var _i = 0, tokens_1 = tokens; _i < tokens_1.length; _i++) {
-                var token = tokens_1[_i];
-                switch (token.type) {
-                    case TokenType.ItemSeperator:
-                        parameters.push(new UbbTagParameter(lastName, lastValue));
-                        lastName = null;
-                        lastValue = null;
-                        lastTokenType = TokenType.ItemSeperator;
-                        break;
-                    case TokenType.NameValueSeperator:
-                        if (lastTokenType !== TokenType.String) {
-                            throw new Error('名称值分隔符只能出现在值之后。');
-                        }
-                        lastName = lastValue;
-                        lastValue = null;
-                        lastTokenType = TokenType.NameValueSeperator;
-                        break;
-                    default:
-                        if (lastTokenType === TokenType.String) {
-                            throw new Error('不能连续出现多个值。');
-                        }
-                        lastValue = token.value;
-                        lastTokenType = TokenType.String;
-                        break;
-                }
-            }
-            // 添加最后一个值
-            parameters.push(new UbbTagParameter(lastName, lastValue));
-            // 第一个项目需要特殊处理，默认是名称而非值
-            if (!parameters[0].name) {
-                parameters[0] = new UbbTagParameter(parameters[0].value, null);
-            }
-            return parameters;
-        }
-    };
-    Object.defineProperty(UbbTagData.prototype, "tagName", {
-        /**
-         * 获取标签的名称。
-         * @returns {string} 标签的名称。
-         */
-        get: function () {
-            return this._parameters[0].name;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(UbbTagData.prototype, "startTagString", {
-        /**
-         * 获取标签的开始标记字符串。
-         * @returns {string} 标签的开始标记字符串。
-         */
-        get: function () {
-            return "[" + this.orignalString + "]";
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(UbbTagData.prototype, "endTagString", {
-        /**
-         * 获取标签的结束标记字符串。
-         * @returns {string} 标签的结束标记字符串。
-         */
-        get: function () {
-            return "[/" + this.tagName + "]";
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(UbbTagData.prototype, "mainValue", {
-        /**
-         * 获取标签的主要值，也即紧跟在标签名称和等号后的值。
-         * @returns {string} 标签的主要值。
-         */
-        get: function () {
-            return this._parameters[0].value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * 获取给定参数的值。
-     * @param indexOrName 要获取的参数的索引或者名称。
-     * @returns {string} 给定位置参数的值。
-     */
-    UbbTagData.prototype.value = function (indexOrName) {
-        if (typeof indexOrName === 'number') {
-            return this._parameters[indexOrName].value;
-        }
-        else if (typeof indexOrName === 'string') {
-            return this._namedParameters[indexOrName];
-        }
-        else {
-            throw new Error('参数必须是字符串或者数字。');
-        }
-    };
-    /**
-     * 获取给定参数的名称。
-     * @param index 要获取的参数的索引。
-     * @returns {string} 给定位置参数的名称。
-     */
-    UbbTagData.prototype.name = function (index) {
-        return this._parameters[index].name;
-    };
-    /**
-     * 获取给定的参数。
-     * @param index 要获取的参数的索引。
-     * @returns {UbbTagParameter} 给定位置的参数。
-     */
-    UbbTagData.prototype.parameter = function (index) {
-        return this._parameters[index];
-    };
-    return UbbTagData;
-}());
-exports.UbbTagData = UbbTagData;
-/**
- * 表示 UBB 标签中单个参数的内容。
- */
-var UbbTagParameter = /** @class */ (function () {
-    /**
-     * 初始化一个对象的新实例。
-     * @param name 新参数的名称。
-     * @param value 新参数的值。
-     */
-    function UbbTagParameter(name, value) {
-        this._name = name;
-        this._value = value;
-    }
-    Object.defineProperty(UbbTagParameter.prototype, "name", {
-        /**
-         * 获取参数的名称。如果参数没有名称，则该属性为 null。
-         */
-        get: function () {
-            return this._name;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(UbbTagParameter.prototype, "value", {
-        /**
-         * 获取参数的值。如果该参数没有值，则该属性为 null。
-         */
-        get: function () {
-            return this._value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return UbbTagParameter;
-}());
-/**
- * 定义 UBB 处理程序的基类。
- */
-var UbbTagHandler = /** @class */ (function () {
-    function UbbTagHandler() {
-    }
-    /**
-     * 在解析完成处理标签内部的内容后，将标签本身作为文本处理。
-     * @param tagData 标签相关的数据。
-     * @param content 标签的内容。
-     */
-    UbbTagHandler.renderTagAsString = function (tagData, content) {
-        return [
-            tagData.startTagString,
-            content,
-            tagData.endTagString
-        ];
-    };
-    return UbbTagHandler;
-}());
-exports.UbbTagHandler = UbbTagHandler;
-/**
- * 定义基于文字的 UBB 标签处理程序的基类。
- */
-var TextTagHandler = /** @class */ (function (_super) {
-    __extends(TextTagHandler, _super);
-    function TextTagHandler() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    TextTagHandler.prototype.exec = function (tagSegment, context) {
-        return this.execCore(tagSegment.getContentText(), tagSegment.tagData, context);
-    };
-    return TextTagHandler;
-}(UbbTagHandler));
-exports.TextTagHandler = TextTagHandler;
-/**
- * 定义递归处理内容的标签处理程序的基类。
- */
-var RecursiveTagHandler = /** @class */ (function (_super) {
-    __extends(RecursiveTagHandler, _super);
-    function RecursiveTagHandler() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    RecursiveTagHandler.prototype.exec = function (tagSegment, context) {
-        var result = [];
-        for (var _i = 0, _a = tagSegment.subSegments; _i < _a.length; _i++) {
-            var subSeg = _a[_i];
-            result.push(context.engine.execSegment(subSeg, context));
-        }
-        return this.execCore(result, tagSegment.tagData, context);
-    };
-    return RecursiveTagHandler;
-}(UbbTagHandler));
-exports.RecursiveTagHandler = RecursiveTagHandler;
-/**
- * 定义 UBB 处理程序列表。
- */
-var UbbHandlerList = /** @class */ (function () {
-    function UbbHandlerList() {
-        /**
-         * 命名的内部标签处理器列表。
-         */
-        this._namedTagHandlerList = {};
-        /**
-         * 未命名的内部标签处理程序列表。
-         */
-        this._unnamedTagHanlderList = [];
-    }
-    /**
-     * 获取给定标签名称的处理程序。
-     * @param supportedTagNames 标签名称。
-     * @returns {UbbTagHandler} 标签处理程序。
-     */
-    UbbHandlerList.prototype.getHandler = function (tagName) {
-        // 首先寻找命名的标签处理程序
-        var namedTagHandler = this._namedTagHandlerList[tagName];
-        // 找到
-        if (namedTagHandler) {
-            return namedTagHandler;
-        }
-        // 寻找未命名的标签处理程序
-        for (var _i = 0, _a = this._unnamedTagHanlderList; _i < _a.length; _i++) {
-            var handler = _a[_i];
-            if (handler.supportedTagNames.test(tagName)) {
-                return handler;
-            }
-        }
-        // 找不到任何标签处理程序
-        return null;
-    };
-    /**
-     * 注册一个给定的标签处理程序。
-     * @param tagHandlerClass 处理程序对象的类型。
-     */
-    UbbHandlerList.prototype.register = function (tagHandlerClass) {
-        // ReSharper disable once InconsistentNaming
-        this.registerInstance(new tagHandlerClass());
-    };
-    /**
-     * 注册一个给定的处理程序实例。
-     * @param tagHandler 要注册的标签处理器。
-     */
-    UbbHandlerList.prototype.registerInstance = function (tagHandler) {
-        if (!tagHandler || !tagHandler.supportedTagNames) {
-            throw new Error('参数 tagHandler 无效，或者未提供正确的标签名称。');
-        }
-        if (typeof tagHandler.supportedTagNames === 'string') {
-            this.registerNamedCore([tagHandler.supportedTagNames], tagHandler);
-        }
-        else if (tagHandler.supportedTagNames instanceof Array) {
-            this.registerNamedCore(tagHandler.supportedTagNames, tagHandler);
-        }
-        else {
-            this.registerUnnamedCore(tagHandler);
-        }
-    };
-    /**
-     * 注册命名处理程序的核心方法。
-     * @param tagNames 处理程序关联的一个或多个标签名。
-     * @param tagHandler 处理程序对象。
-     */
-    UbbHandlerList.prototype.registerNamedCore = function (tagNames, tagHandler) {
-        for (var _i = 0, tagNames_1 = tagNames; _i < tagNames_1.length; _i++) {
-            var tagName = tagNames_1[_i];
-            if (tagName in this._namedTagHandlerList) {
-                console.error('标签 %s 的处理程序已经被注册。', tagName);
-            }
-            else {
-                this._namedTagHandlerList[tagName] = tagHandler;
-            }
-        }
-    };
-    /**
-     * 注册未命名处理程序的核心方法。
-     * @param tagHandler 处理程序对象。
-     */
-    UbbHandlerList.prototype.registerUnnamedCore = function (tagHandler) {
-        this._unnamedTagHanlderList.push(tagHandler);
-    };
-    return UbbHandlerList;
-}());
-/**
- * 提供处理 UBB 程序的核心方法。
- */
-var UbbCodeEngine = /** @class */ (function () {
-    function UbbCodeEngine() {
-        /**
-         * 获取该引擎中注册的处理程序。
-         */
-        this._tagHandlers = new UbbHandlerList();
-        /**
-         * 引擎保存的上下文数据。
-         */
-        this._data = new UbbCodeContextData();
-    }
-    Object.defineProperty(UbbCodeEngine.prototype, "tagHandlers", {
-        /**
-         * 该引擎中注册的处理程序。
-         */
-        get: function () {
-            return this._tagHandlers;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(UbbCodeEngine.prototype, "data", {
-        /**
-         * 获取引擎保存的上下文数据。
-         * @returns {UbbCodeContextData} 引擎保存的上下文数据。
-         */
-        get: function () {
-            return this._data;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    /**
-     * 获取给定标签名称的处理程序。
-     * @param supportedTagNames 给定的标签名称。
-     * @returns {UbbTagHandler} 给定标签名称的处理程序。
-     */
-    UbbCodeEngine.prototype.getHandler = function (tagName) {
-        return this._tagHandlers.getHandler(tagName);
-    };
-    /**
-     * 执行 UBB 解析的核心函数。
-     * @param content 要解析的内容。
-     * @param options 解析使用的相关选项。
-     * @returns {string} 解析后的 HTML 代码。
-     */
-    UbbCodeEngine.prototype.exec = function (content, options) {
-        var context = new UbbCodeContext(this, options);
-        return this.execCore(content, context);
-    };
-    /**
-     * 尝试找到关闭标记对应的开始标记，并关闭该标记。
-     * @param supportedTagNames 标记名称。
-     * @param parent 该标记的第一个上级。
-     * @returns {UbbTagSegment} 新的上级标签。
-     */
-    UbbCodeEngine.tryHandleEndTag = function (tagName, parent) {
-        var p = parent;
-        // 循环找到合适的上级，并关闭上级
-        while (p && p.tagData) {
-            if (p.tagData.tagName === tagName) {
-                p.close();
-                return p.parent;
-            }
-            p = p.parent;
-        }
-        // 没有找到任何上级
-        console.warn('UBB: 找不到结束标签 %s 的开始标签，该标签将被作为一般文字处理。', tagName);
-        parent.subSegments.push(new UbbTextSegment("[/" + tagName + "]", parent));
-        return parent;
-    };
-    /**
-     * 构建标签的核心方法。
-     * @param content 包含多个标签的字符串。
-     * @param parent 字符串的上级容器。
-     */
-    UbbCodeEngine.buildSegmentsCore = function (content, parent) {
-        var regExp = /([\s\S]*?)\[(.*?)]/gi;
-        while (true) {
-            var startIndex = regExp.lastIndex;
-            var tagMatch = regExp.exec(content);
-            // 未找到标记，则这是最后一个标签。
-            if (!tagMatch) {
-                // 提取最后一段内容，如果找到，附加到最后
-                var remainContent = content.substring(startIndex);
-                if (remainContent) {
-                    parent.subSegments.push(new UbbTextSegment(remainContent, parent));
-                }
-                return;
-            }
-            var beforeText = tagMatch[1], tagString = tagMatch[2];
-            // 添加前面的文字。
-            if (beforeText) {
-                parent.subSegments.push(new UbbTextSegment(beforeText, parent));
-            }
-            // 检测是否是结束标记
-            var endTagMatch = tagString.match(/^\/(.*)$/i);
-            if (endTagMatch) {
-                var endTagName = endTagMatch[1];
-                parent = UbbCodeEngine.tryHandleEndTag(endTagName, parent);
-            }
-            else {
-                try {
-                    // 提取新的标签数据
-                    var tagData = UbbTagData.parse(tagString);
-                    var newTag = new UbbTagSegment(tagData, parent);
-                    parent.subSegments.push(newTag);
-                    // 新上级
-                    parent = newTag;
-                    continue;
-                }
-                catch (error) {
-                    // 提取数据失败，则视为没有匹配
-                    console.warn('标签字符串 %s 解析失败，将被视为普通文字。', tagString);
-                    parent.subSegments.push(new UbbTextSegment("[" + tagString + "]", parent));
-                }
-            }
-        }
-    };
-    /**
-     * 执行 UBB 处理的核心函数。
-     * @param content 要处理的内容。
-     * @param context UBB 处理上下文。
-     * @returns {JSX.Element} 处理完成的 HTML 内容。
-     */
-    UbbCodeEngine.prototype.execCore = function (content, context) {
-        var root = new UbbTagSegment(null, null);
-        UbbCodeEngine.buildSegmentsCore(content, root);
-        var result = [];
-        for (var _i = 0, _a = root.subSegments; _i < _a.length; _i++) {
-            var item = _a[_i];
-            result.push(this.execSegment(item, context));
-        }
-        return result;
-    };
-    UbbCodeEngine.prototype.execSegment = function (segment, context) {
-        if (segment.type === UbbSegmentType.Text) {
-            return segment.text;
-        }
-        else {
-            var tag = segment;
-            var handler = this.getHandler(tag.tagData.tagName);
-            if (!handler) {
-                console.warn('没有找到标签 %s 的处理程序，将被视为一般文字。', tag.tagData.tagName);
-                return tag.getFullText();
-            }
-            return handler.exec(tag, context);
-        }
-    };
-    return UbbCodeEngine;
-}());
-exports.UbbCodeEngine = UbbCodeEngine;
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -2616,6 +1662,960 @@ exports.sendMessage = sendMessage;
 
 
 /***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * 提供 UBB 处理上下文所需要的相关数据。
+ */
+var UbbCodeContextData = /** @class */ (function () {
+    function UbbCodeContextData() {
+    }
+    return UbbCodeContextData;
+}());
+exports.UbbCodeContextData = UbbCodeContextData;
+/**
+ * 处理 UBB 编码时可用于存储相关信息的上下文对象。
+ */
+var UbbCodeContext = /** @class */ (function () {
+    /**
+     * 初始化一个上下文对象的新实例。
+     * @param engine 引擎对象。
+     * @param options 处理选项。
+     */
+    function UbbCodeContext(engine, options) {
+        this._engine = engine;
+        this._options = options;
+    }
+    Object.defineProperty(UbbCodeContext.prototype, "engine", {
+        /**
+         * 获取关联到本次处理上下文的处理引擎对象。
+         * @returns {UbbCodeEngine} 关联到本次处理上下文的处理引擎对象。
+         */
+        get: function () {
+            return this._engine;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(UbbCodeContext.prototype, "options", {
+        /**
+         * 获取处理 UBB 需要注意的选项。
+         * @returns {UbbCodeOptions} 处理 UBB 需要注意的选项。
+         */
+        get: function () {
+            return this._options;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(UbbCodeContext.prototype, "data", {
+        /**
+         * 获取上下文相关的数据。
+         * @returns {UbbCodeContextData} 上下文相关的数据。
+         */
+        get: function () {
+            return this._engine.data;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return UbbCodeContext;
+}());
+exports.UbbCodeContext = UbbCodeContext;
+/**
+ * 控制 UBB 编码的选项。在 UBB 编码过程中，需要考虑这些选项。
+ */
+var UbbCodeOptions = /** @class */ (function () {
+    function UbbCodeOptions() {
+        /**
+         * 是否自动检测 URL 并添加链接效果。
+         */
+        this.autoDetectUrl = true;
+        /**
+         * 是否允许外部链接。
+         */
+        this.allowExternalUrl = true;
+        /**
+         * 是否允许显示图像。
+         */
+        this.allowImage = true;
+        /**
+         * 是否允许多媒体资源，如视频，音频，Flash 等。
+         */
+        this.allowMediaContent = true;
+        /**
+         * 是否允许自动播放多媒体资源。
+         */
+        this.allowAutoPlay = true;
+        /**
+         * UBB 处理中的兼容性控制选项。
+         */
+        this.compatibility = UbbCompatiblityMode.Recommended;
+    }
+    return UbbCodeOptions;
+}());
+exports.UbbCodeOptions = UbbCodeOptions;
+/**
+ * 定义 UBB 呈现时使用的兼容性模式。
+ */
+var UbbCompatiblityMode;
+(function (UbbCompatiblityMode) {
+    /**
+     * 使用最低级别兼容性，尽可能保持 UBB 代码的原始含义，即使可能会带来显示效果问题。
+     */
+    UbbCompatiblityMode[UbbCompatiblityMode["Transitional"] = 0] = "Transitional";
+    /**
+     * 如果能在不改变语义的情况下使用较新的呈现技术，则使用新技术；如果不能保证语义一致则不进行更改。
+     */
+    UbbCompatiblityMode[UbbCompatiblityMode["Recommended"] = 1] = "Recommended";
+    /**
+     * 强制使用对现代浏览器更友好的新技术呈现，即使可能在一定程度上改变语义。
+     */
+    UbbCompatiblityMode[UbbCompatiblityMode["EnforceMorden"] = 2] = "EnforceMorden";
+})(UbbCompatiblityMode = exports.UbbCompatiblityMode || (exports.UbbCompatiblityMode = {}));
+/**
+         * 定义符号的类型。
+         */
+var TokenType;
+(function (TokenType) {
+    /**
+     * 一串文本。
+     */
+    TokenType[TokenType["String"] = 0] = "String";
+    /**
+     * 项目之间的分隔符。
+     */
+    TokenType[TokenType["ItemSeperator"] = 1] = "ItemSeperator";
+    /**
+     * 单个项目内名称和值的分隔符。
+     */
+    TokenType[TokenType["NameValueSeperator"] = 2] = "NameValueSeperator";
+})(TokenType || (TokenType = {}));
+/**
+ * 表示一个符号。
+ */
+var Token = /** @class */ (function () {
+    /**
+     * 初始化一个符号对象的新实例。
+     * @param type 符号的类型。
+     * @param value 符号的值。
+     */
+    function Token(type, value) {
+        this.type = type;
+        this.value = value;
+    }
+    /**
+     * 创建一个表示一串文本的符号。
+     * @param value 文本的值内容。
+     */
+    Token.stringValue = function (value) {
+        return new Token(TokenType.String, value);
+    };
+    /**
+     * 获取表示项目分隔符的符号。
+     */
+    Token.itemSeperator = new Token(TokenType.ItemSeperator, null);
+    /**
+     * 获取表示值分隔符的符号。
+     */
+    Token.nameValueSeperator = new Token(TokenType.NameValueSeperator, null);
+    return Token;
+}());
+/**
+ * 定义 UBB 片段的类型。
+ */
+var UbbSegmentType;
+(function (UbbSegmentType) {
+    /**
+     * 纯文字片段。
+     */
+    UbbSegmentType[UbbSegmentType["Text"] = 0] = "Text";
+    /**
+     * 标签片段。
+     */
+    UbbSegmentType[UbbSegmentType["Tag"] = 1] = "Tag";
+})(UbbSegmentType || (UbbSegmentType = {}));
+/**
+ * 表示 UBB 内容的一个片段。
+ */
+var UbbSegment = /** @class */ (function () {
+    /**
+     * 初始化一个 UBB 片段的新实例。
+     * @param parent 新片段的上级。
+     */
+    function UbbSegment(parent) {
+        this._parent = parent;
+    }
+    Object.defineProperty(UbbSegment.prototype, "parent", {
+        /**
+         * 获取该对象的上级片段。
+         * @returns {UbbSegment} 该对象的上级片段。
+         */
+        get: function () { return this._parent; },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    return UbbSegment;
+}());
+/**
+ * 表示 UBB 的文字片段。
+ */
+var UbbTextSegment = /** @class */ (function (_super) {
+    __extends(UbbTextSegment, _super);
+    /**
+     * 创建一个新的 UbbTextSegment 对象。
+     * @param text 新片段包含的文字。
+     */
+    function UbbTextSegment(text, parent) {
+        var _this = _super.call(this, parent) || this;
+        _this._text = text;
+        return _this;
+    }
+    Object.defineProperty(UbbTextSegment.prototype, "type", {
+        get: function () { return UbbSegmentType.Text; },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(UbbTextSegment.prototype, "text", {
+        /**
+         * 获取片段中包含的文字。
+         * @returns {string} 片段中包含的文字。
+         */
+        get: function () { return this._text; },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    UbbTextSegment.prototype.clone = function (newParent) {
+        return new UbbTextSegment(this._text, newParent);
+    };
+    return UbbTextSegment;
+}(UbbSegment));
+/**
+ * 表示 UBB 的标签片段。
+ */
+var UbbTagSegment = /** @class */ (function (_super) {
+    __extends(UbbTagSegment, _super);
+    function UbbTagSegment(tagData, parent) {
+        var _this = _super.call(this, parent) || this;
+        /**
+         * 标签片段是否关闭。
+         */
+        _this._isClosed = false;
+        /**
+         * 标签中包含的子标签数据。
+         */
+        _this._subSegments = [];
+        _this._tagData = tagData;
+        return _this;
+    }
+    Object.defineProperty(UbbTagSegment.prototype, "type", {
+        get: function () { return UbbSegmentType.Tag; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(UbbTagSegment.prototype, "isClosed", {
+        /**
+         * 获取一个值，指示标签是否关闭。
+         * @returns {boolean}
+         */
+        get: function () { return this._isClosed; },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(UbbTagSegment.prototype, "tagData", {
+        get: function () { return this._tagData; },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(UbbTagSegment.prototype, "subSegments", {
+        get: function () { return this._subSegments; },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    /**
+     * 强制关闭一个标签，并将标签挂接到新的上级标签。
+     * @param segment 要关闭的标签。
+     * @param newParent 新的上级标签。
+     * @returns {UbbSegment[]} 产生的新的标签的集合。
+     */
+    UbbTagSegment.forceClose = function (segment, newParent) {
+        // 文字标签无需关闭
+        if (segment.type === UbbSegmentType.Text) {
+            newParent._subSegments.push(segment.clone(newParent));
+        }
+        else {
+            // 已经关闭的标签也无需关闭
+            var seg = segment;
+            if (seg.isClosed) {
+                newParent._subSegments.push(segment.clone(newParent));
+            }
+            else {
+                console.warn('标签 %s 没有正确关闭，已经被转换为纯文字。', seg.tagData.tagName);
+                // 未关闭标签，自己将被转换为纯文字
+                newParent._subSegments.push(new UbbTextSegment("[" + seg._tagData.orignalString + "]", segment.parent));
+                // 自己的下级将被递归强制关闭，并提升为和自己同级
+                for (var _i = 0, _a = seg._subSegments; _i < _a.length; _i++) {
+                    var sub = _a[_i];
+                    UbbTagSegment.forceClose(sub, newParent);
+                }
+            }
+        }
+    };
+    /**
+     * 关闭该标签，并强制处理所有未关闭的下级标签。
+     */
+    UbbTagSegment.prototype.close = function () {
+        // 复制自己的下级并清空数组。
+        var subs = this._subSegments;
+        this._subSegments = [];
+        for (var _i = 0, subs_1 = subs; _i < subs_1.length; _i++) {
+            var item = subs_1[_i];
+            UbbTagSegment.forceClose(item, this);
+        }
+        // 设置关闭状态
+        this._isClosed = true;
+    };
+    UbbTagSegment.prototype.clone = function (newParent) {
+        var result = new UbbTagSegment(this._tagData, newParent);
+        result._content = this._content;
+        result._isClosed = this._isClosed;
+        for (var _i = 0, _a = this._subSegments; _i < _a.length; _i++) {
+            var item = _a[_i];
+            result._subSegments.push(item.clone(result));
+        }
+        return result;
+    };
+    /**
+     * 获取标签的内部内容，不包括标签自身。
+     */
+    UbbTagSegment.prototype.getContentText = function () {
+        var subContents = [];
+        for (var _i = 0, _a = this._subSegments; _i < _a.length; _i++) {
+            var subItem = _a[_i];
+            if (subItem.type === UbbSegmentType.Text) {
+                subContents.push(subItem.text);
+            }
+            else {
+                subContents.push(subItem.getFullText());
+            }
+        }
+        return subContents.join('');
+    };
+    /**
+     * 获取标签的全部文字内容。
+     */
+    UbbTagSegment.prototype.getFullText = function () {
+        return this.tagData.startTagString + this.getContentText() + this.tagData.endTagString;
+    };
+    return UbbTagSegment;
+}(UbbSegment));
+/**
+ * 定义 UBB 标签中包含的数据。
+ */
+var UbbTagData = /** @class */ (function () {
+    function UbbTagData(orignalString, parameters) {
+        if (!parameters) {
+            throw new Error('参数不能为空。');
+        }
+        this._originalString = orignalString;
+        this._parameters = parameters;
+        // 填充命名参数
+        this._namedParameters = {};
+        for (var _i = 0, parameters_1 = parameters; _i < parameters_1.length; _i++) {
+            var item = parameters_1[_i];
+            if (item.name) {
+                this._namedParameters[item.name] = item.value;
+            }
+        }
+    }
+    Object.defineProperty(UbbTagData.prototype, "orignalString", {
+        /**
+         * 获取标签包含的原始文字。
+         * @returns {string} 标签包含的原始文字。
+         */
+        get: function () { return this._originalString; },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    UbbTagData.parse = function (tagString) {
+        // 空字符串处理
+        if (!tagString) {
+            return null;
+        }
+        var tokens = getAllTokens(tagString);
+        // 无法分割标签
+        if (tokens.length === 0) {
+            return null;
+        }
+        var result = convertTokens(tokens);
+        return new UbbTagData(tagString, result);
+        /**
+         * 提取字符串中的所有符号。
+         */
+        function getAllTokens(tokenString) {
+            var index = 0;
+            /**
+             * 从字符串中扫描获得下一个完整的语义符号。
+             * @returns {string} 下一个完整的语义符号。
+             */
+            function scanToken(lastTokenType) {
+                /**
+                 * 从当前位置开始扫描字符串，直到找到对应的结束字符。
+                 * @returns {string} 从当前位置开始到相同字符结束的字符串。
+                 */
+                function scanQuoted() {
+                    // 开始字符串。
+                    var quoteMark = tokenString[index];
+                    var endMarkLocation = tokenString.indexOf('"', index + 1);
+                    // 找不到结束符号
+                    if (endMarkLocation < 0) {
+                        console.error('UBB: 解析标签字符串 %s 时无法找到位置 %d 处 %s 对应的结束字符串。', tokenString, index, quoteMark);
+                        endMarkLocation = tokenString.length;
+                    }
+                    var start = index + 1;
+                    index = endMarkLocation + 1;
+                    return tokenString.substring(start, endMarkLocation);
+                }
+                while (true) {
+                    // 超过范围。
+                    if (index >= tokenString.length) {
+                        return null;
+                    }
+                    var c = tokenString[index];
+                    if (/\s/i.test(c)) {
+                        index++;
+                        continue;
+                    }
+                    else if (c === ',') {
+                        index++;
+                        return Token.itemSeperator;
+                    }
+                    else if (c === '=') {
+                        index++;
+                        return Token.nameValueSeperator;
+                    }
+                    else if (c === '"' || c === '\'') {
+                        return Token.stringValue(scanQuoted());
+                    }
+                    else {
+                        var start = index;
+                        // 根据最后一个标记的类型，本次标记的终止符会有所变化
+                        var matchExp = lastTokenType === TokenType.ItemSeperator ? /[=,]/i : /,/i;
+                        // 寻找下个分隔符
+                        var nextSeperator = tokenString.substring(index + 1).match(matchExp);
+                        if (nextSeperator) {
+                            // 结束位置
+                            var endMarkLocation = nextSeperator.index + index + 1;
+                            index = endMarkLocation;
+                            return Token.stringValue(tokenString.substring(start, endMarkLocation));
+                        }
+                        else {
+                            index = tokenString.length;
+                            return Token.stringValue(tokenString.substring(start));
+                        }
+                    }
+                }
+            }
+            var allTokens = [];
+            var lastTokenType = TokenType.ItemSeperator;
+            while (true) {
+                var newToken = scanToken(lastTokenType);
+                if (newToken) {
+                    allTokens.push(newToken);
+                    lastTokenType = newToken.type;
+                }
+                else {
+                    break;
+                }
+            }
+            return allTokens;
+        }
+        /**
+         * 将令牌转换为参数集合。
+         * @param tokens 要转换的令牌的数组。
+         */
+        function convertTokens(tokens) {
+            var parameters = [];
+            if (!tokens || tokens.length === 0) {
+                console.error('UBB: 无法将标签字符串 %s 解析为参数的集合。', tagString);
+                return parameters;
+            }
+            var lastName = null;
+            var lastValue = null;
+            var lastTokenType = TokenType.ItemSeperator;
+            for (var _i = 0, tokens_1 = tokens; _i < tokens_1.length; _i++) {
+                var token = tokens_1[_i];
+                switch (token.type) {
+                    case TokenType.ItemSeperator:
+                        parameters.push(new UbbTagParameter(lastName, lastValue));
+                        lastName = null;
+                        lastValue = null;
+                        lastTokenType = TokenType.ItemSeperator;
+                        break;
+                    case TokenType.NameValueSeperator:
+                        if (lastTokenType !== TokenType.String) {
+                            throw new Error('名称值分隔符只能出现在值之后。');
+                        }
+                        lastName = lastValue;
+                        lastValue = null;
+                        lastTokenType = TokenType.NameValueSeperator;
+                        break;
+                    default:
+                        if (lastTokenType === TokenType.String) {
+                            throw new Error('不能连续出现多个值。');
+                        }
+                        lastValue = token.value;
+                        lastTokenType = TokenType.String;
+                        break;
+                }
+            }
+            // 添加最后一个值
+            parameters.push(new UbbTagParameter(lastName, lastValue));
+            // 第一个项目需要特殊处理，默认是名称而非值
+            if (!parameters[0].name) {
+                parameters[0] = new UbbTagParameter(parameters[0].value, null);
+            }
+            return parameters;
+        }
+    };
+    Object.defineProperty(UbbTagData.prototype, "tagName", {
+        /**
+         * 获取标签的名称。
+         * @returns {string} 标签的名称。
+         */
+        get: function () {
+            return this._parameters[0].name;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(UbbTagData.prototype, "startTagString", {
+        /**
+         * 获取标签的开始标记字符串。
+         * @returns {string} 标签的开始标记字符串。
+         */
+        get: function () {
+            return "[" + this.orignalString + "]";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(UbbTagData.prototype, "endTagString", {
+        /**
+         * 获取标签的结束标记字符串。
+         * @returns {string} 标签的结束标记字符串。
+         */
+        get: function () {
+            return "[/" + this.tagName + "]";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(UbbTagData.prototype, "mainValue", {
+        /**
+         * 获取标签的主要值，也即紧跟在标签名称和等号后的值。
+         * @returns {string} 标签的主要值。
+         */
+        get: function () {
+            return this._parameters[0].value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * 获取给定参数的值。
+     * @param indexOrName 要获取的参数的索引或者名称。
+     * @returns {string} 给定位置参数的值。
+     */
+    UbbTagData.prototype.value = function (indexOrName) {
+        if (typeof indexOrName === 'number') {
+            return this._parameters[indexOrName].value;
+        }
+        else if (typeof indexOrName === 'string') {
+            return this._namedParameters[indexOrName];
+        }
+        else {
+            throw new Error('参数必须是字符串或者数字。');
+        }
+    };
+    /**
+     * 获取给定参数的名称。
+     * @param index 要获取的参数的索引。
+     * @returns {string} 给定位置参数的名称。
+     */
+    UbbTagData.prototype.name = function (index) {
+        return this._parameters[index].name;
+    };
+    /**
+     * 获取给定的参数。
+     * @param index 要获取的参数的索引。
+     * @returns {UbbTagParameter} 给定位置的参数。
+     */
+    UbbTagData.prototype.parameter = function (index) {
+        return this._parameters[index];
+    };
+    return UbbTagData;
+}());
+exports.UbbTagData = UbbTagData;
+/**
+ * 表示 UBB 标签中单个参数的内容。
+ */
+var UbbTagParameter = /** @class */ (function () {
+    /**
+     * 初始化一个对象的新实例。
+     * @param name 新参数的名称。
+     * @param value 新参数的值。
+     */
+    function UbbTagParameter(name, value) {
+        this._name = name;
+        this._value = value;
+    }
+    Object.defineProperty(UbbTagParameter.prototype, "name", {
+        /**
+         * 获取参数的名称。如果参数没有名称，则该属性为 null。
+         */
+        get: function () {
+            return this._name;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(UbbTagParameter.prototype, "value", {
+        /**
+         * 获取参数的值。如果该参数没有值，则该属性为 null。
+         */
+        get: function () {
+            return this._value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return UbbTagParameter;
+}());
+/**
+ * 定义 UBB 处理程序的基类。
+ */
+var UbbTagHandler = /** @class */ (function () {
+    function UbbTagHandler() {
+    }
+    /**
+     * 在解析完成处理标签内部的内容后，将标签本身作为文本处理。
+     * @param tagData 标签相关的数据。
+     * @param content 标签的内容。
+     */
+    UbbTagHandler.renderTagAsString = function (tagData, content) {
+        return [
+            tagData.startTagString,
+            content,
+            tagData.endTagString
+        ];
+    };
+    return UbbTagHandler;
+}());
+exports.UbbTagHandler = UbbTagHandler;
+/**
+ * 定义基于文字的 UBB 标签处理程序的基类。
+ */
+var TextTagHandler = /** @class */ (function (_super) {
+    __extends(TextTagHandler, _super);
+    function TextTagHandler() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    TextTagHandler.prototype.exec = function (tagSegment, context) {
+        return this.execCore(tagSegment.getContentText(), tagSegment.tagData, context);
+    };
+    return TextTagHandler;
+}(UbbTagHandler));
+exports.TextTagHandler = TextTagHandler;
+/**
+ * 定义递归处理内容的标签处理程序的基类。
+ */
+var RecursiveTagHandler = /** @class */ (function (_super) {
+    __extends(RecursiveTagHandler, _super);
+    function RecursiveTagHandler() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    RecursiveTagHandler.prototype.exec = function (tagSegment, context) {
+        var result = [];
+        for (var _i = 0, _a = tagSegment.subSegments; _i < _a.length; _i++) {
+            var subSeg = _a[_i];
+            result.push(context.engine.execSegment(subSeg, context));
+        }
+        return this.execCore(result, tagSegment.tagData, context);
+    };
+    return RecursiveTagHandler;
+}(UbbTagHandler));
+exports.RecursiveTagHandler = RecursiveTagHandler;
+/**
+ * 定义 UBB 处理程序列表。
+ */
+var UbbHandlerList = /** @class */ (function () {
+    function UbbHandlerList() {
+        /**
+         * 命名的内部标签处理器列表。
+         */
+        this._namedTagHandlerList = {};
+        /**
+         * 未命名的内部标签处理程序列表。
+         */
+        this._unnamedTagHanlderList = [];
+    }
+    /**
+     * 获取给定标签名称的处理程序。
+     * @param supportedTagNames 标签名称。
+     * @returns {UbbTagHandler} 标签处理程序。
+     */
+    UbbHandlerList.prototype.getHandler = function (tagName) {
+        // 首先寻找命名的标签处理程序
+        var namedTagHandler = this._namedTagHandlerList[tagName];
+        // 找到
+        if (namedTagHandler) {
+            return namedTagHandler;
+        }
+        // 寻找未命名的标签处理程序
+        for (var _i = 0, _a = this._unnamedTagHanlderList; _i < _a.length; _i++) {
+            var handler = _a[_i];
+            if (handler.supportedTagNames.test(tagName)) {
+                return handler;
+            }
+        }
+        // 找不到任何标签处理程序
+        return null;
+    };
+    /**
+     * 注册一个给定的标签处理程序。
+     * @param tagHandlerClass 处理程序对象的类型。
+     */
+    UbbHandlerList.prototype.register = function (tagHandlerClass) {
+        // ReSharper disable once InconsistentNaming
+        this.registerInstance(new tagHandlerClass());
+    };
+    /**
+     * 注册一个给定的处理程序实例。
+     * @param tagHandler 要注册的标签处理器。
+     */
+    UbbHandlerList.prototype.registerInstance = function (tagHandler) {
+        if (!tagHandler || !tagHandler.supportedTagNames) {
+            throw new Error('参数 tagHandler 无效，或者未提供正确的标签名称。');
+        }
+        if (typeof tagHandler.supportedTagNames === 'string') {
+            this.registerNamedCore([tagHandler.supportedTagNames], tagHandler);
+        }
+        else if (tagHandler.supportedTagNames instanceof Array) {
+            this.registerNamedCore(tagHandler.supportedTagNames, tagHandler);
+        }
+        else {
+            this.registerUnnamedCore(tagHandler);
+        }
+    };
+    /**
+     * 注册命名处理程序的核心方法。
+     * @param tagNames 处理程序关联的一个或多个标签名。
+     * @param tagHandler 处理程序对象。
+     */
+    UbbHandlerList.prototype.registerNamedCore = function (tagNames, tagHandler) {
+        for (var _i = 0, tagNames_1 = tagNames; _i < tagNames_1.length; _i++) {
+            var tagName = tagNames_1[_i];
+            if (tagName in this._namedTagHandlerList) {
+                console.error('标签 %s 的处理程序已经被注册。', tagName);
+            }
+            else {
+                this._namedTagHandlerList[tagName] = tagHandler;
+            }
+        }
+    };
+    /**
+     * 注册未命名处理程序的核心方法。
+     * @param tagHandler 处理程序对象。
+     */
+    UbbHandlerList.prototype.registerUnnamedCore = function (tagHandler) {
+        this._unnamedTagHanlderList.push(tagHandler);
+    };
+    return UbbHandlerList;
+}());
+/**
+ * 提供处理 UBB 程序的核心方法。
+ */
+var UbbCodeEngine = /** @class */ (function () {
+    function UbbCodeEngine() {
+        /**
+         * 获取该引擎中注册的处理程序。
+         */
+        this._tagHandlers = new UbbHandlerList();
+        /**
+         * 引擎保存的上下文数据。
+         */
+        this._data = new UbbCodeContextData();
+    }
+    Object.defineProperty(UbbCodeEngine.prototype, "tagHandlers", {
+        /**
+         * 该引擎中注册的处理程序。
+         */
+        get: function () {
+            return this._tagHandlers;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(UbbCodeEngine.prototype, "data", {
+        /**
+         * 获取引擎保存的上下文数据。
+         * @returns {UbbCodeContextData} 引擎保存的上下文数据。
+         */
+        get: function () {
+            return this._data;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    /**
+     * 获取给定标签名称的处理程序。
+     * @param supportedTagNames 给定的标签名称。
+     * @returns {UbbTagHandler} 给定标签名称的处理程序。
+     */
+    UbbCodeEngine.prototype.getHandler = function (tagName) {
+        return this._tagHandlers.getHandler(tagName);
+    };
+    /**
+     * 执行 UBB 解析的核心函数。
+     * @param content 要解析的内容。
+     * @param options 解析使用的相关选项。
+     * @returns {string} 解析后的 HTML 代码。
+     */
+    UbbCodeEngine.prototype.exec = function (content, options) {
+        var context = new UbbCodeContext(this, options);
+        return this.execCore(content, context);
+    };
+    /**
+     * 尝试找到关闭标记对应的开始标记，并关闭该标记。
+     * @param supportedTagNames 标记名称。
+     * @param parent 该标记的第一个上级。
+     * @returns {UbbTagSegment} 新的上级标签。
+     */
+    UbbCodeEngine.tryHandleEndTag = function (tagName, parent) {
+        var p = parent;
+        // 循环找到合适的上级，并关闭上级
+        while (p && p.tagData) {
+            if (p.tagData.tagName === tagName) {
+                p.close();
+                return p.parent;
+            }
+            p = p.parent;
+        }
+        // 没有找到任何上级
+        console.warn('UBB: 找不到结束标签 %s 的开始标签，该标签将被作为一般文字处理。', tagName);
+        parent.subSegments.push(new UbbTextSegment("[/" + tagName + "]", parent));
+        return parent;
+    };
+    /**
+     * 构建标签的核心方法。
+     * @param content 包含多个标签的字符串。
+     * @param parent 字符串的上级容器。
+     */
+    UbbCodeEngine.buildSegmentsCore = function (content, parent) {
+        var regExp = /([\s\S]*?)\[(.*?)]/gi;
+        while (true) {
+            var startIndex = regExp.lastIndex;
+            var tagMatch = regExp.exec(content);
+            // 未找到标记，则这是最后一个标签。
+            if (!tagMatch) {
+                // 提取最后一段内容，如果找到，附加到最后
+                var remainContent = content.substring(startIndex);
+                if (remainContent) {
+                    parent.subSegments.push(new UbbTextSegment(remainContent, parent));
+                }
+                return;
+            }
+            var beforeText = tagMatch[1], tagString = tagMatch[2];
+            // 添加前面的文字。
+            if (beforeText) {
+                parent.subSegments.push(new UbbTextSegment(beforeText, parent));
+            }
+            // 检测是否是结束标记
+            var endTagMatch = tagString.match(/^\/(.*)$/i);
+            if (endTagMatch) {
+                var endTagName = endTagMatch[1];
+                parent = UbbCodeEngine.tryHandleEndTag(endTagName, parent);
+            }
+            else {
+                try {
+                    // 提取新的标签数据
+                    var tagData = UbbTagData.parse(tagString);
+                    var newTag = new UbbTagSegment(tagData, parent);
+                    parent.subSegments.push(newTag);
+                    // 新上级
+                    parent = newTag;
+                    continue;
+                }
+                catch (error) {
+                    // 提取数据失败，则视为没有匹配
+                    console.warn('标签字符串 %s 解析失败，将被视为普通文字。', tagString);
+                    parent.subSegments.push(new UbbTextSegment("[" + tagString + "]", parent));
+                }
+            }
+        }
+    };
+    /**
+     * 执行 UBB 处理的核心函数。
+     * @param content 要处理的内容。
+     * @param context UBB 处理上下文。
+     * @returns {JSX.Element} 处理完成的 HTML 内容。
+     */
+    UbbCodeEngine.prototype.execCore = function (content, context) {
+        var root = new UbbTagSegment(null, null);
+        UbbCodeEngine.buildSegmentsCore(content, root);
+        var result = [];
+        for (var _i = 0, _a = root.subSegments; _i < _a.length; _i++) {
+            var item = _a[_i];
+            result.push(this.execSegment(item, context));
+        }
+        return result;
+    };
+    UbbCodeEngine.prototype.execSegment = function (segment, context) {
+        if (segment.type === UbbSegmentType.Text) {
+            return segment.text;
+        }
+        else {
+            var tag = segment;
+            var handler = this.getHandler(tag.tagData.tagName);
+            if (!handler) {
+                console.warn('没有找到标签 %s 的处理程序，将被视为一般文字。', tag.tagData.tagName);
+                return tag.getFullText();
+            }
+            return handler.exec(tag, context);
+        }
+    };
+    return UbbCodeEngine;
+}());
+exports.UbbCodeEngine = UbbCodeEngine;
+
+
+/***/ }),
 /* 3 */
 /***/ (function(module, exports) {
 
@@ -3004,9 +3004,9 @@ var App = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     App.prototype.render = function () {
-        return React.createElement("div", null,
+        return React.createElement("div", { style: { width: "100%" } },
             React.createElement(react_router_dom_1.BrowserRouter, null,
-                React.createElement("div", { style: { backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center" } },
+                React.createElement("div", { style: { backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px" } },
                     React.createElement(Header_1.Header, null),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/", component: MainPage_1.MainPage }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/:page?", component: post_1.Post }),
@@ -3189,7 +3189,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 var UbbContainer_1 = __webpack_require__(4);
 var react_router_dom_1 = __webpack_require__(3);
 var RouteComponent = /** @class */ (function (_super) {
@@ -3828,7 +3828,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 var $ = __webpack_require__(6);
 var react_router_dom_1 = __webpack_require__(3);
 var UbbContainer_1 = __webpack_require__(4);
@@ -5233,7 +5233,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(3);
 var Post = __webpack_require__(59);
 var RouteComponent = /** @class */ (function (_super) {
@@ -5577,7 +5577,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var AppState_1 = __webpack_require__(5);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 //链接到的地址是  /list/boardid
 var BoardList = /** @class */ (function (_super) {
     __extends(BoardList, _super);
@@ -5904,8 +5904,6 @@ var Message = /** @class */ (function (_super) {
     function Message() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Message.prototype.compontDidMount = function () {
-    };
     Message.prototype.render = function () {
         return (React.createElement("div", { className: "message-root" },
             React.createElement("div", { className: "message" },
@@ -6181,7 +6179,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 var $ = __webpack_require__(6);
 var DropDown = /** @class */ (function (_super) {
     __extends(DropDown, _super);
@@ -6574,7 +6572,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var $ = __webpack_require__(6);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 var UbbContainer_1 = __webpack_require__(4);
 /**
  * 全站公告组件
@@ -7132,7 +7130,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 /*
 *拥有权限的账号发帖类型中增加一项校园活动
 *拥有权限的账号才可以选择回复仅楼主可见
@@ -7434,9 +7432,45 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var LogOn_1 = __webpack_require__(11);
+var Utility = __webpack_require__(1);
 var LogOut = /** @class */ (function (_super) {
     __extends(LogOut, _super);
     function LogOut() {
@@ -7479,6 +7513,32 @@ var NotFoundBoard = /** @class */ (function (_super) {
     function NotFoundBoard() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    NotFoundBoard.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var token, headers, response, data, e_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        token = Utility.getLocalStorage("accessToken");
+                        headers = new Headers();
+                        headers.append('Authorization', token);
+                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/11", { headers: headers })];
+                    case 1:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 2:
+                        data = _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        e_1 = _a.sent();
+                        console.log(e_1);
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     NotFoundBoard.prototype.render = function () {
         return React.createElement("div", null, "\u7248\u9762\u4E0D\u5B58\u5728");
     };
@@ -7565,7 +7625,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 //用户中心我的关注&我的粉丝用户通用组件
 var UserCenterMyFollowingsUser = /** @class */ (function (_super) {
     __extends(UserCenterMyFollowingsUser, _super);
@@ -7749,9 +7809,9 @@ var App = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     App.prototype.render = function () {
-        return React.createElement("div", null,
+        return React.createElement("div", { style: { width: "100%" } },
             React.createElement(react_router_dom_1.BrowserRouter, null,
-                React.createElement("div", { style: { backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center" } },
+                React.createElement("div", { style: { backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px" } },
                     React.createElement(Header_1.Header, null),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/", component: MainPage_1.MainPage }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/:page?", component: post_1.Post }),
@@ -7791,7 +7851,7 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 var BTagHandler_1 = __webpack_require__(34);
 var ImageTagHandler_1 = __webpack_require__(35);
 var ITagHandler_1 = __webpack_require__(36);
@@ -7853,7 +7913,7 @@ function createEngine() {
 }
 exports.createEngine = createEngine;
 // 重新导出核心功能
-__export(__webpack_require__(1));
+__export(__webpack_require__(2));
 
 
 /***/ }),
@@ -7877,7 +7937,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 处理 [b] 标签的处理器。
  */
@@ -7930,7 +7990,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 var ImageTagHandler = /** @class */ (function (_super) {
     __extends(ImageTagHandler, _super);
     function ImageTagHandler() {
@@ -8028,7 +8088,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 处理 [i] 标签的处理器。
  */
@@ -8073,7 +8133,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 处理 [size] 标签的处理器。
  */
@@ -8127,7 +8187,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 处理 [quote] 标签的处理器。
  */
@@ -8179,7 +8239,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 处理 [color] 标签的处理器。
  */
@@ -8228,7 +8288,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 处理 [url] 标签的处理器。
  */
@@ -8284,7 +8344,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 处理 [u] 标签的处理器。
  */
@@ -8337,7 +8397,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 处理 [del] 标签的处理器。
  */
@@ -8385,7 +8445,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 处理 [mp3] 标签的处理器。
  */
@@ -8439,7 +8499,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 处理 [cursor] 标签的处理器。
  */
@@ -8487,7 +8547,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 处理 [english] 标签的处理器。
  */
@@ -8535,7 +8595,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 处理 [user] 标签的处理器。
  */
@@ -8583,7 +8643,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 处理 [code] 标签的处理器。
  */
@@ -8630,7 +8690,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 为所有未解析的标签提供通用处理。
  */
@@ -8675,7 +8735,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 处理 [font] 标签的处理器。
  */
@@ -8723,7 +8783,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 处理 [align] 标签的处理器。
  */
@@ -8772,7 +8832,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 //尚未完成 目前仅和ImageHandler功能相同 不能区分是否显示图像 也不能处理非图片格式的upload
 var UploadTagHandler = /** @class */ (function (_super) {
     __extends(UploadTagHandler, _super);
@@ -8829,7 +8889,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 处理 [left] 标签的处理器。
  */
@@ -8877,7 +8937,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 处理 [center] 标签的处理器。
  */
@@ -8925,7 +8985,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 处理 [right] 标签的处理器。
  */
@@ -8973,7 +9033,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 处理 [table] 标签的处理器。
  */
@@ -9017,7 +9077,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 处理 [td] 标签的处理器。
  */
@@ -9061,7 +9121,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 处理 [th] 标签的处理器。
  */
@@ -9105,7 +9165,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(1);
+var Ubb = __webpack_require__(2);
 /**
  * 处理 [tr] 标签的处理器。
  */
@@ -9181,7 +9241,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 var $ = __webpack_require__(6);
 var react_router_dom_1 = __webpack_require__(3);
 var UbbContainer_1 = __webpack_require__(4);
@@ -10657,7 +10717,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 var UserCenterExact_1 = __webpack_require__(62);
 var UserCenterMyFollowings_1 = __webpack_require__(65);
 var UserCenterMyFans_1 = __webpack_require__(83);
@@ -10714,7 +10774,7 @@ var React = __webpack_require__(0);
 var UserCenterExactProfile_1 = __webpack_require__(63);
 var UserCenterExactActivities_1 = __webpack_require__(16);
 var UserCenterExactAvatar_1 = __webpack_require__(17);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 /**
  * 用户中心主页
  */
@@ -10723,6 +10783,7 @@ var UserCenterExact = /** @class */ (function (_super) {
     function UserCenterExact(props) {
         var _this = _super.call(this, props) || this;
         var userInfo = Utility.getLocalStorage('userInfo');
+        console.log(userInfo);
         _this.state = {
             userInfo: userInfo,
             userAvatarImgURL: userInfo.portraitUrl
@@ -10770,24 +10831,51 @@ var UserCenterExactProfile = /** @class */ (function (_super) {
     function UserCenterExactProfile() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    UserCenterExactProfile.prototype.getPrivilegeColor = function () {
+        switch (this.props.userInfo.privilege) {
+            case '注册用户': return 'grey';
+            case '超级版主': return 'pink';
+            case '全站贵宾': return 'blue';
+            case '管理员': return 'red';
+        }
+    };
     UserCenterExactProfile.prototype.render = function () {
         return (React.createElement("div", { className: "user-profile" },
             React.createElement("div", { id: "userId" },
-                React.createElement("p", null, this.props.userInfo.name),
+                React.createElement("p", null,
+                    this.props.userInfo.name,
+                    "      ",
+                    React.createElement("span", { style: { fontSize: '12px', color: this.getPrivilegeColor() } }, this.props.userInfo.privilege)),
                 React.createElement("button", { type: "button", onClick: function () { location.pathname = '/message/message'; } }, "\u79C1\u4FE1")),
             React.createElement("div", { id: "userGenderAndBirthday" },
                 React.createElement("p", null,
-                    "\u6027\u522B  ",
+                    "\u6027\u522B\uFF1A  ",
                     (this.props.userInfo.gender === 1) ? '男' : '女',
                     " "),
-                this.props.userInfo.birthday === null ? '' : React.createElement("p", null,
-                    "\u751F\u65E5  ",
-                    this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T')))),
-            this.props.userInfo.personalDescription ?
-                React.createElement("div", { className: "user-description" },
-                    React.createElement("p", null, "\u4E2A\u4EBA\u8BF4\u660E"),
-                    React.createElement("img", { src: this.props.userInfo.photourl }),
-                    React.createElement("p", null, this.props.userInfo.personalDescription)) : null,
+                this.props.userInfo.birthday === null ? null : React.createElement("p", null,
+                    "\u751F\u65E5\uFF1A  ",
+                    this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T'))),
+                this.props.userInfo.emailAddress ? React.createElement("p", null,
+                    "\u90AE\u7BB1\uFF1A  ",
+                    this.props.userInfo.emailAddress) : null,
+                this.props.userInfo.qq ? React.createElement("p", null,
+                    "QQ\uFF1A  ",
+                    this.props.userInfo.qq) : null,
+                this.props.userInfo.postCount ? React.createElement("p", null,
+                    "\u53D1\u5E16\u6570\uFF1A  ",
+                    this.props.userInfo.postCount) : null,
+                this.props.userInfo.prestige ? React.createElement("p", null,
+                    "\u5A01\u671B\uFF1A  ",
+                    this.props.userInfo.prestige) : null,
+                this.props.userInfo.displayTitle ? React.createElement("p", null,
+                    "\u7528\u6237\u7EC4\uFF1A  ",
+                    this.props.userInfo.displayTitle) : null,
+                this.props.userInfo.registerTime ? React.createElement("p", null,
+                    "\u6CE8\u518C\u65F6\u95F4\uFF1A  ",
+                    this.props.userInfo.registerTime.replace('T', ' ')) : null,
+                this.props.userInfo.lastLogOnTime ? React.createElement("p", null,
+                    "\u6700\u540E\u767B\u5F55\u65F6\u95F4\uFF1A  ",
+                    this.props.userInfo.lastLogOnTime.replace('T', ' ')) : null),
             this.props.userInfo.signatureCode ?
                 React.createElement("div", { className: "user-description" },
                     React.createElement("p", null, "\u4E2A\u6027\u7B7E\u540D"),
@@ -10856,7 +10944,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var UserCenterExactActivitiesPost_1 = __webpack_require__(10);
 var AppState_1 = __webpack_require__(5);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 //用户中心主页帖子动态组件
 var UserCenterExactActivitiesPosts = /** @class */ (function (_super) {
     __extends(UserCenterExactActivitiesPosts, _super);
@@ -11062,7 +11150,7 @@ var AppState_1 = __webpack_require__(5);
 var app_1 = __webpack_require__(7);
 var UserCenterMyFollowingsUser_1 = __webpack_require__(28);
 var UserCenterPageCount_1 = __webpack_require__(8);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 //用户中心我的关注组件
 var UserCenterMyFollowings = /** @class */ (function (_super) {
     __extends(UserCenterMyFollowings, _super);
@@ -11218,7 +11306,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var MessagePerson_1 = __webpack_require__(67);
 var MessageWindow_1 = __webpack_require__(68);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
@@ -11481,7 +11569,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var MessageSender_1 = __webpack_require__(69);
 var MessageReceiver_1 = __webpack_require__(70);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 var MessageWindow = /** @class */ (function (_super) {
     __extends(MessageWindow, _super);
     function MessageWindow(props) {
@@ -12010,7 +12098,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
 var FocusTopicSingle_1 = __webpack_require__(20);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 /**
  * 表示全站最新主题列表
  */
@@ -12264,7 +12352,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
 var FocusBoardSingle_1 = __webpack_require__(76);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 /**
  * 表示我关注的版面列表区域
  */
@@ -12446,7 +12534,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
 var FocusTopicSingle_1 = __webpack_require__(20);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 /**
  * 表示我关注的版面的主题列表
  */
@@ -12747,7 +12835,7 @@ var react_router_dom_1 = __webpack_require__(3);
 var UserExactProfile_1 = __webpack_require__(80);
 var UserCenterExactActivities_1 = __webpack_require__(16);
 var UserCenterExactAvatar_1 = __webpack_require__(17);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 var UserRouter = /** @class */ (function (_super) {
     __extends(UserRouter, _super);
     function UserRouter() {
@@ -12880,7 +12968,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var UbbContainer_1 = __webpack_require__(4);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 /**
  * 用户中心主页个人资料组件
  */
@@ -12940,6 +13028,14 @@ var UserExactProfile = /** @class */ (function (_super) {
             });
         });
     };
+    UserExactProfile.prototype.getPrivilegeColor = function () {
+        switch (this.props.userInfo.privilege) {
+            case '注册用户': return 'grey';
+            case '超级版主': return 'pink';
+            case '全站贵宾': return 'blue';
+            case '管理员': return 'red';
+        }
+    };
     UserExactProfile.prototype.unfollow = function () {
         return __awaiter(this, void 0, void 0, function () {
             var token, userId, url, headers, res;
@@ -12984,22 +13080,42 @@ var UserExactProfile = /** @class */ (function (_super) {
         var _this = this;
         return (React.createElement("div", { className: "user-profile" },
             React.createElement("div", { id: "userId" },
-                React.createElement("p", null, this.props.userInfo.name),
-                React.createElement("button", { type: "button", onClick: function () { location.href = "/message/message?id=" + _this.props.userInfo.id; } }, "\u79C1\u4FE1"),
-                React.createElement("button", { type: "button", id: this.state.isFollowing ? 'unfollow' : '', onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo)),
+                React.createElement("div", { id: "userId" },
+                    React.createElement("p", null,
+                        this.props.userInfo.name,
+                        "      ",
+                        React.createElement("span", { style: { fontSize: '12px', color: this.getPrivilegeColor() } }, this.props.userInfo.privilege)),
+                    React.createElement("button", { type: "button", onClick: function () { location.href = "/message/message?id=" + _this.props.userInfo.id; } }, "\u79C1\u4FE1"),
+                    React.createElement("button", { type: "button", id: this.state.isFollowing ? 'unfollow' : '', onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo))),
             React.createElement("div", { id: "userGenderAndBirthday" },
                 React.createElement("p", null,
-                    "\u6027\u522B  ",
+                    "\u6027\u522B\uFF1A  ",
                     (this.props.userInfo.gender === 1) ? '男' : '女',
                     " "),
-                this.props.userInfo.birthday === null ? '' : React.createElement("p", null,
-                    "\u751F\u65E5  ",
-                    this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T')))),
-            this.props.userInfo.personalDescription ?
-                React.createElement("div", { className: "user-description" },
-                    React.createElement("p", null, "\u4E2A\u4EBA\u8BF4\u660E"),
-                    React.createElement("img", { src: this.props.userInfo.photourl }),
-                    React.createElement("p", null, this.props.userInfo.personalDescription)) : null,
+                this.props.userInfo.birthday === null ? null : React.createElement("p", null,
+                    "\u751F\u65E5\uFF1A  ",
+                    this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T'))),
+                this.props.userInfo.emailAddress ? React.createElement("p", null,
+                    "\u90AE\u7BB1\uFF1A  ",
+                    this.props.userInfo.emailAddress) : null,
+                this.props.userInfo.qq ? React.createElement("p", null,
+                    "QQ\uFF1A  ",
+                    this.props.userInfo.qq) : null,
+                this.props.userInfo.postCount ? React.createElement("p", null,
+                    "\u53D1\u5E16\u6570\uFF1A  ",
+                    this.props.userInfo.postCount) : null,
+                this.props.userInfo.prestige ? React.createElement("p", null,
+                    "\u5A01\u671B\uFF1A  ",
+                    this.props.userInfo.prestige) : null,
+                this.props.userInfo.displayTitle ? React.createElement("p", null,
+                    "\u7528\u6237\u7EC4\uFF1A  ",
+                    this.props.userInfo.displayTitle) : null,
+                this.props.userInfo.registerTime ? React.createElement("p", null,
+                    "\u6CE8\u518C\u65F6\u95F4\uFF1A  ",
+                    this.props.userInfo.registerTime.replace('T', ' ')) : null,
+                this.props.userInfo.lastLogOnTime ? React.createElement("p", null,
+                    "\u6700\u540E\u767B\u5F55\u65F6\u95F4\uFF1A  ",
+                    this.props.userInfo.lastLogOnTime.replace('T', ' ')) : null),
             this.props.userInfo.signatureCode ?
                 React.createElement("div", { className: "user-description" },
                     React.createElement("p", null, "\u4E2A\u6027\u7B7E\u540D"),
@@ -13067,7 +13183,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var $ = __webpack_require__(6);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 var LogOnExact = /** @class */ (function (_super) {
     __extends(LogOnExact, _super);
     function LogOnExact(props) {
@@ -13174,7 +13290,7 @@ var LogOnExact = /** @class */ (function (_super) {
                         return [4 /*yield*/, response1.json()];
                     case 4:
                         userInfo = _a.sent();
-                        Utility.setLocalStorage("userInfo", userInfo, data.expires_in);
+                        Utility.setLocalStorage("userInfo", userInfo);
                         this.setState({
                             loginMessage: '登录成功 正在返回首页',
                             isLogining: false
@@ -13341,7 +13457,7 @@ var AppState_1 = __webpack_require__(5);
 var UserCenterMyFollowingsUser_1 = __webpack_require__(28);
 var app_1 = __webpack_require__(7);
 var UserCenterPageCount_1 = __webpack_require__(8);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 //用户中心我的粉丝组件
 var UserCenterMyFans = /** @class */ (function (_super) {
     __extends(UserCenterMyFans, _super);
@@ -13499,7 +13615,7 @@ var UserCenterExactActivitiesPost_1 = __webpack_require__(10);
 var AppState_1 = __webpack_require__(5);
 var app_1 = __webpack_require__(7);
 var UserCenterPageCount_1 = __webpack_require__(8);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 var UserCenterMyPostsExact = /** @class */ (function (_super) {
     __extends(UserCenterMyPostsExact, _super);
     function UserCenterMyPostsExact(props, contest) {
@@ -13518,7 +13634,7 @@ var UserCenterMyPostsExact = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         page = this.match.params.page || 1;
-                        url = "http://apitest.niconi.cc/me/recenttopics?from=" + (page - 1) * 10 + "&size=10";
+                        url = "http://apitest.niconi.cc/me/recenttopics?from=" + (page - 1) * 10 + "&size=11";
                         token = Utility.getLocalStorage("accessToken");
                         headers = new Headers();
                         headers.append('Authorization', token);
@@ -13531,15 +13647,16 @@ var UserCenterMyPostsExact = /** @class */ (function (_super) {
                     case 2:
                         data = _a.sent();
                         posts = [], i = data.length;
-                        if (i !== 10) {
+                        if (i <= 10) {
                             this.setState({
-                                totalPage: page
+                                totalPage: Number.parseInt(page)
                             });
                         }
                         else {
                             this.setState({
-                                totalPage: page + 1
+                                totalPage: Number.parseInt(page) + 1
                             });
+                            i = 10;
                         }
                         _a.label = 3;
                     case 3:
@@ -13714,7 +13831,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var UserCenterExactActivitiesPost_1 = __webpack_require__(10);
 var AppState_1 = __webpack_require__(5);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 var UserCenterPageCount_1 = __webpack_require__(8);
 var app_1 = __webpack_require__(7);
 var UserCenterMyFavoritesPosts = /** @class */ (function (_super) {
@@ -13859,7 +13976,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 var UserCenterMyFavoritesBoard_1 = __webpack_require__(88);
 var UserCenterMyFavoritesBoards = /** @class */ (function (_super) {
     __extends(UserCenterMyFavoritesBoards, _super);
@@ -13990,7 +14107,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Utility = __webpack_require__(2);
+var Utility = __webpack_require__(1);
 var UserCenterMyFavoritesBoard = /** @class */ (function (_super) {
     __extends(UserCenterMyFavoritesBoard, _super);
     function UserCenterMyFavoritesBoard(props) {
@@ -14161,19 +14278,188 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
+var Utility = __webpack_require__(1);
 var UserCenterConfigAvatar = /** @class */ (function (_super) {
     __extends(UserCenterConfigAvatar, _super);
-    function UserCenterConfigAvatar() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function UserCenterConfigAvatar(props) {
+        var _this = _super.call(this, props) || this;
+        var userInfo = Utility.getLocalStorage('userInfo');
+        _this.state = {
+            avatarURL: '',
+            info: '图片长宽为160×160像素的图片',
+            isShown: false,
+            divheight: '0px',
+            selectorWidth: 160,
+            selectorLeft: 0,
+            selectorTop: 0
+        };
+        _this.handleChange = _this.handleChange.bind(_this);
+        _this.handleIMGLoad = _this.handleIMGLoad.bind(_this);
+        _this.handleSelectorMove = _this.handleSelectorMove.bind(_this);
+        _this.handleResizeMove = _this.handleResizeMove.bind(_this);
+        return _this;
     }
+    UserCenterConfigAvatar.prototype.handleChange = function (e) {
+        var _this = this;
+        var file = e.target.files[0];
+        if (!file.type.match('image.*')) {
+            this.setState({
+                info: '请选择图片文件',
+                isShown: false,
+                divheight: '0px'
+            });
+            return false;
+        }
+        var render = new FileReader();
+        render.readAsDataURL(file);
+        render.addEventListener('load', function (arg) {
+            _this.setState({
+                avatarURL: arg.target.result
+            });
+        });
+    };
+    UserCenterConfigAvatar.prototype.handleIMGLoad = function () {
+        console.log(this.myIMG.naturalWidth);
+        console.log(this.myIMG.naturalHeight);
+        if (this.myIMG.naturalWidth < 160 || this.myIMG.naturalHeight < 160) {
+            this.setState({
+                info: '图片至少为 160*160',
+                isShown: false
+            });
+            return;
+        }
+        var ctx = this.myCanvas.getContext('2d');
+        this.myCanvas.width = this.myIMG.naturalWidth + 40;
+        this.myCanvas.height = this.myIMG.naturalHeight + 40;
+        ctx.drawImage(this.myIMG, 0, 0, this.myIMG.naturalWidth, this.myIMG.naturalHeight, 20, 20, this.myIMG.naturalWidth, this.myIMG.naturalHeight);
+        this.setState({
+            divheight: this.myIMG.naturalHeight + 50 + "px",
+            isShown: true,
+            info: '请选择要显示的区域'
+        });
+    };
+    UserCenterConfigAvatar.prototype.componentDidMount = function () {
+        this.selector.addEventListener('mousedown', this.handleSelectorMove);
+        this.selector.addEventListener('mousemove', this.handleSelectorMove);
+        this.selector.addEventListener('mouseup', this.handleSelectorMove);
+        this.selector.addEventListener('mouseleave', this.handleSelectorMove);
+        this.resize.addEventListener('mousedown', this.handleResizeMove);
+        this.resize.addEventListener('mousemove', this.handleResizeMove);
+        this.resize.addEventListener('mouseup', this.handleResizeMove);
+        this.resize.addEventListener('mouseleave', this.handleResizeMove);
+    };
+    UserCenterConfigAvatar.prototype.componentWillUnmount = function () {
+        this.selector.removeEventListener('mousedown', this.handleSelectorMove);
+        this.selector.removeEventListener('mousemove', this.handleSelectorMove);
+        this.selector.removeEventListener('mouseup', this.handleSelectorMove);
+        this.selector.removeEventListener('mouseleave', this.handleSelectorMove);
+        this.resize.removeEventListener('mousedown', this.handleResizeMove);
+        this.resize.removeEventListener('mousemove', this.handleResizeMove);
+        this.resize.removeEventListener('mouseup', this.handleResizeMove);
+        this.resize.removeEventListener('mouseleave', this.handleResizeMove);
+    };
+    UserCenterConfigAvatar.prototype.handleSelectorMove = function (event) {
+        switch (event.type) {
+            case 'mousedown':
+                this.diffX = event.clientX - event.target.offsetLeft;
+                this.diffY = event.clientY - event.target.offsetTop;
+                this.dragging = event.target;
+                //console.log(event);
+                break;
+            case 'mousemove':
+                //console.log(this.dragging);
+                if (this.dragging !== null) {
+                    var y = event.clientY - this.diffY, x = event.clientX - this.diffX;
+                    if (y < 0) {
+                        y = 0;
+                    }
+                    if (y > this.myIMG.naturalHeight - this.state.selectorWidth) {
+                        y = this.myIMG.naturalHeight - this.state.selectorWidth;
+                    }
+                    if (x < 0) {
+                        x = 0;
+                    }
+                    if (x > 800 - this.state.selectorWidth) {
+                        x = 800 - this.state.selectorWidth;
+                    }
+                    this.setState({
+                        selectorTop: y,
+                        selectorLeft: x
+                    });
+                    //console.log('mousemove');
+                }
+                break;
+            case 'mouseup':
+                this.dragging = null;
+                break;
+            case 'mouseleave':
+                this.dragging = null;
+                break;
+        }
+    };
+    UserCenterConfigAvatar.prototype.handleResizeMove = function (event) {
+        var _this = this;
+        switch (event.type) {
+            case 'mousedown':
+                this.diffX = event.clientX - event.target.offsetLeft;
+                this.dragging = event.target;
+                console.log(event);
+                break;
+            case 'mousemove':
+                //console.log(this.dragging);
+                this.diffY = event.clientX - event.target.offsetLeft;
+                if (this.dragging !== null) {
+                    this.setState(function (prevState) {
+                        var num = prevState.selectorWidth + _this.diffY - _this.diffX;
+                        if (!isNaN(num)) {
+                            if (num < 80) {
+                                num = 80;
+                            }
+                            if (num > 500) {
+                                num = 500;
+                            }
+                        }
+                        return {
+                            selectorWidth: isNaN(num) ? prevState.selectorWidth : num
+                        };
+                    });
+                    //console.log('mousemove');
+                }
+                break;
+            case 'mouseup':
+                this.dragging = null;
+                break;
+            case 'mouseleave':
+                this.dragging = null;
+                break;
+        }
+    };
     UserCenterConfigAvatar.prototype.render = function () {
+        var _this = this;
+        var style = {
+            display: 'none'
+        };
+        var userInfo = Utility.getLocalStorage('userInfo');
         return (React.createElement("div", { className: "user-center-config-avatar" },
-            React.createElement("img", { src: "http://file.cc98.org/uploadface/5298.png" }),
+            React.createElement("img", { src: userInfo.portraitUrl }),
             React.createElement("div", null,
                 React.createElement("button", { id: "chooseDefaultAvatar", type: "button" }, "\u9009\u62E9\u8BBA\u575B\u5934\u50CF"),
                 React.createElement("div", null,
-                    React.createElement("button", { id: "uploadAvatar", type: "button" }, "\u4E0A\u4F20\u5934\u50CF"),
-                    React.createElement("p", null, "\u56FE\u7247\u957F\u5BBD\u4E3A160\u00D7160\u50CF\u7D20\u7684\u56FE\u7247")))));
+                    React.createElement("input", { onChange: this.handleChange, id: "uploadAvatar", type: "file", style: style }),
+                    React.createElement("label", { htmlFor: "uploadAvatar" },
+                        React.createElement("p", null, "\u9009\u62E9\u672C\u5730\u56FE\u7247")),
+                    React.createElement("p", null, this.state.info))),
+            React.createElement("div", { className: "user-center-config-avatar-preview", style: this.state.isShown ? { opacity: 1, marginTop: '2rem' } : { zIndex: -1 } },
+                React.createElement("hr", null),
+                React.createElement("div", { style: { position: 'absolute', width: '824px', overflow: 'hidden' } },
+                    React.createElement("canvas", { ref: function (canvas) { _this.myCanvas = canvas; }, style: { position: 'relative' } }),
+                    React.createElement("div", { id: "cover" }),
+                    React.createElement("div", { className: "imgdata", ref: function (div) { _this.selector = div; }, style: { width: this.state.selectorWidth + "px", height: this.state.selectorWidth + "px", borderRadius: this.state.selectorWidth / 2 + "px", top: this.state.selectorTop + "px", left: this.state.selectorLeft + "px" } },
+                        React.createElement("img", { src: this.state.avatarURL, style: { position: 'relative', top: 20 - this.state.selectorTop + "px", left: 20 - this.state.selectorLeft + "px" } })),
+                    React.createElement("div", { id: "selector", ref: function (div) { _this.selector = div; }, style: { width: this.state.selectorWidth + "px", height: this.state.selectorWidth + "px", borderRadius: this.state.selectorWidth / 2 + "px", top: this.state.selectorTop + "px", left: this.state.selectorLeft + "px" } }),
+                    React.createElement("span", { id: "resize", ref: function (span) { _this.resize = span; }, style: { top: this.state.selectorTop + this.state.selectorWidth + "px", left: this.state.selectorLeft + this.state.selectorWidth + "px" } })),
+                React.createElement("img", { ref: function (img) { _this.myIMG = img; }, onLoad: this.handleIMGLoad, style: style, src: this.state.avatarURL })),
+            React.createElement("div", { style: { width: '100%', height: this.state.divheight, transitionDuration: '.5s' } })));
     };
     return UserCenterConfigAvatar;
 }(React.Component));
@@ -14201,12 +14487,15 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
+var Utility = __webpack_require__(1);
 var UserCenterConfigSignature = /** @class */ (function (_super) {
     __extends(UserCenterConfigSignature, _super);
     function UserCenterConfigSignature(props) {
         var _this = _super.call(this, props) || this;
+        var userInfo = Utility.getLocalStorage('userInfo');
+        console.log(userInfo);
         _this.state = {
-            signature: '你还没有个性签名',
+            signature: userInfo.signatureCode,
             signatureExtends: null
         };
         _this.handleChange = _this.handleChange.bind(_this);
@@ -14214,7 +14503,6 @@ var UserCenterConfigSignature = /** @class */ (function (_super) {
     }
     UserCenterConfigSignature.prototype.handleChange = function (event) {
         this.setState({ signature: event.target.value });
-        console.log(this.state.signature);
     };
     UserCenterConfigSignature.prototype.render = function () {
         return (React.createElement("div", { className: "user-center-config-signature" },
