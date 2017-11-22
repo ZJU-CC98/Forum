@@ -3,6 +3,14 @@ import * as Utility from '../Utility';
 import { AppState } from '../States/AppState';
 import * as $ from 'jquery';
 
+
+/*declare global {
+    interface JQuery {
+        connection: SignalR;
+    }
+}*/
+
+
 export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   //顶部条的下拉菜单组件
     constructor(props?, context?) {
         super(props, context);
@@ -23,6 +31,8 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
             console.log("token已过期，正在重新获取");
             this.reLogOn();
         }
+
+        
 
         //以下是明一写的signalr，有锅找他
         /*var chat = $.connection.messageHub;
