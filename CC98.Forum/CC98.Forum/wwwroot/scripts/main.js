@@ -3295,9 +3295,9 @@ var App = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     App.prototype.render = function () {
-        return React.createElement("div", null,
+        return React.createElement("div", { style: { width: "100%" } },
             React.createElement(react_router_dom_1.BrowserRouter, null,
-                React.createElement("div", { style: { backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center" } },
+                React.createElement("div", { style: { backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px" } },
                     React.createElement(Header_1.Header, null),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/", component: MainPage_1.MainPage }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/:page?", component: post_1.Post }),
@@ -7231,9 +7231,9 @@ var App = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     App.prototype.render = function () {
-        return React.createElement("div", null,
+        return React.createElement("div", { style: { width: "100%" } },
             React.createElement(react_router_dom_1.BrowserRouter, null,
-                React.createElement("div", { style: { backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center" } },
+                React.createElement("div", { style: { backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px" } },
                     React.createElement(Header_1.Header, null),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/", component: MainPage_1.MainPage }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/:page?", component: post_1.Post }),
@@ -12644,7 +12644,7 @@ var LogOnExact = /** @class */ (function (_super) {
                         data = _a.sent();
                         token = "Bearer " + encodeURIComponent(data.access_token);
                         //缓存数据
-                        Utility.setLocalStorage("accessToken", token, 30);
+                        Utility.setLocalStorage("accessToken", token, data.expires_in);
                         Utility.setLocalStorage("userName", this.state.loginName);
                         Utility.setLocalStorage("password", this.state.loginPassword);
                         headers1 = new Headers();
@@ -12658,11 +12658,14 @@ var LogOnExact = /** @class */ (function (_super) {
                     case 4:
                         userInfo = _a.sent();
                         Utility.setLocalStorage("userInfo", userInfo, data.expires_in);
-                        console.log(userInfo);
                         this.setState({
                             loginMessage: '登录成功 正在返回首页',
                             isLogining: false
                         });
+                        //跳转至首页
+                        setTimeout(function () {
+                            location.pathname = "/";
+                        }, 1000);
                         return [2 /*return*/];
                 }
             });
