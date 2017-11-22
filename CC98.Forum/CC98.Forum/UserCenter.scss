@@ -316,7 +316,7 @@
             margin-top: 1rem;
 
             div {
-                margin: 1rem 0;
+                margin: 0 0 2rem 0;
             }
 
             hr {
@@ -342,6 +342,7 @@
 
                 p {
                     flex-grow: 1;
+                    margin: 0;
                 }
 
                 .fa-thumbs-o-up {
@@ -461,6 +462,18 @@
                     background-color: rgb(220,220,220);
                 }
             }
+
+            label {
+                background-color: #f0f0f0;
+
+                &:hover {
+                    background-color: rgb(210,210,210);
+                }
+
+                &:active {
+                    background-color: rgb(200,200,200);
+                }
+            }
         }
 
         hr {
@@ -471,6 +484,19 @@
         .user-center-config-avatar {
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
+
+            .user-center-config-avatar-preview {
+                width: 100%;
+                margin-top: 3rem;
+                display: flex;
+                flex-direction: row;
+            }
+
+            canvas {
+
+                height: 30rem;
+            }
 
             & > img {
                 width: 160px;
@@ -498,6 +524,16 @@
                         height: 30px;
                         margin-left: 30px;
                         margin-right: 20px;
+                    }
+
+                    label {
+                        width: 100px;
+                        height: 30px;
+                        margin-left: 30px;
+                        margin-right: 20px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
                     }
                 }
             }
@@ -627,8 +663,30 @@
     }
 
     button {
+        transition-duration: .4s;
         width: 6rem;
         height: 2rem;
         border-radius: 0.5rem;
+
+        &:hover {
+            background-color: rgb(210,210,210);
+        }
+
+        &:active {
+            background-color: rgb(200,200,200);
+        }
+    }
+
+    .follow {
+        background-color: #68b3ff;
+        color: #FFFFFF;
+
+        &:hover {
+            background-color: rgb(41,174,223);
+        }
+
+        &:active {
+            background-color: rgb(38,154,196);
+        }
     }
 }

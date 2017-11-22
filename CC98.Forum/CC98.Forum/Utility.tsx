@@ -20,10 +20,13 @@ export async function getBoardTopicAsync(curPage, boardid) {
         const endPage = curPage * 20 - 1;
 
         const totalTopicCountResponse = await fetch(`http://apitest.niconi.cc/Board/${boardid}`);
+        //找不到版面
         if (totalTopicCountResponse.status == 404) {
-            this.context.router.history.push('/status/NotFoundBoard');
-        }
 
+        }
+        if (totalTopicCountResponse.status === 500) {
+
+        }
         const totalTopicCountJson = await totalTopicCountResponse.json();
 
         const totalTopicCount = totalTopicCountJson.topicCount;
@@ -42,23 +45,28 @@ export async function getBoardTopicAsync(curPage, boardid) {
         headers.append('Authorization', token);
         const response = await fetch(url,
             { headers });
-        if (response.status == 401) {
-            
-        }
-        if (response.status == 404) {
+        //无权限进版面
+        if (response.status === 401) {
 
         }
-            const data: State.TopicTitleAndContentState[] = await response.json();
-            for (let i = 0; i < topicNumberInPage; i++) {
-                boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName || '匿名', data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime);
-            }
+        //版面不存在
+        if (response.status === 404) {
 
-            return boardtopics;
-        
-     
+        }
+        if (response.status === 500) {
+
+        }
+        const data: State.TopicTitleAndContentState[] = await response.json();
+        for (let i = 0; i < topicNumberInPage; i++) {
+            boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime);
+        }
+
+        return boardtopics;
+
+
     } catch (e) {
 
-        alert("网络中断");
+        alert("网络0中断");
     }
 
 }
@@ -68,39 +76,44 @@ export async function getTopic(topicid: number) {
         const headers = new Headers();
         headers.append('Authorization', token);
         const response = await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}?from=0&size=1`, {
-
             headers
         });
-        if (response.status == 404) {
-            const str = await response.text();
-            console.log("text=" + str);
-         
+        if (response.status === 404) {
+
+        }
+        if (response.status === 500) {
+
         }
         const data = await response.json();
-      
+
         const hitCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers });
-        if (hitCountResponse.status == 404) {
-
+        //两种情况 被删或者不存在
+        if (hitCountResponse.status === 404) {
+       
         }
-        if (hitCountResponse.status == 401) {
-
+         if (hitCountResponse.status === 401) {
+         
         }
         const hitCountJson = await hitCountResponse.json();
         const hitCount = hitCountJson.hitCount;
         let topicMessage = null;
         if (data[0].isAnonymous != true) {
             const userMesResponse = await fetch(`http://apitest.niconi.cc/User/${data[0].userId}`);
+            if (userMesResponse.status === 404) {
+
+            }
             const userMesJson = await userMesResponse.json();
             topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType);
         } else {
-            topicMessage = new State.TopicState('匿名', data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType);
-        }
+            topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType);
 
+}
 
-        return topicMessage;
+            return topicMessage;
+
+        
     } catch (e) {
-         this.context.router.history.push("/status/NotFountTopic");
-       // window.location.href = "/status/NotFountTopic";
+        alert("网络1中断");
     }
 }
 export async function getTopicContent(topicid: number, curPage: number) {
@@ -113,99 +126,176 @@ export async function getTopicContent(topicid: number, curPage: number) {
         const topic = curPage !== 1
             ? await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}?from=${startPage}&size=10`, { headers })
             : await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}?from=1&size=9`, { headers });
+        if (topic.status === 401) {
 
-        const replyCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers });
-
-        const replyCountJson = await replyCountResponse.json();
-        const replyCount = replyCountJson.replyCount;
-        const content = await topic.json();
-        const post: State.ContentState[] = [];
-        let topicNumberInPage: number;
-        if (curPage !== 1 && curPage * 10 <= replyCount) {
-            topicNumberInPage = 10;
-        } else if (curPage === 1 && replyCount >= 9) {
-            topicNumberInPage = 9;
-        } else if (curPage === 1 && replyCount < 9) {
-            topicNumberInPage = replyCount;
-        } else {
-            topicNumberInPage = (replyCount - (curPage - 1) * 10 + 1);
         }
-        for (let i = 0; i < topicNumberInPage; i++) {
-            if (content[i].userName != null) {
+        //两种
+        if (topic.status === 404) {
 
-                const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
-                const userMesJson = await userMesResponse.json();
-                post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+        }
+        if (topic.status === 500) {
+
+        }
+        const replyCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers });
+        if (replyCountResponse.status == 404) {
+            window.location.href = '/status/NotFoundTopic';
+        }
+        if (replyCountResponse.status == 401) {
+            window.location.href = '/status/UnauthorizedTopic';
+        }
+            const replyCountJson = await replyCountResponse.json();
+            const replyCount = replyCountJson.replyCount;
+            const content = await topic.json();
+            const post: State.ContentState[] = [];
+            let topicNumberInPage: number;
+            if (curPage !== 1 && curPage * 10 <= replyCount) {
+                topicNumberInPage = 10;
+            } else if (curPage === 1 && replyCount >= 9) {
+                topicNumberInPage = 9;
+            } else if (curPage === 1 && replyCount < 9) {
+                topicNumberInPage = replyCount;
             } else {
-                let purl = 'https://www.cc98.org/pic/anonymous.gif';
-                post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+                topicNumberInPage = (replyCount - (curPage - 1) * 10 + 1);
+            }
+            for (let i = 0; i < topicNumberInPage; i++) {
+                if (content[i].isAnonymous != true) {
+
+                    const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
+                    if (userMesResponse.status === 404) {
+                        window.location.href = "/status/NotFoundUser";
+                    }
+                        const userMesJson = await userMesResponse.json();
+                        post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+                    
+                } else {
+                    let purl = 'https://www.cc98.org/pic/anonymous.gif';
+                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名' + content[i].userName.toUpperCase(), null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+
+                }
 
             }
-        }
-        return post;
+            return post;
+        
     } catch (e) {
-        alert("网络中断");
+        alert("网络2中断");
     }
 }
 export async function like(topicid, postid) {
     try {
-    const token = getLocalStorage("accessToken");
-    const headers = new Headers();
-    headers.append('Authorization', token);
-    const response = await fetch(`http://apitest.niconi.cc/post/userlike?topicid=${topicid}&postid=${postid}`, { method: "POST", headers });
-    const data = await response.json();
-        return data;
+        const token = getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        const response = await fetch(`http://apitest.niconi.cc/post/userlike?topicid=${topicid}&postid=${postid}`, { method: "POST", headers });
+        if (response.status === 401) {
+
+        }
+        if (response.status === 403) {
+
+        }
+        if (response.status === 404) {
+
+        } 
+        if (response.status === 500) {
+
+        }
+            const data = await response.json();
+            return data;
+        
     } catch (e) {
-        alert("网络中断");
+        alert("网络3中断");
     }
 }
 export async function dislike(topicid, postid) {
     try {
-    const token = getLocalStorage("accessToken");
-    const headers = new Headers();
-    headers.append('Authorization', token);
-    const response = await fetch(`http://apitest.niconi.cc/post/userdislike?topicid=${topicid}&postid=${postid}`, { method: "POST", headers });
-    const data = await response.json();
-    return data;
+        const token = getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        const response = await fetch(`http://apitest.niconi.cc/post/userdislike?topicid=${topicid}&postid=${postid}`, { method: "POST", headers });
+        if (response.status === 401) {
+
+        }
+
+        if (response.status === 403) {
+
+        }
+        if (response.status === 404) {
+
+        } 
+        if (response.status === 500) {
+
+        }
+            const data = await response.json();
+            return data;
+        
     } catch (e) {
-        alert("网络中断");
+        alert("网络4中断");
     }
 }
 export async function getLikeStateAndCount(topicid, postid) {
     try {
-    const token = getLocalStorage("accessToken");
-    const headers = new Headers();
-    headers.append('Authorization', token);
-    await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}?from=0&size=10`, { headers })
-    const response = await fetch(`http://apitest.niconi.cc/likeState?topicid=${topicid}&postid=${postid}`, { headers });
-    const data = await response.json();
-        return data;
+        const token = getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        // await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}?from=0&size=10`, { headers })
+        const response = await fetch(`http://apitest.niconi.cc/likeState?topicid=${topicid}&postid=${postid}`, { headers });
+        if (response.status === 401) {
+
+        }
+        if (response.status === 403) {
+
+        }
+        if (response.status === 404) {
+
+        } 
+        if (response.status === 500) {
+
+        }
+            const data = await response.json();
+            return data;
+        
     } catch (e) {
-        alert("网络中断");
+        alert("网络5中断");
     }
 }
 export async function getHotReplyContent(topicid: number) {
     try {
-    let token = getLocalStorage("accessToken");
-    const headers = new Headers();
-    headers.append('Authorization', token);
-    const response = await fetch(`http://apitest.niconi.cc/Post/Topic/Hot/${topicid}`, { headers });
-    const content = await response.json();
-    const post: State.ContentState[] = [];
-    let topicNumberInPage: number = content.length;
-    for (let i = 0; i < topicNumberInPage; i++) {
-        if (content[i].userName != null) {
-            const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
-            const userMesJson = await userMesResponse.json();
-            post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
-        } else {
-            let purl = 'https://www.cc98.org/pic/anonymous.gif';
-            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+        let token = getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        const response = await fetch(`http://apitest.niconi.cc/Post/Topic/Hot/${topicid}`, { headers });
+        //帖子不存在
+        if (response.status === 404) {
+
         }
-    }
+        //无权限进版面
+         if (response.status === 401) {
+
+        }
+        if (response.status === 500) {
+
+        }
+        const content = await response.json();
+        const post: State.ContentState[] = [];
+        let topicNumberInPage: number = content.length;
+        for (let i = 0; i < topicNumberInPage; i++) {
+            if (content[i].isAnonymous != true) {
+                const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
+                if (userMesResponse.status === 404) {
+
+                }
+                if (userMesResponse.status === 500) {
+
+                }
+                const userMesJson = await userMesResponse.json();
+                post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+            } else {
+                let purl = 'https://www.cc98.org/pic/anonymous.gif';
+                post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名' + content[i].userName.toUpperCase(), null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+            }
+        }
         return post;
     } catch (e) {
-        alert("网络中断");
+        alert("网络6中断");
     }
 }
 export function convertHotTopic(item: State.TopicTitleAndContentState) {
@@ -271,74 +361,101 @@ export function getPager(curPage, totalPage) {
 }
 export async function getCurUserTopic(topicid: number, userId: number) {
     try {
-    let token = getLocalStorage("accessToken");
-    const headers = new Headers();
-    headers.append('Authorization', token);
-    const response = await fetch(`http://apitest.niconi.cc/post/Topic/user?topicid=${topicid}&userid=${userId}&from=0&size=1`, { headers });
-    const data = await response.json();
-    const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${data[0].userName}`);
-    const userMesJson = await userMesResponse.json();
-    data[0].userImgUrl = userMesJson.portraitUrl;
+        let token = getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        const response = await fetch(`http://apitest.niconi.cc/post/Topic/user?topicid=${topicid}&userid=${userId}&from=0&size=1`, { headers });
+        if (response.status === 401) {
+
+        }
+        if (response.status === 404) {
+
+        }
+        if (response.status === 500) {
+
+        }
+        const data = await response.json();
+        const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${data[0].userName}`);
+        if (userMesResponse.status === 404) {
+
+        }
+        if (userMesResponse.status === 500) {
+
+        }
+        const userMesJson = await userMesResponse.json();
+        data[0].userImgUrl = userMesJson.portraitUrl;
         return data[0];
     } catch (e) {
-        alert("网络中断");
+        alert("网络7中断");
     }
 }
 export async function getCurUserTopicContent(topicid: number, curPage: number, userName: string, userId: number) {
     try {
-    const topicMessage = await getTopic(topicid);
-    let start: number;
-    let isUserPoster: boolean;
-    if (topicMessage.userName === userName) {
-        isUserPoster = true;
-        if (curPage === 1)
-            start = (curPage - 1) * 10 + 1;
-        else
-            start = (curPage - 1) * 10;
-    } else {
-        isUserPoster = false;
-        start = (curPage - 1) * 10;
-    }
-
-    const token = getLocalStorage("accessToken");
-    const headers = new Headers();
-    headers.append('Authorization', token);
-    const topic = await fetch(`http://apitest.niconi.cc/Post/Topic/user?topicid=${topicid}&userId=${userId}&from=${start}&size=10`, { headers });
-    const content = await topic.json();
-
-
-    let post: State.ContentState[] = [];
-    let topicNumberInPage: number;
-    const replyCount = content[0].count;
-
-    if (curPage !== 1 && curPage * 10 <= replyCount) {
-        topicNumberInPage = 10;
-    } else if (curPage === 1 && replyCount >= 9 && isUserPoster == true) {
-        topicNumberInPage = 9;
-    } else if (curPage === 1 && replyCount >= 9 && isUserPoster == false) {
-        topicNumberInPage = 10;
-    } else if (curPage === 1 && replyCount < 9) {
-        topicNumberInPage = replyCount;
-    } else {
-        topicNumberInPage = (replyCount - (curPage - 1) * 10);
-    }
-
-    for (let i = 0; i < topicNumberInPage; i++) {
-        if (content[i].userName != null) {
-            const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
-            const userMesJson = await userMesResponse.json();
-
-            post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
-
+        const topicMessage = await getTopic(topicid);
+        let start: number;
+        let isUserPoster: boolean;
+        if (topicMessage.userName === userName) {
+            isUserPoster = true;
+            if (curPage === 1)
+                start = (curPage - 1) * 10 + 1;
+            else
+                start = (curPage - 1) * 10;
         } else {
-            let purl = 'https://www.cc98.org/pic/anonymous.gif';
-            post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名', null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+            isUserPoster = false;
+            start = (curPage - 1) * 10;
         }
-    }
+
+        const token = getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        const topic = await fetch(`http://apitest.niconi.cc/Post/Topic/user?topicid=${topicid}&userId=${userId}&from=${start}&size=10`, { headers });
+        if (topic.status === 401) {
+
+        }
+        if (topic.status === 404) {
+
+        }
+        if (topic.status === 500) {
+
+        }
+        const content = await topic.json();
+
+
+        let post: State.ContentState[] = [];
+        let topicNumberInPage: number;
+        const replyCount = content[0].count;
+
+        if (curPage !== 1 && curPage * 10 <= replyCount) {
+            topicNumberInPage = 10;
+        } else if (curPage === 1 && replyCount >= 9 && isUserPoster == true) {
+            topicNumberInPage = 9;
+        } else if (curPage === 1 && replyCount >= 9 && isUserPoster == false) {
+            topicNumberInPage = 10;
+        } else if (curPage === 1 && replyCount < 9) {
+            topicNumberInPage = replyCount;
+        } else {
+            topicNumberInPage = (replyCount - (curPage - 1) * 10);
+        }
+
+        for (let i = 0; i < topicNumberInPage; i++) {
+            if (content[i].isAnonymous != true) {
+                const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
+                if (userMesResponse.status === 404) {
+
+                }
+                const userMesJson = await userMesResponse.json();
+
+                post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+
+            } else {
+                let purl = 'https://www.cc98.org/pic/anonymous.gif';
+                post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名' + content[i].userName.toUpperCase(), null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+            }
+        }
 
         return post;
     } catch (e) {
-        alert("网络中断");
+        alert("网络8中断");
     }
 }
 
@@ -348,45 +465,63 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
  */
 export async function getAllNewTopic(curNum: number) {
     try {
-    /**
-     * 一次性可以获取20个主题
-     */
-    var size = 20;
-    if (curNum > 80) {
-        size = 100 - curNum;
-    }
-    let token = getLocalStorage("accessToken");
-    const headers = new Headers();
-    headers.append('Authorization', token);
-    /**
-     * 通过api获取到主题之后转成json格式
-     */
-    const response = await fetch(`http://apitest.niconi.cc/topic/new?from=${curNum}&size=${size}`, { headers });
-    const newTopic = await response.json();
-    for (let i in newTopic) {
-        if (newTopic[i].userId) {
-            //获取作者粉丝数目
-            let userFan0 = await fetch(`http://apitest.niconi.cc/user/follow/fanCount?userid=${newTopic[i].userId}`);
-            let userFan1 = await userFan0.json();
-            newTopic[i].fanCount = userFan1;
-            //获取作者头像地址
-            let userInfo0 = await fetch(`http://apitest.niconi.cc/user/basic/${newTopic[i].userId}`);
-            let userInfo1 = await userInfo0.json();
-            newTopic[i].portraitUrl = userInfo1.portraitUrl;
-            //获取所在版面名称
-            newTopic[i].boardName = await getBoardName(newTopic[i].boardId);
+        /**
+         * 一次性可以获取20个主题
+         */
+        var size = 20;
+        if (curNum > 80) {
+            size = 100 - curNum;
         }
-        //匿名时粉丝数显示0
-        else {
-            newTopic[i].fanCount = 0;
-            newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-            newTopic[i].userName = "匿名";
-            newTopic[i].boardName = "心灵之约";
+        let token = getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        /**
+         * 通过api获取到主题之后转成json格式
+         */
+        const response = await fetch(`http://apitest.niconi.cc/topic/new?from=${curNum}&size=${size}`, { headers });
+        if (response.status === 401) {
+
         }
-    }
+        if (response.status === 500) {
+
+        }
+        const newTopic = await response.json();
+        for (let i in newTopic) {
+            if (newTopic[i].userId) {
+                //获取作者粉丝数目
+                let userFan0 = await fetch(`http://apitest.niconi.cc/user/follow/fanCount?userid=${newTopic[i].userId}`);
+                if (userFan0.status === 404) {
+
+                }
+                if (userFan0.status === 500) {
+
+                }
+                let userFan1 = await userFan0.json();
+                newTopic[i].fanCount = userFan1;
+                //获取作者头像地址
+                let userInfo0 = await fetch(`http://apitest.niconi.cc/user/basic/${newTopic[i].userId}`);
+                if (userInfo0.status === 404) {
+
+                }
+                if (userInfo0.status === 500) {
+
+                }
+                let userInfo1 = await userInfo0.json();
+                newTopic[i].portraitUrl = userInfo1.portraitUrl;
+                //获取所在版面名称
+                newTopic[i].boardName = await getBoardName(newTopic[i].boardId);
+            }
+            //匿名时粉丝数显示0
+            else {
+                newTopic[i].fanCount = 0;
+                newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+
+                newTopic[i].boardName = "心灵之约";
+            }
+        }
         return newTopic;
     } catch (e) {
-        alert("网络中断");
+        alert("网络9中断");
     }
 }
 
@@ -396,47 +531,65 @@ export async function getAllNewTopic(curNum: number) {
  */
 export async function getFocusTopic(curNum: number) {
     try {
-    /**
-     * 一次性可以获取20个主题
-     */
-    var size = 20;
-    if (curNum > 80) {
-        size = 100 - curNum;
-    }
-    let token = getLocalStorage("accessToken");
-    const headers = new Headers();
-    headers.append('Authorization', token);
-    /**
-     * 通过api获取到主题之后转成json格式
-     */
-    const response = await fetch(`http://apitest.niconi.cc/topic/customboards/new?from=${curNum}&size=${size}`, { headers });
-    const newTopic = await response.json();
-    for (let i in newTopic) {
-        if (newTopic[i].userId) {
-            //获取作者粉丝数目
-            let userFan0 = await fetch(`http://apitest.niconi.cc/user/follow/fanCount?userid=${newTopic[i].userId}`);
-            let userFan1 = await userFan0.json();
-            newTopic[i].fanCount = userFan1;
-            //获取作者头像地址
-            let userInfo0 = await fetch(`http://apitest.niconi.cc/user/basic/${newTopic[i].userId}`);
-            let userInfo1 = await userInfo0.json();
-            newTopic[i].portraitUrl = userInfo1.portraitUrl;
-            //获取所在版面名称
-            newTopic[i].boardName = await getBoardName(newTopic[i].boardId);
+        /**
+         * 一次性可以获取20个主题
+         */
+        var size = 20;
+        if (curNum > 80) {
+            size = 100 - curNum;
         }
-        //匿名时粉丝数显示0
-        else {
-            newTopic[i].fanCount = 0;
-            newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-            newTopic[i].userName = "匿名";
-            newTopic[i].boardName = "心灵之约";
+        let token = getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        /**
+         * 通过api获取到主题之后转成json格式
+         */
+        const response = await fetch(`http://apitest.niconi.cc/topic/customboards/new?from=${curNum}&size=${size}`, { headers });
+        if (response.status === 401) {
+
         }
-    }
+        if (response.status === 500) {
+
+        }
+        const newTopic = await response.json();
+        for (let i in newTopic) {
+            if (newTopic[i].userId) {
+                //获取作者粉丝数目
+                let userFan0 = await fetch(`http://apitest.niconi.cc/user/follow/fanCount?userid=${newTopic[i].userId}`);
+                if (userFan0.status === 404) {
+
+                }
+                if (userFan0.status === 500) {
+
+                }
+                let userFan1 = await userFan0.json();
+                newTopic[i].fanCount = userFan1;
+                //获取作者头像地址
+                let userInfo0 = await fetch(`http://apitest.niconi.cc/user/basic/${newTopic[i].userId}`);
+                if (userInfo0.status === 404) {
+
+                }
+                if (userInfo0.status === 500) {
+
+                }
+                let userInfo1 = await userInfo0.json();
+                newTopic[i].portraitUrl = userInfo1.portraitUrl;
+                //获取所在版面名称
+                newTopic[i].boardName = await getBoardName(newTopic[i].boardId);
+            }
+            //匿名时粉丝数显示0
+            else {
+                newTopic[i].fanCount = 0;
+                newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+
+                newTopic[i].boardName = "心灵之约";
+            }
+        }
         return newTopic;
-    
-      } catch (e) {
-    alert("网络中断");
-}
+
+    } catch (e) {
+        alert("网络10中断");
+    }
 }
 
 
@@ -473,7 +626,7 @@ export function setLocalStorage(key, value, expireIn = 0) {
         v = `str-${v}`;
     }
     localStorage.setItem(key, v);
-    
+
     if (expireIn !== 0) {
         const now = new Date().getTime();
         let expirationTime = now + expireIn * 1000;
@@ -519,22 +672,29 @@ export function removeStorage(key) {
 */
 export async function getBoardName(boardId: number) {
     try {
-    let boardName: string;
+        let boardName: string;
 
-    boardName = getLocalStorage(`boardId_${boardId}`);
+        boardName = getLocalStorage(`boardId_${boardId}`);
 
-    if (!boardName) {
-        const url = `http://apitest.niconi.cc/board/${boardId}`;
-        let res = await fetch(url);
-        let data = await res.json();
-        boardName = data.name;
-        setLocalStorage(`boardId_${boardId}`, boardName);
-    }
+        if (!boardName) {
+            const token = getLocalStorage("accessToken");
+            const headers = new Headers();
+            headers.append('Authorization', token);
+            const url = `http://apitest.niconi.cc/board/${boardId}`;
+            let res = await fetch(url, { headers });
+            if (res.status === 404) {
+
+            }
+            
+            let data = await res.json();
+            boardName = data.name;
+            setLocalStorage(`boardId_${boardId}`, boardName);
+        }
 
 
         return boardName;
     } catch (e) {
-        alert("网络中断");
+        alert("网络11中断");
     }
 }
 
@@ -553,28 +713,40 @@ export function isLogOn(): boolean {
 */
 export async function getRecentContact(from: number, size: number) {
     try {
-    let token = getLocalStorage("accessToken");
-    const headers = new Headers();
-    headers.append('Authorization', token);
-    let response = await fetch(`http://apitest.niconi.cc/message/recentcontactusers?from=${from}&size=${size}`, { headers });
-    let recentContactId = await response.json();
-    let url = "http://apitest.niconi.cc/user/basic"
-    for (let i in recentContactId) {
-        if (i == "0") {
-            url = `${url}?id=${recentContactId[i]}`;
+        let token = getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        let response = await fetch(`http://apitest.niconi.cc/message/recentcontactusers?from=${from}&size=${size}`, { headers });
+        if (response.status === 401) {
+
         }
-        else {
-            url = `${url}&id=${recentContactId[i]}`;
+        if (response.status === 500) {
+
         }
-    }
-    let response1 = await fetch(url);
-    let recentContact = await response1.json();
-    for (let i in recentContact) {
-        recentContact[i].message = await getRecentMessage(recentContact[i].id, 0, 10);
-    }
-    return recentContact;
+        let recentContactId = await response.json();
+        let url = "http://apitest.niconi.cc/user/basic"
+        for (let i in recentContactId) {
+            if (i == "0") {
+                url = `${url}?id=${recentContactId[i]}`;
+            }
+            else {
+                url = `${url}&id=${recentContactId[i]}`;
+            }
+        }
+        let response1 = await fetch(url);
+        if (response1.status === 404) {
+
+        }
+        if (response1.status === 500) {
+
+        }
+        let recentContact = await response1.json();
+        for (let i in recentContact) {
+            recentContact[i].message = await getRecentMessage(recentContact[i].id, 0, 10);
+        }
+        return recentContact;
     } catch (e) {
-        alert("网络中断");
+        alert("网络12中断");
     }
 }
 
@@ -587,147 +759,235 @@ export async function getRecentMessage(userId: number, from: number, size: numbe
         const headers = new Headers();
         headers.append('Authorization', token);
         let response = await fetch(`http://apitest.niconi.cc/message/${userId}?from=${from}&size=${size}`, { headers });
+        if (response.status === 401) {
+
+        }
+        if (response.status === 500) {
+
+        }
         let recentMessage = await response.json();
         return recentMessage;
     } catch (e) {
-        alert("网络中断");
+        alert("网络13中断");
     }
 }
 
 export async function getTotalReplyCount(topicid) {
-        try {
-    let token = getLocalStorage("accessToken");
-    const headers = new Headers();
-    headers.append('Authorization', token);
-    const replyCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers });
-    const replyCountJson = await replyCountResponse.json();
-    const replyCount = replyCountJson.replyCount;
-    if (replyCount >= 10) {
-        return (replyCount - replyCount % 10) / 10 + 1;
-    } else {
-        return 1;
+    try {
+        let token = getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        const replyCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers });
+        if (replyCountResponse.status === 401) {
+
+        }
+        if (replyCountResponse.status === 404) {
+
+        }
+        if (replyCountResponse.status === 500) {
+
+        }
+        const replyCountJson = await replyCountResponse.json();
+        const replyCount = replyCountJson.replyCount;
+        if (replyCount >= 10) {
+            return (replyCount - replyCount % 10) / 10 + 1;
+        } else {
+            return 1;
         }
     } catch (e) {
-        alert("网络中断");
+        alert("网络14中断");
     }
 }
 export async function getCategory(topicid) {
     try {
-    let token = getLocalStorage("accessToken");
-    const headers = new Headers();
-    headers.append('Authorization', token);
-    const response = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers });
-    const data = await response.json();
-    const topicName = data.title;
-    const boardId = data.boardId;
-    const boardResponse = await fetch(`http://apitest.niconi.cc/Board/${boardId}`, { headers });
-    const boardData = await boardResponse.json();
-    const boardName = boardData.name;
-    const body = { boardId: boardId, topicId: topicid, boardName: boardName, title: topicName }
+        let token = getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        const response = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers });
+        if (response.status === 401) {
+
+        }
+        if (response.status === 404) {
+
+        }
+        if (response.status === 500) {
+
+        }
+        const data = await response.json();
+        const topicName = data.title;
+        const boardId = data.boardId;
+        const boardResponse = await fetch(`http://apitest.niconi.cc/Board/${boardId}`, { headers });
+        const boardData = await boardResponse.json();
+        const boardName = boardData.name;
+        const body = { boardId: boardId, topicId: topicid, boardName: boardName, title: topicName }
         return body;
     } catch (e) {
-        alert("网络中断");
+        alert("网络15中断");
     }
 }
 export async function getUserDetails(userName) {
     try {
-    let url = `http://apitest.niconi.cc/user/name/${userName}`;
-    let message = await fetch(url);
-    let data = await message.json();
-    const body = { portraitUrl: data.portraitUrl, userName: data.name, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle }
+        let url = `http://apitest.niconi.cc/user/name/${userName}`;
+        let message = await fetch(url);
+        if (message.status === 404) {
+
+        }
+        if (message.status === 500) {
+
+        }
+        let data = await message.json();
+        const body = { portraitUrl: data.portraitUrl, userName: data.name, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle }
         return body;
     } catch (e) {
-        alert("网络中断");
+        alert("网络16中断");
     }
 }
 export async function getLikeState(topicid) {
     try {
-    const token = getLocalStorage("accessToken");
-    const headers = new Headers();
-    headers.append('Authorization', token);
-    const topic = await getTopic(topicid);
-    const postid = topic.postid;
-    const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${topicid}&postid=${postid}`, { headers });
-    const data = await response.json();
-        return data;
+        const token = getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        const topic = await getTopic(topicid);
+        const postid = topic.postid;
+        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${topicid}&postid=${postid}`, { headers });
+        if (response.status === 401) {
+
+        }
+        if (response.status === 403) {
+
+        }
+        if (response.status === 404) {
+
+        }
+        if (response.status === 500) {
+
+        } else {
+            const data = await response.json();
+            return data;
+        }
     } catch (e) {
-        alert("网络中断");
+        alert("网络17中断");
     }
 }
 export async function refreshLikeState(topicId, postId) {
     try {
-    const token = getLocalStorage("accessToken");
-    const headers = new Headers();
-    headers.append('Authorization', token);
-    const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${topicId}&postid=${postId}`, { headers });
-    const data = await response.json();
+        const token = getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${topicId}&postid=${postId}`, { headers });
+        if (response.status === 401) {
+
+        }
+        if (response.status === 403) {
+
+        }
+        if (response.status === 404) {
+
+        }
+        if (response.status === 500) {
+
+        }
+        const data = await response.json();
         return data;
     } catch (e) {
-        alert("网络中断");
+        alert("网络18中断");
     }
 }
 export async function sendTopic(topicId) {
     try {
-    const url = `http://apitest.niconi.cc/post/topic/${topicId}`;
-    const c = testEditor.getMarkdown();
-    const content = {
-        content: c,
-        contentType: 1,
-        title: ""
-    }
-    const contentJson = JSON.stringify(content);
-    const token = getLocalStorage("accessToken");
-    const myHeaders = new Headers();
-    myHeaders.append("Authorization", token);
-    myHeaders.append("Content-Type", 'application/json');
+        const url = `http://apitest.niconi.cc/post/topic/${topicId}`;
+        const c = testEditor.getMarkdown();
+        const content = {
+            content: c,
+            contentType: 1,
+            title: ""
+        }
+        const contentJson = JSON.stringify(content);
+        const token = getLocalStorage("accessToken");
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", token);
+        myHeaders.append("Content-Type", 'application/json');
         const mes = await fetch(url, {
             method: 'POST',
             headers: myHeaders,
             body: contentJson
         }
         );
+        if (mes.status === 401) {
+
+        }
+        if (mes.status === 402) {
+
+        }
+        if (mes.status === 403) {
+
+        }
+        if (mes.status === 404) {
+
+        }
+        if (mes.status === 500) {
+
+        }
     } catch (e) {
-        alert("网络中断");
+        alert("网络19中断");
     }
 }
 export async function getListCategory(boardId) {
     try {
-    const token = getLocalStorage("accessToken");
-    const headers = new Headers();
-    headers.append('Authorization', token);
-    const boardResponse = await fetch(`http://apitest.niconi.cc/Board/${boardId}`, { headers });
-    const boardData = await boardResponse.json();
-    const boardName = boardData.name;
+        const token = getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        const boardResponse = await fetch(`http://apitest.niconi.cc/Board/${boardId}`, { headers });
+        if (boardResponse.status === 404) {
+
+        }
+        if (boardResponse.status === 500) {
+
+        }
+        const boardData = await boardResponse.json();
+        const boardName = boardData.name;
         return boardName;
     } catch (e) {
-        alert("网络中断");
+        alert("网络20中断");
     }
 }
 export async function getBoardMessage(boardId) {
     try {
-    const token = getLocalStorage("accessToken");
-    const headers = new Headers();
-    headers.append('Authorization', token);
-    const url = `http://apitest.niconi.cc/Board/${boardId}`;
-    const response = await fetch(url, { headers });
-    const data = await response.json();
+        const token = getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        const url = `http://apitest.niconi.cc/Board/${boardId}`;
+        const response = await fetch(url, { headers });
+        if (response.status === 404) {
+
+        }
+        if (response.status === 500) {
+
+        }
+        const data = await response.json();
         return data;
     } catch (e) {
-        alert("网络中断");
+        alert("网络21中断");
     }
 }
 export async function getListTotalPage(boardId) {
     try {
-    const token = getLocalStorage("accessToken");
-    const headers = new Headers();
-    headers.append('Authorization', token);
-    const totalTopicCountResponse = await fetch(`http://apitest.niconi.cc/Board/${boardId}`, { headers });
-    const totalTopicCountJson = await totalTopicCountResponse.json();
-    const totalTopicCount = totalTopicCountJson.topicCount;
+        const token = getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        const totalTopicCountResponse = await fetch(`http://apitest.niconi.cc/Board/${boardId}`, { headers });
+        if (totalTopicCountResponse.status === 404) {
+
+        }
+        if (totalTopicCountResponse.status === 500) {
+
+        }
+        const totalTopicCountJson = await totalTopicCountResponse.json();
+        const totalTopicCount = totalTopicCountJson.topicCount;
 
         return (totalTopicCount - totalTopicCount % 20) / 20 + 1;
     } catch (e) {
-        alert("网络中断");
+        alert("网络22中断");
     }
 }
 export async function getBasicBoardMessage(boardId, curPage) {
@@ -736,8 +996,12 @@ export async function getBasicBoardMessage(boardId, curPage) {
         const headers = new Headers();
         headers.append('Authorization', token);
         const response = await fetch(`http://apitest.niconi.cc/Board/${boardId}`, { headers });
-        console.log("basic");
-        if (response.status == 200) {
+        if (response.status === 404) {
+
+        }
+        if (response.status === 500) {
+
+        }
             const json = await response.json();
             const bigPaper: string = json.bigPaper;
             let page: number;
@@ -751,27 +1015,139 @@ export async function getBasicBoardMessage(boardId, curPage) {
             const totalPage = await getListTotalPage(boardid);
             const data = { bigPaper: bigPaper, totalPage: totalPage, page: page };
             return data;
-        } else if (response.status == 401) {
-            alert("未登录或无权限");
-        }
+        
     } catch (e) {
-        alert("网络中断");
+        alert("网络23中断");
     }
 }
 export async function getCurUserTotalReplyPage(topicId, userId) {
     try {
-    let token = getLocalStorage("accessToken");
-    const headers = new Headers();
-    headers.append('Authorization', token);
-    const replyCountResponse = await fetch(`http://apitest.niconi.cc/post/topic/user?topicid=${topicId}&userid=${userId}&from=0&size=1`, { headers });
-    const replyCountJson = await replyCountResponse.json();
-    const replyCount = replyCountJson[0].count;
-    if (replyCount > 10) {
-        return (replyCount - replyCount % 10) / 10 + 1;
-    } else {
-        return 1;
+        let token = getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        const replyCountResponse = await fetch(`http://apitest.niconi.cc/post/topic/user?topicid=${topicId}&userid=${userId}&from=0&size=1`, { headers });
+        if (replyCountResponse.status === 401) {
+
+        }
+        if (replyCountResponse.status === 404) {
+
+        }
+        if (replyCountResponse.status === 500) {
+
+        }
+        const replyCountJson = await replyCountResponse.json();
+        const replyCount = replyCountJson[0].count;
+        if (replyCount > 10) {
+            return (replyCount - replyCount % 10) / 10 + 1;
+        } else {
+            return 1;
         }
     } catch (e) {
-        alert("网络中断");
+        alert("网络24中断");
     }
+}
+
+/**
+ * 对联系人列表重新排序，看是否有从其他页面发起的聊天
+ * @param recentContact
+ */
+export async function sortContactList(recentContact) {
+    //看url中是否携带id信息，如果有的话就作为第一个联系人
+    let urlId = location.href.match(/id=(\S+)/);
+    if (urlId) {
+        let chatManId = parseInt(urlId[1]);
+        //先看一下该聊天对象在不在联系人列表里
+        for (var i = 0; i < recentContact.length; i++) {
+            if (recentContact[i].id == chatManId) {
+                break;
+            }
+        }
+        //如果恰好是联系人列表第一那就什么都不做
+        if (i == 0) { }
+        //如果在列表里但不是第一个，就把他提到第一个
+        else if (i < recentContact.length) {
+            let indexData = recentContact[i];
+            recentContact.splice(i, 1);
+            recentContact.unshift(indexData);
+        }
+        //如果不在联系人列表里，那就查找该人信息并作为列表第一个
+        else {
+            let response;
+            let chatMan;
+            let flag = 1;
+            try {
+                response = await fetch(`http://apitest.niconi.cc/user/basic/${chatManId}`);
+                chatMan = await response.json();
+            }
+            catch (e) {
+                alert("用户不存在，无法发起私信");
+                flag = 0;
+            }
+            if (flag == 1) {
+                chatMan.message = await getRecentMessage(chatManId, 0, 10);
+                let chatContact = [chatMan];
+                recentContact = chatContact.concat(recentContact);
+            }
+        }
+    }
+    else { //看url中是否携带name信息，如果有的话就作为第一个联系人
+        let urlName = location.href.match(/name=(\S+)/);
+        if (urlName) {
+            let chatManName = urlName[1];
+            //先看一下该聊天对象在不在联系人列表里
+            for (var i = 0; i < recentContact.length; i++) {
+                if (recentContact[i].name == chatManName) {
+                    break;
+                }
+            }
+            //如果恰好是联系人列表第一那就什么都不做
+            if (i == 0) { }
+            //如果在列表里但不是第一个，就把他提到第一个
+            else if (i < recentContact.length) {
+                let indexData = recentContact[i];
+                recentContact.splice(i, 1);
+                recentContact.unshift(indexData);
+            }
+            //如果不在联系人列表里，那就查找该人信息并作为列表第一个
+            else {
+                let response0;
+                let response1;
+                let flag = 1;
+                try {
+                    response0 = await fetch(`http://apitest.niconi.cc/user/name/${chatManName}`);
+                    response1 = await response0.json();
+                } catch (e) {
+                    alert("用户不存在，无法发起私信");
+                    flag = 0;
+                }
+                if (flag == 1) {
+                    let chatMan = { id: null, name: '', portraitUrl: '', message: [] };
+                    chatMan.id = response1.id;
+                    chatMan.name = response1.name;
+                    chatMan.portraitUrl = response1.portraitUrl;
+                    chatMan.message = await getRecentMessage(chatMan.id, 0, 10);
+                    let chatContact = [chatMan];
+                    recentContact = chatContact.concat(recentContact);
+                }
+            }
+        }
+    }
+    return recentContact;
+}
+
+/**
+ * 发送私信的函数
+ * @param bodyContent
+ */
+export async function sendMessage(bodyContent: string) {
+    let token = getLocalStorage("accessToken");
+    let myHeaders = new Headers();
+    myHeaders.append('Authorization', token);
+    myHeaders.append('content-type', 'application/json');
+    let response = await fetch('http://apitest.niconi.cc/message/send', {
+        method: 'POST',
+        headers: myHeaders,
+        body: bodyContent
+    });
+    return response;
 }

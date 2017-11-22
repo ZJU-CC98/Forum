@@ -22,25 +22,26 @@ export class UserCenterMyPostsExact extends RouteComponent<null, UserCenterMyPos
 
     async componentDidMount() {
         const page = this.match.params.page || 1;
-        const url = `http://apitest.niconi.cc/me/recenttopics?from=${(page-1)*10}&size=10`
+        const url = `http://apitest.niconi.cc/me/recenttopics?from=${(page-1)*10}&size=11`
         const token = Utility.getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append('Authorization', token);
         let res = await fetch(url, {
-            headers: {
-                'Authorization': token
-            }
+            headers
         });
         let data = await res.json();
         let posts: UserRecentPost[] = [],
             i = data.length;
 
-        if (i !== 10) {
+        if (i <= 10) {
             this.setState({
-                totalPage: page
+                totalPage: Number.parseInt(page)
             });
         } else {
             this.setState({
-                totalPage: page + 1
+                totalPage: Number.parseInt(page) + 1
             });
+            i = 10;
         }
 
         while (i--) {

@@ -6,19 +6,25 @@ import * as React from 'react';
 import { UserCenterExactActivitiesPost } from './UserCenterExactActivitiesPost';
 import { UserRecentPost } from '../States/AppState';
 import * as Utility from '../Utility';
+import { UserCenterPageCount } from './UserCenterPageCount';
+import { RouteComponent } from './app';
 
 
-export class UserCenterMyFavoritesPosts extends React.Component<null, UserCenterMyFavoritesPostsState> {
-    constructor(props) {
-        super(props);
+export class UserCenterMyFavoritesPosts extends RouteComponent<null, UserCenterMyFavoritesPostsState, {page}> {
+    constructor(props,c) {
+        super(props,c);
         //临时填充数据
-        this.state = { userRecentPosts: [userRecentPost, userRecentPost, userRecentPost, userRecentPost] };
+        this.state = {
+            userRecentPosts: [],
+            info: '加载中',
+            totalPage: (Number.parseInt(this.match.params.page) || 1) + 1
+        };
     }
 
     async componentDidMount() {
         const token = Utility.getLocalStorage('accessToken');
-        const userName = Utility.getLocalStorage('userName');
-        const url = `http://apitest.niconi.cc/topic/customboards/new?from=0&size=10`;
+        const page = this.match.params.page || 1;
+        const url = `http://apitest.niconi.cc/topic/favorite?from=${(page-1)*10}&size=11`;
 
         let myHeaders = new Headers();
         myHeaders.append('Authorization', token);
@@ -27,11 +33,49 @@ export class UserCenterMyFavoritesPosts extends React.Component<null, UserCenter
             headers: myHeaders
         });
         let data = await res.json();
+        if (data.length === 0) {
+            this.setState({
+                info: '没有主题'
+            });
+            return;
+        }
 
-        console.log(data);
+        let posts: UserRecentPost[] = [];
+        let i = data.length;
+
+        if (i < 10) {
+            this.setState({
+                totalPage: Number.parseInt(this.match.params.page) || 1
+            });
+        } else {
+            i = 10;
+            this.setState({
+                totalPage: (Number.parseInt(this.match.params.page) || 1) + 1
+            });
+        }
+
+        while (i--) {
+            let post = new UserRecentPost();
+            post.board = data[i].boardName;
+            post.boardId = data[i].boardId;
+            post.content = data[i].title;
+            post.date = data[i].time.replace('T', ' ').slice(0, 19);
+            post.id = data[i].id;
+            posts.unshift(post);
+        }
+
+        this.setState({
+            userRecentPosts: posts
+        });
+
     }
 
     render() {
+        if (!this.state.userRecentPosts || this.state.userRecentPosts.length === 0) {
+            return (<div className="user-posts">
+                {this.state.info}
+            </div>);
+        }
         //state转换为JSX
         const userRecentPosts = this.state.userRecentPosts.map((item) => (<UserCenterExactActivitiesPost userRecentPost={item} />));
         //添加分隔线
@@ -41,20 +85,15 @@ export class UserCenterMyFavoritesPosts extends React.Component<null, UserCenter
         return (
             <div className="user-posts">
                 {userRecentPosts}
+                <UserCenterPageCount currentPage={this.match.params.page || 1} totalPage={this.state.totalPage} href="/usercenter/myfavorites/" />
             </div>
+
         );
     }
 }
 
 interface UserCenterMyFavoritesPostsState {
     userRecentPosts: UserRecentPost[];
+    info: string;
+    totalPage: number;
 }
-
-//临时填充数据
-let userRecentPost = new UserRecentPost();
-userRecentPost.approval = 666;
-userRecentPost.board = '学术信息';
-userRecentPost.content = '这是帖子内容';
-userRecentPost.date = '2017-8-18';
-userRecentPost.disapproval = 233;
-userRecentPost.title = '这是帖子标题';

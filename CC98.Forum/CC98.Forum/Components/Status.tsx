@@ -1,5 +1,6 @@
 ﻿import * as React from 'react';
 import { LogOn } from './LogOn';
+import * as Utility from '../Utility';
 export class LogOut extends React.Component<{}, {}>{
     render() {
         return <div style={{
@@ -21,6 +22,17 @@ export class UnauthorizedTopic extends React.Component<{}, {}>{
     }
 }
 export class NotFoundBoard extends React.Component<{}, {}>{
+    async componentDidMount() {
+        try {
+            const token = Utility.getLocalStorage("accessToken");
+            const headers = new Headers();
+            headers.append('Authorization', token);
+            const response = await fetch("http://apitest.niconi.cc/topic/11", { headers });
+            const data = await response.json();
+        } catch (e) {
+            console.log(e);
+        }
+    }
     render() {
         return <div>版面不存在</div>;
     }
@@ -28,5 +40,10 @@ export class NotFoundBoard extends React.Component<{}, {}>{
 export class NotFoundTopic extends React.Component<{}, {}>{
     render() {
         return <div>帖子不存在</div>;
+    }
+}
+export class NotFoundUser extends React.Component<{}, {}>{
+    render() {
+        return <div>用户不存在</div>;
     }
 }

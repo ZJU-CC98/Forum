@@ -1193,6 +1193,11 @@ a {
         overflow-y: auto;
         overflow-x: hidden;
 
+        .quickToTheBottom {
+            width: 100px;
+            height: 0px;
+        }
+
         .message-message-wcLoading {
             flex-shrink: 0;
             flex-grow: 0;

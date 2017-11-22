@@ -12,8 +12,8 @@ import { UbbContainer } from './UbbContainer'
 export class UserCenterExactProfile extends React.Component<UserCenterExactProfileProps> {
     render() {
         return (
-            <div className="user-profile">                
-                <div id="userId"><p>{this.props.userInfo.name}</p><button type="button">私信</button></div>
+            <div className="user-profile">
+                <div id="userId"><p>{this.props.userInfo.name}</p><button type="button" onClick={() => { location.pathname='/message/message' }}>私信</button></div>
                 <div id="userGenderAndBirthday">
                     <p>性别  {(this.props.userInfo.gender === 1) ? '男' : '女'} </p>{this.props.userInfo.birthday === null ? '' : <p>生日  {this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T'))}</p>}
                 </div>

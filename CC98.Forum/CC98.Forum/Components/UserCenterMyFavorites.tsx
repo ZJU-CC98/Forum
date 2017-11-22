@@ -20,9 +20,9 @@ export class UserCenterMyFavorites extends React.Component {
         return (
             <Router>
                 <div className="user-center-myfavorites">
-                    <CustomLink to="/usercenter/myfavorites" label="文章" activeOnlyWhenExact={true} /> | <CustomLink to="/usercenter/myfavorites/boards" label="版面" activeOnlyWhenExact={false} />
-                    <Route exact path="/usercenter/myfavorites" component={UserCenterMyFavoritesPosts} />
-                    <Route path="/usercenter/myfavorites/boards" component={UserCenterMyFavoritesBoards} />
+                    <CustomLink to="/usercenter/myfavorites" label="文章" activeOnlyWhenExact={true} /> | <CustomLink to="/usercenter/myfavorites/boards/1" label="版面" activeOnlyWhenExact={false} />
+                    <Route path="/usercenter/myfavorites/boards/1" component={UserCenterMyFavoritesBoards} />
+                    <Route exact path="/usercenter/myfavorites/:page?" component={UserCenterMyFavoritesPosts} />
                 </div>
             </Router>
         );
