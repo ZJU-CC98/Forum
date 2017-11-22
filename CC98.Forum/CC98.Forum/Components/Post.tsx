@@ -23,12 +23,17 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
     }
 }
 
-export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName }, { topicid, page, userName }> {
+export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName, editor }, { topicid, page, userName }> {
     constructor(props, context) {
         super(props, context);
-
+        var testEditor = editormd("test-editormd", {
+            width: "100%",
+            height: 640,
+            path: "/scripts/lib/editor.md/lib/",
+            saveHTMLToTextarea: false
+        });
         this.handleChange = this.handleChange.bind(this);
-        this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null };
+        this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null, editor: testEditor };
     }
 
     async handleChange() {
@@ -85,7 +90,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
             {hotReply}
             <Route path="/topic/:topicid/:page?" component={Reply} />
             <TopicPagerDown page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
-            <SendTopic onChange={this.handleChange} topicid={this.state.topicid} />
+            <SendTopic onChange={this.handleChange} topicid={this.state.topicid} editor={this.state.editor} />
         </div>
             ;
 
@@ -156,7 +161,7 @@ export class HotReply extends RouteComponent<{}, { contents }, { page, topicid }
     }
 
     async componentWillReceiveProps(newProps) {
-        
+
         const page = newProps.match.params.page || 1;
         if (page == 1) {
             const realContents = await Utility.getHotReplyContent(newProps.match.params.topicid);
@@ -213,7 +218,7 @@ export class HotReplier extends RouteComponent<{ floor, userId, topicid, userNam
         }
         let userDetails;
         if (this.props.isAnonymous != true) {
-            userDetails = <UserDetails userName={this.props.userName}  />;
+            userDetails = <UserDetails userName={this.props.userName} />;
         } else {
             userDetails = null;
         }
@@ -336,14 +341,14 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
             </div></div>;
     }
 }
-export class UserDetails extends RouteComponent<{  userName }, { portraitUrl, userName,fanCount,displayTitle,birthday,gender,prestige,levelTitle }, {}>{
+export class UserDetails extends RouteComponent<{ userName }, { portraitUrl, userName, fanCount, displayTitle, birthday, gender, prestige, levelTitle }, {}>{
     constructor(props) {
         super(props);
-        this.state = ({ portraitUrl: null, userName: null, fanCount: null, displayTitle: null, birthday: null, gender: null, prestige: null, levelTitle:null });
+        this.state = ({ portraitUrl: null, userName: null, fanCount: null, displayTitle: null, birthday: null, gender: null, prestige: null, levelTitle: null });
     }
     async componentDidMount() {
         const data = await Utility.getUserDetails(this.props.userName);
-        this.setState({ portraitUrl: data.portraitUrl, userName: data.userName, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige,gender:data.gender,levelTitle:data.levelTitle });
+        this.setState({ portraitUrl: data.portraitUrl, userName: data.userName, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle });
     }
     render() {
         let title = this.state.displayTitle;
@@ -369,36 +374,36 @@ export class UserDetails extends RouteComponent<{  userName }, { portraitUrl, us
         const url = `/user/name/${this.props.userName}`;
         const userUrl = encodeURI(url);
         const urlHtml = <a href={userUrl}> <img src={this.state.portraitUrl}></img></a>;
-            return <div className='popup'>
-                <div className='popup_title'>
-                    <div className="row">
-                        <div className="row authorImg" style={{ marginLeft: "10px", marginTop: "10px" }}>
-                            {urlHtml}
+        return <div className='popup'>
+            <div className='popup_title'>
+                <div className="row">
+                    <div className="row authorImg" style={{ marginLeft: "10px", marginTop: "10px" }}>
+                        {urlHtml}
+                    </div>
+                    <div className="column" style={{ marginLeft: "1.6rem", marginTop: "2rem" }}>
+                        <div className="row">
+                            <div style={{ fontFamily: "微软雅黑", color: "blue", marginRight: "0.63rem" }}> {this.state.userName}</div>   <div style={{ marginRight: "0.63rem" }}>   粉丝  </div><div style={{ color: "red" }}>{this.state.fanCount}</div>
                         </div>
-                        <div className="column" style={{ marginLeft: "1.6rem", marginTop: "2rem" }}>
-                            <div className="row">
-                                <div style={{ fontFamily: "微软雅黑", color: "blue", marginRight: "0.63rem" }}> {this.state.userName}</div>   <div style={{ marginRight: "0.63rem" }}>   粉丝  </div><div style={{ color: "red"}}>{this.state.fanCount}</div>
-                            </div>
-                            <div className="row" style={{ marginTop: "0.63rem", fontSize: "0.87rem" }}>
-                                {title}
-                            </div>
-                          
+                        <div className="row" style={{ marginTop: "0.63rem", fontSize: "0.87rem" }}>
+                            {title}
                         </div>
 
-                        <div>
-                            <div id="watch" style={{ width: "5rem", backgroundColor: "#FF6A6A", marginRight: "0.63rem", marginLeft: "1.6rem", marginTop: "2rem", height: "2rem" }}>关注</div>
-                       
-                        </div>
                     </div>
-                    <div className="row" style={{ fontSize:"0.87rem" }}>
-                        <div style={{ marginLeft: "7.2rem" }}>威望&nbsp;{this.state.prestige}</div><div style={{ marginLeft: "1rem" }}>生日&nbsp;{birthday}</div>
-                        <div style={{ marginLeft: "1rem" }}>{gender}</div>
-                        </div>
+
+                    <div>
+                        <div id="watch" style={{ width: "5rem", backgroundColor: "#FF6A6A", marginRight: "0.63rem", marginLeft: "1.6rem", marginTop: "2rem", height: "2rem" }}>关注</div>
+
+                    </div>
                 </div>
-            </div>;
+                <div className="row" style={{ fontSize: "0.87rem" }}>
+                    <div style={{ marginLeft: "7.2rem" }}>威望&nbsp;{this.state.prestige}</div><div style={{ marginLeft: "1rem" }}>生日&nbsp;{birthday}</div>
+                    <div style={{ marginLeft: "1rem" }}>{gender}</div>
+                </div>
+            </div>
+        </div>;
     }
 }
-export class PostTopic extends RouteComponent<{userId, imgUrl, page, topicid }, { topicMessage, likeState }, {}> {
+export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid }, { topicMessage, likeState }, {}> {
     constructor(props, content) {
         super(props, content);
         this.state = {
@@ -922,24 +927,66 @@ export class UserMessageBox extends React.Component<{ userName, userFans }, {}>{
         return <div id="userMessageBox">{this.props.userName}</div>;
     }
 }
-export class SendTopic extends RouteComponent<{ topicid, onChange }, { content: string }, {}>{
+export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { content: string }, {}>{
     constructor(props) {
-        super(props);
-        var testEditor = editormd("test-editormd", {
-            width: "100%",
-            height: 640,
-            path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false
-        });
+        super(props);     
         this.state = ({ content: '' });
     }
-
-    async sendMdTopic() {
-     
-        testEditor.setMarkdown("");
+    async sendUbbTopic() {
+        let url = `http://apitest.niconi.cc/post/topic/${this.props.topicid}`;
+        let content = {
+            content: this.state.content,
+            contentType: 1,
+            title: ""
+        }
+        let contentJson = JSON.stringify(content);
+        let token = Utility.getLocalStorage("accessToken");
+        let myHeaders = new Headers();
+        myHeaders.append("Authorization", token);
+        myHeaders.append("Content-Type", 'application/json');
+        let mes = await fetch(url, {
+            method: 'POST',
+            headers: myHeaders,
+            body: contentJson
+        }
+        );
         this.props.onChange();
         this.setState({ content: "" });
+    }
+    async sendMdTopic() {
+        try {
+            let url = `http://apitest.niconi.cc/post/topic/${this.props.topicid}`;
+            let c = testEditor.getMarkdown();
+            let content = {
+                content: c,
+                contentType: 1,
+                title: ""
+            }
+            let contentJson = JSON.stringify(content);
+            let token = Utility.getLocalStorage("accessToken");
+            let myHeaders = new Headers();
+            myHeaders.append("Authorization", token);
+            myHeaders.append("Content-Type", 'application/json');
+            let mes = await fetch(url, {
 
+                method: 'POST',
+
+                headers: myHeaders,
+
+                body: contentJson
+
+            }
+            );
+            if (mes.status === 402) {
+                alert("请输入内容");
+            }
+            testEditor.setMarkdown("");
+            this.props.onChange();
+            this.setState({ content: "" });
+        } catch (e) {
+            console.log("Error");
+            console.log(e);
+        }
     }
     getInitialState() {
         return { value: '' };
@@ -948,40 +995,13 @@ export class SendTopic extends RouteComponent<{ topicid, onChange }, { content: 
 
         this.setState({ content: event.target.value });
     }
-    render() {
-        var testEditor = editormd("test-editormd", {
+    render() {  
+        editormd("test-editormd", {
             width: "100%",
             height: 640,
             path: "/scripts/lib/editor.md/lib/",
             saveHTMLToTextarea: false
         });
-        /*  <div id="sendTopic-options">
-                        <ul className="editor__menu clearfix" id="wmd-button-row" >
-                            <li title="加粗 <strong> Ctrl+B" className="wmd-button" id="wmd-bold-button" ><a className="editor__menu--bold" style={{ backgroundPosition: "0px 0px" }}></a></li>
-                            <li title="斜体 <em> Ctrl+I" className="wmd-button" id="wmd-italic-button" style={{ left: " 25px" }}><a className="editor__menu--bold" style={{ backgroundPosition: " -20px 0px" }}></a></li>
-                            <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer1"></li>
-        
-                            <li title="链接 <a> Ctrl+L" className="wmd-button" id="wmd-link-button" style={{ left: "75px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-40px 0px" }}></a></li>
-                            <li title="引用 <blockquote> Ctrl+Q" className="wmd-button" id="wmd-quote-button" style={{ left: " 100px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-60px 0px" }}></a></li>
-                            <li title="代码 <pre><code> Ctrl+K" className="wmd-button" id="wmd-code-button" style={{ left: " 125px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-80px 0px" }}></a></li>
-                            <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer2"></li>
-                            <li title="图片 <img> Ctrl+G" className="wmd-button" id="wmd-image-button" style={{ left: "150px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-100px 0px" }}></a></li>
-                            <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer2"></li>
-                            <li title="数字列表 <ol> Ctrl+O" className="wmd-button" id="wmd-olist-button" style={{ left: " 200px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-120px 0px" }}></a></li>
-                            <li title="普通列表 <ul> Ctrl+U" className="wmd-button" id="wmd-ulist-button" style={{ left: "225px" }}><a className="editor__menu--bold" style={{ backgroundPosition: " -140px 0px" }}></a></li>
-                            <li title="标题 <h1>/<h2> Ctrl+H" className="wmd-button" id="wmd-heading-button" style={{ left: "250px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-160px 0px" }}></a></li>
-                            <li title="分割线 <hr> Ctrl+R" className="wmd-button" id="wmd-hr-button" style={{ left: "275px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-180px 0px" }}></a></li>
-                            <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer3"></li>
-                            <li title="撤销 - Ctrl+Z" className="wmd-button" id="wmd-undo-button" style={{ left: "325px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-200px 0px" }}></a></li>
-                            <li title="重做 - Ctrl+Y" className="wmd-button" id="wmd-redo-button" style={{ left: "350px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-220px -20px" }}></a></li>
-                            <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer4"></li>
-                            <li title="Markdown 语法" className="wmd-button" id="wmd-help-button" style={{ left: " 400px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-300px 0px" }}></a></li>
-                        </ul>
-                    </div>  <form>
-                        <div >
-                            <textarea id="sendTopic-input" name="sendTopic-input" value={this.state.content} onChange={this.handleChange.bind(this)} />
-                        </div>
-                    </form><textarea name="content" value={this.state.content} onChange={this.handleChange.bind(this)} style={{display:"none"}}></textarea>  */
         return <div style={{ width: "100%", display: "flex", flexDirection: "column" }}><div id="sendTopic">
             <form>
                 <div id="test-editormd" className="editormd">
@@ -991,7 +1011,50 @@ export class SendTopic extends RouteComponent<{ topicid, onChange }, { content: 
             <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
                 <div id="post-topic-button" onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复</div>
             </div>
+
         </div>
+            <div id="sendTopic">
+
+                <div id="sendTopic-options">
+
+                    <ul className="editor__menu clearfix" id="wmd-button-row" >
+
+                        <li title="加粗 <strong> Ctrl+B" className="wmd-button" id="wmd-bold-button" ><a className="editor__menu--bold" style={{ backgroundPosition: "0px 0px" }}></a></li>
+
+                        <li title="斜体 <em> Ctrl+I" className="wmd-button" id="wmd-italic-button" style={{ left: " 25px" }}><a className="editor__menu--bold" style={{ backgroundPosition: " -20px 0px" }}></a></li>
+
+                        <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer1"></li>
+
+
+
+                        <li title="链接 <a> Ctrl+L" className="wmd-button" id="wmd-link-button" style={{ left: "75px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-40px 0px" }}></a></li>
+                        <li title="引用 <blockquote> Ctrl+Q" className="wmd-button" id="wmd-quote-button" style={{ left: " 100px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-60px 0px" }}></a></li>
+                        <li title="代码 <pre><code> Ctrl+K" className="wmd-button" id="wmd-code-button" style={{ left: " 125px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-80px 0px" }}></a></li>
+                        <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer2"></li>
+                        <li title="图片 <img> Ctrl+G" className="wmd-button" id="wmd-image-button" style={{ left: "150px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-100px 0px" }}></a></li>
+                        <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer2"></li>
+                        <li title="数字列表 <ol> Ctrl+O" className="wmd-button" id="wmd-olist-button" style={{ left: " 200px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-120px 0px" }}></a></li>
+                        <li title="普通列表 <ul> Ctrl+U" className="wmd-button" id="wmd-ulist-button" style={{ left: "225px" }}><a className="editor__menu--bold" style={{ backgroundPosition: " -140px 0px" }}></a></li>
+                        <li title="标题 <h1>/<h2> Ctrl+H" className="wmd-button" id="wmd-heading-button" style={{ left: "250px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-160px 0px" }}></a></li>
+                        <li title="分割线 <hr> Ctrl+R" className="wmd-button" id="wmd-hr-button" style={{ left: "275px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-180px 0px" }}></a></li>
+                        <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer3"></li>
+                        <li title="撤销 - Ctrl+Z" className="wmd-button" id="wmd-undo-button" style={{ left: "325px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-200px 0px" }}></a></li>
+                        <li title="重做 - Ctrl+Y" className="wmd-button" id="wmd-redo-button" style={{ left: "350px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-220px -20px" }}></a></li>
+                        <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer4"></li>
+
+                        <li title="Markdown 语法" className="wmd-button" id="wmd-help-button" style={{ left: " 400px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-300px 0px" }}></a></li>
+                    </ul>
+                </div>
+                <form>
+                    <div >
+                        <textarea id="sendTopic-input" name="sendTopic-input" value={this.state.content} onChange={this.handleChange.bind(this)} />
+                    </div>
+                </form>
+            </div><div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
+
+                <div id="post-topic-button" onClick={this.sendUbbTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复</div>
+
+            </div>
         </div>;
     }
-}
+}  /*    */
