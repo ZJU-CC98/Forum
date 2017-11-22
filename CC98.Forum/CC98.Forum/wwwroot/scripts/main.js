@@ -2760,9 +2760,13 @@ var UserCenterPageCount = /** @class */ (function (_super) {
             while (i--) {
                 elements.unshift(i + 1);
             }
-            elements = elements.map(function (item, index) { return (React.createElement("li", null,
-                React.createElement("a", { href: "" + _this.props.href + item },
-                    React.createElement("button", { type: "button", style: (item === _this.props.currentPage) ? currentStyle : {} }, item)))); });
+            elements = elements.map(function (item, index) {
+                console.log();
+                console.log();
+                return React.createElement("li", null,
+                    React.createElement("a", { href: "" + _this.props.href + item },
+                        React.createElement("button", { type: "button", style: (item == _this.props.currentPage) ? currentStyle : {} }, item)));
+            });
         }
         else if (this.props.currentPage - 1 <= 3) {
             i = 7;
@@ -2771,7 +2775,7 @@ var UserCenterPageCount = /** @class */ (function (_super) {
             }
             elements = elements.map(function (item, index) { return (React.createElement("li", null,
                 React.createElement("a", { href: "" + _this.props.href + item },
-                    React.createElement("button", { type: "button", style: (item === _this.props.currentPage) ? currentStyle : {} }, item)))); });
+                    React.createElement("button", { type: "button", style: (item == _this.props.currentPage) ? currentStyle : {} }, item)))); });
             elements.push(React.createElement("li", null,
                 React.createElement("button", { disabled: true }, "\u00B7\u00B7\u00B7")));
             elements.push(React.createElement("li", null,
@@ -2785,7 +2789,7 @@ var UserCenterPageCount = /** @class */ (function (_super) {
             }
             elements = elements.map(function (item, index) { return (React.createElement("li", null,
                 React.createElement("a", { href: "" + _this.props.href + item },
-                    React.createElement("button", { type: "button", style: (item === _this.props.currentPage) ? currentStyle : {} }, item)))); });
+                    React.createElement("button", { type: "button", style: (item == _this.props.currentPage) ? currentStyle : {} }, item)))); });
             elements.unshift(React.createElement("li", null,
                 React.createElement("button", { disabled: true }, "\u00B7\u00B7\u00B7")));
             elements.unshift(React.createElement("li", null,
@@ -2799,7 +2803,7 @@ var UserCenterPageCount = /** @class */ (function (_super) {
             }
             elements = elements.map(function (item, index) { return (React.createElement("li", null,
                 React.createElement("a", { href: "" + _this.props.href + item },
-                    React.createElement("button", { type: "button", style: (item === _this.props.currentPage) ? currentStyle : {} }, item)))); });
+                    React.createElement("button", { type: "button", disabled: item == _this.props.currentPage, style: (item == _this.props.currentPage) ? currentStyle : {} }, item)))); });
             elements.push(React.createElement("li", null,
                 React.createElement("button", { disabled: true }, "\u00B7\u00B7\u00B7")));
             elements.push(React.createElement("li", null,
@@ -12626,7 +12630,7 @@ var LogOnExact = /** @class */ (function (_super) {
                         data = _a.sent();
                         token = "Bearer " + encodeURIComponent(data.access_token);
                         //缓存数据
-                        Utility.setLocalStorage("accessToken", token, 30);
+                        Utility.setLocalStorage("accessToken", token, data.expires_in);
                         Utility.setLocalStorage("userName", this.state.loginName);
                         Utility.setLocalStorage("password", this.state.loginPassword);
                         headers1 = new Headers();
@@ -13202,7 +13206,7 @@ var UserCenterMyFavoritesPosts = /** @class */ (function (_super) {
                     case 0:
                         token = Utility.getLocalStorage('accessToken');
                         page = this.match.params.page || 1;
-                        url = "http://apitest.niconi.cc/topic/favorite?from=" + (page - 1) * 10 + "&size=10";
+                        url = "http://apitest.niconi.cc/topic/favorite?from=" + (page - 1) * 10 + "&size=11";
                         myHeaders = new Headers();
                         myHeaders.append('Authorization', token);
                         return [4 /*yield*/, fetch(url, {
@@ -13226,17 +13230,23 @@ var UserCenterMyFavoritesPosts = /** @class */ (function (_super) {
                                 totalPage: Number.parseInt(this.match.params.page) || 1
                             });
                         }
+                        else {
+                            i = 10;
+                            this.setState({
+                                totalPage: (Number.parseInt(this.match.params.page) || 1) + 1
+                            });
+                        }
                         while (i--) {
                             post = new AppState_1.UserRecentPost();
                             post.board = data[i].boardName;
                             post.boardId = data[i].boardId;
                             post.content = data[i].title;
                             post.date = data[i].time.replace('T', ' ').slice(0, 19);
+                            post.id = data[i].id;
                             posts.unshift(post);
                         }
                         this.setState({
-                            userRecentPosts: posts,
-                            totalPage: (Number.parseInt(this.match.params.page) || 1) + 1
+                            userRecentPosts: posts
                         });
                         return [2 /*return*/];
                 }
