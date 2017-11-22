@@ -27,50 +27,44 @@ export class List extends RouteComponent<{}, {bigPaper:string, page: number, tot
 		super(props, context);
 
         // 默认页码
-        this.state = { page: 1, totalPage: 1, boardId: this.match.params.boardId, bigPaper:"" };
+        this.state = { page: 1, totalPage: 1, boardId: null, bigPaper:"" };
 	}
     async getTotalListPage(boardId) {
         const page = await Utility.getListTotalPage(boardId);
         return page;
 	}
-	async componentWillReceiveProps(newProps) {
-		let page: number;
-		// 未提供页码，防止出错不进行后续处理
-		if (!newProps.match.params.page) {
-			page = 1;
-		}
+    async componentWillReceiveProps(newProps) {
 
-		// 转换类型
-		else { page = parseInt(newProps.match.params.page); }
-		const boardId = this.match.params.boardId;
-		const totalPage = await this.getTotalListPage(boardId);
+        const data = await Utility.getBasicBoardMessage(newProps.match.params.boardId, newProps.match.params.page);
+     
         // 设置状态
-
-		this.setState({ page: page, totalPage: totalPage, boardId: boardId });
+        this.setState({ bigPaper: data.bigPaper, page: data.page, totalPage: data.totalPage, boardId: newProps.match.params.boardId });
 	}
     async componentDidMount() {
+   
         const data = await Utility.getBasicBoardMessage(this.match.params.boardId, this.match.params.page);
         // 设置状态
         this.setState({ bigPaper: data.bigPaper, page: data.page, totalPage: data.totalPage, boardId: this.match.params.boardId });
 	}
 	render() {
         return <div id="listRoot">
-            <Category boardId={this.state.boardId} />
-            <ListHead key={this.state.page} boardId={this.state.boardId} />
+            <Category boardId={this.match.params.boardId} />
+            <ListHead key={this.state.page} boardId={this.match.params.boardId} />
             <ListNotice bigPaper={this.state.bigPaper} />
 			<ListButtonAndPager page={this.state.page} totalPage={this.state.totalPage} boardid={this.state.boardId} />
 			<ListTag />
-            <Route path="/list/:boardid/:page?" component={ListContent} />
+            <Route path="/list/:boardId/:page?" component={ListContent} />
             <PagerDown page={this.state.page} totalPage={this.state.totalPage} boardid={this.state.boardId}/>
 		</div>;
 	}
 }
-export class Category extends React.Component<{boardId}, { boardId,  boardName }>{
+export class Category extends RouteComponent<{boardId }, { boardId, boardName }, {boardId,page}>{
     constructor(props) {
         super(props);
         this.state = ({ boardId: "",boardName: "" });
     }
     async componentDidMount() {
+        console.log("cate" + this.props.boardId);
         const boardName = await Utility.getListCategory(this.props.boardId);
         this.setState({ boardId: this.props.boardId, boardName: boardName });
     }
@@ -79,7 +73,7 @@ export class Category extends React.Component<{boardId}, { boardId,  boardName }
         return <div className="row" style={{width:"100%", justifyContent: "flex-start", color: "blue", fontSize: "0.75rem" }}>&rsaquo;&rsaquo;<a style={{ color: "blue", fontSize: "0.75rem" }} href="/">首页</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "0.75rem" }} href={listUrl} >{this.state.boardName}</a></div>;
     }
 }
-export class ListHead extends RouteComponent<{ boardId }, State.ListHeadState, {}> {
+export class ListHead extends RouteComponent<{ boardId }, State.ListHeadState, {boardId}> {
 	constructor(props, content) {
 		super(props, content);
 		this.state = {
@@ -101,8 +95,8 @@ export class ListHead extends RouteComponent<{ boardId }, State.ListHeadState, {
 			listName: data.name, todayTopics: data.todayCount, totalTopics: data.topicCount, listManager: data.boardMasters
 		});
 	}
-	async componentWillRecieveProps(newProps) {
-        const data = await Utility.getBoardMessage(this.props.boardId);
+    async componentWillRecieveProps(newProps) {
+        const data = await Utility.getBoardMessage(newProps.boardId);
         this.setState({
             listName: data.name, todayTopics: data.todayCount, totalTopics: data.topicCount, listManager: data.boardMasters
         });
@@ -274,9 +268,9 @@ export class ListTag extends React.Component<{}> {
 	}
 }
 
-export class ListContent extends RouteComponent<{}, { items: TopicTitleAndContentState[] }, { page: string, boardid: number }> {
+export class ListContent extends RouteComponent<{}, { items: TopicTitleAndContentState[] }, { page: string, boardId: number }> {
 
-	constructor() {
+	constructor(props,context) {
 		super();
 
 		this.state = { items: [] };
@@ -284,7 +278,8 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
 	}
     async componentDidMount() {
    
-        const data = await Utility.getBoardTopicAsync(1, this.match.params.boardid);
+        console.log("Did" + this.match.params.boardId);
+        const data = await Utility.getBoardTopicAsync(1, this.match.params.boardId);
        
 		this.setState({ items: data });
 	}
@@ -305,8 +300,8 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
 			page = 1;
 		}
 		// 转换类型
-		else { page = parseInt(p); }
-		const data = await Utility.getBoardTopicAsync(page, this.match.params.boardid);
+        else { page = parseInt(p); }
+        const data = await Utility.getBoardTopicAsync(page, newProps.match.params.boardId);
 		this.setState({ items: data });
 	}
 
