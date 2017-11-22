@@ -34,11 +34,11 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
 
         const userId = this.props.userInfo.id;
         const url = `http://apitest.niconi.cc/user/follow/${userId}`;
+        const headers = new Headers();
+        headers.append('Authorization', token);
         let res = await fetch(url, {
             method: 'POST',
-            headers: {
-                'Authorization': token
-            }
+            headers
         });
         if (res.status === 200) {
             this.setState({
@@ -63,12 +63,11 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
         const token = Utility.getLocalStorage("accessToken");
         const userId = this.props.userInfo.id;
         const url = `http://apitest.niconi.cc/user/unfollow/${userId}`;
-
+        const headers = new Headers();
+        headers.append('Authorization', token);
         let res = await fetch(url, {
             method: 'DELETE',
-            headers: {
-                'Authorization': token
-            }
+            headers
         });
         if (res.status === 200) {
             this.setState({

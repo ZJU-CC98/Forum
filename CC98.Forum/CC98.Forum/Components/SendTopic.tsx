@@ -2,7 +2,7 @@
 import * as State from '../States/AppState';
 import * as Utility from '../Utility';
 import * as $ from 'jquery';
-import { testEditor} from './Post'
+
 import {
     BrowserRouter as Router,
     Route,

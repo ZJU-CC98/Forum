@@ -25,11 +25,10 @@ export class UserCenterMyFollowings extends RouteComponent<null, UserCenterMyFol
         const token = Utility.getLocalStorage("accessToken");
         const page = this.match.params.page || 1;
         let url = `http://apitest.niconi.cc/user/follow/follower?from=${(page - 1) * 10}&size=10`;
-
+        const headers = new Headers();
+        headers.append('Authorization', token);
         let res = await fetch(url, {
-            headers: {
-                'Authorization': token
-            }
+            headers
         });
         let data = await res.json();
 
