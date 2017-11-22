@@ -36,9 +36,9 @@ interface SignalR {
     messageHub: ITypedHubProxy<MessageHub, MessageHubClient>;
 }
 
-/*declare global {
+//生命全局变量
+declare global {
     interface JQuery {
-     export var connection: 类型;
+         export var connection: 类型;
+    }
 }
-}
-*/
