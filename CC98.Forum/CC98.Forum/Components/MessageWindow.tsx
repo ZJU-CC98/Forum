@@ -176,17 +176,9 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
         if ($('#postContent').val() == '') {
             return;
         }
-        let token = Utility.getLocalStorage("accessToken");
         let bodyObj = { receiverId: this.props.data.id, content: $('#postContent').val() };
         let bodyContent = JSON.stringify(bodyObj);
-        let myHeaders = new Headers();
-        myHeaders.append('Authorization', token);
-        myHeaders.append('content-type', 'application/json');
-        let response = await fetch('http://apitest.niconi.cc/message/send', {
-                method: 'POST',
-                headers: myHeaders,
-                body: bodyContent
-        });
+        let response = await Utility.sendMessage(bodyContent);
         if (response.status == 403) {
             $('#postContent').val('');
             $('#wPostError').removeClass('displaynone');

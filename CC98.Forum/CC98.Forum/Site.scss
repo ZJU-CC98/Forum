@@ -14,19 +14,24 @@ $color-post: rgb(252,252,252);
 $color-red: rgb(255,60,60);
 $color-black: rgb(32,32,32);
 
+body {
+    margin: 0;
+    padding: 0;
+}
+
 #root {
     font-size: 16px;
-    min-width:96rem;
+    width: 100%;
 }
-.root {
+
+.root { //post中的一些组件用到（子裙写的，天知道为什么起这个名字），并非body下的根div元素
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: #FFFFFF;
     font-family: 微软雅黑;
-    width:100%;
-
+    width: 100%;
 }
 
 .replyRoot {
@@ -48,8 +53,8 @@ $color-black: rgb(32,32,32);
     justify-content: center;
     margin-left: 6.25rem;
     margin-right: 6.25rem;
-    margin-top:2.5rem;
-    width:70%;
+    margin-top: 2.5rem;
+    width: 70%;
 }
 
 .listContent {
@@ -60,12 +65,12 @@ $color-black: rgb(32,32,32);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width:100%;
+    width: 100%;
 }
 
 .notice {
     display: flex;
-    width:100%;
+    width: 100%;
     border: #EAEAEA solid thin;
     border-radius: 5px;
     background-color: #FFFFFF;
@@ -74,8 +79,8 @@ $color-black: rgb(32,32,32);
 }
 
 .essay {
-    height:6rem;
-    width:100%;
+    height: 6rem;
+    width: 100%;
     display: flex;
     align-self: flex-start;
     border-bottom: #EAEAEA solid thin;
@@ -101,7 +106,7 @@ $color-black: rgb(32,32,32);
 
 
 #authorName {
-   margin-left:1rem;
+    margin-left: 1rem;
     justify-content: flex-start;
 }
 
@@ -113,14 +118,13 @@ $color-black: rgb(32,32,32);
 }
 
 #fans {
-    margin-left:1rem;
+    margin-left: 1rem;
     margin-top: 1.4375rem;
     font-family: 微软雅黑;
     font-size: 0.8125rem;
 }
 
 .authorImg {
-
 }
 
 .authorImg img {
@@ -140,7 +144,7 @@ $color-black: rgb(32,32,32);
     background: red;
     border: 1px solid #B22222;
     color: #fff;
-    text-align:center;
+    text-align: center;
 }
 
 #email {
@@ -179,7 +183,7 @@ $color-black: rgb(32,32,32);
 }
 
 #essayTitle {
-    word-break:keep-all;
+    word-break: keep-all;
     color: #000000;
     font-size: 16px;
 }
@@ -192,18 +196,20 @@ $color-black: rgb(32,32,32);
 
 #like {
     flex-grow: 0;
-    margin-top:1rem;
+    margin-top: 1rem;
     margin-left: auto;
     margin-right: 1rem;
 }
 
 #like span {
 }
-#tags{
-    display:flex;
-    flex-wrap:nowrap;
-    word-break:keep-all;
+
+#tags {
+    display: flex;
+    flex-wrap: nowrap;
+    word-break: keep-all;
 }
+
 .tagSize {
     font-size: 0.75rem;
 }
@@ -231,9 +237,9 @@ $color-black: rgb(32,32,32);
 }
 
 .timeProp {
-    margin-left:0.1875rem;
+    margin-left: 0.1875rem;
     font-size: 0.75rem;
-    word-break:keep-all;
+    word-break: keep-all;
 }
 
 #time img {
@@ -266,7 +272,7 @@ $color-black: rgb(32,32,32);
 }
 
 #ads {
-    width:20rem;
+    width: 20rem;
     display: inline-flex;
 }
 
@@ -278,14 +284,14 @@ $color-black: rgb(32,32,32);
     display: flex;
     align-self: flex-start;
     flex-direction: column;
-    width:100%;
+    width: 100%;
     border-left: #EAEAEA solid thin;
     border-right: #EAEAEA solid thin;
     box-sizing: border-box;
 }
 
 .reply-content {
-    width:100%;
+    width: 100%;
     display: flex;
     align-self: flex-start;
     flex-direction: column;
@@ -295,35 +301,37 @@ $color-black: rgb(32,32,32);
 .substance {
     display: flex;
     line-height: 200%;
-    margin:1.25rem;
+    margin: 1.25rem;
     font-size: 0.875rem;
     word-wrap: break-word;
     color: rgb(80,80,80);
-    padding-bottom:1rem;
+    padding-bottom: 1rem;
 }
 
 .signature {
     color: rgb(80,80,80);
-    margin:1.25rem;
+    margin: 1.25rem;
     font-size: 0.875rem;
 }
-.upup{
-    cursor:pointer;
 
+.upup {
+    cursor: pointer;
 }
-.downdown{
-    cursor:pointer;
+
+.downdown {
+    cursor: pointer;
 }
+
 .comment {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
     font-size: 0.75rem;
     align-items: flex-end;
-    border-bottom:2px dashed #eaeaea;
-    margin-left:2rem;
-    padding-bottom:1rem;
-    margin-right:2rem;
+    border-bottom: 2px dashed #eaeaea;
+    margin-left: 2rem;
+    padding-bottom: 1rem;
+    margin-right: 2rem;
 }
 
 .comment1 {
@@ -334,8 +342,9 @@ $color-black: rgb(32,32,32);
     align-items: flex-end;
     border-bottom: solid thin #eaeaea;
     padding-bottom: 1rem;
-    padding-right:2rem;
+    padding-right: 2rem;
 }
+
 #commentlike {
 }
 
@@ -402,14 +411,14 @@ $color-black: rgb(32,32,32);
 }
 
 .vote {
-    width:100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     border-left: #EAEAEA solid thin;
     border-bottom: #EAEAEA solid thin;
     border-right: #EAEAEA solid thin;
-    font-size:0.875rem;
+    font-size: 0.875rem;
     box-sizing: border-box;
 }
 
@@ -445,15 +454,17 @@ $color-black: rgb(32,32,32);
 #replierMes {
     display: flex;
     align-items: flex-end;
-    flex-wrap:nowrap;
-}
-.reply{
-    width:100%;
+    flex-wrap: nowrap;
 }
 
-.rpyClr{
-    word-break:keep-all;
+.reply {
+    width: 100%;
 }
+
+.rpyClr {
+    word-break: keep-all;
+}
+
 #replierMes {
     margin-top: 25px;
     margin-bottom: 10px;
@@ -464,12 +475,14 @@ $color-black: rgb(32,32,32);
     width: 10px;
     height: 10px;
 }
-#operation{
-    margin-top:1rem;
-    height:3rem;
-    display:flex;
-    justify-content:flex-end;
+
+#operation {
+    margin-top: 1rem;
+    height: 3rem;
+    display: flex;
+    justify-content: flex-end;
 }
+
 .operation1 {
     word-break: keep-all;
     font-size: 0.75rem;
@@ -478,11 +491,11 @@ $color-black: rgb(32,32,32);
     padding-right: 0.4375rem;
     color: #000000;
     margin-left: 0.3125rem;
-
     outline: none;
 }
+
 .operation {
-    word-break:keep-all;
+    word-break: keep-all;
     margin-top: 1rem;
     font-size: 0.75rem;
     font-family: 微软雅黑;
@@ -502,7 +515,7 @@ $color-black: rgb(32,32,32);
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    height:6rem;
+    height: 6rem;
 }
 
 #ListImg img {
@@ -513,13 +526,15 @@ $color-black: rgb(32,32,32);
 #noticeName {
     display: flex;
     background-color: #3399FE;
-    font-size:1rem;
+    font-size: 1rem;
 }
-#topicsNumber{
-    display:flex;
-    flex-wrap:nowrap;
-    word-break:keep-all;
+
+#topicsNumber {
+    display: flex;
+    flex-wrap: nowrap;
+    word-break: keep-all;
 }
+
 .postTopic {
     width: 80px;
     height: 30px;
@@ -550,7 +565,7 @@ $color-black: rgb(32,32,32);
 .chooseTag {
     border: #33C499 solid thin;
     width: 6rem;
-    height:2rem;
+    height: 2rem;
     margin-left: 0.625rem;
     background-color: $bgcolor2;
     border-radius: 0.3125rem;
@@ -565,13 +580,13 @@ $color-black: rgb(32,32,32);
 .listContentTag {
     margin-top: 0.625rem;
     margin-left: 1.25rem;
-    margin-bottom:0.625rem;
+    margin-bottom: 0.625rem;
     border: none;
     background-color: $bgcolor2;
 }
 
 .topicInList {
-   height:4rem;
+    height: 4rem;
     text-align: center;
     width: 100%;
     display: flex;
@@ -611,7 +626,6 @@ a {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
 }
 
 .button {
@@ -855,139 +869,7 @@ a {
     line-height: 2px;
 }
 
-
-.headRoot {
-    width: 1140px;
-    height: 252px;
-    border: none;
-    position: absolute;
-    left: 0;
-    top: 0;
-}
-
-#backgroundimg {
-    width: 1920px;
-    position: absolute;
-    left: 0px;
-    top: 0px
-}
-
-.backgroundimg img {
-    width: 1920px;
-    height: 238px;
-    z-index: -2;
-}
-
-.shadow {
-    opacity: 0.16;
-    width: 1920px;
-    height: 4px;
-    border: none;
-    position: absolute;
-    left: 0;
-    top: 238px;
-    background-color: rgb(80,80,80);
-}
-
-.beijingtiao {
-    opacity: 0.5;
-    width: 1920px;
-    height: 51px;
-    border: none;
-    position: absolute;
-    left: 0;
-    top: 0px;
-    background-color: rgb(80,80,80);
-}
-
-.banquantiao {
-    width: 1920px;
-    height: 60px;
-    border: none;
-    position: absolute;
-    left: 0;
-    top: 1020px;
-    background-color: rgb(242,242,242);
-}
-
-#banquanwenzi {
-    width: 1920px;
-    position: absolute;
-    top: 1030px;
-}
-
-#banquanwenzi p {
-    text-align: center;
-    color: rgb(80,80,80);
-    font-family: Microsoft YaHei;
-    font-size: 12px;
-}
-
-#logo {
-    position: absolute;
-    left: 390px;
-    top: 10px;
-    width: 45px;
-    height: 32px;
-}
-
-
-
-#theme {
-    color: rgb(80,80,80);
-    font-family: Microsoft YaHei;
-    font-size: 12px;
-    top: 11px;
-    left: 8px;
-    position: absolute;
-}
-
-#searchbar {
-    width: 300px;
-    height: 33px;
-    border-radius: 0px 6px 6px 0px;
-    border: 2px solid rgb(233,233,233);
-    background-color: rgb(252,252,252);
-}
-
-#searchbutton {
-    position: absolute;
-    left: 306px;
-    top: 2.5px;
-    width: 46px;
-    height: 33px;
-    background-color: rgb(252,252,252);
-    border: none
-}
-
-#BBScolumn {
-    left: 390px;
-    top: 185px;
-    position: absolute;
-    width: 530px;
-    height: 35px;
-    border-radius: 6px 6px 6px 6px;
-    border: 2px solid rgb(233,233,233);
-    background-color: rgb(252,252,252);
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: center;
-}
-
-.ziti1 {
-    color: rgb(70,70,70);
-    font-family: Microsoft YaHei;
-    font-size: 12px;
-}
-
-::-webkit-input-placeholder {
-    color: rgb(160,160,160);
-    font-family: Microsoft YaHei;
-    font-size: 12px;
-}
-
+//以下是版面列表的样式~~---------------------------------------------------------
 .boardList {
     display: flex;
     flex-direction: column;
@@ -995,24 +877,7 @@ a {
     min-width: 1140px;
     align-items: center;
 }
-.newBoardList{
-    min-height: 50rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-}
-.leftList{
-    background-color:#fff;
-    border:#EAEAEA solid thin;
-    margin-left:1.5rem;
-    border-radius:0.3rem;
-}
-.oneBoard {
-    margin: 1rem;
-    font-size: 1.2rem;
-    font-family: 方正宋刻本秀楷简体;
-}
+
 .anArea {
     display: flex;
     flex-direction: column;
@@ -1020,15 +885,6 @@ a {
     box-sizing: border-box;
     background-color: rgb(252,252,252);
     margin-bottom: 30px;
-}
-
-.viewBoard {
-    margin-left: 30px;
-    border-radius: 5px;
-    background-color: #FFFFFF;
-    border-color: #000000;
-    width: 30px;
-    height: 20px;
 }
 
 .hideBoard {
@@ -1092,34 +948,6 @@ a {
     color: rgb(80,80,80);
     margin-top: 12px;
 }
-
-.areaContent2 {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding-top: 12px;
-}
-
-.boardContent2 {
-    display: flex;
-    flex-direction: column;
-    margin: 0 0 12px 6px;
-    width: 180px;
-    //text-align:center;
-}
-
-.boardName3 {
-    font-size: 12px;
-    font-family: 微软雅黑;
-    color: rgb(80,80,80);
-    margin-top: 12px;
-}
-
-body {
-    background-color: rgb(245,250,255);
-}
-
-
 
 /*****************************************以下为我的消息的样式*********************************/
 .message-root {
@@ -1872,6 +1700,7 @@ body {
 
     .focus-topic-board {
         margin: 30px 18px 0px;
+
         a {
             color: $color-thinBlack;
         }
@@ -1932,10 +1761,11 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
+    min-width: 1140px;
     margin: 0 0 20px 0;
     padding: 0px;
     justify-content: center;
-    background: url(/images/autumn1.png) no-repeat center;
+    background: url(/images/winter1.png) no-repeat center;
     z-index: 2;
 }
 
@@ -1959,7 +1789,7 @@ body {
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: 140px;
+    height: 188px;
     justify-content: center;
 }
 
@@ -1968,7 +1798,7 @@ body {
     flex-direction: row;
     justify-content: space-between;
     width: 1140px;
-    margin-top: 104px;
+    margin-top: 130px;
 }
 
 .linkBar {
@@ -2005,8 +1835,8 @@ body {
     padding: 0;
 }
 
-#dropdown a{
-    color:rgb(255,255,255);
+#dropdown a {
+    color: rgb(255,255,255);
 }
 
 #dropdown .box {
@@ -2062,20 +1892,20 @@ body {
     -webkit-filter: brightness(1.1);
 }
 
-#dropdown .dropDownSubBox{
-    margin-top:-5px;
+#dropdown .dropDownSubBox {
+    margin-top: -5px;
 }
 
 #dropdown .dropDownSub {
     width: 94px;
     display: none;
     background-color: rgba(80,80,80,0.5);
-    margin-left:30px;
+    margin-left: 30px;
     opacity: 0.9999; //暂时不知道原因，但是如果不加上一个小于1的opacity值，下拉会出问题,猜测是opacity把元素及所有子元素合在一起？
 }
 
 #dropdown .dropDownSub li {
-    display:flex;
+    display: flex;
     height: 25px;
     cursor: pointer;
     justify-content: center;
@@ -2087,7 +1917,6 @@ body {
 }
 //以下是头部中搜索条的样式
 #search {
-   
 }
 
 #search .box, #search .select, #search input, #search a, #search .searchBoxSub {
@@ -2177,7 +2006,7 @@ body {
     height: 25px;
     cursor: pointer;
     padding-left: 5px;
-    padding-top:3px;
+    padding-top: 3px;
 }
 
 #search .searchBoxSub li.hover {
@@ -2210,6 +2039,40 @@ body {
     color: rgb(80,80,80);
     margin-left: 10px;
     margin-right: 10px;
+}
+
+//--------------------------------以下是首页的样式~ --------------------------------------------
+.mainPage {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    min-width: 1140px;
+    z-index: 0;
+}
+
+.leftPart {
+    display: flex;
+    flex-direction: column;
+    margin-right: 30px;
+}
+
+.rightPart {
+    display: flex;
+    flex-direction: column;
+}
+
+.announcement {
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    width: 860px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 1px;
+    box-sizing: border-box;
+    background-color: rgb(252,252,252);
+    border-radius: 20px 0;
+    margin-bottom: 30px;
 }
 //以下这段是推荐阅读的样式~~
 .recommended1 {
@@ -2529,43 +2392,7 @@ body {
     margin-top: 20px;
 }
 
-.mainPage {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    min-width: 1140px;
-    z-index: 0;
-}
 
-.leftPart {
-    display: flex;
-    flex-direction: column;
-    margin-right: 30px;
-}
-
-.rightPart {
-    display: flex;
-    flex-direction: column;
-}
-
-.announcement {
-    display: flex;
-    flex-direction: column;
-    min-height: 200px;
-    width: 860px;
-    border-style: solid;
-    border-color: rgb(233,233,233);
-    border-width: 1px;
-    box-sizing: border-box;
-    background-color: rgb(252,252,252);
-    border-radius: 20px 0;
-    margin-bottom: 30px;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-}
 /*
 * UBB用
 */
@@ -2755,9 +2582,9 @@ body {
     #sendTopic-input {
         background-color: #fff;
         height: 20rem;
-        padding:1rem;
+        padding: 1rem;
         border: none;
-        width:97.5%;
+        width: 97.5%;
     }
 }
 
@@ -2824,9 +2651,10 @@ body {
     border-radius: .5em;
 }
 
-#quoteOverflow{
-    overflow-y:auto;
+#quoteOverflow {
+    overflow-y: auto;
 }
-.userDetails{
-    z-index:1;
+
+.userDetails {
+    z-index: 1;
 }

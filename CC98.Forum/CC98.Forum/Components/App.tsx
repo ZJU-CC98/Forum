@@ -3,7 +3,8 @@ import { AppState } from '../States/AppState';
 import { match } from 'react-router';
 import {
 	BrowserRouter as Router,
-	Route } from 'react-router-dom';
+	Route
+} from 'react-router-dom';
 import { Post } from './post';
 import { List } from './List';
 import { CurUserPost } from './CurUserPost';
@@ -32,30 +33,30 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
 
 export class App extends React.Component<{}, AppState> {
 
-    render() {
-		return <div>
+	render() {
+		return <div style={{ width: "100%" }}>
 			<Router>
-				    <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column',alignItems:"center" }}>
-                    <Header />
-					<Route exact path="/" component={MainPage}></Route>
+				<div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px" }}>
+					<Header />
+					<Route exact path="/" component={MainPage}></Route>          
 					<Route exact path="/topic/:topicid/:page?" component={Post} />
 					<Route exact path="/topic/:topicid/user/:userId/:page?" component={CurUserPost} />
 					<Route path="/list/:boardId/:page?" component={List} />
 					<Route exact path="/boardlist" component={BoardList} />
 					<Route path="/usercenter" component={UserCenter} />
-                    <Route path="/message" component={Message} />
-                    <Route path="/focus" component={Focus} />
+					<Route path="/message" component={Message} />
+					<Route path="/focus" component={Focus} />
 					<Route path="/newtopics" component={AllNewTopic} />
 					<Route path="/user" component={User} />
-                    <Route path="/logon" component={LogOn} />
-                    <Route path="/createtopic" component={CreateTopic} />
-                    <Route path="/status/logout" component={Status.LogOut} />
-                    <Route path="/status/UnauthorizedBoard" component={Status.UnauthorizedBoard} />
-                    <Route path="/status/UnauthorizedTopic" component={Status.UnauthorizedTopic} />
-                    <Route path="/status/NotFoundTopic" component={Status.NotFoundTopic} />
-                    <Route path="/status/NotFoundBoard" component={Status.NotFoundBoard} />
-                    <Route path="/status/NotFoundUser" component={Status.NotFoundUser} />
-                    <Footer />
+					<Route path="/logon" component={LogOn} />
+					<Route path="/createtopic/:boardId" component={CreateTopic} />
+					<Route path="/status/logout" component={Status.LogOut} />
+					<Route path="/status/UnauthorizedBoard" component={Status.UnauthorizedBoard} />
+					<Route path="/status/UnauthorizedTopic" component={Status.UnauthorizedTopic} />
+					<Route path="/status/NotFoundTopic" component={Status.NotFoundTopic} />
+					<Route path="/status/NotFoundBoard" component={Status.NotFoundBoard} />
+					<Route path="/status/NotFoundUser" component={Status.NotFoundUser} />
+					<Footer />
 				</div>
 			</Router></div>;
 	}
