@@ -2880,7 +2880,7 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { path: "/newtopics", component: AllNewTopic_1.AllNewTopic }),
                     React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }),
                     React.createElement(react_router_dom_1.Route, { path: "/logon", component: LogOn_1.LogOn }),
-                    React.createElement(react_router_dom_1.Route, { path: "/createtopic", component: CreateTopic_1.CreateTopic }),
+                    React.createElement(react_router_dom_1.Route, { path: "/createtopic/:boardId", component: CreateTopic_1.CreateTopic }),
                     React.createElement(react_router_dom_1.Route, { path: "/status/logout", component: Status.LogOut }),
                     React.createElement(react_router_dom_1.Route, { path: "/status/UnauthorizedBoard", component: Status.UnauthorizedBoard }),
                     React.createElement(react_router_dom_1.Route, { path: "/status/UnauthorizedTopic", component: Status.UnauthorizedTopic }),
@@ -2932,8 +2932,6 @@ var UserCenterPageCount = /** @class */ (function (_super) {
                 elements.unshift(i + 1);
             }
             elements = elements.map(function (item, index) {
-                console.log();
-                console.log();
                 return React.createElement("li", null,
                     React.createElement("a", { href: "" + _this.props.href + item },
                         React.createElement("button", { type: "button", style: (item == _this.props.currentPage) ? currentStyle : {} }, item)));
@@ -3311,9 +3309,10 @@ var ListButtonAndPager = /** @class */ (function (_super) {
         });
     };
     ListButtonAndPager.prototype.render = function () {
+        var createTopicUrl = "/createTopic/" + this.props.boardid;
         return React.createElement("div", { className: "row", style: { width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", marginTop: '0.9375rem', justifyContent: 'space-between', alignItems: 'flex-end' } },
             React.createElement("div", { style: { marginBottom: '1.25rem' } },
-                React.createElement("button", { className: "button orange" }, "\u53D1\u4E3B\u9898"),
+                React.createElement(react_router_dom_1.Link, { className: "button orange", to: createTopicUrl }, "\u53D1\u4E3B\u9898"),
                 React.createElement("button", { className: "button green", style: { marginLeft: '1.25rem' } }, "\u53D1\u6295\u7968")),
             React.createElement("div", { id: "pager" },
                 React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this)))));
@@ -4912,7 +4911,7 @@ var SendTopic = /** @class */ (function (_super) {
                         url = "http://apitest.niconi.cc/post/topic/" + this.props.topicid;
                         content = {
                             content: this.state.content,
-                            contentType: 1,
+                            contentType: 0,
                             title: ""
                         };
                         contentJson = JSON.stringify(content);
@@ -5038,7 +5037,7 @@ var SendTopic = /** @class */ (function (_super) {
                 React.createElement("div", { id: "post-topic-button", onClick: this.sendUbbTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u56DE\u590D")));
     };
     return SendTopic;
-}(RouteComponent)); /*    */
+}(RouteComponent));
 exports.SendTopic = SendTopic;
 
 
@@ -7011,50 +7010,6 @@ var Utility = __webpack_require__(2);
 /*
 *不明白handleChange是做什么的QAQ
 */
-var CreateTopic = /** @class */ (function (_super) {
-    __extends(CreateTopic, _super);
-    function CreateTopic(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = ({ title: '' });
-        return _this;
-    }
-    CreateTopic.prototype.handleChange = function (event) {
-        this.setState({ title: event.target.value });
-    };
-    CreateTopic.prototype.render = function () {
-        return React.createElement("div", { style: { display: 'flex', flexDirection: 'row', justifyContent: 'center' } },
-            React.createElement("div", { className: "createTopic" },
-                React.createElement("div", { className: "createTopicBoardName" }, " \u7248\u9762\u540D\u79F0 > \u53D1\u8868\u4E3B\u9898"),
-                React.createElement("div", { className: "createTopicTitle" },
-                    React.createElement("div", { className: "createTopicListName" }, "\u4E3B\u9898\u6807\u9898"),
-                    React.createElement("div", { className: "createTopicListName" }, "\u6807\u7B7E1"),
-                    React.createElement("div", { className: "createTopicListName" }, "\u6807\u7B7E2"),
-                    React.createElement("input", { type: "text", placeholder: "请输入主题的标题", value: this.state.title, onChange: this.handleChange.bind(this) })),
-                React.createElement("div", { className: "createTopicType" },
-                    React.createElement("div", { className: "createTopicListName" }, "\u53D1\u5E16\u7C7B\u578B"),
-                    React.createElement("input", { type: "radio", checked: true, name: "type", value: "normal" }),
-                    " \u666E\u901A",
-                    React.createElement("input", { type: "radio", name: "type", value: "academic" }),
-                    " \u5B66\u672F\u4FE1\u606F",
-                    React.createElement("div", { style: { color: 'rgb(255,0,0)' } }, "\uFF08\u6D3B\u52A8\u5E16\u548C\u5B66\u672F\u8D34\u8BF7\u9009\u62E9\u6B63\u786E\u7684\u53D1\u5E16\u7C7B\u578B\uFF09")),
-                React.createElement("div", { className: "createTopicOption" },
-                    React.createElement("div", { className: "createTopicListName" }, "\u9009\u9879"),
-                    React.createElement("input", { type: "radio", checked: true, name: "option", value: "all" }),
-                    "\u56DE\u590D\u6240\u6709\u4EBA\u53EF\u89C1",
-                    React.createElement("input", { type: "radio", name: "option", value: "host" }),
-                    "\u56DE\u590D\u4EC5\u697C\u4E3B\u53EF\u89C1",
-                    React.createElement("input", { type: "radio", name: "option", value: "special" }),
-                    "\u56DE\u590D\u4EC5\u7279\u5B9A\u7528\u6237\u53EF\u89C1"),
-                React.createElement(CreateTopicContent, { title: this.state.title }),
-                React.createElement("div", { className: "createTopicContent" }, "\u8FD9\u91CC\u4E0E\u5FEB\u901F\u56DE\u590D\u76F8\u540C")));
-    };
-    return CreateTopic;
-}(React.Component));
-exports.CreateTopic = CreateTopic;
-/*
-*Route也不会……QAQ
-*感觉react相关什么都不会啊……有看到这个注释的前辈能教教我吗……
-*/
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -7070,23 +7025,29 @@ var RouteComponent = /** @class */ (function (_super) {
     return RouteComponent;
 }(React.Component));
 exports.RouteComponent = RouteComponent;
-var CreateTopicContent = /** @class */ (function (_super) {
-    __extends(CreateTopicContent, _super);
-    function CreateTopicContent(props) {
+var CreateTopic = /** @class */ (function (_super) {
+    __extends(CreateTopic, _super);
+    function CreateTopic(props) {
         var _this = _super.call(this, props) || this;
-        _this.state = ({ content: '' });
+        _this.state = ({ topicId: null, title: '', content: '', ready: false });
         return _this;
     }
-    CreateTopicContent.prototype.createTopic = function () {
+    CreateTopic.prototype.ready = function () {
+        this.setState({ ready: true });
+    };
+    CreateTopic.prototype.sendMdTopic = function (title) {
         return __awaiter(this, void 0, void 0, function () {
-            var url, content, contentJson, token, myHeaders, mes;
+            var url, con, content, contentJson, token, myHeaders, mes, topicId, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        url = 'http://apitest.niconi.cc/topic/board/753';
+                        _a.trys.push([0, 3, , 4]);
+                        url = "http://apitest.niconi.cc/topic/board/" + this.match.params.boardId;
+                        con = testEditor.getMarkdown();
                         content = {
-                            content: this.state.content,
-                            title: this.props.title,
+                            content: con,
+                            contentType: 1,
+                            title: this.state.title
                         };
                         contentJson = JSON.stringify(content);
                         token = Utility.getLocalStorage("accessToken");
@@ -7100,63 +7061,222 @@ var CreateTopicContent = /** @class */ (function (_super) {
                             })];
                     case 1:
                         mes = _a.sent();
-                        this.setState({ content: "" });
+                        if (mes.status === 402) {
+                            alert("请输入内容");
+                        }
+                        testEditor.setMarkdown("");
+                        return [4 /*yield*/, mes.text()];
+                    case 2:
+                        topicId = _a.sent();
+                        window.location.href = "/topic/" + topicId;
+                        return [3 /*break*/, 4];
+                    case 3:
+                        e_1 = _a.sent();
+                        console.log("Error");
+                        console.log(e_1);
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    CreateTopic.prototype.sendUbbTopic = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var url, content, contentJson, token, myHeaders, mes, topicId;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        url = "http://apitest.niconi.cc/topic/board/" + this.match.params.boardId;
+                        content = {
+                            content: this.state.content,
+                            contentType: 0,
+                            title: this.state.title
+                        };
+                        contentJson = JSON.stringify(content);
+                        token = Utility.getLocalStorage("accessToken");
+                        myHeaders = new Headers();
+                        myHeaders.append("Authorization", token);
+                        myHeaders.append("Content-Type", 'application/json');
+                        return [4 /*yield*/, fetch(url, {
+                                method: 'POST',
+                                headers: myHeaders,
+                                body: contentJson
+                            })];
+                    case 1:
+                        mes = _a.sent();
+                        return [4 /*yield*/, mes.text()];
+                    case 2:
+                        topicId = _a.sent();
+                        window.location.href = "/topic/" + topicId;
                         return [2 /*return*/];
                 }
             });
         });
     };
-    CreateTopicContent.prototype.getInitialState = function () {
-        return { value: '' };
+    CreateTopic.prototype.onTitleChange = function (title) {
+        this.setState({ title: title });
     };
-    CreateTopicContent.prototype.handleChange = function (event) {
+    CreateTopic.prototype.onUbbChange = function (content) {
+        this.setState({ content: content });
+    };
+    CreateTopic.prototype.render = function () {
+        //let mode = 0;
+        var mode = 1;
+        if (mode === 0) {
+            return React.createElement("div", { className: "column", style: { justifyContent: "center", width: "80%" } },
+                React.createElement("div", { className: "createTopicBoardName" }, " \u7248\u9762\u540D\u79F0 > \u53D1\u8868\u4E3B\u9898"),
+                React.createElement(InputTitle, { boardId: this.match.params.boardId, onChange: this.onTitleChange.bind(this) }),
+                React.createElement("div", { className: "createTopicType" },
+                    React.createElement("div", { className: "createTopicListName" }, "\u53D1\u5E16\u7C7B\u578B"),
+                    React.createElement("input", { type: "radio", checked: true, name: "type", value: "normal" }),
+                    " \u666E\u901A",
+                    React.createElement("input", { type: "radio", name: "type", value: "academic" }),
+                    " \u5B66\u672F\u4FE1\u606F",
+                    React.createElement("div", { style: { color: 'rgb(255,0,0)' } }, "\uFF08\u6D3B\u52A8\u5E16\u548C\u5B66\u672F\u8D34\u8BF7\u9009\u62E9\u6B63\u786E\u7684\u53D1\u5E16\u7C7B\u578B\uFF09")),
+                React.createElement("div", { className: "createTopicOption" },
+                    React.createElement("div", { className: "createTopicListName" }, "\u9009\u9879"),
+                    React.createElement("input", { type: "radio", checked: true, name: "option", value: "all" }),
+                    "\u56DE\u590D\u6240\u6709\u4EBA\u53EF\u89C1",
+                    React.createElement("input", { type: "radio", name: "option", value: "host" }),
+                    "\u56DE\u590D\u4EC5\u697C\u4E3B\u53EF\u89C1",
+                    React.createElement("input", { type: "radio", name: "option", value: "special" }),
+                    "\u56DE\u590D\u4EC5\u7279\u5B9A\u7528\u6237\u53EF\u89C1"),
+                React.createElement(InputUbbContent, { onChange: this.onUbbChange.bind(this) }),
+                React.createElement("div", { id: "post-topic-button", onClick: this.sendUbbTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" } }, "\u53D1\u5E16"));
+        }
+        else {
+            return React.createElement("div", { className: "column", style: { justifyContent: "center", width: "80%" } },
+                React.createElement("div", { className: "createTopicBoardName" }, " \u7248\u9762\u540D\u79F0 > \u53D1\u8868\u4E3B\u9898"),
+                React.createElement(InputTitle, { boardId: this.match.params.boardId, onChange: this.onTitleChange.bind(this) }),
+                React.createElement("div", { className: "createTopicType" },
+                    React.createElement("div", { className: "createTopicListName" }, "\u53D1\u5E16\u7C7B\u578B"),
+                    React.createElement("input", { type: "radio", checked: true, name: "type", value: "normal" }),
+                    " \u666E\u901A",
+                    React.createElement("input", { type: "radio", name: "type", value: "academic" }),
+                    " \u5B66\u672F\u4FE1\u606F",
+                    React.createElement("div", { style: { color: 'rgb(255,0,0)' } }, "\uFF08\u6D3B\u52A8\u5E16\u548C\u5B66\u672F\u8D34\u8BF7\u9009\u62E9\u6B63\u786E\u7684\u53D1\u5E16\u7C7B\u578B\uFF09")),
+                React.createElement("div", { className: "createTopicOption" },
+                    React.createElement("div", { className: "createTopicListName" }, "\u9009\u9879"),
+                    React.createElement("input", { type: "radio", checked: true, name: "option", value: "all" }),
+                    "\u56DE\u590D\u6240\u6709\u4EBA\u53EF\u89C1",
+                    React.createElement("input", { type: "radio", name: "option", value: "host" }),
+                    "\u56DE\u590D\u4EC5\u697C\u4E3B\u53EF\u89C1",
+                    React.createElement("input", { type: "radio", name: "option", value: "special" }),
+                    "\u56DE\u590D\u4EC5\u7279\u5B9A\u7528\u6237\u53EF\u89C1"),
+                React.createElement(InputMdContent, { onChange: this.onUbbChange.bind(this), ready: this.state.ready }),
+                React.createElement("div", { id: "post-topic-button", onClick: this.sendMdTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" } }, "\u53D1\u5E16"));
+        }
+    };
+    return CreateTopic;
+}(RouteComponent));
+exports.CreateTopic = CreateTopic;
+var InputTitle = /** @class */ (function (_super) {
+    __extends(InputTitle, _super);
+    function InputTitle(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = ({ title: "" });
+        return _this;
+    }
+    InputTitle.prototype.handleTitleChange = function (event) {
+        this.props.onChange(event.target.value);
+        this.setState({ title: event.target.value });
+    };
+    InputTitle.prototype.render = function () {
+        editormd("title-editormd", {
+            width: "100%",
+            height: 500,
+            path: "/scripts/lib/editor.md/lib/",
+            saveHTMLToTextarea: false
+        });
+        return React.createElement("div", { className: "createTopicTitle" },
+            React.createElement("div", { className: "createTopicListName" }, "\u4E3B\u9898\u6807\u9898"),
+            React.createElement("div", { className: "createTopicListName" }, "\u6807\u7B7E1"),
+            React.createElement("div", { className: "createTopicListName" }, "\u6807\u7B7E2"),
+            React.createElement("div", { id: "title-editormd", className: "editormd" },
+                React.createElement("textarea", { className: "editormd-markdown-textarea", name: "title-editormd-markdown-doc" })));
+    };
+    return InputTitle;
+}(React.Component));
+exports.InputTitle = InputTitle;
+var InputUbbContent = /** @class */ (function (_super) {
+    __extends(InputUbbContent, _super);
+    function InputUbbContent(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = ({ content: "" });
+        return _this;
+    }
+    InputUbbContent.prototype.handleUbbChange = function (event) {
+        this.props.onChange(event.target.value);
         this.setState({ content: event.target.value });
     };
-    CreateTopicContent.prototype.render = function () {
+    InputUbbContent.prototype.render = function () {
+        return React.createElement("div", { id: "sendTopic" },
+            React.createElement("div", { id: "sendTopic-options" },
+                React.createElement("ul", { className: "editor__menu clearfix", id: "wmd-button-row" },
+                    React.createElement("li", { title: "加粗 <strong> Ctrl+B", className: "wmd-button", id: "wmd-bold-button" },
+                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "0px 0px" } })),
+                    React.createElement("li", { title: "斜体 <em> Ctrl+I", className: "wmd-button", id: "wmd-italic-button", style: { left: " 25px" } },
+                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: " -20px 0px" } })),
+                    React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer1" }),
+                    React.createElement("li", { title: "链接 <a> Ctrl+L", className: "wmd-button", id: "wmd-link-button", style: { left: "75px" } },
+                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-40px 0px" } })),
+                    React.createElement("li", { title: "引用 <blockquote> Ctrl+Q", className: "wmd-button", id: "wmd-quote-button", style: { left: " 100px" } },
+                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-60px 0px" } })),
+                    React.createElement("li", { title: "代码 <pre><code> Ctrl+K", className: "wmd-button", id: "wmd-code-button", style: { left: " 125px" } },
+                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-80px 0px" } })),
+                    React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer2" }),
+                    React.createElement("li", { title: "图片 <img> Ctrl+G", className: "wmd-button", id: "wmd-image-button", style: { left: "150px" } },
+                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-100px 0px" } })),
+                    React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer2" }),
+                    React.createElement("li", { title: "数字列表 <ol> Ctrl+O", className: "wmd-button", id: "wmd-olist-button", style: { left: " 200px" } },
+                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-120px 0px" } })),
+                    React.createElement("li", { title: "普通列表 <ul> Ctrl+U", className: "wmd-button", id: "wmd-ulist-button", style: { left: "225px" } },
+                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: " -140px 0px" } })),
+                    React.createElement("li", { title: "标题 <h1>/<h2> Ctrl+H", className: "wmd-button", id: "wmd-heading-button", style: { left: "250px" } },
+                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-160px 0px" } })),
+                    React.createElement("li", { title: "分割线 <hr> Ctrl+R", className: "wmd-button", id: "wmd-hr-button", style: { left: "275px" } },
+                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-180px 0px" } })),
+                    React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer3" }),
+                    React.createElement("li", { title: "撤销 - Ctrl+Z", className: "wmd-button", id: "wmd-undo-button", style: { left: "325px" } },
+                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-200px 0px" } })),
+                    React.createElement("li", { title: "重做 - Ctrl+Y", className: "wmd-button", id: "wmd-redo-button", style: { left: "350px" } },
+                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-220px -20px" } })),
+                    React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer4" }),
+                    React.createElement("li", { title: "Markdown 语法", className: "wmd-button", id: "wmd-help-button", style: { left: " 400px" } },
+                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-300px 0px" } })))),
+            React.createElement("form", null,
+                React.createElement("div", null,
+                    React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input", value: this.state.content, onChange: this.handleUbbChange.bind(this) }))),
+            React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "1.25rem " } }));
+    };
+    return InputUbbContent;
+}(React.Component));
+exports.InputUbbContent = InputUbbContent;
+var InputMdContent = /** @class */ (function (_super) {
+    __extends(InputMdContent, _super);
+    function InputMdContent(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = ({ content: "" });
+        return _this;
+    }
+    InputMdContent.prototype.render = function () {
+        editormd("test-editormd", {
+            width: "100%",
+            height: 680,
+            path: "/scripts/lib/editor.md/lib/",
+            saveHTMLToTextarea: false
+        });
         return React.createElement("div", { style: { width: "100%", display: "flex", flexDirection: "column" } },
             React.createElement("div", { id: "sendTopic" },
-                React.createElement("div", { id: "sendTopic-options" },
-                    React.createElement("ul", { className: "editor__menu clearfix", id: "wmd-button-row" },
-                        React.createElement("li", { title: "加粗 <strong> Ctrl+B", className: "wmd-button", id: "wmd-bold-button" },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "0px 0px" } })),
-                        React.createElement("li", { title: "斜体 <em> Ctrl+I", className: "wmd-button", id: "wmd-italic-button", style: { left: " 25px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: " -20px 0px" } })),
-                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer1" }),
-                        React.createElement("li", { title: "链接 <a> Ctrl+L", className: "wmd-button", id: "wmd-link-button", style: { left: "75px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-40px 0px" } })),
-                        React.createElement("li", { title: "引用 <blockquote> Ctrl+Q", className: "wmd-button", id: "wmd-quote-button", style: { left: " 100px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-60px 0px" } })),
-                        React.createElement("li", { title: "代码 <pre><code> Ctrl+K", className: "wmd-button", id: "wmd-code-button", style: { left: " 125px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-80px 0px" } })),
-                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer2" }),
-                        React.createElement("li", { title: "图片 <img> Ctrl+G", className: "wmd-button", id: "wmd-image-button", style: { left: "150px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-100px 0px" } })),
-                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer2" }),
-                        React.createElement("li", { title: "数字列表 <ol> Ctrl+O", className: "wmd-button", id: "wmd-olist-button", style: { left: " 200px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-120px 0px" } })),
-                        React.createElement("li", { title: "普通列表 <ul> Ctrl+U", className: "wmd-button", id: "wmd-ulist-button", style: { left: "225px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: " -140px 0px" } })),
-                        React.createElement("li", { title: "标题 <h1>/<h2> Ctrl+H", className: "wmd-button", id: "wmd-heading-button", style: { left: "250px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-160px 0px" } })),
-                        React.createElement("li", { title: "分割线 <hr> Ctrl+R", className: "wmd-button", id: "wmd-hr-button", style: { left: "275px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-180px 0px" } })),
-                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer3" }),
-                        React.createElement("li", { title: "撤销 - Ctrl+Z", className: "wmd-button", id: "wmd-undo-button", style: { left: "325px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-200px 0px" } })),
-                        React.createElement("li", { title: "重做 - Ctrl+Y", className: "wmd-button", id: "wmd-redo-button", style: { left: "350px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-220px -20px" } })),
-                        React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer4" }),
-                        React.createElement("li", { title: "Markdown 语法", className: "wmd-button", id: "wmd-help-button", style: { left: " 400px" } },
-                            React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-300px 0px" } })))),
                 React.createElement("form", null,
-                    React.createElement("div", null,
-                        React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input", value: this.state.content, onChange: this.handleChange.bind(this) })))),
-            React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "1.25rem " } },
-                React.createElement("div", { id: "post-topic-button", onClick: this.createTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u53D1\u5E16")));
+                    React.createElement("div", { id: "test-editormd", className: "editormd" },
+                        React.createElement("textarea", { className: "editormd-markdown-textarea", name: "test-editormd-markdown-doc" }))),
+                React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "1.25rem " } },
+                    React.createElement("div", { id: "post-topic-button", className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u53D1\u5E16"))));
     };
-    return CreateTopicContent;
-}(RouteComponent));
-exports.CreateTopicContent = CreateTopicContent;
+    return InputMdContent;
+}(React.Component));
+exports.InputMdContent = InputMdContent;
 
 
 /***/ }),
@@ -7505,7 +7625,7 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { path: "/newtopics", component: AllNewTopic_1.AllNewTopic }),
                     React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }),
                     React.createElement(react_router_dom_1.Route, { path: "/logon", component: LogOn_1.LogOn }),
-                    React.createElement(react_router_dom_1.Route, { path: "/createtopic", component: CreateTopic_1.CreateTopic }),
+                    React.createElement(react_router_dom_1.Route, { path: "/createtopic/:boardId", component: CreateTopic_1.CreateTopic }),
                     React.createElement(react_router_dom_1.Route, { path: "/status/logout", component: Status.LogOut }),
                     React.createElement(react_router_dom_1.Route, { path: "/status/UnauthorizedBoard", component: Status.UnauthorizedBoard }),
                     React.createElement(react_router_dom_1.Route, { path: "/status/UnauthorizedTopic", component: Status.UnauthorizedTopic }),
@@ -10144,7 +10264,7 @@ var SendTopic = /** @class */ (function (_super) {
                         url = "http://apitest.niconi.cc/post/topic/" + this.props.topicid;
                         content = {
                             content: this.state.content,
-                            contentType: 1,
+                            contentType: 0,
                             title: ""
                         };
                         contentJson = JSON.stringify(content);
@@ -10270,7 +10390,7 @@ var SendTopic = /** @class */ (function (_super) {
                 React.createElement("div", { id: "post-topic-button", onClick: this.sendUbbTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u56DE\u590D")));
     };
     return SendTopic;
-}(RouteComponent)); /*    */
+}(RouteComponent));
 exports.SendTopic = SendTopic;
 
 

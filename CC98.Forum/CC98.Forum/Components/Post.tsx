@@ -936,7 +936,7 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
         let url = `http://apitest.niconi.cc/post/topic/${this.props.topicid}`;
         let content = {
             content: this.state.content,
-            contentType: 1,
+            contentType: 0,
             title: ""
         }
         let contentJson = JSON.stringify(content);
@@ -1057,4 +1057,4 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
             </div>
         </div>;
     }
-}  /*    */
+}  

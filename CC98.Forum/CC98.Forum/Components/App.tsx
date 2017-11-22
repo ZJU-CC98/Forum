@@ -37,7 +37,7 @@ export class App extends React.Component<{}, AppState> {
 			<Router>
 				    <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column',alignItems:"center" }}>
                     <Header />
-					<Route exact path="/" component={MainPage}></Route>
+                    <Route exact path="/" component={MainPage}></Route>          
 					<Route exact path="/topic/:topicid/:page?" component={Post} />
 					<Route exact path="/topic/:topicid/user/:userId/:page?" component={CurUserPost} />
 					<Route path="/list/:boardId/:page?" component={List} />
@@ -48,7 +48,7 @@ export class App extends React.Component<{}, AppState> {
 					<Route path="/newtopics" component={AllNewTopic} />
 					<Route path="/user" component={User} />
                     <Route path="/logon" component={LogOn} />
-                    <Route path="/createtopic" component={CreateTopic} />
+                    <Route path="/createtopic/:boardId" component={CreateTopic} />
                     <Route path="/status/logout" component={Status.LogOut} />
                     <Route path="/status/UnauthorizedBoard" component={Status.UnauthorizedBoard} />
                     <Route path="/status/UnauthorizedTopic" component={Status.UnauthorizedTopic} />

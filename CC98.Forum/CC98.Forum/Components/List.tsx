@@ -175,10 +175,11 @@ export class ListButtonAndPager extends React.Component<{ boardid: number, page:
 		const pages = Utility.getPager(this.props.page, this.props.totalPage);
 		this.setState({ pager: pages });
 	}
-	render() {
+    render() {
+        const createTopicUrl = `/createTopic/${this.props.boardid}`;
         return <div className="row" style={{ width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem",marginTop: '0.9375rem', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-			<div style={{ marginBottom: '1.25rem' }}>
-				<button className="button orange">发主题</button>
+            <div style={{ marginBottom: '1.25rem' }}>
+                <Link className="button orange" to={createTopicUrl}>发主题</Link>
 				<button className="button green" style={{ marginLeft: '1.25rem' }}>发投票</button>
 			</div>
 			<div id="pager" >
