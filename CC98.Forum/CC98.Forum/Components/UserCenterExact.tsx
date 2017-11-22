@@ -17,6 +17,7 @@ export class UserCenterExact extends React.Component<null, UserCenterExactState>
         super(props);
 
         const userInfo = Utility.getLocalStorage('userInfo');
+        console.log(userInfo);
         this.state = {
             userInfo: userInfo,
             userAvatarImgURL: userInfo.portraitUrl

@@ -30,19 +30,19 @@ export class List extends RouteComponent<{}, {bigPaper:string, page: number, tot
         this.state = { page: 1, totalPage: 1, boardId: null, bigPaper:"" };
 	}
     async getTotalListPage(boardId) {
-        const page = await Utility.getListTotalPage(boardId);
+        const page = await Utility.getListTotalPage(boardId, this.context.router);
         return page;
 	}
     async componentWillReceiveProps(newProps) {
 
-        const data = await Utility.getBasicBoardMessage(newProps.match.params.boardId, newProps.match.params.page);
+        const data = await Utility.getBasicBoardMessage(newProps.match.params.boardId, newProps.match.params.page, this.context.router);
      
         // 设置状态
         this.setState({ bigPaper: data.bigPaper, page: data.page, totalPage: data.totalPage, boardId: newProps.match.params.boardId });
 	}
     async componentDidMount() {
    
-        const data = await Utility.getBasicBoardMessage(this.match.params.boardId, this.match.params.page);
+        const data = await Utility.getBasicBoardMessage(this.match.params.boardId, this.match.params.page, this.context.router);
         // 设置状态
         this.setState({ bigPaper: data.bigPaper, page: data.page, totalPage: data.totalPage, boardId: this.match.params.boardId });
 	}
@@ -65,7 +65,7 @@ export class Category extends RouteComponent<{boardId }, { boardId, boardName },
     }
     async componentDidMount() {
         console.log("cate" + this.props.boardId);
-        const boardName = await Utility.getListCategory(this.props.boardId);
+        const boardName = await Utility.getListCategory(this.props.boardId, this.context.router);
         this.setState({ boardId: this.props.boardId, boardName: boardName });
     }
     render() {
@@ -90,13 +90,13 @@ export class ListHead extends RouteComponent<{ boardId }, State.ListHeadState, {
 		};
 	}
     async componentDidMount() {
-        const data = await Utility.getBoardMessage(this.props.boardId);
+        const data = await Utility.getBoardMessage(this.props.boardId, this.context.router);
 		this.setState({
 			listName: data.name, todayTopics: data.todayCount, totalTopics: data.topicCount, listManager: data.boardMasters
 		});
 	}
     async componentWillRecieveProps(newProps) {
-        const data = await Utility.getBoardMessage(newProps.boardId);
+        const data = await Utility.getBoardMessage(newProps.boardId, this.context.router);
         this.setState({
             listName: data.name, todayTopics: data.todayCount, totalTopics: data.topicCount, listManager: data.boardMasters
         });
@@ -175,10 +175,11 @@ export class ListButtonAndPager extends React.Component<{ boardid: number, page:
 		const pages = Utility.getPager(this.props.page, this.props.totalPage);
 		this.setState({ pager: pages });
 	}
-	render() {
+    render() {
+        const createTopicUrl = `/createTopic/${this.props.boardid}`;
         return <div className="row" style={{ width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem",marginTop: '0.9375rem', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-			<div style={{ marginBottom: '1.25rem' }}>
-				<button className="button orange">发主题</button>
+            <div style={{ marginBottom: '1.25rem' }}>
+                <Link className="button orange" to={createTopicUrl}>发主题</Link>
 				<button className="button green" style={{ marginLeft: '1.25rem' }}>发投票</button>
 			</div>
 			<div id="pager" >
@@ -279,7 +280,7 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
     async componentDidMount() {
    
         console.log("Did" + this.match.params.boardId);
-        const data = await Utility.getBoardTopicAsync(1, this.match.params.boardId);
+        const data = await Utility.getBoardTopicAsync(1, this.match.params.boardId, this.context.router);
        
 		this.setState({ items: data });
 	}
@@ -301,7 +302,7 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
 		}
 		// 转换类型
         else { page = parseInt(p); }
-        const data = await Utility.getBoardTopicAsync(page, newProps.match.params.boardId);
+        const data = await Utility.getBoardTopicAsync(page, newProps.match.params.boardId, this.context.router);
 		this.setState({ items: data });
 	}
 

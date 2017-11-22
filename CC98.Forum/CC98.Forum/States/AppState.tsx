@@ -326,6 +326,39 @@ export class UserInfo {
     * 当前用户是否关注了该用户
     */
     isFollowing: boolean;
+    /**
+    * 邮箱地址
+    */
+    emailAddress: string;
+    /**
+    * qq
+    */
+    qq: string;
+    /**
+    * 发帖数
+    */
+    postCount: number;
+    /**
+    * 威望
+    */
+    prestige: number;
+    /**
+    * 显示的用户组
+    */
+    displayTitle: string;
+    /**
+    * 全站权限等级
+    */
+    privilege: string;
+    /**
+    * 注册时间
+    */
+    registerTime: string;
+    /**
+    * 最后登录时间
+    */
+    lastLogOnTime: string;
+
 }
 
 /**
