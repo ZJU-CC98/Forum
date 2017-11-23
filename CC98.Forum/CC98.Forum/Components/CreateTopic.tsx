@@ -112,7 +112,7 @@ export class CreateTopic extends RouteComponent<{}, { title,content,topicId ,rea
     }
     render() {
         //let mode = 0;
-        let mode = 0;
+        let mode = 1;
         if (mode === 0) {
             return <div className="column" style={{ justifyContent: "center", width: "80%" }}>
                 <div className="createTopicBoardName"> 版面名称 > 发表主题</div>
@@ -162,27 +162,27 @@ export class InputTitle extends React.Component<{boardId,onChange}, { title: str
         this.state = ({ title: "" });
     }
     handleTitleChange(event) {
-        this.props.onChange(event.target.value );
+        this.props.onChange(event.target.value);
+        console.log("value");
+        console.log(event.target.value);
         this.setState({ title: event.target.value });
+        console.log('finished');
     }
-   
+
     render() {
-        editormd("test-editormd", {
-            width: "100%",
-            height: 500,
-            path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false
-        });
-       return <div className="createTopicTitle">
+        
+        return <div className="column"><div className="createTopicTitle">
             <div className="createTopicListName">主题标题</div>
             <div className="createTopicListName">标签1</div>
            <div className="createTopicListName">标签2</div>
-           <form>
-               <div >
-                   <textarea id="sendTopic-title" name="sendTopic-input" value={this.state.title} onBlur={this.handleTitleChange.bind(this)} />
-               </div>
-           </form>
-        </div>;
+         
+        </div>
+            <form>
+                <div>
+                    <input value={this.state.title} onChange={this.handleTitleChange.bind(this)} />
+                </div>
+            </form>
+            </div>;
     }
 }
 export class InputUbbContent extends React.Component<{ onChange }, { content }>{
@@ -239,10 +239,18 @@ export class InputUbbContent extends React.Component<{ onChange }, { content }>{
             </div></div>;
     }
 } 
-export class InputMdContent extends React.Component<{ ready,onChange }, {content}>{
+export class InputMdContent extends React.Component<{ ready,onChange}, {content}>{
     constructor(props) {
         super(props);
         this.state = ({ content: "" });
+    }
+    componentDidMount() {
+        editormd("test-editormd", {
+            width: "100%",
+            height: 680,
+            path: "/scripts/lib/editor.md/lib/",
+            saveHTMLToTextarea: false
+        });
     }
     send() {
         const content = testEditor.getMarkdown();
@@ -250,12 +258,7 @@ export class InputMdContent extends React.Component<{ ready,onChange }, {content
         this.props.onChange(content);
     }
     render() {
-        editormd("test-editormd", {
-            width: "100%",
-            height: 680,
-            path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false
-        });
+      
         return <div style={{ width: "100%", display: "flex", flexDirection: "column" }}><div id="sendTopic">
             <form>
                 <div id="test-editormd" className="editormd">

@@ -1708,14 +1708,12 @@ a {
 
     .focus-topic-response {
         display: flex;
-        justify-content: flex-end;
         margin: 14px 18px 30px;
-        min-width: 240px;
+        width: 180px;
 
         div {
-            flex-basis: 64px;
+            flex-basis: 60px;
             display: inline-flex;
-            justify-content: flex-end;
             align-items: baseline;
 
             i {
@@ -2584,7 +2582,7 @@ a {
         height: 20rem;
         padding: 1rem;
         border: none;
-        width: 97.5%;
+        width: 96.5%;
     }
 }
 

@@ -1201,36 +1201,64 @@ export async function sendMessage(bodyContent: string,router) {
 }
 
 /**
-* 上传文件
+*滚动条在Y轴上的滚动距离,为isBottom()服务
+*/
+export function getScrollTop() {
+    let scrollTop = 0;
+    let bodyScrollTop = 0;
+    let documentScrollTop = 0;
+    if (document.body) {
+        bodyScrollTop = document.body.scrollTop;
+    }
+    if (document.documentElement) {
+        documentScrollTop = document.documentElement.scrollTop;
+    }
+    scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
+    return scrollTop;
+}
+
+/**
+*文档的总高度，为isBottom()服务
+*/
+export function getScrollHeight() {
+    let scrollHeight = 0;
+    let bodyScrollHeight = 0;
+    let documentScrollHeight = 0;
+    if (document.body) {
+        bodyScrollHeight = document.body.scrollHeight;
+    }
+    if (document.documentElement) {
+        documentScrollHeight = document.documentElement.scrollHeight;
+    }
+    scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
+    return scrollHeight;
+}
+
+/**
+*浏览器视口的高度，为isBottom()服务
+*/
+export function getWindowHeight() {
+    let windowHeight = 0;
+    if (document.compatMode == 'CSS1Compat') {
+        windowHeight = document.documentElement.clientHeight;
+    } else {
+        windowHeight = document.body.clientHeight;
+    }
+    return windowHeight;
+}
+
+/**
+*判断滚动条是否滚动到底部
 */
 
-export async function uploadFile(file: File) {
-    try {
-        const url = `http://apitest.niconi.cc/file`;
-        const token = getLocalStorage('accessToken');
-        let myHeaders = new Headers();
-        myHeaders.append('Authorization', token);
-
-        let formdata = new FormData();
-        formdata.append('files', file, file.name);
-        let res = await fetch(url, {
-            method: 'POST',
-            headers: myHeaders,
-            body: formdata
-        });
-        let data: string[] = await res.json();
-        if (res.status === 200 && data.length !==0) {
-            return {
-                isSuccess: true,
-                content: data[0]
-            };
-        } else {
-            throw {} ;
-        }
-    } catch (e) {
-        return {
-            isSuccess: false,
-            content: ''
-        };
+export function isBottom() {
+    /*
+    *预留100px给“正在加载”的提示标志
+    */
+    if (getScrollTop() + getWindowHeight() + 300 > getScrollHeight()) {
+        return true;
+    }
+    else {
+        return false;
     }
 }
