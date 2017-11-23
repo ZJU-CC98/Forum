@@ -170,18 +170,21 @@ export class TopicTitleAndContentState {
 		  this.lastReply = lastReply;
 		    this.title = title;
 	  }*/
-    constructor(title, userName, topicid, userId, lastPostUser, lastPostTime) {
+    constructor(title, userName, topicid, userId, lastPostUser, lastPostTime,likeCount,dislikeCount,replyCount) {
         this.userName = userName;
         this.title = title;
         this.id = topicid;
         this.userId = userId;
         this.lastPostUser = lastPostUser;
         this.lastPostTime = lastPostTime;
+        this.likeCount = likeCount;
+        this.dislikeCount = dislikeCount;
+        this.replyCount = replyCount;
     }
 
-    likeNumber: number;
-    unlikeNumber: number;
-    commentNumber: number;
+    likeCount: number;
+    dislikeCount: number;
+    replyCount: number;
     userName: string;
     title: string;
     lastPostUser: string;
@@ -313,7 +316,7 @@ export class UserInfo {
     /**
     * 用户个人简介
     */
-    personalDescription: string;
+    introduction: string;
     /**
     * 用户个性签名
     */
@@ -358,7 +361,10 @@ export class UserInfo {
     * 最后登录时间
     */
     lastLogOnTime: string;
-
+    /**
+    * 自定义头衔
+    */
+    customTitle: string;
 }
 
 /**
@@ -457,4 +463,34 @@ export class UserFavoritesBoardInfo {
     * 版面名
     */
     name: string;
+}
+
+/**
+* 修改用户信息所要提交的body
+*/
+export class ChangeUserInfo {
+    /**
+    * 性别 男=1 女=0
+    */
+    Gender: 0 | 1;
+    /**
+    * QQ
+    */
+    QQ: string;
+    /**
+    * 邮箱地址
+    */
+    EmailAddress: string;
+    /**
+    * 个性签名
+    */
+    SignatureCode: string;
+    /**
+    * 个人简介
+    */
+    Introduction: string;
+    /**
+    * 生日
+    */
+    Birthday: string;
 }

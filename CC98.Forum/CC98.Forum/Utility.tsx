@@ -59,7 +59,7 @@ export async function getBoardTopicAsync(curPage, boardid,router) {
         }
         const data: State.TopicTitleAndContentState[] = await response.json();
         for (let i = 0; i < topicNumberInPage; i++) {
-            boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime);
+            boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime, data[i].likeCount, data[i].dislikeCount, data[i].replyCount||0);
         }
 
         return boardtopics;
@@ -323,8 +323,27 @@ export async function getHotReplyContent(topicid: number, router) {
         router.history.replace("/status/Disconnected");
     }
 }
+export function getListPager(totalPage) {
+    if (totalPage === 1) {
+        return [];
+    } else if (totalPage === 2) {
+        return [1, 2];
+    } else if (totalPage === 3) {
+        return [1, 2, 3];
+    } else if (totalPage === 4) {
+        return [1, 2, 3, 4];
+    } else if (totalPage === 5) {
+        return [1, 2, 3, 4, 5];
+    } else if (totalPage === 6) {
+        return [1, 2, 3, 4, 5, 6];
+    } else if (totalPage === 7) {
+        return [1, 2, 3, 4, 5, 6, 7];
+    } else {
+        return [1, 2, 3, 4,-1, totalPage - 3, totalPage - 2, totalPage - 1];
+    }
+}
 export function convertHotTopic(item: State.TopicTitleAndContentState) {
-    return <TopicTitleAndContent title={item.title} authorName={item.userName} id={item.id} authorId={item.userId} lastPostTime={item.lastPostTime} lastPostUserName={item.lastPostUser} />
+    return <TopicTitleAndContent key={item.id} title={item.title} userName={item.userName} id={item.id} userId={item.userId} lastPostTime={item.lastPostTime} lastPostUser={item.lastPostUser} likeCount={item.likeCount} dislikeCount={item.dislikeCount} replyCount={item.replyCount} />
         ;
 }
 export function getPager(curPage, totalPage) {
@@ -1306,5 +1325,40 @@ export function isBottom() {
     }
     else {
         return false;
+    }
+}
+
+/**
+ * 上传文件
+ * @param file
+ */
+export async function uploadFile(file: File) {
+    try {
+        const url = `http://apitest.niconi.cc/file`;
+        const token = getLocalStorage('accessToken');
+        let myHeaders = new Headers();
+        myHeaders.append('Authorization', token);
+
+        let formdata = new FormData();
+        formdata.append('files', file, file.name);
+        let res = await fetch(url, {
+            method: 'POST',
+            headers: myHeaders,
+            body: formdata
+        });
+        let data: string[] = await res.json();
+        if (res.status === 200 && data.length !== 0) {
+            return {
+                isSuccess: true,
+                content: data[0]
+            };
+        } else {
+            throw {};
+        }
+    } catch (e) {
+        return {
+            isSuccess: false,
+            content: ''
+        };
     }
 }
