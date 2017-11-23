@@ -3,7 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
-import { UserRecentPost } from '../States/AppState';
+import { UserRecentPost } from '../../States/AppState';
 
 /**
  * 用户最近单个帖子组件

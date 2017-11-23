@@ -3,8 +3,8 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
-import { UserFanInfo } from '../States/AppState';
-import * as Utility from '../Utility';
+import { UserFanInfo } from '../../States/AppState';
+import * as Utility from '../../Utility';
 
 //用户中心我的关注&我的粉丝用户通用组件
 export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFollowingsUserProps, UserCenterMyFollowingsUserState> {
@@ -20,26 +20,30 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
     }
 
     async unfollow() {
-        this.setState({
-            buttonIsDisabled: true,
-            buttonInfo: '取关中'
-        });
-        const token = Utility.getLocalStorage("accessToken");
-        const userId = this.props.userFanInfo.id;
-        const url = `http://apitest.niconi.cc/user/unfollow/${userId}`;
-        const headers = new Headers();
-        headers.append('Authorization', token);
-        let res = await fetch(url, {
-            method: 'DELETE',
-            headers
-        });
-        if (res.status === 200) {
+        try {
             this.setState({
-                buttonIsDisabled: false,
-                buttonInfo: '重新关注',
-                isFollowing: false
+                buttonIsDisabled: true,
+                buttonInfo: '取关中'
             });
-        } else {
+            const token = Utility.getLocalStorage("accessToken");
+            const userId = this.props.userFanInfo.id;
+            const url = `http://apitest.niconi.cc/user/unfollow/${userId}`;
+            const headers = new Headers();
+            headers.append('Authorization', token);
+            let res = await fetch(url, {
+                method: 'DELETE',
+                headers
+            });
+            if (res.status === 200) {
+                this.setState({
+                    buttonIsDisabled: false,
+                    buttonInfo: '重新关注',
+                    isFollowing: false
+                });
+            } else {
+                throw {};
+            }
+        } catch (e) {
             this.setState({
                 buttonIsDisabled: false,
                 buttonInfo: '取关失败',
@@ -49,26 +53,35 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
     }
 
     async follow() {
-        this.setState({
-            buttonIsDisabled: true,
-            buttonInfo: '关注中'
-        });
-        const token = Utility.getLocalStorage("accessToken");
+        try {
+            this.setState({
+                buttonIsDisabled: true,
+                buttonInfo: '关注中'
+            });
+            const token = Utility.getLocalStorage("accessToken");
 
-        const userId = this.props.userFanInfo.id;
-        const url = `http://apitest.niconi.cc/user/follow/${userId}`;
-        const headers = new Headers();
-        headers.append('Authorization', token);
-        let res = await fetch(url, {
-            method: 'POST',
-            headers
-        });
-        console.log(res);
-        if (res.status === 200) {
+            const userId = this.props.userFanInfo.id;
+            const url = `http://apitest.niconi.cc/user/follow/${userId}`;
+            const headers = new Headers();
+            headers.append('Authorization', token);
+            let res = await fetch(url, {
+                method: 'POST',
+                headers
+            });
+            if (res.status === 200) {
+                this.setState({
+                    buttonIsDisabled: false,
+                    buttonInfo: '取消关注',
+                    isFollowing: true
+                });
+            } else {
+                throw {};
+            }
+        } catch (e) {
             this.setState({
                 buttonIsDisabled: false,
-                buttonInfo: '取消关注',
-                isFollowing: true
+                buttonInfo: '关注失败',
+                isFollowing: false
             });
         }
     }

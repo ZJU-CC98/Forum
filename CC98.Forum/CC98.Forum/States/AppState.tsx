@@ -316,7 +316,7 @@ export class UserInfo {
     /**
     * 用户个人简介
     */
-    personalDescription: string;
+    introduction: string;
     /**
     * 用户个性签名
     */
@@ -361,7 +361,10 @@ export class UserInfo {
     * 最后登录时间
     */
     lastLogOnTime: string;
-
+    /**
+    * 自定义头衔
+    */
+    customTitle: string;
 }
 
 /**
@@ -460,4 +463,34 @@ export class UserFavoritesBoardInfo {
     * 版面名
     */
     name: string;
+}
+
+/**
+* 修改用户信息所要提交的body
+*/
+export class ChangeUserInfo {
+    /**
+    * 性别 男=1 女=0
+    */
+    Gender: 0 | 1;
+    /**
+    * QQ
+    */
+    QQ: string;
+    /**
+    * 邮箱地址
+    */
+    EmailAddress: string;
+    /**
+    * 个性签名
+    */
+    SignatureCode: string;
+    /**
+    * 个人简介
+    */
+    Introduction: string;
+    /**
+    * 生日
+    */
+    Birthday: string;
 }

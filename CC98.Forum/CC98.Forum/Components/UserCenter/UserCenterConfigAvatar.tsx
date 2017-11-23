@@ -3,7 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
-import * as Utility from '../Utility';
+import * as Utility from '../../Utility';
 
 export class UserCenterConfigAvatar extends React.Component<null, UserCenterConfigAvatarState> {
     myCanvas: HTMLCanvasElement;
@@ -41,21 +41,20 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
             });
             return false;
         }
-
+        
         let render = new FileReader();
 
         render.readAsDataURL(file);
-
-        render.addEventListener('load', (arg: any) => {
+        render.addEventListener('load', (e) => {
             this.setState({
-                avatarURL: arg.target.result
-            });            
+                isShown: true,
+                avatarURL: (e as any).target.result
+            });
         });
     }
 
+
     handleIMGLoad() {
-        console.log(this.myIMG.naturalWidth);
-        console.log(this.myIMG.naturalHeight);
         if (this.myIMG.naturalWidth < 160 || this.myIMG.naturalHeight < 160) {
             this.setState({
                 info: '图片至少为 160*160',
@@ -105,10 +104,8 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
                 this.diffX = event.clientX - event.target.offsetLeft;
                 this.diffY = event.clientY - event.target.offsetTop;
                 this.dragging = event.target;
-                //console.log(event);
                 break;
             case 'mousemove':
-                //console.log(this.dragging);
                 if (this.dragging !== null) {
                     let y = event.clientY - this.diffY,
                         x = event.clientX - this.diffX;
@@ -120,8 +117,7 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
                         selectorTop: y,
                         selectorLeft: x
                     });
-
-                    //console.log('mousemove');
+                    
                 }
                 break;
             case 'mouseup':
@@ -137,10 +133,8 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
             case 'mousedown':
                 this.diffX = event.clientX - event.target.offsetLeft;
                 this.dragging = event.target;
-                console.log(event);
                 break;
             case 'mousemove':
-                //console.log(this.dragging);
                 this.diffY = event.clientX - event.target.offsetLeft;
                 if (this.dragging !== null) {
                     this.setState((prevState) => {
@@ -153,8 +147,6 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
                             selectorWidth: isNaN(num) ? prevState.selectorWidth : num
                         };
                     });
-
-                    //console.log('mousemove');
                 }
                 break;
             case 'mouseup':
@@ -170,31 +162,36 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
             display: 'none'
         };
         const userInfo = Utility.getLocalStorage('userInfo');
-        return (<div className="user-center-config-avatar">
-            <img src={userInfo.portraitUrl}></img>
+        return (
             <div>
-                <button id="chooseDefaultAvatar" type="button" >选择论坛头像</button>
-                <div>
-                    <input onChange={this.handleChange} id="uploadAvatar" type="file" style={style} />
-                    <label htmlFor="uploadAvatar"><p>选择本地图片</p></label>
-                    <p>{this.state.info}</p>
-                </div>
-            </div>
-            <div className="user-center-config-avatar-preview" style={this.state.isShown ? { opacity: 1, marginTop: '2rem' } : { zIndex: -1 }}>
-                <hr />
-                <div style={{ position: 'absolute', width: '824px', overflow: 'hidden' }}>
-                    <canvas ref={(canvas) => { this.myCanvas = canvas }} style={{ position: 'relative'}} />
-                    <div id="cover"></div>
-                    <div className="imgdata" ref={(div) => { this.selector = div; }} style={{ width: `${this.state.selectorWidth}px`, height: `${this.state.selectorWidth}px`, borderRadius: `${this.state.selectorWidth / 2}px`, top: `${this.state.selectorTop}px`, left: `${this.state.selectorLeft}px` }}>
-                        <img src={this.state.avatarURL} style={{ position: 'relative', top: `${20-this.state.selectorTop}px`, left: `${20-this.state.selectorLeft}px` }} />
+                <h2>修改头像</h2>
+                <div className="user-center-config-avatar">
+                    <img src={userInfo.portraitUrl}></img>
+                    <div>
+                        <button id="chooseDefaultAvatar" type="button" >选择论坛头像</button>
+                        <div>
+                            <input onChange={this.handleChange} id="uploadAvatar" type="file" style={style} />
+                            <label htmlFor="uploadAvatar"><p>选择本地图片</p></label>
+                            <p>{this.state.info}</p>
+                        </div>
                     </div>
-                    <div id="selector" ref={(div) => { this.selector = div; }} style={{ width: `${this.state.selectorWidth}px`, height: `${this.state.selectorWidth}px`, borderRadius: `${this.state.selectorWidth / 2}px`, top: `${this.state.selectorTop}px`, left: `${this.state.selectorLeft}px` }}></div>
-                    <span id="resize" ref={(span) => { this.resize = span; }} style={{ top: `${this.state.selectorTop + this.state.selectorWidth}px`, left: `${this.state.selectorLeft + this.state.selectorWidth}px` }}></span>
+                    <div className="user-center-config-avatar-preview" style={this.state.isShown ? { opacity: 1, marginTop: '2rem' } : { zIndex: -1 }}>
+                        <hr />
+                        <div style={{ position: 'absolute', width: '824px', overflow: 'hidden' }}>
+                            <canvas ref={(canvas) => { this.myCanvas = canvas }} style={{ position: 'relative'}} />
+                            <div id="cover"></div>
+                            <div className="imgdata" ref={(div) => { this.selector = div; }} style={{ width: `${this.state.selectorWidth}px`, height: `${this.state.selectorWidth}px`, borderRadius: `${this.state.selectorWidth / 2}px`, top: `${this.state.selectorTop}px`, left: `${this.state.selectorLeft}px` }}>
+                                <img src={this.state.avatarURL} style={{ position: 'relative', top: `${20-this.state.selectorTop}px`, left: `${20-this.state.selectorLeft}px` }} />
+                            </div>
+                            <div id="selector" ref={(div) => { this.selector = div; }} style={{ width: `${this.state.selectorWidth}px`, height: `${this.state.selectorWidth}px`, borderRadius: `${this.state.selectorWidth / 2}px`, top: `${this.state.selectorTop}px`, left: `${this.state.selectorLeft}px` }}></div>
+                            <span id="resize" ref={(span) => { this.resize = span; }} style={{ top: `${this.state.selectorTop + this.state.selectorWidth}px`, left: `${this.state.selectorLeft + this.state.selectorWidth}px` }}></span>
+                        </div>
+                        <img ref={(img) => { this.myIMG = img; }} onLoad={this.handleIMGLoad} style={style} src={this.state.avatarURL} />
+                    </div>
+                    <div style={{ width: '100%', height: this.state.divheight, transitionDuration: '.5s' }}></div>
                 </div>
-                <img ref={(img) => { this.myIMG = img; }} onLoad={this.handleIMGLoad} style={style} src={this.state.avatarURL} />
             </div>
-            <div style={{ width: '100%', height: this.state.divheight, transitionDuration: '.5s' }}></div>
-        </div>);
+        );
     }
 }
 

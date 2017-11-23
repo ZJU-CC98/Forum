@@ -224,6 +224,7 @@
                     margin-top: 0.5rem;
                     display: flex;
                     align-items: center;
+                    width: 100%;
 
                     & > p {
                         flex-grow: 1;
@@ -265,6 +266,11 @@
                     &:focus {
                         outline: none;
                     }
+                }
+
+                #userIntroducion {
+                    margin-left: 2rem;
+                    font-size: 12px;
                 }
 
                 #userGenderAndBirthday {
@@ -455,6 +461,11 @@
         }
 
         .user-center-config {
+            h2 {
+                font-size: 12px;
+                margin: 0 0 2rem 0;
+            }
+
             button {
                 background-color: rgb(240,240,240);
 
@@ -604,6 +615,16 @@
                 }
             }
 
+            .signature-extends {
+                transition-duration: .5s;
+                width: 100%;
+                border: 1px solid #e9e9e9;
+
+                p {
+                    margin-left: 30px;
+                }
+            }
+
             #signature {
                 margin: 0px;
                 padding: 20px;
@@ -655,6 +676,85 @@
             button {
                 width: 100px;
                 height: 25px;
+            }
+        }
+
+        .user-center-config-others {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+
+            p {
+                margin-left: 1rem;
+                margin-right: 0.5rem;
+            }
+
+            p:first-child {
+                width: 10rem;
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .config-gender {
+                display: flex;
+                align-items: center;
+
+                select {
+                    width: 3rem;
+                    height: 1.5rem;
+                    text-align-last: center;
+                }
+            }
+
+            .config-birthday {
+                display: flex;
+                align-items: center;
+
+                select {
+                    height: 1.5rem;
+                    width: 5rem;
+                    text-align-last: center;
+                }
+            }
+
+            .config-submit {
+                display: flex;
+                margin-top: 2rem;
+                align-items: center;
+
+                button {
+                    width: 100px;
+                    height: 30px;
+                    border-radius: 5px;
+                }
+
+                p {
+                    flex-grow: 1;
+                    color: red;
+                    margin: 0;
+                }
+            }
+
+            .config-text {
+                display: flex;
+                align-items: center;
+
+                input {
+                    height: 1.5rem;
+                    width: 10rem;
+                    padding: 0 0.5rem;
+                }
+            }
+
+            .config-introduction {
+                display: flex;
+                align-items: center;
+
+                input {
+                    height: 1.5rem;
+                    width: 30rem;
+                    padding: 0 0.5rem;
+                }
             }
         }
 

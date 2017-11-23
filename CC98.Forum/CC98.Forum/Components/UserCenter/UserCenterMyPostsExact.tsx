@@ -4,12 +4,14 @@
 
 import * as React from 'react';
 import { UserCenterExactActivitiesPost } from './UserCenterExactActivitiesPost';
-import { UserRecentPost } from '../States/AppState';
-import { RouteComponent } from './app';
+import { UserRecentPost } from '../../States/AppState';
+import { RouteComponent } from '../app';
 import { UserCenterPageCount } from './UserCenterPageCount';
-import * as Utility from '../Utility';
+import * as Utility from '../../Utility';
 
-
+/**
+ * 用户中心我的主题组件
+ */
 export class UserCenterMyPostsExact extends RouteComponent<null, UserCenterMyPostsExactState, {page}> {
     constructor(props, contest) {
         super(props, contest);
@@ -21,37 +23,44 @@ export class UserCenterMyPostsExact extends RouteComponent<null, UserCenterMyPos
     }
 
     async componentDidMount() {
-        const page = this.match.params.page || 1;
-        const url = `http://apitest.niconi.cc/me/recenttopics?from=${(page-1)*10}&size=11`
-        const token = Utility.getLocalStorage("accessToken");
-        const headers = new Headers();
-        headers.append('Authorization', token);
-        let res = await fetch(url, {
-            headers
-        });
-        let data = await res.json();
-        let posts: UserRecentPost[] = [],
-            i = data.length;
-
-        if (i <= 10) {
-            this.setState({
-                totalPage: Number.parseInt(page)
+        try {
+            const page = this.match.params.page || 1;
+            const url = `http://apitest.niconi.cc/me/recenttopics?from=${(page - 1) * 10}&size=11`
+            const token = Utility.getLocalStorage("accessToken");
+            const headers = new Headers();
+            headers.append('Authorization', token);
+            let res = await fetch(url, {
+                headers
             });
-        } else {
+            if (res.status !== 200) {
+                throw {};
+            }
+            let data = await res.json();
+            let posts: UserRecentPost[] = [],
+                i = data.length;
+
+            if (i <= 10) {
+                this.setState({
+                    totalPage: Number.parseInt(page)
+                });
+            } else {
+                this.setState({
+                    totalPage: Number.parseInt(page) + 1
+                });
+                i = 10;
+            }
+
+            while (i--) {
+                let post = await this.item2post(data[i]);
+                posts.unshift(post);
+            }
+
             this.setState({
-                totalPage: Number.parseInt(page) + 1
+                userRecentPosts: posts
             });
-            i = 10;
+        } catch (e) {
+            console.log('我的主题加载失败');
         }
-
-        while (i--) {
-            let post = await this.item2post(data[i]);
-            posts.unshift(post);
-        }
-
-        this.setState({
-            userRecentPosts: posts
-        });
     }
 
     async item2post(item: itemType) {
