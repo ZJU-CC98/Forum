@@ -937,28 +937,10 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
         this.state = ({ content: '',mode:1 });
     }
     componentDidMount() {
-        editormd("test-editormd", {
-            width: "100%",
-            height: 640,
-            path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false,
-            imageUpload: false,
-            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-            imageUploadURL: "http://apitest.niconi.cc/file/",
-
-        });
+   
     }
     componentWillReceiveProps(newProps) {
-        editormd("test-editormd", {
-            width: "100%",
-            height: 640,
-            path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false,
-            imageUpload: false,
-            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-            imageUploadURL: "http://apitest.niconi.cc/file/",
-
-        });
+      
     }
     async sendUbbTopic() {
         let url = `http://apitest.niconi.cc/post/topic/${this.props.topicid}`;
@@ -1032,16 +1014,7 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
         this.setState({ content: event.target.value });
     }
     render() {  
-        editormd("test-editormd", {
-            width: "100%",
-            height: 640,
-            path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false,
-            imageUpload: false,
-            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-            imageUploadURL: "http://apitest.niconi.cc/file/",
-
-        });
+    
         let mode,editor;
         if (this.state.mode === 0) {
             mode = '使用UBB模式编辑';

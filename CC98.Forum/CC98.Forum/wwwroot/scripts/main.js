@@ -171,7 +171,7 @@ function getBoardTopicAsync(curPage, boardid, router) {
                 case 4:
                     data = _a.sent();
                     for (i = 0; i < topicNumberInPage; i++) {
-                        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime);
+                        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime, data[i].likeCount, data[i].dislikeCount, data[i].replyCount || 0);
                     }
                     return [2 /*return*/, boardtopics];
                 case 5:
@@ -558,8 +558,35 @@ function getHotReplyContent(topicid, router) {
     });
 }
 exports.getHotReplyContent = getHotReplyContent;
+function getListPager(totalPage) {
+    if (totalPage === 1) {
+        return [];
+    }
+    else if (totalPage === 2) {
+        return [1, 2];
+    }
+    else if (totalPage === 3) {
+        return [1, 2, 3];
+    }
+    else if (totalPage === 4) {
+        return [1, 2, 3, 4];
+    }
+    else if (totalPage === 5) {
+        return [1, 2, 3, 4, 5];
+    }
+    else if (totalPage === 6) {
+        return [1, 2, 3, 4, 5, 6];
+    }
+    else if (totalPage === 7) {
+        return [1, 2, 3, 4, 5, 6, 7];
+    }
+    else {
+        return [1, 2, 3, 4, -1, totalPage - 3, totalPage - 2, totalPage - 1];
+    }
+}
+exports.getListPager = getListPager;
 function convertHotTopic(item) {
-    return React.createElement(List_1.TopicTitleAndContent, { title: item.title, authorName: item.userName, id: item.id, authorId: item.userId, lastPostTime: item.lastPostTime, lastPostUserName: item.lastPostUser });
+    return React.createElement(List_1.TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount });
 }
 exports.convertHotTopic = convertHotTopic;
 function getPager(curPage, totalPage) {
@@ -3017,13 +3044,16 @@ var TopicTitleAndContentState = /** @class */ (function () {
           this.lastReply = lastReply;
             this.title = title;
       }*/
-    function TopicTitleAndContentState(title, userName, topicid, userId, lastPostUser, lastPostTime) {
+    function TopicTitleAndContentState(title, userName, topicid, userId, lastPostUser, lastPostTime, likeCount, dislikeCount, replyCount) {
         this.userName = userName;
         this.title = title;
         this.id = topicid;
         this.userId = userId;
         this.lastPostUser = lastPostUser;
         this.lastPostTime = lastPostTime;
+        this.likeCount = likeCount;
+        this.dislikeCount = dislikeCount;
+        this.replyCount = replyCount;
     }
     return TopicTitleAndContentState;
 }());
@@ -3848,11 +3878,10 @@ var ListContent = /** @class */ (function (_super) {
             var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        console.log("Did" + this.match.params.boardId);
-                        return [4 /*yield*/, Utility.getBoardTopicAsync(1, this.match.params.boardId, this.context.router)];
+                    case 0: return [4 /*yield*/, Utility.getBoardTopicAsync(1, this.match.params.boardId, this.context.router)];
                     case 1:
                         data = _a.sent();
+                        console.log(data);
                         this.setState({ items: data });
                         return [2 /*return*/];
                 }
@@ -3860,7 +3889,8 @@ var ListContent = /** @class */ (function (_super) {
         });
     };
     ListContent.prototype.convertTopicToElement = function (item) {
-        return React.createElement(TopicTitleAndContent, { key: item.id, title: item.title, authorName: item.userName, id: item.id, authorId: item.userId, lastPostTime: item.lastPostTime, lastPostUserName: item.lastPostUser });
+        console.log("in");
+        return React.createElement(TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount });
     };
     ListContent.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
@@ -3893,10 +3923,10 @@ var ListContent = /** @class */ (function (_super) {
                     React.createElement("div", { className: "listContentTag" }, "\u7CBE\u534E"),
                     React.createElement("div", { className: "listContentTag" }, "\u6700\u70ED")),
                 React.createElement("div", { className: "row", style: { alignItems: 'center' } },
-                    React.createElement("div", { style: { marginRight: '18.5rem' } },
+                    React.createElement("div", { style: { marginRight: '14.5rem' } },
                         React.createElement("span", null, "\u4F5C\u8005")),
                     React.createElement("div", { style: { marginRight: '7.6875rem' } },
-                        React.createElement("span", null, "\u6700\u540E\u53D1\u8868")))),
+                        React.createElement("span", null, "\u6700\u540E\u56DE\u590D")))),
             React.createElement("div", null, this.state.items.map(this.convertTopicToElement)));
     };
     return ListContent;
@@ -3906,48 +3936,56 @@ var TopicTitleAndContent = /** @class */ (function (_super) {
     __extends(TopicTitleAndContent, _super);
     function TopicTitleAndContent(props, context) {
         var _this = _super.call(this, props, context) || this;
-        _this.state = {
-            title: _this.props.title,
-            authorName: _this.props.authorName,
-            likeNumber: 123,
-            dislikeNumber: 11,
-            commentNumber: 214,
-            lastPostUserName: _this.props.lastPostUserName,
-            lastPostTime: _this.props.lastPostTime,
-            id: _this.props.id,
-            authorId: _this.props.authorId
-        };
+        _this.state = ({ pager: [] });
         return _this;
     }
+    TopicTitleAndContent.prototype.componentWillMount = function () {
+        var count = this.props.replyCount + 1;
+        var totalPage = (count - count % 10) / 10 + 1;
+        var pager = Utility.getListPager(totalPage);
+        this.setState({ pager: pager });
+    };
+    TopicTitleAndContent.prototype.generateListPager = function (item) {
+        var url = "/topic/" + this.props.id + "/" + item;
+        if (item != -1) {
+            return React.createElement("div", { style: { marginRight: "0.3rem" } },
+                React.createElement("a", { href: url }, item));
+        }
+        else {
+            return React.createElement("div", { style: { marginRight: "0.3rem" } }, "...");
+        }
+    };
     TopicTitleAndContent.prototype.render = function () {
-        var url = "/topic/" + this.state.id;
+        var url = "/topic/" + this.props.id;
         return React.createElement("div", { id: "changeColor" },
             React.createElement("div", { className: "row topicInList" },
-                React.createElement(react_router_dom_1.Link, { to: url },
-                    React.createElement("div", { style: { marginLeft: '1.25rem', } },
-                        " ",
-                        React.createElement("span", null, this.state.title))),
-                React.createElement("div", { className: "row", style: { width: "50%", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" } },
-                    React.createElement("div", { style: { width: "15rem", marginRight: '0.625rem', marginLeft: '1rem' } },
+                React.createElement("div", { style: { display: "flex" } },
+                    React.createElement(react_router_dom_1.Link, { to: url },
+                        React.createElement("div", { className: "listTitle", style: { marginLeft: '1.25rem', } },
+                            " ",
+                            this.props.title)),
+                    React.createElement("div", { style: { display: "flex" } }, this.state.pager.map(this.generateListPager.bind(this)))),
+                React.createElement("div", { className: "row", style: { width: "45%", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" } },
+                    React.createElement("div", { style: { width: "15rem" } },
                         " ",
                         React.createElement("span", null,
-                            React.createElement("a", null, this.state.authorName))),
-                    React.createElement("div", { className: "row", style: { width: "25rem", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" } },
+                            React.createElement("a", null, this.props.userName))),
+                    React.createElement("div", { className: "row", style: { width: "15rem", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" } },
                         React.createElement("div", { id: "liked", style: { display: "flex" } },
                             React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
-                            React.createElement("span", { className: "timeProp tagSize" }, this.state.likeNumber)),
+                            React.createElement("span", { className: "timeProp tagSize" }, this.props.likeCount)),
                         React.createElement("div", { id: "disliked", style: { display: "flex" } },
                             React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg" }),
-                            React.createElement("span", { className: "timeProp tagSize" }, this.state.dislikeNumber)),
+                            React.createElement("span", { className: "timeProp tagSize" }, this.props.dislikeCount)),
                         React.createElement("div", { id: "commentsAmount", style: { display: "flex" } },
                             React.createElement("i", { className: "fa fa-commenting-o fa-lg" }),
-                            React.createElement("span", { className: "timeProp tagSize" }, this.state.commentNumber))),
+                            React.createElement("span", { className: "timeProp tagSize" }, this.props.replyCount))),
                     React.createElement("div", { id: "lastReply", style: { width: "15rem" } },
                         React.createElement("div", null,
-                            this.state.lastPostUserName,
+                            this.props.lastPostUser,
                             " ")),
-                    React.createElement("div", { style: { width: "30rem", marginRight: "20px" } },
-                        React.createElement("div", { style: { wordBreak: "keepAll" } }, moment(this.state.lastPostTime).format('YYYY-MM-DD HH:mm:ss'))))));
+                    React.createElement("div", { style: { width: "20rem" } },
+                        React.createElement("div", { style: { wordBreak: "keepAll" } }, moment(this.props.lastPostTime).format('YYYY-MM-DD HH:mm'))))));
     };
     return TopicTitleAndContent;
 }(React.Component));
@@ -4123,7 +4161,10 @@ var Post = /** @class */ (function (_super) {
             width: "100%",
             height: 640,
             path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false
+            saveHTMLToTextarea: false,
+            imageUpload: false,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "http://apitest.niconi.cc/file/",
         });
         _this.handleChange = _this.handleChange.bind(_this);
         _this.state = { page: 1, topicid: _this.match.params.topicid, totalPage: 1, userName: null, editor: testEditor };
@@ -9582,7 +9623,10 @@ var Post = /** @class */ (function (_super) {
             width: "100%",
             height: 640,
             path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false
+            saveHTMLToTextarea: false,
+            imageUpload: false,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "http://apitest.niconi.cc/file/",
         });
         _this.handleChange = _this.handleChange.bind(_this);
         _this.state = { page: 1, topicid: _this.match.params.topicid, totalPage: 1, userName: null, editor: testEditor };
@@ -15473,13 +15517,16 @@ var TopicTitleAndContentState = /** @class */ (function () {
           this.lastReply = lastReply;
             this.title = title;
       }*/
-    function TopicTitleAndContentState(title, userName, topicid, userId, lastPostUser, lastPostTime) {
+    function TopicTitleAndContentState(title, userName, topicid, userId, lastPostUser, lastPostTime, likeCount, dislikeCount, replyCount) {
         this.userName = userName;
         this.title = title;
         this.id = topicid;
         this.userId = userId;
         this.lastPostUser = lastPostUser;
         this.lastPostTime = lastPostTime;
+        this.likeCount = likeCount;
+        this.dislikeCount = dislikeCount;
+        this.replyCount = replyCount;
     }
     return TopicTitleAndContentState;
 }());
