@@ -22,60 +22,64 @@ export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState
     }
 
     async componentDidMount() {
-        // bugtest 550524
-        // 董松松松 569380
-
-        const token = Utility.getLocalStorage("accessToken");
-        const page = this.match.params.page || 1;
-        let url = `http://apitest.niconi.cc/user/follow/fan?from=${(page - 1) * 10}&size=10`;
-        const headers = new Headers();
-        headers.append('Authorization', token);
-        let res = await fetch(url, {
-            headers
-        });
-
-        let data = await res.json();
-        
-
-        //没有粉丝
-
-        if (!data || !data.length) {
-            this.setState({
-                info: '没有粉丝'
+        try {
+            const token = Utility.getLocalStorage("accessToken");
+            const page = this.match.params.page || 1;
+            let url = `http://apitest.niconi.cc/user/follow/fan?from=${(page - 1) * 10}&size=10`;
+            const headers = new Headers();
+            headers.append('Authorization', token);
+            let res = await fetch(url, {
+                headers
             });
-            return false;
+            if (res.status === 200) {
+                let data = await res.json();
+
+
+                //没有粉丝
+
+                if (!data || !data.length) {
+                    this.setState({
+                        info: '没有粉丝'
+                    });
+                    return false;
+                }
+
+                let fans: UserFanInfo[] = [];
+
+                let i = data.length, data2;
+
+                while (i--) {
+                    let userid = data[i];
+                    let userFanInfo = new UserFanInfo();
+                    url = `http://apitest.niconi.cc/user/${userid}`;
+                    res = await fetch(url);
+                    data2 = await res.json();
+
+                    userFanInfo.name = data2.name;
+                    userFanInfo.avatarImgURL = data2.portraitUrl;
+                    userFanInfo.posts = data2.postCount;
+                    userFanInfo.id = userid;
+                    userFanInfo.fans = data2.fanCount;
+
+                    fans.push(userFanInfo);
+                }
+
+
+                const userid = Utility.getLocalStorage('userInfo').id;
+
+                url = `http://apitest.niconi.cc/user/follow/fancount?userid=${userid}`
+                res = await fetch(url);
+                let fanCounts: number = await res.json();
+                this.setState({
+                    userFans: fans,
+                    totalPage: fanCounts % 10 === 0 ? fanCounts / 10 : Math.floor((fanCounts / 10)) + 1
+                });
+            } else {
+                throw {};
+            }
+        } catch (e) {
+            console.log('我的粉丝加载失败');
         }
-
-        let fans: UserFanInfo[] = [];
-        
-        let i = data.length, data2;
-
-        while (i--) {
-            let userid = data[i];
-            let userFanInfo = new UserFanInfo();
-            url = `http://apitest.niconi.cc/user/${userid}`;
-            res = await fetch(url);
-            data2 = await res.json();
-
-            userFanInfo.name = data2.name;
-            userFanInfo.avatarImgURL = data2.portraitUrl;
-            userFanInfo.posts = data2.postCount;
-            userFanInfo.id = userid;
-            userFanInfo.fans = data2.fanCount;
-
-            fans.push(userFanInfo);
-        }
-
-
-        const userid = Utility.getLocalStorage('userInfo').id;
-
-        url = `http://apitest.niconi.cc/user/follow/fancount?userid=${userid}`
-        res = await fetch(url);
-        let fanCounts: number = await res.json();
-        this.setState({
-            userFans: fans,
-            totalPage: fanCounts % 10 === 0 ? fanCounts/10 : Math.floor((fanCounts / 10)) + 1
-        });
     }
 
     render() {

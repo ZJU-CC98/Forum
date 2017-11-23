@@ -10,7 +10,6 @@ export class UserCenterConfigSignature extends React.Component<null, UserCenterC
     constructor(props) {
         super(props);
         const userInfo = Utility.getLocalStorage('userInfo');
-        console.log(userInfo);
         this.state = {
             signature: userInfo.signatureCode,
             signatureExtends: null,
@@ -27,61 +26,69 @@ export class UserCenterConfigSignature extends React.Component<null, UserCenterC
     }
 
     async submit() {
-        const signature = this.state.signature;
-        const token = Utility.getLocalStorage('accessToken');
-        const url = `http://apitest.niconi.cc/user`;
+        try {
+            const signature = this.state.signature;
+            const token = Utility.getLocalStorage('accessToken');
+            const url = `http://apitest.niconi.cc/user`;
 
-        //获取旧的个人信息
-        const userInfo: UserInfo = Utility.getLocalStorage('userInfo');
-        let newInfo = new ChangeUserInfo();
-        newInfo.CustomTitle = userInfo.customTitle;
-        newInfo.EmailAddress = userInfo.emailAddress;
-        newInfo.Gender = (userInfo.gender === 1) ? 1 :0;
-        newInfo.Introduction = userInfo.introduction;
-        newInfo.QQ = userInfo.qq;
-        newInfo.SignatureCode = userInfo.signatureCode;
+            //获取旧的个人信息
+            const userInfo: UserInfo = Utility.getLocalStorage('userInfo');
+            let newInfo = new ChangeUserInfo();
+            newInfo.EmailAddress = userInfo.emailAddress;
+            newInfo.Gender = (userInfo.gender === 1) ? 1 : 0;
+            newInfo.Introduction = userInfo.introduction;
+            newInfo.QQ = userInfo.qq;
+            newInfo.SignatureCode = userInfo.signatureCode;
+            newInfo.Birthday = userInfo.birthday;
 
-        let myHeaders = new Headers();
-        myHeaders.append('Authorization', token);
-        myHeaders.append('Content-Type', 'application/json');
-        let res = await fetch(url, {
-            method: 'PUT',
-            headers: myHeaders,
-            body: JSON.stringify({
-                ...newInfo,
-                SignatureCode: signature
-            })
-        });
-
-        if (res.status === 200) {
-            this.setState({
-                buttonInfo: '保存成功',
-                isLoading: false
+            let myHeaders = new Headers();
+            myHeaders.append('Authorization', token);
+            myHeaders.append('Content-Type', 'application/json');
+            let res = await fetch(url, {
+                method: 'PUT',
+                headers: myHeaders,
+                body: JSON.stringify({
+                    ...newInfo,
+                    SignatureCode: signature
+                })
             });
-        } else {
+
+            if (res.status === 200) {
+                this.setState({
+                    buttonInfo: '保存成功',
+                    isLoading: false
+                });
+            } else {
+                throw {};
+            }
+        } catch (e) {
             this.setState({
-                buttonInfo: '保存失败',
+                buttonInfo: `保存失败`,
                 isLoading: false
             });
         }
     }
 
     render() {
-        return (<div className="user-center-config-signature">
-            <div className="signature-buttons">
-                <button id="signatureImg" type="button">图片</button>
-                <button id="signatureVideo" type="button">视频</button>
-                <button id="signatureAudio" type="button">音乐</button>
-                <button id="signatureColor" type="button">A</button>
-                <button id="signatureStrong" type="button">B</button>
-            </div>
-            <div className="signature-extends">{this.state.signatureExtends}</div>
-            <textarea id="signature" onChange={this.handleChange} value={this.state.signature} />
+        return (
             <div>
-                <p>注* 个性签名将在个人主页、发布文章、回复文章中显示</p>
-                <button id="signatureUpload" type="button" onClick={this.submit} disabled={this.state.isLoading}>{this.state.buttonInfo}</button>
-            </div>
-        </div>);
+                <h2>修改签名档</h2>
+                <div className="user-center-config-signature">
+                    <div className="signature-buttons">
+                        <button id="signatureImg" type="button">图片</button>
+                        <button id="signatureVideo" type="button">视频</button>
+                        <button id="signatureAudio" type="button">音乐</button>
+                        <button id="signatureColor" type="button">A</button>
+                        <button id="signatureStrong" type="button">B</button>
+                    </div>
+                    <div className="signature-extends">{this.state.signatureExtends}</div>
+                    <textarea id="signature" onChange={this.handleChange} value={this.state.signature} />
+                    <div>
+                        <p>注* 个性签名将在个人主页、发布文章、回复文章中显示</p>
+                        <button id="signatureUpload" type="button" onClick={this.submit} disabled={this.state.isLoading}>{this.state.buttonInfo}</button>
+                    </div>
+                </div>
+            </div>);
     }
 }
 

@@ -23,33 +23,40 @@ export class UserRouter extends React.Component {
 class UserExact extends React.Component<null, UserCenterExactState> {
 
     async componentDidMount() {
-        let myHeaders;
-        if (Utility.isLogOn()) {
-            myHeaders = {
-                'Authorization': Utility.getLocalStorage("accessToken")
-            };
-        }
+        try {
+            let myHeaders;
+            if (Utility.isLogOn()) {
+                myHeaders = {
+                    'Authorization': Utility.getLocalStorage("accessToken")
+                };
+            }
 
-        let response;
-        if (!location.pathname.split('/')[2]) {
-            return 0;
-        } 
-        if(location.pathname.split('/')[2] === 'name') {
-            response = await fetch(`http://apitest.niconi.cc/User/Name/${location.pathname.split('/')[3]}`,{
-                headers: myHeaders
+            let response: Response;
+            if (!location.pathname.split('/')[2]) {
+                return 0;
+            }
+            if (location.pathname.split('/')[2] === 'name') {
+                response = await fetch(`http://apitest.niconi.cc/User/Name/${location.pathname.split('/')[3]}`, {
+                    headers: myHeaders
+                });
+            } else {
+                response = await fetch(`http://apitest.niconi.cc/User/${location.pathname.split('/')[2]}`, {
+                    headers: myHeaders
+                });
+            }
+            if (response.status !== 200) {
+                throw {};
+            }
+            const data = await response.json();
+            console.log(data);
+            this.setState({
+                userInfo: data,
+                userAvatarImgURL: data.portraitUrl,
+                responseState: response.status
             });
-        } else {
-            response = await fetch(`http://apitest.niconi.cc/User/${location.pathname.split('/')[2]}`,{
-                headers: myHeaders
-            });
+        } catch (e) {
+            console.log('加载失败');
         }
-        const data = await response.json();
-        console.log(data);
-        this.setState({
-            userInfo: data,
-            userAvatarImgURL: data.portraitUrl,
-            responseState: response.status
-        });
     }
 
     render() {

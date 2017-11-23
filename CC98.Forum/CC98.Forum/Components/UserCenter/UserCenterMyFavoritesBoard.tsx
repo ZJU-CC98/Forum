@@ -23,23 +23,27 @@ export class UserCenterMyFavoritesBoard extends React.Component<UserCenterMyFavo
             buttonIsDisabled: true,
             buttonInfo: '取关中'
         });
-        const token = Utility.getLocalStorage("accessToken");
-        const boardId = this.props.UserFavoritesBoard.id;
-        const url = `http://apitest.niconi.cc/me/removecustomboard/${boardId}`;
-        let myHeaders = new Headers();
-        myHeaders.append('Authorization', token);
-        
-        let res = await fetch(url, {
-            method: 'DELETE',
-            headers: myHeaders
-        });
-        if (res.status === 200) {
-            this.setState({
-                buttonIsDisabled: false,
-                buttonInfo: '重新关注',
-                isFollowing: false
+        try {
+            const token = Utility.getLocalStorage("accessToken");
+            const boardId = this.props.UserFavoritesBoard.id;
+            const url = `http://apitest.niconi.cc/me/removecustomboard/${boardId}`;
+            let myHeaders = new Headers();
+            myHeaders.append('Authorization', token);
+
+            let res = await fetch(url, {
+                method: 'DELETE',
+                headers: myHeaders
             });
-        } else {
+            if (res.status === 200) {
+                this.setState({
+                    buttonIsDisabled: false,
+                    buttonInfo: '重新关注',
+                    isFollowing: false
+                });
+            } else {
+                throw {};
+            }
+        } catch (e) {
             this.setState({
                 buttonIsDisabled: false,
                 buttonInfo: '取关失败',
@@ -53,22 +57,32 @@ export class UserCenterMyFavoritesBoard extends React.Component<UserCenterMyFavo
             buttonIsDisabled: true,
             buttonInfo: '关注中'
         });
-        const token = Utility.getLocalStorage("accessToken");
+        try {
+            const token = Utility.getLocalStorage("accessToken");
 
-        const boardId = this.props.UserFavoritesBoard.id;
-        const url = `http://apitest.niconi.cc/me/addcustomboard/${boardId}`;
-        let myHeaders = new Headers();
-        myHeaders.append('Authorization', token);
-        let res = await fetch(url, {
-            method: 'POST',
-            headers: myHeaders
-        });
-        console.log(res);
-        if (res.status === 200) {
+            const boardId = this.props.UserFavoritesBoard.id;
+            const url = `http://apitest.niconi.cc/me/addcustomboard/${boardId}`;
+            let myHeaders = new Headers();
+            myHeaders.append('Authorization', token);
+            let res = await fetch(url, {
+                method: 'POST',
+                headers: myHeaders
+            });
+            console.log(res);
+            if (res.status === 200) {
+                this.setState({
+                    buttonIsDisabled: false,
+                    buttonInfo: '取消关注',
+                    isFollowing: true
+                });
+            } else {
+                throw {};
+            }
+        } catch (e) {
             this.setState({
                 buttonIsDisabled: false,
-                buttonInfo: '取消关注',
-                isFollowing: true
+                buttonInfo: '关注失败',
+                isFollowing: false
             });
         }
     }

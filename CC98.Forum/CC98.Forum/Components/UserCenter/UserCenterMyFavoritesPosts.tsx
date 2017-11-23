@@ -9,7 +9,9 @@ import * as Utility from '../../Utility';
 import { UserCenterPageCount } from './UserCenterPageCount';
 import { RouteComponent } from '../app';
 
-
+/**
+ * 用户中心我收藏的帖子组件
+ */
 export class UserCenterMyFavoritesPosts extends RouteComponent<null, UserCenterMyFavoritesPostsState, {page}> {
     constructor(props,c) {
         super(props,c);
@@ -22,52 +24,58 @@ export class UserCenterMyFavoritesPosts extends RouteComponent<null, UserCenterM
     }
 
     async componentDidMount() {
-        const token = Utility.getLocalStorage('accessToken');
-        const page = this.match.params.page || 1;
-        const url = `http://apitest.niconi.cc/topic/favorite?from=${(page-1)*10}&size=11`;
+        try {
+            const token = Utility.getLocalStorage('accessToken');
+            const page = this.match.params.page || 1;
+            const url = `http://apitest.niconi.cc/topic/favorite?from=${(page - 1) * 10}&size=11`;
 
-        let myHeaders = new Headers();
-        myHeaders.append('Authorization', token);
+            let myHeaders = new Headers();
+            myHeaders.append('Authorization', token);
 
-        let res = await fetch(url, {
-            headers: myHeaders
-        });
-        let data = await res.json();
-        if (data.length === 0) {
-            this.setState({
-                info: '没有主题'
+            let res = await fetch(url, {
+                headers: myHeaders
             });
-            return;
-        }
+            if (res.status !== 200) {
+                throw {};
+            }
+            let data = await res.json();
+            if (data.length === 0) {
+                this.setState({
+                    info: '没有主题'
+                });
+                return;
+            }
 
-        let posts: UserRecentPost[] = [];
-        let i = data.length;
+            let posts: UserRecentPost[] = [];
+            let i = data.length;
 
-        if (i < 10) {
+            if (i < 10) {
+                this.setState({
+                    totalPage: Number.parseInt(this.match.params.page) || 1
+                });
+            } else {
+                i = 10;
+                this.setState({
+                    totalPage: (Number.parseInt(this.match.params.page) || 1) + 1
+                });
+            }
+
+            while (i--) {
+                let post = new UserRecentPost();
+                post.board = data[i].boardName;
+                post.boardId = data[i].boardId;
+                post.content = data[i].title;
+                post.date = data[i].time.replace('T', ' ').slice(0, 19);
+                post.id = data[i].id;
+                posts.unshift(post);
+            }
+
             this.setState({
-                totalPage: Number.parseInt(this.match.params.page) || 1
+                userRecentPosts: posts
             });
-        } else {
-            i = 10;
-            this.setState({
-                totalPage: (Number.parseInt(this.match.params.page) || 1) + 1
-            });
+        } catch (e) {
+            console.log('加载收藏失败');
         }
-
-        while (i--) {
-            let post = new UserRecentPost();
-            post.board = data[i].boardName;
-            post.boardId = data[i].boardId;
-            post.content = data[i].title;
-            post.date = data[i].time.replace('T', ' ').slice(0, 19);
-            post.id = data[i].id;
-            posts.unshift(post);
-        }
-
-        this.setState({
-            userRecentPosts: posts
-        });
-
     }
 
     render() {

@@ -23,62 +23,79 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
         let pageYLeft = document.body.scrollHeight - window.pageYOffset;
         
         if (pageYLeft < 1500 && this.state.isLoading === false) {
-            this.setState({isLoading: true});
+            try {
+                this.setState({ isLoading: true });
 
-            const url = `http://apitest.niconi.cc/me/recenttopics?from=${this.state.userRecentPosts.length}&size=10`
-            const token = Utility.getLocalStorage("accessToken");
+                const url = `http://apitest.niconi.cc/me/recenttopics?from=${this.state.userRecentPosts.length}&size=10`
+                const token = Utility.getLocalStorage("accessToken");
+                const headers = new Headers();
+                headers.append('Authorization', token);
+                let res = await fetch(url, {
+                    headers
+                });
+
+                if (res.status === 200) {
+                    let data: itemType[] = await res.json();
+
+                    if (data.length < 10) {
+                        window.removeEventListener('scroll', this.scrollHandler);
+                    }
+
+                    let posts = this.state.userRecentPosts;
+                    let i = data.length;
+
+                    while (i--) {
+                        let post = await this.item2post(data[i]);
+                        posts.push(post);
+                    }
+                    this.setState({
+                        userRecentPosts: posts,
+                        isLoading: false
+                    });
+                } else {
+                    throw {};
+                }
+            } catch (e) {
+                this.setState({
+                    isLoading: false
+                });
+                console.log('用户中心滚动加载失败');
+            }
+        }
+    }
+
+    async componentDidMount() {
+        try {
+            const url = `http://apitest.niconi.cc/me/recenttopics?from=0&size=10`
+            const token = window.localStorage.accessToken.slice(4);
             const headers = new Headers();
             headers.append('Authorization', token);
             let res = await fetch(url, {
                 headers
             });
+            
+            if (res.status === 200) {
+                let data = await res.json();
 
-            let data: itemType[] = await res.json();
+                let posts: UserRecentPost[] = [],
+                    i = data.length;
 
-            if (data.length < 10) {
-                window.removeEventListener('scroll', this.scrollHandler);
+                while (i--) {
+                    let post = await this.item2post(data[i]);
+                    posts.unshift(post);
+                }
+
+                this.setState({
+                    userRecentPosts: posts
+                });
+                if (data.length === 10) {
+                    window.addEventListener('scroll', this.scrollHandler);
+                }
+            } else {
+                throw {};
             }
-
-            let posts = this.state.userRecentPosts;
-            let i = data.length;
-
-            while (i--) {
-                let post = await this.item2post(data[i]);
-                posts.push(post);
-            }
-
-            this.setState( {
-                userRecentPosts: posts,
-                isLoading: false
-            });
-        }
-    }
-
-    async componentDidMount() {
-        const url = `http://apitest.niconi.cc/me/recenttopics?from=0&size=10`
-        const token = window.localStorage.accessToken.slice(4);
-        const headers = new Headers();
-        headers.append('Authorization', token);
-        let res = await fetch(url, {
-            headers
-        });
-        let data = await res.json();
-
-        //console.log(data);
-
-        let posts: UserRecentPost[] = [],
-            i = data.length;
-
-        while (i--) {
-            let post = await this.item2post(data[i]);
-            posts.unshift(post);
-        }
-
-        this.setState({
-            userRecentPosts: posts
-        });
-        if (data.length === 10) {
-            window.addEventListener('scroll', this.scrollHandler);
+        } catch (e) {
+            console.log('用户中心帖子加载失败');
         }
     }
 

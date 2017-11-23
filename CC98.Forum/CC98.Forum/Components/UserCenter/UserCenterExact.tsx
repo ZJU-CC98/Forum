@@ -17,7 +17,6 @@ export class UserCenterExact extends React.Component<null, UserCenterExactState>
         super(props);
 
         const userInfo = Utility.getLocalStorage('userInfo');
-        console.log(userInfo);
         this.state = {
             userInfo: userInfo,
             userAvatarImgURL: userInfo.portraitUrl
@@ -25,19 +24,23 @@ export class UserCenterExact extends React.Component<null, UserCenterExactState>
     }
 
     async componentDidMount() {
-        const token = Utility.getLocalStorage('accessToken');
+        try {
+            const token = Utility.getLocalStorage('accessToken');
 
-        let headers1 = new Headers();
-        headers1.append("Authorization", token);
-        let response1 = await fetch(`http://apitest.niconi.cc/user/${this.state.userInfo.id}`, {
-            headers: headers1
-        });
-        let userInfo = await response1.json();
-        Utility.setLocalStorage("userInfo", userInfo);
-        this.setState({
-            userInfo: userInfo,
-            userAvatarImgURL: userInfo.portraitUrl
-        });
+            let headers1 = new Headers();
+            headers1.append("Authorization", token);
+            let response1 = await fetch(`http://apitest.niconi.cc/user/${this.state.userInfo.id}`, {
+                headers: headers1
+            });
+            let userInfo = await response1.json();
+            Utility.setLocalStorage("userInfo", userInfo);
+            this.setState({
+                userInfo: userInfo,
+                userAvatarImgURL: userInfo.portraitUrl
+            });
+        } catch (e) {
+            console.log('用户中心错误');
+        }
     }
 
     render() {        

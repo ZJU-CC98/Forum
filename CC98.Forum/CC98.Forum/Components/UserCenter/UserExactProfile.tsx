@@ -22,31 +22,35 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
         this.follow = this.follow.bind(this);
     }
 
-    async follow() {        
-        const token = Utility.getLocalStorage("accessToken");
-        if (!token) {
-            this.setState({
-                buttonIsDisabled: true,
-                buttonInfo: '请先登录'
-            });
-            return;
-        }
+    async follow() {
+        try {
+            const token = Utility.getLocalStorage("accessToken");
+            if (!token) {
+                this.setState({
+                    buttonIsDisabled: true,
+                    buttonInfo: '请先登录'
+                });
+                return;
+            }
 
-        const userId = this.props.userInfo.id;
-        const url = `http://apitest.niconi.cc/user/follow/${userId}`;
-        const headers = new Headers();
-        headers.append('Authorization', token);
-        let res = await fetch(url, {
-            method: 'POST',
-            headers
-        });
-        if (res.status === 200) {
-            this.setState({
-                buttonIsDisabled: false,
-                buttonInfo: '取消关注',
-                isFollowing: true
+            const userId = this.props.userInfo.id;
+            const url = `http://apitest.niconi.cc/user/follow/${userId}`;
+            const headers = new Headers();
+            headers.append('Authorization', token);
+            let res = await fetch(url, {
+                method: 'POST',
+                headers
             });
-        } else {
+            if (res.status === 200) {
+                this.setState({
+                    buttonIsDisabled: false,
+                    buttonInfo: '取消关注',
+                    isFollowing: true
+                });
+            } else {
+                throw {};
+            }
+        } catch (e) {
             this.setState({
                 buttonIsDisabled: false,
                 buttonInfo: '关注失败',
@@ -67,22 +71,26 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
             buttonIsDisabled: true,
             buttonInfo: '取关中'
         });
-        const token = Utility.getLocalStorage("accessToken");
-        const userId = this.props.userInfo.id;
-        const url = `http://apitest.niconi.cc/user/unfollow/${userId}`;
-        const headers = new Headers();
-        headers.append('Authorization', token);
-        let res = await fetch(url, {
-            method: 'DELETE',
-            headers
-        });
-        if (res.status === 200) {
-            this.setState({
-                buttonIsDisabled: false,
-                buttonInfo: '重新关注',
-                isFollowing: false
+        try {
+            const token = Utility.getLocalStorage("accessToken");
+            const userId = this.props.userInfo.id;
+            const url = `http://apitest.niconi.cc/user/unfollow/${userId}`;
+            const headers = new Headers();
+            headers.append('Authorization', token);
+            let res = await fetch(url, {
+                method: 'DELETE',
+                headers
             });
-        } else {
+            if (res.status === 200) {
+                this.setState({
+                    buttonIsDisabled: false,
+                    buttonInfo: '重新关注',
+                    isFollowing: false
+                });
+            } else {
+                throw {};
+            }
+        } catch (e) {
             this.setState({
                 buttonIsDisabled: false,
                 buttonInfo: '取关失败',

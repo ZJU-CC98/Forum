@@ -475,10 +475,6 @@ export class ChangeUserInfo {
     */
     QQ: string;
     /**
-    * 自定义头衔
-    */
-    CustomTitle: string;
-    /**
     * 邮箱地址
     */
     EmailAddress: string;
@@ -490,4 +486,8 @@ export class ChangeUserInfo {
     * 个人简介
     */
     Introduction: string;
+    /**
+    * 生日
+    */
+    Birthday: string;
 }

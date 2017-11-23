@@ -18,35 +18,45 @@ export class UserCenterMyFavoritesBoards extends React.Component<null, UserCente
     }
 
     async componentDidMount() {
-        const token = Utility.getLocalStorage('accessToken');
-        const loginName = Utility.getLocalStorage('userName');
-        let myHeaders = new Headers();
-        myHeaders.append("Authorization", token);
-        let response1 = await fetch(`http://apitest.niconi.cc/user/name/${loginName}`, {
-            headers: myHeaders
-        });
-        let userInfo = await response1.json();
-        const customBoardsId: number[] = userInfo.customBoards;
-        if (!customBoardsId || customBoardsId.length === 0) {
-            this.setState({
-                info: '没有关注'
+        try {
+            const token = Utility.getLocalStorage('accessToken');
+            const loginName = Utility.getLocalStorage('userName');
+            let myHeaders = new Headers();
+            myHeaders.append("Authorization", token);
+            let response1 = await fetch(`http://apitest.niconi.cc/user/name/${loginName}`, {
+                headers: myHeaders
             });
-            return;
+            if (response1.status !== 200) {
+                throw {};
+            }
+            let userInfo = await response1.json();
+            const customBoardsId: number[] = userInfo.customBoards;
+            if (!customBoardsId || customBoardsId.length === 0) {
+                this.setState({
+                    info: '没有关注'
+                });
+                return;
+            }
+
+            const query = customBoardsId.join('&id=');
+            const url = `http://apitest.niconi.cc/board/?id=${query}`;
+
+            myHeaders = new Headers();
+            myHeaders.append('Authorization', token);
+
+            let res = await fetch(url, {
+                headers: myHeaders
+            });
+            if (res.status !== 200) {
+                throw {};
+            }
+            let data = await res.json();
+            this.setState({
+                boards: data
+            });
+        } catch (e) {
+            console.log('版面加载失败');
         }
-
-        const query = customBoardsId.join('&id=');
-        const url = `http://apitest.niconi.cc/board/?id=${query}`;
-        
-        myHeaders = new Headers();
-        myHeaders.append('Authorization', token);
-
-        let res = await fetch(url, {
-            headers: myHeaders
-        });
-        let data = await res.json();
-        this.setState({
-            boards: data
-        });
     }
 
     render() {

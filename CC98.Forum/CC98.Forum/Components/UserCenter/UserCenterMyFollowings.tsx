@@ -21,56 +21,68 @@ export class UserCenterMyFollowings extends RouteComponent<null, UserCenterMyFol
     }
 
     async componentDidMount() {
-
-        const token = Utility.getLocalStorage("accessToken");
-        const page = this.match.params.page || 1;
-        let url = `http://apitest.niconi.cc/user/follow/follower?from=${(page - 1) * 10}&size=10`;
-        const headers = new Headers();
-        headers.append('Authorization', token);
-        let res = await fetch(url, {
-            headers
-        });
-        let data = await res.json();
-
-        //没有关注
-
-        if (!data || !data.length) {
-            this.setState({
-                info: '没有关注'
+        try {
+            const token = Utility.getLocalStorage("accessToken");
+            const page = this.match.params.page || 1;
+            let url = `http://apitest.niconi.cc/user/follow/follower?from=${(page - 1) * 10}&size=10`;
+            const headers = new Headers();
+            headers.append('Authorization', token);
+            let res = await fetch(url, {
+                headers
             });
-            return false;
-        }
+            if (res.status !== 200) {
+                throw {};
+            }
+            let data = await res.json();
 
-        let fans: UserFanInfo[] = [];
-        
-        let i = data.length, data2;
+            //没有关注
 
-        while (i--) {
-            let userid = data[i];
-            let userFanInfo = new UserFanInfo();
-            url = `http://apitest.niconi.cc/user/${userid}`;
+            if (!data || !data.length) {
+                this.setState({
+                    info: '没有关注'
+                });
+                return false;
+            }
+
+            let fans: UserFanInfo[] = [];
+
+            let i = data.length, data2;
+
+            while (i--) {
+                let userid = data[i];
+                let userFanInfo = new UserFanInfo();
+                url = `http://apitest.niconi.cc/user/${userid}`;
+                res = await fetch(url);
+                if (res.status !== 200) {
+                    throw {};
+                }
+                data2 = await res.json();
+                userFanInfo.name = data2.name;
+                userFanInfo.avatarImgURL = data2.portraitUrl;
+                userFanInfo.posts = data2.postCount;
+                userFanInfo.id = userid;
+                userFanInfo.fans = data2.fanCount;
+
+                fans.push(userFanInfo);
+            }
+
+
+            const userid = Utility.getLocalStorage('userInfo').id;
+
+            url = `http://apitest.niconi.cc/user/follow/followcount?userid=${userid}`
             res = await fetch(url);
+            if (res.status !== 200) {
+                throw {};
+            }
             data2 = await res.json();
-            userFanInfo.name = data2.name;
-            userFanInfo.avatarImgURL = data2.portraitUrl;
-            userFanInfo.posts = data2.postCount;
-            userFanInfo.id = userid;
-            userFanInfo.fans = data2.fanCount;
 
-            fans.push(userFanInfo);
+            this.setState({
+                userFollowings: fans,
+                totalPage: data2 % 10 === 0 ? data2 / 10 : Math.floor((data2 / 10)) + 1
+            });
+        } catch (e) {
+            console.log('我的关注加载失败');
         }
-        
-
-        const userid = Utility.getLocalStorage('userInfo').id;
-
-        url = `http://apitest.niconi.cc/user/follow/followcount?userid=${userid}`
-        res = await fetch(url);
-        data2 = await res.json();
-
-        this.setState({
-            userFollowings: fans,
-            totalPage: data2 % 10 === 0 ? data2 / 10 : Math.floor((data2 / 10)) + 1
-        });
     }
 
     render() {
