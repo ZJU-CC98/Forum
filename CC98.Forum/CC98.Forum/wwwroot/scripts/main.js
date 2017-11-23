@@ -5185,9 +5185,13 @@ var SendTopic = /** @class */ (function (_super) {
     __extends(SendTopic, _super);
     function SendTopic(props) {
         var _this = _super.call(this, props) || this;
-        _this.state = ({ content: '' });
+        _this.state = ({ content: '', mode: 1 });
         return _this;
     }
+    SendTopic.prototype.componentDidMount = function () {
+    };
+    SendTopic.prototype.componentWillReceiveProps = function (newProps) {
+    };
     SendTopic.prototype.sendUbbTopic = function () {
         return __awaiter(this, void 0, void 0, function () {
             var url, content, contentJson, token, myHeaders, mes;
@@ -5262,6 +5266,14 @@ var SendTopic = /** @class */ (function (_super) {
             });
         });
     };
+    SendTopic.prototype.changeEditor = function () {
+        if (this.state.mode === 0) {
+            this.setState({ mode: 1 });
+        }
+        else {
+            this.setState({ mode: 0 });
+        }
+    };
     SendTopic.prototype.getInitialState = function () {
         return { value: '' };
     };
@@ -5269,20 +5281,10 @@ var SendTopic = /** @class */ (function (_super) {
         this.setState({ content: event.target.value });
     };
     SendTopic.prototype.render = function () {
-        editormd("test-editormd", {
-            width: "100%",
-            height: 640,
-            path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false
-        });
-        return React.createElement("div", { style: { width: "100%", display: "flex", flexDirection: "column" } },
-            React.createElement("div", { id: "sendTopic" },
-                React.createElement("form", null,
-                    React.createElement("div", { id: "test-editormd", className: "editormd" },
-                        React.createElement("textarea", { className: "editormd-markdown-textarea", name: "test-editormd-markdown-doc", value: this.state.content }))),
-                React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "1.25rem " } },
-                    React.createElement("div", { id: "post-topic-button", onClick: this.sendMdTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u56DE\u590D"))),
-            React.createElement("div", { id: "sendTopic" },
+        var mode, editor;
+        if (this.state.mode === 0) {
+            mode = '使用UBB模式编辑';
+            editor = React.createElement("div", { id: "sendTopic" },
                 React.createElement("div", { id: "sendTopic-options" },
                     React.createElement("ul", { className: "editor__menu clearfix", id: "wmd-button-row" },
                         React.createElement("li", { title: "加粗 <strong> Ctrl+B", className: "wmd-button", id: "wmd-bold-button" },
@@ -5318,9 +5320,23 @@ var SendTopic = /** @class */ (function (_super) {
                             React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-300px 0px" } })))),
                 React.createElement("form", null,
                     React.createElement("div", null,
-                        React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input", value: this.state.content, onChange: this.handleChange.bind(this) })))),
-            React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "1.25rem " } },
-                React.createElement("div", { id: "post-topic-button", onClick: this.sendUbbTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u56DE\u590D")));
+                        React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input", value: this.state.content, onChange: this.handleChange.bind(this) }))),
+                React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "1.25rem " } },
+                    React.createElement("div", { id: "post-topic-button", onClick: this.sendUbbTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u56DE\u590D"),
+                    React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, this.state.mode),
+                    " "));
+        }
+        else {
+            mode = '使用Markdown编辑';
+            editor = React.createElement("div", { id: "sendTopic" },
+                React.createElement("form", null,
+                    React.createElement("div", { id: "test-editormd", className: "editormd" },
+                        React.createElement("textarea", { className: "editormd-markdown-textarea", name: "test-editormd-markdown-doc", value: this.state.content }))),
+                React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "1.25rem " } },
+                    React.createElement("div", { id: "post-topic-button", onClick: this.sendMdTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u56DE\u590D"),
+                    React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, this.state.mode)));
+        }
+        return React.createElement("div", { style: { width: "100%", display: "flex", flexDirection: "column" } }, editor);
     };
     return SendTopic;
 }(RouteComponent));
@@ -7403,7 +7419,7 @@ var CreateTopic = /** @class */ (function (_super) {
     };
     CreateTopic.prototype.render = function () {
         //let mode = 0;
-        var mode = 0;
+        var mode = 1;
         if (mode === 0) {
             return React.createElement("div", { className: "column", style: { justifyContent: "center", width: "80%" } },
                 React.createElement("div", { className: "createTopicBoardName" }, " \u7248\u9762\u540D\u79F0 > \u53D1\u8868\u4E3B\u9898"),
@@ -7461,22 +7477,20 @@ var InputTitle = /** @class */ (function (_super) {
     }
     InputTitle.prototype.handleTitleChange = function (event) {
         this.props.onChange(event.target.value);
+        console.log("value");
+        console.log(event.target.value);
         this.setState({ title: event.target.value });
+        console.log('finished');
     };
     InputTitle.prototype.render = function () {
-        editormd("test-editormd", {
-            width: "100%",
-            height: 500,
-            path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false
-        });
-        return React.createElement("div", { className: "createTopicTitle" },
-            React.createElement("div", { className: "createTopicListName" }, "\u4E3B\u9898\u6807\u9898"),
-            React.createElement("div", { className: "createTopicListName" }, "\u6807\u7B7E1"),
-            React.createElement("div", { className: "createTopicListName" }, "\u6807\u7B7E2"),
+        return React.createElement("div", { className: "column" },
+            React.createElement("div", { className: "createTopicTitle" },
+                React.createElement("div", { className: "createTopicListName" }, "\u4E3B\u9898\u6807\u9898"),
+                React.createElement("div", { className: "createTopicListName" }, "\u6807\u7B7E1"),
+                React.createElement("div", { className: "createTopicListName" }, "\u6807\u7B7E2")),
             React.createElement("form", null,
                 React.createElement("div", null,
-                    React.createElement("textarea", { id: "sendTopic-title", name: "sendTopic-input", value: this.state.title, onBlur: this.handleTitleChange.bind(this) }))));
+                    React.createElement("input", { value: this.state.title, onChange: this.handleTitleChange.bind(this) }))));
     };
     return InputTitle;
 }(React.Component));
@@ -7542,18 +7556,20 @@ var InputMdContent = /** @class */ (function (_super) {
         _this.state = ({ content: "" });
         return _this;
     }
-    InputMdContent.prototype.send = function () {
-        var content = testEditor.getMarkdown();
-        console.log("content" + content);
-        this.props.onChange(content);
-    };
-    InputMdContent.prototype.render = function () {
+    InputMdContent.prototype.componentDidMount = function () {
         editormd("test-editormd", {
             width: "100%",
             height: 680,
             path: "/scripts/lib/editor.md/lib/",
             saveHTMLToTextarea: false
         });
+    };
+    InputMdContent.prototype.send = function () {
+        var content = testEditor.getMarkdown();
+        console.log("content" + content);
+        this.props.onChange(content);
+    };
+    InputMdContent.prototype.render = function () {
         return React.createElement("div", { style: { width: "100%", display: "flex", flexDirection: "column" } },
             React.createElement("div", { id: "sendTopic" },
                 React.createElement("form", null,
@@ -10605,9 +10621,13 @@ var SendTopic = /** @class */ (function (_super) {
     __extends(SendTopic, _super);
     function SendTopic(props) {
         var _this = _super.call(this, props) || this;
-        _this.state = ({ content: '' });
+        _this.state = ({ content: '', mode: 1 });
         return _this;
     }
+    SendTopic.prototype.componentDidMount = function () {
+    };
+    SendTopic.prototype.componentWillReceiveProps = function (newProps) {
+    };
     SendTopic.prototype.sendUbbTopic = function () {
         return __awaiter(this, void 0, void 0, function () {
             var url, content, contentJson, token, myHeaders, mes;
@@ -10682,6 +10702,14 @@ var SendTopic = /** @class */ (function (_super) {
             });
         });
     };
+    SendTopic.prototype.changeEditor = function () {
+        if (this.state.mode === 0) {
+            this.setState({ mode: 1 });
+        }
+        else {
+            this.setState({ mode: 0 });
+        }
+    };
     SendTopic.prototype.getInitialState = function () {
         return { value: '' };
     };
@@ -10689,20 +10717,10 @@ var SendTopic = /** @class */ (function (_super) {
         this.setState({ content: event.target.value });
     };
     SendTopic.prototype.render = function () {
-        editormd("test-editormd", {
-            width: "100%",
-            height: 640,
-            path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false
-        });
-        return React.createElement("div", { style: { width: "100%", display: "flex", flexDirection: "column" } },
-            React.createElement("div", { id: "sendTopic" },
-                React.createElement("form", null,
-                    React.createElement("div", { id: "test-editormd", className: "editormd" },
-                        React.createElement("textarea", { className: "editormd-markdown-textarea", name: "test-editormd-markdown-doc", value: this.state.content }))),
-                React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "1.25rem " } },
-                    React.createElement("div", { id: "post-topic-button", onClick: this.sendMdTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u56DE\u590D"))),
-            React.createElement("div", { id: "sendTopic" },
+        var mode, editor;
+        if (this.state.mode === 0) {
+            mode = '使用UBB模式编辑';
+            editor = React.createElement("div", { id: "sendTopic" },
                 React.createElement("div", { id: "sendTopic-options" },
                     React.createElement("ul", { className: "editor__menu clearfix", id: "wmd-button-row" },
                         React.createElement("li", { title: "加粗 <strong> Ctrl+B", className: "wmd-button", id: "wmd-bold-button" },
@@ -10738,9 +10756,23 @@ var SendTopic = /** @class */ (function (_super) {
                             React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-300px 0px" } })))),
                 React.createElement("form", null,
                     React.createElement("div", null,
-                        React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input", value: this.state.content, onChange: this.handleChange.bind(this) })))),
-            React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "1.25rem " } },
-                React.createElement("div", { id: "post-topic-button", onClick: this.sendUbbTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u56DE\u590D")));
+                        React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input", value: this.state.content, onChange: this.handleChange.bind(this) }))),
+                React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "1.25rem " } },
+                    React.createElement("div", { id: "post-topic-button", onClick: this.sendUbbTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u56DE\u590D"),
+                    React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, this.state.mode),
+                    " "));
+        }
+        else {
+            mode = '使用Markdown编辑';
+            editor = React.createElement("div", { id: "sendTopic" },
+                React.createElement("form", null,
+                    React.createElement("div", { id: "test-editormd", className: "editormd" },
+                        React.createElement("textarea", { className: "editormd-markdown-textarea", name: "test-editormd-markdown-doc", value: this.state.content }))),
+                React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "1.25rem " } },
+                    React.createElement("div", { id: "post-topic-button", onClick: this.sendMdTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u56DE\u590D"),
+                    React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, this.state.mode)));
+        }
+        return React.createElement("div", { style: { width: "100%", display: "flex", flexDirection: "column" } }, editor);
     };
     return SendTopic;
 }(RouteComponent));
@@ -14385,7 +14417,8 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
         _this.state = {
             avatarURL: '',
             info: '图片长宽为160×160像素的图片',
-            isShown: true
+            isShown: false,
+            divheight: '0px'
         };
         _this.handleChange = _this.handleChange.bind(_this);
         _this.handleIMGLoad = _this.handleIMGLoad.bind(_this);
@@ -14396,7 +14429,9 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
         var file = e.target.files[0];
         if (!file.type.match('image.*')) {
             this.setState({
-                info: '请选择图片文件'
+                info: '请选择图片文件',
+                isShown: false,
+                divheight: '0px'
             });
             return false;
         }
@@ -14411,8 +14446,14 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
     };
     UserCenterConfigAvatar.prototype.handleIMGLoad = function () {
         var ctx = this.myCanvas.getContext('2d');
-        console.log(this.myIMG.naturalWidth + ", " + this.myIMG.naturalHeight);
-        ctx.drawImage(this.myIMG, 0, 0, this.myIMG.naturalWidth, this.myIMG.naturalHeight, 0, 0, this.myIMG.naturalWidth, this.myIMG.naturalHeight);
+        this.myCanvas.width = this.myIMG.naturalWidth;
+        this.myCanvas.height = this.myIMG.naturalHeight;
+        ctx.drawImage(this.myIMG, 0, 0, this.myIMG.naturalWidth, this.myIMG.naturalHeight, 0, 0, this.myCanvas.width, this.myCanvas.height);
+        this.setState({
+            divheight: this.myIMG.naturalHeight + 50 + "px",
+            isShown: true,
+            info: '请选择要显示的区域'
+        });
     };
     UserCenterConfigAvatar.prototype.render = function () {
         var _this = this;
@@ -14427,11 +14468,16 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
                 React.createElement("div", null,
                     React.createElement("input", { onChange: this.handleChange, id: "uploadAvatar", type: "file", style: style }),
                     React.createElement("label", { htmlFor: "uploadAvatar" },
-                        React.createElement("p", null, "\u4E0A\u4F20\u5934\u50CF")),
+                        React.createElement("p", null, "\u9009\u62E9\u672C\u5730\u56FE\u7247")),
                     React.createElement("p", null, this.state.info))),
-            React.createElement("div", { className: "user-center-config-avatar-preview", style: this.state.isShown ? null : style },
-                React.createElement("canvas", { ref: function (canvas) { _this.myCanvas = canvas; } }),
-                React.createElement("img", { ref: function (img) { _this.myIMG = img; }, onLoad: this.handleIMGLoad, style: style, src: this.state.avatarURL }))));
+            React.createElement("div", { className: "user-center-config-avatar-preview", style: this.state.isShown ? { opacity: 1, marginTop: '2rem' } : { zIndex: -1 } },
+                React.createElement("hr", null),
+                React.createElement("div", { style: { position: 'absolute', width: '824px', overflow: 'hidden' } },
+                    React.createElement("canvas", { ref: function (canvas) { _this.myCanvas = canvas; }, style: { position: 'relative', top: '55px' } }),
+                    React.createElement("div", { id: "cover" },
+                        React.createElement("div", { id: "selector" }))),
+                React.createElement("img", { ref: function (img) { _this.myIMG = img; }, onLoad: this.handleIMGLoad, style: style, src: this.state.avatarURL })),
+            React.createElement("div", { style: { width: '100%', height: this.state.divheight, transitionDuration: '.5s' } })));
     };
     return UserCenterConfigAvatar;
 }(React.Component));
