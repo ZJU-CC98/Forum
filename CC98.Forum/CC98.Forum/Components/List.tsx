@@ -278,20 +278,24 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
 
 	}
     async componentDidMount() {
-   
-        console.log("Did" + this.match.params.boardId);
+  
         const data = await Utility.getBoardTopicAsync(1, this.match.params.boardId, this.context.router);
-       
+        console.log(data);
 		this.setState({ items: data });
 	}
-	private convertTopicToElement(item: TopicTitleAndContentState) {
+    private convertTopicToElement(item: TopicTitleAndContentState) {
+        console.log("in");
         return <TopicTitleAndContent key={item.id}
             title={item.title}
-            authorName={item.userName}
+            userName={item.userName}
             id={item.id}
-            authorId={item.userId}
+            userId={item.userId}
             lastPostTime={item.lastPostTime}
-            lastPostUserName={item.lastPostUser} />;
+            lastPostUser={item.lastPostUser}
+            likeCount={item.likeCount}
+            dislikeCount={item.dislikeCount}
+            replyCount={item.replyCount}
+        />;
 	}
 	async componentWillReceiveProps(newProps) {
 		let page: number;
@@ -318,8 +322,8 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
 					<div className="listContentTag">最热</div>
 				</div>
 				<div className="row" style={{ alignItems: 'center' }}>
-					<div style={{ marginRight: '18.5rem' }}><span>作者</span></div>
-					<div style={{ marginRight: '7.6875rem'}}><span>最后发表</span></div>
+					<div style={{ marginRight: '14.5rem' }}><span>作者</span></div>
+					<div style={{ marginRight: '7.6875rem'}}><span>最后回复</span></div>
 				</div>
 			</div>
 			<div>{this.state.items.map(this.convertTopicToElement)}</div>
@@ -328,65 +332,53 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
 	}
 }
 
-export class TopicTitleAndContent extends React.Component<HotTopic, { title, authorName, likeNumber, dislikeNumber, commentNumber, lastPostUserName, lastPostTime, id, authorId }> {
+export class TopicTitleAndContent extends React.Component<State.TopicTitleAndContentState, {pager}> {
 
     constructor(props, context) {
-
         super(props, context);
-
-        this.state = {
-
-            title: this.props.title,
-
-            authorName: this.props.authorName,
-
-            likeNumber: 123,
-
-            dislikeNumber: 11,
-
-            commentNumber: 214,
-
-            lastPostUserName: this.props.lastPostUserName,
-
-            lastPostTime: this.props.lastPostTime,
-
-            id: this.props.id,
-
-            authorId: this.props.authorId
-
-        }
-
+        this.state = ({ pager: [] });
     }
-
+    componentWillMount() {
+        const count = this.props.replyCount+1;
+        const totalPage = (count-count%10) / 10 + 1;
+        const pager = Utility.getListPager(totalPage);
+        this.setState({ pager: pager });
+    }
+    generateListPager(item: number) {
+        const url = `/topic/${this.props.id}/${item}`;
+        if (item != -1) {
+            return <div style={{ marginRight:"0.3rem" }}><a href={url}>{item}</a></div>;
+        } else {
+            return <div style={{ marginRight: "0.3rem" }}>...</div>;
+        }
+    }
     render() {
-
-
-
-        let url = `/topic/${this.state.id}`;
-
+        let url = `/topic/${this.props.id}`;
         return <div id="changeColor">
 
             <div className="row topicInList" >
+                <div style={{ display:"flex" }}>
+                <Link to={url}><div className="listTitle" style={{ marginLeft: '1.25rem', }}> {this.props.title}</div></Link>
+                <div style={{  display:"flex" }}>
+                        {this.state.pager.map(this.generateListPager.bind(this))}</div>
+                    </div>
+                <div className="row" style={{ width: "45%", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" }}>
 
-                <Link to={url}><div style={{ marginLeft: '1.25rem', }}> <span >{this.state.title}</span></div></Link>
+                    <div style={{ width:"15rem" }}> <span ><a >{this.props.userName}</a></span></div>
 
-                <div className="row" style={{ width: "50%", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" }}>
+                    <div className="row" style={{width:"15rem",  flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" }}>
 
-                    <div style={{ width:"15rem", marginRight: '0.625rem', marginLeft: '1rem' }}> <span ><a >{this.state.authorName}</a></span></div>
+                        <div id="liked" style={{ display: "flex" }}><i className="fa fa-thumbs-o-up fa-lg"></i><span className="timeProp tagSize">{this.props.likeCount}</span></div>
 
-                    <div className="row" style={{width:"25rem",  flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" }}>
+                        <div id="disliked" style={{ display: "flex" }}><i className="fa fa-thumbs-o-down fa-lg"></i><span className="timeProp tagSize">{this.props.dislikeCount}</span></div>
 
-                        <div id="liked" style={{ display: "flex" }}><i className="fa fa-thumbs-o-up fa-lg"></i><span className="timeProp tagSize">{this.state.likeNumber}</span></div>
-
-                        <div id="disliked" style={{ display: "flex" }}><i className="fa fa-thumbs-o-down fa-lg"></i><span className="timeProp tagSize">{this.state.dislikeNumber}</span></div>
-
-                        <div id="commentsAmount" style={{ display: "flex" }}><i className="fa fa-commenting-o fa-lg"></i><span className="timeProp tagSize">{this.state.commentNumber}</span></div>
+                        <div id="commentsAmount" style={{ display: "flex" }}><i className="fa fa-commenting-o fa-lg"></i><span className="timeProp tagSize">{this.props.replyCount}</span></div>
 
                     </div>
 
-                    <div id="lastReply" style={{ width: "15rem" }}><div>{this.state.lastPostUserName} </div></div>
+                    <div id="lastReply" style={{ width: "15rem" }}><div>{this.props.lastPostUser} </div></div>
 
-                    <div style={{ width: "30rem", marginRight: "20px" }}><div style={{ wordBreak:"keepAll" }}>{moment(this.state.lastPostTime).format('YYYY-MM-DD HH:mm:ss')}</div></div>
+                    <div style={{ width: "20rem"}}><div style={{ wordBreak:"keepAll" }}>{moment(this.props.lastPostTime).format('YYYY-MM-DD HH:mm')}</div></div>
 
                 </div>
 

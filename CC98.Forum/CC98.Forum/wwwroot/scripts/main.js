@@ -171,7 +171,7 @@ function getBoardTopicAsync(curPage, boardid, router) {
                 case 4:
                     data = _a.sent();
                     for (i = 0; i < topicNumberInPage; i++) {
-                        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime);
+                        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime, data[i].likeCount, data[i].dislikeCount, data[i].replyCount || 0);
                     }
                     return [2 /*return*/, boardtopics];
                 case 5:
@@ -558,8 +558,35 @@ function getHotReplyContent(topicid, router) {
     });
 }
 exports.getHotReplyContent = getHotReplyContent;
+function getListPager(totalPage) {
+    if (totalPage === 1) {
+        return [];
+    }
+    else if (totalPage === 2) {
+        return [1, 2];
+    }
+    else if (totalPage === 3) {
+        return [1, 2, 3];
+    }
+    else if (totalPage === 4) {
+        return [1, 2, 3, 4];
+    }
+    else if (totalPage === 5) {
+        return [1, 2, 3, 4, 5];
+    }
+    else if (totalPage === 6) {
+        return [1, 2, 3, 4, 5, 6];
+    }
+    else if (totalPage === 7) {
+        return [1, 2, 3, 4, 5, 6, 7];
+    }
+    else {
+        return [1, 2, 3, 4, -1, totalPage - 3, totalPage - 2, totalPage - 1];
+    }
+}
+exports.getListPager = getListPager;
 function convertHotTopic(item) {
-    return React.createElement(List_1.TopicTitleAndContent, { title: item.title, authorName: item.userName, id: item.id, authorId: item.userId, lastPostTime: item.lastPostTime, lastPostUserName: item.lastPostUser });
+    return React.createElement(List_1.TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount });
 }
 exports.convertHotTopic = convertHotTopic;
 function getPager(curPage, totalPage) {
@@ -1802,6 +1829,69 @@ function sendMessage(bodyContent, router) {
     });
 }
 exports.sendMessage = sendMessage;
+/**
+*滚动条在Y轴上的滚动距离,为isBottom()服务
+*/
+function getScrollTop() {
+    var scrollTop = 0;
+    var bodyScrollTop = 0;
+    var documentScrollTop = 0;
+    if (document.body) {
+        bodyScrollTop = document.body.scrollTop;
+    }
+    if (document.documentElement) {
+        documentScrollTop = document.documentElement.scrollTop;
+    }
+    scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
+    return scrollTop;
+}
+exports.getScrollTop = getScrollTop;
+/**
+*文档的总高度，为isBottom()服务
+*/
+function getScrollHeight() {
+    var scrollHeight = 0;
+    var bodyScrollHeight = 0;
+    var documentScrollHeight = 0;
+    if (document.body) {
+        bodyScrollHeight = document.body.scrollHeight;
+    }
+    if (document.documentElement) {
+        documentScrollHeight = document.documentElement.scrollHeight;
+    }
+    scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
+    return scrollHeight;
+}
+exports.getScrollHeight = getScrollHeight;
+/**
+*浏览器视口的高度，为isBottom()服务
+*/
+function getWindowHeight() {
+    var windowHeight = 0;
+    if (document.compatMode == 'CSS1Compat') {
+        windowHeight = document.documentElement.clientHeight;
+    }
+    else {
+        windowHeight = document.body.clientHeight;
+    }
+    return windowHeight;
+}
+exports.getWindowHeight = getWindowHeight;
+/**
+*判断滚动条是否滚动到底部
+*/
+function isBottom() {
+    /*
+    *预留100px给“正在加载”的提示标志
+    */
+    if (getScrollTop() + getWindowHeight() + 300 > getScrollHeight()) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+exports.isBottom = isBottom;
 
 
 /***/ }),
@@ -2968,13 +3058,16 @@ var TopicTitleAndContentState = /** @class */ (function () {
           this.lastReply = lastReply;
             this.title = title;
       }*/
-    function TopicTitleAndContentState(title, userName, topicid, userId, lastPostUser, lastPostTime) {
+    function TopicTitleAndContentState(title, userName, topicid, userId, lastPostUser, lastPostTime, likeCount, dislikeCount, replyCount) {
         this.userName = userName;
         this.title = title;
         this.id = topicid;
         this.userId = userId;
         this.lastPostUser = lastPostUser;
         this.lastPostTime = lastPostTime;
+        this.likeCount = likeCount;
+        this.dislikeCount = dislikeCount;
+        this.replyCount = replyCount;
     }
     return TopicTitleAndContentState;
 }());
@@ -3727,11 +3820,10 @@ var ListContent = /** @class */ (function (_super) {
             var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        console.log("Did" + this.match.params.boardId);
-                        return [4 /*yield*/, Utility.getBoardTopicAsync(1, this.match.params.boardId, this.context.router)];
+                    case 0: return [4 /*yield*/, Utility.getBoardTopicAsync(1, this.match.params.boardId, this.context.router)];
                     case 1:
                         data = _a.sent();
+                        console.log(data);
                         this.setState({ items: data });
                         return [2 /*return*/];
                 }
@@ -3739,7 +3831,8 @@ var ListContent = /** @class */ (function (_super) {
         });
     };
     ListContent.prototype.convertTopicToElement = function (item) {
-        return React.createElement(TopicTitleAndContent, { key: item.id, title: item.title, authorName: item.userName, id: item.id, authorId: item.userId, lastPostTime: item.lastPostTime, lastPostUserName: item.lastPostUser });
+        console.log("in");
+        return React.createElement(TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount });
     };
     ListContent.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
@@ -3772,10 +3865,10 @@ var ListContent = /** @class */ (function (_super) {
                     React.createElement("div", { className: "listContentTag" }, "\u7CBE\u534E"),
                     React.createElement("div", { className: "listContentTag" }, "\u6700\u70ED")),
                 React.createElement("div", { className: "row", style: { alignItems: 'center' } },
-                    React.createElement("div", { style: { marginRight: '18.5rem' } },
+                    React.createElement("div", { style: { marginRight: '14.5rem' } },
                         React.createElement("span", null, "\u4F5C\u8005")),
                     React.createElement("div", { style: { marginRight: '7.6875rem' } },
-                        React.createElement("span", null, "\u6700\u540E\u53D1\u8868")))),
+                        React.createElement("span", null, "\u6700\u540E\u56DE\u590D")))),
             React.createElement("div", null, this.state.items.map(this.convertTopicToElement)));
     };
     return ListContent;
@@ -3785,48 +3878,56 @@ var TopicTitleAndContent = /** @class */ (function (_super) {
     __extends(TopicTitleAndContent, _super);
     function TopicTitleAndContent(props, context) {
         var _this = _super.call(this, props, context) || this;
-        _this.state = {
-            title: _this.props.title,
-            authorName: _this.props.authorName,
-            likeNumber: 123,
-            dislikeNumber: 11,
-            commentNumber: 214,
-            lastPostUserName: _this.props.lastPostUserName,
-            lastPostTime: _this.props.lastPostTime,
-            id: _this.props.id,
-            authorId: _this.props.authorId
-        };
+        _this.state = ({ pager: [] });
         return _this;
     }
+    TopicTitleAndContent.prototype.componentWillMount = function () {
+        var count = this.props.replyCount + 1;
+        var totalPage = (count - count % 10) / 10 + 1;
+        var pager = Utility.getListPager(totalPage);
+        this.setState({ pager: pager });
+    };
+    TopicTitleAndContent.prototype.generateListPager = function (item) {
+        var url = "/topic/" + this.props.id + "/" + item;
+        if (item != -1) {
+            return React.createElement("div", { style: { marginRight: "0.3rem" } },
+                React.createElement("a", { href: url }, item));
+        }
+        else {
+            return React.createElement("div", { style: { marginRight: "0.3rem" } }, "...");
+        }
+    };
     TopicTitleAndContent.prototype.render = function () {
-        var url = "/topic/" + this.state.id;
+        var url = "/topic/" + this.props.id;
         return React.createElement("div", { id: "changeColor" },
             React.createElement("div", { className: "row topicInList" },
-                React.createElement(react_router_dom_1.Link, { to: url },
-                    React.createElement("div", { style: { marginLeft: '1.25rem', } },
-                        " ",
-                        React.createElement("span", null, this.state.title))),
-                React.createElement("div", { className: "row", style: { width: "50%", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" } },
-                    React.createElement("div", { style: { width: "15rem", marginRight: '0.625rem', marginLeft: '1rem' } },
+                React.createElement("div", { style: { display: "flex" } },
+                    React.createElement(react_router_dom_1.Link, { to: url },
+                        React.createElement("div", { className: "listTitle", style: { marginLeft: '1.25rem', } },
+                            " ",
+                            this.props.title)),
+                    React.createElement("div", { style: { display: "flex" } }, this.state.pager.map(this.generateListPager.bind(this)))),
+                React.createElement("div", { className: "row", style: { width: "45%", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" } },
+                    React.createElement("div", { style: { width: "15rem" } },
                         " ",
                         React.createElement("span", null,
-                            React.createElement("a", null, this.state.authorName))),
-                    React.createElement("div", { className: "row", style: { width: "25rem", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" } },
+                            React.createElement("a", null, this.props.userName))),
+                    React.createElement("div", { className: "row", style: { width: "15rem", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" } },
                         React.createElement("div", { id: "liked", style: { display: "flex" } },
                             React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
-                            React.createElement("span", { className: "timeProp tagSize" }, this.state.likeNumber)),
+                            React.createElement("span", { className: "timeProp tagSize" }, this.props.likeCount)),
                         React.createElement("div", { id: "disliked", style: { display: "flex" } },
                             React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg" }),
-                            React.createElement("span", { className: "timeProp tagSize" }, this.state.dislikeNumber)),
+                            React.createElement("span", { className: "timeProp tagSize" }, this.props.dislikeCount)),
                         React.createElement("div", { id: "commentsAmount", style: { display: "flex" } },
                             React.createElement("i", { className: "fa fa-commenting-o fa-lg" }),
-                            React.createElement("span", { className: "timeProp tagSize" }, this.state.commentNumber))),
+                            React.createElement("span", { className: "timeProp tagSize" }, this.props.replyCount))),
                     React.createElement("div", { id: "lastReply", style: { width: "15rem" } },
                         React.createElement("div", null,
-                            this.state.lastPostUserName,
+                            this.props.lastPostUser,
                             " ")),
-                    React.createElement("div", { style: { width: "30rem", marginRight: "20px" } },
-                        React.createElement("div", { style: { wordBreak: "keepAll" } }, moment(this.state.lastPostTime).format('YYYY-MM-DD HH:mm:ss'))))));
+                    React.createElement("div", { style: { width: "20rem" } },
+                        React.createElement("div", { style: { wordBreak: "keepAll" } }, moment(this.props.lastPostTime).format('YYYY-MM-DD HH:mm'))))));
     };
     return TopicTitleAndContent;
 }(React.Component));
@@ -4002,7 +4103,10 @@ var Post = /** @class */ (function (_super) {
             width: "100%",
             height: 640,
             path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false
+            saveHTMLToTextarea: false,
+            imageUpload: false,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "http://apitest.niconi.cc/file/",
         });
         _this.handleChange = _this.handleChange.bind(_this);
         _this.state = { page: 1, topicid: _this.match.params.topicid, totalPage: 1, userName: null, editor: testEditor };
@@ -5189,8 +5293,26 @@ var SendTopic = /** @class */ (function (_super) {
         return _this;
     }
     SendTopic.prototype.componentDidMount = function () {
+        editormd("test-editormd", {
+            width: "100%",
+            height: 640,
+            path: "/scripts/lib/editor.md/lib/",
+            saveHTMLToTextarea: false,
+            imageUpload: false,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "http://apitest.niconi.cc/file/",
+        });
     };
     SendTopic.prototype.componentWillReceiveProps = function (newProps) {
+        editormd("test-editormd", {
+            width: "100%",
+            height: 640,
+            path: "/scripts/lib/editor.md/lib/",
+            saveHTMLToTextarea: false,
+            imageUpload: false,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "http://apitest.niconi.cc/file/",
+        });
     };
     SendTopic.prototype.sendUbbTopic = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -5281,6 +5403,15 @@ var SendTopic = /** @class */ (function (_super) {
         this.setState({ content: event.target.value });
     };
     SendTopic.prototype.render = function () {
+        editormd("test-editormd", {
+            width: "100%",
+            height: 640,
+            path: "/scripts/lib/editor.md/lib/",
+            saveHTMLToTextarea: false,
+            imageUpload: false,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "http://apitest.niconi.cc/file/",
+        });
         var mode, editor;
         if (this.state.mode === 0) {
             mode = '使用UBB模式编辑';
@@ -6210,11 +6341,11 @@ var FocusTopicSingle = /** @class */ (function (_super) {
                         React.createElement("i", { className: "fa fa-thumbs-o-up", "aria-hidden": "true" }),
                         this.props.likeCount),
                     React.createElement("div", null,
-                        React.createElement("i", { className: "fa fa-eye", "aria-hidden": "true" }),
-                        this.props.hitCount),
-                    React.createElement("div", null,
                         React.createElement("i", { className: "fa fa-commenting-o", "aria-hidden": "true" }),
-                        this.props.replyCount)))));
+                        this.props.replyCount),
+                    React.createElement("div", null,
+                        React.createElement("i", { className: "fa fa-eye", "aria-hidden": "true" }),
+                        this.props.hitCount)))));
     };
     return FocusTopicSingle;
 }(React.Component));
@@ -6344,6 +6475,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
 var $ = __webpack_require__(6);
+/*declare global {
+    interface JQuery {
+        connection: SignalR;
+    }
+}*/
 var DropDown = /** @class */ (function (_super) {
     __extends(DropDown, _super);
     function DropDown(props, context) {
@@ -9438,7 +9574,10 @@ var Post = /** @class */ (function (_super) {
             width: "100%",
             height: 640,
             path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false
+            saveHTMLToTextarea: false,
+            imageUpload: false,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "http://apitest.niconi.cc/file/",
         });
         _this.handleChange = _this.handleChange.bind(_this);
         _this.state = { page: 1, topicid: _this.match.params.topicid, totalPage: 1, userName: null, editor: testEditor };
@@ -10625,8 +10764,26 @@ var SendTopic = /** @class */ (function (_super) {
         return _this;
     }
     SendTopic.prototype.componentDidMount = function () {
+        editormd("test-editormd", {
+            width: "100%",
+            height: 640,
+            path: "/scripts/lib/editor.md/lib/",
+            saveHTMLToTextarea: false,
+            imageUpload: false,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "http://apitest.niconi.cc/file/",
+        });
     };
     SendTopic.prototype.componentWillReceiveProps = function (newProps) {
+        editormd("test-editormd", {
+            width: "100%",
+            height: 640,
+            path: "/scripts/lib/editor.md/lib/",
+            saveHTMLToTextarea: false,
+            imageUpload: false,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "http://apitest.niconi.cc/file/",
+        });
     };
     SendTopic.prototype.sendUbbTopic = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -10717,6 +10874,15 @@ var SendTopic = /** @class */ (function (_super) {
         this.setState({ content: event.target.value });
     };
     SendTopic.prototype.render = function () {
+        editormd("test-editormd", {
+            width: "100%",
+            height: 640,
+            path: "/scripts/lib/editor.md/lib/",
+            saveHTMLToTextarea: false,
+            imageUpload: false,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "http://apitest.niconi.cc/file/",
+        });
         var mode, editor;
         if (this.state.mode === 0) {
             mode = '使用UBB模式编辑';
@@ -10969,6 +11135,7 @@ var UserCenterExact = /** @class */ (function (_super) {
     function UserCenterExact(props) {
         var _this = _super.call(this, props) || this;
         var userInfo = Utility.getLocalStorage('userInfo');
+        console.log(userInfo);
         _this.state = {
             userInfo: userInfo,
             userAvatarImgURL: userInfo.portraitUrl
@@ -11016,24 +11183,51 @@ var UserCenterExactProfile = /** @class */ (function (_super) {
     function UserCenterExactProfile() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    UserCenterExactProfile.prototype.getPrivilegeColor = function () {
+        switch (this.props.userInfo.privilege) {
+            case '注册用户': return 'grey';
+            case '超级版主': return 'pink';
+            case '全站贵宾': return 'blue';
+            case '管理员': return 'red';
+        }
+    };
     UserCenterExactProfile.prototype.render = function () {
         return (React.createElement("div", { className: "user-profile" },
             React.createElement("div", { id: "userId" },
-                React.createElement("p", null, this.props.userInfo.name),
+                React.createElement("p", null,
+                    this.props.userInfo.name,
+                    "      ",
+                    React.createElement("span", { style: { fontSize: '12px', color: this.getPrivilegeColor() } }, this.props.userInfo.privilege)),
                 React.createElement("button", { type: "button", onClick: function () { location.pathname = '/message/message'; } }, "\u79C1\u4FE1")),
             React.createElement("div", { id: "userGenderAndBirthday" },
                 React.createElement("p", null,
-                    "\u6027\u522B  ",
+                    "\u6027\u522B\uFF1A  ",
                     (this.props.userInfo.gender === 1) ? '男' : '女',
                     " "),
-                this.props.userInfo.birthday === null ? '' : React.createElement("p", null,
-                    "\u751F\u65E5  ",
-                    this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T')))),
-            this.props.userInfo.personalDescription ?
-                React.createElement("div", { className: "user-description" },
-                    React.createElement("p", null, "\u4E2A\u4EBA\u8BF4\u660E"),
-                    React.createElement("img", { src: this.props.userInfo.photourl }),
-                    React.createElement("p", null, this.props.userInfo.personalDescription)) : null,
+                this.props.userInfo.birthday === null ? null : React.createElement("p", null,
+                    "\u751F\u65E5\uFF1A  ",
+                    this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T'))),
+                this.props.userInfo.emailAddress ? React.createElement("p", null,
+                    "\u90AE\u7BB1\uFF1A  ",
+                    this.props.userInfo.emailAddress) : null,
+                this.props.userInfo.qq ? React.createElement("p", null,
+                    "QQ\uFF1A  ",
+                    this.props.userInfo.qq) : null,
+                this.props.userInfo.postCount ? React.createElement("p", null,
+                    "\u53D1\u5E16\u6570\uFF1A  ",
+                    this.props.userInfo.postCount) : null,
+                this.props.userInfo.prestige ? React.createElement("p", null,
+                    "\u5A01\u671B\uFF1A  ",
+                    this.props.userInfo.prestige) : null,
+                this.props.userInfo.displayTitle ? React.createElement("p", null,
+                    "\u7528\u6237\u7EC4\uFF1A  ",
+                    this.props.userInfo.displayTitle) : null,
+                this.props.userInfo.registerTime ? React.createElement("p", null,
+                    "\u6CE8\u518C\u65F6\u95F4\uFF1A  ",
+                    this.props.userInfo.registerTime.replace('T', ' ')) : null,
+                this.props.userInfo.lastLogOnTime ? React.createElement("p", null,
+                    "\u6700\u540E\u767B\u5F55\u65F6\u95F4\uFF1A  ",
+                    this.props.userInfo.lastLogOnTime.replace('T', ' ')) : null),
             this.props.userInfo.signatureCode ?
                 React.createElement("div", { className: "user-description" },
                     React.createElement("p", null, "\u4E2A\u6027\u7B7E\u540D"),
@@ -12772,7 +12966,7 @@ var FocusTopicArea = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!(isBottom() && this.state.loading)) return [3 /*break*/, 5];
+                        if (!(Utility.isBottom() && this.state.loading)) return [3 /*break*/, 5];
                         /**
                         *查看新帖数目大于100条时不再继续加载
                         */
@@ -12827,65 +13021,6 @@ exports.FocusTopicArea = FocusTopicArea;
 */
 function coverFocusPost(item) {
     return React.createElement(FocusTopicSingle_1.FocusTopicSingle, { title: item.title, hitCount: item.hitCount, id: item.id, boardId: item.boardId, boardName: item.boardName, replyCount: item.replyCount, userId: item.userId, userName: item.userName, portraitUrl: item.portraitUrl, time: item.time, likeCount: item.likeCount, dislikeCount: item.dislikeCount, fanCount: item.fanCount });
-}
-/**
-*滚动条在Y轴上的滚动距离
-*/
-function getScrollTop() {
-    var scrollTop = 0;
-    var bodyScrollTop = 0;
-    var documentScrollTop = 0;
-    if (document.body) {
-        bodyScrollTop = document.body.scrollTop;
-    }
-    if (document.documentElement) {
-        documentScrollTop = document.documentElement.scrollTop;
-    }
-    scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
-    return scrollTop;
-}
-/**
-*文档的总高度
-*/
-function getScrollHeight() {
-    var scrollHeight = 0;
-    var bodyScrollHeight = 0;
-    var documentScrollHeight = 0;
-    if (document.body) {
-        bodyScrollHeight = document.body.scrollHeight;
-    }
-    if (document.documentElement) {
-        documentScrollHeight = document.documentElement.scrollHeight;
-    }
-    scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
-    return scrollHeight;
-}
-/**
-*浏览器视口的高度
-*/
-function getWindowHeight() {
-    var windowHeight = 0;
-    if (document.compatMode == 'CSS1Compat') {
-        windowHeight = document.documentElement.clientHeight;
-    }
-    else {
-        windowHeight = document.body.clientHeight;
-    }
-    return windowHeight;
-}
-/**
-*判断滚动条是否滚动到底部
-*/
-function isBottom() {
-    /*
-    *预留100px给“正在加载”的提示标志
-    */
-    if (getScrollTop() + getWindowHeight() + 300 > getScrollHeight()) {
-        return true;
-    }
-    else {
-        return false;
-    }
 }
 
 
@@ -13186,6 +13321,14 @@ var UserExactProfile = /** @class */ (function (_super) {
             });
         });
     };
+    UserExactProfile.prototype.getPrivilegeColor = function () {
+        switch (this.props.userInfo.privilege) {
+            case '注册用户': return 'grey';
+            case '超级版主': return 'pink';
+            case '全站贵宾': return 'blue';
+            case '管理员': return 'red';
+        }
+    };
     UserExactProfile.prototype.unfollow = function () {
         return __awaiter(this, void 0, void 0, function () {
             var token, userId, url, headers, res;
@@ -13230,22 +13373,42 @@ var UserExactProfile = /** @class */ (function (_super) {
         var _this = this;
         return (React.createElement("div", { className: "user-profile" },
             React.createElement("div", { id: "userId" },
-                React.createElement("p", null, this.props.userInfo.name),
-                React.createElement("button", { type: "button", onClick: function () { location.href = "/message/message?id=" + _this.props.userInfo.id; } }, "\u79C1\u4FE1"),
-                React.createElement("button", { type: "button", id: this.state.isFollowing ? 'unfollow' : '', onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo)),
+                React.createElement("div", { id: "userId" },
+                    React.createElement("p", null,
+                        this.props.userInfo.name,
+                        "      ",
+                        React.createElement("span", { style: { fontSize: '12px', color: this.getPrivilegeColor() } }, this.props.userInfo.privilege)),
+                    React.createElement("button", { type: "button", onClick: function () { location.href = "/message/message?id=" + _this.props.userInfo.id; } }, "\u79C1\u4FE1"),
+                    React.createElement("button", { type: "button", id: this.state.isFollowing ? 'unfollow' : '', onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo))),
             React.createElement("div", { id: "userGenderAndBirthday" },
                 React.createElement("p", null,
-                    "\u6027\u522B  ",
+                    "\u6027\u522B\uFF1A  ",
                     (this.props.userInfo.gender === 1) ? '男' : '女',
                     " "),
-                this.props.userInfo.birthday === null ? '' : React.createElement("p", null,
-                    "\u751F\u65E5  ",
-                    this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T')))),
-            this.props.userInfo.personalDescription ?
-                React.createElement("div", { className: "user-description" },
-                    React.createElement("p", null, "\u4E2A\u4EBA\u8BF4\u660E"),
-                    React.createElement("img", { src: this.props.userInfo.photourl }),
-                    React.createElement("p", null, this.props.userInfo.personalDescription)) : null,
+                this.props.userInfo.birthday === null ? null : React.createElement("p", null,
+                    "\u751F\u65E5\uFF1A  ",
+                    this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T'))),
+                this.props.userInfo.emailAddress ? React.createElement("p", null,
+                    "\u90AE\u7BB1\uFF1A  ",
+                    this.props.userInfo.emailAddress) : null,
+                this.props.userInfo.qq ? React.createElement("p", null,
+                    "QQ\uFF1A  ",
+                    this.props.userInfo.qq) : null,
+                this.props.userInfo.postCount ? React.createElement("p", null,
+                    "\u53D1\u5E16\u6570\uFF1A  ",
+                    this.props.userInfo.postCount) : null,
+                this.props.userInfo.prestige ? React.createElement("p", null,
+                    "\u5A01\u671B\uFF1A  ",
+                    this.props.userInfo.prestige) : null,
+                this.props.userInfo.displayTitle ? React.createElement("p", null,
+                    "\u7528\u6237\u7EC4\uFF1A  ",
+                    this.props.userInfo.displayTitle) : null,
+                this.props.userInfo.registerTime ? React.createElement("p", null,
+                    "\u6CE8\u518C\u65F6\u95F4\uFF1A  ",
+                    this.props.userInfo.registerTime.replace('T', ' ')) : null,
+                this.props.userInfo.lastLogOnTime ? React.createElement("p", null,
+                    "\u6700\u540E\u767B\u5F55\u65F6\u95F4\uFF1A  ",
+                    this.props.userInfo.lastLogOnTime.replace('T', ' ')) : null),
             this.props.userInfo.signatureCode ?
                 React.createElement("div", { className: "user-description" },
                     React.createElement("p", null, "\u4E2A\u6027\u7B7E\u540D"),
@@ -14418,10 +14581,15 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
             avatarURL: '',
             info: '图片长宽为160×160像素的图片',
             isShown: false,
-            divheight: '0px'
+            divheight: '0px',
+            selectorWidth: 160,
+            selectorLeft: 0,
+            selectorTop: 0
         };
         _this.handleChange = _this.handleChange.bind(_this);
         _this.handleIMGLoad = _this.handleIMGLoad.bind(_this);
+        _this.handleSelectorMove = _this.handleSelectorMove.bind(_this);
+        _this.handleResizeMove = _this.handleResizeMove.bind(_this);
         return _this;
     }
     UserCenterConfigAvatar.prototype.handleChange = function (e) {
@@ -14441,19 +14609,123 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
             _this.setState({
                 avatarURL: arg.target.result
             });
-            console.log(arg);
         });
     };
     UserCenterConfigAvatar.prototype.handleIMGLoad = function () {
+        console.log(this.myIMG.naturalWidth);
+        console.log(this.myIMG.naturalHeight);
+        if (this.myIMG.naturalWidth < 160 || this.myIMG.naturalHeight < 160) {
+            this.setState({
+                info: '图片至少为 160*160',
+                isShown: false
+            });
+            return;
+        }
         var ctx = this.myCanvas.getContext('2d');
-        this.myCanvas.width = this.myIMG.naturalWidth;
-        this.myCanvas.height = this.myIMG.naturalHeight;
-        ctx.drawImage(this.myIMG, 0, 0, this.myIMG.naturalWidth, this.myIMG.naturalHeight, 0, 0, this.myCanvas.width, this.myCanvas.height);
+        this.myCanvas.width = this.myIMG.naturalWidth + 40;
+        this.myCanvas.height = this.myIMG.naturalHeight + 40;
+        ctx.drawImage(this.myIMG, 0, 0, this.myIMG.naturalWidth, this.myIMG.naturalHeight, 20, 20, this.myIMG.naturalWidth, this.myIMG.naturalHeight);
         this.setState({
             divheight: this.myIMG.naturalHeight + 50 + "px",
             isShown: true,
             info: '请选择要显示的区域'
         });
+    };
+    UserCenterConfigAvatar.prototype.componentDidMount = function () {
+        this.selector.addEventListener('mousedown', this.handleSelectorMove);
+        this.selector.addEventListener('mousemove', this.handleSelectorMove);
+        this.selector.addEventListener('mouseup', this.handleSelectorMove);
+        this.selector.addEventListener('mouseleave', this.handleSelectorMove);
+        this.resize.addEventListener('mousedown', this.handleResizeMove);
+        this.resize.addEventListener('mousemove', this.handleResizeMove);
+        this.resize.addEventListener('mouseup', this.handleResizeMove);
+        this.resize.addEventListener('mouseleave', this.handleResizeMove);
+    };
+    UserCenterConfigAvatar.prototype.componentWillUnmount = function () {
+        this.selector.removeEventListener('mousedown', this.handleSelectorMove);
+        this.selector.removeEventListener('mousemove', this.handleSelectorMove);
+        this.selector.removeEventListener('mouseup', this.handleSelectorMove);
+        this.selector.removeEventListener('mouseleave', this.handleSelectorMove);
+        this.resize.removeEventListener('mousedown', this.handleResizeMove);
+        this.resize.removeEventListener('mousemove', this.handleResizeMove);
+        this.resize.removeEventListener('mouseup', this.handleResizeMove);
+        this.resize.removeEventListener('mouseleave', this.handleResizeMove);
+    };
+    UserCenterConfigAvatar.prototype.handleSelectorMove = function (event) {
+        switch (event.type) {
+            case 'mousedown':
+                this.diffX = event.clientX - event.target.offsetLeft;
+                this.diffY = event.clientY - event.target.offsetTop;
+                this.dragging = event.target;
+                //console.log(event);
+                break;
+            case 'mousemove':
+                //console.log(this.dragging);
+                if (this.dragging !== null) {
+                    var y = event.clientY - this.diffY, x = event.clientX - this.diffX;
+                    if (y < 0) {
+                        y = 0;
+                    }
+                    if (y > this.myIMG.naturalHeight - this.state.selectorWidth) {
+                        y = this.myIMG.naturalHeight - this.state.selectorWidth;
+                    }
+                    if (x < 0) {
+                        x = 0;
+                    }
+                    if (x > 800 - this.state.selectorWidth) {
+                        x = 800 - this.state.selectorWidth;
+                    }
+                    this.setState({
+                        selectorTop: y,
+                        selectorLeft: x
+                    });
+                    //console.log('mousemove');
+                }
+                break;
+            case 'mouseup':
+                this.dragging = null;
+                break;
+            case 'mouseleave':
+                this.dragging = null;
+                break;
+        }
+    };
+    UserCenterConfigAvatar.prototype.handleResizeMove = function (event) {
+        var _this = this;
+        switch (event.type) {
+            case 'mousedown':
+                this.diffX = event.clientX - event.target.offsetLeft;
+                this.dragging = event.target;
+                console.log(event);
+                break;
+            case 'mousemove':
+                //console.log(this.dragging);
+                this.diffY = event.clientX - event.target.offsetLeft;
+                if (this.dragging !== null) {
+                    this.setState(function (prevState) {
+                        var num = prevState.selectorWidth + _this.diffY - _this.diffX;
+                        if (!isNaN(num)) {
+                            if (num < 80) {
+                                num = 80;
+                            }
+                            if (num > 500) {
+                                num = 500;
+                            }
+                        }
+                        return {
+                            selectorWidth: isNaN(num) ? prevState.selectorWidth : num
+                        };
+                    });
+                    //console.log('mousemove');
+                }
+                break;
+            case 'mouseup':
+                this.dragging = null;
+                break;
+            case 'mouseleave':
+                this.dragging = null;
+                break;
+        }
     };
     UserCenterConfigAvatar.prototype.render = function () {
         var _this = this;
@@ -14473,9 +14745,12 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
             React.createElement("div", { className: "user-center-config-avatar-preview", style: this.state.isShown ? { opacity: 1, marginTop: '2rem' } : { zIndex: -1 } },
                 React.createElement("hr", null),
                 React.createElement("div", { style: { position: 'absolute', width: '824px', overflow: 'hidden' } },
-                    React.createElement("canvas", { ref: function (canvas) { _this.myCanvas = canvas; }, style: { position: 'relative', top: '55px' } }),
-                    React.createElement("div", { id: "cover" },
-                        React.createElement("div", { id: "selector" }))),
+                    React.createElement("canvas", { ref: function (canvas) { _this.myCanvas = canvas; }, style: { position: 'relative' } }),
+                    React.createElement("div", { id: "cover" }),
+                    React.createElement("div", { className: "imgdata", ref: function (div) { _this.selector = div; }, style: { width: this.state.selectorWidth + "px", height: this.state.selectorWidth + "px", borderRadius: this.state.selectorWidth / 2 + "px", top: this.state.selectorTop + "px", left: this.state.selectorLeft + "px" } },
+                        React.createElement("img", { src: this.state.avatarURL, style: { position: 'relative', top: 20 - this.state.selectorTop + "px", left: 20 - this.state.selectorLeft + "px" } })),
+                    React.createElement("div", { id: "selector", ref: function (div) { _this.selector = div; }, style: { width: this.state.selectorWidth + "px", height: this.state.selectorWidth + "px", borderRadius: this.state.selectorWidth / 2 + "px", top: this.state.selectorTop + "px", left: this.state.selectorLeft + "px" } }),
+                    React.createElement("span", { id: "resize", ref: function (span) { _this.resize = span; }, style: { top: this.state.selectorTop + this.state.selectorWidth + "px", left: this.state.selectorLeft + this.state.selectorWidth + "px" } })),
                 React.createElement("img", { ref: function (img) { _this.myIMG = img; }, onLoad: this.handleIMGLoad, style: style, src: this.state.avatarURL })),
             React.createElement("div", { style: { width: '100%', height: this.state.divheight, transitionDuration: '.5s' } })));
     };
