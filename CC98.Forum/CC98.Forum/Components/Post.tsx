@@ -927,10 +927,16 @@ export class UserMessageBox extends React.Component<{ userName, userFans }, {}>{
         return <div id="userMessageBox">{this.props.userName}</div>;
     }
 }
-export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { content: string }, {}>{
+export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { content: string,mode:number }, {}>{
     constructor(props) {
         super(props);     
-        this.state = ({ content: '' });
+        this.state = ({ content: '',mode:1 });
+    }
+    componentDidMount() {
+       
+    }
+    componentWillReceiveProps(newProps) {
+       
     }
     async sendUbbTopic() {
         let url = `http://apitest.niconi.cc/post/topic/${this.props.topicid}`;
@@ -988,6 +994,14 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
             console.log(e);
         }
     }
+    changeEditor() {
+        if (this.state.mode === 0) {
+           
+            this.setState({ mode: 1 });
+        } else {
+            this.setState({ mode: 0 });
+        }
+    }
     getInitialState() {
         return { value: '' };
     }
@@ -996,27 +1010,12 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
         this.setState({ content: event.target.value });
     }
     render() {  
-        editormd("test-editormd", {
-            width: "100%",
-            height: 640,
-            path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false
-        });
-        return <div style={{ width: "100%", display: "flex", flexDirection: "column" }}><div id="sendTopic">
-            <form>
-                <div id="test-editormd" className="editormd">
-                    <textarea className="editormd-markdown-textarea" name="test-editormd-markdown-doc" value={this.state.content}  ></textarea>
-                </div>
-            </form>
-            <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
-                <div id="post-topic-button" onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复</div>
-            </div>
-
-        </div>
-            <div id="sendTopic">
-
+       
+        let mode,editor;
+        if (this.state.mode === 0) {
+            mode = '使用UBB模式编辑';
+            editor = <div id="sendTopic">
                 <div id="sendTopic-options">
-
                     <ul className="editor__menu clearfix" id="wmd-button-row" >
 
                         <li title="加粗 <strong> Ctrl+B" className="wmd-button" id="wmd-bold-button" ><a className="editor__menu--bold" style={{ backgroundPosition: "0px 0px" }}></a></li>
@@ -1046,15 +1045,36 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
                     </ul>
                 </div>
                 <form>
-                    <div >
+                    <div>
                         <textarea id="sendTopic-input" name="sendTopic-input" value={this.state.content} onChange={this.handleChange.bind(this)} />
                     </div>
                 </form>
-            </div><div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
+               
+             <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
+                    <div id="post-topic-button" onClick={this.sendUbbTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复
+                    </div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>{this.state.mode}
+            </div> </div></div>;
+        }
+        else {
+            mode = '使用Markdown编辑';
+            editor = <div id="sendTopic">
+                <form>
+                    <div id="test-editormd" className="editormd">
+                        <textarea className="editormd-markdown-textarea" name="test-editormd-markdown-doc" value={this.state.content}  ></textarea>
+                    </div>
+                </form>
+                <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
+                    <div id="post-topic-button" onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复</div>
 
-                <div id="post-topic-button" onClick={this.sendUbbTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>{this.state.mode}
+                    </div>
+                </div>
 
-            </div>
+            </div>;
+        }
+        return <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
+            {editor}
         </div>;
     }
 }  
