@@ -1262,3 +1262,38 @@ export function isBottom() {
         return false;
     }
 }
+
+/**
+ * 上传文件
+ * @param file
+ */
+export async function uploadFile(file: File) {
+    try {
+        const url = `http://apitest.niconi.cc/file`;
+        const token = getLocalStorage('accessToken');
+        let myHeaders = new Headers();
+        myHeaders.append('Authorization', token);
+
+        let formdata = new FormData();
+        formdata.append('files', file, file.name);
+        let res = await fetch(url, {
+            method: 'POST',
+            headers: myHeaders,
+            body: formdata
+        });
+        let data: string[] = await res.json();
+        if (res.status === 200 && data.length !== 0) {
+            return {
+                isSuccess: true,
+                content: data[0]
+            };
+        } else {
+            throw {};
+        }
+    } catch (e) {
+        return {
+            isSuccess: false,
+            content: ''
+        };
+    }
+}
