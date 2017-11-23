@@ -213,6 +213,7 @@
                 display: flex;
                 flex-direction: column;
                 padding: 0 2rem;
+                max-width: 550px;
 
                 & > * {
                     margin-bottom: 1rem;
@@ -226,6 +227,7 @@
 
                     & > p {
                         flex-grow: 1;
+                        white-space: pre;
                     }
                 }
 
@@ -267,9 +269,11 @@
 
                 #userGenderAndBirthday {
                     display: flex;
+                    flex-wrap: wrap;
 
                     p {
                         flex-grow: 1;
+                        width: 50%;
 
                         &:after {
                             font-family: FontAwesome;
@@ -495,18 +499,42 @@
                 height: 0;
 
                 hr {
+                    position: relative;
+                    top: -50px;
                     width: 100%;
                 }
             }
-            
-            #selector {
+
+            .imgdata {
                 z-index: 3;
                 position: absolute;
                 width: 160px;
                 height: 160px;
-                border: 1px solid #000000;
                 border-radius: 80px;
                 background-color: #FFFFFF;
+                overflow: hidden;
+            }
+
+            #selector {
+                z-index: 4;
+                position: absolute;
+                width: 160px;
+                height: 160px;
+                border-radius: 80px;
+                background-color: #FFFFFF;
+                overflow: hidden;
+                opacity: 0;
+                cursor: move;
+            }
+
+            #resize {
+                z-index: 4;
+                position: absolute;
+                cursor: se-resize;
+                width: 50px;
+                height: 50px;
+                background-color: #fff;
+                border-radius: 50px;
             }
 
             #cover {
@@ -515,8 +543,7 @@
                 width: 100%;
                 height: 100%;
                 background-color: #000000;
-                opacity: 0.2;
-                top: 55px;
+                opacity: 0.5;
             }
 
             & > img {
