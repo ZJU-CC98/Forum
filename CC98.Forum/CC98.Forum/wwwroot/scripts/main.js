@@ -1802,6 +1802,69 @@ function sendMessage(bodyContent, router) {
     });
 }
 exports.sendMessage = sendMessage;
+/**
+*滚动条在Y轴上的滚动距离,为isBottom()服务
+*/
+function getScrollTop() {
+    var scrollTop = 0;
+    var bodyScrollTop = 0;
+    var documentScrollTop = 0;
+    if (document.body) {
+        bodyScrollTop = document.body.scrollTop;
+    }
+    if (document.documentElement) {
+        documentScrollTop = document.documentElement.scrollTop;
+    }
+    scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
+    return scrollTop;
+}
+exports.getScrollTop = getScrollTop;
+/**
+*文档的总高度，为isBottom()服务
+*/
+function getScrollHeight() {
+    var scrollHeight = 0;
+    var bodyScrollHeight = 0;
+    var documentScrollHeight = 0;
+    if (document.body) {
+        bodyScrollHeight = document.body.scrollHeight;
+    }
+    if (document.documentElement) {
+        documentScrollHeight = document.documentElement.scrollHeight;
+    }
+    scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
+    return scrollHeight;
+}
+exports.getScrollHeight = getScrollHeight;
+/**
+*浏览器视口的高度，为isBottom()服务
+*/
+function getWindowHeight() {
+    var windowHeight = 0;
+    if (document.compatMode == 'CSS1Compat') {
+        windowHeight = document.documentElement.clientHeight;
+    }
+    else {
+        windowHeight = document.body.clientHeight;
+    }
+    return windowHeight;
+}
+exports.getWindowHeight = getWindowHeight;
+/**
+*判断滚动条是否滚动到底部
+*/
+function isBottom() {
+    /*
+    *预留100px给“正在加载”的提示标志
+    */
+    if (getScrollTop() + getWindowHeight() + 300 > getScrollHeight()) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+exports.isBottom = isBottom;
 
 
 /***/ }),
@@ -6194,11 +6257,11 @@ var FocusTopicSingle = /** @class */ (function (_super) {
                         React.createElement("i", { className: "fa fa-thumbs-o-up", "aria-hidden": "true" }),
                         this.props.likeCount),
                     React.createElement("div", null,
-                        React.createElement("i", { className: "fa fa-eye", "aria-hidden": "true" }),
-                        this.props.hitCount),
-                    React.createElement("div", null,
                         React.createElement("i", { className: "fa fa-commenting-o", "aria-hidden": "true" }),
-                        this.props.replyCount)))));
+                        this.props.replyCount),
+                    React.createElement("div", null,
+                        React.createElement("i", { className: "fa fa-eye", "aria-hidden": "true" }),
+                        this.props.hitCount)))));
     };
     return FocusTopicSingle;
 }(React.Component));
@@ -6328,6 +6391,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
 var $ = __webpack_require__(6);
+/*declare global {
+    interface JQuery {
+        connection: SignalR;
+    }
+}*/
 var DropDown = /** @class */ (function (_super) {
     __extends(DropDown, _super);
     function DropDown(props, context) {
@@ -10937,6 +11005,7 @@ var UserCenterExact = /** @class */ (function (_super) {
     function UserCenterExact(props) {
         var _this = _super.call(this, props) || this;
         var userInfo = Utility.getLocalStorage('userInfo');
+        console.log(userInfo);
         _this.state = {
             userInfo: userInfo,
             userAvatarImgURL: userInfo.portraitUrl
@@ -10984,24 +11053,51 @@ var UserCenterExactProfile = /** @class */ (function (_super) {
     function UserCenterExactProfile() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    UserCenterExactProfile.prototype.getPrivilegeColor = function () {
+        switch (this.props.userInfo.privilege) {
+            case '注册用户': return 'grey';
+            case '超级版主': return 'pink';
+            case '全站贵宾': return 'blue';
+            case '管理员': return 'red';
+        }
+    };
     UserCenterExactProfile.prototype.render = function () {
         return (React.createElement("div", { className: "user-profile" },
             React.createElement("div", { id: "userId" },
-                React.createElement("p", null, this.props.userInfo.name),
+                React.createElement("p", null,
+                    this.props.userInfo.name,
+                    "      ",
+                    React.createElement("span", { style: { fontSize: '12px', color: this.getPrivilegeColor() } }, this.props.userInfo.privilege)),
                 React.createElement("button", { type: "button", onClick: function () { location.pathname = '/message/message'; } }, "\u79C1\u4FE1")),
             React.createElement("div", { id: "userGenderAndBirthday" },
                 React.createElement("p", null,
-                    "\u6027\u522B  ",
+                    "\u6027\u522B\uFF1A  ",
                     (this.props.userInfo.gender === 1) ? '男' : '女',
                     " "),
-                this.props.userInfo.birthday === null ? '' : React.createElement("p", null,
-                    "\u751F\u65E5  ",
-                    this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T')))),
-            this.props.userInfo.personalDescription ?
-                React.createElement("div", { className: "user-description" },
-                    React.createElement("p", null, "\u4E2A\u4EBA\u8BF4\u660E"),
-                    React.createElement("img", { src: this.props.userInfo.photourl }),
-                    React.createElement("p", null, this.props.userInfo.personalDescription)) : null,
+                this.props.userInfo.birthday === null ? null : React.createElement("p", null,
+                    "\u751F\u65E5\uFF1A  ",
+                    this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T'))),
+                this.props.userInfo.emailAddress ? React.createElement("p", null,
+                    "\u90AE\u7BB1\uFF1A  ",
+                    this.props.userInfo.emailAddress) : null,
+                this.props.userInfo.qq ? React.createElement("p", null,
+                    "QQ\uFF1A  ",
+                    this.props.userInfo.qq) : null,
+                this.props.userInfo.postCount ? React.createElement("p", null,
+                    "\u53D1\u5E16\u6570\uFF1A  ",
+                    this.props.userInfo.postCount) : null,
+                this.props.userInfo.prestige ? React.createElement("p", null,
+                    "\u5A01\u671B\uFF1A  ",
+                    this.props.userInfo.prestige) : null,
+                this.props.userInfo.displayTitle ? React.createElement("p", null,
+                    "\u7528\u6237\u7EC4\uFF1A  ",
+                    this.props.userInfo.displayTitle) : null,
+                this.props.userInfo.registerTime ? React.createElement("p", null,
+                    "\u6CE8\u518C\u65F6\u95F4\uFF1A  ",
+                    this.props.userInfo.registerTime.replace('T', ' ')) : null,
+                this.props.userInfo.lastLogOnTime ? React.createElement("p", null,
+                    "\u6700\u540E\u767B\u5F55\u65F6\u95F4\uFF1A  ",
+                    this.props.userInfo.lastLogOnTime.replace('T', ' ')) : null),
             this.props.userInfo.signatureCode ?
                 React.createElement("div", { className: "user-description" },
                     React.createElement("p", null, "\u4E2A\u6027\u7B7E\u540D"),
@@ -12740,7 +12836,7 @@ var FocusTopicArea = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!(isBottom() && this.state.loading)) return [3 /*break*/, 5];
+                        if (!(Utility.isBottom() && this.state.loading)) return [3 /*break*/, 5];
                         /**
                         *查看新帖数目大于100条时不再继续加载
                         */
@@ -12795,65 +12891,6 @@ exports.FocusTopicArea = FocusTopicArea;
 */
 function coverFocusPost(item) {
     return React.createElement(FocusTopicSingle_1.FocusTopicSingle, { title: item.title, hitCount: item.hitCount, id: item.id, boardId: item.boardId, boardName: item.boardName, replyCount: item.replyCount, userId: item.userId, userName: item.userName, portraitUrl: item.portraitUrl, time: item.time, likeCount: item.likeCount, dislikeCount: item.dislikeCount, fanCount: item.fanCount });
-}
-/**
-*滚动条在Y轴上的滚动距离
-*/
-function getScrollTop() {
-    var scrollTop = 0;
-    var bodyScrollTop = 0;
-    var documentScrollTop = 0;
-    if (document.body) {
-        bodyScrollTop = document.body.scrollTop;
-    }
-    if (document.documentElement) {
-        documentScrollTop = document.documentElement.scrollTop;
-    }
-    scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
-    return scrollTop;
-}
-/**
-*文档的总高度
-*/
-function getScrollHeight() {
-    var scrollHeight = 0;
-    var bodyScrollHeight = 0;
-    var documentScrollHeight = 0;
-    if (document.body) {
-        bodyScrollHeight = document.body.scrollHeight;
-    }
-    if (document.documentElement) {
-        documentScrollHeight = document.documentElement.scrollHeight;
-    }
-    scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
-    return scrollHeight;
-}
-/**
-*浏览器视口的高度
-*/
-function getWindowHeight() {
-    var windowHeight = 0;
-    if (document.compatMode == 'CSS1Compat') {
-        windowHeight = document.documentElement.clientHeight;
-    }
-    else {
-        windowHeight = document.body.clientHeight;
-    }
-    return windowHeight;
-}
-/**
-*判断滚动条是否滚动到底部
-*/
-function isBottom() {
-    /*
-    *预留100px给“正在加载”的提示标志
-    */
-    if (getScrollTop() + getWindowHeight() + 300 > getScrollHeight()) {
-        return true;
-    }
-    else {
-        return false;
-    }
 }
 
 
@@ -13154,6 +13191,14 @@ var UserExactProfile = /** @class */ (function (_super) {
             });
         });
     };
+    UserExactProfile.prototype.getPrivilegeColor = function () {
+        switch (this.props.userInfo.privilege) {
+            case '注册用户': return 'grey';
+            case '超级版主': return 'pink';
+            case '全站贵宾': return 'blue';
+            case '管理员': return 'red';
+        }
+    };
     UserExactProfile.prototype.unfollow = function () {
         return __awaiter(this, void 0, void 0, function () {
             var token, userId, url, headers, res;
@@ -13198,22 +13243,42 @@ var UserExactProfile = /** @class */ (function (_super) {
         var _this = this;
         return (React.createElement("div", { className: "user-profile" },
             React.createElement("div", { id: "userId" },
-                React.createElement("p", null, this.props.userInfo.name),
-                React.createElement("button", { type: "button", onClick: function () { location.href = "/message/message?id=" + _this.props.userInfo.id; } }, "\u79C1\u4FE1"),
-                React.createElement("button", { type: "button", id: this.state.isFollowing ? 'unfollow' : '', onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo)),
+                React.createElement("div", { id: "userId" },
+                    React.createElement("p", null,
+                        this.props.userInfo.name,
+                        "      ",
+                        React.createElement("span", { style: { fontSize: '12px', color: this.getPrivilegeColor() } }, this.props.userInfo.privilege)),
+                    React.createElement("button", { type: "button", onClick: function () { location.href = "/message/message?id=" + _this.props.userInfo.id; } }, "\u79C1\u4FE1"),
+                    React.createElement("button", { type: "button", id: this.state.isFollowing ? 'unfollow' : '', onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo))),
             React.createElement("div", { id: "userGenderAndBirthday" },
                 React.createElement("p", null,
-                    "\u6027\u522B  ",
+                    "\u6027\u522B\uFF1A  ",
                     (this.props.userInfo.gender === 1) ? '男' : '女',
                     " "),
-                this.props.userInfo.birthday === null ? '' : React.createElement("p", null,
-                    "\u751F\u65E5  ",
-                    this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T')))),
-            this.props.userInfo.personalDescription ?
-                React.createElement("div", { className: "user-description" },
-                    React.createElement("p", null, "\u4E2A\u4EBA\u8BF4\u660E"),
-                    React.createElement("img", { src: this.props.userInfo.photourl }),
-                    React.createElement("p", null, this.props.userInfo.personalDescription)) : null,
+                this.props.userInfo.birthday === null ? null : React.createElement("p", null,
+                    "\u751F\u65E5\uFF1A  ",
+                    this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T'))),
+                this.props.userInfo.emailAddress ? React.createElement("p", null,
+                    "\u90AE\u7BB1\uFF1A  ",
+                    this.props.userInfo.emailAddress) : null,
+                this.props.userInfo.qq ? React.createElement("p", null,
+                    "QQ\uFF1A  ",
+                    this.props.userInfo.qq) : null,
+                this.props.userInfo.postCount ? React.createElement("p", null,
+                    "\u53D1\u5E16\u6570\uFF1A  ",
+                    this.props.userInfo.postCount) : null,
+                this.props.userInfo.prestige ? React.createElement("p", null,
+                    "\u5A01\u671B\uFF1A  ",
+                    this.props.userInfo.prestige) : null,
+                this.props.userInfo.displayTitle ? React.createElement("p", null,
+                    "\u7528\u6237\u7EC4\uFF1A  ",
+                    this.props.userInfo.displayTitle) : null,
+                this.props.userInfo.registerTime ? React.createElement("p", null,
+                    "\u6CE8\u518C\u65F6\u95F4\uFF1A  ",
+                    this.props.userInfo.registerTime.replace('T', ' ')) : null,
+                this.props.userInfo.lastLogOnTime ? React.createElement("p", null,
+                    "\u6700\u540E\u767B\u5F55\u65F6\u95F4\uFF1A  ",
+                    this.props.userInfo.lastLogOnTime.replace('T', ' ')) : null),
             this.props.userInfo.signatureCode ?
                 React.createElement("div", { className: "user-description" },
                     React.createElement("p", null, "\u4E2A\u6027\u7B7E\u540D"),
@@ -14385,10 +14450,16 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
         _this.state = {
             avatarURL: '',
             info: '图片长宽为160×160像素的图片',
-            isShown: true
+            isShown: false,
+            divheight: '0px',
+            selectorWidth: 160,
+            selectorLeft: 0,
+            selectorTop: 0
         };
         _this.handleChange = _this.handleChange.bind(_this);
         _this.handleIMGLoad = _this.handleIMGLoad.bind(_this);
+        _this.handleSelectorMove = _this.handleSelectorMove.bind(_this);
+        _this.handleResizeMove = _this.handleResizeMove.bind(_this);
         return _this;
     }
     UserCenterConfigAvatar.prototype.handleChange = function (e) {
@@ -14396,7 +14467,9 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
         var file = e.target.files[0];
         if (!file.type.match('image.*')) {
             this.setState({
-                info: '请选择图片文件'
+                info: '请选择图片文件',
+                isShown: false,
+                divheight: '0px'
             });
             return false;
         }
@@ -14406,13 +14479,123 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
             _this.setState({
                 avatarURL: arg.target.result
             });
-            console.log(arg);
         });
     };
     UserCenterConfigAvatar.prototype.handleIMGLoad = function () {
+        console.log(this.myIMG.naturalWidth);
+        console.log(this.myIMG.naturalHeight);
+        if (this.myIMG.naturalWidth < 160 || this.myIMG.naturalHeight < 160) {
+            this.setState({
+                info: '图片至少为 160*160',
+                isShown: false
+            });
+            return;
+        }
         var ctx = this.myCanvas.getContext('2d');
-        console.log(this.myIMG.naturalWidth + ", " + this.myIMG.naturalHeight);
-        ctx.drawImage(this.myIMG, 0, 0, this.myIMG.naturalWidth, this.myIMG.naturalHeight, 0, 0, this.myIMG.naturalWidth, this.myIMG.naturalHeight);
+        this.myCanvas.width = this.myIMG.naturalWidth + 40;
+        this.myCanvas.height = this.myIMG.naturalHeight + 40;
+        ctx.drawImage(this.myIMG, 0, 0, this.myIMG.naturalWidth, this.myIMG.naturalHeight, 20, 20, this.myIMG.naturalWidth, this.myIMG.naturalHeight);
+        this.setState({
+            divheight: this.myIMG.naturalHeight + 50 + "px",
+            isShown: true,
+            info: '请选择要显示的区域'
+        });
+    };
+    UserCenterConfigAvatar.prototype.componentDidMount = function () {
+        this.selector.addEventListener('mousedown', this.handleSelectorMove);
+        this.selector.addEventListener('mousemove', this.handleSelectorMove);
+        this.selector.addEventListener('mouseup', this.handleSelectorMove);
+        this.selector.addEventListener('mouseleave', this.handleSelectorMove);
+        this.resize.addEventListener('mousedown', this.handleResizeMove);
+        this.resize.addEventListener('mousemove', this.handleResizeMove);
+        this.resize.addEventListener('mouseup', this.handleResizeMove);
+        this.resize.addEventListener('mouseleave', this.handleResizeMove);
+    };
+    UserCenterConfigAvatar.prototype.componentWillUnmount = function () {
+        this.selector.removeEventListener('mousedown', this.handleSelectorMove);
+        this.selector.removeEventListener('mousemove', this.handleSelectorMove);
+        this.selector.removeEventListener('mouseup', this.handleSelectorMove);
+        this.selector.removeEventListener('mouseleave', this.handleSelectorMove);
+        this.resize.removeEventListener('mousedown', this.handleResizeMove);
+        this.resize.removeEventListener('mousemove', this.handleResizeMove);
+        this.resize.removeEventListener('mouseup', this.handleResizeMove);
+        this.resize.removeEventListener('mouseleave', this.handleResizeMove);
+    };
+    UserCenterConfigAvatar.prototype.handleSelectorMove = function (event) {
+        switch (event.type) {
+            case 'mousedown':
+                this.diffX = event.clientX - event.target.offsetLeft;
+                this.diffY = event.clientY - event.target.offsetTop;
+                this.dragging = event.target;
+                //console.log(event);
+                break;
+            case 'mousemove':
+                //console.log(this.dragging);
+                if (this.dragging !== null) {
+                    var y = event.clientY - this.diffY, x = event.clientX - this.diffX;
+                    if (y < 0) {
+                        y = 0;
+                    }
+                    if (y > this.myIMG.naturalHeight - this.state.selectorWidth) {
+                        y = this.myIMG.naturalHeight - this.state.selectorWidth;
+                    }
+                    if (x < 0) {
+                        x = 0;
+                    }
+                    if (x > 800 - this.state.selectorWidth) {
+                        x = 800 - this.state.selectorWidth;
+                    }
+                    this.setState({
+                        selectorTop: y,
+                        selectorLeft: x
+                    });
+                    //console.log('mousemove');
+                }
+                break;
+            case 'mouseup':
+                this.dragging = null;
+                break;
+            case 'mouseleave':
+                this.dragging = null;
+                break;
+        }
+    };
+    UserCenterConfigAvatar.prototype.handleResizeMove = function (event) {
+        var _this = this;
+        switch (event.type) {
+            case 'mousedown':
+                this.diffX = event.clientX - event.target.offsetLeft;
+                this.dragging = event.target;
+                console.log(event);
+                break;
+            case 'mousemove':
+                //console.log(this.dragging);
+                this.diffY = event.clientX - event.target.offsetLeft;
+                if (this.dragging !== null) {
+                    this.setState(function (prevState) {
+                        var num = prevState.selectorWidth + _this.diffY - _this.diffX;
+                        if (!isNaN(num)) {
+                            if (num < 80) {
+                                num = 80;
+                            }
+                            if (num > 500) {
+                                num = 500;
+                            }
+                        }
+                        return {
+                            selectorWidth: isNaN(num) ? prevState.selectorWidth : num
+                        };
+                    });
+                    //console.log('mousemove');
+                }
+                break;
+            case 'mouseup':
+                this.dragging = null;
+                break;
+            case 'mouseleave':
+                this.dragging = null;
+                break;
+        }
     };
     UserCenterConfigAvatar.prototype.render = function () {
         var _this = this;
@@ -14427,11 +14610,19 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
                 React.createElement("div", null,
                     React.createElement("input", { onChange: this.handleChange, id: "uploadAvatar", type: "file", style: style }),
                     React.createElement("label", { htmlFor: "uploadAvatar" },
-                        React.createElement("p", null, "\u4E0A\u4F20\u5934\u50CF")),
+                        React.createElement("p", null, "\u9009\u62E9\u672C\u5730\u56FE\u7247")),
                     React.createElement("p", null, this.state.info))),
-            React.createElement("div", { className: "user-center-config-avatar-preview", style: this.state.isShown ? null : style },
-                React.createElement("canvas", { ref: function (canvas) { _this.myCanvas = canvas; } }),
-                React.createElement("img", { ref: function (img) { _this.myIMG = img; }, onLoad: this.handleIMGLoad, style: style, src: this.state.avatarURL }))));
+            React.createElement("div", { className: "user-center-config-avatar-preview", style: this.state.isShown ? { opacity: 1, marginTop: '2rem' } : { zIndex: -1 } },
+                React.createElement("hr", null),
+                React.createElement("div", { style: { position: 'absolute', width: '824px', overflow: 'hidden' } },
+                    React.createElement("canvas", { ref: function (canvas) { _this.myCanvas = canvas; }, style: { position: 'relative' } }),
+                    React.createElement("div", { id: "cover" }),
+                    React.createElement("div", { className: "imgdata", ref: function (div) { _this.selector = div; }, style: { width: this.state.selectorWidth + "px", height: this.state.selectorWidth + "px", borderRadius: this.state.selectorWidth / 2 + "px", top: this.state.selectorTop + "px", left: this.state.selectorLeft + "px" } },
+                        React.createElement("img", { src: this.state.avatarURL, style: { position: 'relative', top: 20 - this.state.selectorTop + "px", left: 20 - this.state.selectorLeft + "px" } })),
+                    React.createElement("div", { id: "selector", ref: function (div) { _this.selector = div; }, style: { width: this.state.selectorWidth + "px", height: this.state.selectorWidth + "px", borderRadius: this.state.selectorWidth / 2 + "px", top: this.state.selectorTop + "px", left: this.state.selectorLeft + "px" } }),
+                    React.createElement("span", { id: "resize", ref: function (span) { _this.resize = span; }, style: { top: this.state.selectorTop + this.state.selectorWidth + "px", left: this.state.selectorLeft + this.state.selectorWidth + "px" } })),
+                React.createElement("img", { ref: function (img) { _this.myIMG = img; }, onLoad: this.handleIMGLoad, style: style, src: this.state.avatarURL })),
+            React.createElement("div", { style: { width: '100%', height: this.state.divheight, transitionDuration: '.5s' } })));
     };
     return UserCenterConfigAvatar;
 }(React.Component));
