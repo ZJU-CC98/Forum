@@ -4,10 +4,10 @@
 
 import * as React from 'react';
 import { UserCenterExactActivitiesPost } from './UserCenterExactActivitiesPost';
-import { UserRecentPost } from '../States/AppState';
-import { RouteComponent } from './app';
+import { UserRecentPost } from '../../States/AppState';
+import { RouteComponent } from '../app';
 import { UserCenterPageCount } from './UserCenterPageCount';
-import * as Utility from '../Utility';
+import * as Utility from '../../Utility';
 
 
 export class UserCenterMyPostsExact extends RouteComponent<null, UserCenterMyPostsExactState, {page}> {

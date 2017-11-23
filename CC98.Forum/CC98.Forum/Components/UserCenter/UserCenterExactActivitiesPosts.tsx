@@ -4,8 +4,8 @@
 
 import * as React from 'react';
 import { UserCenterExactActivitiesPost } from './UserCenterExactActivitiesPost';
-import { UserRecentPost } from '../States/AppState';
-import * as Utility from '../Utility';
+import { UserRecentPost } from '../../States/AppState';
+import * as Utility from '../../Utility';
 
 //用户中心主页帖子动态组件
 export class UserCenterExactActivitiesPosts extends React.Component<null, UserCenterExactActivitiesPostsState> {

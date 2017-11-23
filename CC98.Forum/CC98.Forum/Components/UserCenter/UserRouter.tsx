@@ -6,11 +6,11 @@ import * as React from 'react';
 import {
     Route
 } from 'react-router-dom';
-import { UserInfo } from '../States/AppState';
+import { UserInfo } from '../../States/AppState';
 import { UserExactProfile } from './UserExactProfile';
 import { UserCenterExactActivities } from './UserCenterExactActivities';
 import { UserCenterExactAvatar } from './UserCenterExactAvatar'
-import * as Utility from '../Utility';
+import * as Utility from '../../Utility';
 
 export class UserRouter extends React.Component {
     render() {

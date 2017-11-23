@@ -3,8 +3,8 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
-import { UserInfo } from '../States/AppState';
-import { UbbContainer } from './UbbContainer'
+import { UserInfo } from '../../States/AppState';
+import { UbbContainer } from '../UbbContainer'
 
 /**
  * 用户中心主页个人资料组件

@@ -3,11 +3,11 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
-import { UserFanInfo } from '../States/AppState';
-import { RouteComponent } from './app';
+import { UserFanInfo } from '../../States/AppState';
+import { RouteComponent } from '../app';
 import { UserCenterMyFollowingsUser } from './UserCenterMyFollowingsUser';
 import { UserCenterPageCount } from './UserCenterPageCount';
-import * as Utility from '../Utility';
+import * as Utility from '../../Utility';
 
 //用户中心我的关注组件
 export class UserCenterMyFollowings extends RouteComponent<null, UserCenterMyFollowingsState, {page}> {

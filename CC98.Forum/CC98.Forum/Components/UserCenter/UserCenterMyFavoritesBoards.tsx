@@ -3,9 +3,9 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
-import * as Utility from '../Utility';
+import * as Utility from '../../Utility';
 import { UserCenterMyFavoritesBoard } from './UserCenterMyFavoritesBoard';
-import { UserFavoritesBoardInfo } from '../states/AppState';
+import { UserFavoritesBoardInfo } from '../../states/AppState';
 
 
 export class UserCenterMyFavoritesBoards extends React.Component<null, UserCenterMyFavoritesBoardsState> {

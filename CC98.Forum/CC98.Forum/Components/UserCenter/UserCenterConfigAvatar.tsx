@@ -3,7 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
-import * as Utility from '../Utility';
+import * as Utility from '../../Utility';
 
 export class UserCenterConfigAvatar extends React.Component<null, UserCenterConfigAvatarState> {
     myCanvas: HTMLCanvasElement;
@@ -30,7 +30,7 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
         this.handleResizeMove = this.handleResizeMove.bind(this);
     }
     
-    handleChange(e) {
+    async handleChange(e) {
         let file = e.target.files[0];
 
         if (!file.type.match('image.*')) {
@@ -42,16 +42,43 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
             return false;
         }
 
-        let render = new FileReader();
+        let url = await Utility.uploadFile(file);
+        console.log(url);
+        //let render = new FileReader();
 
-        render.readAsDataURL(file);
+        //render.readAsBinaryString(file);
 
-        render.addEventListener('load', (arg: any) => {
-            this.setState({
-                avatarURL: arg.target.result
-            });            
-        });
+
+
+        ////render.readAsDataURL(file);
+        //render.addEventListener('load', async (arg: any) => {
+        //    const url = `http://apitest.niconi.cc/file`;
+        //    const token = Utility.getLocalStorage('accessToken');
+        //    let myHeaders = new Headers();
+        //    myHeaders.append('Authorization', token);
+        //    myHeaders.append('Content-Type', 'application/json');
+
+
+        //    let formdata = new FormData();
+        //    let res = await fetch(url, {
+        //        method: 'POST',
+        //        headers: myHeaders,
+        //        body: JSON.stringify([{
+        //            name: file.name,
+        //            content: arg.target.result
+        //        }])
+        //    });
+
+        //    let data = await res.json();
+
+        //    console.log(res);
+        //    console.log(data);
+            //this.setState({
+            //    avatarURL: arg.target.result
+            //});            
+        //});
     }
+
 
     handleIMGLoad() {
         console.log(this.myIMG.naturalWidth);
