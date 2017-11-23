@@ -22,6 +22,7 @@ body {
 #root {
     font-size: 16px;
     width: 100%;
+    background-color:$bgcolor2;
 }
 
 .root { //post中的一些组件用到（子裙写的，天知道为什么起这个名字），并非body下的根div元素
@@ -587,7 +588,6 @@ body {
 
 .topicInList {
     height: 4rem;
-    text-align: center;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -2325,7 +2325,13 @@ a {
     font-family: 微软雅黑;
     color: rgb(255,136,56);
 }
-
+.listTitle {
+    max-width:15rem;
+    margin-right:1rem;
+    white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
+    overflow: hidden; //不显示超过对象尺寸的内容
+    text-overflow: ellipsis; //当文本对象溢出时显示...
+}
 .topicTitle {
     font-size: 12px;
     font-family: 微软雅黑;
