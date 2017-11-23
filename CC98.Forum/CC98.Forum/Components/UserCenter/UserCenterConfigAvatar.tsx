@@ -10,7 +10,7 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
     myIMG: HTMLImageElement;
     selector: HTMLDivElement;
     resize: HTMLSpanElement;
-
+    newAvatar: HTMLCanvasElement;
     constructor(props) {
         super(props);
         const userInfo = Utility.getLocalStorage('userInfo');
@@ -28,11 +28,11 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
         this.handleIMGLoad = this.handleIMGLoad.bind(this);
         this.handleSelectorMove = this.handleSelectorMove.bind(this);
         this.handleResizeMove = this.handleResizeMove.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     
     handleChange(e) {
         let file = e.target.files[0];
-
         if (!file.type.match('image.*')) {
             this.setState({
                 info: '请选择图片文件',
@@ -128,6 +128,36 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
                 break;
         }
     }
+
+    handleSubmit() {
+        let canvas = this.newAvatar;
+        let ctx = canvas.getContext('2d');
+        const x = this.state.selectorLeft-20,
+            y = this.state.selectorTop-20,
+            width = this.state.selectorWidth;
+        canvas.width = width;
+        canvas.height = width;
+        ctx.drawImage(this.myIMG, x, y, width, width, 0, 0, width, width);
+        canvas.toBlob(async (result) => {
+            let file = new File([result], '头像.jpg', { type: 'image/jpeg', lastModified: Date.now() });
+            const avatar = await Utility.uploadFile(file);
+            const token = Utility.getLocalStorage('accessToken');
+            const url = 'http://apitest.niconi.cc/user/portrait';
+            let myHeaders = new Headers();
+            myHeaders.append('Content-Type', 'application/json');
+            myHeaders.append('Authorization', token);
+            let data = `http://apitest.niconi.cc${avatar.content}`;
+            let res = await fetch(url, {
+                method: 'PUT',
+                headers: myHeaders,
+                body: JSON.stringify(data)
+            });
+            this.setState({
+                info: '修改成功'
+            });
+        },'image/jpeg',0.75);
+    }
+
     handleResizeMove(event) {
         switch (event.type) {
             case 'mousedown':
@@ -137,6 +167,9 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
             case 'mousemove':
                 this.diffY = event.clientX - event.target.offsetLeft;
                 if (this.dragging !== null) {
+                    console.log(this.state.selectorWidth);
+                    console.log(this.state.selectorTop);
+                    console.log(`${this.state.selectorWidth + this.state.selectorTop}px`);
                     this.setState((prevState) => {
                         let num = prevState.selectorWidth + this.diffY - this.diffX;
                         if (!isNaN(num)) {
@@ -173,18 +206,20 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
                             <input onChange={this.handleChange} id="uploadAvatar" type="file" style={style} />
                             <label htmlFor="uploadAvatar"><p>选择本地图片</p></label>
                             <p>{this.state.info}</p>
+                            <button type="button" style={this.state.isShown ? {} : style} onClick={this.handleSubmit}>提交</button>
                         </div>
                     </div>
                     <div className="user-center-config-avatar-preview" style={this.state.isShown ? { opacity: 1, marginTop: '2rem' } : { zIndex: -1 }}>
                         <hr />
                         <div style={{ position: 'absolute', width: '824px', overflow: 'hidden' }}>
+                            <canvas id="newAvatar" style={style} ref={(a) => { this.newAvatar = a;}}></canvas>
                             <canvas ref={(canvas) => { this.myCanvas = canvas }} style={{ position: 'relative'}} />
                             <div id="cover"></div>
                             <div className="imgdata" ref={(div) => { this.selector = div; }} style={{ width: `${this.state.selectorWidth}px`, height: `${this.state.selectorWidth}px`, borderRadius: `${this.state.selectorWidth / 2}px`, top: `${this.state.selectorTop}px`, left: `${this.state.selectorLeft}px` }}>
                                 <img src={this.state.avatarURL} style={{ position: 'relative', top: `${20-this.state.selectorTop}px`, left: `${20-this.state.selectorLeft}px` }} />
                             </div>
                             <div id="selector" ref={(div) => { this.selector = div; }} style={{ width: `${this.state.selectorWidth}px`, height: `${this.state.selectorWidth}px`, borderRadius: `${this.state.selectorWidth / 2}px`, top: `${this.state.selectorTop}px`, left: `${this.state.selectorLeft}px` }}></div>
-                            <span id="resize" ref={(span) => { this.resize = span; }} style={{ top: `${this.state.selectorTop + this.state.selectorWidth}px`, left: `${this.state.selectorLeft + this.state.selectorWidth}px` }}></span>
+                            <span id="resize" ref={(span) => { this.resize = span; }} style={{ top: `${this.state.selectorWidth + this.state.selectorTop}px`, left: `${this.state.selectorWidth + this.state.selectorLeft}px` }}></span>
                         </div>
                         <img ref={(img) => { this.myIMG = img; }} onLoad={this.handleIMGLoad} style={style} src={this.state.avatarURL} />
                     </div>
