@@ -25,14 +25,16 @@ export class UserCenterExactProfile extends React.Component<UserCenterExactProfi
                 <div id="userIntroducion">{this.props.userInfo.introduction}</div>
                 <div id="userGenderAndBirthday">
                     <p>性别：  {(this.props.userInfo.gender === 1) ? '男' : '女'} </p>
-                    {this.props.userInfo.birthday === null ? null : <p>生日：  {this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T'))}</p>}
+                    {this.props.userInfo.birthday === null ? null : <p>生日：  {this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T')).replace('9999-','')}</p>}
                     {this.props.userInfo.emailAddress ? <p>邮箱：  {this.props.userInfo.emailAddress}</p> : null}
                     {this.props.userInfo.qq ? <p>QQ：  {this.props.userInfo.qq}</p> : null}
-                    {this.props.userInfo.postCount ? <p>发帖数：  {this.props.userInfo.postCount}</p> : null}
-                    {this.props.userInfo.prestige ? <p>威望：  {this.props.userInfo.prestige}</p> : null}
+                    <p>发帖数：  {this.props.userInfo.postCount}</p>
                     {this.props.userInfo.displayTitle ? <p>用户组：  {this.props.userInfo.displayTitle}</p> : null}
-                    {this.props.userInfo.registerTime ? <p>注册时间：  {this.props.userInfo.registerTime.replace('T', ' ')}</p> : null}
-                    {this.props.userInfo.lastLogOnTime ? <p>最后登录时间：  {this.props.userInfo.lastLogOnTime.replace('T', ' ')}</p> : null}
+                    <p>威望：  {this.props.userInfo.prestige}</p>
+                    <div>
+                        {this.props.userInfo.registerTime ? <p>注册时间：  {this.props.userInfo.registerTime.replace('T', ' ')}</p> : null}
+                        {this.props.userInfo.lastLogOnTime ? <p>最后登录时间：  {this.props.userInfo.lastLogOnTime.replace('T', ' ')}</p> : null}
+                    </div>
                 </div>
                 {this.props.userInfo.signatureCode ?
                     <div className="user-description">
