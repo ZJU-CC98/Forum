@@ -12,6 +12,7 @@ import * as $ from 'jquery';
 
 declare let editormd: any;
 declare let testEditor: any;
+declare let moment: any;
 
 export async function getBoardTopicAsync(curPage, boardid,router) {
     try {
@@ -767,10 +768,10 @@ export async function getRecentContact(from: number, size: number, router) {
         headers.append('Authorization', token);
         let response = await fetch(`http://apitest.niconi.cc/message/recentcontactusers?from=${from}&size=${size}`, { headers });
         if (response.status === 401) {
-            router.history.replace("/status/Loggout");
+            //router.history.replace("/status/Loggout");
         }
         if (response.status === 500) {
-            router.history.replace("/status/ServerError");
+            //router.history.replace("/status/ServerError");
         }
         let recentContactId = await response.json();
         let url = "http://apitest.niconi.cc/user/basic"
@@ -784,18 +785,19 @@ export async function getRecentContact(from: number, size: number, router) {
         }
         let response1 = await fetch(url);
         if (response1.status === 404) {
-            router.history.replace("/status/NotFoundUser");
+            //router.history.replace("/status/NotFoundUser");
         }
         if (response1.status === 500) {
-            router.history.replace("/status/ServerError");
+            //router.history.replace("/status/ServerError");
         }
         let recentContact = await response1.json();
         for (let i in recentContact) {
             recentContact[i].message = await getRecentMessage(recentContact[i].id, 0, 10, router);
         }
+        console.log(recentContact);
         return recentContact;
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //router.history.replace("/status/Disconnected");
     }
 }
 
@@ -807,19 +809,163 @@ export async function getRecentMessage(userId: number, from: number, size: numbe
         let token = getLocalStorage("accessToken");
         const headers = new Headers();
         headers.append('Authorization', token);
-        let response = await fetch(`http://apitest.niconi.cc/message/${userId}?from=${from}&size=${size}`, { headers });
-        if (response.status === 401) {
-            router.history.replace("/status/Logout");
+        let response0 = await fetch(`http://apitest.niconi.cc/message/${userId}?from=${from}&size=${size}`, { headers });
+        if (response0.status === 401) {
+            //router.history.replace("/status/Logout");
         }
-        if (response.status === 500) {
-            router.history.replace("/status/ServerError");
+        if (response0.status === 500) {
+            //router.history.replace("/status/ServerError");
         }
-        let recentMessage = await response.json();
+        let response1 = await response0.json();
+        console.log("直接获取到的Message");
+        console.log(response1);
+        let recentMessage = sortRecentMessage(response1);
         return recentMessage;
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //router.history.replace("/status/Disconnected");
     }
 }
+
+/**
+ * 处理最新消息列表，时间间隔短的消息只显示第一条消息的时间
+ * @param recentMessage
+ */
+export function sortRecentMessage(recentMessage) {
+    console.log("走远第0步");
+    console.log(recentMessage);
+    if (recentMessage == [] || !recentMessage) {
+        console.log("要原样返回了");
+        return recentMessage;
+    }
+    else {
+        for (let i = 0; i < recentMessage.length; i++) {
+            if (i + 1 == recentMessage.length) {
+                recentMessage[i].showTime = true;
+            }
+            else if (transerTime(recentMessage[i].time) - transerTime(recentMessage[i + 1].time) < 60000) {
+                recentMessage[i].showTime = false;
+            }
+            else {
+                recentMessage[i].showTime = true;
+            }
+        }
+        console.log("返回的recentMessage");
+        console.log(recentMessage);
+        return recentMessage;
+    }
+}
+
+/**
+ * api返回的时间格式转换成时间戳的函数
+ * @param time
+ */
+export function transerTime(time) {
+    let timeStr = moment(time).format('YYYY-MM-DD HH:mm:ss')
+    let timeDate = timeStr.replace(/-/g, '/');
+    let timestamp = new Date(timeDate).getTime();
+    return timestamp;
+}
+
+/**
+ * 对联系人列表重新排序，看是否有从其他页面发起的聊天
+ * @param recentContact
+ */
+export async function sortContactList(recentContact, router) {
+    //看url中是否携带id信息，如果有的话就作为第一个联系人
+    let urlId = location.href.match(/id=(\S+)/);
+    if (urlId) {
+        let chatManId = parseInt(urlId[1]);
+        //先看一下该聊天对象在不在联系人列表里
+        for (var i = 0; i < recentContact.length; i++) {
+            if (recentContact[i].id == chatManId) {
+                break;
+            }
+        }
+        //如果恰好是联系人列表第一那就什么都不做
+        if (i == 0) { }
+        //如果在列表里但不是第一个，就把他提到第一个
+        else if (i < recentContact.length) {
+            let indexData = recentContact[i];
+            recentContact.splice(i, 1);
+            recentContact.unshift(indexData);
+        }
+        //如果不在联系人列表里，那就查找该人信息并作为列表第一个
+        else {
+            let response;
+            let chatMan;
+            let flag = 1;
+            try {
+                response = await fetch(`http://apitest.niconi.cc/user/basic/${chatManId}`);
+                if (response.status === 404) {
+                    //router.history.replace("/status/NotFoundUser");
+                }
+                if (response.status === 500) {
+                    //router.history.replace("/status/ServerError");
+                }
+                chatMan = await response.json();
+            }
+            catch (e) {
+                //router.history.replace("/status/Disconnected");
+                flag = 0;
+            }
+            if (flag == 1) {
+                chatMan.message = await getRecentMessage(chatManId, 0, 10, router);
+                let chatContact = [chatMan];
+                recentContact = chatContact.concat(recentContact);
+            }
+        }
+    }
+    else { //看url中是否携带name信息，如果有的话就作为第一个联系人
+        let urlName = location.href.match(/name=(\S+)/);
+        if (urlName) {
+            let chatManName = urlName[1];
+            //先看一下该聊天对象在不在联系人列表里
+            for (var i = 0; i < recentContact.length; i++) {
+                if (recentContact[i].name == chatManName) {
+                    break;
+                }
+            }
+            //如果恰好是联系人列表第一那就什么都不做
+            if (i == 0) { }
+            //如果在列表里但不是第一个，就把他提到第一个
+            else if (i < recentContact.length) {
+                let indexData = recentContact[i];
+                recentContact.splice(i, 1);
+                recentContact.unshift(indexData);
+            }
+            //如果不在联系人列表里，那就查找该人信息并作为列表第一个
+            else {
+                let response0;
+                let response1;
+                let flag = 1;
+                try {
+                    response0 = await fetch(`http://apitest.niconi.cc/user/name/${chatManName}`);
+                    if (response0.status === 404) {
+                        //router.history.replace("/status/NotFoundUser");
+                    }
+                    if (response0.status === 500) {
+                        //router.history.replace("/status/ServerError");
+                    }
+                    response1 = await response0.json();
+                } catch (e) {
+                    //router.history.replace("/status/Disconnected");
+                    flag = 0;
+                }
+                if (flag == 1) {
+                    let chatMan = { id: null, name: '', portraitUrl: '', message: [] };
+                    chatMan.id = response1.id;
+                    chatMan.name = response1.name;
+                    chatMan.portraitUrl = response1.portraitUrl;
+                    chatMan.message = await getRecentMessage(chatMan.id, 0, 10, router);
+                    let chatContact = [chatMan];
+                    recentContact = chatContact.concat(recentContact);
+                }
+            }
+        }
+    }
+    return recentContact;
+}
+
 
 export async function getTotalReplyCount(topicid, router) {
     try {
@@ -1094,106 +1240,6 @@ export async function getCurUserTotalReplyPage(topicId, userId, router) {
     } catch (e) {
         router.history.replace("/status/Disconnected");
     }
-}
-
-/**
- * 对联系人列表重新排序，看是否有从其他页面发起的聊天
- * @param recentContact
- */
-export async function sortContactList(recentContact, router) {
-    //看url中是否携带id信息，如果有的话就作为第一个联系人
-    let urlId = location.href.match(/id=(\S+)/);
-    if (urlId) {
-        let chatManId = parseInt(urlId[1]);
-        //先看一下该聊天对象在不在联系人列表里
-        for (var i = 0; i < recentContact.length; i++) {
-            if (recentContact[i].id == chatManId) {
-                break;
-            }
-        }
-        //如果恰好是联系人列表第一那就什么都不做
-        if (i == 0) { }
-        //如果在列表里但不是第一个，就把他提到第一个
-        else if (i < recentContact.length) {
-            let indexData = recentContact[i];
-            recentContact.splice(i, 1);
-            recentContact.unshift(indexData);
-        }
-        //如果不在联系人列表里，那就查找该人信息并作为列表第一个
-        else {
-            let response;
-            let chatMan;
-            let flag = 1;
-            try {
-                response = await fetch(`http://apitest.niconi.cc/user/basic/${chatManId}`);
-                if (response.status === 404) {
-                    router.history.replace("/status/NotFoundUser");
-                }
-                if (response.status === 500) {
-                    router.history.replace("/status/ServerError");
-                }
-                chatMan = await response.json();
-            }
-            catch (e) {
-                router.history.replace("/status/Disconnected");
-                flag = 0;
-            }
-            if (flag == 1) {
-                chatMan.message = await getRecentMessage(chatManId, 0, 10, router);
-                let chatContact = [chatMan];
-                recentContact = chatContact.concat(recentContact);
-            }
-        }
-    }
-    else { //看url中是否携带name信息，如果有的话就作为第一个联系人
-        let urlName = location.href.match(/name=(\S+)/);
-        if (urlName) {
-            let chatManName = urlName[1];
-            //先看一下该聊天对象在不在联系人列表里
-            for (var i = 0; i < recentContact.length; i++) {
-                if (recentContact[i].name == chatManName) {
-                    break;
-                }
-            }
-            //如果恰好是联系人列表第一那就什么都不做
-            if (i == 0) { }
-            //如果在列表里但不是第一个，就把他提到第一个
-            else if (i < recentContact.length) {
-                let indexData = recentContact[i];
-                recentContact.splice(i, 1);
-                recentContact.unshift(indexData);
-            }
-            //如果不在联系人列表里，那就查找该人信息并作为列表第一个
-            else {
-                let response0;
-                let response1;
-                let flag = 1;
-                try {
-                    response0 = await fetch(`http://apitest.niconi.cc/user/name/${chatManName}`);
-                    if (response0.status === 404) {
-                        router.history.replace("/status/NotFoundUser");
-                    }
-                    if (response0.status === 500) {
-                        router.history.replace("/status/ServerError");
-                    }
-                    response1 = await response0.json();
-                } catch (e) {
-                    router.history.replace("/status/Disconnected");
-                    flag = 0;
-                }
-                if (flag == 1) {
-                    let chatMan = { id: null, name: '', portraitUrl: '', message: [] };
-                    chatMan.id = response1.id;
-                    chatMan.name = response1.name;
-                    chatMan.portraitUrl = response1.portraitUrl;
-                    chatMan.message = await getRecentMessage(chatMan.id, 0, 10, router);
-                    let chatContact = [chatMan];
-                    recentContact = chatContact.concat(recentContact);
-                }
-            }
-        }
-    }
-    return recentContact;
 }
 
 /**

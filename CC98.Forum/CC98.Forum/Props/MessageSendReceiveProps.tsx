@@ -38,4 +38,8 @@ export class MessageSendReceiveProps {
     * 消息的发送时间
     */
     time: Date;
+    /**
+    * 是否显示发送时间
+    */
+    showTime: boolean;
 }

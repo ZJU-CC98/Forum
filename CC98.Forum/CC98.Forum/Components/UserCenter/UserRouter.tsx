@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom';
 import { UserInfo } from '../../States/AppState';
 import { UserExactProfile } from './UserExactProfile';
-import { UserCenterExactActivities } from './UserCenterExactActivities';
+import { UserRouterActivities } from './UserRouterActivities';
 import { UserCenterExactAvatar } from './UserCenterExactAvatar'
 import * as Utility from '../../Utility';
 
@@ -65,7 +65,7 @@ class UserExact extends React.Component<null, UserCenterExactState> {
             element = (<div className="user-center-exact">
                 <UserCenterExactAvatar userAvatarImgURL={this.state.userAvatarImgURL} />
                 <UserExactProfile userInfo={this.state.userInfo} />
-                <UserCenterExactActivities />
+                <UserRouterActivities id={this.state.userInfo.id} />
             </div>);
         } else {
             element = <p>加载中</p>;
