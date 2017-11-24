@@ -59,7 +59,7 @@ export async function getBoardTopicAsync(curPage, boardid,router) {
         }
         const data: State.TopicTitleAndContentState[] = await response.json();
         for (let i = 0; i < topicNumberInPage; i++) {
-            boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime, data[i].likeCount, data[i].dislikeCount, data[i].replyCount || 0, data[i].highlightInfo);
+            boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime, data[i].likeCount, data[i].dislikeCount, data[i].replyCount || 0, data[i].highlightInfo, data[i].topState);
         }
 
         return boardtopics;
@@ -343,7 +343,7 @@ export function getListPager(totalPage) {
     }
 }
 export function convertHotTopic(item: State.TopicTitleAndContentState) {
-    return <TopicTitleAndContent key={item.id} title={item.title} userName={item.userName} id={item.id} userId={item.userId} lastPostTime={item.lastPostTime} lastPostUser={item.lastPostUser} likeCount={item.likeCount} dislikeCount={item.dislikeCount} replyCount={item.replyCount} highlightInfo={item.highlightInfo} />
+    return <TopicTitleAndContent key={item.id} title={item.title} userName={item.userName} id={item.id} userId={item.userId} lastPostTime={item.lastPostTime} lastPostUser={item.lastPostUser} likeCount={item.likeCount} dislikeCount={item.dislikeCount} replyCount={item.replyCount} highlightInfo={item.highlightInfo} topState={item.topState} />
         ;
 }
 export function getPager(curPage, totalPage) {
@@ -1362,4 +1362,28 @@ export async function uploadFile(file: File) {
             content: ''
         };
     }
+}
+export async function GetTopTopics(boardId) {
+    const token = getLocalStorage('accessToken');
+    const url = `http://apitest.niconi.cc/topic/toptopics?boardid=${boardId}`;
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    const response = await fetch(url, { headers });
+    const data: State.TopicTitleAndContentState[] = await response.json();
+    const topics: State.TopicTitleAndContentState[] = [];
+    for (let i = 0; i < data.length; i++) {
+        topics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime, data[i].likeCount, data[i].dislikeCount, data[i].replyCount || 0, data[i].highlightInfo, data[i].topState);
+    }
+    //排序
+    for (let i = 0; i < topics.length - 1; i++) {
+        for (let j = 0; j < topics.length - 1 - i; j++) {
+            if (topics[j].topState <= topics[j + 1].topState) {
+                let temp = topics[j];
+                topics[j] = topics[j + 1];
+                topics[j + 1] = temp;
+            }
+        }
+    }
+    console.log(topics);
+    return topics;
 }
