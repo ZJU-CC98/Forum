@@ -64,7 +64,7 @@ export class Category extends RouteComponent<{boardId }, { boardId, boardName },
         this.state = ({ boardId: "",boardName: "" });
     }
     async componentDidMount() {
-        console.log("cate" + this.props.boardId);
+  
         const boardName = await Utility.getListCategory(this.props.boardId, this.context.router);
         this.setState({ boardId: this.props.boardId, boardName: boardName });
     }
@@ -280,11 +280,11 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
     async componentDidMount() {
   
         const data = await Utility.getBoardTopicAsync(1, this.match.params.boardId, this.context.router);
-        console.log(data);
+   
 		this.setState({ items: data });
 	}
     private convertTopicToElement(item: TopicTitleAndContentState) {
-        console.log("in");
+
         return <TopicTitleAndContent key={item.id}
             title={item.title}
             userName={item.userName}
@@ -295,6 +295,7 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
             likeCount={item.likeCount}
             dislikeCount={item.dislikeCount}
             replyCount={item.replyCount}
+            highlightInfo={item.highlightInfo}
         />;
 	}
 	async componentWillReceiveProps(newProps) {
@@ -307,6 +308,7 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
 		// 转换类型
         else { page = parseInt(p); }
         const data = await Utility.getBoardTopicAsync(page, newProps.match.params.boardId, this.context.router);
+        console.log(data);
 		this.setState({ items: data });
 	}
 
@@ -342,7 +344,26 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         const count = this.props.replyCount+1;
         const totalPage = (count-count%10) / 10 + 1;
         const pager = Utility.getListPager(totalPage);
+        const titleId = `#title${this.props.id}`;
+        console.log(this.props);
+
+
         this.setState({ pager: pager });
+    }
+    componentDidMount() {
+        const titleId = `#title${this.props.id}`;
+        if (this.props.highlightInfo != null) {
+            if (this.props.highlightInfo.isBold == true) {
+                $(titleId).css("font-weight", "bold");
+            }
+            if (this.props.highlightInfo.isItalic == true) {
+                $(titleId).css("font-style", "italic");
+            }
+            if (this.props.highlightInfo.color != null) {
+                $(titleId).css("color", this.props.highlightInfo.color);
+            }
+        }
+        this.setState({});
     }
     generateListPager(item: number) {
         const url = `/topic/${this.props.id}/${item}`;
@@ -354,19 +375,20 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
     }
     render() {
         let url = `/topic/${this.props.id}`;
+        const titleId = `title${this.props.id}`;
         return <div id="changeColor">
 
             <div className="row topicInList" >
-                <div style={{ display:"flex" }}>
-                <Link to={url}><div className="listTitle" style={{ marginLeft: '1.25rem', }}> {this.props.title}</div></Link>
+                <div style={{ display: "flex" }}>
+                    <Link to={url}><div className="listTitle" id={titleId} style={{ marginLeft: '1.25rem', }}> {this.props.title}</div></Link>
                 <div style={{  display:"flex" }}>
                         {this.state.pager.map(this.generateListPager.bind(this))}</div>
                     </div>
                 <div className="row" style={{ width: "45%", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" }}>
 
-                    <div style={{ width:"15rem" }}> <span ><a >{this.props.userName}</a></span></div>
+                    <div style={{ width:"8rem" }}> <span ><a >{this.props.userName}</a></span></div>
 
-                    <div className="row" style={{width:"15rem",  flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" }}>
+                    <div className="row" style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" ,width:"10rem"}}>
 
                         <div id="liked" style={{ display: "flex" }}><i className="fa fa-thumbs-o-up fa-lg"></i><span className="timeProp tagSize">{this.props.likeCount}</span></div>
 
@@ -376,9 +398,9 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
 
                     </div>
 
-                    <div id="lastReply" style={{ width: "15rem" }}><div>{this.props.lastPostUser} </div></div>
+                    <div id="lastReply" style={{ width: "8rem" }}><div>{this.props.lastPostUser} </div></div>
 
-                    <div style={{ width: "20rem"}}><div style={{ wordBreak:"keepAll" }}>{moment(this.props.lastPostTime).format('YYYY-MM-DD HH:mm')}</div></div>
+                    <div style={{ width: "12rem"}}><div style={{ wordBreak:"keepAll" }}>{moment(this.props.lastPostTime).format('YYYY-MM-DD HH:mm')}</div></div>
 
                 </div>
 

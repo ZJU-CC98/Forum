@@ -171,7 +171,7 @@ function getBoardTopicAsync(curPage, boardid, router) {
                 case 4:
                     data = _a.sent();
                     for (i = 0; i < topicNumberInPage; i++) {
-                        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime, data[i].likeCount, data[i].dislikeCount, data[i].replyCount || 0);
+                        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime, data[i].likeCount, data[i].dislikeCount, data[i].replyCount || 0, data[i].highlightInfo);
                     }
                     return [2 /*return*/, boardtopics];
                 case 5:
@@ -586,7 +586,7 @@ function getListPager(totalPage) {
 }
 exports.getListPager = getListPager;
 function convertHotTopic(item) {
-    return React.createElement(List_1.TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount });
+    return React.createElement(List_1.TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount, highlightInfo: item.highlightInfo });
 }
 exports.convertHotTopic = convertHotTopic;
 function getPager(curPage, totalPage) {
@@ -1909,6 +1909,7 @@ function uploadFile(file) {
                     myHeaders.append('Authorization', token);
                     formdata = new FormData();
                     formdata.append('files', file, file.name);
+                    formdata.append('contentType', "multipart/form-data");
                     return [4 /*yield*/, fetch(url, {
                             method: 'POST',
                             headers: myHeaders,
@@ -3044,7 +3045,7 @@ var TopicTitleAndContentState = /** @class */ (function () {
           this.lastReply = lastReply;
             this.title = title;
       }*/
-    function TopicTitleAndContentState(title, userName, topicid, userId, lastPostUser, lastPostTime, likeCount, dislikeCount, replyCount) {
+    function TopicTitleAndContentState(title, userName, topicid, userId, lastPostUser, lastPostTime, likeCount, dislikeCount, replyCount, highlightInfo) {
         this.userName = userName;
         this.title = title;
         this.id = topicid;
@@ -3054,6 +3055,7 @@ var TopicTitleAndContentState = /** @class */ (function () {
         this.likeCount = likeCount;
         this.dislikeCount = dislikeCount;
         this.replyCount = replyCount;
+        this.highlightInfo = highlightInfo;
     }
     return TopicTitleAndContentState;
 }());
@@ -3581,9 +3583,7 @@ var Category = /** @class */ (function (_super) {
             var boardName;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        console.log("cate" + this.props.boardId);
-                        return [4 /*yield*/, Utility.getListCategory(this.props.boardId, this.context.router)];
+                    case 0: return [4 /*yield*/, Utility.getListCategory(this.props.boardId, this.context.router)];
                     case 1:
                         boardName = _a.sent();
                         this.setState({ boardId: this.props.boardId, boardName: boardName });
@@ -3881,7 +3881,6 @@ var ListContent = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, Utility.getBoardTopicAsync(1, this.match.params.boardId, this.context.router)];
                     case 1:
                         data = _a.sent();
-                        console.log(data);
                         this.setState({ items: data });
                         return [2 /*return*/];
                 }
@@ -3889,8 +3888,7 @@ var ListContent = /** @class */ (function (_super) {
         });
     };
     ListContent.prototype.convertTopicToElement = function (item) {
-        console.log("in");
-        return React.createElement(TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount });
+        return React.createElement(TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount, highlightInfo: item.highlightInfo });
     };
     ListContent.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
@@ -3909,6 +3907,7 @@ var ListContent = /** @class */ (function (_super) {
                         return [4 /*yield*/, Utility.getBoardTopicAsync(page, newProps.match.params.boardId, this.context.router)];
                     case 1:
                         data = _a.sent();
+                        console.log(data);
                         this.setState({ items: data });
                         return [2 /*return*/];
                 }
@@ -3943,7 +3942,24 @@ var TopicTitleAndContent = /** @class */ (function (_super) {
         var count = this.props.replyCount + 1;
         var totalPage = (count - count % 10) / 10 + 1;
         var pager = Utility.getListPager(totalPage);
+        var titleId = "#title" + this.props.id;
+        console.log(this.props);
         this.setState({ pager: pager });
+    };
+    TopicTitleAndContent.prototype.componentDidMount = function () {
+        var titleId = "#title" + this.props.id;
+        if (this.props.highlightInfo != null) {
+            if (this.props.highlightInfo.isBold == true) {
+                $(titleId).css("font-weight", "bold");
+            }
+            if (this.props.highlightInfo.isItalic == true) {
+                $(titleId).css("font-style", "italic");
+            }
+            if (this.props.highlightInfo.color != null) {
+                $(titleId).css("color", this.props.highlightInfo.color);
+            }
+        }
+        this.setState({});
     };
     TopicTitleAndContent.prototype.generateListPager = function (item) {
         var url = "/topic/" + this.props.id + "/" + item;
@@ -3957,20 +3973,21 @@ var TopicTitleAndContent = /** @class */ (function (_super) {
     };
     TopicTitleAndContent.prototype.render = function () {
         var url = "/topic/" + this.props.id;
+        var titleId = "title" + this.props.id;
         return React.createElement("div", { id: "changeColor" },
             React.createElement("div", { className: "row topicInList" },
                 React.createElement("div", { style: { display: "flex" } },
                     React.createElement(react_router_dom_1.Link, { to: url },
-                        React.createElement("div", { className: "listTitle", style: { marginLeft: '1.25rem', } },
+                        React.createElement("div", { className: "listTitle", id: titleId, style: { marginLeft: '1.25rem', } },
                             " ",
                             this.props.title)),
                     React.createElement("div", { style: { display: "flex" } }, this.state.pager.map(this.generateListPager.bind(this)))),
                 React.createElement("div", { className: "row", style: { width: "45%", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" } },
-                    React.createElement("div", { style: { width: "15rem" } },
+                    React.createElement("div", { style: { width: "8rem" } },
                         " ",
                         React.createElement("span", null,
                             React.createElement("a", null, this.props.userName))),
-                    React.createElement("div", { className: "row", style: { width: "15rem", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" } },
+                    React.createElement("div", { className: "row", style: { flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between", width: "10rem" } },
                         React.createElement("div", { id: "liked", style: { display: "flex" } },
                             React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
                             React.createElement("span", { className: "timeProp tagSize" }, this.props.likeCount)),
@@ -3980,11 +3997,11 @@ var TopicTitleAndContent = /** @class */ (function (_super) {
                         React.createElement("div", { id: "commentsAmount", style: { display: "flex" } },
                             React.createElement("i", { className: "fa fa-commenting-o fa-lg" }),
                             React.createElement("span", { className: "timeProp tagSize" }, this.props.replyCount))),
-                    React.createElement("div", { id: "lastReply", style: { width: "15rem" } },
+                    React.createElement("div", { id: "lastReply", style: { width: "8rem" } },
                         React.createElement("div", null,
                             this.props.lastPostUser,
                             " ")),
-                    React.createElement("div", { style: { width: "20rem" } },
+                    React.createElement("div", { style: { width: "12rem" } },
                         React.createElement("div", { style: { wordBreak: "keepAll" } }, moment(this.props.lastPostTime).format('YYYY-MM-DD HH:mm'))))));
     };
     return TopicTitleAndContent;
@@ -5347,12 +5364,24 @@ var SendTopic = /** @class */ (function (_super) {
     __extends(SendTopic, _super);
     function SendTopic(props) {
         var _this = _super.call(this, props) || this;
+        _this.changeEditor = _this.changeEditor.bind(_this);
         _this.state = ({ content: '', mode: 1 });
         return _this;
     }
     SendTopic.prototype.componentDidMount = function () {
     };
     SendTopic.prototype.componentWillReceiveProps = function (newProps) {
+    };
+    SendTopic.prototype.componentDidUpdate = function () {
+        editormd("test-editormd", {
+            width: "100%",
+            height: 640,
+            path: "/scripts/lib/editor.md/lib/",
+            saveHTMLToTextarea: false,
+            imageUpload: false,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "http://apitest.niconi.cc/file/",
+        });
     };
     SendTopic.prototype.sendUbbTopic = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -5436,6 +5465,32 @@ var SendTopic = /** @class */ (function (_super) {
             this.setState({ mode: 0 });
         }
     };
+    SendTopic.prototype.upload = function (e) {
+        return __awaiter(this, void 0, void 0, function () {
+            var files, res, url, str, str, ex, cur;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        files = e.target.files;
+                        return [4 /*yield*/, Utility.uploadFile(files[0])];
+                    case 1:
+                        res = _a.sent();
+                        url = res.content;
+                        if (this.state.mode === 1) {
+                            str = "![](http://apitest.niconi.cc" + url + ")";
+                            testEditor.appendMarkdown(str);
+                        }
+                        else {
+                            str = "[img]http://apitest.niconi.cc" + url + "[/img]";
+                            ex = this.state.content;
+                            cur = ex + str;
+                            this.setState({ content: cur });
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     SendTopic.prototype.getInitialState = function () {
         return { value: '' };
     };
@@ -5485,7 +5540,7 @@ var SendTopic = /** @class */ (function (_super) {
                         React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input", value: this.state.content, onChange: this.handleChange.bind(this) }))),
                 React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "1.25rem " } },
                     React.createElement("div", { id: "post-topic-button", onClick: this.sendUbbTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u56DE\u590D"),
-                    React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, this.state.mode),
+                    React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u5207\u6362\u5230Markdown\u7F16\u8F91\u5668            "),
                     " "));
         }
         else {
@@ -5496,9 +5551,12 @@ var SendTopic = /** @class */ (function (_super) {
                         React.createElement("textarea", { className: "editormd-markdown-textarea", name: "test-editormd-markdown-doc", value: this.state.content }))),
                 React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "1.25rem " } },
                     React.createElement("div", { id: "post-topic-button", onClick: this.sendMdTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u56DE\u590D"),
-                    React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, this.state.mode)));
+                    React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor, className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u5207\u6362\u5230UBB\u7F16\u8F91\u5668")));
         }
-        return React.createElement("div", { style: { width: "100%", display: "flex", flexDirection: "column" } }, editor);
+        return React.createElement("div", { style: { width: "100%", display: "flex", flexDirection: "column" } },
+            React.createElement("form", { method: "post", encType: "multipart/form-data" },
+                React.createElement("input", { type: "file", id: "upload-files", onChange: this.upload.bind(this) })),
+            editor);
     };
     return SendTopic;
 }(RouteComponent));
@@ -7496,11 +7554,20 @@ var CreateTopic = /** @class */ (function (_super) {
     __extends(CreateTopic, _super);
     function CreateTopic(props) {
         var _this = _super.call(this, props) || this;
-        _this.state = ({ topicId: null, title: '', content: '', ready: false });
+        _this.changeEditor = _this.changeEditor.bind(_this);
+        _this.state = ({ topicId: null, title: '', content: '', ready: false, mode: 0 });
         return _this;
     }
     CreateTopic.prototype.ready = function () {
         this.setState({ ready: true });
+    };
+    CreateTopic.prototype.changeEditor = function () {
+        if (this.state.mode === 0) {
+            this.setState({ mode: 1 });
+        }
+        else {
+            this.setState({ mode: 0 });
+        }
     };
     CreateTopic.prototype.sendMdTopic = function (content1) {
         return __awaiter(this, void 0, void 0, function () {
@@ -7585,8 +7652,7 @@ var CreateTopic = /** @class */ (function (_super) {
         this.setState({ content: content });
     };
     CreateTopic.prototype.render = function () {
-        //let mode = 0;
-        var mode = 1;
+        var mode = this.state.mode;
         if (mode === 0) {
             return React.createElement("div", { className: "column", style: { justifyContent: "center", width: "80%" } },
                 React.createElement("div", { className: "createTopicBoardName" }, " \u7248\u9762\u540D\u79F0 > \u53D1\u8868\u4E3B\u9898"),
@@ -7607,7 +7673,8 @@ var CreateTopic = /** @class */ (function (_super) {
                     React.createElement("input", { type: "radio", name: "option", value: "special" }),
                     "\u56DE\u590D\u4EC5\u7279\u5B9A\u7528\u6237\u53EF\u89C1"),
                 React.createElement(InputUbbContent, { onChange: this.onUbbChange.bind(this) }),
-                React.createElement("div", { id: "post-topic-button", onClick: this.sendUbbTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" } }, "\u53D1\u5E16"));
+                React.createElement("div", { id: "post-topic-button", onClick: this.sendUbbTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" } }, "\u53D1\u5E16"),
+                React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor, className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u5207\u6362\u5230Markdown\u7F16\u8F91\u5668"));
         }
         else {
             return React.createElement("div", { className: "column", style: { justifyContent: "center", width: "80%" } },
@@ -7628,7 +7695,8 @@ var CreateTopic = /** @class */ (function (_super) {
                     "\u56DE\u590D\u4EC5\u697C\u4E3B\u53EF\u89C1",
                     React.createElement("input", { type: "radio", name: "option", value: "special" }),
                     "\u56DE\u590D\u4EC5\u7279\u5B9A\u7528\u6237\u53EF\u89C1"),
-                React.createElement(InputMdContent, { onChange: this.sendMdTopic.bind(this), ready: this.state.ready }));
+                React.createElement(InputMdContent, { onChange: this.sendMdTopic.bind(this), ready: this.state.ready }),
+                React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor, className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u5207\u6362\u5230UBB\u7F16\u8F91\u5668"));
         }
     };
     return CreateTopic;
@@ -10809,12 +10877,24 @@ var SendTopic = /** @class */ (function (_super) {
     __extends(SendTopic, _super);
     function SendTopic(props) {
         var _this = _super.call(this, props) || this;
+        _this.changeEditor = _this.changeEditor.bind(_this);
         _this.state = ({ content: '', mode: 1 });
         return _this;
     }
     SendTopic.prototype.componentDidMount = function () {
     };
     SendTopic.prototype.componentWillReceiveProps = function (newProps) {
+    };
+    SendTopic.prototype.componentDidUpdate = function () {
+        editormd("test-editormd", {
+            width: "100%",
+            height: 640,
+            path: "/scripts/lib/editor.md/lib/",
+            saveHTMLToTextarea: false,
+            imageUpload: false,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "http://apitest.niconi.cc/file/",
+        });
     };
     SendTopic.prototype.sendUbbTopic = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -10898,6 +10978,32 @@ var SendTopic = /** @class */ (function (_super) {
             this.setState({ mode: 0 });
         }
     };
+    SendTopic.prototype.upload = function (e) {
+        return __awaiter(this, void 0, void 0, function () {
+            var files, res, url, str, str, ex, cur;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        files = e.target.files;
+                        return [4 /*yield*/, Utility.uploadFile(files[0])];
+                    case 1:
+                        res = _a.sent();
+                        url = res.content;
+                        if (this.state.mode === 1) {
+                            str = "![](http://apitest.niconi.cc" + url + ")";
+                            testEditor.appendMarkdown(str);
+                        }
+                        else {
+                            str = "[img]http://apitest.niconi.cc" + url + "[/img]";
+                            ex = this.state.content;
+                            cur = ex + str;
+                            this.setState({ content: cur });
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     SendTopic.prototype.getInitialState = function () {
         return { value: '' };
     };
@@ -10947,7 +11053,7 @@ var SendTopic = /** @class */ (function (_super) {
                         React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input", value: this.state.content, onChange: this.handleChange.bind(this) }))),
                 React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "1.25rem " } },
                     React.createElement("div", { id: "post-topic-button", onClick: this.sendUbbTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u56DE\u590D"),
-                    React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, this.state.mode),
+                    React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u5207\u6362\u5230Markdown\u7F16\u8F91\u5668            "),
                     " "));
         }
         else {
@@ -10958,9 +11064,12 @@ var SendTopic = /** @class */ (function (_super) {
                         React.createElement("textarea", { className: "editormd-markdown-textarea", name: "test-editormd-markdown-doc", value: this.state.content }))),
                 React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "1.25rem " } },
                     React.createElement("div", { id: "post-topic-button", onClick: this.sendMdTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u56DE\u590D"),
-                    React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, this.state.mode)));
+                    React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor, className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u5207\u6362\u5230UBB\u7F16\u8F91\u5668")));
         }
-        return React.createElement("div", { style: { width: "100%", display: "flex", flexDirection: "column" } }, editor);
+        return React.createElement("div", { style: { width: "100%", display: "flex", flexDirection: "column" } },
+            React.createElement("form", { method: "post", encType: "multipart/form-data" },
+                React.createElement("input", { type: "file", id: "upload-files", onChange: this.upload.bind(this) })),
+            editor);
     };
     return SendTopic;
 }(RouteComponent));
@@ -15517,7 +15626,7 @@ var TopicTitleAndContentState = /** @class */ (function () {
           this.lastReply = lastReply;
             this.title = title;
       }*/
-    function TopicTitleAndContentState(title, userName, topicid, userId, lastPostUser, lastPostTime, likeCount, dislikeCount, replyCount) {
+    function TopicTitleAndContentState(title, userName, topicid, userId, lastPostUser, lastPostTime, likeCount, dislikeCount, replyCount, highlightInfo) {
         this.userName = userName;
         this.title = title;
         this.id = topicid;
@@ -15527,6 +15636,7 @@ var TopicTitleAndContentState = /** @class */ (function () {
         this.likeCount = likeCount;
         this.dislikeCount = dislikeCount;
         this.replyCount = replyCount;
+        this.highlightInfo = highlightInfo;
     }
     return TopicTitleAndContentState;
 }());

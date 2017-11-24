@@ -58,7 +58,7 @@ export async function getBoardTopicAsync(curPage, boardid,router) {
         }
         const data: State.TopicTitleAndContentState[] = await response.json();
         for (let i = 0; i < topicNumberInPage; i++) {
-            boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime, data[i].likeCount, data[i].dislikeCount, data[i].replyCount||0);
+            boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime, data[i].likeCount, data[i].dislikeCount, data[i].replyCount || 0, data[i].highlightInfo);
         }
 
         return boardtopics;
@@ -342,7 +342,7 @@ export function getListPager(totalPage) {
     }
 }
 export function convertHotTopic(item: State.TopicTitleAndContentState) {
-    return <TopicTitleAndContent key={item.id} title={item.title} userName={item.userName} id={item.id} userId={item.userId} lastPostTime={item.lastPostTime} lastPostUser={item.lastPostUser} likeCount={item.likeCount} dislikeCount={item.dislikeCount} replyCount={item.replyCount} />
+    return <TopicTitleAndContent key={item.id} title={item.title} userName={item.userName} id={item.id} userId={item.userId} lastPostTime={item.lastPostTime} lastPostUser={item.lastPostUser} likeCount={item.likeCount} dislikeCount={item.dislikeCount} replyCount={item.replyCount} highlightInfo={item.highlightInfo} />
         ;
 }
 export function getPager(curPage, totalPage) {
@@ -1295,6 +1295,7 @@ export async function uploadFile(file: File) {
 
         let formdata = new FormData();
         formdata.append('files', file, file.name);
+        formdata.append('contentType', "multipart/form-data");
         let res = await fetch(url, {
             method: 'POST',
             headers: myHeaders,

@@ -170,7 +170,7 @@ export class TopicTitleAndContentState {
 		  this.lastReply = lastReply;
 		    this.title = title;
 	  }*/
-    constructor(title, userName, topicid, userId, lastPostUser, lastPostTime,likeCount,dislikeCount,replyCount) {
+    constructor(title, userName, topicid, userId, lastPostUser, lastPostTime,likeCount,dislikeCount,replyCount,highlightInfo) {
         this.userName = userName;
         this.title = title;
         this.id = topicid;
@@ -180,6 +180,7 @@ export class TopicTitleAndContentState {
         this.likeCount = likeCount;
         this.dislikeCount = dislikeCount;
         this.replyCount = replyCount;
+        this.highlightInfo=highlightInfo
     }
 
     likeCount: number;
@@ -191,7 +192,7 @@ export class TopicTitleAndContentState {
     lastPostTime: string;
     id: number;
     userId: number;
-
+    highlightInfo:any;
 }
 
 /**

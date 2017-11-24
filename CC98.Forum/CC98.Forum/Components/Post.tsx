@@ -933,14 +933,27 @@ export class UserMessageBox extends React.Component<{ userName, userFans }, {}>{
 }
 export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { content: string,mode:number }, {}>{
     constructor(props) {
-        super(props);     
+        super(props);
+        this.changeEditor = this.changeEditor.bind(this);
         this.state = ({ content: '',mode:1 });
     }
     componentDidMount() {
-   
+
     }
     componentWillReceiveProps(newProps) {
       
+    }
+    componentDidUpdate() {
+        editormd("test-editormd", {
+            width: "100%",
+            height: 640,
+            path: "/scripts/lib/editor.md/lib/",
+            saveHTMLToTextarea: false,
+            imageUpload: false,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "http://apitest.niconi.cc/file/",
+        });
+
     }
     async sendUbbTopic() {
         let url = `http://apitest.niconi.cc/post/topic/${this.props.topicid}`;
@@ -1006,6 +1019,20 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
             this.setState({ mode: 0 });
         }
     }
+    async upload(e) {
+        const files = e.target.files;
+        const res = await Utility.uploadFile(files[0]);
+        const url = res.content;
+        if (this.state.mode === 1) {        
+            const str = `![](http://apitest.niconi.cc${url})`;
+            testEditor.appendMarkdown(str);
+        } else {
+            const str = `[img]http://apitest.niconi.cc${url}[/img]`;
+            const ex = this.state.content;
+            const cur = ex + str;
+            this.setState({ content: cur });
+        }
+    }
     getInitialState() {
         return { value: '' };
     }
@@ -1057,8 +1084,7 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
              <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
                     <div id="post-topic-button" onClick={this.sendUbbTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复
                     </div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>{this.state.mode}
-            </div> </div></div>;
+                    <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>切换到Markdown编辑器            </div> </div></div>;
         }
         else {
             mode = '使用Markdown编辑';
@@ -1071,13 +1097,17 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
                 <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
                     <div id="post-topic-button" onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复</div>
 
-                    <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>{this.state.mode}
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>切换到UBB编辑器
+
                     </div>
                 </div>
 
             </div>;
         }
         return <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
+            <form method="post" encType="multipart/form-data">
+                <input type="file" id="upload-files" onChange={this.upload.bind(this)} />
+            </form>
             {editor}
         </div>;
     }
