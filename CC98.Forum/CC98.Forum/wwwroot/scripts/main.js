@@ -1985,6 +1985,80 @@ function uploadFile(file) {
     });
 }
 exports.uploadFile = uploadFile;
+/**
+ * 关注指定id的用户
+ * @param userId
+ */
+function followUser(userId) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, url, headers, res, e_29;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    token = getLocalStorage("accessToken");
+                    url = "http://apitest.niconi.cc/user/follow/" + userId;
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch(url, {
+                            method: 'POST',
+                            headers: headers
+                        })];
+                case 1:
+                    res = _a.sent();
+                    if (res.status === 200) {
+                        return [2 /*return*/, true];
+                    }
+                    else {
+                        throw {};
+                    }
+                    return [3 /*break*/, 3];
+                case 2:
+                    e_29 = _a.sent();
+                    return [2 /*return*/, false];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.followUser = followUser;
+/**
+ * 取关指定id的用户
+ * @param userId
+ */
+function unfollowUser(userId) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, url, headers, res, e_30;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    token = getLocalStorage("accessToken");
+                    url = "http://apitest.niconi.cc/user/unfollow/" + userId;
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch(url, {
+                            method: 'DELETE',
+                            headers: headers
+                        })];
+                case 1:
+                    res = _a.sent();
+                    if (res.status === 200) {
+                        return [2 /*return*/, true];
+                    }
+                    else {
+                        throw {};
+                    }
+                    return [3 /*break*/, 3];
+                case 2:
+                    e_30 = _a.sent();
+                    return [2 /*return*/, false];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.unfollowUser = unfollowUser;
 
 
 /***/ }),
@@ -13654,7 +13728,7 @@ var UserExactProfile = /** @class */ (function (_super) {
     };
     UserExactProfile.prototype.unfollow = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, userId, url, headers, res, e_2;
+            var state;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -13662,21 +13736,10 @@ var UserExactProfile = /** @class */ (function (_super) {
                             buttonIsDisabled: true,
                             buttonInfo: '取关中'
                         });
-                        _a.label = 1;
+                        return [4 /*yield*/, Utility.unfollowUser(Number.parseInt(this.props.userInfo.id))];
                     case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        token = Utility.getLocalStorage("accessToken");
-                        userId = this.props.userInfo.id;
-                        url = "http://apitest.niconi.cc/user/unfollow/" + userId;
-                        headers = new Headers();
-                        headers.append('Authorization', token);
-                        return [4 /*yield*/, fetch(url, {
-                                method: 'DELETE',
-                                headers: headers
-                            })];
-                    case 2:
-                        res = _a.sent();
-                        if (res.status === 200) {
+                        state = _a.sent();
+                        if (state === true) {
                             this.setState({
                                 buttonIsDisabled: false,
                                 buttonInfo: '重新关注',
@@ -13684,18 +13747,13 @@ var UserExactProfile = /** @class */ (function (_super) {
                             });
                         }
                         else {
-                            throw {};
+                            this.setState({
+                                buttonIsDisabled: false,
+                                buttonInfo: '取关失败',
+                                isFollowing: true
+                            });
                         }
-                        return [3 /*break*/, 4];
-                    case 3:
-                        e_2 = _a.sent();
-                        this.setState({
-                            buttonIsDisabled: false,
-                            buttonInfo: '取关失败',
-                            isFollowing: true
-                        });
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
+                        return [2 /*return*/];
                 }
             });
         });

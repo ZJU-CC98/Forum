@@ -1363,3 +1363,51 @@ export async function uploadFile(file: File) {
         };
     }
 }
+
+/**
+ * 关注指定id的用户
+ * @param userId
+ */
+export async function followUser(userId: number){
+    try {
+        const token = getLocalStorage("accessToken");
+        const url = `http://apitest.niconi.cc/user/follow/${userId}`;
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        let res = await fetch(url, {
+            method: 'POST',
+            headers
+        });
+        if (res.status === 200) {
+            return true;
+        } else {
+            throw {};
+        }
+    } catch (e) {
+        return false;
+    }
+}
+
+/**
+ * 取关指定id的用户
+ * @param userId
+ */
+export async function unfollowUser(userId: number) {
+    try {
+        const token = getLocalStorage("accessToken");
+        const url = `http://apitest.niconi.cc/user/unfollow/${userId}`;
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        let res = await fetch(url, {
+            method: 'DELETE',
+            headers
+        });
+        if (res.status === 200) {
+            return true;
+        } else {
+            throw {};
+        }
+    } catch (e) {
+        return false;
+    }
+}

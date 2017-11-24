@@ -71,26 +71,15 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
             buttonIsDisabled: true,
             buttonInfo: '取关中'
         });
-        try {
-            const token = Utility.getLocalStorage("accessToken");
-            const userId = this.props.userInfo.id;
-            const url = `http://apitest.niconi.cc/user/unfollow/${userId}`;
-            const headers = new Headers();
-            headers.append('Authorization', token);
-            let res = await fetch(url, {
-                method: 'DELETE',
-                headers
+        let state = await Utility.unfollowUser(Number.parseInt(this.props.userInfo.id));
+
+        if (state === true) {
+            this.setState({
+                buttonIsDisabled: false,
+                buttonInfo: '重新关注',
+                isFollowing: false
             });
-            if (res.status === 200) {
-                this.setState({
-                    buttonIsDisabled: false,
-                    buttonInfo: '重新关注',
-                    isFollowing: false
-                });
-            } else {
-                throw {};
-            }
-        } catch (e) {
+        } else {
             this.setState({
                 buttonIsDisabled: false,
                 buttonInfo: '取关失败',
