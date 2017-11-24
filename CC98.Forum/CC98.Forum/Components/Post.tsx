@@ -30,7 +30,11 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
             width: "100%",
             height: 640,
             path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false
+            saveHTMLToTextarea: false,
+            imageUpload: false,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "http://apitest.niconi.cc/file/",
+
         });
         this.handleChange = this.handleChange.bind(this);
         this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null, editor: testEditor };
@@ -69,7 +73,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName });
     }
     async getTotalPage(topicid) {
-        return Utility.getTotalReplyCount(topicid);
+        return Utility.getTotalReplyCount(topicid, this.context.router);
     }
     returnTopic() {
         return <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} />;
@@ -103,7 +107,7 @@ export class Category extends React.Component<{ topicId }, { boardId, topicId, b
         this.state = ({ boardId: "", topicId: "", boardName: "", title: "" });
     }
     async componentDidMount() {
-        const body = await Utility.getCategory(this.props.topicId);
+        const body = await Utility.getCategory(this.props.topicId, this.context.router);
         this.setState({ boardId: body.boardId, topicId: body.topicId, boardName: body.boardName, title: body.title });
     }
     render() {
@@ -132,7 +136,7 @@ export class Reply extends RouteComponent<{}, { contents }, { page, topicid, use
          else {
              realContents = Utility.getStorage(storageId);
          }*/
-        realContents = await Utility.getTopicContent(newProps.match.params.topicid, page);
+        realContents = await Utility.getTopicContent(newProps.match.params.topicid, page, this.context.router);
         this.setState({ contents: realContents });
 
     }
@@ -164,7 +168,7 @@ export class HotReply extends RouteComponent<{}, { contents }, { page, topicid }
 
         const page = newProps.match.params.page || 1;
         if (page == 1) {
-            const realContents = await Utility.getHotReplyContent(newProps.match.params.topicid);
+            const realContents = await Utility.getHotReplyContent(newProps.match.params.topicid, this.context.router);
             this.setState({ contents: realContents });
         }
 
@@ -347,7 +351,7 @@ export class UserDetails extends RouteComponent<{ userName }, { portraitUrl, use
         this.state = ({ portraitUrl: null, userName: null, fanCount: null, displayTitle: null, birthday: null, gender: null, prestige: null, levelTitle: null });
     }
     async componentDidMount() {
-        const data = await Utility.getUserDetails(this.props.userName);
+        const data = await Utility.getUserDetails(this.props.userName, this.context.router);
         this.setState({ portraitUrl: data.portraitUrl, userName: data.userName, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle });
     }
     render() {
@@ -412,7 +416,7 @@ export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid },
         }
     }
     async componentDidMount() {
-        let topicMessage = await Utility.getTopic(this.props.topicid);
+        let topicMessage = await Utility.getTopic(this.props.topicid, this.context.router);
         this.setState({ topicMessage: topicMessage });
     }
     render() {
@@ -537,7 +541,7 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
         }
     }
     async componentDidMount() {
-        const data = await Utility.getLikeState(this.props.topicid);
+        const data = await Utility.getLikeState(this.props.topicid, this.context.router);
         if (data.likeState === 1) {
             $("#commentliked").css("color", "red");
         }
@@ -550,44 +554,44 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
     async like() {
         //取消赞
         if (this.state.likeState === 1) {
-            await Utility.like(this.props.topicid, this.props.postid);
+            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
             $("#commentliked").css("color", "black");
         }
         //踩改赞
         else if (this.state.likeState === 2) {
-            await Utility.dislike(this.props.topicid, this.props.postid);
-            await Utility.like(this.props.topicid, this.props.postid);
+            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
+            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
             $("#commentliked").css("color", "red");
             $("#commentdisliked").css("color", "black");
         }
         //单纯赞
         else {
-            await Utility.like(this.props.topicid, this.props.postid);
+            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
             $("#commentliked").css("color", "red");
         }
-        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid);
+        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
 
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
     async dislike() {
         //取消踩
         if (this.state.likeState === 2) {
-            await Utility.dislike(this.props.topicid, this.props.postid);
+            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
             $("#commentdisliked").css("color", "black");
         }
         //赞改踩
         else if (this.state.likeState === 1) {
-            await Utility.like(this.props.topicid, this.props.postid);
-            await Utility.dislike(this.props.topicid, this.props.postid);
+            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
+            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
             $("#commentliked").css("color", "black");
             $("#commentdisliked").css("color", "red");
         }
         //单纯踩
         else {
-            await Utility.dislike(this.props.topicid, this.props.postid);
+            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
             $("#commentdisliked").css("color", "red");
         }
-        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid);
+        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
     render() {
@@ -660,7 +664,7 @@ export class ReplyContent extends RouteComponent<{ content, signature, topicid, 
 
         const idLike = `#like${this.props.postid}`;
         const idDislike = `#dislike${this.props.postid}`;
-        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid);
+        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
         if (data.likeState === 1) {
             $(idLike).css("color", "red");
         }
@@ -674,22 +678,22 @@ export class ReplyContent extends RouteComponent<{ content, signature, topicid, 
         const idDislike = `#dislike${this.props.postid}`;
         //取消赞
         if (this.state.likeState === 1) {
-            await Utility.like(this.props.topicid, this.props.postid);
+            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
             $(idLike).css("color", "black");
         }
         //踩改赞
         else if (this.state.likeState === 2) {
-            await Utility.dislike(this.props.topicid, this.props.postid);
-            await Utility.like(this.props.topicid, this.props.postid);
+            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
+            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
             $(idLike).css("color", "red");
             $(idDislike).css("color", "black");
         }
         //单纯赞
         else {
-            await Utility.like(this.props.topicid, this.props.postid);
+            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
             $(idLike).css("color", "red");
         }
-        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid);
+        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
 
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
@@ -699,22 +703,22 @@ export class ReplyContent extends RouteComponent<{ content, signature, topicid, 
 
         //取消踩
         if (this.state.likeState === 2) {
-            await Utility.dislike(this.props.topicid, this.props.postid);
+            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
             $(idDislike).css("color", "black");
         }
         //赞改踩
         else if (this.state.likeState === 1) {
-            await Utility.like(this.props.topicid, this.props.postid);
-            await Utility.dislike(this.props.topicid, this.props.postid);
+            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
+            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
             $(idLike).css("color", "black");
             $(idDislike).css("color", "red");
         }
         //单纯踩
         else {
-            await Utility.dislike(this.props.topicid, this.props.postid);
+            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
             $(idDislike).css("color", "red");
         }
-        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid);
+        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
     render() {
@@ -927,10 +931,16 @@ export class UserMessageBox extends React.Component<{ userName, userFans }, {}>{
         return <div id="userMessageBox">{this.props.userName}</div>;
     }
 }
-export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { content: string }, {}>{
+export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { content: string,mode:number }, {}>{
     constructor(props) {
         super(props);     
-        this.state = ({ content: '' });
+        this.state = ({ content: '',mode:1 });
+    }
+    componentDidMount() {
+   
+    }
+    componentWillReceiveProps(newProps) {
+      
     }
     async sendUbbTopic() {
         let url = `http://apitest.niconi.cc/post/topic/${this.props.topicid}`;
@@ -988,6 +998,14 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
             console.log(e);
         }
     }
+    changeEditor() {
+        if (this.state.mode === 0) {
+           
+            this.setState({ mode: 1 });
+        } else {
+            this.setState({ mode: 0 });
+        }
+    }
     getInitialState() {
         return { value: '' };
     }
@@ -996,27 +1014,12 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
         this.setState({ content: event.target.value });
     }
     render() {  
-        editormd("test-editormd", {
-            width: "100%",
-            height: 640,
-            path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false
-        });
-        return <div style={{ width: "100%", display: "flex", flexDirection: "column" }}><div id="sendTopic">
-            <form>
-                <div id="test-editormd" className="editormd">
-                    <textarea className="editormd-markdown-textarea" name="test-editormd-markdown-doc" value={this.state.content}  ></textarea>
-                </div>
-            </form>
-            <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
-                <div id="post-topic-button" onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复</div>
-            </div>
-
-        </div>
-            <div id="sendTopic">
-
+    
+        let mode,editor;
+        if (this.state.mode === 0) {
+            mode = '使用UBB模式编辑';
+            editor = <div id="sendTopic">
                 <div id="sendTopic-options">
-
                     <ul className="editor__menu clearfix" id="wmd-button-row" >
 
                         <li title="加粗 <strong> Ctrl+B" className="wmd-button" id="wmd-bold-button" ><a className="editor__menu--bold" style={{ backgroundPosition: "0px 0px" }}></a></li>
@@ -1046,15 +1049,36 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
                     </ul>
                 </div>
                 <form>
-                    <div >
+                    <div>
                         <textarea id="sendTopic-input" name="sendTopic-input" value={this.state.content} onChange={this.handleChange.bind(this)} />
                     </div>
                 </form>
-            </div><div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
+               
+             <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
+                    <div id="post-topic-button" onClick={this.sendUbbTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复
+                    </div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>{this.state.mode}
+            </div> </div></div>;
+        }
+        else {
+            mode = '使用Markdown编辑';
+            editor = <div id="sendTopic">
+                <form>
+                    <div id="test-editormd" className="editormd">
+                        <textarea className="editormd-markdown-textarea" name="test-editormd-markdown-doc" value={this.state.content}  ></textarea>
+                    </div>
+                </form>
+                <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
+                    <div id="post-topic-button" onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复</div>
 
-                <div id="post-topic-button" onClick={this.sendUbbTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>{this.state.mode}
+                    </div>
+                </div>
 
-            </div>
+            </div>;
+        }
+        return <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
+            {editor}
         </div>;
     }
 }  

@@ -7,7 +7,7 @@ import {
     Route
 } from 'react-router-dom';
 
-import * as Utility from '../Utility';
+import * as Utility from '../../Utility';
 
 import { UserCenterExact } from './UserCenterExact';
 import { UserCenterMyFollowings } from './UserCenterMyFollowings';

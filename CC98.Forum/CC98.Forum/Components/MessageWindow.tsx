@@ -22,7 +22,6 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
     async componentDidMount() {
         this.setState({ data: this.props.data.message });
         document.getElementById('messageContent').addEventListener('scroll', this.handleScroll);
-        $('#messageContent')[0].scrollTop = 3000;
     }
 
     /**
@@ -45,10 +44,11 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
             $('#wcLoadingImg').removeClass("displaynone");
             let oldData = this.state.data;
             //到顶了就继续获取10条私信
-            let newData = await Utility.getRecentMessage(this.props.data.id, oldData.length, 10);
+            let newData = await Utility.getRecentMessage(this.props.data.id, oldData.length, 10, this.context.router);
             //跟之前的拼接一下
             if (newData.length > 0) {
                 let data = oldData.concat(newData);
+                data = Utility.sortRecentMessage(data);
                 this.setState({ data: data });
                 //取出联系人缓存，更新对应的联系人的数据并缓存
                 let recentContact = Utility.getStorage("recentContact");
@@ -63,7 +63,6 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
                 }
             }
             else {
-                console.log("没有");
                 $('#wcLoadingImg').addClass("displaynone");
                 $('#wcLoadingText').removeClass("displaynone");
             }
@@ -77,7 +76,7 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
         //把聊天窗口滚动栏拉到最底部
         document.getElementById("quickToTheBottom").scrollIntoView();
         //获取新私信信息
-        let data = await Utility.getRecentMessage(this.props.data.id, 0, 10);
+        let data = await Utility.getRecentMessage(this.props.data.id, 0, 10, this.context.router);
 
         //先看一下缓存里的旧私信信息
         let oldData = [];
@@ -91,7 +90,7 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
                         for (var j = 0; j < data.length; j++) {
                             if (data[j].id == oldData[0].id) {
                                 data = data.slice(0, j).concat(oldData);
-                                console.log("获取到了新私信");
+                                data = Utility.sortRecentMessage(data);
                                 break;
                             }
                         }
@@ -138,11 +137,11 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
         let data = this.props.data;
         if (item.receiverId == userInfo.id) {
             //如果我是接收者调用这个样式，处于左边
-            return <MessageReceiver id={item.id} senderName={data.name} receiverName={userInfo.name} senderPortraitUrl={data.portraitUrl} receiverPortraitUrl={userInfo.portraitUrl} content={item.content} isRead={item.isRead} time={item.time}/>;
+            return <MessageReceiver id={item.id} senderName={data.name} receiverName={userInfo.name} senderPortraitUrl={data.portraitUrl} receiverPortraitUrl={userInfo.portraitUrl} content={item.content} isRead={item.isRead} time={item.time} showTime={item.showTime} />;
         }
         else if(item.senderId == userInfo.id) {
             //如果我是发送者调用这个样式，处于右边
-            return <MessageSender id={item.id} senderName={userInfo.name} receiverName={data.name} senderPortraitUrl={userInfo.portraitUrl} receiverPortraitUrl={data.portraitUrl} content={item.content} isRead={item.isRead} time={item.time} />;
+            return <MessageSender id={item.id} senderName={userInfo.name} receiverName={data.name} senderPortraitUrl={userInfo.portraitUrl} receiverPortraitUrl={data.portraitUrl} content={item.content} isRead={item.isRead} time={item.time} showTime={item.showTime} />;
         }
     };
 
@@ -178,7 +177,7 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
         }
         let bodyObj = { receiverId: this.props.data.id, content: $('#postContent').val() };
         let bodyContent = JSON.stringify(bodyObj);
-        let response = await Utility.sendMessage(bodyContent);
+        let response = await Utility.sendMessage(bodyContent, this.context.router);
         if (response.status == 403) {
             $('#postContent').val('');
             $('#wPostError').removeClass('displaynone');
@@ -199,8 +198,8 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
     };
 
     render() {
-        console.log("4");
         let data = this.props.data;
+        console.log(this.state.data);
         return (<div className="message-message-window">
                     <div className="message-message-wHeader">
                     <div className="message-message-wReport"></div>
@@ -212,13 +211,13 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
                         {this.state.data.map(this.coverMessageProps)}
                         <div className="message-message-wcLoading">
                             <img src="http://file.cc98.org/uploadfile/2017/11/19/2348481046.gif" id="wcLoadingImg" className="displaynone"></img>
-                            <div id="wcLoadingText" className="message-message-wcLoadingText displaynone">-----------已加载全部私信-----------</div>
+                            <div id="wcLoadingText" className="message-message-wcLoadingText displaynone">没有更多消息了~</div>
                         </div>
                     </div>
                     <div className="message-message-wPost">
                         <textarea className="message-message-wPostArea" id="postContent" onFocus={this.handleFocus} onBlur={this.handleBlur}></textarea>
                         <div id="wPostNotice" className="message-message-wPostNotice" onClick={this.handleFocus}>请在这里填入您要发送的私信内容</div>
-                        <div id="wPostError" className="message-message-wPostError displaynone" onClick={this.handleFocus}>您的发送过于频繁，请稍作歇息</div>
+                        <div id="wPostError" className="message-message-wPostError displaynone" onClick={this.handleFocus}>您的发送过快，请稍作歇息~</div>
                         <button className="message-message-wPostBtn" onClick={this.postMessage}>回复</button>
                     </div>
                 </div>);

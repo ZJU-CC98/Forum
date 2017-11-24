@@ -9,14 +9,14 @@ import { Post } from './post';
 import { List } from './List';
 import { CurUserPost } from './CurUserPost';
 import { BoardList } from './BoardList';
-import { UserCenter } from './UserCenter';
+import { UserCenter } from './UserCenter/UserCenter';
 import { Message } from './Message';
 import { AllNewTopic } from './AllNewTopic';
 import { Focus } from './Focus';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { MainPage } from './MainPage';
-import { User } from './User';
+import { User } from './UserCenter/User';
 import { LogOn } from './LogOn';
 import { CreateTopic } from './CreateTopic';
 import * as Status from './Status';
@@ -55,7 +55,11 @@ export class App extends React.Component<{}, AppState> {
 					<Route path="/status/UnauthorizedTopic" component={Status.UnauthorizedTopic} />
 					<Route path="/status/NotFoundTopic" component={Status.NotFoundTopic} />
 					<Route path="/status/NotFoundBoard" component={Status.NotFoundBoard} />
-					<Route path="/status/NotFoundUser" component={Status.NotFoundUser} />
+                    <Route path="/status/NotFoundUser" component={Status.NotFoundUser} />
+                    <Route path="/status/ServerError" component={Status.ServerError} />
+                    <Route path="/status/OperationForbidden" component={Status.OperationForbidden} />
+                    <Route path="/status/Disconnected" component={Status.Disconnected} />
+                    <Route path="/status/TopicDeleted" component={Status.TopicDeleted} />
 					<Footer />
 				</div>
 			</Router></div>;

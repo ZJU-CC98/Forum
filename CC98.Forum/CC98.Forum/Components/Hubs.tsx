@@ -19,26 +19,20 @@ interface ITypedHubProxy<TServer, TClient> extends SignalR.Hub.Proxy {
  * 定义消息服务的服务器端功能。
  */
 // ReSharper disable once InconsistentNaming
-interface MessageHub {
+export interface MessageHub {
 }
 
 /**
  * 定义消息服务的客户端功能。
  */
 // ReSharper disable once InconsistentNaming
-interface MessageHubClient {
+export interface MessageHubClient {
 }
 
 /**
  * 扩展 SignalR 集线器功能。
  */
-interface SignalR {
+export interface SignalR {
     messageHub: ITypedHubProxy<MessageHub, MessageHubClient>;
 }
 
-//生命全局变量
-declare global {
-    interface JQuery {
-         export var connection: 类型;
-    }
-}

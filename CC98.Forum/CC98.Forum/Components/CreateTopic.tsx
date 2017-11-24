@@ -45,12 +45,12 @@ export class CreateTopic extends RouteComponent<{}, { title,content,topicId ,rea
     ready() {
         this.setState({ ready: true });
     }
-    async sendMdTopic(title) {
+    async sendMdTopic(content1) {
         try {
             let url = `http://apitest.niconi.cc/topic/board/${this.match.params.boardId}`;
-            let con = testEditor.getMarkdown();
+          //  let con = testEditor.getMarkdown();
             let content = {
-                content: con,
+                content: content1,
                 contentType: 1,
                 title: this.state.title
             }
@@ -72,7 +72,7 @@ export class CreateTopic extends RouteComponent<{}, { title,content,topicId ,rea
             if (mes.status === 402) {
                 alert("请输入内容");
             }
-            testEditor.setMarkdown("");
+         //   testEditor.setMarkdown("");
             const topicId = await mes.text();
             window.location.href = `/topic/${topicId}`;
         } catch (e) {
@@ -148,39 +148,41 @@ export class CreateTopic extends RouteComponent<{}, { title,content,topicId ,rea
                     <input type="radio" name="option" value="host" />回复仅楼主可见
                     <input type="radio" name="option" value="special" />回复仅特定用户可见
             </div>
-                <InputMdContent onChange={this.onUbbChange.bind(this)} ready={this.state.ready} />
-                <div id="post-topic-button" onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>发帖</div>
+                <InputMdContent onChange={this.sendMdTopic.bind(this)} ready={this.state.ready} />
+              
             </div>;
         }
       
     }
 }
-
+//  <div id="post-topic-button" onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>发帖</div>
 export class InputTitle extends React.Component<{boardId,onChange}, { title: string }>{
     constructor(props) {
         super(props);
         this.state = ({ title: "" });
     }
     handleTitleChange(event) {
-        this.props.onChange(event.target.value );
+        this.props.onChange(event.target.value);
+        console.log("value");
+        console.log(event.target.value);
         this.setState({ title: event.target.value });
+        console.log('finished');
     }
-   
+
     render() {
-        editormd("title-editormd", {
-            width: "100%",
-            height: 500,
-            path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false
-        });
-       return <div className="createTopicTitle">
+        
+        return <div className="column"><div className="createTopicTitle">
             <div className="createTopicListName">主题标题</div>
             <div className="createTopicListName">标签1</div>
            <div className="createTopicListName">标签2</div>
-           <div id="title-editormd" className="editormd">
-               <textarea className="editormd-markdown-textarea" name="title-editormd-markdown-doc"  ></textarea>
-           </div>
-        </div>;
+         
+        </div>
+            <form>
+                <div>
+                    <input value={this.state.title} onChange={this.handleTitleChange.bind(this)} />
+                </div>
+            </form>
+            </div>;
     }
 }
 export class InputUbbContent extends React.Component<{ onChange }, { content }>{
@@ -237,19 +239,26 @@ export class InputUbbContent extends React.Component<{ onChange }, { content }>{
             </div></div>;
     }
 } 
-export class InputMdContent extends React.Component<{ ready,onChange }, {content}>{
+export class InputMdContent extends React.Component<{ ready,onChange}, {content}>{
     constructor(props) {
         super(props);
         this.state = ({ content: "" });
     }
-  
-    render() {
+    componentDidMount() {
         editormd("test-editormd", {
             width: "100%",
             height: 680,
             path: "/scripts/lib/editor.md/lib/",
             saveHTMLToTextarea: false
         });
+    }
+    send() {
+        const content = testEditor.getMarkdown();
+        console.log("content" + content);
+        this.props.onChange(content);
+    }
+    render() {
+      
         return <div style={{ width: "100%", display: "flex", flexDirection: "column" }}><div id="sendTopic">
             <form>
                 <div id="test-editormd" className="editormd">
@@ -257,7 +266,7 @@ export class InputMdContent extends React.Component<{ ready,onChange }, {content
                 </div>
             </form>
             <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
-                <div id="post-topic-button"  className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>发帖</div>
+                <div id="post-topic-button" className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }} onClick={this.send.bind(this)}>发帖</div>
             </div>
             </div>
         </div>;

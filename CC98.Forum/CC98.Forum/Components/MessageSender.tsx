@@ -9,8 +9,11 @@ declare let moment: any;
 export class MessageSender extends React.Component<MessageSendReceiveProps> {
     render() {
         let userUrl = `/user/name/${this.props.senderName}`;
+        let timeClassName: string;
+        if (this.props.showTime) { timeClassName = "message-message-wcTime" }
+        else { timeClassName = "displaynone" }
         return (<div className="message-message-wc">
-                <div className="message-message-wcTime">{moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')}</div>
+                <div className={timeClassName}>{moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')}</div>
                 <div className="message-message-wcSender">
                         <a href={userUrl} target="_blank"><img className="message-message-wcPortraitUrl" src={this.props.senderPortraitUrl} /></a>
                         <div className="message-message-wcContent">

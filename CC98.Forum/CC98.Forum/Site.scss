@@ -22,6 +22,7 @@ body {
 #root {
     font-size: 16px;
     width: 100%;
+    background-color:$bgcolor2;
 }
 
 .root { //post中的一些组件用到（子裙写的，天知道为什么起这个名字），并非body下的根div元素
@@ -587,7 +588,6 @@ body {
 
 .topicInList {
     height: 4rem;
-    text-align: center;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -1219,14 +1219,14 @@ a {
             flex-shrink: 0;
             display: flex;
             flex-direction: column;
-            margin: 20px 0px 20px 0px;
+            margin: 10px 0px 10px 0px;
 
             .message-message-wcTime {
                 height: 10px;
                 font-size: 10px;
                 color: $color-thinBlack;
                 text-align: center;
-                padding: 10px 0px 21px 0px;
+                padding: 5px 0px 8px 0px;
             }
 
             .message-message-wcSender {
@@ -1235,8 +1235,8 @@ a {
                 position: relative;
 
                 .message-message-wcPortraitUrl {
-                    width: 60px;
-                    height: 60px;
+                    width: 50px;
+                    height: 50px;
                     border-radius: 50%;
                     padding: 5px 20px;
                     margin-right: 10px;
@@ -1247,8 +1247,8 @@ a {
                     position: absolute;
                     width: 0;
                     height: 0;
-                    right: 95px;
-                    top: 30px;
+                    right: 85px;
+                    top: 18px;
                     border: 8px solid;
                     border-color: transparent transparent transparent $color-border;
                 }
@@ -1258,8 +1258,8 @@ a {
                     position: absolute;
                     width: 0;
                     height: 0;
-                    right: 99px;
-                    top: 32px;
+                    right: 89px;
+                    top: 20px;
                     border: 6px solid;
                     border-color: transparent transparent transparent $color-body;
                 }
@@ -1271,8 +1271,8 @@ a {
                 position: relative;
 
                 .message-message-wcPortraitUrl {
-                    width: 60px;
-                    height: 60px;
+                    width: 50px;
+                    height: 50px;
                     border-radius: 50%;
                     padding: 5px 20px;
                     margin-left: 10px;
@@ -1283,8 +1283,8 @@ a {
                     position: absolute;
                     width: 0;
                     height: 0;
-                    left: 95px;
-                    top: 30px;
+                    left: 85px;
+                    top: 18px;
                     border: 8px solid;
                     border-color: transparent $color-border transparent transparent;
                 }
@@ -1294,8 +1294,8 @@ a {
                     position: absolute;
                     width: 0;
                     height: 0;
-                    left: 99px;
-                    top: 32px;
+                    left: 89px;
+                    top: 20px;
                     border: 6px solid;
                     border-color: transparent $color-body transparent transparent;
                 }
@@ -1307,14 +1307,14 @@ a {
                 border-radius: 3px;
                 width: auto;
                 height: auto;
-                max-width: 350px;
+                max-width: 500px;
                 margin-top: 8px;
                 margin-bottom: 10px;
 
                 .message-message-wcText {
-                    font-size: 12px;
+                    font-size: 14px;
                     color: $color-thinBlack;
-                    margin: 15px 20px 15px 20px;
+                    margin: 10px 10px 9px 10px;
                     line-height: 22px;
                     clear: both;
                 }
@@ -1708,14 +1708,12 @@ a {
 
     .focus-topic-response {
         display: flex;
-        justify-content: flex-end;
         margin: 14px 18px 30px;
-        min-width: 240px;
+        width: 180px;
 
         div {
-            flex-basis: 64px;
+            flex-basis: 60px;
             display: inline-flex;
-            justify-content: flex-end;
             align-items: baseline;
 
             i {
@@ -2327,7 +2325,13 @@ a {
     font-family: 微软雅黑;
     color: rgb(255,136,56);
 }
-
+.listTitle {
+    max-width:15rem;
+    margin-right:1rem;
+    white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
+    overflow: hidden; //不显示超过对象尺寸的内容
+    text-overflow: ellipsis; //当文本对象溢出时显示...
+}
 .topicTitle {
     font-size: 12px;
     font-family: 微软雅黑;
@@ -2584,7 +2588,7 @@ a {
         height: 20rem;
         padding: 1rem;
         border: none;
-        width: 97.5%;
+        width: 96.5%;
     }
 }
 
