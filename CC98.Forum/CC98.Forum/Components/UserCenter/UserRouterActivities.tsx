@@ -8,7 +8,7 @@ import { UserRecentPost } from '../../States/AppState';
 import * as Utility from '../../Utility';
 
 //用户中心主页帖子动态组件
-export class UserCenterExactActivitiesPosts extends React.Component<null, UserCenterExactActivitiesPostsState> {
+export class UserRouterActivities extends React.Component<{id: string}, UserCenterExactActivitiesPostsState> {
     constructor(props) {
         super(props);
         //临时填充数据
@@ -21,12 +21,11 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
 
     async scrollHandler(e) {
         let pageYLeft = document.body.scrollHeight - window.pageYOffset;
-        
+
         if (pageYLeft < 1500 && this.state.isLoading === false) {
             try {
                 this.setState({ isLoading: true });
-
-                const url = `http://apitest.niconi.cc/me/recenttopics?from=${this.state.userRecentPosts.length}&size=10`
+                const url = `http://apitest.niconi.cc/topic/userrecent?userid=${this.props.id}&from=${this.state.userRecentPosts.length}&size=10`;
                 const token = Utility.getLocalStorage("accessToken");
                 const headers = new Headers();
                 headers.append('Authorization', token);
@@ -66,17 +65,17 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
 
     async componentDidMount() {
         try {
-            const url = `http://apitest.niconi.cc/me/recenttopics?from=0&size=10`
+            const url = `http://apitest.niconi.cc/topic/userrecent?userid=${this.props.id}&from=0&size=10`
             const token = Utility.getLocalStorage("accessToken");
             const headers = new Headers();
             headers.append('Authorization', token);
             let res = await fetch(url, {
                 headers
             });
-            
+
             if (res.status === 200) {
                 let data = await res.json();
-
+                console.log(data);
                 let posts: UserRecentPost[] = [],
                     i = data.length;
 
@@ -107,7 +106,7 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
         let userRecentPost = new UserRecentPost();
         userRecentPost.approval = item.likeCount;
         userRecentPost.board = await Utility.getBoardName(item.boardId, this.context.router);
-        userRecentPost.date = item.time.replace('T', ' ').slice(0,19);
+        userRecentPost.date = item.time.replace('T', ' ').slice(0, 19);
         userRecentPost.disapproval = item.dislikeCount;
         userRecentPost.content = item.title;
         userRecentPost.id = item.id;
@@ -139,9 +138,12 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
             userRecentPosts.splice(i, 0, <hr />);
         }
         return (
-            <div className="user-posts">
-                {userRecentPosts}
-            </div>
+            <div className="user-activities">
+                <p>近期动态</p>
+                <div className="user-posts">
+                    {userRecentPosts}
+                </div>
+            </div>            
         );
     }
 }
