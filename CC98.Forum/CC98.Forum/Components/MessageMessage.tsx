@@ -15,22 +15,9 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
 
     constructor(props) {
         super(props);
-        let defaultData = [{
-            id: null,
-            name: '系统',
-            portraitUrl: 'http://www.cc98.org/pic/anonymous.gif',
-            message: [{
-                id: 9898,
-                senderId: 9898,
-                receiverId: 9898,
-                content: "",
-                isRead: true,
-                time: new Date(),
-            }]
-        }];
         this.state = {
-            data: defaultData,
-            chatObj: defaultData[0]
+            data: null,
+            chatObj: null
         };
         //如果没有设置默认的state，render第一次渲染的时候state为空，MessageWindow组件会报错
         this.getMoreContact = this.getMoreContact.bind(this);
@@ -39,7 +26,7 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
 
     async componentDidMount() {
         let token = Utility.getLocalStorage("accessToken");
-        console.log(token);
+        console.log(`进入消息开始时的token`);
 
         //获取到本人信息
         let myInfo = Utility.getLocalStorage("userInfo");
@@ -48,20 +35,22 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
         let recentContact = Utility.getStorage("recentContact");
         if (!recentContact) {
             recentContact = await Utility.getRecentContact(0, 7, this.context.router);
-            console.log("获取到的联系人");
-            console.log(recentContact);
             Utility.setStorage("recentContact", recentContact);
         }
 
         //对联系人列表重新排序，看是否有从其他页面发起的聊天
         recentContact = await Utility.sortContactList(recentContact, this.context.router);
-        
+
+        console.log("走远第一步");
+        console.log(recentContact);
+
         if (recentContact) {
             //默认第一个人为聊天对象
             this.setState({ data: recentContact, chatObj: recentContact[0] });
         }
         //默认选中第一个联系人
-        $(`#${this.state.chatObj.name}`).addClass('message-message-pFocus');
+        let chatObj = this.state.chatObj
+        $(`#${chatObj.name}`).addClass('message-message-pFocus');
     }
 
     //对this.stata.data进行批量化转化为JSX的函数，每个JSX可点击改变state里聊天对象的信息
@@ -114,22 +103,46 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
         //给我的私信添加选中样式
         $('.message-nav > div').removeClass('message-nav-focus');
         $('#message').addClass('message-nav-focus');
+        //先看state里有没有数组，防止报错
+        let data = this.state.data;
+        let chatObj = this.state.chatObj;
+        if (!chatObj) {
+            chatObj = {
+                id: 9898,
+                name: '系统',
+                portraitUrl: 'http://file.cc98.org/uploadfile/2017/11/24/024368341.gif',
+                message: [{
+                    id: 9898,
+                    senderId: 9898,
+                    receiverId: 9898,
+                    content: "",
+                    isRead: true,
+                    time: new Date(),
+                    showTime: true
+                }]
+            }
+        }
+        if (!data) {
+            data = [chatObj];
+        }
+        console.log("正式开始数据填充的时候");
+        console.log(data);
+        console.log(chatObj);
         //创建联系人列表和聊天窗口
-        console.log("重新渲染");
         return (<div className="message-message">
                 <div className="message-message-people">
                     <div className="message-message-pTitle">近期私信</div>
                     <div className="message-message-pList">
-                    {this.state.data.map(this.coverMessagePerson)}
+                    {data.map(this.coverMessagePerson)}
                     <div className="message-message-plMore" onClick={this.getMoreContact}>
                             <img id="moreImg" src="http://file.cc98.org/uploadfile/2017/11/19/2348481046.gif" className="displaynone"></img>
                             <div id="moreDot">...</div>
-                            <div id="moreShow">点此显示更多</div>
-                            <div id="moreDone" className="displaynone">已全部显示</div>
+                            <div id="moreShow">显示更多小伙伴~</div>
+                            <div id="moreDone" className="displaynone">小伙伴们都出来了~</div>
                         </div>
                     </div>
                 </div>
-                <MessageWindow data={this.state.chatObj} onChange={this.onChange} />
+                <MessageWindow data={chatObj} onChange={this.onChange} />
             </div>);
     }
 }

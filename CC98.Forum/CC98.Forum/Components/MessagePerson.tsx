@@ -8,7 +8,7 @@ export class MessagePerson extends React.Component<MessagePersonProps> {
     
     render() {
         let data = this.props.data;
-        if (data.message.length == 0) {
+        if (!data.message || data.message.length == 0) {
             data.message = [{
                 id: 9898,
                 senderId: 9898,
@@ -16,6 +16,7 @@ export class MessagePerson extends React.Component<MessagePersonProps> {
                 content: "",
                 isRead: true,
                 time: new Date(),
+                showTime: true
             }];
         }
         return (<div className="message-message-person">
