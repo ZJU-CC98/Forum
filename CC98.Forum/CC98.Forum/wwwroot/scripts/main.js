@@ -14835,18 +14835,20 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
         var userInfo = Utility.getLocalStorage('userInfo');
         _this.state = {
             avatarURL: '',
-            info: '图片长宽为160×160像素的图片',
+            info: '',
             isShown: false,
             divheight: '0px',
             selectorWidth: 160,
             selectorLeft: 0,
-            selectorTop: 0
+            selectorTop: 0,
+            avatarNow: userInfo.portraitUrl
         };
         _this.handleChange = _this.handleChange.bind(_this);
         _this.handleIMGLoad = _this.handleIMGLoad.bind(_this);
         _this.handleSelectorMove = _this.handleSelectorMove.bind(_this);
         _this.handleResizeMove = _this.handleResizeMove.bind(_this);
         _this.handleSubmit = _this.handleSubmit.bind(_this);
+        _this.handleCoverMouseMove = _this.handleCoverMouseMove.bind(_this);
         return _this;
     }
     UserCenterConfigAvatar.prototype.handleChange = function (e) {
@@ -14895,7 +14897,8 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
         this.resize.addEventListener('mousedown', this.handleResizeMove);
         this.resize.addEventListener('mousemove', this.handleResizeMove);
         this.resize.addEventListener('mouseup', this.handleResizeMove);
-        this.resize.addEventListener('mouseleave', this.handleResizeMove);
+        this.cover.addEventListener('mousemove', this.handleCoverMouseMove);
+        this.cover.addEventListener('mouseup', this.handleCoverMouseMove);
     };
     UserCenterConfigAvatar.prototype.componentWillUnmount = function () {
         this.selector.removeEventListener('mousedown', this.handleSelectorMove);
@@ -14905,7 +14908,8 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
         this.resize.removeEventListener('mousedown', this.handleResizeMove);
         this.resize.removeEventListener('mousemove', this.handleResizeMove);
         this.resize.removeEventListener('mouseup', this.handleResizeMove);
-        this.resize.removeEventListener('mouseleave', this.handleResizeMove);
+        this.cover.removeEventListener('mousemove', this.handleCoverMouseMove);
+        this.cover.removeEventListener('mouseup', this.handleCoverMouseMove);
     };
     UserCenterConfigAvatar.prototype.handleSelectorMove = function (event) {
         switch (event.type) {
@@ -14920,14 +14924,14 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
                     if (y < 0) {
                         y = 0;
                     }
-                    if (y > this.myIMG.naturalHeight - this.state.selectorWidth) {
-                        y = this.myIMG.naturalHeight - this.state.selectorWidth;
+                    if (y > this.myIMG.naturalHeight - this.state.selectorWidth + 40) {
+                        y = this.myIMG.naturalHeight - this.state.selectorWidth + 40;
                     }
                     if (x < 0) {
                         x = 0;
                     }
-                    if (x > 800 - this.state.selectorWidth) {
-                        x = 800 - this.state.selectorWidth;
+                    if (x > 824 - this.state.selectorWidth) {
+                        x = 824 - this.state.selectorWidth;
                     }
                     this.setState({
                         selectorTop: y,
@@ -14974,7 +14978,8 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
                     case 2:
                         res = _a.sent();
                         this.setState({
-                            info: '修改成功'
+                            info: '修改成功',
+                            avatarNow: data
                         });
                         return [2 /*return*/];
                 }
@@ -14989,11 +14994,8 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
                 this.dragging = event.target;
                 break;
             case 'mousemove':
-                this.diffY = event.clientX - event.target.offsetLeft;
                 if (this.dragging !== null) {
-                    console.log(this.state.selectorWidth);
-                    console.log(this.state.selectorTop);
-                    console.log(this.state.selectorWidth + this.state.selectorTop + "px");
+                    this.diffY = event.clientX - event.target.offsetLeft;
                     this.setState(function (prevState) {
                         var num = prevState.selectorWidth + _this.diffY - _this.diffX;
                         if (!isNaN(num)) {
@@ -15015,6 +15017,33 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
                 break;
             case 'mouseleave':
                 this.dragging = null;
+                break;
+        }
+    };
+    UserCenterConfigAvatar.prototype.handleCoverMouseMove = function (e) {
+        var _this = this;
+        switch (e.type) {
+            case 'mouseup':
+                this.dragging = null;
+                break;
+            case 'mousemove':
+                if (this.dragging !== null && this.dragging.id === 'resize') {
+                    this.diffY = e.clientX - this.dragging.offsetLeft;
+                    this.setState(function (prevState) {
+                        var num = prevState.selectorWidth + _this.diffY - _this.diffX;
+                        if (!isNaN(num)) {
+                            if (num < 80) {
+                                num = 80;
+                            }
+                            if (num > 500) {
+                                num = 500;
+                            }
+                        }
+                        return {
+                            selectorWidth: isNaN(num) ? prevState.selectorWidth : num
+                        };
+                    });
+                }
                 break;
         }
     };
@@ -15041,7 +15070,7 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
                     React.createElement("div", { style: { position: 'absolute', width: '824px', overflow: 'hidden' } },
                         React.createElement("canvas", { id: "newAvatar", style: style, ref: function (a) { _this.newAvatar = a; } }),
                         React.createElement("canvas", { ref: function (canvas) { _this.myCanvas = canvas; }, style: { position: 'relative' } }),
-                        React.createElement("div", { id: "cover" }),
+                        React.createElement("div", { id: "cover", ref: function (div) { _this.cover = div; } }),
                         React.createElement("div", { className: "imgdata", ref: function (div) { _this.selector = div; }, style: { width: this.state.selectorWidth + "px", height: this.state.selectorWidth + "px", borderRadius: this.state.selectorWidth / 2 + "px", top: this.state.selectorTop + "px", left: this.state.selectorLeft + "px" } },
                             React.createElement("img", { src: this.state.avatarURL, style: { position: 'relative', top: 20 - this.state.selectorTop + "px", left: 20 - this.state.selectorLeft + "px" } })),
                         React.createElement("div", { id: "selector", ref: function (div) { _this.selector = div; }, style: { width: this.state.selectorWidth + "px", height: this.state.selectorWidth + "px", borderRadius: this.state.selectorWidth / 2 + "px", top: this.state.selectorTop + "px", left: this.state.selectorLeft + "px" } }),

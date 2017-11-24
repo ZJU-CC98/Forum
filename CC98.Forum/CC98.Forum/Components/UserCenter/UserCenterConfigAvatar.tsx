@@ -11,17 +11,20 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
     selector: HTMLDivElement;
     resize: HTMLSpanElement;
     newAvatar: HTMLCanvasElement;
+    cover: HTMLDivElement;
     constructor(props) {
         super(props);
         const userInfo = Utility.getLocalStorage('userInfo');
         this.state = {
             avatarURL: '',
-            info: '图片长宽为160×160像素的图片',
+            info: '',
             isShown: false,
             divheight: '0px',
             selectorWidth: 160,
             selectorLeft: 0,
-            selectorTop: 0
+            selectorTop: 0,
+            avatarNow: userInfo.portraitUrl,
+            isLoading: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -29,6 +32,7 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
         this.handleSelectorMove = this.handleSelectorMove.bind(this);
         this.handleResizeMove = this.handleResizeMove.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleCoverMouseMove = this.handleCoverMouseMove.bind(this);
     }
     
     handleChange(e) {
@@ -81,7 +85,8 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
         this.resize.addEventListener('mousedown', this.handleResizeMove);
         this.resize.addEventListener('mousemove', this.handleResizeMove);
         this.resize.addEventListener('mouseup', this.handleResizeMove);
-        this.resize.addEventListener('mouseleave', this.handleResizeMove);
+        this.cover.addEventListener('mousemove', this.handleCoverMouseMove);
+        this.cover.addEventListener('mouseup', this.handleCoverMouseMove);
     }
 
     componentWillUnmount() {
@@ -92,10 +97,11 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
         this.resize.removeEventListener('mousedown', this.handleResizeMove);
         this.resize.removeEventListener('mousemove', this.handleResizeMove);
         this.resize.removeEventListener('mouseup', this.handleResizeMove);
-        this.resize.removeEventListener('mouseleave', this.handleResizeMove);
+        this.cover.removeEventListener('mousemove', this.handleCoverMouseMove);
+        this.cover.removeEventListener('mouseup', this.handleCoverMouseMove);
     }
 
-    dragging: null;
+    dragging: HTMLElement;
     diffX: number;
     diffY: number;
     handleSelectorMove(event) {
@@ -110,9 +116,9 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
                     let y = event.clientY - this.diffY,
                         x = event.clientX - this.diffX;
                     if (y < 0) { y = 0; }
-                    if (y > this.myIMG.naturalHeight - this.state.selectorWidth) { y = this.myIMG.naturalHeight - this.state.selectorWidth; }
+                    if (y > this.myIMG.naturalHeight - this.state.selectorWidth + 40) { y = this.myIMG.naturalHeight - this.state.selectorWidth + 40; }
                     if (x < 0) { x = 0; }
-                    if (x > 800 - this.state.selectorWidth) { x = 800 - this.state.selectorWidth; }
+                    if (x > 824 - this.state.selectorWidth) { x = 824 - this.state.selectorWidth; }
                     this.setState({
                         selectorTop: y,
                         selectorLeft: x
@@ -141,20 +147,40 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
         canvas.toBlob(async (result) => {
             let file = new File([result], '头像.jpg', { type: 'image/jpeg', lastModified: Date.now() });
             const avatar = await Utility.uploadFile(file);
-            const token = Utility.getLocalStorage('accessToken');
-            const url = 'http://apitest.niconi.cc/user/portrait';
-            let myHeaders = new Headers();
-            myHeaders.append('Content-Type', 'application/json');
-            myHeaders.append('Authorization', token);
-            let data = `http://apitest.niconi.cc${avatar.content}`;
-            let res = await fetch(url, {
-                method: 'PUT',
-                headers: myHeaders,
-                body: JSON.stringify(data)
-            });
-            this.setState({
-                info: '修改成功'
-            });
+            try {
+                this.setState({
+                    isLoading: true
+                });
+                const token = Utility.getLocalStorage('accessToken');
+                const url = 'http://apitest.niconi.cc/user/portrait';
+                let myHeaders = new Headers();
+                myHeaders.append('Content-Type', 'application/json');
+                myHeaders.append('Authorization', token);
+                let data = `http://apitest.niconi.cc${avatar.content}`;
+                let res = await fetch(url, {
+                    method: 'PUT',
+                    headers: myHeaders,
+                    body: JSON.stringify(data)
+                });
+                if (res.status === 200) {
+                    this.setState({
+                        info: '修改成功',
+                        avatarNow: data,
+                        isLoading: false
+                    });
+                    let userInfo = Utility.getLocalStorage('userInfo');
+                    userInfo.portraitUrl = data;
+                    Utility.setLocalStorage('userInfo', userInfo);
+                } else {
+                    throw {};
+                }
+                
+            } catch (e) {
+                this.setState({
+                    info: '修改失败',
+                    isLoading: false
+                });
+            }
         },'image/jpeg',0.75);
     }
 
@@ -165,11 +191,8 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
                 this.dragging = event.target;
                 break;
             case 'mousemove':
-                this.diffY = event.clientX - event.target.offsetLeft;
                 if (this.dragging !== null) {
-                    console.log(this.state.selectorWidth);
-                    console.log(this.state.selectorTop);
-                    console.log(`${this.state.selectorWidth + this.state.selectorTop}px`);
+                    this.diffY = event.clientX - event.target.offsetLeft;
                     this.setState((prevState) => {
                         let num = prevState.selectorWidth + this.diffY - this.diffX;
                         if (!isNaN(num)) {
@@ -190,6 +213,30 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
                 break;
         }
     }
+
+    handleCoverMouseMove(e) {
+        switch (e.type) {
+            case 'mouseup':
+                this.dragging = null;
+                break;
+            case 'mousemove':
+                if (this.dragging !== null && this.dragging.id === 'resize') {
+                    this.diffY = e.clientX - this.dragging.offsetLeft;
+                    this.setState((prevState) => {
+                        let num = prevState.selectorWidth + this.diffY - this.diffX;
+                        if (!isNaN(num)) {
+                            if (num < 80) { num = 80 }
+                            if (num > 500) { num = 500 }
+                        }
+                        return {
+                            selectorWidth: isNaN(num) ? prevState.selectorWidth : num
+                        };
+                    });
+                }
+                break;
+        }
+    }
+
     render() {
         const style = {
             display: 'none'
@@ -199,14 +246,14 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
             <div>
                 <h2>修改头像</h2>
                 <div className="user-center-config-avatar">
-                    <img src={userInfo.portraitUrl}></img>
+                    <img src={this.state.avatarNow}></img>
                     <div>
                         <button id="chooseDefaultAvatar" type="button" >选择论坛头像</button>
                         <div>
                             <input onChange={this.handleChange} id="uploadAvatar" type="file" style={style} />
                             <label htmlFor="uploadAvatar"><p>选择本地图片</p></label>
                             <p>{this.state.info}</p>
-                            <button type="button" style={this.state.isShown ? {} : style} onClick={this.handleSubmit}>提交</button>
+                            <button type="button" style={this.state.isShown ? {} : style} onClick={this.handleSubmit} disabled={this.state.isLoading}>提交</button>
                         </div>
                     </div>
                     <div className="user-center-config-avatar-preview" style={this.state.isShown ? { opacity: 1, marginTop: '2rem' } : { zIndex: -1 }}>
@@ -214,7 +261,7 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
                         <div style={{ position: 'absolute', width: '824px', overflow: 'hidden' }}>
                             <canvas id="newAvatar" style={style} ref={(a) => { this.newAvatar = a;}}></canvas>
                             <canvas ref={(canvas) => { this.myCanvas = canvas }} style={{ position: 'relative'}} />
-                            <div id="cover"></div>
+                            <div id="cover" ref={(div) => { this.cover = div; }}></div>
                             <div className="imgdata" ref={(div) => { this.selector = div; }} style={{ width: `${this.state.selectorWidth}px`, height: `${this.state.selectorWidth}px`, borderRadius: `${this.state.selectorWidth / 2}px`, top: `${this.state.selectorTop}px`, left: `${this.state.selectorLeft}px` }}>
                                 <img src={this.state.avatarURL} style={{ position: 'relative', top: `${20-this.state.selectorTop}px`, left: `${20-this.state.selectorLeft}px` }} />
                             </div>
@@ -238,4 +285,6 @@ interface UserCenterConfigAvatarState {
     selectorWidth: number;
     selectorTop: number;
     selectorLeft: number;
+    avatarNow: string;
+    isLoading: boolean;
 }
