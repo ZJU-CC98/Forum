@@ -8600,7 +8600,7 @@ var UserCenterMyFollowingsUser = /** @class */ (function (_super) {
     function UserCenterMyFollowingsUser(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
-            buttonInfo: '取消关注',
+            buttonInfo: '已关注',
             buttonIsDisabled: false,
             isFollowing: true
         };
@@ -8610,97 +8610,65 @@ var UserCenterMyFollowingsUser = /** @class */ (function (_super) {
     }
     UserCenterMyFollowingsUser.prototype.unfollow = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, userId, url, headers, res, e_1;
+            var res;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        this.setState({
-                            buttonIsDisabled: true,
-                            buttonInfo: '取关中'
-                        });
-                        token = Utility.getLocalStorage("accessToken");
-                        userId = this.props.userFanInfo.id;
-                        url = "http://apitest.niconi.cc/user/unfollow/" + userId;
-                        headers = new Headers();
-                        headers.append('Authorization', token);
-                        return [4 /*yield*/, fetch(url, {
-                                method: 'DELETE',
-                                headers: headers
-                            })];
-                    case 1:
-                        res = _a.sent();
-                        if (res.status === 200) {
-                            this.setState({
-                                buttonIsDisabled: false,
-                                buttonInfo: '重新关注',
-                                isFollowing: false
-                            });
-                        }
-                        else {
-                            throw {};
-                        }
-                        return [3 /*break*/, 3];
-                    case 2:
-                        e_1 = _a.sent();
-                        this.setState({
-                            buttonIsDisabled: false,
-                            buttonInfo: '取关失败',
-                            isFollowing: true
-                        });
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
+                this.setState({
+                    buttonIsDisabled: true,
+                    buttonInfo: '取关中'
+                });
+                res = Utility.unfollowUser(this.props.userFanInfo.id);
+                if (res) {
+                    this.setState({
+                        buttonIsDisabled: false,
+                        buttonInfo: '关注',
+                        isFollowing: false
+                    });
                 }
+                else {
+                    this.setState({
+                        buttonIsDisabled: false,
+                        buttonInfo: '取关失败',
+                        isFollowing: true
+                    });
+                }
+                return [2 /*return*/];
             });
         });
     };
     UserCenterMyFollowingsUser.prototype.follow = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, userId, url, headers, res, e_2;
+            var res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
                         this.setState({
                             buttonIsDisabled: true,
                             buttonInfo: '关注中'
                         });
-                        token = Utility.getLocalStorage("accessToken");
-                        userId = this.props.userFanInfo.id;
-                        url = "http://apitest.niconi.cc/user/follow/" + userId;
-                        headers = new Headers();
-                        headers.append('Authorization', token);
-                        return [4 /*yield*/, fetch(url, {
-                                method: 'POST',
-                                headers: headers
-                            })];
+                        return [4 /*yield*/, Utility.followUser(this.props.userFanInfo.id)];
                     case 1:
                         res = _a.sent();
-                        if (res.status === 200) {
+                        if (res) {
                             this.setState({
                                 buttonIsDisabled: false,
-                                buttonInfo: '取消关注',
+                                buttonInfo: '已关注',
                                 isFollowing: true
                             });
                         }
                         else {
-                            throw {};
+                            this.setState({
+                                buttonIsDisabled: false,
+                                buttonInfo: '关注失败',
+                                isFollowing: false
+                            });
                         }
-                        return [3 /*break*/, 3];
-                    case 2:
-                        e_2 = _a.sent();
-                        this.setState({
-                            buttonIsDisabled: false,
-                            buttonInfo: '关注失败',
-                            isFollowing: false
-                        });
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
+                        return [2 /*return*/];
                 }
             });
         });
     };
     UserCenterMyFollowingsUser.prototype.render = function () {
+        var _this = this;
         return (React.createElement("div", { className: "user-center-myfollowings-user" },
             React.createElement("img", { src: this.props.userFanInfo.avatarImgURL }),
             React.createElement("p", null,
@@ -8710,7 +8678,19 @@ var UserCenterMyFollowingsUser = /** @class */ (function (_super) {
                 React.createElement("span", { className: "user-center-myfollowings-user-posts" }, this.props.userFanInfo.posts),
                 "\u7C89\u4E1D",
                 React.createElement("span", { className: "user-center-myfollowings-user-fans" }, this.props.userFanInfo.fans)),
-            React.createElement("button", { type: "button", id: this.state.isFollowing ? '' : 'follow', onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo)));
+            React.createElement("button", { type: "button", id: this.state.isFollowing ? '' : 'follow', onMouseOver: function () {
+                    if (_this.state.isFollowing && !_this.state.buttonIsDisabled) {
+                        _this.setState({
+                            buttonInfo: '取消关注'
+                        });
+                    }
+                }, onMouseLeave: function () {
+                    if (_this.state.isFollowing && !_this.state.buttonIsDisabled) {
+                        _this.setState({
+                            buttonInfo: '已关注'
+                        });
+                    }
+                }, onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo)));
     };
     return UserCenterMyFollowingsUser;
 }(React.Component));
@@ -14368,7 +14348,7 @@ var UserExactProfile = /** @class */ (function (_super) {
         _this.state = {
             isFollowing: _this.props.userInfo.isFollowing,
             buttonIsDisabled: false,
-            buttonInfo: _this.props.userInfo.isFollowing ? '取消关注' : '关注'
+            buttonInfo: _this.props.userInfo.isFollowing ? '已关注' : '关注'
         };
         _this.unfollow = _this.unfollow.bind(_this);
         _this.follow = _this.follow.bind(_this);
@@ -14376,49 +14356,32 @@ var UserExactProfile = /** @class */ (function (_super) {
     }
     UserExactProfile.prototype.follow = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, userId, url, headers, res, e_1;
+            var res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        token = Utility.getLocalStorage("accessToken");
-                        if (!token) {
-                            this.setState({
-                                buttonIsDisabled: true,
-                                buttonInfo: '请先登录'
-                            });
-                            return [2 /*return*/];
-                        }
-                        userId = this.props.userInfo.id;
-                        url = "http://apitest.niconi.cc/user/follow/" + userId;
-                        headers = new Headers();
-                        headers.append('Authorization', token);
-                        return [4 /*yield*/, fetch(url, {
-                                method: 'POST',
-                                headers: headers
-                            })];
+                        this.setState({
+                            buttonIsDisabled: true,
+                            buttonInfo: '关注中'
+                        });
+                        return [4 /*yield*/, Utility.followUser(Number.parseInt(this.props.userInfo.id))];
                     case 1:
                         res = _a.sent();
-                        if (res.status === 200) {
+                        if (res) {
                             this.setState({
                                 buttonIsDisabled: false,
-                                buttonInfo: '取消关注',
+                                buttonInfo: '已关注',
                                 isFollowing: true
                             });
                         }
                         else {
-                            throw {};
+                            this.setState({
+                                buttonIsDisabled: false,
+                                buttonInfo: '关注失败',
+                                isFollowing: false
+                            });
                         }
-                        return [3 /*break*/, 3];
-                    case 2:
-                        e_1 = _a.sent();
-                        this.setState({
-                            buttonIsDisabled: false,
-                            buttonInfo: '关注失败',
-                            isFollowing: false
-                        });
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
+                        return [2 /*return*/];
                 }
             });
         });
@@ -14470,10 +14433,21 @@ var UserExactProfile = /** @class */ (function (_super) {
                 React.createElement("div", { id: "userId" },
                     React.createElement("p", null,
                         this.props.userInfo.name,
-                        "      ",
                         React.createElement("span", { style: { fontSize: '12px', color: this.getPrivilegeColor() } }, this.props.userInfo.privilege)),
                     React.createElement("button", { type: "button", onClick: function () { location.href = "/message/message?id=" + _this.props.userInfo.id; } }, "\u79C1\u4FE1"),
-                    React.createElement("button", { type: "button", id: this.state.isFollowing ? 'unfollow' : '', onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo))),
+                    React.createElement("button", { type: "button", id: this.state.isFollowing ? 'unfollow' : '', onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled, onMouseOver: function () {
+                            if (_this.state.isFollowing && !_this.state.buttonIsDisabled) {
+                                _this.setState({
+                                    buttonInfo: '取消关注'
+                                });
+                            }
+                        }, onMouseLeave: function () {
+                            if (_this.state.isFollowing && !_this.state.buttonIsDisabled) {
+                                _this.setState({
+                                    buttonInfo: '未关注'
+                                });
+                            }
+                        } }, this.state.buttonInfo))),
             React.createElement("div", { id: "userGenderAndBirthday" },
                 React.createElement("p", null,
                     "\u6027\u522B\uFF1A  ",
