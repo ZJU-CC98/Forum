@@ -8,7 +8,9 @@ import {
     Link
 } from 'react-router-dom';
 import { match } from "react-router";
-
+export module Constants {
+    export var testEditor;
+}
 declare let editormd: any;
 declare let testEditor: any;
 /*
@@ -37,11 +39,21 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
         return (this.props as any).match;
     }
 }
-export class CreateTopic extends RouteComponent<{}, { title,content,topicId ,ready,mode}, {boardId}> {   //发帖
+export class CreateTopic extends RouteComponent<{}, { title,content,topicId ,ready,mode,boardName}, {boardId}> {   //发帖
     constructor(props) {
         super(props);
         this.changeEditor = this.changeEditor.bind(this);
-        this.state = ({ topicId:null,title: '', content: '', ready:false,mode:0});
+        this.state = ({ topicId: null, title: '', content: '', ready: false, mode: 0, boardName:"" });
+    }
+    async componentDidMount() {
+        const token = Utility.getLocalStorage("accessToken");
+        const url = `http://apitest.niconi.cc/Board/${this.match.params.boardId}`;
+        const headers = new Headers();
+        headers.append("Authorization", token);
+        const response = await fetch(url, { headers });
+        const data = await response.json();
+        const boardName = data.name;
+        this.setState({ boardName: boardName });
     }
     ready() {
         this.setState({ ready: true });
@@ -116,9 +128,10 @@ export class CreateTopic extends RouteComponent<{}, { title,content,topicId ,rea
     }
     render() {
         const mode = this.state.mode;
+        const url = `/list/${this.match.params.boardId}`;
         if (mode === 0) {
             return <div className="column" style={{ justifyContent: "center", width: "80%" }}>
-                <div className="createTopicBoardName"> 版面名称 > 发表主题</div>
+                <div className="createTopicBoardName"> <a href={url}>{this.state.boardName} ></a>> 发表主题</div>
                 <InputTitle boardId={this.match.params.boardId} onChange={this.onTitleChange.bind(this)} />
                 <div className="createTopicType">
                     <div className="createTopicListName">发帖类型</div>
@@ -253,7 +266,7 @@ export class InputMdContent extends React.Component<{ ready,onChange}, {content}
         this.state = ({ content: "" });
     }
     componentDidMount() {
-        editormd("test-editormd", {
+        Constants.testEditor=editormd("test-editormd", {
             width: "100%",
             height: 680,
             path: "/scripts/lib/editor.md/lib/",
@@ -261,8 +274,7 @@ export class InputMdContent extends React.Component<{ ready,onChange}, {content}
         });
     }
     send() {
-        const content = testEditor.getMarkdown();
-        console.log("content" + content);
+        const content = Constants.testEditor.getMarkdown();
         this.props.onChange(content);
     }
     render() {

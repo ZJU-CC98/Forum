@@ -13,6 +13,10 @@ import { UbbContainer } from './UbbContainer';
 declare let moment: any;
 declare let testEditor: any;
 declare let editormd: any;
+
+export module Constants {
+    export var testEditor;
+}
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
 
     constructor(props?, context?) {
@@ -938,13 +942,21 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
         this.state = ({ content: '',mode:1 });
     }
     componentDidMount() {
-
+        Constants.testEditor = editormd("test-editormd", {
+            width: "100%",
+            height: 640,
+            path: "/scripts/lib/editor.md/lib/",
+            saveHTMLToTextarea: false,
+            imageUpload: false,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "http://apitest.niconi.cc/file/",
+        });
     }
     componentWillReceiveProps(newProps) {
       
     }
     componentDidUpdate() {
-        editormd("test-editormd", {
+        Constants.testEditor = editormd("test-editormd", {
             width: "100%",
             height: 640,
             path: "/scripts/lib/editor.md/lib/",
@@ -979,7 +991,7 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
     async sendMdTopic() {
         try {
             let url = `http://apitest.niconi.cc/post/topic/${this.props.topicid}`;
-            let c = testEditor.getMarkdown();
+            let c = Constants.testEditor.getMarkdown();
             let content = {
                 content: c,
                 contentType: 1,
@@ -1003,7 +1015,7 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
             if (mes.status === 402) {
                 alert("请输入内容");
             }
-            testEditor.setMarkdown("");
+            Constants.testEditor.setMarkdown("");
             this.props.onChange();
             this.setState({ content: "" });
         } catch (e) {
@@ -1025,7 +1037,7 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
         const url = res.content;
         if (this.state.mode === 1) {        
             const str = `![](http://apitest.niconi.cc${url})`;
-            testEditor.appendMarkdown(str);
+            Constants.testEditor.appendMarkdown(str);
         } else {
             const str = `[img]http://apitest.niconi.cc${url}[/img]`;
             const ex = this.state.content;
