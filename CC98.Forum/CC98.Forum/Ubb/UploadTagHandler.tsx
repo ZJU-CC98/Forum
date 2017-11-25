@@ -19,7 +19,7 @@ export class UploadTagHandler extends Ubb.TextTagHandler {
             return content;
         }
 
-        const imageTag = <img src={imageUri} alt={title} />;
+        const imageTag = <img style={{ maxWidth:'100%' }} src={imageUri} alt={title} />;
 
         // HTML5 模式下，使用 figure 表示插图
         if (context.options.compatibility === Ubb.UbbCompatiblityMode.EnforceMorden) {

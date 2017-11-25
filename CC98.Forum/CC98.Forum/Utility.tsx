@@ -14,7 +14,7 @@ declare let editormd: any;
 declare let testEditor: any;
 declare let moment: any;
 
-export async function getBoardTopicAsync(curPage, boardid,router) {
+export async function getBoardTopicAsync(curPage, boardid, router) {
     try {
         const token = getLocalStorage("accessToken");
         const startPage = (curPage - 1) * 20;
@@ -23,10 +23,10 @@ export async function getBoardTopicAsync(curPage, boardid,router) {
         const totalTopicCountResponse = await fetch(`http://apitest.niconi.cc/Board/${boardid}`);
         //找不到版面
         if (totalTopicCountResponse.status == 404) {
-            router.history.replace('/status/NotFoundBoard');
+            //window.location.href = '/status/NotFoundBoard';
         }
         if (totalTopicCountResponse.status === 500) {
-            router.history.replace('/status/ServerError');
+            //window.location.href = '/status/ServerError';
         }
         const totalTopicCountJson = await totalTopicCountResponse.json();
 
@@ -48,25 +48,27 @@ export async function getBoardTopicAsync(curPage, boardid,router) {
             { headers });
         //无权限进版面
         if (response.status === 401) {
-            router.history.replace('/status/UnauthorizedBoard');
+            //window.location.href = '/status/UnauthorizedBoard';
         }
         //版面不存在
         if (response.status === 404) {
-            router.history.replace('/status/NotFoundBoard');
+            //window.location.href = '/status/NotFoundBoard';
         }
         if (response.status === 500) {
-            router.history.replace('/status/ServerError');
+            //window.location.href = '/status/ServerError';
         }
         const data: State.TopicTitleAndContentState[] = await response.json();
         for (let i = 0; i < topicNumberInPage; i++) {
-            boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime, data[i].likeCount, data[i].dislikeCount, data[i].replyCount || 0, data[i].highlightInfo, data[i].topState);
+            boardtopics[i] = {
+                ...data[i], replyCount: data[i].replyCount || 0
+            }
         }
 
         return boardtopics;
 
 
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //window.location.href = "/status/Disconnected";
     }
 
 }
@@ -82,18 +84,18 @@ export async function getTopic(topicid: number, router) {
             const str = await response.text();
             switch (str) {
                 case 'topic_not_exists':
-                    router.history.replace("/status/NotFoundTopic");
+                    //window.location.href = "/status/NotFoundTopic";
                     break;
                 case 'topic_is_deleted':
-                    router.history.replace("/status/TopicDeleted");
+                    //window.location.href = "/status/TopicDeleted";
                     break;
                 default:
-                    router.history.replace("/status/NotFoundTopic");
+                    //window.location.href = "/status/NotFoundTopic";
             }
-            router.history.replace("/status/NotFoundTopic");
+            //window.location.href = "/status/NotFoundTopic";
         }
         if (response.status === 500) {
-            router.history.replace("/status/ServerError");
+            //window.location.href = "/status/ServerError";
         }
         const data = await response.json();
 
@@ -103,20 +105,20 @@ export async function getTopic(topicid: number, router) {
             const str = await hitCountResponse.text();
             switch (str) {
                 case 'topic_not_exists':
-                    router.history.replace("/status/NotFoundTopic");
+                    //window.location.href = "/status/NotFoundTopic";
                     break;
                 case 'topic_is_deleted':
-                    router.history.replace("/status/TopicDeleted");
+                    //window.location.href = "/status/TopicDeleted";
                     break;
                 default:
-                    router.history.replace("/status/NotFoundTopic");
+                    //window.location.href = "/status/NotFoundTopic";
             }
         }
-         if (hitCountResponse.status === 401) {
-             router.history.replace("/status/UnauthorizedTopic");
+        if (hitCountResponse.status === 401) {
+            //window.location.href = "/status/UnauthorizedTopic";
         }
         if (hitCountResponse.status === 500) {
-            router.history.replace("/status/ServerError");
+            //window.location.href = "/status/ServerError";
         }
         const hitCountJson = await hitCountResponse.json();
         const hitCount = hitCountJson.hitCount;
@@ -124,20 +126,20 @@ export async function getTopic(topicid: number, router) {
         if (data[0].isAnonymous != true) {
             const userMesResponse = await fetch(`http://apitest.niconi.cc/User/${data[0].userId}`, { headers });
             if (userMesResponse.status === 404) {
-                router.history.replace("/status/NotFoundUser");
+                //window.location.href = "/status/NotFoundUser";
             }
             const userMesJson = await userMesResponse.json();
-            topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType,data[0].isFollowing);
+            topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing);
         } else {
             topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing);
 
-}
+        }
 
-            return topicMessage;
+        return topicMessage;
 
-        
+
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function getTopicContent(topicid: number, curPage: number, router) {
@@ -151,57 +153,64 @@ export async function getTopicContent(topicid: number, curPage: number, router) 
             ? await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}?from=${startPage}&size=10`, { headers })
             : await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}?from=1&size=9`, { headers });
         if (topic.status === 401) {
-            router.history.replace("/status/UnauthorizedTopic");
+            //window.location.href = "/status/UnauthorizedTopic";
         }
         //两种
         if (topic.status === 404) {
-            router.history.replace("/status/");
+            //window.location.href = "/status/";
         }
         if (topic.status === 500) {
-            router.history.replace("/status/ServerError");
+            //window.location.href = "/status/ServerError";
         }
         const replyCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers });
         if (replyCountResponse.status == 404) {
-            router.history.replace("/status/NotFoundTopic");
+            //window.location.href = "/status/NotFoundTopic";
         }
         if (replyCountResponse.status == 401) {
-            router.history.replace("/status/UnauthorizedTopic");
+            //window.location.href = "/status/UnauthorizedTopic";
         }
-            const replyCountJson = await replyCountResponse.json();
-            const replyCount = replyCountJson.replyCount;
-            const content = await topic.json();
-            const post: State.ContentState[] = [];
-            let topicNumberInPage: number;
-            if (curPage !== 1 && curPage * 10 <= replyCount) {
-                topicNumberInPage = 10;
-            } else if (curPage === 1 && replyCount >= 9) {
-                topicNumberInPage = 9;
-            } else if (curPage === 1 && replyCount < 9) {
-                topicNumberInPage = replyCount;
-            } else {
-                topicNumberInPage = (replyCount - (curPage - 1) * 10 + 1);
-            }
-            for (let i = 0; i < topicNumberInPage; i++) {
-                if (content[i].isAnonymous != true) {
+        const replyCountJson = await replyCountResponse.json();
+        const replyCount = replyCountJson.replyCount;
+        const content = await topic.json();
+        const post: State.ContentState[] = [];
+        let topicNumberInPage: number;
+        if (curPage !== 1 && curPage * 10 <= replyCount) {
+            topicNumberInPage = 10;
+        } else if (curPage === 1 && replyCount >= 9) {
+            topicNumberInPage = 9;
+        } else if (curPage === 1 && replyCount < 9) {
+            topicNumberInPage = replyCount;
+        } else {
+            topicNumberInPage = (replyCount - (curPage - 1) * 10 + 1);
+        }
 
-                    const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
-                    if (userMesResponse.status === 404) {
-                        window.location.href = "/status/NotFoundUser";
-                    }
-                        const userMesJson = await userMesResponse.json();
-                        post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
-                    
-                } else {
-                    let purl = 'https://www.cc98.org/pic/anonymous.gif';
-                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名' + content[i].userName.toUpperCase(), null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+        for (let i = 0; i < topicNumberInPage; i++) {
+            if (content[i].isAnonymous != true) {
 
+                const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
+                if (userMesResponse.status === 404) {
+                    //window.location.href = "/status/NotFoundUser";
                 }
-
-            }
-            return post;
+                const userMesJson = await userMesResponse.json();
+                post[i] = {
+                    ...content[i], ...userMesJson, postId: content[i].id, userImgUrl: userMesJson.portraitUrl, sendTopicNumber: userMesJson.postCount
+                }
         
+            } else {
+                let purl = 'https://www.cc98.org/pic/anonymous.gif';
+                const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
+               
+                post[i] = {
+                    ...content[i], userName: anonymousUserName, userImgUrl: purl, userId: null, signature: null, sendTopicNumber: null, postId: content[i].id
+                }
+            }
+        }
+        console.log(post);
+        return post;
+
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        console.error(e);
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function like(topicid, postid, router) {
@@ -211,22 +220,22 @@ export async function like(topicid, postid, router) {
         headers.append('Authorization', token);
         const response = await fetch(`http://apitest.niconi.cc/post/userlike?topicid=${topicid}&postid=${postid}`, { method: "POST", headers });
         if (response.status === 401) {
-            router.history.replace("/status/UnauthorizedTopic");
+            //window.location.href = "/status/UnauthorizedTopic";
         }
         if (response.status === 403) {
-            router.history.replace("/status/OperationForbidden");
+            //window.location.href = "/status/OperationForbidden";
         }
         if (response.status === 404) {
-            router.history.replace("/status/NotFoundTopic");
-        } 
-        if (response.status === 500) {
-            router.history.replace("/status/ServerError");
+            //window.location.href = "/status/NotFoundTopic";
         }
-            const data = await response.json();
-            return data;
-        
+        if (response.status === 500) {
+            //window.location.href = "/status/ServerError";
+        }
+        const data = await response.json();
+        return data;
+
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function dislike(topicid, postid, router) {
@@ -236,23 +245,23 @@ export async function dislike(topicid, postid, router) {
         headers.append('Authorization', token);
         const response = await fetch(`http://apitest.niconi.cc/post/userdislike?topicid=${topicid}&postid=${postid}`, { method: "POST", headers });
         if (response.status === 401) {
-            router.history.replace("/status/UnauthorizedTopic");
+            //window.location.href = "/status/UnauthorizedTopic";
         }
 
         if (response.status === 403) {
-            router.history.replace("/status/OperationForbidden");
+            //window.location.href = "/status/OperationForbidden";
         }
         if (response.status === 404) {
-            router.history.replace("/status/NotFoundTopic");
-        } 
-        if (response.status === 500) {
-            router.history.replace("/status/ServerError");
+            //window.location.href = "/status/NotFoundTopic";
         }
-            const data = await response.json();
-            return data;
-        
+        if (response.status === 500) {
+            //window.location.href = "/status/ServerError";
+        }
+        const data = await response.json();
+        return data;
+
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function getLikeStateAndCount(topicid, postid, router) {
@@ -263,23 +272,23 @@ export async function getLikeStateAndCount(topicid, postid, router) {
         // await fetch(`http://apitest.niconi.cc/Post/Topic/${topicid}?from=0&size=10`, { headers })
         const response = await fetch(`http://apitest.niconi.cc/likeState?topicid=${topicid}&postid=${postid}`, { headers });
         if (response.status === 401) {
-            router.history.replace("/status/UnauthorizedTopic");
+            //window.location.href = "/status/UnauthorizedTopic";
         }
 
         if (response.status === 403) {
-            router.history.replace("/status/OperationForbidden");
+            //window.location.href = "/status/OperationForbidden";
         }
         if (response.status === 404) {
-            router.history.replace("/status/NotFoundTopic");
+            //window.location.href = "/status/NotFoundTopic";
         }
         if (response.status === 500) {
-            router.history.replace("/status/ServerError");
+            //window.location.href = "/status/ServerError";
         }
-            const data = await response.json();
-            return data;
-        
+        const data = await response.json();
+        return data;
+
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function getHotReplyContent(topicid: number, router) {
@@ -290,37 +299,42 @@ export async function getHotReplyContent(topicid: number, router) {
         const response = await fetch(`http://apitest.niconi.cc/Post/Topic/Hot/${topicid}`, { headers });
         //帖子不存在
         if (response.status === 404) {
-            router.history.replace("/status/NotFoundTopic");
+            //window.location.href = "/status/NotFoundTopic";
         }
         //无权限进版面
-         if (response.status === 401) {
-             router.history.replace("/status/UnauthorizedTopic");
+        if (response.status === 401) {
+            //window.location.href = "/status/UnauthorizedTopic";
         }
         if (response.status === 500) {
-            router.history.replace("/status/ServerError");
+            //window.location.href = "/status/ServerError";
         }
         const content = await response.json();
         const post: State.ContentState[] = [];
         let topicNumberInPage: number = content.length;
         for (let i = 0; i < topicNumberInPage; i++) {
             if (content[i].isAnonymous != true) {
+
                 const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
                 if (userMesResponse.status === 404) {
-                    router.history.replace("/status/NotFoundUser");
-                }
-                if (userMesResponse.status === 500) {
-                    router.history.replace("/status/ServerError");
+                    //window.location.href = "/status/NotFoundUser";
                 }
                 const userMesJson = await userMesResponse.json();
-                post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+                post[i] = {
+                    ...content[i], ...userMesJson
+                }
+
             } else {
                 let purl = 'https://www.cc98.org/pic/anonymous.gif';
-                post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名' + content[i].userName.toUpperCase(), null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+                const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
+                const anonymousLastReplierName = `匿名${content[i].lastUpdateAuthor.toUpperCase()}`;
+                post[i] = {
+                    ...content[i], userName: anonymousUserName, userImgUrl: purl, userId: null, lastUpdateAuthor: anonymousLastReplierName, signature: null, sendTopicNumber: null
+                }
             }
         }
         return post;
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //window.location.href = "/status/Disconnected";
     }
 }
 export function getListPager(totalPage) {
@@ -339,11 +353,11 @@ export function getListPager(totalPage) {
     } else if (totalPage === 7) {
         return [1, 2, 3, 4, 5, 6, 7];
     } else {
-        return [1, 2, 3, 4,-1, totalPage - 3, totalPage - 2, totalPage - 1];
+        return [1, 2, 3, 4, -1, totalPage - 3, totalPage - 2, totalPage - 1];
     }
 }
 export function convertHotTopic(item: State.TopicTitleAndContentState) {
-    return <TopicTitleAndContent key={item.id} title={item.title} userName={item.userName} id={item.id} userId={item.userId} lastPostTime={item.lastPostTime} lastPostUser={item.lastPostUser} likeCount={item.likeCount} dislikeCount={item.dislikeCount} replyCount={item.replyCount} highlightInfo={item.highlightInfo} topState={item.topState} />
+    return <TopicTitleAndContent key={item.id} title={item.title} userName={item.userName} id={item.id} userId={item.userId} lastPostTime={item.lastPostTime} lastPostUser={item.lastPostUser} likeCount={item.likeCount} dislikeCount={item.dislikeCount} replyCount={item.replyCount} highlightInfo={item.highlightInfo} topState={item.topState} state={item.state} />
         ;
 }
 export function getPager(curPage, totalPage) {
@@ -410,27 +424,27 @@ export async function getCurUserTopic(topicid: number, userId: number, router) {
         headers.append('Authorization', token);
         const response = await fetch(`http://apitest.niconi.cc/post/Topic/user?topicid=${topicid}&userid=${userId}&from=0&size=1`, { headers });
         if (response.status === 401) {
-            router.history.replace("/status/UnauthorizedTopic");
+            //window.location.href = "/status/UnauthorizedTopic";
         }
         if (response.status === 404) {
-            router.history.replace("/status/NotFoundTopic");
+            //window.location.href = "/status/NotFoundTopic";
         }
         if (response.status === 500) {
-            router.history.replace("/status/ServerError");
+            //window.location.href = "/status/ServerError";
         }
         const data = await response.json();
         const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${data[0].userName}`);
         if (userMesResponse.status === 404) {
-            router.history.replace("/status/NotFoundUser");
+            //window.location.href = "/status/NotFoundUser";
         }
         if (userMesResponse.status === 500) {
-            router.history.replace("/status/ServerError");
+            //window.location.href = "/status/ServerError";
         }
         const userMesJson = await userMesResponse.json();
         data[0].userImgUrl = userMesJson.portraitUrl;
         return data[0];
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function getCurUserTopicContent(topicid: number, curPage: number, userName: string, userId: number, router) {
@@ -454,21 +468,20 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
         headers.append('Authorization', token);
         const topic = await fetch(`http://apitest.niconi.cc/Post/Topic/user?topicid=${topicid}&userId=${userId}&from=${start}&size=10`, { headers });
         if (topic.status === 401) {
-            router.history.replace("/status/UnauthorizedTopic");
+            //window.location.href = "/status/UnauthorizedTopic";
         }
         if (topic.status === 404) {
-            router.history.replace("/status/NotFoundTopic");
+            //window.location.href = "/status/NotFoundTopic";
         }
         if (topic.status === 500) {
-            router.history.replace("/status/ServerError");
+            //window.location.href = "/status/ServerError";
         }
         const content = await topic.json();
-
-
+        console.log("00");
         let post: State.ContentState[] = [];
         let topicNumberInPage: number;
         const replyCount = content[0].count;
-
+        console.log('11');
         if (curPage !== 1 && curPage * 10 <= replyCount) {
             topicNumberInPage = 10;
         } else if (curPage === 1 && replyCount >= 9 && isUserPoster == true) {
@@ -480,29 +493,31 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
         } else {
             topicNumberInPage = (replyCount - (curPage - 1) * 10);
         }
-
+        console.log(topicNumberInPage);
         for (let i = 0; i < topicNumberInPage; i++) {
             if (content[i].isAnonymous != true) {
                 const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
                 if (userMesResponse.status === 404) {
-                    router.history.replace("/status/NotFoundUser");
-                }
-                if (userMesResponse.status === 500) {
-                    router.history.replace("/status/ServerError");
+                    //window.location.href = "/status/NotFoundUser";
                 }
                 const userMesJson = await userMesResponse.json();
-
-                post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
-
+                post[i] = {
+                    ...content[i], ...userMesJson, postId: content[i].id, userImgUrl: userMesJson.portraitUrl, sendTopicNumber: userMesJson.postCount
+                }
+  
             } else {
                 let purl = 'https://www.cc98.org/pic/anonymous.gif';
-                post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名' + content[i].userName.toUpperCase(), null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+                const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
+       
+                post[i] = {
+                    ...content[i], userName: anonymousUserName, userImgUrl: purl, userId: null, signature: null, sendTopicNumber: null
+                }
             }
         }
 
         return post;
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //window.location.href = "/status/Disconnected";
     }
 }
 
@@ -527,10 +542,10 @@ export async function getAllNewTopic(curNum: number, router) {
          */
         const response = await fetch(`http://apitest.niconi.cc/topic/new?from=${curNum}&size=${size}`, { headers });
         if (response.status === 401) {
-            router.history.replace("/status/UnauthorizedTopic");
+            //window.location.href = "/status/UnauthorizedTopic";
         }
         if (response.status === 500) {
-            router.history.replace("/status/ServerError");
+            //window.location.href = "/status/ServerError";
         }
         const newTopic = await response.json();
         for (let i in newTopic) {
@@ -538,20 +553,20 @@ export async function getAllNewTopic(curNum: number, router) {
                 //获取作者粉丝数目
                 let userFan0 = await fetch(`http://apitest.niconi.cc/user/follow/fanCount?userid=${newTopic[i].userId}`);
                 if (userFan0.status === 404) {
-                    router.history.replace("/status/NotFoundUser");
+                    //window.location.href = "/status/NotFoundUser";
                 }
                 if (userFan0.status === 500) {
-                    router.history.replace("/status/ServerError");
+                    //window.location.href = "/status/ServerError";
                 }
                 let userFan1 = await userFan0.json();
                 newTopic[i].fanCount = userFan1;
                 //获取作者头像地址
                 let userInfo0 = await fetch(`http://apitest.niconi.cc/user/basic/${newTopic[i].userId}`);
                 if (userInfo0.status === 404) {
-                    router.history.replace("/status/NotFoundUser");
+                    //window.location.href = "/status/NotFoundUser";
                 }
                 if (userInfo0.status === 500) {
-                    router.history.replace("/status/ServerError");
+                    //window.location.href = "/status/ServerError";
                 }
                 let userInfo1 = await userInfo0.json();
                 newTopic[i].portraitUrl = userInfo1.portraitUrl;
@@ -568,7 +583,7 @@ export async function getAllNewTopic(curNum: number, router) {
         }
         return newTopic;
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //window.location.href = "/status/Disconnected";
     }
 }
 
@@ -593,10 +608,10 @@ export async function getFocusTopic(curNum: number, router) {
          */
         const response = await fetch(`http://apitest.niconi.cc/topic/customboards/new?from=${curNum}&size=${size}`, { headers });
         if (response.status === 401) {
-            router.history.replace("/status/UnauthorizedTopic");
+            //window.location.href = "/status/UnauthorizedTopic";
         }
         if (response.status === 500) {
-            router.history.replace("/status/ServerError");
+            //window.location.href = "/status/ServerError";
         }
         const newTopic = await response.json();
         for (let i in newTopic) {
@@ -604,20 +619,20 @@ export async function getFocusTopic(curNum: number, router) {
                 //获取作者粉丝数目
                 let userFan0 = await fetch(`http://apitest.niconi.cc/user/follow/fanCount?userid=${newTopic[i].userId}`);
                 if (userFan0.status === 404) {
-                    router.history.replace("/status/NotFoundUser");
+                    //window.location.href = "/status/NotFoundUser";
                 }
                 if (userFan0.status === 500) {
-                    router.history.replace("/status/ServerError");
+                    //window.location.href = "/status/ServerError";
                 }
                 let userFan1 = await userFan0.json();
                 newTopic[i].fanCount = userFan1;
                 //获取作者头像地址
                 let userInfo0 = await fetch(`http://apitest.niconi.cc/user/basic/${newTopic[i].userId}`);
                 if (userInfo0.status === 404) {
-                    router.history.replace("/status/NotFoundUser");
+                    //window.location.href = "/status/NotFoundUser";
                 }
                 if (userInfo0.status === 500) {
-                    router.history.replace("/status/ServerError");
+                    //window.location.href = "/status/ServerError";
                 }
                 let userInfo1 = await userInfo0.json();
                 newTopic[i].portraitUrl = userInfo1.portraitUrl;
@@ -635,7 +650,7 @@ export async function getFocusTopic(curNum: number, router) {
         return newTopic;
 
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //window.location.href = "/status/Disconnected";
     }
 }
 
@@ -730,12 +745,12 @@ export async function getBoardName(boardId: number, router) {
             const url = `http://apitest.niconi.cc/board/${boardId}`;
             let res = await fetch(url, { headers });
             if (res.status === 404) {
-                router.history.replace("/status/NotFoundBoard");
+                //window.location.href = "/status/NotFoundBoard";
             }
             if (res.status === 500) {
-                router.history.replace("/status/ServerError");
+                //window.location.href = "/status/ServerError";
             }
-            
+
             let data = await res.json();
             boardName = data.name;
             setLocalStorage(`boardId_${boardId}`, boardName);
@@ -744,7 +759,7 @@ export async function getBoardName(boardId: number, router) {
 
         return boardName;
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //window.location.href = "/status/Disconnected";
     }
 }
 
@@ -768,10 +783,10 @@ export async function getRecentContact(from: number, size: number, router) {
         headers.append('Authorization', token);
         let response = await fetch(`http://apitest.niconi.cc/message/recentcontactusers?from=${from}&size=${size}`, { headers });
         if (response.status === 401) {
-            //router.history.replace("/status/Loggout");
+            ////window.location.href="/status/Loggout");
         }
         if (response.status === 500) {
-            //router.history.replace("/status/ServerError");
+            ////window.location.href="/status/ServerError");
         }
         let recentContactId = await response.json();
         let url = "http://apitest.niconi.cc/user/basic"
@@ -785,10 +800,10 @@ export async function getRecentContact(from: number, size: number, router) {
         }
         let response1 = await fetch(url);
         if (response1.status === 404) {
-            //router.history.replace("/status/NotFoundUser");
+            ////window.location.href="/status/NotFoundUser");
         }
         if (response1.status === 500) {
-            //router.history.replace("/status/ServerError");
+            ////window.location.href="/status/ServerError");
         }
         let recentContact = await response1.json();
         for (let i in recentContact) {
@@ -797,7 +812,7 @@ export async function getRecentContact(from: number, size: number, router) {
         console.log(recentContact);
         return recentContact;
     } catch (e) {
-        //router.history.replace("/status/Disconnected");
+        ////window.location.href="/status/Disconnected");
     }
 }
 
@@ -811,10 +826,10 @@ export async function getRecentMessage(userId: number, from: number, size: numbe
         headers.append('Authorization', token);
         let response0 = await fetch(`http://apitest.niconi.cc/message/${userId}?from=${from}&size=${size}`, { headers });
         if (response0.status === 401) {
-            //router.history.replace("/status/Logout");
+            ////window.location.href="/status/Logout");
         }
         if (response0.status === 500) {
-            //router.history.replace("/status/ServerError");
+            ////window.location.href="/status/ServerError");
         }
         let response1 = await response0.json();
         console.log("直接获取到的Message");
@@ -822,7 +837,7 @@ export async function getRecentMessage(userId: number, from: number, size: numbe
         let recentMessage = sortRecentMessage(response1);
         return recentMessage;
     } catch (e) {
-        //router.history.replace("/status/Disconnected");
+        ////window.location.href="/status/Disconnected");
     }
 }
 
@@ -897,15 +912,15 @@ export async function sortContactList(recentContact, router) {
             try {
                 response = await fetch(`http://apitest.niconi.cc/user/basic/${chatManId}`);
                 if (response.status === 404) {
-                    //router.history.replace("/status/NotFoundUser");
+                    ////window.location.href="/status/NotFoundUser");
                 }
                 if (response.status === 500) {
-                    //router.history.replace("/status/ServerError");
+                    ////window.location.href="/status/ServerError");
                 }
                 chatMan = await response.json();
             }
             catch (e) {
-                //router.history.replace("/status/Disconnected");
+                ////window.location.href="/status/Disconnected");
                 flag = 0;
             }
             if (flag == 1) {
@@ -941,14 +956,14 @@ export async function sortContactList(recentContact, router) {
                 try {
                     response0 = await fetch(`http://apitest.niconi.cc/user/name/${chatManName}`);
                     if (response0.status === 404) {
-                        //router.history.replace("/status/NotFoundUser");
+                        ////window.location.href="/status/NotFoundUser");
                     }
                     if (response0.status === 500) {
-                        //router.history.replace("/status/ServerError");
+                        ////window.location.href="/status/ServerError");
                     }
                     response1 = await response0.json();
                 } catch (e) {
-                    //router.history.replace("/status/Disconnected");
+                    ////window.location.href="/status/Disconnected");
                     flag = 0;
                 }
                 if (flag == 1) {
@@ -974,13 +989,13 @@ export async function getTotalReplyCount(topicid, router) {
         headers.append('Authorization', token);
         const replyCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers });
         if (replyCountResponse.status === 401) {
-            router.history.replace("/status/UnauthorizedTopic");
+            //window.location.href = "/status/UnauthorizedTopic";
         }
         if (replyCountResponse.status === 404) {
-            router.history.replace("/status/NotFoundTopic");
+            //window.location.href = "/status/NotFoundTopic";
         }
         if (replyCountResponse.status === 500) {
-            router.history.replace("/status/ServerError");
+            //window.location.href = "/status/ServerError";
         }
         const replyCountJson = await replyCountResponse.json();
         const replyCount = replyCountJson.replyCount;
@@ -990,7 +1005,7 @@ export async function getTotalReplyCount(topicid, router) {
             return 1;
         }
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function getCategory(topicid, router) {
@@ -1000,13 +1015,13 @@ export async function getCategory(topicid, router) {
         headers.append('Authorization', token);
         const response = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers });
         if (response.status === 401) {
-            router.history.replace("/status/UnauthorizedTopic");
+            //window.location.href = "/status/UnauthorizedTopic";
         }
         if (response.status === 404) {
-            router.history.replace("/status/NotFoundTopic");
+            //window.location.href = "/status/NotFoundTopic";
         }
         if (response.status === 500) {
-            router.history.replace("/status/ServerError");
+            //window.location.href = "/status/ServerError";
         }
         const data = await response.json();
         const topicName = data.title;
@@ -1017,7 +1032,7 @@ export async function getCategory(topicid, router) {
         const body = { boardId: boardId, topicId: topicid, boardName: boardName, title: topicName }
         return body;
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function getUserDetails(userName, router) {
@@ -1028,17 +1043,17 @@ export async function getUserDetails(userName, router) {
         let url = `http://apitest.niconi.cc/user/name/${userName}`;
         let message = await fetch(url, { headers });
         if (message.status === 404) {
-            router.history.replace("/status/NotFoundUser");
+            //window.location.href = "/status/NotFoundUser";
         }
         if (message.status === 500) {
-            router.history.replace("/status/ServerError");
+            //window.location.href = "/status/ServerError";
         }
         let data = await message.json();
         console.log(data);
-        const body = { portraitUrl: data.portraitUrl, userName: data.name, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle ,isFollowing:data.isFollowing}
+        const body = { portraitUrl: data.portraitUrl, userName: data.name, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle, isFollowing: data.isFollowing }
         return body;
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function getLikeState(topicid, router) {
@@ -1047,25 +1062,25 @@ export async function getLikeState(topicid, router) {
         const headers = new Headers();
         headers.append('Authorization', token);
         const topic = await getTopic(topicid, router);
-        const postid = topic.postid;
-        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${topicid}&postid=${postid}`, { headers });
+        const postId = topic.postId;
+        const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${topicid}&postid=${postId}`, { headers });
         if (response.status === 401) {
-            router.history.replace("/status/UnauthorizedTopic");
+            //window.location.href = "/status/UnauthorizedTopic";
         }
         if (response.status === 403) {
-            router.history.replace("/status/OperationForbidden");
+            //window.location.href = "/status/OperationForbidden";
         }
         if (response.status === 404) {
-            router.history.replace("/status/NotFoundTopic");
+            //window.location.href = "/status/NotFoundTopic";
         }
         if (response.status === 500) {
-            router.history.replace("/status/ServerError");
+            //window.location.href = "/status/ServerError";
         } else {
             const data = await response.json();
             return data;
         }
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function refreshLikeState(topicId, postId, router) {
@@ -1075,21 +1090,21 @@ export async function refreshLikeState(topicId, postId, router) {
         headers.append('Authorization', token);
         const response = await fetch(`http://apitest.niconi.cc/post/likestate?topicid=${topicId}&postid=${postId}`, { headers });
         if (response.status === 401) {
-            router.history.replace("/status/UnauthorizedTopic");
+            //window.location.href = "/status/UnauthorizedTopic";
         }
         if (response.status === 403) {
-            router.history.replace("/status/OperationForbidden");
+            //window.location.href = "/status/OperationForbidden";
         }
         if (response.status === 404) {
-            router.history.replace("/status/NotFoundTopic");
+            //window.location.href = "/status/NotFoundTopic";
         }
         if (response.status === 500) {
-            router.history.replace("/status/ServerError");
-        } 
+            //window.location.href = "/status/ServerError";
+        }
         const data = await response.json();
         return data;
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function sendTopic(topicId, router) {
@@ -1113,22 +1128,22 @@ export async function sendTopic(topicId, router) {
         }
         );
         if (mes.status === 401) {
-            router.history.replace("/status/Logout");
+            //window.location.href = "/status/Logout";
         }
         if (mes.status === 402) {
-            router.history.replace("/status/ContentNeeded");
+            //window.location.href = "/status/ContentNeeded";
         }
         if (mes.status === 403) {
-            router.history.replace("/status/OperationForbidden");
+            //window.location.href = "/status/OperationForbidden";
         }
         if (mes.status === 404) {
-            router.history.replace("/status/NotFoundTopic");
+            //window.location.href = "/status/NotFoundTopic";
         }
         if (mes.status === 500) {
-            router.history.replace("/status/ServerError");
+            //window.location.href = "/status/ServerError";
         }
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function getListCategory(boardId, router) {
@@ -1138,16 +1153,16 @@ export async function getListCategory(boardId, router) {
         headers.append('Authorization', token);
         const boardResponse = await fetch(`http://apitest.niconi.cc/Board/${boardId}`, { headers });
         if (boardResponse.status === 404) {
-            router.history.replace("/status/NotFoundBoard");
+            //window.location.href = "/status/NotFoundBoard";
         }
         if (boardResponse.status === 500) {
-            router.history.replace("/status/ServerError");
+            //window.location.href = "/status/ServerError";
         }
         const boardData = await boardResponse.json();
         const boardName = boardData.name;
         return boardName;
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function getBoardMessage(boardId, router) {
@@ -1158,15 +1173,15 @@ export async function getBoardMessage(boardId, router) {
         const url = `http://apitest.niconi.cc/Board/${boardId}`;
         const response = await fetch(url, { headers });
         if (response.status === 404) {
-            router.history.replace("/status/NotFoundBoard");
+            //window.location.href = "/status/NotFoundBoard";
         }
         if (response.status === 500) {
-            router.history.replace("/status/ServerError");
+            //window.location.href = "/status/ServerError";
         }
         const data = await response.json();
         return data;
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function getListTotalPage(boardId, router) {
@@ -1176,17 +1191,17 @@ export async function getListTotalPage(boardId, router) {
         headers.append('Authorization', token);
         const totalTopicCountResponse = await fetch(`http://apitest.niconi.cc/Board/${boardId}`, { headers });
         if (totalTopicCountResponse.status === 404) {
-            router.history.replace("/status/NotFoundBoard");
+            //window.location.href = "/status/NotFoundBoard";
         }
         if (totalTopicCountResponse.status === 500) {
-            router.history.replace("/status/ServerError");
+            //window.location.href = "/status/ServerError";
         }
         const totalTopicCountJson = await totalTopicCountResponse.json();
         const totalTopicCount = totalTopicCountJson.topicCount;
 
         return (totalTopicCount - totalTopicCount % 20) / 20 + 1;
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function getBasicBoardMessage(boardId, curPage, router) {
@@ -1196,27 +1211,27 @@ export async function getBasicBoardMessage(boardId, curPage, router) {
         headers.append('Authorization', token);
         const response = await fetch(`http://apitest.niconi.cc/Board/${boardId}`, { headers });
         if (response.status === 404) {
-            router.history.replace("/status/NotFoundBoard");
+            //window.location.href = "/status/NotFoundBoard";
         }
         if (response.status === 500) {
-            router.history.replace("/status/ServerError");
+            //window.location.href = "/status/ServerError";
         }
-            const json = await response.json();
-            const bigPaper: string = json.bigPaper;
-            let page: number;
-            // 未提供页码，防止出错不进行后续处理
-            if (!curPage) {
-                page = 1;
-            }
-            // 转换类型
-            else { page = parseInt(curPage); }
-            const boardid = boardId;
+        const json = await response.json();
+        const bigPaper: string = json.bigPaper;
+        let page: number;
+        // 未提供页码，防止出错不进行后续处理
+        if (!curPage) {
+            page = 1;
+        }
+        // 转换类型
+        else { page = parseInt(curPage); }
+        const boardid = boardId;
         const totalPage = await getListTotalPage(boardid, router);
-            const data = { bigPaper: bigPaper, totalPage: totalPage, page: page };
-            return data;
-        
+        const data = { bigPaper: bigPaper, totalPage: totalPage, page: page };
+        return data;
+
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function getCurUserTotalReplyPage(topicId, userId, router) {
@@ -1226,13 +1241,13 @@ export async function getCurUserTotalReplyPage(topicId, userId, router) {
         headers.append('Authorization', token);
         const replyCountResponse = await fetch(`http://apitest.niconi.cc/post/topic/user?topicid=${topicId}&userid=${userId}&from=0&size=1`, { headers });
         if (replyCountResponse.status === 401) {
-            router.history.replace("/status/UnauthorizedTopic");
+            //window.location.href = "/status/UnauthorizedTopic";
         }
         if (replyCountResponse.status === 404) {
-            router.history.replace("/status/NotFoundBoard");
+            //window.location.href = "/status/NotFoundBoard";
         }
         if (replyCountResponse.status === 500) {
-            router.history.replace("/status/ServerError");
+            //window.location.href = "/status/ServerError";
         }
         const replyCountJson = await replyCountResponse.json();
         const replyCount = replyCountJson[0].count;
@@ -1242,7 +1257,7 @@ export async function getCurUserTotalReplyPage(topicId, userId, router) {
             return 1;
         }
     } catch (e) {
-        router.history.replace("/status/Disconnected");
+        //window.location.href = "/status/Disconnected";
     }
 }
 
@@ -1250,7 +1265,7 @@ export async function getCurUserTotalReplyPage(topicId, userId, router) {
  * 发送私信的函数
  * @param bodyContent
  */
-export async function sendMessage(bodyContent: string,router) {
+export async function sendMessage(bodyContent: string, router) {
     let token = getLocalStorage("accessToken");
     let myHeaders = new Headers();
     myHeaders.append('Authorization', token);
@@ -1261,10 +1276,10 @@ export async function sendMessage(bodyContent: string,router) {
         body: bodyContent
     });
     if (response.status === 401) {
-        router.history.replace("/status/Loggout");
+        //window.location.href = "/status/Loggout";
     }
     if (response.status === 500) {
-        router.history.replace("/status/ServerError");
+        //window.location.href = "/status/ServerError";
     }
     return response;
 }
@@ -1372,7 +1387,7 @@ export async function uploadFile(file: File) {
  * 关注指定id的用户
  * @param userId
  */
-export async function followUser(userId: number){
+export async function followUser(userId: number) {
     try {
         const token = getLocalStorage("accessToken");
         const url = `http://apitest.niconi.cc/user/follow/${userId}`;
@@ -1416,18 +1431,18 @@ export async function unfollowUser(userId: number) {
     }
 }
 
-export async function GetTopTopics(boardId){
+export async function GetTopTopics(boardId) {
     const token = getLocalStorage("accessToken");
     const headers = new Headers();
     headers.append("Authorization", token);
     const url = `http://apitest.niconi.cc/topic/toptopics?boardid=${boardId}`;
     const response = await fetch(url, { headers });
     const data: State.TopicTitleAndContentState[] = await response.json();
-    let topics: State.TopicTitleAndContentState[]=[];
+    let topics: State.TopicTitleAndContentState[] = [];
     for (let i = 0; i < data.length; i++) {
-        topics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime, data[i].likeCount, data[i].dislikeCount, data[i].replyCount || 0, data[i].highlightInfo, data[i].topState);
+        topics[i] = { ...data[i], replyCount: data[i].replyCount || 0 };
     }
-    for (let i = 0; i < topics.length-1; i++) {
+    for (let i = 0; i < topics.length - 1; i++) {
         for (let j = 0; j < topics.length - 1 - j; j++) {
             if (topics[j].topState <= topics[j + 1].topState) {
                 let temp = topics[j];
@@ -1441,19 +1456,29 @@ export async function GetTopTopics(boardId){
 }
 export async function GetBestTopics(boardId, curPage) {
     const start = (curPage - 1) * 20;
-    const url = `http://apitest.niconi.cc/topic/best/board/${boardId}?from=${start}&size=20 `;
+    const url = `http://apitest.niconi.cc/topic/best/board/${boardId}?from=${start}&size=20`;
     const token = getLocalStorage("accessToken");
     const headers = new Headers();
     headers.append("Authorization", token);
     const response = await fetch(url, { headers });
     const data = await response.json();
-    console.log(data);
     let boardtopics: State.TopicTitleAndContentState[] = [];
     for (let i = 0; i < data.length; i++) {
-        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime, data[i].likeCount, data[i].dislikeCount, data[i].replyCount || 0, data[i].highlightInfo, data[i].topState);
+        boardtopics[i] = { ...data[i], replyCount: data[i].replyCount || 0 };
     }
     return boardtopics;
 }
 export async function GetSaveTopics(boardId, totalPage, curPage) {
-
+    const start = (curPage - 1) * 20;
+    const url = `http://apitest.niconi.cc/topic/save/board/${boardId}?from=${start}&size=20`;
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    const response = await fetch(url, { headers });
+    const data: State.TopicTitleAndContentState[] = await response.json();
+    let boardtopics: State.TopicTitleAndContentState[] = [];
+    for (let i = 0; i < data.length; i++) {
+        boardtopics[i] = { ...data[i], replyCount: data[i].replyCount || 0 };
+    }
+    return boardtopics;
 }

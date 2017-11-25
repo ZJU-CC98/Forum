@@ -75,6 +75,14 @@ module.exports = React;
 
 "use strict";
 
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -130,10 +138,10 @@ function getBoardTopicAsync(curPage, boardid, router) {
                     totalTopicCountResponse = _a.sent();
                     //找不到版面
                     if (totalTopicCountResponse.status == 404) {
-                        router.history.replace('/status/NotFoundBoard');
+                        //window.location.href = '/status/NotFoundBoard';
                     }
                     if (totalTopicCountResponse.status === 500) {
-                        router.history.replace('/status/ServerError');
+                        //window.location.href = '/status/ServerError';
                     }
                     return [4 /*yield*/, totalTopicCountResponse.json()];
                 case 2:
@@ -158,25 +166,24 @@ function getBoardTopicAsync(curPage, boardid, router) {
                     response = _a.sent();
                     //无权限进版面
                     if (response.status === 401) {
-                        router.history.replace('/status/UnauthorizedBoard');
+                        //window.location.href = '/status/UnauthorizedBoard';
                     }
                     //版面不存在
                     if (response.status === 404) {
-                        router.history.replace('/status/NotFoundBoard');
+                        //window.location.href = '/status/NotFoundBoard';
                     }
                     if (response.status === 500) {
-                        router.history.replace('/status/ServerError');
+                        //window.location.href = '/status/ServerError';
                     }
                     return [4 /*yield*/, response.json()];
                 case 4:
                     data = _a.sent();
                     for (i = 0; i < topicNumberInPage; i++) {
-                        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime, data[i].likeCount, data[i].dislikeCount, data[i].replyCount || 0, data[i].highlightInfo, data[i].topState);
+                        boardtopics[i] = __assign({}, data[i], { replyCount: data[i].replyCount || 0 });
                     }
                     return [2 /*return*/, boardtopics];
                 case 5:
                     e_1 = _a.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];
             }
@@ -205,19 +212,17 @@ function getTopic(topicid, router) {
                     str = _a.sent();
                     switch (str) {
                         case 'topic_not_exists':
-                            router.history.replace("/status/NotFoundTopic");
+                            //window.location.href = "/status/NotFoundTopic";
                             break;
                         case 'topic_is_deleted':
-                            router.history.replace("/status/TopicDeleted");
+                            //window.location.href = "/status/TopicDeleted";
                             break;
                         default:
-                            router.history.replace("/status/NotFoundTopic");
                     }
-                    router.history.replace("/status/NotFoundTopic");
                     _a.label = 3;
                 case 3:
                     if (response.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 4:
@@ -231,21 +236,20 @@ function getTopic(topicid, router) {
                     str = _a.sent();
                     switch (str) {
                         case 'topic_not_exists':
-                            router.history.replace("/status/NotFoundTopic");
+                            //window.location.href = "/status/NotFoundTopic";
                             break;
                         case 'topic_is_deleted':
-                            router.history.replace("/status/TopicDeleted");
+                            //window.location.href = "/status/TopicDeleted";
                             break;
                         default:
-                            router.history.replace("/status/NotFoundTopic");
                     }
                     _a.label = 7;
                 case 7:
                     if (hitCountResponse.status === 401) {
-                        router.history.replace("/status/UnauthorizedTopic");
+                        //window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (hitCountResponse.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, hitCountResponse.json()];
                 case 8:
@@ -257,7 +261,7 @@ function getTopic(topicid, router) {
                 case 9:
                     userMesResponse = _a.sent();
                     if (userMesResponse.status === 404) {
-                        router.history.replace("/status/NotFoundUser");
+                        //window.location.href = "/status/NotFoundUser";
                     }
                     return [4 /*yield*/, userMesResponse.json()];
                 case 10:
@@ -270,7 +274,6 @@ function getTopic(topicid, router) {
                 case 12: return [2 /*return*/, topicMessage];
                 case 13:
                     e_2 = _a.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 14];
                 case 14: return [2 /*return*/];
             }
@@ -280,7 +283,7 @@ function getTopic(topicid, router) {
 exports.getTopic = getTopic;
 function getTopicContent(topicid, curPage, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var startPage, endPage, token, headers, topic, _a, replyCountResponse, replyCountJson, replyCount, content, post, topicNumberInPage, i, userMesResponse, userMesJson, purl, e_3;
+        var startPage, endPage, token, headers, topic, _a, replyCountResponse, replyCountJson, replyCount, content, post, topicNumberInPage, i, userMesResponse, userMesJson, purl, anonymousUserName, e_3;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -302,23 +305,23 @@ function getTopicContent(topicid, curPage, router) {
                 case 4:
                     topic = _a;
                     if (topic.status === 401) {
-                        router.history.replace("/status/UnauthorizedTopic");
+                        //window.location.href = "/status/UnauthorizedTopic";
                     }
                     //两种
                     if (topic.status === 404) {
-                        router.history.replace("/status/");
+                        //window.location.href = "/status/";
                     }
                     if (topic.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + topicid, { headers: headers })];
                 case 5:
                     replyCountResponse = _b.sent();
                     if (replyCountResponse.status == 404) {
-                        router.history.replace("/status/NotFoundTopic");
+                        //window.location.href = "/status/NotFoundTopic";
                     }
                     if (replyCountResponse.status == 401) {
-                        router.history.replace("/status/UnauthorizedTopic");
+                        //window.location.href = "/status/UnauthorizedTopic";
                     }
                     return [4 /*yield*/, replyCountResponse.json()];
                 case 6:
@@ -350,24 +353,27 @@ function getTopicContent(topicid, curPage, router) {
                 case 9:
                     userMesResponse = _b.sent();
                     if (userMesResponse.status === 404) {
-                        window.location.href = "/status/NotFoundUser";
+                        //window.location.href = "/status/NotFoundUser";
                     }
                     return [4 /*yield*/, userMesResponse.json()];
                 case 10:
                     userMesJson = _b.sent();
-                    post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+                    post[i] = __assign({}, content[i], userMesJson, { postId: content[i].id, userImgUrl: userMesJson.portraitUrl, sendTopicNumber: userMesJson.postCount });
                     return [3 /*break*/, 12];
                 case 11:
                     purl = 'https://www.cc98.org/pic/anonymous.gif';
-                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名' + content[i].userName.toUpperCase(), null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+                    anonymousUserName = "\u533F\u540D" + content[i].userName.toUpperCase();
+                    post[i] = __assign({}, content[i], { userName: anonymousUserName, userImgUrl: purl, userId: null, signature: null, sendTopicNumber: null, postId: content[i].id });
                     _b.label = 12;
                 case 12:
                     i++;
                     return [3 /*break*/, 8];
-                case 13: return [2 /*return*/, post];
+                case 13:
+                    console.log(post);
+                    return [2 /*return*/, post];
                 case 14:
                     e_3 = _b.sent();
-                    router.history.replace("/status/Disconnected");
+                    console.error(e_3);
                     return [3 /*break*/, 15];
                 case 15: return [2 /*return*/];
             }
@@ -389,16 +395,16 @@ function like(topicid, postid, router) {
                 case 1:
                     response = _a.sent();
                     if (response.status === 401) {
-                        router.history.replace("/status/UnauthorizedTopic");
+                        //window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 403) {
-                        router.history.replace("/status/OperationForbidden");
+                        //window.location.href = "/status/OperationForbidden";
                     }
                     if (response.status === 404) {
-                        router.history.replace("/status/NotFoundTopic");
+                        //window.location.href = "/status/NotFoundTopic";
                     }
                     if (response.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -406,7 +412,6 @@ function like(topicid, postid, router) {
                     return [2 /*return*/, data];
                 case 3:
                     e_4 = _a.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -428,16 +433,16 @@ function dislike(topicid, postid, router) {
                 case 1:
                     response = _a.sent();
                     if (response.status === 401) {
-                        router.history.replace("/status/UnauthorizedTopic");
+                        //window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 403) {
-                        router.history.replace("/status/OperationForbidden");
+                        //window.location.href = "/status/OperationForbidden";
                     }
                     if (response.status === 404) {
-                        router.history.replace("/status/NotFoundTopic");
+                        //window.location.href = "/status/NotFoundTopic";
                     }
                     if (response.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -445,7 +450,6 @@ function dislike(topicid, postid, router) {
                     return [2 /*return*/, data];
                 case 3:
                     e_5 = _a.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -467,16 +471,16 @@ function getLikeStateAndCount(topicid, postid, router) {
                 case 1:
                     response = _a.sent();
                     if (response.status === 401) {
-                        router.history.replace("/status/UnauthorizedTopic");
+                        //window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 403) {
-                        router.history.replace("/status/OperationForbidden");
+                        //window.location.href = "/status/OperationForbidden";
                     }
                     if (response.status === 404) {
-                        router.history.replace("/status/NotFoundTopic");
+                        //window.location.href = "/status/NotFoundTopic";
                     }
                     if (response.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -484,7 +488,6 @@ function getLikeStateAndCount(topicid, postid, router) {
                     return [2 /*return*/, data];
                 case 3:
                     e_6 = _a.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -494,7 +497,7 @@ function getLikeStateAndCount(topicid, postid, router) {
 exports.getLikeStateAndCount = getLikeStateAndCount;
 function getHotReplyContent(topicid, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, headers, response, content, post, topicNumberInPage, i, userMesResponse, userMesJson, purl, e_7;
+        var token, headers, response, content, post, topicNumberInPage, i, userMesResponse, userMesJson, purl, anonymousUserName, anonymousLastReplierName, e_7;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -507,14 +510,14 @@ function getHotReplyContent(topicid, router) {
                     response = _a.sent();
                     //帖子不存在
                     if (response.status === 404) {
-                        router.history.replace("/status/NotFoundTopic");
+                        //window.location.href = "/status/NotFoundTopic";
                     }
                     //无权限进版面
                     if (response.status === 401) {
-                        router.history.replace("/status/UnauthorizedTopic");
+                        //window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -530,19 +533,18 @@ function getHotReplyContent(topicid, router) {
                 case 4:
                     userMesResponse = _a.sent();
                     if (userMesResponse.status === 404) {
-                        router.history.replace("/status/NotFoundUser");
-                    }
-                    if (userMesResponse.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/NotFoundUser";
                     }
                     return [4 /*yield*/, userMesResponse.json()];
                 case 5:
                     userMesJson = _a.sent();
-                    post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+                    post[i] = __assign({}, content[i], userMesJson);
                     return [3 /*break*/, 7];
                 case 6:
                     purl = 'https://www.cc98.org/pic/anonymous.gif';
-                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名' + content[i].userName.toUpperCase(), null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+                    anonymousUserName = "\u533F\u540D" + content[i].userName.toUpperCase();
+                    anonymousLastReplierName = "\u533F\u540D" + content[i].lastUpdateAuthor.toUpperCase();
+                    post[i] = __assign({}, content[i], { userName: anonymousUserName, userImgUrl: purl, userId: null, lastUpdateAuthor: anonymousLastReplierName, signature: null, sendTopicNumber: null });
                     _a.label = 7;
                 case 7:
                     i++;
@@ -550,7 +552,6 @@ function getHotReplyContent(topicid, router) {
                 case 8: return [2 /*return*/, post];
                 case 9:
                     e_7 = _a.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 10];
                 case 10: return [2 /*return*/];
             }
@@ -586,7 +587,7 @@ function getListPager(totalPage) {
 }
 exports.getListPager = getListPager;
 function convertHotTopic(item) {
-    return React.createElement(List_1.TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount, highlightInfo: item.highlightInfo, topState: item.topState });
+    return React.createElement(List_1.TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount, highlightInfo: item.highlightInfo, topState: item.topState, state: item.state });
 }
 exports.convertHotTopic = convertHotTopic;
 function getPager(curPage, totalPage) {
@@ -670,13 +671,13 @@ function getCurUserTopic(topicid, userId, router) {
                 case 1:
                     response = _a.sent();
                     if (response.status === 401) {
-                        router.history.replace("/status/UnauthorizedTopic");
+                        //window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 404) {
-                        router.history.replace("/status/NotFoundTopic");
+                        //window.location.href = "/status/NotFoundTopic";
                     }
                     if (response.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -685,10 +686,10 @@ function getCurUserTopic(topicid, userId, router) {
                 case 3:
                     userMesResponse = _a.sent();
                     if (userMesResponse.status === 404) {
-                        router.history.replace("/status/NotFoundUser");
+                        //window.location.href = "/status/NotFoundUser";
                     }
                     if (userMesResponse.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, userMesResponse.json()];
                 case 4:
@@ -697,7 +698,6 @@ function getCurUserTopic(topicid, userId, router) {
                     return [2 /*return*/, data[0]];
                 case 5:
                     e_8 = _a.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];
             }
@@ -707,7 +707,7 @@ function getCurUserTopic(topicid, userId, router) {
 exports.getCurUserTopic = getCurUserTopic;
 function getCurUserTopicContent(topicid, curPage, userName, userId, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var topicMessage, start, isUserPoster, token, headers, topic, content, post, topicNumberInPage, replyCount, i, userMesResponse, userMesJson, purl, e_9;
+        var topicMessage, start, isUserPoster, token, headers, topic, content, post, topicNumberInPage, replyCount, i, userMesResponse, userMesJson, purl, anonymousUserName, e_9;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -735,20 +735,22 @@ function getCurUserTopicContent(topicid, curPage, userName, userId, router) {
                 case 2:
                     topic = _a.sent();
                     if (topic.status === 401) {
-                        router.history.replace("/status/UnauthorizedTopic");
+                        //window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (topic.status === 404) {
-                        router.history.replace("/status/NotFoundTopic");
+                        //window.location.href = "/status/NotFoundTopic";
                     }
                     if (topic.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, topic.json()];
                 case 3:
                     content = _a.sent();
+                    console.log("00");
                     post = [];
                     topicNumberInPage = void 0;
                     replyCount = content[0].count;
+                    console.log('11');
                     if (curPage !== 1 && curPage * 10 <= replyCount) {
                         topicNumberInPage = 10;
                     }
@@ -764,6 +766,7 @@ function getCurUserTopicContent(topicid, curPage, userName, userId, router) {
                     else {
                         topicNumberInPage = (replyCount - (curPage - 1) * 10);
                     }
+                    console.log(topicNumberInPage);
                     i = 0;
                     _a.label = 4;
                 case 4:
@@ -773,19 +776,17 @@ function getCurUserTopicContent(topicid, curPage, userName, userId, router) {
                 case 5:
                     userMesResponse = _a.sent();
                     if (userMesResponse.status === 404) {
-                        router.history.replace("/status/NotFoundUser");
-                    }
-                    if (userMesResponse.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/NotFoundUser";
                     }
                     return [4 /*yield*/, userMesResponse.json()];
                 case 6:
                     userMesJson = _a.sent();
-                    post[i] = new State.ContentState(content[i].id, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, content[i].lastUpdateAuthor, content[i].lastUpdateTime, content[i].topicId, content[i].userName, userMesJson.postCount, userMesJson.portraitUrl, userMesJson.signatureCode, content[i].userId, userMesJson.privilege, content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+                    post[i] = __assign({}, content[i], userMesJson, { postId: content[i].id, userImgUrl: userMesJson.portraitUrl, sendTopicNumber: userMesJson.postCount });
                     return [3 /*break*/, 8];
                 case 7:
                     purl = 'https://www.cc98.org/pic/anonymous.gif';
-                    post[i] = new State.ContentState(null, content[i].content, content[i].time, content[i].isDeleted, content[i].floor, content[i].isAnonymous, null, content[i].lastUpdateTime, content[i].topicId, '匿名' + content[i].userName.toUpperCase(), null, purl, '', null, "匿名用户", content[i].likeCount, content[i].dislikeCount, content[i].id, content[i].contentType);
+                    anonymousUserName = "\u533F\u540D" + content[i].userName.toUpperCase();
+                    post[i] = __assign({}, content[i], { userName: anonymousUserName, userImgUrl: purl, userId: null, signature: null, sendTopicNumber: null });
                     _a.label = 8;
                 case 8:
                     i++;
@@ -793,7 +794,6 @@ function getCurUserTopicContent(topicid, curPage, userName, userId, router) {
                 case 9: return [2 /*return*/, post];
                 case 10:
                     e_9 = _a.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 11];
                 case 11: return [2 /*return*/];
             }
@@ -823,10 +823,10 @@ function getAllNewTopic(curNum, router) {
                 case 1:
                     response = _d.sent();
                     if (response.status === 401) {
-                        router.history.replace("/status/UnauthorizedTopic");
+                        //window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -844,10 +844,10 @@ function getAllNewTopic(curNum, router) {
                 case 4:
                     userFan0 = _d.sent();
                     if (userFan0.status === 404) {
-                        router.history.replace("/status/NotFoundUser");
+                        //window.location.href = "/status/NotFoundUser";
                     }
                     if (userFan0.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, userFan0.json()];
                 case 5:
@@ -857,10 +857,10 @@ function getAllNewTopic(curNum, router) {
                 case 6:
                     userInfo0 = _d.sent();
                     if (userInfo0.status === 404) {
-                        router.history.replace("/status/NotFoundUser");
+                        //window.location.href = "/status/NotFoundUser";
                     }
                     if (userInfo0.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, userInfo0.json()];
                 case 7:
@@ -884,7 +884,6 @@ function getAllNewTopic(curNum, router) {
                 case 11: return [2 /*return*/, newTopic];
                 case 12:
                     e_10 = _d.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 13];
                 case 13: return [2 /*return*/];
             }
@@ -914,10 +913,10 @@ function getFocusTopic(curNum, router) {
                 case 1:
                     response = _d.sent();
                     if (response.status === 401) {
-                        router.history.replace("/status/UnauthorizedTopic");
+                        //window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -935,10 +934,10 @@ function getFocusTopic(curNum, router) {
                 case 4:
                     userFan0 = _d.sent();
                     if (userFan0.status === 404) {
-                        router.history.replace("/status/NotFoundUser");
+                        //window.location.href = "/status/NotFoundUser";
                     }
                     if (userFan0.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, userFan0.json()];
                 case 5:
@@ -948,10 +947,10 @@ function getFocusTopic(curNum, router) {
                 case 6:
                     userInfo0 = _d.sent();
                     if (userInfo0.status === 404) {
-                        router.history.replace("/status/NotFoundUser");
+                        //window.location.href = "/status/NotFoundUser";
                     }
                     if (userInfo0.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, userInfo0.json()];
                 case 7:
@@ -975,7 +974,6 @@ function getFocusTopic(curNum, router) {
                 case 11: return [2 /*return*/, newTopic];
                 case 12:
                     e_11 = _d.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 13];
                 case 13: return [2 /*return*/];
             }
@@ -1085,10 +1083,10 @@ function getBoardName(boardId, router) {
                 case 1:
                     res = _a.sent();
                     if (res.status === 404) {
-                        router.history.replace("/status/NotFoundBoard");
+                        //window.location.href = "/status/NotFoundBoard";
                     }
                     if (res.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, res.json()];
                 case 2:
@@ -1099,7 +1097,6 @@ function getBoardName(boardId, router) {
                 case 3: return [2 /*return*/, boardName];
                 case 4:
                     e_12 = _a.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 5];
                 case 5: return [2 /*return*/];
             }
@@ -1132,10 +1129,10 @@ function getRecentContact(from, size, router) {
                 case 1:
                     response = _d.sent();
                     if (response.status === 401) {
-                        //router.history.replace("/status/Loggout");
+                        ////window.location.href="/status/Loggout");
                     }
                     if (response.status === 500) {
-                        //router.history.replace("/status/ServerError");
+                        ////window.location.href="/status/ServerError");
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -1153,10 +1150,10 @@ function getRecentContact(from, size, router) {
                 case 3:
                     response1 = _d.sent();
                     if (response1.status === 404) {
-                        //router.history.replace("/status/NotFoundUser");
+                        ////window.location.href="/status/NotFoundUser");
                     }
                     if (response1.status === 500) {
-                        //router.history.replace("/status/ServerError");
+                        ////window.location.href="/status/ServerError");
                     }
                     return [4 /*yield*/, response1.json()];
                 case 4:
@@ -1206,10 +1203,10 @@ function getRecentMessage(userId, from, size, router) {
                 case 1:
                     response0 = _a.sent();
                     if (response0.status === 401) {
-                        //router.history.replace("/status/Logout");
+                        ////window.location.href="/status/Logout");
                     }
                     if (response0.status === 500) {
-                        //router.history.replace("/status/ServerError");
+                        ////window.location.href="/status/ServerError");
                     }
                     return [4 /*yield*/, response0.json()];
                 case 2:
@@ -1305,10 +1302,10 @@ function sortContactList(recentContact, router) {
                 case 4:
                     response = _c.sent();
                     if (response.status === 404) {
-                        //router.history.replace("/status/NotFoundUser");
+                        ////window.location.href="/status/NotFoundUser");
                     }
                     if (response.status === 500) {
-                        //router.history.replace("/status/ServerError");
+                        ////window.location.href="/status/ServerError");
                     }
                     return [4 /*yield*/, response.json()];
                 case 5:
@@ -1316,7 +1313,7 @@ function sortContactList(recentContact, router) {
                     return [3 /*break*/, 7];
                 case 6:
                     e_15 = _c.sent();
-                    //router.history.replace("/status/Disconnected");
+                    ////window.location.href="/status/Disconnected");
                     flag = 0;
                     return [3 /*break*/, 7];
                 case 7:
@@ -1358,10 +1355,10 @@ function sortContactList(recentContact, router) {
                 case 14:
                     response0 = _c.sent();
                     if (response0.status === 404) {
-                        //router.history.replace("/status/NotFoundUser");
+                        ////window.location.href="/status/NotFoundUser");
                     }
                     if (response0.status === 500) {
-                        //router.history.replace("/status/ServerError");
+                        ////window.location.href="/status/ServerError");
                     }
                     return [4 /*yield*/, response0.json()];
                 case 15:
@@ -1369,7 +1366,7 @@ function sortContactList(recentContact, router) {
                     return [3 /*break*/, 17];
                 case 16:
                     e_16 = _c.sent();
-                    //router.history.replace("/status/Disconnected");
+                    ////window.location.href="/status/Disconnected");
                     flag = 0;
                     return [3 /*break*/, 17];
                 case 17:
@@ -1405,13 +1402,13 @@ function getTotalReplyCount(topicid, router) {
                 case 1:
                     replyCountResponse = _a.sent();
                     if (replyCountResponse.status === 401) {
-                        router.history.replace("/status/UnauthorizedTopic");
+                        //window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (replyCountResponse.status === 404) {
-                        router.history.replace("/status/NotFoundTopic");
+                        //window.location.href = "/status/NotFoundTopic";
                     }
                     if (replyCountResponse.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, replyCountResponse.json()];
                 case 2:
@@ -1426,7 +1423,6 @@ function getTotalReplyCount(topicid, router) {
                     return [3 /*break*/, 4];
                 case 3:
                     e_17 = _a.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -1448,13 +1444,13 @@ function getCategory(topicid, router) {
                 case 1:
                     response = _a.sent();
                     if (response.status === 401) {
-                        router.history.replace("/status/UnauthorizedTopic");
+                        //window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 404) {
-                        router.history.replace("/status/NotFoundTopic");
+                        //window.location.href = "/status/NotFoundTopic";
                     }
                     if (response.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -1472,7 +1468,6 @@ function getCategory(topicid, router) {
                     return [2 /*return*/, body];
                 case 5:
                     e_18 = _a.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];
             }
@@ -1495,10 +1490,10 @@ function getUserDetails(userName, router) {
                 case 1:
                     message = _a.sent();
                     if (message.status === 404) {
-                        router.history.replace("/status/NotFoundUser");
+                        //window.location.href = "/status/NotFoundUser";
                     }
                     if (message.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, message.json()];
                 case 2:
@@ -1508,7 +1503,6 @@ function getUserDetails(userName, router) {
                     return [2 /*return*/, body];
                 case 3:
                     e_19 = _a.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -1518,7 +1512,7 @@ function getUserDetails(userName, router) {
 exports.getUserDetails = getUserDetails;
 function getLikeState(topicid, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, headers, topic, postid, response, data, e_20;
+        var token, headers, topic, postId, response, data, e_20;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1529,21 +1523,20 @@ function getLikeState(topicid, router) {
                     return [4 /*yield*/, getTopic(topicid, router)];
                 case 1:
                     topic = _a.sent();
-                    postid = topic.postid;
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/likestate?topicid=" + topicid + "&postid=" + postid, { headers: headers })];
+                    postId = topic.postId;
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/likestate?topicid=" + topicid + "&postid=" + postId, { headers: headers })];
                 case 2:
                     response = _a.sent();
                     if (response.status === 401) {
-                        router.history.replace("/status/UnauthorizedTopic");
+                        //window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 403) {
-                        router.history.replace("/status/OperationForbidden");
+                        //window.location.href = "/status/OperationForbidden";
                     }
                     if (response.status === 404) {
-                        router.history.replace("/status/NotFoundTopic");
+                        //window.location.href = "/status/NotFoundTopic";
                     }
                     if (!(response.status === 500)) return [3 /*break*/, 3];
-                    router.history.replace("/status/ServerError");
                     return [3 /*break*/, 5];
                 case 3: return [4 /*yield*/, response.json()];
                 case 4:
@@ -1552,7 +1545,6 @@ function getLikeState(topicid, router) {
                 case 5: return [3 /*break*/, 7];
                 case 6:
                     e_20 = _a.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 7];
                 case 7: return [2 /*return*/];
             }
@@ -1574,16 +1566,16 @@ function refreshLikeState(topicId, postId, router) {
                 case 1:
                     response = _a.sent();
                     if (response.status === 401) {
-                        router.history.replace("/status/UnauthorizedTopic");
+                        //window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 403) {
-                        router.history.replace("/status/OperationForbidden");
+                        //window.location.href = "/status/OperationForbidden";
                     }
                     if (response.status === 404) {
-                        router.history.replace("/status/NotFoundTopic");
+                        //window.location.href = "/status/NotFoundTopic";
                     }
                     if (response.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -1591,7 +1583,6 @@ function refreshLikeState(topicId, postId, router) {
                     return [2 /*return*/, data];
                 case 3:
                     e_21 = _a.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -1626,24 +1617,23 @@ function sendTopic(topicId, router) {
                 case 1:
                     mes = _a.sent();
                     if (mes.status === 401) {
-                        router.history.replace("/status/Logout");
+                        //window.location.href = "/status/Logout";
                     }
                     if (mes.status === 402) {
-                        router.history.replace("/status/ContentNeeded");
+                        //window.location.href = "/status/ContentNeeded";
                     }
                     if (mes.status === 403) {
-                        router.history.replace("/status/OperationForbidden");
+                        //window.location.href = "/status/OperationForbidden";
                     }
                     if (mes.status === 404) {
-                        router.history.replace("/status/NotFoundTopic");
+                        //window.location.href = "/status/NotFoundTopic";
                     }
                     if (mes.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [3 /*break*/, 3];
                 case 2:
                     e_22 = _a.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }
@@ -1665,10 +1655,10 @@ function getListCategory(boardId, router) {
                 case 1:
                     boardResponse = _a.sent();
                     if (boardResponse.status === 404) {
-                        router.history.replace("/status/NotFoundBoard");
+                        //window.location.href = "/status/NotFoundBoard";
                     }
                     if (boardResponse.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, boardResponse.json()];
                 case 2:
@@ -1677,7 +1667,6 @@ function getListCategory(boardId, router) {
                     return [2 /*return*/, boardName];
                 case 3:
                     e_23 = _a.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -1700,10 +1689,10 @@ function getBoardMessage(boardId, router) {
                 case 1:
                     response = _a.sent();
                     if (response.status === 404) {
-                        router.history.replace("/status/NotFoundBoard");
+                        //window.location.href = "/status/NotFoundBoard";
                     }
                     if (response.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -1711,7 +1700,6 @@ function getBoardMessage(boardId, router) {
                     return [2 /*return*/, data];
                 case 3:
                     e_24 = _a.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -1733,10 +1721,10 @@ function getListTotalPage(boardId, router) {
                 case 1:
                     totalTopicCountResponse = _a.sent();
                     if (totalTopicCountResponse.status === 404) {
-                        router.history.replace("/status/NotFoundBoard");
+                        //window.location.href = "/status/NotFoundBoard";
                     }
                     if (totalTopicCountResponse.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, totalTopicCountResponse.json()];
                 case 2:
@@ -1745,7 +1733,6 @@ function getListTotalPage(boardId, router) {
                     return [2 /*return*/, (totalTopicCount - totalTopicCount % 20) / 20 + 1];
                 case 3:
                     e_25 = _a.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -1767,10 +1754,10 @@ function getBasicBoardMessage(boardId, curPage, router) {
                 case 1:
                     response = _a.sent();
                     if (response.status === 404) {
-                        router.history.replace("/status/NotFoundBoard");
+                        //window.location.href = "/status/NotFoundBoard";
                     }
                     if (response.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -1792,7 +1779,6 @@ function getBasicBoardMessage(boardId, curPage, router) {
                     return [2 /*return*/, data];
                 case 4:
                     e_26 = _a.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 5];
                 case 5: return [2 /*return*/];
             }
@@ -1814,13 +1800,13 @@ function getCurUserTotalReplyPage(topicId, userId, router) {
                 case 1:
                     replyCountResponse = _a.sent();
                     if (replyCountResponse.status === 401) {
-                        router.history.replace("/status/UnauthorizedTopic");
+                        //window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (replyCountResponse.status === 404) {
-                        router.history.replace("/status/NotFoundBoard");
+                        //window.location.href = "/status/NotFoundBoard";
                     }
                     if (replyCountResponse.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, replyCountResponse.json()];
                 case 2:
@@ -1835,7 +1821,6 @@ function getCurUserTotalReplyPage(topicId, userId, router) {
                     return [3 /*break*/, 4];
                 case 3:
                     e_27 = _a.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -1865,10 +1850,10 @@ function sendMessage(bodyContent, router) {
                 case 1:
                     response = _a.sent();
                     if (response.status === 401) {
-                        router.history.replace("/status/Loggout");
+                        //window.location.href = "/status/Loggout";
                     }
                     if (response.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //window.location.href = "/status/ServerError";
                     }
                     return [2 /*return*/, response];
             }
@@ -2081,7 +2066,7 @@ function GetTopTopics(boardId) {
                     data = _a.sent();
                     topics = [];
                     for (i = 0; i < data.length; i++) {
-                        topics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime, data[i].likeCount, data[i].dislikeCount, data[i].replyCount || 0, data[i].highlightInfo, data[i].topState);
+                        topics[i] = __assign({}, data[i], { replyCount: data[i].replyCount || 0 });
                     }
                     for (i = 0; i < topics.length - 1; i++) {
                         for (j = 0; j < topics.length - 1 - j; j++) {
@@ -2105,7 +2090,7 @@ function GetBestTopics(boardId, curPage) {
             switch (_a.label) {
                 case 0:
                     start = (curPage - 1) * 20;
-                    url = "http://apitest.niconi.cc/topic/best/board/" + boardId + "?from=" + start + "&size=20 ";
+                    url = "http://apitest.niconi.cc/topic/best/board/" + boardId + "?from=" + start + "&size=20";
                     token = getLocalStorage("accessToken");
                     headers = new Headers();
                     headers.append("Authorization", token);
@@ -2115,10 +2100,9 @@ function GetBestTopics(boardId, curPage) {
                     return [4 /*yield*/, response.json()];
                 case 2:
                     data = _a.sent();
-                    console.log(data);
                     boardtopics = [];
                     for (i = 0; i < data.length; i++) {
-                        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime, data[i].likeCount, data[i].dislikeCount, data[i].replyCount || 0, data[i].highlightInfo, data[i].topState);
+                        boardtopics[i] = __assign({}, data[i], { replyCount: data[i].replyCount || 0 });
                     }
                     return [2 /*return*/, boardtopics];
             }
@@ -2128,8 +2112,27 @@ function GetBestTopics(boardId, curPage) {
 exports.GetBestTopics = GetBestTopics;
 function GetSaveTopics(boardId, totalPage, curPage) {
     return __awaiter(this, void 0, void 0, function () {
+        var start, url, token, headers, response, data, boardtopics, i;
         return __generator(this, function (_a) {
-            return [2 /*return*/];
+            switch (_a.label) {
+                case 0:
+                    start = (curPage - 1) * 20;
+                    url = "http://apitest.niconi.cc/topic/save/board/" + boardId + "?from=" + start + "&size=20";
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append("Authorization", token);
+                    return [4 /*yield*/, fetch(url, { headers: headers })];
+                case 1:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    data = _a.sent();
+                    boardtopics = [];
+                    for (i = 0; i < data.length; i++) {
+                        boardtopics[i] = __assign({}, data[i], { replyCount: data[i].replyCount || 0 });
+                    }
+                    return [2 /*return*/, boardtopics];
+            }
         });
     });
 }
@@ -3152,26 +3155,7 @@ exports.TopicTitleState = TopicTitleState;
  * 文章内容
  */
 var ContentState = /** @class */ (function () {
-    function ContentState(id, content, time, isDelete, floor, isAnonymous, lastUpdateAuthor, lastUpdateTime, topicId, userName, sendTopicNumber, userImgUrl, signature, userId, privilege, likeNumber, dislikeNumber, postid, contentType) {
-        this.userName = userName;
-        this.id = id;
-        this.content = content;
-        this.time = time;
-        this.isAnonymous = isAnonymous;
-        this.isDelete = isDelete;
-        this.floor = floor;
-        this.lastUpdateAuthor = lastUpdateAuthor;
-        this.lastUpdateTime = lastUpdateTime;
-        this.topicId = topicId;
-        this.sendTopicNumber = sendTopicNumber;
-        this.userImgUrl = userImgUrl;
-        this.signature = signature;
-        this.userId = userId;
-        this.privilege = privilege;
-        this.likeNumber = likeNumber;
-        this.dislikeNumber = dislikeNumber;
-        this.postid = postid;
-        this.contentType = contentType;
+    function ContentState() {
     }
     return ContentState;
 }());
@@ -3237,18 +3221,19 @@ var TopicTitleAndContentState = /** @class */ (function () {
           this.lastReply = lastReply;
             this.title = title;
       }*/
-    function TopicTitleAndContentState(title, userName, topicid, userId, lastPostUser, lastPostTime, likeCount, dislikeCount, replyCount, highlightInfo, topState) {
-        this.userName = userName;
-        this.title = title;
-        this.id = topicid;
-        this.userId = userId;
-        this.lastPostUser = lastPostUser;
-        this.lastPostTime = lastPostTime;
-        this.likeCount = likeCount;
-        this.dislikeCount = dislikeCount;
-        this.replyCount = replyCount;
-        this.highlightInfo = highlightInfo;
-        this.topState = topState;
+    function TopicTitleAndContentState() {
+        //this.userName = userName;
+        //this.title = title;
+        //this.id = topicid;
+        //this.userId = userId;
+        //this.lastPostUser = lastPostUser;
+        //this.lastPostTime = lastPostTime;
+        //this.likeCount = likeCount;
+        //this.dislikeCount = dislikeCount;
+        //this.replyCount = replyCount;
+        //this.highlightInfo = highlightInfo;
+        //this.topState = topState;
+        //this.state = state;
     }
     return TopicTitleAndContentState;
 }());
@@ -3270,7 +3255,7 @@ var PagerState = /** @class */ (function () {
 }());
 exports.PagerState = PagerState;
 var TopicState = /** @class */ (function () {
-    function TopicState(userName, title, content, time, signature, userImgUrl, hitCount, userId, likeNumber, dislikeNumber, postid, isAnonymous, contentType, isFollowing) {
+    function TopicState(userName, title, content, time, signature, userImgUrl, hitCount, userId, likeNumber, dislikeNumber, postId, isAnonymous, contentType, isFollowing) {
         this.userName = userName;
         this.time = time;
         this.title = title;
@@ -3281,7 +3266,7 @@ var TopicState = /** @class */ (function () {
         this.userId = userId;
         this.likeNumber = likeNumber;
         this.dislikeNumber = dislikeNumber;
-        this.postid = postid;
+        this.postId = postId;
         this.isAnonymous = isAnonymous;
         this.contentType = contentType;
         this.isFollowing = isFollowing;
@@ -4114,7 +4099,7 @@ var ListTopContent = /** @class */ (function (_super) {
         return _this;
     }
     ListTopContent.prototype.convertTopicToElement = function (item) {
-        return React.createElement(TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount, highlightInfo: item.highlightInfo, topState: item.topState });
+        return React.createElement(TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount, highlightInfo: item.highlightInfo, topState: item.topState, state: item.state });
     };
     ListTopContent.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -4158,7 +4143,7 @@ var BestTopics = /** @class */ (function (_super) {
         });
     };
     BestTopics.prototype.convertTopicToElement = function (item) {
-        return React.createElement(TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount, highlightInfo: item.highlightInfo, topState: item.topState });
+        return React.createElement(TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount, highlightInfo: item.highlightInfo, topState: item.topState, state: item.state });
     };
     BestTopics.prototype.render = function () {
         return React.createElement("div", null, this.state.data.map(this.convertTopicToElement));
@@ -4201,7 +4186,7 @@ var ListContent = /** @class */ (function (_super) {
         });
     };
     ListContent.prototype.convertTopicToElement = function (item) {
-        return React.createElement(TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount, highlightInfo: item.highlightInfo, topState: item.topState });
+        return React.createElement(TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount, highlightInfo: item.highlightInfo, topState: item.topState, state: item.state });
     };
     ListContent.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
@@ -4248,7 +4233,7 @@ var ListContent = /** @class */ (function (_super) {
                 React.createElement("div", { className: "row", style: { alignItems: 'center' } },
                     React.createElement("div", { className: "listContentTag", onClick: this.inAll }, "\u5168\u90E8"),
                     React.createElement("div", { className: "listContentTag", onClick: this.inBest }, "\u7CBE\u534E"),
-                    React.createElement("div", { className: "listContentTag" }, "\u6700\u70ED")),
+                    React.createElement("div", { className: "listContentTag", onClick: this.inSave }, "\u4FDD\u5B58")),
                 React.createElement("div", { className: "row", style: { alignItems: 'center' } },
                     React.createElement("div", { style: { marginRight: '14.5rem' } },
                         React.createElement("span", null, "\u4F5C\u8005")),
@@ -4312,7 +4297,7 @@ var TopicTitleAndContent = /** @class */ (function (_super) {
         var titleId = "title" + this.props.id;
         var icon;
         if (this.props.topState === 0) {
-            icon = React.createElement("i", { style: { color: "blue" }, className: "fa fa-envelope fa-lg" });
+            icon = React.createElement("i", { style: { color: "#B0B0B0" }, className: "fa fa-envelope fa-lg" });
         }
         else if (this.props.topState === 2) {
             icon = React.createElement("i", { style: { color: "orange" }, className: "fa fa-chevron-circle-up fa-lg" });
@@ -4321,10 +4306,14 @@ var TopicTitleAndContent = /** @class */ (function (_super) {
             icon = React.createElement("i", { style: { color: "red" }, className: "fa fa-arrow-circle-up fa-lg" });
         }
         if (this.props.replyCount > 100 && this.props.topState === 0) {
-            icon = React.createElement("i", { style: { color: "red" }, className: "fa fa-envelope fa-lg" });
+            icon = React.createElement("i", { style: { color: "red" }, className: "fa fa-envelope-open fa-lg" });
         }
         if (Utility.getLocalStorage("userInfo").name === this.props.userName) {
             icon = React.createElement("i", { style: { color: "#FFC90E" }, className: "fa fa-envelope fa-lg" });
+        }
+        //1是锁贴
+        if (this.props.state === 1) {
+            icon = React.createElement("i", { style: { color: "#B0B0B0" }, className: "fa fa-lock fa-lg" });
         }
         return React.createElement("div", { id: colorId },
             React.createElement("div", { className: "row topicInList", id: topicId },
@@ -4664,8 +4653,8 @@ var Reply = /** @class */ (function (_super) {
     Reply.prototype.generateContents = function (item) {
         return React.createElement("div", { className: "reply" },
             React.createElement("div", { style: { marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" } },
-                React.createElement(Replier, { key: item.postid, isAnonymous: item.isAnonymous, userId: item.userId, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber, privilege: item.privilege }),
-                React.createElement(ReplyContent, { key: item.content, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.postid, contentType: item.contentType })));
+                React.createElement(Replier, { key: item.postId, isAnonymous: item.isAnonymous, userId: item.userId, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber, privilege: item.privilege }),
+                React.createElement(ReplyContent, { key: item.content, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.postId, contentType: item.contentType })));
     };
     Reply.prototype.render = function () {
         return React.createElement("div", { className: "center", style: { width: "100%" } }, this.state.contents.map(this.generateContents));
@@ -5085,7 +5074,7 @@ var PostTopic = /** @class */ (function (_super) {
                     React.createElement(TopicTitle, { Title: this.state.topicMessage.title, Time: this.state.topicMessage.time, HitCount: this.state.topicMessage.hitCount }),
                     React.createElement("div", { id: "ads" },
                         React.createElement("img", { width: "100%", src: this.props.imgUrl }))),
-                React.createElement(TopicContent, { postid: this.state.topicMessage.postid, content: this.state.topicMessage.content, signature: this.state.topicMessage.signature, topicid: this.props.topicid, userId: this.state.topicMessage.userId, contentType: this.state.topicMessage.contentType }),
+                React.createElement(TopicContent, { postid: this.state.topicMessage.postId, content: this.state.topicMessage.content, signature: this.state.topicMessage.signature, topicid: this.props.topicid, userId: this.state.topicMessage.userId, contentType: this.state.topicMessage.contentType }),
                 React.createElement(TopicGood, null),
                 React.createElement(TopicVote, null));
         }
@@ -6244,14 +6233,17 @@ var Reply = /** @class */ (function (_super) {
     }
     Reply.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
-            var page, storageId, realContents, url, response, data, userName;
+            var page, storageId, realContents, token, headers, url, response, data, userName;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         page = newProps.match.params.page || 1;
                         storageId = "TopicContent_" + newProps.match.params.topicid + "_" + page;
+                        token = Utility.getLocalStorage("accessToken");
+                        headers = new Headers();
+                        headers.append("Authorization", token);
                         url = "http://apitest.niconi.cc/user/" + newProps.match.params.userId;
-                        return [4 /*yield*/, fetch(url)];
+                        return [4 /*yield*/, fetch(url, { headers: headers })];
                     case 1:
                         response = _a.sent();
                         return [4 /*yield*/, response.json()];
@@ -6270,8 +6262,8 @@ var Reply = /** @class */ (function (_super) {
     Reply.prototype.generateContents = function (item) {
         return React.createElement("div", { className: "reply" },
             React.createElement("div", { style: { marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" } },
-                React.createElement(Post.Replier, { key: item.postid, isAnonymous: item.isAnonymous, userId: item.userId, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber, privilege: item.privilege }),
-                React.createElement(Post.ReplyContent, { key: item.content, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.postid, contentType: item.contentType })));
+                React.createElement(Post.Replier, { key: item.postId, isAnonymous: item.isAnonymous, userId: item.userId, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber, privilege: item.privilege }),
+                React.createElement(Post.ReplyContent, { key: item.content, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.postId, contentType: item.contentType })));
     };
     Reply.prototype.render = function () {
         return React.createElement("div", { className: "center", style: { width: "100%" } }, this.state.contents.map(this.generateContents));
@@ -8620,7 +8612,7 @@ var UserCenterMyFollowingsUser = /** @class */ (function (_super) {
                 if (res) {
                     this.setState({
                         buttonIsDisabled: false,
-                        buttonInfo: '关注',
+                        buttonInfo: '重新关注',
                         isFollowing: false
                     });
                 }
@@ -9026,7 +9018,7 @@ var Image = /** @class */ (function (_super) {
     };
     Image.prototype.render = function () {
         if (this.state.isShowed) {
-            return React.createElement("img", { src: this.props.imageUri, alt: this.props.title });
+            return React.createElement("img", { style: { maxWidth: '100%' }, src: this.props.imageUri, alt: this.props.title });
         }
         else {
             return React.createElement("div", { className: "hiddenImage", onClick: this.toggleIsShowed }, "\u70B9\u51FB\u67E5\u770B\u56FE\u7247");
@@ -9822,7 +9814,7 @@ var UploadTagHandler = /** @class */ (function (_super) {
         if (!context.options.allowImage) {
             return content;
         }
-        var imageTag = React.createElement("img", { src: imageUri, alt: title });
+        var imageTag = React.createElement("img", { style: { maxWidth: '100%' }, src: imageUri, alt: title });
         // HTML5 模式下，使用 figure 表示插图
         if (context.options.compatibility === Ubb.UbbCompatiblityMode.EnforceMorden) {
             return React.createElement("figure", null,
@@ -10417,8 +10409,8 @@ var Reply = /** @class */ (function (_super) {
     Reply.prototype.generateContents = function (item) {
         return React.createElement("div", { className: "reply" },
             React.createElement("div", { style: { marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" } },
-                React.createElement(Replier, { key: item.postid, isAnonymous: item.isAnonymous, userId: item.userId, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber, privilege: item.privilege }),
-                React.createElement(ReplyContent, { key: item.content, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.postid, contentType: item.contentType })));
+                React.createElement(Replier, { key: item.postId, isAnonymous: item.isAnonymous, userId: item.userId, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber, privilege: item.privilege }),
+                React.createElement(ReplyContent, { key: item.content, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.postId, contentType: item.contentType })));
     };
     Reply.prototype.render = function () {
         return React.createElement("div", { className: "center", style: { width: "100%" } }, this.state.contents.map(this.generateContents));
@@ -10838,7 +10830,7 @@ var PostTopic = /** @class */ (function (_super) {
                     React.createElement(TopicTitle, { Title: this.state.topicMessage.title, Time: this.state.topicMessage.time, HitCount: this.state.topicMessage.hitCount }),
                     React.createElement("div", { id: "ads" },
                         React.createElement("img", { width: "100%", src: this.props.imgUrl }))),
-                React.createElement(TopicContent, { postid: this.state.topicMessage.postid, content: this.state.topicMessage.content, signature: this.state.topicMessage.signature, topicid: this.props.topicid, userId: this.state.topicMessage.userId, contentType: this.state.topicMessage.contentType }),
+                React.createElement(TopicContent, { postid: this.state.topicMessage.postId, content: this.state.topicMessage.content, signature: this.state.topicMessage.signature, topicid: this.props.topicid, userId: this.state.topicMessage.userId, contentType: this.state.topicMessage.contentType }),
                 React.createElement(TopicGood, null),
                 React.createElement(TopicVote, null));
         }
@@ -14444,7 +14436,7 @@ var UserExactProfile = /** @class */ (function (_super) {
                         }, onMouseLeave: function () {
                             if (_this.state.isFollowing && !_this.state.buttonIsDisabled) {
                                 _this.setState({
-                                    buttonInfo: '未关注'
+                                    buttonInfo: '已关注'
                                 });
                             }
                         } }, this.state.buttonInfo))),
@@ -16752,26 +16744,7 @@ exports.TopicTitleState = TopicTitleState;
  * 文章内容
  */
 var ContentState = /** @class */ (function () {
-    function ContentState(id, content, time, isDelete, floor, isAnonymous, lastUpdateAuthor, lastUpdateTime, topicId, userName, sendTopicNumber, userImgUrl, signature, userId, privilege, likeNumber, dislikeNumber, postid, contentType) {
-        this.userName = userName;
-        this.id = id;
-        this.content = content;
-        this.time = time;
-        this.isAnonymous = isAnonymous;
-        this.isDelete = isDelete;
-        this.floor = floor;
-        this.lastUpdateAuthor = lastUpdateAuthor;
-        this.lastUpdateTime = lastUpdateTime;
-        this.topicId = topicId;
-        this.sendTopicNumber = sendTopicNumber;
-        this.userImgUrl = userImgUrl;
-        this.signature = signature;
-        this.userId = userId;
-        this.privilege = privilege;
-        this.likeNumber = likeNumber;
-        this.dislikeNumber = dislikeNumber;
-        this.postid = postid;
-        this.contentType = contentType;
+    function ContentState() {
     }
     return ContentState;
 }());
@@ -16837,18 +16810,19 @@ var TopicTitleAndContentState = /** @class */ (function () {
           this.lastReply = lastReply;
             this.title = title;
       }*/
-    function TopicTitleAndContentState(title, userName, topicid, userId, lastPostUser, lastPostTime, likeCount, dislikeCount, replyCount, highlightInfo, topState) {
-        this.userName = userName;
-        this.title = title;
-        this.id = topicid;
-        this.userId = userId;
-        this.lastPostUser = lastPostUser;
-        this.lastPostTime = lastPostTime;
-        this.likeCount = likeCount;
-        this.dislikeCount = dislikeCount;
-        this.replyCount = replyCount;
-        this.highlightInfo = highlightInfo;
-        this.topState = topState;
+    function TopicTitleAndContentState() {
+        //this.userName = userName;
+        //this.title = title;
+        //this.id = topicid;
+        //this.userId = userId;
+        //this.lastPostUser = lastPostUser;
+        //this.lastPostTime = lastPostTime;
+        //this.likeCount = likeCount;
+        //this.dislikeCount = dislikeCount;
+        //this.replyCount = replyCount;
+        //this.highlightInfo = highlightInfo;
+        //this.topState = topState;
+        //this.state = state;
     }
     return TopicTitleAndContentState;
 }());
@@ -16870,7 +16844,7 @@ var PagerState = /** @class */ (function () {
 }());
 exports.PagerState = PagerState;
 var TopicState = /** @class */ (function () {
-    function TopicState(userName, title, content, time, signature, userImgUrl, hitCount, userId, likeNumber, dislikeNumber, postid, isAnonymous, contentType, isFollowing) {
+    function TopicState(userName, title, content, time, signature, userImgUrl, hitCount, userId, likeNumber, dislikeNumber, postId, isAnonymous, contentType, isFollowing) {
         this.userName = userName;
         this.time = time;
         this.title = title;
@@ -16881,7 +16855,7 @@ var TopicState = /** @class */ (function () {
         this.userId = userId;
         this.likeNumber = likeNumber;
         this.dislikeNumber = dislikeNumber;
-        this.postid = postid;
+        this.postId = postId;
         this.isAnonymous = isAnonymous;
         this.contentType = contentType;
         this.isFollowing = isFollowing;

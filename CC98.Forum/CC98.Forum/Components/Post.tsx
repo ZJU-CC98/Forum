@@ -146,8 +146,8 @@ export class Reply extends RouteComponent<{}, { contents }, { page, topicid, use
     }
     private generateContents(item: State.ContentState) {
         return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
-            <Replier key={item.postid} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} />
-            <ReplyContent key={item.content} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postid} contentType={item.contentType} />
+            <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} />
+            <ReplyContent key={item.content} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postId} contentType={item.contentType} />
         </div>
         </div>;
     }
@@ -208,7 +208,7 @@ export class HotReplier extends RouteComponent<{ floor, userId, topicid, userNam
         const url = `/user/${this.props.userId}`;
         const realUrl = encodeURIComponent(url);
         const curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userId}`;
-        const email = `/message/message/${this.props.userId}`;
+        const email = `/message/message?id=${this.props.userId}`;
         $(document).ready(function () {
             $(".authorImg").mouseenter(function (event: JQuery.Event) {
                 const currentImage = event.currentTarget;
@@ -279,7 +279,7 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
     render() {
         const url = `/user/${this.props.userId}`;
         const realUrl = encodeURIComponent(url);
-        const email = `/message/message/${this.props.userId}`;
+        const email = `/message/message?id=${this.props.userId}`;
         let urlHtml = <a href={realUrl}><img src={this.props.userImgUrl}></img></a>;
         if (this.props.isAnonymous == true) {
             urlHtml = <img src={this.props.userImgUrl}></img>;
@@ -504,7 +504,7 @@ export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid },
                     <div id="ads"><img width="100%" src={this.props.imgUrl}></img></div>
                 </div>
 
-                <TopicContent postid={this.state.topicMessage.postid} content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} topicid={this.props.topicid} userId={this.state.topicMessage.userId}
+                <TopicContent postid={this.state.topicMessage.postId} content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} topicid={this.props.topicid} userId={this.state.topicMessage.userId}
                     contentType={this.state.topicMessage.contentType} />
                 <TopicGood />
                 <TopicVote />

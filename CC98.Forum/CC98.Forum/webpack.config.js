@@ -38,7 +38,8 @@ var config = {
         'jquery': '$',
         'signalr': '$.connection',
         'moment': 'moment',
-        'editor.md': 'editorMd'
+        'editor.md': 'editormd',
+        'codemirror': 'CodeMirror'
     },
     plugins: [
         new webpack.optimize.UglifyJsPlugin(),
@@ -59,6 +60,7 @@ var config = {
             { from: 'node_modules/font-awesome', to: 'content/font-awesome' },
             { from: 'node_modules/moment', to: 'scripts/lib/moment' },
             { from: 'node_modules/editor.md', to: 'scripts/lib/editor.md/' },
+            { from: 'node_modules/codemirror', to: 'scripts/lib/editor.md/lib/codemirror' },
         ]),
         new ExtractTextPlugin('content/site.min.css')
     ]

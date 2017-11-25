@@ -287,6 +287,7 @@ export class ListTopContent extends React.Component<{boardId}, {data}>{
             replyCount={item.replyCount}
             highlightInfo={item.highlightInfo}
             topState={item.topState}
+            state={item.state}
         />;
     }
     async componentDidMount() {
@@ -320,6 +321,7 @@ export class BestTopics extends React.Component<{ boardId, curPage }, { data }>{
             replyCount={item.replyCount}
             highlightInfo={item.highlightInfo}
             topState={item.topState}
+            state={item.state}
         />;
     }
     render() {
@@ -365,6 +367,7 @@ export class ListContent extends RouteComponent<{}, {class:number, items: TopicT
             replyCount={item.replyCount}
             highlightInfo={item.highlightInfo}
             topState={item.topState}
+            state={item.state}
         />;
 	}
 	async componentWillReceiveProps(newProps) {
@@ -401,7 +404,7 @@ export class ListContent extends RouteComponent<{}, {class:number, items: TopicT
 
                     <div className="listContentTag" onClick={this.inAll}>全部</div>
                     <div className="listContentTag" onClick={this.inBest}>精华</div>
-					<div className="listContentTag">最热</div>
+                    <div className="listContentTag" onClick={this.inSave}>保存</div>
 				</div>
 				<div className="row" style={{ alignItems: 'center' }}>
 					<div style={{ marginRight: '14.5rem' }}><span>作者</span></div>
@@ -464,17 +467,21 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         const titleId = `title${this.props.id}`;
         let icon;
         if (this.props.topState === 0) {
-            icon = <i style={{ color: "blue" }}className="fa fa-envelope fa-lg"></i>
+            icon = <i style={{ color: "#B0B0B0" }}className="fa fa-envelope fa-lg"></i>
         } else if (this.props.topState === 2) {
             icon = <i style={{ color: "orange" }}className="fa fa-chevron-circle-up fa-lg"></i>
         } else if (this.props.topState === 4) {
             icon = <i style={{ color: "red" }}className="fa fa-arrow-circle-up fa-lg"></i>
         }
         if (this.props.replyCount > 100 && this.props.topState===0) {
-            icon = <i style={{color:"red"}}className="fa fa-envelope fa-lg"></i>
+            icon = <i style={{color:"red"}}className="fa fa-envelope-open fa-lg"></i>
         }
         if (Utility.getLocalStorage("userInfo").name === this.props.userName) {
             icon = <i style={{ color: "#FFC90E" }} className="fa fa-envelope fa-lg"></i>
+        }
+        //1是锁贴
+        if (this.props.state === 1) {
+            icon = <i style={{ color: "#B0B0B0" }} className="fa fa-lock fa-lg"></i>
         }
         return <div id={colorId}>
 
