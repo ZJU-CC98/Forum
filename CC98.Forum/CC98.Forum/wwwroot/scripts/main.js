@@ -253,7 +253,7 @@ function getTopic(topicid, router) {
                     hitCount = hitCountJson.hitCount;
                     topicMessage = null;
                     if (!(data[0].isAnonymous != true)) return [3 /*break*/, 11];
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/User/" + data[0].userId)];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/User/" + data[0].userId, { headers: headers })];
                 case 9:
                     userMesResponse = _a.sent();
                     if (userMesResponse.status === 404) {
@@ -262,10 +262,10 @@ function getTopic(topicid, router) {
                     return [4 /*yield*/, userMesResponse.json()];
                 case 10:
                     userMesJson = _a.sent();
-                    topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType);
+                    topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing);
                     return [3 /*break*/, 12];
                 case 11:
-                    topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType);
+                    topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing);
                     _a.label = 12;
                 case 12: return [2 /*return*/, topicMessage];
                 case 13:
@@ -1482,13 +1482,16 @@ function getCategory(topicid, router) {
 exports.getCategory = getCategory;
 function getUserDetails(userName, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var url, message, data, body, e_19;
+        var token, headers, url, message, data, body, e_19;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append("Authorization", token);
                     url = "http://apitest.niconi.cc/user/name/" + userName;
-                    return [4 /*yield*/, fetch(url)];
+                    return [4 /*yield*/, fetch(url, { headers: headers })];
                 case 1:
                     message = _a.sent();
                     if (message.status === 404) {
@@ -1500,7 +1503,8 @@ function getUserDetails(userName, router) {
                     return [4 /*yield*/, message.json()];
                 case 2:
                     data = _a.sent();
-                    body = { portraitUrl: data.portraitUrl, userName: data.name, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle };
+                    console.log(data);
+                    body = { portraitUrl: data.portraitUrl, userName: data.name, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle, isFollowing: data.isFollowing };
                     return [2 /*return*/, body];
                 case 3:
                     e_19 = _a.sent();
@@ -2059,6 +2063,77 @@ function unfollowUser(userId) {
     });
 }
 exports.unfollowUser = unfollowUser;
+function GetTopTopics(boardId) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, url, response, data, topics, i, i, j, temp;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append("Authorization", token);
+                    url = "http://apitest.niconi.cc/topic/toptopics?boardid=" + boardId;
+                    return [4 /*yield*/, fetch(url, { headers: headers })];
+                case 1:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    data = _a.sent();
+                    topics = [];
+                    for (i = 0; i < data.length; i++) {
+                        topics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime, data[i].likeCount, data[i].dislikeCount, data[i].replyCount || 0, data[i].highlightInfo, data[i].topState);
+                    }
+                    for (i = 0; i < topics.length - 1; i++) {
+                        for (j = 0; j < topics.length - 1 - j; j++) {
+                            if (topics[j].topState <= topics[j + 1].topState) {
+                                temp = topics[j];
+                                topics[j] = topics[j + 1];
+                                topics[j + 1] = temp;
+                            }
+                        }
+                    }
+                    return [2 /*return*/, topics];
+            }
+        });
+    });
+}
+exports.GetTopTopics = GetTopTopics;
+function GetBestTopics(boardId, curPage) {
+    return __awaiter(this, void 0, void 0, function () {
+        var start, url, token, headers, response, data, boardtopics, i;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    start = (curPage - 1) * 20;
+                    url = "http://apitest.niconi.cc/topic/best/board/" + boardId + "?from=" + start + "&size=20 ";
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append("Authorization", token);
+                    return [4 /*yield*/, fetch(url, { headers: headers })];
+                case 1:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    data = _a.sent();
+                    console.log(data);
+                    boardtopics = [];
+                    for (i = 0; i < data.length; i++) {
+                        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime, data[i].likeCount, data[i].dislikeCount, data[i].replyCount || 0, data[i].highlightInfo, data[i].topState);
+                    }
+                    return [2 /*return*/, boardtopics];
+            }
+        });
+    });
+}
+exports.GetBestTopics = GetBestTopics;
+function GetSaveTopics(boardId, totalPage, curPage) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            return [2 /*return*/];
+        });
+    });
+}
+exports.GetSaveTopics = GetSaveTopics;
 
 
 /***/ }),
@@ -3195,7 +3270,7 @@ var PagerState = /** @class */ (function () {
 }());
 exports.PagerState = PagerState;
 var TopicState = /** @class */ (function () {
-    function TopicState(userName, title, content, time, signature, userImgUrl, hitCount, userId, likeNumber, dislikeNumber, postid, isAnonymous, contentType) {
+    function TopicState(userName, title, content, time, signature, userImgUrl, hitCount, userId, likeNumber, dislikeNumber, postid, isAnonymous, contentType, isFollowing) {
         this.userName = userName;
         this.time = time;
         this.title = title;
@@ -3209,6 +3284,7 @@ var TopicState = /** @class */ (function () {
         this.postid = postid;
         this.isAnonymous = isAnonymous;
         this.contentType = contentType;
+        this.isFollowing = isFollowing;
     }
     return TopicState;
 }());
@@ -4062,9 +4138,31 @@ var ListTopContent = /** @class */ (function (_super) {
 exports.ListTopContent = ListTopContent;
 var BestTopics = /** @class */ (function (_super) {
     __extends(BestTopics, _super);
-    function BestTopics() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function BestTopics(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = ({ data: [] });
+        return _this;
     }
+    BestTopics.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Utility.GetBestTopics(this.props.boardId, this.props.curPage)];
+                    case 1:
+                        data = _a.sent();
+                        this.setState({ data: data });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    BestTopics.prototype.convertTopicToElement = function (item) {
+        return React.createElement(TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount, highlightInfo: item.highlightInfo, topState: item.topState });
+    };
+    BestTopics.prototype.render = function () {
+        return React.createElement("div", null, this.state.data.map(this.convertTopicToElement));
+    };
     return BestTopics;
 }(React.Component));
 exports.BestTopics = BestTopics;
@@ -4129,6 +4227,7 @@ var ListContent = /** @class */ (function (_super) {
         });
     };
     ListContent.prototype.render = function () {
+        var curPage = this.match.params.page ? parseInt(this.match.params.page) : 1;
         var topTopics = null;
         if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
             topTopics = React.createElement("div", null,
@@ -4139,7 +4238,7 @@ var ListContent = /** @class */ (function (_super) {
             topics = this.state.items.map(this.convertTopicToElement);
         }
         else if (this.state.class === 1) {
-            //    topics =
+            topics = React.createElement(BestTopics, { boardId: this.match.params.boardId, curPage: curPage });
         }
         else if (this.state.class === 2) {
             //  topics =
@@ -4643,7 +4742,7 @@ var HotReplier = /** @class */ (function (_super) {
         }
         var userDetails;
         if (this.props.isAnonymous != true) {
-            userDetails = React.createElement(UserDetails, { userName: this.props.userName });
+            userDetails = React.createElement(UserDetails, { userName: this.props.userName, userId: this.props.userId });
         }
         else {
             userDetails = null;
@@ -4727,7 +4826,7 @@ var Replier = /** @class */ (function (_super) {
         }
         var userDetails;
         if (this.props.isAnonymous != true) {
-            userDetails = React.createElement(UserDetails, { userName: this.props.userName });
+            userDetails = React.createElement(UserDetails, { userName: this.props.userName, userId: this.props.userId });
         }
         else {
             userDetails = null;
@@ -4784,9 +4883,107 @@ var UserDetails = /** @class */ (function (_super) {
     __extends(UserDetails, _super);
     function UserDetails(props) {
         var _this = _super.call(this, props) || this;
-        _this.state = ({ portraitUrl: null, userName: null, fanCount: null, displayTitle: null, birthday: null, gender: null, prestige: null, levelTitle: null });
+        _this.unfollow = _this.unfollow.bind(_this);
+        _this.follow = _this.follow.bind(_this);
+        _this.state = ({
+            portraitUrl: null, userName: null, fanCount: null, displayTitle: null, birthday: null, gender: null, prestige: null, levelTitle: null, buttonInfo: '关注',
+            buttonIsDisabled: false,
+            isFollowing: false
+        });
         return _this;
     }
+    UserDetails.prototype.unfollow = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var token, userId, url, headers, res, e_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        this.setState({
+                            buttonIsDisabled: true,
+                            buttonInfo: '取关中'
+                        });
+                        token = Utility.getLocalStorage("accessToken");
+                        userId = this.props.userId;
+                        url = "http://apitest.niconi.cc/user/unfollow/" + userId;
+                        headers = new Headers();
+                        headers.append('Authorization', token);
+                        return [4 /*yield*/, fetch(url, {
+                                method: 'DELETE',
+                                headers: headers
+                            })];
+                    case 1:
+                        res = _a.sent();
+                        if (res.status === 200) {
+                            this.setState({
+                                buttonIsDisabled: false,
+                                buttonInfo: '重新关注',
+                                isFollowing: false
+                            });
+                        }
+                        else {
+                            throw {};
+                        }
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_1 = _a.sent();
+                        this.setState({
+                            buttonIsDisabled: false,
+                            buttonInfo: '取关失败',
+                            isFollowing: true
+                        });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    UserDetails.prototype.follow = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var token, userId, url, headers, res, e_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        this.setState({
+                            buttonIsDisabled: true,
+                            buttonInfo: '关注中'
+                        });
+                        token = Utility.getLocalStorage("accessToken");
+                        userId = this.props.userId;
+                        url = "http://apitest.niconi.cc/user/follow/" + userId;
+                        headers = new Headers();
+                        headers.append('Authorization', token);
+                        return [4 /*yield*/, fetch(url, {
+                                method: 'POST',
+                                headers: headers
+                            })];
+                    case 1:
+                        res = _a.sent();
+                        if (res.status === 200) {
+                            this.setState({
+                                buttonIsDisabled: false,
+                                buttonInfo: '取消关注',
+                                isFollowing: true
+                            });
+                        }
+                        else {
+                            throw {};
+                        }
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_2 = _a.sent();
+                        this.setState({
+                            buttonIsDisabled: false,
+                            buttonInfo: '关注失败',
+                            isFollowing: false
+                        });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     UserDetails.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
             var data;
@@ -4795,7 +4992,7 @@ var UserDetails = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, Utility.getUserDetails(this.props.userName, this.context.router)];
                     case 1:
                         data = _a.sent();
-                        this.setState({ portraitUrl: data.portraitUrl, userName: data.userName, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle });
+                        this.setState({ portraitUrl: data.portraitUrl, userName: data.userName, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle, isFollowing: data.isFollowing, buttonInfo: data.isFollowing ? '取消关注' : '关注' });
                         return [2 /*return*/];
                 }
             });
@@ -4843,7 +5040,7 @@ var UserDetails = /** @class */ (function (_super) {
                             React.createElement("div", { style: { color: "red" } }, this.state.fanCount)),
                         React.createElement("div", { className: "row", style: { marginTop: "0.63rem", fontSize: "0.87rem" } }, title)),
                     React.createElement("div", null,
-                        React.createElement("div", { id: "watch", style: { width: "5rem", backgroundColor: "#FF6A6A", marginRight: "0.63rem", marginLeft: "1.6rem", marginTop: "2rem", height: "2rem" } }, "\u5173\u6CE8"))),
+                        React.createElement("button", { className: "watch", style: { width: "5rem", backgroundColor: "#FF6A6A", marginRight: "0.63rem", marginLeft: "1.6rem", marginTop: "2rem", height: "2rem" }, id: this.state.isFollowing ? '' : 'follow', onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo))),
                 React.createElement("div", { className: "row", style: { fontSize: "0.87rem" } },
                     React.createElement("div", { style: { marginLeft: "7.2rem" } },
                         "\u5A01\u671B\u00A0",
@@ -4884,7 +5081,7 @@ var PostTopic = /** @class */ (function (_super) {
         if (this.state.topicMessage.userId == this.props.userId || this.props.userId == null) {
             return React.createElement("div", { className: "root", id: "1" },
                 React.createElement("div", { className: "essay" },
-                    React.createElement(AuthorMessage, { authorId: this.state.topicMessage.userId, authorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl, isAnonymous: this.state.topicMessage.isAnonymous }),
+                    React.createElement(AuthorMessage, { authorId: this.state.topicMessage.userId, authorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl, isAnonymous: this.state.topicMessage.isAnonymous, isFollowing: this.state.topicMessage.isFollowing }),
                     React.createElement(TopicTitle, { Title: this.state.topicMessage.title, Time: this.state.topicMessage.time, HitCount: this.state.topicMessage.hitCount }),
                     React.createElement("div", { id: "ads" },
                         React.createElement("img", { width: "100%", src: this.props.imgUrl }))),
@@ -4903,13 +5100,118 @@ var AuthorMessage = /** @class */ (function (_super) {
     __extends(AuthorMessage, _super);
     function AuthorMessage(props, content) {
         var _this = _super.call(this, props, content) || this;
+        _this.follow = _this.follow.bind(_this);
+        _this.unfollow = _this.unfollow.bind(_this);
         _this.state = {
             userName: 'Mana',
             fansNumber: 233,
-            imgUrl: _this.props.authorImgUrl
+            imgUrl: _this.props.authorImgUrl,
+            buttonInfo: '关注',
+            isFollowing: false,
+            buttonIsDisabled: false
         };
         return _this;
     }
+    AuthorMessage.prototype.unfollow = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var token, userId, url, headers, res, e_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        this.setState({
+                            buttonIsDisabled: true,
+                            buttonInfo: '取关中'
+                        });
+                        token = Utility.getLocalStorage("accessToken");
+                        userId = this.props.authorId;
+                        url = "http://apitest.niconi.cc/user/unfollow/" + userId;
+                        headers = new Headers();
+                        headers.append('Authorization', token);
+                        return [4 /*yield*/, fetch(url, {
+                                method: 'DELETE',
+                                headers: headers
+                            })];
+                    case 1:
+                        res = _a.sent();
+                        if (res.status === 200) {
+                            this.setState({
+                                buttonIsDisabled: false,
+                                buttonInfo: '重新关注',
+                                isFollowing: false
+                            });
+                        }
+                        else {
+                            throw {};
+                        }
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_3 = _a.sent();
+                        this.setState({
+                            buttonIsDisabled: false,
+                            buttonInfo: '取关失败',
+                            isFollowing: true
+                        });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    AuthorMessage.prototype.follow = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var token, userId, url, headers, res, e_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        this.setState({
+                            buttonIsDisabled: true,
+                            buttonInfo: '关注中'
+                        });
+                        token = Utility.getLocalStorage("accessToken");
+                        userId = this.props.authorId;
+                        url = "http://apitest.niconi.cc/user/follow/" + userId;
+                        headers = new Headers();
+                        headers.append('Authorization', token);
+                        return [4 /*yield*/, fetch(url, {
+                                method: 'POST',
+                                headers: headers
+                            })];
+                    case 1:
+                        res = _a.sent();
+                        if (res.status === 200) {
+                            this.setState({
+                                buttonIsDisabled: false,
+                                buttonInfo: '取消关注',
+                                isFollowing: true
+                            });
+                        }
+                        else {
+                            throw {};
+                        }
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_4 = _a.sent();
+                        this.setState({
+                            buttonIsDisabled: false,
+                            buttonInfo: '关注失败',
+                            isFollowing: false
+                        });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    AuthorMessage.prototype.componentDidMount = function () {
+        if (this.state.isFollowing === true) {
+            this.setState({ buttonInfo: "取消关注", isFollowing: true });
+        }
+        else {
+            this.setState({ buttonInfo: "关注", isFollowing: false });
+        }
+    };
     AuthorMessage.prototype.render = function () {
         var email = "/message/message/" + this.props.authorId;
         var url = "/user/" + this.props.authorId;
@@ -4932,7 +5234,7 @@ var AuthorMessage = /** @class */ (function (_super) {
                         React.createElement("div", { style: { marginRight: "0.1875rem" } }, "\u7C89\u4E1D"),
                         React.createElement("div", { style: { color: "#EE0000" } }, this.state.fansNumber))),
                 React.createElement("div", { className: "row" },
-                    React.createElement("div", { id: "watch", style: { marginLeft: "1rem" } }, "\u5173\u6CE8"),
+                    React.createElement("button", { className: "watch", style: { marginLeft: "1rem" }, id: this.state.isFollowing ? '' : 'follow', onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo),
                     React.createElement("a", { id: "email", href: email, style: { marginLeft: "1rem" } }, "\u79C1\u4FE1"))));
     };
     return AuthorMessage;
@@ -5636,7 +5938,7 @@ var SendTopic = /** @class */ (function (_super) {
     };
     SendTopic.prototype.sendMdTopic = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var url, c, content, contentJson, token, myHeaders, mes, e_1;
+            var url, c, content, contentJson, token, myHeaders, mes, e_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -5668,9 +5970,9 @@ var SendTopic = /** @class */ (function (_super) {
                         this.setState({ content: "" });
                         return [3 /*break*/, 3];
                     case 2:
-                        e_1 = _a.sent();
+                        e_5 = _a.sent();
                         console.log("Error");
-                        console.log(e_1);
+                        console.log(e_5);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -8157,7 +8459,8 @@ var NotFoundBoard = /** @class */ (function (_super) {
                         token = Utility.getLocalStorage("accessToken");
                         headers = new Headers();
                         headers.append("Authorization", token);
-                        content = { reason: "test" };
+                        headers.append("Content-Type", "application/json");
+                        content = "test";
                         return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/deletetop?topicid=4739872&boardid=753", {
                                 method: "DELETE",
                                 headers: headers,
@@ -10212,7 +10515,7 @@ var HotReplier = /** @class */ (function (_super) {
         }
         var userDetails;
         if (this.props.isAnonymous != true) {
-            userDetails = React.createElement(UserDetails, { userName: this.props.userName });
+            userDetails = React.createElement(UserDetails, { userName: this.props.userName, userId: this.props.userId });
         }
         else {
             userDetails = null;
@@ -10296,7 +10599,7 @@ var Replier = /** @class */ (function (_super) {
         }
         var userDetails;
         if (this.props.isAnonymous != true) {
-            userDetails = React.createElement(UserDetails, { userName: this.props.userName });
+            userDetails = React.createElement(UserDetails, { userName: this.props.userName, userId: this.props.userId });
         }
         else {
             userDetails = null;
@@ -10353,9 +10656,107 @@ var UserDetails = /** @class */ (function (_super) {
     __extends(UserDetails, _super);
     function UserDetails(props) {
         var _this = _super.call(this, props) || this;
-        _this.state = ({ portraitUrl: null, userName: null, fanCount: null, displayTitle: null, birthday: null, gender: null, prestige: null, levelTitle: null });
+        _this.unfollow = _this.unfollow.bind(_this);
+        _this.follow = _this.follow.bind(_this);
+        _this.state = ({
+            portraitUrl: null, userName: null, fanCount: null, displayTitle: null, birthday: null, gender: null, prestige: null, levelTitle: null, buttonInfo: '关注',
+            buttonIsDisabled: false,
+            isFollowing: false
+        });
         return _this;
     }
+    UserDetails.prototype.unfollow = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var token, userId, url, headers, res, e_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        this.setState({
+                            buttonIsDisabled: true,
+                            buttonInfo: '取关中'
+                        });
+                        token = Utility.getLocalStorage("accessToken");
+                        userId = this.props.userId;
+                        url = "http://apitest.niconi.cc/user/unfollow/" + userId;
+                        headers = new Headers();
+                        headers.append('Authorization', token);
+                        return [4 /*yield*/, fetch(url, {
+                                method: 'DELETE',
+                                headers: headers
+                            })];
+                    case 1:
+                        res = _a.sent();
+                        if (res.status === 200) {
+                            this.setState({
+                                buttonIsDisabled: false,
+                                buttonInfo: '重新关注',
+                                isFollowing: false
+                            });
+                        }
+                        else {
+                            throw {};
+                        }
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_1 = _a.sent();
+                        this.setState({
+                            buttonIsDisabled: false,
+                            buttonInfo: '取关失败',
+                            isFollowing: true
+                        });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    UserDetails.prototype.follow = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var token, userId, url, headers, res, e_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        this.setState({
+                            buttonIsDisabled: true,
+                            buttonInfo: '关注中'
+                        });
+                        token = Utility.getLocalStorage("accessToken");
+                        userId = this.props.userId;
+                        url = "http://apitest.niconi.cc/user/follow/" + userId;
+                        headers = new Headers();
+                        headers.append('Authorization', token);
+                        return [4 /*yield*/, fetch(url, {
+                                method: 'POST',
+                                headers: headers
+                            })];
+                    case 1:
+                        res = _a.sent();
+                        if (res.status === 200) {
+                            this.setState({
+                                buttonIsDisabled: false,
+                                buttonInfo: '取消关注',
+                                isFollowing: true
+                            });
+                        }
+                        else {
+                            throw {};
+                        }
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_2 = _a.sent();
+                        this.setState({
+                            buttonIsDisabled: false,
+                            buttonInfo: '关注失败',
+                            isFollowing: false
+                        });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     UserDetails.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
             var data;
@@ -10364,7 +10765,7 @@ var UserDetails = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, Utility.getUserDetails(this.props.userName, this.context.router)];
                     case 1:
                         data = _a.sent();
-                        this.setState({ portraitUrl: data.portraitUrl, userName: data.userName, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle });
+                        this.setState({ portraitUrl: data.portraitUrl, userName: data.userName, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle, isFollowing: data.isFollowing, buttonInfo: data.isFollowing ? '取消关注' : '关注' });
                         return [2 /*return*/];
                 }
             });
@@ -10412,7 +10813,7 @@ var UserDetails = /** @class */ (function (_super) {
                             React.createElement("div", { style: { color: "red" } }, this.state.fanCount)),
                         React.createElement("div", { className: "row", style: { marginTop: "0.63rem", fontSize: "0.87rem" } }, title)),
                     React.createElement("div", null,
-                        React.createElement("div", { id: "watch", style: { width: "5rem", backgroundColor: "#FF6A6A", marginRight: "0.63rem", marginLeft: "1.6rem", marginTop: "2rem", height: "2rem" } }, "\u5173\u6CE8"))),
+                        React.createElement("button", { className: "watch", style: { width: "5rem", backgroundColor: "#FF6A6A", marginRight: "0.63rem", marginLeft: "1.6rem", marginTop: "2rem", height: "2rem" }, id: this.state.isFollowing ? '' : 'follow', onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo))),
                 React.createElement("div", { className: "row", style: { fontSize: "0.87rem" } },
                     React.createElement("div", { style: { marginLeft: "7.2rem" } },
                         "\u5A01\u671B\u00A0",
@@ -10453,7 +10854,7 @@ var PostTopic = /** @class */ (function (_super) {
         if (this.state.topicMessage.userId == this.props.userId || this.props.userId == null) {
             return React.createElement("div", { className: "root", id: "1" },
                 React.createElement("div", { className: "essay" },
-                    React.createElement(AuthorMessage, { authorId: this.state.topicMessage.userId, authorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl, isAnonymous: this.state.topicMessage.isAnonymous }),
+                    React.createElement(AuthorMessage, { authorId: this.state.topicMessage.userId, authorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl, isAnonymous: this.state.topicMessage.isAnonymous, isFollowing: this.state.topicMessage.isFollowing }),
                     React.createElement(TopicTitle, { Title: this.state.topicMessage.title, Time: this.state.topicMessage.time, HitCount: this.state.topicMessage.hitCount }),
                     React.createElement("div", { id: "ads" },
                         React.createElement("img", { width: "100%", src: this.props.imgUrl }))),
@@ -10472,13 +10873,118 @@ var AuthorMessage = /** @class */ (function (_super) {
     __extends(AuthorMessage, _super);
     function AuthorMessage(props, content) {
         var _this = _super.call(this, props, content) || this;
+        _this.follow = _this.follow.bind(_this);
+        _this.unfollow = _this.unfollow.bind(_this);
         _this.state = {
             userName: 'Mana',
             fansNumber: 233,
-            imgUrl: _this.props.authorImgUrl
+            imgUrl: _this.props.authorImgUrl,
+            buttonInfo: '关注',
+            isFollowing: false,
+            buttonIsDisabled: false
         };
         return _this;
     }
+    AuthorMessage.prototype.unfollow = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var token, userId, url, headers, res, e_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        this.setState({
+                            buttonIsDisabled: true,
+                            buttonInfo: '取关中'
+                        });
+                        token = Utility.getLocalStorage("accessToken");
+                        userId = this.props.authorId;
+                        url = "http://apitest.niconi.cc/user/unfollow/" + userId;
+                        headers = new Headers();
+                        headers.append('Authorization', token);
+                        return [4 /*yield*/, fetch(url, {
+                                method: 'DELETE',
+                                headers: headers
+                            })];
+                    case 1:
+                        res = _a.sent();
+                        if (res.status === 200) {
+                            this.setState({
+                                buttonIsDisabled: false,
+                                buttonInfo: '重新关注',
+                                isFollowing: false
+                            });
+                        }
+                        else {
+                            throw {};
+                        }
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_3 = _a.sent();
+                        this.setState({
+                            buttonIsDisabled: false,
+                            buttonInfo: '取关失败',
+                            isFollowing: true
+                        });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    AuthorMessage.prototype.follow = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var token, userId, url, headers, res, e_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        this.setState({
+                            buttonIsDisabled: true,
+                            buttonInfo: '关注中'
+                        });
+                        token = Utility.getLocalStorage("accessToken");
+                        userId = this.props.authorId;
+                        url = "http://apitest.niconi.cc/user/follow/" + userId;
+                        headers = new Headers();
+                        headers.append('Authorization', token);
+                        return [4 /*yield*/, fetch(url, {
+                                method: 'POST',
+                                headers: headers
+                            })];
+                    case 1:
+                        res = _a.sent();
+                        if (res.status === 200) {
+                            this.setState({
+                                buttonIsDisabled: false,
+                                buttonInfo: '取消关注',
+                                isFollowing: true
+                            });
+                        }
+                        else {
+                            throw {};
+                        }
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_4 = _a.sent();
+                        this.setState({
+                            buttonIsDisabled: false,
+                            buttonInfo: '关注失败',
+                            isFollowing: false
+                        });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    AuthorMessage.prototype.componentDidMount = function () {
+        if (this.state.isFollowing === true) {
+            this.setState({ buttonInfo: "取消关注", isFollowing: true });
+        }
+        else {
+            this.setState({ buttonInfo: "关注", isFollowing: false });
+        }
+    };
     AuthorMessage.prototype.render = function () {
         var email = "/message/message/" + this.props.authorId;
         var url = "/user/" + this.props.authorId;
@@ -10501,7 +11007,7 @@ var AuthorMessage = /** @class */ (function (_super) {
                         React.createElement("div", { style: { marginRight: "0.1875rem" } }, "\u7C89\u4E1D"),
                         React.createElement("div", { style: { color: "#EE0000" } }, this.state.fansNumber))),
                 React.createElement("div", { className: "row" },
-                    React.createElement("div", { id: "watch", style: { marginLeft: "1rem" } }, "\u5173\u6CE8"),
+                    React.createElement("button", { className: "watch", style: { marginLeft: "1rem" }, id: this.state.isFollowing ? '' : 'follow', onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo),
                     React.createElement("a", { id: "email", href: email, style: { marginLeft: "1rem" } }, "\u79C1\u4FE1"))));
     };
     return AuthorMessage;
@@ -11205,7 +11711,7 @@ var SendTopic = /** @class */ (function (_super) {
     };
     SendTopic.prototype.sendMdTopic = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var url, c, content, contentJson, token, myHeaders, mes, e_1;
+            var url, c, content, contentJson, token, myHeaders, mes, e_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -11237,9 +11743,9 @@ var SendTopic = /** @class */ (function (_super) {
                         this.setState({ content: "" });
                         return [3 /*break*/, 3];
                     case 2:
-                        e_1 = _a.sent();
+                        e_5 = _a.sent();
                         console.log("Error");
-                        console.log(e_1);
+                        console.log(e_5);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -16390,7 +16896,7 @@ var PagerState = /** @class */ (function () {
 }());
 exports.PagerState = PagerState;
 var TopicState = /** @class */ (function () {
-    function TopicState(userName, title, content, time, signature, userImgUrl, hitCount, userId, likeNumber, dislikeNumber, postid, isAnonymous, contentType) {
+    function TopicState(userName, title, content, time, signature, userImgUrl, hitCount, userId, likeNumber, dislikeNumber, postid, isAnonymous, contentType, isFollowing) {
         this.userName = userName;
         this.time = time;
         this.title = title;
@@ -16404,6 +16910,7 @@ var TopicState = /** @class */ (function () {
         this.postid = postid;
         this.isAnonymous = isAnonymous;
         this.contentType = contentType;
+        this.isFollowing = isFollowing;
     }
     return TopicState;
 }());

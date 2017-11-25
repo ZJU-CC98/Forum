@@ -29,6 +29,9 @@ export class AuthorMessageState {
     imgUrl: string;
     userName: string;
     fansNumber: number;
+    isFollowing;
+    buttonInfo;
+    buttonIsDisabled;
 }
 /**
  * 题目信息状态
@@ -226,6 +229,7 @@ export class TopicState {
         postid: number,
         isAnonymous: boolean,
         contentType: number,
+        isFollowing: boolean
     ) {
         this.userName = userName;
         this.time = time;
@@ -240,6 +244,7 @@ export class TopicState {
         this.postid = postid;
         this.isAnonymous = isAnonymous;
         this.contentType = contentType;
+        this.isFollowing = isFollowing;
     }
     userName: string;
     title: string;
@@ -254,6 +259,7 @@ export class TopicState {
     postid: number;
     isAnonymous: boolean;
     contentType: number;
+    isFollowing: boolean;
 }
 
 /**
