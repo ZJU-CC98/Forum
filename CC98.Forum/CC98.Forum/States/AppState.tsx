@@ -29,6 +29,9 @@ export class AuthorMessageState {
     imgUrl: string;
     userName: string;
     fansNumber: number;
+    isFollowing;
+    buttonInfo;
+    buttonIsDisabled;
 }
 /**
  * 题目信息状态
@@ -170,7 +173,7 @@ export class TopicTitleAndContentState {
 		  this.lastReply = lastReply;
 		    this.title = title;
 	  }*/
-    constructor(title, userName, topicid, userId, lastPostUser, lastPostTime,likeCount,dislikeCount,replyCount) {
+    constructor(title, userName, topicid, userId, lastPostUser, lastPostTime,likeCount,dislikeCount,replyCount,highlightInfo,topState) {
         this.userName = userName;
         this.title = title;
         this.id = topicid;
@@ -180,6 +183,8 @@ export class TopicTitleAndContentState {
         this.likeCount = likeCount;
         this.dislikeCount = dislikeCount;
         this.replyCount = replyCount;
+        this.highlightInfo = highlightInfo;
+        this.topState = topState;
     }
 
     likeCount: number;
@@ -191,7 +196,8 @@ export class TopicTitleAndContentState {
     lastPostTime: string;
     id: number;
     userId: number;
-
+    highlightInfo: any;
+    topState: number;
 }
 
 /**
@@ -223,6 +229,7 @@ export class TopicState {
         postid: number,
         isAnonymous: boolean,
         contentType: number,
+        isFollowing: boolean
     ) {
         this.userName = userName;
         this.time = time;
@@ -237,6 +244,7 @@ export class TopicState {
         this.postid = postid;
         this.isAnonymous = isAnonymous;
         this.contentType = contentType;
+        this.isFollowing = isFollowing;
     }
     userName: string;
     title: string;
@@ -251,6 +259,7 @@ export class TopicState {
     postid: number;
     isAnonymous: boolean;
     contentType: number;
+    isFollowing: boolean;
 }
 
 /**

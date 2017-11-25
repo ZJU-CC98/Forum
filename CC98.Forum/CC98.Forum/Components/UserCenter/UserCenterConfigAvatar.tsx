@@ -12,7 +12,10 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
     resize: HTMLSpanElement;
     newAvatar: HTMLCanvasElement;
     cover: HTMLDivElement;
+    dragging: HTMLElement;
     NUM_MAX: number;
+    diffX: number;
+    diffY: number;
     constructor(props) {
         super(props);
         const userInfo = Utility.getLocalStorage('userInfo');
@@ -26,7 +29,10 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
             selectorLeft: 0,
             selectorTop: 0,
             avatarNow: userInfo.portraitUrl,
-            isLoading: false
+            isLoading: false,
+            naturalWidth: 0,
+            naturalHeight: 0
+            
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -59,17 +65,18 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
             });
         });
     }
-
-
+    
     handleIMGLoad() {
-        if (this.myIMG.naturalWidth < 160 || this.myIMG.naturalHeight < 160) {
+        let width = this.myIMG.naturalWidth,
+            height = this.myIMG.naturalHeight;
+        if (width < 160 || height < 160) {
             this.setState({
                 info: '图片至少为 160*160',
                 isShown: false,
                 divheight: '0px'
             });
             return;
-        } else if (this.myIMG.naturalWidth > 800) {
+        } else if (width > 800) {
             this.setState({
                 info: '图片宽度至多为 800',
                 isShown: false,
@@ -77,16 +84,21 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
             });
             return;
         }
-        this.NUM_MAX = Math.min(800, this.myIMG.naturalWidth, this.myIMG.naturalHeight);
+        this.NUM_MAX = Math.min(500, width, height);
         let ctx = this.myCanvas.getContext('2d');
-        this.myCanvas.width = this.myIMG.naturalWidth;
-        this.myCanvas.height = this.myIMG.naturalHeight;
-        ctx.drawImage(this.myIMG, 0, 0, this.myIMG.naturalWidth, this.myIMG.naturalHeight, 0, 0, this.myIMG.naturalWidth, this.myIMG.naturalHeight);
+        this.myCanvas.width = width;
+        this.myCanvas.height = height;
+        ctx.drawImage(this.myIMG, 0, 0, width, height, 0, 0, width, height);
         this.setState({
-            divheight: `${this.myIMG.naturalHeight + 50}px`,
-            divWidth: `${this.myIMG.naturalWidth + 50}px`,
+            divheight: `${height + 50}px`,
+            divWidth: `${width + 50}px`,
             isShown: true,
-            info: '请选择要显示的区域'
+            info: '请选择要显示的区域',
+            selectorLeft: width / 4,
+            selectorTop: height / 4,
+            selectorWidth: Math.min(height, width) / 2,
+            naturalWidth: width,
+            naturalHeight: height
         });
     }
 
@@ -117,10 +129,7 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
         this.cover.removeEventListener('mouseup', this.handleCoverMouseMove);
         window.removeEventListener('mouseup', this.handleMouseUp);
     }
-
-    dragging: HTMLElement;
-    diffX: number;
-    diffY: number;
+        
     handleSelectorMove(event) {
         if (this.dragging !== undefined && this.dragging !== null && this.dragging.id === 'resize') {
             this.handleCoverMouseMove(event);
@@ -220,9 +229,10 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
                     this.diffY = event.clientX - event.target.offsetLeft;
                     this.setState((prevState) => {
                         let num = prevState.selectorWidth + this.diffY - this.diffX;
+                        let max = Math.min(this.NUM_MAX, prevState.naturalWidth - prevState.selectorLeft, prevState.naturalHeight - prevState.selectorTop);
                         if (!isNaN(num)) {
                             if (num < 100) { num = 100 }
-                            if (num > this.NUM_MAX) { num = this.NUM_MAX }
+                            if (num > max) { num = max }
                         }
                         return {
                             selectorWidth: isNaN(num) ? prevState.selectorWidth : num
@@ -250,8 +260,9 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
                     this.setState((prevState) => {
                         let num = prevState.selectorWidth + this.diffY - this.diffX;
                         if (!isNaN(num)) {
+                            let max = Math.min(this.NUM_MAX, prevState.naturalWidth - prevState.selectorLeft, prevState.naturalHeight - prevState.selectorTop);
                             if (num < 100) { num = 100 }
-                            if (num > this.NUM_MAX) { num = this.NUM_MAX }
+                            if (num > max) { num = max }
                         }
                         return {
                             selectorWidth: isNaN(num) ? prevState.selectorWidth : num
@@ -299,10 +310,10 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
                             <canvas id="newAvatar" style={style} ref={(a) => { this.newAvatar = a;}}></canvas>
                             <canvas ref={(canvas) => { this.myCanvas = canvas }} style={{ position: 'relative' }} />
                             <div id="cover" ref={(div) => { this.cover = div; }} style={{ width: this.state.divWidth, height: this.state.divheight, top: 0 }}></div>
-                            <div className="imgdata" ref={(div) => { this.selector = div; }} style={{ width: `${this.state.selectorWidth}px`, height: `${this.state.selectorWidth}px`, borderRadius: `${this.state.selectorWidth / 2}px`, top: `${this.state.selectorTop}px`, left: `${this.state.selectorLeft}px` }}>
+                            <div className="imgdata" ref={(div) => { this.selector = div; }} style={this.state.isShown ? { width: `${this.state.selectorWidth}px`, height: `${this.state.selectorWidth}px`, borderRadius: `${this.state.selectorWidth / 2}px`, top: `${this.state.selectorTop}px`, left: `${this.state.selectorLeft}px` }: style}>
                                 <img src={this.state.avatarURL} style={{ position: 'relative', top: `-${this.state.selectorTop}px`, left: `-${this.state.selectorLeft}px` }} />
                             </div>
-                            <div id="selector" ref={(div) => { this.selector = div; }} style={{ width: `${this.state.selectorWidth}px`, height: `${this.state.selectorWidth}px`, borderRadius: `${this.state.selectorWidth / 2}px`, top: `${this.state.selectorTop}px`, left: `${this.state.selectorLeft}px` }}></div>
+                            <div id="selector" ref={(div) => { this.selector = div; }} style={this.state.isShown ? {width: `${this.state.selectorWidth}px`, height: `${this.state.selectorWidth}px`, borderRadius: `${this.state.selectorWidth / 2}px`, top: `${this.state.selectorTop}px`, left: `${this.state.selectorLeft}px` } : style}></div>
                             <span id="resize" ref={(span) => { this.resize = span; }} style={{ top: `${this.state.selectorWidth + this.state.selectorTop}px`, left: `${this.state.selectorWidth + this.state.selectorLeft}px` }}></span>
                         </div>
                         <img ref={(img) => { this.myIMG = img; }} onLoad={this.handleIMGLoad} style={style} src={this.state.avatarURL} />
@@ -325,4 +336,6 @@ interface UserCenterConfigAvatarState {
     selectorLeft: number;
     avatarNow: string;
     isLoading: boolean;
+    naturalWidth: number;
+    naturalHeight: number;
 }

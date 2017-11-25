@@ -29,6 +29,7 @@
     <None Remove="Components\UserCenterMyFavoritesBoard.tsx" />
     <None Remove="Components\UserCenterMyFavoritesBoards.tsx" />
     <None Remove="Components\UserCenterPageCount.tsx" />
+    <None Remove="Components\UserCenter\UserRouterActivities.tsx" />
     <None Remove="Components\UserExactProfile.tsx" />
     <None Remove="Props\FocusBoardProps.tsx" />
     <None Remove="Props\MessageSendReceiveProps.tsx" />
@@ -94,6 +95,7 @@
     <TypeScriptCompile Include="Components\UserCenter\UserCenterMyFavoritesBoards.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\UserCenterPageCount.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\UserExactProfile.tsx" />
+    <TypeScriptCompile Include="Components\UserCenter\UserRouterActivities.tsx" />
     <TypeScriptCompile Include="Props\FocusBoardProps.tsx" />
     <TypeScriptCompile Include="Props\MessagePersonProps.tsx" />
     <TypeScriptCompile Include="Props\MessageSendReceiveProps.tsx" />

@@ -8,7 +8,9 @@ import {
     Link
 } from 'react-router-dom';
 import { match } from "react-router";
-
+export module Constants {
+    export var testEditor;
+}
 declare let editormd: any;
 declare let testEditor: any;
 /*
@@ -37,18 +39,35 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
         return (this.props as any).match;
     }
 }
-export class CreateTopic extends RouteComponent<{}, { title,content,topicId ,ready}, {boardId}> {   //发帖
+export class CreateTopic extends RouteComponent<{}, { title,content,topicId ,ready,mode,boardName}, {boardId}> {   //发帖
     constructor(props) {
         super(props);
-        this.state = ({ topicId:null,title: '', content: '', ready:false});
+        this.changeEditor = this.changeEditor.bind(this);
+        this.state = ({ topicId: null, title: '', content: '', ready: false, mode: 0, boardName:"" });
+    }
+    async componentDidMount() {
+        const token = Utility.getLocalStorage("accessToken");
+        const url = `http://apitest.niconi.cc/Board/${this.match.params.boardId}`;
+        const headers = new Headers();
+        headers.append("Authorization", token);
+        const response = await fetch(url, { headers });
+        const data = await response.json();
+        const boardName = data.name;
+        this.setState({ boardName: boardName });
     }
     ready() {
         this.setState({ ready: true });
     }
+    changeEditor() {
+        if (this.state.mode === 0) {
+            this.setState({ mode: 1 });
+        } else {
+            this.setState({ mode: 0 });
+        }
+    }
     async sendMdTopic(content1) {
         try {
             let url = `http://apitest.niconi.cc/topic/board/${this.match.params.boardId}`;
-          //  let con = testEditor.getMarkdown();
             let content = {
                 content: content1,
                 contentType: 1,
@@ -101,9 +120,6 @@ export class CreateTopic extends RouteComponent<{}, { title,content,topicId ,rea
         const topicId = await mes.text();
         window.location.href = `/topic/${topicId}`;
     }
-   
-    
-
     onTitleChange(title) {
         this.setState({ title: title });
     }
@@ -111,11 +127,11 @@ export class CreateTopic extends RouteComponent<{}, { title,content,topicId ,rea
         this.setState({ content: content });
     }
     render() {
-        //let mode = 0;
-        let mode = 1;
+        const mode = this.state.mode;
+        const url = `/list/${this.match.params.boardId}`;
         if (mode === 0) {
             return <div className="column" style={{ justifyContent: "center", width: "80%" }}>
-                <div className="createTopicBoardName"> 版面名称 > 发表主题</div>
+                <div className="createTopicBoardName"> <a href={url}>{this.state.boardName} ></a>> 发表主题</div>
                 <InputTitle boardId={this.match.params.boardId} onChange={this.onTitleChange.bind(this)} />
                 <div className="createTopicType">
                     <div className="createTopicListName">发帖类型</div>
@@ -131,6 +147,9 @@ export class CreateTopic extends RouteComponent<{}, { title,content,topicId ,rea
             </div>
                 <InputUbbContent onChange={this.onUbbChange.bind(this)} />
                 <div id="post-topic-button" onClick={this.sendUbbTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>发帖</div>
+                <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>切换到Markdown编辑器
+
+                    </div>
             </div>;
         } else {
             return <div className="column" style={{ justifyContent: "center", width: "80%" }}>
@@ -149,7 +168,9 @@ export class CreateTopic extends RouteComponent<{}, { title,content,topicId ,rea
                     <input type="radio" name="option" value="special" />回复仅特定用户可见
             </div>
                 <InputMdContent onChange={this.sendMdTopic.bind(this)} ready={this.state.ready} />
-              
+                <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>切换到UBB编辑器
+
+                    </div>
             </div>;
         }
       
@@ -245,7 +266,7 @@ export class InputMdContent extends React.Component<{ ready,onChange}, {content}
         this.state = ({ content: "" });
     }
     componentDidMount() {
-        editormd("test-editormd", {
+        Constants.testEditor=editormd("test-editormd", {
             width: "100%",
             height: 680,
             path: "/scripts/lib/editor.md/lib/",
@@ -253,8 +274,7 @@ export class InputMdContent extends React.Component<{ ready,onChange}, {content}
         });
     }
     send() {
-        const content = testEditor.getMarkdown();
-        console.log("content" + content);
+        const content = Constants.testEditor.getMarkdown();
         this.props.onChange(content);
     }
     render() {

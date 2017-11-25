@@ -13,6 +13,10 @@ import { UbbContainer } from './UbbContainer';
 declare let moment: any;
 declare let testEditor: any;
 declare let editormd: any;
+
+export module Constants {
+    export var testEditor;
+}
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
 
     constructor(props?, context?) {
@@ -222,7 +226,7 @@ export class HotReplier extends RouteComponent<{ floor, userId, topicid, userNam
         }
         let userDetails;
         if (this.props.isAnonymous != true) {
-            userDetails = <UserDetails userName={this.props.userName} />;
+            userDetails = <UserDetails userName={this.props.userName} userId={this.props.userId}/>;
         } else {
             userDetails = null;
         }
@@ -298,7 +302,7 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
         }
         let userDetails;
         if (this.props.isAnonymous != true) {
-            userDetails = <UserDetails userName={this.props.userName} />;
+            userDetails = <UserDetails userName={this.props.userName} userId={this.props.userId} />;
         } else {
             userDetails = null;
         }
@@ -345,14 +349,86 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
             </div></div>;
     }
 }
-export class UserDetails extends RouteComponent<{ userName }, { portraitUrl, userName, fanCount, displayTitle, birthday, gender, prestige, levelTitle }, {}>{
+export class UserDetails extends RouteComponent<{ userName,userId }, { portraitUrl, userName, fanCount, displayTitle, birthday, gender, prestige, levelTitle,buttonIsDisabled,buttonInfo,isFollowing }, {}>{
     constructor(props) {
         super(props);
-        this.state = ({ portraitUrl: null, userName: null, fanCount: null, displayTitle: null, birthday: null, gender: null, prestige: null, levelTitle: null });
+        this.unfollow = this.unfollow.bind(this);
+        this.follow = this.follow.bind(this);
+        this.state = ({
+            portraitUrl: null, userName: null, fanCount: null, displayTitle: null, birthday: null, gender: null, prestige: null, levelTitle: null, buttonInfo: '关注',
+            buttonIsDisabled: false,
+            isFollowing: false });
     }
+     async unfollow() {
+        try {
+            this.setState({
+                buttonIsDisabled: true,
+                buttonInfo: '取关中'
+            });
+            const token = Utility.getLocalStorage("accessToken");
+            const userId = this.props.userId;
+            const url = `http://apitest.niconi.cc/user/unfollow/${userId}`;
+            const headers = new Headers();
+            headers.append('Authorization', token);
+            let res = await fetch(url, {
+                method: 'DELETE',
+                headers
+            });
+            if (res.status === 200) {
+                this.setState({
+                    buttonIsDisabled: false,
+                    buttonInfo: '重新关注',
+                    isFollowing: false
+                });
+            } else {
+                throw {};
+            }
+        } catch (e) {
+            this.setState({
+                buttonIsDisabled: false,
+                buttonInfo: '取关失败',
+                isFollowing: true
+            });
+        }
+    }
+
+    async follow() {
+        try {
+            this.setState({
+                buttonIsDisabled: true,
+                buttonInfo: '关注中'
+            });
+            const token = Utility.getLocalStorage("accessToken");
+
+            const userId = this.props.userId;
+            const url = `http://apitest.niconi.cc/user/follow/${userId}`;
+            const headers = new Headers();
+            headers.append('Authorization', token);
+            let res = await fetch(url, {
+                method: 'POST',
+                headers
+            });
+            if (res.status === 200) {
+                this.setState({
+                    buttonIsDisabled: false,
+                    buttonInfo: '取消关注',
+                    isFollowing: true
+                });
+            } else {
+                throw {};
+            }
+        } catch (e) {
+            this.setState({
+                buttonIsDisabled: false,
+                buttonInfo: '关注失败',
+                isFollowing: false
+            });
+        }
+    }
+
     async componentDidMount() {
         const data = await Utility.getUserDetails(this.props.userName, this.context.router);
-        this.setState({ portraitUrl: data.portraitUrl, userName: data.userName, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle });
+        this.setState({ portraitUrl: data.portraitUrl, userName: data.userName, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle, isFollowing: data.isFollowing, buttonInfo: data.isFollowing?'取消关注':'关注'});
     }
     render() {
         let title = this.state.displayTitle;
@@ -395,7 +471,7 @@ export class UserDetails extends RouteComponent<{ userName }, { portraitUrl, use
                     </div>
 
                     <div>
-                        <div id="watch" style={{ width: "5rem", backgroundColor: "#FF6A6A", marginRight: "0.63rem", marginLeft: "1.6rem", marginTop: "2rem", height: "2rem" }}>关注</div>
+                        <button className="watch" style={{ width: "5rem", backgroundColor: "#FF6A6A", marginRight: "0.63rem", marginLeft: "1.6rem", marginTop: "2rem", height: "2rem" }} id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
 
                     </div>
                 </div>
@@ -423,7 +499,7 @@ export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid },
         if (this.state.topicMessage.userId == this.props.userId || this.props.userId == null) {
             return <div className="root" id="1">
                 <div className="essay">
-                    <AuthorMessage authorId={this.state.topicMessage.userId} authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} isAnonymous={this.state.topicMessage.isAnonymous} />
+                    <AuthorMessage authorId={this.state.topicMessage.userId} authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} isAnonymous={this.state.topicMessage.isAnonymous} isFollowing={this.state.topicMessage.isFollowing} />
                     <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount} />
                     <div id="ads"><img width="100%" src={this.props.imgUrl}></img></div>
                 </div>
@@ -441,14 +517,92 @@ export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid },
 }
 
 
-export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, authorName: string, authorId: number, authorImgUrl: string }, State.AuthorMessageState, {}> {
+export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, authorName: string, authorId: number, authorImgUrl: string,isFollowing:boolean }, State.AuthorMessageState, {}> {
     constructor(props, content) {
         super(props, content);
+        this.follow = this.follow.bind(this);
+        this.unfollow = this.unfollow.bind(this);
         this.state = {
             userName: 'Mana',
             fansNumber: 233,
-            imgUrl: this.props.authorImgUrl
+            imgUrl: this.props.authorImgUrl,
+            buttonInfo: '关注',
+            isFollowing: false,
+            buttonIsDisabled: false
         };
+    }
+    async unfollow() {
+        try {
+            this.setState({
+                buttonIsDisabled: true,
+                buttonInfo: '取关中'
+            });
+            const token = Utility.getLocalStorage("accessToken");
+            const userId = this.props.authorId;
+            const url = `http://apitest.niconi.cc/user/unfollow/${userId}`;
+            const headers = new Headers();
+            headers.append('Authorization', token);
+            let res = await fetch(url, {
+                method: 'DELETE',
+                headers
+            });
+            if (res.status === 200) {
+                this.setState({
+                    buttonIsDisabled: false,
+                    buttonInfo: '重新关注',
+                    isFollowing: false
+                });
+            } else {
+                throw {};
+            }
+        } catch (e) {
+            this.setState({
+                buttonIsDisabled: false,
+                buttonInfo: '取关失败',
+                isFollowing: true
+            });
+        }
+    }
+
+    async follow() {
+        try {
+            this.setState({
+                buttonIsDisabled: true,
+                buttonInfo: '关注中'
+            });
+            const token = Utility.getLocalStorage("accessToken");
+
+            const userId = this.props.authorId;
+            const url = `http://apitest.niconi.cc/user/follow/${userId}`;
+            const headers = new Headers();
+            headers.append('Authorization', token);
+            let res = await fetch(url, {
+                method: 'POST',
+                headers
+            });
+            if (res.status === 200) {
+                this.setState({
+                    buttonIsDisabled: false,
+                    buttonInfo: '取消关注',
+                    isFollowing: true
+                });
+            } else {
+                throw {};
+            }
+        } catch (e) {
+            this.setState({
+                buttonIsDisabled: false,
+                buttonInfo: '关注失败',
+                isFollowing: false
+            });
+        }
+    }
+    componentDidMount() {
+        if (this.state.isFollowing === true) {
+            this.setState({ buttonInfo: "取消关注", isFollowing: true });
+        } else {
+            this.setState({ buttonInfo: "关注", isFollowing: false});
+        }
     }
     render() {
         const email = `/message/message/${this.props.authorId}`;
@@ -470,7 +624,7 @@ export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, author
                 </div>
 
                 <div className="row">
-                    <div id="watch" style={{ marginLeft: "1rem" }}>关注</div>
+                    <button className="watch" style={{ marginLeft: "1rem" }} id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
                     <a id="email" href={email} style={{ marginLeft: "1rem" }}>私信</a>
                 </div>
             </div>
@@ -933,14 +1087,35 @@ export class UserMessageBox extends React.Component<{ userName, userFans }, {}>{
 }
 export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { content: string,mode:number }, {}>{
     constructor(props) {
-        super(props);     
+        super(props);
+        this.changeEditor = this.changeEditor.bind(this);
         this.state = ({ content: '',mode:1 });
     }
     componentDidMount() {
-   
+        Constants.testEditor = editormd("test-editormd", {
+            width: "100%",
+            height: 640,
+            path: "/scripts/lib/editor.md/lib/",
+            saveHTMLToTextarea: false,
+            imageUpload: false,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "http://apitest.niconi.cc/file/",
+        });
     }
     componentWillReceiveProps(newProps) {
       
+    }
+    componentDidUpdate() {
+        Constants.testEditor = editormd("test-editormd", {
+            width: "100%",
+            height: 640,
+            path: "/scripts/lib/editor.md/lib/",
+            saveHTMLToTextarea: false,
+            imageUpload: false,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "http://apitest.niconi.cc/file/",
+        });
+
     }
     async sendUbbTopic() {
         let url = `http://apitest.niconi.cc/post/topic/${this.props.topicid}`;
@@ -966,7 +1141,7 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
     async sendMdTopic() {
         try {
             let url = `http://apitest.niconi.cc/post/topic/${this.props.topicid}`;
-            let c = testEditor.getMarkdown();
+            let c = Constants.testEditor.getMarkdown();
             let content = {
                 content: c,
                 contentType: 1,
@@ -990,7 +1165,7 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
             if (mes.status === 402) {
                 alert("请输入内容");
             }
-            testEditor.setMarkdown("");
+            Constants.testEditor.setMarkdown("");
             this.props.onChange();
             this.setState({ content: "" });
         } catch (e) {
@@ -1004,6 +1179,20 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
             this.setState({ mode: 1 });
         } else {
             this.setState({ mode: 0 });
+        }
+    }
+    async upload(e) {
+        const files = e.target.files;
+        const res = await Utility.uploadFile(files[0]);
+        const url = res.content;
+        if (this.state.mode === 1) {        
+            const str = `![](http://apitest.niconi.cc${url})`;
+            Constants.testEditor.appendMarkdown(str);
+        } else {
+            const str = `[img]http://apitest.niconi.cc${url}[/img]`;
+            const ex = this.state.content;
+            const cur = ex + str;
+            this.setState({ content: cur });
         }
     }
     getInitialState() {
@@ -1057,8 +1246,7 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
              <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
                     <div id="post-topic-button" onClick={this.sendUbbTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复
                     </div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>{this.state.mode}
-            </div> </div></div>;
+                    <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>切换到Markdown编辑器            </div> </div></div>;
         }
         else {
             mode = '使用Markdown编辑';
@@ -1071,13 +1259,17 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
                 <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
                     <div id="post-topic-button" onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复</div>
 
-                    <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>{this.state.mode}
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>切换到UBB编辑器
+
                     </div>
                 </div>
 
             </div>;
         }
         return <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
+            <form method="post" encType="multipart/form-data">
+                <input type="file" id="upload-files" onChange={this.upload.bind(this)} />
+            </form>
             {editor}
         </div>;
     }

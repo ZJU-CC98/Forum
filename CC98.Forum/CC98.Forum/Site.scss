@@ -136,8 +136,8 @@ body {
     margin-top: 20px;
 }
 
-#watch {
-    width: 4rem;
+.watch {
+    width: 4.6rem;
     font-size: 0.75rem;
     font-family: 微软雅黑;
     letter-spacing: 0.1875rem;
@@ -463,6 +463,7 @@ body {
 }
 
 .rpyClr {
+    width:5rem;
     word-break: keep-all;
 }
 
@@ -603,6 +604,10 @@ body {
 #changeColor:nth-child(odd) {
     background-color: #FCFCFC;
 }
+#changeTopColor {
+    background-color: #FFFAF0;
+}
+
 
 #lastReply {
     margin-right: -1.8rem;

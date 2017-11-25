@@ -52,7 +52,8 @@ export class List extends RouteComponent<{}, {bigPaper:string, page: number, tot
             <ListHead key={this.state.page} boardId={this.match.params.boardId} />
             <ListNotice bigPaper={this.state.bigPaper} />
 			<ListButtonAndPager page={this.state.page} totalPage={this.state.totalPage} boardid={this.state.boardId} />
-			<ListTag />
+            <ListTag />
+        
             <Route path="/list/:boardId/:page?" component={ListContent} />
             <PagerDown page={this.state.page} totalPage={this.state.totalPage} boardid={this.state.boardId}/>
 		</div>;
@@ -64,7 +65,7 @@ export class Category extends RouteComponent<{boardId }, { boardId, boardName },
         this.state = ({ boardId: "",boardName: "" });
     }
     async componentDidMount() {
-        console.log("cate" + this.props.boardId);
+  
         const boardName = await Utility.getListCategory(this.props.boardId, this.context.router);
         this.setState({ boardId: this.props.boardId, boardName: boardName });
     }
@@ -268,23 +269,12 @@ export class ListTag extends React.Component<{}> {
 		</div >;
 	}
 }
-
-export class ListContent extends RouteComponent<{}, { items: TopicTitleAndContentState[] }, { page: string, boardId: number }> {
-
-	constructor(props,context) {
-		super();
-
-		this.state = { items: [] };
-
-	}
-    async componentDidMount() {
-  
-        const data = await Utility.getBoardTopicAsync(1, this.match.params.boardId, this.context.router);
-        console.log(data);
-		this.setState({ items: data });
-	}
+export class ListTopContent extends React.Component<{boardId}, {data}>{
+    constructor(props, context) {
+        super(props,context);
+        this.state = { data:[]};
+    }
     private convertTopicToElement(item: TopicTitleAndContentState) {
-        console.log("in");
         return <TopicTitleAndContent key={item.id}
             title={item.title}
             userName={item.userName}
@@ -295,6 +285,86 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
             likeCount={item.likeCount}
             dislikeCount={item.dislikeCount}
             replyCount={item.replyCount}
+            highlightInfo={item.highlightInfo}
+            topState={item.topState}
+        />;
+    }
+    async componentDidMount() {
+        const data =await Utility.GetTopTopics(this.props.boardId);
+        this.setState({ data: data });
+    }
+    render() {
+        return <div>{this.state.data.map(this.convertTopicToElement)}</div>;
+    }
+}
+export class BestTopics extends React.Component<{ boardId, curPage }, { data }>{
+    constructor(props) {
+        super(props);
+        this.state = ({ data: [] });
+    }
+    async componentDidMount() {
+        const data = await Utility.GetBestTopics(this.props.boardId, this.props.curPage);
+        this.setState({ data: data });
+    }
+    private convertTopicToElement(item: TopicTitleAndContentState) {
+
+        return <TopicTitleAndContent key={item.id}
+            title={item.title}
+            userName={item.userName}
+            id={item.id}
+            userId={item.userId}
+            lastPostTime={item.lastPostTime}
+            lastPostUser={item.lastPostUser}
+            likeCount={item.likeCount}
+            dislikeCount={item.dislikeCount}
+            replyCount={item.replyCount}
+            highlightInfo={item.highlightInfo}
+            topState={item.topState}
+        />;
+    }
+    render() {
+        return <div>{this.state.data.map(this.convertTopicToElement)}</div>;
+    }
+}
+export class ListContent extends RouteComponent<{}, {class:number, items: TopicTitleAndContentState[] }, { page: string, boardId: number }> {
+    //class 0全部 1精华 2保存
+	constructor(props,context) {
+        super(props, context);
+        this.inAll = this.inAll.bind(this);
+        this.inBest = this.inBest.bind(this);
+        this.inSave = this.inSave.bind(this);
+		this.state = { items: [] ,class:0};
+
+    }
+    inSave() {
+        this.setState({ class: 2 });
+    }
+    inBest() {
+        this.setState({ class: 1 });
+    }
+    inAll() {
+        this.setState({ class: 0 });
+    }
+    async componentDidMount() {
+  
+        const data = await Utility.getBoardTopicAsync(1, this.match.params.boardId, this.context.router);
+   
+		this.setState({ items: data });
+	}
+    private convertTopicToElement(item: TopicTitleAndContentState) {
+
+        return <TopicTitleAndContent key={item.id}
+            title={item.title}
+            userName={item.userName}
+            id={item.id}
+            userId={item.userId}
+            lastPostTime={item.lastPostTime}
+            lastPostUser={item.lastPostUser}
+            likeCount={item.likeCount}
+            dislikeCount={item.dislikeCount}
+            replyCount={item.replyCount}
+            highlightInfo={item.highlightInfo}
+            topState={item.topState}
         />;
 	}
 	async componentWillReceiveProps(newProps) {
@@ -311,22 +381,35 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
 	}
 
 
-	render() {
-
+    render() {
+        const curPage = this.match.params.page ? parseInt(this.match.params.page) : 1;
+        let topTopics = null;
+        if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
+            topTopics = <div><ListTopContent boardId={this.match.params.boardId} /></div>;
+        }
+        let topics;
+        if (this.state.class === 0) {
+            topics = this.state.items.map(this.convertTopicToElement);
+        } else if (this.state.class === 1) {
+            topics = <BestTopics boardId={this.match.params.boardId} curPage={curPage} />
+        } else if (this.state.class === 2) {
+          //  topics =
+        }
 		return <div className="listContent ">
 			<div className="row" style={{ justifyContent: 'space-between', }}>
                 <div className="row" style={{ alignItems: 'center' }} >
 
-                    <div className="listContentTag">全部</div>
-					<div className="listContentTag">精华</div>
+                    <div className="listContentTag" onClick={this.inAll}>全部</div>
+                    <div className="listContentTag" onClick={this.inBest}>精华</div>
 					<div className="listContentTag">最热</div>
 				</div>
 				<div className="row" style={{ alignItems: 'center' }}>
 					<div style={{ marginRight: '14.5rem' }}><span>作者</span></div>
 					<div style={{ marginRight: '7.6875rem'}}><span>最后回复</span></div>
 				</div>
-			</div>
-			<div>{this.state.items.map(this.convertTopicToElement)}</div>
+            </div>
+            {topTopics}
+			<div>{topics}</div>
 		</div>;
 
 	}
@@ -342,7 +425,24 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         const count = this.props.replyCount+1;
         const totalPage = (count-count%10) / 10 + 1;
         const pager = Utility.getListPager(totalPage);
+        const titleId = `#title${this.props.id}`;
         this.setState({ pager: pager });
+    }
+    componentDidMount() {
+        const titleId = `#title${this.props.id}`;
+        if (this.props.highlightInfo != null) {
+            if (this.props.highlightInfo.isBold == true) {
+                $(titleId).css("font-weight", "bold");
+            }
+            if (this.props.highlightInfo.isItalic == true) {
+                $(titleId).css("font-style", "italic");
+            }
+            if (this.props.highlightInfo.color != null) {
+                $(titleId).css("color", this.props.highlightInfo.color);
+            }
+        }
+
+        this.setState({});
     }
     generateListPager(item: number) {
         const url = `/topic/${this.props.id}/${item}`;
@@ -353,20 +453,43 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         }
     }
     render() {
+        let colorId;
+        if (this.props.topState === 0) {
+            colorId = "changeColor";
+        } else {
+            colorId = "changeTopColor";
+        }
+        const topicId = `topic${this.props.id}`;
         let url = `/topic/${this.props.id}`;
-        return <div id="changeColor">
+        const titleId = `title${this.props.id}`;
+        let icon;
+        if (this.props.topState === 0) {
+            icon = <i style={{ color: "blue" }}className="fa fa-envelope fa-lg"></i>
+        } else if (this.props.topState === 2) {
+            icon = <i style={{ color: "orange" }}className="fa fa-chevron-circle-up fa-lg"></i>
+        } else if (this.props.topState === 4) {
+            icon = <i style={{ color: "red" }}className="fa fa-arrow-circle-up fa-lg"></i>
+        }
+        if (this.props.replyCount > 100 && this.props.topState===0) {
+            icon = <i style={{color:"red"}}className="fa fa-envelope fa-lg"></i>
+        }
+        if (Utility.getLocalStorage("userInfo").name === this.props.userName) {
+            icon = <i style={{ color: "#FFC90E" }} className="fa fa-envelope fa-lg"></i>
+        }
+        return <div id={colorId}>
 
-            <div className="row topicInList" >
-                <div style={{ display:"flex" }}>
-                <Link to={url}><div className="listTitle" style={{ marginLeft: '1.25rem', }}> {this.props.title}</div></Link>
+            <div className="row topicInList" id={topicId}>
+                <div style={{ display: "flex", marginLeft:"1rem" }}>
+                    {icon}
+                    <Link to={url}><div className="listTitle" id={titleId} style={{ marginLeft: '1.25rem', }}> {this.props.title}</div></Link>
                 <div style={{  display:"flex" }}>
                         {this.state.pager.map(this.generateListPager.bind(this))}</div>
                     </div>
                 <div className="row" style={{ width: "45%", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" }}>
 
-                    <div style={{ width:"15rem" }}> <span ><a >{this.props.userName}</a></span></div>
+                    <div style={{ width:"8rem" }}> <span ><a >{this.props.userName}</a></span></div>
 
-                    <div className="row" style={{width:"15rem",  flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" }}>
+                    <div className="row" style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" ,width:"10rem"}}>
 
                         <div id="liked" style={{ display: "flex" }}><i className="fa fa-thumbs-o-up fa-lg"></i><span className="timeProp tagSize">{this.props.likeCount}</span></div>
 
@@ -376,9 +499,9 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
 
                     </div>
 
-                    <div id="lastReply" style={{ width: "15rem" }}><div>{this.props.lastPostUser} </div></div>
+                    <div id="lastReply" style={{ width: "8rem" }}><div>{this.props.lastPostUser} </div></div>
 
-                    <div style={{ width: "20rem"}}><div style={{ wordBreak:"keepAll" }}>{moment(this.props.lastPostTime).format('YYYY-MM-DD HH:mm')}</div></div>
+                    <div style={{ width: "12rem"}}><div style={{ wordBreak:"keepAll" }}>{moment(this.props.lastPostTime).format('YYYY-MM-DD HH:mm')}</div></div>
 
                 </div>
 
