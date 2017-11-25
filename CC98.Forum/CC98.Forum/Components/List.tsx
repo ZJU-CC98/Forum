@@ -297,8 +297,34 @@ export class ListTopContent extends React.Component<{boardId}, {data}>{
         return <div>{this.state.data.map(this.convertTopicToElement)}</div>;
     }
 }
-export class BestTopics extends React.Component<{boardId}, {}>{
+export class BestTopics extends React.Component<{ boardId, curPage }, { data }>{
+    constructor(props) {
+        super(props);
+        this.state = ({ data: [] });
+    }
+    async componentDidMount() {
+        const data = await Utility.GetBestTopics(this.props.boardId, this.props.curPage);
+        this.setState({ data: data });
+    }
+    private convertTopicToElement(item: TopicTitleAndContentState) {
 
+        return <TopicTitleAndContent key={item.id}
+            title={item.title}
+            userName={item.userName}
+            id={item.id}
+            userId={item.userId}
+            lastPostTime={item.lastPostTime}
+            lastPostUser={item.lastPostUser}
+            likeCount={item.likeCount}
+            dislikeCount={item.dislikeCount}
+            replyCount={item.replyCount}
+            highlightInfo={item.highlightInfo}
+            topState={item.topState}
+        />;
+    }
+    render() {
+        return <div>{this.state.data.map(this.convertTopicToElement)}</div>;
+    }
 }
 export class ListContent extends RouteComponent<{}, {class:number, items: TopicTitleAndContentState[] }, { page: string, boardId: number }> {
     //class 0全部 1精华 2保存
@@ -355,7 +381,8 @@ export class ListContent extends RouteComponent<{}, {class:number, items: TopicT
 	}
 
 
-	render() {
+    render() {
+        const curPage = this.match.params.page ? parseInt(this.match.params.page) : 1;
         let topTopics = null;
         if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
             topTopics = <div><ListTopContent boardId={this.match.params.boardId} /></div>;
@@ -364,7 +391,7 @@ export class ListContent extends RouteComponent<{}, {class:number, items: TopicT
         if (this.state.class === 0) {
             topics = this.state.items.map(this.convertTopicToElement);
         } else if (this.state.class === 1) {
-        //    topics =
+            topics = <BestTopics boardId={this.match.params.boardId} curPage={curPage} />
         } else if (this.state.class === 2) {
           //  topics =
         }

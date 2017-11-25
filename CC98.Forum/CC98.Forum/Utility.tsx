@@ -59,7 +59,7 @@ export async function getBoardTopicAsync(curPage, boardid,router) {
         }
         const data: State.TopicTitleAndContentState[] = await response.json();
         for (let i = 0; i < topicNumberInPage; i++) {
-            boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime, data[i].likeCount, data[i].dislikeCount, data[i].replyCount || 0, data[i].highlightInfo);
+            boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime, data[i].likeCount, data[i].dislikeCount, data[i].replyCount || 0, data[i].highlightInfo, data[i].topState);
         }
 
         return boardtopics;
@@ -122,14 +122,14 @@ export async function getTopic(topicid: number, router) {
         const hitCount = hitCountJson.hitCount;
         let topicMessage = null;
         if (data[0].isAnonymous != true) {
-            const userMesResponse = await fetch(`http://apitest.niconi.cc/User/${data[0].userId}`);
+            const userMesResponse = await fetch(`http://apitest.niconi.cc/User/${data[0].userId}`, { headers });
             if (userMesResponse.status === 404) {
                 router.history.replace("/status/NotFoundUser");
             }
             const userMesJson = await userMesResponse.json();
-            topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType);
+            topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType,data[0].isFollowing);
         } else {
-            topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType);
+            topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing);
 
 }
 
@@ -343,7 +343,7 @@ export function getListPager(totalPage) {
     }
 }
 export function convertHotTopic(item: State.TopicTitleAndContentState) {
-    return <TopicTitleAndContent key={item.id} title={item.title} userName={item.userName} id={item.id} userId={item.userId} lastPostTime={item.lastPostTime} lastPostUser={item.lastPostUser} likeCount={item.likeCount} dislikeCount={item.dislikeCount} replyCount={item.replyCount} highlightInfo={item.highlightInfo} />
+    return <TopicTitleAndContent key={item.id} title={item.title} userName={item.userName} id={item.id} userId={item.userId} lastPostTime={item.lastPostTime} lastPostUser={item.lastPostUser} likeCount={item.likeCount} dislikeCount={item.dislikeCount} replyCount={item.replyCount} highlightInfo={item.highlightInfo} topState={item.topState} />
         ;
 }
 export function getPager(curPage, totalPage) {
@@ -1022,8 +1022,11 @@ export async function getCategory(topicid, router) {
 }
 export async function getUserDetails(userName, router) {
     try {
+        const token = getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append("Authorization", token);
         let url = `http://apitest.niconi.cc/user/name/${userName}`;
-        let message = await fetch(url);
+        let message = await fetch(url, { headers });
         if (message.status === 404) {
             router.history.replace("/status/NotFoundUser");
         }
@@ -1031,7 +1034,8 @@ export async function getUserDetails(userName, router) {
             router.history.replace("/status/ServerError");
         }
         let data = await message.json();
-        const body = { portraitUrl: data.portraitUrl, userName: data.name, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle }
+        console.log(data);
+        const body = { portraitUrl: data.portraitUrl, userName: data.name, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle ,isFollowing:data.isFollowing}
         return body;
     } catch (e) {
         router.history.replace("/status/Disconnected");
@@ -1410,4 +1414,46 @@ export async function unfollowUser(userId: number) {
     } catch (e) {
         return false;
     }
+}
+
+export async function GetTopTopics(boardId){
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    const url = `http://apitest.niconi.cc/topic/toptopics?boardid=${boardId}`;
+    const response = await fetch(url, { headers });
+    const data: State.TopicTitleAndContentState[] = await response.json();
+    let topics: State.TopicTitleAndContentState[]=[];
+    for (let i = 0; i < data.length; i++) {
+        topics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime, data[i].likeCount, data[i].dislikeCount, data[i].replyCount || 0, data[i].highlightInfo, data[i].topState);
+    }
+    for (let i = 0; i < topics.length-1; i++) {
+        for (let j = 0; j < topics.length - 1 - j; j++) {
+            if (topics[j].topState <= topics[j + 1].topState) {
+                let temp = topics[j];
+                topics[j] = topics[j + 1];
+                topics[j + 1] = temp;
+
+            }
+        }
+    }
+    return topics;
+}
+export async function GetBestTopics(boardId, curPage) {
+    const start = (curPage - 1) * 20;
+    const url = `http://apitest.niconi.cc/topic/best/board/${boardId}?from=${start}&size=20 `;
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    const response = await fetch(url, { headers });
+    const data = await response.json();
+    console.log(data);
+    let boardtopics: State.TopicTitleAndContentState[] = [];
+    for (let i = 0; i < data.length; i++) {
+        boardtopics[i] = new State.TopicTitleAndContentState(data[i].title, data[i].userName, data[i].id, data[i].userId, data[i].lastPostUser, data[i].lastPostTime, data[i].likeCount, data[i].dislikeCount, data[i].replyCount || 0, data[i].highlightInfo, data[i].topState);
+    }
+    return boardtopics;
+}
+export async function GetSaveTopics(boardId, totalPage, curPage) {
+
 }

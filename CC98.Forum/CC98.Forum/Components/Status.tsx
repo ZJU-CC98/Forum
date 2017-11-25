@@ -8,7 +8,7 @@ export class LogOut extends React.Component<{}, {}>{
         }}>
             <div>您当前未登录</div>
             <LogOn />
-            </div>;
+        </div>;
     }
 }
 export class TopicDeleted extends React.Component<{}, {}>{
@@ -35,21 +35,22 @@ export class NotFoundBoard extends React.Component<{}, {}>{
     constructor(props, context) {
         super(props, context);
     }
-   async componentDidMount() {
+    async componentDidMount() {
         const token = Utility.getLocalStorage("accessToken");
         const headers = new Headers();
-       headers.append("Authorization", token);
-       const content = { reason: "test" };
-       const response = await fetch(
+        headers.append("Authorization", token);
+        headers.append("Content-Type", "application/json");
+        const content =  "test" ;
+        const response = await fetch(
 
-           `http://apitest.niconi.cc/topic/deletetop?topicid=4739872&boardid=753`,
-           {
-               method: "DELETE",
-               headers,
-               body: JSON.stringify(content)
-           }
-       );
-       console.log("finished");
+            `http://apitest.niconi.cc/topic/deletetop?topicid=4739872&boardid=753`,
+            {
+                method: "DELETE",
+                headers,
+                body: JSON.stringify(content)
+            }
+        );
+        console.log("finished");
     }
     render() {
         return <div>404版面不存在</div>;

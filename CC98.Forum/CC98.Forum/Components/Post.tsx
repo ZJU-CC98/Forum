@@ -226,7 +226,7 @@ export class HotReplier extends RouteComponent<{ floor, userId, topicid, userNam
         }
         let userDetails;
         if (this.props.isAnonymous != true) {
-            userDetails = <UserDetails userName={this.props.userName} />;
+            userDetails = <UserDetails userName={this.props.userName} userId={this.props.userId}/>;
         } else {
             userDetails = null;
         }
@@ -302,7 +302,7 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
         }
         let userDetails;
         if (this.props.isAnonymous != true) {
-            userDetails = <UserDetails userName={this.props.userName} />;
+            userDetails = <UserDetails userName={this.props.userName} userId={this.props.userId} />;
         } else {
             userDetails = null;
         }
@@ -349,14 +349,86 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
             </div></div>;
     }
 }
-export class UserDetails extends RouteComponent<{ userName }, { portraitUrl, userName, fanCount, displayTitle, birthday, gender, prestige, levelTitle }, {}>{
+export class UserDetails extends RouteComponent<{ userName,userId }, { portraitUrl, userName, fanCount, displayTitle, birthday, gender, prestige, levelTitle,buttonIsDisabled,buttonInfo,isFollowing }, {}>{
     constructor(props) {
         super(props);
-        this.state = ({ portraitUrl: null, userName: null, fanCount: null, displayTitle: null, birthday: null, gender: null, prestige: null, levelTitle: null });
+        this.unfollow = this.unfollow.bind(this);
+        this.follow = this.follow.bind(this);
+        this.state = ({
+            portraitUrl: null, userName: null, fanCount: null, displayTitle: null, birthday: null, gender: null, prestige: null, levelTitle: null, buttonInfo: '关注',
+            buttonIsDisabled: false,
+            isFollowing: false });
     }
+     async unfollow() {
+        try {
+            this.setState({
+                buttonIsDisabled: true,
+                buttonInfo: '取关中'
+            });
+            const token = Utility.getLocalStorage("accessToken");
+            const userId = this.props.userId;
+            const url = `http://apitest.niconi.cc/user/unfollow/${userId}`;
+            const headers = new Headers();
+            headers.append('Authorization', token);
+            let res = await fetch(url, {
+                method: 'DELETE',
+                headers
+            });
+            if (res.status === 200) {
+                this.setState({
+                    buttonIsDisabled: false,
+                    buttonInfo: '重新关注',
+                    isFollowing: false
+                });
+            } else {
+                throw {};
+            }
+        } catch (e) {
+            this.setState({
+                buttonIsDisabled: false,
+                buttonInfo: '取关失败',
+                isFollowing: true
+            });
+        }
+    }
+
+    async follow() {
+        try {
+            this.setState({
+                buttonIsDisabled: true,
+                buttonInfo: '关注中'
+            });
+            const token = Utility.getLocalStorage("accessToken");
+
+            const userId = this.props.userId;
+            const url = `http://apitest.niconi.cc/user/follow/${userId}`;
+            const headers = new Headers();
+            headers.append('Authorization', token);
+            let res = await fetch(url, {
+                method: 'POST',
+                headers
+            });
+            if (res.status === 200) {
+                this.setState({
+                    buttonIsDisabled: false,
+                    buttonInfo: '取消关注',
+                    isFollowing: true
+                });
+            } else {
+                throw {};
+            }
+        } catch (e) {
+            this.setState({
+                buttonIsDisabled: false,
+                buttonInfo: '关注失败',
+                isFollowing: false
+            });
+        }
+    }
+
     async componentDidMount() {
         const data = await Utility.getUserDetails(this.props.userName, this.context.router);
-        this.setState({ portraitUrl: data.portraitUrl, userName: data.userName, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle });
+        this.setState({ portraitUrl: data.portraitUrl, userName: data.userName, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle, isFollowing: data.isFollowing, buttonInfo: data.isFollowing?'取消关注':'关注'});
     }
     render() {
         let title = this.state.displayTitle;
@@ -399,7 +471,7 @@ export class UserDetails extends RouteComponent<{ userName }, { portraitUrl, use
                     </div>
 
                     <div>
-                        <div id="watch" style={{ width: "5rem", backgroundColor: "#FF6A6A", marginRight: "0.63rem", marginLeft: "1.6rem", marginTop: "2rem", height: "2rem" }}>关注</div>
+                        <button className="watch" style={{ width: "5rem", backgroundColor: "#FF6A6A", marginRight: "0.63rem", marginLeft: "1.6rem", marginTop: "2rem", height: "2rem" }} id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
 
                     </div>
                 </div>
@@ -427,7 +499,7 @@ export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid },
         if (this.state.topicMessage.userId == this.props.userId || this.props.userId == null) {
             return <div className="root" id="1">
                 <div className="essay">
-                    <AuthorMessage authorId={this.state.topicMessage.userId} authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} isAnonymous={this.state.topicMessage.isAnonymous} />
+                    <AuthorMessage authorId={this.state.topicMessage.userId} authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} isAnonymous={this.state.topicMessage.isAnonymous} isFollowing={this.state.topicMessage.isFollowing} />
                     <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount} />
                     <div id="ads"><img width="100%" src={this.props.imgUrl}></img></div>
                 </div>
@@ -445,14 +517,92 @@ export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid },
 }
 
 
-export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, authorName: string, authorId: number, authorImgUrl: string }, State.AuthorMessageState, {}> {
+export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, authorName: string, authorId: number, authorImgUrl: string,isFollowing:boolean }, State.AuthorMessageState, {}> {
     constructor(props, content) {
         super(props, content);
+        this.follow = this.follow.bind(this);
+        this.unfollow = this.unfollow.bind(this);
         this.state = {
             userName: 'Mana',
             fansNumber: 233,
-            imgUrl: this.props.authorImgUrl
+            imgUrl: this.props.authorImgUrl,
+            buttonInfo: '关注',
+            isFollowing: false,
+            buttonIsDisabled: false
         };
+    }
+    async unfollow() {
+        try {
+            this.setState({
+                buttonIsDisabled: true,
+                buttonInfo: '取关中'
+            });
+            const token = Utility.getLocalStorage("accessToken");
+            const userId = this.props.authorId;
+            const url = `http://apitest.niconi.cc/user/unfollow/${userId}`;
+            const headers = new Headers();
+            headers.append('Authorization', token);
+            let res = await fetch(url, {
+                method: 'DELETE',
+                headers
+            });
+            if (res.status === 200) {
+                this.setState({
+                    buttonIsDisabled: false,
+                    buttonInfo: '重新关注',
+                    isFollowing: false
+                });
+            } else {
+                throw {};
+            }
+        } catch (e) {
+            this.setState({
+                buttonIsDisabled: false,
+                buttonInfo: '取关失败',
+                isFollowing: true
+            });
+        }
+    }
+
+    async follow() {
+        try {
+            this.setState({
+                buttonIsDisabled: true,
+                buttonInfo: '关注中'
+            });
+            const token = Utility.getLocalStorage("accessToken");
+
+            const userId = this.props.authorId;
+            const url = `http://apitest.niconi.cc/user/follow/${userId}`;
+            const headers = new Headers();
+            headers.append('Authorization', token);
+            let res = await fetch(url, {
+                method: 'POST',
+                headers
+            });
+            if (res.status === 200) {
+                this.setState({
+                    buttonIsDisabled: false,
+                    buttonInfo: '取消关注',
+                    isFollowing: true
+                });
+            } else {
+                throw {};
+            }
+        } catch (e) {
+            this.setState({
+                buttonIsDisabled: false,
+                buttonInfo: '关注失败',
+                isFollowing: false
+            });
+        }
+    }
+    componentDidMount() {
+        if (this.state.isFollowing === true) {
+            this.setState({ buttonInfo: "取消关注", isFollowing: true });
+        } else {
+            this.setState({ buttonInfo: "关注", isFollowing: false});
+        }
     }
     render() {
         const email = `/message/message/${this.props.authorId}`;
@@ -474,7 +624,7 @@ export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, author
                 </div>
 
                 <div className="row">
-                    <div id="watch" style={{ marginLeft: "1rem" }}>关注</div>
+                    <button className="watch" style={{ marginLeft: "1rem" }} id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
                     <a id="email" href={email} style={{ marginLeft: "1rem" }}>私信</a>
                 </div>
             </div>
