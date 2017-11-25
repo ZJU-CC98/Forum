@@ -8620,7 +8620,7 @@ var UserCenterMyFollowingsUser = /** @class */ (function (_super) {
                 if (res) {
                     this.setState({
                         buttonIsDisabled: false,
-                        buttonInfo: '关注',
+                        buttonInfo: '重新关注',
                         isFollowing: false
                     });
                 }
@@ -14444,7 +14444,7 @@ var UserExactProfile = /** @class */ (function (_super) {
                         }, onMouseLeave: function () {
                             if (_this.state.isFollowing && !_this.state.buttonIsDisabled) {
                                 _this.setState({
-                                    buttonInfo: '未关注'
+                                    buttonInfo: '已关注'
                                 });
                             }
                         } }, this.state.buttonInfo))),
@@ -15987,7 +15987,9 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
             selectorLeft: 0,
             selectorTop: 0,
             avatarNow: userInfo.portraitUrl,
-            isLoading: false
+            isLoading: false,
+            naturalWidth: 0,
+            naturalHeight: 0
         };
         _this.handleChange = _this.handleChange.bind(_this);
         _this.handleIMGLoad = _this.handleIMGLoad.bind(_this);
@@ -16019,7 +16021,8 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
         });
     };
     UserCenterConfigAvatar.prototype.handleIMGLoad = function () {
-        if (this.myIMG.naturalWidth < 160 || this.myIMG.naturalHeight < 160) {
+        var width = this.myIMG.naturalWidth, height = this.myIMG.naturalHeight;
+        if (width < 160 || height < 160) {
             this.setState({
                 info: '图片至少为 160*160',
                 isShown: false,
@@ -16027,7 +16030,7 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
             });
             return;
         }
-        else if (this.myIMG.naturalWidth > 800) {
+        else if (width > 800) {
             this.setState({
                 info: '图片宽度至多为 800',
                 isShown: false,
@@ -16035,16 +16038,21 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
             });
             return;
         }
-        this.NUM_MAX = Math.min(800, this.myIMG.naturalWidth, this.myIMG.naturalHeight);
+        this.NUM_MAX = Math.min(500, width, height);
         var ctx = this.myCanvas.getContext('2d');
-        this.myCanvas.width = this.myIMG.naturalWidth;
-        this.myCanvas.height = this.myIMG.naturalHeight;
-        ctx.drawImage(this.myIMG, 0, 0, this.myIMG.naturalWidth, this.myIMG.naturalHeight, 0, 0, this.myIMG.naturalWidth, this.myIMG.naturalHeight);
+        this.myCanvas.width = width;
+        this.myCanvas.height = height;
+        ctx.drawImage(this.myIMG, 0, 0, width, height, 0, 0, width, height);
         this.setState({
-            divheight: this.myIMG.naturalHeight + 50 + "px",
-            divWidth: this.myIMG.naturalWidth + 50 + "px",
+            divheight: height + 50 + "px",
+            divWidth: width + 50 + "px",
             isShown: true,
-            info: '请选择要显示的区域'
+            info: '请选择要显示的区域',
+            selectorLeft: width / 4,
+            selectorTop: height / 4,
+            selectorWidth: Math.min(height, width) / 2,
+            naturalWidth: width,
+            naturalHeight: height
         });
     };
     UserCenterConfigAvatar.prototype.handleMouseUp = function () {
@@ -16191,12 +16199,13 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
                     this.diffY = event.clientX - event.target.offsetLeft;
                     this.setState(function (prevState) {
                         var num = prevState.selectorWidth + _this.diffY - _this.diffX;
+                        var max = Math.min(_this.NUM_MAX, prevState.naturalWidth - prevState.selectorLeft, prevState.naturalHeight - prevState.selectorTop);
                         if (!isNaN(num)) {
                             if (num < 100) {
                                 num = 100;
                             }
-                            if (num > _this.NUM_MAX) {
-                                num = _this.NUM_MAX;
+                            if (num > max) {
+                                num = max;
                             }
                         }
                         return {
@@ -16225,11 +16234,12 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
                     this.setState(function (prevState) {
                         var num = prevState.selectorWidth + _this.diffY - _this.diffX;
                         if (!isNaN(num)) {
+                            var max = Math.min(_this.NUM_MAX, prevState.naturalWidth - prevState.selectorLeft, prevState.naturalHeight - prevState.selectorTop);
                             if (num < 100) {
                                 num = 100;
                             }
-                            if (num > _this.NUM_MAX) {
-                                num = _this.NUM_MAX;
+                            if (num > max) {
+                                num = max;
                             }
                         }
                         return {
