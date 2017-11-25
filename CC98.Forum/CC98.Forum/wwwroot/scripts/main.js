@@ -2300,7 +2300,7 @@ var UbbTagSegment = /** @class */ (function (_super) {
             else {
                 console.warn('标签 %s 没有正确关闭，已经被转换为纯文字。', seg.tagData.tagName);
                 // 未关闭标签，自己将被转换为纯文字
-                newParent._subSegments.push(new UbbTextSegment("[" + seg._tagData.orignalString + "]", segment.parent));
+                newParent._subSegments.push(new UbbTextSegment(seg.tagData.startTagString, segment.parent));
                 // 自己的下级将被递归强制关闭，并提升为和自己同级
                 for (var _i = 0, _a = seg._subSegments; _i < _a.length; _i++) {
                     var sub = _a[_i];
@@ -2595,6 +2595,16 @@ var UbbTagData = /** @class */ (function () {
     UbbTagData.prototype.name = function (index) {
         return this._parameters[index].name;
     };
+    Object.defineProperty(UbbTagData.prototype, "parameterCount", {
+        /**
+         * 获取当前标签中包含的参数的个数。
+         */
+        get: function () {
+            return this._parameters.length;
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * 获取给定的参数。
      * @param index 要获取的参数的索引。
@@ -2914,6 +2924,7 @@ var UbbCodeEngine = /** @class */ (function () {
     UbbCodeEngine.prototype.execCore = function (content, context) {
         var root = new UbbTagSegment(null, null);
         UbbCodeEngine.buildSegmentsCore(content, root);
+        root.close();
         var result = [];
         for (var _i = 0, _a = root.subSegments; _i < _a.length; _i++) {
             var item = _a[_i];
@@ -9204,26 +9215,66 @@ var UploadTagHandler = /** @class */ (function (_super) {
     });
     ;
     UploadTagHandler.prototype.execCore = function (content, tagData, context) {
-        var imageUri = content;
-        var title = tagData.value('title');
+        //tagData.value(0,1,2,……)
+        var uploadUri = content;
+        var uploadType = tagData.value(0);
+        var uploadValue;
+        if (tagData.parameterCount === 1)
+            uploadValue = 0;
+        if (tagData.parameterCount === 2)
+            uploadValue = tagData.value(1);
+        console.log("uploadType=" + uploadType);
+        console.log("uploadValue=" + uploadValue);
+        console.log(Ubb.UbbTagHandler.renderTagAsString(tagData, content));
         // 不允许显示图像
         if (!context.options.allowImage) {
-            return content;
+            return React.createElement(Image, { imageUri: uploadUri, title: "", isShowed: false });
         }
-        var imageTag = React.createElement("img", { src: imageUri, alt: title });
+        //[img=1]默认不显示图片，[img]或[img=0]默认显示图片
         // HTML5 模式下，使用 figure 表示插图
         if (context.options.compatibility === Ubb.UbbCompatiblityMode.EnforceMorden) {
             return React.createElement("figure", null,
-                imageTag,
-                React.createElement("figcaption", null, title));
+                React.createElement(Image, { imageUri: uploadUri, title: "", isShowed: true }),
+                React.createElement("figcaption", null, ""));
         }
         else {
-            return imageTag;
+            return React.createElement(Image, { imageUri: uploadUri, title: "", isShowed: true });
         }
     };
     return UploadTagHandler;
 }(Ubb.TextTagHandler));
 exports.UploadTagHandler = UploadTagHandler;
+/*
+ *图片组件
+ *用于控制图片是否默认显示
+ */
+var Image = /** @class */ (function (_super) {
+    __extends(Image, _super);
+    function Image(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            isShowed: _this.props.isShowed
+        };
+        _this.toggleIsShowed = _this.toggleIsShowed.bind(_this); //别再忘了bind了！！  “bind一般放在构造过程中” ——樱桃
+        return _this;
+    }
+    Image.prototype.toggleIsShowed = function () {
+        console.log("显示图片！");
+        this.setState(function (prevState) { return ({
+            isShowed: !prevState.isShowed //setState() 可以接收一个函数，这个函数接受两个参数，第一个参数prevState表示上一个状态值，第二个参数props表示当前的props
+        }); });
+    };
+    Image.prototype.render = function () {
+        if (this.state.isShowed) {
+            return React.createElement("img", { src: this.props.imageUri, alt: this.props.title });
+        }
+        else {
+            return React.createElement("div", { className: "hiddenImage", onClick: this.toggleIsShowed }, "\u70B9\u51FB\u67E5\u770B\u56FE\u7247");
+        }
+    };
+    return Image;
+}(React.Component));
+exports.Image = Image;
 
 
 /***/ }),
