@@ -547,7 +547,9 @@ export async function getAllNewTopic(curNum: number, router) {
         if (response.status === 500) {
             //window.location.href = "/status/ServerError";
         }
-        const newTopic = await response.json();
+        let newTopic = await response.json();
+        console.log("全站新帖");
+        console.log(newTopic);
         for (let i in newTopic) {
             if (newTopic[i].userId) {
                 //获取作者粉丝数目
@@ -572,12 +574,34 @@ export async function getAllNewTopic(curNum: number, router) {
                 newTopic[i].portraitUrl = userInfo1.portraitUrl;
                 //获取所在版面名称
                 newTopic[i].boardName = await getBoardName(newTopic[i].boardId, router);
+                //阅读数转换
+                if (newTopic[i].hitCount > 10000) {
+                    if (newTopic[i].hitCount > 100000) {
+                        let index = parseInt(`${newTopic[i].hitCount / 10000}`);
+                        newTopic[i].hitCount = `${index}万`;
+                    }
+                    else {
+                        let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
+                        newTopic[i].hitCount = `${index}万`;
+                    }
+                }
+                //回复数转换
+                if (newTopic[i].replyCount > 10000) {
+                    if (newTopic[i].replyCount > 100000) {
+                        let index = parseInt(`${newTopic[i].replyCount / 10000}`);
+                        newTopic[i].replyCount = `${index}万`;
+                    }
+                    else {
+                        let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
+                        newTopic[i].replyCount = `${index}万`;
+                    }
+                }
             }
             //匿名时粉丝数显示0
             else {
                 newTopic[i].fanCount = 0;
                 newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-
+                newTopic[i].userName = "匿名";
                 newTopic[i].boardName = "心灵之约";
             }
         }
@@ -606,14 +630,16 @@ export async function getFocusTopic(curNum: number, router) {
         /**
          * 通过api获取到主题之后转成json格式
          */
-        const response = await fetch(`http://apitest.niconi.cc/topic/customboards/new?from=${curNum}&size=${size}`, { headers });
+        const response = await fetch(`http://apitest.niconi.cc/topic/customboards?from=${curNum}&size=${size}`, { headers });
         if (response.status === 401) {
             //window.location.href = "/status/UnauthorizedTopic";
         }
         if (response.status === 500) {
             //window.location.href = "/status/ServerError";
         }
-        const newTopic = await response.json();
+        let newTopic = await response.json(); 
+        console.log("关注新帖");
+        console.log(newTopic);
         for (let i in newTopic) {
             if (newTopic[i].userId) {
                 //获取作者粉丝数目
@@ -638,12 +664,34 @@ export async function getFocusTopic(curNum: number, router) {
                 newTopic[i].portraitUrl = userInfo1.portraitUrl;
                 //获取所在版面名称
                 newTopic[i].boardName = await getBoardName(newTopic[i].boardId, router);
+                //阅读数转换
+                if (newTopic[i].hitCount > 10000) {
+                    if (newTopic[i].hitCount > 100000) {
+                        let index = parseInt(`${newTopic[i].hitCount / 10000}`);
+                        newTopic[i].hitCount = `${index}万`;
+                    }
+                    else {
+                        let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
+                        newTopic[i].hitCount = `${index}万`;
+                    }
+                }
+                //回复数转换
+                if (newTopic[i].replyCount > 10000) {
+                    if (newTopic[i].replyCount > 100000) {
+                        let index = parseInt(`${newTopic[i].replyCount / 10000}`);
+                        newTopic[i].replyCount = `${index}万`;
+                    }
+                    else {
+                        let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
+                        newTopic[i].replyCount = `${index}万`;
+                    }
+                }
             }
             //匿名时粉丝数显示0
             else {
                 newTopic[i].fanCount = 0;
                 newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-
+                newTopic[i].userName = "匿名";
                 newTopic[i].boardName = "心灵之约";
             }
         }
