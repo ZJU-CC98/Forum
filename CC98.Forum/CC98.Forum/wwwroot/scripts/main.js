@@ -1132,10 +1132,10 @@ function getRecentContact(from, size, router) {
                 case 1:
                     response = _d.sent();
                     if (response.status === 401) {
-                        router.history.replace("/status/Loggout");
+                        //router.history.replace("/status/Loggout");
                     }
                     if (response.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //router.history.replace("/status/ServerError");
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -1153,10 +1153,10 @@ function getRecentContact(from, size, router) {
                 case 3:
                     response1 = _d.sent();
                     if (response1.status === 404) {
-                        router.history.replace("/status/NotFoundUser");
+                        //router.history.replace("/status/NotFoundUser");
                     }
                     if (response1.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //router.history.replace("/status/ServerError");
                     }
                     return [4 /*yield*/, response1.json()];
                 case 4:
@@ -1177,10 +1177,11 @@ function getRecentContact(from, size, router) {
                 case 7:
                     _i++;
                     return [3 /*break*/, 5];
-                case 8: return [2 /*return*/, recentContact];
+                case 8:
+                    console.log(recentContact);
+                    return [2 /*return*/, recentContact];
                 case 9:
                     e_13 = _d.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 10];
                 case 10: return [2 /*return*/];
             }
@@ -1193,7 +1194,7 @@ exports.getRecentContact = getRecentContact;
 */
 function getRecentMessage(userId, from, size, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, headers, response, recentMessage, e_14;
+        var token, headers, response0, response1, recentMessage, e_14;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1203,20 +1204,22 @@ function getRecentMessage(userId, from, size, router) {
                     headers.append('Authorization', token);
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/message/" + userId + "?from=" + from + "&size=" + size, { headers: headers })];
                 case 1:
-                    response = _a.sent();
-                    if (response.status === 401) {
-                        router.history.replace("/status/Logout");
+                    response0 = _a.sent();
+                    if (response0.status === 401) {
+                        //router.history.replace("/status/Logout");
                     }
-                    if (response.status === 500) {
-                        router.history.replace("/status/ServerError");
+                    if (response0.status === 500) {
+                        //router.history.replace("/status/ServerError");
                     }
-                    return [4 /*yield*/, response.json()];
+                    return [4 /*yield*/, response0.json()];
                 case 2:
-                    recentMessage = _a.sent();
+                    response1 = _a.sent();
+                    console.log("直接获取到的Message");
+                    console.log(response1);
+                    recentMessage = sortRecentMessage(response1);
                     return [2 /*return*/, recentMessage];
                 case 3:
                     e_14 = _a.sent();
-                    router.history.replace("/status/Disconnected");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -1224,461 +1227,53 @@ function getRecentMessage(userId, from, size, router) {
     });
 }
 exports.getRecentMessage = getRecentMessage;
-function getTotalReplyCount(topicid, router) {
-    return __awaiter(this, void 0, void 0, function () {
-        var token, headers, replyCountResponse, replyCountJson, replyCount, e_15;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    token = getLocalStorage("accessToken");
-                    headers = new Headers();
-                    headers.append('Authorization', token);
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + topicid, { headers: headers })];
-                case 1:
-                    replyCountResponse = _a.sent();
-                    if (replyCountResponse.status === 401) {
-                        router.history.replace("/status/UnauthorizedTopic");
-                    }
-                    if (replyCountResponse.status === 404) {
-                        router.history.replace("/status/NotFoundTopic");
-                    }
-                    if (replyCountResponse.status === 500) {
-                        router.history.replace("/status/ServerError");
-                    }
-                    return [4 /*yield*/, replyCountResponse.json()];
-                case 2:
-                    replyCountJson = _a.sent();
-                    replyCount = replyCountJson.replyCount;
-                    if (replyCount >= 10) {
-                        return [2 /*return*/, (replyCount - replyCount % 10) / 10 + 1];
-                    }
-                    else {
-                        return [2 /*return*/, 1];
-                    }
-                    return [3 /*break*/, 4];
-                case 3:
-                    e_15 = _a.sent();
-                    router.history.replace("/status/Disconnected");
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+/**
+ * 处理最新消息列表，时间间隔短的消息只显示第一条消息的时间
+ * @param recentMessage
+ */
+function sortRecentMessage(recentMessage) {
+    console.log("走远第0步");
+    console.log(recentMessage);
+    if (recentMessage == [] || !recentMessage) {
+        console.log("要原样返回了");
+        return recentMessage;
+    }
+    else {
+        for (var i = 0; i < recentMessage.length; i++) {
+            if (i + 1 == recentMessage.length) {
+                recentMessage[i].showTime = true;
             }
-        });
-    });
-}
-exports.getTotalReplyCount = getTotalReplyCount;
-function getCategory(topicid, router) {
-    return __awaiter(this, void 0, void 0, function () {
-        var token, headers, response, data, topicName, boardId, boardResponse, boardData, boardName, body, e_16;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 5, , 6]);
-                    token = getLocalStorage("accessToken");
-                    headers = new Headers();
-                    headers.append('Authorization', token);
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + topicid, { headers: headers })];
-                case 1:
-                    response = _a.sent();
-                    if (response.status === 401) {
-                        router.history.replace("/status/UnauthorizedTopic");
-                    }
-                    if (response.status === 404) {
-                        router.history.replace("/status/NotFoundTopic");
-                    }
-                    if (response.status === 500) {
-                        router.history.replace("/status/ServerError");
-                    }
-                    return [4 /*yield*/, response.json()];
-                case 2:
-                    data = _a.sent();
-                    topicName = data.title;
-                    boardId = data.boardId;
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + boardId, { headers: headers })];
-                case 3:
-                    boardResponse = _a.sent();
-                    return [4 /*yield*/, boardResponse.json()];
-                case 4:
-                    boardData = _a.sent();
-                    boardName = boardData.name;
-                    body = { boardId: boardId, topicId: topicid, boardName: boardName, title: topicName };
-                    return [2 /*return*/, body];
-                case 5:
-                    e_16 = _a.sent();
-                    router.history.replace("/status/Disconnected");
-                    return [3 /*break*/, 6];
-                case 6: return [2 /*return*/];
+            else if (transerTime(recentMessage[i].time) - transerTime(recentMessage[i + 1].time) < 60000) {
+                recentMessage[i].showTime = false;
             }
-        });
-    });
-}
-exports.getCategory = getCategory;
-function getUserDetails(userName, router) {
-    return __awaiter(this, void 0, void 0, function () {
-        var url, message, data, body, e_17;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    url = "http://apitest.niconi.cc/user/name/" + userName;
-                    return [4 /*yield*/, fetch(url)];
-                case 1:
-                    message = _a.sent();
-                    if (message.status === 404) {
-                        router.history.replace("/status/NotFoundUser");
-                    }
-                    if (message.status === 500) {
-                        router.history.replace("/status/ServerError");
-                    }
-                    return [4 /*yield*/, message.json()];
-                case 2:
-                    data = _a.sent();
-                    body = { portraitUrl: data.portraitUrl, userName: data.name, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle };
-                    return [2 /*return*/, body];
-                case 3:
-                    e_17 = _a.sent();
-                    router.history.replace("/status/Disconnected");
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+            else {
+                recentMessage[i].showTime = true;
             }
-        });
-    });
+        }
+        console.log("返回的recentMessage");
+        console.log(recentMessage);
+        return recentMessage;
+    }
 }
-exports.getUserDetails = getUserDetails;
-function getLikeState(topicid, router) {
-    return __awaiter(this, void 0, void 0, function () {
-        var token, headers, topic, postid, response, data, e_18;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 6, , 7]);
-                    token = getLocalStorage("accessToken");
-                    headers = new Headers();
-                    headers.append('Authorization', token);
-                    return [4 /*yield*/, getTopic(topicid, router)];
-                case 1:
-                    topic = _a.sent();
-                    postid = topic.postid;
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/likestate?topicid=" + topicid + "&postid=" + postid, { headers: headers })];
-                case 2:
-                    response = _a.sent();
-                    if (response.status === 401) {
-                        router.history.replace("/status/UnauthorizedTopic");
-                    }
-                    if (response.status === 403) {
-                        router.history.replace("/status/OperationForbidden");
-                    }
-                    if (response.status === 404) {
-                        router.history.replace("/status/NotFoundTopic");
-                    }
-                    if (!(response.status === 500)) return [3 /*break*/, 3];
-                    router.history.replace("/status/ServerError");
-                    return [3 /*break*/, 5];
-                case 3: return [4 /*yield*/, response.json()];
-                case 4:
-                    data = _a.sent();
-                    return [2 /*return*/, data];
-                case 5: return [3 /*break*/, 7];
-                case 6:
-                    e_18 = _a.sent();
-                    router.history.replace("/status/Disconnected");
-                    return [3 /*break*/, 7];
-                case 7: return [2 /*return*/];
-            }
-        });
-    });
+exports.sortRecentMessage = sortRecentMessage;
+/**
+ * api返回的时间格式转换成时间戳的函数
+ * @param time
+ */
+function transerTime(time) {
+    var timeStr = moment(time).format('YYYY-MM-DD HH:mm:ss');
+    var timeDate = timeStr.replace(/-/g, '/');
+    var timestamp = new Date(timeDate).getTime();
+    return timestamp;
 }
-exports.getLikeState = getLikeState;
-function refreshLikeState(topicId, postId, router) {
-    return __awaiter(this, void 0, void 0, function () {
-        var token, headers, response, data, e_19;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    token = getLocalStorage("accessToken");
-                    headers = new Headers();
-                    headers.append('Authorization', token);
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/likestate?topicid=" + topicId + "&postid=" + postId, { headers: headers })];
-                case 1:
-                    response = _a.sent();
-                    if (response.status === 401) {
-                        router.history.replace("/status/UnauthorizedTopic");
-                    }
-                    if (response.status === 403) {
-                        router.history.replace("/status/OperationForbidden");
-                    }
-                    if (response.status === 404) {
-                        router.history.replace("/status/NotFoundTopic");
-                    }
-                    if (response.status === 500) {
-                        router.history.replace("/status/ServerError");
-                    }
-                    return [4 /*yield*/, response.json()];
-                case 2:
-                    data = _a.sent();
-                    return [2 /*return*/, data];
-                case 3:
-                    e_19 = _a.sent();
-                    router.history.replace("/status/Disconnected");
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
-        });
-    });
-}
-exports.refreshLikeState = refreshLikeState;
-function sendTopic(topicId, router) {
-    return __awaiter(this, void 0, void 0, function () {
-        var url, c, content, contentJson, token, myHeaders, mes, e_20;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    url = "http://apitest.niconi.cc/post/topic/" + topicId;
-                    c = testEditor.getMarkdown();
-                    content = {
-                        content: c,
-                        contentType: 1,
-                        title: ""
-                    };
-                    contentJson = JSON.stringify(content);
-                    token = getLocalStorage("accessToken");
-                    myHeaders = new Headers();
-                    myHeaders.append("Authorization", token);
-                    myHeaders.append("Content-Type", 'application/json');
-                    return [4 /*yield*/, fetch(url, {
-                            method: 'POST',
-                            headers: myHeaders,
-                            body: contentJson
-                        })];
-                case 1:
-                    mes = _a.sent();
-                    if (mes.status === 401) {
-                        router.history.replace("/status/Logout");
-                    }
-                    if (mes.status === 402) {
-                        router.history.replace("/status/ContentNeeded");
-                    }
-                    if (mes.status === 403) {
-                        router.history.replace("/status/OperationForbidden");
-                    }
-                    if (mes.status === 404) {
-                        router.history.replace("/status/NotFoundTopic");
-                    }
-                    if (mes.status === 500) {
-                        router.history.replace("/status/ServerError");
-                    }
-                    return [3 /*break*/, 3];
-                case 2:
-                    e_20 = _a.sent();
-                    router.history.replace("/status/Disconnected");
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    });
-}
-exports.sendTopic = sendTopic;
-function getListCategory(boardId, router) {
-    return __awaiter(this, void 0, void 0, function () {
-        var token, headers, boardResponse, boardData, boardName, e_21;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    token = getLocalStorage("accessToken");
-                    headers = new Headers();
-                    headers.append('Authorization', token);
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + boardId, { headers: headers })];
-                case 1:
-                    boardResponse = _a.sent();
-                    if (boardResponse.status === 404) {
-                        router.history.replace("/status/NotFoundBoard");
-                    }
-                    if (boardResponse.status === 500) {
-                        router.history.replace("/status/ServerError");
-                    }
-                    return [4 /*yield*/, boardResponse.json()];
-                case 2:
-                    boardData = _a.sent();
-                    boardName = boardData.name;
-                    return [2 /*return*/, boardName];
-                case 3:
-                    e_21 = _a.sent();
-                    router.history.replace("/status/Disconnected");
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
-        });
-    });
-}
-exports.getListCategory = getListCategory;
-function getBoardMessage(boardId, router) {
-    return __awaiter(this, void 0, void 0, function () {
-        var token, headers, url, response, data, e_22;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    token = getLocalStorage("accessToken");
-                    headers = new Headers();
-                    headers.append('Authorization', token);
-                    url = "http://apitest.niconi.cc/Board/" + boardId;
-                    return [4 /*yield*/, fetch(url, { headers: headers })];
-                case 1:
-                    response = _a.sent();
-                    if (response.status === 404) {
-                        router.history.replace("/status/NotFoundBoard");
-                    }
-                    if (response.status === 500) {
-                        router.history.replace("/status/ServerError");
-                    }
-                    return [4 /*yield*/, response.json()];
-                case 2:
-                    data = _a.sent();
-                    return [2 /*return*/, data];
-                case 3:
-                    e_22 = _a.sent();
-                    router.history.replace("/status/Disconnected");
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
-        });
-    });
-}
-exports.getBoardMessage = getBoardMessage;
-function getListTotalPage(boardId, router) {
-    return __awaiter(this, void 0, void 0, function () {
-        var token, headers, totalTopicCountResponse, totalTopicCountJson, totalTopicCount, e_23;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    token = getLocalStorage("accessToken");
-                    headers = new Headers();
-                    headers.append('Authorization', token);
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + boardId, { headers: headers })];
-                case 1:
-                    totalTopicCountResponse = _a.sent();
-                    if (totalTopicCountResponse.status === 404) {
-                        router.history.replace("/status/NotFoundBoard");
-                    }
-                    if (totalTopicCountResponse.status === 500) {
-                        router.history.replace("/status/ServerError");
-                    }
-                    return [4 /*yield*/, totalTopicCountResponse.json()];
-                case 2:
-                    totalTopicCountJson = _a.sent();
-                    totalTopicCount = totalTopicCountJson.topicCount;
-                    return [2 /*return*/, (totalTopicCount - totalTopicCount % 20) / 20 + 1];
-                case 3:
-                    e_23 = _a.sent();
-                    router.history.replace("/status/Disconnected");
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
-        });
-    });
-}
-exports.getListTotalPage = getListTotalPage;
-function getBasicBoardMessage(boardId, curPage, router) {
-    return __awaiter(this, void 0, void 0, function () {
-        var token, headers, response, json, bigPaper, page, boardid, totalPage, data, e_24;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 4, , 5]);
-                    token = getLocalStorage("accessToken");
-                    headers = new Headers();
-                    headers.append('Authorization', token);
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + boardId, { headers: headers })];
-                case 1:
-                    response = _a.sent();
-                    if (response.status === 404) {
-                        router.history.replace("/status/NotFoundBoard");
-                    }
-                    if (response.status === 500) {
-                        router.history.replace("/status/ServerError");
-                    }
-                    return [4 /*yield*/, response.json()];
-                case 2:
-                    json = _a.sent();
-                    bigPaper = json.bigPaper;
-                    page = void 0;
-                    // 未提供页码，防止出错不进行后续处理
-                    if (!curPage) {
-                        page = 1;
-                    }
-                    else {
-                        page = parseInt(curPage);
-                    }
-                    boardid = boardId;
-                    return [4 /*yield*/, getListTotalPage(boardid, router)];
-                case 3:
-                    totalPage = _a.sent();
-                    data = { bigPaper: bigPaper, totalPage: totalPage, page: page };
-                    return [2 /*return*/, data];
-                case 4:
-                    e_24 = _a.sent();
-                    router.history.replace("/status/Disconnected");
-                    return [3 /*break*/, 5];
-                case 5: return [2 /*return*/];
-            }
-        });
-    });
-}
-exports.getBasicBoardMessage = getBasicBoardMessage;
-function getCurUserTotalReplyPage(topicId, userId, router) {
-    return __awaiter(this, void 0, void 0, function () {
-        var token, headers, replyCountResponse, replyCountJson, replyCount, e_25;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    token = getLocalStorage("accessToken");
-                    headers = new Headers();
-                    headers.append('Authorization', token);
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/topic/user?topicid=" + topicId + "&userid=" + userId + "&from=0&size=1", { headers: headers })];
-                case 1:
-                    replyCountResponse = _a.sent();
-                    if (replyCountResponse.status === 401) {
-                        router.history.replace("/status/UnauthorizedTopic");
-                    }
-                    if (replyCountResponse.status === 404) {
-                        router.history.replace("/status/NotFoundBoard");
-                    }
-                    if (replyCountResponse.status === 500) {
-                        router.history.replace("/status/ServerError");
-                    }
-                    return [4 /*yield*/, replyCountResponse.json()];
-                case 2:
-                    replyCountJson = _a.sent();
-                    replyCount = replyCountJson[0].count;
-                    if (replyCount > 10) {
-                        return [2 /*return*/, (replyCount - replyCount % 10) / 10 + 1];
-                    }
-                    else {
-                        return [2 /*return*/, 1];
-                    }
-                    return [3 /*break*/, 4];
-                case 3:
-                    e_25 = _a.sent();
-                    router.history.replace("/status/Disconnected");
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
-        });
-    });
-}
-exports.getCurUserTotalReplyPage = getCurUserTotalReplyPage;
+exports.transerTime = transerTime;
 /**
  * 对联系人列表重新排序，看是否有从其他页面发起的聊天
  * @param recentContact
  */
 function sortContactList(recentContact, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var urlId, chatManId, i, indexData, response, chatMan, flag, e_26, _a, chatContact, urlName, chatManName, i, indexData, response0, response1, flag, e_27, chatMan, _b, chatContact;
+        var urlId, chatManId, i, indexData, response, chatMan, flag, e_15, _a, chatContact, urlName, chatManName, i, indexData, response0, response1, flag, e_16, chatMan, _b, chatContact;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
@@ -1710,18 +1305,18 @@ function sortContactList(recentContact, router) {
                 case 4:
                     response = _c.sent();
                     if (response.status === 404) {
-                        router.history.replace("/status/NotFoundUser");
+                        //router.history.replace("/status/NotFoundUser");
                     }
                     if (response.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //router.history.replace("/status/ServerError");
                     }
                     return [4 /*yield*/, response.json()];
                 case 5:
                     chatMan = _c.sent();
                     return [3 /*break*/, 7];
                 case 6:
-                    e_26 = _c.sent();
-                    router.history.replace("/status/Disconnected");
+                    e_15 = _c.sent();
+                    //router.history.replace("/status/Disconnected");
                     flag = 0;
                     return [3 /*break*/, 7];
                 case 7:
@@ -1763,18 +1358,18 @@ function sortContactList(recentContact, router) {
                 case 14:
                     response0 = _c.sent();
                     if (response0.status === 404) {
-                        router.history.replace("/status/NotFoundUser");
+                        //router.history.replace("/status/NotFoundUser");
                     }
                     if (response0.status === 500) {
-                        router.history.replace("/status/ServerError");
+                        //router.history.replace("/status/ServerError");
                     }
                     return [4 /*yield*/, response0.json()];
                 case 15:
                     response1 = _c.sent();
                     return [3 /*break*/, 17];
                 case 16:
-                    e_27 = _c.sent();
-                    router.history.replace("/status/Disconnected");
+                    e_16 = _c.sent();
+                    //router.history.replace("/status/Disconnected");
                     flag = 0;
                     return [3 /*break*/, 17];
                 case 17:
@@ -1796,6 +1391,454 @@ function sortContactList(recentContact, router) {
     });
 }
 exports.sortContactList = sortContactList;
+function getTotalReplyCount(topicid, router) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, replyCountResponse, replyCountJson, replyCount, e_17;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + topicid, { headers: headers })];
+                case 1:
+                    replyCountResponse = _a.sent();
+                    if (replyCountResponse.status === 401) {
+                        router.history.replace("/status/UnauthorizedTopic");
+                    }
+                    if (replyCountResponse.status === 404) {
+                        router.history.replace("/status/NotFoundTopic");
+                    }
+                    if (replyCountResponse.status === 500) {
+                        router.history.replace("/status/ServerError");
+                    }
+                    return [4 /*yield*/, replyCountResponse.json()];
+                case 2:
+                    replyCountJson = _a.sent();
+                    replyCount = replyCountJson.replyCount;
+                    if (replyCount >= 10) {
+                        return [2 /*return*/, (replyCount - replyCount % 10) / 10 + 1];
+                    }
+                    else {
+                        return [2 /*return*/, 1];
+                    }
+                    return [3 /*break*/, 4];
+                case 3:
+                    e_17 = _a.sent();
+                    router.history.replace("/status/Disconnected");
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getTotalReplyCount = getTotalReplyCount;
+function getCategory(topicid, router) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, response, data, topicName, boardId, boardResponse, boardData, boardName, body, e_18;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 5, , 6]);
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + topicid, { headers: headers })];
+                case 1:
+                    response = _a.sent();
+                    if (response.status === 401) {
+                        router.history.replace("/status/UnauthorizedTopic");
+                    }
+                    if (response.status === 404) {
+                        router.history.replace("/status/NotFoundTopic");
+                    }
+                    if (response.status === 500) {
+                        router.history.replace("/status/ServerError");
+                    }
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    data = _a.sent();
+                    topicName = data.title;
+                    boardId = data.boardId;
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + boardId, { headers: headers })];
+                case 3:
+                    boardResponse = _a.sent();
+                    return [4 /*yield*/, boardResponse.json()];
+                case 4:
+                    boardData = _a.sent();
+                    boardName = boardData.name;
+                    body = { boardId: boardId, topicId: topicid, boardName: boardName, title: topicName };
+                    return [2 /*return*/, body];
+                case 5:
+                    e_18 = _a.sent();
+                    router.history.replace("/status/Disconnected");
+                    return [3 /*break*/, 6];
+                case 6: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getCategory = getCategory;
+function getUserDetails(userName, router) {
+    return __awaiter(this, void 0, void 0, function () {
+        var url, message, data, body, e_19;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    url = "http://apitest.niconi.cc/user/name/" + userName;
+                    return [4 /*yield*/, fetch(url)];
+                case 1:
+                    message = _a.sent();
+                    if (message.status === 404) {
+                        router.history.replace("/status/NotFoundUser");
+                    }
+                    if (message.status === 500) {
+                        router.history.replace("/status/ServerError");
+                    }
+                    return [4 /*yield*/, message.json()];
+                case 2:
+                    data = _a.sent();
+                    body = { portraitUrl: data.portraitUrl, userName: data.name, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle };
+                    return [2 /*return*/, body];
+                case 3:
+                    e_19 = _a.sent();
+                    router.history.replace("/status/Disconnected");
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getUserDetails = getUserDetails;
+function getLikeState(topicid, router) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, topic, postid, response, data, e_20;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 6, , 7]);
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, getTopic(topicid, router)];
+                case 1:
+                    topic = _a.sent();
+                    postid = topic.postid;
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/likestate?topicid=" + topicid + "&postid=" + postid, { headers: headers })];
+                case 2:
+                    response = _a.sent();
+                    if (response.status === 401) {
+                        router.history.replace("/status/UnauthorizedTopic");
+                    }
+                    if (response.status === 403) {
+                        router.history.replace("/status/OperationForbidden");
+                    }
+                    if (response.status === 404) {
+                        router.history.replace("/status/NotFoundTopic");
+                    }
+                    if (!(response.status === 500)) return [3 /*break*/, 3];
+                    router.history.replace("/status/ServerError");
+                    return [3 /*break*/, 5];
+                case 3: return [4 /*yield*/, response.json()];
+                case 4:
+                    data = _a.sent();
+                    return [2 /*return*/, data];
+                case 5: return [3 /*break*/, 7];
+                case 6:
+                    e_20 = _a.sent();
+                    router.history.replace("/status/Disconnected");
+                    return [3 /*break*/, 7];
+                case 7: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getLikeState = getLikeState;
+function refreshLikeState(topicId, postId, router) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, response, data, e_21;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/likestate?topicid=" + topicId + "&postid=" + postId, { headers: headers })];
+                case 1:
+                    response = _a.sent();
+                    if (response.status === 401) {
+                        router.history.replace("/status/UnauthorizedTopic");
+                    }
+                    if (response.status === 403) {
+                        router.history.replace("/status/OperationForbidden");
+                    }
+                    if (response.status === 404) {
+                        router.history.replace("/status/NotFoundTopic");
+                    }
+                    if (response.status === 500) {
+                        router.history.replace("/status/ServerError");
+                    }
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    data = _a.sent();
+                    return [2 /*return*/, data];
+                case 3:
+                    e_21 = _a.sent();
+                    router.history.replace("/status/Disconnected");
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.refreshLikeState = refreshLikeState;
+function sendTopic(topicId, router) {
+    return __awaiter(this, void 0, void 0, function () {
+        var url, c, content, contentJson, token, myHeaders, mes, e_22;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    url = "http://apitest.niconi.cc/post/topic/" + topicId;
+                    c = testEditor.getMarkdown();
+                    content = {
+                        content: c,
+                        contentType: 1,
+                        title: ""
+                    };
+                    contentJson = JSON.stringify(content);
+                    token = getLocalStorage("accessToken");
+                    myHeaders = new Headers();
+                    myHeaders.append("Authorization", token);
+                    myHeaders.append("Content-Type", 'application/json');
+                    return [4 /*yield*/, fetch(url, {
+                            method: 'POST',
+                            headers: myHeaders,
+                            body: contentJson
+                        })];
+                case 1:
+                    mes = _a.sent();
+                    if (mes.status === 401) {
+                        router.history.replace("/status/Logout");
+                    }
+                    if (mes.status === 402) {
+                        router.history.replace("/status/ContentNeeded");
+                    }
+                    if (mes.status === 403) {
+                        router.history.replace("/status/OperationForbidden");
+                    }
+                    if (mes.status === 404) {
+                        router.history.replace("/status/NotFoundTopic");
+                    }
+                    if (mes.status === 500) {
+                        router.history.replace("/status/ServerError");
+                    }
+                    return [3 /*break*/, 3];
+                case 2:
+                    e_22 = _a.sent();
+                    router.history.replace("/status/Disconnected");
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.sendTopic = sendTopic;
+function getListCategory(boardId, router) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, boardResponse, boardData, boardName, e_23;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + boardId, { headers: headers })];
+                case 1:
+                    boardResponse = _a.sent();
+                    if (boardResponse.status === 404) {
+                        router.history.replace("/status/NotFoundBoard");
+                    }
+                    if (boardResponse.status === 500) {
+                        router.history.replace("/status/ServerError");
+                    }
+                    return [4 /*yield*/, boardResponse.json()];
+                case 2:
+                    boardData = _a.sent();
+                    boardName = boardData.name;
+                    return [2 /*return*/, boardName];
+                case 3:
+                    e_23 = _a.sent();
+                    router.history.replace("/status/Disconnected");
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getListCategory = getListCategory;
+function getBoardMessage(boardId, router) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, url, response, data, e_24;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    url = "http://apitest.niconi.cc/Board/" + boardId;
+                    return [4 /*yield*/, fetch(url, { headers: headers })];
+                case 1:
+                    response = _a.sent();
+                    if (response.status === 404) {
+                        router.history.replace("/status/NotFoundBoard");
+                    }
+                    if (response.status === 500) {
+                        router.history.replace("/status/ServerError");
+                    }
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    data = _a.sent();
+                    return [2 /*return*/, data];
+                case 3:
+                    e_24 = _a.sent();
+                    router.history.replace("/status/Disconnected");
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getBoardMessage = getBoardMessage;
+function getListTotalPage(boardId, router) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, totalTopicCountResponse, totalTopicCountJson, totalTopicCount, e_25;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + boardId, { headers: headers })];
+                case 1:
+                    totalTopicCountResponse = _a.sent();
+                    if (totalTopicCountResponse.status === 404) {
+                        router.history.replace("/status/NotFoundBoard");
+                    }
+                    if (totalTopicCountResponse.status === 500) {
+                        router.history.replace("/status/ServerError");
+                    }
+                    return [4 /*yield*/, totalTopicCountResponse.json()];
+                case 2:
+                    totalTopicCountJson = _a.sent();
+                    totalTopicCount = totalTopicCountJson.topicCount;
+                    return [2 /*return*/, (totalTopicCount - totalTopicCount % 20) / 20 + 1];
+                case 3:
+                    e_25 = _a.sent();
+                    router.history.replace("/status/Disconnected");
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getListTotalPage = getListTotalPage;
+function getBasicBoardMessage(boardId, curPage, router) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, response, json, bigPaper, page, boardid, totalPage, data, e_26;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 4, , 5]);
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Board/" + boardId, { headers: headers })];
+                case 1:
+                    response = _a.sent();
+                    if (response.status === 404) {
+                        router.history.replace("/status/NotFoundBoard");
+                    }
+                    if (response.status === 500) {
+                        router.history.replace("/status/ServerError");
+                    }
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    json = _a.sent();
+                    bigPaper = json.bigPaper;
+                    page = void 0;
+                    // 未提供页码，防止出错不进行后续处理
+                    if (!curPage) {
+                        page = 1;
+                    }
+                    else {
+                        page = parseInt(curPage);
+                    }
+                    boardid = boardId;
+                    return [4 /*yield*/, getListTotalPage(boardid, router)];
+                case 3:
+                    totalPage = _a.sent();
+                    data = { bigPaper: bigPaper, totalPage: totalPage, page: page };
+                    return [2 /*return*/, data];
+                case 4:
+                    e_26 = _a.sent();
+                    router.history.replace("/status/Disconnected");
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getBasicBoardMessage = getBasicBoardMessage;
+function getCurUserTotalReplyPage(topicId, userId, router) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, replyCountResponse, replyCountJson, replyCount, e_27;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/topic/user?topicid=" + topicId + "&userid=" + userId + "&from=0&size=1", { headers: headers })];
+                case 1:
+                    replyCountResponse = _a.sent();
+                    if (replyCountResponse.status === 401) {
+                        router.history.replace("/status/UnauthorizedTopic");
+                    }
+                    if (replyCountResponse.status === 404) {
+                        router.history.replace("/status/NotFoundBoard");
+                    }
+                    if (replyCountResponse.status === 500) {
+                        router.history.replace("/status/ServerError");
+                    }
+                    return [4 /*yield*/, replyCountResponse.json()];
+                case 2:
+                    replyCountJson = _a.sent();
+                    replyCount = replyCountJson[0].count;
+                    if (replyCount > 10) {
+                        return [2 /*return*/, (replyCount - replyCount % 10) / 10 + 1];
+                    }
+                    else {
+                        return [2 /*return*/, 1];
+                    }
+                    return [3 /*break*/, 4];
+                case 3:
+                    e_27 = _a.sent();
+                    router.history.replace("/status/Disconnected");
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getCurUserTotalReplyPage = getCurUserTotalReplyPage;
 /**
  * 发送私信的函数
  * @param bodyContent
@@ -11804,22 +11847,9 @@ var MessageMessage = /** @class */ (function (_super) {
             return React.createElement("div", { onClick: changeChatName, id: "" + item.name },
                 React.createElement(MessagePerson_1.MessagePerson, { data: item }));
         };
-        var defaultData = [{
-                id: null,
-                name: '系统',
-                portraitUrl: 'http://www.cc98.org/pic/anonymous.gif',
-                message: [{
-                        id: 9898,
-                        senderId: 9898,
-                        receiverId: 9898,
-                        content: "",
-                        isRead: true,
-                        time: new Date(),
-                    }]
-            }];
         _this.state = {
-            data: defaultData,
-            chatObj: defaultData[0]
+            data: null,
+            chatObj: null
         };
         //如果没有设置默认的state，render第一次渲染的时候state为空，MessageWindow组件会报错
         _this.getMoreContact = _this.getMoreContact.bind(_this);
@@ -11828,32 +11858,32 @@ var MessageMessage = /** @class */ (function (_super) {
     }
     MessageMessage.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var token, myInfo, recentContact;
+            var token, myInfo, recentContact, chatObj;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         token = Utility.getLocalStorage("accessToken");
-                        console.log(token);
+                        console.log("\u8FDB\u5165\u6D88\u606F\u5F00\u59CB\u65F6\u7684token");
                         myInfo = Utility.getLocalStorage("userInfo");
                         recentContact = Utility.getStorage("recentContact");
                         if (!!recentContact) return [3 /*break*/, 2];
                         return [4 /*yield*/, Utility.getRecentContact(0, 7, this.context.router)];
                     case 1:
                         recentContact = _a.sent();
-                        console.log("获取到的联系人");
-                        console.log(recentContact);
                         Utility.setStorage("recentContact", recentContact);
                         _a.label = 2;
                     case 2: return [4 /*yield*/, Utility.sortContactList(recentContact, this.context.router)];
                     case 3:
                         //对联系人列表重新排序，看是否有从其他页面发起的聊天
                         recentContact = _a.sent();
+                        console.log("走远第一步");
+                        console.log(recentContact);
                         if (recentContact) {
                             //默认第一个人为聊天对象
                             this.setState({ data: recentContact, chatObj: recentContact[0] });
                         }
-                        //默认选中第一个联系人
-                        $("#" + this.state.chatObj.name).addClass('message-message-pFocus');
+                        chatObj = this.state.chatObj;
+                        $("#" + chatObj.name).addClass('message-message-pFocus');
                         return [2 /*return*/];
                 }
             });
@@ -11912,19 +11942,43 @@ var MessageMessage = /** @class */ (function (_super) {
         //给我的私信添加选中样式
         $('.message-nav > div').removeClass('message-nav-focus');
         $('#message').addClass('message-nav-focus');
+        //先看state里有没有数组，防止报错
+        var data = this.state.data;
+        var chatObj = this.state.chatObj;
+        if (!chatObj) {
+            chatObj = {
+                id: 9898,
+                name: '系统',
+                portraitUrl: 'http://file.cc98.org/uploadfile/2017/11/24/024368341.gif',
+                message: [{
+                        id: 9898,
+                        senderId: 9898,
+                        receiverId: 9898,
+                        content: "",
+                        isRead: true,
+                        time: new Date(),
+                        showTime: true
+                    }]
+            };
+        }
+        if (!data) {
+            data = [chatObj];
+        }
+        console.log("正式开始数据填充的时候");
+        console.log(data);
+        console.log(chatObj);
         //创建联系人列表和聊天窗口
-        console.log("重新渲染");
         return (React.createElement("div", { className: "message-message" },
             React.createElement("div", { className: "message-message-people" },
                 React.createElement("div", { className: "message-message-pTitle" }, "\u8FD1\u671F\u79C1\u4FE1"),
                 React.createElement("div", { className: "message-message-pList" },
-                    this.state.data.map(this.coverMessagePerson),
+                    data.map(this.coverMessagePerson),
                     React.createElement("div", { className: "message-message-plMore", onClick: this.getMoreContact },
                         React.createElement("img", { id: "moreImg", src: "http://file.cc98.org/uploadfile/2017/11/19/2348481046.gif", className: "displaynone" }),
                         React.createElement("div", { id: "moreDot" }, "..."),
-                        React.createElement("div", { id: "moreShow" }, "\u70B9\u6B64\u663E\u793A\u66F4\u591A"),
-                        React.createElement("div", { id: "moreDone", className: "displaynone" }, "\u5DF2\u5168\u90E8\u663E\u793A")))),
-            React.createElement(MessageWindow_1.MessageWindow, { data: this.state.chatObj, onChange: this.onChange })));
+                        React.createElement("div", { id: "moreShow" }, "\u663E\u793A\u66F4\u591A\u5C0F\u4F19\u4F34~"),
+                        React.createElement("div", { id: "moreDone", className: "displaynone" }, "\u5C0F\u4F19\u4F34\u4EEC\u90FD\u51FA\u6765\u4E86~")))),
+            React.createElement(MessageWindow_1.MessageWindow, { data: chatObj, onChange: this.onChange })));
     };
     return MessageMessage;
 }(React.Component));
@@ -11969,7 +12023,7 @@ var MessagePerson = /** @class */ (function (_super) {
     }
     MessagePerson.prototype.render = function () {
         var data = this.props.data;
-        if (data.message.length == 0) {
+        if (!data.message || data.message.length == 0) {
             data.message = [{
                     id: 9898,
                     senderId: 9898,
@@ -11977,6 +12031,7 @@ var MessagePerson = /** @class */ (function (_super) {
                     content: "",
                     isRead: true,
                     time: new Date(),
+                    showTime: true
                 }];
         }
         return (React.createElement("div", { className: "message-message-person" },
@@ -12061,11 +12116,11 @@ var MessageWindow = /** @class */ (function (_super) {
             var data = _this.props.data;
             if (item.receiverId == userInfo.id) {
                 //如果我是接收者调用这个样式，处于左边
-                return React.createElement(MessageReceiver_1.MessageReceiver, { id: item.id, senderName: data.name, receiverName: userInfo.name, senderPortraitUrl: data.portraitUrl, receiverPortraitUrl: userInfo.portraitUrl, content: item.content, isRead: item.isRead, time: item.time });
+                return React.createElement(MessageReceiver_1.MessageReceiver, { id: item.id, senderName: data.name, receiverName: userInfo.name, senderPortraitUrl: data.portraitUrl, receiverPortraitUrl: userInfo.portraitUrl, content: item.content, isRead: item.isRead, time: item.time, showTime: item.showTime });
             }
             else if (item.senderId == userInfo.id) {
                 //如果我是发送者调用这个样式，处于右边
-                return React.createElement(MessageSender_1.MessageSender, { id: item.id, senderName: userInfo.name, receiverName: data.name, senderPortraitUrl: userInfo.portraitUrl, receiverPortraitUrl: data.portraitUrl, content: item.content, isRead: item.isRead, time: item.time });
+                return React.createElement(MessageSender_1.MessageSender, { id: item.id, senderName: userInfo.name, receiverName: data.name, senderPortraitUrl: userInfo.portraitUrl, receiverPortraitUrl: data.portraitUrl, content: item.content, isRead: item.isRead, time: item.time, showTime: item.showTime });
             }
         };
         /*
@@ -12085,7 +12140,6 @@ var MessageWindow = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 this.setState({ data: this.props.data.message });
                 document.getElementById('messageContent').addEventListener('scroll', this.handleScroll);
-                $('#messageContent')[0].scrollTop = 3000;
                 return [2 /*return*/];
             });
         });
@@ -12124,6 +12178,7 @@ var MessageWindow = /** @class */ (function (_super) {
                         //跟之前的拼接一下
                         if (newData.length > 0) {
                             data = oldData.concat(newData);
+                            data = Utility.sortRecentMessage(data);
                             this.setState({ data: data });
                             recentContact = Utility.getStorage("recentContact");
                             if (recentContact) {
@@ -12137,7 +12192,6 @@ var MessageWindow = /** @class */ (function (_super) {
                             }
                         }
                         else {
-                            console.log("没有");
                             $('#wcLoadingImg').addClass("displaynone");
                             $('#wcLoadingText').removeClass("displaynone");
                         }
@@ -12172,7 +12226,7 @@ var MessageWindow = /** @class */ (function (_super) {
                                         for (j = 0; j < data.length; j++) {
                                             if (data[j].id == oldData[0].id) {
                                                 data = data.slice(0, j).concat(oldData);
-                                                console.log("获取到了新私信");
+                                                data = Utility.sortRecentMessage(data);
                                                 break;
                                             }
                                         }
@@ -12274,8 +12328,8 @@ var MessageWindow = /** @class */ (function (_super) {
     };
     ;
     MessageWindow.prototype.render = function () {
-        console.log("4");
         var data = this.props.data;
+        console.log(this.state.data);
         return (React.createElement("div", { className: "message-message-window" },
             React.createElement("div", { className: "message-message-wHeader" },
                 React.createElement("div", { className: "message-message-wReport" }),
@@ -12290,11 +12344,11 @@ var MessageWindow = /** @class */ (function (_super) {
                 this.state.data.map(this.coverMessageProps),
                 React.createElement("div", { className: "message-message-wcLoading" },
                     React.createElement("img", { src: "http://file.cc98.org/uploadfile/2017/11/19/2348481046.gif", id: "wcLoadingImg", className: "displaynone" }),
-                    React.createElement("div", { id: "wcLoadingText", className: "message-message-wcLoadingText displaynone" }, "-----------\u5DF2\u52A0\u8F7D\u5168\u90E8\u79C1\u4FE1-----------"))),
+                    React.createElement("div", { id: "wcLoadingText", className: "message-message-wcLoadingText displaynone" }, "\u6CA1\u6709\u66F4\u591A\u6D88\u606F\u4E86~"))),
             React.createElement("div", { className: "message-message-wPost" },
                 React.createElement("textarea", { className: "message-message-wPostArea", id: "postContent", onFocus: this.handleFocus, onBlur: this.handleBlur }),
                 React.createElement("div", { id: "wPostNotice", className: "message-message-wPostNotice", onClick: this.handleFocus }, "\u8BF7\u5728\u8FD9\u91CC\u586B\u5165\u60A8\u8981\u53D1\u9001\u7684\u79C1\u4FE1\u5185\u5BB9"),
-                React.createElement("div", { id: "wPostError", className: "message-message-wPostError displaynone", onClick: this.handleFocus }, "\u60A8\u7684\u53D1\u9001\u8FC7\u4E8E\u9891\u7E41\uFF0C\u8BF7\u7A0D\u4F5C\u6B47\u606F"),
+                React.createElement("div", { id: "wPostError", className: "message-message-wPostError displaynone", onClick: this.handleFocus }, "\u60A8\u7684\u53D1\u9001\u8FC7\u5FEB\uFF0C\u8BF7\u7A0D\u4F5C\u6B47\u606F~"),
                 React.createElement("button", { className: "message-message-wPostBtn", onClick: this.postMessage }, "\u56DE\u590D"))));
     };
     return MessageWindow;
@@ -12331,8 +12385,15 @@ var MessageSender = /** @class */ (function (_super) {
     }
     MessageSender.prototype.render = function () {
         var userUrl = "/user/name/" + this.props.senderName;
+        var timeClassName;
+        if (this.props.showTime) {
+            timeClassName = "message-message-wcTime";
+        }
+        else {
+            timeClassName = "displaynone";
+        }
         return (React.createElement("div", { className: "message-message-wc" },
-            React.createElement("div", { className: "message-message-wcTime" }, moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')),
+            React.createElement("div", { className: timeClassName }, moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')),
             React.createElement("div", { className: "message-message-wcSender" },
                 React.createElement("a", { href: userUrl, target: "_blank" },
                     React.createElement("img", { className: "message-message-wcPortraitUrl", src: this.props.senderPortraitUrl })),
@@ -12376,8 +12437,15 @@ var MessageReceiver = /** @class */ (function (_super) {
     }
     MessageReceiver.prototype.render = function () {
         var userUrl = "/user/name/" + this.props.senderName;
+        var timeClassName;
+        if (this.props.showTime) {
+            timeClassName = "message-message-wcTime";
+        }
+        else {
+            timeClassName = "displaynone";
+        }
         return (React.createElement("div", { className: "message-message-wc" },
-            React.createElement("div", { className: "message-message-wcTime" }, moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')),
+            React.createElement("div", { className: timeClassName }, moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')),
             React.createElement("div", { className: "message-message-wcReceiver" },
                 React.createElement("a", { href: userUrl, target: "_blank" },
                     React.createElement("img", { className: "message-message-wcPortraitUrl", src: this.props.senderPortraitUrl })),

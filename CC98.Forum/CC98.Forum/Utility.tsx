@@ -849,6 +849,8 @@ export function sortRecentMessage(recentMessage) {
                 recentMessage[i].showTime = true;
             }
         }
+
+        
         console.log("返回的recentMessage");
         console.log(recentMessage);
         return recentMessage;
