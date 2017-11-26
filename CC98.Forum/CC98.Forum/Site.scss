@@ -42,14 +42,13 @@ body {
     justify-content: flex-start;
     background-color: $bgcolor2;
     font-family: 微软雅黑;
-    font-size: 0.875rem;
 }
 
 #listRoot {
     display: flex;
     flex-direction: column;
     font-family: 微软雅黑;
-    font-size: 0.75rem;
+
     align-items: center;
     justify-content: center;
     margin-left: 6.25rem;
@@ -303,7 +302,6 @@ body {
     display: flex;
     line-height: 200%;
     margin: 1.25rem;
-    font-size: 0.875rem;
     word-wrap: break-word;
     color: rgb(80,80,80);
     padding-bottom: 1rem;
@@ -312,7 +310,7 @@ body {
 .signature {
     color: rgb(80,80,80);
     margin: 1.25rem;
-    font-size: 0.875rem;
+    max-height:15rem;
 }
 
 .upup {
@@ -463,6 +461,7 @@ body {
 }
 
 .rpyClr {
+    text-align:center;
     width:5rem;
     word-break: keep-all;
 }
@@ -585,6 +584,7 @@ body {
     margin-bottom: 0.625rem;
     border: none;
     background-color: $bgcolor2;
+    cursor:pointer;
 }
 
 .topicInList {
@@ -1713,17 +1713,18 @@ a {
 
     .focus-topic-response {
         display: flex;
-        margin: 14px 18px 30px;
-        width: 180px;
+        margin: 14px 10px 30px;
+        width: 216px;
 
         div {
-            flex-basis: 60px;
+            flex-basis: 54px;
             display: inline-flex;
             align-items: baseline;
+            flex-shrink: 0;
 
             i {
                 font-size: 14px;
-                flex-basis: 20px;
+                flex-basis: 18px;
             }
         }
     }
@@ -2331,7 +2332,7 @@ a {
     color: rgb(255,136,56);
 }
 .listTitle {
-    max-width:15rem;
+    max-width:20rem;
     margin-right:1rem;
     white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
     overflow: hidden; //不显示超过对象尺寸的内容

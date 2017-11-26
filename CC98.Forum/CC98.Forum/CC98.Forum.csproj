@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <TypeScriptToolsVersion>2.4</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>2.6</TypeScriptToolsVersion>
     <AssemblyName>CC98.Forum</AssemblyName>
   </PropertyGroup>
 
@@ -18,7 +18,6 @@
     <None Remove="Components\AllNewTopicArea.tsx" />
     <None Remove="Components\Category.tsx" />
     <None Remove="Components\Footer.tsx" />
-    <None Remove="Components\Hubs.tsx" />
     <None Remove="Components\Status.tsx" />
     <None Remove="Components\UbbContainer.tsx" />
     <None Remove="Components\UserCenterConfig.tsx" />
@@ -79,7 +78,6 @@
     <TypeScriptCompile Include="Components\AllNewTopicArea.tsx" />
     <TypeScriptCompile Include="Components\Category.tsx" />
     <TypeScriptCompile Include="Components\Footer.tsx" />
-    <TypeScriptCompile Include="Components\Hubs.tsx" />
     <TypeScriptCompile Include="Components\LogOn.tsx" />
     <TypeScriptCompile Include="Components\LogOnExact.tsx" />
     <TypeScriptCompile Include="Components\LogOff.tsx" />

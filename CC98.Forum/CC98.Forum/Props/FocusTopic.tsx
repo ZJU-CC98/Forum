@@ -10,9 +10,9 @@ export class FocusTopic {
     */
     title: string;
     /**
-    *主题被点击的次数（阅读数）
+    *主题被点击的次数（阅读数）,由于太多，所以显示字符串k
     */
-    hitCount: number;
+    hitCount: string;
     /**
     *主题的ID值
     */
@@ -26,9 +26,9 @@ export class FocusTopic {
    */
     boardName: string;
     /**
-    *主题的回复数（不包括第一次发言）
+    *主题的回复数（不包括第一次发言），由于太多，所以显示字符串k
     */
-    replyCount: number;
+    replyCount: string;
     /**
     *主题作者的id。如果主题为匿名主题，则该参数为 null
     */
