@@ -16,41 +16,25 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
         this.state = {
             isFollowing: this.props.userInfo.isFollowing,
             buttonIsDisabled: false,
-            buttonInfo: this.props.userInfo.isFollowing ? '取消关注' :'关注'
+            buttonInfo: this.props.userInfo.isFollowing ? '已关注' :'关注'
         }
         this.unfollow = this.unfollow.bind(this);
         this.follow = this.follow.bind(this);
     }
 
     async follow() {
-        try {
-            const token = Utility.getLocalStorage("accessToken");
-            if (!token) {
-                this.setState({
-                    buttonIsDisabled: true,
-                    buttonInfo: '请先登录'
-                });
-                return;
-            }
-
-            const userId = this.props.userInfo.id;
-            const url = `http://apitest.niconi.cc/user/follow/${userId}`;
-            const headers = new Headers();
-            headers.append('Authorization', token);
-            let res = await fetch(url, {
-                method: 'POST',
-                headers
+        this.setState({
+            buttonIsDisabled: true,
+            buttonInfo: '关注中'
+        });
+        let res = await Utility.followUser(Number.parseInt(this.props.userInfo.id));
+        if (res) {
+            this.setState({
+                buttonIsDisabled: false,
+                buttonInfo: '已关注',
+                isFollowing: true
             });
-            if (res.status === 200) {
-                this.setState({
-                    buttonIsDisabled: false,
-                    buttonInfo: '取消关注',
-                    isFollowing: true
-                });
-            } else {
-                throw {};
-            }
-        } catch (e) {
+        } else {
             this.setState({
                 buttonIsDisabled: false,
                 buttonInfo: '关注失败',
@@ -58,6 +42,7 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
             });
         }
     }
+
     getPrivilegeColor() {
         switch (this.props.userInfo.privilege) {
             case '注册用户': return 'grey';
@@ -66,31 +51,21 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
             case '管理员': return 'red';
         }
     }
+
     async unfollow() {
         this.setState({
             buttonIsDisabled: true,
             buttonInfo: '取关中'
         });
-        try {
-            const token = Utility.getLocalStorage("accessToken");
-            const userId = this.props.userInfo.id;
-            const url = `http://apitest.niconi.cc/user/unfollow/${userId}`;
-            const headers = new Headers();
-            headers.append('Authorization', token);
-            let res = await fetch(url, {
-                method: 'DELETE',
-                headers
+        let state = await Utility.unfollowUser(Number.parseInt(this.props.userInfo.id));
+
+        if (state === true) {
+            this.setState({
+                buttonIsDisabled: false,
+                buttonInfo: '重新关注',
+                isFollowing: false
             });
-            if (res.status === 200) {
-                this.setState({
-                    buttonIsDisabled: false,
-                    buttonInfo: '重新关注',
-                    isFollowing: false
-                });
-            } else {
-                throw {};
-            }
-        } catch (e) {
+        } else {
             this.setState({
                 buttonIsDisabled: false,
                 buttonInfo: '取关失败',
@@ -103,9 +78,29 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
         return (
             <div className="user-profile">
                 <div id="userId">
-                    <div id="userId"><p>{this.props.userInfo.name}      <span style={{ fontSize: '12px', color: this.getPrivilegeColor() }}>{this.props.userInfo.privilege}</span></p>
-                    <button type="button" onClick={() => { location.href = `/message/message?id=${this.props.userInfo.id}`; }}>私信</button>
-                    <button type="button" id={this.state.isFollowing ? 'unfollow' : ''} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button></div>
+                    <div id="userId"><p>{this.props.userInfo.name}
+                        <span style={{ fontSize: '12px', color: this.getPrivilegeColor() }}>{this.props.userInfo.privilege}</span></p>
+                        <button type="button" onClick={() => { location.href = `/message/message?id=${this.props.userInfo.id}`; }}>私信</button>
+                        <button type="button"
+                            id={this.state.isFollowing ? 'unfollow' : ''}
+                            onClick={this.state.isFollowing ? this.unfollow : this.follow}
+                            disabled={this.state.buttonIsDisabled}
+                            onMouseOver={() => {
+                                if (this.state.isFollowing && !this.state.buttonIsDisabled) {
+                                    this.setState({
+                                        buttonInfo: '取消关注'
+                                    });
+                                }
+                            }}
+                            onMouseLeave={() => {
+                                if (this.state.isFollowing && !this.state.buttonIsDisabled) {
+                                    this.setState({
+                                        buttonInfo: '已关注'
+                                    });
+                                }
+                            }}
+                        >{this.state.buttonInfo}</button>
+                    </div>
                 </div>
                 <div id="userGenderAndBirthday">
                     <p>性别：  {(this.props.userInfo.gender === 1) ? '男' : '女'} </p>

@@ -11,7 +11,7 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
     constructor(props) {
         super(props);
         this.state = {
-            buttonInfo: '取消关注',
+            buttonInfo: '已关注',
             buttonIsDisabled: false,
             isFollowing: true
         }
@@ -20,30 +20,18 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
     }
 
     async unfollow() {
-        try {
+        this.setState({
+            buttonIsDisabled: true,
+            buttonInfo: '取关中'
+        });
+        let res = Utility.unfollowUser(this.props.userFanInfo.id);
+        if (res) {
             this.setState({
-                buttonIsDisabled: true,
-                buttonInfo: '取关中'
+                buttonIsDisabled: false,
+                buttonInfo: '重新关注',
+                isFollowing: false
             });
-            const token = Utility.getLocalStorage("accessToken");
-            const userId = this.props.userFanInfo.id;
-            const url = `http://apitest.niconi.cc/user/unfollow/${userId}`;
-            const headers = new Headers();
-            headers.append('Authorization', token);
-            let res = await fetch(url, {
-                method: 'DELETE',
-                headers
-            });
-            if (res.status === 200) {
-                this.setState({
-                    buttonIsDisabled: false,
-                    buttonInfo: '重新关注',
-                    isFollowing: false
-                });
-            } else {
-                throw {};
-            }
-        } catch (e) {
+        } else {
             this.setState({
                 buttonIsDisabled: false,
                 buttonInfo: '取关失败',
@@ -53,31 +41,18 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
     }
 
     async follow() {
-        try {
+        this.setState({
+            buttonIsDisabled: true,
+            buttonInfo: '关注中'
+        });
+        let res = await Utility.followUser(this.props.userFanInfo.id);
+        if (res) {
             this.setState({
-                buttonIsDisabled: true,
-                buttonInfo: '关注中'
+                buttonIsDisabled: false,
+                buttonInfo: '已关注',
+                isFollowing: true
             });
-            const token = Utility.getLocalStorage("accessToken");
-
-            const userId = this.props.userFanInfo.id;
-            const url = `http://apitest.niconi.cc/user/follow/${userId}`;
-            const headers = new Headers();
-            headers.append('Authorization', token);
-            let res = await fetch(url, {
-                method: 'POST',
-                headers
-            });
-            if (res.status === 200) {
-                this.setState({
-                    buttonIsDisabled: false,
-                    buttonInfo: '取消关注',
-                    isFollowing: true
-                });
-            } else {
-                throw {};
-            }
-        } catch (e) {
+        } else {
             this.setState({
                 buttonIsDisabled: false,
                 buttonInfo: '关注失败',
@@ -97,7 +72,26 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
                     粉丝
                     <span className="user-center-myfollowings-user-fans">{this.props.userFanInfo.fans}</span>
                 </p>
-                <button type="button" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
+                <button
+                    type="button"
+                    id={this.state.isFollowing ? '' : 'follow'}
+                    onMouseOver={() => {
+                        if (this.state.isFollowing && !this.state.buttonIsDisabled) {
+                            this.setState({
+                                buttonInfo: '取消关注'
+                            });
+                        }
+                    }}
+                    onMouseLeave={() => {
+                        if (this.state.isFollowing && !this.state.buttonIsDisabled) {
+                            this.setState({
+                                buttonInfo: '已关注'
+                            });
+                        }
+                    }}
+                    onClick={this.state.isFollowing ? this.unfollow : this.follow}
+                    disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}
+                </button>
             </div>
         );
     }

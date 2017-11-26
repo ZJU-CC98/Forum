@@ -67,7 +67,7 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
     async componentDidMount() {
         try {
             const url = `http://apitest.niconi.cc/me/recenttopics?from=0&size=10`
-            const token = window.localStorage.accessToken.slice(4);
+            const token = Utility.getLocalStorage("accessToken");
             const headers = new Headers();
             headers.append('Authorization', token);
             let res = await fetch(url, {

@@ -16,7 +16,8 @@
     "react-router-dom": "4.1.2",
     "redux": "3.7.2",
     "signalr": "2.2.2",
-    "ssri": "^4.1.6"
+    "ssri": "^4.1.6",
+    "codemirror": "5.32.0"
   },
   "devDependencies": {
     "@types/jquery": "3.2.11",
@@ -24,8 +25,8 @@
     "@types/react": "15.6.0",
     "@types/react-dom": "15.5.1",
     "@types/react-redux": "4.4.47",
-    "@types/react-router": "4.0.14",
-    "@types/react-router-dom": "4.0.7",
+    "@types/react-router": "4.0.18",
+    "@types/react-router-dom": "4.2.2",
     "@types/redux": "3.6.31",
     "@types/signalr": "2.2.34",
     "@types/webpack": "3.0.5",
@@ -37,7 +38,7 @@
     "font-awesome": "4.7.0",
     "node-sass": "^4.7.1",
     "sass-loader": "6.0.6",
-    "typescript": "2.5.2",
+    "typescript": "2.6.1",
     "unminified-webpack-plugin": "1.2.0",
     "webpack": "3.4.1"
   }

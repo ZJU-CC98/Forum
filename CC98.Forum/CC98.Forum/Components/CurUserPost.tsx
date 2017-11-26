@@ -89,8 +89,12 @@ export class Reply extends RouteComponent<{}, { contents }, { page, topicid, use
          else {
              realContents = Utility.getStorage(storageId);
          }*/
+        const token = Utility.getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append("Authorization", token);
+
         const url = `http://apitest.niconi.cc/user/${newProps.match.params.userId}`;
-        const response = await fetch(url);
+        const response = await fetch(url, { headers });
         const data = await response.json();
         const userName = data.name;
         realContents = await Utility.getCurUserTopicContent(newProps.match.params.topicid, page, userName, newProps.match.params.userId, this.context.router);
@@ -99,8 +103,8 @@ export class Reply extends RouteComponent<{}, { contents }, { page, topicid, use
     }
     private generateContents(item: State.ContentState) {
         return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
-            <Post.Replier key={item.postid} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} />
-            <Post.ReplyContent key={item.content} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postid} contentType={item.contentType} />
+            <Post.Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} />
+            <Post.ReplyContent key={item.content} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postId} contentType={item.contentType} />
         </div>
         </div>;
     }

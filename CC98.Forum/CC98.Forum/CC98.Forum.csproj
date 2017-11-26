@@ -18,7 +18,6 @@
     <None Remove="Components\AllNewTopicArea.tsx" />
     <None Remove="Components\Category.tsx" />
     <None Remove="Components\Footer.tsx" />
-    <None Remove="Components\Hubs.tsx" />
     <None Remove="Components\Status.tsx" />
     <None Remove="Components\UbbContainer.tsx" />
     <None Remove="Components\UserCenterConfig.tsx" />
@@ -29,6 +28,7 @@
     <None Remove="Components\UserCenterMyFavoritesBoard.tsx" />
     <None Remove="Components\UserCenterMyFavoritesBoards.tsx" />
     <None Remove="Components\UserCenterPageCount.tsx" />
+    <None Remove="Components\UserCenter\UserRouterActivities.tsx" />
     <None Remove="Components\UserExactProfile.tsx" />
     <None Remove="Props\FocusBoardProps.tsx" />
     <None Remove="Props\MessageSendReceiveProps.tsx" />
@@ -78,7 +78,6 @@
     <TypeScriptCompile Include="Components\AllNewTopicArea.tsx" />
     <TypeScriptCompile Include="Components\Category.tsx" />
     <TypeScriptCompile Include="Components\Footer.tsx" />
-    <TypeScriptCompile Include="Components\Hubs.tsx" />
     <TypeScriptCompile Include="Components\LogOn.tsx" />
     <TypeScriptCompile Include="Components\LogOnExact.tsx" />
     <TypeScriptCompile Include="Components\LogOff.tsx" />
@@ -94,6 +93,7 @@
     <TypeScriptCompile Include="Components\UserCenter\UserCenterMyFavoritesBoards.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\UserCenterPageCount.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\UserExactProfile.tsx" />
+    <TypeScriptCompile Include="Components\UserCenter\UserRouterActivities.tsx" />
     <TypeScriptCompile Include="Props\FocusBoardProps.tsx" />
     <TypeScriptCompile Include="Props\MessagePersonProps.tsx" />
     <TypeScriptCompile Include="Props\MessageSendReceiveProps.tsx" />
