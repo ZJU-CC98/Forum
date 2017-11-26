@@ -314,8 +314,8 @@ class UbbTagSegment extends UbbSegment {
 
 				console.warn('标签 %s 没有正确关闭，已经被转换为纯文字。', seg.tagData.tagName);
 
-				// 未关闭标签，自己将被转换为纯文字
-				newParent._subSegments.push(new UbbTextSegment(`[${seg._tagData.orignalString}]`, segment.parent));
+                // 未关闭标签，自己将被转换为纯文字
+                newParent._subSegments.push(new UbbTextSegment(seg.tagData.startTagString, segment.parent));
 
 				// 自己的下级将被递归强制关闭，并提升为和自己同级
 				for (const sub of seg._subSegments) {
@@ -639,8 +639,8 @@ export class UbbTagData {
 	 */
 	value(indexOrName: number | string): string {
 
-		if (typeof indexOrName === 'number') {
-			return this._parameters[indexOrName].value;
+        if (typeof indexOrName === 'number') {
+            return this._parameters[indexOrName].value;
 		} else if (typeof indexOrName === 'string') {
 			return this._namedParameters[indexOrName];
 		} else {
@@ -655,7 +655,14 @@ export class UbbTagData {
 	 */
 	name(index: number) {
 		return this._parameters[index].name;
-	}
+    }
+
+    /**
+     * 获取当前标签中包含的参数的个数。
+     */
+    get parameterCount(): number {
+        return this._parameters.length;
+    }
 
 	/**
 	 * 获取给定的参数。
@@ -962,7 +969,7 @@ export class UbbCodeEngine {
 	 */
 	private static buildSegmentsCore(content: string, parent: UbbTagSegment) {
 
-		const regExp = /([\s\S]*?)\[(.*?)]/gi;
+		const regExp = /([\s\S]*?)\[(.+?)]/gi;
 
 		while (true) {
 
@@ -988,7 +995,7 @@ export class UbbCodeEngine {
 			}
 
 			// 检测是否是结束标记
-			const endTagMatch = tagString.match(/^\/(.*)$/i);
+			const endTagMatch = tagString.match(/^\/(.+)$/i);
 			if (endTagMatch) {
 				const endTagName = endTagMatch[1];
 				parent = UbbCodeEngine.tryHandleEndTag(endTagName, parent);
@@ -1023,7 +1030,8 @@ export class UbbCodeEngine {
 	private execCore(content: string, context: UbbCodeContext): ReactNode {
 
 		const root = new UbbTagSegment(null, null);
-		UbbCodeEngine.buildSegmentsCore(content, root);
+        UbbCodeEngine.buildSegmentsCore(content, root);
+        root.close();
 
 		const result: ReactNode[] = [];
 

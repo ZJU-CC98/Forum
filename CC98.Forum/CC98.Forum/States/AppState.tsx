@@ -50,45 +50,9 @@ export class TopicTitleState {
  * 文章内容
  */
 export class ContentState {
-    constructor(id: number,
-        content: string,
-        time: string,
-        isDelete: boolean,
-        floor: number,
-        isAnonymous: boolean,
-        lastUpdateAuthor: string,
-        lastUpdateTime: string,
-        topicId: number,
-        userName: string,
-        sendTopicNumber: number,
-        userImgUrl: string,
-        signature: string,
-        userId: number,
-        privilege: string,
-        likeNumber: number,
-        dislikeNumber: number,
-        postid: number,
-        contentType:number
+    constructor(
     ) {
-        this.userName = userName;
-        this.id = id;
-        this.content = content;
-        this.time = time;
-        this.isAnonymous = isAnonymous;
-        this.isDelete = isDelete;
-        this.floor = floor;
-        this.lastUpdateAuthor = lastUpdateAuthor;
-        this.lastUpdateTime = lastUpdateTime;
-        this.topicId = topicId;
-        this.sendTopicNumber = sendTopicNumber;
-        this.userImgUrl = userImgUrl;
-        this.signature = signature;
-        this.userId = userId;
-        this.privilege = privilege;
-        this.likeNumber = likeNumber;
-        this.dislikeNumber = dislikeNumber;
-        this.postid = postid;
-        this.contentType = contentType;
+       
     }
     id: number;
     content: string;
@@ -107,7 +71,7 @@ export class ContentState {
     privilege: string;
     likeNumber: number;
     dislikeNumber: number;
-    postid: number;
+    postId: number;
     contentType: number;
 }
 /**
@@ -173,18 +137,19 @@ export class TopicTitleAndContentState {
 		  this.lastReply = lastReply;
 		    this.title = title;
 	  }*/
-    constructor(title, userName, topicid, userId, lastPostUser, lastPostTime,likeCount,dislikeCount,replyCount,highlightInfo,topState) {
-        this.userName = userName;
-        this.title = title;
-        this.id = topicid;
-        this.userId = userId;
-        this.lastPostUser = lastPostUser;
-        this.lastPostTime = lastPostTime;
-        this.likeCount = likeCount;
-        this.dislikeCount = dislikeCount;
-        this.replyCount = replyCount;
-        this.highlightInfo = highlightInfo;
-        this.topState = topState;
+    constructor() {
+        //this.userName = userName;
+        //this.title = title;
+        //this.id = topicid;
+        //this.userId = userId;
+        //this.lastPostUser = lastPostUser;
+        //this.lastPostTime = lastPostTime;
+        //this.likeCount = likeCount;
+        //this.dislikeCount = dislikeCount;
+        //this.replyCount = replyCount;
+        //this.highlightInfo = highlightInfo;
+        //this.topState = topState;
+        //this.state = state;
     }
 
     likeCount: number;
@@ -198,6 +163,8 @@ export class TopicTitleAndContentState {
     userId: number;
     highlightInfo: any;
     topState: number;
+    topicState: number;
+    hitCount:number;
 }
 
 /**
@@ -226,7 +193,7 @@ export class TopicState {
         userId: number,
         likeNumber: number,
         dislikeNumber: number,
-        postid: number,
+        postId: number,
         isAnonymous: boolean,
         contentType: number,
         isFollowing: boolean
@@ -241,7 +208,7 @@ export class TopicState {
         this.userId = userId;
         this.likeNumber = likeNumber;
         this.dislikeNumber = dislikeNumber;
-        this.postid = postid;
+        this.postId = postId;
         this.isAnonymous = isAnonymous;
         this.contentType = contentType;
         this.isFollowing = isFollowing;
@@ -256,7 +223,7 @@ export class TopicState {
     userId: number;
     likeNumber: number;
     dislikeNumber: number;
-    postid: number;
+    postId: number;
     isAnonymous: boolean;
     contentType: number;
     isFollowing: boolean;

@@ -164,8 +164,9 @@ export class ListButtonAndPager extends React.Component<{ boardid: number, page:
 	 * @param pageNumber 要转换的页码。
 	 * @returns {JSX.Element} 页码对应的 UI 元素。
 	 */
-	generatePageLink(pageNumber: number) {
-		return <PageModel pageNumber={pageNumber} boardid={this.props.boardid} curPage={this.props.page} totalPage={this.props.totalPage} />;
+    generatePageLink(pageNumber: number) {
+        const url = `/list/${this.props.boardid}/`;
+        return <PageModel pageNumber={pageNumber} url={url} curPage={this.props.page} totalPage={this.props.totalPage} />;
 	}
 
 	async componentWillReceiveProps(newProps) {
@@ -203,7 +204,8 @@ export class PagerDown extends React.Component<{ boardid: number, page: number, 
 	 * @returns {JSX.Element} 页码对应的 UI 元素。
 	 */
     generatePageLink(pageNumber: number) {
-        return <PageModel pageNumber={pageNumber} boardid={this.props.boardid} curPage={this.props.page} totalPage={this.props.totalPage} />;
+        const url = `/list/${this.props.boardid}/`;
+        return <PageModel pageNumber={pageNumber} url={url} curPage={this.props.page} totalPage={this.props.totalPage} />;
     }
 
     async componentWillReceiveProps(newProps) {
@@ -222,12 +224,12 @@ export class PagerDown extends React.Component<{ boardid: number, page: number, 
         </div>;
     }
 }
-export class PageModel extends React.Component<{ boardid: number, pageNumber: number, curPage: number, totalPage: number }, {}> {
+export class PageModel extends React.Component<{ url:string, pageNumber: number, curPage: number, totalPage: number }, {}> {
 
 	render() {
 		let pageUrl: string;
 		if (this.props.pageNumber > 0) {
-			pageUrl = `/list/${this.props.boardid}/${this.props.pageNumber}`;
+			pageUrl = `${this.props.url}${this.props.pageNumber}`;
 			if (this.props.pageNumber !== this.props.curPage) {
 				return <li className="page-item"><Link to={pageUrl} className="page-link" >{this.props.pageNumber}</Link></li>
 					;
@@ -239,21 +241,21 @@ export class PageModel extends React.Component<{ boardid: number, pageNumber: nu
 
 
 		} else if (this.props.pageNumber == -1) {
-			pageUrl = `/list/${this.props.boardid}/${this.props.curPage - 1}`;
+			pageUrl = `${this.props.url}${this.props.curPage - 1}`;
 			return <li className="page-item"><Link className="page-link" to={pageUrl}>&lsaquo;</Link></li>
 				;
 		} else if (this.props.pageNumber == -2) {
-			pageUrl = `/list/${this.props.boardid}/${this.props.curPage + 1}`;
+			pageUrl = `${this.props.url}${this.props.curPage + 1}`;
 			return <li className="page-item"><Link className="page-link" to={pageUrl}>&rsaquo;</Link></li>
 				;
 		}
 		else if (this.props.pageNumber == -3) {
-			pageUrl = `/list/${this.props.boardid}/1`;
+			pageUrl = `${this.props.url}1`;
 			return <li className="page-item"> <Link className="page-link" to={pageUrl}>&laquo;</Link></li>
 				;
 		}
 		else if (this.props.pageNumber == -4) {
-			pageUrl = `/list/${this.props.boardid}/${this.props.totalPage}`;
+			pageUrl = `${this.props.url}${this.props.totalPage}`;
 			return <li className="page-item"><Link className="page-link" to={pageUrl}>&raquo;</Link></li>
 				;
 		}
@@ -287,6 +289,8 @@ export class ListTopContent extends React.Component<{boardId}, {data}>{
             replyCount={item.replyCount}
             highlightInfo={item.highlightInfo}
             topState={item.topState}
+            topicState={item.topicState}
+            hitCount={item.hitCount}
         />;
     }
     async componentDidMount() {
@@ -320,6 +324,8 @@ export class BestTopics extends React.Component<{ boardId, curPage }, { data }>{
             replyCount={item.replyCount}
             highlightInfo={item.highlightInfo}
             topState={item.topState}
+            topicState={item.topicState}
+            hitCount={item.hitCount}
         />;
     }
     render() {
@@ -365,6 +371,8 @@ export class ListContent extends RouteComponent<{}, {class:number, items: TopicT
             replyCount={item.replyCount}
             highlightInfo={item.highlightInfo}
             topState={item.topState}
+            topicState={item.topicState}
+            hitCount={item.hitCount}
         />;
 	}
 	async componentWillReceiveProps(newProps) {
@@ -401,10 +409,10 @@ export class ListContent extends RouteComponent<{}, {class:number, items: TopicT
 
                     <div className="listContentTag" onClick={this.inAll}>全部</div>
                     <div className="listContentTag" onClick={this.inBest}>精华</div>
-					<div className="listContentTag">最热</div>
+                    <div className="listContentTag" onClick={this.inSave}>保存</div>
 				</div>
 				<div className="row" style={{ alignItems: 'center' }}>
-					<div style={{ marginRight: '14.5rem' }}><span>作者</span></div>
+					<div style={{ marginRight: '14rem' }}><span>作者</span></div>
 					<div style={{ marginRight: '7.6875rem'}}><span>最后回复</span></div>
 				</div>
             </div>
@@ -447,7 +455,7 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
     generateListPager(item: number) {
         const url = `/topic/${this.props.id}/${item}`;
         if (item != -1) {
-            return <div style={{ marginRight:"0.3rem" }}><a href={url}>{item}</a></div>;
+            return <div style={{ marginRight: "0.3rem" }}><a style={{color:"red"}}href={url}>{item}</a></div>;
         } else {
             return <div style={{ marginRight: "0.3rem" }}>...</div>;
         }
@@ -464,44 +472,56 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         const titleId = `title${this.props.id}`;
         let icon;
         if (this.props.topState === 0) {
-            icon = <i style={{ color: "blue" }}className="fa fa-envelope fa-lg"></i>
+            icon = <i style={{ color: "#B0B0B0" }}className="fa fa-envelope fa-lg"></i>
         } else if (this.props.topState === 2) {
             icon = <i style={{ color: "orange" }}className="fa fa-chevron-circle-up fa-lg"></i>
         } else if (this.props.topState === 4) {
             icon = <i style={{ color: "red" }}className="fa fa-arrow-circle-up fa-lg"></i>
         }
         if (this.props.replyCount > 100 && this.props.topState===0) {
-            icon = <i style={{color:"red"}}className="fa fa-envelope fa-lg"></i>
+            icon = <i style={{color:"red"}}className="fa fa-envelope-open fa-lg"></i>
         }
-        if (Utility.getLocalStorage("userInfo").name === this.props.userName) {
+        let curName = Utility.getLocalStorage("userInfo").name;
+        if (!curName) curName = "";
+        if (curName === this.props.userName) {
             icon = <i style={{ color: "#FFC90E" }} className="fa fa-envelope fa-lg"></i>
+        }
+        //1是锁贴
+        if (this.props.topicState === 1) {
+            icon = <i style={{ color: "#B0B0B0" }} className="fa fa-lock fa-lg"></i>
+        }
+        let hitCount:any = this.props.hitCount;
+        if (this.props.hitCount > 100000) {
+            hitCount = ((this.props.hitCount - this.props.hitCount % 10000) / 10000).toString() + '万';
+        } else if (this.props.hitCount > 10000) {
+            hitCount = (this.props.hitCount / 10000).toFixed(1).toString() + '万';
         }
         return <div id={colorId}>
 
             <div className="row topicInList" id={topicId}>
-                <div style={{ display: "flex", marginLeft:"1rem" }}>
+                <div style={{ display: "flex", marginLeft: "0.5rem", alignItems: "flex-end", lineHeight:"1rem" }}>
                     {icon}
-                    <Link to={url}><div className="listTitle" id={titleId} style={{ marginLeft: '1.25rem', }}> {this.props.title}</div></Link>
-                <div style={{  display:"flex" }}>
+                    <Link to={url}><div className="listTitle" id={titleId} style={{ marginLeft: '0.5rem', }}> {this.props.title}</div></Link>
+                    <div style={{ display: "flex", fontSize: "0.75rem", marginBottom:"-2px" }}>
                         {this.state.pager.map(this.generateListPager.bind(this))}</div>
+                </div>
+                <div className="row" style={{ width: "50%", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between", fontSize: "0.75rem", marginBottom:"-4px" }}>
+
+                    <div style={{ width: "8rem", textAlign:"center" }}> <span ><a >{this.props.userName||'匿名'}</a></span></div>
+
+                    <div className="row" style={{  width: "10rem" }}>
+
+                        <div id="liked" style={{ display: "flex",width:"2rem" }}><i className="fa fa-thumbs-o-up fa-lg"></i><span className="timeProp tagSize">{this.props.likeCount}</span></div>
+
+                        <div id="disliked" style={{ display: "flex", width: "4.5rem" }}><i className="fa fa-eye fa-lg"></i><span className="timeProp tagSize">{hitCount}</span></div>
+
+                        <div id="commentsAmount" style={{ display: "flex", width: "3.5rem"}}><i className="fa fa-commenting-o fa-lg"></i><span className="timeProp tagSize">{this.props.replyCount}</span></div>
+
                     </div>
-                <div className="row" style={{ width: "45%", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" }}>
 
-                    <div style={{ width:"8rem" }}> <span ><a >{this.props.userName}</a></span></div>
+                    <div id="lastReply" style={{ width: "8rem", textAlign:"center" }}><div>{this.props.lastPostUser} </div></div>
 
-                    <div className="row" style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" ,width:"10rem"}}>
-
-                        <div id="liked" style={{ display: "flex" }}><i className="fa fa-thumbs-o-up fa-lg"></i><span className="timeProp tagSize">{this.props.likeCount}</span></div>
-
-                        <div id="disliked" style={{ display: "flex" }}><i className="fa fa-thumbs-o-down fa-lg"></i><span className="timeProp tagSize">{this.props.dislikeCount}</span></div>
-
-                        <div id="commentsAmount" style={{ display: "flex" }}><i className="fa fa-commenting-o fa-lg"></i><span className="timeProp tagSize">{this.props.replyCount}</span></div>
-
-                    </div>
-
-                    <div id="lastReply" style={{ width: "8rem" }}><div>{this.props.lastPostUser} </div></div>
-
-                    <div style={{ width: "12rem"}}><div style={{ wordBreak:"keepAll" }}>{moment(this.props.lastPostTime).format('YYYY-MM-DD HH:mm')}</div></div>
+                    <div style={{ width: "12rem", textAlign:"center" }}><div style={{ wordBreak: "keepAll" }}>{moment(this.props.lastPostTime).format('YY-MM-DD HH:mm')}</div></div>
 
                 </div>
 
