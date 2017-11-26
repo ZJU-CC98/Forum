@@ -68,6 +68,7 @@ export async function getBoardTopicAsync(curPage, boardid, router) {
 
 
     } catch (e) {
+        console.error(e);
         //window.location.href = "/status/Disconnected";
     }
 
@@ -357,7 +358,7 @@ export function getListPager(totalPage) {
     }
 }
 export function convertHotTopic(item: State.TopicTitleAndContentState) {
-    return <TopicTitleAndContent key={item.id} title={item.title} userName={item.userName} id={item.id} userId={item.userId} lastPostTime={item.lastPostTime} lastPostUser={item.lastPostUser} likeCount={item.likeCount} dislikeCount={item.dislikeCount} replyCount={item.replyCount} highlightInfo={item.highlightInfo} topState={item.topState} state={item.state} />
+    return <TopicTitleAndContent key={item.id} title={item.title} userName={item.userName} id={item.id} userId={item.userId} lastPostTime={item.lastPostTime} lastPostUser={item.lastPostUser} likeCount={item.likeCount} dislikeCount={item.dislikeCount} replyCount={item.replyCount} highlightInfo={item.highlightInfo} topState={item.topState} topicState={item.topicState} hitCount={item.hitCount} />
         ;
 }
 export function getPager(curPage, totalPage) {
@@ -1438,20 +1439,22 @@ export async function GetTopTopics(boardId) {
     const url = `http://apitest.niconi.cc/topic/toptopics?boardid=${boardId}`;
     const response = await fetch(url, { headers });
     const data: State.TopicTitleAndContentState[] = await response.json();
+    console.log(data);
     let topics: State.TopicTitleAndContentState[] = [];
     for (let i = 0; i < data.length; i++) {
         topics[i] = { ...data[i], replyCount: data[i].replyCount || 0 };
     }
     for (let i = 0; i < topics.length - 1; i++) {
-        for (let j = 0; j < topics.length - 1 - j; j++) {
+        for (let j = 0; j < topics.length - 1 - i; j++) {
             if (topics[j].topState <= topics[j + 1].topState) {
+                console.log("in");
                 let temp = topics[j];
                 topics[j] = topics[j + 1];
                 topics[j + 1] = temp;
-
             }
         }
     }
+    console.log(topics);
     return topics;
 }
 export async function GetBestTopics(boardId, curPage) {
