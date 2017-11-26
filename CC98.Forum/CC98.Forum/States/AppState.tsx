@@ -163,7 +163,8 @@ export class TopicTitleAndContentState {
     userId: number;
     highlightInfo: any;
     topState: number;
-    state: number;
+    topicState: number;
+    hitCount:number;
 }
 
 /**

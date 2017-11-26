@@ -184,6 +184,7 @@ function getBoardTopicAsync(curPage, boardid, router) {
                     return [2 /*return*/, boardtopics];
                 case 5:
                     e_1 = _a.sent();
+                    console.error(e_1);
                     return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];
             }
@@ -587,7 +588,7 @@ function getListPager(totalPage) {
 }
 exports.getListPager = getListPager;
 function convertHotTopic(item) {
-    return React.createElement(List_1.TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount, highlightInfo: item.highlightInfo, topState: item.topState, state: item.state });
+    return React.createElement(List_1.TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount, highlightInfo: item.highlightInfo, topState: item.topState, topicState: item.topicState, hitCount: item.hitCount });
 }
 exports.convertHotTopic = convertHotTopic;
 function getPager(curPage, totalPage) {
@@ -807,7 +808,7 @@ exports.getCurUserTopicContent = getCurUserTopicContent;
  */
 function getAllNewTopic(curNum, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var size, token, headers, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, _c, index, index, index, index, e_10;
+        var size, token, headers, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, _c, e_10;
         return __generator(this, function (_d) {
             switch (_d.label) {
                 case 0:
@@ -831,8 +832,6 @@ function getAllNewTopic(curNum, router) {
                     return [4 /*yield*/, response.json()];
                 case 2:
                     newTopic = _d.sent();
-                    console.log("全站新帖");
-                    console.log(newTopic);
                     _a = [];
                     for (_b in newTopic)
                         _a.push(_b);
@@ -874,33 +873,10 @@ function getAllNewTopic(curNum, router) {
                 case 8:
                     //获取所在版面名称
                     _c.boardName = _d.sent();
-                    //阅读数转换
-                    if (newTopic[i].hitCount > 10000) {
-                        if (newTopic[i].hitCount > 100000) {
-                            index = parseInt("" + newTopic[i].hitCount / 10000);
-                            newTopic[i].hitCount = index + "\u4E07";
-                        }
-                        else {
-                            index = parseInt("" + newTopic[i].hitCount / 1000) / 10;
-                            newTopic[i].hitCount = index + "\u4E07";
-                        }
-                    }
-                    //回复数转换
-                    if (newTopic[i].replyCount > 10000) {
-                        if (newTopic[i].replyCount > 100000) {
-                            index = parseInt("" + newTopic[i].replyCount / 10000);
-                            newTopic[i].replyCount = index + "\u4E07";
-                        }
-                        else {
-                            index = parseInt("" + newTopic[i].replyCount / 1000) / 10;
-                            newTopic[i].replyCount = index + "\u4E07";
-                        }
-                    }
                     return [3 /*break*/, 10];
                 case 9:
                     newTopic[i].fanCount = 0;
                     newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-                    newTopic[i].userName = "匿名";
                     newTopic[i].boardName = "心灵之约";
                     _d.label = 10;
                 case 10:
@@ -922,7 +898,7 @@ exports.getAllNewTopic = getAllNewTopic;
  */
 function getFocusTopic(curNum, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var size, token, headers, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, _c, index, index, index, index, e_11;
+        var size, token, headers, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, _c, e_11;
         return __generator(this, function (_d) {
             switch (_d.label) {
                 case 0:
@@ -934,7 +910,7 @@ function getFocusTopic(curNum, router) {
                     token = getLocalStorage("accessToken");
                     headers = new Headers();
                     headers.append('Authorization', token);
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/customboards?from=" + curNum + "&size=" + size, { headers: headers })];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/customboards/new?from=" + curNum + "&size=" + size, { headers: headers })];
                 case 1:
                     response = _d.sent();
                     if (response.status === 401) {
@@ -946,8 +922,6 @@ function getFocusTopic(curNum, router) {
                     return [4 /*yield*/, response.json()];
                 case 2:
                     newTopic = _d.sent();
-                    console.log("关注新帖");
-                    console.log(newTopic);
                     _a = [];
                     for (_b in newTopic)
                         _a.push(_b);
@@ -989,33 +963,10 @@ function getFocusTopic(curNum, router) {
                 case 8:
                     //获取所在版面名称
                     _c.boardName = _d.sent();
-                    //阅读数转换
-                    if (newTopic[i].hitCount > 10000) {
-                        if (newTopic[i].hitCount > 100000) {
-                            index = parseInt("" + newTopic[i].hitCount / 10000);
-                            newTopic[i].hitCount = index + "\u4E07";
-                        }
-                        else {
-                            index = parseInt("" + newTopic[i].hitCount / 1000) / 10;
-                            newTopic[i].hitCount = index + "\u4E07";
-                        }
-                    }
-                    //回复数转换
-                    if (newTopic[i].replyCount > 10000) {
-                        if (newTopic[i].replyCount > 100000) {
-                            index = parseInt("" + newTopic[i].replyCount / 10000);
-                            newTopic[i].replyCount = index + "\u4E07";
-                        }
-                        else {
-                            index = parseInt("" + newTopic[i].replyCount / 1000) / 10;
-                            newTopic[i].replyCount = index + "\u4E07";
-                        }
-                    }
                     return [3 /*break*/, 10];
                 case 9:
                     newTopic[i].fanCount = 0;
                     newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-                    newTopic[i].userName = "匿名";
                     newTopic[i].boardName = "心灵之约";
                     _d.label = 10;
                 case 10:
@@ -2114,19 +2065,22 @@ function GetTopTopics(boardId) {
                     return [4 /*yield*/, response.json()];
                 case 2:
                     data = _a.sent();
+                    console.log(data);
                     topics = [];
                     for (i = 0; i < data.length; i++) {
                         topics[i] = __assign({}, data[i], { replyCount: data[i].replyCount || 0 });
                     }
                     for (i = 0; i < topics.length - 1; i++) {
-                        for (j = 0; j < topics.length - 1 - j; j++) {
+                        for (j = 0; j < topics.length - 1 - i; j++) {
                             if (topics[j].topState <= topics[j + 1].topState) {
+                                console.log("in");
                                 temp = topics[j];
                                 topics[j] = topics[j + 1];
                                 topics[j + 1] = temp;
                             }
                         }
                     }
+                    console.log(topics);
                     return [2 /*return*/, topics];
             }
         });
@@ -4009,7 +3963,8 @@ var ListButtonAndPager = /** @class */ (function (_super) {
      * @returns {JSX.Element} 页码对应的 UI 元素。
      */
     ListButtonAndPager.prototype.generatePageLink = function (pageNumber) {
-        return React.createElement(PageModel, { pageNumber: pageNumber, boardid: this.props.boardid, curPage: this.props.page, totalPage: this.props.totalPage });
+        var url = "/list/" + this.props.boardid + "/";
+        return React.createElement(PageModel, { pageNumber: pageNumber, url: url, curPage: this.props.page, totalPage: this.props.totalPage });
     };
     ListButtonAndPager.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
@@ -4058,7 +4013,8 @@ var PagerDown = /** @class */ (function (_super) {
      * @returns {JSX.Element} 页码对应的 UI 元素。
      */
     PagerDown.prototype.generatePageLink = function (pageNumber) {
-        return React.createElement(PageModel, { pageNumber: pageNumber, boardid: this.props.boardid, curPage: this.props.page, totalPage: this.props.totalPage });
+        var url = "/list/" + this.props.boardid + "/";
+        return React.createElement(PageModel, { pageNumber: pageNumber, url: url, curPage: this.props.page, totalPage: this.props.totalPage });
     };
     PagerDown.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
@@ -4096,7 +4052,7 @@ var PageModel = /** @class */ (function (_super) {
     PageModel.prototype.render = function () {
         var pageUrl;
         if (this.props.pageNumber > 0) {
-            pageUrl = "/list/" + this.props.boardid + "/" + this.props.pageNumber;
+            pageUrl = "" + this.props.url + this.props.pageNumber;
             if (this.props.pageNumber !== this.props.curPage) {
                 return React.createElement("li", { className: "page-item" },
                     React.createElement(react_router_dom_1.Link, { to: pageUrl, className: "page-link" }, this.props.pageNumber));
@@ -4108,23 +4064,23 @@ var PageModel = /** @class */ (function (_super) {
             }
         }
         else if (this.props.pageNumber == -1) {
-            pageUrl = "/list/" + this.props.boardid + "/" + (this.props.curPage - 1);
+            pageUrl = "" + this.props.url + (this.props.curPage - 1);
             return React.createElement("li", { className: "page-item" },
                 React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u2039"));
         }
         else if (this.props.pageNumber == -2) {
-            pageUrl = "/list/" + this.props.boardid + "/" + (this.props.curPage + 1);
+            pageUrl = "" + this.props.url + (this.props.curPage + 1);
             return React.createElement("li", { className: "page-item" },
                 React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u203A"));
         }
         else if (this.props.pageNumber == -3) {
-            pageUrl = "/list/" + this.props.boardid + "/1";
+            pageUrl = this.props.url + "1";
             return React.createElement("li", { className: "page-item" },
                 " ",
                 React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u00AB"));
         }
         else if (this.props.pageNumber == -4) {
-            pageUrl = "/list/" + this.props.boardid + "/" + this.props.totalPage;
+            pageUrl = "" + this.props.url + this.props.totalPage;
             return React.createElement("li", { className: "page-item" },
                 React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u00BB"));
         }
@@ -4160,7 +4116,7 @@ var ListTopContent = /** @class */ (function (_super) {
         return _this;
     }
     ListTopContent.prototype.convertTopicToElement = function (item) {
-        return React.createElement(TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount, highlightInfo: item.highlightInfo, topState: item.topState, state: item.state });
+        return React.createElement(TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount, highlightInfo: item.highlightInfo, topState: item.topState, topicState: item.topicState, hitCount: item.hitCount });
     };
     ListTopContent.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -4204,7 +4160,7 @@ var BestTopics = /** @class */ (function (_super) {
         });
     };
     BestTopics.prototype.convertTopicToElement = function (item) {
-        return React.createElement(TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount, highlightInfo: item.highlightInfo, topState: item.topState, state: item.state });
+        return React.createElement(TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount, highlightInfo: item.highlightInfo, topState: item.topState, topicState: item.topicState, hitCount: item.hitCount });
     };
     BestTopics.prototype.render = function () {
         return React.createElement("div", null, this.state.data.map(this.convertTopicToElement));
@@ -4247,7 +4203,7 @@ var ListContent = /** @class */ (function (_super) {
         });
     };
     ListContent.prototype.convertTopicToElement = function (item) {
-        return React.createElement(TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount, highlightInfo: item.highlightInfo, topState: item.topState, state: item.state });
+        return React.createElement(TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount, highlightInfo: item.highlightInfo, topState: item.topState, topicState: item.topicState, hitCount: item.hitCount });
     };
     ListContent.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
@@ -4296,7 +4252,7 @@ var ListContent = /** @class */ (function (_super) {
                     React.createElement("div", { className: "listContentTag", onClick: this.inBest }, "\u7CBE\u534E"),
                     React.createElement("div", { className: "listContentTag", onClick: this.inSave }, "\u4FDD\u5B58")),
                 React.createElement("div", { className: "row", style: { alignItems: 'center' } },
-                    React.createElement("div", { style: { marginRight: '14.5rem' } },
+                    React.createElement("div", { style: { marginRight: '14rem' } },
                         React.createElement("span", null, "\u4F5C\u8005")),
                     React.createElement("div", { style: { marginRight: '7.6875rem' } },
                         React.createElement("span", null, "\u6700\u540E\u56DE\u590D")))),
@@ -4339,7 +4295,7 @@ var TopicTitleAndContent = /** @class */ (function (_super) {
         var url = "/topic/" + this.props.id + "/" + item;
         if (item != -1) {
             return React.createElement("div", { style: { marginRight: "0.3rem" } },
-                React.createElement("a", { href: url }, item));
+                React.createElement("a", { style: { color: "red" }, href: url }, item));
         }
         else {
             return React.createElement("div", { style: { marginRight: "0.3rem" } }, "...");
@@ -4369,43 +4325,53 @@ var TopicTitleAndContent = /** @class */ (function (_super) {
         if (this.props.replyCount > 100 && this.props.topState === 0) {
             icon = React.createElement("i", { style: { color: "red" }, className: "fa fa-envelope-open fa-lg" });
         }
-        if (Utility.getLocalStorage("userInfo").name === this.props.userName) {
+        var curName = Utility.getLocalStorage("userInfo").name;
+        if (!curName)
+            curName = "";
+        if (curName === this.props.userName) {
             icon = React.createElement("i", { style: { color: "#FFC90E" }, className: "fa fa-envelope fa-lg" });
         }
         //1是锁贴
-        if (this.props.state === 1) {
+        if (this.props.topicState === 1) {
             icon = React.createElement("i", { style: { color: "#B0B0B0" }, className: "fa fa-lock fa-lg" });
+        }
+        var hitCount = this.props.hitCount;
+        if (this.props.hitCount > 100000) {
+            hitCount = ((this.props.hitCount - this.props.hitCount % 10000) / 10000).toString() + '万';
+        }
+        else if (this.props.hitCount > 10000) {
+            hitCount = (this.props.hitCount / 10000).toFixed(1).toString() + '万';
         }
         return React.createElement("div", { id: colorId },
             React.createElement("div", { className: "row topicInList", id: topicId },
-                React.createElement("div", { style: { display: "flex", marginLeft: "1rem" } },
+                React.createElement("div", { style: { display: "flex", marginLeft: "0.5rem", alignItems: "flex-end", lineHeight: "1rem" } },
                     icon,
                     React.createElement(react_router_dom_1.Link, { to: url },
-                        React.createElement("div", { className: "listTitle", id: titleId, style: { marginLeft: '1.25rem', } },
+                        React.createElement("div", { className: "listTitle", id: titleId, style: { marginLeft: '0.5rem', } },
                             " ",
                             this.props.title)),
-                    React.createElement("div", { style: { display: "flex" } }, this.state.pager.map(this.generateListPager.bind(this)))),
-                React.createElement("div", { className: "row", style: { width: "45%", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between" } },
-                    React.createElement("div", { style: { width: "8rem" } },
+                    React.createElement("div", { style: { display: "flex", fontSize: "0.75rem", marginBottom: "-2px" } }, this.state.pager.map(this.generateListPager.bind(this)))),
+                React.createElement("div", { className: "row", style: { width: "50%", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between", fontSize: "0.75rem", marginBottom: "-4px" } },
+                    React.createElement("div", { style: { width: "8rem", textAlign: "center" } },
                         " ",
                         React.createElement("span", null,
-                            React.createElement("a", null, this.props.userName))),
-                    React.createElement("div", { className: "row", style: { flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between", width: "10rem" } },
-                        React.createElement("div", { id: "liked", style: { display: "flex" } },
+                            React.createElement("a", null, this.props.userName || '匿名'))),
+                    React.createElement("div", { className: "row", style: { width: "10rem" } },
+                        React.createElement("div", { id: "liked", style: { display: "flex", width: "2rem" } },
                             React.createElement("i", { className: "fa fa-thumbs-o-up fa-lg" }),
                             React.createElement("span", { className: "timeProp tagSize" }, this.props.likeCount)),
-                        React.createElement("div", { id: "disliked", style: { display: "flex" } },
-                            React.createElement("i", { className: "fa fa-thumbs-o-down fa-lg" }),
-                            React.createElement("span", { className: "timeProp tagSize" }, this.props.dislikeCount)),
-                        React.createElement("div", { id: "commentsAmount", style: { display: "flex" } },
+                        React.createElement("div", { id: "disliked", style: { display: "flex", width: "4.5rem" } },
+                            React.createElement("i", { className: "fa fa-eye fa-lg" }),
+                            React.createElement("span", { className: "timeProp tagSize" }, hitCount)),
+                        React.createElement("div", { id: "commentsAmount", style: { display: "flex", width: "3.5rem" } },
                             React.createElement("i", { className: "fa fa-commenting-o fa-lg" }),
                             React.createElement("span", { className: "timeProp tagSize" }, this.props.replyCount))),
-                    React.createElement("div", { id: "lastReply", style: { width: "8rem" } },
+                    React.createElement("div", { id: "lastReply", style: { width: "8rem", textAlign: "center" } },
                         React.createElement("div", null,
                             this.props.lastPostUser,
                             " ")),
-                    React.createElement("div", { style: { width: "12rem" } },
-                        React.createElement("div", { style: { wordBreak: "keepAll" } }, moment(this.props.lastPostTime).format('YYYY-MM-DD HH:mm'))))));
+                    React.createElement("div", { style: { width: "12rem", textAlign: "center" } },
+                        React.createElement("div", { style: { wordBreak: "keepAll" } }, moment(this.props.lastPostTime).format('YY-MM-DD HH:mm'))))));
     };
     return TopicTitleAndContent;
 }(React.Component));
@@ -6964,9 +6930,6 @@ var FocusTopicSingle = /** @class */ (function (_super) {
                     React.createElement("div", null,
                         React.createElement("i", { className: "fa fa-thumbs-o-up", "aria-hidden": "true" }),
                         this.props.likeCount),
-                    React.createElement("div", null,
-                        React.createElement("i", { className: "fa fa-thumbs-o-down", "aria-hidden": "true" }),
-                        this.props.dislikeCount),
                     React.createElement("div", null,
                         React.createElement("i", { className: "fa fa-commenting-o", "aria-hidden": "true" }),
                         this.props.replyCount),
