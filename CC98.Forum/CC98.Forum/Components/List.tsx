@@ -431,7 +431,8 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
     }
     componentWillMount() {
         const count = this.props.replyCount+1;
-        const totalPage = (count-count%10) / 10 + 1;
+        let totalPage = (count - count % 10) / 10 + 1;
+        if (count % 10 === 0) totalPage = count / 10;
         const pager = Utility.getListPager(totalPage);
         const titleId = `#title${this.props.id}`;
         this.setState({ pager: pager });

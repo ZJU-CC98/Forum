@@ -489,9 +489,6 @@ export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid },
     }
     async componentWillMount() {
         let topicMessage = await Utility.getTopic(this.props.topicid, this.context.router);
-        console.log(topicMessage);
-        console.log(topicMessage.userName);
-        console.log(topicMessage.isAnonymous);
         this.setState({ topicMessage: topicMessage });
     }
     render() {
@@ -506,7 +503,8 @@ export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid },
                     </div>
 
                     <TopicContent postid={this.state.topicMessage.postId} content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} topicid={this.props.topicid} userId={this.state.topicMessage.userId}
-                        contentType={this.state.topicMessage.contentType} />
+                        contentType={this.state.topicMessage.contentType}
+                        masters={this.state.topicMessage.masters} />
                     <TopicGood />
                     <TopicVote />
                 </div>;
@@ -698,7 +696,7 @@ export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.
         </div>;
     }
 }
-export class TopicContent extends RouteComponent<{ postid: number, topicid: number, content: string, signature: string, userId: number, contentType: number }, { likeState: number, likeNumber: number, dislikeNumber: number }, {}> {
+export class TopicContent extends RouteComponent<{ postid: number, topicid: number, content: string, signature: string, userId: number, contentType: number ,masters:string[]}, { likeState: number, likeNumber: number, dislikeNumber: number }, {}> {
     constructor(props, content) {
         super(props, content);
         this.state = {
@@ -786,6 +784,23 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
             content = mdMode;
 
         }
+        if (Utility.getLocalStorage("userInfo")) {
+            const privilege = Utility.getLocalStorage("userInfo").privilege;
+            const myName = Utility.getLocalStorage("userInfo").name;
+            const myId = Utility.getLocalStorage("userInfo").id;
+           
+            if (privilege === '管理员' || privilege === '超级版主' || (privilege === '全站贵宾' && myId === this.props.userId)) {
+                $("#postTopicManage").css("display", "");
+            }
+            console.log(Utility.getLocalStorage("userInfo"));
+            if (this.props.masters) {
+                for (let i = 0; i < this.props.masters.length; i++) {
+                    if (myName === this.props.masters[i]) {
+                        $("#postTopicManage").css("display", "");
+                    }
+                }
+            }
+        }
         if (this.props.signature == "") {
             return <div className="content">
                 <div className="substance">{content}</div>
@@ -797,7 +812,7 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
 
                     <div className="operation1">引用</div>
                     <Link className="operation1" to={curUserPostUrl}>只看此用户</Link>
-
+                    <div className="operation1" id="postTopicManage" style={{ display:"none" }}>管理</div>
                 </div>
             </div>;
         } else {
