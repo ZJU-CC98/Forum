@@ -1714,17 +1714,18 @@ a {
 
     .focus-topic-response {
         display: flex;
-        margin: 14px 18px 30px;
-        width: 180px;
+        margin: 14px 10px 30px;
+        width: 216px;
 
         div {
-            flex-basis: 60px;
+            flex-basis: 54px;
             display: inline-flex;
             align-items: baseline;
+            flex-shrink: 0;
 
             i {
                 font-size: 14px;
-                flex-basis: 20px;
+                flex-basis: 18px;
             }
         }
     }

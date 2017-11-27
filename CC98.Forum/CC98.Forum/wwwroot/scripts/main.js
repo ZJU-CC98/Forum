@@ -9997,7 +9997,6 @@ var UploadTagHandler = /** @class */ (function (_super) {
     });
     ;
     UploadTagHandler.prototype.execCore = function (content, tagData, context) {
-        //tagData.value(0,1,2,……)
         var uploadUri = content;
         var uploadType = tagData.value(0);
         var uploadValue;
@@ -10005,22 +10004,39 @@ var UploadTagHandler = /** @class */ (function (_super) {
             uploadValue = 0;
         if (tagData.parameterCount === 2)
             uploadValue = tagData.value(1);
-        console.log("uploadType=" + uploadType);
-        console.log("uploadValue=" + uploadValue);
-        console.log(Ubb.UbbTagHandler.renderTagAsString(tagData, content));
-        // 不允许显示图像
-        if (!context.options.allowImage) {
-            return React.createElement(Image, { imageUri: uploadUri, title: "", isShowed: false });
-        }
-        //[img=1]默认不显示图片，[img]或[img=0]默认显示图片
-        // HTML5 模式下，使用 figure 表示插图
-        if (context.options.compatibility === Ubb.UbbCompatiblityMode.EnforceMorden) {
-            return React.createElement("figure", null,
-                React.createElement(Image, { imageUri: uploadUri, title: "", isShowed: true }),
-                React.createElement("figcaption", null, ""));
-        }
-        else {
-            return React.createElement(Image, { imageUri: uploadUri, title: "", isShowed: true });
+        switch (uploadType) {
+            case "jpg":
+            case "jpeg":
+            case "png":
+            case "gif":
+            case "bmp":
+            case "webp":
+                // 不允许显示图像
+                if (!context.options.allowImage) {
+                    return React.createElement(Image, { imageUri: uploadUri, title: "upload图片", isShowed: false });
+                }
+                //第二个参数值为1默认不显示图片，为0或没有则默认显示图片
+                // HTML5 模式下，使用 figure 表示插图
+                if (context.options.compatibility === Ubb.UbbCompatiblityMode.EnforceMorden) {
+                    if (uploadValue === 1) {
+                        return React.createElement(Image, { imageUri: uploadUri, title: "upload图片", isShowed: false });
+                    }
+                    else {
+                        return React.createElement("figure", null,
+                            React.createElement(Image, { imageUri: uploadUri, title: "upload图片", isShowed: true }),
+                            React.createElement("figcaption", null, "upload图片"));
+                    }
+                }
+                else {
+                    if (uploadValue === 1) {
+                        return React.createElement(Image, { imageUri: uploadUri, title: "upload图片", isShowed: false });
+                    }
+                    else {
+                        return React.createElement(Image, { imageUri: uploadUri, title: "upload图片", isShowed: true });
+                    }
+                }
+            default:
+                return React.createElement("a", { href: uploadUri }, uploadUri);
         }
     };
     return UploadTagHandler;
@@ -16191,15 +16207,17 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
             avatarURL: '',
             info: '',
             isShown: false,
-            divheight: '0px',
-            divWidth: '0px',
+            divheight: 0,
+            divWidth: 0,
             selectorWidth: 160,
             selectorLeft: 0,
             selectorTop: 0,
             avatarNow: userInfo.portraitUrl,
             isLoading: false,
             naturalWidth: 0,
-            naturalHeight: 0
+            naturalHeight: 0,
+            img: null,
+            NUM_MAX: 0
         };
         _this.handleChange = _this.handleChange.bind(_this);
         _this.handleIMGLoad = _this.handleIMGLoad.bind(_this);
@@ -16217,7 +16235,7 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
             this.setState({
                 info: '请选择图片文件',
                 isShown: false,
-                divheight: '0px'
+                divheight: 0
             });
             return false;
         }
@@ -16230,13 +16248,12 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
             });
         });
     };
-    UserCenterConfigAvatar.prototype.handleIMGLoad = function () {
-        var width = this.myIMG.naturalWidth, height = this.myIMG.naturalHeight;
+    UserCenterConfigAvatar.prototype.handleIMGLoad = function (width, height, img) {
         if (width < 160 || height < 160) {
             this.setState({
                 info: '图片至少为 160*160',
                 isShown: false,
-                divheight: '0px'
+                divheight: 0
             });
             return;
         }
@@ -16244,25 +16261,26 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
             this.setState({
                 info: '图片宽度至多为 800',
                 isShown: false,
-                divheight: '0px'
+                divheight: 0
             });
             return;
         }
-        this.NUM_MAX = Math.min(500, width, height);
         var ctx = this.myCanvas.getContext('2d');
         this.myCanvas.width = width;
         this.myCanvas.height = height;
-        ctx.drawImage(this.myIMG, 0, 0, width, height, 0, 0, width, height);
+        ctx.drawImage(img, 0, 0, width, height, 0, 0, width, height);
         this.setState({
-            divheight: height + 50 + "px",
-            divWidth: width + 50 + "px",
+            divheight: height + 50,
+            divWidth: width + 50,
             isShown: true,
             info: '请选择要显示的区域',
             selectorLeft: width / 4,
             selectorTop: height / 4,
             selectorWidth: Math.min(height, width) / 2,
             naturalWidth: width,
-            naturalHeight: height
+            naturalHeight: height,
+            img: img,
+            NUM_MAX: Math.min(500, width, height)
         });
     };
     UserCenterConfigAvatar.prototype.handleMouseUp = function () {
@@ -16291,6 +16309,7 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
         window.removeEventListener('mouseup', this.handleMouseUp);
     };
     UserCenterConfigAvatar.prototype.handleSelectorMove = function (event) {
+        var _this = this;
         if (this.dragging !== undefined && this.dragging !== null && this.dragging.id === 'resize') {
             this.handleCoverMouseMove(event);
         }
@@ -16303,22 +16322,24 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
                     break;
                 case 'mousemove':
                     if (this.dragging !== null) {
-                        var y = event.clientY - this.diffY, x = event.clientX - this.diffX;
-                        if (y < 0) {
-                            y = 0;
-                        }
-                        if (y > this.myIMG.naturalHeight - this.state.selectorWidth) {
-                            y = this.myIMG.naturalHeight - this.state.selectorWidth;
-                        }
-                        if (x < 0) {
-                            x = 0;
-                        }
-                        if (x > this.myIMG.naturalWidth - this.state.selectorWidth) {
-                            x = this.myIMG.naturalWidth - this.state.selectorWidth;
-                        }
-                        this.setState({
-                            selectorTop: y,
-                            selectorLeft: x
+                        var y_1 = event.clientY - this.diffY, x_1 = event.clientX - this.diffX;
+                        this.setState(function (prevState) {
+                            if (y_1 < 0) {
+                                y_1 = 0;
+                            }
+                            if (x_1 < 0) {
+                                x_1 = 0;
+                            }
+                            if (y_1 > prevState.naturalHeight - _this.state.selectorWidth) {
+                                y_1 = prevState.naturalHeight - _this.state.selectorWidth;
+                            }
+                            if (x_1 > prevState.naturalWidth - _this.state.selectorWidth) {
+                                x_1 = prevState.naturalWidth - _this.state.selectorWidth;
+                            }
+                            return {
+                                selectorTop: y_1,
+                                selectorLeft: x_1
+                            };
                         });
                     }
                     break;
@@ -16338,7 +16359,7 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
         var x = this.state.selectorLeft, y = this.state.selectorTop, width = this.state.selectorWidth;
         canvas.width = width;
         canvas.height = width;
-        ctx.drawImage(this.myIMG, x, y, width, width, 0, 0, width, width);
+        ctx.drawImage(this.state.img, x, y, width, width, 0, 0, width, width);
         canvas.toBlob(function (result) { return __awaiter(_this, void 0, void 0, function () {
             var file, avatar, token, url, myHeaders, data, res, userInfo, e_1;
             return __generator(this, function (_a) {
@@ -16373,7 +16394,7 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
                                 avatarNow: data,
                                 isLoading: false,
                                 isShown: false,
-                                divheight: '0px'
+                                divheight: 0
                             });
                             userInfo = Utility.getLocalStorage('userInfo');
                             userInfo.portraitUrl = data;
@@ -16389,7 +16410,7 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
                             info: '修改失败',
                             isLoading: false,
                             isShown: false,
-                            divheight: '0px'
+                            divheight: 0
                         });
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
@@ -16409,7 +16430,7 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
                     this.diffY = event.clientX - event.target.offsetLeft;
                     this.setState(function (prevState) {
                         var num = prevState.selectorWidth + _this.diffY - _this.diffX;
-                        var max = Math.min(_this.NUM_MAX, prevState.naturalWidth - prevState.selectorLeft, prevState.naturalHeight - prevState.selectorTop);
+                        var max = Math.min(prevState.NUM_MAX, prevState.naturalWidth - prevState.selectorLeft, prevState.naturalHeight - prevState.selectorTop);
                         if (!isNaN(num)) {
                             if (num < 100) {
                                 num = 100;
@@ -16444,7 +16465,7 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
                     this.setState(function (prevState) {
                         var num = prevState.selectorWidth + _this.diffY - _this.diffX;
                         if (!isNaN(num)) {
-                            var max = Math.min(_this.NUM_MAX, prevState.naturalWidth - prevState.selectorLeft, prevState.naturalHeight - prevState.selectorTop);
+                            var max = Math.min(prevState.NUM_MAX, prevState.naturalWidth - prevState.selectorLeft, prevState.naturalHeight - prevState.selectorTop);
                             if (num < 100) {
                                 num = 100;
                             }
@@ -16458,22 +16479,24 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
                     });
                 }
                 else if (this.dragging !== undefined && this.dragging !== null && this.dragging.id === 'selector') {
-                    var y = e.clientY - this.diffY, x = e.clientX - this.diffX;
-                    if (y < 0) {
-                        y = 0;
-                    }
-                    if (y > this.myIMG.naturalHeight - this.state.selectorWidth) {
-                        y = this.myIMG.naturalHeight - this.state.selectorWidth;
-                    }
-                    if (x < 0) {
-                        x = 0;
-                    }
-                    if (x > this.myIMG.naturalWidth - this.state.selectorWidth) {
-                        x = this.myIMG.naturalWidth - this.state.selectorWidth;
-                    }
-                    this.setState({
-                        selectorTop: y,
-                        selectorLeft: x
+                    var y_2 = e.clientY - this.diffY, x_2 = e.clientX - this.diffX;
+                    this.setState(function (prevState) {
+                        if (y_2 < 0) {
+                            y_2 = 0;
+                        }
+                        if (x_2 < 0) {
+                            x_2 = 0;
+                        }
+                        if (y_2 > prevState.naturalHeight - _this.state.selectorWidth) {
+                            y_2 = prevState.naturalHeight - _this.state.selectorWidth;
+                        }
+                        if (x_2 > prevState.naturalWidth - _this.state.selectorWidth) {
+                            x_2 = prevState.naturalWidth - _this.state.selectorWidth;
+                        }
+                        return {
+                            selectorTop: y_2,
+                            selectorLeft: x_2
+                        };
                     });
                 }
                 break;
@@ -16502,13 +16525,13 @@ var UserCenterConfigAvatar = /** @class */ (function (_super) {
                     React.createElement("div", { style: { position: 'absolute', width: '824px', overflow: 'hidden', paddingBottom: '50px' } },
                         React.createElement("canvas", { id: "newAvatar", style: style, ref: function (a) { _this.newAvatar = a; } }),
                         React.createElement("canvas", { ref: function (canvas) { _this.myCanvas = canvas; }, style: { position: 'relative' } }),
-                        React.createElement("div", { id: "cover", ref: function (div) { _this.cover = div; }, style: { width: this.state.divWidth, height: this.state.divheight, top: 0 } }),
+                        React.createElement("div", { id: "cover", ref: function (div) { _this.cover = div; }, style: { width: this.state.divWidth + "px", height: this.state.divheight + "px", top: 0 } }),
                         React.createElement("div", { className: "imgdata", ref: function (div) { _this.selector = div; }, style: this.state.isShown ? { width: this.state.selectorWidth + "px", height: this.state.selectorWidth + "px", borderRadius: this.state.selectorWidth / 2 + "px", top: this.state.selectorTop + "px", left: this.state.selectorLeft + "px" } : style },
                             React.createElement("img", { src: this.state.avatarURL, style: { position: 'relative', top: "-" + this.state.selectorTop + "px", left: "-" + this.state.selectorLeft + "px" } })),
                         React.createElement("div", { id: "selector", ref: function (div) { _this.selector = div; }, style: this.state.isShown ? { width: this.state.selectorWidth + "px", height: this.state.selectorWidth + "px", borderRadius: this.state.selectorWidth / 2 + "px", top: this.state.selectorTop + "px", left: this.state.selectorLeft + "px" } : style }),
                         React.createElement("span", { id: "resize", ref: function (span) { _this.resize = span; }, style: { top: this.state.selectorWidth + this.state.selectorTop + "px", left: this.state.selectorWidth + this.state.selectorLeft + "px" } })),
-                    React.createElement("img", { ref: function (img) { _this.myIMG = img; }, onLoad: this.handleIMGLoad, style: style, src: this.state.avatarURL })),
-                React.createElement("div", { style: { width: '100%', height: this.state.divheight, transitionDuration: '.5s' } }))));
+                    React.createElement("img", { onLoad: function (e) { _this.handleIMGLoad(e.target.naturalWidth, e.target.naturalHeight, e.target); }, style: style, src: this.state.avatarURL })),
+                React.createElement("div", { style: { width: '100%', height: this.state.divheight + "px", transitionDuration: '.5s' } }))));
     };
     return UserCenterConfigAvatar;
 }(React.Component));

@@ -12,31 +12,46 @@ export class UploadTagHandler extends Ubb.TextTagHandler {
 
     execCore(content: string, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
 
-        //tagData.value(0,1,2,……)
         const uploadUri = content;
         const uploadType = tagData.value(0);
         let uploadValue;
         if (tagData.parameterCount === 1) uploadValue = 0;
         if (tagData.parameterCount === 2) uploadValue = tagData.value(1);
-        console.log("uploadType=" + uploadType);
-        console.log("uploadValue=" + uploadValue);
-        console.log(Ubb.UbbTagHandler.renderTagAsString(tagData, content));
 
-        // 不允许显示图像
-        if (!context.options.allowImage) {
-            return <Image imageUri={uploadUri} title={""} isShowed={false} />
+        switch (uploadType) {
+            case "jpg":
+            case "jpeg":
+            case "png":
+            case "gif":
+            case "bmp":
+            case "webp":
+                // 不允许显示图像
+                if (!context.options.allowImage) {
+                    return <Image imageUri={uploadUri} title={"upload图片"} isShowed={false} />
+                }
+
+                //第二个参数值为1默认不显示图片，为0或没有则默认显示图片
+                // HTML5 模式下，使用 figure 表示插图
+                if (context.options.compatibility === Ubb.UbbCompatiblityMode.EnforceMorden) {
+                    if (uploadValue === 1) {
+                        return <Image imageUri={uploadUri} title={"upload图片"} isShowed={false} />
+                    } else {
+                        return <figure>
+                            <Image imageUri={uploadUri} title={"upload图片"} isShowed={true} />
+                            <figcaption>{"upload图片"}</figcaption>
+                        </figure>;
+                    }
+                } else {
+                    if (uploadValue === 1) {
+                        return <Image imageUri={uploadUri} title={"upload图片"} isShowed={false} />
+                    } else {
+                        return <Image imageUri={uploadUri} title={"upload图片"} isShowed={true} />
+                    }
+                }
+            default:
+                return <a href={uploadUri}>{uploadUri}</a>
         }
 
-        //[img=1]默认不显示图片，[img]或[img=0]默认显示图片
-        // HTML5 模式下，使用 figure 表示插图
-        if (context.options.compatibility === Ubb.UbbCompatiblityMode.EnforceMorden) {
-            return <figure>
-                <Image imageUri={uploadUri} title={""} isShowed={true} />
-                <figcaption>{""}</figcaption>
-            </figure>;
-        } else {
-            return <Image imageUri={uploadUri} title={""} isShowed={true} />
-        }
     }
 }
 

@@ -25,7 +25,8 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
                     <div className="focus-topic-info2">
                         <div className="focus-topic-board"><a href={boardUrl} target="_blank">{this.props.boardName}</a>&nbsp;&nbsp;/&nbsp;&nbsp;{moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')}</div>
                         <div className="focus-topic-response">
-                            <div><i className="fa fa-thumbs-o-up" aria-hidden="true"></i>{this.props.likeCount}</div>
+                        <div><i className="fa fa-thumbs-o-up" aria-hidden="true"></i>{this.props.likeCount}</div>
+                        <div><i className="fa fa-thumbs-o-down" aria-hidden="true"></i>{this.props.dislikeCount}</div>
                             <div><i className="fa fa-commenting-o" aria-hidden="true"></i>{this.props.replyCount}</div>
                             <div><i className="fa fa-eye" aria-hidden="true"></i>{this.props.hitCount}</div>
                         </div>
