@@ -1746,8 +1746,8 @@ a {
 
 .focus-allNewTopic {
     color: $color-thinBlack;
-    min-height: 12px;
-    font-size: 12px;
+    min-height: 14px;
+    font-size: 14px;
     display: flex;
     align-items: baseline;
 
@@ -1982,7 +1982,7 @@ a {
     padding-left: 2px;
 }
 
-#search .fangdajing {
+#search .searchIco {
     width: 20px;
     padding: 2px 0 0 3px;
 }
@@ -2667,4 +2667,12 @@ a {
 
 .userDetails {
     z-index: 1;
+}
+
+/**********************************搜索页的样式*********************************/
+.noRusult {
+    font-size: 16px;
+    color: $color-thinBlack;
+    margin-top: 100px;
+    text-align: center;
 }

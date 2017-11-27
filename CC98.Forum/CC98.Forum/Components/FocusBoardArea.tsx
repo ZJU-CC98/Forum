@@ -5,7 +5,6 @@ import * as React from 'react';
 import { FocusBoard } from '../Props/FocusBoard';
 import { FocusBoardProps } from '../Props/FocusBoardProps';
 import { FocusBoardAreaState } from '../States/FocusBoardAreaState';
-import { FocusBoardSingle } from './FocusBoardSingle';
 import * as Utility from '../Utility';
 /**
  * 表示我关注的版面列表区域
@@ -61,10 +60,15 @@ export class FocusBoardArea extends React.Component<{}, FocusBoardProps> {
     }
 
     render() {
-        return <div className="focus-board-area">{this.state.data.map(coverFocusBoard)}</div>;
+        return <div className="focus-board-area">
+            <a href="#" target="_blank"><div className="focus-board">关注用户</div></a>
+            {this.state.data.map(coverFocusBoard)}
+        </div>;
     }
 }
 
 function coverFocusBoard(item: FocusBoard) {
-    return <FocusBoardSingle id={item.id} name={item.name} />;
+    //点击版面名称会进入相应版面
+    let boardUrl = `/list/${item.id}`;
+    return <a href={boardUrl} target="_blank"><div className="focus-board">{item.name}</div></a>;
 }

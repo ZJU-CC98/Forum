@@ -117,7 +117,7 @@ export class Category extends React.Component<{ topicId }, { boardId, topicId, b
     render() {
         const listUrl = `/list/${this.state.boardId}`;
         const topicUrl = `/topic/${this.state.topicId}`;
-        return <div style={{ color: "blue", fontSize: "0.75rem" }}>&rsaquo;&rsaquo;<a style={{ color: "blue", fontSize: "0.75rem" }} href="/">首页</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "0.75rem" }} href={listUrl} >{this.state.boardName}</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "0.75rem" }} href={topicUrl}>{this.state.title}</a></div>;
+        return <div style={{ color: "blue", fontSize: "0.75rem" }}>&rsaquo;&rsaquo;<a style={{ color: "blue", fontSize: "0.75rem" }} href="/">首页</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "0.75rem" }} href={listUrl}>{this.state.boardName}</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "0.75rem" }} href={topicUrl}>{this.state.title}</a></div>;
     }
 }
 export class Reply extends RouteComponent<{}, { contents }, { page, topicid, userName }>{
