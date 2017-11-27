@@ -71,7 +71,7 @@ export class Category extends RouteComponent<{boardId }, { boardId, boardName },
     }
     render() {
         const listUrl = `/list/${this.state.boardId}`;
-        return <div className="row" style={{width:"100%", justifyContent: "flex-start", color: "blue", fontSize: "0.75rem" }}>&rsaquo;&rsaquo;<a style={{ color: "blue", fontSize: "0.75rem" }} href="/">首页</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "0.75rem" }} href={listUrl} >{this.state.boardName}</a></div>;
+        return <div className="row" style={{width:"100%", justifyContent: "flex-start", color: "blue", fontSize: "1rem" }}>&rsaquo;&rsaquo;<a style={{ color: "blue", fontSize: "0.75rem" }} href="/">首页</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "0.75rem" }} href={listUrl} >{this.state.boardName}</a></div>;
     }
 }
 export class ListHead extends RouteComponent<{ boardId }, State.ListHeadState, {boardId}> {

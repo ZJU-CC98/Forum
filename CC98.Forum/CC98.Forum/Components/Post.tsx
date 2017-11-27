@@ -108,7 +108,7 @@ export class Category extends React.Component<{ topicId }, { boardId, topicId, b
     render() {
         const listUrl = `/list/${this.state.boardId}`;
         const topicUrl = `/topic/${this.state.topicId}`;
-        return <div style={{ color: "blue", fontSize: "0.75rem" }}>&rsaquo;&rsaquo;<a style={{ color: "blue", fontSize: "0.75rem" }} href="/">首页</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "0.75rem" }} href={listUrl} >{this.state.boardName}</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "0.75rem" }} href={topicUrl}>{this.state.title}</a></div>;
+        return <div style={{ color: "blue", fontSize: "1rem" }}>&rsaquo;&rsaquo;<a style={{ color: "blue", fontSize: "0.75rem" }} href="/">首页</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "0.75rem" }} href={listUrl} >{this.state.boardName}</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "0.75rem" }} href={topicUrl}>{this.state.title}</a></div>;
     }
 }
 export class Reply extends RouteComponent<{}, { contents }, { page, topicid, userName }>{
@@ -453,7 +453,7 @@ export class UserDetails extends RouteComponent<{ userName,userId }, { portraitU
                     </div>
                     <div className="column" style={{ marginLeft: "1.6rem", marginTop: "2rem" }}>
                         <div className="row">
-                            <div style={{ fontFamily: "微软雅黑", color: "blue", marginRight: "0.63rem" }}> {this.state.userName}</div>   <div style={{ marginRight: "0.63rem" }}>   粉丝  </div><div style={{ color: "red" }}>{this.state.fanCount}</div>
+                            <div style={{ fontFamily: "微软雅黑", color: "blue", marginRight: "0.63rem" }}> {this.state.userName}</div>   <div style={{ marginRight: "0.63rem", fontSize: "1rem" }}>   粉丝  </div><div style={{ color: "red", fontSize: "1rem"}}>{this.state.fanCount}</div>
                         </div>
                         <div className="row" style={{ marginTop: "0.63rem", fontSize: "0.87rem" }}>
                             {title}
@@ -462,7 +462,7 @@ export class UserDetails extends RouteComponent<{ userName,userId }, { portraitU
                     </div>
 
                     <div>
-                        <button className="watch" style={{ width: "5rem", backgroundColor: "#FF6A6A", marginRight: "0.63rem", marginLeft: "1.6rem", marginTop: "2rem", height: "2rem" }} id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
+                        <button className="followuser"  id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
 
                     </div>
                 </div>
@@ -490,7 +490,8 @@ export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid },
         if (this.state.topicMessage.userId == this.props.userId || this.props.userId == null) {
             return <div className="root" id="1">
                 <div className="essay">
-                    <AuthorMessage authorId={this.state.topicMessage.userId} authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} isAnonymous={this.state.topicMessage.isAnonymous} isFollowing={this.state.topicMessage.isFollowing} />
+                    <AuthorMessage authorId={this.state.topicMessage.userId} authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} isAnonymous={this.state.topicMessage.isAnonymous} isFollowing={this.state.topicMessage.isFollowing}
+                        fanCount=  {this.state.topicMessage.fanCount} />
                     <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount} />
                     <div id="ads"><img width="100%" src={this.props.imgUrl}></img></div>
                 </div>
@@ -508,7 +509,7 @@ export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid },
 }
 
 
-export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, authorName: string, authorId: number, authorImgUrl: string,isFollowing:boolean }, State.AuthorMessageState, {}> {
+export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, authorName: string, authorId: number, authorImgUrl: string,isFollowing:boolean ,fanCount}, State.AuthorMessageState, {}> {
     constructor(props, content) {
         super(props, content);
         this.follow = this.follow.bind(this);
@@ -589,6 +590,10 @@ export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, author
         }
     }
     componentDidMount() {
+        if (this.props.isAnonymous === true) {
+            $(".email").css("display", "none"); 
+            $(".follow").css("display", "none");
+        }
         if (this.state.isFollowing === true) {
             this.setState({ buttonInfo: "取消关注", isFollowing: true });
         } else {
@@ -611,12 +616,12 @@ export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, author
                 <div className="row authorFans" style={{ justifyContent: "space-between" }}>
                     {userHtml}
 
-                    <div id="fans" className="row"><div style={{ marginRight: "0.1875rem" }}>粉丝</div><div style={{ color: "#EE0000" }}>{this.state.fansNumber}</div></div>
+                    <div id="fans" className="row"><div style={{ marginRight: "0.1875rem" }}>粉丝</div><div style={{ color: "#EE0000" }}>{this.props.fanCount}</div></div>
                 </div>
 
                 <div className="row">
-                    <button className="watch" style={{ marginLeft: "1rem" }} id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
-                    <a id="email" href={email} style={{ marginLeft: "1rem" }}>私信</a>
+                    <button className="follow" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
+                    <button className="email"><a href={email}>私信</a></button>
                 </div>
             </div>
         </div>;

@@ -808,7 +808,7 @@ exports.getCurUserTopicContent = getCurUserTopicContent;
  */
 function getAllNewTopic(curNum, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var size, token, headers, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, _c, e_10;
+        var size, token, headers, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, _c, index, index, index, index, e_10;
         return __generator(this, function (_d) {
             switch (_d.label) {
                 case 0:
@@ -832,6 +832,8 @@ function getAllNewTopic(curNum, router) {
                     return [4 /*yield*/, response.json()];
                 case 2:
                     newTopic = _d.sent();
+                    console.log("全站新帖");
+                    console.log(newTopic);
                     _a = [];
                     for (_b in newTopic)
                         _a.push(_b);
@@ -873,10 +875,33 @@ function getAllNewTopic(curNum, router) {
                 case 8:
                     //获取所在版面名称
                     _c.boardName = _d.sent();
+                    //阅读数转换
+                    if (newTopic[i].hitCount > 10000) {
+                        if (newTopic[i].hitCount > 100000) {
+                            index = parseInt("" + newTopic[i].hitCount / 10000);
+                            newTopic[i].hitCount = index + "\u4E07";
+                        }
+                        else {
+                            index = parseInt("" + newTopic[i].hitCount / 1000) / 10;
+                            newTopic[i].hitCount = index + "\u4E07";
+                        }
+                    }
+                    //回复数转换
+                    if (newTopic[i].replyCount > 10000) {
+                        if (newTopic[i].replyCount > 100000) {
+                            index = parseInt("" + newTopic[i].replyCount / 10000);
+                            newTopic[i].replyCount = index + "\u4E07";
+                        }
+                        else {
+                            index = parseInt("" + newTopic[i].replyCount / 1000) / 10;
+                            newTopic[i].replyCount = index + "\u4E07";
+                        }
+                    }
                     return [3 /*break*/, 10];
                 case 9:
                     newTopic[i].fanCount = 0;
                     newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+                    newTopic[i].userName = "匿名";
                     newTopic[i].boardName = "心灵之约";
                     _d.label = 10;
                 case 10:
@@ -898,7 +923,7 @@ exports.getAllNewTopic = getAllNewTopic;
  */
 function getFocusTopic(curNum, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var size, token, headers, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, _c, e_11;
+        var size, token, headers, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, _c, index, index, index, index, e_11;
         return __generator(this, function (_d) {
             switch (_d.label) {
                 case 0:
@@ -910,7 +935,7 @@ function getFocusTopic(curNum, router) {
                     token = getLocalStorage("accessToken");
                     headers = new Headers();
                     headers.append('Authorization', token);
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/customboards/new?from=" + curNum + "&size=" + size, { headers: headers })];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/customboards?from=" + curNum + "&size=" + size, { headers: headers })];
                 case 1:
                     response = _d.sent();
                     if (response.status === 401) {
@@ -922,6 +947,8 @@ function getFocusTopic(curNum, router) {
                     return [4 /*yield*/, response.json()];
                 case 2:
                     newTopic = _d.sent();
+                    console.log("关注新帖");
+                    console.log(newTopic);
                     _a = [];
                     for (_b in newTopic)
                         _a.push(_b);
@@ -963,10 +990,33 @@ function getFocusTopic(curNum, router) {
                 case 8:
                     //获取所在版面名称
                     _c.boardName = _d.sent();
+                    //阅读数转换
+                    if (newTopic[i].hitCount > 10000) {
+                        if (newTopic[i].hitCount > 100000) {
+                            index = parseInt("" + newTopic[i].hitCount / 10000);
+                            newTopic[i].hitCount = index + "\u4E07";
+                        }
+                        else {
+                            index = parseInt("" + newTopic[i].hitCount / 1000) / 10;
+                            newTopic[i].hitCount = index + "\u4E07";
+                        }
+                    }
+                    //回复数转换
+                    if (newTopic[i].replyCount > 10000) {
+                        if (newTopic[i].replyCount > 100000) {
+                            index = parseInt("" + newTopic[i].replyCount / 10000);
+                            newTopic[i].replyCount = index + "\u4E07";
+                        }
+                        else {
+                            index = parseInt("" + newTopic[i].replyCount / 1000) / 10;
+                            newTopic[i].replyCount = index + "\u4E07";
+                        }
+                    }
                     return [3 /*break*/, 10];
                 case 9:
                     newTopic[i].fanCount = 0;
                     newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+                    newTopic[i].userName = "匿名";
                     newTopic[i].boardName = "心灵之约";
                     _d.label = 10;
                 case 10:
@@ -3030,7 +3080,7 @@ var UbbCodeEngine = /** @class */ (function () {
      * @param parent 字符串的上级容器。
      */
     UbbCodeEngine.buildSegmentsCore = function (content, parent) {
-        var regExp = /([\s\S]*?)\[(.*?)]/gi;
+        var regExp = /([\s\S]*?)\[(.+?)]/gi;
         while (true) {
             var startIndex = regExp.lastIndex;
             var tagMatch = regExp.exec(content);
@@ -3049,7 +3099,7 @@ var UbbCodeEngine = /** @class */ (function () {
                 parent.subSegments.push(new UbbTextSegment(beforeText, parent));
             }
             // 检测是否是结束标记
-            var endTagMatch = tagString.match(/^\/(.*)$/i);
+            var endTagMatch = tagString.match(/^\/(.+)$/i);
             if (endTagMatch) {
                 var endTagName = endTagMatch[1];
                 parent = UbbCodeEngine.tryHandleEndTag(endTagName, parent);
@@ -3834,7 +3884,7 @@ var Category = /** @class */ (function (_super) {
     };
     Category.prototype.render = function () {
         var listUrl = "/list/" + this.state.boardId;
-        return React.createElement("div", { className: "row", style: { width: "100%", justifyContent: "flex-start", color: "blue", fontSize: "0.75rem" } },
+        return React.createElement("div", { className: "row", style: { width: "100%", justifyContent: "flex-start", color: "blue", fontSize: "1rem" } },
             "\u203A\u203A",
             React.createElement("a", { style: { color: "blue", fontSize: "0.75rem" }, href: "/" }, "\u9996\u9875"),
             "\u00A0\u2192\u00A0",
@@ -4624,7 +4674,7 @@ var Category = /** @class */ (function (_super) {
     Category.prototype.render = function () {
         var listUrl = "/list/" + this.state.boardId;
         var topicUrl = "/topic/" + this.state.topicId;
-        return React.createElement("div", { style: { color: "blue", fontSize: "0.75rem" } },
+        return React.createElement("div", { style: { color: "blue", fontSize: "1rem" } },
             "\u203A\u203A",
             React.createElement("a", { style: { color: "blue", fontSize: "0.75rem" }, href: "/" }, "\u9996\u9875"),
             "\u00A0\u2192\u00A0",
@@ -5043,11 +5093,11 @@ var UserDetails = /** @class */ (function (_super) {
                                 " ",
                                 this.state.userName),
                             "   ",
-                            React.createElement("div", { style: { marginRight: "0.63rem" } }, "   \u7C89\u4E1D  "),
-                            React.createElement("div", { style: { color: "red" } }, this.state.fanCount)),
+                            React.createElement("div", { style: { marginRight: "0.63rem", fontSize: "1rem" } }, "   \u7C89\u4E1D  "),
+                            React.createElement("div", { style: { color: "red", fontSize: "1rem" } }, this.state.fanCount)),
                         React.createElement("div", { className: "row", style: { marginTop: "0.63rem", fontSize: "0.87rem" } }, title)),
                     React.createElement("div", null,
-                        React.createElement("button", { className: "watch", style: { width: "5rem", backgroundColor: "#FF6A6A", marginRight: "0.63rem", marginLeft: "1.6rem", marginTop: "2rem", height: "2rem" }, id: this.state.isFollowing ? '' : 'follow', onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo))),
+                        React.createElement("button", { className: "followuser", id: this.state.isFollowing ? '' : 'follow', onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo))),
                 React.createElement("div", { className: "row", style: { fontSize: "0.87rem" } },
                     React.createElement("div", { style: { marginLeft: "7.2rem" } },
                         "\u5A01\u671B\u00A0",
@@ -5088,7 +5138,7 @@ var PostTopic = /** @class */ (function (_super) {
         if (this.state.topicMessage.userId == this.props.userId || this.props.userId == null) {
             return React.createElement("div", { className: "root", id: "1" },
                 React.createElement("div", { className: "essay" },
-                    React.createElement(AuthorMessage, { authorId: this.state.topicMessage.userId, authorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl, isAnonymous: this.state.topicMessage.isAnonymous, isFollowing: this.state.topicMessage.isFollowing }),
+                    React.createElement(AuthorMessage, { authorId: this.state.topicMessage.userId, authorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl, isAnonymous: this.state.topicMessage.isAnonymous, isFollowing: this.state.topicMessage.isFollowing, fanCount: this.state.topicMessage.fanCount }),
                     React.createElement(TopicTitle, { Title: this.state.topicMessage.title, Time: this.state.topicMessage.time, HitCount: this.state.topicMessage.hitCount }),
                     React.createElement("div", { id: "ads" },
                         React.createElement("img", { width: "100%", src: this.props.imgUrl }))),
@@ -5212,6 +5262,10 @@ var AuthorMessage = /** @class */ (function (_super) {
         });
     };
     AuthorMessage.prototype.componentDidMount = function () {
+        if (this.props.isAnonymous === true) {
+            $(".email").css("display", "none");
+            $(".follow").css("display", "none");
+        }
         if (this.state.isFollowing === true) {
             this.setState({ buttonInfo: "取消关注", isFollowing: true });
         }
@@ -5239,10 +5293,11 @@ var AuthorMessage = /** @class */ (function (_super) {
                     userHtml,
                     React.createElement("div", { id: "fans", className: "row" },
                         React.createElement("div", { style: { marginRight: "0.1875rem" } }, "\u7C89\u4E1D"),
-                        React.createElement("div", { style: { color: "#EE0000" } }, this.state.fansNumber))),
+                        React.createElement("div", { style: { color: "#EE0000" } }, this.props.fanCount))),
                 React.createElement("div", { className: "row" },
-                    React.createElement("button", { className: "watch", style: { marginLeft: "1rem" }, id: this.state.isFollowing ? '' : 'follow', onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo),
-                    React.createElement("a", { id: "email", href: email, style: { marginLeft: "1rem" } }, "\u79C1\u4FE1"))));
+                    React.createElement("button", { className: "follow", id: this.state.isFollowing ? '' : 'follow', onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo),
+                    React.createElement("button", { className: "email" },
+                        React.createElement("a", { href: email }, "\u79C1\u4FE1")))));
     };
     return AuthorMessage;
 }(RouteComponent));
@@ -6919,6 +6974,9 @@ var FocusTopicSingle = /** @class */ (function (_super) {
                     React.createElement("div", null,
                         React.createElement("i", { className: "fa fa-thumbs-o-up", "aria-hidden": "true" }),
                         this.props.likeCount),
+                    React.createElement("div", null,
+                        React.createElement("i", { className: "fa fa-thumbs-o-down", "aria-hidden": "true" }),
+                        this.props.dislikeCount),
                     React.createElement("div", null,
                         React.createElement("i", { className: "fa fa-commenting-o", "aria-hidden": "true" }),
                         this.props.replyCount),
@@ -10598,7 +10656,7 @@ var Category = /** @class */ (function (_super) {
     Category.prototype.render = function () {
         var listUrl = "/list/" + this.state.boardId;
         var topicUrl = "/topic/" + this.state.topicId;
-        return React.createElement("div", { style: { color: "blue", fontSize: "0.75rem" } },
+        return React.createElement("div", { style: { color: "blue", fontSize: "1rem" } },
             "\u203A\u203A",
             React.createElement("a", { style: { color: "blue", fontSize: "0.75rem" }, href: "/" }, "\u9996\u9875"),
             "\u00A0\u2192\u00A0",
@@ -11017,11 +11075,11 @@ var UserDetails = /** @class */ (function (_super) {
                                 " ",
                                 this.state.userName),
                             "   ",
-                            React.createElement("div", { style: { marginRight: "0.63rem" } }, "   \u7C89\u4E1D  "),
-                            React.createElement("div", { style: { color: "red" } }, this.state.fanCount)),
+                            React.createElement("div", { style: { marginRight: "0.63rem", fontSize: "1rem" } }, "   \u7C89\u4E1D  "),
+                            React.createElement("div", { style: { color: "red", fontSize: "1rem" } }, this.state.fanCount)),
                         React.createElement("div", { className: "row", style: { marginTop: "0.63rem", fontSize: "0.87rem" } }, title)),
                     React.createElement("div", null,
-                        React.createElement("button", { className: "watch", style: { width: "5rem", backgroundColor: "#FF6A6A", marginRight: "0.63rem", marginLeft: "1.6rem", marginTop: "2rem", height: "2rem" }, id: this.state.isFollowing ? '' : 'follow', onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo))),
+                        React.createElement("button", { className: "followuser", id: this.state.isFollowing ? '' : 'follow', onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo))),
                 React.createElement("div", { className: "row", style: { fontSize: "0.87rem" } },
                     React.createElement("div", { style: { marginLeft: "7.2rem" } },
                         "\u5A01\u671B\u00A0",
@@ -11062,7 +11120,7 @@ var PostTopic = /** @class */ (function (_super) {
         if (this.state.topicMessage.userId == this.props.userId || this.props.userId == null) {
             return React.createElement("div", { className: "root", id: "1" },
                 React.createElement("div", { className: "essay" },
-                    React.createElement(AuthorMessage, { authorId: this.state.topicMessage.userId, authorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl, isAnonymous: this.state.topicMessage.isAnonymous, isFollowing: this.state.topicMessage.isFollowing }),
+                    React.createElement(AuthorMessage, { authorId: this.state.topicMessage.userId, authorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl, isAnonymous: this.state.topicMessage.isAnonymous, isFollowing: this.state.topicMessage.isFollowing, fanCount: this.state.topicMessage.fanCount }),
                     React.createElement(TopicTitle, { Title: this.state.topicMessage.title, Time: this.state.topicMessage.time, HitCount: this.state.topicMessage.hitCount }),
                     React.createElement("div", { id: "ads" },
                         React.createElement("img", { width: "100%", src: this.props.imgUrl }))),
@@ -11186,6 +11244,10 @@ var AuthorMessage = /** @class */ (function (_super) {
         });
     };
     AuthorMessage.prototype.componentDidMount = function () {
+        if (this.props.isAnonymous === true) {
+            $(".email").css("display", "none");
+            $(".follow").css("display", "none");
+        }
         if (this.state.isFollowing === true) {
             this.setState({ buttonInfo: "取消关注", isFollowing: true });
         }
@@ -11213,10 +11275,11 @@ var AuthorMessage = /** @class */ (function (_super) {
                     userHtml,
                     React.createElement("div", { id: "fans", className: "row" },
                         React.createElement("div", { style: { marginRight: "0.1875rem" } }, "\u7C89\u4E1D"),
-                        React.createElement("div", { style: { color: "#EE0000" } }, this.state.fansNumber))),
+                        React.createElement("div", { style: { color: "#EE0000" } }, this.props.fanCount))),
                 React.createElement("div", { className: "row" },
-                    React.createElement("button", { className: "watch", style: { marginLeft: "1rem" }, id: this.state.isFollowing ? '' : 'follow', onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo),
-                    React.createElement("a", { id: "email", href: email, style: { marginLeft: "1rem" } }, "\u79C1\u4FE1"))));
+                    React.createElement("button", { className: "follow", id: this.state.isFollowing ? '' : 'follow', onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo),
+                    React.createElement("button", { className: "email" },
+                        React.createElement("a", { href: email }, "\u79C1\u4FE1")))));
     };
     return AuthorMessage;
 }(RouteComponent));
