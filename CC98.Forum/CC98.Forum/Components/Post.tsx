@@ -11,7 +11,7 @@ import {
 import { match } from "react-router";
 import { UbbContainer } from './UbbContainer';
 declare let moment: any;
-declare let testEditor: any;
+
 declare let editormd: any;
 
 export module Constants {
@@ -27,21 +27,12 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
     }
 }
 
-export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName, editor }, { topicid, page, userName }> {
+export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName }, { topicid, page, userName }> {
     constructor(props, context) {
         super(props, context);
-        var testEditor = editormd("test-editormd", {
-            width: "100%",
-            height: 640,
-            path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false,
-            imageUpload: false,
-            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-            imageUploadURL: "http://apitest.niconi.cc/file/",
-
-        });
+       
         this.handleChange = this.handleChange.bind(this);
-        this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null, editor: testEditor };
+        this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null};
     }
 
     async handleChange() {
@@ -90,7 +81,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
             topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} />;
             hotReply = <Route path="/topic/:topicid/:page?" component={HotReply} />;
         }
-        return <div className="center" style={{ width: "80%" }} >
+        return <div className="center" >
             <div className="row" style={{ width: "100%", justifyContent: 'space-between', borderBottom: '#EAEAEA solid thin', alignItems: "center" }}>
                 <Category topicId={this.state.topicid} />
                 <TopicPager page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} /></div>
@@ -98,7 +89,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
             {hotReply}
             <Route path="/topic/:topicid/:page?" component={Reply} />
             <TopicPagerDown page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
-            <SendTopic onChange={this.handleChange} topicid={this.state.topicid} editor={this.state.editor} />
+            <SendTopic onChange={this.handleChange} topicid={this.state.topicid}  />
         </div>
             ;
 
@@ -1085,7 +1076,7 @@ export class UserMessageBox extends React.Component<{ userName, userFans }, {}>{
         return <div id="userMessageBox">{this.props.userName}</div>;
     }
 }
-export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { content: string,mode:number }, {}>{
+export class SendTopic extends RouteComponent<{ topicid, onChange,  }, { content: string,mode:number }, {}>{
     constructor(props) {
         super(props);
         this.changeEditor = this.changeEditor.bind(this);
@@ -1101,9 +1092,6 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
             imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
             imageUploadURL: "http://apitest.niconi.cc/file/",
         });
-    }
-    componentWillReceiveProps(newProps) {
-      
     }
     componentDidUpdate() {
         Constants.testEditor = editormd("test-editormd", {

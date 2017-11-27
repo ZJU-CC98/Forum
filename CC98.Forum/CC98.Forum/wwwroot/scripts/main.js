@@ -4500,17 +4500,8 @@ var Post = /** @class */ (function (_super) {
     __extends(Post, _super);
     function Post(props, context) {
         var _this = _super.call(this, props, context) || this;
-        var testEditor = editormd("test-editormd", {
-            width: "100%",
-            height: 640,
-            path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false,
-            imageUpload: false,
-            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-            imageUploadURL: "http://apitest.niconi.cc/file/",
-        });
         _this.handleChange = _this.handleChange.bind(_this);
-        _this.state = { page: 1, topicid: _this.match.params.topicid, totalPage: 1, userName: null, editor: testEditor };
+        _this.state = { page: 1, topicid: _this.match.params.topicid, totalPage: 1, userName: null };
         return _this;
     }
     Post.prototype.handleChange = function () {
@@ -4596,7 +4587,7 @@ var Post = /** @class */ (function (_super) {
             topic = React.createElement(PostTopic, { imgUrl: "/images/ads.jpg", page: this.state.page, topicid: this.state.topicid, userId: null });
             hotReply = React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: HotReply });
         }
-        return React.createElement("div", { className: "center", style: { width: "80%" } },
+        return React.createElement("div", { className: "center" },
             React.createElement("div", { className: "row", style: { width: "100%", justifyContent: 'space-between', borderBottom: '#EAEAEA solid thin', alignItems: "center" } },
                 React.createElement(Category, { topicId: this.state.topicid }),
                 React.createElement(TopicPager, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage })),
@@ -4604,7 +4595,7 @@ var Post = /** @class */ (function (_super) {
             hotReply,
             React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: Reply }),
             React.createElement(TopicPagerDown, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
-            React.createElement(SendTopic, { onChange: this.handleChange, topicid: this.state.topicid, editor: this.state.editor }));
+            React.createElement(SendTopic, { onChange: this.handleChange, topicid: this.state.topicid }));
     };
     return Post;
 }(RouteComponent));
@@ -5907,8 +5898,6 @@ var SendTopic = /** @class */ (function (_super) {
             imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
             imageUploadURL: "http://apitest.niconi.cc/file/",
         });
-    };
-    SendTopic.prototype.componentWillReceiveProps = function (newProps) {
     };
     SendTopic.prototype.componentDidUpdate = function () {
         Constants.testEditor = editormd("test-editormd", {
@@ -8504,6 +8493,32 @@ var NotFoundTopic = /** @class */ (function (_super) {
     function NotFoundTopic() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    NotFoundTopic.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var token, headers, body, str, url;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        token = Utility.getLocalStorage("accessToken");
+                        headers = new Headers();
+                        headers.append("Authorizaton", token);
+                        body = {
+                            isCanceling: false,
+                            isBold: true,
+                            isItalic: true,
+                            color: "red",
+                            duration: null
+                        };
+                        str = JSON.stringify(body);
+                        url = 'http://apitest.niconi.cc/topic/sethighlight?boardid=753&topicid=4739872';
+                        return [4 /*yield*/, fetch(url, { method: "PUT", headers: headers, body: str })];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     NotFoundTopic.prototype.render = function () {
         return React.createElement("div", null, "404\u5E16\u5B50\u4E0D\u5B58\u5728");
     };
@@ -8554,6 +8569,153 @@ var OperationForbidden = /** @class */ (function (_super) {
     return OperationForbidden;
 }(React.Component));
 exports.OperationForbidden = OperationForbidden;
+/*
+class student {
+    private:
+        long id;
+        string name;
+        double averageGrade;
+        string major;
+        int gradeClass;
+        string majorClass;
+        double totalGradePoint;
+        enum studentType;
+public:
+    showAllCourseGrade(){
+    //在表四中通过学号找到学生选的所有课程
+    courseNumber[] = search in database4
+   //对于每一门课程，在表二中找到这个学号的成绩并存起来
+    loop
+    foreach course in courseNumber search grade in database 2
+    save in grade[]
+    return grade;
+}
+    //计算平均成绩
+    getAverageGrade(grade[]){
+    double gpa = average(sum of grade[]);
+    return gpa;
+}
+}
+class Course {
+    private:
+        string courseId;
+        string courseName;
+        string teachers;
+        string student;
+        double grade;
+    public:
+    //对某个课程号，找到所有选这门课学生的成绩信息
+    showAllGradesInCourse(){
+    message: { student, grade } [] = search courseId in database2
+    return message[];
+    }
+    //对某个课程、老师，找到所有选这个老师这门课学生的成绩信息
+    showGradeOfTeacher(string teacher){
+    message: { student, grade } [] = search { couseId, teacher }in database 2;
+    return message[];
+    }
+    //对于某个老师的某节课的所有学生找出他们的成绩
+    showGradeOfTeacherClass(string teacher,string time){
+    message: { student, grade } [] = search { couseId, teacher, time }in database 2;
+    return message[];
+}
+    //录入成绩
+    setGrade(courseId,student,grade){
+    add { courseId, student, grade } in database 4;
+    }
+    //修改成绩
+    alterGrade(courseId, student, grade){
+    update { courseId, student, grade } in database 4;
+}
+    //删除成绩
+    deleteGrade(courseId, student, grade){
+    delete { courseId, student, grade } in database 4;
+}
+}
+class CourseAndStudentRelationship {
+    //数据库表4，,记录课程——学生的关系
+    private:
+        string courseId;
+        string courseName;
+        string studentName;
+        long studentId;
+        string teacher;
+    public:
+    //找到一个学生选的所有课
+    getAllStudentCourses(studentId){
+    courses[] = search studentId in database 2 for his or her courses;
+    }
+    //找到一个课所有的学生
+    getAllStudentsInCourse(courseId){
+    students[] = search courseId in database 3 for all students;
+    }
+}
+class Teacher {
+    private:
+        string courses[];
+    public:
+        //找到一个老师打出的所有成绩
+        getGrade(teacher){
+            messages: { student, grade } [] = search teacher in database2 for all grades;
+                 return messages[];
+        }
+        //找到一个老师一门课程打出的所有成绩
+        getGrade(teacher, courseId) {
+            messages: { student, grade } [] = search { teacher, courseId } in database2 for all grades;
+             return messages[];
+    }
+        //找到一个老师某节课全班的成绩
+     getGrade(teacher, courseId,time) {
+         messages: { student, grade }[] = search { teacher, courseId, time } in database2 for all grades;
+            return messages[];
+    }
+}
+class Major {
+    private:
+        string majorName;
+    public:
+        //通过专业名字找到这个专业所有的学生
+        getAllStudents(majorName){
+            students[] = search majorName in database1 for all students in this major;
+            return students[];
+        }
+        //通过学生ID找到所有的平均成绩并组成键值对
+    getGrade(students[]) {
+        messages{ student, grade }[] = search students[] in database1 for all grades in this major;
+        return messages[];
+    }
+}
+class majorClass {
+    private:
+        string className;
+    public:
+        //通过班级名字找到班内所有同学
+        getStudents(className){
+            students[] = search className in database1 for all students in this class;
+            return students[];
+        }
+          //通过学生ID找到所有的平均成绩并组成键值对
+    getGrade(students[]) {
+        messages{ student, grade } [] = search student in database1 for all grades;
+            return messages[];
+    }
+}
+class gradeClass {
+    private:
+        int gradeClass;
+    public:
+        //通过年级找到本年级所有学生
+        getStudent(gradeClass){
+            students[] = search gradeClass in database1 for all students in this gradeClass;
+            return students[];
+        }
+        //通过学生ID找到他们成绩的键值对
+        getGrade() {
+        messages{ student, grade } [] = search students in database1 for grades;
+            return messages[];
+    }
+}
+*/
 
 
 /***/ }),
@@ -10296,17 +10458,8 @@ var Post = /** @class */ (function (_super) {
     __extends(Post, _super);
     function Post(props, context) {
         var _this = _super.call(this, props, context) || this;
-        var testEditor = editormd("test-editormd", {
-            width: "100%",
-            height: 640,
-            path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false,
-            imageUpload: false,
-            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-            imageUploadURL: "http://apitest.niconi.cc/file/",
-        });
         _this.handleChange = _this.handleChange.bind(_this);
-        _this.state = { page: 1, topicid: _this.match.params.topicid, totalPage: 1, userName: null, editor: testEditor };
+        _this.state = { page: 1, topicid: _this.match.params.topicid, totalPage: 1, userName: null };
         return _this;
     }
     Post.prototype.handleChange = function () {
@@ -10392,7 +10545,7 @@ var Post = /** @class */ (function (_super) {
             topic = React.createElement(PostTopic, { imgUrl: "/images/ads.jpg", page: this.state.page, topicid: this.state.topicid, userId: null });
             hotReply = React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: HotReply });
         }
-        return React.createElement("div", { className: "center", style: { width: "80%" } },
+        return React.createElement("div", { className: "center" },
             React.createElement("div", { className: "row", style: { width: "100%", justifyContent: 'space-between', borderBottom: '#EAEAEA solid thin', alignItems: "center" } },
                 React.createElement(Category, { topicId: this.state.topicid }),
                 React.createElement(TopicPager, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage })),
@@ -10400,7 +10553,7 @@ var Post = /** @class */ (function (_super) {
             hotReply,
             React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: Reply }),
             React.createElement(TopicPagerDown, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
-            React.createElement(SendTopic, { onChange: this.handleChange, topicid: this.state.topicid, editor: this.state.editor }));
+            React.createElement(SendTopic, { onChange: this.handleChange, topicid: this.state.topicid }));
     };
     return Post;
 }(RouteComponent));
@@ -11703,8 +11856,6 @@ var SendTopic = /** @class */ (function (_super) {
             imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
             imageUploadURL: "http://apitest.niconi.cc/file/",
         });
-    };
-    SendTopic.prototype.componentWillReceiveProps = function (newProps) {
     };
     SendTopic.prototype.componentDidUpdate = function () {
         Constants.testEditor = editormd("test-editormd", {

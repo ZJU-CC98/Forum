@@ -54,7 +54,7 @@ body {
     margin-left: 6.25rem;
     margin-right: 6.25rem;
     margin-top: 2.5rem;
-    width: 70%;
+    min-width: 71.2px;
 }
 
 .listContent {
@@ -631,6 +631,7 @@ a {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width:71.2rem;
 }
 
 .button {
@@ -2590,7 +2591,7 @@ a {
 
     #sendTopic-input {
         background-color: #fff;
-        height: 20rem;
+        height: 34.5rem;
         padding: 1rem;
         border: none;
         width: 96.5%;
