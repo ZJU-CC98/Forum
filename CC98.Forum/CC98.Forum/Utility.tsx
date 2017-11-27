@@ -531,14 +531,14 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
  * 获取全站新帖
  * @param curPage
  */
-export async function getAllNewTopic(curNum: number, router) {
+export async function getAllNewTopic(from: number, router) {
     try {
         /**
          * 一次性可以获取20个主题
          */
         var size = 20;
-        if (curNum > 80) {
-            size = 100 - curNum;
+        if (from > 80) {
+            size = 100 - from;
         }
         let token = getLocalStorage("accessToken");
         const headers = new Headers();
@@ -546,7 +546,7 @@ export async function getAllNewTopic(curNum: number, router) {
         /**
          * 通过api获取到主题之后转成json格式
          */
-        const response = await fetch(`http://apitest.niconi.cc/topic/new?from=${curNum}&size=${size}`, { headers });
+        const response = await fetch(`http://apitest.niconi.cc/topic/new?from=${from}&size=${size}`, { headers });
         if (response.status === 401) {
             //window.location.href = "/status/UnauthorizedTopic";
         }
@@ -620,14 +620,14 @@ export async function getAllNewTopic(curNum: number, router) {
  * 获取关注版面新帖
  * @param curPage
  */
-export async function getFocusTopic(curNum: number, router) {
+export async function getFocusTopic(from: number, router) {
     try {
         /**
          * 一次性可以获取20个主题
          */
         var size = 20;
-        if (curNum > 80) {
-            size = 100 - curNum;
+        if (from > 80) {
+            size = 100 - from;
         }
         let token = getLocalStorage("accessToken");
         const headers = new Headers();
@@ -635,7 +635,7 @@ export async function getFocusTopic(curNum: number, router) {
         /**
          * 通过api获取到主题之后转成json格式
          */
-        const response = await fetch(`http://apitest.niconi.cc/topic/customboards?from=${curNum}&size=${size}`, { headers });
+        const response = await fetch(`http://apitest.niconi.cc/topic/customboards?from=${from}&size=${size}`, { headers });
         if (response.status === 401) {
             //window.location.href = "/status/UnauthorizedTopic";
         }
@@ -898,10 +898,8 @@ export async function getRecentMessage(userId: number, from: number, size: numbe
  * @param recentMessage
  */
 export function sortRecentMessage(recentMessage) {
-    console.log("走远第0步");
     console.log(recentMessage);
     if (recentMessage == [] || !recentMessage) {
-        console.log("要原样返回了");
         return recentMessage;
     }
     else {
@@ -916,8 +914,6 @@ export function sortRecentMessage(recentMessage) {
                 recentMessage[i].showTime = true;
             }
         }
-
-        
         console.log("返回的recentMessage");
         console.log(recentMessage);
         return recentMessage;
@@ -1537,4 +1533,120 @@ export async function GetSaveTopics(boardId, totalPage, curPage) {
         boardtopics[i] = { ...data[i], replyCount: data[i].replyCount || 0 };
     }
     return boardtopics;
+}
+
+/**
+ * 搜索指定关键词主题
+ * @param boardId
+ * @param words
+ * @param from
+ * @param rouer
+ */
+export async function getSearchTopic(boardId: number, words: string[], from: number, router) {
+    console.log("开始获取搜索结果了");
+    try {
+        let token = getLocalStorage("accessToken");
+        let bodyCotent = JSON.stringify(words);
+        console.log("下面是body");
+        console.log(bodyCotent);
+        let myHeaders = new Headers();
+        myHeaders.append('Authorization', token);
+        myHeaders.append('content-type', 'application/json');
+        let size = 20;
+        let newTopic;
+        if (boardId == 0) {
+            const response = await fetch(`http://apitest.niconi.cc/topic/search?from=${from}&size=${size}`, {
+                method: 'POST',
+                headers: myHeaders,
+                body: bodyCotent
+            });
+            if (response.status === 401) {
+                //window.location.href = "/status/UnauthorizedTopic";
+            }
+            if (response.status === 500) {
+                //window.location.href = "/status/ServerError";
+            }
+            newTopic = await response.json();
+        }
+        else {
+            console.log(`http://apitest.niconi.cc/topic/search/board/${boardId}?from=${from}&size=${size}`);
+            const response = await fetch(`http://apitest.niconi.cc/topic/search/board/${boardId}?from=${from}&size=${size}`, {
+                method: 'POST',
+                headers: myHeaders,
+                body: bodyCotent
+            });
+            if (response.status === 401) {
+                //window.location.href = "/status/UnauthorizedTopic";
+            }
+            if (response.status === 500) {
+                //window.location.href = "/status/ServerError";
+            }
+            newTopic = await response.json();
+        }
+        //如果有搜索结果就处理一下
+        if (newTopic && newTopic != []) {
+            for (let i in newTopic) {
+                if (newTopic[i].userId) {
+                    //获取作者粉丝数目
+                    let userFan0 = await fetch(`http://apitest.niconi.cc/user/follow/fanCount?userid=${newTopic[i].userId}`);
+                    if (userFan0.status === 404) {
+                        //window.location.href = "/status/NotFoundUser";
+                    }
+                    if (userFan0.status === 500) {
+                        //window.location.href = "/status/ServerError";
+                    }
+                    let userFan1 = await userFan0.json();
+                    newTopic[i].fanCount = userFan1;
+                    //获取作者头像地址
+                    let userInfo0 = await fetch(`http://apitest.niconi.cc/user/basic/${newTopic[i].userId}`);
+                    if (userInfo0.status === 404) {
+                        //window.location.href = "/status/NotFoundUser";
+                    }
+                    if (userInfo0.status === 500) {
+                        //window.location.href = "/status/ServerError";
+                    }
+                    let userInfo1 = await userInfo0.json();
+                    newTopic[i].portraitUrl = userInfo1.portraitUrl;
+                    //获取所在版面名称
+                    newTopic[i].boardName = await getBoardName(newTopic[i].boardId, router);
+                    //阅读数转换
+                    if (newTopic[i].hitCount > 10000) {
+                        if (newTopic[i].hitCount > 100000) {
+                            let index = parseInt(`${newTopic[i].hitCount / 10000}`);
+                            newTopic[i].hitCount = `${index}万`;
+                        }
+                        else {
+                            let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
+                            newTopic[i].hitCount = `${index}万`;
+                        }
+                    }
+                    //回复数转换
+                    if (newTopic[i].replyCount > 10000) {
+                        if (newTopic[i].replyCount > 100000) {
+                            let index = parseInt(`${newTopic[i].replyCount / 10000}`);
+                            newTopic[i].replyCount = `${index}万`;
+                        }
+                        else {
+                            let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
+                            newTopic[i].replyCount = `${index}万`;
+                        }
+                    }
+                }
+                //匿名时粉丝数显示0
+                else {
+                    newTopic[i].fanCount = 0;
+                    newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+                    newTopic[i].userName = "匿名";
+                    newTopic[i].boardName = "心灵之约";
+                }
+            }
+            return newTopic;
+        }
+        //如果没有搜索结果就返回null
+        else {
+            return null;
+        }
+    } catch (e) {
+        //window.location.href = "/status/Disconnected";
+    }
 }

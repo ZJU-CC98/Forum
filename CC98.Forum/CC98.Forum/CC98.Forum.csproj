@@ -15,9 +15,9 @@
 
   <ItemGroup>
     <None Remove="CC98.Forum.rar" />
-    <None Remove="Components\AllNewTopicArea.tsx" />
     <None Remove="Components\Category.tsx" />
     <None Remove="Components\Footer.tsx" />
+    <None Remove="Components\SearCH.tsx" />
     <None Remove="Components\Status.tsx" />
     <None Remove="Components\UbbContainer.tsx" />
     <None Remove="Components\UserCenterConfig.tsx" />
@@ -35,6 +35,7 @@
     <None Remove="Props\MessageWindowProps.tsx" />
     <None Remove="Reducer.tsx" />
     <None Remove="States\MessageWindowState.tsx" />
+    <None Remove="States\SearchState.tsx" />
     <None Remove="Store.tsx" />
     <None Remove="UbbCode.tsx" />
     <None Remove="Ubb\AlignTagHandler.tsx" />
@@ -75,12 +76,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="Components\AllNewTopicArea.tsx" />
+    <TypeScriptCompile Include="Components\AllNewTopic.tsx" />
     <TypeScriptCompile Include="Components\Category.tsx" />
     <TypeScriptCompile Include="Components\Footer.tsx" />
     <TypeScriptCompile Include="Components\LogOn.tsx" />
     <TypeScriptCompile Include="Components\LogOnExact.tsx" />
     <TypeScriptCompile Include="Components\LogOff.tsx" />
+    <TypeScriptCompile Include="Components\Search.tsx" />
     <TypeScriptCompile Include="Components\SendTopic.tsx" />
     <TypeScriptCompile Include="Components\Status.tsx" />
     <TypeScriptCompile Include="Components\UbbContainer.tsx" />
@@ -99,6 +101,7 @@
     <TypeScriptCompile Include="Props\MessageSendReceiveProps.tsx" />
     <TypeScriptCompile Include="Props\MessageWindowProps.tsx" />
     <TypeScriptCompile Include="States\MessageWindowState.tsx" />
+    <TypeScriptCompile Include="States\SearchState.tsx" />
     <TypeScriptCompile Include="Ubb\AlignTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\BTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\CenterTagHandler.tsx" />

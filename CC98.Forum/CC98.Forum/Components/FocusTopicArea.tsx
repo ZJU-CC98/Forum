@@ -25,7 +25,7 @@ export class FocusTopicArea extends React.Component<{}, FocusTopicAreaState> {
         }
         this.state = {
             data: data,
-            curNum: 0,
+            from: 0,
             loading: true
         };
 	    this.handleScroll = this.handleScroll.bind(this);
@@ -35,7 +35,7 @@ export class FocusTopicArea extends React.Component<{}, FocusTopicAreaState> {
      * 进入立即获取20条新帖的数据，同时为滚动条添加监听事件
      */
     async componentDidMount() {
-        let data = await Utility.getFocusTopic(this.state.curNum, this.context.router);
+        let data = await Utility.getFocusTopic(this.state.from, this.context.router);
 
         //先看一下有没有缓存的数据，如果有的话新数据跟缓存数据组合一下
         let oldData =  Utility.getStorage("focusBoardTopic");
@@ -54,7 +54,7 @@ export class FocusTopicArea extends React.Component<{}, FocusTopicAreaState> {
             data = data.slice(0,100);
         }
 
-        this.setState({ data: data, curNum: data.length });
+        this.setState({ data: data, from: data.length });
         //缓存获取到的数据
         Utility.setStorage("focusBoardTopic", data);
 
@@ -77,7 +77,7 @@ export class FocusTopicArea extends React.Component<{}, FocusTopicAreaState> {
             /**
             *查看新帖数目大于100条时不再继续加载
             */
-            if (this.state.curNum >= 99) {
+            if (this.state.from >= 99) {
                 $('#focus-topic-loading').addClass('displaynone');
                 $('#focus-topic-loaddone').removeClass('displaynone');
                 return;
@@ -87,7 +87,7 @@ export class FocusTopicArea extends React.Component<{}, FocusTopicAreaState> {
             */
             this.setState({ loading: false });
             try {
-                var newData = await Utility.getFocusTopic(this.state.curNum, this.context.router);
+                var newData = await Utility.getFocusTopic(this.state.from, this.context.router);
             } catch (err) {
                 /**
                 *如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
@@ -99,7 +99,7 @@ export class FocusTopicArea extends React.Component<{}, FocusTopicAreaState> {
             *如果正确获取到数据，则添加新数据，翻页+1，同时this.state.loading设置为true，后续才可以再次发送fetch请求
             */
             let data = this.state.data.concat(newData);
-            this.setState({ data: data, curNum: data.length, loading: true });
+            this.setState({ data: data, from: data.length, loading: true });
             Utility.setStorage("focusBoardTopic", data);
         }
     }
@@ -110,7 +110,7 @@ export class FocusTopicArea extends React.Component<{}, FocusTopicAreaState> {
         return <div className="focus-topic-area">
                     <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
                     <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif"></img></div>
-                    <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">---------------------- 已加载100条新帖，无法加载更多 ----------------------</div>
+                    <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">已加载100条新帖，无法加载更多了~</div>
                </div>;
     }
     
