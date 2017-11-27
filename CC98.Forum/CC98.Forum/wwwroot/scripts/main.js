@@ -267,10 +267,10 @@ function getTopic(topicid, router) {
                     return [4 /*yield*/, userMesResponse.json()];
                 case 10:
                     userMesJson = _a.sent();
-                    topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing);
+                    topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, userMesJson.fanCount);
                     return [3 /*break*/, 12];
                 case 11:
-                    topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing);
+                    topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, -9898);
                     _a.label = 12;
                 case 12: return [2 /*return*/, topicMessage];
                 case 13:
@@ -359,19 +359,17 @@ function getTopicContent(topicid, curPage, router) {
                     return [4 /*yield*/, userMesResponse.json()];
                 case 10:
                     userMesJson = _b.sent();
-                    post[i] = __assign({}, content[i], userMesJson, { postId: content[i].id, userImgUrl: userMesJson.portraitUrl, sendTopicNumber: userMesJson.postCount });
+                    post[i] = __assign({}, content[i], userMesJson, { postId: content[i].id, userImgUrl: userMesJson.portraitUrl, sendTopicNumber: userMesJson.postCount, privilege: userMesJson.privilege });
                     return [3 /*break*/, 12];
                 case 11:
                     purl = 'https://www.cc98.org/pic/anonymous.gif';
                     anonymousUserName = "\u533F\u540D" + content[i].userName.toUpperCase();
-                    post[i] = __assign({}, content[i], { userName: anonymousUserName, userImgUrl: purl, userId: null, signature: null, sendTopicNumber: null, postId: content[i].id });
+                    post[i] = __assign({}, content[i], { userName: anonymousUserName, userImgUrl: purl, userId: null, signature: null, sendTopicNumber: null, postId: content[i].id, privilege: '匿名用户', isAnonymous: true });
                     _b.label = 12;
                 case 12:
                     i++;
                     return [3 /*break*/, 8];
-                case 13:
-                    console.log(post);
-                    return [2 /*return*/, post];
+                case 13: return [2 /*return*/, post];
                 case 14:
                     e_3 = _b.sent();
                     console.error(e_3);
@@ -747,11 +745,9 @@ function getCurUserTopicContent(topicid, curPage, userName, userId, router) {
                     return [4 /*yield*/, topic.json()];
                 case 3:
                     content = _a.sent();
-                    console.log("00");
                     post = [];
                     topicNumberInPage = void 0;
                     replyCount = content[0].count;
-                    console.log('11');
                     if (curPage !== 1 && curPage * 10 <= replyCount) {
                         topicNumberInPage = 10;
                     }
@@ -767,7 +763,6 @@ function getCurUserTopicContent(topicid, curPage, userName, userId, router) {
                     else {
                         topicNumberInPage = (replyCount - (curPage - 1) * 10);
                     }
-                    console.log(topicNumberInPage);
                     i = 0;
                     _a.label = 4;
                 case 4:
@@ -832,8 +827,6 @@ function getAllNewTopic(curNum, router) {
                     return [4 /*yield*/, response.json()];
                 case 2:
                     newTopic = _d.sent();
-                    console.log("全站新帖");
-                    console.log(newTopic);
                     _a = [];
                     for (_b in newTopic)
                         _a.push(_b);
@@ -947,8 +940,6 @@ function getFocusTopic(curNum, router) {
                     return [4 /*yield*/, response.json()];
                 case 2:
                     newTopic = _d.sent();
-                    console.log("关注新帖");
-                    console.log(newTopic);
                     _a = [];
                     for (_b in newTopic)
                         _a.push(_b);
@@ -3320,7 +3311,7 @@ var PagerState = /** @class */ (function () {
 }());
 exports.PagerState = PagerState;
 var TopicState = /** @class */ (function () {
-    function TopicState(userName, title, content, time, signature, userImgUrl, hitCount, userId, likeNumber, dislikeNumber, postId, isAnonymous, contentType, isFollowing) {
+    function TopicState(userName, title, content, time, signature, userImgUrl, hitCount, userId, likeNumber, dislikeNumber, postId, isAnonymous, contentType, isFollowing, fanCount) {
         this.userName = userName;
         this.time = time;
         this.title = title;
@@ -3335,6 +3326,7 @@ var TopicState = /** @class */ (function () {
         this.isAnonymous = isAnonymous;
         this.contentType = contentType;
         this.isFollowing = isFollowing;
+        this.fanCount = fanCount;
     }
     return TopicState;
 }());
@@ -3886,9 +3878,9 @@ var Category = /** @class */ (function (_super) {
         var listUrl = "/list/" + this.state.boardId;
         return React.createElement("div", { className: "row", style: { width: "100%", justifyContent: "flex-start", color: "blue", fontSize: "1rem" } },
             "\u203A\u203A",
-            React.createElement("a", { style: { color: "blue", fontSize: "0.75rem" }, href: "/" }, "\u9996\u9875"),
+            React.createElement("a", { style: { color: "blue", fontSize: "1rem" }, href: "/" }, "\u9996\u9875"),
             "\u00A0\u2192\u00A0",
-            React.createElement("a", { style: { color: "blue", fontSize: "0.75rem" }, href: listUrl }, this.state.boardName));
+            React.createElement("a", { style: { color: "blue", fontSize: "1rem" }, href: listUrl }, this.state.boardName));
     };
     return Category;
 }(RouteComponent));
@@ -4554,6 +4546,9 @@ var Post = /** @class */ (function (_super) {
         _this.state = { page: 1, topicid: _this.match.params.topicid, totalPage: 1, userName: null };
         return _this;
     }
+    Post.prototype.componentDidUpdate = function () {
+        scrollTo(0, 0);
+    };
     Post.prototype.handleChange = function () {
         return __awaiter(this, void 0, void 0, function () {
             var page, totalPage, userName;
@@ -4676,11 +4671,11 @@ var Category = /** @class */ (function (_super) {
         var topicUrl = "/topic/" + this.state.topicId;
         return React.createElement("div", { style: { color: "blue", fontSize: "1rem" } },
             "\u203A\u203A",
-            React.createElement("a", { style: { color: "blue", fontSize: "0.75rem" }, href: "/" }, "\u9996\u9875"),
+            React.createElement("a", { style: { color: "blue", fontSize: "1rem" }, href: "/" }, "\u9996\u9875"),
             "\u00A0\u2192\u00A0",
-            React.createElement("a", { style: { color: "blue", fontSize: "0.75rem" }, href: listUrl }, this.state.boardName),
+            React.createElement("a", { style: { color: "blue", fontSize: "1rem" }, href: listUrl }, this.state.boardName),
             "\u00A0\u2192\u00A0",
-            React.createElement("a", { style: { color: "blue", fontSize: "0.75rem" }, href: topicUrl }, this.state.title));
+            React.createElement("a", { style: { color: "blue", fontSize: "1rem" }, href: topicUrl }, this.state.title));
     };
     return Category;
 }(React.Component));
@@ -5092,7 +5087,6 @@ var UserDetails = /** @class */ (function (_super) {
                             React.createElement("div", { style: { fontFamily: "微软雅黑", color: "blue", marginRight: "0.63rem" } },
                                 " ",
                                 this.state.userName),
-                            "   ",
                             React.createElement("div", { style: { marginRight: "0.63rem", fontSize: "1rem" } }, "   \u7C89\u4E1D  "),
                             React.createElement("div", { style: { color: "red", fontSize: "1rem" } }, this.state.fanCount)),
                         React.createElement("div", { className: "row", style: { marginTop: "0.63rem", fontSize: "0.87rem" } }, title)),
@@ -5120,7 +5114,7 @@ var PostTopic = /** @class */ (function (_super) {
         };
         return _this;
     }
-    PostTopic.prototype.componentDidMount = function () {
+    PostTopic.prototype.componentWillMount = function () {
         return __awaiter(this, void 0, void 0, function () {
             var topicMessage;
             return __generator(this, function (_a) {
@@ -5128,6 +5122,9 @@ var PostTopic = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, Utility.getTopic(this.props.topicid, this.context.router)];
                     case 1:
                         topicMessage = _a.sent();
+                        console.log(topicMessage);
+                        console.log(topicMessage.userName);
+                        console.log(topicMessage.isAnonymous);
                         this.setState({ topicMessage: topicMessage });
                         return [2 /*return*/];
                 }
@@ -5135,16 +5132,21 @@ var PostTopic = /** @class */ (function (_super) {
         });
     };
     PostTopic.prototype.render = function () {
-        if (this.state.topicMessage.userId == this.props.userId || this.props.userId == null) {
-            return React.createElement("div", { className: "root", id: "1" },
-                React.createElement("div", { className: "essay" },
-                    React.createElement(AuthorMessage, { authorId: this.state.topicMessage.userId, authorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl, isAnonymous: this.state.topicMessage.isAnonymous, isFollowing: this.state.topicMessage.isFollowing, fanCount: this.state.topicMessage.fanCount }),
-                    React.createElement(TopicTitle, { Title: this.state.topicMessage.title, Time: this.state.topicMessage.time, HitCount: this.state.topicMessage.hitCount }),
-                    React.createElement("div", { id: "ads" },
-                        React.createElement("img", { width: "100%", src: this.props.imgUrl }))),
-                React.createElement(TopicContent, { postid: this.state.topicMessage.postId, content: this.state.topicMessage.content, signature: this.state.topicMessage.signature, topicid: this.props.topicid, userId: this.state.topicMessage.userId, contentType: this.state.topicMessage.contentType }),
-                React.createElement(TopicGood, null),
-                React.createElement(TopicVote, null));
+        if (this.state.topicMessage != null) {
+            if (this.state.topicMessage.userId == this.props.userId || this.props.userId == null) {
+                return React.createElement("div", { className: "root", id: "1" },
+                    React.createElement("div", { className: "essay" },
+                        React.createElement(AuthorMessage, { authorId: this.state.topicMessage.userId, authorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl, isAnonymous: this.state.topicMessage.isAnonymous, isFollowing: this.state.topicMessage.isFollowing, fanCount: this.state.topicMessage.fanCount }),
+                        React.createElement(TopicTitle, { Title: this.state.topicMessage.title, Time: this.state.topicMessage.time, HitCount: this.state.topicMessage.hitCount }),
+                        React.createElement("div", { id: "ads" },
+                            React.createElement("img", { width: "100%", src: this.props.imgUrl }))),
+                    React.createElement(TopicContent, { postid: this.state.topicMessage.postId, content: this.state.topicMessage.content, signature: this.state.topicMessage.signature, topicid: this.props.topicid, userId: this.state.topicMessage.userId, contentType: this.state.topicMessage.contentType }),
+                    React.createElement(TopicGood, null),
+                    React.createElement(TopicVote, null));
+            }
+            else {
+                return null;
+            }
         }
         else {
             return null;
@@ -5261,11 +5263,7 @@ var AuthorMessage = /** @class */ (function (_super) {
             });
         });
     };
-    AuthorMessage.prototype.componentDidMount = function () {
-        if (this.props.isAnonymous === true) {
-            $(".email").css("display", "none");
-            $(".follow").css("display", "none");
-        }
+    AuthorMessage.prototype.componenDidMount = function () {
         if (this.state.isFollowing === true) {
             this.setState({ buttonInfo: "取消关注", isFollowing: true });
         }
@@ -5285,6 +5283,13 @@ var AuthorMessage = /** @class */ (function (_super) {
             urlHtml = React.createElement("img", { src: this.props.authorImgUrl });
             userHtml = React.createElement("div", { id: "authorName" },
                 React.createElement("p", null, this.props.authorName));
+        }
+        if (this.props.isAnonymous === true) {
+            $(".email").css("display", "none");
+            $(".follow").css("display", "none");
+            $(".authorFans").css("margin-top", "1rem");
+            $("#fans").css("display", "none");
+            $("#authorMes").css("width", "14rem");
         }
         return React.createElement("div", { className: "row", id: "authormes" },
             React.createElement("div", { className: "authorImg" }, urlHtml),
@@ -8560,6 +8565,7 @@ var NotFoundTopic = /** @class */ (function (_super) {
                         token = Utility.getLocalStorage("accessToken");
                         headers = new Headers();
                         headers.append("Authorizaton", token);
+                        headers.append("Content-Type", "application/json");
                         body = {
                             isCanceling: false,
                             isBold: true,
@@ -8568,7 +8574,7 @@ var NotFoundTopic = /** @class */ (function (_super) {
                             duration: null
                         };
                         str = JSON.stringify(body);
-                        url = 'http://apitest.niconi.cc/topic/sethighlight?boardid=753&topicid=4739872';
+                        url = 'http://apitest.niconi.cc/topic/sethighlight?boardid=753&topicid=4740298';
                         return [4 /*yield*/, fetch(url, { method: "PUT", headers: headers, body: str })];
                     case 1:
                         _a.sent();
@@ -10536,6 +10542,9 @@ var Post = /** @class */ (function (_super) {
         _this.state = { page: 1, topicid: _this.match.params.topicid, totalPage: 1, userName: null };
         return _this;
     }
+    Post.prototype.componentDidUpdate = function () {
+        scrollTo(0, 0);
+    };
     Post.prototype.handleChange = function () {
         return __awaiter(this, void 0, void 0, function () {
             var page, totalPage, userName;
@@ -10658,11 +10667,11 @@ var Category = /** @class */ (function (_super) {
         var topicUrl = "/topic/" + this.state.topicId;
         return React.createElement("div", { style: { color: "blue", fontSize: "1rem" } },
             "\u203A\u203A",
-            React.createElement("a", { style: { color: "blue", fontSize: "0.75rem" }, href: "/" }, "\u9996\u9875"),
+            React.createElement("a", { style: { color: "blue", fontSize: "1rem" }, href: "/" }, "\u9996\u9875"),
             "\u00A0\u2192\u00A0",
-            React.createElement("a", { style: { color: "blue", fontSize: "0.75rem" }, href: listUrl }, this.state.boardName),
+            React.createElement("a", { style: { color: "blue", fontSize: "1rem" }, href: listUrl }, this.state.boardName),
             "\u00A0\u2192\u00A0",
-            React.createElement("a", { style: { color: "blue", fontSize: "0.75rem" }, href: topicUrl }, this.state.title));
+            React.createElement("a", { style: { color: "blue", fontSize: "1rem" }, href: topicUrl }, this.state.title));
     };
     return Category;
 }(React.Component));
@@ -11074,7 +11083,6 @@ var UserDetails = /** @class */ (function (_super) {
                             React.createElement("div", { style: { fontFamily: "微软雅黑", color: "blue", marginRight: "0.63rem" } },
                                 " ",
                                 this.state.userName),
-                            "   ",
                             React.createElement("div", { style: { marginRight: "0.63rem", fontSize: "1rem" } }, "   \u7C89\u4E1D  "),
                             React.createElement("div", { style: { color: "red", fontSize: "1rem" } }, this.state.fanCount)),
                         React.createElement("div", { className: "row", style: { marginTop: "0.63rem", fontSize: "0.87rem" } }, title)),
@@ -11102,7 +11110,7 @@ var PostTopic = /** @class */ (function (_super) {
         };
         return _this;
     }
-    PostTopic.prototype.componentDidMount = function () {
+    PostTopic.prototype.componentWillMount = function () {
         return __awaiter(this, void 0, void 0, function () {
             var topicMessage;
             return __generator(this, function (_a) {
@@ -11110,6 +11118,9 @@ var PostTopic = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, Utility.getTopic(this.props.topicid, this.context.router)];
                     case 1:
                         topicMessage = _a.sent();
+                        console.log(topicMessage);
+                        console.log(topicMessage.userName);
+                        console.log(topicMessage.isAnonymous);
                         this.setState({ topicMessage: topicMessage });
                         return [2 /*return*/];
                 }
@@ -11117,16 +11128,21 @@ var PostTopic = /** @class */ (function (_super) {
         });
     };
     PostTopic.prototype.render = function () {
-        if (this.state.topicMessage.userId == this.props.userId || this.props.userId == null) {
-            return React.createElement("div", { className: "root", id: "1" },
-                React.createElement("div", { className: "essay" },
-                    React.createElement(AuthorMessage, { authorId: this.state.topicMessage.userId, authorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl, isAnonymous: this.state.topicMessage.isAnonymous, isFollowing: this.state.topicMessage.isFollowing, fanCount: this.state.topicMessage.fanCount }),
-                    React.createElement(TopicTitle, { Title: this.state.topicMessage.title, Time: this.state.topicMessage.time, HitCount: this.state.topicMessage.hitCount }),
-                    React.createElement("div", { id: "ads" },
-                        React.createElement("img", { width: "100%", src: this.props.imgUrl }))),
-                React.createElement(TopicContent, { postid: this.state.topicMessage.postId, content: this.state.topicMessage.content, signature: this.state.topicMessage.signature, topicid: this.props.topicid, userId: this.state.topicMessage.userId, contentType: this.state.topicMessage.contentType }),
-                React.createElement(TopicGood, null),
-                React.createElement(TopicVote, null));
+        if (this.state.topicMessage != null) {
+            if (this.state.topicMessage.userId == this.props.userId || this.props.userId == null) {
+                return React.createElement("div", { className: "root", id: "1" },
+                    React.createElement("div", { className: "essay" },
+                        React.createElement(AuthorMessage, { authorId: this.state.topicMessage.userId, authorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl, isAnonymous: this.state.topicMessage.isAnonymous, isFollowing: this.state.topicMessage.isFollowing, fanCount: this.state.topicMessage.fanCount }),
+                        React.createElement(TopicTitle, { Title: this.state.topicMessage.title, Time: this.state.topicMessage.time, HitCount: this.state.topicMessage.hitCount }),
+                        React.createElement("div", { id: "ads" },
+                            React.createElement("img", { width: "100%", src: this.props.imgUrl }))),
+                    React.createElement(TopicContent, { postid: this.state.topicMessage.postId, content: this.state.topicMessage.content, signature: this.state.topicMessage.signature, topicid: this.props.topicid, userId: this.state.topicMessage.userId, contentType: this.state.topicMessage.contentType }),
+                    React.createElement(TopicGood, null),
+                    React.createElement(TopicVote, null));
+            }
+            else {
+                return null;
+            }
         }
         else {
             return null;
@@ -11243,11 +11259,7 @@ var AuthorMessage = /** @class */ (function (_super) {
             });
         });
     };
-    AuthorMessage.prototype.componentDidMount = function () {
-        if (this.props.isAnonymous === true) {
-            $(".email").css("display", "none");
-            $(".follow").css("display", "none");
-        }
+    AuthorMessage.prototype.componenDidMount = function () {
         if (this.state.isFollowing === true) {
             this.setState({ buttonInfo: "取消关注", isFollowing: true });
         }
@@ -11267,6 +11279,13 @@ var AuthorMessage = /** @class */ (function (_super) {
             urlHtml = React.createElement("img", { src: this.props.authorImgUrl });
             userHtml = React.createElement("div", { id: "authorName" },
                 React.createElement("p", null, this.props.authorName));
+        }
+        if (this.props.isAnonymous === true) {
+            $(".email").css("display", "none");
+            $(".follow").css("display", "none");
+            $(".authorFans").css("margin-top", "1rem");
+            $("#fans").css("display", "none");
+            $("#authorMes").css("width", "14rem");
         }
         return React.createElement("div", { className: "row", id: "authormes" },
             React.createElement("div", { className: "authorImg" }, urlHtml),
@@ -17158,7 +17177,7 @@ var PagerState = /** @class */ (function () {
 }());
 exports.PagerState = PagerState;
 var TopicState = /** @class */ (function () {
-    function TopicState(userName, title, content, time, signature, userImgUrl, hitCount, userId, likeNumber, dislikeNumber, postId, isAnonymous, contentType, isFollowing) {
+    function TopicState(userName, title, content, time, signature, userImgUrl, hitCount, userId, likeNumber, dislikeNumber, postId, isAnonymous, contentType, isFollowing, fanCount) {
         this.userName = userName;
         this.time = time;
         this.title = title;
@@ -17173,6 +17192,7 @@ var TopicState = /** @class */ (function () {
         this.isAnonymous = isAnonymous;
         this.contentType = contentType;
         this.isFollowing = isFollowing;
+        this.fanCount = fanCount;
     }
     return TopicState;
 }());

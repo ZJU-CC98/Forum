@@ -61,6 +61,7 @@ export class NotFoundTopic extends React.Component<{}, {}>{
         const token = Utility.getLocalStorage("accessToken");
         const headers = new Headers();
         headers.append("Authorizaton", token);
+        headers.append("Content-Type", "application/json");
         const body = {
             isCanceling: false,
             isBold: true,
@@ -69,7 +70,7 @@ export class NotFoundTopic extends React.Component<{}, {}>{
             duration:null
         }
         const str = JSON.stringify(body);
-        const url = 'http://apitest.niconi.cc/topic/sethighlight?boardid=753&topicid=4739872'
+        const url = 'http://apitest.niconi.cc/topic/sethighlight?boardid=753&topicid=4740298'
         await fetch(url, { method: "PUT", headers, body: str });
 
 

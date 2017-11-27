@@ -130,9 +130,9 @@ export async function getTopic(topicid: number, router) {
                 //window.location.href = "/status/NotFoundUser";
             }
             const userMesJson = await userMesResponse.json();
-            topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing);
+            topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, userMesJson.fanCount);
         } else {
-            topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing);
+            topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing,-9898);
 
         }
 
@@ -194,19 +194,20 @@ export async function getTopicContent(topicid: number, curPage: number, router) 
                 }
                 const userMesJson = await userMesResponse.json();
                 post[i] = {
-                    ...content[i], ...userMesJson, postId: content[i].id, userImgUrl: userMesJson.portraitUrl, sendTopicNumber: userMesJson.postCount
+                    ...content[i], ...userMesJson, postId: content[i].id, userImgUrl: userMesJson.portraitUrl, sendTopicNumber: userMesJson.postCount, privilege: userMesJson.privilege
                 }
         
             } else {
                 let purl = 'https://www.cc98.org/pic/anonymous.gif';
                 const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
-               
+
+
                 post[i] = {
-                    ...content[i], userName: anonymousUserName, userImgUrl: purl, userId: null, signature: null, sendTopicNumber: null, postId: content[i].id
+                    ...content[i], userName: anonymousUserName, userImgUrl: purl, userId: null, signature: null, sendTopicNumber: null, postId: content[i].id, privilege: '匿名用户', isAnonymous:true
                 }
             }
         }
-        console.log(post);
+  
         return post;
 
     } catch (e) {
@@ -478,11 +479,11 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
             //window.location.href = "/status/ServerError";
         }
         const content = await topic.json();
-        console.log("00");
+    
         let post: State.ContentState[] = [];
         let topicNumberInPage: number;
         const replyCount = content[0].count;
-        console.log('11');
+     
         if (curPage !== 1 && curPage * 10 <= replyCount) {
             topicNumberInPage = 10;
         } else if (curPage === 1 && replyCount >= 9 && isUserPoster == true) {
@@ -494,7 +495,7 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
         } else {
             topicNumberInPage = (replyCount - (curPage - 1) * 10);
         }
-        console.log(topicNumberInPage);
+      
         for (let i = 0; i < topicNumberInPage; i++) {
             if (content[i].isAnonymous != true) {
                 const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
@@ -549,8 +550,7 @@ export async function getAllNewTopic(curNum: number, router) {
             //window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
-        console.log("全站新帖");
-        console.log(newTopic);
+    
         for (let i in newTopic) {
             if (newTopic[i].userId) {
                 //获取作者粉丝数目
@@ -639,8 +639,7 @@ export async function getFocusTopic(curNum: number, router) {
             //window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json(); 
-        console.log("关注新帖");
-        console.log(newTopic);
+    
         for (let i in newTopic) {
             if (newTopic[i].userId) {
                 //获取作者粉丝数目

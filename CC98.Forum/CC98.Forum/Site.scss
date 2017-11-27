@@ -102,6 +102,7 @@ body {
 
 #authormes {
     border-right: $bgcolor solid thin;
+    width:26rem;
 }
 
 
@@ -109,21 +110,21 @@ body {
     margin-left: 1rem;
     justify-content: flex-start;
     font-size:1rem;
-    width:5rem;
+    width:8rem;
 }
 
 #authorName p {
     margin-top: 1.4375rem;
-    font-size: 0.8125rem;
+    font-size: 1rem;
     font-family: 微软雅黑;
     color: #9ACD32;
 }
 
 #fans {
-    margin-left: 1rem;
+
     margin-top: 1.4375rem;
     font-family: 微软雅黑;
-    font-size: 0.8125rem;
+    font-size: 1rem;
 }
 
 .authorImg {
@@ -163,6 +164,7 @@ body {
     color: #fff;
     }
     text-align: center;
+    margin-left:1rem;
 }
 
 #title {
