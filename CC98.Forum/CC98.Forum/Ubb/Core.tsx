@@ -969,7 +969,7 @@ export class UbbCodeEngine {
 	 */
 	private static buildSegmentsCore(content: string, parent: UbbTagSegment) {
 
-		const regExp = /([\s\S]*?)\[(.*?)]/gi;
+		const regExp = /([\s\S]*?)\[(.+?)]/gi;
 
 		while (true) {
 
@@ -995,7 +995,7 @@ export class UbbCodeEngine {
 			}
 
 			// 检测是否是结束标记
-			const endTagMatch = tagString.match(/^\/(.*)$/i);
+			const endTagMatch = tagString.match(/^\/(.+)$/i);
 			if (endTagMatch) {
 				const endTagName = endTagMatch[1];
 				parent = UbbCodeEngine.tryHandleEndTag(endTagName, parent);

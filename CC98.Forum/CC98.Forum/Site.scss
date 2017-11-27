@@ -54,7 +54,7 @@ body {
     margin-left: 6.25rem;
     margin-right: 6.25rem;
     margin-top: 2.5rem;
-    width: 70%;
+    min-width: 71.2px;
 }
 
 .listContent {
@@ -102,26 +102,29 @@ body {
 
 #authormes {
     border-right: $bgcolor solid thin;
+    width:26rem;
 }
 
 
 #authorName {
     margin-left: 1rem;
     justify-content: flex-start;
+    font-size:1rem;
+    width:8rem;
 }
 
 #authorName p {
     margin-top: 1.4375rem;
-    font-size: 0.8125rem;
+    font-size: 1rem;
     font-family: 微软雅黑;
     color: #9ACD32;
 }
 
 #fans {
-    margin-left: 1rem;
+
     margin-top: 1.4375rem;
     font-family: 微软雅黑;
-    font-size: 0.8125rem;
+    font-size: 1rem;
 }
 
 .authorImg {
@@ -147,16 +150,21 @@ body {
     text-align: center;
 }
 
-#email {
-    width: 4rem;
+.email {
+    width: 5rem;
+    height:1.5rem;
     font-size: 0.75rem;
     font-family: 微软雅黑;
-    letter-spacing: 0.1875rem;
-    border-radius: 0.3125rem;
+    letter-spacing: 0.2rem;
+    border-radius: 0.3rem;
     background: #67B3FF;
     border: 1px solid #2576A8;
+    cursor:pointer;
+    a{
     color: #fff;
+    }
     text-align: center;
+    margin-left:1rem;
 }
 
 #title {
@@ -490,6 +498,7 @@ body {
     font-family: 微软雅黑;
     padding-left: 0.4375rem;
     padding-right: 0.4375rem;
+    padding-top:0.1rem;
     color: #000000;
     margin-left: 0.3125rem;
     outline: none;
@@ -502,6 +511,7 @@ body {
     font-family: 微软雅黑;
     padding-left: 0.4375rem;
     padding-right: 0.4375rem;
+    padding-top:0.1rem;
     border-radius: 0.3125rem;
     background: #FFFFFF;
     border: 1px solid #5CADDD;
@@ -625,12 +635,43 @@ a {
     width: 4.375rem;
     background-color: #F5FAFD;
 }
-
+.follow {
+    width: 5rem;
+    background-color: #FF6A6A;
+    margin-right: 0.63rem;
+    margin-left: 1rem;
+    height: 1.5rem;
+    cursor: pointer;
+    text-align: center;
+    font-size: 0.75rem;
+    font-family: 微软雅黑;
+    letter-spacing: 0.2rem;
+    border-radius: 0.3rem;
+    background: red;
+    border: 1px solid #B22222;
+    color: #fff;
+}
+.followuser {
+    width: 6rem;
+    background-color: #FF6A6A;
+    margin-right: 0.63rem;
+    margin-left: 2.5rem;
+    margin-top:2.5rem;
+    height: 2.5rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 微软雅黑;
+    letter-spacing: 0.2rem;
+    border-radius: 0.3rem;
+    border: 1px solid #B22222;
+    color: #fff;
+}
 .center {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width:71.2rem;
 }
 
 .button {
@@ -2591,7 +2632,7 @@ a {
 
     #sendTopic-input {
         background-color: #fff;
-        height: 20rem;
+        height: 34.5rem;
         padding: 1rem;
         border: none;
         width: 96.5%;

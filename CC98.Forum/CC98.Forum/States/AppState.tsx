@@ -196,7 +196,8 @@ export class TopicState {
         postId: number,
         isAnonymous: boolean,
         contentType: number,
-        isFollowing: boolean
+        isFollowing: boolean,
+        fanCount: number,
     ) {
         this.userName = userName;
         this.time = time;
@@ -212,6 +213,7 @@ export class TopicState {
         this.isAnonymous = isAnonymous;
         this.contentType = contentType;
         this.isFollowing = isFollowing;
+        this.fanCount = fanCount;
     }
     userName: string;
     title: string;
@@ -227,6 +229,7 @@ export class TopicState {
     isAnonymous: boolean;
     contentType: number;
     isFollowing: boolean;
+    fanCount: number;
 }
 
 /**

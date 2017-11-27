@@ -11,7 +11,7 @@ import {
 import { match } from "react-router";
 import { UbbContainer } from './UbbContainer';
 declare let moment: any;
-declare let testEditor: any;
+
 declare let editormd: any;
 
 export module Constants {
@@ -27,23 +27,16 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
     }
 }
 
-export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName, editor }, { topicid, page, userName }> {
+export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName }, { topicid, page, userName }> {
     constructor(props, context) {
         super(props, context);
-        var testEditor = editormd("test-editormd", {
-            width: "100%",
-            height: 640,
-            path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false,
-            imageUpload: false,
-            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-            imageUploadURL: "http://apitest.niconi.cc/file/",
-
-        });
+       
         this.handleChange = this.handleChange.bind(this);
-        this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null, editor: testEditor };
+        this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null};
     }
-
+    componentDidUpdate() {
+        scrollTo(0, 0);
+    }
     async handleChange() {
         let page: number;
         if (!this.match.params.page) {
@@ -90,7 +83,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
             topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} />;
             hotReply = <Route path="/topic/:topicid/:page?" component={HotReply} />;
         }
-        return <div className="center" style={{ width: "80%" }} >
+        return <div className="center" >
             <div className="row" style={{ width: "100%", justifyContent: 'space-between', borderBottom: '#EAEAEA solid thin', alignItems: "center" }}>
                 <Category topicId={this.state.topicid} />
                 <TopicPager page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} /></div>
@@ -98,7 +91,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
             {hotReply}
             <Route path="/topic/:topicid/:page?" component={Reply} />
             <TopicPagerDown page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
-            <SendTopic onChange={this.handleChange} topicid={this.state.topicid} editor={this.state.editor} />
+            <SendTopic onChange={this.handleChange} topicid={this.state.topicid}  />
         </div>
             ;
 
@@ -117,7 +110,7 @@ export class Category extends React.Component<{ topicId }, { boardId, topicId, b
     render() {
         const listUrl = `/list/${this.state.boardId}`;
         const topicUrl = `/topic/${this.state.topicId}`;
-        return <div style={{ color: "blue", fontSize: "0.75rem" }}>&rsaquo;&rsaquo;<a style={{ color: "blue", fontSize: "0.75rem" }} href="/">首页</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "0.75rem" }} href={listUrl}>{this.state.boardName}</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "0.75rem" }} href={topicUrl}>{this.state.title}</a></div>;
+        return <div style={{ color: "blue", fontSize: "1rem" }}>&rsaquo;&rsaquo;<a style={{ color: "blue", fontSize: "1rem" }} href="/">首页</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "1rem" }} href={listUrl} >{this.state.boardName}</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "1rem" }} href={topicUrl}>{this.state.title}</a></div>;
     }
 }
 export class Reply extends RouteComponent<{}, { contents }, { page, topicid, userName }>{
@@ -307,6 +300,7 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
             userDetails = null;
         }
         let userName;
+ 
         if (this.props.privilege === "超级版主") {
             userName = <a style={{ color: "pink" }} href={url}>{this.props.userName}</a>;
         } else if (this.props.privilege === "全站贵宾") {
@@ -462,7 +456,9 @@ export class UserDetails extends RouteComponent<{ userName,userId }, { portraitU
                     </div>
                     <div className="column" style={{ marginLeft: "1.6rem", marginTop: "2rem" }}>
                         <div className="row">
-                            <div style={{ fontFamily: "微软雅黑", color: "blue", marginRight: "0.63rem" }}> {this.state.userName}</div>   <div style={{ marginRight: "0.63rem" }}>   粉丝  </div><div style={{ color: "red" }}>{this.state.fanCount}</div>
+                            <div style={{ fontFamily: "微软雅黑", color: "blue", marginRight: "0.63rem" }}> {this.state.userName}</div>
+                            <div style={{ marginRight: "0.63rem", fontSize: "1rem" }}>   粉丝  </div>
+                            <div style={{ color: "red", fontSize: "1rem" }}>{this.state.fanCount}</div>
                         </div>
                         <div className="row" style={{ marginTop: "0.63rem", fontSize: "0.87rem" }}>
                             {title}
@@ -471,7 +467,7 @@ export class UserDetails extends RouteComponent<{ userName,userId }, { portraitU
                     </div>
 
                     <div>
-                        <button className="watch" style={{ width: "5rem", backgroundColor: "#FF6A6A", marginRight: "0.63rem", marginLeft: "1.6rem", marginTop: "2rem", height: "2rem" }} id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
+                        <button className="followuser"  id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
 
                     </div>
                 </div>
@@ -491,33 +487,41 @@ export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid },
             , likeState: 0
         }
     }
-    async componentDidMount() {
+    async componentWillMount() {
         let topicMessage = await Utility.getTopic(this.props.topicid, this.context.router);
+        console.log(topicMessage);
+        console.log(topicMessage.userName);
+        console.log(topicMessage.isAnonymous);
         this.setState({ topicMessage: topicMessage });
     }
     render() {
-        if (this.state.topicMessage.userId == this.props.userId || this.props.userId == null) {
-            return <div className="root" id="1">
-                <div className="essay">
-                    <AuthorMessage authorId={this.state.topicMessage.userId} authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} isAnonymous={this.state.topicMessage.isAnonymous} isFollowing={this.state.topicMessage.isFollowing} />
-                    <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount} />
-                    <div id="ads"><img width="100%" src={this.props.imgUrl}></img></div>
-                </div>
+        if (this.state.topicMessage != null) {
+            if (this.state.topicMessage.userId == this.props.userId || this.props.userId == null) {
+                return <div className="root" id="1">
+                    <div className="essay">
+                        <AuthorMessage authorId={this.state.topicMessage.userId} authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} isAnonymous={this.state.topicMessage.isAnonymous} isFollowing={this.state.topicMessage.isFollowing}
+                            fanCount={this.state.topicMessage.fanCount} />
+                        <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount} />
+                        <div id="ads"><img width="100%" src={this.props.imgUrl}></img></div>
+                    </div>
 
-                <TopicContent postid={this.state.topicMessage.postId} content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} topicid={this.props.topicid} userId={this.state.topicMessage.userId}
-                    contentType={this.state.topicMessage.contentType} />
-                <TopicGood />
-                <TopicVote />
-            </div>;
-        }
-        else {
+                    <TopicContent postid={this.state.topicMessage.postId} content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} topicid={this.props.topicid} userId={this.state.topicMessage.userId}
+                        contentType={this.state.topicMessage.contentType} />
+                    <TopicGood />
+                    <TopicVote />
+                </div>;
+            }
+            else {
+                return null;
+            }
+        } else {
             return null;
         }
     }
 }
 
 
-export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, authorName: string, authorId: number, authorImgUrl: string,isFollowing:boolean }, State.AuthorMessageState, {}> {
+export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, authorName: string, authorId: number, authorImgUrl: string,isFollowing:boolean ,fanCount}, State.AuthorMessageState, {}> {
     constructor(props, content) {
         super(props, content);
         this.follow = this.follow.bind(this);
@@ -597,7 +601,9 @@ export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, author
             });
         }
     }
-    componentDidMount() {
+    componenDidMount() {
+
+       
         if (this.state.isFollowing === true) {
             this.setState({ buttonInfo: "取消关注", isFollowing: true });
         } else {
@@ -613,6 +619,13 @@ export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, author
             urlHtml = <img src={this.props.authorImgUrl}></img>;
             userHtml = <div id="authorName"><p>{this.props.authorName}</p></div>
         }
+        if (this.props.isAnonymous === true) {
+            $(".email").css("display", "none");
+            $(".follow").css("display", "none");
+            $(".authorFans").css("margin-top", "1rem");
+            $("#fans").css("display", "none");
+            $("#authorMes").css("width","14rem");
+        }
         return <div className="row" id="authormes">
 
             <div className="authorImg" >{urlHtml}</div>
@@ -620,12 +633,12 @@ export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, author
                 <div className="row authorFans" style={{ justifyContent: "space-between" }}>
                     {userHtml}
 
-                    <div id="fans" className="row"><div style={{ marginRight: "0.1875rem" }}>粉丝</div><div style={{ color: "#EE0000" }}>{this.state.fansNumber}</div></div>
+                    <div id="fans" className="row"><div style={{ marginRight: "0.1875rem" }}>粉丝</div><div style={{ color: "#EE0000"}}>{this.props.fanCount}</div></div>
                 </div>
 
                 <div className="row">
-                    <button className="watch" style={{ marginLeft: "1rem" }} id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
-                    <a id="email" href={email} style={{ marginLeft: "1rem" }}>私信</a>
+                    <button className="follow" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
+                    <button className="email"><a href={email}>私信</a></button>
                 </div>
             </div>
         </div>;
@@ -1085,7 +1098,7 @@ export class UserMessageBox extends React.Component<{ userName, userFans }, {}>{
         return <div id="userMessageBox">{this.props.userName}</div>;
     }
 }
-export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { content: string,mode:number }, {}>{
+export class SendTopic extends RouteComponent<{ topicid, onChange,  }, { content: string,mode:number }, {}>{
     constructor(props) {
         super(props);
         this.changeEditor = this.changeEditor.bind(this);
@@ -1101,9 +1114,6 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, editor }, { c
             imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
             imageUploadURL: "http://apitest.niconi.cc/file/",
         });
-    }
-    componentWillReceiveProps(newProps) {
-      
     }
     componentDidUpdate() {
         Constants.testEditor = editormd("test-editormd", {
