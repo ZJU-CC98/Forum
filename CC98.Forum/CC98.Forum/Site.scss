@@ -383,6 +383,8 @@ body {
 }
 
 .good {
+    height:2rem;
+    align-items:center;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -657,7 +659,7 @@ a {
     width: 6rem;
     background-color: #FF6A6A;
     margin-right: 0.63rem;
-    margin-left: 7.5rem;
+    margin-left: 2.5rem;
     margin-top:2.5rem;
     height: 2.5rem;
     cursor: pointer;

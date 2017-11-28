@@ -1,8 +1,8 @@
 ﻿import * as React from 'react';
-import { HotTopic } from '../Props/AppProps'
-import * as State from '../States/AppState'
-import * as Utility from '../Utility'
-import { UbbContainer } from './UbbContainer';
+import { HotTopic } from '../../Props/AppProps'
+import * as State from '../../States/AppState'
+import * as Utility from '../../Utility'
+import { UbbContainer } from '.././UbbContainer';
 import { match } from 'react-router';
 import {
     BrowserRouter as Router, 

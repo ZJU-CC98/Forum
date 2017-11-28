@@ -5,20 +5,20 @@ import {
 	BrowserRouter as Router,
 	Route
 } from 'react-router-dom';
-import { Post } from './post';
-import { List } from './List';
-import { CurUserPost } from './CurUserPost';
-import { BoardList } from './BoardList';
+import { Post } from './Topic/Topic';
+import { List } from './Board/Board';
+import { CurUserPost } from './Topic/Topic-Trace';
+import { BoardList } from './Board/BoardList';
 import { UserCenter } from './UserCenter/UserCenter';
 import { Message } from './Message';
-import { AllNewTopic } from './AllNewTopic';
+import { AllNewTopic } from './Topic/Topic-New';
 import { Focus } from './Focus';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { MainPage } from './MainPage';
 import { User } from './UserCenter/User';
 import { LogOn } from './LogOn';
-import { CreateTopic } from './CreateTopic';
+import { CreateTopic } from './Topic/Topic-CreateTopic';
 import * as Status from './Status';
 import { UbbContainer } from './UbbContainer';
 import { Search } from './Search';
