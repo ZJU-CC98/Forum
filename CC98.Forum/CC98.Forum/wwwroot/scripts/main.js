@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 28);
+/******/ 	return __webpack_require__(__webpack_require__.s = 29);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -122,7 +122,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var State = __webpack_require__(4);
 var React = __webpack_require__(0);
 //import { browserHistory } from 'react-router';
-var List_1 = __webpack_require__(10);
+var List_1 = __webpack_require__(11);
 function getBoardTopicAsync(curPage, boardid, router) {
     return __awaiter(this, void 0, void 0, function () {
         var token, startPage, endPage, totalTopicCountResponse, totalTopicCountJson, totalTopicCount, topicNumberInPage, boardtopics, url, headers, response, data, i, e_1;
@@ -801,7 +801,7 @@ exports.getCurUserTopicContent = getCurUserTopicContent;
  * 获取全站新帖
  * @param curPage
  */
-function getAllNewTopic(curNum, router) {
+function getAllNewTopic(from, router) {
     return __awaiter(this, void 0, void 0, function () {
         var size, token, headers, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, _c, index, index, index, index, e_10;
         return __generator(this, function (_d) {
@@ -809,13 +809,13 @@ function getAllNewTopic(curNum, router) {
                 case 0:
                     _d.trys.push([0, 12, , 13]);
                     size = 20;
-                    if (curNum > 80) {
-                        size = 100 - curNum;
+                    if (from > 80) {
+                        size = 100 - from;
                     }
                     token = getLocalStorage("accessToken");
                     headers = new Headers();
                     headers.append('Authorization', token);
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/new?from=" + curNum + "&size=" + size, { headers: headers })];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/new?from=" + from + "&size=" + size, { headers: headers })];
                 case 1:
                     response = _d.sent();
                     if (response.status === 401) {
@@ -911,24 +911,148 @@ function getAllNewTopic(curNum, router) {
 }
 exports.getAllNewTopic = getAllNewTopic;
 /**
- * 获取关注版面新帖
+ * 获取某个关注版面帖子
  * @param curPage
  */
-function getFocusTopic(curNum, router) {
+function getFocusBoardTopic(boardId, boardName, from, router) {
     return __awaiter(this, void 0, void 0, function () {
         var size, token, headers, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, _c, index, index, index, index, e_11;
         return __generator(this, function (_d) {
             switch (_d.label) {
                 case 0:
-                    _d.trys.push([0, 12, , 13]);
+                    _d.trys.push([0, 17, , 18]);
                     size = 20;
-                    if (curNum > 80) {
-                        size = 100 - curNum;
+                    if (from > 80) {
+                        size = 100 - from;
                     }
                     token = getLocalStorage("accessToken");
                     headers = new Headers();
                     headers.append('Authorization', token);
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/customboards?from=" + curNum + "&size=" + size, { headers: headers })];
+                    response = void 0;
+                    if (!(boardId == 0)) return [3 /*break*/, 2];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/followusers?from=" + from + "&size=" + size, { headers: headers })];
+                case 1:
+                    response = _d.sent();
+                    return [3 /*break*/, 4];
+                case 2: return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/board/" + boardId + "?from=" + from + "&size=" + size, { headers: headers })];
+                case 3:
+                    response = _d.sent();
+                    _d.label = 4;
+                case 4:
+                    if (response.status === 401) {
+                        //window.location.href = "/status/UnauthorizedTopic";
+                    }
+                    if (response.status === 500) {
+                        //window.location.href = "/status/ServerError";
+                    }
+                    return [4 /*yield*/, response.json()];
+                case 5:
+                    newTopic = _d.sent();
+                    _a = [];
+                    for (_b in newTopic)
+                        _a.push(_b);
+                    _i = 0;
+                    _d.label = 6;
+                case 6:
+                    if (!(_i < _a.length)) return [3 /*break*/, 16];
+                    i = _a[_i];
+                    if (!newTopic[i].userId) return [3 /*break*/, 14];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/follow/fanCount?userid=" + newTopic[i].userId)];
+                case 7:
+                    userFan0 = _d.sent();
+                    if (userFan0.status === 404) {
+                        //window.location.href = "/status/NotFoundUser";
+                    }
+                    if (userFan0.status === 500) {
+                        //window.location.href = "/status/ServerError";
+                    }
+                    return [4 /*yield*/, userFan0.json()];
+                case 8:
+                    userFan1 = _d.sent();
+                    newTopic[i].fanCount = userFan1;
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/basic/" + newTopic[i].userId)];
+                case 9:
+                    userInfo0 = _d.sent();
+                    if (userInfo0.status === 404) {
+                        //window.location.href = "/status/NotFoundUser";
+                    }
+                    if (userInfo0.status === 500) {
+                        //window.location.href = "/status/ServerError";
+                    }
+                    return [4 /*yield*/, userInfo0.json()];
+                case 10:
+                    userInfo1 = _d.sent();
+                    newTopic[i].portraitUrl = userInfo1.portraitUrl;
+                    if (!(boardId == 0)) return [3 /*break*/, 12];
+                    _c = newTopic[i];
+                    return [4 /*yield*/, getBoardName(newTopic[i].boardId, router)];
+                case 11:
+                    _c.boardName = _d.sent();
+                    return [3 /*break*/, 13];
+                case 12:
+                    newTopic[i].boardName = boardName;
+                    _d.label = 13;
+                case 13:
+                    //阅读数转换
+                    if (newTopic[i].hitCount > 10000) {
+                        if (newTopic[i].hitCount > 100000) {
+                            index = parseInt("" + newTopic[i].hitCount / 10000);
+                            newTopic[i].hitCount = index + "\u4E07";
+                        }
+                        else {
+                            index = parseInt("" + newTopic[i].hitCount / 1000) / 10;
+                            newTopic[i].hitCount = index + "\u4E07";
+                        }
+                    }
+                    //回复数转换
+                    if (newTopic[i].replyCount > 10000) {
+                        if (newTopic[i].replyCount > 100000) {
+                            index = parseInt("" + newTopic[i].replyCount / 10000);
+                            newTopic[i].replyCount = index + "\u4E07";
+                        }
+                        else {
+                            index = parseInt("" + newTopic[i].replyCount / 1000) / 10;
+                            newTopic[i].replyCount = index + "\u4E07";
+                        }
+                    }
+                    return [3 /*break*/, 15];
+                case 14:
+                    newTopic[i].fanCount = 0;
+                    newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+                    newTopic[i].userName = "匿名";
+                    newTopic[i].boardName = "心灵之约";
+                    _d.label = 15;
+                case 15:
+                    _i++;
+                    return [3 /*break*/, 6];
+                case 16: return [2 /*return*/, newTopic];
+                case 17:
+                    e_11 = _d.sent();
+                    return [3 /*break*/, 18];
+                case 18: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getFocusBoardTopic = getFocusBoardTopic;
+/**
+ * 获取全部关注版面帖子
+ */
+function getFocusTopic(from, router) {
+    return __awaiter(this, void 0, void 0, function () {
+        var size, token, headers, response, newTopic, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, _c, index, index, index, index, e_12;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
+                case 0:
+                    _d.trys.push([0, 12, , 13]);
+                    size = 20;
+                    if (from > 80) {
+                        size = 100 - from;
+                    }
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append('Authorization', token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/customboards?from=" + from + "&size=" + size, { headers: headers })];
                 case 1:
                     response = _d.sent();
                     if (response.status === 401) {
@@ -1015,7 +1139,7 @@ function getFocusTopic(curNum, router) {
                     return [3 /*break*/, 3];
                 case 11: return [2 /*return*/, newTopic];
                 case 12:
-                    e_11 = _d.sent();
+                    e_12 = _d.sent();
                     return [3 /*break*/, 13];
                 case 13: return [2 /*return*/];
             }
@@ -1095,12 +1219,22 @@ function getLocalStorage(key) {
 }
 exports.getLocalStorage = getLocalStorage;
 function removeLocalStorage(key) {
-    localStorage.removeItem(key);
+    if (key != 'all') {
+        localStorage.removeItem(key);
+    }
+    else {
+        localStorage.clear();
+    }
     return;
 }
 exports.removeLocalStorage = removeLocalStorage;
 function removeStorage(key) {
-    sessionStorage.removeItem(key);
+    if (key != 'all') {
+        sessionStorage.removeItem(key);
+    }
+    else {
+        sessionStorage.clear();
+    }
     return;
 }
 exports.removeStorage = removeStorage;
@@ -1109,7 +1243,7 @@ exports.removeStorage = removeStorage;
 */
 function getBoardName(boardId, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var boardName, token, headers, url, res, data, e_12;
+        var boardName, token, headers, url, res, data, e_13;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1138,7 +1272,7 @@ function getBoardName(boardId, router) {
                     _a.label = 3;
                 case 3: return [2 /*return*/, boardName];
                 case 4:
-                    e_12 = _a.sent();
+                    e_13 = _a.sent();
                     return [3 /*break*/, 5];
                 case 5: return [2 /*return*/];
             }
@@ -1159,7 +1293,7 @@ exports.isLogOn = isLogOn;
 */
 function getRecentContact(from, size, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, headers, response, recentContactId, url, i, response1, recentContact, _a, _b, _i, i, _c, e_13;
+        var token, headers, response, recentContactId, url, i, response1, recentContact, _a, _b, _i, i, _c, e_14;
         return __generator(this, function (_d) {
             switch (_d.label) {
                 case 0:
@@ -1220,7 +1354,7 @@ function getRecentContact(from, size, router) {
                     console.log(recentContact);
                     return [2 /*return*/, recentContact];
                 case 9:
-                    e_13 = _d.sent();
+                    e_14 = _d.sent();
                     return [3 /*break*/, 10];
                 case 10: return [2 /*return*/];
             }
@@ -1233,7 +1367,7 @@ exports.getRecentContact = getRecentContact;
 */
 function getRecentMessage(userId, from, size, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, headers, response0, response1, recentMessage, e_14;
+        var token, headers, response0, response1, recentMessage, e_15;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1258,7 +1392,7 @@ function getRecentMessage(userId, from, size, router) {
                     recentMessage = sortRecentMessage(response1);
                     return [2 /*return*/, recentMessage];
                 case 3:
-                    e_14 = _a.sent();
+                    e_15 = _a.sent();
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -1271,10 +1405,8 @@ exports.getRecentMessage = getRecentMessage;
  * @param recentMessage
  */
 function sortRecentMessage(recentMessage) {
-    console.log("走远第0步");
     console.log(recentMessage);
     if (recentMessage == [] || !recentMessage) {
-        console.log("要原样返回了");
         return recentMessage;
     }
     else {
@@ -1312,7 +1444,7 @@ exports.transerTime = transerTime;
  */
 function sortContactList(recentContact, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var urlId, chatManId, i, indexData, response, chatMan, flag, e_15, _a, chatContact, urlName, chatManName, i, indexData, response0, response1, flag, e_16, chatMan, _b, chatContact;
+        var urlId, chatManId, i, indexData, response, chatMan, flag, e_16, _a, chatContact, urlName, chatManName, i, indexData, response0, response1, flag, e_17, chatMan, _b, chatContact;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
@@ -1354,7 +1486,7 @@ function sortContactList(recentContact, router) {
                     chatMan = _c.sent();
                     return [3 /*break*/, 7];
                 case 6:
-                    e_15 = _c.sent();
+                    e_16 = _c.sent();
                     ////window.location.href="/status/Disconnected");
                     flag = 0;
                     return [3 /*break*/, 7];
@@ -1407,7 +1539,7 @@ function sortContactList(recentContact, router) {
                     response1 = _c.sent();
                     return [3 /*break*/, 17];
                 case 16:
-                    e_16 = _c.sent();
+                    e_17 = _c.sent();
                     ////window.location.href="/status/Disconnected");
                     flag = 0;
                     return [3 /*break*/, 17];
@@ -1432,7 +1564,7 @@ function sortContactList(recentContact, router) {
 exports.sortContactList = sortContactList;
 function getTotalReplyCount(topicid, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, headers, replyCountResponse, replyCountJson, replyCount, e_17;
+        var token, headers, replyCountResponse, replyCountJson, replyCount, e_18;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1464,7 +1596,7 @@ function getTotalReplyCount(topicid, router) {
                     }
                     return [3 /*break*/, 4];
                 case 3:
-                    e_17 = _a.sent();
+                    e_18 = _a.sent();
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -1474,7 +1606,7 @@ function getTotalReplyCount(topicid, router) {
 exports.getTotalReplyCount = getTotalReplyCount;
 function getCategory(topicid, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, headers, response, data, topicName, boardId, boardResponse, boardData, boardName, body, e_18;
+        var token, headers, response, data, topicName, boardId, boardResponse, boardData, boardName, body, e_19;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1509,7 +1641,7 @@ function getCategory(topicid, router) {
                     body = { boardId: boardId, topicId: topicid, boardName: boardName, title: topicName };
                     return [2 /*return*/, body];
                 case 5:
-                    e_18 = _a.sent();
+                    e_19 = _a.sent();
                     return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];
             }
@@ -1519,7 +1651,7 @@ function getCategory(topicid, router) {
 exports.getCategory = getCategory;
 function getUserDetails(userName, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, headers, url, message, data, body, e_19;
+        var token, headers, url, message, data, body, e_20;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1544,7 +1676,7 @@ function getUserDetails(userName, router) {
                     body = { portraitUrl: data.portraitUrl, userName: data.name, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle, isFollowing: data.isFollowing };
                     return [2 /*return*/, body];
                 case 3:
-                    e_19 = _a.sent();
+                    e_20 = _a.sent();
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -1554,7 +1686,7 @@ function getUserDetails(userName, router) {
 exports.getUserDetails = getUserDetails;
 function getLikeState(topicid, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, headers, topic, postId, response, data, e_20;
+        var token, headers, topic, postId, response, data, e_21;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1586,7 +1718,7 @@ function getLikeState(topicid, router) {
                     return [2 /*return*/, data];
                 case 5: return [3 /*break*/, 7];
                 case 6:
-                    e_20 = _a.sent();
+                    e_21 = _a.sent();
                     return [3 /*break*/, 7];
                 case 7: return [2 /*return*/];
             }
@@ -1596,7 +1728,7 @@ function getLikeState(topicid, router) {
 exports.getLikeState = getLikeState;
 function refreshLikeState(topicId, postId, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, headers, response, data, e_21;
+        var token, headers, response, data, e_22;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1624,7 +1756,7 @@ function refreshLikeState(topicId, postId, router) {
                     data = _a.sent();
                     return [2 /*return*/, data];
                 case 3:
-                    e_21 = _a.sent();
+                    e_22 = _a.sent();
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -1634,7 +1766,7 @@ function refreshLikeState(topicId, postId, router) {
 exports.refreshLikeState = refreshLikeState;
 function sendTopic(topicId, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var url, c, content, contentJson, token, myHeaders, mes, e_22;
+        var url, c, content, contentJson, token, myHeaders, mes, e_23;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1675,7 +1807,7 @@ function sendTopic(topicId, router) {
                     }
                     return [3 /*break*/, 3];
                 case 2:
-                    e_22 = _a.sent();
+                    e_23 = _a.sent();
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }
@@ -1685,7 +1817,7 @@ function sendTopic(topicId, router) {
 exports.sendTopic = sendTopic;
 function getListCategory(boardId, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, headers, boardResponse, boardData, boardName, e_23;
+        var token, headers, boardResponse, boardData, boardName, e_24;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1708,7 +1840,7 @@ function getListCategory(boardId, router) {
                     boardName = boardData.name;
                     return [2 /*return*/, boardName];
                 case 3:
-                    e_23 = _a.sent();
+                    e_24 = _a.sent();
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -1718,7 +1850,7 @@ function getListCategory(boardId, router) {
 exports.getListCategory = getListCategory;
 function getBoardMessage(boardId, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, headers, url, response, data, e_24;
+        var token, headers, url, response, data, e_25;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1741,7 +1873,7 @@ function getBoardMessage(boardId, router) {
                     data = _a.sent();
                     return [2 /*return*/, data];
                 case 3:
-                    e_24 = _a.sent();
+                    e_25 = _a.sent();
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -1751,7 +1883,7 @@ function getBoardMessage(boardId, router) {
 exports.getBoardMessage = getBoardMessage;
 function getListTotalPage(boardId, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, headers, totalTopicCountResponse, totalTopicCountJson, totalTopicCount, e_25;
+        var token, headers, totalTopicCountResponse, totalTopicCountJson, totalTopicCount, e_26;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1774,7 +1906,7 @@ function getListTotalPage(boardId, router) {
                     totalTopicCount = totalTopicCountJson.topicCount;
                     return [2 /*return*/, (totalTopicCount - totalTopicCount % 20) / 20 + 1];
                 case 3:
-                    e_25 = _a.sent();
+                    e_26 = _a.sent();
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -1784,7 +1916,7 @@ function getListTotalPage(boardId, router) {
 exports.getListTotalPage = getListTotalPage;
 function getBasicBoardMessage(boardId, curPage, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, headers, response, json, bigPaper, page, boardid, totalPage, data, e_26;
+        var token, headers, response, json, bigPaper, page, boardid, totalPage, data, e_27;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1820,7 +1952,7 @@ function getBasicBoardMessage(boardId, curPage, router) {
                     data = { bigPaper: bigPaper, totalPage: totalPage, page: page };
                     return [2 /*return*/, data];
                 case 4:
-                    e_26 = _a.sent();
+                    e_27 = _a.sent();
                     return [3 /*break*/, 5];
                 case 5: return [2 /*return*/];
             }
@@ -1830,7 +1962,7 @@ function getBasicBoardMessage(boardId, curPage, router) {
 exports.getBasicBoardMessage = getBasicBoardMessage;
 function getCurUserTotalReplyPage(topicId, userId, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, headers, replyCountResponse, replyCountJson, replyCount, e_27;
+        var token, headers, replyCountResponse, replyCountJson, replyCount, e_28;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1862,7 +1994,7 @@ function getCurUserTotalReplyPage(topicId, userId, router) {
                     }
                     return [3 /*break*/, 4];
                 case 3:
-                    e_27 = _a.sent();
+                    e_28 = _a.sent();
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -1972,7 +2104,7 @@ exports.isBottom = isBottom;
  */
 function uploadFile(file) {
     return __awaiter(this, void 0, void 0, function () {
-        var url, token, myHeaders, formdata, res, data, e_28;
+        var url, token, myHeaders, formdata, res, data, e_29;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -2005,7 +2137,7 @@ function uploadFile(file) {
                     }
                     return [3 /*break*/, 4];
                 case 3:
-                    e_28 = _a.sent();
+                    e_29 = _a.sent();
                     return [2 /*return*/, {
                             isSuccess: false,
                             content: ''
@@ -2022,7 +2154,7 @@ exports.uploadFile = uploadFile;
  */
 function followUser(userId) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, url, headers, res, e_29;
+        var token, url, headers, res, e_30;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -2045,7 +2177,7 @@ function followUser(userId) {
                     }
                     return [3 /*break*/, 3];
                 case 2:
-                    e_29 = _a.sent();
+                    e_30 = _a.sent();
                     return [2 /*return*/, false];
                 case 3: return [2 /*return*/];
             }
@@ -2059,7 +2191,7 @@ exports.followUser = followUser;
  */
 function unfollowUser(userId) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, url, headers, res, e_30;
+        var token, url, headers, res, e_31;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -2082,7 +2214,7 @@ function unfollowUser(userId) {
                     }
                     return [3 /*break*/, 3];
                 case 2:
-                    e_30 = _a.sent();
+                    e_31 = _a.sent();
                     return [2 /*return*/, false];
                 case 3: return [2 /*return*/];
             }
@@ -2182,6 +2314,156 @@ function GetSaveTopics(boardId, totalPage, curPage) {
     });
 }
 exports.GetSaveTopics = GetSaveTopics;
+/**
+ * 搜索指定关键词主题
+ * @param boardId
+ * @param words
+ * @param from
+ * @param rouer
+ */
+function getSearchTopic(boardId, words, from, router) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, bodyCotent, myHeaders, size, newTopic, response, response, _a, _b, _i, i, userFan0, userFan1, userInfo0, userInfo1, _c, index, index, index, index, e_32;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
+                case 0:
+                    console.log("开始获取搜索结果了");
+                    _d.label = 1;
+                case 1:
+                    _d.trys.push([1, 19, , 20]);
+                    token = getLocalStorage("accessToken");
+                    bodyCotent = JSON.stringify(words);
+                    console.log("下面是body");
+                    console.log(bodyCotent);
+                    myHeaders = new Headers();
+                    myHeaders.append('Authorization', token);
+                    myHeaders.append('content-type', 'application/json');
+                    size = 20;
+                    newTopic = void 0;
+                    if (!(boardId == 0)) return [3 /*break*/, 4];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/search?from=" + from + "&size=" + size, {
+                            method: 'POST',
+                            headers: myHeaders,
+                            body: bodyCotent
+                        })];
+                case 2:
+                    response = _d.sent();
+                    if (response.status === 401) {
+                        //window.location.href = "/status/UnauthorizedTopic";
+                    }
+                    if (response.status === 500) {
+                        //window.location.href = "/status/ServerError";
+                    }
+                    return [4 /*yield*/, response.json()];
+                case 3:
+                    newTopic = _d.sent();
+                    return [3 /*break*/, 7];
+                case 4:
+                    console.log("http://apitest.niconi.cc/topic/search/board/" + boardId + "?from=" + from + "&size=" + size);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/search/board/" + boardId + "?from=" + from + "&size=" + size, {
+                            method: 'POST',
+                            headers: myHeaders,
+                            body: bodyCotent
+                        })];
+                case 5:
+                    response = _d.sent();
+                    if (response.status === 401) {
+                        //window.location.href = "/status/UnauthorizedTopic";
+                    }
+                    if (response.status === 500) {
+                        //window.location.href = "/status/ServerError";
+                    }
+                    return [4 /*yield*/, response.json()];
+                case 6:
+                    newTopic = _d.sent();
+                    _d.label = 7;
+                case 7:
+                    if (!(newTopic && newTopic != [])) return [3 /*break*/, 17];
+                    _a = [];
+                    for (_b in newTopic)
+                        _a.push(_b);
+                    _i = 0;
+                    _d.label = 8;
+                case 8:
+                    if (!(_i < _a.length)) return [3 /*break*/, 16];
+                    i = _a[_i];
+                    if (!newTopic[i].userId) return [3 /*break*/, 14];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/follow/fanCount?userid=" + newTopic[i].userId)];
+                case 9:
+                    userFan0 = _d.sent();
+                    if (userFan0.status === 404) {
+                        //window.location.href = "/status/NotFoundUser";
+                    }
+                    if (userFan0.status === 500) {
+                        //window.location.href = "/status/ServerError";
+                    }
+                    return [4 /*yield*/, userFan0.json()];
+                case 10:
+                    userFan1 = _d.sent();
+                    newTopic[i].fanCount = userFan1;
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/basic/" + newTopic[i].userId)];
+                case 11:
+                    userInfo0 = _d.sent();
+                    if (userInfo0.status === 404) {
+                        //window.location.href = "/status/NotFoundUser";
+                    }
+                    if (userInfo0.status === 500) {
+                        //window.location.href = "/status/ServerError";
+                    }
+                    return [4 /*yield*/, userInfo0.json()];
+                case 12:
+                    userInfo1 = _d.sent();
+                    newTopic[i].portraitUrl = userInfo1.portraitUrl;
+                    //获取所在版面名称
+                    _c = newTopic[i];
+                    return [4 /*yield*/, getBoardName(newTopic[i].boardId, router)];
+                case 13:
+                    //获取所在版面名称
+                    _c.boardName = _d.sent();
+                    //阅读数转换
+                    if (newTopic[i].hitCount > 10000) {
+                        if (newTopic[i].hitCount > 100000) {
+                            index = parseInt("" + newTopic[i].hitCount / 10000);
+                            newTopic[i].hitCount = index + "\u4E07";
+                        }
+                        else {
+                            index = parseInt("" + newTopic[i].hitCount / 1000) / 10;
+                            newTopic[i].hitCount = index + "\u4E07";
+                        }
+                    }
+                    //回复数转换
+                    if (newTopic[i].replyCount > 10000) {
+                        if (newTopic[i].replyCount > 100000) {
+                            index = parseInt("" + newTopic[i].replyCount / 10000);
+                            newTopic[i].replyCount = index + "\u4E07";
+                        }
+                        else {
+                            index = parseInt("" + newTopic[i].replyCount / 1000) / 10;
+                            newTopic[i].replyCount = index + "\u4E07";
+                        }
+                    }
+                    return [3 /*break*/, 15];
+                case 14:
+                    newTopic[i].fanCount = 0;
+                    newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+                    newTopic[i].userName = "匿名";
+                    newTopic[i].boardName = "心灵之约";
+                    _d.label = 15;
+                case 15:
+                    _i++;
+                    return [3 /*break*/, 8];
+                case 16: return [2 /*return*/, newTopic];
+                case 17: return [2 /*return*/, null];
+                case 18: return [3 /*break*/, 20];
+                case 19:
+                    e_32 = _d.sent();
+                    return [3 /*break*/, 20];
+                case 20: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getSearchTopic = getSearchTopic;
 
 
 /***/ }),
@@ -3438,7 +3720,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(32);
+var Ubb = __webpack_require__(33);
 /**
  * 定义 UBBContainer 组件需要使用的属性。
  */
@@ -3551,21 +3833,22 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var post_1 = __webpack_require__(12);
-var List_1 = __webpack_require__(10);
-var CurUserPost_1 = __webpack_require__(13);
-var BoardList_1 = __webpack_require__(14);
-var UserCenter_1 = __webpack_require__(15);
-var Message_1 = __webpack_require__(17);
-var AllNewTopic_1 = __webpack_require__(18);
+var post_1 = __webpack_require__(13);
+var List_1 = __webpack_require__(11);
+var CurUserPost_1 = __webpack_require__(14);
+var BoardList_1 = __webpack_require__(15);
+var UserCenter_1 = __webpack_require__(16);
+var Message_1 = __webpack_require__(18);
+var AllNewTopic_1 = __webpack_require__(19);
 var Focus_1 = __webpack_require__(20);
 var Header_1 = __webpack_require__(21);
 var Footer_1 = __webpack_require__(22);
 var MainPage_1 = __webpack_require__(23);
 var User_1 = __webpack_require__(24);
-var LogOn_1 = __webpack_require__(11);
+var LogOn_1 = __webpack_require__(12);
 var CreateTopic_1 = __webpack_require__(25);
 var Status = __webpack_require__(26);
+var Search_1 = __webpack_require__(27);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -3597,6 +3880,7 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { path: "/newtopics", component: AllNewTopic_1.AllNewTopic }),
                     React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }),
                     React.createElement(react_router_dom_1.Route, { path: "/logon", component: LogOn_1.LogOn }),
+                    React.createElement(react_router_dom_1.Route, { path: "/search", component: Search_1.Search }),
                     React.createElement(react_router_dom_1.Route, { path: "/createtopic/:boardId", component: CreateTopic_1.CreateTopic }),
                     React.createElement(react_router_dom_1.Route, { path: "/status/logout", component: Status.LogOut }),
                     React.createElement(react_router_dom_1.Route, { path: "/status/UnauthorizedBoard", component: Status.UnauthorizedBoard }),
@@ -3617,6 +3901,96 @@ exports.App = App;
 
 /***/ }),
 /* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var React = __webpack_require__(0);
+/**
+ * 我关注的某个版面的单个主题
+ */
+var FocusTopicSingle = /** @class */ (function (_super) {
+    __extends(FocusTopicSingle, _super);
+    function FocusTopicSingle() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    FocusTopicSingle.prototype.render = function () {
+        var topicUrl = "/topic/" + this.props.id;
+        var boardUrl = "/list/" + this.props.boardId;
+        return (React.createElement("div", { className: "focus-topic" },
+            React.createElement(PortaritrUrl, { userId: this.props.userId, portraitUrl: this.props.portraitUrl }),
+            React.createElement("div", { className: "focus-topic-info1" },
+                React.createElement("div", { className: "focus-topic-authorInfo" },
+                    React.createElement("div", { className: "focus-topic-blackText" }, this.props.userName),
+                    React.createElement("div", { className: "focus-topic-redText" }, this.props.fanCount),
+                    React.createElement("div", { className: "focus-topic-blackText" }, "\u7C89\u4E1D")),
+                React.createElement("div", { className: "focus-topic-title" },
+                    React.createElement("a", { href: topicUrl, target: "_blank" }, this.props.title))),
+            React.createElement("div", { className: "focus-topic-info2" },
+                React.createElement("div", { className: "focus-topic-board" },
+                    React.createElement("a", { href: boardUrl, target: "_blank" }, this.props.boardName),
+                    "\u00A0\u00A0/\u00A0\u00A0",
+                    moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')),
+                React.createElement("div", { className: "focus-topic-response" },
+                    React.createElement("div", null,
+                        React.createElement("i", { className: "fa fa-thumbs-o-up", "aria-hidden": "true" }),
+                        this.props.likeCount),
+                    React.createElement("div", null,
+                        React.createElement("i", { className: "fa fa-thumbs-o-down", "aria-hidden": "true" }),
+                        this.props.dislikeCount),
+                    React.createElement("div", null,
+                        React.createElement("i", { className: "fa fa-commenting-o", "aria-hidden": "true" }),
+                        this.props.replyCount),
+                    React.createElement("div", null,
+                        React.createElement("i", { className: "fa fa-eye", "aria-hidden": "true" }),
+                        this.props.hitCount)))));
+    };
+    return FocusTopicSingle;
+}(React.Component));
+exports.FocusTopicSingle = FocusTopicSingle;
+//返回可点击或者不可点击的头像
+var PortaritrUrl = /** @class */ (function (_super) {
+    __extends(PortaritrUrl, _super);
+    function PortaritrUrl() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    PortaritrUrl.prototype.render = function () {
+        if (this.props.userId) {
+            var userUrl = "/user/" + this.props.userId;
+            return (React.createElement("a", { href: userUrl, target: "_blank" },
+                React.createElement("img", { className: "focus-topic-portraitUrl", src: this.props.portraitUrl })));
+        }
+        else {
+            return React.createElement("img", { className: "focus-topic-portraitUrl", src: this.props.portraitUrl });
+        }
+    };
+    return PortaritrUrl;
+}(React.Component));
+exports.PortaritrUrl = PortaritrUrl;
+var PortaritrUrlProps = /** @class */ (function () {
+    function PortaritrUrlProps() {
+    }
+    return PortaritrUrlProps;
+}());
+exports.PortaritrUrlProps = PortaritrUrlProps;
+
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3719,7 +4093,7 @@ var UserCenterPageCountProps = /** @class */ (function () {
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4421,7 +4795,7 @@ exports.TopicTitleAndContent = TopicTitleAndContent;
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4464,7 +4838,7 @@ exports.LogOn = LogOn;
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6151,7 +6525,7 @@ exports.SendTopic = SendTopic;
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6205,7 +6579,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(3);
-var Post = __webpack_require__(58);
+var Post = __webpack_require__(59);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -6497,7 +6871,7 @@ exports.TopicPagerDown = TopicPagerDown;
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6723,7 +7097,7 @@ exports.ChildBoard = ChildBoard;
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6744,8 +7118,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserCenterNavigation_1 = __webpack_require__(59);
-var UserCenterRouter_1 = __webpack_require__(60);
+var UserCenterNavigation_1 = __webpack_require__(60);
+var UserCenterRouter_1 = __webpack_require__(61);
 /**
  * 用户中心页面
  */
@@ -6770,7 +7144,7 @@ exports.UserCenter = UserCenter;
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6807,7 +7181,7 @@ exports.UserCenterExactAvatar = UserCenterExactAvatar;
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6824,10 +7198,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var MessageMessage_1 = __webpack_require__(66);
-var MessageResponse_1 = __webpack_require__(71);
-var MessageAttme_1 = __webpack_require__(72);
-var MessageSystem_1 = __webpack_require__(73);
+var MessageMessage_1 = __webpack_require__(67);
+var MessageResponse_1 = __webpack_require__(72);
+var MessageAttme_1 = __webpack_require__(73);
+var MessageSystem_1 = __webpack_require__(74);
 var react_router_dom_1 = __webpack_require__(3);
 /**
  * 网站的主页面对象。
@@ -6848,85 +7222,18 @@ var Message = /** @class */ (function (_super) {
                                 React.createElement(react_router_dom_1.NavLink, { to: "/message/response" }, "\u56DE\u590D\u6211\u7684")),
                             React.createElement("div", { id: "attme" },
                                 React.createElement(react_router_dom_1.NavLink, { to: "/message/attme" }, "@\u6211\u7684")),
-                            React.createElement("div", { id: "likes" },
-                                React.createElement(react_router_dom_1.NavLink, { to: "/message/likes" }, "\u6536\u5230\u7684\u8D5E")),
                             React.createElement("div", { id: "system" },
                                 React.createElement(react_router_dom_1.NavLink, { to: "/message/system" }, "\u7CFB\u7EDF\u901A\u77E5")),
                             React.createElement("div", { id: "message" },
                                 React.createElement(react_router_dom_1.NavLink, { to: "/message/message" }, "\u6211\u7684\u79C1\u4FE1"))),
                         React.createElement(react_router_dom_1.Route, { path: "/message/response", component: MessageResponse_1.MessageResponse }),
                         React.createElement(react_router_dom_1.Route, { path: "/message/attme", component: MessageAttme_1.MessageAttme }),
-                        React.createElement(react_router_dom_1.Route, { path: "/message/likes", component: Likes }),
                         React.createElement(react_router_dom_1.Route, { path: "/message/system", component: MessageSystem_1.MessageSystem }),
                         React.createElement(react_router_dom_1.Route, { path: "/message/message", component: MessageMessage_1.MessageMessage }))))));
     };
     return Message;
 }(React.Component));
 exports.Message = Message;
-//选中效果
-function changeNav(id) {
-    $('.message-nav > div').removeClass('message-nav-focus');
-    $(id).addClass('message-nav-focus');
-}
-exports.changeNav = changeNav;
-var Likes = /** @class */ (function (_super) {
-    __extends(Likes, _super);
-    function Likes() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Likes.prototype.render = function () {
-        changeNav('#likes');
-        return React.createElement("div", null, "\u8FD9\u91CC\u662F\u6211\u6536\u5230\u7684\u8D5E");
-    };
-    return Likes;
-}(React.Component));
-exports.Likes = Likes;
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var React = __webpack_require__(0);
-var AllNewTopicArea_1 = __webpack_require__(74);
-/**
- * 网站的主页面对象。
- */
-var AllNewTopic = /** @class */ (function (_super) {
-    __extends(AllNewTopic, _super);
-    function AllNewTopic() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * 全站新帖列表
-     */
-    AllNewTopic.prototype.render = function () {
-        return (React.createElement("div", { className: "focus-root" },
-            React.createElement("div", { className: "focus" },
-                React.createElement("div", { className: "focus-allNewTopic" },
-                    React.createElement("i", { className: "fa fa-home", "aria-hidden": "true" }),
-                    "\u9996\u9875/\u5168\u7AD9\u65B0\u5E16"),
-                React.createElement(AllNewTopicArea_1.AllNewTopicArea, null))));
-    };
-    return AllNewTopic;
-}(React.Component));
-exports.AllNewTopic = AllNewTopic;
 
 
 /***/ }),
@@ -6945,78 +7252,247 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 // A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
+var FocusTopicSingle_1 = __webpack_require__(9);
+var Utility = __webpack_require__(1);
 /**
- * 我关注的某个版面的单个主题
+ * 表示全站最新主题列表
  */
-var FocusTopicSingle = /** @class */ (function (_super) {
-    __extends(FocusTopicSingle, _super);
-    function FocusTopicSingle() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    FocusTopicSingle.prototype.render = function () {
-        var topicUrl = "/topic/" + this.props.id;
-        var boardUrl = "/list/" + this.props.boardId;
-        return (React.createElement("div", { className: "focus-topic" },
-            React.createElement(PortaritrUrl, { userId: this.props.userId, portraitUrl: this.props.portraitUrl }),
-            React.createElement("div", { className: "focus-topic-info1" },
-                React.createElement("div", { className: "focus-topic-authorInfo" },
-                    React.createElement("div", { className: "focus-topic-blackText" }, this.props.userName),
-                    React.createElement("div", { className: "focus-topic-redText" }, this.props.fanCount),
-                    React.createElement("div", { className: "focus-topic-blackText" }, "\u7C89\u4E1D")),
-                React.createElement("div", { className: "focus-topic-title" },
-                    React.createElement("a", { href: topicUrl, target: "_blank" }, this.props.title))),
-            React.createElement("div", { className: "focus-topic-info2" },
-                React.createElement("div", { className: "focus-topic-board" },
-                    React.createElement("a", { href: boardUrl, target: "_blank" }, this.props.boardName),
-                    "\u00A0\u00A0/\u00A0\u00A0",
-                    moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')),
-                React.createElement("div", { className: "focus-topic-response" },
-                    React.createElement("div", null,
-                        React.createElement("i", { className: "fa fa-thumbs-o-up", "aria-hidden": "true" }),
-                        this.props.likeCount),
-                    React.createElement("div", null,
-                        React.createElement("i", { className: "fa fa-thumbs-o-down", "aria-hidden": "true" }),
-                        this.props.dislikeCount),
-                    React.createElement("div", null,
-                        React.createElement("i", { className: "fa fa-commenting-o", "aria-hidden": "true" }),
-                        this.props.replyCount),
-                    React.createElement("div", null,
-                        React.createElement("i", { className: "fa fa-eye", "aria-hidden": "true" }),
-                        this.props.hitCount)))));
-    };
-    return FocusTopicSingle;
-}(React.Component));
-exports.FocusTopicSingle = FocusTopicSingle;
-//返回可点击或者不可点击的头像
-var PortaritrUrl = /** @class */ (function (_super) {
-    __extends(PortaritrUrl, _super);
-    function PortaritrUrl() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    PortaritrUrl.prototype.render = function () {
-        if (this.props.userId) {
-            var userUrl = "/user/" + this.props.userId;
-            return (React.createElement("a", { href: userUrl, target: "_blank" },
-                React.createElement("img", { className: "focus-topic-portraitUrl", src: this.props.portraitUrl })));
+var AllNewTopic = /** @class */ (function (_super) {
+    __extends(AllNewTopic, _super);
+    /**
+     * 构造函数
+     * @param props
+     */
+    function AllNewTopic(props) {
+        var _this = _super.call(this, props) || this;
+        //先看一下有没有缓存的帖子数据
+        var data = Utility.getStorage("AllNewTopic");
+        if (!data) {
+            data = [];
         }
-        else {
-            return React.createElement("img", { className: "focus-topic-portraitUrl", src: this.props.portraitUrl });
-        }
-    };
-    return PortaritrUrl;
-}(React.Component));
-exports.PortaritrUrl = PortaritrUrl;
-var PortaritrUrlProps = /** @class */ (function () {
-    function PortaritrUrlProps() {
+        _this.state = {
+            data: data,
+            from: 0,
+            loading: true
+        };
+        _this.handleScroll = _this.handleScroll.bind(_this);
+        return _this;
     }
-    return PortaritrUrlProps;
-}());
-exports.PortaritrUrlProps = PortaritrUrlProps;
+    /**
+     * 进入立即获取20条新帖的数据，同时为滚动条添加监听事件
+     */
+    AllNewTopic.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var data, oldData, i;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Utility.getAllNewTopic(this.state.from, this.context.router)];
+                    case 1:
+                        data = _a.sent();
+                        oldData = Utility.getStorage("AllNewTopic");
+                        if (oldData) {
+                            for (i = 0; i < data.length; i++) {
+                                //最新的20条数据跟之前的有重合就组合起来
+                                if (data[i].id == oldData[0].id) {
+                                    data = data.slice(0, i).concat(oldData);
+                                    break;
+                                }
+                            }
+                        }
+                        //最多100条新帖
+                        if (data.length > 100) {
+                            data = data.slice(0, 100);
+                        }
+                        //缓存获取到的数据                      
+                        Utility.setStorage("AllNewTopic", data);
+                        this.setState({ data: data, from: data.length });
+                        //滚动条监听
+                        document.addEventListener('scroll', this.handleScroll);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * 移除DOM时，为滚动条移除监听事件
+     */
+    AllNewTopic.prototype.componentWillUnmount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                document.removeEventListener('scroll', this.handleScroll);
+                return [2 /*return*/];
+            });
+        });
+    };
+    /**
+     * 处理滚动的函数
+     */
+    AllNewTopic.prototype.handleScroll = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var newData, err_1, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(isBottom() && this.state.loading)) return [3 /*break*/, 5];
+                        /**
+                        *查看新帖数目大于100条时不再继续加载
+                        */
+                        if (this.state.from >= 99) {
+                            $('#focus-topic-loading').addClass('displaynone');
+                            $('#focus-topic-loaddone').removeClass('displaynone');
+                            return [2 /*return*/];
+                        }
+                        /**
+                        *发出第一条fetch请求前将this.state.loading设置为false，防止后面重复发送fetch请求
+                        */
+                        this.setState({ loading: false });
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, Utility.getAllNewTopic(this.state.from, this.context.router)];
+                    case 2:
+                        newData = _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        err_1 = _a.sent();
+                        /**
+                        *如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
+                        */
+                        this.setState({ loading: true });
+                        return [2 /*return*/];
+                    case 4:
+                        data = this.state.data.concat(newData);
+                        this.setState({ data: data, from: data.length, loading: true });
+                        Utility.setStorage("AllNewTopic", data);
+                        _a.label = 5;
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * 将主题排列好
+     */
+    AllNewTopic.prototype.render = function () {
+        return (React.createElement("div", { className: "focus-root" },
+            React.createElement("div", { className: "focus" },
+                React.createElement("div", { className: "focus-allNewTopic" },
+                    React.createElement("i", { className: "fa fa-home", "aria-hidden": "true" }),
+                    "\u9996\u9875/\u5168\u7AD9\u65B0\u5E16"),
+                React.createElement("div", { className: "focus-topic-area" },
+                    React.createElement("div", { className: "focus-topic-topicArea" }, this.state.data.map(coverFocusPost)),
+                    React.createElement("div", { className: "focus-topic-loading", id: "focus-topic-loading" },
+                        React.createElement("img", { src: "http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif" })),
+                    React.createElement("div", { className: "focus-topic-loaddone displaynone", id: "focus-topic-loaddone" }, "\u6CA1\u6709\u66F4\u591A\u5E16\u5B50\u5566~")))));
+    };
+    return AllNewTopic;
+}(React.Component));
+exports.AllNewTopic = AllNewTopic;
+/**
+* 单个主题数据转换成单个主题组件
+*/
+function coverFocusPost(item) {
+    return React.createElement(FocusTopicSingle_1.FocusTopicSingle, { title: item.title, hitCount: item.hitCount, id: item.id, boardId: item.boardId, boardName: item.boardName, replyCount: item.replyCount, userId: item.userId, userName: item.userName, portraitUrl: item.portraitUrl, time: item.time, likeCount: item.likeCount, dislikeCount: item.dislikeCount, fanCount: item.fanCount });
+}
+/**
+*滚动条在Y轴上的滚动距离
+*/
+function getScrollTop() {
+    var scrollTop = 0;
+    var bodyScrollTop = 0;
+    var documentScrollTop = 0;
+    if (document.body) {
+        bodyScrollTop = document.body.scrollTop;
+    }
+    if (document.documentElement) {
+        documentScrollTop = document.documentElement.scrollTop;
+    }
+    scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
+    return scrollTop;
+}
+/**
+*文档的总高度
+*/
+function getScrollHeight() {
+    var scrollHeight = 0;
+    var bodyScrollHeight = 0;
+    var documentScrollHeight = 0;
+    if (document.body) {
+        bodyScrollHeight = document.body.scrollHeight;
+    }
+    if (document.documentElement) {
+        documentScrollHeight = document.documentElement.scrollHeight;
+    }
+    scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
+    return scrollHeight;
+}
+/**
+*浏览器视口的高度
+*/
+function getWindowHeight() {
+    var windowHeight = 0;
+    if (document.compatMode == 'CSS1Compat') {
+        windowHeight = document.documentElement.clientHeight;
+    }
+    else {
+        windowHeight = document.body.clientHeight;
+    }
+    return windowHeight;
+}
+/**
+*判断滚动条是否滚动到底部
+*/
+function isBottom() {
+    /*
+    *预留100px给“正在加载”的提示标志
+    */
+    if (getScrollTop() + getWindowHeight() + 300 > getScrollHeight()) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 
 
 /***/ }),
@@ -7041,25 +7517,56 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
 var FocusBoardArea_1 = __webpack_require__(75);
-var FocusTopicArea_1 = __webpack_require__(77);
+var FocusTopicArea_1 = __webpack_require__(76);
+var FocusBoardTopicArea_1 = __webpack_require__(77);
+var Utility = __webpack_require__(1);
 var Focus = /** @class */ (function (_super) {
     __extends(Focus, _super);
-    function Focus() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function Focus(props) {
+        var _this = _super.call(this, props) || this;
+        _this.changeFocusBoard = function () {
+            var currentFocusBoard = Utility.getStorage("currentFocusBoard");
+            if (currentFocusBoard) {
+                _this.setState({ id: currentFocusBoard.boardId, name: currentFocusBoard.boardName });
+            }
+            else {
+                _this.setState({ id: null, name: null });
+            }
+        };
+        _this.state = {
+            id: null,
+            name: null
+        };
+        return _this;
     }
     /**
      * 从上往下分别为：页面标题、关注版面列表区域、关注版面的主题列表区域，分别用三个组件表示
      */
     Focus.prototype.render = function () {
-        return (React.createElement("div", { className: "focus-root" },
-            React.createElement("div", { className: "focus" },
-                React.createElement("div", { className: "focus-title" }, "\u6211\u7684\u5173\u6CE8\u7248\u9762"),
-                React.createElement(FocusBoardArea_1.FocusBoardArea, null),
-                React.createElement(FocusTopicArea_1.FocusTopicArea, null))));
+        if (!this.state.id) {
+            return (React.createElement("div", { className: "focus-root" },
+                React.createElement("div", { className: "focus" },
+                    React.createElement("div", { className: "focus-title" }, "\u6211\u7684\u5173\u6CE8\u7248\u9762"),
+                    React.createElement(FocusBoardArea_1.FocusBoardArea, { onChange: this.changeFocusBoard }),
+                    React.createElement(FocusTopicArea_1.FocusTopicArea, null))));
+        }
+        else {
+            return (React.createElement("div", { className: "focus-root" },
+                React.createElement("div", { className: "focus" },
+                    React.createElement("div", { className: "focus-title" }, "\u6211\u7684\u5173\u6CE8\u7248\u9762"),
+                    React.createElement(FocusBoardArea_1.FocusBoardArea, { onChange: this.changeFocusBoard }),
+                    React.createElement(FocusBoardTopicArea_1.FocusBoardTopicArea, { boardId: this.state.id, boardNme: this.state.name }))));
+        }
     };
     return Focus;
 }(React.Component));
 exports.Focus = Focus;
+var FocusState = /** @class */ (function () {
+    function FocusState() {
+    }
+    return FocusState;
+}());
+exports.FocusState = FocusState;
 
 
 /***/ }),
@@ -7221,9 +7728,7 @@ var DropDown = /** @class */ (function (_super) {
         Utility.removeLocalStorage("userName");
         Utility.removeLocalStorage("password");
         Utility.removeLocalStorage("userInfo");
-        Utility.removeStorage("focusBoardList");
-        Utility.removeStorage("focusBoardTopic");
-        Utility.removeStorage("recentContact");
+        Utility.removeStorage("all");
         location = window.location; //刷新当前页面
     };
     DropDown.prototype.render = function () {
@@ -7298,54 +7803,170 @@ var Search = /** @class */ (function (_super) {
     function Search() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Search.prototype.render = function () {
-        $(document).ready(function () {
-            var searchBoxSelect = $('.searchBoxSelect');
-            var downArrow = $('.downArrow');
-            var searchBoxSub = $('.searchBoxSub');
-            var searchBoxLi = searchBoxSub.find('li');
-            $(document).click(function () {
-                searchBoxSub.css('display', 'none');
-            });
-            searchBoxSelect.click(function () {
-                if (searchBoxSub.css('display') === 'block')
-                    searchBoxSub.css('display', 'none');
-                else
-                    searchBoxSub.css('display', 'block');
-                return false; //阻止事件冒泡
-            });
-            downArrow.click(function () {
-                if (searchBoxSub.css('display') === 'block')
-                    searchBoxSub.css('display', 'none');
-                else
-                    searchBoxSub.css('display', 'block');
-                return false; //阻止事件冒泡
-            });
-            /*在一个对象上触发某类事件（比如单击onclick事件），如果此对象定义了此事件的处理程序，那么此事件就会调用这个处理程序，
-            如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
-            或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
-            searchBoxLi.click(function () {
-                searchBoxSelect.text($(this).text());
-            });
-            searchBoxLi.mouseover(function () {
-                this.className = 'hover';
-            });
-            searchBoxLi.mouseout(function () {
-                this.className = '';
+    Search.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var searchBoxSelect, downArrow, searchBoxSub, searchIco, searchBoxLi, url1, url2, url3, boardId, boardName, topicId, response, searchInfo;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        searchBoxSelect = $('.searchBoxSelect');
+                        downArrow = $('.downArrow');
+                        searchBoxSub = $('.searchBoxSub');
+                        searchIco = $('.searchIco');
+                        searchBoxLi = searchBoxSub.find('li');
+                        url1 = location.href.match(/\/topic\/(\S+)/);
+                        url2 = location.href.match(/\/list\/(\S+)/);
+                        url3 = location.href.match(/\/(search)/);
+                        boardId = 0;
+                        boardName = '全站';
+                        if (!url1) return [3 /*break*/, 2];
+                        topicId = url1[1];
+                        return [4 /*yield*/, Utility.getCategory(topicId, this.context.router)];
+                    case 1:
+                        response = _a.sent();
+                        boardId = response.boardId;
+                        boardName = response.boardName;
+                        return [3 /*break*/, 5];
+                    case 2:
+                        if (!url2) return [3 /*break*/, 4];
+                        boardId = parseInt(url2[1]);
+                        return [4 /*yield*/, Utility.getBoardName(boardId, this.context.router)];
+                    case 3:
+                        boardName = _a.sent();
+                        return [3 /*break*/, 5];
+                    case 4:
+                        if (url3) {
+                            searchInfo = Utility.getStorage("searchInfo");
+                            if (searchInfo) {
+                                boardId = searchInfo.boardId;
+                                boardName = searchInfo.boardName;
+                            }
+                        }
+                        _a.label = 5;
+                    case 5:
+                        $(document).click(function () {
+                            searchBoxSub.css('display', 'none');
+                        });
+                        searchBoxSelect.click(function () {
+                            if (searchBoxSub.css('display') === 'block')
+                                searchBoxSub.css('display', 'none');
+                            else
+                                searchBoxSub.css('display', 'block');
+                            return false; //阻止事件冒泡
+                        });
+                        downArrow.click(function () {
+                            if (searchBoxSub.css('display') === 'block')
+                                searchBoxSub.css('display', 'none');
+                            else
+                                searchBoxSub.css('display', 'block');
+                            return false; //阻止事件冒泡
+                        });
+                        /*在一个对象上触发某类事件（比如单击onclick事件），如果此对象定义了此事件的处理程序，那么此事件就会调用这个处理程序，
+                        如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
+                        或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
+                        searchBoxLi.click(function () {
+                            searchBoxSelect.text($(this).text());
+                        });
+                        searchBoxLi.mouseover(function () {
+                            this.className = 'hover';
+                        });
+                        searchBoxLi.mouseout(function () {
+                            this.className = '';
+                        });
+                        //获取搜索关键词
+                        searchIco.click(function () {
+                            if (searchBoxSelect.text() == '主题' || searchBoxSelect.text() == '全站') {
+                                var val = $('#searchText').val();
+                                if (val && val != '') {
+                                    var words = val.split(' ');
+                                    if (words) {
+                                        if (words.length > 5) {
+                                            alert("关键词过多，请不要超过5个！");
+                                        }
+                                        else {
+                                            var searchInfo = { boardId: 0, boardName: '全站', words: words };
+                                            Utility.setStorage('searchInfo', searchInfo);
+                                            var host = window.location.host;
+                                            window.location.href = "http://" + host + "/search";
+                                        }
+                                    }
+                                }
+                            }
+                            else if (searchBoxSelect.text() == '版内') {
+                                var val = $('#searchText').val();
+                                if (val && val != '') {
+                                    var words = val.split(' ');
+                                    if (words) {
+                                        if (words.length > 5) {
+                                            alert("关键词过多，请不要超过5个！");
+                                        }
+                                        else {
+                                            var searchInfo = { boardId: boardId, boardName: boardName, words: words };
+                                            Utility.setStorage('searchInfo', searchInfo);
+                                            var host = window.location.host;
+                                            window.location.href = "http://" + host + "/search";
+                                        }
+                                    }
+                                }
+                            }
+                            else {
+                                alert("搜索用户和版面还没有做");
+                            }
+                        });
+                        return [2 /*return*/];
+                }
             });
         });
-        return React.createElement("div", { id: "search" },
-            React.createElement("div", { className: "box" },
-                React.createElement("div", { className: "searchBoxSelect" }, "\u4E3B\u9898"),
-                React.createElement("div", { className: "downArrow" },
-                    React.createElement("img", { src: "/images/downArrow.png", width: "12", height: "12" })),
-                React.createElement("input", { name: "searchText", type: "text", placeholder: "猜猜能搜到什么..." }),
-                React.createElement("div", { className: "fangdajing" },
-                    React.createElement("img", { src: "/images/fangdajing.ico", width: "15", height: "15" }))),
-            React.createElement("ul", { className: "searchBoxSub" },
-                React.createElement("li", null, "\u7248\u9762"),
-                React.createElement("li", null, "\u4E3B\u9898"),
-                React.createElement("li", null, "\u7528\u6237")));
+    };
+    Search.prototype.render = function () {
+        //查看当前是全站还是某版
+        var url1 = location.href.match(/\/topic\/(\S+)/);
+        var url2 = location.href.match(/\/list\/(\S+)/);
+        var url3 = location.href.match(/\/(search)/);
+        var flag = 1;
+        if (url1) {
+            flag = 0;
+        }
+        else if (url2) {
+            flag = 0;
+        }
+        else if (url3) {
+            var searchInfo = Utility.getStorage("searchInfo");
+            if (searchInfo) {
+                if (searchInfo.boardId != 0) {
+                    flag = 0;
+                }
+            }
+        }
+        if (flag) {
+            return React.createElement("div", { id: "search" },
+                React.createElement("div", { className: "box" },
+                    React.createElement("div", { className: "searchBoxSelect" }, "\u4E3B\u9898"),
+                    React.createElement("div", { className: "downArrow" },
+                        React.createElement("img", { src: "/images/downArrow.png", width: "12", height: "12" })),
+                    React.createElement("input", { id: "searchText", type: "text", placeholder: "猜猜能搜到什么..." }),
+                    React.createElement("div", { className: "searchIco" },
+                        React.createElement("img", { src: "/images/searchIco.ico", width: "15", height: "15" }))),
+                React.createElement("ul", { className: "searchBoxSub" },
+                    React.createElement("li", null, "\u4E3B\u9898"),
+                    React.createElement("li", null, "\u7528\u6237"),
+                    React.createElement("li", null, "\u7248\u9762")));
+        }
+        else {
+            return React.createElement("div", { id: "search" },
+                React.createElement("div", { className: "box" },
+                    React.createElement("div", { className: "searchBoxSelect" }, "\u7248\u5185"),
+                    React.createElement("div", { className: "downArrow" },
+                        React.createElement("img", { src: "/images/downArrow.png", width: "12", height: "12" })),
+                    React.createElement("input", { id: "searchText", type: "text", placeholder: "猜猜能搜到什么..." }),
+                    React.createElement("div", { className: "searchIco" },
+                        React.createElement("img", { src: "/images/searchIco.ico", width: "15", height: "15" }))),
+                React.createElement("ul", { className: "searchBoxSub" },
+                    React.createElement("li", null, "\u7248\u5185"),
+                    React.createElement("li", null, "\u5168\u7AD9"),
+                    React.createElement("li", null, "\u7528\u6237"),
+                    React.createElement("li", null, "\u7248\u9762")));
+        }
     };
     return Search;
 }(React.Component));
@@ -8455,7 +9076,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var LogOn_1 = __webpack_require__(11);
+var LogOn_1 = __webpack_require__(12);
 var Utility = __webpack_require__(1);
 var LogOut = /** @class */ (function (_super) {
     __extends(LogOut, _super);
@@ -8788,6 +9409,198 @@ class gradeClass {
 
 "use strict";
 
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var React = __webpack_require__(0);
+var FocusTopicSingle_1 = __webpack_require__(9);
+var Utility = __webpack_require__(1);
+/**
+ * 表示搜索结果的帖子列表
+ */
+var Search = /** @class */ (function (_super) {
+    __extends(Search, _super);
+    function Search(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            boardId: 0,
+            boardName: '全站',
+            words: [],
+            data: [],
+            from: 0,
+            loading: true
+        };
+        _this.handleScroll = _this.handleScroll.bind(_this);
+        return _this;
+    }
+    Search.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var searchInfo, newTopic;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        searchInfo = Utility.getStorage("searchInfo");
+                        if (!!searchInfo) return [3 /*break*/, 1];
+                        this.showNoResult();
+                        this.setState({ loading: false });
+                        return [3 /*break*/, 3];
+                    case 1: return [4 /*yield*/, Utility.getSearchTopic(searchInfo.boardId, searchInfo.words, this.state.from, this.context.router)];
+                    case 2:
+                        newTopic = _a.sent();
+                        //搜索结果为0
+                        if (!newTopic) {
+                            this.showNoResult();
+                            this.setState({ loading: false });
+                        }
+                        else {
+                            //搜索结果小于20条，无法再获取新的了
+                            if (newTopic.length < 20) {
+                                this.setState({ boardId: searchInfo.boardId, boardName: searchInfo.boardName, words: searchInfo.words, data: newTopic, from: newTopic.length, loading: false });
+                                $('#focus-topic-loaddone').removeClass('displaynone');
+                            }
+                            else {
+                                this.setState({ boardId: searchInfo.boardId, boardName: searchInfo.boardName, words: searchInfo.words, data: newTopic, from: newTopic.length, loading: true });
+                                $('#focus-topic-loading').removeClass('displaynone');
+                            }
+                        }
+                        _a.label = 3;
+                    case 3:
+                        //滚动条监听
+                        document.addEventListener('scroll', this.handleScroll);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Search.prototype.handleScroll = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var newData, err_1, data, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(Utility.isBottom() && this.state.loading)) return [3 /*break*/, 5];
+                        /**
+                        *发出第一条fetch请求前将this.state.loading设置为false，防止后面重复发送fetch请求
+                        */
+                        this.setState({ loading: false });
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, Utility.getSearchTopic(this.state.boardId, this.state.words, this.state.from, this.context.router)];
+                    case 2:
+                        newData = _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        err_1 = _a.sent();
+                        /**
+                        *如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
+                        */
+                        this.setState({ loading: true });
+                        return [2 /*return*/];
+                    case 4:
+                        if (!newData) {
+                            $('#focus-topic-loading').addClass('displaynone');
+                            $('#focus-topic-loaddone').removeClass('displaynone');
+                            this.setState({ loading: false });
+                            return [2 /*return*/];
+                        }
+                        else {
+                            //搜索结果小于20条，无法再获取新的了,添加新数据，this.state.loading设置为false，后续不可以再次发送fetch请求
+                            if (newData.length < 20) {
+                                $('#focus-topic-loading').addClass('displaynone');
+                                $('#focus-topic-loaddone').removeClass('displaynone');
+                                data = this.state.data.concat(newData);
+                                this.setState({ data: data, from: data.length, loading: false });
+                            }
+                            else {
+                                data = this.state.data.concat(newData);
+                                this.setState({ data: data, from: data.length, loading: true });
+                            }
+                        }
+                        _a.label = 5;
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Search.prototype.showNoResult = function () {
+        $('#focus-topic-area').addClass('displaynone');
+        $('#noResult').removeClass('displaynone');
+    };
+    Search.prototype.render = function () {
+        return (React.createElement("div", { className: "focus-root" },
+            React.createElement("div", { className: "focus" },
+                React.createElement("div", { className: "focus-allNewTopic" },
+                    React.createElement("i", { className: "fa fa-home", "aria-hidden": "true" }),
+                    "\u641C\u7D22/",
+                    this.state.boardName),
+                React.createElement("div", { className: "focus-topic-area", id: "focus-topic-area" },
+                    React.createElement("div", { className: "focus-topic-topicArea" }, this.state.data.map(coverFocusPost)),
+                    React.createElement("div", { className: "focus-topic-loading displaynone", id: "focus-topic-loading" },
+                        React.createElement("img", { src: "http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif" })),
+                    React.createElement("div", { className: "focus-topic-loaddone displaynone", id: "focus-topic-loaddone" }, " \u6CA1\u6709\u66F4\u591A\u5E16\u5B50\u5566~")),
+                React.createElement("div", { id: "noResult", className: "noResult displaynone" }, "\u6CA1\u6709\u7B26\u5408\u6761\u4EF6\u7684\u641C\u7D22\u7ED3\u679C"))));
+    };
+    return Search;
+}(React.Component));
+exports.Search = Search;
+function coverFocusPost(item) {
+    return React.createElement(FocusTopicSingle_1.FocusTopicSingle, { title: item.title, hitCount: item.hitCount, id: item.id, boardId: item.boardId, boardName: item.boardName, replyCount: item.replyCount, userId: item.userId, userName: item.userName, portraitUrl: item.portraitUrl, time: item.time, likeCount: item.likeCount, dislikeCount: item.dislikeCount, fanCount: item.fanCount });
+}
+
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 // A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
@@ -8943,35 +9756,35 @@ exports.UserCenterMyFollowingsUser = UserCenterMyFollowingsUser;
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(29);
+__webpack_require__(30);
 module.exports = __webpack_require__(95);
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var ReactDOM = __webpack_require__(30);
-var App_1 = __webpack_require__(31);
+var ReactDOM = __webpack_require__(31);
+var App_1 = __webpack_require__(32);
 // 显示应用程序核心内容
 ReactDOM.render(React.createElement(App_1.App, null), document.getElementById('root'));
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports) {
 
 module.exports = ReactDOM;
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8989,21 +9802,22 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var post_1 = __webpack_require__(12);
-var List_1 = __webpack_require__(10);
-var CurUserPost_1 = __webpack_require__(13);
-var BoardList_1 = __webpack_require__(14);
-var UserCenter_1 = __webpack_require__(15);
-var Message_1 = __webpack_require__(17);
-var AllNewTopic_1 = __webpack_require__(18);
+var post_1 = __webpack_require__(13);
+var List_1 = __webpack_require__(11);
+var CurUserPost_1 = __webpack_require__(14);
+var BoardList_1 = __webpack_require__(15);
+var UserCenter_1 = __webpack_require__(16);
+var Message_1 = __webpack_require__(18);
+var AllNewTopic_1 = __webpack_require__(19);
 var Focus_1 = __webpack_require__(20);
 var Header_1 = __webpack_require__(21);
 var Footer_1 = __webpack_require__(22);
 var MainPage_1 = __webpack_require__(23);
 var User_1 = __webpack_require__(24);
-var LogOn_1 = __webpack_require__(11);
+var LogOn_1 = __webpack_require__(12);
 var CreateTopic_1 = __webpack_require__(25);
 var Status = __webpack_require__(26);
+var Search_1 = __webpack_require__(27);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -9035,6 +9849,7 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { path: "/newtopics", component: AllNewTopic_1.AllNewTopic }),
                     React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }),
                     React.createElement(react_router_dom_1.Route, { path: "/logon", component: LogOn_1.LogOn }),
+                    React.createElement(react_router_dom_1.Route, { path: "/search", component: Search_1.Search }),
                     React.createElement(react_router_dom_1.Route, { path: "/createtopic/:boardId", component: CreateTopic_1.CreateTopic }),
                     React.createElement(react_router_dom_1.Route, { path: "/status/logout", component: Status.LogOut }),
                     React.createElement(react_router_dom_1.Route, { path: "/status/UnauthorizedBoard", component: Status.UnauthorizedBoard }),
@@ -9054,7 +9869,7 @@ exports.App = App;
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9067,31 +9882,31 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 var Ubb = __webpack_require__(2);
-var BTagHandler_1 = __webpack_require__(33);
-var ImageTagHandler_1 = __webpack_require__(34);
-var ITagHandler_1 = __webpack_require__(35);
-var SizeTagHandler_1 = __webpack_require__(36);
-var QuoteTagHandler_1 = __webpack_require__(37);
-var ColorTagHandler_1 = __webpack_require__(38);
-var URLTagHandler_1 = __webpack_require__(39);
-var UTagHandler_1 = __webpack_require__(40);
-var DelTagHandler_1 = __webpack_require__(41);
-var MP3TagHandler_1 = __webpack_require__(42);
-var CursorTagHandler_1 = __webpack_require__(43);
-var EnglishTagHandler_1 = __webpack_require__(44);
-var UserTagHandler_1 = __webpack_require__(45);
-var CodeTagHandler_1 = __webpack_require__(46);
-var UnresolvedTagHandler_1 = __webpack_require__(47);
-var FontTagHandler_1 = __webpack_require__(48);
-var AlignTagHandler_1 = __webpack_require__(49);
-var UploadTagHandler_1 = __webpack_require__(50);
-var LeftTagHandler_1 = __webpack_require__(51);
-var CenterTagHandler_1 = __webpack_require__(52);
-var RightTagHandler_1 = __webpack_require__(53);
-var TableTagHandler_1 = __webpack_require__(54);
-var TdTagHandler_1 = __webpack_require__(55);
-var ThTagHandler_1 = __webpack_require__(56);
-var TrTagHandler_1 = __webpack_require__(57);
+var BTagHandler_1 = __webpack_require__(34);
+var ImageTagHandler_1 = __webpack_require__(35);
+var ITagHandler_1 = __webpack_require__(36);
+var SizeTagHandler_1 = __webpack_require__(37);
+var QuoteTagHandler_1 = __webpack_require__(38);
+var ColorTagHandler_1 = __webpack_require__(39);
+var URLTagHandler_1 = __webpack_require__(40);
+var UTagHandler_1 = __webpack_require__(41);
+var DelTagHandler_1 = __webpack_require__(42);
+var MP3TagHandler_1 = __webpack_require__(43);
+var CursorTagHandler_1 = __webpack_require__(44);
+var EnglishTagHandler_1 = __webpack_require__(45);
+var UserTagHandler_1 = __webpack_require__(46);
+var CodeTagHandler_1 = __webpack_require__(47);
+var UnresolvedTagHandler_1 = __webpack_require__(48);
+var FontTagHandler_1 = __webpack_require__(49);
+var AlignTagHandler_1 = __webpack_require__(50);
+var UploadTagHandler_1 = __webpack_require__(51);
+var LeftTagHandler_1 = __webpack_require__(52);
+var CenterTagHandler_1 = __webpack_require__(53);
+var RightTagHandler_1 = __webpack_require__(54);
+var TableTagHandler_1 = __webpack_require__(55);
+var TdTagHandler_1 = __webpack_require__(56);
+var ThTagHandler_1 = __webpack_require__(57);
+var TrTagHandler_1 = __webpack_require__(58);
 /**
  * 创建一个具有所有功能的默认引擎。
  */
@@ -9132,7 +9947,7 @@ __export(__webpack_require__(2));
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9185,7 +10000,7 @@ exports.BTagHandler = BTagHandler;
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9283,7 +10098,7 @@ exports.Image = Image;
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9328,7 +10143,7 @@ exports.ITagHandler = ITagHandler;
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9382,7 +10197,7 @@ exports.SizeTagHandler = SizeTagHandler;
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9434,7 +10249,7 @@ exports.QuoteTagHandler = QuoteTagHandler;
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9483,7 +10298,7 @@ exports.ColorTagHandler = ColorTagHandler;
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9539,7 +10354,7 @@ exports.UrlTagHandler = UrlTagHandler;
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9592,7 +10407,7 @@ exports.UTagHandler = UTagHandler;
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9640,7 +10455,7 @@ exports.DelTagHandler = DelTagHandler;
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9694,7 +10509,7 @@ exports.MP3TagHandler = MP3TagHandler;
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9742,7 +10557,7 @@ exports.CursorTagHandler = CursorTagHandler;
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9790,7 +10605,7 @@ exports.EnglishTagHandler = EnglishTagHandler;
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9838,7 +10653,7 @@ exports.UserTagHandler = UserTagHandler;
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9886,7 +10701,7 @@ exports.CodeTagHandler = CodeTagHandler;
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9930,7 +10745,7 @@ exports.UnresolvedTagHandler = UnresolvedTagHandler;
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9978,7 +10793,7 @@ exports.FontTagHandler = FontTagHandler;
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10027,7 +10842,7 @@ exports.AlignTagHandler = AlignTagHandler;
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10140,7 +10955,7 @@ exports.Image = Image;
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10188,7 +11003,7 @@ exports.LeftTagHandler = LeftTagHandler;
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10236,7 +11051,7 @@ exports.CenterTagHandler = CenterTagHandler;
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10284,7 +11099,7 @@ exports.RightTagHandler = RightTagHandler;
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10328,7 +11143,7 @@ exports.TableTagHandler = TableTagHandler;
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10372,7 +11187,7 @@ exports.TdTagHandler = TdTagHandler;
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10416,7 +11231,7 @@ exports.ThTagHandler = ThTagHandler;
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10460,7 +11275,7 @@ exports.TrTagHandler = TrTagHandler;
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12147,7 +12962,7 @@ exports.SendTopic = SendTopic;
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12249,7 +13064,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12271,8 +13086,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
 var Utility = __webpack_require__(1);
-var UserCenterExact_1 = __webpack_require__(61);
-var UserCenterMyFollowings_1 = __webpack_require__(65);
+var UserCenterExact_1 = __webpack_require__(62);
+var UserCenterMyFollowings_1 = __webpack_require__(66);
 var UserCenterMyFans_1 = __webpack_require__(84);
 var UserCenterMyPostsExact_1 = __webpack_require__(85);
 var UserCenterMyFavorites_1 = __webpack_require__(86);
@@ -12304,7 +13119,7 @@ exports.UserCenterRouter = UserCenterRouter;
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12359,9 +13174,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactProfile_1 = __webpack_require__(62);
-var UserCenterExactActivities_1 = __webpack_require__(63);
-var UserCenterExactAvatar_1 = __webpack_require__(16);
+var UserCenterExactProfile_1 = __webpack_require__(63);
+var UserCenterExactActivities_1 = __webpack_require__(64);
+var UserCenterExactAvatar_1 = __webpack_require__(17);
 var Utility = __webpack_require__(1);
 /**
  * 用户中心主页
@@ -12422,7 +13237,7 @@ exports.UserCenterExact = UserCenterExact;
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12509,7 +13324,7 @@ exports.UserCenterExactProfile = UserCenterExactProfile;
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12529,7 +13344,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPosts_1 = __webpack_require__(64);
+var UserCenterExactActivitiesPosts_1 = __webpack_require__(65);
 /**
  * 用户中心主页近期动态组件
  */
@@ -12549,7 +13364,7 @@ exports.UserCenterExactActivities = UserCenterExactActivities;
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12775,7 +13590,7 @@ exports.UserCenterExactActivitiesPosts = UserCenterExactActivitiesPosts;
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12832,8 +13647,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var AppState_1 = __webpack_require__(4);
 var app_1 = __webpack_require__(8);
-var UserCenterMyFollowingsUser_1 = __webpack_require__(27);
-var UserCenterPageCount_1 = __webpack_require__(9);
+var UserCenterMyFollowingsUser_1 = __webpack_require__(28);
+var UserCenterPageCount_1 = __webpack_require__(10);
 var Utility = __webpack_require__(1);
 //用户中心我的关注组件
 var UserCenterMyFollowings = /** @class */ (function (_super) {
@@ -12948,7 +13763,7 @@ exports.UserCenterMyFollowings = UserCenterMyFollowings;
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13003,8 +13818,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MessagePerson_1 = __webpack_require__(67);
-var MessageWindow_1 = __webpack_require__(68);
+var MessagePerson_1 = __webpack_require__(68);
+var MessageWindow_1 = __webpack_require__(69);
 var Utility = __webpack_require__(1);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
@@ -13173,7 +13988,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13223,7 +14038,7 @@ exports.MessagePerson = MessagePerson;
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13278,8 +14093,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MessageSender_1 = __webpack_require__(69);
-var MessageReceiver_1 = __webpack_require__(70);
+var MessageSender_1 = __webpack_require__(70);
+var MessageReceiver_1 = __webpack_require__(71);
 var Utility = __webpack_require__(1);
 var MessageWindow = /** @class */ (function (_super) {
     __extends(MessageWindow, _super);
@@ -13526,7 +14341,7 @@ var MessageWindow = /** @class */ (function (_super) {
                 React.createElement("textarea", { className: "message-message-wPostArea", id: "postContent", onFocus: this.handleFocus, onBlur: this.handleBlur }),
                 React.createElement("div", { id: "wPostNotice", className: "message-message-wPostNotice", onClick: this.handleFocus }, "\u8BF7\u5728\u8FD9\u91CC\u586B\u5165\u60A8\u8981\u53D1\u9001\u7684\u79C1\u4FE1\u5185\u5BB9"),
                 React.createElement("div", { id: "wPostError", className: "message-message-wPostError displaynone", onClick: this.handleFocus }, "\u60A8\u7684\u53D1\u9001\u8FC7\u5FEB\uFF0C\u8BF7\u7A0D\u4F5C\u6B47\u606F~"),
-                React.createElement("button", { className: "message-message-wPostBtn", onClick: this.postMessage }, "\u56DE\u590D"))));
+                React.createElement("button", { className: "message-message-wPostBtn", onClick: this.postMessage }, "\u53D1\u9001"))));
     };
     return MessageWindow;
 }(React.Component));
@@ -13534,7 +14349,7 @@ exports.MessageWindow = MessageWindow;
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13586,7 +14401,7 @@ exports.MessageSender = MessageSender;
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13636,7 +14451,7 @@ exports.MessageReceiver = MessageReceiver;
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13686,7 +14501,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13726,7 +14541,7 @@ exports.MessageAttme = MessageAttme;
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13763,260 +14578,6 @@ var MessageSystem = /** @class */ (function (_super) {
     return MessageSystem;
 }(React.Component));
 exports.MessageSystem = MessageSystem;
-
-
-/***/ }),
-/* 74 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var React = __webpack_require__(0);
-var FocusTopicSingle_1 = __webpack_require__(19);
-var Utility = __webpack_require__(1);
-/**
- * 表示全站最新主题列表
- */
-var AllNewTopicArea = /** @class */ (function (_super) {
-    __extends(AllNewTopicArea, _super);
-    /**
-     * 构造函数
-     * @param props
-     */
-    function AllNewTopicArea(props) {
-        var _this = _super.call(this, props) || this;
-        //先看一下有没有缓存的帖子数据
-        var data = Utility.getStorage("AllNewTopic");
-        if (!data) {
-            data = [];
-        }
-        _this.state = {
-            data: data,
-            curNum: 0,
-            loading: true
-        };
-        _this.handleScroll = _this.handleScroll.bind(_this);
-        return _this;
-    }
-    /**
-     * 进入立即获取20条新帖的数据，同时为滚动条添加监听事件
-     */
-    AllNewTopicArea.prototype.componentDidMount = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var data, oldData, i;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getAllNewTopic(this.state.curNum, this.context.router)];
-                    case 1:
-                        data = _a.sent();
-                        oldData = Utility.getStorage("AllNewTopic");
-                        if (oldData) {
-                            for (i = 0; i < data.length; i++) {
-                                //最新的20条数据跟之前的有重合就组合起来
-                                if (data[i].id == oldData[0].id) {
-                                    data = data.slice(0, i).concat(oldData);
-                                    break;
-                                }
-                            }
-                        }
-                        //最多100条新帖
-                        if (data.length > 100) {
-                            data = data.slice(0, 100);
-                        }
-                        //缓存获取到的数据                      
-                        Utility.setStorage("AllNewTopic", data);
-                        this.setState({ data: data, curNum: data.length });
-                        //滚动条监听
-                        document.addEventListener('scroll', this.handleScroll);
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    /**
-     * 移除DOM时，为滚动条移除监听事件
-     */
-    AllNewTopicArea.prototype.componentWillUnmount = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                document.removeEventListener('scroll', this.handleScroll);
-                return [2 /*return*/];
-            });
-        });
-    };
-    /**
-     * 处理滚动的函数
-     */
-    AllNewTopicArea.prototype.handleScroll = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var newData, err_1, data;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!(isBottom() && this.state.loading)) return [3 /*break*/, 5];
-                        /**
-                        *查看新帖数目大于100条时不再继续加载
-                        */
-                        if (this.state.curNum >= 99) {
-                            $('#focus-topic-loading').addClass('displaynone');
-                            $('#focus-topic-loaddone').removeClass('displaynone');
-                            return [2 /*return*/];
-                        }
-                        /**
-                        *发出第一条fetch请求前将this.state.loading设置为false，防止后面重复发送fetch请求
-                        */
-                        this.setState({ loading: false });
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, Utility.getAllNewTopic(this.state.curNum, this.context.router)];
-                    case 2:
-                        newData = _a.sent();
-                        return [3 /*break*/, 4];
-                    case 3:
-                        err_1 = _a.sent();
-                        /**
-                        *如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
-                        */
-                        this.setState({ loading: true });
-                        return [2 /*return*/];
-                    case 4:
-                        data = this.state.data.concat(newData);
-                        this.setState({ data: data, curNum: data.length, loading: true });
-                        Utility.setStorage("AllNewTopic", data);
-                        _a.label = 5;
-                    case 5: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    /**
-     * 将主题排列好
-     */
-    AllNewTopicArea.prototype.render = function () {
-        return React.createElement("div", { className: "focus-topic-area" },
-            React.createElement("div", { className: "focus-topic-topicArea" }, this.state.data.map(coverFocusPost)),
-            React.createElement("div", { className: "focus-topic-loading", id: "focus-topic-loading" },
-                React.createElement("img", { src: "http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif" })),
-            React.createElement("div", { className: "focus-topic-loaddone displaynone", id: "focus-topic-loaddone" }, "---------------------- \u5DF2\u52A0\u8F7D100\u6761\u5E16\u5B50\uFF0C\u65E0\u6CD5\u52A0\u8F7D\u66F4\u591A ----------------------"));
-    };
-    return AllNewTopicArea;
-}(React.Component));
-exports.AllNewTopicArea = AllNewTopicArea;
-/**
-* 单个主题数据转换成单个主题组件
-*/
-function coverFocusPost(item) {
-    return React.createElement(FocusTopicSingle_1.FocusTopicSingle, { title: item.title, hitCount: item.hitCount, id: item.id, boardId: item.boardId, boardName: item.boardName, replyCount: item.replyCount, userId: item.userId, userName: item.userName, portraitUrl: item.portraitUrl, time: item.time, likeCount: item.likeCount, dislikeCount: item.dislikeCount, fanCount: item.fanCount });
-}
-/**
-*滚动条在Y轴上的滚动距离
-*/
-function getScrollTop() {
-    var scrollTop = 0;
-    var bodyScrollTop = 0;
-    var documentScrollTop = 0;
-    if (document.body) {
-        bodyScrollTop = document.body.scrollTop;
-    }
-    if (document.documentElement) {
-        documentScrollTop = document.documentElement.scrollTop;
-    }
-    scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
-    return scrollTop;
-}
-/**
-*文档的总高度
-*/
-function getScrollHeight() {
-    var scrollHeight = 0;
-    var bodyScrollHeight = 0;
-    var documentScrollHeight = 0;
-    if (document.body) {
-        bodyScrollHeight = document.body.scrollHeight;
-    }
-    if (document.documentElement) {
-        documentScrollHeight = document.documentElement.scrollHeight;
-    }
-    scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
-    return scrollHeight;
-}
-/**
-*浏览器视口的高度
-*/
-function getWindowHeight() {
-    var windowHeight = 0;
-    if (document.compatMode == 'CSS1Compat') {
-        windowHeight = document.documentElement.clientHeight;
-    }
-    else {
-        windowHeight = document.body.clientHeight;
-    }
-    return windowHeight;
-}
-/**
-*判断滚动条是否滚动到底部
-*/
-function isBottom() {
-    /*
-    *预留100px给“正在加载”的提示标志
-    */
-    if (getScrollTop() + getWindowHeight() + 300 > getScrollHeight()) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
 
 
 /***/ }),
@@ -14075,7 +14636,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusBoardSingle_1 = __webpack_require__(76);
 var Utility = __webpack_require__(1);
 /**
  * 表示我关注的版面列表区域
@@ -14104,7 +14664,7 @@ var FocusBoardArea = /** @class */ (function (_super) {
      */
     FocusBoardArea.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var data, token, userInfo, boardid, headers, _a, _b, _i, i, response, boardInfo;
+            var data, token, userInfo, boardid, headers, _a, _b, _i, i, response, boardInfo, currentFocusBoard, self;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -14145,20 +14705,51 @@ var FocusBoardArea = /** @class */ (function (_super) {
                         //存到缓存里
                         Utility.setStorage("focusBoardList", data);
                         _c.label = 7;
-                    case 7: return [2 /*return*/];
+                    case 7:
+                        currentFocusBoard = Utility.getStorage("currentFocusBoard");
+                        if (currentFocusBoard) {
+                            $(".focus-board").removeClass("focus-hover");
+                            $("boardId_" + currentFocusBoard.id).addClass("focus-hover");
+                        }
+                        self = this;
+                        $('.focus-board').click(function () {
+                            //如果没被点击过，就设为选中，并更新下方帖子列表
+                            if (this.className == "focus-board") {
+                                var currentFocusBoard_1 = { boardId: this.id, boardName: this.innerHTML };
+                                Utility.setStorage("currentFocusBoard", currentFocusBoard_1);
+                                $(".focus-board").removeClass("focus-hover");
+                                $(this).addClass("focus-hover");
+                                self.props.onChange();
+                            }
+                            else if (this.className == "focus-board focus-hover") {
+                                Utility.removeStorage("currentFocusBoard");
+                                $(".focus-board").removeClass("focus-hover");
+                                self.props.onChange();
+                            }
+                        });
+                        return [2 /*return*/];
                 }
             });
         });
     };
     FocusBoardArea.prototype.render = function () {
-        return React.createElement("div", { className: "focus-board-area" }, this.state.data.map(coverFocusBoard));
+        return React.createElement("div", { className: "focus-board-area" },
+            React.createElement("div", { className: "focus-board", id: "0" }, "\u5173\u6CE8\u7528\u6237"),
+            this.state.data.map(coverFocusBoard));
     };
     return FocusBoardArea;
 }(React.Component));
 exports.FocusBoardArea = FocusBoardArea;
 function coverFocusBoard(item) {
-    return React.createElement(FocusBoardSingle_1.FocusBoardSingle, { id: item.id, name: item.name });
+    //点击版面名称会显示相应版面的帖子
+    return React.createElement("div", { className: "focus-board", id: "" + item.id }, item.name);
 }
+var FocusProps = /** @class */ (function () {
+    function FocusProps() {
+    }
+    return FocusProps;
+}());
+exports.FocusProps = FocusProps;
 
 
 /***/ }),
@@ -14177,28 +14768,183 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 // A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
+var FocusTopicSingle_1 = __webpack_require__(9);
+var Utility = __webpack_require__(1);
 /**
- * 我关注的版面（单个版面的样式）
+ * 表示我关注的版面的主题列表
  */
-var FocusBoardSingle = /** @class */ (function (_super) {
-    __extends(FocusBoardSingle, _super);
-    function FocusBoardSingle() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var FocusTopicArea = /** @class */ (function (_super) {
+    __extends(FocusTopicArea, _super);
+    /**
+     * 构造函数
+     * @param props
+     */
+    function FocusTopicArea(props) {
+        var _this = _super.call(this, props) || this;
+        //先看一下有没有缓存的帖子数据
+        var data = Utility.getStorage("focusBoardTopic");
+        if (!data) {
+            data = [];
+        }
+        _this.state = {
+            data: data,
+            from: 0,
+            loading: true
+        };
+        _this.handleScroll = _this.handleScroll.bind(_this);
+        return _this;
     }
-    FocusBoardSingle.prototype.render = function () {
-        //点击版面名称会进入相应版面
-        var boardUrl = "/list/" + this.props.id;
-        return React.createElement("a", { href: boardUrl, target: "_blank" },
-            React.createElement("div", { className: "focus-board" }, this.props.name));
+    /**
+     * 进入立即获取20条新帖的数据，同时为滚动条添加监听事件
+     */
+    FocusTopicArea.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var data, oldData, i;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Utility.getFocusTopic(this.state.from, this.context.router)];
+                    case 1:
+                        data = _a.sent();
+                        oldData = Utility.getStorage("focusBoardTopic");
+                        if (oldData) {
+                            for (i = 0; i < data.length; i++) {
+                                // 最新的20 条数据跟之前的有重合就组合起来
+                                if (data[i].id == oldData[0].id) {
+                                    data = data.slice(0, i).concat(oldData);
+                                    break;
+                                }
+                            }
+                        }
+                        //最多100条新帖
+                        if (data.length > 100) {
+                            data = data.slice(0, 100);
+                        }
+                        this.setState({ data: data, from: data.length });
+                        //缓存获取到的数据
+                        Utility.setStorage("focusBoardTopic", data);
+                        //滚动条监听
+                        document.addEventListener('scroll', this.handleScroll);
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
-    return FocusBoardSingle;
+    /**
+     * 移除DOM时，为滚动条移除监听事件
+     */
+    FocusTopicArea.prototype.componentWillUnmount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                document.removeEventListener('scroll', this.handleScroll);
+                return [2 /*return*/];
+            });
+        });
+    };
+    /**
+     * 处理滚动的函数
+     */
+    FocusTopicArea.prototype.handleScroll = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var newData, err_1, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(Utility.isBottom() && this.state.loading)) return [3 /*break*/, 5];
+                        /**
+                        *查看新帖数目大于100条时不再继续加载
+                        */
+                        if (this.state.from >= 99) {
+                            $('#focus-topic-loading').addClass('displaynone');
+                            $('#focus-topic-loaddone').removeClass('displaynone');
+                            return [2 /*return*/];
+                        }
+                        /**
+                        *发出第一条fetch请求前将this.state.loading设置为false，防止后面重复发送fetch请求
+                        */
+                        this.setState({ loading: false });
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, Utility.getFocusTopic(this.state.from, this.context.router)];
+                    case 2:
+                        newData = _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        err_1 = _a.sent();
+                        /**
+                        *如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
+                        */
+                        this.setState({ loading: true });
+                        return [2 /*return*/];
+                    case 4:
+                        data = this.state.data.concat(newData);
+                        this.setState({ data: data, from: data.length, loading: true });
+                        Utility.setStorage("focusBoardTopic", data);
+                        _a.label = 5;
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * 将主题排列好
+     */
+    FocusTopicArea.prototype.render = function () {
+        return React.createElement("div", { className: "focus-topic-area" },
+            React.createElement("div", { className: "focus-topic-topicArea" }, this.state.data.map(coverFocusPost)),
+            React.createElement("div", { className: "focus-topic-loading", id: "focus-topic-loading" },
+                React.createElement("img", { src: "http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif" })),
+            React.createElement("div", { className: "focus-topic-loaddone displaynone", id: "focus-topic-loaddone" }, "\u5DF2\u52A0\u8F7D100\u6761\u65B0\u5E16\uFF0C\u65E0\u6CD5\u52A0\u8F7D\u66F4\u591A\u4E86~"));
+    };
+    return FocusTopicArea;
 }(React.Component));
-exports.FocusBoardSingle = FocusBoardSingle;
+exports.FocusTopicArea = FocusTopicArea;
+/**
+* 单个主题数据转换成单个主题组件
+*/
+function coverFocusPost(item) {
+    return React.createElement(FocusTopicSingle_1.FocusTopicSingle, { title: item.title, hitCount: item.hitCount, id: item.id, boardId: item.boardId, boardName: item.boardName, replyCount: item.replyCount, userId: item.userId, userName: item.userName, portraitUrl: item.portraitUrl, time: item.time, likeCount: item.likeCount, dislikeCount: item.dislikeCount, fanCount: item.fanCount });
+}
 
 
 /***/ }),
@@ -14257,44 +15003,60 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusTopicSingle_1 = __webpack_require__(19);
+var FocusTopicSingle_1 = __webpack_require__(9);
 var Utility = __webpack_require__(1);
 /**
  * 表示我关注的版面的主题列表
  */
-var FocusTopicArea = /** @class */ (function (_super) {
-    __extends(FocusTopicArea, _super);
+var FocusBoardTopicArea = /** @class */ (function (_super) {
+    __extends(FocusBoardTopicArea, _super);
     /**
      * 构造函数
      * @param props
      */
-    function FocusTopicArea(props) {
+    function FocusBoardTopicArea(props) {
         var _this = _super.call(this, props) || this;
         //先看一下有没有缓存的帖子数据
-        var data = Utility.getStorage("focusBoardTopic");
+        var data = Utility.getStorage("focusBoard_" + _this.props.boardId);
         if (!data) {
             data = [];
         }
         _this.state = {
             data: data,
-            curNum: 0,
+            from: 0,
             loading: true
         };
         _this.handleScroll = _this.handleScroll.bind(_this);
         return _this;
     }
+    FocusBoardTopicArea.prototype.componentWillReceiveProps = function (nextProps) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.getData(nextProps);
+                return [2 /*return*/];
+            });
+        });
+    };
     /**
      * 进入立即获取20条新帖的数据，同时为滚动条添加监听事件
      */
-    FocusTopicArea.prototype.componentDidMount = function () {
+    FocusBoardTopicArea.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.getData(this.props);
+                return [2 /*return*/];
+            });
+        });
+    };
+    FocusBoardTopicArea.prototype.getData = function (props) {
         return __awaiter(this, void 0, void 0, function () {
             var data, oldData, i;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getFocusTopic(this.state.curNum, this.context.router)];
+                    case 0: return [4 /*yield*/, Utility.getFocusBoardTopic(props.boardId, props.boardNme, this.state.from, this.context.router)];
                     case 1:
                         data = _a.sent();
-                        oldData = Utility.getStorage("focusBoardTopic");
+                        oldData = Utility.getStorage("focusBoard_" + props.boardId);
                         if (oldData) {
                             for (i = 0; i < data.length; i++) {
                                 // 最新的20 条数据跟之前的有重合就组合起来
@@ -14308,9 +15070,9 @@ var FocusTopicArea = /** @class */ (function (_super) {
                         if (data.length > 100) {
                             data = data.slice(0, 100);
                         }
-                        this.setState({ data: data, curNum: data.length });
+                        this.setState({ data: data, from: data.length });
                         //缓存获取到的数据
-                        Utility.setStorage("focusBoardTopic", data);
+                        Utility.setStorage("focusBoard_" + props.boardId, data);
                         //滚动条监听
                         document.addEventListener('scroll', this.handleScroll);
                         return [2 /*return*/];
@@ -14321,7 +15083,7 @@ var FocusTopicArea = /** @class */ (function (_super) {
     /**
      * 移除DOM时，为滚动条移除监听事件
      */
-    FocusTopicArea.prototype.componentWillUnmount = function () {
+    FocusBoardTopicArea.prototype.componentWillUnmount = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 document.removeEventListener('scroll', this.handleScroll);
@@ -14332,7 +15094,7 @@ var FocusTopicArea = /** @class */ (function (_super) {
     /**
      * 处理滚动的函数
      */
-    FocusTopicArea.prototype.handleScroll = function () {
+    FocusBoardTopicArea.prototype.handleScroll = function () {
         return __awaiter(this, void 0, void 0, function () {
             var newData, err_1, data;
             return __generator(this, function (_a) {
@@ -14342,7 +15104,7 @@ var FocusTopicArea = /** @class */ (function (_super) {
                         /**
                         *查看新帖数目大于100条时不再继续加载
                         */
-                        if (this.state.curNum >= 99) {
+                        if (this.state.from >= 99) {
                             $('#focus-topic-loading').addClass('displaynone');
                             $('#focus-topic-loaddone').removeClass('displaynone');
                             return [2 /*return*/];
@@ -14354,7 +15116,7 @@ var FocusTopicArea = /** @class */ (function (_super) {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, Utility.getFocusTopic(this.state.curNum, this.context.router)];
+                        return [4 /*yield*/, Utility.getFocusBoardTopic(this.props.boardId, this.props.boardNme, this.state.from, this.context.router)];
                     case 2:
                         newData = _a.sent();
                         return [3 /*break*/, 4];
@@ -14367,8 +15129,8 @@ var FocusTopicArea = /** @class */ (function (_super) {
                         return [2 /*return*/];
                     case 4:
                         data = this.state.data.concat(newData);
-                        this.setState({ data: data, curNum: data.length, loading: true });
-                        Utility.setStorage("focusBoardTopic", data);
+                        this.setState({ data: data, from: data.length, loading: true });
+                        Utility.setStorage("focusBoard_" + this.props.boardId, data);
                         _a.label = 5;
                     case 5: return [2 /*return*/];
                 }
@@ -14378,22 +15140,28 @@ var FocusTopicArea = /** @class */ (function (_super) {
     /**
      * 将主题排列好
      */
-    FocusTopicArea.prototype.render = function () {
+    FocusBoardTopicArea.prototype.render = function () {
         return React.createElement("div", { className: "focus-topic-area" },
             React.createElement("div", { className: "focus-topic-topicArea" }, this.state.data.map(coverFocusPost)),
             React.createElement("div", { className: "focus-topic-loading", id: "focus-topic-loading" },
                 React.createElement("img", { src: "http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif" })),
-            React.createElement("div", { className: "focus-topic-loaddone displaynone", id: "focus-topic-loaddone" }, "---------------------- \u5DF2\u52A0\u8F7D100\u6761\u65B0\u5E16\uFF0C\u65E0\u6CD5\u52A0\u8F7D\u66F4\u591A ----------------------"));
+            React.createElement("div", { className: "focus-topic-loaddone displaynone", id: "focus-topic-loaddone" }, "\u5DF2\u52A0\u8F7D100\u6761\u65B0\u5E16\uFF0C\u65E0\u6CD5\u52A0\u8F7D\u66F4\u591A\u4E86~"));
     };
-    return FocusTopicArea;
+    return FocusBoardTopicArea;
 }(React.Component));
-exports.FocusTopicArea = FocusTopicArea;
+exports.FocusBoardTopicArea = FocusBoardTopicArea;
 /**
 * 单个主题数据转换成单个主题组件
 */
 function coverFocusPost(item) {
     return React.createElement(FocusTopicSingle_1.FocusTopicSingle, { title: item.title, hitCount: item.hitCount, id: item.id, boardId: item.boardId, boardName: item.boardName, replyCount: item.replyCount, userId: item.userId, userName: item.userName, portraitUrl: item.portraitUrl, time: item.time, likeCount: item.likeCount, dislikeCount: item.dislikeCount, fanCount: item.fanCount });
 }
+var FocusBoardTopicProps = /** @class */ (function () {
+    function FocusBoardTopicProps() {
+    }
+    return FocusBoardTopicProps;
+}());
+exports.FocusBoardTopicProps = FocusBoardTopicProps;
 
 
 /***/ }),
@@ -14499,7 +15267,7 @@ var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
 var UserExactProfile_1 = __webpack_require__(80);
 var UserRouterActivities_1 = __webpack_require__(81);
-var UserCenterExactAvatar_1 = __webpack_require__(16);
+var UserCenterExactAvatar_1 = __webpack_require__(17);
 var Utility = __webpack_require__(1);
 var UserRouter = /** @class */ (function (_super) {
     __extends(UserRouter, _super);
@@ -15352,9 +16120,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var AppState_1 = __webpack_require__(4);
-var UserCenterMyFollowingsUser_1 = __webpack_require__(27);
+var UserCenterMyFollowingsUser_1 = __webpack_require__(28);
 var app_1 = __webpack_require__(8);
-var UserCenterPageCount_1 = __webpack_require__(9);
+var UserCenterPageCount_1 = __webpack_require__(10);
 var Utility = __webpack_require__(1);
 //用户中心我的粉丝组件
 var UserCenterMyFans = /** @class */ (function (_super) {
@@ -15521,7 +16289,7 @@ var React = __webpack_require__(0);
 var UserCenterExactActivitiesPost_1 = __webpack_require__(7);
 var AppState_1 = __webpack_require__(4);
 var app_1 = __webpack_require__(8);
-var UserCenterPageCount_1 = __webpack_require__(9);
+var UserCenterPageCount_1 = __webpack_require__(10);
 var Utility = __webpack_require__(1);
 /**
  * 用户中心我的主题组件
@@ -15751,7 +16519,7 @@ var React = __webpack_require__(0);
 var UserCenterExactActivitiesPost_1 = __webpack_require__(7);
 var AppState_1 = __webpack_require__(4);
 var Utility = __webpack_require__(1);
-var UserCenterPageCount_1 = __webpack_require__(9);
+var UserCenterPageCount_1 = __webpack_require__(10);
 var app_1 = __webpack_require__(8);
 /**
  * 用户中心我收藏的帖子组件

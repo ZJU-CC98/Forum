@@ -103,7 +103,7 @@ export class Search extends React.Component<{}, SearchState> {
     render() {
         return (<div className="focus-root">
                     <div className="focus" >
-                        <div className="focus-allNewTopic"><i className="fa fa-home" aria-hidden="true"></i>{this.state.boardName}</div>
+                            <div className="focus-allNewTopic"><i className="fa fa-home" aria-hidden="true"></i>搜索/{this.state.boardName}</div>
                             <div className="focus-topic-area" id="focus-topic-area">
                                     <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
                                     <div className="focus-topic-loading displaynone" id="focus-topic-loading"><img src="http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif"></img></div>
