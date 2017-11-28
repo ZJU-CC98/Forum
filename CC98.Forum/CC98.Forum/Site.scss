@@ -353,6 +353,8 @@ body {
 }
 
 #commentlike {
+    display:flex;
+    align-items:flex-end;
 }
 
 #commentliked {
@@ -655,7 +657,7 @@ a {
     width: 6rem;
     background-color: #FF6A6A;
     margin-right: 0.63rem;
-    margin-left: 2.5rem;
+    margin-left: 7.5rem;
     margin-top:2.5rem;
     height: 2.5rem;
     cursor: pointer;
@@ -2716,4 +2718,57 @@ a {
     color: $color-thinBlack;
     margin-top: 100px;
     text-align: center;
+}
+.postManagement {
+
+    position: absolute;
+    z-index: 1000;
+    width: 30rem;
+    height: 20rem;
+    border: 1px solid #d5d5d5;
+    background: #fff;
+    box-shadow: 0px 0px 3px rgba(0,0,0,0.25);
+    -moz-box-shadow: 0 0 3px rgba(0,0,0,.25);
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,.25);
+    border-radius: .5rem;
+    -moz-border-radius: .5rem;
+    -webkit-border-radius: .5rem;
+    background-color:#FFFACD;
+}
+.manageUI{
+    display:flex;
+    flex-direction:row;
+}
+.manageOptions{
+    width:30rem;
+    height:3rem;
+}
+.manageOptions-icon {
+    background-color:#FFDEAD;
+    text-align: center;
+    width: 10rem;
+    height: 3rem;
+    line-height: 3rem;
+    border-right: #EAEAEA solid thin;
+    border-bottom: #EAEAEA solid thin;
+    cursor:pointer;
+}
+.manageObject{
+    width:3rem;
+    margin-right:1rem;
+}
+.manageOperation{
+    width:15rem;
+    margin-left:5rem;
+    margin-top:2rem;
+}
+.confirmManagement {
+    margin-left: 5rem;
+    margin-top: 3rem;
+    width: 5rem;
+    height: 2rem;
+    background-color: #EECBAD;
+    border: gray solid thin;
+    border-radius: 0.3rem;
+    cursor:pointer;
 }

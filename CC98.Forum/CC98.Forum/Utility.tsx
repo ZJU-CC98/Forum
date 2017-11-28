@@ -1506,7 +1506,7 @@ export async function GetTopTopics(boardId) {
     console.log(topics);
     return topics;
 }
-export async function GetBestTopics(boardId, curPage) {
+export async function getBestTopics( curPage,boardId) {
     const start = (curPage - 1) * 20;
     const url = `http://apitest.niconi.cc/topic/best/board/${boardId}?from=${start}&size=20`;
     const token = getLocalStorage("accessToken");
@@ -1515,24 +1515,27 @@ export async function GetBestTopics(boardId, curPage) {
     const response = await fetch(url, { headers });
     const data = await response.json();
     let boardtopics: State.TopicTitleAndContentState[] = [];
-    for (let i = 0; i < data.length; i++) {
-        boardtopics[i] = { ...data[i], replyCount: data[i].replyCount || 0 };
+    for (let i = 0; i < data.topics.length; i++) {
+        boardtopics[i] = { ...data.topics[i], replyCount: data.topics[i].replyCount || 0 };
     }
-    return boardtopics;
+    const totalPage = data.count%20===0?data.count/20:(data.count - data.count % 20) / 20+1;
+    const obj = { boardtopics:boardtopics, totalPage:totalPage };
+    return obj;
 }
-export async function GetSaveTopics(boardId, totalPage, curPage) {
+export async function getSaveTopics(curPage, boardId ) {
     const start = (curPage - 1) * 20;
     const url = `http://apitest.niconi.cc/topic/save/board/${boardId}?from=${start}&size=20`;
     const token = getLocalStorage("accessToken");
     const headers = new Headers();
     headers.append("Authorization", token);
     const response = await fetch(url, { headers });
-    const data: State.TopicTitleAndContentState[] = await response.json();
+    const data = await response.json();
     let boardtopics: State.TopicTitleAndContentState[] = [];
     for (let i = 0; i < data.length; i++) {
-        boardtopics[i] = { ...data[i], replyCount: data[i].replyCount || 0 };
-    }
-    return boardtopics;
+        boardtopics[i] = { ...data.topics[i], replyCount: data.topics[i].replyCount || 0 };
+    } const totalPage = data.count % 20 === 0 ? data.count / 20 : (data.count - data.count % 20) / 20 + 1;
+    const obj = { boardtopics: boardtopics, totalPage: totalPage };
+    return obj;
 }
 
 /**
@@ -1649,4 +1652,29 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
     } catch (e) {
         //window.location.href = "/status/Disconnected";
     }
+}
+export async function getMasters(topicId) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    const response = await fetch(`http://apitest.niconi.cc/Topic/${topicId}`, { headers });
+    const data = await response.json();
+    const boardId = data.boardId;
+    const boardResponse = await fetch(`http://apitest.niconi.cc/board/${boardId}`, { headers });
+    const boardData = await boardResponse.json();
+    const masters = boardData.boardMasters;
+    return masters;
+}
+export async function awardWealth( reason, value, postId) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    headers.append("Content-Type", "application/json");
+    const body = {
+        reason: reason,
+        value:value
+    }
+    const str = JSON.stringify(body);
+    const url = `http://apitest.niconi.cc/manage/bonus/wealth?postid=${postId}`;
+    const response = await fetch(url, { method: "PUT", headers,body: str });
 }
