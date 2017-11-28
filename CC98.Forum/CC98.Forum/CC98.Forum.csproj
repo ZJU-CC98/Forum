@@ -48,6 +48,7 @@
     <None Remove="Ubb\FlashTagHandler.tsx" />
     <None Remove="Ubb\ImageTagHandler.tsx" />
     <None Remove="Ubb\LeftTagHandler.tsx" />
+    <None Remove="Ubb\mdTagHandler.tsx" />
     <None Remove="Ubb\MP3TagHandler.tsx" />
     <None Remove="Ubb\NoUbbTagHandler.tsx" />
     <None Remove="Ubb\RightTagHandler.tsx" />
@@ -110,12 +111,14 @@
     <TypeScriptCompile Include="Ubb\ImageTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\Core.tsx" />
     <TypeScriptCompile Include="Ubb\LeftTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\MdTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\MP3TagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\NoUbbTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\RightTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\TableTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\TdTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\ThTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\TopicTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\TrTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\UnresolvedTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\UploadTagHandler.tsx" />

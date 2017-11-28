@@ -142,6 +142,7 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
                         <div className="userName">{this.state.userName}</div>
                     </div>
                     <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/" style={{ color: '#fff' }}>首页</a></div>
+                    <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/message" style={{ color: '#fff' }}>消息</a></div>     
                     <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/focus" style={{ color: '#fff' }}>关注</a></div>
                     <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/newTopics" style={{ color: '#fff' }}>新帖</a></div>
                     <a href="/boardList"><div className="boardListLink" style={{ margin: '0 0 0 10px' }}><div style={{ marginTop: '16px', color: '#fff' }}>版面</div></div></a>
@@ -149,7 +150,7 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
                 <div className="dropDownSubBox">
                     <ul className="dropDownSub">
                         <a href="/userCenter"> <li>个人中心</li></a>
-                        <a href="/message"><li>消息</li></a>
+                        <a href="/"><li>签到（暂无）</li></a>
                         <li onClick={this.logOff}>注销</li>
                     </ul>
                 </div>
