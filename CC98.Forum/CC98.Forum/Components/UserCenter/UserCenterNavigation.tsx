@@ -66,6 +66,8 @@ export class UserCenterNavigation extends React.Component<null, UserCenterNaviga
             <ul>
                 <CustomLink to="/usercenter" label="主页" activeOnlyWhenExact={true} myClassName="fa-home" />
                 <hr />
+                <CustomLink to="/usercenter/config" label="修改个人资料" myClassName="fa-cog" />
+                <hr />
                 <CustomLink to="/usercenter/myposts" label="我的主题" myClassName="fa-pencil-square-o"/>
                 <hr />
                 <CustomLink to="/usercenter/myfavorites" label="我的收藏" myClassName="fa-star" />
@@ -73,8 +75,6 @@ export class UserCenterNavigation extends React.Component<null, UserCenterNaviga
                 <CustomLink to="/usercenter/myfollowings" label="我的关注" myClassName="fa-heart" />
                 <hr />
                 <CustomLink to="/usercenter/myfans" label="我的粉丝" myClassName="fa-users" />
-                <hr />
-                <CustomLink to="/usercenter/config" label="功能设置" myClassName="fa-cog" />
             </ul>
             <button type="button" id="scrollToTop" className={this.state.buttonClassName} onClick={this.scrollToTop}>回到顶部</button>
         </div>);

@@ -54,7 +54,7 @@ body {
     margin-left: 6.25rem;
     margin-right: 6.25rem;
     margin-top: 2.5rem;
-    width: 70%;
+    min-width: 71.2px;
 }
 
 .listContent {
@@ -102,26 +102,29 @@ body {
 
 #authormes {
     border-right: $bgcolor solid thin;
+    width:26rem;
 }
 
 
 #authorName {
     margin-left: 1rem;
     justify-content: flex-start;
+    font-size:1rem;
+    width:8rem;
 }
 
 #authorName p {
     margin-top: 1.4375rem;
-    font-size: 0.8125rem;
+    font-size: 1rem;
     font-family: 微软雅黑;
     color: #9ACD32;
 }
 
 #fans {
-    margin-left: 1rem;
+
     margin-top: 1.4375rem;
     font-family: 微软雅黑;
-    font-size: 0.8125rem;
+    font-size: 1rem;
 }
 
 .authorImg {
@@ -147,16 +150,21 @@ body {
     text-align: center;
 }
 
-#email {
-    width: 4rem;
+.email {
+    width: 5rem;
+    height:1.5rem;
     font-size: 0.75rem;
     font-family: 微软雅黑;
-    letter-spacing: 0.1875rem;
-    border-radius: 0.3125rem;
+    letter-spacing: 0.2rem;
+    border-radius: 0.3rem;
     background: #67B3FF;
     border: 1px solid #2576A8;
+    cursor:pointer;
+    a{
     color: #fff;
+    }
     text-align: center;
+    margin-left:1rem;
 }
 
 #title {
@@ -345,6 +353,8 @@ body {
 }
 
 #commentlike {
+    display:flex;
+    align-items:flex-end;
 }
 
 #commentliked {
@@ -373,6 +383,9 @@ body {
 }
 
 .good {
+    height:2rem;
+   
+    align-items:center;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -381,8 +394,6 @@ body {
     padding: 1.25rem;
     font-size: 0.75rem;
     border-bottom: #EAEAEA solid thin;
-    border-left: #EAEAEA solid thin;
-    border-right: #EAEAEA solid thin;
     box-sizing: border-box;
 }
 
@@ -462,7 +473,7 @@ body {
 
 .rpyClr {
     text-align:center;
-    width:5rem;
+    width:8rem;
     word-break: keep-all;
 }
 
@@ -490,6 +501,7 @@ body {
     font-family: 微软雅黑;
     padding-left: 0.4375rem;
     padding-right: 0.4375rem;
+    padding-top:0.1rem;
     color: #000000;
     margin-left: 0.3125rem;
     outline: none;
@@ -502,6 +514,7 @@ body {
     font-family: 微软雅黑;
     padding-left: 0.4375rem;
     padding-right: 0.4375rem;
+    padding-top:0.1rem;
     border-radius: 0.3125rem;
     background: #FFFFFF;
     border: 1px solid #5CADDD;
@@ -625,12 +638,43 @@ a {
     width: 4.375rem;
     background-color: #F5FAFD;
 }
-
+.follow {
+    width: 5rem;
+    background-color: #FF6A6A;
+    margin-right: 0.63rem;
+    margin-left: 1rem;
+    height: 1.5rem;
+    cursor: pointer;
+    text-align: center;
+    font-size: 0.75rem;
+    font-family: 微软雅黑;
+    letter-spacing: 0.2rem;
+    border-radius: 0.3rem;
+    background: red;
+    border: 1px solid #B22222;
+    color: #fff;
+}
+.followuser {
+    width: 6rem;
+    background-color: #FF6A6A;
+    margin-right: 0.63rem;
+    margin-left: 2.5rem;
+    margin-top:2.5rem;
+    height: 2.5rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 微软雅黑;
+    letter-spacing: 0.2rem;
+    border-radius: 0.3rem;
+    border: 1px solid #B22222;
+    color: #fff;
+}
 .center {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width:71.2rem;
 }
 
 .button {
@@ -1606,6 +1650,7 @@ a {
     .focus-board {
         height: 14px;
         flex-shrink: 0;
+        cursor: pointer;
 
         border: {
             style: solid;
@@ -1627,6 +1672,10 @@ a {
         &:active {
             background-color: rgba(0,150,255,0.1);
         }
+    }
+
+    .focus-hover {
+        background-color: rgba(0,150,255,0.1);
     }
 }
 
@@ -1746,8 +1795,8 @@ a {
 
 .focus-allNewTopic {
     color: $color-thinBlack;
-    min-height: 12px;
-    font-size: 12px;
+    min-height: 14px;
+    font-size: 14px;
     display: flex;
     align-items: baseline;
 
@@ -1982,7 +2031,7 @@ a {
     padding-left: 2px;
 }
 
-#search .fangdajing {
+#search .searchIco {
     width: 20px;
     padding: 2px 0 0 3px;
 }
@@ -2429,7 +2478,7 @@ a {
     弹出用户悬浮窗
 */
 .popup {
-    width: 25rem;
+    width: 30rem;
     height: 15.625rem; /*高度自由，因为不确定，内容多少。*/
     border: 1px solid #D5D5D5;
     background: #fff; /*窗口内容不透明，背景为白色*/
@@ -2591,7 +2640,7 @@ a {
 
     #sendTopic-input {
         background-color: #fff;
-        height: 20rem;
+        height: 34.5rem;
         padding: 1rem;
         border: none;
         width: 96.5%;
@@ -2667,4 +2716,65 @@ a {
 
 .userDetails {
     z-index: 1;
+}
+
+/**********************************搜索页的样式*********************************/
+.noRusult {
+    font-size: 16px;
+    color: $color-thinBlack;
+    margin-top: 100px;
+    text-align: center;
+}
+.postManagement {
+
+    position: absolute;
+    z-index: 1000;
+    width: 30rem;
+    height: 20rem;
+    border: 1px solid #d5d5d5;
+    background: #fff;
+    box-shadow: 0px 0px 3px rgba(0,0,0,0.25);
+    -moz-box-shadow: 0 0 3px rgba(0,0,0,.25);
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,.25);
+    border-radius: .5rem;
+    -moz-border-radius: .5rem;
+    -webkit-border-radius: .5rem;
+    background-color:#FFFACD;
+}
+.manageUI{
+    display:flex;
+    flex-direction:row;
+}
+.manageOptions{
+    width:30rem;
+    height:3rem;
+}
+.manageOptions-icon {
+    background-color:#FFDEAD;
+    text-align: center;
+    width: 10rem;
+    height: 3rem;
+    line-height: 3rem;
+    border-right: #EAEAEA solid thin;
+    border-bottom: #EAEAEA solid thin;
+    cursor:pointer;
+}
+.manageObject{
+    width:3rem;
+    margin-right:1rem;
+}
+.manageOperation{
+    width:15rem;
+    margin-left:5rem;
+    margin-top:2rem;
+}
+.confirmManagement {
+    margin-left: 5rem;
+    margin-top: 3rem;
+    width: 5rem;
+    height: 2rem;
+    background-color: #EECBAD;
+    border: gray solid thin;
+    border-radius: 0.3rem;
+    cursor:pointer;
 }

@@ -5,12 +5,11 @@ import * as React from 'react';
 import { FocusBoard } from '../Props/FocusBoard';
 import { FocusBoardProps } from '../Props/FocusBoardProps';
 import { FocusBoardAreaState } from '../States/FocusBoardAreaState';
-import { FocusBoardSingle } from './FocusBoardSingle';
 import * as Utility from '../Utility';
 /**
  * 表示我关注的版面列表区域
  */
-export class FocusBoardArea extends React.Component<{}, FocusBoardProps> {
+export class FocusBoardArea extends React.Component<FocusProps, FocusBoardProps> {
 
     /**
      * 构造函数
@@ -58,13 +57,47 @@ export class FocusBoardArea extends React.Component<{}, FocusBoardProps> {
             //存到缓存里
             Utility.setStorage("focusBoardList", data);
         }
-    }
 
+        let currentFocusBoard = Utility.getStorage("currentFocusBoard");
+        if (currentFocusBoard) {
+            $(".focus-board").removeClass("focus-hover");
+            $(`boardId_${currentFocusBoard.id}`).addClass("focus-hover");
+        }
+
+        //给每个版的按钮添加点击事件
+        let self = this;
+        $('.focus-board').click(function () {
+            //如果没被点击过，就设为选中，并更新下方帖子列表
+            if (this.className == "focus-board") {
+                let currentFocusBoard = { boardId: this.id, boardName: this.innerHTML };
+                Utility.setStorage("currentFocusBoard", currentFocusBoard);
+                $(".focus-board").removeClass("focus-hover");
+                $(this).addClass("focus-hover");
+                self.props.onChange();
+            }
+            //如果被点击过，就设为取消，并更新下方帖子列表
+            else if (this.className == "focus-board focus-hover") {
+                Utility.removeStorage("currentFocusBoard");
+                $(".focus-board").removeClass("focus-hover");
+                self.props.onChange();
+            }
+        });
+
+    }
+    
     render() {
-        return <div className="focus-board-area">{this.state.data.map(coverFocusBoard)}</div>;
+        return <div className="focus-board-area">
+                   <div className="focus-board" id="0">关注用户</div>
+                   {this.state.data.map(coverFocusBoard)}
+               </div>;
     }
 }
 
 function coverFocusBoard(item: FocusBoard) {
-    return <FocusBoardSingle id={item.id} name={item.name} />;
+    //点击版面名称会显示相应版面的帖子
+    return <div className="focus-board" id={`${item.id}`}>{item.name}</div>;
+}
+
+export class FocusProps {
+    onChange: any;
 }

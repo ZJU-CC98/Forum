@@ -99,9 +99,7 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
         Utility.removeLocalStorage("userName");
         Utility.removeLocalStorage("password");
         Utility.removeLocalStorage("userInfo");
-        Utility.removeStorage("focusBoardList");
-        Utility.removeStorage("focusBoardTopic");
-        Utility.removeStorage("recentContact");
+        Utility.removeStorage("all");
         location = window.location;     //刷新当前页面
     }
 
@@ -170,61 +168,197 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
 }
 
 export class Search extends React.Component<{}, AppState> {     //搜索框组件
-    render() {
 
-        $(document).ready(function () {
+    async componentDidMount() {
+        const searchBoxSelect = $('.searchBoxSelect');
+        const downArrow = $('.downArrow');
+        const searchBoxSub = $('.searchBoxSub');
+        const searchIco = $('.searchIco');
+        const searchBoxLi = searchBoxSub.find('li');
 
-            const searchBoxSelect = $('.searchBoxSelect');
-            const downArrow = $('.downArrow');
-            const searchBoxSub = $('.searchBoxSub');
-            const searchBoxLi = searchBoxSub.find('li');
-
-            $(document).click(function () {
-                searchBoxSub.css('display', 'none');
-            });
-
-            searchBoxSelect.click(function () {
-                if (searchBoxSub.css('display') === 'block') searchBoxSub.css('display', 'none');
-                else searchBoxSub.css('display', 'block');
-                return false;   //阻止事件冒泡
-            });
-
-            downArrow.click(function () {
-                if (searchBoxSub.css('display') === 'block') searchBoxSub.css('display', 'none');
-                else searchBoxSub.css('display', 'block');
-                return false;   //阻止事件冒泡
-            });
-
-            /*在一个对象上触发某类事件（比如单击onclick事件），如果此对象定义了此事件的处理程序，那么此事件就会调用这个处理程序，
-            如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
-            或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
-
-            searchBoxLi.click(function () {
-                searchBoxSelect.text($(this).text());
-            });
-
-            searchBoxLi.mouseover(function () {
-                this.className = 'hover';
-            });
-
-            searchBoxLi.mouseout(function () {
-                this.className = '';
-            });
+        //查看当前是全站还是某版，如果是某版就查询到某版id
+        let url1 = location.href.match(/\/topic\/(\S+)\/+?/);
+        let url2 = location.href.match(/\/list\/(\S+)\/+?/);
+        let url3 = location.href.match(/\/(search)/);
+        let boardId = 0;
+        let boardName = '全站';
+        if (url1) {
+            let topicId = url1[1];
+            let response = await Utility.getCategory(topicId, this.context.router);
+            boardId = response.boardId;
+            boardName = response.boardName;
+        }
+        else if (url2) {
+            boardId = parseInt(url2[1]);
+            boardName = await Utility.getBoardName(boardId, this.context.router);
+        }
+        else if (url3) {
+            let searchInfo = Utility.getStorage("searchInfo");
+            if (searchInfo) {
+                boardId = searchInfo.boardId;
+                boardName = searchInfo.boardName;
+            }
+        }
+        
+        $(document).click(function () {
+            searchBoxSub.css('display', 'none');
         });
 
-        return <div id="search">
-            <div className="box">
-                <div className="searchBoxSelect">主题</div>
-                <div className="downArrow"><img src="/images/downArrow.png" width="12" height="12" /></div>
-                <input name="searchText" type="text" placeholder="猜猜能搜到什么..." />
-                <div className="fangdajing"><img src="/images/fangdajing.ico" width="15" height="15" /></div>
-            </div>
-            <ul className="searchBoxSub">
-                <li>版面</li>
-                <li>主题</li>
-                <li>用户</li>
-            </ul>
-        </div>;
+        searchBoxSelect.click(function () {
+            if (searchBoxSub.css('display') === 'block') searchBoxSub.css('display', 'none');
+            else searchBoxSub.css('display', 'block');
+            return false;   //阻止事件冒泡
+        });
+
+        downArrow.click(function () {
+            if (searchBoxSub.css('display') === 'block') searchBoxSub.css('display', 'none');
+            else searchBoxSub.css('display', 'block');
+            return false;   //阻止事件冒泡
+        });
+
+        /*在一个对象上触发某类事件（比如单击onclick事件），如果此对象定义了此事件的处理程序，那么此事件就会调用这个处理程序，
+        如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
+        或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
+
+        searchBoxLi.click(function () {
+            searchBoxSelect.text($(this).text());
+        });
+
+        searchBoxLi.mouseover(function () {
+            this.className = 'hover';
+        });
+
+        searchBoxLi.mouseout(function () {
+            this.className = '';
+        });
+        
+        //获取搜索关键词
+        let self = this;
+        searchIco.click(async function () {
+            let val: any = $('#searchText').val();
+            if (val && val != '') {
+                if (searchBoxSelect.text() == '主题' || searchBoxSelect.text() == '全站') {
+                    let words = val.split(' ');
+                    if (words) {
+                        if (words.length > 5) {
+                            alert("关键词过多，请不要超过5个！");
+                        }
+                        else {
+                            let searchInfo = { boardId: 0, boardName: '全站', words: words };
+                            Utility.setStorage('searchInfo', searchInfo);
+                            let host = window.location.host;
+                            window.location.href = `http://${host}/search`;
+                        }
+                    }
+                }
+                else if (searchBoxSelect.text() == '版内') {
+                    let words = val.split(' ');
+                    if (words) {
+                        if (words.length > 5) {
+                            alert("关键词过多，请不要超过5个！");
+                        }
+                        else {
+                            let searchInfo = { boardId: boardId, boardName: boardName, words: words };
+                            Utility.setStorage('searchInfo', searchInfo);
+                            let host = window.location.host;
+                            window.location.href = `http://${host}/search`;
+                        }
+                    }
+                }
+                else if (searchBoxSelect.text() == '用户') {
+                    let body = await Utility.getUserDetails(val, self.context.router);
+                    let host = window.location.host;
+                    if (body) {
+                        window.location.href = `http://${host}/user/name/${val}`;
+                    }
+                    else {
+                        Utility.removeStorage('searchInfo');
+                        window.location.href = `http://${host}/search`;
+                    }
+                }
+                else if (searchBoxSelect.text() == '版面') {
+                    let host = window.location.host;
+                    let boardResult = Utility.getBoardId(val);
+                    if (boardResult) {
+                        if (boardResult == []) {
+                            Utility.removeStorage('searchInfo');
+                            window.location.href = `http://${host}/search`;
+                        }
+                        else if (boardResult.length == 1) {
+                            window.location.href = `http://${host}/list/${boardResult[0].id}/normal/`;
+                        }
+                        else if (boardResult.length > 1) {
+                            Utility.setStorage("searchBoardInfo", boardResult);
+                            window.location.href = `http://${host}/searchBoard`;
+                        }
+                        else {
+                            Utility.removeStorage('searchInfo');
+                            window.location.href = `http://${host}/search`;
+                        }
+                    }
+                    else {
+                        Utility.removeStorage('searchInfo');
+                        window.location.href = `http://${host}/search`;
+                    }
+                }
+            }
+        });
+    }
+
+    render() {
+        //查看当前是全站还是某版
+        let url1 = location.href.match(/\/topic\/(\S+)\/+?/);
+        let url2 = location.href.match(/\/list\/(\S+)\/+?/);
+        let url3 = location.href.match(/\/(search)/);
+        let flag = 1;
+        if (url1) {
+            console.log(url1[1]);
+            flag = 0;
+        }
+        else if (url2) {
+            console.log(url2[1]);
+            flag = 0;
+        }
+        else if (url3) {
+            let searchInfo = Utility.getStorage("searchInfo");
+            if (searchInfo) {
+                if (searchInfo.boardId != 0) {
+                    flag = 0;
+                }
+            }
+        }
+
+        if (flag) {
+            return <div id="search">
+                <div className="box">
+                    <div className="searchBoxSelect">主题</div>
+                    <div className="downArrow"><img src="/images/downArrow.png" width="12" height="12" /></div>
+                    <input id="searchText" type="text" placeholder="猜猜能搜到什么..." />
+                    <div className="searchIco"><img src="/images/searchIco.ico" width="15" height="15" /></div>
+                </div>
+                <ul className="searchBoxSub">
+                    <li>主题</li>
+                    <li>用户</li>
+                    <li>版面</li>
+                </ul>
+            </div>;
+        }
+        else {
+            return <div id="search">
+                <div className="box">
+                    <div className="searchBoxSelect">版内</div>
+                    <div className="downArrow"><img src="/images/downArrow.png" width="12" height="12" /></div>
+                    <input id="searchText" type="text" placeholder="猜猜能搜到什么..." />
+                    <div className="searchIco"><img src="/images/searchIco.ico" width="15" height="15" /></div>
+                </div>
+                <ul className="searchBoxSub">
+                    <li>版内</li>
+                    <li>全站</li>
+                    <li>用户</li>
+                    <li>版面</li>
+                </ul>
+            </div>;
+        }
     }
 }
 

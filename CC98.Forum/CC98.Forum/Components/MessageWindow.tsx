@@ -218,7 +218,7 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
                         <textarea className="message-message-wPostArea" id="postContent" onFocus={this.handleFocus} onBlur={this.handleBlur}></textarea>
                         <div id="wPostNotice" className="message-message-wPostNotice" onClick={this.handleFocus}>请在这里填入您要发送的私信内容</div>
                         <div id="wPostError" className="message-message-wPostError displaynone" onClick={this.handleFocus}>您的发送过快，请稍作歇息~</div>
-                        <button className="message-message-wPostBtn" onClick={this.postMessage}>回复</button>
+                        <button className="message-message-wPostBtn" onClick={this.postMessage}>发送</button>
                     </div>
                 </div>);
     }

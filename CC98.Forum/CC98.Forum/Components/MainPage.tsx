@@ -157,7 +157,7 @@ export class HotTopicComponent extends React.Component<{}, MainPageTopicState> {
 
 
     convertMainPageTopic(item: MainPageTopic) {
-        const boardUrl = `/list/${item.boardid}`;
+        const boardUrl = `/list/${item.boardid}/normal/`;
         const topicUrl = `/topic/${item.id}`;
         return <div className="listRow">
             <div className="boardName"> <a href={boardUrl}>[{item.boardName}]</a></div >

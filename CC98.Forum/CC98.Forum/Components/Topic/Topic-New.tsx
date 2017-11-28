@@ -1,15 +1,13 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
+﻿
 import * as React from 'react';
-import { FocusTopic } from '../Props/FocusTopic';
-import { FocusTopicSingle } from './FocusTopicSingle';
-import { FocusTopicAreaState } from '../States/FocusTopicAreaState';
-import * as Utility from '../Utility';
+import { FocusTopic } from '../../Props/FocusTopic';
+import { FocusTopicSingle } from '.././FocusTopicSingle';
+import { FocusTopicAreaState } from '../../States/FocusTopicAreaState';
+import * as Utility from '../../Utility';
 /**
  * 表示全站最新主题列表
  */
-export class AllNewTopicArea extends React.Component<{}, FocusTopicAreaState> {
+export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
 
     /**
      * 构造函数
@@ -24,7 +22,7 @@ export class AllNewTopicArea extends React.Component<{}, FocusTopicAreaState> {
         }
         this.state = {
             data: data,
-            curNum: 0,
+            from: 0,
             loading: true
         };
 	    this.handleScroll = this.handleScroll.bind(this);
@@ -34,7 +32,7 @@ export class AllNewTopicArea extends React.Component<{}, FocusTopicAreaState> {
      * 进入立即获取20条新帖的数据，同时为滚动条添加监听事件
      */
     async componentDidMount() {
-        let data = await Utility.getAllNewTopic(this.state.curNum, this.context.router);
+        let data = await Utility.getAllNewTopic(this.state.from, this.context.router);
 
         //先看一下有没有缓存的数据，如果有的话新数据跟缓存数据组合一下
         let oldData =  Utility.getStorage("AllNewTopic");
@@ -55,7 +53,7 @@ export class AllNewTopicArea extends React.Component<{}, FocusTopicAreaState> {
                     
         //缓存获取到的数据                      
         Utility.setStorage("AllNewTopic", data);
-        this.setState({ data: data, curNum: data.length });
+        this.setState({ data: data, from: data.length });
 
         //滚动条监听
         document.addEventListener('scroll', this.handleScroll);
@@ -76,7 +74,7 @@ export class AllNewTopicArea extends React.Component<{}, FocusTopicAreaState> {
             /**
             *查看新帖数目大于100条时不再继续加载
             */
-            if (this.state.curNum >= 99) {
+            if (this.state.from >= 99) {
                 $('#focus-topic-loading').addClass('displaynone');
                 $('#focus-topic-loaddone').removeClass('displaynone');
                 return;
@@ -86,7 +84,7 @@ export class AllNewTopicArea extends React.Component<{}, FocusTopicAreaState> {
             */
             this.setState({ loading: false });
             try {
-                var newData = await Utility.getAllNewTopic(this.state.curNum, this.context.router);
+                var newData = await Utility.getAllNewTopic(this.state.from, this.context.router);
             } catch (err) {
                 /**
                 *如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
@@ -98,7 +96,7 @@ export class AllNewTopicArea extends React.Component<{}, FocusTopicAreaState> {
             *如果正确获取到数据，则添加新数据，翻页+1，同时this.state.loading设置为true，后续才可以再次发送fetch请求
             */
             let data = this.state.data.concat(newData);
-            this.setState({ data: data, curNum: data.length, loading: true });
+            this.setState({ data: data, from: data.length, loading: true });
             Utility.setStorage("AllNewTopic", data);
         }
     }
@@ -106,11 +104,16 @@ export class AllNewTopicArea extends React.Component<{}, FocusTopicAreaState> {
      * 将主题排列好
      */
     render() {
-        return <div className="focus-topic-area">
-                    <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
-                    <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif"></img></div>
-                    <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">---------------------- 已加载100条帖子，无法加载更多 ----------------------</div>
-               </div>;
+        return (<div className="focus-root">
+                    <div className="focus" >
+                        <div className="focus-allNewTopic"><i className="fa fa-home" aria-hidden="true"></i>首页/全站新帖</div>
+                        <div className="focus-topic-area">
+                            <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
+                            <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif"></img></div>
+                            <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">没有更多帖子啦~</div>
+                        </div>
+                    </div>
+                </div>);
     }
     
 }
