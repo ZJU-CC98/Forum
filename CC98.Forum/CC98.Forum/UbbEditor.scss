@@ -1,0 +1,95 @@
+﻿.ubb-editor {
+    width: 1140px;
+    background-color: white;
+    border: 1px solid rgb(204,204,204);
+
+    .editor-buttons {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid rgb(204,204,204);
+    }
+
+    select, input, textarea, button {
+        border: none;
+        &:focus {
+            outline: none;
+        }
+    }
+
+    label, button {
+        width: 3rem;
+        height: 2rem;
+        font-size: 14px;
+        background-color: white;
+        padding: 0;
+        border: none;
+        cursor: pointer;
+        margin-right: 1rem;
+    }
+
+    label {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .editor-buttons-extends, .editor-buttons-styles {
+        display: flex;
+        align-items: center;
+    }
+
+    .editor-buttons-extends {
+        margin-right: 2rem;
+    }
+
+    .editor-buttons-selects {
+        display: flex;
+        align-items: center;
+
+        p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        select {
+            width: 6rem;
+            height: 2rem;
+            margin-right: 2rem;
+            text-align-last: center;
+        }
+    }
+
+    .ubb-extend {
+        display: flex;
+        align-items: center;
+        transition-duration: .5s;
+        overflow: hidden;
+        border-bottom: 1px solid rgb(204,204,204);
+        height: 2rem;
+        justify-content: space-between;
+        padding: 0 2rem;
+
+        p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        input {
+            height: 2rem;
+            width: 40rem;
+        }
+    }
+
+    .ubb-content {
+        padding: 1rem;
+
+        textarea {
+            border: none;
+            width: 100%;
+            padding: 0;
+            height: 34.5rem;
+            resize: none;
+            font-size: 1rem;
+        }
+    }
+}
