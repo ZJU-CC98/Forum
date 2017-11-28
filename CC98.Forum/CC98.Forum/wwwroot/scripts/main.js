@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 30);
+/******/ 	return __webpack_require__(__webpack_require__.s = 31);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -2530,7 +2530,7 @@ function awardWealth(reason, value, postId) {
     });
 }
 exports.awardWealth = awardWealth;
-function getAwardInfo(postId, page) {
+function getAwardInfo(postId) {
     return __awaiter(this, void 0, void 0, function () {
         var token, headers, start, size, url, response, data;
         return __generator(this, function (_a) {
@@ -2539,7 +2539,7 @@ function getAwardInfo(postId, page) {
                     token = getLocalStorage("accessToken");
                     headers = new Headers();
                     headers.append("Authorization", token);
-                    start = (page - 1) * 10;
+                    start = 0;
                     size = 10;
                     url = "http://apitest.niconi.cc/post/awards?postid=" + postId + "&from=" + start + "&size=" + size;
                     return [4 /*yield*/, fetch(url, { headers: headers })];
@@ -2573,6 +2573,433 @@ function getPortraitUrl(userName) {
     });
 }
 exports.getPortraitUrl = getPortraitUrl;
+function getBoardId(boardName) {
+    var boardInfo = [
+        { id: "7", name: "王何宇老师答疑版" },
+        { id: "20", name: "冯晓霞老师答疑版" },
+        { id: "21", name: "何善蒙老师答疑版" },
+        { id: "23", name: "肖少拥老师答疑版" },
+        { id: "36", name: "王云武老师答疑版" },
+        { id: "41", name: "楼学庆老师答疑版" },
+        { id: "42", name: "杨起帆老师答疑版" },
+        { id: "47", name: "陈越老师答疑版" },
+        { id: "49", name: "方红光老师答疑版" },
+        { id: "50", name: "徐镜春老师答疑版" },
+        { id: "52", name: "陆汉权老师答疑版" },
+        { id: "83", name: "魏宝刚老师的答疑版" },
+        { id: "140", name: "古红英老师答疑版" },
+        { id: "149", name: "李岩老师答疑版" },
+        { id: "151", name: "孙建伶老师答疑版" },
+        { id: "183", name: "陆魁军老师答疑版" },
+        { id: "204", name: "冯雁老师答疑版" },
+        { id: "205", name: "张引老师的答疑版" },
+        { id: "207", name: "郑扣根老师答疑版" },
+        { id: "208", name: "翁恺老师答疑版" },
+        { id: "224", name: "钱抱清老师的答疑版" },
+        { id: "279", name: "教师答疑区事务版" },
+        { id: "292", name: "高晴老师答疑版" },
+        { id: "311", name: "杨义群老师的答疑版" },
+        { id: "323", name: "白洪欢老师答疑版" },
+        { id: "325", name: "贾厚玉老师的答疑板" },
+        { id: "375", name: "张重辉老师答疑版" },
+        { id: "383", name: "张彤彧老师答疑版" },
+        { id: "408", name: "陈建海老师答疑" },
+        { id: "412", name: "精品课程C语言答疑中心" },
+        { id: "423", name: "方宁老师答疑版" },
+        { id: "427", name: "季江民老师答疑版块" },
+        { id: "432", name: "陈平老师答疑版" },
+        { id: "440", name: "丁展平老师答疑版" },
+        { id: "442", name: "谈艺论戏" },
+        { id: "446", name: "桥牌天地" },
+        { id: "448", name: "张军老师答疑版" },
+        { id: "451", name: "胡兰青老师答疑版" },
+        { id: "452", name: "胡兰青老师答疑版" },
+        { id: "454", name: "董亚波老师答疑版" },
+        { id: "457", name: "史治国老师答疑版" },
+        { id: "494", name: "方富民老师答疑版" },
+        { id: "501", name: "外院朱晔老师答疑版" },
+        { id: "513", name: "邢卫老师答疑版" },
+        { id: "514", name: "周波老师答疑版" },
+        { id: "535", name: "面向对象程序设计答疑中心" },
+        { id: "540", name: "陆维敏老师答疑版" },
+        { id: "546", name: "苏振华老师答疑版" },
+        { id: "548", name: "姜晓红老师答疑版" },
+        { id: "559", name: "吴江琴老师答疑版" },
+        { id: "568", name: "杨万喜老师答疑版" },
+        { id: "574", name: "胡敏老师的答疑版面" },
+        { id: "575", name: "顾宗华老师答疑版" },
+        { id: "578", name: "蒋文华老师答疑版" },
+        { id: "579", name: "陈华钧老师答疑版" },
+        { id: "588", name: "吕萍老师答疑版" },
+        { id: "589", name: "黄正谦老师答疑版" },
+        { id: "590", name: "王强老师答疑版" },
+        { id: "595", name: "陈志坚老师答疑版" },
+        { id: "599", name: "彭笑刚老师答疑版" },
+        { id: "600", name: "楼辉老师答疑版" },
+        { id: "601", name: "沈钦仙老师答疑版" },
+        { id: "602", name: "孙凌云老师答疑版" },
+        { id: "603", name: "孟涛老师答疑版" },
+        { id: "615", name: "孟炳泉老师答疑版" },
+        { id: "624", name: "计算机类通识课程答疑版" },
+        { id: "626", name: "杨颖老师答疑版" },
+        { id: "629", name: "陈实老师答疑版" },
+        { id: "631", name: "管理学课程交流版" },
+        { id: "632", name: "陈纯老师答疑版" },
+        { id: "633", name: "近现代中国的人物研究答疑版" },
+        { id: "634", name: "董平老师答疑版" },
+        { id: "635", name: "戴俊飞老师答疑版" },
+        { id: "640", name: "刘海风老师答疑版" },
+        { id: "710", name: "沈语冰老师答疑版" },
+        { id: "714", name: "王跃明老师答疑版" },
+        { id: "723", name: "李浩然老师答疑版" },
+        { id: "724", name: "胡吉明老师答疑版" },
+        { id: "726", name: "董玮老师答疑版" },
+        { id: "727", name: "王毅老师答疑版" },
+        { id: "728", name: "陈文智老师答疑版" },
+        { id: "733", name: "陈奇老师答疑版" },
+        { id: "745", name: "刘新国老师答疑版" },
+        { id: "751", name: "李啸风物理化学答疑版" },
+        { id: "752", name: "雷勇老师答疑版" },
+        { id: "761", name: "高在峰老师课程交流版" },
+        { id: "68", name: "学习交流" },
+        { id: "85", name: "English Corner" },
+        { id: "102", name: "彼岸阳光" },
+        { id: "263", name: "考研一族" },
+        { id: "304", name: "二外天地" },
+        { id: "318", name: "选课交流" },
+        { id: "391", name: "和语瀛风" },
+        { id: "401", name: "对外交流" },
+        { id: "592", name: "学习天地区事务版" },
+        { id: "593", name: "专业咨询" },
+        { id: "594", name: "学习资源" },
+        { id: "715", name: "在线答疑" },
+        { id: "100", name: "校园信息" },
+        { id: "197", name: "军训生活" },
+        { id: "198", name: "新生宝典" },
+        { id: "264", name: "浙大广电" },
+        { id: "266", name: "校园动态区事务版" },
+        { id: "372", name: "维权空间" },
+        { id: "417", name: "毕业生" },
+        { id: "450", name: "依依校情" },
+        { id: "460", name: "声像浙大" },
+        { id: "534", name: "团委学生会" },
+        { id: "537", name: "寒假·2017" },
+        { id: "539", name: "校园卡工作" },
+        { id: "547", name: "青年志愿者" },
+        { id: "570", name: "防火视窗" },
+        { id: "571", name: "公益爱心" },
+        { id: "581", name: "浙大研究生" },
+        { id: "748", name: "创客在浙" },
+        { id: "230", name: "ftp联盟" },
+        { id: "235", name: "求职广场" },
+        { id: "339", name: "失物招领" },
+        { id: "357", name: "时事新闻" },
+        { id: "392", name: "信息资讯区事务版" },
+        { id: "459", name: "实习兼职" },
+        { id: "473", name: "公务员考录" },
+        { id: "515", name: "住房信息" },
+        { id: "560", name: "证券投资" },
+        { id: "572", name: "交通天下" },
+        { id: "738", name: "学生资助" },
+        { id: "101", name: "时尚空间" },
+        { id: "147", name: "行者无疆" },
+        { id: "157", name: "军事天地" },
+        { id: "180", name: "数码世界" },
+        { id: "229", name: "美食天地" },
+        { id: "256", name: "恋车情结" },
+        { id: "258", name: "宠物情缘" },
+        { id: "261", name: "健康帖士" },
+        { id: "272", name: "个性生活区事务版" },
+        { id: "313", name: "模型世界" },
+        { id: "316", name: "心理学与生活" },
+        { id: "402", name: "气象万千" },
+        { id: "518", name: "茶韵飘香" },
+        { id: "545", name: "手工生活" },
+        { id: "551", name: "绿色心情" },
+        { id: "16", name: "自由贴图" },
+        { id: "115", name: "星座物语" },
+        { id: "135", name: "开怀一笑" },
+        { id: "146", name: "mm图片" },
+        { id: "148", name: "有间鬼屋" },
+        { id: "155", name: "智力宝典" },
+        { id: "173", name: "光影留痕" },
+        { id: "192", name: "有家侦探社" },
+        { id: "269", name: "休闲娱乐区事务版" },
+        { id: "283", name: "舞动心灵" },
+        { id: "353", name: "真我风采" },
+        { id: "422", name: "gg图片" },
+        { id: "430", name: "魔术与魔方" },
+        { id: "549", name: "娱乐新闻" },
+        { id: "15", name: "足球板块" },
+        { id: "48", name: "台球世界" },
+        { id: "86", name: "篮球板块" },
+        { id: "99", name: "体育运动" },
+        { id: "124", name: "板板一族" },
+        { id: "128", name: "free skater" },
+        { id: "203", name: "排球天地" },
+        { id: "232", name: "我爱网球" },
+        { id: "233", name: "乒乓世界" },
+        { id: "236", name: "羽球之家" },
+        { id: "273", name: "体育运动区事务版" },
+        { id: "281", name: "精武门" },
+        { id: "282", name: "跆拳道场" },
+        { id: "288", name: "梦幻黄龙" },
+        { id: "405", name: "精彩F1" },
+        { id: "627", name: "伦敦奥运·2012" },
+        { id: "731", name: "三好杯" },
+        { id: "25", name: "天籁之音" },
+        { id: "164", name: "如影随形" },
+        { id: "169", name: "摇滚和独立音乐" },
+        { id: "202", name: "网络资源" },
+        { id: "234", name: "TV满屋" },
+        { id: "257", name: "影视工作室" },
+        { id: "260", name: "资源发布区" },
+        { id: "270", name: "影音无限区事务版" },
+        { id: "306", name: "综E在线" },
+        { id: "308", name: "乱弹吉他" },
+        { id: "314", name: "我的麦克风" },
+        { id: "744", name: "NexusHD高清社区" },
+        { id: "750", name: "戏剧联盟" },
+        { id: "39", name: "软件荟萃" },
+        { id: "84", name: "数字艺术" },
+        { id: "103", name: "Web设计与开发" },
+        { id: "104", name: "硬件天地" },
+        { id: "105", name: "编程技术" },
+        { id: "154", name: "Java俱乐部" },
+        { id: "211", name: "网络技术" },
+        { id: "212", name: "Linux天地" },
+        { id: "226", name: "电脑医院" },
+        { id: "268", name: "电脑技术区事务版" },
+        { id: "9", name: "似水年华" },
+        { id: "81", name: "情感空气" },
+        { id: "114", name: "郁闷小屋" },
+        { id: "152", name: "缘分天空" },
+        { id: "182", name: "心灵之约" },
+        { id: "186", name: "祝福许愿" },
+        { id: "244", name: "清樽酹月" },
+        { id: "276", name: "感性空间区事务版" },
+        { id: "26", name: "读书时光" },
+        { id: "144", name: "一路走来" },
+        { id: "170", name: "史海拾贝" },
+        { id: "271", name: "瞬间永恒区事务版" },
+        { id: "312", name: "怪力乱神" },
+        { id: "315", name: "98网事" },
+        { id: "379", name: "月亮街" },
+        { id: "406", name: "哲学思考" },
+        { id: "749", name: "社科学术" },
+        { id: "759", name: "曲苑杂坛" },
+        { id: "760", name: "文学交流" },
+        { id: "80", name: "生活点滴" },
+        { id: "251", name: "代理专区(旧)" },
+        { id: "399", name: "书海淘沙" },
+        { id: "449", name: "代理审核" },
+        { id: "562", name: "电脑数码" },
+        { id: "563", name: "服饰美肤" },
+        { id: "564", name: "交易代理区事务版" },
+        { id: "569", name: "代理专区" },
+        { id: "756", name: "电脑数码已完成交易" },
+        { id: "58", name: "信电ISEE" },
+        { id: "67", name: "管理学院" },
+        { id: "145", name: "传媒与国际文化学院" },
+        { id: "158", name: "E电园" },
+        { id: "193", name: "生仪大家庭" },
+        { id: "214", name: "不败光电" },
+        { id: "217", name: "材化演绎" },
+        { id: "241", name: "医学院" },
+        { id: "246", name: "外语学院" },
+        { id: "247", name: "动力机能" },
+        { id: "278", name: "院系交流区事务版" },
+        { id: "285", name: "碧水青禾" },
+        { id: "294", name: "竺可桢学院" },
+        { id: "307", name: "人文学院" },
+        { id: "319", name: "光华法学院" },
+        { id: "320", name: "生命科学学院" },
+        { id: "321", name: "生工食品学院" },
+        { id: "341", name: "药学院" },
+        { id: "344", name: "环资经纬" },
+        { id: "351", name: "天下为公" },
+        { id: "352", name: "经济学院" },
+        { id: "362", name: "教育杏坛" },
+        { id: "363", name: "建工学院" },
+        { id: "367", name: "理学院" },
+        { id: "368", name: "计算机科学与技术学院" },
+        { id: "371", name: "控制天下" },
+        { id: "377", name: "动科天地CAS" },
+        { id: "469", name: "航空航天学院" },
+        { id: "582", name: "求是学院" },
+        { id: "623", name: "海洋学院" },
+        { id: "754", name: "我是工程师" },
+        { id: "60", name: "MSTC Microsoft Technology Club" },
+        { id: "72", name: "韩之恋韩语社" },
+        { id: "129", name: "杭高毕业生专版" },
+        { id: "165", name: "绿之源协会" },
+        { id: "166", name: "棒垒球协会" },
+        { id: "176", name: "Fantasy动漫社" },
+        { id: "187", name: "科技探索者协会" },
+        { id: "190", name: "学军中学" },
+        { id: "194", name: "梵音剧社" },
+        { id: "195", name: "法学研究会" },
+        { id: "206", name: "浙大DFM街舞社" },
+        { id: "209", name: "书院飘香" },
+        { id: "210", name: "生命科学协会" },
+        { id: "213", name: "墨语茗音" },
+        { id: "215", name: "登山协会" },
+        { id: "216", name: "梦想天堂" },
+        { id: "219", name: "艺术插花协会" },
+        { id: "222", name: "慈中家园" },
+        { id: "225", name: "灵韵艺术团" },
+        { id: "227", name: "博盟电脑俱乐部" },
+        { id: "250", name: "奔向奥林匹克运动俱乐部" },
+        { id: "253", name: "英语挑战者联盟CEO" },
+        { id: "254", name: "学生旅游协会" },
+        { id: "277", name: "社团风采区事务版" },
+        { id: "287", name: "SCDA（就业与职业发展协会）" },
+        { id: "297", name: "《紫金港》·星空文学" },
+        { id: "303", name: "浙江大学国防协会" },
+        { id: "305", name: "意灵读书者协会" },
+        { id: "310", name: "心理学会" },
+        { id: "322", name: "紫金港艺术团" },
+        { id: "330", name: "学生社团联合会" },
+        { id: "332", name: "紫金港证券投资社" },
+        { id: "333", name: "摄协之家" },
+        { id: "334", name: "红十字会学生分会" },
+        { id: "335", name: "DV联盟" },
+        { id: "336", name: "学生医学进展研究会" },
+        { id: "337", name: "学生第一希望社" },
+        { id: "340", name: "无我茶社" },
+        { id: "347", name: "学生三农协会" },
+        { id: "350", name: "创业协会" },
+        { id: "354", name: "一方水土" },
+        { id: "355", name: "辩论队与求是辩论社" },
+        { id: "358", name: "浙大虫子" },
+        { id: "359", name: "卡侬音乐" },
+        { id: "361", name: "学生无极棋社" },
+        { id: "369", name: "学生空手道协会" },
+        { id: "373", name: "伊甸法国" },
+        { id: "382", name: "文学联合会" },
+        { id: "385", name: "【enactus(原SIFE)】浙大创行国际学生圈" },
+        { id: "393", name: "爱心社" },
+        { id: "395", name: "动物保护者协会" },
+        { id: "396", name: "求是人俱乐部" },
+        { id: "397", name: "邓研风采" },
+        { id: "431", name: "学生校友联络协会" },
+        { id: "434", name: "亦心·民韵舞社" },
+        { id: "436", name: "杨式太极拳协会" },
+        { id: "437", name: "社团百花园" },
+        { id: "438", name: "文琴艺术总团" },
+        { id: "439", name: "春秋社" },
+        { id: "470", name: "腾讯创新俱乐部" },
+        { id: "519", name: "机器人协会" },
+        { id: "520", name: "心系西部协会" },
+        { id: "558", name: "模拟联合国协会" },
+        { id: "561", name: "ShARE" },
+        { id: "566", name: "财商俱乐部" },
+        { id: "573", name: "Power Of Voice" },
+        { id: "576", name: "黑白剧社" },
+        { id: "587", name: "HPA保健协会" },
+        { id: "617", name: "浙江大学出国留学学生圈SOSA" },
+        { id: "618", name: "成长互助训练营GCC" },
+        { id: "628", name: "浙江大学学生E志者协会" },
+        { id: "713", name: "未来企业家俱乐部FEC" },
+        { id: "736", name: "浙江大学研究生创新创业中心CIE" },
+        { id: "262", name: "天下一家" },
+        { id: "461", name: "在浙之滨" },
+        { id: "462", name: "天下一家区事务版" },
+        { id: "467", name: "三湘四水" },
+        { id: "468", name: "津门故里" },
+        { id: "471", name: "齐鲁青未了" },
+        { id: "472", name: "蓉汇贯川" },
+        { id: "475", name: "三秦大地" },
+        { id: "480", name: "八闽来风" },
+        { id: "481", name: "江南西道" },
+        { id: "482", name: "一皖情深" },
+        { id: "483", name: "燕赵飞歌" },
+        { id: "484", name: "吴韵汉风" },
+        { id: "485", name: "辽地永宁" },
+        { id: "486", name: "新上海滩" },
+        { id: "489", name: "黑土风情" },
+        { id: "491", name: "白山松水" },
+        { id: "492", name: "巴渝人家" },
+        { id: "493", name: "天山南北" },
+        { id: "498", name: "晋善晋美" },
+        { id: "502", name: "塞上风光" },
+        { id: "503", name: "彩云之南" },
+        { id: "504", name: "荆楚纵横" },
+        { id: "505", name: "邦锦梅朵" },
+        { id: "506", name: "粤来客栈" },
+        { id: "507", name: "鼎豫中原" },
+        { id: "511", name: "丝路花雨" },
+        { id: "550", name: "皇城根儿" },
+        { id: "596", name: "八桂飘香" },
+        { id: "625", name: "黔山秀水" },
+        { id: "642", name: "椰风海韵" },
+        { id: "328", name: "网上冲浪" },
+        { id: "329", name: "编程答疑" },
+        { id: "346", name: "flash版" },
+        { id: "394", name: "游戏编程" },
+        { id: "499", name: "多媒体技术" },
+        { id: "538", name: "Mac(苹果)专区" },
+        { id: "591", name: ".NET 美学" },
+        { id: "597", name: "脚本语言" },
+        { id: "598", name: "iOS" },
+        { id: "621", name: "魅族 Meizu" },
+        { id: "622", name: "Android" },
+        { id: "711", name: "Windows Phone" },
+        { id: "91", name: "游戏广场" },
+        { id: "274", name: "游戏广场区事务版" },
+        { id: "296", name: "暴雪游戏" },
+        { id: "30", name: "动漫讨论" },
+        { id: "139", name: "恋声症候群" },
+        { id: "191", name: "动漫资源" },
+        { id: "223", name: "空蝉之恋" },
+        { id: "239", name: "贴图工坊" },
+        { id: "275", name: "动漫天地区事务版" },
+        { id: "327", name: "动漫文区" },
+        { id: "376", name: "ACG音乐区" },
+        { id: "455", name: "周边百老汇" },
+        { id: "245", name: "技术组工作室" },
+        { id: "249", name: "编辑部工作室" },
+        { id: "286", name: "坛庆策划" },
+        { id: "605", name: "策划部工作室" },
+        { id: "606", name: "体育部工作室" },
+        { id: "607", name: "部长联席会议" },
+        { id: "610", name: "意见与建议" },
+        { id: "611", name: "通知通告" },
+        { id: "613", name: "招贤纳士" },
+        { id: "620", name: "赞助合作" },
+        { id: "747", name: "Banner申请" },
+        { id: "753", name: "CC98协会" },
+        { id: "17", name: "论坛事务" },
+        { id: "38", name: "站规修订" },
+        { id: "40", name: "站务讨论" },
+        { id: "116", name: "test" },
+        { id: "136", name: "98博物馆" },
+        { id: "184", name: "论坛帮助" },
+        { id: "221", name: "版主会议厅" },
+        { id: "267", name: "社科学术区事务版" },
+        { id: "326", name: "集思广益" },
+        { id: "400", name: "废弃版块" },
+        { id: "404", name: "98足迹" },
+        { id: "433", name: "网络安全" },
+        { id: "614", name: "莫失莫忘" }
+    ];
+    var boardResult = [];
+    //是否完全匹配
+    for (var i in boardInfo) {
+        if (boardInfo[i].name == boardName) {
+            boardResult.push({ id: boardInfo[i].id, name: boardInfo[i].name });
+            return boardResult;
+        }
+    }
+    //如果不完全匹配，看是否包含
+    for (var i in boardInfo) {
+        if (boardInfo[i].name.indexOf(boardName) > 0) {
+            boardResult.push({ id: boardInfo[i].id, name: boardInfo[i].name });
+        }
+    }
+    return boardResult;
+}
+exports.getBoardId = getBoardId;
 
 
 /***/ }),
@@ -3830,7 +4257,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(34);
+var Ubb = __webpack_require__(35);
 /**
  * 定义 UBBContainer 组件需要使用的属性。
  */
@@ -4223,7 +4650,7 @@ var PostTopic = /** @class */ (function (_super) {
                     case 1:
                         topicMessage = _a.sent();
                         console.log(topicMessage);
-                        return [4 /*yield*/, Utility.getAwardInfo(topicMessage.postId, 1)];
+                        return [4 /*yield*/, Utility.getAwardInfo(topicMessage.postId)];
                     case 2:
                         award = _a.sent();
                         info = award.map(this.generateAwardInfo.bind(this));
@@ -4376,7 +4803,7 @@ var AuthorMessage = /** @class */ (function (_super) {
         }
     };
     AuthorMessage.prototype.render = function () {
-        var email = "/message/message?id=" + this.props.authorId;
+        var email = "/message/message/" + this.props.authorId;
         var url = "/user/" + this.props.authorId;
         var urlHtml = React.createElement("a", { href: url },
             React.createElement("img", { src: this.props.authorImgUrl }));
@@ -5141,58 +5568,15 @@ var ReplyContent = /** @class */ (function (_super) {
     function ReplyContent(props, content) {
         var _this = _super.call(this, props, content) || this;
         _this.showManageUI = _this.showManageUI.bind(_this);
-        _this.nextPage = _this.nextPage.bind(_this);
-        _this.lastPage = _this.lastPage.bind(_this);
         _this.state = {
             likeNumber: 1,
             dislikeNumber: 1,
             likeState: 0,
             awardInfo: [],
-            info: null,
-            awardPage: 1
+            info: null
         };
         return _this;
     }
-    ReplyContent.prototype.nextPage = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var page, award, info, awardInfo;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        page = this.state.awardPage;
-                        return [4 /*yield*/, Utility.getAwardInfo(this.props.postid, page + 1)];
-                    case 1:
-                        award = _a.sent();
-                        info = award.map(this.generateAwardInfo.bind(this));
-                        return [4 /*yield*/, Promise.all(info)];
-                    case 2:
-                        awardInfo = _a.sent();
-                        this.setState({ info: awardInfo, awardPage: page + 1 });
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    ReplyContent.prototype.lastPage = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var page, award, info, awardInfo;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        page = this.state.awardPage;
-                        return [4 /*yield*/, Utility.getAwardInfo(this.props.postid, page - 1)];
-                    case 1:
-                        award = _a.sent();
-                        info = award.map(this.generateAwardInfo.bind(this));
-                        return [4 /*yield*/, Promise.all(info)];
-                    case 2:
-                        awardInfo = _a.sent();
-                        this.setState({ info: awardInfo, awardPage: page - 1 });
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
     ReplyContent.prototype.showManageUI = function () {
         var UIId = "#manage" + this.props.postid;
         $(UIId).css("display", "");
@@ -5214,7 +5598,7 @@ var ReplyContent = /** @class */ (function (_super) {
                         else if (data.likeState === 2) {
                             $(idDislike).css("color", "red");
                         }
-                        return [4 /*yield*/, Utility.getAwardInfo(this.props.postid, 1)];
+                        return [4 /*yield*/, Utility.getAwardInfo(this.props.postid)];
                     case 2:
                         award = _a.sent();
                         info = award.map(this.generateAwardInfo.bind(this));
@@ -5383,10 +5767,7 @@ var ReplyContent = /** @class */ (function (_super) {
                         React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206"),
                         React.createElement("div", { className: "operation1", id: manageIcon, style: { display: "none", cursor: "pointer" }, onClick: this.showManageUI }, "\u7BA1\u7406"))),
                 signature,
-                React.createElement("div", { className: "column", style: { borderTop: "2px dashed #EAEAEA" } },
-                    this.state.info,
-                    React.createElement("button", { onClick: this.nextPage }, "\u4E0A\u4E00\u9875"),
-                    React.createElement("button", { onClick: this.lastPage }, "\u4E0B\u4E00\u9875"))));
+                React.createElement("div", { className: "column" }, this.state.info)));
     };
     return ReplyContent;
 }(RouteComponent));
@@ -5808,6 +6189,7 @@ var LogOn_1 = __webpack_require__(13);
 var Topic_CreateTopic_1 = __webpack_require__(26);
 var Status = __webpack_require__(27);
 var Search_1 = __webpack_require__(28);
+var SearchBoard_1 = __webpack_require__(29);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -5840,6 +6222,7 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }),
                     React.createElement(react_router_dom_1.Route, { path: "/logon", component: LogOn_1.LogOn }),
                     React.createElement(react_router_dom_1.Route, { path: "/search", component: Search_1.Search }),
+                    React.createElement(react_router_dom_1.Route, { path: "/searchBoard", component: SearchBoard_1.SearchBoard }),
                     React.createElement(react_router_dom_1.Route, { path: "/createtopic/:boardId", component: Topic_CreateTopic_1.CreateTopic }),
                     React.createElement(react_router_dom_1.Route, { path: "/status/logout", component: Status.LogOut }),
                     React.createElement(react_router_dom_1.Route, { path: "/status/UnauthorizedBoard", component: Status.UnauthorizedBoard }),
@@ -5940,7 +6323,7 @@ var PortaritrUrl = /** @class */ (function (_super) {
     return PortaritrUrl;
 }(React.Component));
 exports.PortaritrUrl = PortaritrUrl;
-//返回可点击或者不可点击的头像
+//返回可点击或者不可点击的用户名
 var UserName = /** @class */ (function (_super) {
     __extends(UserName, _super);
     function UserName() {
@@ -5949,7 +6332,7 @@ var UserName = /** @class */ (function (_super) {
     UserName.prototype.render = function () {
         if (this.props.userId) {
             var userUrl = "/user/" + this.props.userId;
-            return (React.createElement("a", { href: userUrl, target: "_blank" },
+            return (React.createElement("a", { href: userUrl, target: "_blank", className: "focus-topic-blackText" },
                 React.createElement("div", { className: "focus-topic-blackText" }, this.props.userName)));
         }
         else {
@@ -6963,8 +7346,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var LogOnExact_1 = __webpack_require__(84);
-var Logoff_1 = __webpack_require__(85);
+var LogOnExact_1 = __webpack_require__(85);
+var Logoff_1 = __webpack_require__(86);
 /**
  * 用户中心页面
  */
@@ -7039,8 +7422,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(3);
-var Post = __webpack_require__(60);
-var Topic_PostTopic_1 = __webpack_require__(61);
+var Post = __webpack_require__(61);
+var Topic_PostTopic_1 = __webpack_require__(62);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -7701,8 +8084,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserCenterNavigation_1 = __webpack_require__(62);
-var UserCenterRouter_1 = __webpack_require__(63);
+var UserCenterNavigation_1 = __webpack_require__(63);
+var UserCenterRouter_1 = __webpack_require__(64);
 /**
  * 用户中心页面
  */
@@ -7781,10 +8164,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var MessageMessage_1 = __webpack_require__(69);
-var MessageResponse_1 = __webpack_require__(74);
-var MessageAttme_1 = __webpack_require__(75);
-var MessageSystem_1 = __webpack_require__(76);
+var MessageMessage_1 = __webpack_require__(70);
+var MessageResponse_1 = __webpack_require__(75);
+var MessageAttme_1 = __webpack_require__(76);
+var MessageSystem_1 = __webpack_require__(77);
 var react_router_dom_1 = __webpack_require__(3);
 /**
  * 网站的主页面对象。
@@ -8096,9 +8479,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusBoardArea_1 = __webpack_require__(77);
-var FocusTopicArea_1 = __webpack_require__(78);
-var FocusBoardTopicArea_1 = __webpack_require__(79);
+var FocusBoardArea_1 = __webpack_require__(78);
+var FocusTopicArea_1 = __webpack_require__(79);
+var FocusBoardTopicArea_1 = __webpack_require__(80);
 var Utility = __webpack_require__(1);
 var Focus = /** @class */ (function (_super) {
     __extends(Focus, _super);
@@ -8456,49 +8839,43 @@ var Search = /** @class */ (function (_super) {
                         self = this;
                         searchIco.click(function () {
                             return __awaiter(this, void 0, void 0, function () {
-                                var val, words, searchInfo, host, val, words, searchInfo, host, val, body, host;
+                                var val, words, searchInfo, host, words, searchInfo, host, body, host, host, boardResult;
                                 return __generator(this, function (_a) {
                                     switch (_a.label) {
                                         case 0:
-                                            if (!(searchBoxSelect.text() == '主题' || searchBoxSelect.text() == '全站')) return [3 /*break*/, 1];
                                             val = $('#searchText').val();
-                                            if (val && val != '') {
-                                                words = val.split(' ');
-                                                if (words) {
-                                                    if (words.length > 5) {
-                                                        alert("关键词过多，请不要超过5个！");
-                                                    }
-                                                    else {
-                                                        searchInfo = { boardId: 0, boardName: '全站', words: words };
-                                                        Utility.setStorage('searchInfo', searchInfo);
-                                                        host = window.location.host;
-                                                        window.location.href = "http://" + host + "/search";
-                                                    }
+                                            if (!(val && val != '')) return [3 /*break*/, 5];
+                                            if (!(searchBoxSelect.text() == '主题' || searchBoxSelect.text() == '全站')) return [3 /*break*/, 1];
+                                            words = val.split(' ');
+                                            if (words) {
+                                                if (words.length > 5) {
+                                                    alert("关键词过多，请不要超过5个！");
+                                                }
+                                                else {
+                                                    searchInfo = { boardId: 0, boardName: '全站', words: words };
+                                                    Utility.setStorage('searchInfo', searchInfo);
+                                                    host = window.location.host;
+                                                    window.location.href = "http://" + host + "/search";
                                                 }
                                             }
-                                            return [3 /*break*/, 6];
+                                            return [3 /*break*/, 5];
                                         case 1:
                                             if (!(searchBoxSelect.text() == '版内')) return [3 /*break*/, 2];
-                                            val = $('#searchText').val();
-                                            if (val && val != '') {
-                                                words = val.split(' ');
-                                                if (words) {
-                                                    if (words.length > 5) {
-                                                        alert("关键词过多，请不要超过5个！");
-                                                    }
-                                                    else {
-                                                        searchInfo = { boardId: boardId, boardName: boardName, words: words };
-                                                        Utility.setStorage('searchInfo', searchInfo);
-                                                        host = window.location.host;
-                                                        window.location.href = "http://" + host + "/search";
-                                                    }
+                                            words = val.split(' ');
+                                            if (words) {
+                                                if (words.length > 5) {
+                                                    alert("关键词过多，请不要超过5个！");
+                                                }
+                                                else {
+                                                    searchInfo = { boardId: boardId, boardName: boardName, words: words };
+                                                    Utility.setStorage('searchInfo', searchInfo);
+                                                    host = window.location.host;
+                                                    window.location.href = "http://" + host + "/search";
                                                 }
                                             }
-                                            return [3 /*break*/, 6];
+                                            return [3 /*break*/, 5];
                                         case 2:
-                                            if (!(searchBoxSelect.text() == '用户')) return [3 /*break*/, 5];
-                                            val = $('#searchText').val();
-                                            if (!(val && val != '')) return [3 /*break*/, 4];
+                                            if (!(searchBoxSelect.text() == '用户')) return [3 /*break*/, 4];
                                             return [4 /*yield*/, Utility.getUserDetails(val, self.context.router)];
                                         case 3:
                                             body = _a.sent();
@@ -8510,12 +8887,35 @@ var Search = /** @class */ (function (_super) {
                                                 Utility.removeStorage('searchInfo');
                                                 window.location.href = "http://" + host + "/search";
                                             }
-                                            _a.label = 4;
-                                        case 4: return [3 /*break*/, 6];
-                                        case 5:
-                                            alert("搜索版面还没有做");
-                                            _a.label = 6;
-                                        case 6: return [2 /*return*/];
+                                            return [3 /*break*/, 5];
+                                        case 4:
+                                            if (searchBoxSelect.text() == '版面') {
+                                                host = window.location.host;
+                                                boardResult = Utility.getBoardId(val);
+                                                if (boardResult) {
+                                                    if (boardResult == []) {
+                                                        Utility.removeStorage('searchInfo');
+                                                        window.location.href = "http://" + host + "/search";
+                                                    }
+                                                    else if (boardResult.length == 1) {
+                                                        window.location.href = "http://" + host + "/list/" + boardResult[0].id + "/normal/";
+                                                    }
+                                                    else if (boardResult.length > 1) {
+                                                        Utility.setStorage("searchBoardInfo", boardResult);
+                                                        window.location.href = "http://" + host + "/searchBoard";
+                                                    }
+                                                    else {
+                                                        Utility.removeStorage('searchInfo');
+                                                        window.location.href = "http://" + host + "/search";
+                                                    }
+                                                }
+                                                else {
+                                                    Utility.removeStorage('searchInfo');
+                                                    window.location.href = "http://" + host + "/search";
+                                                }
+                                            }
+                                            _a.label = 5;
+                                        case 5: return [2 /*return*/];
                                     }
                                 });
                             });
@@ -9226,8 +9626,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserNavigation_1 = __webpack_require__(80);
-var UserRouter_1 = __webpack_require__(81);
+var UserNavigation_1 = __webpack_require__(81);
+var UserRouter_1 = __webpack_require__(82);
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
@@ -10211,6 +10611,56 @@ function coverFocusPost(item) {
 
 "use strict";
 
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var React = __webpack_require__(0);
+var Utility = __webpack_require__(1);
+/**
+ * 表示我搜索到的版面列表区域
+ */
+var SearchBoard = /** @class */ (function (_super) {
+    __extends(SearchBoard, _super);
+    function SearchBoard() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    SearchBoard.prototype.render = function () {
+        var data = Utility.getStorage("searchBoardInfo");
+        return (React.createElement("div", { className: "focus-root" },
+            React.createElement("div", { className: "focus" },
+                React.createElement("div", { className: "focus-title" },
+                    React.createElement("i", { className: "fa fa-home", "aria-hidden": "true" }),
+                    "\u641C\u7D22/\u7248\u9762"),
+                React.createElement("div", { className: "focus-board-area" }, data.map(coverFocusBoard)))));
+    };
+    return SearchBoard;
+}(React.Component));
+exports.SearchBoard = SearchBoard;
+function coverFocusBoard(item) {
+    //点击版面名称会显示相应版面的帖子
+    var boardUrl = "/list/" + item.id + "/normal/";
+    return React.createElement("a", { href: boardUrl, target: "_blank" },
+        React.createElement("div", { className: "focus-board" }, item.name));
+}
+
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 // A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
@@ -10366,35 +10816,35 @@ exports.UserCenterMyFollowingsUser = UserCenterMyFollowingsUser;
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(31);
-module.exports = __webpack_require__(97);
+__webpack_require__(32);
+module.exports = __webpack_require__(98);
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var ReactDOM = __webpack_require__(32);
-var App_1 = __webpack_require__(33);
+var ReactDOM = __webpack_require__(33);
+var App_1 = __webpack_require__(34);
 // 显示应用程序核心内容
 ReactDOM.render(React.createElement(App_1.App, null), document.getElementById('root'));
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports) {
 
 module.exports = ReactDOM;
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10428,6 +10878,7 @@ var LogOn_1 = __webpack_require__(13);
 var Topic_CreateTopic_1 = __webpack_require__(26);
 var Status = __webpack_require__(27);
 var Search_1 = __webpack_require__(28);
+var SearchBoard_1 = __webpack_require__(29);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -10460,6 +10911,7 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { path: "/user", component: User_1.User }),
                     React.createElement(react_router_dom_1.Route, { path: "/logon", component: LogOn_1.LogOn }),
                     React.createElement(react_router_dom_1.Route, { path: "/search", component: Search_1.Search }),
+                    React.createElement(react_router_dom_1.Route, { path: "/searchBoard", component: SearchBoard_1.SearchBoard }),
                     React.createElement(react_router_dom_1.Route, { path: "/createtopic/:boardId", component: Topic_CreateTopic_1.CreateTopic }),
                     React.createElement(react_router_dom_1.Route, { path: "/status/logout", component: Status.LogOut }),
                     React.createElement(react_router_dom_1.Route, { path: "/status/UnauthorizedBoard", component: Status.UnauthorizedBoard }),
@@ -10479,7 +10931,7 @@ exports.App = App;
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10492,31 +10944,31 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 var Ubb = __webpack_require__(2);
-var BTagHandler_1 = __webpack_require__(35);
-var ImageTagHandler_1 = __webpack_require__(36);
-var ITagHandler_1 = __webpack_require__(37);
-var SizeTagHandler_1 = __webpack_require__(38);
-var QuoteTagHandler_1 = __webpack_require__(39);
-var ColorTagHandler_1 = __webpack_require__(40);
-var URLTagHandler_1 = __webpack_require__(41);
-var UTagHandler_1 = __webpack_require__(42);
-var DelTagHandler_1 = __webpack_require__(43);
-var MP3TagHandler_1 = __webpack_require__(44);
-var CursorTagHandler_1 = __webpack_require__(45);
-var EnglishTagHandler_1 = __webpack_require__(46);
-var UserTagHandler_1 = __webpack_require__(47);
-var CodeTagHandler_1 = __webpack_require__(48);
-var UnresolvedTagHandler_1 = __webpack_require__(49);
-var FontTagHandler_1 = __webpack_require__(50);
-var AlignTagHandler_1 = __webpack_require__(51);
-var UploadTagHandler_1 = __webpack_require__(52);
-var LeftTagHandler_1 = __webpack_require__(53);
-var CenterTagHandler_1 = __webpack_require__(54);
-var RightTagHandler_1 = __webpack_require__(55);
-var TableTagHandler_1 = __webpack_require__(56);
-var TdTagHandler_1 = __webpack_require__(57);
-var ThTagHandler_1 = __webpack_require__(58);
-var TrTagHandler_1 = __webpack_require__(59);
+var BTagHandler_1 = __webpack_require__(36);
+var ImageTagHandler_1 = __webpack_require__(37);
+var ITagHandler_1 = __webpack_require__(38);
+var SizeTagHandler_1 = __webpack_require__(39);
+var QuoteTagHandler_1 = __webpack_require__(40);
+var ColorTagHandler_1 = __webpack_require__(41);
+var URLTagHandler_1 = __webpack_require__(42);
+var UTagHandler_1 = __webpack_require__(43);
+var DelTagHandler_1 = __webpack_require__(44);
+var MP3TagHandler_1 = __webpack_require__(45);
+var CursorTagHandler_1 = __webpack_require__(46);
+var EnglishTagHandler_1 = __webpack_require__(47);
+var UserTagHandler_1 = __webpack_require__(48);
+var CodeTagHandler_1 = __webpack_require__(49);
+var UnresolvedTagHandler_1 = __webpack_require__(50);
+var FontTagHandler_1 = __webpack_require__(51);
+var AlignTagHandler_1 = __webpack_require__(52);
+var UploadTagHandler_1 = __webpack_require__(53);
+var LeftTagHandler_1 = __webpack_require__(54);
+var CenterTagHandler_1 = __webpack_require__(55);
+var RightTagHandler_1 = __webpack_require__(56);
+var TableTagHandler_1 = __webpack_require__(57);
+var TdTagHandler_1 = __webpack_require__(58);
+var ThTagHandler_1 = __webpack_require__(59);
+var TrTagHandler_1 = __webpack_require__(60);
 /**
  * 创建一个具有所有功能的默认引擎。
  */
@@ -10557,7 +11009,7 @@ __export(__webpack_require__(2));
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10610,7 +11062,7 @@ exports.BTagHandler = BTagHandler;
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10708,7 +11160,7 @@ exports.Image = Image;
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10753,7 +11205,7 @@ exports.ITagHandler = ITagHandler;
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10807,7 +11259,7 @@ exports.SizeTagHandler = SizeTagHandler;
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10859,7 +11311,7 @@ exports.QuoteTagHandler = QuoteTagHandler;
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10908,7 +11360,7 @@ exports.ColorTagHandler = ColorTagHandler;
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10964,7 +11416,7 @@ exports.UrlTagHandler = UrlTagHandler;
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11017,7 +11469,7 @@ exports.UTagHandler = UTagHandler;
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11065,7 +11517,7 @@ exports.DelTagHandler = DelTagHandler;
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11119,7 +11571,7 @@ exports.MP3TagHandler = MP3TagHandler;
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11167,7 +11619,7 @@ exports.CursorTagHandler = CursorTagHandler;
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11215,7 +11667,7 @@ exports.EnglishTagHandler = EnglishTagHandler;
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11263,7 +11715,7 @@ exports.UserTagHandler = UserTagHandler;
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11311,7 +11763,7 @@ exports.CodeTagHandler = CodeTagHandler;
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11355,7 +11807,7 @@ exports.UnresolvedTagHandler = UnresolvedTagHandler;
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11403,7 +11855,7 @@ exports.FontTagHandler = FontTagHandler;
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11452,7 +11904,7 @@ exports.AlignTagHandler = AlignTagHandler;
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11565,7 +12017,7 @@ exports.Image = Image;
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11613,7 +12065,7 @@ exports.LeftTagHandler = LeftTagHandler;
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11661,7 +12113,7 @@ exports.CenterTagHandler = CenterTagHandler;
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11709,7 +12161,7 @@ exports.RightTagHandler = RightTagHandler;
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11753,7 +12205,7 @@ exports.TableTagHandler = TableTagHandler;
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11797,7 +12249,7 @@ exports.TdTagHandler = TdTagHandler;
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11841,7 +12293,7 @@ exports.ThTagHandler = ThTagHandler;
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11885,7 +12337,7 @@ exports.TrTagHandler = TrTagHandler;
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12593,7 +13045,7 @@ exports.ReplyContent = ReplyContent;
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13151,7 +13603,7 @@ exports.AwardInfo = AwardInfo;
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13253,7 +13705,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13275,12 +13727,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
 var Utility = __webpack_require__(1);
-var UserCenterExact_1 = __webpack_require__(64);
-var UserCenterMyFollowings_1 = __webpack_require__(68);
-var UserCenterMyFans_1 = __webpack_require__(86);
-var UserCenterMyPostsExact_1 = __webpack_require__(87);
-var UserCenterMyFavorites_1 = __webpack_require__(88);
-var UserCenterConfig_1 = __webpack_require__(92);
+var UserCenterExact_1 = __webpack_require__(65);
+var UserCenterMyFollowings_1 = __webpack_require__(69);
+var UserCenterMyFans_1 = __webpack_require__(87);
+var UserCenterMyPostsExact_1 = __webpack_require__(88);
+var UserCenterMyFavorites_1 = __webpack_require__(89);
+var UserCenterConfig_1 = __webpack_require__(93);
 /**
  * 用户中心主体
  */
@@ -13308,7 +13760,7 @@ exports.UserCenterRouter = UserCenterRouter;
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13363,8 +13815,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactProfile_1 = __webpack_require__(65);
-var UserCenterExactActivities_1 = __webpack_require__(66);
+var UserCenterExactProfile_1 = __webpack_require__(66);
+var UserCenterExactActivities_1 = __webpack_require__(67);
 var UserCenterExactAvatar_1 = __webpack_require__(18);
 var Utility = __webpack_require__(1);
 /**
@@ -13426,7 +13878,7 @@ exports.UserCenterExact = UserCenterExact;
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13513,7 +13965,7 @@ exports.UserCenterExactProfile = UserCenterExactProfile;
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13533,7 +13985,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPosts_1 = __webpack_require__(67);
+var UserCenterExactActivitiesPosts_1 = __webpack_require__(68);
 /**
  * 用户中心主页近期动态组件
  */
@@ -13553,7 +14005,7 @@ exports.UserCenterExactActivities = UserCenterExactActivities;
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13779,7 +14231,7 @@ exports.UserCenterExactActivitiesPosts = UserCenterExactActivitiesPosts;
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13836,7 +14288,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var AppState_1 = __webpack_require__(4);
 var app_1 = __webpack_require__(9);
-var UserCenterMyFollowingsUser_1 = __webpack_require__(29);
+var UserCenterMyFollowingsUser_1 = __webpack_require__(30);
 var UserCenterPageCount_1 = __webpack_require__(11);
 var Utility = __webpack_require__(1);
 //用户中心我的关注组件
@@ -13952,7 +14404,7 @@ exports.UserCenterMyFollowings = UserCenterMyFollowings;
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14007,8 +14459,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MessagePerson_1 = __webpack_require__(70);
-var MessageWindow_1 = __webpack_require__(71);
+var MessagePerson_1 = __webpack_require__(71);
+var MessageWindow_1 = __webpack_require__(72);
 var Utility = __webpack_require__(1);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
@@ -14177,7 +14629,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14227,7 +14679,7 @@ exports.MessagePerson = MessagePerson;
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14282,8 +14734,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MessageSender_1 = __webpack_require__(72);
-var MessageReceiver_1 = __webpack_require__(73);
+var MessageSender_1 = __webpack_require__(73);
+var MessageReceiver_1 = __webpack_require__(74);
 var Utility = __webpack_require__(1);
 var MessageWindow = /** @class */ (function (_super) {
     __extends(MessageWindow, _super);
@@ -14538,7 +14990,7 @@ exports.MessageWindow = MessageWindow;
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14590,7 +15042,7 @@ exports.MessageSender = MessageSender;
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14640,7 +15092,7 @@ exports.MessageReceiver = MessageReceiver;
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14690,7 +15142,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14730,7 +15182,7 @@ exports.MessageAttme = MessageAttme;
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14770,7 +15222,7 @@ exports.MessageSystem = MessageSystem;
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14942,7 +15394,7 @@ exports.FocusProps = FocusProps;
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15137,7 +15589,7 @@ function coverFocusPost(item) {
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15354,7 +15806,7 @@ exports.FocusBoardTopicProps = FocusBoardTopicProps;
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15398,7 +15850,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15454,8 +15906,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserExactProfile_1 = __webpack_require__(82);
-var UserRouterActivities_1 = __webpack_require__(83);
+var UserExactProfile_1 = __webpack_require__(83);
+var UserRouterActivities_1 = __webpack_require__(84);
 var UserCenterExactAvatar_1 = __webpack_require__(18);
 var Utility = __webpack_require__(1);
 var UserRouter = /** @class */ (function (_super) {
@@ -15546,7 +15998,7 @@ var UserExact = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15753,7 +16205,7 @@ exports.UserExactProfile = UserExactProfile;
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15982,7 +16434,7 @@ exports.UserRouterActivities = UserRouterActivities;
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16201,7 +16653,7 @@ var LogOnState = /** @class */ (function () {
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16253,7 +16705,7 @@ exports.LogOff = LogOff;
 
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16309,7 +16761,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var AppState_1 = __webpack_require__(4);
-var UserCenterMyFollowingsUser_1 = __webpack_require__(29);
+var UserCenterMyFollowingsUser_1 = __webpack_require__(30);
 var app_1 = __webpack_require__(9);
 var UserCenterPageCount_1 = __webpack_require__(11);
 var Utility = __webpack_require__(1);
@@ -16420,7 +16872,7 @@ exports.UserCenterMyFans = UserCenterMyFans;
 
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16595,7 +17047,7 @@ exports.UserCenterMyPostsExact = UserCenterMyPostsExact;
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16616,8 +17068,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserCenterMyFavoritesPosts_1 = __webpack_require__(89);
-var UserCenterMyFavoritesBoards_1 = __webpack_require__(90);
+var UserCenterMyFavoritesPosts_1 = __webpack_require__(90);
+var UserCenterMyFavoritesBoards_1 = __webpack_require__(91);
 //import { UserCenterMyFavoritesPostsBoards } from './UserCenterMyFavoritesPostsBoards';
 //<Route path='/usercenter/myfavorites/boards' component={UserCenterMyFavoritesPostsBoards} />
 /**
@@ -16650,7 +17102,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16809,7 +17261,7 @@ exports.UserCenterMyFavoritesPosts = UserCenterMyFavoritesPosts;
 
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16865,7 +17317,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
-var UserCenterMyFavoritesBoard_1 = __webpack_require__(91);
+var UserCenterMyFavoritesBoard_1 = __webpack_require__(92);
 var UserCenterMyFavoritesBoards = /** @class */ (function (_super) {
     __extends(UserCenterMyFavoritesBoards, _super);
     function UserCenterMyFavoritesBoards(props) {
@@ -16952,7 +17404,7 @@ exports.UserCenterMyFavoritesBoards = UserCenterMyFavoritesBoards;
 
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17139,7 +17591,7 @@ exports.UserCenterMyFavoritesBoard = UserCenterMyFavoritesBoard;
 
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17204,9 +17656,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
 var AppState_1 = __webpack_require__(4);
-var UserCenterConfigAvatar_1 = __webpack_require__(93);
-var UserCenterConfigSignature_1 = __webpack_require__(94);
-var UserCenterConfigOthers_1 = __webpack_require__(95);
+var UserCenterConfigAvatar_1 = __webpack_require__(94);
+var UserCenterConfigSignature_1 = __webpack_require__(95);
+var UserCenterConfigOthers_1 = __webpack_require__(96);
 var UserCenterConfig = /** @class */ (function (_super) {
     __extends(UserCenterConfig, _super);
     function UserCenterConfig(props) {
@@ -17345,7 +17797,7 @@ var UserInfo = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17742,7 +18194,7 @@ exports.UserCenterConfigAvatar = UserCenterConfigAvatar;
 
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17782,7 +18234,7 @@ exports.UserCenterConfigSignature = UserCenterConfigSignature;
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17802,7 +18254,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var AppState_1 = __webpack_require__(96);
+var AppState_1 = __webpack_require__(97);
 var UserCenterConfigOthers = /** @class */ (function (_super) {
     __extends(UserCenterConfigOthers, _super);
     function UserCenterConfigOthers() {
@@ -17875,7 +18327,7 @@ var UserInfo = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18138,7 +18590,7 @@ exports.ChangeUserInfo = ChangeUserInfo;
 
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

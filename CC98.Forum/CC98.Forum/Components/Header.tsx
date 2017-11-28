@@ -234,9 +234,9 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
         //获取搜索关键词
         let self = this;
         searchIco.click(async function () {
-            if (searchBoxSelect.text() == '主题' || searchBoxSelect.text() == '全站') {
-                let val: any = $('#searchText').val();
-                if (val && val != '') {
+            let val: any = $('#searchText').val();
+            if (val && val != '') {
+                if (searchBoxSelect.text() == '主题' || searchBoxSelect.text() == '全站') {
                     let words = val.split(' ');
                     if (words) {
                         if (words.length > 5) {
@@ -250,10 +250,7 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
                         }
                     }
                 }
-            }
-            else if (searchBoxSelect.text() == '版内') {
-                let val: any = $('#searchText').val();
-                if (val && val != '') {
+                else if (searchBoxSelect.text() == '版内') {
                     let words = val.split(' ');
                     if (words) {
                         if (words.length > 5) {
@@ -267,10 +264,7 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
                         }
                     }
                 }
-            }
-            else if (searchBoxSelect.text() == '用户') {
-                let val: any = $('#searchText').val();
-                if (val && val != '') {
+                else if (searchBoxSelect.text() == '用户') {
                     let body = await Utility.getUserDetails(val, self.context.router);
                     let host = window.location.host;
                     if (body) {
@@ -281,9 +275,31 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
                         window.location.href = `http://${host}/search`;
                     }
                 }
-            }
-            else {
-                alert("搜索版面还没有做");
+                else if (searchBoxSelect.text() == '版面') {
+                    let host = window.location.host;
+                    let boardResult = Utility.getBoardId(val);
+                    if (boardResult) {
+                        if (boardResult == []) {
+                            Utility.removeStorage('searchInfo');
+                            window.location.href = `http://${host}/search`;
+                        }
+                        else if (boardResult.length == 1) {
+                            window.location.href = `http://${host}/list/${boardResult[0].id}/normal/`;
+                        }
+                        else if (boardResult.length > 1) {
+                            Utility.setStorage("searchBoardInfo", boardResult);
+                            window.location.href = `http://${host}/searchBoard`;
+                        }
+                        else {
+                            Utility.removeStorage('searchInfo');
+                            window.location.href = `http://${host}/search`;
+                        }
+                    }
+                    else {
+                        Utility.removeStorage('searchInfo');
+                        window.location.href = `http://${host}/search`;
+                    }
+                }
             }
         });
     }
