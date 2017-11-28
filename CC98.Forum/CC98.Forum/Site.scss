@@ -1649,6 +1649,7 @@ a {
     .focus-board {
         height: 14px;
         flex-shrink: 0;
+        cursor: pointer;
 
         border: {
             style: solid;
@@ -1670,6 +1671,10 @@ a {
         &:active {
             background-color: rgba(0,150,255,0.1);
         }
+    }
+
+    .focus-hover {
+        background-color: rgba(0,150,255,0.1);
     }
 }
 

@@ -617,8 +617,108 @@ export async function getAllNewTopic(from: number, router) {
 }
 
 /**
- * 获取关注版面新帖
+ * 获取某个关注版面帖子
  * @param curPage
+ */
+export async function getFocusBoardTopic(boardId: number, boardName: string, from: number, router) {
+    try {
+        /**
+         * 一次性可以获取20个主题
+         */
+        var size = 20;
+        if (from > 80) {
+            size = 100 - from;
+        }
+        let token = getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        /**
+         * 通过api获取到主题之后转成json格式
+         */
+        let response;
+        if (boardId == 0) {
+            response = await fetch(`http://apitest.niconi.cc/topic/followusers?from=${from}&size=${size}`, { headers });
+        }
+        else {
+            response = await fetch(`http://apitest.niconi.cc/topic/board/${boardId}?from=${from}&size=${size}`, { headers });
+        }
+        if (response.status === 401) {
+            //window.location.href = "/status/UnauthorizedTopic";
+        }
+        if (response.status === 500) {
+            //window.location.href = "/status/ServerError";
+        }
+        let newTopic = await response.json(); 
+    
+        for (let i in newTopic) {
+            if (newTopic[i].userId) {
+                //获取作者粉丝数目
+                let userFan0 = await fetch(`http://apitest.niconi.cc/user/follow/fanCount?userid=${newTopic[i].userId}`);
+                if (userFan0.status === 404) {
+                    //window.location.href = "/status/NotFoundUser";
+                }
+                if (userFan0.status === 500) {
+                    //window.location.href = "/status/ServerError";
+                }
+                let userFan1 = await userFan0.json();
+                newTopic[i].fanCount = userFan1;
+                //获取作者头像地址
+                let userInfo0 = await fetch(`http://apitest.niconi.cc/user/basic/${newTopic[i].userId}`);
+                if (userInfo0.status === 404) {
+                    //window.location.href = "/status/NotFoundUser";
+                }
+                if (userInfo0.status === 500) {
+                    //window.location.href = "/status/ServerError";
+                }
+                let userInfo1 = await userInfo0.json();
+                newTopic[i].portraitUrl = userInfo1.portraitUrl;
+                //获取所在版面名称
+                if (boardId == 0) {
+                    newTopic[i].boardName = await getBoardName(newTopic[i].boardId, router);
+                }
+                else {
+                    newTopic[i].boardName = boardName;
+                }
+                //阅读数转换
+                if (newTopic[i].hitCount > 10000) {
+                    if (newTopic[i].hitCount > 100000) {
+                        let index = parseInt(`${newTopic[i].hitCount / 10000}`);
+                        newTopic[i].hitCount = `${index}万`;
+                    }
+                    else {
+                        let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
+                        newTopic[i].hitCount = `${index}万`;
+                    }
+                }
+                //回复数转换
+                if (newTopic[i].replyCount > 10000) {
+                    if (newTopic[i].replyCount > 100000) {
+                        let index = parseInt(`${newTopic[i].replyCount / 10000}`);
+                        newTopic[i].replyCount = `${index}万`;
+                    }
+                    else {
+                        let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
+                        newTopic[i].replyCount = `${index}万`;
+                    }
+                }
+            }
+            //匿名时粉丝数显示0
+            else {
+                newTopic[i].fanCount = 0;
+                newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+                newTopic[i].userName = "匿名";
+                newTopic[i].boardName = "心灵之约";
+            }
+        }
+        return newTopic;
+
+    } catch (e) {
+        //window.location.href = "/status/Disconnected";
+    }
+}
+
+/**
+ * 获取全部关注版面帖子
  */
 export async function getFocusTopic(from: number, router) {
     try {
@@ -642,8 +742,8 @@ export async function getFocusTopic(from: number, router) {
         if (response.status === 500) {
             //window.location.href = "/status/ServerError";
         }
-        let newTopic = await response.json(); 
-    
+        let newTopic = await response.json();
+
         for (let i in newTopic) {
             if (newTopic[i].userId) {
                 //获取作者粉丝数目
@@ -773,11 +873,21 @@ export function getLocalStorage(key) {
     }
 }
 export function removeLocalStorage(key) {
-    localStorage.removeItem(key);
+    if (key != 'all') {
+        localStorage.removeItem(key);
+    }
+    else {
+        localStorage.clear();
+    }
     return;
 }
 export function removeStorage(key) {
-    sessionStorage.removeItem(key);
+    if (key != 'all') {
+        sessionStorage.removeItem(key);
+    }
+    else {
+        sessionStorage.clear();
+    }
     return;
 }
 
