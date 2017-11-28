@@ -198,6 +198,7 @@ export class TopicState {
         contentType: number,
         isFollowing: boolean,
         fanCount: number,
+        masters
     ) {
         this.userName = userName;
         this.time = time;
@@ -214,6 +215,7 @@ export class TopicState {
         this.contentType = contentType;
         this.isFollowing = isFollowing;
         this.fanCount = fanCount;
+        this.masters = masters;
     }
     userName: string;
     title: string;
@@ -230,6 +232,7 @@ export class TopicState {
     contentType: number;
     isFollowing: boolean;
     fanCount: number;
+    masters: string[];
 }
 
 /**

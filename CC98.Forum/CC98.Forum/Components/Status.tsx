@@ -60,7 +60,7 @@ export class NotFoundTopic extends React.Component<{}, {}>{
     async componentDidMount() {
         const token = Utility.getLocalStorage("accessToken");
         const headers = new Headers();
-        headers.append("Authorizaton", token);
+        headers.append("Authorization", token);
         headers.append("Content-Type", "application/json");
         const body = {
             isCanceling: false,

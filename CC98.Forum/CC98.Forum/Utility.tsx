@@ -123,6 +123,10 @@ export async function getTopic(topicid: number, router) {
         }
         const hitCountJson = await hitCountResponse.json();
         const hitCount = hitCountJson.hitCount;
+        const boardId = hitCountJson.boardId;
+        const boardResponse = await fetch(`http://apitest.niconi.cc/board/${boardId}`, { headers });
+        const boardData = await boardResponse.json();
+        const masters = boardData.boardMasters;
         let topicMessage = null;
         if (data[0].isAnonymous != true) {
             const userMesResponse = await fetch(`http://apitest.niconi.cc/User/${data[0].userId}`, { headers });
@@ -130,9 +134,9 @@ export async function getTopic(topicid: number, router) {
                 //window.location.href = "/status/NotFoundUser";
             }
             const userMesJson = await userMesResponse.json();
-            topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, userMesJson.fanCount);
+            topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, userMesJson.fanCount, masters);
         } else {
-            topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing,-9898);
+            topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, -9898, masters);
 
         }
 
