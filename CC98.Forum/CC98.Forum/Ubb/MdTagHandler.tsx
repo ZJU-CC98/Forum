@@ -14,12 +14,12 @@ export class MdTagHandler extends Ubb.TextTagHandler {
     execCore(content: string, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
 
         const mdContent = content;
-        return <MarkDown content={mdContent} />
+        return <MarkdownParser content={mdContent} />
 
     }
 }
 
-export class MarkDown extends React.Component<{ content }, { divid: string }> {
+export class MarkdownParser extends React.Component<{ content }, { divid: string }> {
     constructor(props?, context?) {
         super(props, context);
         const randomNum = Math.floor(Math.random() * 1000000); //生成一个0-999999的随机数
@@ -39,7 +39,7 @@ export class MarkDown extends React.Component<{ content }, { divid: string }> {
         });
     }
     render() {
-        return <div id={this.state.divid}>
+        return <div id={this.state.divid} style={{ maxWidth:"80%" }}>
             <textarea name="editormd-markdown-doc" style={{ display: 'none' }}>{this.props.content}</textarea>
         </div>;
     }

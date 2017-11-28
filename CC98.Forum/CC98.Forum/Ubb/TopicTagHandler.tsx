@@ -8,9 +8,9 @@ import * as Ubb from './Core';
 export class TopicTagHandler extends Ubb.RecursiveTagHandler {
     get supportedTagNames(): string { return 'topic' };
 
-    execCore(content: string, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
+    execCore(innerContent: React.ReactNode, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
 
-        const topicTagContent = content;
+        const topicTagContent = innerContent;
         const boardID = tagData.value(0);//因为现在帖子的url不需要boardid，所以这里其实是无意义的
         let topicID;
         if (tagData.parameterCount === 1) topicID = parseInt(tagData.value(0));//如果只有一个参数,则认为它是topicid

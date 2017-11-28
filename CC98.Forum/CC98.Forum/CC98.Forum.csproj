@@ -52,6 +52,7 @@
     <None Remove="Ubb\ColorTagHandler.tsx" />
     <None Remove="Ubb\CursorTagHandler.tsx" />
     <None Remove="Ubb\DelTagHandler.tsx" />
+    <None Remove="Ubb\emTagHandler.tsx" />
     <None Remove="Ubb\EnglishTagHandler.tsx" />
     <None Remove="Ubb\FlashTagHandler.tsx" />
     <None Remove="Ubb\ImageTagHandler.tsx" />
@@ -60,6 +61,7 @@
     <None Remove="Ubb\MP3TagHandler.tsx" />
     <None Remove="Ubb\NoUbbTagHandler.tsx" />
     <None Remove="Ubb\RightTagHandler.tsx" />
+    <None Remove="Ubb\SandboxTagHandler.tsx" />
     <None Remove="Ubb\TableTagHandler.tsx" />
     <None Remove="Ubb\TdTagHandler.tsx" />
     <None Remove="Ubb\ThTagHandler.tsx" />
@@ -124,6 +126,7 @@
     <TypeScriptCompile Include="Ubb\ColorTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\CursorTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\DelTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\EmTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\EnglishTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\ImageTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\Core.tsx" />
@@ -132,6 +135,7 @@
     <TypeScriptCompile Include="Ubb\MP3TagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\NoUbbTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\RightTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\SandboxTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\TableTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\TdTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\ThTagHandler.tsx" />
