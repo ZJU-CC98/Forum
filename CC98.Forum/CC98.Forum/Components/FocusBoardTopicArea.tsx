@@ -43,7 +43,7 @@ export class FocusBoardTopicArea extends React.Component<FocusBoardTopicProps, F
     }
 
     async getData(props) {
-        let data = await Utility.getFocusBoardTopic(props.boardId, props.boardNme, this.state.from, this.context.router);
+        let data = await Utility.getFocusBoardTopic(props.boardId, props.boardNme, 0, this.context.router);
 
         //先看一下有没有缓存的数据，如果有的话新数据跟缓存数据组合一下
         let oldData = Utility.getStorage(`focusBoard_${props.boardId}`);

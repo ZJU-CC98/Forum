@@ -15092,7 +15092,7 @@ var FocusBoardTopicArea = /** @class */ (function (_super) {
             var data, oldData, i;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getFocusBoardTopic(props.boardId, props.boardNme, this.state.from, this.context.router)];
+                    case 0: return [4 /*yield*/, Utility.getFocusBoardTopic(props.boardId, props.boardNme, 0, this.context.router)];
                     case 1:
                         data = _a.sent();
                         oldData = Utility.getStorage("focusBoard_" + props.boardId);
