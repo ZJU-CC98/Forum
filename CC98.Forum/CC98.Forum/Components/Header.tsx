@@ -232,7 +232,8 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
         });
         
         //获取搜索关键词
-        searchIco.click(function () {
+        let self = this;
+        searchIco.click(async function () {
             if (searchBoxSelect.text() == '主题' || searchBoxSelect.text() == '全站') {
                 let val: any = $('#searchText').val();
                 if (val && val != '') {
@@ -267,8 +268,22 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
                     }
                 }
             }
+            else if (searchBoxSelect.text() == '用户') {
+                let val: any = $('#searchText').val();
+                if (val && val != '') {
+                    let body = await Utility.getUserDetails(val, self.context.router);
+                    let host = window.location.host;
+                    if (body) {
+                        window.location.href = `http://${host}/user/name/${val}`;
+                    }
+                    else {
+                        Utility.removeStorage('searchInfo');
+                        window.location.href = `http://${host}/search`;
+                    }
+                }
+            }
             else {
-                alert("搜索用户和版面还没有做");
+                alert("搜索版面还没有做");
             }
         });
     }

@@ -15,8 +15,8 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
         return (<div className="focus-topic">
                     <PortaritrUrl userId={this.props.userId} portraitUrl={this.props.portraitUrl} />
                     <div className="focus-topic-info1">
-                        <div className="focus-topic-authorInfo">
-                            <div className="focus-topic-blackText">{this.props.userName}</div>
+                    <div className="focus-topic-authorInfo">
+                            <UserName userId={this.props.userId} userName={this.props.userName} />
                             <div className="focus-topic-redText">{this.props.fanCount}</div>
                             <div className="focus-topic-blackText">粉丝</div>
                         </div>
@@ -51,9 +51,32 @@ export class PortaritrUrl extends React.Component<PortaritrUrlProps> {
     }
 }
 
+//返回可点击或者不可点击的头像
+export class UserName extends React.Component<UserNameProps> {
+    render() {
+        if (this.props.userId) {
+            let userUrl = `/user/${this.props.userId}`;
+            return (<a href={userUrl} target="_blank">
+                <div className="focus-topic-blackText">{this.props.userName}</div>
+            </a>);
+        }
+        else {
+            return <div className="focus-topic-blackText">{this.props.userName}</div>;
+        }
+    }
+}
+
+
 export class PortaritrUrlProps {
     //用户id
     userId: number;
     //用户头像地址
     portraitUrl: string;
+}
+
+export class UserNameProps {
+    //用户id
+    userId: number;
+    //用户名称
+    userName: string;
 }

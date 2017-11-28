@@ -73,7 +73,7 @@ export class RootBoard extends React.Component<{ board }, { isExpanded: boolean 
             return <div className="anArea">
                 <div className="column" style={{ border: '2px solid #e9e9e9' }}>
                     <div className="row" style={{ marginTop: '15px', marginBottom: '15px' }}>
-                        <div className="areaName"><a href="/list/758">{boards.name}</a></div>
+                        <div className="areaName"><a href="/list/758/normal">{boards.name}</a></div>
                         <div className="areaName">主管：{boards.masters}</div>
                     </div>
                 </div>
@@ -114,14 +114,14 @@ export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>
     }
     convertChildBoard(item: Board) {    //暂无各版面图片，以绿色背景方块替代
         return <div className="boardContent">
-            <a href={`/list/${item.id}`}><div className="greenBackdrop"></div></a>
-            <a href={`/list/${item.id}`}><div className="boardName2">{item.name}</div></a>
+            <a href={`/list/${item.id}/normal`}><div className="greenBackdrop"></div></a>
+            <a href={`/list/${item.id}/normal`}><div className="boardName2">{item.name}</div></a>
             <div className="boardInfo">今日发帖 {item.todayPostCount} / 总主题数 {item.totalPostCount}</div>
         </div>;
     }
     convertNoImgChildBoard(item: Board) {
         return <div className="noImgBoardContent">
-            <a href={`/list/${item.id}`}><div className="boardName2">{item.name}</div></a>
+            <a href={`/list/${item.id}/normal`}><div className="boardName2">{item.name}</div></a>
         </div>;
     }
     render() {
