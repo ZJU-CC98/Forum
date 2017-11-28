@@ -1,6 +1,6 @@
 ﻿import * as React from 'react';
-import { Board } from '../States/AppState';
-import * as Utility from '../Utility';
+import { Board } from '../../States/AppState';
+import * as Utility from '../../Utility';
 import * as $ from 'jquery';
 //链接到的地址是  /list/boardid
 

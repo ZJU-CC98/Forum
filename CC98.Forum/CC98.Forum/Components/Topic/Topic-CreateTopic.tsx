@@ -1,6 +1,6 @@
 ﻿import * as React from 'react';
-import * as Utility from '../Utility';
-import { AppState } from '../States/AppState';
+import * as Utility from '../../Utility';
+import { AppState } from '../../States/AppState';
 import * as $ from 'jquery';
 import {
     BrowserRouter as Router,

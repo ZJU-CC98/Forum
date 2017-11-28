@@ -1,6 +1,6 @@
 ﻿import * as React from 'react';
-import * as State from '../States/AppState';
-import * as Utility from '../Utility';
+import * as State from '../../States/AppState';
+import * as Utility from '../../Utility';
 import * as $ from 'jquery';
 import {
     BrowserRouter as Router,
@@ -9,14 +9,20 @@ import {
 } from 'react-router-dom';
 
 import { match } from "react-router";
-import { UbbContainer } from './UbbContainer';
+import { UbbContainer } from '.././UbbContainer';
+//import { TopicPager, TopicPagerDown, PageModel } from './Topic-Pager';
+//import { PostTopic } from './Topic-PostTopic';
+//import { HotReply, Reply } from './Topic-Post';
+//import { SendTopic } from './Topic-SendTopic';
+//import { Category } from './Topic-Category';
+//import { PostManagement } from './Post-Management';
 declare let moment: any;
-
 declare let editormd: any;
 
 export module Constants {
     export var testEditor;
 }
+
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
 
     constructor(props?, context?) {
@@ -99,21 +105,489 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
     }
 
 }
-export class Category extends React.Component<{ topicId }, { boardId, topicId, boardName, title }>{
-    constructor(props) {
-        super(props);
-        this.state = ({ boardId: "", topicId: "", boardName: "", title: "" });
+export class TopicPager extends RouteComponent<{ page, topicid, totalPage }, { pager }, {}> {
+    constructor(props, content) {
+        super(props, content);
+        this.state = {
+            pager: [1, 2, 3, 4, 5]
+        };
+    }
+	/**
+	 * 将页码转换为 UI 界面。
+	 * @param pageNumber 要转换的页码。
+	 * @returns {JSX.Element} 页码对应的 UI 元素。
+	 */
+    generatePageLink(pageNumber: number) {
+        return <PageModel pageNumber={pageNumber} topicid={this.props.topicid} curPage={this.props.page} totalPage={this.props.totalPage} />;
+    }
+    async componentWillReceiveProps(newProps) {
+        const pages = Utility.getPager(newProps.page, newProps.totalPage);
+        this.setState({ pager: pages });
     }
     async componentDidMount() {
-        const body = await Utility.getCategory(this.props.topicId, this.context.router);
-        this.setState({ boardId: body.boardId, topicId: body.topicId, boardName: body.boardName, title: body.title });
+        const pages = Utility.getPager(this.props.page, this.props.totalPage);
+        this.setState({ pager: pages });
     }
     render() {
-        const listUrl = `/list/${this.state.boardId}/normal`;
-        const topicUrl = `/topic/${this.state.topicId}`;
-        return <div style={{ color: "blue", fontSize: "1rem" }}>&rsaquo;&rsaquo;<a style={{ color: "blue", fontSize: "1rem" }} href="/">首页</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "1rem" }} href={listUrl} >{this.state.boardName}</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "1rem" }} href={topicUrl}>{this.state.title}</a></div>;
+        return <div id="pager" >
+            <div className="row pagination">{this.state.pager.map(this.generatePageLink.bind(this))}</div>
+        </div>
+            ;
     }
 }
+export class TopicPagerDown extends RouteComponent<{ page, topicid, totalPage }, { pager }, {}> {
+    constructor(props, content) {
+        super(props, content);
+        this.state = {
+            pager: [1, 2, 3, 4, 5]
+        };
+    }
+	/**
+	 * 将页码转换为 UI 界面。
+	 * @param pageNumber 要转换的页码。
+	 * @returns {JSX.Element} 页码对应的 UI 元素。
+	 */
+
+
+    generatePageLink(pageNumber: number) {
+
+        return <PageModel pageNumber={pageNumber} topicid={this.props.topicid} curPage={this.props.page} totalPage={this.props.totalPage} />;
+    }
+    async componentWillReceiveProps(newProps) {
+        const pages = Utility.getPager(newProps.page, newProps.totalPage);
+        this.setState({ pager: pages });
+    }
+    async componentDidMount() {
+        const pages = Utility.getPager(this.props.page, this.props.totalPage);
+        this.setState({ pager: pages });
+    } t
+    render() {
+        return <div className="row" style={{ width: '100%', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+            <div id="pager" >
+                <div className="row pagination">{this.state.pager.map(this.generatePageLink.bind(this))}</div>
+            </div>
+        </div>;
+    }
+}
+export class PageModel extends React.Component<{ pageNumber, topicid, curPage, totalPage }, {}> {
+
+    render() {
+        let pageUrl: string;
+        if (this.props.pageNumber > 0) {
+            pageUrl = `/topic/${this.props.topicid}/${this.props.pageNumber}`;
+            if (this.props.pageNumber != this.props.curPage) {
+                return <li className="page-item"><Link className="page-link" to={pageUrl}>{this.props.pageNumber}</Link></li>;
+            } else {
+                return <li className="page-item active"><Link className="page-link" to={pageUrl}>{this.props.pageNumber}</Link></li>;
+
+            }
+
+        } else if (this.props.pageNumber == -1) {
+            pageUrl = `/topic/${this.props.topicid}/${this.props.curPage - 1}`;
+
+            return <li className="page-item"><Link className="page-link" to={pageUrl}>&lsaquo;</Link></li>
+                ;
+        } else if (this.props.pageNumber == -2) {
+            pageUrl = `/topic/${this.props.topicid}/${this.props.curPage + 1}`;
+
+            return <li className="page-item"><Link className="page-link" to={pageUrl}>&rsaquo;</Link></li>
+                ;
+        } else if (this.props.pageNumber == -3) {
+            pageUrl = `/topic/${this.props.topicid}`;
+
+            return <li className="page-item"><Link className="page-link" to={pageUrl}>&lsaquo;&lsaquo;</Link></li>
+                ;
+        } else {
+            pageUrl = `/topic/${this.props.topicid}/${this.props.totalPage}`;
+
+            return <li className="page-item"><Link className="page-link" to={pageUrl}>&rsaquo;&rsaquo;</Link></li>
+                ;
+        }
+    }
+}
+
+export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid }, { topicMessage, likeState,awardInfo ,info}, {}> {
+    constructor(props, content) {
+        super(props, content);
+        this.state = {
+            topicMessage: { title: "加载中...", time: "", content: "", signature: "", postid: 0 }
+            , likeState: 0, awardInfo:[],info:null
+        }
+    }
+    async generateAwardInfo(item) {
+        const url = await Utility.getPortraitUrl(item.operatorName);
+        return <AwardInfo postId={this.state.topicMessage.postId} userImgUrl={url} content={item.content} reason={item.reason} userName={item.operatorName} />;
+    }
+    async componentWillMount() {
+        let topicMessage = await Utility.getTopic(this.props.topicid, this.context.router);
+        console.log(topicMessage);
+        const award = await Utility.getAwardInfo(topicMessage.postId);
+        const info = award.map(this.generateAwardInfo.bind(this));
+        const awardInfo = await Promise.all(info);
+        this.setState({ topicMessage: topicMessage,awardInfo:award ,info:awardInfo});
+    }
+    render() {
+        if (this.state.topicMessage != null) {
+            if (this.state.topicMessage.userId == this.props.userId || this.props.userId == null) {
+                return <div className="root" id="1">
+                    <div className="essay">
+                        <AuthorMessage authorId={this.state.topicMessage.userId} authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} isAnonymous={this.state.topicMessage.isAnonymous} isFollowing={this.state.topicMessage.isFollowing}
+                            fanCount={this.state.topicMessage.fanCount} />
+                        <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount} />
+                        <div id="ads"><img width="100%" src={this.props.imgUrl}></img></div>
+                    </div>
+
+                    <TopicContent postid={this.state.topicMessage.postId} content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} topicid={this.props.topicid} userId={this.state.topicMessage.userId}
+                        contentType={this.state.topicMessage.contentType}
+                        masters={this.state.topicMessage.masters} />
+                    <div className="column" style={{ width: "100%" }}>
+                        {this.state.info}
+                    </div>
+                </div>;
+            }
+            else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+}
+
+
+export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, authorName: string, authorId: number, authorImgUrl: string, isFollowing: boolean, fanCount }, State.AuthorMessageState, {}> {
+    constructor(props, content) {
+        super(props, content);
+        this.follow = this.follow.bind(this);
+        this.unfollow = this.unfollow.bind(this);
+        this.state = {
+            userName: 'Mana',
+            fansNumber: 233,
+            imgUrl: this.props.authorImgUrl,
+            buttonInfo: '关注',
+            isFollowing: false,
+            buttonIsDisabled: false
+        };
+    }
+    async unfollow() {
+        try {
+            this.setState({
+                buttonIsDisabled: true,
+                buttonInfo: '取关中'
+            });
+            const token = Utility.getLocalStorage("accessToken");
+            const userId = this.props.authorId;
+            const url = `http://apitest.niconi.cc/user/unfollow/${userId}`;
+            const headers = new Headers();
+            headers.append('Authorization', token);
+            let res = await fetch(url, {
+                method: 'DELETE',
+                headers
+            });
+            if (res.status === 200) {
+                this.setState({
+                    buttonIsDisabled: false,
+                    buttonInfo: '重新关注',
+                    isFollowing: false
+                });
+            } else {
+                throw {};
+            }
+        } catch (e) {
+            this.setState({
+                buttonIsDisabled: false,
+                buttonInfo: '取关失败',
+                isFollowing: true
+            });
+        }
+    }
+
+    async follow() {
+        try {
+            this.setState({
+                buttonIsDisabled: true,
+                buttonInfo: '关注中'
+            });
+            const token = Utility.getLocalStorage("accessToken");
+
+            const userId = this.props.authorId;
+            const url = `http://apitest.niconi.cc/user/follow/${userId}`;
+            const headers = new Headers();
+            headers.append('Authorization', token);
+            let res = await fetch(url, {
+                method: 'POST',
+                headers
+            });
+            if (res.status === 200) {
+                this.setState({
+                    buttonIsDisabled: false,
+                    buttonInfo: '取消关注',
+                    isFollowing: true
+                });
+            } else {
+                throw {};
+            }
+        } catch (e) {
+            this.setState({
+                buttonIsDisabled: false,
+                buttonInfo: '关注失败',
+                isFollowing: false
+            });
+        }
+    }
+    componenDidMount() {
+
+
+        if (this.state.isFollowing === true) {
+            this.setState({ buttonInfo: "取消关注", isFollowing: true });
+        } else {
+            this.setState({ buttonInfo: "关注", isFollowing: false });
+        }
+    }
+    render() {
+        const email = `/message/message/${this.props.authorId}`;
+        const url = `/user/${this.props.authorId}`;
+        let urlHtml = <a href={url}><img src={this.props.authorImgUrl}></img></a>;
+        let userHtml = <div id="authorName"><p><a href={url}>{this.props.authorName}</a></p></div>;
+        if (this.props.isAnonymous == true) {
+            urlHtml = <img src={this.props.authorImgUrl}></img>;
+            userHtml = <div id="authorName"><p>{this.props.authorName}</p></div>
+        }
+        if (this.props.isAnonymous === true) {
+            $(".email").css("display", "none");
+            $(".follow").css("display", "none");
+            $(".authorFans").css("margin-top", "1rem");
+            $("#fans").css("display", "none");
+            $("#authorMes").css("width", "14rem");
+        }
+        return <div className="row" id="authormes">
+
+            <div className="authorImg" >{urlHtml}</div>
+            <div className="column" style={{ marginRight: "1rem" }}>
+                <div className="row authorFans" style={{ justifyContent: "space-between" }}>
+                    {userHtml}
+
+                    <div id="fans" className="row"><div style={{ marginRight: "0.1875rem" }}>粉丝</div><div style={{ color: "#EE0000" }}>{this.props.fanCount}</div></div>
+                </div>
+
+                <div className="row">
+                    <button className="follow" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
+                    <button className="email"><a href={email}>私信</a></button>
+                </div>
+            </div>
+        </div>;
+    }
+}
+export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.TopicTitleState, {}> {
+    constructor(props, content) {
+        super(props, content);
+        this.state = {
+            isNotice: true,
+            isTop: true,
+            title: "这是一个长长啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊的标题",
+            tag: "女装/开车",
+            time: "2017.8.12",
+            likeNumber: 1,
+            dislikeNumber: 1,
+            viewTimes: 2366
+        }
+    }
+
+    returnProps(isTop, isNotice, title) {
+        if (isTop == true && isNotice == false) {
+            return <div id="title1" className="row" style={{ justifyContent: "flex-start" }}>
+
+                <div id="essayTitle">{title}</div>
+            </div>;
+        } else if (isTop == false && isNotice == true) {
+            return <div id="title1" className="row" style={{ justifyContent: "flex-start" }}>
+
+                <div id="essayTitle">{title}</div>
+            </div>;
+        } else if (isTop == true && isNotice == true) {
+            return <div id="title1" className="row" style={{ justifyContent: "flex-start" }}>
+
+                <div id="essayTitle">{title}</div>
+            </div>;
+        } else {
+            return <div id="title1" className="row" style={{ justifyContent: "flex-start" }}>
+                <div id="essayTitle">{title}</div>
+            </div>;
+        }
+    }
+    render() {
+        return <div id="title">
+            <div className="column" id="topicTitleProp" >
+                <div id="essay1" className="row">
+                    {this.returnProps(this.state.isTop, this.state.isNotice, this.props.Title)}
+
+                </div>
+                <div className="row" id="essayProp">
+                    <div id="tags"><div className="tagProp tagSize">标签： {this.state.tag}</div><div className="tagProp"></div></div>
+                    <div id="time"><div className="viewProp"><i className="fa fa-clock-o fa-lg fa-fw"></i></div> <div className="timeProp tagSize">{moment(this.props.Time).format('YYYY-MM-DD HH:mm:ss')}</div></div>
+                    <div id="viewtimes"><div className="viewProp"><i className="fa fa-eye fa-lg fa-fw"></i>  </div> <div className="timeProp tagSize">{this.props.HitCount}次</div></div>
+                </div>
+            </div>
+
+        </div>;
+    }
+}
+export class TopicContent extends RouteComponent<{ postid: number, topicid: number, content: string, signature: string, userId: number, contentType: number, masters: string[] }, { likeState: number, likeNumber: number, dislikeNumber: number }, {}> {
+    constructor(props, content) {
+        super(props, content);
+        this.state = {
+            likeNumber: 666,
+            dislikeNumber: 233,
+            likeState: 0
+        }
+    }
+    async componentDidMount() {
+        const data = await Utility.getLikeState(this.props.topicid, this.context.router);
+        if (data.likeState === 1) {
+            $("#commentliked").css("color", "red");
+        }
+        else if (data.likeState === 2) {
+            $("#commentdisliked").css("color", "red");
+        }
+
+        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
+    }
+    async like() {
+        //取消赞
+        if (this.state.likeState === 1) {
+            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
+            $("#commentliked").css("color", "black");
+        }
+        //踩改赞
+        else if (this.state.likeState === 2) {
+            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
+            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
+            $("#commentliked").css("color", "red");
+            $("#commentdisliked").css("color", "black");
+        }
+        //单纯赞
+        else {
+            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
+            $("#commentliked").css("color", "red");
+        }
+        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
+
+        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
+    }
+    async dislike() {
+        //取消踩
+        if (this.state.likeState === 2) {
+            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
+            $("#commentdisliked").css("color", "black");
+        }
+        //赞改踩
+        else if (this.state.likeState === 1) {
+            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
+            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
+            $("#commentliked").css("color", "black");
+            $("#commentdisliked").css("color", "red");
+        }
+        //单纯踩
+        else {
+            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
+            $("#commentdisliked").css("color", "red");
+        }
+        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
+        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
+    }
+    render() {
+        const divid = `doc-content${this.props.postid}`;
+        let curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userId}`;
+        const ubbMode = <UbbContainer code={this.props.content} />;
+        const mdMode = <div id={divid}>
+            <textarea name="editormd-markdown-doc" style={{ display: 'none' }}>{this.props.content}</textarea>
+
+        </div>;
+        editormd.markdownToHTML(divid, {
+            htmlDecode: "style,script,iframe",
+            emoji: true,
+            taskList: true,
+            tex: true,
+            flowChart: true,
+            sequenceDiagram: true,
+            codeFold: true,
+        });
+        let content = ubbMode;
+        //ubb
+
+        if (this.props.contentType === 1) {
+
+            content = mdMode;
+
+        }
+        if (Utility.getLocalStorage("userInfo")) {
+            const privilege = Utility.getLocalStorage("userInfo").privilege;
+            const myName = Utility.getLocalStorage("userInfo").name;
+            const myId = Utility.getLocalStorage("userInfo").id;
+
+            if (privilege === '管理员' || privilege === '超级版主' || (privilege === '全站贵宾' && myId === this.props.userId)) {
+                $("#postTopicManage").css("display", "");
+            }
+
+            if (this.props.masters) {
+                for (let i = 0; i < this.props.masters.length; i++) {
+                    if (myName === this.props.masters[i]) {
+                        $("#postTopicManage").css("display", "");
+                    }
+                }
+            }
+        }
+        if (this.props.signature == "") {
+            return <div className="content">
+                <div className="substance">{content}</div>
+                <PostManagement postId={this.props.postid} userId={this.props.userId} />
+                <div className="comment1">
+                    <div id="commentlike" className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg" ></i></button>   收藏文章 </div>
+                    <div id="commentliked" className="upup" style={{ marginRight: "0.7rem" }} ><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
+                    <div id="commentdisliked" className="downdown" ><i title="踩" onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
+                    <div id="commentlike" className="buttonFont row"> <div className="commentbutton">   评分</div><div className="commentbutton">   编辑</div></div>
+
+                    <div className="operation1">引用</div>
+                    <Link className="operation1" to={curUserPostUrl}>只看此用户</Link>
+                    <div className="operation1" id="postTopicManage" style={{ display: "none", cursor: "pointer" }}>管理</div>
+
+                </div>
+            </div>;
+        } else {
+            return <div className="content">
+                <div className="substance">{content} </div>
+                <PostManagement postId={this.props.postid} userId={this.props.userId} />
+                <div className="signature"><UbbContainer code={this.props.signature} /></div>
+                <div className="comment">
+                    <div id="commentlike" style={{ marginRight: "0.7rem" }} className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg"></i></button>   收藏文章 </div>
+                    <div id="commentliked" className="upup" style={{ marginRight: "0.7rem" }}><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
+                    <div id="commentdisliked" className="downdown"><i title="踩" onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
+                    <div id="commentlike" className="buttonFont row"> <div className="commentbutton">   评分</div><div className="commentbutton">   编辑</div></div>
+
+                    <div className="operation1">引用</div>
+                    <Link className="operation1" to={curUserPostUrl}>只看此用户</Link>
+                    <div className="operation1" id="postTopicManage" style={{ display: "none", cursor: "pointer" }}>管理</div>
+
+                </div>
+            </div>;
+        }
+    }
+}
+export class AwardInfo extends RouteComponent<{ postId,userImgUrl,content,userName,reason }, {}, {}> {
+    constructor(props, content) {
+        super(props, content);
+
+    }
+    render() {
+        return <div className="good tagSize" >
+            <div id="userImage"><img src={this.props.userImgUrl}></img> </div>
+            <div id="userName"><span>{this.props.userName}</span></div>
+            <div id="grades"><span id="grade">{this.props.content}</span></div>          
+            <div id="credit"><span>{this.props.reason}</span></div>
+        </div>;
+    }
+}
+
 export class Reply extends RouteComponent<{}, { contents, masters }, { page, topicid, userName }>{
     constructor(props, content) {
         super(props, content);
@@ -467,7 +941,7 @@ export class UserDetails extends RouteComponent<{ userName, userId }, { portrait
                     </div>
                     <div className="column" style={{ marginLeft: "1.6rem", marginTop: "2rem" }}>
                         <div className="row">
-                            <div style={{ fontFamily: "微软雅黑", color: "blue", marginRight: "0.63rem" }}> {this.state.userName}</div>
+                            <div style={{ fontFamily: "微软雅黑", color: "blue", marginRight: "0.63rem",width:"8rem" }}> {this.state.userName}</div>
                             <div style={{ marginRight: "0.63rem", fontSize: "1rem" }}>   粉丝  </div>
                             <div style={{ color: "red", fontSize: "1rem" }}>{this.state.fanCount}</div>
                         </div>
@@ -490,372 +964,16 @@ export class UserDetails extends RouteComponent<{ userName, userId }, { portrait
         </div>;
     }
 }
-export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid }, { topicMessage, likeState }, {}> {
-    constructor(props, content) {
-        super(props, content);
-        this.state = {
-            topicMessage: { title: "加载中...", time: "", content: "", signature: "", postid: 0 }
-            , likeState: 0
-        }
-    }
-    async componentWillMount() {
-        let topicMessage = await Utility.getTopic(this.props.topicid, this.context.router);
-        this.setState({ topicMessage: topicMessage });
-    }
-    render() {
-        if (this.state.topicMessage != null) {
-            if (this.state.topicMessage.userId == this.props.userId || this.props.userId == null) {
-                return <div className="root" id="1">
-                    <div className="essay">
-                        <AuthorMessage authorId={this.state.topicMessage.userId} authorName={this.state.topicMessage.userName} authorImgUrl={this.state.topicMessage.userImgUrl} isAnonymous={this.state.topicMessage.isAnonymous} isFollowing={this.state.topicMessage.isFollowing}
-                            fanCount={this.state.topicMessage.fanCount} />
-                        <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount} />
-                        <div id="ads"><img width="100%" src={this.props.imgUrl}></img></div>
-                    </div>
-
-                    <TopicContent postid={this.state.topicMessage.postId} content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} topicid={this.props.topicid} userId={this.state.topicMessage.userId}
-                        contentType={this.state.topicMessage.contentType}
-                        masters={this.state.topicMessage.masters} />
-                    <TopicGood />
-                    <TopicVote />
-                </div>;
-            }
-            else {
-                return null;
-            }
-        } else {
-            return null;
-        }
-    }
-}
-
-
-export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, authorName: string, authorId: number, authorImgUrl: string, isFollowing: boolean, fanCount }, State.AuthorMessageState, {}> {
-    constructor(props, content) {
-        super(props, content);
-        this.follow = this.follow.bind(this);
-        this.unfollow = this.unfollow.bind(this);
-        this.state = {
-            userName: 'Mana',
-            fansNumber: 233,
-            imgUrl: this.props.authorImgUrl,
-            buttonInfo: '关注',
-            isFollowing: false,
-            buttonIsDisabled: false
-        };
-    }
-    async unfollow() {
-        try {
-            this.setState({
-                buttonIsDisabled: true,
-                buttonInfo: '取关中'
-            });
-            const token = Utility.getLocalStorage("accessToken");
-            const userId = this.props.authorId;
-            const url = `http://apitest.niconi.cc/user/unfollow/${userId}`;
-            const headers = new Headers();
-            headers.append('Authorization', token);
-            let res = await fetch(url, {
-                method: 'DELETE',
-                headers
-            });
-            if (res.status === 200) {
-                this.setState({
-                    buttonIsDisabled: false,
-                    buttonInfo: '重新关注',
-                    isFollowing: false
-                });
-            } else {
-                throw {};
-            }
-        } catch (e) {
-            this.setState({
-                buttonIsDisabled: false,
-                buttonInfo: '取关失败',
-                isFollowing: true
-            });
-        }
-    }
-
-    async follow() {
-        try {
-            this.setState({
-                buttonIsDisabled: true,
-                buttonInfo: '关注中'
-            });
-            const token = Utility.getLocalStorage("accessToken");
-
-            const userId = this.props.authorId;
-            const url = `http://apitest.niconi.cc/user/follow/${userId}`;
-            const headers = new Headers();
-            headers.append('Authorization', token);
-            let res = await fetch(url, {
-                method: 'POST',
-                headers
-            });
-            if (res.status === 200) {
-                this.setState({
-                    buttonIsDisabled: false,
-                    buttonInfo: '取消关注',
-                    isFollowing: true
-                });
-            } else {
-                throw {};
-            }
-        } catch (e) {
-            this.setState({
-                buttonIsDisabled: false,
-                buttonInfo: '关注失败',
-                isFollowing: false
-            });
-        }
-    }
-    componenDidMount() {
-
-
-        if (this.state.isFollowing === true) {
-            this.setState({ buttonInfo: "取消关注", isFollowing: true });
-        } else {
-            this.setState({ buttonInfo: "关注", isFollowing: false });
-        }
-    }
-    render() {
-        const email = `/message/message/${this.props.authorId}`;
-        const url = `/user/${this.props.authorId}`;
-        let urlHtml = <a href={url}><img src={this.props.authorImgUrl}></img></a>;
-        let userHtml = <div id="authorName"><p><a href={url}>{this.props.authorName}</a></p></div>;
-        if (this.props.isAnonymous == true) {
-            urlHtml = <img src={this.props.authorImgUrl}></img>;
-            userHtml = <div id="authorName"><p>{this.props.authorName}</p></div>
-        }
-        if (this.props.isAnonymous === true) {
-            $(".email").css("display", "none");
-            $(".follow").css("display", "none");
-            $(".authorFans").css("margin-top", "1rem");
-            $("#fans").css("display", "none");
-            $("#authorMes").css("width", "14rem");
-        }
-        return <div className="row" id="authormes">
-
-            <div className="authorImg" >{urlHtml}</div>
-            <div className="column" style={{ marginRight: "1rem" }}>
-                <div className="row authorFans" style={{ justifyContent: "space-between" }}>
-                    {userHtml}
-
-                    <div id="fans" className="row"><div style={{ marginRight: "0.1875rem" }}>粉丝</div><div style={{ color: "#EE0000" }}>{this.props.fanCount}</div></div>
-                </div>
-
-                <div className="row">
-                    <button className="follow" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
-                    <button className="email"><a href={email}>私信</a></button>
-                </div>
-            </div>
-        </div>;
-    }
-}
-export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.TopicTitleState, {}> {
-    constructor(props, content) {
-        super(props, content);
-        this.state = {
-            isNotice: true,
-            isTop: true,
-            title: "这是一个长长啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊的标题",
-            tag: "女装/开车",
-            time: "2017.8.12",
-            likeNumber: 1,
-            dislikeNumber: 1,
-            viewTimes: 2366
-        }
-    }
-
-    returnProps(isTop, isNotice, title) {
-        if (isTop == true && isNotice == false) {
-            return <div id="title1" className="row" style={{ justifyContent: "flex-start" }}>
-
-                <div id="essayTitle">{title}</div>
-            </div>;
-        } else if (isTop == false && isNotice == true) {
-            return <div id="title1" className="row" style={{ justifyContent: "flex-start" }}>
-
-                <div id="essayTitle">{title}</div>
-            </div>;
-        } else if (isTop == true && isNotice == true) {
-            return <div id="title1" className="row" style={{ justifyContent: "flex-start" }}>
-
-                <div id="essayTitle">{title}</div>
-            </div>;
-        } else {
-            return <div id="title1" className="row" style={{ justifyContent: "flex-start" }}>
-                <div id="essayTitle">{title}</div>
-            </div>;
-        }
-    }
-    render() {
-        return <div id="title">
-            <div className="column" id="topicTitleProp" >
-                <div id="essay1" className="row">
-                    {this.returnProps(this.state.isTop, this.state.isNotice, this.props.Title)}
-
-                </div>
-                <div className="row" id="essayProp">
-                    <div id="tags"><div className="tagProp tagSize">标签： {this.state.tag}</div><div className="tagProp"></div></div>
-                    <div id="time"><div className="viewProp"><i className="fa fa-clock-o fa-lg fa-fw"></i></div> <div className="timeProp tagSize">{moment(this.props.Time).format('YYYY-MM-DD HH:mm:ss')}</div></div>
-                    <div id="viewtimes"><div className="viewProp"><i className="fa fa-eye fa-lg fa-fw"></i>  </div> <div className="timeProp tagSize">{this.props.HitCount}次</div></div>
-                </div>
-            </div>
-
-        </div>;
-    }
-}
-export class TopicContent extends RouteComponent<{ postid: number, topicid: number, content: string, signature: string, userId: number, contentType: number, masters: string[] }, { likeState: number, likeNumber: number, dislikeNumber: number }, {}> {
-    constructor(props, content) {
-        super(props, content);
-        this.state = {
-            likeNumber: 666,
-            dislikeNumber: 233,
-            likeState: 0
-        }
-    }
-    async componentDidMount() {
-        const data = await Utility.getLikeState(this.props.topicid, this.context.router);
-        if (data.likeState === 1) {
-            $("#commentliked").css("color", "red");
-        }
-        else if (data.likeState === 2) {
-            $("#commentdisliked").css("color", "red");
-        }
-
-        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
-    }
-    async like() {
-        //取消赞
-        if (this.state.likeState === 1) {
-            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
-            $("#commentliked").css("color", "black");
-        }
-        //踩改赞
-        else if (this.state.likeState === 2) {
-            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
-            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
-            $("#commentliked").css("color", "red");
-            $("#commentdisliked").css("color", "black");
-        }
-        //单纯赞
-        else {
-            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
-            $("#commentliked").css("color", "red");
-        }
-        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
-
-        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
-    }
-    async dislike() {
-        //取消踩
-        if (this.state.likeState === 2) {
-            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
-            $("#commentdisliked").css("color", "black");
-        }
-        //赞改踩
-        else if (this.state.likeState === 1) {
-            await Utility.like(this.props.topicid, this.props.postid, this.context.router);
-            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
-            $("#commentliked").css("color", "black");
-            $("#commentdisliked").css("color", "red");
-        }
-        //单纯踩
-        else {
-            await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
-            $("#commentdisliked").css("color", "red");
-        }
-        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
-        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
-    }
-    render() {
-        const divid = `doc-content${this.props.postid}`;
-        let curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userId}`;
-        const ubbMode = <UbbContainer code={this.props.content} />;
-        const mdMode = <div id={divid}>
-            <textarea name="editormd-markdown-doc" style={{ display: 'none' }}>{this.props.content}</textarea>
-
-        </div>;
-        editormd.markdownToHTML(divid, {
-            htmlDecode: "style,script,iframe",
-            emoji: true,
-            taskList: true,
-            tex: true,
-            flowChart: true,
-            sequenceDiagram: true,
-            codeFold: true,
-        });
-        let content = ubbMode;
-        //ubb
-
-        if (this.props.contentType === 1) {
-
-            content = mdMode;
-
-        }
-        if (Utility.getLocalStorage("userInfo")) {
-            const privilege = Utility.getLocalStorage("userInfo").privilege;
-            const myName = Utility.getLocalStorage("userInfo").name;
-            const myId = Utility.getLocalStorage("userInfo").id;
-
-            if (privilege === '管理员' || privilege === '超级版主' || (privilege === '全站贵宾' && myId === this.props.userId)) {
-                $("#postTopicManage").css("display", "");
-            }
-
-            if (this.props.masters) {
-                for (let i = 0; i < this.props.masters.length; i++) {
-                    if (myName === this.props.masters[i]) {
-                        $("#postTopicManage").css("display", "");
-                    }
-                }
-            }
-        }
-        if (this.props.signature == "") {
-            return <div className="content">
-                <div className="substance">{content}</div>
-                <PostManagement postId={this.props.postid} userId={this.props.userId} />
-                <div className="comment1">
-                    <div id="commentlike" className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg" ></i></button>   收藏文章 </div>
-                    <div id="commentliked" className="upup" style={{ marginRight: "0.7rem" }} ><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
-                    <div id="commentdisliked" className="downdown" ><i title="踩" onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
-                    <div id="commentlike" className="buttonFont row"> <div className="commentbutton">   评分</div><div className="commentbutton">   编辑</div></div>
-
-                    <div className="operation1">引用</div>
-                    <Link className="operation1" to={curUserPostUrl}>只看此用户</Link>
-                    <div className="operation1" id="postTopicManage" style={{ display: "none", cursor: "pointer" }}>管理</div>
-
-                </div>
-            </div>;
-        } else {
-            return <div className="content">
-                <div className="substance">{content} </div>
-                <PostManagement postId={this.props.postid} userId={this.props.userId} />
-                <div className="signature"><UbbContainer code={this.props.signature} /></div>
-                <div className="comment">
-                    <div id="commentlike" style={{ marginRight: "0.7rem" }} className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg"></i></button>   收藏文章 </div>
-                    <div id="commentliked" className="upup" style={{ marginRight: "0.7rem" }}><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
-                    <div id="commentdisliked" className="downdown"><i title="踩" onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
-                    <div id="commentlike" className="buttonFont row"> <div className="commentbutton">   评分</div><div className="commentbutton">   编辑</div></div>
-
-                    <div className="operation1">引用</div>
-                    <Link className="operation1" to={curUserPostUrl}>只看此用户</Link>
-                    <div className="operation1" id="postTopicManage" style={{ display: "none", cursor: "pointer" }}>管理</div>
-
-                </div>
-            </div>;
-        }
-    }
-}
-export class ReplyContent extends RouteComponent<{ masters, userId, content, signature, topicid, postid, contentType }, { likeNumber, dislikeNumber, likeState }, {}> {
+export class ReplyContent extends RouteComponent<{ masters, userId, content, signature, topicid, postid, contentType }, { likeNumber, dislikeNumber, likeState,awardInfo ,info}, {}> {
     constructor(props, content) {
         super(props, content);
         this.showManageUI = this.showManageUI.bind(this);
         this.state = {
             likeNumber: 1,
             dislikeNumber: 1,
-            likeState: 0
+            likeState: 0,
+            awardInfo: [],
+            info:null
         }
     }
     showManageUI() {
@@ -875,7 +993,15 @@ export class ReplyContent extends RouteComponent<{ masters, userId, content, sig
         else if (data.likeState === 2) {
             $(idDislike).css("color", "red");
         }
-        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
+        const award = await Utility.getAwardInfo(this.props.postid);
+
+        const info = award.map(this.generateAwardInfo.bind(this));
+        const awardInfo = await Promise.all(info);
+        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState,awardInfo:award ,info:awardInfo});
+    }
+    async generateAwardInfo(item) {
+        const url = await Utility.getPortraitUrl(item.operatorName);
+        return <AwardInfo postId={this.props.postid} userImgUrl={url} content={item.content} reason={item.reason} userName={item.operatorName} />;
     }
     async like() {
         const idLike = `#like${this.props.postid}`;
@@ -926,6 +1052,7 @@ export class ReplyContent extends RouteComponent<{ masters, userId, content, sig
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
     render() {
+        
         const idLike = `like${this.props.postid}`;
         const idDislike = `dislike${this.props.postid}`;
         const divid = `doc-content${this.props.postid}`;
@@ -972,196 +1099,31 @@ export class ReplyContent extends RouteComponent<{ masters, userId, content, sig
                 }
             }
         }
+        let signature = <div className="signature"><UbbContainer code={this.props.signature} /></div>;
         if (this.props.signature == "") {
+            signature = null;
+        }
             return <div className="root" style={{ marginTop: "-170px" }}>
                 <div className="reply-content">
                     <div className="substance">{content}</div>
                     <PostManagement postId={this.props.postid} userId={this.props.userId} />
-                    <div className="comment1">
 
+                    <div className="comment1">
                         <div id={idLike} className="upup" style={{ marginRight: "0.7rem" }}><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
                         <div id={idDislike} className="downdown"  ><i title="踩" onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
                         <div id="commentlike"> <div className="commentbutton">   评分</div>
                             <div className="operation1" id={manageIcon} style={{ display: "none", cursor: "pointer" }} onClick={this.showManageUI}>管理</div>
-
                         </div>
                     </div>
-                </div></div>;
-        }
-        else {
-            return <div className="root" style={{ marginTop: "-170px" }}>
-                <div className="reply-content">
-                    <div className="substance">{content}</div>
-                    <PostManagement postId={this.props.postid} userId={this.props.userId} />
-                    <div className="comment">
 
-                        <div id={idLike} className="upup" style={{ marginRight: "0.7rem", }}><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
-                        <div id={idDislike} className="downdown" ><i title="踩" onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
-                        <div id="commentlike"> <div className="commentbutton">   评分</div>
-                            <div className="operation1" id={manageIcon} style={{ display: "none", cursor: "pointer" }} onClick={this.showManageUI}>管理</div>
-
+                    {signature}
+                    <div className="column">
+                        {this.state.info }
                         </div>
-                    </div>
-                    <div className="signature"><UbbContainer code={this.props.signature} /></div>
-
                 </div></div>;
-        }
+        }        
     }
-}
-export class TopicGood extends RouteComponent<{}, State.TopicGoodState, {}> {
-    constructor(props, content) {
-        super(props, content);
-        this.state = {
-            userName: "Mana",
-            grade: 10,
-            reward: 20,
-            credit: "6666炒鸡赞",
-            imgUrl: "/images/authorImg.jpg"
-        }
-    }
-    render() {
-        return <div className="good tagSize" >
-            <div id="userImage"><img src={this.state.imgUrl}></img> </div>
-            <div id="userName"><span>{this.state.userName}</span></div>
-            <div id="grades"><span>评分 </span><span id="grade">+{this.state.grade}</span></div>
-            <div id="reward"><span>赏金 </span><span id="money">{this.state.reward}</span><span>论坛币</span></div>
-            <div id="credit"><span>{this.state.credit}</span></div>
-        </div>;
-    }
-}
 
-export class TopicVote extends RouteComponent<{}, State.TopicVoteState, {}> {
-    constructor(props, content) {
-        super(props, content);
-        this.state = {
-            option: "我认为他说的很对",
-            votes: 60,
-            totalVotes: 220,
-            voted: false,
-        }
-    }
-    render() {
-        return <div className="vote" >
-            <div className="row"><input id="checkbox" type="checkbox" /> <span id="option1" style={{ marginLeft: "0.9375rem" }}>{this.state.option} </span></div>
-            <div className="row" style={{ alignItems: "center" }}>
-                <div className="progress">
-                    <div className="voteResult"></div>
-                </div>
-                <span style={{ marginLeft: "0.9375rem" }}>{this.state.votes}</span>
-                <span> ({this.state.votes / this.state.totalVotes * 100}%)</span>
-            </div>
-            <div style={{ marginLeft: "1.25rem" }}>{this.state.voted ? <span>你已经投过票啦</span> : <button className="operation">投票</button>}</div>
-        </div>;
-    }
-}
-export class TopicPager extends RouteComponent<{ page, topicid, totalPage }, { pager }, {}> {
-    constructor(props, content) {
-        super(props, content);
-        this.state = {
-            pager: [1, 2, 3, 4, 5]
-        };
-    }
-	/**
-	 * 将页码转换为 UI 界面。
-	 * @param pageNumber 要转换的页码。
-	 * @returns {JSX.Element} 页码对应的 UI 元素。
-	 */
-
-
-    generatePageLink(pageNumber: number) {
-
-        return <PageModel pageNumber={pageNumber} topicid={this.props.topicid} curPage={this.props.page} totalPage={this.props.totalPage} />;
-    }
-    async componentWillReceiveProps(newProps) {
-        const pages = Utility.getPager(newProps.page, newProps.totalPage);
-        this.setState({ pager: pages });
-    }
-    async componentDidMount() {
-        const pages = Utility.getPager(this.props.page, this.props.totalPage);
-        this.setState({ pager: pages });
-    }
-    render() {
-        return <div id="pager" >
-            <div className="row pagination">{this.state.pager.map(this.generatePageLink.bind(this))}</div>
-        </div>
-            ;
-    }
-}
-export class TopicPagerDown extends RouteComponent<{ page, topicid, totalPage }, { pager }, {}> {
-    constructor(props, content) {
-        super(props, content);
-        this.state = {
-            pager: [1, 2, 3, 4, 5]
-        };
-    }
-	/**
-	 * 将页码转换为 UI 界面。
-	 * @param pageNumber 要转换的页码。
-	 * @returns {JSX.Element} 页码对应的 UI 元素。
-	 */
-
-
-    generatePageLink(pageNumber: number) {
-
-        return <PageModel pageNumber={pageNumber} topicid={this.props.topicid} curPage={this.props.page} totalPage={this.props.totalPage} />;
-    }
-    async componentWillReceiveProps(newProps) {
-        const pages = Utility.getPager(newProps.page, newProps.totalPage);
-        this.setState({ pager: pages });
-    }
-    async componentDidMount() {
-        const pages = Utility.getPager(this.props.page, this.props.totalPage);
-        this.setState({ pager: pages });
-    } t
-    render() {
-        return <div className="row" style={{ width: '100%', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-            <div id="pager" >
-                <div className="row pagination">{this.state.pager.map(this.generatePageLink.bind(this))}</div>
-            </div>
-        </div>;
-    }
-}
-export class PageModel extends React.Component<{ pageNumber, topicid, curPage, totalPage }, {}> {
-
-    render() {
-        let pageUrl: string;
-        if (this.props.pageNumber > 0) {
-            pageUrl = `/topic/${this.props.topicid}/${this.props.pageNumber}`;
-            if (this.props.pageNumber != this.props.curPage) {
-                return <li className="page-item"><Link className="page-link" to={pageUrl}>{this.props.pageNumber}</Link></li>;
-            } else {
-                return <li className="page-item active"><Link className="page-link" to={pageUrl}>{this.props.pageNumber}</Link></li>;
-
-            }
-
-        } else if (this.props.pageNumber == -1) {
-            pageUrl = `/topic/${this.props.topicid}/${this.props.curPage - 1}`;
-
-            return <li className="page-item"><Link className="page-link" to={pageUrl}>&lsaquo;</Link></li>
-                ;
-        } else if (this.props.pageNumber == -2) {
-            pageUrl = `/topic/${this.props.topicid}/${this.props.curPage + 1}`;
-
-            return <li className="page-item"><Link className="page-link" to={pageUrl}>&rsaquo;</Link></li>
-                ;
-        } else if (this.props.pageNumber == -3) {
-            pageUrl = `/topic/${this.props.topicid}`;
-
-            return <li className="page-item"><Link className="page-link" to={pageUrl}>&lsaquo;&lsaquo;</Link></li>
-                ;
-        } else {
-            pageUrl = `/topic/${this.props.topicid}/${this.props.totalPage}`;
-
-            return <li className="page-item"><Link className="page-link" to={pageUrl}>&rsaquo;&rsaquo;</Link></li>
-                ;
-        }
-    }
-}
-export class UserMessageBox extends React.Component<{ userName, userFans }, {}>{
-    render() {
-        return <div id="userMessageBox">{this.props.userName}</div>;
-    }
-}
 export class SendTopic extends RouteComponent<{ topicid, onChange, }, { content: string, mode: number }, {}>{
     constructor(props) {
         super(props);
@@ -1348,7 +1310,7 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, }, { content:
         </div>;
     }
 }
-export class PostManagement extends React.Component<{ userId, postId }, { wealth, prestige, reason, tpdays,UI }>{
+export class PostManagement extends React.Component<{ userId, postId }, { wealth, prestige, reason, tpdays, UI }>{
     constructor(props) {
         super(props);
         this.wealthInput = this.wealthInput.bind(this);
@@ -1359,7 +1321,7 @@ export class PostManagement extends React.Component<{ userId, postId }, { wealth
         this.showAwardUI = this.showAwardUI.bind(this);
         this.showPunishUI = this.showPunishUI.bind(this);
         this.showDeleteUI = this.showDeleteUI.bind(this);
-        this.state = { wealth: 1000, prestige: 0, reason: "", tpdays: 0,UI:"Award" }
+        this.state = { wealth: 1000, prestige: 0, reason: "", tpdays: 0, UI: "Award" }
     }
     showAwardUI() {
         this.setState({ UI: "Award" });
@@ -1367,7 +1329,7 @@ export class PostManagement extends React.Component<{ userId, postId }, { wealth
     showPunishUI() {
         this.setState({ UI: "Punish" });
     }
-    showDeleteUI(){
+    showDeleteUI() {
         this.setState({ UI: "Delete" });
     }
     confirm() {
@@ -1421,7 +1383,7 @@ export class PostManagement extends React.Component<{ userId, postId }, { wealth
                 <input type="text" value={this.state.reason} onChange={this.reasonInput} />
             </div>
         </div>;
-        const deleteUI = <div className="column" id="punish" >    
+        const deleteUI = <div className="column" id="punish" >
             <div className="row manageOperation">
                 <div className="manageObject">删除原因</div>
                 <input type="text" value={this.state.reason} onChange={this.reasonInput} />
@@ -1436,12 +1398,27 @@ export class PostManagement extends React.Component<{ userId, postId }, { wealth
             <div className="manageUI">
                 <div className="row manageOptions">
                     <div className="manageOptions-icon" onClick={this.showAwardUI} style={{ color: "#FF7F00" }}>奖励</div>
-                    <div className="manageOptions-icon" onClick={this.showPunishUI}style={{ color: "red" }}>惩罚</div>
+                    <div className="manageOptions-icon" onClick={this.showPunishUI} style={{ color: "red" }}>惩罚</div>
                     <div className="manageOptions-icon" onClick={this.showDeleteUI}>删除</div>
                 </div>
             </div>
             {UI}
             <button onClick={this.confirm} className="confirmManagement">确认</button>
         </div>;
+    }
+}
+export class Category extends React.Component<{ topicId }, { boardId, topicId, boardName, title }>{
+    constructor(props) {
+        super(props);
+        this.state = ({ boardId: "", topicId: "", boardName: "", title: "" });
+    }
+    async componentDidMount() {
+        const body = await Utility.getCategory(this.props.topicId, this.context.router);
+        this.setState({ boardId: body.boardId, topicId: body.topicId, boardName: body.boardName, title: body.title });
+    }
+    render() {
+        const listUrl = `/list/${this.state.boardId}/normal`;
+        const topicUrl = `/topic/${this.state.topicId}`;
+        return <div style={{ color: "blue", fontSize: "1rem" }}>&rsaquo;&rsaquo;<a style={{ color: "blue", fontSize: "1rem" }} href="/">首页</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "1rem" }} href={listUrl} >{this.state.boardName}</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "1rem" }} href={topicUrl}>{this.state.title}</a></div>;
     }
 }

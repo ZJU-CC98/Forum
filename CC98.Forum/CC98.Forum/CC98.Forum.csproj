@@ -15,11 +15,17 @@
 
   <ItemGroup>
     <None Remove="CC98.Forum.rar" />
-    <None Remove="Components\Category.tsx" />
     <None Remove="Components\FocusBoardTopicArea.tsx" />
     <None Remove="Components\Footer.tsx" />
     <None Remove="Components\SearCH.tsx" />
     <None Remove="Components\Status.tsx" />
+    <None Remove="Components\Topic\Post-Management.tsx" />
+    <None Remove="Components\Topic\Topic-AwardInfo.tsx" />
+    <None Remove="Components\Topic\Topic-Category.tsx" />
+    <None Remove="Components\Topic\Topic-Pager.tsx" />
+    <None Remove="Components\Topic\Topic-PostTopic.tsx" />
+    <None Remove="Components\Topic\Topic-SendTopic.tsx" />
+    <None Remove="Components\Topic\Topic.tsx" />
     <None Remove="Components\UbbContainer.tsx" />
     <None Remove="Components\UserCenterConfig.tsx" />
     <None Remove="Components\UserCenterConfigAvatar.tsx" />
@@ -77,16 +83,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="Components\AllNewTopic.tsx" />
-    <TypeScriptCompile Include="Components\Category.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-New.tsx" />
     <TypeScriptCompile Include="Components\FocusBoardTopicArea.tsx" />
     <TypeScriptCompile Include="Components\Footer.tsx" />
     <TypeScriptCompile Include="Components\LogOn.tsx" />
     <TypeScriptCompile Include="Components\LogOnExact.tsx" />
     <TypeScriptCompile Include="Components\LogOff.tsx" />
     <TypeScriptCompile Include="Components\Search.tsx" />
-    <TypeScriptCompile Include="Components\SendTopic.tsx" />
     <TypeScriptCompile Include="Components\Status.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Post-Management.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-AwardInfo.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-Category.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-Pager.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-PostTopic.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-Post.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-SendTopic.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic.tsx" />
     <TypeScriptCompile Include="Components\UbbContainer.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\UserCenterConfig.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\UserCenterConfigAvatar.tsx" />

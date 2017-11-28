@@ -2,7 +2,7 @@
 import * as State from './States/AppState'
 import * as React from 'react';
 //import { browserHistory } from 'react-router';
-import { TopicTitleAndContent } from './Components/List'
+import { TopicTitleAndContent } from './Components/Board/Board'
 import {
     BrowserRouter as Router,
     Route,
@@ -198,7 +198,7 @@ export async function getTopicContent(topicid: number, curPage: number, router) 
                 }
                 const userMesJson = await userMesResponse.json();
                 post[i] = {
-                    ...content[i], ...userMesJson, postId: content[i].id, userImgUrl: userMesJson.portraitUrl, sendTopicNumber: userMesJson.postCount, privilege: userMesJson.privilege
+                    ...content[i], ...userMesJson, postId: content[i].id, userImgUrl: userMesJson.portraitUrl, sendTopicNumber: userMesJson.postCount, privilege: userMesJson.privilege, signature: userMesJson.signatureCode
                 }
         
             } else {
@@ -1788,4 +1788,21 @@ export async function awardWealth( reason, value, postId) {
     const str = JSON.stringify(body);
     const url = `http://apitest.niconi.cc/manage/bonus/wealth?postid=${postId}`;
     const response = await fetch(url, { method: "PUT", headers,body: str });
+}
+export async function getAwardInfo(postId) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    const start = 0;
+    const size = 10;
+    const url = `http://apitest.niconi.cc/post/awards?postid=${postId}&from=${start}&size=${size}`;
+    const response = await fetch(url, {  headers });
+    const data = await response.json();
+    return data;
+}
+export async function getPortraitUrl(userName) {
+    const url = `http://apitest.niconi.cc/user/name/${userName}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    return data.portraitUrl;
 }
