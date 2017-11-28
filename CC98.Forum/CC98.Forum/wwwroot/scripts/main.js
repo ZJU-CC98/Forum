@@ -2268,9 +2268,9 @@ function GetTopTopics(boardId) {
     });
 }
 exports.GetTopTopics = GetTopTopics;
-function GetBestTopics(boardId, curPage) {
+function getBestTopics(curPage, boardId) {
     return __awaiter(this, void 0, void 0, function () {
-        var start, url, token, headers, response, data, boardtopics, i;
+        var start, url, token, headers, response, data, boardtopics, i, totalPage, obj;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -2286,18 +2286,20 @@ function GetBestTopics(boardId, curPage) {
                 case 2:
                     data = _a.sent();
                     boardtopics = [];
-                    for (i = 0; i < data.length; i++) {
-                        boardtopics[i] = __assign({}, data[i], { replyCount: data[i].replyCount || 0 });
+                    for (i = 0; i < data.topics.length; i++) {
+                        boardtopics[i] = __assign({}, data.topics[i], { replyCount: data.topics[i].replyCount || 0 });
                     }
-                    return [2 /*return*/, boardtopics];
+                    totalPage = data.count % 20 === 0 ? data.count / 20 : (data.count - data.count % 20) / 20 + 1;
+                    obj = { boardtopics: boardtopics, totalPage: totalPage };
+                    return [2 /*return*/, obj];
             }
         });
     });
 }
-exports.GetBestTopics = GetBestTopics;
-function GetSaveTopics(boardId, totalPage, curPage) {
+exports.getBestTopics = getBestTopics;
+function getSaveTopics(curPage, boardId) {
     return __awaiter(this, void 0, void 0, function () {
-        var start, url, token, headers, response, data, boardtopics, i;
+        var start, url, token, headers, response, data, boardtopics, i, totalPage, obj;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -2314,14 +2316,16 @@ function GetSaveTopics(boardId, totalPage, curPage) {
                     data = _a.sent();
                     boardtopics = [];
                     for (i = 0; i < data.length; i++) {
-                        boardtopics[i] = __assign({}, data[i], { replyCount: data[i].replyCount || 0 });
+                        boardtopics[i] = __assign({}, data.topics[i], { replyCount: data.topics[i].replyCount || 0 });
                     }
-                    return [2 /*return*/, boardtopics];
+                    totalPage = data.count % 20 === 0 ? data.count / 20 : (data.count - data.count % 20) / 20 + 1;
+                    obj = { boardtopics: boardtopics, totalPage: totalPage };
+                    return [2 /*return*/, obj];
             }
         });
     });
 }
-exports.GetSaveTopics = GetSaveTopics;
+exports.getSaveTopics = getSaveTopics;
 /**
  * 搜索指定关键词主题
  * @param boardId
@@ -2472,6 +2476,60 @@ function getSearchTopic(boardId, words, from, router) {
     });
 }
 exports.getSearchTopic = getSearchTopic;
+function getMasters(topicId) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, response, data, boardId, boardResponse, boardData, masters;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append("Authorization", token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + topicId, { headers: headers })];
+                case 1:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    data = _a.sent();
+                    boardId = data.boardId;
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/board/" + boardId, { headers: headers })];
+                case 3:
+                    boardResponse = _a.sent();
+                    return [4 /*yield*/, boardResponse.json()];
+                case 4:
+                    boardData = _a.sent();
+                    masters = boardData.boardMasters;
+                    return [2 /*return*/, masters];
+            }
+        });
+    });
+}
+exports.getMasters = getMasters;
+function awardWealth(reason, value, postId) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, body, str, url, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append("Authorization", token);
+                    headers.append("Content-Type", "application/json");
+                    body = {
+                        reason: reason,
+                        value: value
+                    };
+                    str = JSON.stringify(body);
+                    url = "http://apitest.niconi.cc/manage/bonus/wealth?postid=" + postId;
+                    return [4 /*yield*/, fetch(url, { method: "PUT", headers: headers, body: str })];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.awardWealth = awardWealth;
 
 
 /***/ }),
@@ -3881,7 +3939,7 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/", component: MainPage_1.MainPage }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/:page?", component: post_1.Post }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/user/:userId/:page?", component: CurUserPost_1.CurUserPost }),
-                    React.createElement(react_router_dom_1.Route, { path: "/list/:boardId/:page?", component: List_1.List }),
+                    React.createElement(react_router_dom_1.Route, { path: "/list/:boardId/:type?/:page?", component: List_1.List }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/boardlist", component: BoardList_1.BoardList }),
                     React.createElement(react_router_dom_1.Route, { path: "/usercenter", component: UserCenter_1.UserCenter }),
                     React.createElement(react_router_dom_1.Route, { path: "/message", component: Message_1.Message }),
@@ -4177,22 +4235,9 @@ var List = /** @class */ (function (_super) {
     function List(props, context) {
         var _this = _super.call(this, props, context) || this;
         // 默认页码
-        _this.state = { page: 1, totalPage: 1, boardId: null, bigPaper: "" };
+        _this.state = { boardId: null, bigPaper: "", page: 1 };
         return _this;
     }
-    List.prototype.getTotalListPage = function (boardId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var page;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getListTotalPage(boardId, this.context.router)];
-                    case 1:
-                        page = _a.sent();
-                        return [2 /*return*/, page];
-                }
-            });
-        });
-    };
     List.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
             var data;
@@ -4202,7 +4247,7 @@ var List = /** @class */ (function (_super) {
                     case 1:
                         data = _a.sent();
                         // 设置状态
-                        this.setState({ bigPaper: data.bigPaper, page: data.page, totalPage: data.totalPage, boardId: newProps.match.params.boardId });
+                        this.setState({ bigPaper: data.bigPaper, page: data.page, boardId: newProps.match.params.boardId });
                         return [2 /*return*/];
                 }
             });
@@ -4217,7 +4262,7 @@ var List = /** @class */ (function (_super) {
                     case 1:
                         data = _a.sent();
                         // 设置状态
-                        this.setState({ bigPaper: data.bigPaper, page: data.page, totalPage: data.totalPage, boardId: this.match.params.boardId });
+                        this.setState({ bigPaper: data.bigPaper, page: data.page, boardId: this.match.params.boardId });
                         return [2 /*return*/];
                 }
             });
@@ -4228,14 +4273,16 @@ var List = /** @class */ (function (_super) {
             React.createElement(Category, { boardId: this.match.params.boardId }),
             React.createElement(ListHead, { key: this.state.page, boardId: this.match.params.boardId }),
             React.createElement(ListNotice, { bigPaper: this.state.bigPaper }),
-            React.createElement(ListButtonAndPager, { page: this.state.page, totalPage: this.state.totalPage, boardid: this.state.boardId }),
-            React.createElement(ListTag, null),
-            React.createElement(react_router_dom_1.Route, { path: "/list/:boardId/:page?", component: ListContent }),
-            React.createElement(PagerDown, { page: this.state.page, totalPage: this.state.totalPage, boardid: this.state.boardId }));
+            React.createElement(react_router_dom_1.Route, { exact: true, path: "/list/:boardId/normal/:page?", component: ListContent }),
+            React.createElement(react_router_dom_1.Route, { exact: true, path: "/list/:boardId/best/:page?", component: ListBestContent }),
+            React.createElement(react_router_dom_1.Route, { exact: true, path: "/list/:boardId/save/:page?", component: ListSaveContent }));
     };
     return List;
 }(RouteComponent));
 exports.List = List;
+/**
+ 
+ */
 var Category = /** @class */ (function (_super) {
     __extends(Category, _super);
     function Category(props) {
@@ -4388,8 +4435,7 @@ var ListButtonAndPager = /** @class */ (function (_super) {
      * @returns {JSX.Element} 页码对应的 UI 元素。
      */
     ListButtonAndPager.prototype.generatePageLink = function (pageNumber) {
-        var url = "/list/" + this.props.boardid + "/";
-        return React.createElement(PageModel, { pageNumber: pageNumber, url: url, curPage: this.props.page, totalPage: this.props.totalPage });
+        return React.createElement(PageModel, { pageNumber: pageNumber, url: this.props.url, curPage: this.props.page, totalPage: this.props.totalPage });
     };
     ListButtonAndPager.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
@@ -4438,8 +4484,7 @@ var PagerDown = /** @class */ (function (_super) {
      * @returns {JSX.Element} 页码对应的 UI 元素。
      */
     PagerDown.prototype.generatePageLink = function (pageNumber) {
-        var url = "/list/" + this.props.boardid + "/";
-        return React.createElement(PageModel, { pageNumber: pageNumber, url: url, curPage: this.props.page, totalPage: this.props.totalPage });
+        return React.createElement(PageModel, { pageNumber: pageNumber, url: this.props.url, curPage: this.props.page, totalPage: this.props.totalPage });
     };
     PagerDown.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
@@ -4509,6 +4554,9 @@ var PageModel = /** @class */ (function (_super) {
             return React.createElement("li", { className: "page-item" },
                 React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u00BB"));
         }
+        else {
+            return null;
+        }
     };
     return PageModel;
 }(React.Component));
@@ -4575,7 +4623,7 @@ var BestTopics = /** @class */ (function (_super) {
             var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.GetBestTopics(this.props.boardId, this.props.curPage)];
+                    case 0: return [4 /*yield*/, Utility.getBestTopics(this.props.boardId, this.props.curPage)];
                     case 1:
                         data = _a.sent();
                         this.setState({ data: data });
@@ -4595,33 +4643,23 @@ var BestTopics = /** @class */ (function (_super) {
 exports.BestTopics = BestTopics;
 var ListContent = /** @class */ (function (_super) {
     __extends(ListContent, _super);
-    //class 0全部 1精华 2保存
     function ListContent(props, context) {
         var _this = _super.call(this, props, context) || this;
-        _this.inAll = _this.inAll.bind(_this);
-        _this.inBest = _this.inBest.bind(_this);
-        _this.inSave = _this.inSave.bind(_this);
-        _this.state = { items: [], class: 0 };
+        _this.state = { items: [], totalPage: 0 };
         return _this;
     }
-    ListContent.prototype.inSave = function () {
-        this.setState({ class: 2 });
-    };
-    ListContent.prototype.inBest = function () {
-        this.setState({ class: 1 });
-    };
-    ListContent.prototype.inAll = function () {
-        this.setState({ class: 0 });
-    };
     ListContent.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var data;
+            var data, totalPage;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, Utility.getBoardTopicAsync(1, this.match.params.boardId, this.context.router)];
                     case 1:
                         data = _a.sent();
-                        this.setState({ items: data });
+                        return [4 /*yield*/, this.getTotalListPage(this.match.params.boardId)];
+                    case 2:
+                        totalPage = _a.sent();
+                        this.setState({ items: data, totalPage: totalPage });
                         return [2 /*return*/];
                 }
             });
@@ -4653,6 +4691,19 @@ var ListContent = /** @class */ (function (_super) {
             });
         });
     };
+    ListContent.prototype.getTotalListPage = function (boardId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var page;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Utility.getListTotalPage(boardId, this.context.router)];
+                    case 1:
+                        page = _a.sent();
+                        return [2 /*return*/, page];
+                }
+            });
+        });
+    };
     ListContent.prototype.render = function () {
         var curPage = this.match.params.page ? parseInt(this.match.params.page) : 1;
         var topTopics = null;
@@ -4660,33 +4711,201 @@ var ListContent = /** @class */ (function (_super) {
             topTopics = React.createElement("div", null,
                 React.createElement(ListTopContent, { boardId: this.match.params.boardId }));
         }
-        var topics;
-        if (this.state.class === 0) {
-            topics = this.state.items.map(this.convertTopicToElement);
-        }
-        else if (this.state.class === 1) {
-            topics = React.createElement(BestTopics, { boardId: this.match.params.boardId, curPage: curPage });
-        }
-        else if (this.state.class === 2) {
-            //  topics =
-        }
+        var topics = this.state.items.map(this.convertTopicToElement);
+        var bestTopicsUrl = "/list/" + this.match.params.boardId + "/best/";
+        var saveTopicsUrl = "/list/" + this.match.params.boardId + "/save/";
+        var normalTopicsUrl = "/list/" + this.match.params.boardId + "/normal/";
         return React.createElement("div", { className: "listContent " },
+            React.createElement(ListButtonAndPager, { page: curPage, totalPage: this.state.totalPage, boardid: this.match.params.boardId, url: normalTopicsUrl }),
+            React.createElement(ListTag, null),
             React.createElement("div", { className: "row", style: { justifyContent: 'space-between', } },
                 React.createElement("div", { className: "row", style: { alignItems: 'center' } },
-                    React.createElement("div", { className: "listContentTag", onClick: this.inAll }, "\u5168\u90E8"),
-                    React.createElement("div", { className: "listContentTag", onClick: this.inBest }, "\u7CBE\u534E"),
-                    React.createElement("div", { className: "listContentTag", onClick: this.inSave }, "\u4FDD\u5B58")),
+                    React.createElement("div", { className: "listContentTag" }, "\u5168\u90E8"),
+                    React.createElement("div", { className: "listContentTag" },
+                        React.createElement("a", { href: bestTopicsUrl }, "\u7CBE\u534E")),
+                    React.createElement("div", { className: "listContentTag" },
+                        React.createElement("a", { href: saveTopicsUrl }, "\u4FDD\u5B58"))),
                 React.createElement("div", { className: "row", style: { alignItems: 'center' } },
                     React.createElement("div", { style: { marginRight: '14rem' } },
                         React.createElement("span", null, "\u4F5C\u8005")),
                     React.createElement("div", { style: { marginRight: '7.6875rem' } },
                         React.createElement("span", null, "\u6700\u540E\u56DE\u590D")))),
             topTopics,
-            React.createElement("div", null, topics));
+            React.createElement("div", null, topics),
+            React.createElement(PagerDown, { page: curPage, totalPage: this.state.totalPage, boardid: this.match.params.boardId, url: normalTopicsUrl }));
     };
     return ListContent;
 }(RouteComponent));
 exports.ListContent = ListContent;
+var ListBestContent = /** @class */ (function (_super) {
+    __extends(ListBestContent, _super);
+    function ListBestContent(props, context) {
+        var _this = _super.call(this, props, context) || this;
+        _this.state = { items: [], totalPage: 0 };
+        return _this;
+    }
+    ListBestContent.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var data, totalPage;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Utility.getBestTopics(1, this.match.params.boardId)];
+                    case 1:
+                        data = _a.sent();
+                        totalPage = data.totalPage;
+                        this.setState({
+                            items: data.boardtopics, totalPage: totalPage
+                        });
+                        ;
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ListBestContent.prototype.convertTopicToElement = function (item) {
+        return React.createElement(TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount, highlightInfo: item.highlightInfo, topState: item.topState, topicState: item.topicState, hitCount: item.hitCount });
+    };
+    ListBestContent.prototype.componentWillReceiveProps = function (newProps) {
+        return __awaiter(this, void 0, void 0, function () {
+            var page, p, data, totalPage;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        p = newProps.match.params.page;
+                        // 未提供页码，防止出错不进行后续处理
+                        if (!p) {
+                            page = 1;
+                        }
+                        else {
+                            page = parseInt(p);
+                        }
+                        return [4 /*yield*/, Utility.getBestTopics(page, newProps.match.params.boardId)];
+                    case 1:
+                        data = _a.sent();
+                        totalPage = data.totalPage;
+                        this.setState({
+                            items: data.boardtopics, totalPage: totalPage
+                        });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ListBestContent.prototype.render = function () {
+        var curPage = this.match.params.page ? parseInt(this.match.params.page) : 1;
+        var topTopics = null;
+        if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
+            topTopics = React.createElement("div", null,
+                React.createElement(ListTopContent, { boardId: this.match.params.boardId }));
+        }
+        var topics = this.state.items.map(this.convertTopicToElement);
+        var bestTopicsUrl = "/list/" + this.match.params.boardId + "/best/";
+        var saveTopicsUrl = "/list/" + this.match.params.boardId + "/save/";
+        var normalTopicsUrl = "/list/" + this.match.params.boardId + "/normal/";
+        return React.createElement("div", { className: "listContent " },
+            React.createElement(ListButtonAndPager, { page: curPage, totalPage: this.state.totalPage, boardid: this.match.params.boardId, url: bestTopicsUrl }),
+            React.createElement(ListTag, null),
+            React.createElement("div", { className: "row", style: { justifyContent: 'space-between', } },
+                React.createElement("div", { className: "row", style: { alignItems: 'center' } },
+                    React.createElement("div", { className: "listContentTag" },
+                        React.createElement("a", { href: normalTopicsUrl }, "\u5168\u90E8")),
+                    React.createElement("div", { className: "listContentTag" }, "\u7CBE\u534E"),
+                    React.createElement("div", { className: "listContentTag" },
+                        React.createElement("a", { href: saveTopicsUrl }, "\u4FDD\u5B58"))),
+                React.createElement("div", { className: "row", style: { alignItems: 'center' } },
+                    React.createElement("div", { style: { marginRight: '14rem' } },
+                        React.createElement("span", null, "\u4F5C\u8005")),
+                    React.createElement("div", { style: { marginRight: '7.6875rem' } },
+                        React.createElement("span", null, "\u6700\u540E\u56DE\u590D")))),
+            topTopics,
+            React.createElement("div", null, topics),
+            React.createElement(PagerDown, { page: curPage, totalPage: this.state.totalPage, boardid: this.match.params.boardId, url: bestTopicsUrl }));
+    };
+    return ListBestContent;
+}(RouteComponent));
+exports.ListBestContent = ListBestContent;
+var ListSaveContent = /** @class */ (function (_super) {
+    __extends(ListSaveContent, _super);
+    function ListSaveContent(props, context) {
+        var _this = _super.call(this, props, context) || this;
+        _this.state = { items: [], totalPage: 0 };
+        return _this;
+    }
+    ListSaveContent.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var data, totalPage;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Utility.getSaveTopics(1, this.match.params.boardId)];
+                    case 1:
+                        data = _a.sent();
+                        console.log(data);
+                        totalPage = data.totalPage;
+                        this.setState({ items: data.boardtopics, totalPage: totalPage });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ListSaveContent.prototype.convertTopicToElement = function (item) {
+        return React.createElement(TopicTitleAndContent, { key: item.id, title: item.title, userName: item.userName, id: item.id, userId: item.userId, lastPostTime: item.lastPostTime, lastPostUser: item.lastPostUser, likeCount: item.likeCount, dislikeCount: item.dislikeCount, replyCount: item.replyCount, highlightInfo: item.highlightInfo, topState: item.topState, topicState: item.topicState, hitCount: item.hitCount });
+    };
+    ListSaveContent.prototype.componentWillReceiveProps = function (newProps) {
+        return __awaiter(this, void 0, void 0, function () {
+            var page, p, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        p = newProps.match.params.page;
+                        // 未提供页码，防止出错不进行后续处理
+                        if (!p) {
+                            page = 1;
+                        }
+                        else {
+                            page = parseInt(p);
+                        }
+                        return [4 /*yield*/, Utility.getSaveTopics(page, newProps.match.params.boardId)];
+                    case 1:
+                        data = _a.sent();
+                        this.setState({ items: data.boardtopics });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ListSaveContent.prototype.render = function () {
+        var curPage = this.match.params.page ? parseInt(this.match.params.page) : 1;
+        var topTopics = null;
+        if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
+            topTopics = React.createElement("div", null,
+                React.createElement(ListTopContent, { boardId: this.match.params.boardId }));
+        }
+        var topics = this.state.items.map(this.convertTopicToElement);
+        var bestTopicsUrl = "/list/" + this.match.params.boardId + "/best/";
+        var saveTopicsUrl = "/list/" + this.match.params.boardId + "/save/";
+        var normalTopicsUrl = "/list/" + this.match.params.boardId + "/normal/";
+        return React.createElement("div", { className: "listContent " },
+            React.createElement(ListButtonAndPager, { page: curPage, totalPage: this.state.totalPage, boardid: this.match.params.boardId, url: normalTopicsUrl }),
+            React.createElement(ListTag, null),
+            React.createElement("div", { className: "row", style: { justifyContent: 'space-between', } },
+                React.createElement("div", { className: "row", style: { alignItems: 'center' } },
+                    React.createElement("div", { className: "listContentTag" },
+                        React.createElement("a", { href: normalTopicsUrl }, "\u5168\u90E8")),
+                    React.createElement("div", { className: "listContentTag" },
+                        React.createElement("a", { href: bestTopicsUrl }, "\u7CBE\u534E")),
+                    React.createElement("div", { className: "listContentTag" }, "\u4FDD\u5B58")),
+                React.createElement("div", { className: "row", style: { alignItems: 'center' } },
+                    React.createElement("div", { style: { marginRight: '14rem' } },
+                        React.createElement("span", null, "\u4F5C\u8005")),
+                    React.createElement("div", { style: { marginRight: '7.6875rem' } },
+                        React.createElement("span", null, "\u6700\u540E\u56DE\u590D")))),
+            topTopics,
+            React.createElement("div", null, topics),
+            React.createElement(PagerDown, { page: curPage, totalPage: this.state.totalPage, boardid: this.match.params.boardId, url: normalTopicsUrl }));
+    };
+    return ListSaveContent;
+}(RouteComponent));
+exports.ListSaveContent = ListSaveContent;
 var TopicTitleAndContent = /** @class */ (function (_super) {
     __extends(TopicTitleAndContent, _super);
     function TopicTitleAndContent(props, context) {
@@ -5000,10 +5219,10 @@ var Post = /** @class */ (function (_super) {
             });
         });
     };
-    Post.prototype.getTotalPage = function (topicid) {
+    Post.prototype.getTotalPage = function (topicId) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, Utility.getTotalReplyCount(topicid, this.context.router)];
+                return [2 /*return*/, Utility.getTotalReplyCount(topicId, this.context.router)];
             });
         });
     };
@@ -5052,7 +5271,7 @@ var Category = /** @class */ (function (_super) {
         });
     };
     Category.prototype.render = function () {
-        var listUrl = "/list/" + this.state.boardId;
+        var listUrl = "/list/" + this.state.boardId + "/normal";
         var topicUrl = "/topic/" + this.state.topicId;
         return React.createElement("div", { style: { color: "blue", fontSize: "1rem" } },
             "\u203A\u203A",
@@ -5071,12 +5290,20 @@ var Reply = /** @class */ (function (_super) {
         var _this = _super.call(this, props, content) || this;
         _this.state = {
             contents: [],
+            masters: []
         };
         return _this;
     }
+    Reply.prototype.getMasters = function (topicId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, Utility.getMasters(topicId)];
+            });
+        });
+    };
     Reply.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
-            var page, storageId, realContents;
+            var page, storageId, realContents, masters;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -5092,7 +5319,8 @@ var Reply = /** @class */ (function (_super) {
                              realContents = Utility.getStorage(storageId);
                          }*/
                         realContents = _a.sent();
-                        this.setState({ contents: realContents });
+                        masters = this.getMasters(newProps.match.params.topicid);
+                        this.setState({ contents: realContents, masters: masters });
                         return [2 /*return*/];
                 }
             });
@@ -5102,10 +5330,10 @@ var Reply = /** @class */ (function (_super) {
         return React.createElement("div", { className: "reply" },
             React.createElement("div", { style: { marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" } },
                 React.createElement(Replier, { key: item.postId, isAnonymous: item.isAnonymous, userId: item.userId, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber, privilege: item.privilege }),
-                React.createElement(ReplyContent, { key: item.content, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.postId, contentType: item.contentType })));
+                React.createElement(ReplyContent, { key: item.content, masters: this.state.masters, userId: item.userId, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.postId, contentType: item.contentType })));
     };
     Reply.prototype.render = function () {
-        return React.createElement("div", { className: "center", style: { width: "100%" } }, this.state.contents.map(this.generateContents));
+        return React.createElement("div", { className: "center", style: { width: "100%" } }, this.state.contents.map(this.generateContents.bind(this)));
     };
     return Reply;
 }(RouteComponent));
@@ -5116,12 +5344,20 @@ var HotReply = /** @class */ (function (_super) {
         var _this = _super.call(this, props, content) || this;
         _this.state = {
             contents: [],
+            masters: []
         };
         return _this;
     }
+    HotReply.prototype.getMasters = function (topicId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, Utility.getMasters(topicId)];
+            });
+        });
+    };
     HotReply.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
-            var page, realContents;
+            var page, realContents, masters;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -5130,7 +5366,8 @@ var HotReply = /** @class */ (function (_super) {
                         return [4 /*yield*/, Utility.getHotReplyContent(newProps.match.params.topicid, this.context.router)];
                     case 1:
                         realContents = _a.sent();
-                        this.setState({ contents: realContents });
+                        masters = this.getMasters(newProps.match.params.topicid);
+                        this.setState({ contents: realContents, masters: masters });
                         _a.label = 2;
                     case 2: return [2 /*return*/];
                 }
@@ -5142,7 +5379,7 @@ var HotReply = /** @class */ (function (_super) {
         return React.createElement("div", { className: "reply", id: floor },
             React.createElement("div", { style: { marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" } },
                 React.createElement(HotReplier, { key: item.id, userId: item.userId, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber, privilege: item.privilege, isAnonymous: item.isAnonymous }),
-                React.createElement(ReplyContent, { key: item.content, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.id, contentType: item.contentType })));
+                React.createElement(ReplyContent, { key: item.content, masters: this.state.masters, userId: item.userId, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.id, contentType: item.contentType })));
     };
     HotReply.prototype.render = function () {
         $(".header").scrollTop();
@@ -5882,7 +6119,6 @@ var TopicContent = /** @class */ (function (_super) {
             if (privilege === '管理员' || privilege === '超级版主' || (privilege === '全站贵宾' && myId === this.props.userId)) {
                 $("#postTopicManage").css("display", "");
             }
-            console.log(Utility.getLocalStorage("userInfo"));
             if (this.props.masters) {
                 for (var i = 0; i < this.props.masters.length; i++) {
                     if (myName === this.props.masters[i]) {
@@ -5894,6 +6130,7 @@ var TopicContent = /** @class */ (function (_super) {
         if (this.props.signature == "") {
             return React.createElement("div", { className: "content" },
                 React.createElement("div", { className: "substance" }, content),
+                React.createElement(PostManagement, { postId: this.props.postid, userId: this.props.userId }),
                 React.createElement("div", { className: "comment1" },
                     React.createElement("div", { id: "commentlike", className: "buttonFont" },
                         React.createElement("button", { className: "commentbutton" },
@@ -5915,13 +6152,14 @@ var TopicContent = /** @class */ (function (_super) {
                         React.createElement("div", { className: "commentbutton" }, "   \u7F16\u8F91")),
                     React.createElement("div", { className: "operation1" }, "\u5F15\u7528"),
                     React.createElement(react_router_dom_1.Link, { className: "operation1", to: curUserPostUrl }, "\u53EA\u770B\u6B64\u7528\u6237"),
-                    React.createElement("div", { className: "operation1", id: "postTopicManage", style: { display: "none" } }, "\u7BA1\u7406")));
+                    React.createElement("div", { className: "operation1", id: "postTopicManage", style: { display: "none", cursor: "pointer" } }, "\u7BA1\u7406")));
         }
         else {
             return React.createElement("div", { className: "content" },
                 React.createElement("div", { className: "substance" },
                     content,
                     " "),
+                React.createElement(PostManagement, { postId: this.props.postid, userId: this.props.userId }),
                 React.createElement("div", { className: "signature" },
                     React.createElement(UbbContainer_1.UbbContainer, { code: this.props.signature })),
                 React.createElement("div", { className: "comment" },
@@ -5944,7 +6182,8 @@ var TopicContent = /** @class */ (function (_super) {
                         React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206"),
                         React.createElement("div", { className: "commentbutton" }, "   \u7F16\u8F91")),
                     React.createElement("div", { className: "operation1" }, "\u5F15\u7528"),
-                    React.createElement(react_router_dom_1.Link, { className: "operation1", to: curUserPostUrl }, "\u53EA\u770B\u6B64\u7528\u6237")));
+                    React.createElement(react_router_dom_1.Link, { className: "operation1", to: curUserPostUrl }, "\u53EA\u770B\u6B64\u7528\u6237"),
+                    React.createElement("div", { className: "operation1", id: "postTopicManage", style: { display: "none", cursor: "pointer" } }, "\u7BA1\u7406")));
         }
     };
     return TopicContent;
@@ -5954,6 +6193,7 @@ var ReplyContent = /** @class */ (function (_super) {
     __extends(ReplyContent, _super);
     function ReplyContent(props, content) {
         var _this = _super.call(this, props, content) || this;
+        _this.showManageUI = _this.showManageUI.bind(_this);
         _this.state = {
             likeNumber: 1,
             dislikeNumber: 1,
@@ -5961,6 +6201,10 @@ var ReplyContent = /** @class */ (function (_super) {
         };
         return _this;
     }
+    ReplyContent.prototype.showManageUI = function () {
+        var UIId = "#manage" + this.props.postid;
+        $(UIId).css("display", "");
+    };
     ReplyContent.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
             var idLike, idDislike, data;
@@ -6085,10 +6329,28 @@ var ReplyContent = /** @class */ (function (_super) {
         if (this.props.contentType === 1) {
             content = mdMode;
         }
+        var manageIcon = "icon" + this.props.postid;
+        var manageId = "#icon" + this.props.postid;
+        if (Utility.getLocalStorage("userInfo")) {
+            var privilege = Utility.getLocalStorage("userInfo").privilege;
+            var myName = Utility.getLocalStorage("userInfo").name;
+            var myId = Utility.getLocalStorage("userInfo").id;
+            if (privilege === '管理员' || privilege === '超级版主' || (privilege === '全站贵宾' && myId === this.props.userId)) {
+                $(manageId).css("display", "");
+            }
+            if (this.props.masters) {
+                for (var i = 0; i < this.props.masters.length; i++) {
+                    if (myName === this.props.masters[i]) {
+                        $(manageId).css("display", "");
+                    }
+                }
+            }
+        }
         if (this.props.signature == "") {
             return React.createElement("div", { className: "root", style: { marginTop: "-170px" } },
                 React.createElement("div", { className: "reply-content" },
                     React.createElement("div", { className: "substance" }, content),
+                    React.createElement(PostManagement, { postId: this.props.postid, userId: this.props.userId }),
                     React.createElement("div", { className: "comment1" },
                         React.createElement("div", { id: idLike, className: "upup", style: { marginRight: "0.7rem" } },
                             React.createElement("i", { title: "赞", onClick: this.like.bind(this), className: "fa fa-thumbs-o-up fa-lg" }),
@@ -6102,12 +6364,14 @@ var ReplyContent = /** @class */ (function (_super) {
                                 this.state.dislikeNumber)),
                         React.createElement("div", { id: "commentlike" },
                             " ",
-                            React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206")))));
+                            React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206"),
+                            React.createElement("div", { className: "operation1", id: manageIcon, style: { display: "none", cursor: "pointer" }, onClick: this.showManageUI }, "\u7BA1\u7406")))));
         }
         else {
             return React.createElement("div", { className: "root", style: { marginTop: "-170px" } },
                 React.createElement("div", { className: "reply-content" },
                     React.createElement("div", { className: "substance" }, content),
+                    React.createElement(PostManagement, { postId: this.props.postid, userId: this.props.userId }),
                     React.createElement("div", { className: "comment" },
                         React.createElement("div", { id: idLike, className: "upup", style: { marginRight: "0.7rem", } },
                             React.createElement("i", { title: "赞", onClick: this.like.bind(this), className: "fa fa-thumbs-o-up fa-lg" }),
@@ -6121,7 +6385,8 @@ var ReplyContent = /** @class */ (function (_super) {
                                 this.state.dislikeNumber)),
                         React.createElement("div", { id: "commentlike" },
                             " ",
-                            React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206"))),
+                            React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206"),
+                            React.createElement("div", { className: "operation1", id: manageIcon, style: { display: "none", cursor: "pointer" }, onClick: this.showManageUI }, "\u7BA1\u7406"))),
                     React.createElement("div", { className: "signature" },
                         React.createElement(UbbContainer_1.UbbContainer, { code: this.props.signature }))));
         }
@@ -6547,6 +6812,97 @@ var SendTopic = /** @class */ (function (_super) {
     return SendTopic;
 }(RouteComponent));
 exports.SendTopic = SendTopic;
+var PostManagement = /** @class */ (function (_super) {
+    __extends(PostManagement, _super);
+    function PostManagement(props) {
+        var _this = _super.call(this, props) || this;
+        _this.wealthInput = _this.wealthInput.bind(_this);
+        _this.prestigeInput = _this.prestigeInput.bind(_this);
+        _this.reasonInput = _this.reasonInput.bind(_this);
+        _this.tpdaysInput = _this.tpdaysInput.bind(_this);
+        _this.confirm = _this.confirm.bind(_this);
+        _this.showAwardUI = _this.showAwardUI.bind(_this);
+        _this.showPunishUI = _this.showPunishUI.bind(_this);
+        _this.showDeleteUI = _this.showDeleteUI.bind(_this);
+        _this.state = { wealth: 1000, prestige: 0, reason: "", tpdays: 0, UI: "Award" };
+        return _this;
+    }
+    PostManagement.prototype.showAwardUI = function () {
+        this.setState({ UI: "Award" });
+    };
+    PostManagement.prototype.showPunishUI = function () {
+        this.setState({ UI: "Punish" });
+    };
+    PostManagement.prototype.showDeleteUI = function () {
+        this.setState({ UI: "Delete" });
+    };
+    PostManagement.prototype.confirm = function () {
+        Utility.awardWealth(this.state.reason, this.state.wealth, this.props.postId);
+        var UIId = "#manage" + this.props.postId;
+        $(UIId).css("display", "none");
+    };
+    PostManagement.prototype.wealthInput = function (e) {
+        console.log(this.state);
+        this.setState({ wealth: e.target.value });
+    };
+    PostManagement.prototype.prestigeInput = function (e) {
+        console.log(this.state);
+        this.setState({ prestige: e.target.value });
+    };
+    PostManagement.prototype.reasonInput = function (e) {
+        console.log(this.state);
+        this.setState({ reason: e.target.value });
+    };
+    PostManagement.prototype.tpdaysInput = function (e) {
+        console.log(this.state);
+        this.setState({ tpdays: e.target.value });
+    };
+    PostManagement.prototype.render = function () {
+        var UI;
+        var awardUI = React.createElement("div", { className: "column", id: "award" },
+            React.createElement("div", { className: "row manageOperation" },
+                React.createElement("div", { className: "manageObject" }, "\u8D22\u5BCC\u503C"),
+                React.createElement("input", { type: "text", value: this.state.wealth, onChange: this.wealthInput })),
+            React.createElement("div", { className: "row manageOperation" },
+                React.createElement("div", { className: "manageObject" }, "\u5A01\u671B"),
+                React.createElement("input", { type: "text", value: this.state.prestige, onChange: this.prestigeInput })),
+            React.createElement("div", { className: "row manageOperation" },
+                React.createElement("div", { className: "manageObject" }, "\u539F\u56E0"),
+                React.createElement("input", { type: "text", value: this.state.reason, onChange: this.reasonInput })));
+        var punishUI = React.createElement("div", { className: "column", id: "punish" },
+            React.createElement("div", { className: "row manageOperation" },
+                React.createElement("div", { className: "manageObject" }, "\u6263\u5A01\u671B"),
+                React.createElement("input", { type: "text", value: this.state.prestige, onChange: this.prestigeInput })),
+            React.createElement("div", { className: "row manageOperation" },
+                React.createElement("div", { className: "manageObject" }, "\u7981\u6B62\u53D1\u8A00(\u5929)"),
+                React.createElement("input", { type: "text", value: this.state.tpdays, onChange: this.tpdaysInput })),
+            React.createElement("div", { className: "row manageOperation" },
+                React.createElement("div", { className: "manageObject" }, "\u539F\u56E0"),
+                React.createElement("input", { type: "text", value: this.state.reason, onChange: this.reasonInput })));
+        var deleteUI = React.createElement("div", { className: "column", id: "punish" },
+            React.createElement("div", { className: "row manageOperation" },
+                React.createElement("div", { className: "manageObject" }, "\u5220\u9664\u539F\u56E0"),
+                React.createElement("input", { type: "text", value: this.state.reason, onChange: this.reasonInput })));
+        var UIId = "manage" + this.props.postId;
+        UI = awardUI;
+        if (this.state.UI === "Award")
+            UI = awardUI;
+        if (this.state.UI === "Punish")
+            UI = punishUI;
+        if (this.state.UI === "Delete")
+            UI = deleteUI;
+        return React.createElement("div", { style: { display: "none" }, id: UIId, className: "postManagement" },
+            React.createElement("div", { className: "manageUI" },
+                React.createElement("div", { className: "row manageOptions" },
+                    React.createElement("div", { className: "manageOptions-icon", onClick: this.showAwardUI, style: { color: "#FF7F00" } }, "\u5956\u52B1"),
+                    React.createElement("div", { className: "manageOptions-icon", onClick: this.showPunishUI, style: { color: "red" } }, "\u60E9\u7F5A"),
+                    React.createElement("div", { className: "manageOptions-icon", onClick: this.showDeleteUI }, "\u5220\u9664"))),
+            UI,
+            React.createElement("button", { onClick: this.confirm, className: "confirmManagement" }, "\u786E\u8BA4"));
+    };
+    return PostManagement;
+}(React.Component));
+exports.PostManagement = PostManagement;
 
 
 /***/ }),
@@ -6703,12 +7059,20 @@ var Reply = /** @class */ (function (_super) {
         var _this = _super.call(this, props, content) || this;
         _this.state = {
             contents: [],
+            masters: []
         };
         return _this;
     }
+    Reply.prototype.getMasters = function (topicId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, Utility.getMasters(topicId)];
+            });
+        });
+    };
     Reply.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
-            var page, storageId, realContents, token, headers, url, response, data, userName;
+            var page, storageId, realContents, token, headers, url, response, data, userName, masters;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -6728,7 +7092,8 @@ var Reply = /** @class */ (function (_super) {
                         return [4 /*yield*/, Utility.getCurUserTopicContent(newProps.match.params.topicid, page, userName, newProps.match.params.userId, this.context.router)];
                     case 3:
                         realContents = _a.sent();
-                        this.setState({ contents: realContents });
+                        masters = this.getMasters(newProps.match.params.topicid);
+                        this.setState({ contents: realContents, masters: masters });
                         return [2 /*return*/];
                 }
             });
@@ -6738,10 +7103,10 @@ var Reply = /** @class */ (function (_super) {
         return React.createElement("div", { className: "reply" },
             React.createElement("div", { style: { marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" } },
                 React.createElement(Post.Replier, { key: item.postId, isAnonymous: item.isAnonymous, userId: item.userId, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber, privilege: item.privilege }),
-                React.createElement(Post.ReplyContent, { key: item.content, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.postId, contentType: item.contentType })));
+                React.createElement(Post.ReplyContent, { key: item.content, masters: this.state.masters, userId: item.userId, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.postId, contentType: item.contentType })));
     };
     Reply.prototype.render = function () {
-        return React.createElement("div", { className: "center", style: { width: "100%" } }, this.state.contents.map(this.generateContents));
+        return React.createElement("div", { className: "center", style: { width: "100%" } }, this.state.contents.map(this.generateContents.bind(this)));
     };
     return Reply;
 }(RouteComponent));
@@ -7034,7 +7399,7 @@ var RootBoard = /** @class */ (function (_super) {
                 React.createElement("div", { className: "column", style: { border: '2px solid #e9e9e9' } },
                     React.createElement("div", { className: "row", style: { marginTop: '15px', marginBottom: '15px' } },
                         React.createElement("div", { className: "areaName" },
-                            React.createElement("a", { href: "/list/758" }, boards.name)),
+                            React.createElement("a", { href: "/list/758/normal" }, boards.name)),
                         React.createElement("div", { className: "areaName" },
                             "\u4E3B\u7BA1\uFF1A",
                             boards.masters))));
@@ -7093,9 +7458,9 @@ var ChildBoard = /** @class */ (function (_super) {
     };
     ChildBoard.prototype.convertChildBoard = function (item) {
         return React.createElement("div", { className: "boardContent" },
-            React.createElement("a", { href: "/list/" + item.id },
+            React.createElement("a", { href: "/list/" + item.id + "/normal" },
                 React.createElement("div", { className: "greenBackdrop" })),
-            React.createElement("a", { href: "/list/" + item.id },
+            React.createElement("a", { href: "/list/" + item.id + "/normal" },
                 React.createElement("div", { className: "boardName2" }, item.name)),
             React.createElement("div", { className: "boardInfo" },
                 "\u4ECA\u65E5\u53D1\u5E16 ",
@@ -7105,7 +7470,7 @@ var ChildBoard = /** @class */ (function (_super) {
     };
     ChildBoard.prototype.convertNoImgChildBoard = function (item) {
         return React.createElement("div", { className: "noImgBoardContent" },
-            React.createElement("a", { href: "/list/" + item.id },
+            React.createElement("a", { href: "/list/" + item.id + "/normal" },
                 React.createElement("div", { className: "boardName2" }, item.name)));
     };
     ChildBoard.prototype.render = function () {
@@ -8343,7 +8708,7 @@ var HotTopicComponent = /** @class */ (function (_super) {
         });
     };
     HotTopicComponent.prototype.convertMainPageTopic = function (item) {
-        var boardUrl = "/list/" + item.boardid;
+        var boardUrl = "/list/" + item.boardid + "/normal/";
         var topicUrl = "/topic/" + item.id;
         return React.createElement("div", { className: "listRow" },
             React.createElement("div", { className: "boardName" },
@@ -9866,7 +10231,7 @@ var App = /** @class */ (function (_super) {
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/", component: MainPage_1.MainPage }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/:page?", component: post_1.Post }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/topic/:topicid/user/:userId/:page?", component: CurUserPost_1.CurUserPost }),
-                    React.createElement(react_router_dom_1.Route, { path: "/list/:boardId/:page?", component: List_1.List }),
+                    React.createElement(react_router_dom_1.Route, { path: "/list/:boardId/:type?/:page?", component: List_1.List }),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/boardlist", component: BoardList_1.BoardList }),
                     React.createElement(react_router_dom_1.Route, { path: "/usercenter", component: UserCenter_1.UserCenter }),
                     React.createElement(react_router_dom_1.Route, { path: "/message", component: Message_1.Message }),
@@ -11451,10 +11816,10 @@ var Post = /** @class */ (function (_super) {
             });
         });
     };
-    Post.prototype.getTotalPage = function (topicid) {
+    Post.prototype.getTotalPage = function (topicId) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, Utility.getTotalReplyCount(topicid, this.context.router)];
+                return [2 /*return*/, Utility.getTotalReplyCount(topicId, this.context.router)];
             });
         });
     };
@@ -11503,7 +11868,7 @@ var Category = /** @class */ (function (_super) {
         });
     };
     Category.prototype.render = function () {
-        var listUrl = "/list/" + this.state.boardId;
+        var listUrl = "/list/" + this.state.boardId + "/normal";
         var topicUrl = "/topic/" + this.state.topicId;
         return React.createElement("div", { style: { color: "blue", fontSize: "1rem" } },
             "\u203A\u203A",
@@ -11522,12 +11887,20 @@ var Reply = /** @class */ (function (_super) {
         var _this = _super.call(this, props, content) || this;
         _this.state = {
             contents: [],
+            masters: []
         };
         return _this;
     }
+    Reply.prototype.getMasters = function (topicId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, Utility.getMasters(topicId)];
+            });
+        });
+    };
     Reply.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
-            var page, storageId, realContents;
+            var page, storageId, realContents, masters;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -11543,7 +11916,8 @@ var Reply = /** @class */ (function (_super) {
                              realContents = Utility.getStorage(storageId);
                          }*/
                         realContents = _a.sent();
-                        this.setState({ contents: realContents });
+                        masters = this.getMasters(newProps.match.params.topicid);
+                        this.setState({ contents: realContents, masters: masters });
                         return [2 /*return*/];
                 }
             });
@@ -11553,10 +11927,10 @@ var Reply = /** @class */ (function (_super) {
         return React.createElement("div", { className: "reply" },
             React.createElement("div", { style: { marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" } },
                 React.createElement(Replier, { key: item.postId, isAnonymous: item.isAnonymous, userId: item.userId, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber, privilege: item.privilege }),
-                React.createElement(ReplyContent, { key: item.content, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.postId, contentType: item.contentType })));
+                React.createElement(ReplyContent, { key: item.content, masters: this.state.masters, userId: item.userId, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.postId, contentType: item.contentType })));
     };
     Reply.prototype.render = function () {
-        return React.createElement("div", { className: "center", style: { width: "100%" } }, this.state.contents.map(this.generateContents));
+        return React.createElement("div", { className: "center", style: { width: "100%" } }, this.state.contents.map(this.generateContents.bind(this)));
     };
     return Reply;
 }(RouteComponent));
@@ -11567,12 +11941,20 @@ var HotReply = /** @class */ (function (_super) {
         var _this = _super.call(this, props, content) || this;
         _this.state = {
             contents: [],
+            masters: []
         };
         return _this;
     }
+    HotReply.prototype.getMasters = function (topicId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, Utility.getMasters(topicId)];
+            });
+        });
+    };
     HotReply.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
-            var page, realContents;
+            var page, realContents, masters;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -11581,7 +11963,8 @@ var HotReply = /** @class */ (function (_super) {
                         return [4 /*yield*/, Utility.getHotReplyContent(newProps.match.params.topicid, this.context.router)];
                     case 1:
                         realContents = _a.sent();
-                        this.setState({ contents: realContents });
+                        masters = this.getMasters(newProps.match.params.topicid);
+                        this.setState({ contents: realContents, masters: masters });
                         _a.label = 2;
                     case 2: return [2 /*return*/];
                 }
@@ -11593,7 +11976,7 @@ var HotReply = /** @class */ (function (_super) {
         return React.createElement("div", { className: "reply", id: floor },
             React.createElement("div", { style: { marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" } },
                 React.createElement(HotReplier, { key: item.id, userId: item.userId, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber, privilege: item.privilege, isAnonymous: item.isAnonymous }),
-                React.createElement(ReplyContent, { key: item.content, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.id, contentType: item.contentType })));
+                React.createElement(ReplyContent, { key: item.content, masters: this.state.masters, userId: item.userId, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.id, contentType: item.contentType })));
     };
     HotReply.prototype.render = function () {
         $(".header").scrollTop();
@@ -12333,7 +12716,6 @@ var TopicContent = /** @class */ (function (_super) {
             if (privilege === '管理员' || privilege === '超级版主' || (privilege === '全站贵宾' && myId === this.props.userId)) {
                 $("#postTopicManage").css("display", "");
             }
-            console.log(Utility.getLocalStorage("userInfo"));
             if (this.props.masters) {
                 for (var i = 0; i < this.props.masters.length; i++) {
                     if (myName === this.props.masters[i]) {
@@ -12345,6 +12727,7 @@ var TopicContent = /** @class */ (function (_super) {
         if (this.props.signature == "") {
             return React.createElement("div", { className: "content" },
                 React.createElement("div", { className: "substance" }, content),
+                React.createElement(PostManagement, { postId: this.props.postid, userId: this.props.userId }),
                 React.createElement("div", { className: "comment1" },
                     React.createElement("div", { id: "commentlike", className: "buttonFont" },
                         React.createElement("button", { className: "commentbutton" },
@@ -12366,13 +12749,14 @@ var TopicContent = /** @class */ (function (_super) {
                         React.createElement("div", { className: "commentbutton" }, "   \u7F16\u8F91")),
                     React.createElement("div", { className: "operation1" }, "\u5F15\u7528"),
                     React.createElement(react_router_dom_1.Link, { className: "operation1", to: curUserPostUrl }, "\u53EA\u770B\u6B64\u7528\u6237"),
-                    React.createElement("div", { className: "operation1", id: "postTopicManage", style: { display: "none" } }, "\u7BA1\u7406")));
+                    React.createElement("div", { className: "operation1", id: "postTopicManage", style: { display: "none", cursor: "pointer" } }, "\u7BA1\u7406")));
         }
         else {
             return React.createElement("div", { className: "content" },
                 React.createElement("div", { className: "substance" },
                     content,
                     " "),
+                React.createElement(PostManagement, { postId: this.props.postid, userId: this.props.userId }),
                 React.createElement("div", { className: "signature" },
                     React.createElement(UbbContainer_1.UbbContainer, { code: this.props.signature })),
                 React.createElement("div", { className: "comment" },
@@ -12395,7 +12779,8 @@ var TopicContent = /** @class */ (function (_super) {
                         React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206"),
                         React.createElement("div", { className: "commentbutton" }, "   \u7F16\u8F91")),
                     React.createElement("div", { className: "operation1" }, "\u5F15\u7528"),
-                    React.createElement(react_router_dom_1.Link, { className: "operation1", to: curUserPostUrl }, "\u53EA\u770B\u6B64\u7528\u6237")));
+                    React.createElement(react_router_dom_1.Link, { className: "operation1", to: curUserPostUrl }, "\u53EA\u770B\u6B64\u7528\u6237"),
+                    React.createElement("div", { className: "operation1", id: "postTopicManage", style: { display: "none", cursor: "pointer" } }, "\u7BA1\u7406")));
         }
     };
     return TopicContent;
@@ -12405,6 +12790,7 @@ var ReplyContent = /** @class */ (function (_super) {
     __extends(ReplyContent, _super);
     function ReplyContent(props, content) {
         var _this = _super.call(this, props, content) || this;
+        _this.showManageUI = _this.showManageUI.bind(_this);
         _this.state = {
             likeNumber: 1,
             dislikeNumber: 1,
@@ -12412,6 +12798,10 @@ var ReplyContent = /** @class */ (function (_super) {
         };
         return _this;
     }
+    ReplyContent.prototype.showManageUI = function () {
+        var UIId = "#manage" + this.props.postid;
+        $(UIId).css("display", "");
+    };
     ReplyContent.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
             var idLike, idDislike, data;
@@ -12536,10 +12926,28 @@ var ReplyContent = /** @class */ (function (_super) {
         if (this.props.contentType === 1) {
             content = mdMode;
         }
+        var manageIcon = "icon" + this.props.postid;
+        var manageId = "#icon" + this.props.postid;
+        if (Utility.getLocalStorage("userInfo")) {
+            var privilege = Utility.getLocalStorage("userInfo").privilege;
+            var myName = Utility.getLocalStorage("userInfo").name;
+            var myId = Utility.getLocalStorage("userInfo").id;
+            if (privilege === '管理员' || privilege === '超级版主' || (privilege === '全站贵宾' && myId === this.props.userId)) {
+                $(manageId).css("display", "");
+            }
+            if (this.props.masters) {
+                for (var i = 0; i < this.props.masters.length; i++) {
+                    if (myName === this.props.masters[i]) {
+                        $(manageId).css("display", "");
+                    }
+                }
+            }
+        }
         if (this.props.signature == "") {
             return React.createElement("div", { className: "root", style: { marginTop: "-170px" } },
                 React.createElement("div", { className: "reply-content" },
                     React.createElement("div", { className: "substance" }, content),
+                    React.createElement(PostManagement, { postId: this.props.postid, userId: this.props.userId }),
                     React.createElement("div", { className: "comment1" },
                         React.createElement("div", { id: idLike, className: "upup", style: { marginRight: "0.7rem" } },
                             React.createElement("i", { title: "赞", onClick: this.like.bind(this), className: "fa fa-thumbs-o-up fa-lg" }),
@@ -12553,12 +12961,14 @@ var ReplyContent = /** @class */ (function (_super) {
                                 this.state.dislikeNumber)),
                         React.createElement("div", { id: "commentlike" },
                             " ",
-                            React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206")))));
+                            React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206"),
+                            React.createElement("div", { className: "operation1", id: manageIcon, style: { display: "none", cursor: "pointer" }, onClick: this.showManageUI }, "\u7BA1\u7406")))));
         }
         else {
             return React.createElement("div", { className: "root", style: { marginTop: "-170px" } },
                 React.createElement("div", { className: "reply-content" },
                     React.createElement("div", { className: "substance" }, content),
+                    React.createElement(PostManagement, { postId: this.props.postid, userId: this.props.userId }),
                     React.createElement("div", { className: "comment" },
                         React.createElement("div", { id: idLike, className: "upup", style: { marginRight: "0.7rem", } },
                             React.createElement("i", { title: "赞", onClick: this.like.bind(this), className: "fa fa-thumbs-o-up fa-lg" }),
@@ -12572,7 +12982,8 @@ var ReplyContent = /** @class */ (function (_super) {
                                 this.state.dislikeNumber)),
                         React.createElement("div", { id: "commentlike" },
                             " ",
-                            React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206"))),
+                            React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206"),
+                            React.createElement("div", { className: "operation1", id: manageIcon, style: { display: "none", cursor: "pointer" }, onClick: this.showManageUI }, "\u7BA1\u7406"))),
                     React.createElement("div", { className: "signature" },
                         React.createElement(UbbContainer_1.UbbContainer, { code: this.props.signature }))));
         }
@@ -12998,6 +13409,97 @@ var SendTopic = /** @class */ (function (_super) {
     return SendTopic;
 }(RouteComponent));
 exports.SendTopic = SendTopic;
+var PostManagement = /** @class */ (function (_super) {
+    __extends(PostManagement, _super);
+    function PostManagement(props) {
+        var _this = _super.call(this, props) || this;
+        _this.wealthInput = _this.wealthInput.bind(_this);
+        _this.prestigeInput = _this.prestigeInput.bind(_this);
+        _this.reasonInput = _this.reasonInput.bind(_this);
+        _this.tpdaysInput = _this.tpdaysInput.bind(_this);
+        _this.confirm = _this.confirm.bind(_this);
+        _this.showAwardUI = _this.showAwardUI.bind(_this);
+        _this.showPunishUI = _this.showPunishUI.bind(_this);
+        _this.showDeleteUI = _this.showDeleteUI.bind(_this);
+        _this.state = { wealth: 1000, prestige: 0, reason: "", tpdays: 0, UI: "Award" };
+        return _this;
+    }
+    PostManagement.prototype.showAwardUI = function () {
+        this.setState({ UI: "Award" });
+    };
+    PostManagement.prototype.showPunishUI = function () {
+        this.setState({ UI: "Punish" });
+    };
+    PostManagement.prototype.showDeleteUI = function () {
+        this.setState({ UI: "Delete" });
+    };
+    PostManagement.prototype.confirm = function () {
+        Utility.awardWealth(this.state.reason, this.state.wealth, this.props.postId);
+        var UIId = "#manage" + this.props.postId;
+        $(UIId).css("display", "none");
+    };
+    PostManagement.prototype.wealthInput = function (e) {
+        console.log(this.state);
+        this.setState({ wealth: e.target.value });
+    };
+    PostManagement.prototype.prestigeInput = function (e) {
+        console.log(this.state);
+        this.setState({ prestige: e.target.value });
+    };
+    PostManagement.prototype.reasonInput = function (e) {
+        console.log(this.state);
+        this.setState({ reason: e.target.value });
+    };
+    PostManagement.prototype.tpdaysInput = function (e) {
+        console.log(this.state);
+        this.setState({ tpdays: e.target.value });
+    };
+    PostManagement.prototype.render = function () {
+        var UI;
+        var awardUI = React.createElement("div", { className: "column", id: "award" },
+            React.createElement("div", { className: "row manageOperation" },
+                React.createElement("div", { className: "manageObject" }, "\u8D22\u5BCC\u503C"),
+                React.createElement("input", { type: "text", value: this.state.wealth, onChange: this.wealthInput })),
+            React.createElement("div", { className: "row manageOperation" },
+                React.createElement("div", { className: "manageObject" }, "\u5A01\u671B"),
+                React.createElement("input", { type: "text", value: this.state.prestige, onChange: this.prestigeInput })),
+            React.createElement("div", { className: "row manageOperation" },
+                React.createElement("div", { className: "manageObject" }, "\u539F\u56E0"),
+                React.createElement("input", { type: "text", value: this.state.reason, onChange: this.reasonInput })));
+        var punishUI = React.createElement("div", { className: "column", id: "punish" },
+            React.createElement("div", { className: "row manageOperation" },
+                React.createElement("div", { className: "manageObject" }, "\u6263\u5A01\u671B"),
+                React.createElement("input", { type: "text", value: this.state.prestige, onChange: this.prestigeInput })),
+            React.createElement("div", { className: "row manageOperation" },
+                React.createElement("div", { className: "manageObject" }, "\u7981\u6B62\u53D1\u8A00(\u5929)"),
+                React.createElement("input", { type: "text", value: this.state.tpdays, onChange: this.tpdaysInput })),
+            React.createElement("div", { className: "row manageOperation" },
+                React.createElement("div", { className: "manageObject" }, "\u539F\u56E0"),
+                React.createElement("input", { type: "text", value: this.state.reason, onChange: this.reasonInput })));
+        var deleteUI = React.createElement("div", { className: "column", id: "punish" },
+            React.createElement("div", { className: "row manageOperation" },
+                React.createElement("div", { className: "manageObject" }, "\u5220\u9664\u539F\u56E0"),
+                React.createElement("input", { type: "text", value: this.state.reason, onChange: this.reasonInput })));
+        var UIId = "manage" + this.props.postId;
+        UI = awardUI;
+        if (this.state.UI === "Award")
+            UI = awardUI;
+        if (this.state.UI === "Punish")
+            UI = punishUI;
+        if (this.state.UI === "Delete")
+            UI = deleteUI;
+        return React.createElement("div", { style: { display: "none" }, id: UIId, className: "postManagement" },
+            React.createElement("div", { className: "manageUI" },
+                React.createElement("div", { className: "row manageOptions" },
+                    React.createElement("div", { className: "manageOptions-icon", onClick: this.showAwardUI, style: { color: "#FF7F00" } }, "\u5956\u52B1"),
+                    React.createElement("div", { className: "manageOptions-icon", onClick: this.showPunishUI, style: { color: "red" } }, "\u60E9\u7F5A"),
+                    React.createElement("div", { className: "manageOptions-icon", onClick: this.showDeleteUI }, "\u5220\u9664"))),
+            UI,
+            React.createElement("button", { onClick: this.confirm, className: "confirmManagement" }, "\u786E\u8BA4"));
+    };
+    return PostManagement;
+}(React.Component));
+exports.PostManagement = PostManagement;
 
 
 /***/ }),
