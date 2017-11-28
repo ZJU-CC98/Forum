@@ -51,14 +51,14 @@ export class PortaritrUrl extends React.Component<PortaritrUrlProps> {
     }
 }
 
-//返回可点击或者不可点击的头像
+//返回可点击或者不可点击的用户名
 export class UserName extends React.Component<UserNameProps> {
     render() {
         if (this.props.userId) {
             let userUrl = `/user/${this.props.userId}`;
-            return (<a href={userUrl} target="_blank">
-                <div className="focus-topic-blackText">{this.props.userName}</div>
-            </a>);
+            return (<a href={userUrl} target="_blank" className="focus-topic-blackText">
+                        <div className="focus-topic-blackText">{this.props.userName}</div>
+                    </a>);
         }
         else {
             return <div className="focus-topic-blackText">{this.props.userName}</div>;

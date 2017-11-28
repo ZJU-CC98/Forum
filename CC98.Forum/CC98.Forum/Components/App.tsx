@@ -22,6 +22,7 @@ import { CreateTopic } from './CreateTopic';
 import * as Status from './Status';
 import { UbbContainer } from './UbbContainer';
 import { Search } from './Search';
+import { SearchBoard } from './SearchBoard';
 
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
@@ -51,6 +52,7 @@ export class App extends React.Component<{}, AppState> {
 					<Route path="/user" component={User} />
                     <Route path="/logon" component={LogOn} />
                     <Route path="/search" component={Search} />
+                    <Route path="/searchBoard" component={SearchBoard} />
 					<Route path="/createtopic/:boardId" component={CreateTopic} />
 					<Route path="/status/logout" component={Status.LogOut} />
 					<Route path="/status/UnauthorizedBoard" component={Status.UnauthorizedBoard} />

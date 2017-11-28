@@ -19,6 +19,7 @@
     <None Remove="Components\FocusBoardTopicArea.tsx" />
     <None Remove="Components\Footer.tsx" />
     <None Remove="Components\SearCH.tsx" />
+    <None Remove="Components\searchBoard.tsx" />
     <None Remove="Components\Status.tsx" />
     <None Remove="Components\UbbContainer.tsx" />
     <None Remove="Components\UserCenterConfig.tsx" />
@@ -85,6 +86,7 @@
     <TypeScriptCompile Include="Components\LogOnExact.tsx" />
     <TypeScriptCompile Include="Components\LogOff.tsx" />
     <TypeScriptCompile Include="Components\Search.tsx" />
+    <TypeScriptCompile Include="Components\SearchBoard.tsx" />
     <TypeScriptCompile Include="Components\SendTopic.tsx" />
     <TypeScriptCompile Include="Components\Status.tsx" />
     <TypeScriptCompile Include="Components\UbbContainer.tsx" />
