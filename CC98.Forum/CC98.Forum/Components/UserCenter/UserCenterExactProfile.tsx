@@ -33,7 +33,7 @@ export class UserCenterExactProfile extends React.Component<UserCenterExactProfi
                     <p>威望：  {this.props.userInfo.prestige}</p>
                     <div>
                         {this.props.userInfo.registerTime ? <p>注册时间：  {this.props.userInfo.registerTime.replace('T', ' ')}</p> : null}
-                        {this.props.userInfo.lastLogOnTime ? <p>最后登录时间：  {this.props.userInfo.lastLogOnTime.replace('T', ' ')}</p> : null}
+                        {this.props.userInfo.lastLogOnTime ? <p>最后登录：  {this.props.userInfo.lastLogOnTime.replace('T', ' ')}</p> : null}
                     </div>
                 </div>
                 {this.props.userInfo.signatureCode ?
