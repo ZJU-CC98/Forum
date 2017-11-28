@@ -69,15 +69,18 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
     }
 
 }
-export class Reply extends RouteComponent<{}, { contents }, { page, topicid, userName }>{
+export class Reply extends RouteComponent<{}, { masters,contents }, { page, topicid, userName }>{
     constructor(props, content) {
         super(props, content);
         this.state = {
             contents: [],
+            masters:[]
         };
 
     }
-
+    async getMasters(topicId) {
+        return Utility.getMasters(topicId);
+    }
     async componentWillReceiveProps(newProps) {
         const page = newProps.match.params.page || 1;
         const storageId = `TopicContent_${newProps.match.params.topicid}_${page}`;
@@ -98,19 +101,19 @@ export class Reply extends RouteComponent<{}, { contents }, { page, topicid, use
         const data = await response.json();
         const userName = data.name;
         realContents = await Utility.getCurUserTopicContent(newProps.match.params.topicid, page, userName, newProps.match.params.userId, this.context.router);
-        this.setState({ contents: realContents });
-
-    }
+        const masters = this.getMasters(newProps.match.params.topicid);
+        this.setState({ contents: realContents, masters: masters });
+            }
     private generateContents(item: State.ContentState) {
         return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
             <Post.Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} />
-            <Post.ReplyContent key={item.content} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postId} contentType={item.contentType} />
+            <Post.ReplyContent key={item.content} masters={this.state.masters} userId={item.userId} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postId} contentType={item.contentType} />
         </div>
         </div>;
     }
     render() {
         return <div className="center" style={{ width: "100%" }}>
-            {this.state.contents.map(this.generateContents)}
+            {this.state.contents.map(this.generateContents.bind(this))}
         </div>
             ;
     }

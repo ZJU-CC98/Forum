@@ -30,9 +30,9 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
 export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName }, { topicid, page, userName }> {
     constructor(props, context) {
         super(props, context);
-       
+
         this.handleChange = this.handleChange.bind(this);
-        this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null};
+        this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null };
     }
     componentDidUpdate() {
         scrollTo(0, 0);
@@ -69,9 +69,10 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         const userName = this.match.params.userName;
         this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName });
     }
-    async getTotalPage(topicid) {
-        return Utility.getTotalReplyCount(topicid, this.context.router);
+    async getTotalPage(topicId) {
+        return Utility.getTotalReplyCount(topicId, this.context.router);
     }
+
     returnTopic() {
         return <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} />;
 
@@ -91,7 +92,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
             {hotReply}
             <Route path="/topic/:topicid/:page?" component={Reply} />
             <TopicPagerDown page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
-            <SendTopic onChange={this.handleChange} topicid={this.state.topicid}  />
+            <SendTopic onChange={this.handleChange} topicid={this.state.topicid} />
         </div>
             ;
 
@@ -108,20 +109,23 @@ export class Category extends React.Component<{ topicId }, { boardId, topicId, b
         this.setState({ boardId: body.boardId, topicId: body.topicId, boardName: body.boardName, title: body.title });
     }
     render() {
-        const listUrl = `/list/${this.state.boardId}`;
+        const listUrl = `/list/${this.state.boardId}/normal`;
         const topicUrl = `/topic/${this.state.topicId}`;
         return <div style={{ color: "blue", fontSize: "1rem" }}>&rsaquo;&rsaquo;<a style={{ color: "blue", fontSize: "1rem" }} href="/">首页</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "1rem" }} href={listUrl} >{this.state.boardName}</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "1rem" }} href={topicUrl}>{this.state.title}</a></div>;
     }
 }
-export class Reply extends RouteComponent<{}, { contents }, { page, topicid, userName }>{
+export class Reply extends RouteComponent<{}, { contents, masters }, { page, topicid, userName }>{
     constructor(props, content) {
         super(props, content);
         this.state = {
             contents: [],
+            masters: []
         };
 
     }
-
+    async getMasters(topicId) {
+        return Utility.getMasters(topicId);
+    }
     async componentWillReceiveProps(newProps) {
         const page = newProps.match.params.page || 1;
         const storageId = `TopicContent_${newProps.match.params.topicid}_${page}`;
@@ -134,39 +138,45 @@ export class Reply extends RouteComponent<{}, { contents }, { page, topicid, use
              realContents = Utility.getStorage(storageId);
          }*/
         realContents = await Utility.getTopicContent(newProps.match.params.topicid, page, this.context.router);
-        this.setState({ contents: realContents });
+        const masters = this.getMasters(newProps.match.params.topicid);
+        this.setState({ contents: realContents, masters: masters });
 
     }
+
     private generateContents(item: State.ContentState) {
         return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
             <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} />
-            <ReplyContent key={item.content} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postId} contentType={item.contentType} />
+            <ReplyContent key={item.content} masters={this.state.masters} userId={item.userId} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postId} contentType={item.contentType} />
         </div>
         </div>;
     }
     render() {
 
         return <div className="center" style={{ width: "100%" }}>
-            {this.state.contents.map(this.generateContents)}
+            {this.state.contents.map(this.generateContents.bind(this))}
         </div>
             ;
     }
 }
-export class HotReply extends RouteComponent<{}, { contents }, { page, topicid }>{
+export class HotReply extends RouteComponent<{}, { masters, contents }, { page, topicid }>{
     constructor(props, content) {
         super(props, content);
         this.state = {
             contents: [],
+            masters: []
         };
 
     }
-
+    async getMasters(topicId) {
+        return Utility.getMasters(topicId);
+    }
     async componentWillReceiveProps(newProps) {
 
         const page = newProps.match.params.page || 1;
         if (page == 1) {
             const realContents = await Utility.getHotReplyContent(newProps.match.params.topicid, this.context.router);
-            this.setState({ contents: realContents });
+            const masters = this.getMasters(newProps.match.params.topicid);
+            this.setState({ contents: realContents, masters: masters });
         }
 
 
@@ -175,7 +185,7 @@ export class HotReply extends RouteComponent<{}, { contents }, { page, topicid }
         const floor = (item.floor % 10).toString();
         return <div className="reply" id={floor}><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
             <HotReplier key={item.id} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isAnonymous={item.isAnonymous} />
-            <ReplyContent key={item.content} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.id} contentType={item.contentType} />
+            <ReplyContent key={item.content} masters={this.state.masters} userId={item.userId} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.id} contentType={item.contentType} />
         </div>
         </div>;
     }
@@ -219,7 +229,7 @@ export class HotReplier extends RouteComponent<{ floor, userId, topicid, userNam
         }
         let userDetails;
         if (this.props.isAnonymous != true) {
-            userDetails = <UserDetails userName={this.props.userName} userId={this.props.userId}/>;
+            userDetails = <UserDetails userName={this.props.userName} userId={this.props.userId} />;
         } else {
             userDetails = null;
         }
@@ -300,7 +310,7 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
             userDetails = null;
         }
         let userName;
- 
+
         if (this.props.privilege === "超级版主") {
             userName = <a style={{ color: "pink" }} href={url}>{this.props.userName}</a>;
         } else if (this.props.privilege === "全站贵宾") {
@@ -343,7 +353,7 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
             </div></div>;
     }
 }
-export class UserDetails extends RouteComponent<{ userName,userId }, { portraitUrl, userName, fanCount, displayTitle, birthday, gender, prestige, levelTitle,buttonIsDisabled,buttonInfo,isFollowing }, {}>{
+export class UserDetails extends RouteComponent<{ userName, userId }, { portraitUrl, userName, fanCount, displayTitle, birthday, gender, prestige, levelTitle, buttonIsDisabled, buttonInfo, isFollowing }, {}>{
     constructor(props) {
         super(props);
         this.unfollow = this.unfollow.bind(this);
@@ -351,9 +361,10 @@ export class UserDetails extends RouteComponent<{ userName,userId }, { portraitU
         this.state = ({
             portraitUrl: null, userName: null, fanCount: null, displayTitle: null, birthday: null, gender: null, prestige: null, levelTitle: null, buttonInfo: '关注',
             buttonIsDisabled: false,
-            isFollowing: false });
+            isFollowing: false
+        });
     }
-     async unfollow() {
+    async unfollow() {
         try {
             this.setState({
                 buttonIsDisabled: true,
@@ -422,7 +433,7 @@ export class UserDetails extends RouteComponent<{ userName,userId }, { portraitU
 
     async componentDidMount() {
         const data = await Utility.getUserDetails(this.props.userName, this.context.router);
-        this.setState({ portraitUrl: data.portraitUrl, userName: data.userName, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle, isFollowing: data.isFollowing, buttonInfo: data.isFollowing?'取消关注':'关注'});
+        this.setState({ portraitUrl: data.portraitUrl, userName: data.userName, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle, isFollowing: data.isFollowing, buttonInfo: data.isFollowing ? '取消关注' : '关注' });
     }
     render() {
         let title = this.state.displayTitle;
@@ -467,7 +478,7 @@ export class UserDetails extends RouteComponent<{ userName,userId }, { portraitU
                     </div>
 
                     <div>
-                        <button className="followuser"  id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
+                        <button className="followuser" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
 
                     </div>
                 </div>
@@ -519,7 +530,7 @@ export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid },
 }
 
 
-export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, authorName: string, authorId: number, authorImgUrl: string,isFollowing:boolean ,fanCount}, State.AuthorMessageState, {}> {
+export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, authorName: string, authorId: number, authorImgUrl: string, isFollowing: boolean, fanCount }, State.AuthorMessageState, {}> {
     constructor(props, content) {
         super(props, content);
         this.follow = this.follow.bind(this);
@@ -601,11 +612,11 @@ export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, author
     }
     componenDidMount() {
 
-       
+
         if (this.state.isFollowing === true) {
             this.setState({ buttonInfo: "取消关注", isFollowing: true });
         } else {
-            this.setState({ buttonInfo: "关注", isFollowing: false});
+            this.setState({ buttonInfo: "关注", isFollowing: false });
         }
     }
     render() {
@@ -622,7 +633,7 @@ export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, author
             $(".follow").css("display", "none");
             $(".authorFans").css("margin-top", "1rem");
             $("#fans").css("display", "none");
-            $("#authorMes").css("width","14rem");
+            $("#authorMes").css("width", "14rem");
         }
         return <div className="row" id="authormes">
 
@@ -631,7 +642,7 @@ export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, author
                 <div className="row authorFans" style={{ justifyContent: "space-between" }}>
                     {userHtml}
 
-                    <div id="fans" className="row"><div style={{ marginRight: "0.1875rem" }}>粉丝</div><div style={{ color: "#EE0000"}}>{this.props.fanCount}</div></div>
+                    <div id="fans" className="row"><div style={{ marginRight: "0.1875rem" }}>粉丝</div><div style={{ color: "#EE0000" }}>{this.props.fanCount}</div></div>
                 </div>
 
                 <div className="row">
@@ -696,7 +707,7 @@ export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.
         </div>;
     }
 }
-export class TopicContent extends RouteComponent<{ postid: number, topicid: number, content: string, signature: string, userId: number, contentType: number ,masters:string[]}, { likeState: number, likeNumber: number, dislikeNumber: number }, {}> {
+export class TopicContent extends RouteComponent<{ postid: number, topicid: number, content: string, signature: string, userId: number, contentType: number, masters: string[] }, { likeState: number, likeNumber: number, dislikeNumber: number }, {}> {
     constructor(props, content) {
         super(props, content);
         this.state = {
@@ -788,11 +799,11 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
             const privilege = Utility.getLocalStorage("userInfo").privilege;
             const myName = Utility.getLocalStorage("userInfo").name;
             const myId = Utility.getLocalStorage("userInfo").id;
-           
+
             if (privilege === '管理员' || privilege === '超级版主' || (privilege === '全站贵宾' && myId === this.props.userId)) {
                 $("#postTopicManage").css("display", "");
             }
-            console.log(Utility.getLocalStorage("userInfo"));
+
             if (this.props.masters) {
                 for (let i = 0; i < this.props.masters.length; i++) {
                     if (myName === this.props.masters[i]) {
@@ -804,6 +815,7 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
         if (this.props.signature == "") {
             return <div className="content">
                 <div className="substance">{content}</div>
+                <PostManagement postId={this.props.postid} userId={this.props.userId} />
                 <div className="comment1">
                     <div id="commentlike" className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg" ></i></button>   收藏文章 </div>
                     <div id="commentliked" className="upup" style={{ marginRight: "0.7rem" }} ><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
@@ -812,12 +824,14 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
 
                     <div className="operation1">引用</div>
                     <Link className="operation1" to={curUserPostUrl}>只看此用户</Link>
-                    <div className="operation1" id="postTopicManage" style={{ display:"none" }}>管理</div>
+                    <div className="operation1" id="postTopicManage" style={{ display: "none", cursor: "pointer" }}>管理</div>
+
                 </div>
             </div>;
         } else {
             return <div className="content">
                 <div className="substance">{content} </div>
+                <PostManagement postId={this.props.postid} userId={this.props.userId} />
                 <div className="signature"><UbbContainer code={this.props.signature} /></div>
                 <div className="comment">
                     <div id="commentlike" style={{ marginRight: "0.7rem" }} className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg"></i></button>   收藏文章 </div>
@@ -827,20 +841,28 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
 
                     <div className="operation1">引用</div>
                     <Link className="operation1" to={curUserPostUrl}>只看此用户</Link>
+                    <div className="operation1" id="postTopicManage" style={{ display: "none", cursor: "pointer" }}>管理</div>
 
                 </div>
             </div>;
         }
     }
 }
-export class ReplyContent extends RouteComponent<{ content, signature, topicid, postid, contentType }, { likeNumber, dislikeNumber, likeState }, {}> {
+export class ReplyContent extends RouteComponent<{ masters, userId, content, signature, topicid, postid, contentType }, { likeNumber, dislikeNumber, likeState }, {}> {
     constructor(props, content) {
         super(props, content);
+        this.showManageUI = this.showManageUI.bind(this);
         this.state = {
             likeNumber: 1,
             dislikeNumber: 1,
             likeState: 0
         }
+    }
+    showManageUI() {
+
+        const UIId = `#manage${this.props.postid}`;
+
+        $(UIId).css("display", "");
     }
     async componentDidMount() {
 
@@ -930,16 +952,39 @@ export class ReplyContent extends RouteComponent<{ content, signature, topicid, 
             content = mdMode;
 
         }
+
+        const manageIcon = `icon${this.props.postid}`;
+        const manageId = `#icon${this.props.postid}`;
+        if (Utility.getLocalStorage("userInfo")) {
+            const privilege = Utility.getLocalStorage("userInfo").privilege;
+            const myName = Utility.getLocalStorage("userInfo").name;
+            const myId = Utility.getLocalStorage("userInfo").id;
+
+            if (privilege === '管理员' || privilege === '超级版主' || (privilege === '全站贵宾' && myId === this.props.userId)) {
+                $(manageId).css("display", "");
+            }
+
+            if (this.props.masters) {
+                for (let i = 0; i < this.props.masters.length; i++) {
+                    if (myName === this.props.masters[i]) {
+                        $(manageId).css("display", "");
+                    }
+                }
+            }
+        }
         if (this.props.signature == "") {
             return <div className="root" style={{ marginTop: "-170px" }}>
                 <div className="reply-content">
                     <div className="substance">{content}</div>
-
+                    <PostManagement postId={this.props.postid} userId={this.props.userId} />
                     <div className="comment1">
 
                         <div id={idLike} className="upup" style={{ marginRight: "0.7rem" }}><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
                         <div id={idDislike} className="downdown"  ><i title="踩" onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
-                        <div id="commentlike"> <div className="commentbutton">   评分</div></div>
+                        <div id="commentlike"> <div className="commentbutton">   评分</div>
+                            <div className="operation1" id={manageIcon} style={{ display: "none", cursor: "pointer" }} onClick={this.showManageUI}>管理</div>
+
+                        </div>
                     </div>
                 </div></div>;
         }
@@ -947,11 +992,15 @@ export class ReplyContent extends RouteComponent<{ content, signature, topicid, 
             return <div className="root" style={{ marginTop: "-170px" }}>
                 <div className="reply-content">
                     <div className="substance">{content}</div>
+                    <PostManagement postId={this.props.postid} userId={this.props.userId} />
                     <div className="comment">
 
                         <div id={idLike} className="upup" style={{ marginRight: "0.7rem", }}><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
                         <div id={idDislike} className="downdown" ><i title="踩" onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
-                        <div id="commentlike"> <div className="commentbutton">   评分</div></div>
+                        <div id="commentlike"> <div className="commentbutton">   评分</div>
+                            <div className="operation1" id={manageIcon} style={{ display: "none", cursor: "pointer" }} onClick={this.showManageUI}>管理</div>
+
+                        </div>
                     </div>
                     <div className="signature"><UbbContainer code={this.props.signature} /></div>
 
@@ -1113,11 +1162,11 @@ export class UserMessageBox extends React.Component<{ userName, userFans }, {}>{
         return <div id="userMessageBox">{this.props.userName}</div>;
     }
 }
-export class SendTopic extends RouteComponent<{ topicid, onChange,  }, { content: string,mode:number }, {}>{
+export class SendTopic extends RouteComponent<{ topicid, onChange, }, { content: string, mode: number }, {}>{
     constructor(props) {
         super(props);
         this.changeEditor = this.changeEditor.bind(this);
-        this.state = ({ content: '',mode:1 });
+        this.state = ({ content: '', mode: 1 });
     }
     componentDidMount() {
         Constants.testEditor = editormd("test-editormd", {
@@ -1200,7 +1249,7 @@ export class SendTopic extends RouteComponent<{ topicid, onChange,  }, { content
     }
     changeEditor() {
         if (this.state.mode === 0) {
-           
+
             this.setState({ mode: 1 });
         } else {
             this.setState({ mode: 0 });
@@ -1210,7 +1259,7 @@ export class SendTopic extends RouteComponent<{ topicid, onChange,  }, { content
         const files = e.target.files;
         const res = await Utility.uploadFile(files[0]);
         const url = res.content;
-        if (this.state.mode === 1) {        
+        if (this.state.mode === 1) {
             const str = `![](http://apitest.niconi.cc${url})`;
             Constants.testEditor.appendMarkdown(str);
         } else {
@@ -1227,9 +1276,9 @@ export class SendTopic extends RouteComponent<{ topicid, onChange,  }, { content
 
         this.setState({ content: event.target.value });
     }
-    render() {  
-    
-        let mode,editor;
+    render() {
+
+        let mode, editor;
         if (this.state.mode === 0) {
             mode = '使用UBB模式编辑';
             editor = <div id="sendTopic">
@@ -1267,8 +1316,8 @@ export class SendTopic extends RouteComponent<{ topicid, onChange,  }, { content
                         <textarea id="sendTopic-input" name="sendTopic-input" value={this.state.content} onChange={this.handleChange.bind(this)} />
                     </div>
                 </form>
-               
-             <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
+
+                <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
                     <div id="post-topic-button" onClick={this.sendUbbTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复
                     </div>
                     <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>切换到Markdown编辑器            </div> </div></div>;
@@ -1298,4 +1347,101 @@ export class SendTopic extends RouteComponent<{ topicid, onChange,  }, { content
             {editor}
         </div>;
     }
-}  
+}
+export class PostManagement extends React.Component<{ userId, postId }, { wealth, prestige, reason, tpdays,UI }>{
+    constructor(props) {
+        super(props);
+        this.wealthInput = this.wealthInput.bind(this);
+        this.prestigeInput = this.prestigeInput.bind(this);
+        this.reasonInput = this.reasonInput.bind(this);
+        this.tpdaysInput = this.tpdaysInput.bind(this);
+        this.confirm = this.confirm.bind(this);
+        this.showAwardUI = this.showAwardUI.bind(this);
+        this.showPunishUI = this.showPunishUI.bind(this);
+        this.showDeleteUI = this.showDeleteUI.bind(this);
+        this.state = { wealth: 1000, prestige: 0, reason: "", tpdays: 0,UI:"Award" }
+    }
+    showAwardUI() {
+        this.setState({ UI: "Award" });
+    }
+    showPunishUI() {
+        this.setState({ UI: "Punish" });
+    }
+    showDeleteUI(){
+        this.setState({ UI: "Delete" });
+    }
+    confirm() {
+        Utility.awardWealth(this.state.reason, this.state.wealth, this.props.postId);
+        const UIId = `#manage${this.props.postId}`;
+        $(UIId).css("display", "none");
+    }
+    wealthInput(e) {
+        console.log(this.state);
+        this.setState({ wealth: e.target.value });
+    }
+    prestigeInput(e) {
+        console.log(this.state);
+        this.setState({ prestige: e.target.value });
+    }
+    reasonInput(e) {
+        console.log(this.state);
+        this.setState({ reason: e.target.value });
+    }
+    tpdaysInput(e) {
+        console.log(this.state);
+        this.setState({ tpdays: e.target.value });
+    }
+    render() {
+        let UI;
+        const awardUI = <div className="column" id="award">
+            <div className="row manageOperation">
+                <div className="manageObject">财富值</div>
+                <input type="text" value={this.state.wealth} onChange={this.wealthInput} />
+            </div>
+            <div className="row manageOperation">
+                <div className="manageObject">威望</div>
+                <input type="text" value={this.state.prestige} onChange={this.prestigeInput} />
+            </div>
+            <div className="row manageOperation">
+                <div className="manageObject">原因</div>
+                <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+            </div>
+        </div>;
+        const punishUI = <div className="column" id="punish" >
+            <div className="row manageOperation">
+                <div className="manageObject">扣威望</div>
+                <input type="text" value={this.state.prestige} onChange={this.prestigeInput} />
+            </div>
+            <div className="row manageOperation">
+                <div className="manageObject">禁止发言(天)</div>
+                <input type="text" value={this.state.tpdays} onChange={this.tpdaysInput} />
+            </div>
+            <div className="row manageOperation">
+                <div className="manageObject">原因</div>
+                <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+            </div>
+        </div>;
+        const deleteUI = <div className="column" id="punish" >    
+            <div className="row manageOperation">
+                <div className="manageObject">删除原因</div>
+                <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+            </div>
+        </div>;
+        const UIId = `manage${this.props.postId}`;
+        UI = awardUI;
+        if (this.state.UI === "Award") UI = awardUI;
+        if (this.state.UI === "Punish") UI = punishUI;
+        if (this.state.UI === "Delete") UI = deleteUI;
+        return <div style={{ display: "none" }} id={UIId} className="postManagement">
+            <div className="manageUI">
+                <div className="row manageOptions">
+                    <div className="manageOptions-icon" onClick={this.showAwardUI} style={{ color: "#FF7F00" }}>奖励</div>
+                    <div className="manageOptions-icon" onClick={this.showPunishUI}style={{ color: "red" }}>惩罚</div>
+                    <div className="manageOptions-icon" onClick={this.showDeleteUI}>删除</div>
+                </div>
+            </div>
+            {UI}
+            <button onClick={this.confirm} className="confirmManagement">确认</button>
+        </div>;
+    }
+}
