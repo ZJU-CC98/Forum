@@ -1789,11 +1789,11 @@ export async function awardWealth( reason, value, postId) {
     const url = `http://apitest.niconi.cc/manage/bonus/wealth?postid=${postId}`;
     const response = await fetch(url, { method: "PUT", headers,body: str });
 }
-export async function getAwardInfo(postId) {
+export async function getAwardInfo(postId,page) {
     const token = getLocalStorage("accessToken");
     const headers = new Headers();
     headers.append("Authorization", token);
-    const start = 0;
+    const start = (page-1)*10;
     const size = 10;
     const url = `http://apitest.niconi.cc/post/awards?postid=${postId}&from=${start}&size=${size}`;
     const response = await fetch(url, {  headers });

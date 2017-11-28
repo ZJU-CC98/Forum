@@ -221,7 +221,7 @@ export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid },
     async componentWillMount() {
         let topicMessage = await Utility.getTopic(this.props.topicid, this.context.router);
         console.log(topicMessage);
-        const award = await Utility.getAwardInfo(topicMessage.postId);
+        const award = await Utility.getAwardInfo(topicMessage.postId,1);
         const info = award.map(this.generateAwardInfo.bind(this));
         const awardInfo = await Promise.all(info);
         this.setState({ topicMessage: topicMessage,awardInfo:award ,info:awardInfo});
@@ -345,7 +345,7 @@ export class AuthorMessage extends RouteComponent<{ isAnonymous: boolean, author
         }
     }
     render() {
-        const email = `/message/message/${this.props.authorId}`;
+        const email = `/message/message?id=${this.props.authorId}`;
         const url = `/user/${this.props.authorId}`;
         let urlHtml = <a href={url}><img src={this.props.authorImgUrl}></img></a>;
         let userHtml = <div id="authorName"><p><a href={url}>{this.props.authorName}</a></p></div>;
@@ -964,17 +964,35 @@ export class UserDetails extends RouteComponent<{ userName, userId }, { portrait
         </div>;
     }
 }
-export class ReplyContent extends RouteComponent<{ masters, userId, content, signature, topicid, postid, contentType }, { likeNumber, dislikeNumber, likeState,awardInfo ,info}, {}> {
+export class ReplyContent extends RouteComponent<{ masters, userId, content, signature, topicid, postid, contentType }, { likeNumber, dislikeNumber, likeState,awardInfo ,info, awardPage}, {}> {
     constructor(props, content) {
         super(props, content);
         this.showManageUI = this.showManageUI.bind(this);
+        this.nextPage = this.nextPage.bind(this);
+        this.lastPage = this.lastPage.bind(this);
         this.state = {
             likeNumber: 1,
             dislikeNumber: 1,
             likeState: 0,
             awardInfo: [],
-            info:null
+            info: null,
+            awardPage:1
         }
+    }
+    async nextPage() {
+        const page = this.state.awardPage;
+        const award = await Utility.getAwardInfo(this.props.postid, page+1);
+
+        const info = award.map(this.generateAwardInfo.bind(this));
+        const awardInfo = await Promise.all(info);
+        this.setState({ info: awardInfo, awardPage: page + 1 });
+    }
+    async lastPage() {
+        const page = this.state.awardPage;
+        const award = await Utility.getAwardInfo(this.props.postid, page - 1);
+        const info = award.map(this.generateAwardInfo.bind(this));
+        const awardInfo = await Promise.all(info);
+        this.setState({ info: awardInfo, awardPage: page - 1 });
     }
     showManageUI() {
 
@@ -993,7 +1011,7 @@ export class ReplyContent extends RouteComponent<{ masters, userId, content, sig
         else if (data.likeState === 2) {
             $(idDislike).css("color", "red");
         }
-        const award = await Utility.getAwardInfo(this.props.postid);
+        const award = await Utility.getAwardInfo(this.props.postid,1);
 
         const info = award.map(this.generateAwardInfo.bind(this));
         const awardInfo = await Promise.all(info);
@@ -1117,8 +1135,9 @@ export class ReplyContent extends RouteComponent<{ masters, userId, content, sig
                     </div>
 
                     {signature}
-                    <div className="column">
-                        {this.state.info }
+                    <div className="column" style={{ borderTop:"2px dashed #EAEAEA"}}>
+                        {this.state.info}
+                        <button onClick={this.nextPage}>上一页</button><button onClick={this.lastPage}>下一页</button>
                         </div>
                 </div></div>;
         }        
