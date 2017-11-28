@@ -1673,9 +1673,11 @@ function getUserDetails(userName, router) {
                     message = _a.sent();
                     if (message.status === 404) {
                         //window.location.href = "/status/NotFoundUser";
+                        return [2 /*return*/, null];
                     }
                     if (message.status === 500) {
                         //window.location.href = "/status/ServerError";
+                        return [2 /*return*/, null];
                     }
                     return [4 /*yield*/, message.json()];
                 case 2:
@@ -2370,13 +2372,11 @@ function getSearchTopic(boardId, words, from, router) {
                 case 3:
                     newTopic = _d.sent();
                     return [3 /*break*/, 7];
-                case 4:
-                    console.log("http://apitest.niconi.cc/topic/search/board/" + boardId + "?from=" + from + "&size=" + size);
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/search/board/" + boardId + "?from=" + from + "&size=" + size, {
-                            method: 'POST',
-                            headers: myHeaders,
-                            body: bodyCotent
-                        })];
+                case 4: return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/search/board/" + boardId + "?from=" + from + "&size=" + size, {
+                        method: 'POST',
+                        headers: myHeaders,
+                        body: bodyCotent
+                    })];
                 case 5:
                     response = _d.sent();
                     if (response.status === 401) {
@@ -2465,7 +2465,7 @@ function getSearchTopic(boardId, words, from, router) {
                     _i++;
                     return [3 /*break*/, 8];
                 case 16: return [2 /*return*/, newTopic];
-                case 17: return [2 /*return*/, null];
+                case 17: return [2 /*return*/, 0];
                 case 18: return [3 /*break*/, 20];
                 case 19:
                     e_32 = _d.sent();
@@ -4002,7 +4002,7 @@ var FocusTopicSingle = /** @class */ (function (_super) {
             React.createElement(PortaritrUrl, { userId: this.props.userId, portraitUrl: this.props.portraitUrl }),
             React.createElement("div", { className: "focus-topic-info1" },
                 React.createElement("div", { className: "focus-topic-authorInfo" },
-                    React.createElement("div", { className: "focus-topic-blackText" }, this.props.userName),
+                    React.createElement(UserName, { userId: this.props.userId, userName: this.props.userName }),
                     React.createElement("div", { className: "focus-topic-redText" }, this.props.fanCount),
                     React.createElement("div", { className: "focus-topic-blackText" }, "\u7C89\u4E1D")),
                 React.createElement("div", { className: "focus-topic-title" },
@@ -4048,12 +4048,37 @@ var PortaritrUrl = /** @class */ (function (_super) {
     return PortaritrUrl;
 }(React.Component));
 exports.PortaritrUrl = PortaritrUrl;
+//返回可点击或者不可点击的头像
+var UserName = /** @class */ (function (_super) {
+    __extends(UserName, _super);
+    function UserName() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserName.prototype.render = function () {
+        if (this.props.userId) {
+            var userUrl = "/user/" + this.props.userId;
+            return (React.createElement("a", { href: userUrl, target: "_blank" },
+                React.createElement("div", { className: "focus-topic-blackText" }, this.props.userName)));
+        }
+        else {
+            return React.createElement("div", { className: "focus-topic-blackText" }, this.props.userName);
+        }
+    };
+    return UserName;
+}(React.Component));
+exports.UserName = UserName;
 var PortaritrUrlProps = /** @class */ (function () {
     function PortaritrUrlProps() {
     }
     return PortaritrUrlProps;
 }());
 exports.PortaritrUrlProps = PortaritrUrlProps;
+var UserNameProps = /** @class */ (function () {
+    function UserNameProps() {
+    }
+    return UserNameProps;
+}());
+exports.UserNameProps = UserNameProps;
 
 
 /***/ }),
@@ -8195,7 +8220,7 @@ var Search = /** @class */ (function (_super) {
     }
     Search.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var searchBoxSelect, downArrow, searchBoxSub, searchIco, searchBoxLi, url1, url2, url3, boardId, boardName, topicId, response, searchInfo;
+            var searchBoxSelect, downArrow, searchBoxSub, searchIco, searchBoxLi, url1, url2, url3, boardId, boardName, topicId, response, searchInfo, self;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -8263,45 +8288,72 @@ var Search = /** @class */ (function (_super) {
                         searchBoxLi.mouseout(function () {
                             this.className = '';
                         });
-                        //获取搜索关键词
+                        self = this;
                         searchIco.click(function () {
-                            if (searchBoxSelect.text() == '主题' || searchBoxSelect.text() == '全站') {
-                                var val = $('#searchText').val();
-                                if (val && val != '') {
-                                    var words = val.split(' ');
-                                    if (words) {
-                                        if (words.length > 5) {
-                                            alert("关键词过多，请不要超过5个！");
-                                        }
-                                        else {
-                                            var searchInfo = { boardId: 0, boardName: '全站', words: words };
-                                            Utility.setStorage('searchInfo', searchInfo);
-                                            var host = window.location.host;
-                                            window.location.href = "http://" + host + "/search";
-                                        }
+                            return __awaiter(this, void 0, void 0, function () {
+                                var val, words, searchInfo, host, val, words, searchInfo, host, val, body, host;
+                                return __generator(this, function (_a) {
+                                    switch (_a.label) {
+                                        case 0:
+                                            if (!(searchBoxSelect.text() == '主题' || searchBoxSelect.text() == '全站')) return [3 /*break*/, 1];
+                                            val = $('#searchText').val();
+                                            if (val && val != '') {
+                                                words = val.split(' ');
+                                                if (words) {
+                                                    if (words.length > 5) {
+                                                        alert("关键词过多，请不要超过5个！");
+                                                    }
+                                                    else {
+                                                        searchInfo = { boardId: 0, boardName: '全站', words: words };
+                                                        Utility.setStorage('searchInfo', searchInfo);
+                                                        host = window.location.host;
+                                                        window.location.href = "http://" + host + "/search";
+                                                    }
+                                                }
+                                            }
+                                            return [3 /*break*/, 6];
+                                        case 1:
+                                            if (!(searchBoxSelect.text() == '版内')) return [3 /*break*/, 2];
+                                            val = $('#searchText').val();
+                                            if (val && val != '') {
+                                                words = val.split(' ');
+                                                if (words) {
+                                                    if (words.length > 5) {
+                                                        alert("关键词过多，请不要超过5个！");
+                                                    }
+                                                    else {
+                                                        searchInfo = { boardId: boardId, boardName: boardName, words: words };
+                                                        Utility.setStorage('searchInfo', searchInfo);
+                                                        host = window.location.host;
+                                                        window.location.href = "http://" + host + "/search";
+                                                    }
+                                                }
+                                            }
+                                            return [3 /*break*/, 6];
+                                        case 2:
+                                            if (!(searchBoxSelect.text() == '用户')) return [3 /*break*/, 5];
+                                            val = $('#searchText').val();
+                                            if (!(val && val != '')) return [3 /*break*/, 4];
+                                            return [4 /*yield*/, Utility.getUserDetails(val, self.context.router)];
+                                        case 3:
+                                            body = _a.sent();
+                                            host = window.location.host;
+                                            if (body) {
+                                                window.location.href = "http://" + host + "/user/name/" + val;
+                                            }
+                                            else {
+                                                Utility.removeStorage('searchInfo');
+                                                window.location.href = "http://" + host + "/search";
+                                            }
+                                            _a.label = 4;
+                                        case 4: return [3 /*break*/, 6];
+                                        case 5:
+                                            alert("搜索版面还没有做");
+                                            _a.label = 6;
+                                        case 6: return [2 /*return*/];
                                     }
-                                }
-                            }
-                            else if (searchBoxSelect.text() == '版内') {
-                                var val = $('#searchText').val();
-                                if (val && val != '') {
-                                    var words = val.split(' ');
-                                    if (words) {
-                                        if (words.length > 5) {
-                                            alert("关键词过多，请不要超过5个！");
-                                        }
-                                        else {
-                                            var searchInfo = { boardId: boardId, boardName: boardName, words: words };
-                                            Utility.setStorage('searchInfo', searchInfo);
-                                            var host = window.location.host;
-                                            window.location.href = "http://" + host + "/search";
-                                        }
-                                    }
-                                }
-                            }
-                            else {
-                                alert("搜索用户和版面还没有做");
-                            }
+                                });
+                            });
                         });
                         return [2 /*return*/];
                 }
@@ -9884,7 +9936,8 @@ var Search = /** @class */ (function (_super) {
                     case 2:
                         newTopic = _a.sent();
                         //搜索结果为0
-                        if (!newTopic) {
+                        if (newTopic == 0) {
+                            console.log("没有搜索结果");
                             this.showNoResult();
                             this.setState({ loading: false });
                         }
@@ -9892,11 +9945,11 @@ var Search = /** @class */ (function (_super) {
                             //搜索结果小于20条，无法再获取新的了
                             if (newTopic.length < 20) {
                                 this.setState({ boardId: searchInfo.boardId, boardName: searchInfo.boardName, words: searchInfo.words, data: newTopic, from: newTopic.length, loading: false });
+                                $('#focus-topic-loading').addClass('displaynone');
                                 $('#focus-topic-loaddone').removeClass('displaynone');
                             }
                             else {
                                 this.setState({ boardId: searchInfo.boardId, boardName: searchInfo.boardName, words: searchInfo.words, data: newTopic, from: newTopic.length, loading: true });
-                                $('#focus-topic-loading').removeClass('displaynone');
                             }
                         }
                         _a.label = 3;
@@ -9972,7 +10025,7 @@ var Search = /** @class */ (function (_super) {
                     this.state.boardName),
                 React.createElement("div", { className: "focus-topic-area", id: "focus-topic-area" },
                     React.createElement("div", { className: "focus-topic-topicArea" }, this.state.data.map(coverFocusPost)),
-                    React.createElement("div", { className: "focus-topic-loading displaynone", id: "focus-topic-loading" },
+                    React.createElement("div", { className: "focus-topic-loading", id: "focus-topic-loading" },
                         React.createElement("img", { src: "http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif" })),
                     React.createElement("div", { className: "focus-topic-loaddone displaynone", id: "focus-topic-loaddone" }, " \u6CA1\u6709\u66F4\u591A\u5E16\u5B50\u5566~")),
                 React.createElement("div", { id: "noResult", className: "noResult displaynone" }, "\u6CA1\u6709\u7B26\u5408\u6761\u4EF6\u7684\u641C\u7D22\u7ED3\u679C"))));

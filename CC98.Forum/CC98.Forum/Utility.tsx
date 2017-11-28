@@ -1204,9 +1204,11 @@ export async function getUserDetails(userName, router) {
         let message = await fetch(url, { headers });
         if (message.status === 404) {
             //window.location.href = "/status/NotFoundUser";
+            return null;
         }
         if (message.status === 500) {
             //window.location.href = "/status/ServerError";
+            return null;
         }
         let data = await message.json();
         console.log(data);
@@ -1682,7 +1684,6 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
             newTopic = await response.json();
         }
         else {
-            console.log(`http://apitest.niconi.cc/topic/search/board/${boardId}?from=${from}&size=${size}`);
             const response = await fetch(`http://apitest.niconi.cc/topic/search/board/${boardId}?from=${from}&size=${size}`, {
                 method: 'POST',
                 headers: myHeaders,
@@ -1757,7 +1758,7 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
         }
         //如果没有搜索结果就返回null
         else {
-            return null;
+            return 0;
         }
     } catch (e) {
         //window.location.href = "/status/Disconnected";
