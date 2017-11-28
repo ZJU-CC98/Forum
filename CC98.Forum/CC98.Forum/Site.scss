@@ -318,7 +318,6 @@ body {
 .signature {
     color: rgb(80,80,80);
     margin: 1.25rem;
-    max-height:15rem;
 }
 
 .upup {
@@ -2726,7 +2725,7 @@ a {
     text-align: center;
 }
 .postManagement {
-
+    margin-left:30rem;
     position: absolute;
     z-index: 1000;
     width: 30rem;
@@ -2760,21 +2759,30 @@ a {
     cursor:pointer;
 }
 .manageObject{
-    width:3rem;
+    width:6rem;
     margin-right:1rem;
 }
 .manageOperation{
-    width:15rem;
+    width:18rem;
     margin-left:5rem;
     margin-top:2rem;
 }
 .confirmManagement {
     margin-left: 5rem;
-    margin-top: 3rem;
+    margin-top: 1rem;
     width: 5rem;
     height: 2rem;
     background-color: #EECBAD;
     border: gray solid thin;
     border-radius: 0.3rem;
     cursor:pointer;
+}
+.awardPage{
+    width:5rem;
+    height:1.2rem;
+    background-color:$bgcolor2;
+    border:#eaeaea solid thin;
+    border-radius:0.2rem;
+    cursor:pointer;
+    margin-left:2rem;
 }

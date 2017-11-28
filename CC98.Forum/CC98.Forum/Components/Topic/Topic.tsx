@@ -206,13 +206,35 @@ export class PageModel extends React.Component<{ pageNumber, topicid, curPage, t
     }
 }
 
-export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid }, { topicMessage, likeState,awardInfo ,info}, {}> {
+export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid }, { topicMessage, likeState, awardInfo, info, awardPage }, {}> {
     constructor(props, content) {
         super(props, content);
+        this.nextPage = this.nextPage.bind(this);
+        this.lastPage = this.lastPage.bind(this);
         this.state = {
             topicMessage: { title: "加载中...", time: "", content: "", signature: "", postid: 0 }
-            , likeState: 0, awardInfo:[],info:null
+            , likeState: 0, awardInfo: [], info: null, awardPage: 1
         }
+    }
+    async nextPage() {
+        const page = this.state.awardPage;
+        const award = await Utility.getAwardInfo(this.state.topicMessage.postId, page + 1);
+        const info = award.map(this.generateAwardInfo.bind(this));
+        const awardInfo = await Promise.all(info);
+        this.setState({ info: awardInfo, awardPage: page + 1 });
+    }
+    async lastPage() {
+        const id = `#awardPager${this.state.topicMessage.postId}`;
+        const page = this.state.awardPage;
+        if (this.state.awardPage === 1) {
+            $(id).css("disabled", "true");
+            return;
+        }
+        const award = await Utility.getAwardInfo(this.state.topicMessage.postId, page - 1);
+        const info = award.map(this.generateAwardInfo.bind(this));
+        const awardInfo = await Promise.all(info);
+        
+        this.setState({ info: awardInfo, awardPage: page - 1 });
     }
     async generateAwardInfo(item) {
         const url = await Utility.getPortraitUrl(item.operatorName);
@@ -220,13 +242,15 @@ export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid },
     }
     async componentWillMount() {
         let topicMessage = await Utility.getTopic(this.props.topicid, this.context.router);
-        console.log(topicMessage);
-        const award = await Utility.getAwardInfo(topicMessage.postId,1);
+   
+        const award = await Utility.getAwardInfo(topicMessage.postId, 1);
         const info = award.map(this.generateAwardInfo.bind(this));
         const awardInfo = await Promise.all(info);
-        this.setState({ topicMessage: topicMessage,awardInfo:award ,info:awardInfo});
+        this.setState({ topicMessage: topicMessage, awardInfo: award, info: awardInfo });
     }
+
     render() {
+        const awardPagerId = `awardPager${this.state.topicMessage.postId}`;
         if (this.state.topicMessage != null) {
             if (this.state.topicMessage.userId == this.props.userId || this.props.userId == null) {
                 return <div className="root" id="1">
@@ -242,6 +266,10 @@ export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid },
                         masters={this.state.topicMessage.masters} />
                     <div className="column" style={{ width: "100%" }}>
                         {this.state.info}
+                        <div className="row">
+                            <button className="awardPage" id={awardPagerId} onClick={this.lastPage}>上一页</button>
+                            <button className="awardPage" onClick={this.nextPage}>下一页</button>
+                        </div>
                     </div>
                 </div>;
             }
@@ -435,11 +463,18 @@ export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.
 export class TopicContent extends RouteComponent<{ postid: number, topicid: number, content: string, signature: string, userId: number, contentType: number, masters: string[] }, { likeState: number, likeNumber: number, dislikeNumber: number }, {}> {
     constructor(props, content) {
         super(props, content);
+        this.showManageUI = this.showManageUI.bind(this);
+        this.update = this.update.bind(this);
         this.state = {
             likeNumber: 666,
             dislikeNumber: 233,
             likeState: 0
         }
+    }
+    update() {
+        console.log("topic should update");
+        this.setState({});
+        this.forceUpdate();
     }
     async componentDidMount() {
         const data = await Utility.getLikeState(this.props.topicid, this.context.router);
@@ -495,6 +530,12 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
         const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
+    showManageUI() {
+
+        const UIId = `#manage${this.props.postid}`;
+        console.log("in manage");
+        $(UIId).css("display", "");
+    }
     render() {
         const divid = `doc-content${this.props.postid}`;
         let curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userId}`;
@@ -520,6 +561,7 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
             content = mdMode;
 
         }
+
         if (Utility.getLocalStorage("userInfo")) {
             const privilege = Utility.getLocalStorage("userInfo").privilege;
             const myName = Utility.getLocalStorage("userInfo").name;
@@ -540,7 +582,7 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
         if (this.props.signature == "") {
             return <div className="content">
                 <div className="substance">{content}</div>
-                <PostManagement postId={this.props.postid} userId={this.props.userId} />
+                <PostManagement postId={this.props.postid} userId={this.props.userId} onChange={this.update} />
                 <div className="comment1">
                     <div id="commentlike" className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg" ></i></button>   收藏文章 </div>
                     <div id="commentliked" className="upup" style={{ marginRight: "0.7rem" }} ><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
@@ -549,14 +591,14 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
 
                     <div className="operation1">引用</div>
                     <Link className="operation1" to={curUserPostUrl}>只看此用户</Link>
-                    <div className="operation1" id="postTopicManage" style={{ display: "none", cursor: "pointer" }}>管理</div>
+                    <div className="operation1" id="postTopicManage" onClick={this.showManageUI} style={{ display: "none", cursor: "pointer" }}>管理</div>
 
                 </div>
             </div>;
         } else {
             return <div className="content">
                 <div className="substance">{content} </div>
-                <PostManagement postId={this.props.postid} userId={this.props.userId} />
+                <PostManagement postId={this.props.postid} userId={this.props.userId} onChange={this.update} />
                 <div className="signature"><UbbContainer code={this.props.signature} /></div>
                 <div className="comment">
                     <div id="commentlike" style={{ marginRight: "0.7rem" }} className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg"></i></button>   收藏文章 </div>
@@ -566,14 +608,14 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
 
                     <div className="operation1">引用</div>
                     <Link className="operation1" to={curUserPostUrl}>只看此用户</Link>
-                    <div className="operation1" id="postTopicManage" style={{ display: "none", cursor: "pointer" }}>管理</div>
+                    <div className="operation1" id="postTopicManage" onClick={this.showManageUI} style={{ display: "none", cursor: "pointer" }}>管理</div>
 
                 </div>
             </div>;
         }
     }
 }
-export class AwardInfo extends RouteComponent<{ postId,userImgUrl,content,userName,reason }, {}, {}> {
+export class AwardInfo extends RouteComponent<{ postId, userImgUrl, content, userName, reason }, {}, {}> {
     constructor(props, content) {
         super(props, content);
 
@@ -582,7 +624,7 @@ export class AwardInfo extends RouteComponent<{ postId,userImgUrl,content,userNa
         return <div className="good tagSize" >
             <div id="userImage"><img src={this.props.userImgUrl}></img> </div>
             <div id="userName"><span>{this.props.userName}</span></div>
-            <div id="grades"><span id="grade">{this.props.content}</span></div>          
+            <div id="grades"><span id="grade">{this.props.content}</span></div>
             <div id="credit"><span>{this.props.reason}</span></div>
         </div>;
     }
@@ -590,7 +632,9 @@ export class AwardInfo extends RouteComponent<{ postId,userImgUrl,content,userNa
 
 export class Reply extends RouteComponent<{}, { contents, masters }, { page, topicid, userName }>{
     constructor(props, content) {
+       
         super(props, content);
+        this.update = this.update.bind(this);
         this.state = {
             contents: [],
             masters: []
@@ -620,9 +664,14 @@ export class Reply extends RouteComponent<{}, { contents, masters }, { page, top
     private generateContents(item: State.ContentState) {
         return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
             <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} />
-            <ReplyContent key={item.content} masters={this.state.masters} userId={item.userId} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postId} contentType={item.contentType} />
+            <ReplyContent key={item.content} masters={this.state.masters} userId={item.userId} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postId} contentType={item.contentType} update={this.update} />
         </div>
         </div>;
+    }
+    update() {
+        console.log("reply should update");
+        this.setState({});
+        this.forceUpdate();
     }
     render() {
 
@@ -635,11 +684,15 @@ export class Reply extends RouteComponent<{}, { contents, masters }, { page, top
 export class HotReply extends RouteComponent<{}, { masters, contents }, { page, topicid }>{
     constructor(props, content) {
         super(props, content);
+        this.update = this.update.bind(this);
         this.state = {
             contents: [],
             masters: []
         };
 
+    }
+    update() {
+        this.setState({});
     }
     async getMasters(topicId) {
         return Utility.getMasters(topicId);
@@ -659,7 +712,7 @@ export class HotReply extends RouteComponent<{}, { masters, contents }, { page, 
         const floor = (item.floor % 10).toString();
         return <div className="reply" id={floor}><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
             <HotReplier key={item.id} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isAnonymous={item.isAnonymous} />
-            <ReplyContent key={item.content} masters={this.state.masters} userId={item.userId} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.id} contentType={item.contentType} />
+            <ReplyContent key={item.content} masters={this.state.masters} userId={item.userId} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.id} contentType={item.contentType} update={this.update} />
         </div>
         </div>;
     }
@@ -683,7 +736,7 @@ export class HotReplier extends RouteComponent<{ floor, userId, topicid, userNam
 
     render() {
         const url = `/user/${this.props.userId}`;
-        const realUrl = encodeURIComponent(url);
+        const realUrl = encodeURI(url);
         const curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userId}`;
         const email = `/message/message?id=${this.props.userId}`;
         $(document).ready(function () {
@@ -755,7 +808,7 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
 
     render() {
         const url = `/user/${this.props.userId}`;
-        const realUrl = encodeURIComponent(url);
+        const realUrl = encodeURI(url);
         const email = `/message/message?id=${this.props.userId}`;
         let urlHtml = <a href={realUrl}><img src={this.props.userImgUrl}></img></a>;
         if (this.props.isAnonymous == true) {
@@ -941,7 +994,7 @@ export class UserDetails extends RouteComponent<{ userName, userId }, { portrait
                     </div>
                     <div className="column" style={{ marginLeft: "1.6rem", marginTop: "2rem" }}>
                         <div className="row">
-                            <div style={{ fontFamily: "微软雅黑", color: "blue", marginRight: "0.63rem",width:"8rem" }}> {this.state.userName}</div>
+                            <div style={{ fontFamily: "微软雅黑", color: "blue", marginRight: "0.63rem", width: "8rem" }}> {this.state.userName}</div>
                             <div style={{ marginRight: "0.63rem", fontSize: "1rem" }}>   粉丝  </div>
                             <div style={{ color: "red", fontSize: "1rem" }}>{this.state.fanCount}</div>
                         </div>
@@ -964,34 +1017,45 @@ export class UserDetails extends RouteComponent<{ userName, userId }, { portrait
         </div>;
     }
 }
-export class ReplyContent extends RouteComponent<{ masters, userId, content, signature, topicid, postid, contentType }, { likeNumber, dislikeNumber, likeState,awardInfo ,info, awardPage}, {}> {
+export class ReplyContent extends RouteComponent<{ masters, userId, content, signature, topicid, postid, contentType ,update}, { likeNumber, dislikeNumber, likeState, awardInfo, info, awardPage }, {}> {
     constructor(props, content) {
         super(props, content);
         this.showManageUI = this.showManageUI.bind(this);
         this.nextPage = this.nextPage.bind(this);
         this.lastPage = this.lastPage.bind(this);
+        this.update = this.update.bind(this);
         this.state = {
             likeNumber: 1,
             dislikeNumber: 1,
             likeState: 0,
             awardInfo: [],
             info: null,
-            awardPage:1
+            awardPage: 1
         }
+    }
+    update() {
+        this.props.update();
     }
     async nextPage() {
         const page = this.state.awardPage;
-        const award = await Utility.getAwardInfo(this.props.postid, page+1);
+        const award = await Utility.getAwardInfo(this.props.postid, page + 1);
 
         const info = award.map(this.generateAwardInfo.bind(this));
         const awardInfo = await Promise.all(info);
+
         this.setState({ info: awardInfo, awardPage: page + 1 });
     }
     async lastPage() {
+        const id = `#awardPager${this.props.postid}`;
         const page = this.state.awardPage;
+        if (this.state.awardPage === 1) {
+            $(id).css("disabled", "true");
+            return;
+        }
         const award = await Utility.getAwardInfo(this.props.postid, page - 1);
         const info = award.map(this.generateAwardInfo.bind(this));
         const awardInfo = await Promise.all(info);
+      
         this.setState({ info: awardInfo, awardPage: page - 1 });
     }
     showManageUI() {
@@ -1011,11 +1075,11 @@ export class ReplyContent extends RouteComponent<{ masters, userId, content, sig
         else if (data.likeState === 2) {
             $(idDislike).css("color", "red");
         }
-        const award = await Utility.getAwardInfo(this.props.postid,1);
+        const award = await Utility.getAwardInfo(this.props.postid, 1);
 
         const info = award.map(this.generateAwardInfo.bind(this));
         const awardInfo = await Promise.all(info);
-        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState,awardInfo:award ,info:awardInfo});
+        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState, awardInfo: award, info: awardInfo });
     }
     async generateAwardInfo(item) {
         const url = await Utility.getPortraitUrl(item.operatorName);
@@ -1045,6 +1109,7 @@ export class ReplyContent extends RouteComponent<{ masters, userId, content, sig
 
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
+
     async dislike() {
         const idLike = `#like${this.props.postid}`;
         const idDislike = `#dislike${this.props.postid}`;
@@ -1070,7 +1135,7 @@ export class ReplyContent extends RouteComponent<{ masters, userId, content, sig
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
     render() {
-        
+
         const idLike = `like${this.props.postid}`;
         const idDislike = `dislike${this.props.postid}`;
         const divid = `doc-content${this.props.postid}`;
@@ -1117,31 +1182,35 @@ export class ReplyContent extends RouteComponent<{ masters, userId, content, sig
                 }
             }
         }
+        const awardPagerId = `awardPager${this.props.postid}`;
         let signature = <div className="signature"><UbbContainer code={this.props.signature} /></div>;
         if (this.props.signature == "") {
             signature = null;
         }
-            return <div className="root" style={{ marginTop: "-170px" }}>
-                <div className="reply-content">
-                    <div className="substance">{content}</div>
-                    <PostManagement postId={this.props.postid} userId={this.props.userId} />
+        return <div className="root" style={{ marginTop: "-170px" }}>
+            <div className="reply-content">
+                <div className="substance">{content}</div>
+                <PostManagement onChange={this.update} postId={this.props.postid} userId={this.props.userId} />
 
-                    <div className="comment1">
-                        <div id={idLike} className="upup" style={{ marginRight: "0.7rem" }}><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
-                        <div id={idDislike} className="downdown"  ><i title="踩" onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
-                        <div id="commentlike"> <div className="commentbutton">   评分</div>
-                            <div className="operation1" id={manageIcon} style={{ display: "none", cursor: "pointer" }} onClick={this.showManageUI}>管理</div>
-                        </div>
+                <div className="comment1">
+                    <div id={idLike} className="upup" style={{ marginRight: "0.7rem" }}><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
+                    <div id={idDislike} className="downdown"  ><i title="踩" onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
+                    <div id="commentlike"> <div className="commentbutton">   评分</div>
+                        <div className="operation1" id={manageIcon} style={{ display: "none", cursor: "pointer" }} onClick={this.showManageUI}>管理</div>
                     </div>
+                </div>
 
-                    {signature}
-                    <div className="column" style={{ borderTop:"2px dashed #EAEAEA"}}>
-                        {this.state.info}
-                        <button onClick={this.nextPage}>上一页</button><button onClick={this.lastPage}>下一页</button>
-                        </div>
-                </div></div>;
-        }        
+                {signature}
+                <div className="column" style={{ borderTop: "2px dashed #EAEAEA" }}>
+                    {this.state.info}
+                    <div className="row">
+                        <button className="awardPage" id={awardPagerId} onClick={this.lastPage}>上一页</button>
+                        <button className="awardPage" onClick={this.nextPage}>下一页</button>
+                    </div>
+                </div>
+            </div></div>;
     }
+}
 
 export class SendTopic extends RouteComponent<{ topicid, onChange, }, { content: string, mode: number }, {}>{
     constructor(props) {
@@ -1329,7 +1398,7 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, }, { content:
         </div>;
     }
 }
-export class PostManagement extends React.Component<{ userId, postId }, { wealth, prestige, reason, tpdays, UI }>{
+export class PostManagement extends React.Component<{ userId, postId, onChange }, { wealth, prestige, reason, tpdays, UI, tips }>{
     constructor(props) {
         super(props);
         this.wealthInput = this.wealthInput.bind(this);
@@ -1340,7 +1409,7 @@ export class PostManagement extends React.Component<{ userId, postId }, { wealth
         this.showAwardUI = this.showAwardUI.bind(this);
         this.showPunishUI = this.showPunishUI.bind(this);
         this.showDeleteUI = this.showDeleteUI.bind(this);
-        this.state = { wealth: 1000, prestige: 0, reason: "", tpdays: 0, UI: "Award" }
+        this.state = { wealth: 1000, prestige: 0, reason: "", tpdays: 0, UI: "Award", tips: "" }
     }
     showAwardUI() {
         this.setState({ UI: "Award" });
@@ -1352,24 +1421,36 @@ export class PostManagement extends React.Component<{ userId, postId }, { wealth
         this.setState({ UI: "Delete" });
     }
     confirm() {
-        Utility.awardWealth(this.state.reason, this.state.wealth, this.props.postId);
-        const UIId = `#manage${this.props.postId}`;
-        $(UIId).css("display", "none");
+        if ($("input[name='reason']:checked").val()) {
+            Utility.awardWealth($("input[name='reason']:checked").val(), this.state.wealth, this.props.postId);
+            const UIId = `#manage${this.props.postId}`;
+            $(UIId).css("display", "none");
+            this.props.onChange();
+        } else {
+            if (this.state.reason==="") {
+                console.log("请输入原因！");
+                this.setState({ tips: "请输入原因！" });
+                return false;
+            } else {
+                Utility.awardWealth(this.state.reason, this.state.wealth, this.props.postId);
+                const UIId = `#manage${this.props.postId}`;
+                $(UIId).css("display", "none");
+                this.setState({ reason: "" });
+                this.props.onChange();
+            }
+        }
+
     }
     wealthInput(e) {
-        console.log(this.state);
         this.setState({ wealth: e.target.value });
     }
     prestigeInput(e) {
-        console.log(this.state);
         this.setState({ prestige: e.target.value });
     }
     reasonInput(e) {
-        console.log(this.state);
         this.setState({ reason: e.target.value });
     }
     tpdaysInput(e) {
-        console.log(this.state);
         this.setState({ tpdays: e.target.value });
     }
     render() {
@@ -1383,9 +1464,20 @@ export class PostManagement extends React.Component<{ userId, postId }, { wealth
                 <div className="manageObject">威望</div>
                 <input type="text" value={this.state.prestige} onChange={this.prestigeInput} />
             </div>
-            <div className="row manageOperation">
+            <div className="column manageOperation">
                 <div className="manageObject">原因</div>
+                <div className="row">
+                <div className="row">
+                    <input type="radio" name="reason" value="好文章" /><div>好文章</div>
+                </div>
+                <div className="row">
+                    <input type="radio" name="reason" value="有用资源" /><div>有用资源</div>
+                </div>
+                <div className="row">
+                        <input type="radio" name="reason" value="热心回复" /><div>热心回复</div></div>
+                    </div>
                 <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+                <div>{this.state.tips}</div>
             </div>
         </div>;
         const punishUI = <div className="column" id="punish" >
@@ -1399,7 +1491,9 @@ export class PostManagement extends React.Component<{ userId, postId }, { wealth
             </div>
             <div className="row manageOperation">
                 <div className="manageObject">原因</div>
+              
                 <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+                <div>{this.state.tips}</div>
             </div>
         </div>;
         const deleteUI = <div className="column" id="punish" >
