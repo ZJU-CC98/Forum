@@ -21,6 +21,7 @@
     <None Remove="Components\SearCH.tsx" />
     <None Remove="Components\Status.tsx" />
     <None Remove="Components\UbbContainer.tsx" />
+    <None Remove="Components\UbbEditor.tsx" />
     <None Remove="Components\UserCenterConfig.tsx" />
     <None Remove="Components\UserCenterConfigAvatar.tsx" />
     <None Remove="Components\UserCenterConfigOthers.tsx" />
@@ -88,6 +89,7 @@
     <TypeScriptCompile Include="Components\SendTopic.tsx" />
     <TypeScriptCompile Include="Components\Status.tsx" />
     <TypeScriptCompile Include="Components\UbbContainer.tsx" />
+    <TypeScriptCompile Include="Components\UbbEditor.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\UserCenterConfig.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\UserCenterConfigAvatar.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\UserCenterConfigOthers.tsx" />
