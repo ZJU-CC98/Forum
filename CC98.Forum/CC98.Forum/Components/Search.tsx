@@ -35,7 +35,8 @@ export class Search extends React.Component<{}, SearchState> {
         else {
             let newTopic = await Utility.getSearchTopic(searchInfo.boardId, searchInfo.words, this.state.from, this.context.router);
             //搜索结果为0
-            if (!newTopic) {
+            if (newTopic == 0) {
+                console.log("没有搜索结果");
                 this.showNoResult();
                 this.setState({ loading: false });
             }
@@ -43,12 +44,12 @@ export class Search extends React.Component<{}, SearchState> {
                 //搜索结果小于20条，无法再获取新的了
                 if (newTopic.length < 20) {
                     this.setState({ boardId: searchInfo.boardId, boardName: searchInfo.boardName, words: searchInfo.words, data: newTopic, from: newTopic.length, loading: false });
+                    $('#focus-topic-loading').addClass('displaynone');
                     $('#focus-topic-loaddone').removeClass('displaynone');
                 }
                 //搜索结果多于20条，还可以通过滚动条继续获取
                 else {
                     this.setState({ boardId: searchInfo.boardId, boardName: searchInfo.boardName, words: searchInfo.words, data: newTopic, from: newTopic.length, loading: true });
-                    $('#focus-topic-loading').removeClass('displaynone');
                 }
             }
         }
@@ -106,7 +107,7 @@ export class Search extends React.Component<{}, SearchState> {
                             <div className="focus-allNewTopic"><i className="fa fa-home" aria-hidden="true"></i>搜索/{this.state.boardName}</div>
                             <div className="focus-topic-area" id="focus-topic-area">
                                     <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
-                                    <div className="focus-topic-loading displaynone" id="focus-topic-loading"><img src="http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif"></img></div>
+                                    <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif"></img></div>
                                     <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone"> 没有更多帖子啦~</div>
                             </div>
                             <div id="noResult" className="noResult displaynone">没有符合条件的搜索结果</div>
