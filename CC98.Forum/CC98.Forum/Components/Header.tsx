@@ -176,8 +176,8 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
         const searchBoxLi = searchBoxSub.find('li');
 
         //查看当前是全站还是某版，如果是某版就查询到某版id
-        let url1 = location.href.match(/\/topic\/(\S+)/);
-        let url2 = location.href.match(/\/list\/(\S+)/);
+        let url1 = location.href.match(/\/topic\/(\S+)\/+?/);
+        let url2 = location.href.match(/\/list\/(\S+)\/+?/);
         let url3 = location.href.match(/\/(search)/);
         let boardId = 0;
         let boardName = '全站';
@@ -290,14 +290,16 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
 
     render() {
         //查看当前是全站还是某版
-        let url1 = location.href.match(/\/topic\/(\S+)/);
-        let url2 = location.href.match(/\/list\/(\S+)/);
+        let url1 = location.href.match(/\/topic\/(\S+)\/+?/);
+        let url2 = location.href.match(/\/list\/(\S+)\/+?/);
         let url3 = location.href.match(/\/(search)/);
         let flag = 1;
         if (url1) {
+            console.log(url1[1]);
             flag = 0;
         }
         else if (url2) {
+            console.log(url2[1]);
             flag = 0;
         }
         else if (url3) {
