@@ -643,6 +643,20 @@
                 border-radius: 5px;
             }
 
+            #submit {
+                margin-left: 10rem;
+                background-color: #68b3ff;
+                color: #fff;
+
+                &:hover {
+                    background-color: rgb(41,174,223);
+                }
+
+                &:active {
+                    background-color: rgb(38,154,196);
+                }
+            }
+
             p {
                 transition-duration: .5s;
             }
