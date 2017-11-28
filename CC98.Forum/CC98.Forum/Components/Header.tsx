@@ -140,6 +140,7 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
                         <div className="userName">{this.state.userName}</div>
                     </div>
                     <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/" style={{ color: '#fff' }}>首页</a></div>
+                    <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/message" style={{ color: '#fff' }}>消息</a></div>     
                     <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/focus" style={{ color: '#fff' }}>关注</a></div>
                     <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/newTopics" style={{ color: '#fff' }}>新帖</a></div>
                     <a href="/boardList"><div className="boardListLink" style={{ margin: '0 0 0 10px' }}><div style={{ marginTop: '16px', color: '#fff' }}>版面</div></div></a>
@@ -147,7 +148,7 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
                 <div className="dropDownSubBox">
                     <ul className="dropDownSub">
                         <a href="/userCenter"> <li>个人中心</li></a>
-                        <a href="/message"><li>消息</li></a>
+                        <a href="/"><li>签到（暂无）</li></a>
                         <li onClick={this.logOff}>注销</li>
                     </ul>
                 </div>
@@ -234,9 +235,9 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
         //获取搜索关键词
         let self = this;
         searchIco.click(async function () {
-            if (searchBoxSelect.text() == '主题' || searchBoxSelect.text() == '全站') {
-                let val: any = $('#searchText').val();
-                if (val && val != '') {
+            let val: any = $('#searchText').val();
+            if (val && val != '') {
+                if (searchBoxSelect.text() == '主题' || searchBoxSelect.text() == '全站') {
                     let words = val.split(' ');
                     if (words) {
                         if (words.length > 5) {
@@ -250,10 +251,7 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
                         }
                     }
                 }
-            }
-            else if (searchBoxSelect.text() == '版内') {
-                let val: any = $('#searchText').val();
-                if (val && val != '') {
+                else if (searchBoxSelect.text() == '版内') {
                     let words = val.split(' ');
                     if (words) {
                         if (words.length > 5) {
@@ -267,10 +265,7 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
                         }
                     }
                 }
-            }
-            else if (searchBoxSelect.text() == '用户') {
-                let val: any = $('#searchText').val();
-                if (val && val != '') {
+                else if (searchBoxSelect.text() == '用户') {
                     let body = await Utility.getUserDetails(val, self.context.router);
                     let host = window.location.host;
                     if (body) {
@@ -281,9 +276,31 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
                         window.location.href = `http://${host}/search`;
                     }
                 }
-            }
-            else {
-                alert("搜索版面还没有做");
+                else if (searchBoxSelect.text() == '版面') {
+                    let host = window.location.host;
+                    let boardResult = Utility.getBoardId(val);
+                    if (boardResult) {
+                        if (boardResult == []) {
+                            Utility.removeStorage('searchInfo');
+                            window.location.href = `http://${host}/search`;
+                        }
+                        else if (boardResult.length == 1) {
+                            window.location.href = `http://${host}/list/${boardResult[0].id}/normal/`;
+                        }
+                        else if (boardResult.length > 1) {
+                            Utility.setStorage("searchBoardInfo", boardResult);
+                            window.location.href = `http://${host}/searchBoard`;
+                        }
+                        else {
+                            Utility.removeStorage('searchInfo');
+                            window.location.href = `http://${host}/search`;
+                        }
+                    }
+                    else {
+                        Utility.removeStorage('searchInfo');
+                        window.location.href = `http://${host}/search`;
+                    }
+                }
             }
         });
     }

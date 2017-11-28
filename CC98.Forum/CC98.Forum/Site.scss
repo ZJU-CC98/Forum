@@ -384,6 +384,9 @@ body {
 }
 
 .good {
+    height:2rem;
+   
+    align-items:center;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -392,8 +395,6 @@ body {
     padding: 1.25rem;
     font-size: 0.75rem;
     border-bottom: #EAEAEA solid thin;
-    border-left: #EAEAEA solid thin;
-    border-right: #EAEAEA solid thin;
     box-sizing: border-box;
 }
 
@@ -658,7 +659,7 @@ a {
     width: 6rem;
     background-color: #FF6A6A;
     margin-right: 0.63rem;
-    margin-left: 7.5rem;
+    margin-left: 2.5rem;
     margin-top:2.5rem;
     height: 2.5rem;
     cursor: pointer;

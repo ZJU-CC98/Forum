@@ -1,11 +1,9 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
+﻿
 import * as React from 'react';
-import { FocusTopic } from '../Props/FocusTopic';
-import { FocusTopicSingle } from './FocusTopicSingle';
-import { FocusTopicAreaState } from '../States/FocusTopicAreaState';
-import * as Utility from '../Utility';
+import { FocusTopic } from '../../Props/FocusTopic';
+import { FocusTopicSingle } from '.././FocusTopicSingle';
+import { FocusTopicAreaState } from '../../States/FocusTopicAreaState';
+import * as Utility from '../../Utility';
 /**
  * 表示全站最新主题列表
  */

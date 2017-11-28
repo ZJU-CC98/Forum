@@ -1,14 +1,15 @@
 ﻿import * as React from 'react';
-import * as State from '../States/AppState';
-import * as Utility from '../Utility';
-import { UbbContainer } from './UbbContainer';
+import * as State from '../../States/AppState';
+import * as Utility from '../../Utility';
+import { UbbContainer } from '.././UbbContainer';
 import {
     Route,
     Link
 } from 'react-router-dom';
 
 import { match } from 'react-router';
-import *　as Post from './Post';
+import *　as Post from './Topic-Post';
+import { PostTopic } from './Topic-PostTopic';
 declare let moment: any;
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
@@ -55,7 +56,7 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
     render() {
         let topic = null;
 		if (this.state.page == 1) {
-			topic = <Post.PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={this.state.userId} />;
+			topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={this.state.userId} />;
 		}    
 			
         return <div className="center" style={{width:"80%"}} >

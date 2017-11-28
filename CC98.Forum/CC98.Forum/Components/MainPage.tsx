@@ -220,7 +220,7 @@ export class Shixijianzhi extends React.Component<{}, MainPageTopicState>{
 export class Test extends React.Component<{}, AppState>{
 
     async test() {
-        const url = 'http://apitest.niconi.cc/topic/test';
+        const url = 'http://apitest.niconi.cc/me/unreadcount';
         const token = Utility.getLocalStorage("accessToken");
         console.log(token);
         let myHeaders = new Headers();

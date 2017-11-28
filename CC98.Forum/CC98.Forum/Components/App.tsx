@@ -5,23 +5,24 @@ import {
 	BrowserRouter as Router,
 	Route
 } from 'react-router-dom';
-import { Post } from './post';
-import { List } from './List';
-import { CurUserPost } from './CurUserPost';
-import { BoardList } from './BoardList';
+import { Post } from './Topic/Topic';
+import { List } from './Board/Board';
+import { CurUserPost } from './Topic/Topic-Trace';
+import { BoardList } from './Board/BoardList';
 import { UserCenter } from './UserCenter/UserCenter';
 import { Message } from './Message';
-import { AllNewTopic } from './AllNewTopic';
+import { AllNewTopic } from './Topic/Topic-New';
 import { Focus } from './Focus';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { MainPage } from './MainPage';
 import { User } from './UserCenter/User';
 import { LogOn } from './LogOn';
-import { CreateTopic } from './CreateTopic';
+import { CreateTopic } from './Topic/Topic-CreateTopic';
 import * as Status from './Status';
 import { UbbContainer } from './UbbContainer';
 import { Search } from './Search';
+import { SearchBoard } from './SearchBoard';
 
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
@@ -51,6 +52,7 @@ export class App extends React.Component<{}, AppState> {
 					<Route path="/user" component={User} />
                     <Route path="/logon" component={LogOn} />
                     <Route path="/search" component={Search} />
+                    <Route path="/searchBoard" component={SearchBoard} />
 					<Route path="/createtopic/:boardId" component={CreateTopic} />
 					<Route path="/status/logout" component={Status.LogOut} />
 					<Route path="/status/UnauthorizedBoard" component={Status.UnauthorizedBoard} />
