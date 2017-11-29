@@ -37,7 +37,7 @@ class UbbEditorState {
 /**
  * UBB编辑器组件
  */
-export class UbbEditor extends React.Component<null, UbbEditorState> {
+export class UbbEditor extends React.Component<{update}, UbbEditorState> {
     /**
     * 对textarea的引用
     */
@@ -77,6 +77,7 @@ export class UbbEditor extends React.Component<null, UbbEditorState> {
     }
 
     handleTextareaChange(value: string) {
+        this.props.update(value);
         this.setState({
             value: value
         });

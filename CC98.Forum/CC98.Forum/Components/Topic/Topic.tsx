@@ -7,7 +7,7 @@ import {
     Route,
     Link
 } from 'react-router-dom';
-
+import { UbbEditor } from '../UbbEditor';
 import { match } from "react-router";
 import { UbbContainer } from '.././UbbContainer';
 //import { TopicPager, TopicPagerDown, PageModel } from './Topic-Pager';
@@ -211,10 +211,15 @@ export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid },
         super(props, content);
         this.nextPage = this.nextPage.bind(this);
         this.lastPage = this.lastPage.bind(this);
+        this.update = this.update.bind(this);
         this.state = {
             topicMessage: { title: "加载中...", time: "", content: "", signature: "", postid: 0 }
-            , likeState: 0, awardInfo: [], info: null, awardPage: 1
+            , likeState: 0, awardInfo: [], info: [], awardPage: 1
         }
+    }
+    async update() {
+        console.log("topic should update");
+        this.setState({});
     }
     async nextPage() {
         const page = this.state.awardPage;
@@ -233,7 +238,7 @@ export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid },
         const award = await Utility.getAwardInfo(this.state.topicMessage.postId, page - 1);
         const info = award.map(this.generateAwardInfo.bind(this));
         const awardInfo = await Promise.all(info);
-        
+
         this.setState({ info: awardInfo, awardPage: page - 1 });
     }
     async generateAwardInfo(item) {
@@ -242,7 +247,7 @@ export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid },
     }
     async componentWillMount() {
         let topicMessage = await Utility.getTopic(this.props.topicid, this.context.router);
-   
+
         const award = await Utility.getAwardInfo(topicMessage.postId, 1);
         const info = award.map(this.generateAwardInfo.bind(this));
         const awardInfo = await Promise.all(info);
@@ -251,6 +256,15 @@ export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid },
 
     render() {
         const awardPagerId = `awardPager${this.state.topicMessage.postId}`;
+        let awardPager = null;
+        if (this.state.info.length !== 0) {
+
+            awardPager = < div className="row" >
+                <button className="awardPage" id={awardPagerId} onClick={this.lastPage}>上一页</button>
+                <button className="awardPage" onClick={this.nextPage}>下一页</button>
+            </div>;
+        }
+
         if (this.state.topicMessage != null) {
             if (this.state.topicMessage.userId == this.props.userId || this.props.userId == null) {
                 return <div className="root" id="1">
@@ -263,13 +277,11 @@ export class PostTopic extends RouteComponent<{ userId, imgUrl, page, topicid },
 
                     <TopicContent postid={this.state.topicMessage.postId} content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} topicid={this.props.topicid} userId={this.state.topicMessage.userId}
                         contentType={this.state.topicMessage.contentType}
-                        masters={this.state.topicMessage.masters} />
+                        masters={this.state.topicMessage.masters}
+                        update={this.update} />
                     <div className="column" style={{ width: "100%" }}>
                         {this.state.info}
-                        <div className="row">
-                            <button className="awardPage" id={awardPagerId} onClick={this.lastPage}>上一页</button>
-                            <button className="awardPage" onClick={this.nextPage}>下一页</button>
-                        </div>
+                        {awardPager}
                     </div>
                 </div>;
             }
@@ -460,7 +472,7 @@ export class TopicTitle extends RouteComponent<{ Title, Time, HitCount }, State.
         </div>;
     }
 }
-export class TopicContent extends RouteComponent<{ postid: number, topicid: number, content: string, signature: string, userId: number, contentType: number, masters: string[] }, { likeState: number, likeNumber: number, dislikeNumber: number }, {}> {
+export class TopicContent extends RouteComponent<{ postid: number, topicid: number, content: string, signature: string, userId: number, contentType: number, masters: string[], update }, { likeState: number, likeNumber: number, dislikeNumber: number }, {}> {
     constructor(props, content) {
         super(props, content);
         this.showManageUI = this.showManageUI.bind(this);
@@ -472,9 +484,19 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
         }
     }
     update() {
-        console.log("topic should update");
-        this.setState({});
-        this.forceUpdate();
+        this.props.update();
+    }
+    componentDidUpdate() {
+        const divid = `doc-content${this.props.postid}`;
+        editormd.markdownToHTML(divid, {
+            htmlDecode: "style,script,iframe",
+            emoji: true,
+            taskList: true,
+            tex: true,
+            flowChart: true,
+            sequenceDiagram: true,
+            codeFold: true,
+        });
     }
     async componentDidMount() {
         const data = await Utility.getLikeState(this.props.topicid, this.context.router);
@@ -484,7 +506,16 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
         else if (data.likeState === 2) {
             $("#commentdisliked").css("color", "red");
         }
-
+        const divid = `doc-content${this.props.postid}`;
+        editormd.markdownToHTML(divid, {
+            htmlDecode: "style,script,iframe",
+            emoji: true,
+            taskList: true,
+            tex: true,
+            flowChart: true,
+            sequenceDiagram: true,
+            codeFold: true,
+        });
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
     async like() {
@@ -544,15 +575,7 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
             <textarea name="editormd-markdown-doc" style={{ display: 'none' }}>{this.props.content}</textarea>
 
         </div>;
-        editormd.markdownToHTML(divid, {
-            htmlDecode: "style,script,iframe",
-            emoji: true,
-            taskList: true,
-            tex: true,
-            flowChart: true,
-            sequenceDiagram: true,
-            codeFold: true,
-        });
+
         let content = ubbMode;
         //ubb
 
@@ -630,14 +653,15 @@ export class AwardInfo extends RouteComponent<{ postId, userImgUrl, content, use
     }
 }
 
-export class Reply extends RouteComponent<{}, { contents, masters }, { page, topicid, userName }>{
+export class Reply extends RouteComponent<{}, { contents, masters, k }, { page, topicid, userName }>{
     constructor(props, content) {
-       
+
         super(props, content);
         this.update = this.update.bind(this);
         this.state = {
             contents: [],
-            masters: []
+            masters: [],
+            k: 0
         };
 
     }
@@ -656,7 +680,7 @@ export class Reply extends RouteComponent<{}, { contents, masters }, { page, top
              realContents = Utility.getStorage(storageId);
          }*/
         realContents = await Utility.getTopicContent(newProps.match.params.topicid, page, this.context.router);
-        const masters = this.getMasters(newProps.match.params.topicid);
+        const masters = await this.getMasters(newProps.match.params.topicid);
         this.setState({ contents: realContents, masters: masters });
 
     }
@@ -664,14 +688,14 @@ export class Reply extends RouteComponent<{}, { contents, masters }, { page, top
     private generateContents(item: State.ContentState) {
         return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
             <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} />
-            <ReplyContent key={item.content} masters={this.state.masters} userId={item.userId} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postId} contentType={item.contentType} update={this.update} />
+            <ReplyContent key={item.content} masters={this.state.masters} userId={item.userId} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postId} contentType={item.contentType} update={this.update} k={this.state.k} />
         </div>
         </div>;
     }
-    update() {
+    async update() {
         console.log("reply should update");
-        this.setState({});
-        this.forceUpdate();
+        this.setState({ k: 1});
+        console.log(this.state);
     }
     render() {
 
@@ -712,7 +736,7 @@ export class HotReply extends RouteComponent<{}, { masters, contents }, { page, 
         const floor = (item.floor % 10).toString();
         return <div className="reply" id={floor}><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
             <HotReplier key={item.id} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isAnonymous={item.isAnonymous} />
-            <ReplyContent key={item.content} masters={this.state.masters} userId={item.userId} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.id} contentType={item.contentType} update={this.update} />
+            <ReplyContent key={item.content} masters={this.state.masters} userId={item.userId} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.id} contentType={item.contentType} update={this.update} k={this.state.contents} />
         </div>
         </div>;
     }
@@ -1017,7 +1041,7 @@ export class UserDetails extends RouteComponent<{ userName, userId }, { portrait
         </div>;
     }
 }
-export class ReplyContent extends RouteComponent<{ masters, userId, content, signature, topicid, postid, contentType ,update}, { likeNumber, dislikeNumber, likeState, awardInfo, info, awardPage }, {}> {
+export class ReplyContent extends RouteComponent<{ k,masters, userId, content, signature, topicid, postid, contentType, update }, { likeNumber, dislikeNumber, likeState, awardInfo, info, awardPage }, {}> {
     constructor(props, content) {
         super(props, content);
         this.showManageUI = this.showManageUI.bind(this);
@@ -1029,11 +1053,12 @@ export class ReplyContent extends RouteComponent<{ masters, userId, content, sig
             dislikeNumber: 1,
             likeState: 0,
             awardInfo: [],
-            info: null,
+            info: [],
             awardPage: 1
         }
     }
     update() {
+        console.log(this.props.k);
         this.props.update();
     }
     async nextPage() {
@@ -1055,7 +1080,7 @@ export class ReplyContent extends RouteComponent<{ masters, userId, content, sig
         const award = await Utility.getAwardInfo(this.props.postid, page - 1);
         const info = award.map(this.generateAwardInfo.bind(this));
         const awardInfo = await Promise.all(info);
-      
+
         this.setState({ info: awardInfo, awardPage: page - 1 });
     }
     showManageUI() {
@@ -1063,6 +1088,18 @@ export class ReplyContent extends RouteComponent<{ masters, userId, content, sig
         const UIId = `#manage${this.props.postid}`;
 
         $(UIId).css("display", "");
+    }
+    componentDidUpdate() {
+        const divid = `doc-content${this.props.postid}`;
+        editormd.markdownToHTML(divid, {
+            htmlDecode: "style,script,iframe",
+            emoji: true,
+            taskList: true,
+            tex: true,
+            flowChart: true,
+            sequenceDiagram: true,
+            codeFold: true,
+        });
     }
     async componentDidMount() {
 
@@ -1079,6 +1116,16 @@ export class ReplyContent extends RouteComponent<{ masters, userId, content, sig
 
         const info = award.map(this.generateAwardInfo.bind(this));
         const awardInfo = await Promise.all(info);
+        const divid = `doc-content${this.props.postid}`;
+        editormd.markdownToHTML(divid, {
+            htmlDecode: "style,script,iframe",
+            emoji: true,
+            taskList: true,
+            tex: true,
+            flowChart: true,
+            sequenceDiagram: true,
+            codeFold: true,
+        });
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState, awardInfo: award, info: awardInfo });
     }
     async generateAwardInfo(item) {
@@ -1144,15 +1191,7 @@ export class ReplyContent extends RouteComponent<{ masters, userId, content, sig
             <textarea name="editormd-markdown-doc" style={{ display: 'none' }}>{this.props.content}</textarea>
         </div>;
 
-        editormd.markdownToHTML(divid, {
-            htmlDecode: "style,script,iframe",
-            emoji: true,
-            taskList: true,
-            tex: true,
-            flowChart: true,
-            sequenceDiagram: true,
-            codeFold: true,
-        });
+
 
         let content;
         //ubb      
@@ -1183,6 +1222,17 @@ export class ReplyContent extends RouteComponent<{ masters, userId, content, sig
             }
         }
         const awardPagerId = `awardPager${this.props.postid}`;
+        let awardPager = null;
+
+        if (this.state.info.length !== 0) {
+            awardPager = < div className="row" >
+                <button className="awardPage" id={awardPagerId} onClick={this.lastPage}>上一页</button>
+                <button className="awardPage" onClick={this.nextPage}>下一页</button>
+            </div>;
+
+        } else {
+            $(".awardInfo").css("display", "none");
+        }
         let signature = <div className="signature"><UbbContainer code={this.props.signature} /></div>;
         if (this.props.signature == "") {
             signature = null;
@@ -1201,12 +1251,9 @@ export class ReplyContent extends RouteComponent<{ masters, userId, content, sig
                 </div>
 
                 {signature}
-                <div className="column" style={{ borderTop: "2px dashed #EAEAEA" }}>
+                <div className="column awardInfo" style={{ borderTop: "2px dashed #EAEAEA" }}>
                     {this.state.info}
-                    <div className="row">
-                        <button className="awardPage" id={awardPagerId} onClick={this.lastPage}>上一页</button>
-                        <button className="awardPage" onClick={this.nextPage}>下一页</button>
-                    </div>
+                    {awardPager}
                 </div>
             </div></div>;
     }
@@ -1215,8 +1262,13 @@ export class ReplyContent extends RouteComponent<{ masters, userId, content, sig
 export class SendTopic extends RouteComponent<{ topicid, onChange, }, { content: string, mode: number }, {}>{
     constructor(props) {
         super(props);
+        this.sendUbbTopic = this.sendUbbTopic.bind(this);
         this.changeEditor = this.changeEditor.bind(this);
+        this.update = this.update.bind(this);
         this.state = ({ content: '', mode: 1 });
+    }
+    update(value) {
+        this.setState({ content: value });
     }
     componentDidMount() {
         Constants.testEditor = editormd("test-editormd", {
@@ -1331,44 +1383,10 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, }, { content:
         let mode, editor;
         if (this.state.mode === 0) {
             mode = '使用UBB模式编辑';
-            editor = <div id="sendTopic">
-                <div id="sendTopic-options">
-                    <ul className="editor__menu clearfix" id="wmd-button-row" >
-
-                        <li title="加粗 <strong> Ctrl+B" className="wmd-button" id="wmd-bold-button" ><a className="editor__menu--bold" style={{ backgroundPosition: "0px 0px" }}></a></li>
-
-                        <li title="斜体 <em> Ctrl+I" className="wmd-button" id="wmd-italic-button" style={{ left: " 25px" }}><a className="editor__menu--bold" style={{ backgroundPosition: " -20px 0px" }}></a></li>
-
-                        <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer1"></li>
-
-
-
-                        <li title="链接 <a> Ctrl+L" className="wmd-button" id="wmd-link-button" style={{ left: "75px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-40px 0px" }}></a></li>
-                        <li title="引用 <blockquote> Ctrl+Q" className="wmd-button" id="wmd-quote-button" style={{ left: " 100px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-60px 0px" }}></a></li>
-                        <li title="代码 <pre><code> Ctrl+K" className="wmd-button" id="wmd-code-button" style={{ left: " 125px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-80px 0px" }}></a></li>
-                        <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer2"></li>
-                        <li title="图片 <img> Ctrl+G" className="wmd-button" id="wmd-image-button" style={{ left: "150px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-100px 0px" }}></a></li>
-                        <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer2"></li>
-                        <li title="数字列表 <ol> Ctrl+O" className="wmd-button" id="wmd-olist-button" style={{ left: " 200px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-120px 0px" }}></a></li>
-                        <li title="普通列表 <ul> Ctrl+U" className="wmd-button" id="wmd-ulist-button" style={{ left: "225px" }}><a className="editor__menu--bold" style={{ backgroundPosition: " -140px 0px" }}></a></li>
-                        <li title="标题 <h1>/<h2> Ctrl+H" className="wmd-button" id="wmd-heading-button" style={{ left: "250px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-160px 0px" }}></a></li>
-                        <li title="分割线 <hr> Ctrl+R" className="wmd-button" id="wmd-hr-button" style={{ left: "275px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-180px 0px" }}></a></li>
-                        <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer3"></li>
-                        <li title="撤销 - Ctrl+Z" className="wmd-button" id="wmd-undo-button" style={{ left: "325px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-200px 0px" }}></a></li>
-                        <li title="重做 - Ctrl+Y" className="wmd-button" id="wmd-redo-button" style={{ left: "350px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-220px -20px" }}></a></li>
-                        <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer4"></li>
-
-                        <li title="Markdown 语法" className="wmd-button" id="wmd-help-button" style={{ left: " 400px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-300px 0px" }}></a></li>
-                    </ul>
-                </div>
-                <form>
-                    <div>
-                        <textarea id="sendTopic-input" name="sendTopic-input" value={this.state.content} onChange={this.handleChange.bind(this)} />
-                    </div>
-                </form>
-
+            editor = <div>
+                <UbbEditor update={this.update} />
                 <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
-                    <div id="post-topic-button" onClick={this.sendUbbTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复
+                    <div id="post-topic-button" onClick={this.sendUbbTopic} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复
                     </div>
                     <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>切换到Markdown编辑器            </div> </div></div>;
         }
@@ -1427,7 +1445,7 @@ export class PostManagement extends React.Component<{ userId, postId, onChange }
             $(UIId).css("display", "none");
             this.props.onChange();
         } else {
-            if (this.state.reason==="") {
+            if (this.state.reason === "") {
                 console.log("请输入原因！");
                 this.setState({ tips: "请输入原因！" });
                 return false;
@@ -1467,15 +1485,15 @@ export class PostManagement extends React.Component<{ userId, postId, onChange }
             <div className="column manageOperation">
                 <div className="manageObject">原因</div>
                 <div className="row">
-                <div className="row">
-                    <input type="radio" name="reason" value="好文章" /><div>好文章</div>
-                </div>
-                <div className="row">
-                    <input type="radio" name="reason" value="有用资源" /><div>有用资源</div>
-                </div>
-                <div className="row">
-                        <input type="radio" name="reason" value="热心回复" /><div>热心回复</div></div>
+                    <div className="row">
+                        <input type="radio" name="reason" value="好文章" /><div>好文章</div>
                     </div>
+                    <div className="row">
+                        <input type="radio" name="reason" value="有用资源" /><div>有用资源</div>
+                    </div>
+                    <div className="row">
+                        <input type="radio" name="reason" value="热心回复" /><div>热心回复</div></div>
+                </div>
                 <input type="text" value={this.state.reason} onChange={this.reasonInput} />
                 <div>{this.state.tips}</div>
             </div>
@@ -1491,7 +1509,7 @@ export class PostManagement extends React.Component<{ userId, postId, onChange }
             </div>
             <div className="row manageOperation">
                 <div className="manageObject">原因</div>
-              
+
                 <input type="text" value={this.state.reason} onChange={this.reasonInput} />
                 <div>{this.state.tips}</div>
             </div>
@@ -1532,6 +1550,6 @@ export class Category extends React.Component<{ topicId }, { boardId, topicId, b
     render() {
         const listUrl = `/list/${this.state.boardId}/normal`;
         const topicUrl = `/topic/${this.state.topicId}`;
-        return <div style={{ color: "blue", fontSize: "1rem" }}>&rsaquo;&rsaquo;<a style={{ color: "blue", fontSize: "1rem" }} href="/">首页</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "1rem" }} href={listUrl} >{this.state.boardName}</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "1rem" }} href={topicUrl}>{this.state.title}</a></div>;
+        return <div style={{ color: "blue", fontSize: "1rem" }}>&rsaquo;&rsaquo;<a style={{ color: "blue", fontSize: "1rem" }} href="/">首页</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "1rem" }} href={listUrl} >{this.state.boardName}</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "1rem", overflow: "hidden", textOverflow:"ellipsis",width:"10rem" }} href={topicUrl}>{this.state.title}</a></div>;
     }
 }

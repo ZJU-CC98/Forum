@@ -1211,7 +1211,7 @@ export async function getUserDetails(userName, router) {
             return null;
         }
         let data = await message.json();
-        console.log(data);
+       
         const body = { portraitUrl: data.portraitUrl, userName: data.name, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle, isFollowing: data.isFollowing }
         return body;
     } catch (e) {
