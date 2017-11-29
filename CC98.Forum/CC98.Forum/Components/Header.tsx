@@ -108,9 +108,12 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
             $(document).ready(function () {
 
                 const userInfo = $('.userInfo').eq(0);
+                const userMessage = $('#userMessage'); 
                 const dropDownSub = $('.dropDownSub').eq(0);
+                const dropDownSubMessage = $('.dropDownSubMessage').eq(0);
                 const dropDownLi = dropDownSub.find('li');
-
+                const dropDownLiMessage = dropDownSubMessage.find('li');
+                //点击名字之后出现的下拉列表
                 userInfo.hover(function () {
                     dropDownSub.slideDown("fast");
                 }, function () {
@@ -121,15 +124,29 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
                 }, function () {
                     dropDownSub.slideUp("fast");
                 });
-                /*在一个对象上触发某类事件（比如单击onclick事件），如果此对象定义了此事件的处理程序，那么此事件就会调用这个处理程序，
-                如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
-                或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
-
                 dropDownLi.mouseover(function () {
                     this.className = 'hover';
                 });
 
                 dropDownLi.mouseout(function () {
+                    this.className = '';
+                });
+                //点击消息之后出现的下拉列表
+                userMessage.hover(function () {
+                    dropDownSubMessage.slideDown("fast");
+                }, function () {
+                    dropDownSubMessage.css('display', 'none');
+                });
+                dropDownSubMessage.hover(function () {
+                    dropDownSubMessage.css('display', 'block');
+                }, function () {
+                    dropDownSubMessage.slideUp("fast");
+                });
+                dropDownLiMessage.mouseover(function () {
+                    this.className = 'hover';
+                });
+
+                dropDownLiMessage.mouseout(function () {
                     this.className = '';
                 });
             });
@@ -139,10 +156,10 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
                         <div className="userImg"><img src={this.state.userImgUrl}></img></div>
                         <div className="userName">{this.state.userName}</div>
                     </div>
-                    <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/" style={{ color: '#fff' }}>首页</a></div>
-                    <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/message" style={{ color: '#fff' }}>消息</a></div>     
-                    <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/focus" style={{ color: '#fff' }}>关注</a></div>
-                    <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/newTopics" style={{ color: '#fff' }}>新帖</a></div>
+                    <div className="topBarText"><a href="/" style={{ color: '#fff' }}>首页</a></div>
+                    <div className="topBarText" id="userMessage"><a href="/message" style={{ color: '#fff' }}>消息</a></div>     
+                    <div className="topBarText"><a href="/focus" style={{ color: '#fff' }}>关注</a></div>
+                    <div className="topBarText"><a href="/newTopics" style={{ color: '#fff' }}>新帖</a></div>
                     <a href="/boardList"><div className="boardListLink" style={{ margin: '0 0 0 10px' }}><div style={{ marginTop: '16px', color: '#fff' }}>版面</div></div></a>
                 </div>
                 <div className="dropDownSubBox">
@@ -150,6 +167,14 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
                         <a href="/userCenter"> <li>个人中心</li></a>
                         <a href="/"><li>签到（暂无）</li></a>
                         <li onClick={this.logOff}>注销</li>
+                    </ul>
+                </div>
+                <div className="dropDownSubBox">
+                    <ul className="dropDownSubMessage">
+                        <a href="/message/response"> <li>我的回复</li></a>
+                        <a href="/message/attme"><li>@ 我的</li></a>
+                        <a href="/message/system"><li>系统通知</li></a>
+                        <a href="/message/message"><li>我的私信</li></a>
                     </ul>
                 </div>
             </div>;
