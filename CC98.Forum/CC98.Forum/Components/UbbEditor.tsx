@@ -37,7 +37,7 @@ class UbbEditorState {
 /**
  * UBB编辑器组件
  */
-export class UbbEditor extends React.Component<{update}, UbbEditorState> {
+export class UbbEditor extends React.Component<{update: Function}, UbbEditorState> {
     /**
     * 对textarea的引用
     */
@@ -64,9 +64,9 @@ export class UbbEditor extends React.Component<{update}, UbbEditorState> {
     }
 
     handleExtendButtonClick(tagName: string) {
-        this.setState({
-            extendTagName: tagName
-        });
+        this.setState((prevState)=>({
+            extendTagName: prevState.extendTagName !== tagName ? tagName : ''
+        }));
         this.input.focus();
     }
 
@@ -138,61 +138,65 @@ export class UbbEditor extends React.Component<{update}, UbbEditorState> {
     }
 
     render() {
-        const size = ['未选择', 1, 2, 3, 4, 5, 6, 7];
-        const color = ['未选择', 'aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon', 'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow'];
+        const size = ['', 1, 2, 3, 4, 5, 6, 7];
+        const color = ['颜色', 'aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon', 'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow'];
+        const textarea = (<textarea
+            onInput={() => ('')}
+            value={this.state.value}
+            onChange={(e) => { this.handleTextareaChange(e.target.value); }}
+            onBlur={(e) => {
+                let target: any = e.target;
+                this.handleTextareaBlur(target.selectionStart, target.selectionEnd);
+            }}
+            ref={(textarea) => {
+                this.content = textarea;
+            }}
+        ></textarea>);
 
         return (
+            
             <div className="ubb-editor">
                 <div className="editor-buttons">
                     <div className="editor-buttons-styles">
-                        <button type="button" title="加粗" onClick={() => { this.handleButtonClick('b'); }}>B</button>
-                        <button type="button" title="斜体" onClick={() => { this.handleButtonClick('i'); }}>I</button>
-                        <button type="button" title="下划线" onClick={() => { this.handleButtonClick('u'); }}>U</button>
-                        <button type="button" title="左对齐" onClick={() => { this.handleButtonClick('align', 'left'); }}>左对齐</button>
-                        <button type="button" title="居中" onClick={() => { this.handleButtonClick('align', 'center'); }}>居中</button>
-                        <button type="button" title="右对齐" onClick={() => { this.handleButtonClick('align', 'right'); }}>右对齐</button>
-                    </div>
-                    <div className="editor-buttons-extends">
-                        <button type="button" title="插入url" onClick={() => { this.handleExtendButtonClick('img'); }}>img</button>
-                        <button type="button" title="插入url" onClick={() => { this.handleExtendButtonClick('url'); }}>url</button>
-                        <button type="button" title="插入视频" onClick={() => { this.handleExtendButtonClick('video'); }}>video</button>
-                        <button type="button" title="插入音频" onClick={() => { this.handleExtendButtonClick('audio'); }}>audio</button>
+                        <button className="fa-bold" type="button" title="加粗" onClick={() => { this.handleButtonClick('b'); }}></button>
+                        <button className="fa-italic" type="button" title="斜体" onClick={() => { this.handleButtonClick('i'); }}></button>
+                        <button className="fa-underline" type="button" title="下划线" onClick={() => { this.handleButtonClick('u'); }}></button>
+                        <button className="fa-align-left" type="button" title="左对齐" onClick={() => { this.handleButtonClick('align', 'left'); }}></button>
+                        <button className="fa-align-center" type="button" title="居中" onClick={() => { this.handleButtonClick('align', 'center'); }}></button>
+                        <button className="fa-align-right" type="button" title="右对齐" onClick={() => { this.handleButtonClick('align', 'right'); }}></button>
                     </div>
                     <div className="editor-buttons-selects">
-                        <p>字号：</p>
+                        <p className="fa-text-height"></p>
                         <select onChange={(e) => { this.handleButtonClick('size', e.target.value); (e.target.value as any) = 0; }} value={0}>
-                            {size.map((value, index) => (<option value={index} disabled={index === 0}>{value}</option>))}
+                            {size.map((value, index) => (<option value={index} disabled={index === 0} style={{ display: index === 0 ? 'none' : '' }}>{value}</option>))}
                         </select>
-                        <p>颜色：</p>
-                        <select onChange={(e) => { this.handleButtonClick('color', e.target.value); (e.target.value as any) = 0; }} value={0}>
-                            {color.map((value, index) => (<option value={value} disabled={index === 0} style={{ backgroundColor: value }}></option>))}
+                        <p className="fa-text-height"></p>
+                        <select onChange={(e) => { this.handleButtonClick('color', e.target.value); (e.target.value as any) = "颜色"; }} value={"颜色"}>
+                            {color.map((value, index) => (<option value={value} disabled={index === 0} style={{ backgroundColor: value, display: index === 0 ? 'none' : '' }}></option>))}
                         </select>
+                    </div>
+                    <div className="editor-buttons-extends">
+                        <button className="fa-link" type="button" title="插入url" onClick={() => { this.handleExtendButtonClick('url'); }}></button>
+                        <button className="fa-picture-o" type="button" title="插入图片" onClick={() => { this.handleExtendButtonClick('img'); }}></button>
+                        <button className="fa-film" type="button" title="插入视频" onClick={() => { this.handleExtendButtonClick('video'); }}></button>
+                        <button className="fa-music" type="button" title="插入音频" onClick={() => { this.handleExtendButtonClick('audio'); }}></button>
                     </div>
                 </div>
                 <div className="ubb-extend" style={{ height: this.state.extendTagName ? '2rem' : '0rem' }}>
-                    <p>请输入{this.state.extendTagName}的地址</p>
+                    <p>请输入地址：</p>
                     <input
                         type="text"
                         value={this.state.extendValue}
                         onChange={(e) => { this.handleExtendValueChange(e.target.value); }}
                         ref={(it) => { this.input = it; }}
                     />
-                    <button type="button" onClick={() => { this.handleButtonClick(this.state.extendTagName, this.state.extendValue) }}>确认</button>
+                    {this.state.extendTagName === 'img' ? <label className="fa-upload" htmlFor="upload"></label> : null}
+                    <button className="fa-check" type="button" onClick={() => { this.handleButtonClick(this.state.extendTagName, this.state.extendValue) }}></button>
+                    <button className="fa-remove" type="button" onClick={() => { this.setState({ extendTagName: ''}); }}></button>
                     <input type="file" id="upload" accept="image/*" style={{ display: 'none' }} onChange={(e) => { this.handleUpload(e.target.files[0]); }} />
-                    {this.state.extendTagName === 'img' ? <label htmlFor="upload">上传</label> : null}
                 </div>
                 <div className="ubb-content">
-                    <textarea
-                        value={this.state.value}
-                        onChange={(e) => { this.handleTextareaChange(e.target.value); }}
-                        onBlur={(e) => {
-                            let target: any = e.target;
-                            this.handleTextareaBlur(target.selectionStart, target.selectionEnd);
-                        }}
-                        ref={(textarea) => {
-                            this.content = textarea;
-                        }}
-                    ></textarea>
+                    {textarea}
                 </div>
             </div>
         );
