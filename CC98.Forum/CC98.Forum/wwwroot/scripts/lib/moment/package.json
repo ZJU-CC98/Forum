@@ -2,7 +2,7 @@
   "_args": [
     [
       "moment@2.18.1",
-      "C:\\Users\\an\\Source\\Repos2\\Forum\\CC98.Forum\\CC98.Forum"
+      "C:\\Users\\user.ZSQ-PC\\source\\repos\\Forum\\CC98.Forum\\CC98.Forum"
     ]
   ],
   "_from": "moment@2.18.1",
@@ -35,7 +35,7 @@
   "_shasum": "c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f",
   "_shrinkwrap": null,
   "_spec": "moment@2.18.1",
-  "_where": "C:\\Users\\an\\Source\\Repos2\\Forum\\CC98.Forum\\CC98.Forum",
+  "_where": "C:\\Users\\user.ZSQ-PC\\source\\repos\\Forum\\CC98.Forum\\CC98.Forum",
   "author": {
     "email": "iskren.chernev@gmail.com",
     "name": "Iskren Ivov Chernev",

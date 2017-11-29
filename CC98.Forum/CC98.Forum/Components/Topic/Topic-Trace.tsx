@@ -59,7 +59,7 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
 			topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={this.state.userId} />;
 		}    
 			
-        return <div className="center" style={{width:"80%"}} >
+        return <div className="center" style={{width:"1140px"}} >
             <TopicPager userId={this.state.userId} page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
             {topic}
             <Route path="/topic/:topicid/user/:userId/:page?" component={Reply} />

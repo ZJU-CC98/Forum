@@ -26,7 +26,7 @@ export class UserCenterMyFavoritesBoard extends React.Component<UserCenterMyFavo
         try {
             const token = Utility.getLocalStorage("accessToken");
             const boardId = this.props.UserFavoritesBoard.id;
-            const url = `http://apitest.niconi.cc/me/removecustomboard/${boardId}`;
+            const url = `http://apitest.niconi.cc/me/removecustomboard/${boardId}/normal`;
             let myHeaders = new Headers();
             myHeaders.append('Authorization', token);
 

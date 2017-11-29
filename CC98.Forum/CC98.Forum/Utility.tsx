@@ -1211,7 +1211,7 @@ export async function getUserDetails(userName, router) {
             return null;
         }
         let data = await message.json();
-        console.log(data);
+       
         const body = { portraitUrl: data.portraitUrl, userName: data.name, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle, isFollowing: data.isFollowing }
         return body;
     } catch (e) {
@@ -2218,16 +2218,9 @@ export function getBoardId(boardName: string) {
         { id: "614", name: "莫失莫忘" }
     ];
     let boardResult = [];
-    //是否完全匹配
+    //看是否包含
     for (let i in boardInfo) {
-        if (boardInfo[i].name == boardName) {
-            boardResult.push({ id: boardInfo[i].id, name: boardInfo[i].name });
-            return boardResult;
-        }
-    }
-    //如果不完全匹配，看是否包含
-    for (let i in boardInfo) {
-        if (boardInfo[i].name.indexOf(boardName) > 0) {
+        if (boardInfo[i].name.indexOf(boardName) > -1) {
             boardResult.push({ id: boardInfo[i].id, name: boardInfo[i].name });
         }
     }
