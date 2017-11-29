@@ -8,6 +8,7 @@ import {
     Link
 } from 'react-router-dom';
 import { match } from "react-router";
+import { UbbEditor } from '../UbbEditor';
 export module Constants {
     export var testEditor;
 }
@@ -42,6 +43,7 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
 export class CreateTopic extends RouteComponent<{}, { title,content,topicId ,ready,mode,boardName}, {boardId}> {   //发帖
     constructor(props) {
         super(props);
+        this.update = this.update.bind(this);
         this.changeEditor = this.changeEditor.bind(this);
         this.state = ({ topicId: null, title: '', content: '', ready: false, mode: 0, boardName:"" });
     }
@@ -64,6 +66,9 @@ export class CreateTopic extends RouteComponent<{}, { title,content,topicId ,rea
         } else {
             this.setState({ mode: 0 });
         }
+    }
+    update(value) {
+        this.setState({ content: value });
     }
     async sendMdTopic(content1) {
         try {
@@ -145,7 +150,7 @@ export class CreateTopic extends RouteComponent<{}, { title,content,topicId ,rea
                     <input type="radio" name="option" value="host" />回复仅楼主可见
                     <input type="radio" name="option" value="special" />回复仅特定用户可见
             </div>
-                <InputUbbContent onChange={this.onUbbChange.bind(this)} />
+                <UbbEditor update={this.update} />
                 <div id="post-topic-button" onClick={this.sendUbbTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>发帖</div>
                 <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>切换到Markdown编辑器
 
