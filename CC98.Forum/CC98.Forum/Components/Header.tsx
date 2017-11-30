@@ -171,7 +171,7 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
                 </div>
                 <div className="dropDownSubBox">
                     <ul className="dropDownSubMessage">
-                        <a href="/message/response"> <li>我的回复</li></a>
+                        <a href="/message/response"> <li>回复我的</li></a>
                         <a href="/message/attme"><li>@ 我的</li></a>
                         <a href="/message/system"><li>系统通知</li></a>
                         <a href="/message/message"><li>我的私信</li></a>
