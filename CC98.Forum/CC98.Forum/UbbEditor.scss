@@ -9,22 +9,27 @@
         border-bottom: 1px solid rgb(204,204,204);
     }
 
-    select, input, textarea, button {
+    p, label, select, input, textarea, button {
         border: none;
+
         &:focus {
             outline: none;
+        }
+
+        &:before {
+            font-family: FontAwesome;
         }
     }
 
     label, button {
-        width: 3rem;
+        transition-duration: .5s;
         height: 2rem;
         font-size: 14px;
         background-color: white;
         padding: 0;
         border: none;
         cursor: pointer;
-        margin-right: 1rem;
+        margin: 0 1rem;
     }
 
     label {
@@ -32,30 +37,37 @@
         justify-content: center;
         align-items: center;
     }
-    
+
     .editor-buttons-extends, .editor-buttons-styles {
         display: flex;
         align-items: center;
     }
 
     .editor-buttons-extends {
-        margin-right: 2rem;
+        margin-left: -1.2rem;
     }
 
     .editor-buttons-selects {
         display: flex;
         align-items: center;
+        padding-left: 1.2rem;
 
         p {
             margin: 0;
+            margin-right: -2.5rem;
             font-size: 14px;
+            z-index: 1;
+            pointer-events: none;
         }
 
         select {
-            width: 6rem;
+            width: 2rem;
             height: 2rem;
-            margin-right: 2rem;
+            margin: 0 1.2rem;
             text-align-last: center;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            cursor: pointer;
         }
     }
 
@@ -66,8 +78,7 @@
         overflow: hidden;
         border-bottom: 1px solid rgb(204,204,204);
         height: 2rem;
-        justify-content: space-between;
-        padding: 0 2rem;
+        padding: 0 1rem;
 
         p {
             margin: 0;
@@ -76,7 +87,7 @@
 
         input {
             height: 2rem;
-            width: 40rem;
+            width: 35rem;
         }
     }
 

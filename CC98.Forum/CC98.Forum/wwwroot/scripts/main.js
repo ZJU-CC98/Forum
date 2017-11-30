@@ -12635,7 +12635,13 @@ var TdTagHandler = /** @class */ (function (_super) {
     });
     ;
     TdTagHandler.prototype.execCore = function (innerContent, tagData, context) {
-        return React.createElement("td", null, innerContent);
+        var rowspanValue = 1;
+        var colspanValue = 1;
+        if (tagData.parameterCount === 2) {
+            rowspanValue = parseInt(tagData.value(0));
+            colspanValue = parseInt(tagData.value(1));
+        }
+        return React.createElement("td", { rowSpan: rowspanValue, colSpan: colspanValue }, innerContent);
     };
     return TdTagHandler;
 }(Ubb.RecursiveTagHandler));
@@ -12679,7 +12685,13 @@ var ThTagHandler = /** @class */ (function (_super) {
     });
     ;
     ThTagHandler.prototype.execCore = function (innerContent, tagData, context) {
-        return React.createElement("th", null, innerContent);
+        var rowspanValue = 1;
+        var colspanValue = 1;
+        if (tagData.parameterCount === 2) {
+            rowspanValue = parseInt(tagData.value(0));
+            colspanValue = parseInt(tagData.value(1));
+        }
+        return React.createElement("th", { rowSpan: rowspanValue, colSpan: colspanValue }, innerContent);
     };
     return ThTagHandler;
 }(Ubb.RecursiveTagHandler));
