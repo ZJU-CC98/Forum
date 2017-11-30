@@ -8,7 +8,7 @@ import {
     BrowserRouter as Router
 } from 'react-router-dom';
 
-import { LogOnExact } from './LogOnExact';
+import LogOnExact from './LogOnExact';
 import { LogOff } from './Logoff'
 
 /**

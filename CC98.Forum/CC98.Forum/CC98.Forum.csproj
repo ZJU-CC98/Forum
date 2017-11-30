@@ -14,6 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Actions.tsx" />
+    <None Remove="ActionTypes.tsx" />
     <None Remove="CC98.Forum.rar" />
     <None Remove="Components\FocusBoardTopicArea.tsx" />
     <None Remove="Components\Footer.tsx" />
@@ -44,7 +46,6 @@
     <None Remove="Reducer.tsx" />
     <None Remove="States\MessageWindowState.tsx" />
     <None Remove="States\SearchState.tsx" />
-    <None Remove="Store.tsx" />
     <None Remove="UbbCode.tsx" />
     <None Remove="Ubb\AlignTagHandler.tsx" />
     <None Remove="Ubb\BTagHandler.tsx" />
@@ -87,6 +88,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="Actions.tsx" />
+    <TypeScriptCompile Include="ActionTypes.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-New.tsx" />
     <TypeScriptCompile Include="Components\FocusBoardTopicArea.tsx" />
     <TypeScriptCompile Include="Components\Footer.tsx" />
@@ -119,8 +122,10 @@
     <TypeScriptCompile Include="Props\MessagePersonProps.tsx" />
     <TypeScriptCompile Include="Props\MessageSendReceiveProps.tsx" />
     <TypeScriptCompile Include="Props\MessageWindowProps.tsx" />
+    <TypeScriptCompile Include="Reducer.tsx" />
     <TypeScriptCompile Include="States\MessageWindowState.tsx" />
     <TypeScriptCompile Include="States\SearchState.tsx" />
+    <TypeScriptCompile Include="Store.tsx" />
     <TypeScriptCompile Include="Ubb\AlignTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\BTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\CenterTagHandler.tsx" />
