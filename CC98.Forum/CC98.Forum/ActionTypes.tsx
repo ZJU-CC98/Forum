@@ -12,3 +12,7 @@ export const USER_LOG_OFF = 'USER_LOG_OFF';
  */
 export const GET_USER_POSTS = 'GET_USER_POSTS';
 export const CHANGE_USERINFO = 'CHANGE_USERINFO';
+/**
+ * 抛出错误
+ */
+export const ERROR = 'ERROR';

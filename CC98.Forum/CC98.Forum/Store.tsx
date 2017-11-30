@@ -12,6 +12,14 @@ import * as Appstate from './States/AppState';
  */
 class Store {
     /**
+    * 表示是否有错误
+    */
+    isError: boolean = false;
+    /**
+    * 表示错误信息
+    */
+    errorMessage: string = '';
+    /**
     * 表示用户是否登录
     */
     isLogOn:boolean = Utility.isLogOn();

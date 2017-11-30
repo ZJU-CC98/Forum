@@ -6,6 +6,8 @@ import * as React from 'react';
 import {
     Route
 } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { throwError } from '../../Actions';
 
 import * as Utility from '../../Utility';
 
@@ -16,14 +18,16 @@ import { UserCenterMyPostsExact } from './UserCenterMyPostsExact';
 import { UserCenterMyFavorites } from './UserCenterMyFavorites'; 
 import { UserCenterConfig } from './UserCenterConfig';
 
+
 /**
  * 用户中心主体
  */
-export class UserCenterRouter extends React.Component {
+class UserCenterRouterBeforeConnect extends React.Component<{isLogOn, throwError}> {
     render() {
         let logOnState = Utility.isLogOn();
-        if (!Utility.isLogOn()) {
-            return <div className="user-center-router">请先登录</div>;
+        if (!this.props.isLogOn) {
+            this.props.throwError('LogOut');
+            return<div></div>;
         }
 
         return (<div className="user-center-router">
@@ -36,3 +40,17 @@ export class UserCenterRouter extends React.Component {
         </div>);
     }
 }
+
+function mapState(state) {
+    return {
+        isLogOn: state.isLogOn
+    };
+}
+
+function mapDispatch(dispatch) {
+    return {
+        throwError: (message) => dispatch(throwError(message))
+    }
+}
+
+export const UserCenterRouter = connect(mapState, mapDispatch)(UserCenterRouterBeforeConnect);
