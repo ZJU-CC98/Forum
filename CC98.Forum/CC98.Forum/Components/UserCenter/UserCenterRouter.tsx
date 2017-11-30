@@ -6,10 +6,6 @@ import * as React from 'react';
 import {
     Route
 } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { throwError } from '../../Actions';
-
-import * as Utility from '../../Utility';
 
 import UserCenterExact from './UserCenterExact';
 import { UserCenterMyFollowings } from './UserCenterMyFollowings';
@@ -22,14 +18,8 @@ import { UserCenterConfig } from './UserCenterConfig';
 /**
  * 用户中心主体
  */
-class UserCenterRouterBeforeConnect extends React.Component<{isLogOn, throwError}> {
-    render() {
-        let logOnState = Utility.isLogOn();
-        if (!this.props.isLogOn) {
-            this.props.throwError('LogOut');
-            return<div></div>;
-        }
-
+export class UserCenterRouter extends React.Component {
+    render() {      
         return (<div className="user-center-router">
             <Route exact path="/usercenter/" component={UserCenterExact} />
             <Route path="/usercenter/myfollowings/:page?" component={UserCenterMyFollowings} />
@@ -40,17 +30,3 @@ class UserCenterRouterBeforeConnect extends React.Component<{isLogOn, throwError
         </div>);
     }
 }
-
-function mapState(state) {
-    return {
-        isLogOn: state.isLogOn
-    };
-}
-
-function mapDispatch(dispatch) {
-    return {
-        throwError: (message) => dispatch(throwError(message))
-    }
-}
-
-export const UserCenterRouter = connect(mapState, mapDispatch)(UserCenterRouterBeforeConnect);

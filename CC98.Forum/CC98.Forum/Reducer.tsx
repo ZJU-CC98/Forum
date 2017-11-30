@@ -15,7 +15,7 @@ export default (state, action) => {
             Utility.setLocalStorage("userInfo", action.newInfo);
             return { ...state, currentUserInfo: action.newInfo }
         case ActionTypes.ERROR:
-            return { ...state, isError: true, errorMessage: action.message}
+            return { ...state, isError: true, errorMessage: action.errorMessage}
         default:
             return state;
     }

@@ -17,7 +17,7 @@ export const changeUserInfo = (newInfo) => ({
     newInfo: newInfo
 });
 
-export const throwError = (message: string) => ({
+export const throwError = (errorMessage: string) => ({
     type: ActionTypes.ERROR,
-    message: message
+    errorMessage: errorMessage
 });
