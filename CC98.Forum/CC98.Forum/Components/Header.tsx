@@ -2,7 +2,7 @@
 import * as Utility from '../Utility';
 import { AppState } from '../States/AppState';
 import * as $ from 'jquery';
-
+import { connect } from 'react-redux';
 
 /*declare global {
     interface JQuery {
@@ -11,7 +11,7 @@ import * as $ from 'jquery';
 }*/
 
 
-export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   //顶部条的下拉菜单组件
+class DropDownConnect extends React.Component<{ userImgUrl }, { userName, userImgUrl }> {   //顶部条的下拉菜单组件
     constructor(props?, context?) {
         super(props, context);
         this.state = ({
@@ -153,7 +153,7 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
             return <div id="dropdown">
                 <div className="box">
                     <div className="userInfo">
-                        <div className="userImg"><img src={this.state.userImgUrl}></img></div>
+                        <div className="userImg"><img src={this.props.userImgUrl||this.state.userImgUrl}></img></div>
                         <div className="userName">{this.state.userName}</div>
                     </div>
                     <div className="topBarText"><a href="/" style={{ color: '#fff' }}>首页</a></div>
@@ -191,6 +191,17 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
         }
     }
 }
+
+// 这里是董松松的修改，加了redux
+function mapState(state) {
+    return {
+        userImgUrl: state.currentUserInfo.portraitUrl
+    }
+}
+
+let DropDown = connect(mapState, () => (null))(DropDownConnect);
+
+//到此结束
 
 export class Search extends React.Component<{}, AppState> {     //搜索框组件
 

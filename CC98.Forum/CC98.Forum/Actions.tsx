@@ -11,3 +11,8 @@ export const userLogIn = () => ({
 export const userLogOff = () => ({
     type: ActionTypes.USER_LOG_OFF
 });
+
+export const changeUserInfo = (newInfo) => ({
+    type: ActionTypes.CHANGE_USERINFO,
+    newInfo: newInfo
+});

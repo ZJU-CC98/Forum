@@ -7,3 +7,8 @@
  */
 export const USER_LOG_ON = 'USER_LOG_ON';
 export const USER_LOG_OFF = 'USER_LOG_OFF';
+/**
+ * 用户中心用
+ */
+export const GET_USER_POSTS = 'GET_USER_POSTS';
+export const CHANGE_USERINFO = 'CHANGE_USERINFO';

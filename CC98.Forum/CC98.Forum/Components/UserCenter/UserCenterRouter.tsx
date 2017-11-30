@@ -9,7 +9,7 @@ import {
 
 import * as Utility from '../../Utility';
 
-import { UserCenterExact } from './UserCenterExact';
+import UserCenterExact from './UserCenterExact';
 import { UserCenterMyFollowings } from './UserCenterMyFollowings';
 import { UserCenterMyFans } from './UserCenterMyFans';
 import { UserCenterMyPostsExact } from './UserCenterMyPostsExact';
