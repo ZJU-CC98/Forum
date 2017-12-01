@@ -5,15 +5,16 @@
 import * as React from 'react';
 import * as $ from 'jquery';
 import * as Utility from '../Utility';
+import * as Actions from '../Actions';
+import { connect } from 'react-redux';
 
-export class LogOnExact extends React.Component<null, LogOnState> {
+class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff}, LogOnState> {
     constructor(props) {
         super(props);
         this.state = {
             loginName: '',
             loginPassword: '',
-            loginMessage: '',
-            isLogining: false
+            loginMessage: ''
         };
 
         this.handleNameChange = this.handleNameChange.bind(this);
@@ -44,7 +45,7 @@ export class LogOnExact extends React.Component<null, LogOnState> {
         e.preventDefault();
 
         //如果在登录中则无视提交
-        if (this.state.isLogining) {
+        if (this.props.isLogOn) {
             return false;
         }
 
@@ -67,9 +68,9 @@ export class LogOnExact extends React.Component<null, LogOnState> {
 
         //登录
         this.setState({
-            loginMessage: '登录中',
-            isLogining: true
+            loginMessage: '登录中'
         });
+        this.props.logOff();
 
         let url = 'https://openid.cc98.org/connect/token';
 
@@ -96,9 +97,9 @@ export class LogOnExact extends React.Component<null, LogOnState> {
         //请求是否成功
         if (response.status !== 200) {
             this.setState({
-                loginMessage: `登录失败 ${response.status}`,
-                isLogining: false
+                loginMessage: `登录失败 ${response.status}`
             });
+            this.props.logOff();
             return false;
         }
 
@@ -120,22 +121,22 @@ export class LogOnExact extends React.Component<null, LogOnState> {
         Utility.setLocalStorage("userInfo", userInfo);
 
         this.setState({
-            loginMessage: '登录成功 正在返回首页',
-            isLogining: false
+            loginMessage: '登录成功 正在返回首页'
         });
+        this.props.logOn();
 
         //跳转至首页
         setTimeout(() => {
-        location.pathname = "/";
+            location.pathname = "/";
         }, 1000); 
 
     } catch(e) {    //捕捉到例外，开始执行catch语句，否则跳过
         //alert(e.error);     这行好像没什么用……暂时还不会处理不同的error……
         console.log("Oops, error", e);
         this.setState({
-            loginMessage: `登录失败`,
-            isLogining: false
+            loginMessage: `登录失败`
         });
+        this.props.logOff();
     }
 
     render() {
@@ -153,7 +154,7 @@ export class LogOnExact extends React.Component<null, LogOnState> {
                                 <p>密码</p><input type="password" id="loginPassword" onChange={this.handlePasswordChange} />
                             </div>
                             <p id="loginMessage">{this.state.loginMessage}</p>
-                            <button type="submit" disabled={this.state.isLogining}>登录账号</button>
+                            <button type="submit" disabled={this.props.isLogOn}>登录账号</button>
                         </form>
                         <p><span>还没账号？我要 <a href="">注册</a></span></p>
                     </div>
@@ -179,8 +180,23 @@ class LogOnState {
     * 登录信息
     */
     loginMessage: string;
-    /**
-    * 登录状态
-    */
-    isLogining: boolean;
 }
+
+function mapState(state) {
+    return {
+        isLogOn: state.isLogOn
+    };
+}
+
+function mapDispatch(disPatch) {
+    return {
+        logOn: () => {
+            disPatch(Actions.userLogIn());
+        },
+        logOff: () => {
+            disPatch(Actions.userLogOff());
+        }
+    };
+}
+
+export default connect(mapState, mapDispatch)(LogOnExact);

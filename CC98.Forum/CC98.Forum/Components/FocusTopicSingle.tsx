@@ -11,7 +11,7 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
    
     render() {
         let topicUrl = `/topic/${this.props.id}`;
-        let boardUrl = `/list/${this.props.boardId}`;
+        let boardUrl = `/list/${this.props.boardId}/normal`;
         return (<div className="focus-topic">
                     <PortaritrUrl userId={this.props.userId} portraitUrl={this.props.portraitUrl} />
                     <div className="focus-topic-info1">

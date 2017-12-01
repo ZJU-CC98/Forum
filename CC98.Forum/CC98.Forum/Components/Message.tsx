@@ -23,7 +23,7 @@ export class Message extends React.Component<{}, AppState> {
                                 <div className="message-content">
                                     <div className="message-nav">
                                         <div id="response"><NavLink to={`/message/response`}>回复我的</NavLink></div>
-                                        <div id="attme"><NavLink to={`/message/attme`}>@我的</NavLink></div>
+                                        <div id="attme"><NavLink to={`/message/attme`}>@ 我的</NavLink></div>
                                         <div id="system"><NavLink to={`/message/system`}>系统通知</NavLink></div>
                                         <div id="message"><NavLink to={`/message/message`}>我的私信</NavLink></div>
                                     </div>

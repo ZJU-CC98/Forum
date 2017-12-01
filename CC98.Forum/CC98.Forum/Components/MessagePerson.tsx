@@ -3,6 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
 import { MessagePersonProps } from '../Props/MessagePersonProps';
+import { UbbContainer } from './UbbContainer'
 
 export class MessagePerson extends React.Component<MessagePersonProps> {
     
@@ -23,7 +24,7 @@ export class MessagePerson extends React.Component<MessagePersonProps> {
                 <img className="message-message-pPortraitUrl" src={data.portraitUrl} />
                         <div className="message-message-pInfo">
                             <div className="message-message-pName">{data.name}</div>
-                            <div className="message-message-pMessage">{data.message[0].content}</div>
+                <div className="message-message-pMessage"><UbbContainer code={data.message[0].content} /></div>
                         </div>
                 </div>);
     }

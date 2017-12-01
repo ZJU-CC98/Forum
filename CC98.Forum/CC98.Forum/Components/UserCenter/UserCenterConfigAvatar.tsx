@@ -4,8 +4,10 @@
 
 import * as React from 'react';
 import * as Utility from '../../Utility';
+import { changeUserInfo } from '../../Actions';
+import { connect } from 'react-redux';
 
-export class UserCenterConfigAvatar extends React.Component<null, UserCenterConfigAvatarState> {
+class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCenterConfigAvatarState> {
     myCanvas: HTMLCanvasElement;
     selector: HTMLDivElement;
     resize: HTMLSpanElement;
@@ -202,7 +204,7 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
                     });
                     let userInfo = Utility.getLocalStorage('userInfo');
                     userInfo.portraitUrl = data;
-                    Utility.setLocalStorage('userInfo', userInfo);
+                    this.props.changeUserInfo(userInfo);
                 } else {
                     throw {};
                 }
@@ -302,7 +304,7 @@ export class UserCenterConfigAvatar extends React.Component<null, UserCenterConf
                         <div>
                             <input onChange={this.handleChange} id="uploadAvatar" type="file" style={style} />
                             <label htmlFor="uploadAvatar"><p>选择本地图片</p></label>
-                            <p>{this.state.info}</p>
+                            <p style={{ color: 'red' }}>{this.state.info}</p>
                             <button type="button" style={this.state.isShown ? {} : style} onClick={this.handleSubmit} disabled={this.state.isLoading}>提交</button>
                         </div>
                     </div>
@@ -343,3 +345,13 @@ interface UserCenterConfigAvatarState {
     img: HTMLImageElement;
     NUM_MAX: number;
 }
+
+function mapDispatch(dispatch) {
+    return {
+        changeUserInfo: (newInfo) => {
+            dispatch(changeUserInfo(newInfo));
+        }
+    };
+}
+
+export default connect(() => (null), mapDispatch)(UserCenterConfigAvatar);

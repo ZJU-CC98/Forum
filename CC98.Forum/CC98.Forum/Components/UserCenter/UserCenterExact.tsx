@@ -8,20 +8,13 @@ import { UserCenterExactProfile } from './UserCenterExactProfile';
 import { UserCenterExactActivities } from './UserCenterExactActivities';
 import { UserCenterExactAvatar } from './UserCenterExactAvatar'
 import * as Utility from '../../Utility';
+import { changeUserInfo } from '../../Actions';
+import { connect } from 'react-redux';
 
 /**
  * 用户中心主页
  */
-export class UserCenterExact extends React.Component<null, UserCenterExactState> {
-    constructor(props) {
-        super(props);
-
-        const userInfo = Utility.getLocalStorage('userInfo');
-        this.state = {
-            userInfo: userInfo,
-            userAvatarImgURL: userInfo.portraitUrl
-        };
-    }
+class UserCenterExact extends React.Component<{userInfo, changeUserInfo}> {
 
     async componentDidMount() {
         try {
@@ -29,15 +22,12 @@ export class UserCenterExact extends React.Component<null, UserCenterExactState>
 
             let headers1 = new Headers();
             headers1.append("Authorization", token);
-            let response1 = await fetch(`http://apitest.niconi.cc/user/${this.state.userInfo.id}`, {
+            let response1 = await fetch(`http://apitest.niconi.cc/user/${this.props.userInfo.id}`, {
                 headers: headers1
             });
             let userInfo = await response1.json();
             Utility.setLocalStorage("userInfo", userInfo);
-            this.setState({
-                userInfo: userInfo,
-                userAvatarImgURL: userInfo.portraitUrl
-            });
+            this.props.changeUserInfo(userInfo);
         } catch (e) {
             console.log('用户中心错误');
         }
@@ -45,20 +35,25 @@ export class UserCenterExact extends React.Component<null, UserCenterExactState>
 
     render() {        
         return (<div className="user-center-exact">
-            <UserCenterExactAvatar userAvatarImgURL={this.state.userAvatarImgURL} />
-            <UserCenterExactProfile userInfo={this.state.userInfo} />
+            <UserCenterExactAvatar userAvatarImgURL={this.props.userInfo.portraitUrl} />
+            <UserCenterExactProfile userInfo={this.props.userInfo} />
             <UserCenterExactActivities />
         </div>);
     }
 }
 
-interface UserCenterExactState {
-    /**
-    * 用户信息
-    */
-    userInfo: UserInfo;
-    /**
-    * 用户头像链接地址
-    */
-    userAvatarImgURL: string;
+function mapState(state) {
+    return {
+        userInfo: state.currentUserInfo
+    };
 }
+
+function mapDispatch(dispatch) {
+    return {
+        changeUserInfo: (newInfo) => {
+            dispatch(changeUserInfo(newInfo));
+        }
+    };
+}
+
+export default connect(mapState, mapDispatch)(UserCenterExact);

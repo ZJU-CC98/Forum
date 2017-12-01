@@ -3,6 +3,8 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
+import { connect } from 'react-redux';
+import { throwError } from '../../Actions';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { UserCenterNavigation } from './UserCenterNavigation';
 import { UserCenterRouter } from './UserCenterRouter';
@@ -10,8 +12,12 @@ import { UserCenterRouter } from './UserCenterRouter';
 /**
  * 用户中心页面
  */
-export class UserCenter extends React.Component {
+export class UserCenterBefore extends React.Component<{ isLogOn, throwError }> {
     render() {
+        if (!this.props.isLogOn) {
+            this.props.throwError('LogOut');
+            return <div></div>;
+        }
         return (
             <div className="user-center">
                 <div className="user-center-content">
@@ -29,3 +35,20 @@ export class UserCenter extends React.Component {
         );
     }
 }
+
+function mapState(state) {
+    return {
+        isLogOn: state.isLogOn
+    };
+}
+
+function mapDispatch(dispatch) {
+    return {
+        throwError: (errorMessage) => {
+            console.log(errorMessage);
+            dispatch(throwError(errorMessage));
+        }
+    };
+}
+
+export const UserCenter = connect(mapState, mapDispatch)(UserCenterBefore);

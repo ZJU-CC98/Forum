@@ -2226,3 +2226,47 @@ export function getBoardId(boardName: string) {
     }
     return boardResult;
 }
+export function isFollowThisBoard(boardId) {
+    const customBoards = getLocalStorage("userInfo").customBoards;
+    if (!customBoards) return false;
+    for (let item of customBoards) {
+        if (item === boardId) return true;
+    }
+    return false;
+}
+export async function followBoard(boardId) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    const url = `http://apitest.niconi.cc/me/addcustomboard/${boardId}`;
+    const response = await fetch(url, { method:"POST", headers });
+}
+export async function unfollowBoard(boardId) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    const url = `http://apitest.niconi.cc/me/removecustomboard/${boardId}`;
+    const response = await fetch(url, { method: "DELETE", headers });
+}
+//获取系统通知
+export async function getMessageSystem(from: number, router) {
+    console.log("开始获取系统通知了");
+    try {
+        let token = getLocalStorage("accessToken");
+        let myHeaders = new Headers();
+        myHeaders.append('Authorization', token);
+        let size = 15;
+        const response = await fetch(`http://apitest.niconi.cc/notification/system?from=${from}&size=${size}`, { headers: myHeaders });
+        if (response.status === 401) {
+            //window.location.href = "/status/UnauthorizedTopic";
+        }
+        if (response.status === 500) {
+            //window.location.href = "/status/ServerError";
+        }
+        let newTopic = response.json();
+        console.log(newTopic);
+        return newTopic;
+    } catch (e) {
+        //window.location.href = "/status/Disconnected";
+    }
+} 
