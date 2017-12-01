@@ -4,8 +4,10 @@
 
 import * as React from 'react';
 import * as Utility from '../Utility';
+import { connect } from 'react-redux';
+import { userLogOff } from '../Actions';
 
-export class LogOff extends React.Component<null, LogOffState> {
+class LogOffBefore extends React.Component<{logOff}, LogOffState> {
     constructor(props) {
         super(props);
 
@@ -44,3 +46,13 @@ export class LogOff extends React.Component<null, LogOffState> {
 interface LogOffState {
     logOffInfo: string;
 }
+
+function mapDispatch(dispatch) {
+    return {
+        logOff: () => {
+            dispatch(userLogOff());
+        }
+    };
+}
+
+export const LogOff = connect(() => null, mapDispatch)(LogOffBefore);
