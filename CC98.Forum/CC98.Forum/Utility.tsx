@@ -2226,3 +2226,26 @@ export function getBoardId(boardName: string) {
     }
     return boardResult;
 }
+
+//获取系统通知
+export async function getMessageSystem(from: number,  router) {
+    console.log("开始获取系统通知了");
+    try {
+        let token = getLocalStorage("accessToken");
+        let myHeaders = new Headers();
+        myHeaders.append('Authorization', token);
+        let size = 15;
+        const response = await fetch(`http://apitest.niconi.cc/notification/system?from=${from}&size=${size}`, { headers: myHeaders});
+        if (response.status === 401) {
+            //window.location.href = "/status/UnauthorizedTopic";
+        }
+        if (response.status === 500) {
+            //window.location.href = "/status/ServerError";
+        }
+        let newTopic = response.json();
+        console.log(newTopic);
+        return newTopic;
+    } catch (e) {
+        //window.location.href = "/status/Disconnected";
+    }
+} 

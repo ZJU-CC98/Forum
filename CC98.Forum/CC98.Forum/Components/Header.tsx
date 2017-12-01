@@ -99,6 +99,7 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
         Utility.removeLocalStorage("userName");
         Utility.removeLocalStorage("password");
         Utility.removeLocalStorage("userInfo");
+        Utility.removeLocalStorage("SystemMessage");
         Utility.removeStorage("all");
         location = window.location;     //刷新当前页面
     }

@@ -1060,13 +1060,7 @@ a {
     }
 }
 
-.message-login {
-    position: absolute;
-    top: 250px;
-    left: 50%;
-    font-size: 20px;
-}
-
+/******以下为私信部分的样式***/
 .message-message {
     display: flex;
     flex-grow: 1;
@@ -1451,47 +1445,49 @@ a {
     }
 }
 
+/******以下为系统消息部分的样式***/
 .message-system {
     display: flex;
     flex-direction: column;
-    max-width: 910px;
-    height: 680px;
+    flex-grow: 1;
     font-family: 微软雅黑;
     border: 1px solid $color-border;
+    flex-shrink: 0;
+    background-color: $color-post;
 
     .message-system-box { /*一个系统消息的框框*/
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        height: 120px;
-        width: 910px;
+        flex-direction: column;
         border-bottom: 1px dashed lightgray;
-    }
+        flex-shrink: 0;
 
-    .message-system-box-title { /*一个系统消息标题*/
-        height: 50px;
-        max-width: 200px;
-        font-size: 15px;
-        line-height: 50px;
-        color: black;
-        margin-left: 30px;
-    }
+        .message-system-box-bar {
+            display: flex;
+            flex-direction: row;
+        }
 
-    .message-system-box-date { /*一个系统消息日期*/
-        height: 50px;
-        width: 650px;
-        font-size: 13px;
-        line-height: 50px;
-        color: lightgray;
-        margin-left: 10px;
-    }
+        .message-system-box-title { /*一个系统消息标题*/
+            height: 50px;
+            font-size: 15px;
+            line-height: 50px;
+            color: black;
+            margin-left: 30px;
+        }
 
-    .message-system-box-content { /*一个系统消息内容*/
-        height: 70px;
-        width: 910px;
-        font-size: 14px;
-        color: gray;
-        margin-left: 30px;
+        .message-system-box-date { /*一个系统消息日期*/
+            height: 50px;
+            font-size: 13px;
+            line-height: 50px;
+            color: lightgray;
+            margin-left: 10px;
+        }
+
+        .message-system-box-content { /*一个系统消息内容*/
+            font-size: 14px;
+            line-height: 24px;
+            color: gray;
+            margin: 0px 30px 20px 30px;
+        }
     }
 }
 
@@ -1573,52 +1569,6 @@ a {
         margin-left: 10px;
     }
 }
-
-.message-system {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    border: 1px solid $color-border;
-    overflow-y: auto;
-    background-color: $color-post;
-
-    .message-system-box { /*一个系统消息的框框*/
-        flex-shrink: 0;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        min-height: 120px;
-        border-bottom: 1px dashed lightgray;
-
-        .message-system-box-title { /*一个系统消息标题*/
-            height: 50px;
-            max-width: 200px;
-            font-size: 16px;
-            line-height: 50px;
-            color: $color-black;
-            margin-left: 30px;
-        }
-
-        .message-system-box-date { /*一个系统消息日期*/
-            height: 50px;
-            width: 650px;
-            font-size: 12px;
-            line-height: 50px;
-            color: lightgray;
-            margin-left: 10px;
-        }
-
-        .message-system-box-content { /*一个系统消息内容*/
-            height: 70px;
-            width: 840px;
-            font-size: 14px;
-            color: gray;
-            margin-left: 30px;
-            margin-right: 40px;
-        }
-    }
-}
-
 /*****************************************以下为我的关注的样式*********************************/
 .focus-root {
     display: flex;

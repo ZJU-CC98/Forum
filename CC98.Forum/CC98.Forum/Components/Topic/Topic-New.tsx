@@ -32,7 +32,7 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
      * 进入立即获取20条新帖的数据，同时为滚动条添加监听事件
      */
     async componentDidMount() {
-        let data = await Utility.getAllNewTopic(this.state.from, this.context.router);
+        let data = await Utility.getAllNewTopic(0, this.context.router);
 
         //先看一下有没有缓存的数据，如果有的话新数据跟缓存数据组合一下
         let oldData =  Utility.getStorage("AllNewTopic");
@@ -70,7 +70,7 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
      * 处理滚动的函数
      */
     async handleScroll() {
-        if (isBottom() && this.state.loading) {
+        if (Utility.isBottom() && this.state.loading) {
             /**
             *查看新帖数目大于100条时不再继续加载
             */
@@ -123,68 +123,4 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
 */
 function coverFocusPost(item: FocusTopic) {
     return <FocusTopicSingle title={item.title} hitCount={item.hitCount} id={item.id} boardId={item.boardId} boardName={item.boardName} replyCount={item.replyCount} userId={item.userId} userName={item.userName} portraitUrl={item.portraitUrl} time={item.time} likeCount={item.likeCount} dislikeCount={item.dislikeCount} fanCount={item.fanCount} />;
-}
-
-
-/**
-*滚动条在Y轴上的滚动距离
-*/
-function getScrollTop() {
-	let scrollTop = 0;
-	let bodyScrollTop = 0;
-	let documentScrollTop = 0;
-    　　if (document.body) {
-        　　　　bodyScrollTop = document.body.scrollTop;
-    　　}
-    　　if (document.documentElement) {
-        　　　　documentScrollTop = document.documentElement.scrollTop;
-    　　}
-    　　scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
-    　　return scrollTop;
-}
-
-/**
-*文档的总高度
-*/
-function getScrollHeight() {
-	let scrollHeight = 0;
-	let bodyScrollHeight = 0;
-	let documentScrollHeight = 0;
-    　　if (document.body) {
-        　　　　bodyScrollHeight = document.body.scrollHeight;
-    　　}
-    　　if (document.documentElement) {
-        　　　　documentScrollHeight = document.documentElement.scrollHeight;
-    　　}
-    　　scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
-    　　return scrollHeight;
-}
-
-/**
-*浏览器视口的高度
-*/
-function getWindowHeight() {
-    　　let windowHeight = 0;
-    　　if (document.compatMode == 'CSS1Compat') {
-        　　　　windowHeight = document.documentElement.clientHeight;
-    　　} else {
-        　　　　windowHeight = document.body.clientHeight;
-    　　}
-    　　return windowHeight;
-}
-
-/**
-*判断滚动条是否滚动到底部
-*/
-
-function isBottom() {
-    /*
-    *预留100px给“正在加载”的提示标志
-    */
-    if (getScrollTop() + getWindowHeight() + 300 > getScrollHeight()) {
-        return true;
-    }
-    else {
-        return false;
-    }
 }

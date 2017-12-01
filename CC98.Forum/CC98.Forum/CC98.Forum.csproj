@@ -40,8 +40,10 @@
     <None Remove="Components\UserExactProfile.tsx" />
     <None Remove="Props\FocusBoardProps.tsx" />
     <None Remove="Props\MessageSendReceiveProps.tsx" />
+    <None Remove="Props\MessageSystemProps.tsx" />
     <None Remove="Props\MessageWindowProps.tsx" />
     <None Remove="Reducer.tsx" />
+    <None Remove="States\MessageSystemState.tsx" />
     <None Remove="States\MessageWindowState.tsx" />
     <None Remove="States\SearchState.tsx" />
     <None Remove="Store.tsx" />
@@ -118,7 +120,9 @@
     <TypeScriptCompile Include="Props\FocusBoardProps.tsx" />
     <TypeScriptCompile Include="Props\MessagePersonProps.tsx" />
     <TypeScriptCompile Include="Props\MessageSendReceiveProps.tsx" />
+    <TypeScriptCompile Include="Props\MessageSystemProps.tsx" />
     <TypeScriptCompile Include="Props\MessageWindowProps.tsx" />
+    <TypeScriptCompile Include="States\MessageSystemState.tsx" />
     <TypeScriptCompile Include="States\MessageWindowState.tsx" />
     <TypeScriptCompile Include="States\SearchState.tsx" />
     <TypeScriptCompile Include="Ubb\AlignTagHandler.tsx" />
