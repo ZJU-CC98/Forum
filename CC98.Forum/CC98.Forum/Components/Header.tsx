@@ -3,6 +3,7 @@ import * as Utility from '../Utility';
 import { AppState } from '../States/AppState';
 import * as $ from 'jquery';
 import { connect } from 'react-redux';
+import { userLogOff } from '../Actions';
 
 /*declare global {
     interface JQuery {
@@ -11,7 +12,7 @@ import { connect } from 'react-redux';
 }*/
 
 
-class DropDownConnect extends React.Component<{ userImgUrl }, { userName, userImgUrl }> {   //顶部条的下拉菜单组件
+class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName, userImgUrl }> {   //顶部条的下拉菜单组件
     constructor(props?, context?) {
         super(props, context);
         this.state = ({
@@ -100,6 +101,7 @@ class DropDownConnect extends React.Component<{ userImgUrl }, { userName, userIm
         Utility.removeLocalStorage("password");
         Utility.removeLocalStorage("userInfo");
         Utility.removeStorage("all");
+        this.props.logOff();            //更新redux中的状态
         location = window.location;     //刷新当前页面
     }
 
@@ -166,7 +168,7 @@ class DropDownConnect extends React.Component<{ userImgUrl }, { userName, userIm
                     <ul className="dropDownSub">
                         <a href="/userCenter"> <li>个人中心</li></a>
                         <a href="/"><li>签到（暂无）</li></a>
-                        <li onClick={this.logOff}>注销</li>
+                        <li onClick={this.logOff.bind(this)}>注销</li>
                     </ul>
                 </div>
                 <div className="dropDownSubBox">
@@ -199,7 +201,15 @@ function mapState(state) {
     }
 }
 
-let DropDown = connect(mapState, () => (null))(DropDownConnect);
+function mapDispatch(dispatch) {
+    return {
+        logOff: () => {
+            dispatch(userLogOff());
+        }
+    };
+}
+
+let DropDown = connect(mapState, mapDispatch)(DropDownConnect);
 
 //到此结束
 
