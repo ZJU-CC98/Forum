@@ -1922,7 +1922,13 @@ a {
 }
 
 #dropdown .topBarText {
+    display: flex;
     margin-top: 12px;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    cursor: pointer;
+    margin: 0 10px;
 }
 
 #dropdown .boardListLink {
@@ -1957,7 +1963,15 @@ a {
     opacity: 0.9999; //暂时不知道原因，但是如果不加上一个小于1的opacity值，下拉会出问题,猜测是opacity把元素及所有子元素合在一起？
 }
 
-#dropdown .dropDownSub li {
+#dropdown .dropDownSubMessage {
+    width: 94px;
+    display: none;
+    background-color: rgba(80,80,80,0.5);
+    margin-left: 145px;
+    opacity: 0.9999; //暂时不知道原因，但是如果不加上一个小于1的opacity值，下拉会出问题,猜测是opacity把元素及所有子元素合在一起？
+}
+
+#dropdown li {
     display: flex;
     height: 25px;
     cursor: pointer;
@@ -1965,7 +1979,7 @@ a {
     align-items: center;
 }
 
-#dropdown .dropDownSub li.hover {
+#dropdown li.hover {
     background: rgb(53,177,255);
 }
 //以下是头部中搜索条的样式

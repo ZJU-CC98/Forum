@@ -14,6 +14,12 @@ export class TdTagHandler extends Ubb.RecursiveTagHandler {
 
     execCore(innerContent: React.ReactNode, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
 
-        return <td>{innerContent}</td>;
+        let rowspanValue = 1;
+        let colspanValue = 1;
+        if (tagData.parameterCount === 2) {
+            rowspanValue = parseInt(tagData.value(0));
+            colspanValue = parseInt(tagData.value(1));
+        }
+        return <td rowSpan={rowspanValue} colSpan={colspanValue}>{innerContent}</td>;
     }
 }

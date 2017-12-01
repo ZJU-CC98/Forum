@@ -2983,16 +2983,9 @@ function getBoardId(boardName) {
         { id: "614", name: "莫失莫忘" }
     ];
     var boardResult = [];
-    //是否完全匹配
+    //看是否包含
     for (var i in boardInfo) {
-        if (boardInfo[i].name == boardName) {
-            boardResult.push({ id: boardInfo[i].id, name: boardInfo[i].name });
-            return boardResult;
-        }
-    }
-    //如果不完全匹配，看是否包含
-    for (var i in boardInfo) {
-        if (boardInfo[i].name.indexOf(boardName) > 0) {
+        if (boardInfo[i].name.indexOf(boardName) > -1) {
             boardResult.push({ id: boardInfo[i].id, name: boardInfo[i].name });
         }
     }
@@ -9259,8 +9252,12 @@ var DropDown = /** @class */ (function (_super) {
         if (Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName")) {
             $(document).ready(function () {
                 var userInfo = $('.userInfo').eq(0);
+                var userMessage = $('#userMessage');
                 var dropDownSub = $('.dropDownSub').eq(0);
+                var dropDownSubMessage = $('.dropDownSubMessage').eq(0);
                 var dropDownLi = dropDownSub.find('li');
+                var dropDownLiMessage = dropDownSubMessage.find('li');
+                //点击名字之后出现的下拉列表
                 userInfo.hover(function () {
                     dropDownSub.slideDown("fast");
                 }, function () {
@@ -9271,13 +9268,27 @@ var DropDown = /** @class */ (function (_super) {
                 }, function () {
                     dropDownSub.slideUp("fast");
                 });
-                /*在一个对象上触发某类事件（比如单击onclick事件），如果此对象定义了此事件的处理程序，那么此事件就会调用这个处理程序，
-                如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
-                或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
                 dropDownLi.mouseover(function () {
                     this.className = 'hover';
                 });
                 dropDownLi.mouseout(function () {
+                    this.className = '';
+                });
+                //点击消息之后出现的下拉列表
+                userMessage.hover(function () {
+                    dropDownSubMessage.slideDown("fast");
+                }, function () {
+                    dropDownSubMessage.css('display', 'none');
+                });
+                dropDownSubMessage.hover(function () {
+                    dropDownSubMessage.css('display', 'block');
+                }, function () {
+                    dropDownSubMessage.slideUp("fast");
+                });
+                dropDownLiMessage.mouseover(function () {
+                    this.className = 'hover';
+                });
+                dropDownLiMessage.mouseout(function () {
                     this.className = '';
                 });
             });
@@ -9287,13 +9298,13 @@ var DropDown = /** @class */ (function (_super) {
                         React.createElement("div", { className: "userImg" },
                             React.createElement("img", { src: this.state.userImgUrl })),
                         React.createElement("div", { className: "userName" }, this.state.userName)),
-                    React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
+                    React.createElement("div", { className: "topBarText" },
                         React.createElement("a", { href: "/", style: { color: '#fff' } }, "\u9996\u9875")),
-                    React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
+                    React.createElement("div", { className: "topBarText", id: "userMessage" },
                         React.createElement("a", { href: "/message", style: { color: '#fff' } }, "\u6D88\u606F")),
-                    React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
+                    React.createElement("div", { className: "topBarText" },
                         React.createElement("a", { href: "/focus", style: { color: '#fff' } }, "\u5173\u6CE8")),
-                    React.createElement("div", { className: "topBarText", style: { margin: '0 10px 0 10px' } },
+                    React.createElement("div", { className: "topBarText" },
                         React.createElement("a", { href: "/newTopics", style: { color: '#fff' } }, "\u65B0\u5E16")),
                     React.createElement("a", { href: "/boardList" },
                         React.createElement("div", { className: "boardListLink", style: { margin: '0 0 0 10px' } },
@@ -9305,7 +9316,18 @@ var DropDown = /** @class */ (function (_super) {
                             React.createElement("li", null, "\u4E2A\u4EBA\u4E2D\u5FC3")),
                         React.createElement("a", { href: "/" },
                             React.createElement("li", null, "\u7B7E\u5230\uFF08\u6682\u65E0\uFF09")),
-                        React.createElement("li", { onClick: this.logOff }, "\u6CE8\u9500"))));
+                        React.createElement("li", { onClick: this.logOff }, "\u6CE8\u9500"))),
+                React.createElement("div", { className: "dropDownSubBox" },
+                    React.createElement("ul", { className: "dropDownSubMessage" },
+                        React.createElement("a", { href: "/message/response" },
+                            " ",
+                            React.createElement("li", null, "\u6211\u7684\u56DE\u590D")),
+                        React.createElement("a", { href: "/message/attme" },
+                            React.createElement("li", null, "@\u6211\u7684")),
+                        React.createElement("a", { href: "/message/system" },
+                            React.createElement("li", null, "\u7CFB\u7EDF\u901A\u77E5")),
+                        React.createElement("a", { href: "/message/message" },
+                            React.createElement("li", null, "\u6211\u7684\u79C1\u4FE1")))));
         }
         else {
             return React.createElement("div", { id: "dropdown" },
@@ -12690,7 +12712,13 @@ var TdTagHandler = /** @class */ (function (_super) {
     });
     ;
     TdTagHandler.prototype.execCore = function (innerContent, tagData, context) {
-        return React.createElement("td", null, innerContent);
+        var rowspanValue = 1;
+        var colspanValue = 1;
+        if (tagData.parameterCount === 2) {
+            rowspanValue = parseInt(tagData.value(0));
+            colspanValue = parseInt(tagData.value(1));
+        }
+        return React.createElement("td", { rowSpan: rowspanValue, colSpan: colspanValue }, innerContent);
     };
     return TdTagHandler;
 }(Ubb.RecursiveTagHandler));
@@ -12734,7 +12762,13 @@ var ThTagHandler = /** @class */ (function (_super) {
     });
     ;
     ThTagHandler.prototype.execCore = function (innerContent, tagData, context) {
-        return React.createElement("th", null, innerContent);
+        var rowspanValue = 1;
+        var colspanValue = 1;
+        if (tagData.parameterCount === 2) {
+            rowspanValue = parseInt(tagData.value(0));
+            colspanValue = parseInt(tagData.value(1));
+        }
+        return React.createElement("th", { rowSpan: rowspanValue, colSpan: colspanValue }, innerContent);
     };
     return ThTagHandler;
 }(Ubb.RecursiveTagHandler));
