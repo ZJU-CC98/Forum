@@ -241,6 +241,7 @@
                     margin: 0;
                     border-radius: 3px;
                     margin-left: 2rem;
+                    cursor: pointer;
 
                     &:hover {
                         background-color: rgb(41,174,223);
@@ -410,6 +411,7 @@
                     border-radius: 3px;
                     background-color: rgb(230,230,230);
                     color: rgb(160,160,160);
+                    cursor: pointer;
 
                     &:hover {
                         background-color: rgb(210,210,210);

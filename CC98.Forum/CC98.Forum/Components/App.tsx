@@ -1,4 +1,5 @@
 ﻿import * as React from 'react';
+import { connect } from 'react-redux';
 import { AppState } from '../States/AppState';
 import { match } from 'react-router';
 import {
@@ -33,39 +34,62 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
 	}
 }
 
-export class App extends React.Component<{}, AppState> {
+class AppBeforeConnect extends React.Component<{isError: boolean, errorMessage: string}, AppState> {
 
-	render() {
-		return <div style={{ width: "100%" }}>
-			<Router>
-				<div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px" }}>
-					<Header />
-					<Route exact path="/" component={MainPage}></Route>          
-					<Route exact path="/topic/:topicid/:page?" component={Post} />
-					<Route exact path="/topic/:topicid/user/:userId/:page?" component={CurUserPost} />
-					<Route path="/list/:boardId/:type?/:page?" component={List} />
-					<Route exact path="/boardlist" component={BoardList} />
-					<Route path="/usercenter" component={UserCenter} />
-					<Route path="/message" component={Message} />
-					<Route path="/focus" component={Focus} />
-					<Route path="/newtopics" component={AllNewTopic} />
-					<Route path="/user" component={User} />
-                    <Route path="/logon" component={LogOn} />
-                    <Route path="/search" component={Search} />
-                    <Route path="/searchBoard" component={SearchBoard} />
-					<Route path="/createtopic/:boardId" component={CreateTopic} />
-					<Route path="/status/logout" component={Status.LogOut} />
-					<Route path="/status/UnauthorizedBoard" component={Status.UnauthorizedBoard} />
-					<Route path="/status/UnauthorizedTopic" component={Status.UnauthorizedTopic} />
-					<Route path="/status/NotFoundTopic" component={Status.NotFoundTopic} />
-					<Route path="/status/NotFoundBoard" component={Status.NotFoundBoard} />
-                    <Route path="/status/NotFoundUser" component={Status.NotFoundUser} />
-                    <Route path="/status/ServerError" component={Status.ServerError} />
-                    <Route path="/status/OperationForbidden" component={Status.OperationForbidden} />
-                    <Route path="/status/Disconnected" component={Status.Disconnected} />
-                    <Route path="/status/TopicDeleted" component={Status.TopicDeleted} />
-					<Footer />
-				</div>
-			</Router></div>;
+    render() {
+        let errorElement: JSX.Element;
+        if (this.props.isError) {
+            switch (this.props.errorMessage) {
+                case 'LogOut': errorElement = <Status.LogOut />; break;
+                case 'UnauthorizedBoard': errorElement = <Status.UnauthorizedBoard />; break;
+                case 'UnauthorizedTopic': errorElement = <Status.UnauthorizedTopic />; break;
+                case 'NotFoundTopic': errorElement = <Status.NotFoundTopic />; break;
+                case 'NotFoundBoard': errorElement = <Status.NotFoundBoard />; break;
+                case 'NotFoundUser': errorElement = <Status.NotFoundUser />; break;
+                case 'ServerError': errorElement = <Status.ServerError />; break;
+                case 'OperationForbidden': errorElement = <Status.OperationForbidden />; break;
+                case 'Disconnected': errorElement = <Status.Disconnected />; break;
+                case 'TopicDeleted': errorElement = <Status.TopicDeleted />; break;
+            }
+        }
+
+        return <div style={{ width: "100%" }}>
+                <Router>
+                {!this.props.isError ? (
+                    <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px" }}>
+                        <Header />
+                        <Route exact path="/" component={MainPage}></Route>
+                        <Route exact path="/topic/:topicid/:page?" component={Post} />
+                        <Route exact path="/topic/:topicid/user/:userId/:page?" component={CurUserPost} />
+                        <Route path="/list/:boardId/:type?/:page?" component={List} />
+                        <Route exact path="/boardlist" component={BoardList} />
+                        <Route path="/usercenter" component={UserCenter} />
+                        <Route path="/message" component={Message} />
+                        <Route path="/focus" component={Focus} />
+                        <Route path="/newtopics" component={AllNewTopic} />
+                        <Route path="/user" component={User} />
+                        <Route path="/logon" component={LogOn} />
+                        <Route path="/search" component={Search} />
+                        <Route path="/searchBoard" component={SearchBoard} />
+                        <Route path="/createtopic/:boardId" component={CreateTopic} />
+                        <Footer />
+                    </div>
+                ) : <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px" }}>
+                        <Header />
+                        {errorElement}
+                        <Footer />
+                    </div>
+                }
+                </Router>
+        </div>;
 	}
 }
+
+function mapState(state) {
+    return {
+        isError: state.isError,
+        errorMessage: state.errorMessage
+    };
+}
+
+export const App = connect(mapState, ()=>(null))(AppBeforeConnect);

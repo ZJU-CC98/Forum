@@ -2,7 +2,8 @@
 import * as Utility from '../Utility';
 import { AppState } from '../States/AppState';
 import * as $ from 'jquery';
-
+import { connect } from 'react-redux';
+import { userLogOff } from '../Actions';
 
 /*declare global {
     interface JQuery {
@@ -11,7 +12,7 @@ import * as $ from 'jquery';
 }*/
 
 
-export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   //顶部条的下拉菜单组件
+class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName, userImgUrl }> {   //顶部条的下拉菜单组件
     constructor(props?, context?) {
         super(props, context);
         this.state = ({
@@ -101,6 +102,7 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
         Utility.removeLocalStorage("userInfo");
         Utility.removeLocalStorage("SystemMessage");
         Utility.removeStorage("all");
+        this.props.logOff();            //更新redux中的状态
         location = window.location;     //刷新当前页面
     }
 
@@ -154,7 +156,7 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
             return <div id="dropdown">
                 <div className="box">
                     <div className="userInfo">
-                        <div className="userImg"><img src={this.state.userImgUrl}></img></div>
+                        <div className="userImg"><img src={this.props.userImgUrl||this.state.userImgUrl}></img></div>
                         <div className="userName">{this.state.userName}</div>
                     </div>
                     <div className="topBarText"><a href="/" style={{ color: '#fff' }}>首页</a></div>
@@ -167,7 +169,7 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
                     <ul className="dropDownSub">
                         <a href="/userCenter"> <li>个人中心</li></a>
                         <a href="/"><li>签到（暂无）</li></a>
-                        <li onClick={this.logOff}>注销</li>
+                        <li onClick={this.logOff.bind(this)}>注销</li>
                     </ul>
                 </div>
                 <div className="dropDownSubBox">
@@ -192,6 +194,25 @@ export class DropDown extends React.Component<{}, { userName, userImgUrl }> {   
         }
     }
 }
+
+// 这里是董松松的修改，加了redux
+function mapState(state) {
+    return {
+        userImgUrl: state.currentUserInfo.portraitUrl
+    }
+}
+
+function mapDispatch(dispatch) {
+    return {
+        logOff: () => {
+            dispatch(userLogOff());
+        }
+    };
+}
+
+let DropDown = connect(mapState, mapDispatch)(DropDownConnect);
+
+//到此结束
 
 export class Search extends React.Component<{}, AppState> {     //搜索框组件
 

@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 33);
+/******/ 	return __webpack_require__(__webpack_require__.s = 34);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -119,7 +119,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var State = __webpack_require__(5);
+var State = __webpack_require__(4);
 var React = __webpack_require__(0);
 //import { browserHistory } from 'react-router';
 var Board_1 = __webpack_require__(12);
@@ -2992,42 +2992,56 @@ function getBoardId(boardName) {
     return boardResult;
 }
 exports.getBoardId = getBoardId;
-//获取系统通知
-function getMessageSystem(from, router) {
+function isFollowThisBoard(boardId) {
+    var customBoards = getLocalStorage("userInfo").customBoards;
+    if (!customBoards)
+        return false;
+    for (var _i = 0, customBoards_1 = customBoards; _i < customBoards_1.length; _i++) {
+        var item = customBoards_1[_i];
+        if (item === boardId)
+            return true;
+    }
+    return false;
+}
+exports.isFollowThisBoard = isFollowThisBoard;
+function followBoard(boardId) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, myHeaders, size, response, newTopic, e_33;
+        var token, headers, url, response;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    console.log("开始获取系统通知了");
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
                     token = getLocalStorage("accessToken");
-                    myHeaders = new Headers();
-                    myHeaders.append('Authorization', token);
-                    size = 15;
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/notification/system?from=" + from + "&size=" + size, { headers: myHeaders })];
-                case 2:
+                    headers = new Headers();
+                    headers.append("Authorization", token);
+                    url = "http://apitest.niconi.cc/me/addcustomboard/" + boardId;
+                    return [4 /*yield*/, fetch(url, { method: "POST", headers: headers })];
+                case 1:
                     response = _a.sent();
-                    if (response.status === 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
-                    }
-                    if (response.status === 500) {
-                        //window.location.href = "/status/ServerError";
-                    }
-                    newTopic = response.json();
-                    console.log(newTopic);
-                    return [2 /*return*/, newTopic];
-                case 3:
-                    e_33 = _a.sent();
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    return [2 /*return*/];
             }
         });
     });
 }
-exports.getMessageSystem = getMessageSystem;
+exports.followBoard = followBoard;
+function unfollowBoard(boardId) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, url, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append("Authorization", token);
+                    url = "http://apitest.niconi.cc/me/removecustomboard/" + boardId;
+                    return [4 /*yield*/, fetch(url, { method: "DELETE", headers: headers })];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.unfollowBoard = unfollowBoard;
 
 
 /***/ }),
@@ -4007,69 +4021,6 @@ module.exports = ReactRouterDOM;
 
 "use strict";
 
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var Ubb = __webpack_require__(37);
-/**
- * 定义 UBBContainer 组件需要使用的属性。
- */
-var UbbContainerProps = /** @class */ (function () {
-    function UbbContainerProps() {
-    }
-    return UbbContainerProps;
-}());
-exports.UbbContainerProps = UbbContainerProps;
-/**
- * 提供用于解析 UBB 的核心组件。
- */
-var UbbContainer = /** @class */ (function (_super) {
-    __extends(UbbContainer, _super);
-    function UbbContainer() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    UbbContainer.prototype.render = function () {
-        // 获取引擎对象，如果不使用引擎对象则创建一个默认的
-        var engine = this.props.engine || Ubb.createEngine();
-        // 获取选项，如果不设置选项则创建一个默认的
-        var options = this.props.options || new Ubb.UbbCodeOptions();
-        var ubbHtml = engine.exec(this.props.code || '', options);
-        //打开回车与空格00
-        var style = {
-            whiteSpace: 'pre-wrap',
-            width: "100%"
-        };
-        // 注意兼容性设置， HTML4 不支持 article 标签
-        if (options.compatibility === Ubb.UbbCompatiblityMode.Transitional) {
-            return React.createElement("blockquote", { style: style }, ubbHtml);
-        }
-        else {
-            return React.createElement("article", { style: style }, ubbHtml);
-        }
-    };
-    return UbbContainer;
-}(React.Component));
-exports.UbbContainer = UbbContainer;
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * 表示应用程序的状态。
@@ -4328,6 +4279,69 @@ exports.ChangeUserInfo = ChangeUserInfo;
 
 
 /***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var Ubb = __webpack_require__(38);
+/**
+ * 定义 UBBContainer 组件需要使用的属性。
+ */
+var UbbContainerProps = /** @class */ (function () {
+    function UbbContainerProps() {
+    }
+    return UbbContainerProps;
+}());
+exports.UbbContainerProps = UbbContainerProps;
+/**
+ * 提供用于解析 UBB 的核心组件。
+ */
+var UbbContainer = /** @class */ (function (_super) {
+    __extends(UbbContainer, _super);
+    function UbbContainer() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UbbContainer.prototype.render = function () {
+        // 获取引擎对象，如果不使用引擎对象则创建一个默认的
+        var engine = this.props.engine || Ubb.createEngine();
+        // 获取选项，如果不设置选项则创建一个默认的
+        var options = this.props.options || new Ubb.UbbCodeOptions();
+        var ubbHtml = engine.exec(this.props.code || '', options);
+        //打开回车与空格00
+        var style = {
+            whiteSpace: 'pre-wrap',
+            width: "100%"
+        };
+        // 注意兼容性设置， HTML4 不支持 article 标签
+        if (options.compatibility === Ubb.UbbCompatiblityMode.Transitional) {
+            return React.createElement("blockquote", { style: style }, ubbHtml);
+        }
+        else {
+            return React.createElement("article", { style: style }, ubbHtml);
+        }
+    };
+    return UbbContainer;
+}(React.Component));
+exports.UbbContainer = UbbContainer;
+
+
+/***/ }),
 /* 6 */
 /***/ (function(module, exports) {
 
@@ -4390,7 +4404,9 @@ var Utility = __webpack_require__(1);
 var $ = __webpack_require__(6);
 var react_router_dom_1 = __webpack_require__(3);
 var UbbEditor_1 = __webpack_require__(15);
-var UbbContainer_1 = __webpack_require__(4);
+var UbbContainer_1 = __webpack_require__(5);
+var reducers_1 = __webpack_require__(66);
+var react_redux_1 = __webpack_require__(16);
 var Constants;
 (function (Constants) {
 })(Constants = exports.Constants || (exports.Constants = {}));
@@ -5159,7 +5175,7 @@ var TopicContent = /** @class */ (function (_super) {
         if (this.props.signature == "") {
             return React.createElement("div", { className: "content" },
                 React.createElement("div", { className: "substance" }, content),
-                React.createElement(PostManagement, { postId: this.props.postid, userId: this.props.userId, onChange: this.update }),
+                React.createElement(PostManagement, { postId: this.props.postid, userId: this.props.userId }),
                 React.createElement("div", { className: "comment1" },
                     React.createElement("div", { id: "commentlike", className: "buttonFont" },
                         React.createElement("button", { className: "commentbutton" },
@@ -5188,7 +5204,7 @@ var TopicContent = /** @class */ (function (_super) {
                 React.createElement("div", { className: "substance" },
                     content,
                     " "),
-                React.createElement(PostManagement, { postId: this.props.postid, userId: this.props.userId, onChange: this.update }),
+                React.createElement(PostManagement, { postId: this.props.postid, userId: this.props.userId }),
                 React.createElement("div", { className: "signature" },
                     React.createElement(UbbContainer_1.UbbContainer, { code: this.props.signature })),
                 React.createElement("div", { className: "comment" },
@@ -5242,11 +5258,9 @@ var Reply = /** @class */ (function (_super) {
     __extends(Reply, _super);
     function Reply(props, content) {
         var _this = _super.call(this, props, content) || this;
-        _this.update = _this.update.bind(_this);
         _this.state = {
             contents: [],
             masters: [],
-            k: 0
         };
         return _this;
     }
@@ -5288,17 +5302,8 @@ var Reply = /** @class */ (function (_super) {
         return React.createElement("div", { className: "reply" },
             React.createElement("div", { style: { marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" } },
                 React.createElement(Replier, { key: item.postId, isAnonymous: item.isAnonymous, userId: item.userId, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber, privilege: item.privilege }),
-                React.createElement(ReplyContent, { key: item.content, masters: this.state.masters, userId: item.userId, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.postId, contentType: item.contentType, update: this.update, k: this.state.k })));
-    };
-    Reply.prototype.update = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                console.log("reply should update");
-                this.setState({ k: 1 });
-                console.log(this.state);
-                return [2 /*return*/];
-            });
-        });
+                React.createElement(react_redux_1.Provider, { store: reducers_1.store },
+                    React.createElement(ReplyContent, { key: item.content, masters: this.state.masters, userId: item.userId, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.postId, contentType: item.contentType }))));
     };
     Reply.prototype.render = function () {
         return React.createElement("div", { className: "center", style: { width: "100%" } }, this.state.contents.map(this.generateContents.bind(this)));
@@ -5351,7 +5356,7 @@ var HotReply = /** @class */ (function (_super) {
         return React.createElement("div", { className: "reply", id: floor },
             React.createElement("div", { style: { marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" } },
                 React.createElement(HotReplier, { key: item.id, userId: item.userId, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber, privilege: item.privilege, isAnonymous: item.isAnonymous }),
-                React.createElement(ReplyContent, { key: item.content, masters: this.state.masters, userId: item.userId, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.id, contentType: item.contentType, update: this.update, k: this.state.contents })));
+                React.createElement(ReplyContent, { key: item.content, masters: this.state.masters, userId: item.userId, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.id, contentType: item.contentType })));
     };
     HotReply.prototype.render = function () {
         $(".header").scrollTop();
@@ -5705,21 +5710,17 @@ var ReplyContent = /** @class */ (function (_super) {
         _this.showManageUI = _this.showManageUI.bind(_this);
         _this.nextPage = _this.nextPage.bind(_this);
         _this.lastPage = _this.lastPage.bind(_this);
-        _this.update = _this.update.bind(_this);
         _this.state = {
             likeNumber: 1,
             dislikeNumber: 1,
             likeState: 0,
             awardInfo: [],
             info: [],
-            awardPage: 1
+            awardPage: 1,
+            postId: _this.props.postid
         };
         return _this;
     }
-    ReplyContent.prototype.update = function () {
-        console.log(this.props.k);
-        this.props.update();
-    };
     ReplyContent.prototype.nextPage = function () {
         return __awaiter(this, void 0, void 0, function () {
             var page, award, info, awardInfo;
@@ -5961,7 +5962,7 @@ var ReplyContent = /** @class */ (function (_super) {
         return React.createElement("div", { className: "root", style: { marginTop: "-170px" } },
             React.createElement("div", { className: "reply-content" },
                 React.createElement("div", { className: "substance" }, content),
-                React.createElement(PostManagement, { onChange: this.update, postId: this.props.postid, userId: this.props.userId }),
+                React.createElement(PostManagement, { postId: this.props.postid, userId: this.props.userId }),
                 React.createElement("div", { className: "comment1" },
                     React.createElement("div", { id: idLike, className: "upup", style: { marginRight: "0.7rem" } },
                         React.createElement("i", { title: "赞", onClick: this.like.bind(this), className: "fa fa-thumbs-o-up fa-lg" }),
@@ -6192,7 +6193,8 @@ var PostManagement = /** @class */ (function (_super) {
             Utility.awardWealth($("input[name='reason']:checked").val(), this.state.wealth, this.props.postId);
             var UIId = "#manage" + this.props.postId;
             $(UIId).css("display", "none");
-            this.props.onChange();
+            reducers_1.store.dispatch({ 'type': 'add-award' });
+            reducers_1.store.subscribe(this.render);
         }
         else {
             if (this.state.reason === "") {
@@ -6205,7 +6207,8 @@ var PostManagement = /** @class */ (function (_super) {
                 var UIId = "#manage" + this.props.postId;
                 $(UIId).css("display", "none");
                 this.setState({ reason: "" });
-                this.props.onChange();
+                reducers_1.store.dispatch({ 'type': 'add-award' });
+                reducers_1.store.subscribe(this.render);
             }
         }
     };
@@ -6303,13 +6306,13 @@ var Category = /** @class */ (function (_super) {
     Category.prototype.render = function () {
         var listUrl = "/list/" + this.state.boardId + "/normal";
         var topicUrl = "/topic/" + this.state.topicId;
-        return React.createElement("div", { style: { color: "blue", fontSize: "1rem" } },
-            "\u203A\u203A",
-            React.createElement("a", { style: { color: "blue", fontSize: "1rem" }, href: "/" }, "\u9996\u9875"),
-            "\u00A0\u2192\u00A0",
-            React.createElement("a", { style: { color: "blue", fontSize: "1rem" }, href: listUrl }, this.state.boardName),
-            "\u00A0\u2192\u00A0",
-            React.createElement("a", { style: { color: "blue", fontSize: "1rem", overflow: "hidden", textOverflow: "ellipsis", width: "10rem" }, href: topicUrl }, this.state.title));
+        return React.createElement("div", { style: { color: "grey", fontSize: "1rem" } },
+            React.createElement("i", { className: "fa fa-window-maximize fa-lg" }),
+            React.createElement("a", { style: { color: "grey", fontSize: "1rem", marginLeft: "0.3rem" }, href: "/" }, "\u9996\u9875"),
+            React.createElement("i", { className: "fa fa-mail-forward fa-lg" }),
+            React.createElement("a", { style: { color: "grey", fontSize: "1rem", marginLeft: "0.3rem" }, href: listUrl }, this.state.boardName),
+            React.createElement("i", { className: "fa fa-mail-forward fa-lg" }),
+            React.createElement("a", { style: { color: "grey", fontSize: "1rem", overflow: "hidden", textOverflow: "ellipsis", width: "10rem", marginLeft: "0.3rem" }, href: topicUrl }, this.state.title));
     };
     return Category;
 }(React.Component));
@@ -6383,21 +6386,21 @@ var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
 var Topic_1 = __webpack_require__(7);
 var Board_1 = __webpack_require__(12);
-var Topic_Trace_1 = __webpack_require__(16);
-var BoardList_1 = __webpack_require__(18);
-var UserCenter_1 = __webpack_require__(19);
-var Message_1 = __webpack_require__(21);
-var Topic_New_1 = __webpack_require__(22);
-var Focus_1 = __webpack_require__(23);
-var Header_1 = __webpack_require__(24);
-var Footer_1 = __webpack_require__(25);
-var MainPage_1 = __webpack_require__(26);
-var User_1 = __webpack_require__(27);
+var Topic_Trace_1 = __webpack_require__(17);
+var BoardList_1 = __webpack_require__(19);
+var UserCenter_1 = __webpack_require__(20);
+var Message_1 = __webpack_require__(22);
+var Topic_New_1 = __webpack_require__(23);
+var Focus_1 = __webpack_require__(24);
+var Header_1 = __webpack_require__(25);
+var Footer_1 = __webpack_require__(26);
+var MainPage_1 = __webpack_require__(27);
+var User_1 = __webpack_require__(28);
 var LogOn_1 = __webpack_require__(13);
-var Topic_CreateTopic_1 = __webpack_require__(28);
-var Status = __webpack_require__(29);
-var Search_1 = __webpack_require__(30);
-var SearchBoard_1 = __webpack_require__(31);
+var Topic_CreateTopic_1 = __webpack_require__(29);
+var Status = __webpack_require__(30);
+var Search_1 = __webpack_require__(31);
+var SearchBoard_1 = __webpack_require__(32);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -6480,7 +6483,7 @@ var FocusTopicSingle = /** @class */ (function (_super) {
     }
     FocusTopicSingle.prototype.render = function () {
         var topicUrl = "/topic/" + this.props.id;
-        var boardUrl = "/list/" + this.props.boardId + "/normal";
+        var boardUrl = "/list/" + this.props.boardId;
         return (React.createElement("div", { className: "focus-topic" },
             React.createElement(PortaritrUrl, { userId: this.props.userId, portraitUrl: this.props.portraitUrl }),
             React.createElement("div", { className: "focus-topic-info1" },
@@ -6721,7 +6724,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
-var UbbContainer_1 = __webpack_require__(4);
+var UbbContainer_1 = __webpack_require__(5);
 var react_router_dom_1 = __webpack_require__(3);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
@@ -6814,11 +6817,13 @@ var Category = /** @class */ (function (_super) {
     };
     Category.prototype.render = function () {
         var listUrl = "/list/" + this.state.boardId;
-        return React.createElement("div", { className: "row", style: { width: "100%", justifyContent: "flex-start", color: "blue", fontSize: "1rem" } },
-            "\u203A\u203A",
-            React.createElement("a", { style: { color: "blue", fontSize: "1rem" }, href: "/" }, "\u9996\u9875"),
-            "\u00A0\u2192\u00A0",
-            React.createElement("a", { style: { color: "blue", fontSize: "1rem" }, href: listUrl }, this.state.boardName));
+        return React.createElement("div", { className: "row", style: {
+                alignItems: "flex-end", width: "100% ", justifyContent: "flex-start", color: "grey", fontSize: "1rem", marginBottom: "1rem"
+            } },
+            React.createElement("i", { className: "fa fa-window-maximize fa-lg" }),
+            React.createElement("a", { style: { color: "grey", fontSize: "1rem", marginLeft: "0.3rem" }, href: " / " }, "\u9996\u9875"),
+            React.createElement("i", { className: "fa fa-mail-forward fa-lg" }),
+            React.createElement("a", { style: { color: "grey", fontSize: "1rem", marginLeft: "0.3rem" }, href: listUrl }, this.state.boardName));
     };
     return Category;
 }(RouteComponent));
@@ -6827,6 +6832,9 @@ var ListHead = /** @class */ (function (_super) {
     __extends(ListHead, _super);
     function ListHead(props, content) {
         var _this = _super.call(this, props, content) || this;
+        var initFollow = Utility.isFollowThisBoard(_this.props.boardId);
+        _this.follow = _this.follow.bind(_this);
+        _this.unfollow = _this.unfollow.bind(_this);
         _this.state = {
             imgUrl: '/images/ListImg.jpg',
             listName: '学术信息',
@@ -6837,10 +6845,37 @@ var ListHead = /** @class */ (function (_super) {
             isAnomynous: false,
             isEncrypted: false,
             isHidden: false,
-            isLocked: false
+            isLocked: false,
+            isFollow: initFollow
         };
         return _this;
     }
+    ListHead.prototype.follow = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Utility.followBoard(this.props.boardId)];
+                    case 1:
+                        _a.sent();
+                        this.setState({ isFollow: true });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ListHead.prototype.unfollow = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Utility.unfollowBoard(this.props.boardId)];
+                    case 1:
+                        _a.sent();
+                        this.setState({ isFollow: false });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     ListHead.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
             var data;
@@ -6886,7 +6921,7 @@ var ListHead = /** @class */ (function (_super) {
                 React.createElement("div", { style: { flexgrow: '1', flexDirection: 'row', display: 'flex' } },
                     React.createElement("div", { id: "ListImg" },
                         React.createElement("img", { src: this.state.imgUrl })),
-                    React.createElement("div", { className: "column", style: { marginTop: '1.25rem', marginLeft: '0.625rempx' } },
+                    React.createElement("div", { className: "column", style: { marginTop: '1.25rem', marginLeft: '0.625rem' } },
                         React.createElement("div", { className: "row", style: { marginTop: '0.625rem' } },
                             React.createElement("div", null, "\u4ECA\u65E5\u4E3B\u9898"),
                             React.createElement("div", { style: { marginLeft: '0.625rem' } }, this.state.todayTopics)),
@@ -6895,8 +6930,8 @@ var ListHead = /** @class */ (function (_super) {
                             React.createElement("div", { style: { marginLeft: '1.25rem' } }, this.state.totalTopics)))),
                 React.createElement("div", { className: "column", style: { flexgrow: '0' } },
                     React.createElement("div", { id: "like" },
-                        React.createElement("button", { style: { border: 'none', color: '#F5FAFC' } }, "\u2730"),
-                        "  \u6536\u85CF\u7248\u9762"),
+                        React.createElement("button", { onClick: this.state.isFollow ? this.unfollow : this.follow, className: "followBoard" }, this.state.isFollow ? "取消关注" : "关注版面"),
+                        "  "),
                     React.createElement("div", null,
                         React.createElement("img", { src: this.state.adsUrl, style: { width: '15.625rem', height: '3.75rem' } })))),
             React.createElement("div", { className: "row", style: { marginTop: '0.3125rem' } },
@@ -7554,8 +7589,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var LogOnExact_1 = __webpack_require__(90);
-var Logoff_1 = __webpack_require__(91);
+var LogOnExact_1 = __webpack_require__(92);
+var Logoff_1 = __webpack_require__(93);
 /**
  * 用户中心页面
  */
@@ -7760,9 +7795,9 @@ var UbbEditor = /** @class */ (function (_super) {
         return _this;
     }
     UbbEditor.prototype.handleExtendButtonClick = function (tagName) {
-        this.setState(function (prevState) { return ({
-            extendTagName: prevState.extendTagName !== tagName ? tagName : ''
-        }); });
+        this.setState({
+            extendTagName: tagName
+        });
         this.input.focus();
     };
     UbbEditor.prototype.handleExtendValueChange = function (value) {
@@ -7837,41 +7872,43 @@ var UbbEditor = /** @class */ (function (_super) {
     };
     UbbEditor.prototype.render = function () {
         var _this = this;
-        var size = ['', 1, 2, 3, 4, 5, 6, 7];
-        var color = ['颜色', 'aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon', 'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow'];
-        var textarea = (React.createElement("textarea", { onInput: function () { return (''); }, value: this.state.value, onChange: function (e) { _this.handleTextareaChange(e.target.value); }, onBlur: function (e) {
-                var target = e.target;
-                _this.handleTextareaBlur(target.selectionStart, target.selectionEnd);
-            }, ref: function (textarea) {
-                _this.content = textarea;
-            } }));
+        var size = ['未选择', 1, 2, 3, 4, 5, 6, 7];
+        var color = ['未选择', 'aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon', 'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow'];
         return (React.createElement("div", { className: "ubb-editor" },
             React.createElement("div", { className: "editor-buttons" },
                 React.createElement("div", { className: "editor-buttons-styles" },
-                    React.createElement("button", { className: "fa-bold", type: "button", title: "加粗", onClick: function () { _this.handleButtonClick('b'); } }),
-                    React.createElement("button", { className: "fa-italic", type: "button", title: "斜体", onClick: function () { _this.handleButtonClick('i'); } }),
-                    React.createElement("button", { className: "fa-underline", type: "button", title: "下划线", onClick: function () { _this.handleButtonClick('u'); } }),
-                    React.createElement("button", { className: "fa-align-left", type: "button", title: "左对齐", onClick: function () { _this.handleButtonClick('align', 'left'); } }),
-                    React.createElement("button", { className: "fa-align-center", type: "button", title: "居中", onClick: function () { _this.handleButtonClick('align', 'center'); } }),
-                    React.createElement("button", { className: "fa-align-right", type: "button", title: "右对齐", onClick: function () { _this.handleButtonClick('align', 'right'); } })),
-                React.createElement("div", { className: "editor-buttons-selects" },
-                    React.createElement("p", { className: "fa-text-height" }),
-                    React.createElement("select", { onChange: function (e) { _this.handleButtonClick('size', e.target.value); e.target.value = 0; }, value: 0 }, size.map(function (value, index) { return (React.createElement("option", { value: index, disabled: index === 0, style: { display: index === 0 ? 'none' : '' } }, value)); })),
-                    React.createElement("p", { className: "fa-text-height" }),
-                    React.createElement("select", { onChange: function (e) { _this.handleButtonClick('color', e.target.value); e.target.value = "颜色"; }, value: "颜色" }, color.map(function (value, index) { return (React.createElement("option", { value: value, disabled: index === 0, style: { backgroundColor: value, display: index === 0 ? 'none' : '' } })); }))),
+                    React.createElement("button", { type: "button", title: "加粗", onClick: function () { _this.handleButtonClick('b'); } }, "B"),
+                    React.createElement("button", { type: "button", title: "斜体", onClick: function () { _this.handleButtonClick('i'); } }, "I"),
+                    React.createElement("button", { type: "button", title: "下划线", onClick: function () { _this.handleButtonClick('u'); } }, "U"),
+                    React.createElement("button", { type: "button", title: "左对齐", onClick: function () { _this.handleButtonClick('align', 'left'); } }, "\u5DE6\u5BF9\u9F50"),
+                    React.createElement("button", { type: "button", title: "居中", onClick: function () { _this.handleButtonClick('align', 'center'); } }, "\u5C45\u4E2D"),
+                    React.createElement("button", { type: "button", title: "右对齐", onClick: function () { _this.handleButtonClick('align', 'right'); } }, "\u53F3\u5BF9\u9F50")),
                 React.createElement("div", { className: "editor-buttons-extends" },
-                    React.createElement("button", { className: "fa-link", type: "button", title: "插入url", onClick: function () { _this.handleExtendButtonClick('url'); } }),
-                    React.createElement("button", { className: "fa-picture-o", type: "button", title: "插入图片", onClick: function () { _this.handleExtendButtonClick('img'); } }),
-                    React.createElement("button", { className: "fa-film", type: "button", title: "插入视频", onClick: function () { _this.handleExtendButtonClick('video'); } }),
-                    React.createElement("button", { className: "fa-music", type: "button", title: "插入音频", onClick: function () { _this.handleExtendButtonClick('audio'); } }))),
+                    React.createElement("button", { type: "button", title: "插入url", onClick: function () { _this.handleExtendButtonClick('img'); } }, "img"),
+                    React.createElement("button", { type: "button", title: "插入url", onClick: function () { _this.handleExtendButtonClick('url'); } }, "url"),
+                    React.createElement("button", { type: "button", title: "插入视频", onClick: function () { _this.handleExtendButtonClick('video'); } }, "video"),
+                    React.createElement("button", { type: "button", title: "插入音频", onClick: function () { _this.handleExtendButtonClick('audio'); } }, "audio")),
+                React.createElement("div", { className: "editor-buttons-selects" },
+                    React.createElement("p", null, "\u5B57\u53F7\uFF1A"),
+                    React.createElement("select", { onChange: function (e) { _this.handleButtonClick('size', e.target.value); e.target.value = 0; }, value: 0 }, size.map(function (value, index) { return (React.createElement("option", { value: index, disabled: index === 0 }, value)); })),
+                    React.createElement("p", null, "\u989C\u8272\uFF1A"),
+                    React.createElement("select", { onChange: function (e) { _this.handleButtonClick('color', e.target.value); e.target.value = 0; }, value: 0 }, color.map(function (value, index) { return (React.createElement("option", { value: value, disabled: index === 0, style: { backgroundColor: value } })); })))),
             React.createElement("div", { className: "ubb-extend", style: { height: this.state.extendTagName ? '2rem' : '0rem' } },
-                React.createElement("p", null, "\u8BF7\u8F93\u5165\u5730\u5740\uFF1A"),
+                React.createElement("p", null,
+                    "\u8BF7\u8F93\u5165",
+                    this.state.extendTagName,
+                    "\u7684\u5730\u5740"),
                 React.createElement("input", { type: "text", value: this.state.extendValue, onChange: function (e) { _this.handleExtendValueChange(e.target.value); }, ref: function (it) { _this.input = it; } }),
-                this.state.extendTagName === 'img' ? React.createElement("label", { className: "fa-upload", htmlFor: "upload" }) : null,
-                React.createElement("button", { className: "fa-check", type: "button", onClick: function () { _this.handleButtonClick(_this.state.extendTagName, _this.state.extendValue); } }),
-                React.createElement("button", { className: "fa-remove", type: "button", onClick: function () { _this.setState({ extendTagName: '' }); } }),
-                React.createElement("input", { type: "file", id: "upload", accept: "image/*", style: { display: 'none' }, onChange: function (e) { _this.handleUpload(e.target.files[0]); } })),
-            React.createElement("div", { className: "ubb-content" }, textarea)));
+                React.createElement("button", { type: "button", onClick: function () { _this.handleButtonClick(_this.state.extendTagName, _this.state.extendValue); } }, "\u786E\u8BA4"),
+                React.createElement("input", { type: "file", id: "upload", accept: "image/*", style: { display: 'none' }, onChange: function (e) { _this.handleUpload(e.target.files[0]); } }),
+                this.state.extendTagName === 'img' ? React.createElement("label", { htmlFor: "upload" }, "\u4E0A\u4F20") : null),
+            React.createElement("div", { className: "ubb-content" },
+                React.createElement("textarea", { value: this.state.value, onChange: function (e) { _this.handleTextareaChange(e.target.value); }, onBlur: function (e) {
+                        var target = e.target;
+                        _this.handleTextareaBlur(target.selectionStart, target.selectionEnd);
+                    }, ref: function (textarea) {
+                        _this.content = textarea;
+                    } }))));
     };
     return UbbEditor;
 }(React.Component));
@@ -7880,6 +7917,12 @@ exports.UbbEditor = UbbEditor;
 
 /***/ }),
 /* 16 */
+/***/ (function(module, exports) {
+
+module.exports = ReactRedux;
+
+/***/ }),
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7933,8 +7976,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(3);
-var Post = __webpack_require__(65);
-var Topic_PostTopic_1 = __webpack_require__(66);
+var Post = __webpack_require__(68);
+var Topic_PostTopic_1 = __webpack_require__(69);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -8235,7 +8278,7 @@ exports.TopicPagerDown = TopicPagerDown;
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8348,7 +8391,7 @@ exports.PostManagement = PostManagement;
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8400,7 +8443,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var AppState_1 = __webpack_require__(5);
+var AppState_1 = __webpack_require__(4);
 var Utility = __webpack_require__(1);
 //链接到的地址是  /list/boardid
 var BoardList = /** @class */ (function (_super) {
@@ -8574,7 +8617,7 @@ exports.ChildBoard = ChildBoard;
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8595,8 +8638,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserCenterNavigation_1 = __webpack_require__(67);
-var UserCenterRouter_1 = __webpack_require__(68);
+var UserCenterNavigation_1 = __webpack_require__(70);
+var UserCenterRouter_1 = __webpack_require__(71);
 /**
  * 用户中心页面
  */
@@ -8621,7 +8664,7 @@ exports.UserCenter = UserCenter;
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8658,7 +8701,7 @@ exports.UserCenterExactAvatar = UserCenterExactAvatar;
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8675,10 +8718,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var MessageMessage_1 = __webpack_require__(74);
-var MessageResponse_1 = __webpack_require__(79);
-var MessageAttme_1 = __webpack_require__(80);
-var MessageSystem_1 = __webpack_require__(81);
+var MessageMessage_1 = __webpack_require__(77);
+var MessageResponse_1 = __webpack_require__(82);
+var MessageAttme_1 = __webpack_require__(83);
+var MessageSystem_1 = __webpack_require__(84);
 var react_router_dom_1 = __webpack_require__(3);
 /**
  * 网站的主页面对象。
@@ -8698,7 +8741,7 @@ var Message = /** @class */ (function (_super) {
                             React.createElement("div", { id: "response" },
                                 React.createElement(react_router_dom_1.NavLink, { to: "/message/response" }, "\u56DE\u590D\u6211\u7684")),
                             React.createElement("div", { id: "attme" },
-                                React.createElement(react_router_dom_1.NavLink, { to: "/message/attme" }, "@ \u6211\u7684")),
+                                React.createElement(react_router_dom_1.NavLink, { to: "/message/attme" }, "@\u6211\u7684")),
                             React.createElement("div", { id: "system" },
                                 React.createElement(react_router_dom_1.NavLink, { to: "/message/system" }, "\u7CFB\u7EDF\u901A\u77E5")),
                             React.createElement("div", { id: "message" },
@@ -8714,7 +8757,7 @@ exports.Message = Message;
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8800,7 +8843,7 @@ var AllNewTopic = /** @class */ (function (_super) {
             var data, oldData, i;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getAllNewTopic(0, this.context.router)];
+                    case 0: return [4 /*yield*/, Utility.getAllNewTopic(this.state.from, this.context.router)];
                     case 1:
                         data = _a.sent();
                         oldData = Utility.getStorage("AllNewTopic");
@@ -8847,7 +8890,7 @@ var AllNewTopic = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!(Utility.isBottom() && this.state.loading)) return [3 /*break*/, 5];
+                        if (!(isBottom() && this.state.loading)) return [3 /*break*/, 5];
                         /**
                         *查看新帖数目大于100条时不再继续加载
                         */
@@ -8908,10 +8951,69 @@ exports.AllNewTopic = AllNewTopic;
 function coverFocusPost(item) {
     return React.createElement(FocusTopicSingle_1.FocusTopicSingle, { title: item.title, hitCount: item.hitCount, id: item.id, boardId: item.boardId, boardName: item.boardName, replyCount: item.replyCount, userId: item.userId, userName: item.userName, portraitUrl: item.portraitUrl, time: item.time, likeCount: item.likeCount, dislikeCount: item.dislikeCount, fanCount: item.fanCount });
 }
+/**
+*滚动条在Y轴上的滚动距离
+*/
+function getScrollTop() {
+    var scrollTop = 0;
+    var bodyScrollTop = 0;
+    var documentScrollTop = 0;
+    if (document.body) {
+        bodyScrollTop = document.body.scrollTop;
+    }
+    if (document.documentElement) {
+        documentScrollTop = document.documentElement.scrollTop;
+    }
+    scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
+    return scrollTop;
+}
+/**
+*文档的总高度
+*/
+function getScrollHeight() {
+    var scrollHeight = 0;
+    var bodyScrollHeight = 0;
+    var documentScrollHeight = 0;
+    if (document.body) {
+        bodyScrollHeight = document.body.scrollHeight;
+    }
+    if (document.documentElement) {
+        documentScrollHeight = document.documentElement.scrollHeight;
+    }
+    scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
+    return scrollHeight;
+}
+/**
+*浏览器视口的高度
+*/
+function getWindowHeight() {
+    var windowHeight = 0;
+    if (document.compatMode == 'CSS1Compat') {
+        windowHeight = document.documentElement.clientHeight;
+    }
+    else {
+        windowHeight = document.body.clientHeight;
+    }
+    return windowHeight;
+}
+/**
+*判断滚动条是否滚动到底部
+*/
+function isBottom() {
+    /*
+    *预留100px给“正在加载”的提示标志
+    */
+    if (getScrollTop() + getWindowHeight() + 300 > getScrollHeight()) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8931,9 +9033,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusBoardArea_1 = __webpack_require__(83);
-var FocusTopicArea_1 = __webpack_require__(84);
-var FocusBoardTopicArea_1 = __webpack_require__(85);
+var FocusBoardArea_1 = __webpack_require__(85);
+var FocusTopicArea_1 = __webpack_require__(86);
+var FocusBoardTopicArea_1 = __webpack_require__(87);
 var Utility = __webpack_require__(1);
 var Focus = /** @class */ (function (_super) {
     __extends(Focus, _super);
@@ -8985,7 +9087,7 @@ exports.FocusState = FocusState;
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9143,7 +9245,6 @@ var DropDown = /** @class */ (function (_super) {
         Utility.removeLocalStorage("userName");
         Utility.removeLocalStorage("password");
         Utility.removeLocalStorage("userInfo");
-        Utility.removeLocalStorage("SystemMessage");
         Utility.removeStorage("all");
         location = window.location; //刷新当前页面
     };
@@ -9220,9 +9321,9 @@ var DropDown = /** @class */ (function (_super) {
                     React.createElement("ul", { className: "dropDownSubMessage" },
                         React.createElement("a", { href: "/message/response" },
                             " ",
-                            React.createElement("li", null, "\u56DE\u590D\u6211\u7684")),
+                            React.createElement("li", null, "\u6211\u7684\u56DE\u590D")),
                         React.createElement("a", { href: "/message/attme" },
-                            React.createElement("li", null, "@ \u6211\u7684")),
+                            React.createElement("li", null, "@\u6211\u7684")),
                         React.createElement("a", { href: "/message/system" },
                             React.createElement("li", null, "\u7CFB\u7EDF\u901A\u77E5")),
                         React.createElement("a", { href: "/message/message" },
@@ -9522,7 +9623,7 @@ exports.Header = Header;
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9574,7 +9675,7 @@ exports.Footer = Footer;
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9628,7 +9729,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var $ = __webpack_require__(6);
 var Utility = __webpack_require__(1);
-var UbbContainer_1 = __webpack_require__(4);
+var UbbContainer_1 = __webpack_require__(5);
 /**
  * 全站公告组件
  **/
@@ -10089,7 +10190,7 @@ exports.MainPage = MainPage;
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10110,8 +10211,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserNavigation_1 = __webpack_require__(86);
-var UserRouter_1 = __webpack_require__(87);
+var UserNavigation_1 = __webpack_require__(88);
+var UserRouter_1 = __webpack_require__(89);
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
@@ -10133,7 +10234,7 @@ exports.User = User;
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10522,7 +10623,7 @@ exports.InputMdContent = InputMdContent;
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10902,7 +11003,7 @@ class gradeClass {
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11095,7 +11196,7 @@ function coverFocusPost(item) {
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11145,7 +11246,7 @@ function coverFocusBoard(item) {
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11305,35 +11406,35 @@ exports.UserCenterMyFollowingsUser = UserCenterMyFollowingsUser;
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(34);
-module.exports = __webpack_require__(103);
+__webpack_require__(35);
+module.exports = __webpack_require__(105);
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var ReactDOM = __webpack_require__(35);
-var App_1 = __webpack_require__(36);
+var ReactDOM = __webpack_require__(36);
+var App_1 = __webpack_require__(37);
 // 显示应用程序核心内容
 ReactDOM.render(React.createElement(App_1.App, null), document.getElementById('root'));
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports) {
 
 module.exports = ReactDOM;
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11353,21 +11454,21 @@ var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
 var Topic_1 = __webpack_require__(7);
 var Board_1 = __webpack_require__(12);
-var Topic_Trace_1 = __webpack_require__(16);
-var BoardList_1 = __webpack_require__(18);
-var UserCenter_1 = __webpack_require__(19);
-var Message_1 = __webpack_require__(21);
-var Topic_New_1 = __webpack_require__(22);
-var Focus_1 = __webpack_require__(23);
-var Header_1 = __webpack_require__(24);
-var Footer_1 = __webpack_require__(25);
-var MainPage_1 = __webpack_require__(26);
-var User_1 = __webpack_require__(27);
+var Topic_Trace_1 = __webpack_require__(17);
+var BoardList_1 = __webpack_require__(19);
+var UserCenter_1 = __webpack_require__(20);
+var Message_1 = __webpack_require__(22);
+var Topic_New_1 = __webpack_require__(23);
+var Focus_1 = __webpack_require__(24);
+var Header_1 = __webpack_require__(25);
+var Footer_1 = __webpack_require__(26);
+var MainPage_1 = __webpack_require__(27);
+var User_1 = __webpack_require__(28);
 var LogOn_1 = __webpack_require__(13);
-var Topic_CreateTopic_1 = __webpack_require__(28);
-var Status = __webpack_require__(29);
-var Search_1 = __webpack_require__(30);
-var SearchBoard_1 = __webpack_require__(31);
+var Topic_CreateTopic_1 = __webpack_require__(29);
+var Status = __webpack_require__(30);
+var Search_1 = __webpack_require__(31);
+var SearchBoard_1 = __webpack_require__(32);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -11420,7 +11521,7 @@ exports.App = App;
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11433,34 +11534,34 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 var Ubb = __webpack_require__(2);
-var BTagHandler_1 = __webpack_require__(38);
+var BTagHandler_1 = __webpack_require__(39);
 var ImageTagHandler_1 = __webpack_require__(14);
-var ITagHandler_1 = __webpack_require__(39);
-var SizeTagHandler_1 = __webpack_require__(40);
-var QuoteTagHandler_1 = __webpack_require__(41);
-var ColorTagHandler_1 = __webpack_require__(42);
-var URLTagHandler_1 = __webpack_require__(43);
-var UTagHandler_1 = __webpack_require__(44);
-var DelTagHandler_1 = __webpack_require__(45);
-var MP3TagHandler_1 = __webpack_require__(46);
-var CursorTagHandler_1 = __webpack_require__(47);
-var EnglishTagHandler_1 = __webpack_require__(48);
-var UserTagHandler_1 = __webpack_require__(49);
-var CodeTagHandler_1 = __webpack_require__(50);
-var UnresolvedTagHandler_1 = __webpack_require__(51);
-var FontTagHandler_1 = __webpack_require__(52);
-var AlignTagHandler_1 = __webpack_require__(53);
-var UploadTagHandler_1 = __webpack_require__(54);
-var LeftTagHandler_1 = __webpack_require__(55);
-var CenterTagHandler_1 = __webpack_require__(56);
-var RightTagHandler_1 = __webpack_require__(57);
-var TableTagHandler_1 = __webpack_require__(58);
-var TdTagHandler_1 = __webpack_require__(59);
-var ThTagHandler_1 = __webpack_require__(60);
-var TrTagHandler_1 = __webpack_require__(61);
-var TopicTagHandler_1 = __webpack_require__(62);
-var MdTagHandler_1 = __webpack_require__(63);
-var EmTagHandler_1 = __webpack_require__(64);
+var ITagHandler_1 = __webpack_require__(40);
+var SizeTagHandler_1 = __webpack_require__(41);
+var QuoteTagHandler_1 = __webpack_require__(42);
+var ColorTagHandler_1 = __webpack_require__(43);
+var URLTagHandler_1 = __webpack_require__(44);
+var UTagHandler_1 = __webpack_require__(45);
+var DelTagHandler_1 = __webpack_require__(46);
+var MP3TagHandler_1 = __webpack_require__(47);
+var CursorTagHandler_1 = __webpack_require__(48);
+var EnglishTagHandler_1 = __webpack_require__(49);
+var UserTagHandler_1 = __webpack_require__(50);
+var CodeTagHandler_1 = __webpack_require__(51);
+var UnresolvedTagHandler_1 = __webpack_require__(52);
+var FontTagHandler_1 = __webpack_require__(53);
+var AlignTagHandler_1 = __webpack_require__(54);
+var UploadTagHandler_1 = __webpack_require__(55);
+var LeftTagHandler_1 = __webpack_require__(56);
+var CenterTagHandler_1 = __webpack_require__(57);
+var RightTagHandler_1 = __webpack_require__(58);
+var TableTagHandler_1 = __webpack_require__(59);
+var TdTagHandler_1 = __webpack_require__(60);
+var ThTagHandler_1 = __webpack_require__(61);
+var TrTagHandler_1 = __webpack_require__(62);
+var TopicTagHandler_1 = __webpack_require__(63);
+var MdTagHandler_1 = __webpack_require__(64);
+var EmTagHandler_1 = __webpack_require__(65);
 /**
  * 创建一个具有所有功能的默认引擎。
  */
@@ -11504,7 +11605,7 @@ __export(__webpack_require__(2));
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11557,7 +11658,7 @@ exports.BTagHandler = BTagHandler;
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11602,7 +11703,7 @@ exports.ITagHandler = ITagHandler;
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11656,7 +11757,7 @@ exports.SizeTagHandler = SizeTagHandler;
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11708,7 +11809,7 @@ exports.QuoteTagHandler = QuoteTagHandler;
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11757,7 +11858,7 @@ exports.ColorTagHandler = ColorTagHandler;
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11805,7 +11906,7 @@ var UrlTagHandler = /** @class */ (function (_super) {
                 return innerContent;
             }
         }
-        return React.createElement("a", { href: url, target: "_blank" }, innerContent);
+        return React.createElement("a", { href: url }, innerContent);
     };
     return UrlTagHandler;
 }(Ubb.RecursiveTagHandler));
@@ -11813,7 +11914,7 @@ exports.UrlTagHandler = UrlTagHandler;
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11866,7 +11967,7 @@ exports.UTagHandler = UTagHandler;
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11914,7 +12015,7 @@ exports.DelTagHandler = DelTagHandler;
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11968,7 +12069,7 @@ exports.MP3TagHandler = MP3TagHandler;
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12016,7 +12117,7 @@ exports.CursorTagHandler = CursorTagHandler;
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12064,7 +12165,7 @@ exports.EnglishTagHandler = EnglishTagHandler;
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12112,7 +12213,7 @@ exports.UserTagHandler = UserTagHandler;
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12160,7 +12261,7 @@ exports.CodeTagHandler = CodeTagHandler;
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12204,7 +12305,7 @@ exports.UnresolvedTagHandler = UnresolvedTagHandler;
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12252,7 +12353,7 @@ exports.FontTagHandler = FontTagHandler;
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12301,7 +12402,7 @@ exports.AlignTagHandler = AlignTagHandler;
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12387,7 +12488,7 @@ exports.UploadTagHandler = UploadTagHandler;
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12435,7 +12536,7 @@ exports.LeftTagHandler = LeftTagHandler;
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12483,7 +12584,7 @@ exports.CenterTagHandler = CenterTagHandler;
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12531,7 +12632,7 @@ exports.RightTagHandler = RightTagHandler;
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12575,7 +12676,7 @@ exports.TableTagHandler = TableTagHandler;
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12625,7 +12726,7 @@ exports.TdTagHandler = TdTagHandler;
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12675,7 +12776,7 @@ exports.ThTagHandler = ThTagHandler;
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12719,7 +12820,7 @@ exports.TrTagHandler = TrTagHandler;
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12768,7 +12869,7 @@ exports.TopicTagHandler = TopicTagHandler;
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12838,7 +12939,7 @@ exports.MarkdownParser = MarkdownParser;
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12885,7 +12986,155 @@ exports.EmTagHandler = EmTagHandler;
 
 
 /***/ }),
-/* 65 */
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var Redux = __webpack_require__(67);
+var react_redux_1 = __webpack_require__(16);
+var Utility = __webpack_require__(1);
+var React = __webpack_require__(0);
+//定义数据
+//定义顶级数据 1.帖子数据
+var AppState = /** @class */ (function () {
+    function AppState() {
+    }
+    return AppState;
+}());
+//定义部分数据 帖子数据包括帖子本身的数据以及所属版面的数据
+var ReplyContentState = /** @class */ (function () {
+    function ReplyContentState() {
+    }
+    return ReplyContentState;
+}());
+//定义action，dispatch时将广播这个type的action
+var AddAwardAction = /** @class */ (function () {
+    function AddAwardAction() {
+    }
+    return AddAwardAction;
+}());
+//子reducer 通过接收action的type来进行对state的修改，必须返回一个全新的state
+function post(state, action) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a, award, info, awardInfo;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _a = action.type;
+                    switch (_a) {
+                        case 'add-award': return [3 /*break*/, 1];
+                    }
+                    return [3 /*break*/, 4];
+                case 1: return [4 /*yield*/, Utility.getAwardInfo(state.postId, 1)];
+                case 2:
+                    award = _b.sent();
+                    info = award.map(this.generateAwardInfo.bind(this));
+                    return [4 /*yield*/, Promise.all(info)];
+                case 3:
+                    awardInfo = _b.sent();
+                    return [2 /*return*/, __assign({}, state, { info: awardInfo, awardInfo: award })];
+                case 4: return [2 /*return*/, state];
+            }
+        });
+    });
+}
+//组合子reducer形成最大的reducer
+exports.app = Redux.combineReducers({
+    post: post
+});
+//用最大的reducer创建store store在Main.tsx的provider组件中被引用
+exports.store = Redux.createStore(exports.app);
+//redux不存在state，将state全部复制到props中，ownProps是关于router路由的参数
+function mapStateToProps(state, ownProps) {
+    return state;
+}
+var A = /** @class */ (function (_super) {
+    __extends(A, _super);
+    function A() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    A.prototype.render = function () {
+        return React.createElement("div", null, "11");
+    };
+    return A;
+}(React.Component));
+exports.ReduxReplyContent = react_redux_1.connect(mapStateToProps)(A);
+//把操作封装到props中
+/*function mapDispatchToProps(dispatch) {
+
+    return {
+        newAward: function () {
+            dispatch({ 'type': 'add-award' });
+        }
+    }
+}
+export const ReduxReplyContent = connect(mapStateToProps, mapDispatchToProps)(Topic.Reply);
+*/
+
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports) {
+
+module.exports = Redux;
+
+/***/ }),
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12940,8 +13189,8 @@ var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
 var $ = __webpack_require__(6);
 var react_router_dom_1 = __webpack_require__(3);
-var UbbContainer_1 = __webpack_require__(4);
-var Post_Management_1 = __webpack_require__(17);
+var UbbContainer_1 = __webpack_require__(5);
+var Post_Management_1 = __webpack_require__(18);
 var Topic_1 = __webpack_require__(7);
 var Reply = /** @class */ (function (_super) {
     __extends(Reply, _super);
@@ -13593,7 +13842,7 @@ exports.ReplyContent = ReplyContent;
 
 
 /***/ }),
-/* 66 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13649,8 +13898,8 @@ var Utility = __webpack_require__(1);
 var $ = __webpack_require__(6);
 var react_router_dom_1 = __webpack_require__(3);
 var Topic_1 = __webpack_require__(7);
-var UbbContainer_1 = __webpack_require__(4);
-var Post_Management_1 = __webpack_require__(17);
+var UbbContainer_1 = __webpack_require__(5);
+var Post_Management_1 = __webpack_require__(18);
 var PostTopic = /** @class */ (function (_super) {
     __extends(PostTopic, _super);
     function PostTopic(props, content) {
@@ -14151,7 +14400,7 @@ exports.AwardInfo = AwardInfo;
 
 
 /***/ }),
-/* 67 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14253,7 +14502,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 68 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14275,12 +14524,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
 var Utility = __webpack_require__(1);
-var UserCenterExact_1 = __webpack_require__(69);
-var UserCenterMyFollowings_1 = __webpack_require__(73);
-var UserCenterMyFans_1 = __webpack_require__(92);
-var UserCenterMyPostsExact_1 = __webpack_require__(93);
-var UserCenterMyFavorites_1 = __webpack_require__(94);
-var UserCenterConfig_1 = __webpack_require__(98);
+var UserCenterExact_1 = __webpack_require__(72);
+var UserCenterMyFollowings_1 = __webpack_require__(76);
+var UserCenterMyFans_1 = __webpack_require__(94);
+var UserCenterMyPostsExact_1 = __webpack_require__(95);
+var UserCenterMyFavorites_1 = __webpack_require__(96);
+var UserCenterConfig_1 = __webpack_require__(100);
 /**
  * 用户中心主体
  */
@@ -14308,7 +14557,7 @@ exports.UserCenterRouter = UserCenterRouter;
 
 
 /***/ }),
-/* 69 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14363,9 +14612,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactProfile_1 = __webpack_require__(70);
-var UserCenterExactActivities_1 = __webpack_require__(71);
-var UserCenterExactAvatar_1 = __webpack_require__(20);
+var UserCenterExactProfile_1 = __webpack_require__(73);
+var UserCenterExactActivities_1 = __webpack_require__(74);
+var UserCenterExactAvatar_1 = __webpack_require__(21);
 var Utility = __webpack_require__(1);
 /**
  * 用户中心主页
@@ -14426,7 +14675,7 @@ exports.UserCenterExact = UserCenterExact;
 
 
 /***/ }),
-/* 70 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14446,7 +14695,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UbbContainer_1 = __webpack_require__(4);
+var UbbContainer_1 = __webpack_require__(5);
 /**
  * 用户中心主页个人资料组件
  */
@@ -14513,7 +14762,7 @@ exports.UserCenterExactProfile = UserCenterExactProfile;
 
 
 /***/ }),
-/* 71 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14533,7 +14782,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPosts_1 = __webpack_require__(72);
+var UserCenterExactActivitiesPosts_1 = __webpack_require__(75);
 /**
  * 用户中心主页近期动态组件
  */
@@ -14553,7 +14802,7 @@ exports.UserCenterExactActivities = UserCenterExactActivities;
 
 
 /***/ }),
-/* 72 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14609,7 +14858,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var UserCenterExactActivitiesPost_1 = __webpack_require__(8);
-var AppState_1 = __webpack_require__(5);
+var AppState_1 = __webpack_require__(4);
 var Utility = __webpack_require__(1);
 //用户中心主页帖子动态组件
 var UserCenterExactActivitiesPosts = /** @class */ (function (_super) {
@@ -14779,7 +15028,7 @@ exports.UserCenterExactActivitiesPosts = UserCenterExactActivitiesPosts;
 
 
 /***/ }),
-/* 73 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14834,9 +15083,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var AppState_1 = __webpack_require__(5);
+var AppState_1 = __webpack_require__(4);
 var app_1 = __webpack_require__(9);
-var UserCenterMyFollowingsUser_1 = __webpack_require__(32);
+var UserCenterMyFollowingsUser_1 = __webpack_require__(33);
 var UserCenterPageCount_1 = __webpack_require__(11);
 var Utility = __webpack_require__(1);
 //用户中心我的关注组件
@@ -14952,7 +15201,7 @@ exports.UserCenterMyFollowings = UserCenterMyFollowings;
 
 
 /***/ }),
-/* 74 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15007,8 +15256,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MessagePerson_1 = __webpack_require__(75);
-var MessageWindow_1 = __webpack_require__(76);
+var MessagePerson_1 = __webpack_require__(78);
+var MessageWindow_1 = __webpack_require__(79);
 var Utility = __webpack_require__(1);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
@@ -15177,7 +15426,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 75 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15227,7 +15476,7 @@ exports.MessagePerson = MessagePerson;
 
 
 /***/ }),
-/* 76 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15282,8 +15531,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MessageSender_1 = __webpack_require__(77);
-var MessageReceiver_1 = __webpack_require__(78);
+var MessageSender_1 = __webpack_require__(80);
+var MessageReceiver_1 = __webpack_require__(81);
 var Utility = __webpack_require__(1);
 var MessageWindow = /** @class */ (function (_super) {
     __extends(MessageWindow, _super);
@@ -15538,7 +15787,7 @@ exports.MessageWindow = MessageWindow;
 
 
 /***/ }),
-/* 77 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15558,7 +15807,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var UbbContainer_1 = __webpack_require__(4);
+var UbbContainer_1 = __webpack_require__(5);
 var MessageSender = /** @class */ (function (_super) {
     __extends(MessageSender, _super);
     function MessageSender() {
@@ -15590,7 +15839,7 @@ exports.MessageSender = MessageSender;
 
 
 /***/ }),
-/* 78 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15610,7 +15859,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var UbbContainer_1 = __webpack_require__(4);
+var UbbContainer_1 = __webpack_require__(5);
 var MessageReceiver = /** @class */ (function (_super) {
     __extends(MessageReceiver, _super);
     function MessageReceiver() {
@@ -15640,7 +15889,7 @@ exports.MessageReceiver = MessageReceiver;
 
 
 /***/ }),
-/* 79 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15690,7 +15939,7 @@ function contains(arr, obj) {
 
 
 /***/ }),
-/* 80 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15730,7 +15979,7 @@ exports.MessageAttme = MessageAttme;
 
 
 /***/ }),
-/* 81 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15745,127 +15994,24 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 // A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MessageSystembox_1 = __webpack_require__(82);
-var Utility = __webpack_require__(1);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
 var MessageSystem = /** @class */ (function (_super) {
     __extends(MessageSystem, _super);
-    function MessageSystem(props) {
-        var _this = _super.call(this, props) || this;
-        /**
-         * 移除DOM时，为滚动条移除监听事件
-         */
-        /*async componentWillUnmount() {
-            document.removeEventListener('scroll', this.handleScroll);
-        }
-    
-        /**
-         * 处理滚动的函数
-         */
-        /*async handleScroll() {
-            if (Utility.isBottom() && this.state.loading) {
-                //发出第一条fetch请求前将this.state.loading设置为false，防止后面重复发送fetch请求
-                this.setState({ loading: false });
-                try {
-                    var newData = await Utility.getMessageSystem(this.state.from, this.context.router);
-                } catch (err) {
-                    //如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
-                    this.setState({ loading: true });
-                    return;
-                }
-                //如果正确获取到数据，则添加新数据，翻页+1，同时this.state.loading设置为true，后续才可以再次发送fetch请求
-                if (newData && newData != []) {
-                    let data = this.state.data.concat(newData);
-                    this.setState({ data: data, from: data.length, loading: true });
-                    Utility.setLocalStorage("SystemMessage", data);
-                }
-            }
-        }*/
-        _this.coverMessageSystem = function (item) {
-            return React.createElement(MessageSystembox_1.MessageSystembox, { id: item.id, type: item.type, title: item.title, content: item.content, time: item.time, topicId: item.topicId, postId: item.postId, isRead: item.isRead });
-        };
-        _this.state = {
-            data: [],
-            from: 0,
-            loading: true
-        };
-        return _this;
+    function MessageSystem() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    MessageSystem.prototype.componentWillMount = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var data, oldData, i;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getMessageSystem(0, this.context.router)];
-                    case 1:
-                        data = _a.sent();
-                        if (data && data != []) {
-                            oldData = Utility.getLocalStorage("SystemMessage");
-                            if (oldData) {
-                                for (i = 0; i < data.length; i++) {
-                                    //最新的20条数据跟之前的有重合就组合起来
-                                    if (data[i].id == oldData[0].id) {
-                                        data = data.slice(0, i).concat(oldData);
-                                        break;
-                                    }
-                                }
-                            }
-                            //缓存获取到的数据                      
-                            Utility.setLocalStorage("SystemMessage", data);
-                            this.setState({ data: data, from: data.length });
-                        }
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
     MessageSystem.prototype.render = function () {
         //给我的回复添加选中样式
         $('.message-nav > div').removeClass('message-nav-focus');
         $('#system').addClass('message-nav-focus');
-        return React.createElement("div", { className: "message-system" }, this.state.data.map(this.coverMessageSystem));
+        return React.createElement("div", null, "\u8FD9\u91CC\u662F\u7CFB\u7EDF\u6D88\u606F");
     };
     return MessageSystem;
 }(React.Component));
@@ -15873,61 +16019,7 @@ exports.MessageSystem = MessageSystem;
 
 
 /***/ }),
-/* 82 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var React = __webpack_require__(0);
-var UbbContainer_1 = __webpack_require__(4);
-var MessageSystembox = /** @class */ (function (_super) {
-    __extends(MessageSystembox, _super);
-    function MessageSystembox() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    MessageSystembox.prototype.render = function () {
-        var content = this.props.content;
-        if (this.props.topicId) {
-            var host = window.location.host;
-            if (this.props.postId) {
-                var a = this.props.postId / 10;
-                var b = parseInt(a);
-                var c = this.props.postId - b * 10;
-                content = this.props.content + "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=blue]http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "[/color][/url]";
-            }
-            else {
-                content = this.props.content + "[url=http://" + host + "/topic/" + this.props.topicId + "][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/url]";
-            }
-        }
-        console.log(content);
-        return (React.createElement("div", { className: "message-system-box" },
-            React.createElement("div", { className: "message-system-box-bar" },
-                React.createElement("div", { className: "message-system-box-title" }, this.props.title),
-                React.createElement("div", { className: "message-system-box-date" }, moment(this.props.time).format('YYYY-MM-DD HH:mm:ss'))),
-            React.createElement("div", { className: "message-system-box-content" },
-                React.createElement(UbbContainer_1.UbbContainer, { code: content }))));
-    };
-    return MessageSystembox;
-}(React.Component));
-exports.MessageSystembox = MessageSystembox;
-
-
-/***/ }),
-/* 83 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16099,7 +16191,7 @@ exports.FocusProps = FocusProps;
 
 
 /***/ }),
-/* 84 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16294,7 +16386,7 @@ function coverFocusPost(item) {
 
 
 /***/ }),
-/* 85 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16511,7 +16603,7 @@ exports.FocusBoardTopicProps = FocusBoardTopicProps;
 
 
 /***/ }),
-/* 86 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16555,7 +16647,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 87 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16611,9 +16703,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserExactProfile_1 = __webpack_require__(88);
-var UserRouterActivities_1 = __webpack_require__(89);
-var UserCenterExactAvatar_1 = __webpack_require__(20);
+var UserExactProfile_1 = __webpack_require__(90);
+var UserRouterActivities_1 = __webpack_require__(91);
+var UserCenterExactAvatar_1 = __webpack_require__(21);
 var Utility = __webpack_require__(1);
 var UserRouter = /** @class */ (function (_super) {
     __extends(UserRouter, _super);
@@ -16703,7 +16795,7 @@ var UserExact = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 88 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16758,7 +16850,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UbbContainer_1 = __webpack_require__(4);
+var UbbContainer_1 = __webpack_require__(5);
 var Utility = __webpack_require__(1);
 /**
  * 用户中心主页个人资料组件
@@ -16910,7 +17002,7 @@ exports.UserExactProfile = UserExactProfile;
 
 
 /***/ }),
-/* 89 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16966,7 +17058,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var UserCenterExactActivitiesPost_1 = __webpack_require__(8);
-var AppState_1 = __webpack_require__(5);
+var AppState_1 = __webpack_require__(4);
 var Utility = __webpack_require__(1);
 //用户中心主页帖子动态组件
 var UserRouterActivities = /** @class */ (function (_super) {
@@ -17139,7 +17231,7 @@ exports.UserRouterActivities = UserRouterActivities;
 
 
 /***/ }),
-/* 90 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17358,7 +17450,7 @@ var LogOnState = /** @class */ (function () {
 
 
 /***/ }),
-/* 91 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17410,7 +17502,7 @@ exports.LogOff = LogOff;
 
 
 /***/ }),
-/* 92 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17465,8 +17557,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var AppState_1 = __webpack_require__(5);
-var UserCenterMyFollowingsUser_1 = __webpack_require__(32);
+var AppState_1 = __webpack_require__(4);
+var UserCenterMyFollowingsUser_1 = __webpack_require__(33);
 var app_1 = __webpack_require__(9);
 var UserCenterPageCount_1 = __webpack_require__(11);
 var Utility = __webpack_require__(1);
@@ -17577,7 +17669,7 @@ exports.UserCenterMyFans = UserCenterMyFans;
 
 
 /***/ }),
-/* 93 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17633,7 +17725,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var UserCenterExactActivitiesPost_1 = __webpack_require__(8);
-var AppState_1 = __webpack_require__(5);
+var AppState_1 = __webpack_require__(4);
 var app_1 = __webpack_require__(9);
 var UserCenterPageCount_1 = __webpack_require__(11);
 var Utility = __webpack_require__(1);
@@ -17752,7 +17844,7 @@ exports.UserCenterMyPostsExact = UserCenterMyPostsExact;
 
 
 /***/ }),
-/* 94 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17773,8 +17865,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserCenterMyFavoritesPosts_1 = __webpack_require__(95);
-var UserCenterMyFavoritesBoards_1 = __webpack_require__(96);
+var UserCenterMyFavoritesPosts_1 = __webpack_require__(97);
+var UserCenterMyFavoritesBoards_1 = __webpack_require__(98);
 //import { UserCenterMyFavoritesPostsBoards } from './UserCenterMyFavoritesPostsBoards';
 //<Route path='/usercenter/myfavorites/boards' component={UserCenterMyFavoritesPostsBoards} />
 /**
@@ -17807,7 +17899,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 95 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17863,7 +17955,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var UserCenterExactActivitiesPost_1 = __webpack_require__(8);
-var AppState_1 = __webpack_require__(5);
+var AppState_1 = __webpack_require__(4);
 var Utility = __webpack_require__(1);
 var UserCenterPageCount_1 = __webpack_require__(11);
 var app_1 = __webpack_require__(9);
@@ -17966,7 +18058,7 @@ exports.UserCenterMyFavoritesPosts = UserCenterMyFavoritesPosts;
 
 
 /***/ }),
-/* 96 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18022,7 +18114,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
-var UserCenterMyFavoritesBoard_1 = __webpack_require__(97);
+var UserCenterMyFavoritesBoard_1 = __webpack_require__(99);
 var UserCenterMyFavoritesBoards = /** @class */ (function (_super) {
     __extends(UserCenterMyFavoritesBoards, _super);
     function UserCenterMyFavoritesBoards(props) {
@@ -18109,7 +18201,7 @@ exports.UserCenterMyFavoritesBoards = UserCenterMyFavoritesBoards;
 
 
 /***/ }),
-/* 97 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18296,7 +18388,7 @@ exports.UserCenterMyFavoritesBoard = UserCenterMyFavoritesBoard;
 
 
 /***/ }),
-/* 98 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18360,10 +18452,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
-var AppState_1 = __webpack_require__(5);
-var UserCenterConfigAvatar_1 = __webpack_require__(99);
-var UserCenterConfigSignature_1 = __webpack_require__(100);
-var UserCenterConfigOthers_1 = __webpack_require__(101);
+var AppState_1 = __webpack_require__(4);
+var UserCenterConfigAvatar_1 = __webpack_require__(101);
+var UserCenterConfigSignature_1 = __webpack_require__(102);
+var UserCenterConfigOthers_1 = __webpack_require__(103);
 var UserCenterConfig = /** @class */ (function (_super) {
     __extends(UserCenterConfig, _super);
     function UserCenterConfig(props) {
@@ -18502,7 +18594,7 @@ var UserInfo = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 99 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18899,7 +18991,7 @@ exports.UserCenterConfigAvatar = UserCenterConfigAvatar;
 
 
 /***/ }),
-/* 100 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18939,7 +19031,7 @@ exports.UserCenterConfigSignature = UserCenterConfigSignature;
 
 
 /***/ }),
-/* 101 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18959,7 +19051,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var AppState_1 = __webpack_require__(102);
+var AppState_1 = __webpack_require__(104);
 var UserCenterConfigOthers = /** @class */ (function (_super) {
     __extends(UserCenterConfigOthers, _super);
     function UserCenterConfigOthers() {
@@ -19032,7 +19124,7 @@ var UserInfo = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 102 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19295,7 +19387,7 @@ exports.ChangeUserInfo = ChangeUserInfo;
 
 
 /***/ }),
-/* 103 */
+/* 105 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

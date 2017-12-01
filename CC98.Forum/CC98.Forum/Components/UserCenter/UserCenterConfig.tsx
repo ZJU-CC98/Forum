@@ -6,7 +6,7 @@ import * as React from 'react';
 import * as Utility from '../../Utility';
 import { ChangeUserInfo } from '../../States/AppState';
 
-import { UserCenterConfigAvatar } from './UserCenterConfigAvatar';
+import UserCenterConfigAvatar from './UserCenterConfigAvatar';
 import { UserCenterConfigSignature } from './UserCenterConfigSignature';
 import { UserCenterConfigPassword } from './UserCenterConfigPassword';
 import { UserCenterConfigOthers } from './UserCenterConfigOthers';

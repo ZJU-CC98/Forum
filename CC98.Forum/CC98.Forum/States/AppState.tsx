@@ -114,6 +114,7 @@ export class ListHeadState {
     isEncrypted: boolean;
     isAnomynous: boolean;
     isLocked: boolean;
+    isFollow: boolean;
 }
 export class ListNoticeState {
     notice: string;
