@@ -40,12 +40,12 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
         return (this.props as any).match;
     }
 }
-export class CreateTopic extends RouteComponent<{}, { title,content,topicId ,ready,mode,boardName}, {boardId}> {   //发帖
+export class CreateTopic extends RouteComponent<{}, { title, content, topicId, ready, mode, boardName }, { boardId }> {   //发帖
     constructor(props) {
         super(props);
         this.update = this.update.bind(this);
         this.changeEditor = this.changeEditor.bind(this);
-        this.state = ({ topicId: null, title: '', content: '', ready: false, mode: 0, boardName:"" });
+        this.state = ({ topicId: null, title: '', content: '', ready: false, mode: 0, boardName: "" });
     }
     async componentDidMount() {
         const token = Utility.getLocalStorage("accessToken");
@@ -96,7 +96,7 @@ export class CreateTopic extends RouteComponent<{}, { title,content,topicId ,rea
             if (mes.status === 402) {
                 alert("请输入内容");
             }
-         //   testEditor.setMarkdown("");
+            //   testEditor.setMarkdown("");
             const topicId = await mes.text();
             window.location.href = `/topic/${topicId}`;
         } catch (e) {
@@ -135,7 +135,7 @@ export class CreateTopic extends RouteComponent<{}, { title,content,topicId ,rea
         const mode = this.state.mode;
         const url = `/list/${this.match.params.boardId}`;
         if (mode === 0) {
-            return <div className="column" style={{ justifyContent: "center", width: "80%" }}>
+            return <div className="createTopic">
                 <div className="createTopicBoardName"> <a href={url}>{this.state.boardName} ></a>> 发表主题</div>
                 <InputTitle boardId={this.match.params.boardId} onChange={this.onTitleChange.bind(this)} />
                 <div className="createTopicType">
@@ -149,16 +149,16 @@ export class CreateTopic extends RouteComponent<{}, { title,content,topicId ,rea
                     <input type="radio" checked={true} name="option" value="all" />回复所有人可见
                     <input type="radio" name="option" value="host" />回复仅楼主可见
                     <input type="radio" name="option" value="special" />回复仅特定用户可见
-            </div>
+                </div>
                 <UbbEditor update={this.update} />
-                <div id="post-topic-button" onClick={this.sendUbbTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>发帖</div>
-                <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>切换到Markdown编辑器
-
-                    </div>
+                <div className="row" style={{ justifyContent: "center" }}>
+                    <div id="post-topic-button" onClick={this.sendUbbTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", marginBottom: "1.25rem", marginRight:"1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>发帖</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ marginTop: "1.25rem", marginBottom: "1.25rem", width: "13.5rem" }}>切换到Markdown编辑器</div>
+                </div>
             </div>;
         } else {
-            return <div className="column" style={{ justifyContent: "center", width: "80%" }}>
-                <div className="createTopicBoardName"> 版面名称 > 发表主题</div>
+            return <div className="createTopic">
+                <div className="createTopicBoardName"> <a href={url}>{this.state.boardName} ></a>> 发表主题</div>
                 <InputTitle boardId={this.match.params.boardId} onChange={this.onTitleChange.bind(this)} />
                 <div className="createTopicType">
                     <div className="createTopicListName">发帖类型</div>
@@ -171,18 +171,18 @@ export class CreateTopic extends RouteComponent<{}, { title,content,topicId ,rea
                     <input type="radio" checked={true} name="option" value="all" />回复所有人可见
                     <input type="radio" name="option" value="host" />回复仅楼主可见
                     <input type="radio" name="option" value="special" />回复仅特定用户可见
-            </div>
+                </div>
                 <InputMdContent onChange={this.sendMdTopic.bind(this)} ready={this.state.ready} />
-                <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>切换到UBB编辑器
-
-                    </div>
+                <div className="row" style={{ justifyContent: "center" }}>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ marginTop: "1.25rem", marginBottom:"1.25rem", width: "13.5rem", letterSpacing: "0.3125rem" }}>切换到UBB编辑器</div>
+                </div>
             </div>;
         }
-      
+
     }
 }
 //  <div id="post-topic-button" onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>发帖</div>
-export class InputTitle extends React.Component<{boardId,onChange}, { title: string }>{
+export class InputTitle extends React.Component<{ boardId, onChange }, { title: string }>{
     constructor(props) {
         super(props);
         this.state = ({ title: "" });
@@ -196,19 +196,12 @@ export class InputTitle extends React.Component<{boardId,onChange}, { title: str
     }
 
     render() {
-        
-        return <div className="column"><div className="createTopicTitle">
+        return <div className="createTopicTitle">
             <div className="createTopicListName">主题标题</div>
             <div className="createTopicListName">标签1</div>
-           <div className="createTopicListName">标签2</div>
-         
+            <div className="createTopicListName">标签2</div>
+            <input value={this.state.title} placeholder="请输入新主题的标题" onChange={this.handleTitleChange.bind(this)} />
         </div>
-            <form>
-                <div>
-                    <input value={this.state.title} onChange={this.handleTitleChange.bind(this)} />
-                </div>
-            </form>
-            </div>;
     }
 }
 export class InputUbbContent extends React.Component<{ onChange }, { content }>{
@@ -258,20 +251,16 @@ export class InputUbbContent extends React.Component<{ onChange }, { content }>{
                     <textarea id="sendTopic-input" name="sendTopic-input" value={this.state.content} onChange={this.handleUbbChange.bind(this)} />
                 </div>
             </form>
-         <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
-
-                
-
-            </div></div>;
+        </div>;
     }
-} 
-export class InputMdContent extends React.Component<{ ready,onChange}, {content}>{
+}
+export class InputMdContent extends React.Component<{ ready, onChange }, { content }>{
     constructor(props) {
         super(props);
         this.state = ({ content: "" });
     }
     componentDidMount() {
-        Constants.testEditor=editormd("test-editormd", {
+        Constants.testEditor = editormd("test-editormd", {
             width: "100%",
             height: 680,
             path: "/scripts/lib/editor.md/lib/",
@@ -283,7 +272,7 @@ export class InputMdContent extends React.Component<{ ready,onChange}, {content}
         this.props.onChange(content);
     }
     render() {
-      
+
         return <div style={{ width: "100%", display: "flex", flexDirection: "column" }}><div id="sendTopic">
             <form>
                 <div id="test-editormd" className="editormd">
@@ -293,7 +282,7 @@ export class InputMdContent extends React.Component<{ ready,onChange}, {content}
             <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
                 <div id="post-topic-button" className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }} onClick={this.send.bind(this)}>发帖</div>
             </div>
-            </div>
+        </div>
         </div>;
     }
 }

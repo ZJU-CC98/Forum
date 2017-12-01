@@ -7724,9 +7724,9 @@ var UbbEditor = /** @class */ (function (_super) {
         return _this;
     }
     UbbEditor.prototype.handleExtendButtonClick = function (tagName) {
-        this.setState({
-            extendTagName: tagName
-        });
+        this.setState(function (prevState) { return ({
+            extendTagName: prevState.extendTagName !== tagName ? tagName : ''
+        }); });
         this.input.focus();
     };
     UbbEditor.prototype.handleExtendValueChange = function (value) {
@@ -7801,43 +7801,41 @@ var UbbEditor = /** @class */ (function (_super) {
     };
     UbbEditor.prototype.render = function () {
         var _this = this;
-        var size = ['未选择', 1, 2, 3, 4, 5, 6, 7];
-        var color = ['未选择', 'aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon', 'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow'];
+        var size = ['', 1, 2, 3, 4, 5, 6, 7];
+        var color = ['颜色', 'aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon', 'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow'];
+        var textarea = (React.createElement("textarea", { onInput: function () { return (''); }, value: this.state.value, onChange: function (e) { _this.handleTextareaChange(e.target.value); }, onBlur: function (e) {
+                var target = e.target;
+                _this.handleTextareaBlur(target.selectionStart, target.selectionEnd);
+            }, ref: function (textarea) {
+                _this.content = textarea;
+            } }));
         return (React.createElement("div", { className: "ubb-editor" },
             React.createElement("div", { className: "editor-buttons" },
                 React.createElement("div", { className: "editor-buttons-styles" },
-                    React.createElement("button", { type: "button", title: "加粗", onClick: function () { _this.handleButtonClick('b'); } }, "B"),
-                    React.createElement("button", { type: "button", title: "斜体", onClick: function () { _this.handleButtonClick('i'); } }, "I"),
-                    React.createElement("button", { type: "button", title: "下划线", onClick: function () { _this.handleButtonClick('u'); } }, "U"),
-                    React.createElement("button", { type: "button", title: "左对齐", onClick: function () { _this.handleButtonClick('align', 'left'); } }, "\u5DE6\u5BF9\u9F50"),
-                    React.createElement("button", { type: "button", title: "居中", onClick: function () { _this.handleButtonClick('align', 'center'); } }, "\u5C45\u4E2D"),
-                    React.createElement("button", { type: "button", title: "右对齐", onClick: function () { _this.handleButtonClick('align', 'right'); } }, "\u53F3\u5BF9\u9F50")),
-                React.createElement("div", { className: "editor-buttons-extends" },
-                    React.createElement("button", { type: "button", title: "插入url", onClick: function () { _this.handleExtendButtonClick('img'); } }, "img"),
-                    React.createElement("button", { type: "button", title: "插入url", onClick: function () { _this.handleExtendButtonClick('url'); } }, "url"),
-                    React.createElement("button", { type: "button", title: "插入视频", onClick: function () { _this.handleExtendButtonClick('video'); } }, "video"),
-                    React.createElement("button", { type: "button", title: "插入音频", onClick: function () { _this.handleExtendButtonClick('audio'); } }, "audio")),
+                    React.createElement("button", { className: "fa-bold", type: "button", title: "加粗", onClick: function () { _this.handleButtonClick('b'); } }),
+                    React.createElement("button", { className: "fa-italic", type: "button", title: "斜体", onClick: function () { _this.handleButtonClick('i'); } }),
+                    React.createElement("button", { className: "fa-underline", type: "button", title: "下划线", onClick: function () { _this.handleButtonClick('u'); } }),
+                    React.createElement("button", { className: "fa-align-left", type: "button", title: "左对齐", onClick: function () { _this.handleButtonClick('align', 'left'); } }),
+                    React.createElement("button", { className: "fa-align-center", type: "button", title: "居中", onClick: function () { _this.handleButtonClick('align', 'center'); } }),
+                    React.createElement("button", { className: "fa-align-right", type: "button", title: "右对齐", onClick: function () { _this.handleButtonClick('align', 'right'); } })),
                 React.createElement("div", { className: "editor-buttons-selects" },
-                    React.createElement("p", null, "\u5B57\u53F7\uFF1A"),
-                    React.createElement("select", { onChange: function (e) { _this.handleButtonClick('size', e.target.value); e.target.value = 0; }, value: 0 }, size.map(function (value, index) { return (React.createElement("option", { value: index, disabled: index === 0 }, value)); })),
-                    React.createElement("p", null, "\u989C\u8272\uFF1A"),
-                    React.createElement("select", { onChange: function (e) { _this.handleButtonClick('color', e.target.value); e.target.value = 0; }, value: 0 }, color.map(function (value, index) { return (React.createElement("option", { value: value, disabled: index === 0, style: { backgroundColor: value } })); })))),
+                    React.createElement("p", { className: "fa-text-height" }),
+                    React.createElement("select", { onChange: function (e) { _this.handleButtonClick('size', e.target.value); e.target.value = 0; }, value: 0 }, size.map(function (value, index) { return (React.createElement("option", { value: index, disabled: index === 0, style: { display: index === 0 ? 'none' : '' } }, value)); })),
+                    React.createElement("p", { className: "fa-text-height" }),
+                    React.createElement("select", { onChange: function (e) { _this.handleButtonClick('color', e.target.value); e.target.value = "颜色"; }, value: "颜色" }, color.map(function (value, index) { return (React.createElement("option", { value: value, disabled: index === 0, style: { backgroundColor: value, display: index === 0 ? 'none' : '' } })); }))),
+                React.createElement("div", { className: "editor-buttons-extends" },
+                    React.createElement("button", { className: "fa-link", type: "button", title: "插入url", onClick: function () { _this.handleExtendButtonClick('url'); } }),
+                    React.createElement("button", { className: "fa-picture-o", type: "button", title: "插入图片", onClick: function () { _this.handleExtendButtonClick('img'); } }),
+                    React.createElement("button", { className: "fa-film", type: "button", title: "插入视频", onClick: function () { _this.handleExtendButtonClick('video'); } }),
+                    React.createElement("button", { className: "fa-music", type: "button", title: "插入音频", onClick: function () { _this.handleExtendButtonClick('audio'); } }))),
             React.createElement("div", { className: "ubb-extend", style: { height: this.state.extendTagName ? '2rem' : '0rem' } },
-                React.createElement("p", null,
-                    "\u8BF7\u8F93\u5165",
-                    this.state.extendTagName,
-                    "\u7684\u5730\u5740"),
+                React.createElement("p", null, "\u8BF7\u8F93\u5165\u5730\u5740\uFF1A"),
                 React.createElement("input", { type: "text", value: this.state.extendValue, onChange: function (e) { _this.handleExtendValueChange(e.target.value); }, ref: function (it) { _this.input = it; } }),
-                React.createElement("button", { type: "button", onClick: function () { _this.handleButtonClick(_this.state.extendTagName, _this.state.extendValue); } }, "\u786E\u8BA4"),
-                React.createElement("input", { type: "file", id: "upload", accept: "image/*", style: { display: 'none' }, onChange: function (e) { _this.handleUpload(e.target.files[0]); } }),
-                this.state.extendTagName === 'img' ? React.createElement("label", { htmlFor: "upload" }, "\u4E0A\u4F20") : null),
-            React.createElement("div", { className: "ubb-content" },
-                React.createElement("textarea", { value: this.state.value, onChange: function (e) { _this.handleTextareaChange(e.target.value); }, onBlur: function (e) {
-                        var target = e.target;
-                        _this.handleTextareaBlur(target.selectionStart, target.selectionEnd);
-                    }, ref: function (textarea) {
-                        _this.content = textarea;
-                    } }))));
+                this.state.extendTagName === 'img' ? React.createElement("label", { className: "fa-upload", htmlFor: "upload" }) : null,
+                React.createElement("button", { className: "fa-check", type: "button", onClick: function () { _this.handleButtonClick(_this.state.extendTagName, _this.state.extendValue); } }),
+                React.createElement("button", { className: "fa-remove", type: "button", onClick: function () { _this.setState({ extendTagName: '' }); } }),
+                React.createElement("input", { type: "file", id: "upload", accept: "image/*", style: { display: 'none' }, onChange: function (e) { _this.handleUpload(e.target.files[0]); } })),
+            React.createElement("div", { className: "ubb-content" }, textarea)));
     };
     return UbbEditor;
 }(React.Component));
@@ -9246,7 +9244,7 @@ var DropDown = /** @class */ (function (_super) {
                             " ",
                             React.createElement("li", null, "\u6211\u7684\u56DE\u590D")),
                         React.createElement("a", { href: "/message/attme" },
-                            React.createElement("li", null, "@\u6211\u7684")),
+                            React.createElement("li", null, "@ \u6211\u7684")),
                         React.createElement("a", { href: "/message/system" },
                             React.createElement("li", null, "\u7CFB\u7EDF\u901A\u77E5")),
                         React.createElement("a", { href: "/message/message" },
@@ -10377,7 +10375,7 @@ var CreateTopic = /** @class */ (function (_super) {
         var mode = this.state.mode;
         var url = "/list/" + this.match.params.boardId;
         if (mode === 0) {
-            return React.createElement("div", { className: "column", style: { justifyContent: "center", width: "80%" } },
+            return React.createElement("div", { className: "createTopic" },
                 React.createElement("div", { className: "createTopicBoardName" },
                     " ",
                     React.createElement("a", { href: url },
@@ -10401,12 +10399,18 @@ var CreateTopic = /** @class */ (function (_super) {
                     React.createElement("input", { type: "radio", name: "option", value: "special" }),
                     "\u56DE\u590D\u4EC5\u7279\u5B9A\u7528\u6237\u53EF\u89C1"),
                 React.createElement(UbbEditor_1.UbbEditor, { update: this.update }),
-                React.createElement("div", { id: "post-topic-button", onClick: this.sendUbbTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" } }, "\u53D1\u5E16"),
-                React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor, className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u5207\u6362\u5230Markdown\u7F16\u8F91\u5668"));
+                React.createElement("div", { className: "row", style: { justifyContent: "center" } },
+                    React.createElement("div", { id: "post-topic-button", onClick: this.sendUbbTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", marginBottom: "1.25rem", marginRight: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" } }, "\u53D1\u5E16"),
+                    React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor, className: "button blue", style: { marginTop: "1.25rem", marginBottom: "1.25rem", width: "13.5rem" } }, "\u5207\u6362\u5230Markdown\u7F16\u8F91\u5668")));
         }
         else {
-            return React.createElement("div", { className: "column", style: { justifyContent: "center", width: "80%" } },
-                React.createElement("div", { className: "createTopicBoardName" }, " \u7248\u9762\u540D\u79F0 > \u53D1\u8868\u4E3B\u9898"),
+            return React.createElement("div", { className: "createTopic" },
+                React.createElement("div", { className: "createTopicBoardName" },
+                    " ",
+                    React.createElement("a", { href: url },
+                        this.state.boardName,
+                        " >"),
+                    "> \u53D1\u8868\u4E3B\u9898"),
                 React.createElement(InputTitle, { boardId: this.match.params.boardId, onChange: this.onTitleChange.bind(this) }),
                 React.createElement("div", { className: "createTopicType" },
                     React.createElement("div", { className: "createTopicListName" }, "\u53D1\u5E16\u7C7B\u578B"),
@@ -10424,7 +10428,8 @@ var CreateTopic = /** @class */ (function (_super) {
                     React.createElement("input", { type: "radio", name: "option", value: "special" }),
                     "\u56DE\u590D\u4EC5\u7279\u5B9A\u7528\u6237\u53EF\u89C1"),
                 React.createElement(InputMdContent, { onChange: this.sendMdTopic.bind(this), ready: this.state.ready }),
-                React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor, className: "button blue", style: { marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" } }, "\u5207\u6362\u5230UBB\u7F16\u8F91\u5668"));
+                React.createElement("div", { className: "row", style: { justifyContent: "center" } },
+                    React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor, className: "button blue", style: { marginTop: "1.25rem", marginBottom: "1.25rem", width: "13.5rem", letterSpacing: "0.3125rem" } }, "\u5207\u6362\u5230UBB\u7F16\u8F91\u5668")));
         }
     };
     return CreateTopic;
@@ -10446,14 +10451,11 @@ var InputTitle = /** @class */ (function (_super) {
         console.log('finished');
     };
     InputTitle.prototype.render = function () {
-        return React.createElement("div", { className: "column" },
-            React.createElement("div", { className: "createTopicTitle" },
-                React.createElement("div", { className: "createTopicListName" }, "\u4E3B\u9898\u6807\u9898"),
-                React.createElement("div", { className: "createTopicListName" }, "\u6807\u7B7E1"),
-                React.createElement("div", { className: "createTopicListName" }, "\u6807\u7B7E2")),
-            React.createElement("form", null,
-                React.createElement("div", null,
-                    React.createElement("input", { value: this.state.title, onChange: this.handleTitleChange.bind(this) }))));
+        return React.createElement("div", { className: "createTopicTitle" },
+            React.createElement("div", { className: "createTopicListName" }, "\u4E3B\u9898\u6807\u9898"),
+            React.createElement("div", { className: "createTopicListName" }, "\u6807\u7B7E1"),
+            React.createElement("div", { className: "createTopicListName" }, "\u6807\u7B7E2"),
+            React.createElement("input", { value: this.state.title, placeholder: "请输入新主题的标题", onChange: this.handleTitleChange.bind(this) }));
     };
     return InputTitle;
 }(React.Component));
@@ -10506,8 +10508,7 @@ var InputUbbContent = /** @class */ (function (_super) {
                         React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-300px 0px" } })))),
             React.createElement("form", null,
                 React.createElement("div", null,
-                    React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input", value: this.state.content, onChange: this.handleUbbChange.bind(this) }))),
-            React.createElement("div", { className: "row", style: { justifyContent: "center", marginBottom: "1.25rem " } }));
+                    React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input", value: this.state.content, onChange: this.handleUbbChange.bind(this) }))));
     };
     return InputUbbContent;
 }(React.Component));
