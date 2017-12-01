@@ -2233,3 +2233,25 @@ export function getBoardId(boardName: string) {
     }
     return boardResult;
 }
+export function isFollowThisBoard(boardId) {
+    const customBoards = getLocalStorage("userInfo").customBoards;
+    if (!customBoards) return false;
+    for (let item of customBoards) {
+        if (item === boardId) return true;
+    }
+    return false;
+}
+export async function followBoard(boardId) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    const url = `http://apitest.niconi.cc/me/addcustomboard/${boardId}`;
+    const response = await fetch(url, { method:"POST", headers });
+}
+export async function unfollowBoard(boardId) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    const url = `http://apitest.niconi.cc/me/removecustomboard/${boardId}`;
+    const response = await fetch(url, { method: "DELETE", headers });
+}

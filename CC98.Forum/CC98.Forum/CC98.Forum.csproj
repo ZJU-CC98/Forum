@@ -42,6 +42,7 @@
     <None Remove="Props\MessageSendReceiveProps.tsx" />
     <None Remove="Props\MessageWindowProps.tsx" />
     <None Remove="Reducer.tsx" />
+    <None Remove="reducers.tsx" />
     <None Remove="States\MessageWindowState.tsx" />
     <None Remove="States\SearchState.tsx" />
     <None Remove="Store.tsx" />
@@ -119,6 +120,7 @@
     <TypeScriptCompile Include="Props\MessagePersonProps.tsx" />
     <TypeScriptCompile Include="Props\MessageSendReceiveProps.tsx" />
     <TypeScriptCompile Include="Props\MessageWindowProps.tsx" />
+    <TypeScriptCompile Include="reducers.tsx" />
     <TypeScriptCompile Include="States\MessageWindowState.tsx" />
     <TypeScriptCompile Include="States\SearchState.tsx" />
     <TypeScriptCompile Include="Ubb\AlignTagHandler.tsx" />

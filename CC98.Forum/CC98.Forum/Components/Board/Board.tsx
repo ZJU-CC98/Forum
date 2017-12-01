@@ -75,12 +75,17 @@ export class Category extends RouteComponent<{ boardId }, { boardId, boardName }
     }
     render() {
         const listUrl = `/list/${this.state.boardId}`;
-        return <div className="row" style={{ width: "100%", justifyContent: "flex-start", color: "blue", fontSize: "1rem" }}>&rsaquo;&rsaquo;<a style={{ color: "blue", fontSize: "1rem" }} href="/">首页</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "1rem" }} href={listUrl} >{this.state.boardName}</a></div>;
+        return <div className="row" style={{
+            alignItems: "flex-end", width: "100% ", justifyContent: "flex-start", color: "grey", fontSize: "1rem", marginBottom:"1rem"
+        }}><i className="fa fa-window-maximize fa-lg"></i><a style={{ color: "grey", fontSize: "1rem", marginLeft: "0.3rem", marginRight: "0.3rem" }} href=" / ">首页</a><i className="fa fa-arrow-right fa-lg"></i><a style={{ color: "grey", fontSize: "1rem", marginLeft: "0.3rem" }} href={listUrl} >{this.state.boardName}</a></div>;
     }
 }
 export class ListHead extends RouteComponent<{ boardId }, State.ListHeadState, { boardId }> {
     constructor(props, content) {
         super(props, content);
+        const initFollow = Utility.isFollowThisBoard(this.props.boardId);
+        this.follow = this.follow.bind(this);
+        this.unfollow = this.unfollow.bind(this);
         this.state = {
             imgUrl: '/images/ListImg.jpg',
             listName: '学术信息',
@@ -91,8 +96,17 @@ export class ListHead extends RouteComponent<{ boardId }, State.ListHeadState, {
             isAnomynous: false,
             isEncrypted: false,
             isHidden: false,
-            isLocked: false
+            isLocked: false,
+            isFollow: initFollow
         };
+    }
+    async follow() {
+        await Utility.followBoard(this.props.boardId);
+        this.setState({ isFollow: true });
+    }
+    async unfollow() {
+        await Utility.unfollowBoard(this.props.boardId);
+        this.setState({ isFollow: false });
     }
     async componentDidMount() {
         const data = await Utility.getBoardMessage(this.props.boardId, this.context.router);
@@ -117,14 +131,14 @@ export class ListHead extends RouteComponent<{ boardId }, State.ListHeadState, {
             <div className="row" style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <div style={{ flexgrow: '1', flexDirection: 'row', display: 'flex' }}>
                     <div id="ListImg" ><img src={this.state.imgUrl}></img></div>
-                    <div className="column" style={{ marginTop: '1.25rem', marginLeft: '0.625rempx' }}>
+                    <div className="column" style={{ marginTop: '1.25rem', marginLeft: '0.625rem' }}>
 
                         <div className="row" style={{ marginTop: '0.625rem' }}><div>今日主题</div><div style={{ marginLeft: '0.625rem' }}>{this.state.todayTopics}</div></div>
                         <div className="row" style={{ marginTop: '0.625rem' }}><div>总主题</div><div style={{ marginLeft: '1.25rem' }}>{this.state.totalTopics}</div></div>
                     </div>
                 </div>
                 <div className="column" style={{ flexgrow: '0' }}>
-                    <div id="like"><button style={{ border: 'none', color: '#F5FAFC' }}>✰</button>  收藏版面</div>
+                    <div id="like"><button onClick={this.state.isFollow ? this.unfollow : this.follow} className="followBoard">{this.state.isFollow?"取消关注":"关注版面"}</button>  </div>
                     <div ><img src={this.state.adsUrl} style={{ width: '15.625rem', height: '3.75rem' }}></img></div>
                 </div>
             </div>

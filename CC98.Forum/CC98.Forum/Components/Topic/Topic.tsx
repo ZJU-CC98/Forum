@@ -10,6 +10,11 @@ import {
 import { UbbEditor } from '../UbbEditor';
 import { match } from "react-router";
 import { UbbContainer } from '.././UbbContainer';
+import * as Reducer from '../../reducers';
+import { store} from '../../reducers';
+import { Provider } from 'react-redux';
+import * as Redux from 'redux'
+import { ReduxReplyContent } from '../../reducers';
 //import { TopicPager, TopicPagerDown, PageModel } from './Topic-Pager';
 //import { PostTopic } from './Topic-PostTopic';
 //import { HotReply, Reply } from './Topic-Post';
@@ -36,7 +41,7 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
 export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName }, { topicid, page, userName }> {
     constructor(props, context) {
         super(props, context);
-
+       
         this.handleChange = this.handleChange.bind(this);
         this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null };
     }
@@ -96,7 +101,9 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
                 <TopicPager page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} /></div>
             {topic}
             {hotReply}
-            <Route path="/topic/:topicid/:page?" component={Reply} />
+        
+                <Route path="/topic/:topicid/:page?" component={Reply} />
+          
             <TopicPagerDown page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
             <SendTopic onChange={this.handleChange} topicid={this.state.topicid} />
         </div>
@@ -605,7 +612,7 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
         if (this.props.signature == "") {
             return <div className="content">
                 <div className="substance">{content}</div>
-                <PostManagement postId={this.props.postid} userId={this.props.userId} onChange={this.update} />
+                <PostManagement postId={this.props.postid} userId={this.props.userId} />
                 <div className="comment1">
                     <div id="commentlike" className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg" ></i></button>   收藏文章 </div>
                     <div id="commentliked" className="upup" style={{ marginRight: "0.7rem" }} ><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
@@ -621,7 +628,7 @@ export class TopicContent extends RouteComponent<{ postid: number, topicid: numb
         } else {
             return <div className="content">
                 <div className="substance">{content} </div>
-                <PostManagement postId={this.props.postid} userId={this.props.userId} onChange={this.update} />
+                <PostManagement postId={this.props.postid} userId={this.props.userId} />
                 <div className="signature"><UbbContainer code={this.props.signature} /></div>
                 <div className="comment">
                     <div id="commentlike" style={{ marginRight: "0.7rem" }} className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg"></i></button>   收藏文章 </div>
@@ -653,20 +660,19 @@ export class AwardInfo extends RouteComponent<{ postId, userImgUrl, content, use
     }
 }
 
-export class Reply extends RouteComponent<{}, { contents, masters, k }, { page, topicid, userName }>{
+export class Reply extends RouteComponent<{}, { contents, masters}, { page, topicid, userName }>{
     constructor(props, content) {
 
         super(props, content);
-        this.update = this.update.bind(this);
         this.state = {
             contents: [],
             masters: [],
-            k: 0
         };
 
     }
     async getMasters(topicId) {
         return Utility.getMasters(topicId);
+      //  store.dispatch()
     }
     async componentWillReceiveProps(newProps) {
         const page = newProps.match.params.page || 1;
@@ -679,6 +685,7 @@ export class Reply extends RouteComponent<{}, { contents, masters, k }, { page, 
          else {
              realContents = Utility.getStorage(storageId);
          }*/
+
         realContents = await Utility.getTopicContent(newProps.match.params.topicid, page, this.context.router);
         const masters = await this.getMasters(newProps.match.params.topicid);
         this.setState({ contents: realContents, masters: masters });
@@ -688,14 +695,11 @@ export class Reply extends RouteComponent<{}, { contents, masters, k }, { page, 
     private generateContents(item: State.ContentState) {
         return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
             <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} />
-            <ReplyContent key={item.content} masters={this.state.masters} userId={item.userId} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postId} contentType={item.contentType} update={this.update} k={this.state.k} />
+            <Provider store={store}>
+                <ReplyContent key={item.content} masters={this.state.masters} userId={item.userId} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postId} contentType={item.contentType} />
+            </Provider>
         </div>
         </div>;
-    }
-    async update() {
-        console.log("reply should update");
-        this.setState({ k: 1});
-        console.log(this.state);
     }
     render() {
 
@@ -736,7 +740,7 @@ export class HotReply extends RouteComponent<{}, { masters, contents }, { page, 
         const floor = (item.floor % 10).toString();
         return <div className="reply" id={floor}><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
             <HotReplier key={item.id} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isAnonymous={item.isAnonymous} />
-            <ReplyContent key={item.content} masters={this.state.masters} userId={item.userId} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.id} contentType={item.contentType} update={this.update} k={this.state.contents} />
+            <ReplyContent key={item.content} masters={this.state.masters} userId={item.userId} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.id} contentType={item.contentType} />
         </div>
         </div>;
     }
@@ -1041,25 +1045,21 @@ export class UserDetails extends RouteComponent<{ userName, userId }, { portrait
         </div>;
     }
 }
-export class ReplyContent extends RouteComponent<{ k,masters, userId, content, signature, topicid, postid, contentType, update }, { likeNumber, dislikeNumber, likeState, awardInfo, info, awardPage }, {}> {
+export class ReplyContent extends RouteComponent<{ masters, userId, content, signature, topicid, postid, contentType }, {postId, likeNumber, dislikeNumber, likeState, awardInfo, info, awardPage }, {}> {
     constructor(props, content) {
         super(props, content);
         this.showManageUI = this.showManageUI.bind(this);
         this.nextPage = this.nextPage.bind(this);
         this.lastPage = this.lastPage.bind(this);
-        this.update = this.update.bind(this);
         this.state = {
             likeNumber: 1,
             dislikeNumber: 1,
             likeState: 0,
             awardInfo: [],
             info: [],
-            awardPage: 1
+            awardPage: 1,
+            postId: this.props.postid
         }
-    }
-    update() {
-        console.log(this.props.k);
-        this.props.update();
     }
     async nextPage() {
         const page = this.state.awardPage;
@@ -1113,7 +1113,6 @@ export class ReplyContent extends RouteComponent<{ k,masters, userId, content, s
             $(idDislike).css("color", "red");
         }
         const award = await Utility.getAwardInfo(this.props.postid, 1);
-
         const info = award.map(this.generateAwardInfo.bind(this));
         const awardInfo = await Promise.all(info);
         const divid = `doc-content${this.props.postid}`;
@@ -1240,7 +1239,7 @@ export class ReplyContent extends RouteComponent<{ k,masters, userId, content, s
         return <div className="root" style={{ marginTop: "-170px" }}>
             <div className="reply-content">
                 <div className="substance">{content}</div>
-                <PostManagement onChange={this.update} postId={this.props.postid} userId={this.props.userId} />
+                <PostManagement postId={this.props.postid} userId={this.props.userId} />
 
                 <div className="comment1">
                     <div id={idLike} className="upup" style={{ marginRight: "0.7rem" }}><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
@@ -1416,7 +1415,7 @@ export class SendTopic extends RouteComponent<{ topicid, onChange, }, { content:
         </div>;
     }
 }
-export class PostManagement extends React.Component<{ userId, postId, onChange }, { wealth, prestige, reason, tpdays, UI, tips }>{
+export class PostManagement extends React.Component<{ userId, postId }, { wealth, prestige, reason, tpdays, UI, tips }>{
     constructor(props) {
         super(props);
         this.wealthInput = this.wealthInput.bind(this);
@@ -1443,7 +1442,8 @@ export class PostManagement extends React.Component<{ userId, postId, onChange }
             Utility.awardWealth($("input[name='reason']:checked").val(), this.state.wealth, this.props.postId);
             const UIId = `#manage${this.props.postId}`;
             $(UIId).css("display", "none");
-            this.props.onChange();
+            store.dispatch({ 'type': 'add-award' });
+            store.subscribe(this.render);
         } else {
             if (this.state.reason === "") {
                 console.log("请输入原因！");
@@ -1454,7 +1454,8 @@ export class PostManagement extends React.Component<{ userId, postId, onChange }
                 const UIId = `#manage${this.props.postId}`;
                 $(UIId).css("display", "none");
                 this.setState({ reason: "" });
-                this.props.onChange();
+                 store.dispatch({ 'type': 'add-award' });
+            store.subscribe(this.render);
             }
         }
 
@@ -1550,6 +1551,6 @@ export class Category extends React.Component<{ topicId }, { boardId, topicId, b
     render() {
         const listUrl = `/list/${this.state.boardId}/normal`;
         const topicUrl = `/topic/${this.state.topicId}`;
-        return <div style={{ color: "blue", fontSize: "1rem" }}>&rsaquo;&rsaquo;<a style={{ color: "blue", fontSize: "1rem" }} href="/">首页</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "1rem" }} href={listUrl} >{this.state.boardName}</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "1rem", overflow: "hidden", textOverflow:"ellipsis",width:"10rem" }} href={topicUrl}>{this.state.title}</a></div>;
+        return <div style={{ color: "grey", fontSize: "1rem" }}><i className="fa fa-window-maximize fa-lg"></i><a style={{ color: "grey", fontSize: "1rem", marginLeft: "0.3rem", marginRight: "0.3rem" }} href="/">首页</a><i className="fa fa-arrow-right fa-lg"></i><a style={{ color: "grey", fontSize: "1rem", marginLeft: "0.3rem", marginRight: "0.3rem" }} href={listUrl} >{this.state.boardName}</a><i className="fa fa-arrow-right fa-lg"></i><a style={{ color: "grey", fontSize: "1rem", overflow: "hidden", textOverflow: "ellipsis", width: "10rem", marginLeft: "0.3rem", marginRight: "0.3rem" }} href={topicUrl}>{this.state.title}</a></div>;
     }
 }
