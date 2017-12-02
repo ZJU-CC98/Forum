@@ -12,7 +12,7 @@ class AppState {
 class ReplyContentState {
     postId; likeNumber; dislikeNumber; likeState; awardInfo; info; awardPage;
 
-   // newPost: () => void;
+    // newPost: () => void;
 }
 //定义action，dispatch时将广播这个type的action
 class AddAwardAction implements Redux.Action {
@@ -26,7 +26,8 @@ async function post(state: ReplyContentState, action: Redux.Action) {
             const info = award.map(this.generateAwardInfo.bind(this));
             const awardInfo = await Promise.all(info);
             return {
-                ...state, info:awardInfo,awardInfo:award  };
+                ...state, info: awardInfo, awardInfo: award
+            };
         default:
             return state;
     }
@@ -41,7 +42,7 @@ export const app = Redux.combineReducers({
 export const store = Redux.createStore(app);
 
 //redux不存在state，将state全部复制到props中，ownProps是关于router路由的参数
-function mapStateToProps(state,ownProps) {
+function mapStateToProps(state, ownProps) {
     return state;
 }
 
