@@ -2,6 +2,7 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
+import * as Redux from 'redux';
 import * as ActionTypes from './ActionTypes';
 
 export const userLogIn = () => ({
@@ -21,3 +22,7 @@ export const throwError = (errorMessage: string) => ({
     type: ActionTypes.ERROR,
     errorMessage: errorMessage
 });
+
+export class AddAwardAction implements Redux.Action {
+    type: string = ActionTypes.ADD_AWARD;
+}

@@ -6,11 +6,17 @@ import { createStore } from 'redux';
 import reducer from './Reducer'
 import * as Utility from './Utility';
 import * as Appstate from './States/AppState';
+/**
+ * 这些趁早移到/States里
+ */
+export class ReplyContentState {
+    postId; likeNumber; dislikeNumber; likeState; awardInfo; info; awardPage;
+}
 
 /**
  * 应用的store
  */
-class Store {
+export class Store {
     /**
     * 表示是否有错误
     */
@@ -28,17 +34,10 @@ class Store {
     */
     currentUserInfo: Appstate.UserInfo = Utility.getLocalStorage('userInfo') || new Appstate.UserInfo();
     /**
-    * 表示当前登录用户发过的主题帖
+    * 帖子数据包括帖子本身的数据以及所属版面的数据
     */
-    currentUserPosts: Appstate.UserRecentPost[] = [];
-    /**
-    * 表示当前登录用户的粉丝
-    */
-    currentUserFans: Appstate.UserFanInfo[] = [];
-    /**
-    * 表示当前登录用户的关注
-    */
-    currentUserFollowers: Appstate.UserFanInfo[] = [];
+    post: ReplyContentState = new ReplyContentState();
+
 };
 
 const store = createStore(reducer,new Store());

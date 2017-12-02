@@ -1,25 +1,19 @@
 ﻿import * as Redux from 'redux';
-import { connect } from 'react-redux';
-import * as Topic from './Components/Topic/Topic';
 import * as Utility from './Utility';
-import * as React from 'react';
-//定义数据
-//定义顶级数据 1.帖子数据
-class AppState {
-    post: ReplyContentState;
-}
-//定义部分数据 帖子数据包括帖子本身的数据以及所属版面的数据
-class ReplyContentState {
-    postId; likeNumber; dislikeNumber; likeState; awardInfo; info; awardPage;
+import { ReplyContentState } from './Store';
 
-   // newPost: () => void;
-}
-//定义action，dispatch时将广播这个type的action
-class AddAwardAction implements Redux.Action {
-    type: 'add-award';
-}
+/**
+ * actionType放到./ActionTypes里
+ * action放到./Actions里
+ * reducer放到./Reducer里
+ * dispatch的action必须用./actions里的，不能手写 
+ * 全局只能有一个唯一的store
+ * connect 是映射store的state和dispatch方法到组件的props用，不要写在顶层，写在相应的组件
+ * 只需要connect需要用到store的组件，具体参考./components/usercenter/usercenter
+ */
+
 //子reducer 通过接收action的type来进行对state的修改，必须返回一个全新的state
-async function post(state: ReplyContentState, action: Redux.Action) {
+export async function post(state: ReplyContentState, action: Redux.Action) {
     switch (action.type) {
         case 'add-award':
             const award = await Utility.getAwardInfo(state.postId, 1);
@@ -32,33 +26,68 @@ async function post(state: ReplyContentState, action: Redux.Action) {
     }
 }
 
-//组合子reducer形成最大的reducer
-export const app = Redux.combineReducers({
-    post
-});
+//import * as Redux from 'redux';
+//import { connect } from 'react-redux';
+//import * as Topic from './Components/Topic/Topic';
+//import * as Utility from './Utility';
+//import * as React from 'react';
+////定义数据
+////定义顶级数据 1.帖子数据
+//class AppState {
+//    post: ReplyContentState;
+//}
+////定义部分数据 帖子数据包括帖子本身的数据以及所属版面的数据
+//class ReplyContentState {
+//    postId; likeNumber; dislikeNumber; likeState; awardInfo; info; awardPage;
 
-//用最大的reducer创建store store在Main.tsx的provider组件中被引用
-export const store = Redux.createStore(app);
+//    // newPost: () => void;
+//}
+////定义action，dispatch时将广播这个type的action
+//class AddAwardAction implements Redux.Action {
+//    type: 'add-award';
+//}
+////子reducer 通过接收action的type来进行对state的修改，必须返回一个全新的state
+//async function post(state: ReplyContentState, action: Redux.Action) {
+//    switch (action.type) {
+//        case 'add-award':
+//            const award = await Utility.getAwardInfo(state.postId, 1);
+//            const info = award.map(this.generateAwardInfo.bind(this));
+//            const awardInfo = await Promise.all(info);
+//            return {
+//                ...state, info: awardInfo, awardInfo: award
+//            };
+//        default:
+//            return state;
+//    }
+//}
 
-//redux不存在state，将state全部复制到props中，ownProps是关于router路由的参数
-function mapStateToProps(state,ownProps) {
-    return state;
-}
+////组合子reducer形成最大的reducer
+//export const app = Redux.combineReducers({
+//    post
+//});
 
-class A extends React.Component {
-    render() {
-        return <div>11</div>;
-    }
-}
-export const ReduxReplyContent = connect(mapStateToProps)(A);
-//把操作封装到props中
-/*function mapDispatchToProps(dispatch) {
+////用最大的reducer创建store store在Main.tsx的provider组件中被引用
+//export const store = Redux.createStore(app);
 
-    return {
-        newAward: function () {
-            dispatch({ 'type': 'add-award' });
-        }
-    }
-}
-export const ReduxReplyContent = connect(mapStateToProps, mapDispatchToProps)(Topic.Reply);
-*/
+////redux不存在state，将state全部复制到props中，ownProps是关于router路由的参数
+//function mapStateToProps(state, ownProps) {
+//    return state;
+//}
+
+//class A extends React.Component {
+//    render() {
+//        return <div>11</div>;
+//    }
+//}
+//export const ReduxReplyContent = connect(mapStateToProps)(A);
+////把操作封装到props中
+///*function mapDispatchToProps(dispatch) {
+
+//    return {
+//        newAward: function () {
+//            dispatch({ 'type': 'add-award' });
+//        }
+//    }
+//}
+//export const ReduxReplyContent = connect(mapStateToProps, mapDispatchToProps)(Topic.Reply);
+//*/

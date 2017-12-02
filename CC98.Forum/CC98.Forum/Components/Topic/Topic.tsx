@@ -11,10 +11,8 @@ import { UbbEditor } from '../UbbEditor';
 import { match } from "react-router";
 import { UbbContainer } from '.././UbbContainer';
 import * as Reducer from '../../reducers';
-import { store} from '../../reducers';
 import { Provider } from 'react-redux';
 import * as Redux from 'redux'
-import { ReduxReplyContent } from '../../reducers';
 //import { TopicPager, TopicPagerDown, PageModel } from './Topic-Pager';
 //import { PostTopic } from './Topic-PostTopic';
 //import { HotReply, Reply } from './Topic-Post';
@@ -695,10 +693,8 @@ export class Reply extends RouteComponent<{}, { contents, masters}, { page, topi
     private generateContents(item: State.ContentState) {
         return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
             <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} />
-            <Provider store={store}>
-                <ReplyContent key={item.content} masters={this.state.masters} userId={item.userId} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postId} contentType={item.contentType} />
-            </Provider>
-        </div>
+            <ReplyContent key={item.content} masters={this.state.masters} userId={item.userId} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postId} contentType={item.contentType} />
+            </div>
         </div>;
     }
     render() {
@@ -1442,8 +1438,14 @@ export class PostManagement extends React.Component<{ userId, postId }, { wealth
             Utility.awardWealth($("input[name='reason']:checked").val(), this.state.wealth, this.props.postId);
             const UIId = `#manage${this.props.postId}`;
             $(UIId).css("display", "none");
-            store.dispatch({ 'type': 'add-award' });
-            store.subscribe(this.render);
+            /**
+             * 不要直接导入store
+             * 将store的一部分关联到this.props
+             * dispatch用connect关联到this.props
+             * 具体参考./usercenter/usercenter
+             */
+            //store.dispatch({ 'type': 'add-award' });
+            //store.subscribe(this.render);
         } else {
             if (this.state.reason === "") {
                 console.log("请输入原因！");
@@ -1454,8 +1456,8 @@ export class PostManagement extends React.Component<{ userId, postId }, { wealth
                 const UIId = `#manage${this.props.postId}`;
                 $(UIId).css("display", "none");
                 this.setState({ reason: "" });
-                 store.dispatch({ 'type': 'add-award' });
-            store.subscribe(this.render);
+            //     store.dispatch({ 'type': 'add-award' });
+            //store.subscribe(this.render);
             }
         }
 

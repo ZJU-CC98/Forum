@@ -3,7 +3,10 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as ActionTypes from './ActionTypes';
+import { combineReducers } from 'redux';
 import * as Utility from './Utility';
+import { post } from './reducers';
+import { Store } from './Store';
 
 export default (state, action) => {
     switch (action.type) {
@@ -15,8 +18,13 @@ export default (state, action) => {
             Utility.setLocalStorage("userInfo", action.newInfo);
             return { ...state, currentUserInfo: action.newInfo }
         case ActionTypes.ERROR:
-            return { ...state, isError: true, errorMessage: action.errorMessage}
+            return { ...state, isError: true, errorMessage: action.errorMessage }
         default:
             return state;
     }
 }
+
+// 不太懂 combineReducers 的原理
+//export default combineReducers({
+//    main, post
+//});

@@ -16,3 +16,7 @@ export const CHANGE_USERINFO = 'CHANGE_USERINFO';
  * 抛出错误
  */
 export const ERROR = 'ERROR';
+/**
+ * 帖子
+ */
+export const ADD_AWARD = 'ADD_AWARD';
