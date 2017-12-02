@@ -4,6 +4,11 @@
 
 import * as React from 'react';
 import * as Ubb from './Core';
+import {
+    BrowserRouter as Router,
+    Route,
+    Link
+} from 'react-router-dom';
 
 export class TopicTagHandler extends Ubb.RecursiveTagHandler {
     get supportedTagNames(): string { return 'topic' };
@@ -16,6 +21,7 @@ export class TopicTagHandler extends Ubb.RecursiveTagHandler {
         if (tagData.parameterCount === 1) topicID = parseInt(tagData.value(0));//如果只有一个参数,则认为它是topicid
         if (tagData.parameterCount === 2) topicID = parseInt(tagData.value(1));//如果有2个参数,则认为第2个是topicid
         const url = `/topic/${topicID}`;
-        return <a href={url}>{topicTagContent}</ a>
+        //return <a href={url}>{topicTagContent}</ a> 
+        return <Link to={url}>{topicTagContent}</Link>
     }
 }

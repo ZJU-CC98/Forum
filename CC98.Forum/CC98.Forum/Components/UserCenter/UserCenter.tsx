@@ -1,8 +1,4 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-
-import * as React from 'react';
+﻿import * as React from 'react';
 import { connect } from 'react-redux';
 import { throwError } from '../../Actions';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -12,7 +8,7 @@ import { UserCenterRouter } from './UserCenterRouter';
 /**
  * 用户中心页面
  */
-export class UserCenterBefore extends React.Component<{ isLogOn, throwError }> {
+export class UserCenterBeforeConnect extends React.Component<{ isLogOn, throwError }> {
     render() {
         if (!this.props.isLogOn) {
             this.props.throwError('LogOut');
@@ -35,13 +31,21 @@ export class UserCenterBefore extends React.Component<{ isLogOn, throwError }> {
         );
     }
 }
-
+/**
+ * 将store中的isLogOn属性映射到UserCenterBeforeConnect的props的isLogOn
+ * @param state
+ */
 function mapState(state) {
     return {
-        isLogOn: state.isLogOn
+        isLogOn: state.userInfo.isLogOn
     };
 }
-
+/**
+ * 把dispatch(throwError(errorMessage))赋给props中的throwError
+ * 其中throwError(errorMessage)是action的构造函数
+ * 用类方法定义的action我就不知道怎么dispatch了
+ * @param dispatch
+ */
 function mapDispatch(dispatch) {
     return {
         throwError: (errorMessage) => {
@@ -50,5 +54,7 @@ function mapDispatch(dispatch) {
         }
     };
 }
-
-export const UserCenter = connect(mapState, mapDispatch)(UserCenterBefore);
+/**
+ * 连接UserCenterBeforeConnect与store，默认导出UserCenter替换掉原来的导出
+ */
+export const UserCenter = connect(mapState, mapDispatch)(UserCenterBeforeConnect);

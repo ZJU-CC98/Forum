@@ -1,17 +1,7 @@
 ﻿import * as React from 'react';
-import * as State from '../../States/AppState';
 import * as Utility from '../../Utility';
 import * as $ from 'jquery';
-import {
-    BrowserRouter as Router,
-    Route,
-    Link
-} from 'react-router-dom';
-
 import { match } from "react-router";
-import { UbbContainer } from '.././UbbContainer';
-declare let moment: any;
-declare let editormd: any;
 export class PostManagement extends React.Component<{ userId, postId }, { wealth, prestige, reason, tpdays, UI }>{
     constructor(props) {
         super(props);

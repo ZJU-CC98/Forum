@@ -22,58 +22,9 @@ export class PostTopicState {
     userName;
     topicMessage;
 }
-/**
- * 作者信息状态
- */
-export class AuthorMessageState {
-    imgUrl: string;
-    userName: string;
-    fansNumber: number;
-    isFollowing;
-    buttonInfo;
-    buttonIsDisabled;
-}
-/**
- * 题目信息状态
- */
-export class TopicTitleState {
-    title: string;
-    isTop: boolean;
-    isNotice: boolean;
-    tag: string;
-    likeNumber: number;
-    dislikeNumber: number;
-    time: string;
-    viewTimes: number;
-}
-/**
- * 文章内容
- */
-export class ContentState {
-    constructor(
-    ) {
-       
-    }
-    id: number;
-    content: string;
-    time: string;
-    isDelete: boolean;
-    floor: number;
-    isAnonymous: boolean;
-    lastUpdateAuthor: string;
-    lastUpdateTime: string;
-    topicId: number;
-    userName: string;
-    sendTopicNumber: number;
-    userImgUrl: string;
-    signature: string;
-    userId: number;
-    privilege: string;
-    likeNumber: number;
-    dislikeNumber: number;
-    postId: number;
-    contentType: number;
-}
+
+
+
 /**
  * 点赞信息状态
  */

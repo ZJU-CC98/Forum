@@ -184,7 +184,7 @@ class LogOnState {
 
 function mapState(state) {
     return {
-        isLogOn: state.isLogOn
+        isLogOn: state.userInfo.isLogOn
     };
 }
 

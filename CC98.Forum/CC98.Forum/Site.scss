@@ -49,7 +49,7 @@ body {
     display: flex;
     flex-direction: column;
     font-family: 微软雅黑;
-
+    width:1140px;
     align-items: center;
     justify-content: center;
     margin-left: 6.25rem;
@@ -1013,7 +1013,8 @@ a {
 }
 
 .message-title {
-    font-size: 16px;
+    margin-top: 30px;
+    font-size: 14px;
     color: $color-thinBlack;
 }
 
@@ -1021,7 +1022,7 @@ a {
     display: flex;
 
     margin: {
-        top: 20px;
+        top: 30px;
         bottom: 30px;
     }
 }
@@ -1452,7 +1453,6 @@ a {
     font-family: 微软雅黑;
     border: 1px solid $color-border;
     flex-shrink: 0;
-    overflow-y: auto;
     background-color: $color-post;
 
     .message-system-box { /*一个系统消息的框框*/
@@ -1485,12 +1485,12 @@ a {
         .message-system-box-content { /*一个系统消息内容*/
             font-size: 14px;
             line-height: 24px;
+            color: gray;
             margin: 0px 30px 20px 30px;
         }
     }
 }
 
-/******以下为我的回复部分的样式***/
 .message-response {
     flex-grow: 1;
     display: flex;
@@ -1502,1261 +1502,1260 @@ a {
     .message-response-box { /*一个消息的框框*/
         flex-shrink: 0;
         display: flex;
-        flex-direction: row;
-        min-height: 100px;
+        min-height: 120px;
         border-bottom: 1px dashed lightgray;
-        /*.message-response-box-left { 
-            flex-basis: 100px;
-            flex-shrink: 0;
+    }
 
-            .message-response-img { 
-                margin: 30px 20px;
-                border-radius: 50%;
-                width: 60px;
-                height: 60px;
-            }
-        }*/
-        .message-response-box-middle { /*消息框的中间-文字*/
-            display: flex;
-            flex-direction: column;
-            flex-wrap: wrap;
-            flex-grow: 1;
-            flex-shrink: 0;
-            margin: 20px 30px 0px 30px;
+    .message-response-img { /*头像*/
+        margin: 30px 20px;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+    }
 
-            .message-response-box-middle1 {
-                display: flex;
-                flex-direction: row;
+    .message-response-box-left { /*一个消息框的左边-头像*/
+        flex-basis: 100px;
+    }
 
-                .message-response-box-middle-title { /*消息框文字第一行 学术信息*/
-                    height: 20px;
-                    flex-basis: 70px;
-                    font-size: 14px;
-                    line-height: 20px;
-                    color: dodgerblue;
-                    flex-shrink: 0;
-                }
+    .message-response-box-middle { /*消息框的中间-文字*/
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        flex-basis: 750px;
 
-                .message-response-box-middle-date { /*消息框文字第一行日期*/
-                    height: 20px;
-                    flex-basis: 300px;
-                    font-size: 12px;
-                    line-height: 20px;
-                    color: gray;
-                    flex-shrink: 0;
-                    flex-grow: 1;
-                }
-            }
-
-            .message-response-box-middle-content { /*消息框文字第二行-主体内容*/
-                height: 20px;
-                font-size: 14px;
-                line-height: 20px;
-                flex-shrink: 0;
-                margin-top: 15px;
-            }
-        }
-
-        .message-response-box-right { /*查看*/
-            flex-basis: 60px;
-            line-height: 100px;
+        .message-response-box-middle-name { /*消息框文字第一行 用户名*/
+            height: 30px;
+            flex-basis: 90px;
             font-size: 14px;
-            margin-left: 10px;
-            flex-shrink: 0;
+            line-height: 30px;
+            color: $color-black;
+            margin-top: 20px;
         }
+
+        .message-response-box-middle-title { /*消息框文字第一行 学术信息*/
+            height: 30px;
+            flex-basis: 70px;
+            font-size: 14px;
+            line-height: 30px;
+            color: dodgerblue;
+            margin-top: 20px;
+        }
+
+        .message-response-box-middle-date { /*消息框文字第一行日期*/
+            height: 30px;
+            flex-basis: 300px;
+            font-size: 12px;
+            line-height: 30px;
+            color: gray;
+            margin-top: 20px;
+        }
+
+        .message-response-content { /*消息框文字第二行-主体内容*/
+            height: 30px;
+            flex-basis: 750px;
+            font-size: 16px;
+            line-height: 30px;
+            color: black;
+            margin-left: 10px;
+            margin-bottom: 50px;
+        }
+    }
+
+    .message-response-box-right { /*查看*/
+        flex-basis: 60px;
+        line-height: 120px;
+        font-size: 14px;
+        color: gray;
+        margin-left: 10px;
     }
 }
-    /*****************************************以下为我的关注的样式*********************************/
-    .focus-root {
-        display: flex;
-        justify-content: center;
-    }
+/*****************************************以下为我的关注的样式*********************************/
+.focus-root {
+    display: flex;
+    justify-content: center;
+}
 
-    .focus {
-        display: flex;
-        flex-direction: column;
-        width: 1140px;
-        min-height: 780px;
-        margin-bottom: 60px;
-    }
+.focus {
+    display: flex;
+    flex-direction: column;
+    width: 1140px;
+    min-height: 780px;
+    margin-bottom: 60px;
+}
 
-    .focus-title {
-        width: 100px;
-        height: 16px;
-        font-size: 16px;
-        color: $color-thinBlack;
-        padding: 0px 1px 6px;
-    }
+.focus-title {
+    width: 88px;
+    height: 14px;
+    margin-top: 20px;
+    font-size: 14px;
+    color: $color-thinBlack;
+    padding: 0px 1px 6px;
+}
 
-    .focus-board-area {
-        display: flex;
-        flex-wrap: wrap;
-        min-height: 30px;
+.focus-board-area {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 30px;
 
-        .focus-board {
-            height: 14px;
-            flex-shrink: 0;
-            cursor: pointer;
+    .focus-board {
+        height: 14px;
+        flex-shrink: 0;
+        cursor: pointer;
 
-            border: {
-                style: solid;
-                width: 1px;
-                color: $color-board;
-                radius: 2px;
-            }
-
-            font-size: 14px;
+        border: {
+            style: solid;
+            width: 1px;
             color: $color-board;
-            padding: 4px 11px 10px;
-            margin-right: 20px;
-            margin-top: 20px;
-
-            &:hover {
-                background-color: rgba(0,150,255,0.1);
-            }
-
-            &:active {
-                background-color: rgba(0,150,255,0.1);
-            }
+            radius: 2px;
         }
 
-        .focus-hover {
+        font-size: 14px;
+        color: $color-board;
+        padding: 4px 11px 10px;
+        margin-right: 20px;
+        margin-top: 20px;
+
+        &:hover {
+            background-color: rgba(0,150,255,0.1);
+        }
+
+        &:active {
             background-color: rgba(0,150,255,0.1);
         }
     }
 
-    .focus-topic-area {
+    .focus-hover {
+        background-color: rgba(0,150,255,0.1);
+    }
+}
+
+.focus-topic-area {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.625rem;
+
+    .focus-topic-topicArea {
         display: flex;
         flex-direction: column;
-        margin-top: 0.625rem;
-
-        .focus-topic-topicArea {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .focus-topic-loading {
-            margin-top: 20px;
-            text-align: center;
-
-            img {
-                width: 200px;
-                height: 18px;
-            }
-        }
-
-        .focus-topic-loaddone {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 16px;
-            color: $color-black;
-        }
     }
 
-
-    .focus-topic {
-        display: flex;
-        min-height: 98px;
-        border: 1px solid $color-border;
-        background-color: $color-post;
+    .focus-topic-loading {
         margin-top: 20px;
-        overflow: hidden;
-    }
-
-    .focus-topic-portraitUrl {
-        display: inline-block;
-        width: 60px;
-        height: 60px;
-        padding: 19px;
-        border-radius: 50%;
-    }
-
-    .focus-topic-info1 {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-
-        .focus-topic-authorInfo {
-            display: flex;
-            height: 14px;
-            margin: 24px 0px 0px 2px;
-            font-size: 14px;
-        }
-
-        .focus-topic-title {
-            height: 16px;
-            margin: 14px 0px 30px 2px;
-            font-size: 16px;
-            color: $color-black;
-        }
-    }
-
-    .focus-topic-info2 {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        font-size: 14px;
-        color: $color-thinBlack;
-
-        .focus-topic-board {
-            margin: 24px 18px 0px;
-
-            a {
-                color: $color-thinBlack;
-            }
-        }
-
-        .focus-topic-response {
-            display: flex;
-            margin: 14px 10px 30px;
-            width: 232px;
-
-            div {
-                flex-basis: 58px;
-                display: inline-flex;
-                align-items: baseline;
-                flex-shrink: 0;
-
-                i {
-                    font-size: 16px;
-                    flex-basis: 18px;
-                }
-            }
-        }
-    }
-
-
-    .focus-topic-blackText {
-        color: $color-thinBlack;
-        min-height: 14px;
-        flex-basis: 90px;
-    }
-
-    .focus-topic-redText {
-        color: $color-red;
-        flex-basis: 26px;
-        min-height: 14px;
-    }
-
-
-    .focus-allNewTopic {
-        color: $color-thinBlack;
-        min-height: 16px;
-        font-size: 16px;
-        display: flex;
-        align-items: baseline;
-
-        i {
-            flex-basis: 18px;
-            font-size: 16px;
-        }
-    }
-
-    .displaynone {
-        display: none;
-    }
-    //-------------------------以下是头部的样式！ ----------------------------------------
-    .header {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        min-width: 1140px;
-        margin: 0 0 20px 0;
-        padding: 0px;
-        justify-content: center;
-        background: url(/images/winter1.png) no-repeat center;
-        z-index: 2;
-    }
-
-    .topBar {
-        display: flex;
-        flex-direction: row;
-        height: 50px;
-        width: 100%;
-        justify-content: center;
-        background-color: rgba(80,80,80,0.5); //仅背景条半透明，内层元素无半透明效果
-    }
-
-    .topBarRow {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        width: 1140px;
-    }
-
-    .headerContent {
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        height: 188px;
-        justify-content: center;
-    }
-
-    .headerRow {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        width: 1140px;
-        margin-top: 130px;
-    }
-
-    .linkBar {
-        display: flex;
-        flex-direction: row;
-        height: 36px;
-        background-color: rgb(252,252,252);
-        border-radius: 5px;
-        border-style: solid;
-        border-color: rgb(233,233,233);
-        border-width: 2px;
-        box-sizing: border-box;
-        align-items: center;
-    }
-
-    .linkText {
-        font-size: 12px;
-        font-family: 微软雅黑;
-        color: rgb(70,70,70);
-        margin-top: 12px;
-    }
-    //以下是头部中顶部条下拉菜单的样式~
-    #dropdown {
-        font-size: 12px;
-        font-family: 微软雅黑;
-        color: rgb(255,255,255);
-    }
-
-    #dropdown ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    #dropdown a {
-        color: rgb(255,255,255);
-    }
-
-    #dropdown .box {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
-
-    #dropdown .userInfo {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
-
-    #dropdown .userImg img {
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        margin: 0 0 0 0;
-    }
-
-    #dropdown .userName {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        width: 94px;
-        height: 50px;
-        cursor: pointer;
-    }
-
-    #dropdown .topBarText {
-        display: flex;
-        margin-top: 12px;
-        justify-content: center;
-        align-items: center;
-        height: 50px;
-        cursor: pointer;
-        margin: 0 10px;
-    }
-
-    #dropdown .boardListLink {
-        display: flex;
-        height: 55px;
-        width: 60px;
-        border-radius: 0 0 10px 10px;
-        background-color: rgb(53,177,255);
-        font-size: 16px; //这里字体要大一点
-        letter-spacing: 2px;
-        justify-content: center;
-        background: linear-gradient(rgb(53,177,255),rgb(13,137,255)); //渐变效果
-        background: -webkit-linear-gradient(rgb(53,177,255),rgb(13,137,255)); /* Safari 5.1 - 6.0 */
-        background: -o-linear-gradient(rgb(53,177,255),rgb(13,137,255)); /* Opera 11.1 - 12.0 */
-        background: -moz-linear-gradient(rgb(53,177,255),rgb(13,137,255)); /* Firefox 3.6 - 15 */
-    }
-
-    #dropdown .boardListLink:hover { //:hover 选择器用于选择鼠标指针浮动在上面的元素
-        filter: brightness(1.1); //亮度
-        -webkit-filter: brightness(1.1);
-    }
-
-    #dropdown .dropDownSubBox {
-        margin-top: -5px;
-    }
-
-    #dropdown .dropDownSub {
-        width: 94px;
-        display: none;
-        background-color: rgba(80,80,80,0.5);
-        margin-left: 30px;
-        opacity: 0.9999; //暂时不知道原因，但是如果不加上一个小于1的opacity值，下拉会出问题,猜测是opacity把元素及所有子元素合在一起？
-    }
-
-    #dropdown .dropDownSubMessage {
-        width: 94px;
-        display: none;
-        background-color: rgba(80,80,80,0.5);
-        margin-left: 145px;
-        opacity: 0.9999; //暂时不知道原因，但是如果不加上一个小于1的opacity值，下拉会出问题,猜测是opacity把元素及所有子元素合在一起？
-    }
-
-    #dropdown li {
-        display: flex;
-        height: 25px;
-        cursor: pointer;
-        justify-content: center;
-        align-items: center;
-    }
-
-    #dropdown li.hover {
-        background: rgb(53,177,255);
-    }
-    //以下是头部中搜索条的样式
-    #search {
-    }
-
-    #search .box, #search .select, #search input, #search a, #search .searchBoxSub {
-        background: rgb(255,255,255);
-    }
-
-    #search .box {
-        display: flex;
-        flex-direction: row;
-        height: 36px;
-        width: 340px;
-        border-radius: 5px;
-        border-style: solid;
-        border-color: rgb(233,233,233);
-        border-width: 2px;
-        box-sizing: border-box;
-        align-items: center;
-        opacity: 0.8;
-    }
-
-    #search form {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
-
-    #search .searchBoxSelect {
-        display: flex;
-        width: 30px;
-        height: 30px;
-        font-size: 12px;
-        font-family: 微软雅黑;
-        color: rgb(80,80,80);
-        justify-content: center;
-        align-items: center;
-        margin-left: 2px;
-        cursor: pointer;
-    }
-
-    #search .downArrow {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        height: 32px;
-        border-right: 2px solid rgb(233,233,233);
-        padding-right: 2px;
-        cursor: pointer;
-    }
-
-    #search input {
-        display: flex;
-        border: 0;
-        width: 260px;
-        height: 30px;
-        font-size: 14px;
-        font-family: 微软雅黑;
-        color: rgb(80,80,80);
-        outline: none;
-        padding-left: 2px;
-    }
-
-    #search .searchIco {
-        width: 20px;
-        padding: 2px 0 0 3px;
-    }
-
-    #search ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    #search .searchBoxSub {
-        width: 50px;
-        border-radius: 5px;
-        border-style: solid;
-        border-color: rgb(233,233,233);
-        border-width: 2px;
-        box-sizing: border-box;
-        display: none;
-        font-size: 12px;
-        font-family: 微软雅黑;
-        color: rgb(80,80,80);
-    }
-
-    #search .searchBoxSub li {
-        height: 25px;
-        cursor: pointer;
-        padding-left: 5px;
-        padding-top: 3px;
-    }
-
-    #search .searchBoxSub li.hover {
-        background: rgb(233,233,233);
-    }
-    //-------------------------以下是底部的样式~~~---------------------------------------------------
-    .footer {
-        display: flex;
-        flex-direction: column;
         text-align: center;
-        background-color: rgb(242,242,242);
-        padding-top: 15px;
-        width: 100%;
-        min-width: 1140px;
+
+        img {
+            width: 200px;
+            height: 18px;
+        }
     }
 
-    .footerRow {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        font-size: 12px;
-        font-family: 微软雅黑;
-        color: rgb(80,80,80);
-        margin-bottom: 15px;
-    }
-
-    .footerRow a {
-        font-size: 12px;
-        font-family: 微软雅黑;
-        color: rgb(80,80,80);
-        margin-left: 10px;
-        margin-right: 10px;
-    }
-    //--------------------------------以下是首页的样式~ --------------------------------------------
-    .mainPage {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        min-width: 1140px;
-        z-index: 0;
-    }
-
-    .leftPart {
-        display: flex;
-        flex-direction: column;
-        margin-right: 30px;
-    }
-
-    .rightPart {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .announcement {
-        display: flex;
-        flex-direction: column;
-        min-height: 200px;
-        width: 860px;
-        border-style: solid;
-        border-color: rgb(233,233,233);
-        border-width: 1px;
-        box-sizing: border-box;
-        background-color: rgb(252,252,252);
-        border-radius: 20px 0;
-        margin-bottom: 30px;
-    }
-    //以下这段是推荐阅读的样式~~
-    .recommended1 {
-        display: flex;
-        flex-direction: column;
-        height: 126px;
-        width: 860px;
-        border-style: solid;
-        border-color: rgb(233,233,233);
-        border-width: 1px;
-        box-sizing: border-box;
-        background-color: rgb(252,252,252);
-        border-radius: 20px 0;
-        margin-bottom: 30px;
-        padding: 25px 0 0 20px;
-    }
-
-    .recommended1Content {
-        display: none;
-    }
-
-    .recommended1Img {
-        margin-right: 10px;
-    }
-
-    .recommended1Img img {
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-    }
-
-    .recommended1Title {
-        margin-top: 3px;
-        font-size: 14px;
-        font-family: 微软雅黑;
-        color: rgb(32,32,32);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .recommended1Abstract {
-        margin-top: 12px;
-        font-size: 12px;
-        font-family: 微软雅黑;
-        color: rgb(160,160,160);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .buttonRow {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        margin-top: 18px;
-    }
-
-    .recommended1Content {
-        display: none;
-    }
-
-    .recommended1Button {
-        width: 10px;
-        height: 10px;
-        border-style: solid;
-        border-color: rgb(160,160,160);
-        border-width: 1px;
-        border-radius: 50%;
-        box-sizing: border-box;
-        margin: 0 5px 0 5px;
-    }
-
-    #hover {
-        width: 10px;
-        height: 10px;
-        border-style: solid;
-        border-color: rgb(160,160,160);
-        border-width: 1px;
-        border-radius: 50%;
-        box-sizing: border-box;
-        margin: 0 5px 0 5px;
-        background-color: rgb(53,177,255);
-    }
-    //推荐阅读到此为止~
-    .list1 {
-        display: flex;
-        flex-direction: column;
-        height: 344px;
-        width: 415px;
-        border-style: solid;
-        border-color: rgb(233,233,233);
-        border-width: 1px;
-        box-sizing: border-box;
-        background-color: rgb(252,252,252);
-        border-radius: 20px 0;
-        margin-bottom: 30px;
-        margin-right: 30px;
-    }
-
-    .list2 {
-        display: flex;
-        flex-direction: column;
-        height: 344px;
-        width: 415px;
-        border-style: solid;
-        border-color: rgb(233,233,233);
-        border-width: 1px;
-        box-sizing: border-box;
-        background-color: rgb(252,252,252);
-        border-radius: 20px 0;
-        margin-bottom: 30px;
-    }
-
-    .recommended2 {
-        display: flex;
-        flex-direction: column;
-        height: 346px;
-        width: 250px;
-        border-style: solid;
-        border-color: rgb(233,233,233);
-        border-width: 1px;
-        box-sizing: border-box;
-        background-color: rgb(252,252,252);
-        margin-bottom: 30px
-    }
-
-    .ad {
-        display: flex;
-        margin-bottom: 30px;
-    }
-
-    .ad img {
-        width: 250px;
-        height: 100px;
-    }
-
-    .news {
-        display: flex;
-        flex-direction: column;
-        height: 347px;
-        width: 250px;
-        border-style: solid;
-        border-color: rgb(233,233,233);
-        border-width: 1px;
-        box-sizing: border-box;
-        background-color: rgb(252,252,252);
-        margin-bottom: 30px;
-    }
-
-    .boardRecommended {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .blueBar1 {
-        background-color: rgb(53,177,255);
-        border-radius: 20px 0 0 0;
-        height: 40px;
-        width: 858px;
-        padding: 10px 10px 0 20px;
-        box-sizing: border-box;
-    }
-
-    .blueBar2 {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        background-color: rgb(53,177,255);
-        border-radius: 20px 0 0 0;
-        height: 40px;
-        width: 413px;
-        padding: 10px 10px 0 20px;
-        box-sizing: border-box;
-    }
-
-    .listName {
-        font-size: 14px;
-        font-family: 微软雅黑;
-        color: rgb(252,252,252)
-    }
-
-    .more {
-        font-size: 12px;
-        font-family: 微软雅黑;
-        color: rgb(252,252,252);
-        margin-top: 1px;
-    }
-
-    .announcementContent {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 5px 0 0 10px;
-    }
-
-    .announcementDate {
-        font-size: 12px;
-        font-family: 微软雅黑;
-        color: rgb(80,80,80);
-        margin-top: 12px;
-        margin-right: 12px;
-    }
-
-    .announcementText {
-        font-size: 12px;
-        font-family: 微软雅黑;
-        color: rgb(80,80,80);
-        margin-top: 12px;
-        margin-right: 16px;
-    }
-
-    .announcementLink1 {
-        font-size: 12px;
-        font-family: 微软雅黑;
-        color: rgb(254,36,51);
-        margin-top: 12px;
-    }
-
-    .announcementLink2 {
-        font-size: 12px;
-        font-family: 微软雅黑;
-        color: rgb(13,59,255);
-        margin-top: 12px;
-        margin-right: 12px;
-    }
-
-    .listContent1 {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 4px 0 0 0;
-    }
-
-    .listRow {
-        display: flex;
-        width: 415px;
-        white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
-        overflow: hidden; //不显示超过对象尺寸的内容
-        //text-overflow: ellipsis; //当文本对象溢出时显示...
-    }
-
-    .boardName {
-        font-size: 12px;
-        font-family: 微软雅黑;
-        color: rgb(255,136,56);
-        margin: 6px 6px 5px 8px;
-    }
-
-    .boardName a {
-        font-size: 12px;
-        font-family: 微软雅黑;
-        color: rgb(255,136,56);
-    }
-
-    .listTitle {
-        max-width: 20rem;
-        margin-right: 1rem;
-        white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
-        overflow: hidden; //不显示超过对象尺寸的内容
-        text-overflow: ellipsis; //当文本对象溢出时显示...
-    }
-
-    .topicTitle {
-        font-size: 12px;
-        font-family: 微软雅黑;
-        color: rgb(70,70,70);
-        margin-top: 6px;
-        margin-bottom: 5px;
-        width: 300px;
-        white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
-        overflow: hidden; //不显示超过对象尺寸的内容
-        text-overflow: ellipsis; //当文本对象溢出时显示...
-    }
-
-    .dashedBorder {
-        height: 40px;
-        width: 248px;
-        border-bottom-style: dashed;
-        border-color: rgb(233,233,233);
-        border-width: 1px;
-        box-sizing: border-box;
-        background-color: rgb(252,252,252);
-        padding: 10px 0 0 9px;
-    }
-
-    .heading {
-        font-size: 14px;
-        font-family: 微软雅黑;
-        color: rgb(70,70,70)
-    }
-
-    .recommended2Img img {
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        margin: 7px 12px 0 10px;
-    }
-
-    .recommended2Title {
-        font-size: 12px;
-        font-family: 微软雅黑;
-        color: rgb(32,32,32);
-        margin-top: 18px;
-    }
-
-    .newsContent {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 0 0 0 28px;
-    }
-
-    .newsText {
-        font-size: 12px;
-        font-family: 微软雅黑;
-        color: rgb(70,70,70);
-        margin-top: 11px;
-    }
-
-    .blueBackdrop {
-        height: 88px;
-        width: 250px;
-        background-color: rgb(0,157,255);
+    .focus-topic-loaddone {
         margin-top: 20px;
+        text-align: center;
+        font-size: 16px;
+        color: $color-black;
     }
-    /*
-* UBB用
-*/
-    .ubb-code {
-        ol {
-            list-style: none;
-            counter-reset: li
-        }
+}
 
-        li {
-            counter-increment: li
-        }
 
-        li::before {
-            content: counter(li);
-            display: inline-flex;
-            width: 50px;
-            margin: 0 10px;
-            justify-content: center;
-            background-color: #ebebeb;
-        }
-    }
-    /**
-    弹出用户悬浮窗
-*/
-    .popup {
-        width: 30rem;
-        height: 15.625rem; /*高度自由，因为不确定，内容多少。*/
-        border: 1px solid #D5D5D5;
-        background: #fff; /*窗口内容不透明，背景为白色*/
-        box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
-        -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
-        -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.25); /*内容窗口带阴影*/
-        border-radius: 0.5rem; /* 所有角都使用半径为8px的圆角，此属性为CSS3标准属性 */
-        -moz-border-radius: 0.5rem; /* Mozilla浏览器的私有属性 */
-        -webkit-border-radius: 0.5rem; /* Webkit浏览器的私有属性 */ /*窗口圆角*/
-        z-index: 9000;
-    }
+.focus-topic {
+    display: flex;
+    min-height: 98px;
+    border: 1px solid $color-border;
+    background-color: $color-post;
+    margin-top: 20px;
+    overflow: hidden;
+}
 
-    .popup_title {
-        background: url(/images/headerBackground.jpg) no-repeat center;
-        height: 7.8rem;
-        line-height: 1.5rem; /*使垂直居中*/
-        border-bottom: 1px solid #efefef; /*底边框*/
-        border-radius: 0.5rem 0.5rem 0 0; /* 左上角和右上角使用半径为5px的圆角，此属性为CSS3标准属性 */
-        -moz-border-radius: 0.5rem 0.5rem 0 0; /* Mozilla浏览器的私有属性 */
-        -webkit-border-radius: 0.5rem 0.5rem 0 0; /* Webkit浏览器的私有属性 */ /*窗口圆角*/
-        color: #535353;
-        font-size: 1rem; /*字体颜色和字体大小*/
-        -moz-user-select: none; /* Firefox all */
-        -webkit-user-select: none; /* Chrome all / Safari all /opera15+*/
-        -ms-user-select: none; /*IE10*/
-        -khtml-user-select: none; /*早期浏览器*/
-        user-select: none;
-        -o-user-select: none; /* 以上两个属性目前并未支持，写在这里为了减少风险 */
-    }
-    /*
-    登录页用
-*/
-    .login {
+.focus-topic-portraitUrl {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    padding: 19px;
+    border-radius: 50%;
+}
+
+.focus-topic-info1 {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    .focus-topic-authorInfo {
         display: flex;
-        align-items: center;
-        flex-direction: column;
-        margin-bottom: 6rem;
+        height: 12px;
+        margin: 30px 0px 0px 2px;
+        font-size: 12px;
+    }
 
-        & > div {
-            margin-top: 30px;
-            background-color: white;
-            min-width: 1140px;
-            display: flex;
-            border: 1px solid rgb(204,204,204);
-            height: 567px;
+    .focus-topic-title {
+        height: 12px;
+        margin: 14px 0px 30px 2px;
+        font-size: 12px;
+        color: $color-black;
+    }
+}
 
-            & > img {
-                margin: 30px;
-            }
+.focus-topic-info2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 12px;
+    color: $color-thinBlack;
 
-            & > div {
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                align-items: flex-end;
-                margin-top: 50px;
-
-                & > img {
-                    width: 123px;
-                    height: 26px;
-                    margin-right: 200px;
-                }
-
-                & > p {
-                    margin-right: 200px;
-                    font-size: 12px;
-                }
-
-                .LogOffInfo {
-                    align-self: center;
-                    font-size: 1rem;
-                    margin-right: 0;
-                }
-            }
-        }
-
-        .login-form {
-            display: flex;
-            margin-right: 80px;
-            margin-top: 30px;
-            font-size: 12px;
-
-            input {
-                width: 320px;
-                height: 40px;
-                border: 1px solid rgb(204,204,204);
-                border-radius: 5px;
-                margin-left: 25px;
-                padding: 0 10px;
-            }
-        }
+    .focus-topic-board {
+        margin: 30px 18px 0px;
 
         a {
-            color: rgb(40,167,225);
+            color: $color-thinBlack;
+        }
+    }
+
+    .focus-topic-response {
+        display: flex;
+        margin: 14px 10px 30px;
+        width: 216px;
+
+        div {
+            flex-basis: 54px;
+            display: inline-flex;
+            align-items: baseline;
+            flex-shrink: 0;
+
+            i {
+                font-size: 14px;
+                flex-basis: 18px;
+            }
+        }
+    }
+}
+
+
+.focus-topic-blackText {
+    color: $color-thinBlack;
+    min-height: 12px;
+    flex-basis: 90px;
+}
+
+.focus-topic-redText {
+    color: $color-red;
+    flex-basis: 26px;
+    min-height: 12px;
+}
+
+
+.focus-allNewTopic {
+    color: $color-thinBlack;
+    min-height: 14px;
+    font-size: 14px;
+    display: flex;
+    align-items: baseline;
+
+    i {
+        flex-basis: 18px;
+        font-size: 14px;
+    }
+}
+
+.displaynone {
+    display: none;
+}
+//-------------------------以下是头部的样式！ ----------------------------------------
+.header {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 1140px;
+    margin: 0 0 20px 0;
+    padding: 0px;
+    justify-content: center;
+    background: url(/images/winter1.png) no-repeat center;
+    z-index: 2;
+}
+
+.topBar {
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+    width: 100%;
+    justify-content: center;
+    background-color: rgba(80,80,80,0.5); //仅背景条半透明，内层元素无半透明效果
+}
+
+.topBarRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 1140px;
+}
+
+.headerContent {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 188px;
+    justify-content: center;
+}
+
+.headerRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 1140px;
+    margin-top: 130px;
+}
+
+.linkBar {
+    display: flex;
+    flex-direction: row;
+    height: 36px;
+    background-color: rgb(252,252,252);
+    border-radius: 5px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 2px;
+    box-sizing: border-box;
+    align-items: center;
+}
+
+.linkText {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(70,70,70);
+    margin-top: 12px;
+}
+
+//以下是头部中顶部条下拉菜单的样式~
+
+#dropdown {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(255,255,255);
+}
+
+#dropdown ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#dropdown a {
+    color: rgb(255,255,255);
+}
+
+#dropdown .box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#dropdown .userInfo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#dropdown .userImg img {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    margin: 0 0 0 0;
+}
+
+#dropdown .userName {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 94px;
+    height: 50px;
+    cursor: pointer;
+}
+
+#dropdown .topBarText {
+    display: flex;
+    margin-top: 12px;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    cursor: pointer;
+    margin: 0 10px;
+}
+
+#dropdown .boardListLink {
+    display: flex;
+    height: 55px;
+    width: 60px;
+    border-radius: 0 0 10px 10px;
+    background-color: rgb(53,177,255);
+    font-size: 16px; //这里字体要大一点
+    letter-spacing: 2px;
+    justify-content: center;
+    background: linear-gradient(rgb(53,177,255),rgb(13,137,255)); //渐变效果
+    background: -webkit-linear-gradient(rgb(53,177,255),rgb(13,137,255)); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(rgb(53,177,255),rgb(13,137,255)); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(rgb(53,177,255),rgb(13,137,255)); /* Firefox 3.6 - 15 */
+}
+
+#dropdown .boardListLink:hover { //:hover 选择器用于选择鼠标指针浮动在上面的元素
+    filter: brightness(1.1); //亮度
+    -webkit-filter: brightness(1.1);
+}
+
+#dropdown .dropDownSubBox {
+    margin-top: -5px;
+}
+
+#dropdown .dropDownSub {
+    width: 94px;
+    display: none;
+    background-color: rgba(80,80,80,0.5);
+    margin-left: 30px;
+    opacity: 0.9999; //暂时不知道原因，但是如果不加上一个小于1的opacity值，下拉会出问题,猜测是opacity把元素及所有子元素合在一起？
+}
+
+#dropdown .dropDownSubMessage {
+    width: 94px;
+    display: none;
+    background-color: rgba(80,80,80,0.5);
+    margin-left: 145px;
+    opacity: 0.9999; //暂时不知道原因，但是如果不加上一个小于1的opacity值，下拉会出问题,猜测是opacity把元素及所有子元素合在一起？
+}
+
+#dropdown li {
+    display: flex;
+    height: 25px;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+}
+
+#dropdown li.hover {
+    background: rgb(53,177,255);
+}
+//以下是头部中搜索条的样式
+#search {
+}
+
+#search .box, #search .select, #search input, #search a, #search .searchBoxSub {
+    background: rgb(255,255,255);
+}
+
+#search .box {
+    display: flex;
+    flex-direction: row;
+    height: 36px;
+    width: 340px;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 2px;
+    box-sizing: border-box;
+    align-items: center;
+    opacity: 0.8;
+}
+
+#search form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#search .searchBoxSelect {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    justify-content: center;
+    align-items: center;
+    margin-left: 2px;
+    cursor: pointer;
+}
+
+#search .downArrow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 32px;
+    border-right: 2px solid rgb(233,233,233);
+    padding-right: 2px;
+    cursor: pointer;
+}
+
+#search input {
+    display: flex;
+    border: 0;
+    width: 260px;
+    height: 30px;
+    font-size: 14px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    outline: none;
+    padding-left: 2px;
+}
+
+#search .searchIco {
+    width: 20px;
+    padding: 2px 0 0 3px;
+}
+
+#search ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#search .searchBoxSub {
+    width: 50px;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 2px;
+    box-sizing: border-box;
+    display: none;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+}
+
+#search .searchBoxSub li {
+    height: 25px;
+    cursor: pointer;
+    padding-left: 5px;
+    padding-top: 3px;
+}
+
+#search .searchBoxSub li.hover {
+    background: rgb(233,233,233);
+}
+//-------------------------以下是底部的样式~~~---------------------------------------------------
+.footer {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background-color: rgb(242,242,242);
+    padding-top: 15px;
+    width: 100%;
+    min-width: 1140px;
+}
+
+.footerRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    margin-bottom: 15px;
+}
+
+.footerRow a {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+//--------------------------------以下是首页的样式~ --------------------------------------------
+.mainPage {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    min-width: 1140px;
+    z-index: 0;
+}
+
+.leftPart {
+    display: flex;
+    flex-direction: column;
+    margin-right: 30px;
+}
+
+.rightPart {
+    display: flex;
+    flex-direction: column;
+}
+
+.announcement {
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    width: 860px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 1px;
+    box-sizing: border-box;
+    background-color: rgb(252,252,252);
+    border-radius: 20px 0;
+    margin-bottom: 30px;
+}
+//以下这段是推荐阅读的样式~~
+.recommended1 {
+    display: flex;
+    flex-direction: column;
+    height: 126px;
+    width: 860px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 1px;
+    box-sizing: border-box;
+    background-color: rgb(252,252,252);
+    border-radius: 20px 0;
+    margin-bottom: 30px;
+    padding: 25px 0 0 20px;
+}
+
+.recommended1Content {
+    display: none;
+}
+
+.recommended1Img {
+    margin-right: 10px;
+}
+
+.recommended1Img img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+.recommended1Title {
+    margin-top: 3px;
+    font-size: 14px;
+    font-family: 微软雅黑;
+    color: rgb(32,32,32);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recommended1Abstract {
+    margin-top: 12px;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(160,160,160);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.buttonRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 18px;
+}
+
+.recommended1Content {
+    display: none;
+}
+
+.recommended1Button {
+    width: 10px;
+    height: 10px;
+    border-style: solid;
+    border-color: rgb(160,160,160);
+    border-width: 1px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    margin: 0 5px 0 5px;
+}
+
+#hover {
+    width: 10px;
+    height: 10px;
+    border-style: solid;
+    border-color: rgb(160,160,160);
+    border-width: 1px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    margin: 0 5px 0 5px;
+    background-color: rgb(53,177,255);
+}
+//推荐阅读到此为止~
+.list1 {
+    display: flex;
+    flex-direction: column;
+    height: 344px;
+    width: 415px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 1px;
+    box-sizing: border-box;
+    background-color: rgb(252,252,252);
+    border-radius: 20px 0;
+    margin-bottom: 30px;
+    margin-right: 30px;
+}
+
+.list2 {
+    display: flex;
+    flex-direction: column;
+    height: 344px;
+    width: 415px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 1px;
+    box-sizing: border-box;
+    background-color: rgb(252,252,252);
+    border-radius: 20px 0;
+    margin-bottom: 30px;
+}
+
+.recommended2 {
+    display: flex;
+    flex-direction: column;
+    height: 346px;
+    width: 250px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 1px;
+    box-sizing: border-box;
+    background-color: rgb(252,252,252);
+    margin-bottom: 30px
+}
+
+.ad {
+    display: flex;
+    margin-bottom: 30px;
+}
+
+.ad img {
+    width: 250px;
+    height: 100px;
+}
+
+.news {
+    display: flex;
+    flex-direction: column;
+    height: 347px;
+    width: 250px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 1px;
+    box-sizing: border-box;
+    background-color: rgb(252,252,252);
+    margin-bottom: 30px;
+}
+
+.boardRecommended {
+    display: flex;
+    flex-direction: column;
+}
+
+.blueBar1 {
+    background-color: rgb(53,177,255);
+    border-radius: 20px 0 0 0;
+    height: 40px;
+    width: 858px;
+    padding: 10px 10px 0 20px;
+    box-sizing: border-box;
+}
+
+.blueBar2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: rgb(53,177,255);
+    border-radius: 20px 0 0 0;
+    height: 40px;
+    width: 413px;
+    padding: 10px 10px 0 20px;
+    box-sizing: border-box;
+}
+
+.listName {
+    font-size: 14px;
+    font-family: 微软雅黑;
+    color: rgb(252,252,252)
+}
+
+.more {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(252,252,252);
+    margin-top: 1px;
+}
+
+.announcementContent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 5px 0 0 10px;
+}
+
+.announcementDate {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    margin-top: 12px;
+    margin-right: 12px;
+}
+
+.announcementText {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    margin-top: 12px;
+    margin-right: 16px;
+}
+
+.announcementLink1 {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(254,36,51);
+    margin-top: 12px;
+}
+
+.announcementLink2 {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(13,59,255);
+    margin-top: 12px;
+    margin-right: 12px;
+}
+
+.listContent1 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 4px 0 0 0;
+}
+
+.listRow {
+    display: flex;
+    width: 415px;
+    white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
+    overflow: hidden; //不显示超过对象尺寸的内容
+    //text-overflow: ellipsis; //当文本对象溢出时显示...
+}
+
+.boardName {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(255,136,56);
+    margin: 6px 6px 5px 8px;
+}
+
+.boardName a {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(255,136,56);
+}
+.listTitle {
+    max-width:auto;
+    margin-right:1rem;
+    white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
+    overflow: hidden; //不显示超过对象尺寸的内容
+    text-overflow: ellipsis; //当文本对象溢出时显示...
+}
+.topicTitle {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(70,70,70);
+    margin-top: 6px;
+    margin-bottom: 5px;
+    width: 300px;
+    white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
+    overflow: hidden; //不显示超过对象尺寸的内容
+    text-overflow: ellipsis; //当文本对象溢出时显示...
+}
+
+.dashedBorder {
+    height: 40px;
+    width: 248px;
+    border-bottom-style: dashed;
+    border-color: rgb(233,233,233);
+    border-width: 1px;
+    box-sizing: border-box;
+    background-color: rgb(252,252,252);
+    padding: 10px 0 0 9px;
+}
+
+.heading {
+    font-size: 14px;
+    font-family: 微软雅黑;
+    color: rgb(70,70,70)
+}
+
+.recommended2Img img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin: 7px 12px 0 10px;
+}
+
+.recommended2Title {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(32,32,32);
+    margin-top: 18px;
+}
+
+.newsContent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 0 0 28px;
+}
+
+.newsText {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(70,70,70);
+    margin-top: 11px;
+}
+
+.blueBackdrop {
+    height: 88px;
+    width: 250px;
+    background-color: rgb(0,157,255);
+    margin-top: 20px;
+}
+
+
+/*
+* UBB用
+*/
+.ubb-code {
+    ol {
+        list-style: none;
+        counter-reset: li
+    }
+
+    li {
+        counter-increment: li
+    }
+
+    li::before {
+        content: counter(li);
+        display: inline-flex;
+        width: 50px;
+        margin: 0 10px;
+        justify-content: center;
+        background-color: #ebebeb;
+    }
+}
+/**
+    弹出用户悬浮窗
+*/
+.popup {
+    width: 30rem;
+    height: 15.625rem; /*高度自由，因为不确定，内容多少。*/
+    border: 1px solid #D5D5D5;
+    background: #fff; /*窗口内容不透明，背景为白色*/
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.25); /*内容窗口带阴影*/
+    border-radius: 0.5rem; /* 所有角都使用半径为8px的圆角，此属性为CSS3标准属性 */
+    -moz-border-radius: 0.5rem; /* Mozilla浏览器的私有属性 */
+    -webkit-border-radius: 0.5rem; /* Webkit浏览器的私有属性 */ /*窗口圆角*/
+    z-index: 9000;
+}
+
+.popup_title {
+    background: url(/images/headerBackground.jpg) no-repeat center;
+    height: 7.8rem;
+    line-height: 1.5rem; /*使垂直居中*/
+    border-bottom: 1px solid #efefef; /*底边框*/
+    border-radius: 0.5rem 0.5rem 0 0; /* 左上角和右上角使用半径为5px的圆角，此属性为CSS3标准属性 */
+    -moz-border-radius: 0.5rem 0.5rem 0 0; /* Mozilla浏览器的私有属性 */
+    -webkit-border-radius: 0.5rem 0.5rem 0 0; /* Webkit浏览器的私有属性 */ /*窗口圆角*/
+    color: #535353;
+    font-size: 1rem; /*字体颜色和字体大小*/
+    -moz-user-select: none; /* Firefox all */
+    -webkit-user-select: none; /* Chrome all / Safari all /opera15+*/
+    -ms-user-select: none; /*IE10*/
+    -khtml-user-select: none; /*早期浏览器*/
+    user-select: none;
+    -o-user-select: none; /* 以上两个属性目前并未支持，写在这里为了减少风险 */
+}
+/*
+    登录页用
+*/
+.login {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 6rem;
+
+    & > div {
+        margin-top: 30px;
+        background-color: white;
+        min-width: 1140px;
+        display: flex;
+        border: 1px solid rgb(204,204,204);
+        height: 567px;
+
+        & > img {
+            margin: 30px;
         }
 
-        form {
+        & > div {
+            width: 100%;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-        }
+            margin-top: 50px;
 
-        button {
-            margin-right: 5rem;
-            height: 2.5rem;
-            width: 20rem;
-            border: 0;
-            background-color: rgb(40,167,225);
-            color: white;
-            border-radius: 0.3125rem;
-
-            &:hover {
-                background-color: rgb(41,174,223);
+            & > img {
+                width: 123px;
+                height: 26px;
+                margin-right: 200px;
             }
 
-            &:active {
-                background-color: rgb(38,154,196);
+            & > p {
+                margin-right: 200px;
+                font-size: 12px;
+            }
+
+            .LogOffInfo {
+                align-self: center;
+                font-size: 1rem;
+                margin-right: 0;
             }
         }
+    }
 
-        #loginMessage {
-            color: red;
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-            width: 340px;
-            margin-right: 80px;
+    .login-form {
+        display: flex;
+        margin-right: 80px;
+        margin-top: 30px;
+        font-size: 12px;
+
+        input {
+            width: 320px;
+            height: 40px;
+            border: 1px solid rgb(204,204,204);
+            border-radius: 5px;
+            margin-left: 25px;
+            padding: 0 10px;
         }
     }
 
-    @keyframes cssShake {
-        from {
-            transform: translateX(-5px);
-        }
-
-        to {
-            transform: translateX(5px);
-        }
+    a {
+        color: rgb(40,167,225);
     }
 
-    .shake {
-        animation-name: cssShake;
-        animation-duration: 50ms;
-        animation-iteration-count: infinite;
-        animation-direction: alternate;
-    }
-    //------------------------登录页到此结束----------------------------------
-    #sendTopic {
-        border: #CCCCCC solid thin;
+    form {
         display: flex;
         flex-direction: column;
+        align-items: flex-end;
+    }
 
+    button {
+        margin-right: 5rem;
+        height: 2.5rem;
+        width: 20rem;
+        border: 0;
+        background-color: rgb(40,167,225);
+        color: white;
+        border-radius: 0.3125rem;
 
-
-        #sendTopic-options {
-            background-color: #fff;
-            border-bottom: #CCCCCC solid thin;
+        &:hover {
+            background-color: rgb(41,174,223);
         }
 
-        #sendTopic-input {
-            background-color: #fff;
-            height: 34.5rem;
-            padding: 1rem;
-            border: none;
-            width: 96.5%;
+        &:active {
+            background-color: rgb(38,154,196);
         }
     }
 
-    .editor__menu {
-        float: left;
-        margin: 0 2px;
-        vertical-align: text-top;
-        padding-left: 0.3125rem;
+    #loginMessage {
+        color: red;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        width: 340px;
+        margin-right: 80px;
+    }
+}
+
+@keyframes cssShake {
+    from {
+        transform: translateX(-5px);
     }
 
-    .editor__menu li {
-        list-style: none;
-        float: left;
-        list-style-type: none;
-        margin-right: 2px;
-        margin-left: 2px;
+    to {
+        transform: translateX(5px);
     }
+}
 
-    .editor__menu--bold {
-        background-image: url(/images/editOption.png);
-        background-size: 380px 60px;
-        border-bottom-color: rgb(255, 255, 255);
-        display: block;
-        height: 20px;
-        list-style-type: none;
-        width: 20px;
-        border-left-width: 5px;
-        border-right-width: 5px;
-        border-style: solid;
-        border-width: 5px;
-        border-color: rgb(255, 255, 255);
-        cursor: pointer;
+.shake {
+    animation-name: cssShake;
+    animation-duration: 50ms;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+//------------------------登录页到此结束----------------------------------
+#sendTopic {
+    border: #CCCCCC solid thin;
+    display: flex;
+    flex-direction: column;
+
+
+
+    #sendTopic-options {
         background-color: #fff;
+        border-bottom: #CCCCCC solid thin;
     }
 
-    .wmd-spacer1 {
-        margin: 5px 4px;
-        width: 0px;
-        height: 20px;
-        padding-left: 0px;
-        padding-right: 0px;
-        border-right: 1px solid #ddd;
-        text-indent: 110%;
-        white-space: nowrap;
-        overflow: hidden;
-        text-transform: capitalize;
+    #sendTopic-input {
+        background-color: #fff;
+        height: 34.5rem;
+        padding: 1rem;
+        border: none;
+        width: 96.5%;
     }
+}
 
-    #sendTopic-send {
-        display: inline-block;
-        outline: none;
-        cursor: pointer;
-        text-align: center;
-        width: 50px;
-        margin-top: 20px;
-        background-color: rgb(128,187,235);
-        color: #fff;
-        text-decoration: none;
-        font: 14px/100% Arial, Helvetica, sans-serif;
-        padding: .5em 2em .55em;
-        letter-spacing: 5px;
-        -webkit-border-radius: .5em;
-        -moz-border-radius: .5em;
-        border-radius: .5em;
-    }
+.editor__menu {
+    float: left;
+    margin: 0 2px;
+    vertical-align: text-top;
+    padding-left: 0.3125rem;
+}
 
-    #quoteOverflow {
-        overflow-y: auto;
-    }
+.editor__menu li {
+    list-style: none;
+    float: left;
+    list-style-type: none;
+    margin-right: 2px;
+    margin-left: 2px;
+}
 
-    .userDetails {
-        z-index: 1;
-    }
-    /**********************************搜索页的样式*********************************/
-    .noRusult {
-        font-size: 16px;
-        color: $color-thinBlack;
-        margin-top: 100px;
-        text-align: center;
-    }
+.editor__menu--bold {
+    background-image: url(/images/editOption.png);
+    background-size: 380px 60px;
+    border-bottom-color: rgb(255, 255, 255);
+    display: block;
+    height: 20px;
+    list-style-type: none;
+    width: 20px;
+    border-left-width: 5px;
+    border-right-width: 5px;
+    border-style: solid;
+    border-width: 5px;
+    border-color: rgb(255, 255, 255);
+    cursor: pointer;
+    background-color: #fff;
+}
 
-    .postManagement {
-        margin-left: 30rem;
-        position: absolute;
-        z-index: 1000;
-        width: 30rem;
-        height: 20rem;
-        border: 1px solid #d5d5d5;
-        background: #fff;
-        box-shadow: 0px 0px 3px rgba(0,0,0,0.25);
-        -moz-box-shadow: 0 0 3px rgba(0,0,0,.25);
-        -webkit-box-shadow: 0 0 3px rgba(0,0,0,.25);
-        border-radius: .5rem;
-        -moz-border-radius: .5rem;
-        -webkit-border-radius: .5rem;
-        background-color: #FFFACD;
-    }
+.wmd-spacer1 {
+    margin: 5px 4px;
+    width: 0px;
+    height: 20px;
+    padding-left: 0px;
+    padding-right: 0px;
+    border-right: 1px solid #ddd;
+    text-indent: 110%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-transform: capitalize;
+}
 
-    .manageUI {
-        display: flex;
-        flex-direction: row;
-    }
+#sendTopic-send {
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    width: 50px;
+    margin-top: 20px;
+    background-color: rgb(128,187,235);
+    color: #fff;
+    text-decoration: none;
+    font: 14px/100% Arial, Helvetica, sans-serif;
+    padding: .5em 2em .55em;
+    letter-spacing: 5px;
+    -webkit-border-radius: .5em;
+    -moz-border-radius: .5em;
+    border-radius: .5em;
+}
 
-    .manageOptions {
-        width: 30rem;
-        height: 3rem;
-    }
+#quoteOverflow {
+    overflow-y: auto;
+}
 
-    .manageOptions-icon {
-        background-color: #FFDEAD;
-        text-align: center;
-        width: 10rem;
-        height: 3rem;
-        line-height: 3rem;
-        border-right: #EAEAEA solid thin;
-        border-bottom: #EAEAEA solid thin;
-        cursor: pointer;
-    }
+.userDetails {
+    z-index: 1;
+}
 
-    .manageObject {
-        width: 6rem;
-        margin-right: 1rem;
-    }
-
-    .manageOperation {
-        width: 18rem;
-        margin-left: 5rem;
-        margin-top: 2rem;
-    }
-
-    .confirmManagement {
-        margin-left: 5rem;
-        margin-top: 1rem;
-        width: 5rem;
-        height: 2rem;
-        background-color: #EECBAD;
-        border: gray solid thin;
-        border-radius: 0.3rem;
-        cursor: pointer;
-    }
-
-    .awardPage {
-        width: 5rem;
-        height: 1.2rem;
-        background-color: $bgcolor2;
-        border: #eaeaea solid thin;
-        border-radius: 0.2rem;
-        cursor: pointer;
-        margin-left: 2rem;
-    }
-
-    .followBoard {
-        width: 5rem;
-        height: 1.5rem;
-        background-color: #e6e6fa;
-        border: gray solid thin;
-        border-radius: 0.3rem;
-        cursor: pointer;
-    }
+/**********************************搜索页的样式*********************************/
+.noRusult {
+    font-size: 16px;
+    color: $color-thinBlack;
+    margin-top: 100px;
+    text-align: center;
+}
+.postManagement {
+    margin-left:30rem;
+    position: absolute;
+    z-index: 1000;
+    width: 30rem;
+    height: 20rem;
+    border: 1px solid #d5d5d5;
+    background: #fff;
+    box-shadow: 0px 0px 3px rgba(0,0,0,0.25);
+    -moz-box-shadow: 0 0 3px rgba(0,0,0,.25);
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,.25);
+    border-radius: .5rem;
+    -moz-border-radius: .5rem;
+    -webkit-border-radius: .5rem;
+    background-color:#FFFACD;
+}
+.manageUI{
+    display:flex;
+    flex-direction:row;
+}
+.manageOptions{
+    width:30rem;
+    height:3rem;
+}
+.manageOptions-icon {
+    background-color:#FFDEAD;
+    text-align: center;
+    width: 10rem;
+    height: 3rem;
+    line-height: 3rem;
+    border-right: #EAEAEA solid thin;
+    border-bottom: #EAEAEA solid thin;
+    cursor:pointer;
+}
+.manageObject{
+    width:6rem;
+    margin-right:1rem;
+}
+.manageOperation{
+    width:18rem;
+    margin-left:5rem;
+    margin-top:2rem;
+}
+.confirmManagement {
+    margin-left: 5rem;
+    margin-top: 1rem;
+    width: 5rem;
+    height: 2rem;
+    background-color: #EECBAD;
+    border: gray solid thin;
+    border-radius: 0.3rem;
+    cursor:pointer;
+}
+.awardPage{
+    width:5rem;
+    height:1.2rem;
+    background-color:$bgcolor2;
+    border:#eaeaea solid thin;
+    border-radius:0.2rem;
+    cursor:pointer;
+    margin-left:2rem;
+}
+.followBoard {
+    width: 5rem;
+    height: 1.5rem;
+    background-color: #e6e6fa;
+    border: gray solid thin;
+    border-radius: 0.3rem;
+    cursor: pointer;
+}

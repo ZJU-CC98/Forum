@@ -10,7 +10,7 @@
     margin-bottom: 20px;
 }
 
-.createTopicTitle, .createTopicType, .createTopicOption {
+.createTopicTitle, .createTopicType, .createTopicOption, .createTopicContent {
     display: flex;
     height: 40px;
     margin-bottom: 20px;
@@ -34,13 +34,13 @@
 
 .createTopicTitle input {
     display: flex;
-    width: 1020px;
+    width: 740px;
     border: 0;
     font-size: 14px;
     font-family: 微软雅黑;
     color: rgb(80,80,80);
     outline: none;
-    padding-left: 6px;
+    padding-left: 1rem;
 }
 
 .createTopicTag {
@@ -58,7 +58,8 @@
 }
 
 .createTopicContent {
-    display: flex;
+    margin-bottom: 0;
+    justify-content: space-between;
 }
 
 //ubb解析图片默认不显示的样式
