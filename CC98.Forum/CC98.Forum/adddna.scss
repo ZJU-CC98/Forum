@@ -10,7 +10,7 @@
     margin-bottom: 20px;
 }
 
-.createTopicTitle, .createTopicType, .createTopicOption {
+.createTopicTitle, .createTopicType, .createTopicOption, .createTopicContent {
     display: flex;
     height: 40px;
     margin-bottom: 20px;
@@ -58,7 +58,8 @@
 }
 
 .createTopicContent {
-    display: flex;
+    margin-bottom: 0;
+    justify-content: space-between;
 }
 
 //ubb解析图片默认不显示的样式
