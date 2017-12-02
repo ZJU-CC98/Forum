@@ -9,17 +9,35 @@ declare let moment: any;
 export class MessageSystembox extends React.Component<MessageSystemProps> {
 
     render() {
-        let content = this.props.content;
+        let content;
         if (this.props.topicId) {
             let host = window.location.host;
             if (this.props.postId) {
                 let a: any = this.props.postId / 10;
                 let b = parseInt(a);
                 let c = this.props.postId - b * 10;
-                content = `${this.props.content}[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=blue]http://${host}/topic/${this.props.topicId}/${b}#${c}[/color][/url]`;
+                if (this.props.isRead) {
+                    content = `[color=gray]${this.props.content}[/color][url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=blue]http://${host}/topic/${this.props.topicId}/${b}#${c}[/color][/url]`;
+                }
+                else {
+                    content = `[color=black][b]${this.props.content}[/b][/color][url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=blue]http://${host}/topic/${this.props.topicId}/${b}#${c}[/color][/url]`;
+                }
             }
             else {
-                content = `${this.props.content}[url=http://${host}/topic/${this.props.topicId}][color=blue]http://${host}/topic/${this.props.topicId}[/color][/url]`;
+                if (this.props.isRead) {
+                    content = `[color=gray]${this.props.content}[/color][url=http://${host}/topic/${this.props.topicId}][color=blue]http://${host}/topic/${this.props.topicId}[/color][/url]`;
+                }
+                else {
+                    content = `[color=black][b]${this.props.content}[/b][/color][url=http://${host}/topic/${this.props.topicId}][color=blue]http://${host}/topic/${this.props.topicId}[/color][/url]`;
+                }
+            }
+        }
+        else {
+            if (this.props.isRead) {
+                content = `[color=gray]${this.props.content}[/color]`;
+            }
+            else {
+                content = `[color=black][b]${this.props.content}[/b][/color]`;
             }
         }
         console.log(content);

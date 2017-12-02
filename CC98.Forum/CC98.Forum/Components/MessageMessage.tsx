@@ -119,7 +119,8 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
                     isRead: true,
                     time: new Date(),
                     showTime: true
-                }]
+                }],
+                lastContent: ''
             }
         }
         if (!data) {
@@ -145,15 +146,4 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
                 <MessageWindow data={chatObj} onChange={this.onChange} />
             </div>);
     }
-}
-
-//查找数组arr中是否存在元素的名字为obj
-function contains(arr , obj) {
-    let i = arr.length;
-    while (i--) {
-        if (arr[i].name === obj) {
-            return true;
-        }
-    }
-    return false;
 }

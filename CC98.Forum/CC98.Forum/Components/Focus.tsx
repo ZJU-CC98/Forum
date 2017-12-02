@@ -34,7 +34,7 @@ export class Focus extends React.Component<{}, FocusState> {
         if (!this.state.id) {
             return (<div className="focus-root">
                 <div className="focus">
-                    <div className="focus-title">我的关注版面</div>
+                    <div className="focus-title">我的关注</div>
                     <FocusBoardArea onChange={this.changeFocusBoard} />
                     <FocusTopicArea />
                 </div>
@@ -43,7 +43,7 @@ export class Focus extends React.Component<{}, FocusState> {
         else {
             return (<div className="focus-root">
                 <div className="focus">
-                    <div className="focus-title">我的关注版面</div>
+                    <div className="focus-title">我的关注</div>
                     <FocusBoardArea onChange={this.changeFocusBoard} />
                     <FocusBoardTopicArea boardId={this.state.id} boardNme={this.state.name} />
                 </div>
