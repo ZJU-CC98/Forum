@@ -44,6 +44,7 @@ export class FocusBoardArea extends React.Component<FocusProps, FocusBoardProps>
             //获取关注版面的id列表
             let userInfo = Utility.getLocalStorage("userInfo");
             let boardid = userInfo.customBoards;
+            console.log(boardid);
             const headers = new Headers();
             headers.append('Authorization', token);
             for (let i in boardid) {

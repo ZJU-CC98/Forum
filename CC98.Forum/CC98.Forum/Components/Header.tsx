@@ -100,7 +100,6 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
         Utility.removeLocalStorage("userName");
         Utility.removeLocalStorage("password");
         Utility.removeLocalStorage("userInfo");
-        Utility.removeLocalStorage("SystemMessage");
         Utility.removeStorage("all");
         this.props.logOff();            //更新redux中的状态
         location = window.location;     //刷新当前页面

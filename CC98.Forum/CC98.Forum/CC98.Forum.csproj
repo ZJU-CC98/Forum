@@ -41,6 +41,7 @@
     <None Remove="Components\UserCenter\UserRouterActivities.tsx" />
     <None Remove="Components\UserExactProfile.tsx" />
     <None Remove="Props\FocusBoardProps.tsx" />
+    <None Remove="Props\MessageResponseProps.tsx" />
     <None Remove="Props\MessageSendReceiveProps.tsx" />
     <None Remove="Props\MessageWindowProps.tsx" />
     <None Remove="Reducer.tsx" />
@@ -90,6 +91,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Actions.tsx" />
     <TypeScriptCompile Include="ActionTypes.tsx" />
+    <TypeScriptCompile Include="Components\MessageAttmebox.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-New.tsx" />
     <TypeScriptCompile Include="Components\FocusBoardTopicArea.tsx" />
     <TypeScriptCompile Include="Components\Footer.tsx" />
@@ -120,6 +122,7 @@
     <TypeScriptCompile Include="Components\UserCenter\UserRouterActivities.tsx" />
     <TypeScriptCompile Include="Props\FocusBoardProps.tsx" />
     <TypeScriptCompile Include="Props\MessagePersonProps.tsx" />
+    <TypeScriptCompile Include="Props\MessageResponseProps.tsx" />
     <TypeScriptCompile Include="Props\MessageSendReceiveProps.tsx" />
     <TypeScriptCompile Include="Props\MessageWindowProps.tsx" />
     <TypeScriptCompile Include="Reducer.tsx" />

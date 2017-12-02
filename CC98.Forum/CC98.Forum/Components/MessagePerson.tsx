@@ -9,22 +9,14 @@ export class MessagePerson extends React.Component<MessagePersonProps> {
     
     render() {
         let data = this.props.data;
-        if (!data.message || data.message.length == 0) {
-            data.message = [{
-                id: 9898,
-                senderId: 9898,
-                receiverId: 9898,
-                content: "",
-                isRead: true,
-                time: new Date(),
-                showTime: true
-            }];
+        if (!data.lastContent) {
+            data.lastContent = '';
         }
         return (<div className="message-message-person">
                 <img className="message-message-pPortraitUrl" src={data.portraitUrl} />
                         <div className="message-message-pInfo">
-                            <div className="message-message-pName">{data.name}</div>
-                <div className="message-message-pMessage"><UbbContainer code={data.message[0].content} /></div>
+                <div className="message-message-pName">{data.name}</div>
+                <div className="message-message-pMessage"><UbbContainer code={data.lastContent} /></div>
                         </div>
                 </div>);
     }

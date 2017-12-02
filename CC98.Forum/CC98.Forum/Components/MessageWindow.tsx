@@ -20,7 +20,35 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
     }
 
     async componentDidMount() {
-        this.setState({ data: this.props.data.message });
+        this.getData(this.props);
+    }
+
+    async getData(props) {
+        let data = await Utility.getRecentMessage(props.data.id, 0, 10, this.context.router);
+        if (data && data.length > 0) {
+            let oldData = props.data.message;
+            if (oldData && oldData.length > 0) {
+                for (let i in data) {
+                    if (data[i].id == oldData[0].id) {
+                        data = data.slice(0, i).concat(oldData);
+                        data = Utility.sortRecentMessage(data);
+                        break;
+                    }
+                }
+            }
+            //找到对应的联系人更新一下缓存信息里的message
+            let recentContact = Utility.getStorage("recentContact");
+            if (recentContact) {
+                for (let i in recentContact) {
+                    if (recentContact[i].id == props.data.id) {
+                        recentContact[i].message = data;
+                        break;
+                    }
+                }
+                Utility.setStorage("recentContact", recentContact);
+            }
+            this.setState({ data: data });
+        }
         document.getElementById('messageContent').addEventListener('scroll', this.handleScroll);
     }
 
@@ -31,7 +59,7 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
     async componentWillReceiveProps(nextProps) {
         //把聊天窗口滚动栏拉到最底部
         document.getElementById("quickToTheBottom").scrollIntoView();
-        this.setState({ data: nextProps.data.message });
+        this.getData(nextProps);
     }
 
     /*
@@ -46,7 +74,7 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
             //到顶了就继续获取10条私信
             let newData = await Utility.getRecentMessage(this.props.data.id, oldData.length, 10, this.context.router);
             //跟之前的拼接一下
-            if (newData.length > 0) {
+            if (newData && newData.length > 0) {
                 let data = oldData.concat(newData);
                 data = Utility.sortRecentMessage(data);
                 this.setState({ data: data });
