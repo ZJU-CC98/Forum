@@ -10,9 +10,6 @@ import {
 import { UbbEditor } from '../UbbEditor';
 import { match } from "react-router";
 import { UbbContainer } from '.././UbbContainer';
-import * as Reducer from '../../reducers';
-import { Provider } from 'react-redux';
-import * as Redux from 'redux'
 //import { TopicPager, TopicPagerDown, PageModel } from './Topic-Pager';
 //import { PostTopic } from './Topic-PostTopic';
 //import { HotReply, Reply } from './Topic-Post';

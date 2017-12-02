@@ -198,7 +198,7 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
 // 这里是董松松的修改，加了redux
 function mapState(state) {
     return {
-        userImgUrl: state.currentUserInfo.portraitUrl
+        userImgUrl: state.userInfo.currentUserInfo.portraitUrl
     }
 }
 

@@ -41,7 +41,7 @@ export class UserCenterBeforeConnect extends React.Component<{ isLogOn, throwErr
  */
 function mapState(state) {
     return {
-        isLogOn: state.isLogOn
+        isLogOn: state.userInfo.isLogOn
     };
 }
 /**

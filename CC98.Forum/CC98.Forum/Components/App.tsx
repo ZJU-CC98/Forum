@@ -87,8 +87,8 @@ class AppBeforeConnect extends React.Component<{isError: boolean, errorMessage: 
 
 function mapState(state) {
     return {
-        isError: state.isError,
-        errorMessage: state.errorMessage
+        isError: state.error.isError,
+        errorMessage: state.error.errorMessage
     };
 }
 
