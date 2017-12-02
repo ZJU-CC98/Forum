@@ -119,7 +119,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var State = __webpack_require__(4);
+var State = __webpack_require__(5);
 var React = __webpack_require__(0);
 //import { browserHistory } from 'react-router';
 var Board_1 = __webpack_require__(15);
@@ -902,7 +902,7 @@ function getAllNewTopic(from, router) {
                 case 9:
                     newTopic[i].fanCount = 0;
                     newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-                    newTopic[i].userName = "匿名";
+                    newTopic[i].userName = "匿名用户";
                     newTopic[i].boardName = "心灵之约";
                     _d.label = 10;
                 case 10:
@@ -1027,7 +1027,7 @@ function getFocusBoardTopic(boardId, boardName, from, router) {
                 case 14:
                     newTopic[i].fanCount = 0;
                     newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-                    newTopic[i].userName = "匿名";
+                    newTopic[i].userName = "匿名用户";
                     newTopic[i].boardName = "心灵之约";
                     _d.label = 15;
                 case 15:
@@ -1139,7 +1139,7 @@ function getFocusTopic(from, router) {
                 case 9:
                     newTopic[i].fanCount = 0;
                     newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-                    newTopic[i].userName = "匿名";
+                    newTopic[i].userName = "匿名用户";
                     newTopic[i].boardName = "心灵之约";
                     _d.label = 10;
                 case 10:
@@ -1301,17 +1301,17 @@ exports.isLogOn = isLogOn;
 */
 function getRecentContact(from, size, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, headers, response, recentContactId, url, i, response1, recentContact, _a, _b, _i, i, _c, e_14;
-        return __generator(this, function (_d) {
-            switch (_d.label) {
+        var token, headers, response, recentContactId, url, i, response1, recentContact, i, e_14;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    _d.trys.push([0, 9, , 10]);
+                    _a.trys.push([0, 5, , 6]);
                     token = getLocalStorage("accessToken");
                     headers = new Headers();
                     headers.append('Authorization', token);
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/message/recentcontactusers?from=" + from + "&size=" + size, { headers: headers })];
                 case 1:
-                    response = _d.sent();
+                    response = _a.sent();
                     if (response.status === 401) {
                         ////window.location.href="/status/Loggout");
                     }
@@ -1320,7 +1320,7 @@ function getRecentContact(from, size, router) {
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
-                    recentContactId = _d.sent();
+                    recentContactId = _a.sent();
                     url = "http://apitest.niconi.cc/user/basic";
                     for (i in recentContactId) {
                         if (i == "0") {
@@ -1332,7 +1332,7 @@ function getRecentContact(from, size, router) {
                     }
                     return [4 /*yield*/, fetch(url)];
                 case 3:
-                    response1 = _d.sent();
+                    response1 = _a.sent();
                     if (response1.status === 404) {
                         ////window.location.href="/status/NotFoundUser");
                     }
@@ -1341,30 +1341,16 @@ function getRecentContact(from, size, router) {
                     }
                     return [4 /*yield*/, response1.json()];
                 case 4:
-                    recentContact = _d.sent();
-                    _a = [];
-                    for (_b in recentContact)
-                        _a.push(_b);
-                    _i = 0;
-                    _d.label = 5;
-                case 5:
-                    if (!(_i < _a.length)) return [3 /*break*/, 8];
-                    i = _a[_i];
-                    _c = recentContact[i];
-                    return [4 /*yield*/, getRecentMessage(recentContact[i].id, 0, 10, router)];
-                case 6:
-                    _c.message = _d.sent();
-                    _d.label = 7;
-                case 7:
-                    _i++;
-                    return [3 /*break*/, 5];
-                case 8:
+                    recentContact = _a.sent();
+                    for (i in recentContact) {
+                        recentContact[i].message = [];
+                    }
                     console.log(recentContact);
                     return [2 /*return*/, recentContact];
-                case 9:
-                    e_14 = _d.sent();
-                    return [3 /*break*/, 10];
-                case 10: return [2 /*return*/];
+                case 5:
+                    e_14 = _a.sent();
+                    return [3 /*break*/, 6];
+                case 6: return [2 /*return*/];
             }
         });
     });
@@ -1501,9 +1487,12 @@ function sortContactList(recentContact, router) {
                 case 7:
                     if (!(flag == 1)) return [3 /*break*/, 9];
                     _a = chatMan;
-                    return [4 /*yield*/, getRecentMessage(chatManId, 0, 10, router)];
+                    return [4 /*yield*/, getRecentMessage(chatMan.id, 0, 10, router)];
                 case 8:
                     _a.message = _c.sent();
+                    if (chatMan.message) {
+                        chatMan.lastContent = chatMan.message[0];
+                    }
                     chatContact = [chatMan];
                     recentContact = chatContact.concat(recentContact);
                     _c.label = 9;
@@ -1553,7 +1542,7 @@ function sortContactList(recentContact, router) {
                     return [3 /*break*/, 17];
                 case 17:
                     if (!(flag == 1)) return [3 /*break*/, 19];
-                    chatMan = { id: null, name: '', portraitUrl: '', message: [] };
+                    chatMan = { id: null, name: '', portraitUrl: '', message: [], lastContent: '' };
                     chatMan.id = response1.id;
                     chatMan.name = response1.name;
                     chatMan.portraitUrl = response1.portraitUrl;
@@ -1561,6 +1550,9 @@ function sortContactList(recentContact, router) {
                     return [4 /*yield*/, getRecentMessage(chatMan.id, 0, 10, router)];
                 case 18:
                     _b.message = _c.sent();
+                    if (chatMan.message) {
+                        chatMan.lastContent = chatMan.message[0];
+                    }
                     chatContact = [chatMan];
                     recentContact = chatContact.concat(recentContact);
                     _c.label = 19;
@@ -3052,11 +3044,11 @@ function getMessageSystem(from, router) {
                     console.log("开始获取系统通知了");
                     _a.label = 1;
                 case 1:
-                    _a.trys.push([1, 3, , 4]);
+                    _a.trys.push([1, 4, , 5]);
                     token = getLocalStorage("accessToken");
                     myHeaders = new Headers();
                     myHeaders.append('Authorization', token);
-                    size = 15;
+                    size = 10;
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/notification/system?from=" + from + "&size=" + size, { headers: myHeaders })];
                 case 2:
                     response = _a.sent();
@@ -3066,18 +3058,148 @@ function getMessageSystem(from, router) {
                     if (response.status === 500) {
                         //window.location.href = "/status/ServerError";
                     }
-                    newTopic = response.json();
+                    return [4 /*yield*/, response.json()];
+                case 3:
+                    newTopic = _a.sent();
                     console.log(newTopic);
                     return [2 /*return*/, newTopic];
-                case 3:
+                case 4:
                     e_33 = _a.sent();
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/];
             }
         });
     });
 }
 exports.getMessageSystem = getMessageSystem;
+//获取回复我的通知
+function getMessageResponse(from, router) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, myHeaders, size, response, newTopic, _a, _b, _i, i, response0, response1, _c, e_34;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
+                case 0:
+                    console.log("开始获取回复我的通知了");
+                    _d.label = 1;
+                case 1:
+                    _d.trys.push([1, 10, , 11]);
+                    token = getLocalStorage("accessToken");
+                    myHeaders = new Headers();
+                    myHeaders.append('Authorization', token);
+                    size = 10;
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/notification/reply?from=" + from + "&size=" + size, { headers: myHeaders })];
+                case 2:
+                    response = _d.sent();
+                    if (response.status === 401) {
+                        //window.location.href = "/status/UnauthorizedTopic";
+                    }
+                    if (response.status === 500) {
+                        //window.location.href = "/status/ServerError";
+                    }
+                    return [4 /*yield*/, response.json()];
+                case 3:
+                    newTopic = _d.sent();
+                    console.log(newTopic);
+                    if (!newTopic) return [3 /*break*/, 9];
+                    _a = [];
+                    for (_b in newTopic)
+                        _a.push(_b);
+                    _i = 0;
+                    _d.label = 4;
+                case 4:
+                    if (!(_i < _a.length)) return [3 /*break*/, 9];
+                    i = _a[_i];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/" + newTopic[i].topicId, { headers: myHeaders })];
+                case 5:
+                    response0 = _d.sent();
+                    return [4 /*yield*/, response0.json()];
+                case 6:
+                    response1 = _d.sent();
+                    console.log(response1);
+                    newTopic[i].topicTitle = response1.title;
+                    newTopic[i].boardId = response1.boardId;
+                    _c = newTopic[i];
+                    return [4 /*yield*/, getBoardName(response1.boardId, router)];
+                case 7:
+                    _c.boardName = _d.sent();
+                    _d.label = 8;
+                case 8:
+                    _i++;
+                    return [3 /*break*/, 4];
+                case 9: return [2 /*return*/, newTopic];
+                case 10:
+                    e_34 = _d.sent();
+                    return [3 /*break*/, 11];
+                case 11: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getMessageResponse = getMessageResponse;
+//获取回复我的通知
+function getMessageAttme(from, router) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, myHeaders, size, response, newTopic, _a, _b, _i, i, response0, response1, _c, e_35;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
+                case 0:
+                    console.log("开始获取@我的通知了");
+                    _d.label = 1;
+                case 1:
+                    _d.trys.push([1, 10, , 11]);
+                    token = getLocalStorage("accessToken");
+                    myHeaders = new Headers();
+                    myHeaders.append('Authorization', token);
+                    size = 10;
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/notification/at?from=" + from + "&size=" + size, { headers: myHeaders })];
+                case 2:
+                    response = _d.sent();
+                    if (response.status === 401) {
+                        //window.location.href = "/status/UnauthorizedTopic";
+                    }
+                    if (response.status === 500) {
+                        //window.location.href = "/status/ServerError";
+                    }
+                    return [4 /*yield*/, response.json()];
+                case 3:
+                    newTopic = _d.sent();
+                    console.log(newTopic);
+                    if (!newTopic) return [3 /*break*/, 9];
+                    _a = [];
+                    for (_b in newTopic)
+                        _a.push(_b);
+                    _i = 0;
+                    _d.label = 4;
+                case 4:
+                    if (!(_i < _a.length)) return [3 /*break*/, 9];
+                    i = _a[_i];
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/" + newTopic[i].topicId, { headers: myHeaders })];
+                case 5:
+                    response0 = _d.sent();
+                    return [4 /*yield*/, response0.json()];
+                case 6:
+                    response1 = _d.sent();
+                    console.log(response1);
+                    newTopic[i].topicTitle = response1.title;
+                    newTopic[i].boardId = response1.boardId;
+                    _c = newTopic[i];
+                    return [4 /*yield*/, getBoardName(response1.boardId, router)];
+                case 7:
+                    _c.boardName = _d.sent();
+                    _d.label = 8;
+                case 8:
+                    _i++;
+                    return [3 /*break*/, 4];
+                case 9: return [2 /*return*/, newTopic];
+                case 10:
+                    e_35 = _d.sent();
+                    return [3 /*break*/, 11];
+                case 11: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getMessageAttme = getMessageAttme;
 
 
 /***/ }),
@@ -4057,6 +4179,69 @@ module.exports = ReactRouterDOM;
 
 "use strict";
 
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var Ubb = __webpack_require__(49);
+/**
+ * 定义 UBBContainer 组件需要使用的属性。
+ */
+var UbbContainerProps = /** @class */ (function () {
+    function UbbContainerProps() {
+    }
+    return UbbContainerProps;
+}());
+exports.UbbContainerProps = UbbContainerProps;
+/**
+ * 提供用于解析 UBB 的核心组件。
+ */
+var UbbContainer = /** @class */ (function (_super) {
+    __extends(UbbContainer, _super);
+    function UbbContainer() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UbbContainer.prototype.render = function () {
+        // 获取引擎对象，如果不使用引擎对象则创建一个默认的
+        var engine = this.props.engine || Ubb.createEngine();
+        // 获取选项，如果不设置选项则创建一个默认的
+        var options = this.props.options || new Ubb.UbbCodeOptions();
+        var ubbHtml = engine.exec(this.props.code || '', options);
+        //打开回车与空格00
+        var style = {
+            whiteSpace: 'pre-wrap',
+            width: "100%"
+        };
+        // 注意兼容性设置， HTML4 不支持 article 标签
+        if (options.compatibility === Ubb.UbbCompatiblityMode.Transitional) {
+            return React.createElement("blockquote", { style: style }, ubbHtml);
+        }
+        else {
+            return React.createElement("article", { style: style }, ubbHtml);
+        }
+    };
+    return UbbContainer;
+}(React.Component));
+exports.UbbContainer = UbbContainer;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * 表示应用程序的状态。
@@ -4285,69 +4470,6 @@ var ChangeUserInfo = /** @class */ (function () {
     return ChangeUserInfo;
 }());
 exports.ChangeUserInfo = ChangeUserInfo;
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var Ubb = __webpack_require__(49);
-/**
- * 定义 UBBContainer 组件需要使用的属性。
- */
-var UbbContainerProps = /** @class */ (function () {
-    function UbbContainerProps() {
-    }
-    return UbbContainerProps;
-}());
-exports.UbbContainerProps = UbbContainerProps;
-/**
- * 提供用于解析 UBB 的核心组件。
- */
-var UbbContainer = /** @class */ (function (_super) {
-    __extends(UbbContainer, _super);
-    function UbbContainer() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    UbbContainer.prototype.render = function () {
-        // 获取引擎对象，如果不使用引擎对象则创建一个默认的
-        var engine = this.props.engine || Ubb.createEngine();
-        // 获取选项，如果不设置选项则创建一个默认的
-        var options = this.props.options || new Ubb.UbbCodeOptions();
-        var ubbHtml = engine.exec(this.props.code || '', options);
-        //打开回车与空格00
-        var style = {
-            whiteSpace: 'pre-wrap',
-            width: "100%"
-        };
-        // 注意兼容性设置， HTML4 不支持 article 标签
-        if (options.compatibility === Ubb.UbbCompatiblityMode.Transitional) {
-            return React.createElement("blockquote", { style: style }, ubbHtml);
-        }
-        else {
-            return React.createElement("article", { style: style }, ubbHtml);
-        }
-    };
-    return UbbContainer;
-}(React.Component));
-exports.UbbContainer = UbbContainer;
 
 
 /***/ }),
@@ -4900,7 +5022,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
-var UbbContainer_1 = __webpack_require__(5);
+var UbbContainer_1 = __webpack_require__(4);
 var react_router_dom_1 = __webpack_require__(3);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
@@ -5974,7 +6096,7 @@ var Utility = __webpack_require__(1);
 var Topic_AwardInfo_1 = __webpack_require__(21);
 var RouteComponent_1 = __webpack_require__(7);
 var Post_Management_1 = __webpack_require__(22);
-var UbbContainer_1 = __webpack_require__(5);
+var UbbContainer_1 = __webpack_require__(4);
 var ReplyContent = /** @class */ (function (_super) {
     __extends(ReplyContent, _super);
     function ReplyContent(props, content) {
@@ -6282,8 +6404,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var LogOnExact_1 = __webpack_require__(111);
-var Logoff_1 = __webpack_require__(112);
+var LogOnExact_1 = __webpack_require__(113);
+var Logoff_1 = __webpack_require__(114);
 /**
  * 用户中心页面
  */
@@ -7707,7 +7829,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var AppState_1 = __webpack_require__(4);
+var AppState_1 = __webpack_require__(5);
 var Utility = __webpack_require__(1);
 //链接到的地址是  /list/boardid
 var BoardList = /** @class */ (function (_super) {
@@ -8014,8 +8136,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var MessageMessage_1 = __webpack_require__(95);
 var MessageResponse_1 = __webpack_require__(100);
-var MessageAttme_1 = __webpack_require__(101);
-var MessageSystem_1 = __webpack_require__(102);
+var MessageAttme_1 = __webpack_require__(102);
+var MessageSystem_1 = __webpack_require__(104);
 var react_router_dom_1 = __webpack_require__(3);
 /**
  * 网站的主页面对象。
@@ -8268,9 +8390,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusBoardArea_1 = __webpack_require__(104);
-var FocusTopicArea_1 = __webpack_require__(105);
-var FocusBoardTopicArea_1 = __webpack_require__(106);
+var FocusBoardArea_1 = __webpack_require__(106);
+var FocusTopicArea_1 = __webpack_require__(107);
+var FocusBoardTopicArea_1 = __webpack_require__(108);
 var Utility = __webpack_require__(1);
 var Focus = /** @class */ (function (_super) {
     __extends(Focus, _super);
@@ -8298,14 +8420,14 @@ var Focus = /** @class */ (function (_super) {
         if (!this.state.id) {
             return (React.createElement("div", { className: "focus-root" },
                 React.createElement("div", { className: "focus" },
-                    React.createElement("div", { className: "focus-title" }, "\u6211\u7684\u5173\u6CE8\u7248\u9762"),
+                    React.createElement("div", { className: "focus-title" }, "\u6211\u7684\u5173\u6CE8"),
                     React.createElement(FocusBoardArea_1.FocusBoardArea, { onChange: this.changeFocusBoard }),
                     React.createElement(FocusTopicArea_1.FocusTopicArea, null))));
         }
         else {
             return (React.createElement("div", { className: "focus-root" },
                 React.createElement("div", { className: "focus" },
-                    React.createElement("div", { className: "focus-title" }, "\u6211\u7684\u5173\u6CE8\u7248\u9762"),
+                    React.createElement("div", { className: "focus-title" }, "\u6211\u7684\u5173\u6CE8"),
                     React.createElement(FocusBoardArea_1.FocusBoardArea, { onChange: this.changeFocusBoard }),
                     React.createElement(FocusBoardTopicArea_1.FocusBoardTopicArea, { boardId: this.state.id, boardNme: this.state.name }))));
         }
@@ -8482,7 +8604,6 @@ var DropDownConnect = /** @class */ (function (_super) {
         Utility.removeLocalStorage("userName");
         Utility.removeLocalStorage("password");
         Utility.removeLocalStorage("userInfo");
-        Utility.removeLocalStorage("SystemMessage");
         Utility.removeStorage("all");
         this.props.logOff(); //更新redux中的状态
         location = window.location; //刷新当前页面
@@ -8982,7 +9103,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var $ = __webpack_require__(9);
 var Utility = __webpack_require__(1);
-var UbbContainer_1 = __webpack_require__(5);
+var UbbContainer_1 = __webpack_require__(4);
 /**
  * 全站公告组件
  **/
@@ -9464,8 +9585,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserNavigation_1 = __webpack_require__(107);
-var UserRouter_1 = __webpack_require__(108);
+var UserNavigation_1 = __webpack_require__(109);
+var UserRouter_1 = __webpack_require__(110);
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
@@ -9730,10 +9851,12 @@ var CreateTopic = /** @class */ (function (_super) {
                     "\u56DE\u590D\u4EC5\u697C\u4E3B\u53EF\u89C1",
                     React.createElement("input", { type: "radio", name: "option", value: "special" }),
                     "\u56DE\u590D\u4EC5\u7279\u5B9A\u7528\u6237\u53EF\u89C1"),
+                React.createElement("div", { className: "createTopicContent" },
+                    React.createElement("div", { className: "createTopicListName" }, "\u4E3B\u9898\u5185\u5BB9"),
+                    React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor, className: "button blue", style: { width: "13.5rem" } }, "\u5207\u6362\u5230Markdown\u7F16\u8F91\u5668")),
                 React.createElement(UbbEditor_1.UbbEditor, { update: this.update }),
                 React.createElement("div", { className: "row", style: { justifyContent: "center" } },
-                    React.createElement("div", { id: "post-topic-button", onClick: this.sendUbbTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", marginBottom: "1.25rem", marginRight: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" } }, "\u53D1\u5E16"),
-                    React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor, className: "button blue", style: { marginTop: "1.25rem", marginBottom: "1.25rem", width: "13.5rem" } }, "\u5207\u6362\u5230Markdown\u7F16\u8F91\u5668")));
+                    React.createElement("div", { id: "post-topic-button", onClick: this.sendUbbTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", marginBottom: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" } }, "\u53D1\u5E16")));
         }
         else {
             return React.createElement("div", { className: "createTopic" },
@@ -9759,9 +9882,10 @@ var CreateTopic = /** @class */ (function (_super) {
                     "\u56DE\u590D\u4EC5\u697C\u4E3B\u53EF\u89C1",
                     React.createElement("input", { type: "radio", name: "option", value: "special" }),
                     "\u56DE\u590D\u4EC5\u7279\u5B9A\u7528\u6237\u53EF\u89C1"),
-                React.createElement(InputMdContent, { onChange: this.sendMdTopic.bind(this), ready: this.state.ready }),
-                React.createElement("div", { className: "row", style: { justifyContent: "center" } },
-                    React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor, className: "button blue", style: { marginTop: "1.25rem", marginBottom: "1.25rem", width: "13.5rem", letterSpacing: "0.3125rem" } }, "\u5207\u6362\u5230UBB\u7F16\u8F91\u5668")));
+                React.createElement("div", { className: "createTopicContent" },
+                    React.createElement("div", { className: "createTopicListName" }, "\u4E3B\u9898\u5185\u5BB9"),
+                    React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor, className: "button blue", style: { width: "13.5rem", letterSpacing: "0.3125rem" } }, "\u5207\u6362\u5230UBB\u7F16\u8F91\u5668")),
+                React.createElement(InputMdContent, { onChange: this.sendMdTopic.bind(this), ready: this.state.ready }));
         }
     };
     return CreateTopic;
@@ -9777,10 +9901,7 @@ var InputTitle = /** @class */ (function (_super) {
     }
     InputTitle.prototype.handleTitleChange = function (event) {
         this.props.onChange(event.target.value);
-        console.log("value");
-        console.log(event.target.value);
         this.setState({ title: event.target.value });
-        console.log('finished');
     };
     InputTitle.prototype.render = function () {
         return React.createElement("div", { className: "createTopicTitle" },
@@ -9792,59 +9913,6 @@ var InputTitle = /** @class */ (function (_super) {
     return InputTitle;
 }(React.Component));
 exports.InputTitle = InputTitle;
-var InputUbbContent = /** @class */ (function (_super) {
-    __extends(InputUbbContent, _super);
-    function InputUbbContent(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = ({ content: "" });
-        return _this;
-    }
-    InputUbbContent.prototype.handleUbbChange = function (event) {
-        this.props.onChange(event.target.value);
-        this.setState({ content: event.target.value });
-    };
-    InputUbbContent.prototype.render = function () {
-        return React.createElement("div", { id: "sendTopic" },
-            React.createElement("div", { id: "sendTopic-options" },
-                React.createElement("ul", { className: "editor__menu clearfix", id: "wmd-button-row" },
-                    React.createElement("li", { title: "加粗 <strong> Ctrl+B", className: "wmd-button", id: "wmd-bold-button" },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "0px 0px" } })),
-                    React.createElement("li", { title: "斜体 <em> Ctrl+I", className: "wmd-button", id: "wmd-italic-button", style: { left: " 25px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: " -20px 0px" } })),
-                    React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer1" }),
-                    React.createElement("li", { title: "链接 <a> Ctrl+L", className: "wmd-button", id: "wmd-link-button", style: { left: "75px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-40px 0px" } })),
-                    React.createElement("li", { title: "引用 <blockquote> Ctrl+Q", className: "wmd-button", id: "wmd-quote-button", style: { left: " 100px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-60px 0px" } })),
-                    React.createElement("li", { title: "代码 <pre><code> Ctrl+K", className: "wmd-button", id: "wmd-code-button", style: { left: " 125px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-80px 0px" } })),
-                    React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer2" }),
-                    React.createElement("li", { title: "图片 <img> Ctrl+G", className: "wmd-button", id: "wmd-image-button", style: { left: "150px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-100px 0px" } })),
-                    React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer2" }),
-                    React.createElement("li", { title: "数字列表 <ol> Ctrl+O", className: "wmd-button", id: "wmd-olist-button", style: { left: " 200px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-120px 0px" } })),
-                    React.createElement("li", { title: "普通列表 <ul> Ctrl+U", className: "wmd-button", id: "wmd-ulist-button", style: { left: "225px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: " -140px 0px" } })),
-                    React.createElement("li", { title: "标题 <h1>/<h2> Ctrl+H", className: "wmd-button", id: "wmd-heading-button", style: { left: "250px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-160px 0px" } })),
-                    React.createElement("li", { title: "分割线 <hr> Ctrl+R", className: "wmd-button", id: "wmd-hr-button", style: { left: "275px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-180px 0px" } })),
-                    React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer3" }),
-                    React.createElement("li", { title: "撤销 - Ctrl+Z", className: "wmd-button", id: "wmd-undo-button", style: { left: "325px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-200px 0px" } })),
-                    React.createElement("li", { title: "重做 - Ctrl+Y", className: "wmd-button", id: "wmd-redo-button", style: { left: "350px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-220px -20px" } })),
-                    React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer4" }),
-                    React.createElement("li", { title: "Markdown 语法", className: "wmd-button", id: "wmd-help-button", style: { left: " 400px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-300px 0px" } })))),
-            React.createElement("form", null,
-                React.createElement("div", null,
-                    React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input", value: this.state.content, onChange: this.handleUbbChange.bind(this) }))));
-    };
-    return InputUbbContent;
-}(React.Component));
-exports.InputUbbContent = InputUbbContent;
 var InputMdContent = /** @class */ (function (_super) {
     __extends(InputMdContent, _super);
     function InputMdContent(props) {
@@ -10666,7 +10734,7 @@ exports.UserCenterMyFollowingsUser = UserCenterMyFollowingsUser;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(43);
-module.exports = __webpack_require__(124);
+module.exports = __webpack_require__(126);
 
 
 /***/ }),
@@ -12190,6 +12258,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Ubb = __webpack_require__(2);
+var react_router_dom_1 = __webpack_require__(3);
 var TopicTagHandler = /** @class */ (function (_super) {
     __extends(TopicTagHandler, _super);
     function TopicTagHandler() {
@@ -12210,7 +12279,8 @@ var TopicTagHandler = /** @class */ (function (_super) {
         if (tagData.parameterCount === 2)
             topicID = parseInt(tagData.value(1)); //如果有2个参数,则认为第2个是topicid
         var url = "/topic/" + topicID;
-        return React.createElement("a", { href: url }, topicTagContent);
+        //return <a href={url}>{topicTagContent}</ a> 
+        return React.createElement(react_router_dom_1.Link, { to: url }, topicTagContent);
     };
     return TopicTagHandler;
 }(Ubb.RecursiveTagHandler));
@@ -12354,7 +12424,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var ActionTypes = __webpack_require__(10);
 var Utility = __webpack_require__(1);
-var Appstate = __webpack_require__(4);
+var Appstate = __webpack_require__(5);
 /**
  * 用户中心用Store
  */
@@ -13556,9 +13626,7 @@ var TopicTitle = /** @class */ (function (_super) {
                             React.createElement("i", { className: "fa fa-eye fa-lg fa-fw" }),
                             "  "),
                         " ",
-                        React.createElement("div", { className: "timeProp tagSize" },
-                            this.props.HitCount,
-                            "\u6B21")))));
+                        React.createElement("div", { className: "timeProp tagSize" }, this.props.HitCount)))));
     };
     return TopicTitle;
 }(React.Component));
@@ -13620,7 +13688,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
 var Post_Management_1 = __webpack_require__(22);
-var UbbContainer_1 = __webpack_require__(5);
+var UbbContainer_1 = __webpack_require__(4);
 var react_router_dom_1 = __webpack_require__(3);
 var TopicContent = /** @class */ (function (_super) {
     __extends(TopicContent, _super);
@@ -14099,10 +14167,10 @@ var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
 var UserCenterExact_1 = __webpack_require__(90);
 var UserCenterMyFollowings_1 = __webpack_require__(94);
-var UserCenterMyFans_1 = __webpack_require__(113);
-var UserCenterMyPostsExact_1 = __webpack_require__(114);
-var UserCenterMyFavorites_1 = __webpack_require__(115);
-var UserCenterConfig_1 = __webpack_require__(119);
+var UserCenterMyFans_1 = __webpack_require__(115);
+var UserCenterMyPostsExact_1 = __webpack_require__(116);
+var UserCenterMyFavorites_1 = __webpack_require__(117);
+var UserCenterConfig_1 = __webpack_require__(121);
 /**
  * 用户中心主体
  */
@@ -14269,7 +14337,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UbbContainer_1 = __webpack_require__(5);
+var UbbContainer_1 = __webpack_require__(4);
 /**
  * 用户中心主页个人资料组件
  */
@@ -14432,7 +14500,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var UserCenterExactActivitiesPost_1 = __webpack_require__(11);
-var AppState_1 = __webpack_require__(4);
+var AppState_1 = __webpack_require__(5);
 var Utility = __webpack_require__(1);
 //用户中心主页帖子动态组件
 var UserCenterExactActivitiesPosts = /** @class */ (function (_super) {
@@ -14657,7 +14725,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var AppState_1 = __webpack_require__(4);
+var AppState_1 = __webpack_require__(5);
 var app_1 = __webpack_require__(12);
 var UserCenterMyFollowingsUser_1 = __webpack_require__(41);
 var UserCenterPageCount_1 = __webpack_require__(14);
@@ -14962,7 +15030,8 @@ var MessageMessage = /** @class */ (function (_super) {
                         isRead: true,
                         time: new Date(),
                         showTime: true
-                    }]
+                    }],
+                lastContent: ''
             };
         }
         if (!data) {
@@ -14987,16 +15056,6 @@ var MessageMessage = /** @class */ (function (_super) {
     return MessageMessage;
 }(React.Component));
 exports.MessageMessage = MessageMessage;
-//查找数组arr中是否存在元素的名字为obj
-function contains(arr, obj) {
-    var i = arr.length;
-    while (i--) {
-        if (arr[i].name === obj) {
-            return true;
-        }
-    }
-    return false;
-}
 
 
 /***/ }),
@@ -15020,7 +15079,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var UbbContainer_1 = __webpack_require__(5);
+var UbbContainer_1 = __webpack_require__(4);
 var MessagePerson = /** @class */ (function (_super) {
     __extends(MessagePerson, _super);
     function MessagePerson() {
@@ -15028,23 +15087,15 @@ var MessagePerson = /** @class */ (function (_super) {
     }
     MessagePerson.prototype.render = function () {
         var data = this.props.data;
-        if (!data.message || data.message.length == 0) {
-            data.message = [{
-                    id: 9898,
-                    senderId: 9898,
-                    receiverId: 9898,
-                    content: "",
-                    isRead: true,
-                    time: new Date(),
-                    showTime: true
-                }];
+        if (!data.lastContent) {
+            data.lastContent = '';
         }
         return (React.createElement("div", { className: "message-message-person" },
             React.createElement("img", { className: "message-message-pPortraitUrl", src: data.portraitUrl }),
             React.createElement("div", { className: "message-message-pInfo" },
                 React.createElement("div", { className: "message-message-pName" }, data.name),
                 React.createElement("div", { className: "message-message-pMessage" },
-                    React.createElement(UbbContainer_1.UbbContainer, { code: data.message[0].content })))));
+                    React.createElement(UbbContainer_1.UbbContainer, { code: data.lastContent })))));
     };
     return MessagePerson;
 }(React.Component));
@@ -15144,9 +15195,45 @@ var MessageWindow = /** @class */ (function (_super) {
     MessageWindow.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                this.setState({ data: this.props.data.message });
-                document.getElementById('messageContent').addEventListener('scroll', this.handleScroll);
+                this.getData(this.props);
                 return [2 /*return*/];
+            });
+        });
+    };
+    MessageWindow.prototype.getData = function (props) {
+        return __awaiter(this, void 0, void 0, function () {
+            var data, oldData, i, recentContact, i;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Utility.getRecentMessage(props.data.id, 0, 10, this.context.router)];
+                    case 1:
+                        data = _a.sent();
+                        if (data && data.length > 0) {
+                            oldData = props.data.message;
+                            if (oldData && oldData.length > 0) {
+                                for (i in data) {
+                                    if (data[i].id == oldData[0].id) {
+                                        data = data.slice(0, i).concat(oldData);
+                                        data = Utility.sortRecentMessage(data);
+                                        break;
+                                    }
+                                }
+                            }
+                            recentContact = Utility.getStorage("recentContact");
+                            if (recentContact) {
+                                for (i in recentContact) {
+                                    if (recentContact[i].id == props.data.id) {
+                                        recentContact[i].message = data;
+                                        break;
+                                    }
+                                }
+                                Utility.setStorage("recentContact", recentContact);
+                            }
+                            this.setState({ data: data });
+                        }
+                        document.getElementById('messageContent').addEventListener('scroll', this.handleScroll);
+                        return [2 /*return*/];
+                }
             });
         });
     };
@@ -15159,7 +15246,7 @@ var MessageWindow = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 //把聊天窗口滚动栏拉到最底部
                 document.getElementById("quickToTheBottom").scrollIntoView();
-                this.setState({ data: nextProps.data.message });
+                this.getData(nextProps);
                 return [2 /*return*/];
             });
         });
@@ -15182,7 +15269,7 @@ var MessageWindow = /** @class */ (function (_super) {
                     case 1:
                         newData = _a.sent();
                         //跟之前的拼接一下
-                        if (newData.length > 0) {
+                        if (newData && newData.length > 0) {
                             data = oldData.concat(newData);
                             data = Utility.sortRecentMessage(data);
                             this.setState({ data: data });
@@ -15383,7 +15470,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var UbbContainer_1 = __webpack_require__(5);
+var UbbContainer_1 = __webpack_require__(4);
 var MessageSender = /** @class */ (function (_super) {
     __extends(MessageSender, _super);
     function MessageSender() {
@@ -15435,7 +15522,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var UbbContainer_1 = __webpack_require__(5);
+var UbbContainer_1 = __webpack_require__(4);
 var MessageReceiver = /** @class */ (function (_super) {
     __extends(MessageReceiver, _super);
     function MessageReceiver() {
@@ -15480,38 +15567,90 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 // A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
+var MessageResponsebox_1 = __webpack_require__(101);
+var Utility = __webpack_require__(1);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
 var MessageResponse = /** @class */ (function (_super) {
     __extends(MessageResponse, _super);
-    function MessageResponse() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function MessageResponse(props) {
+        var _this = _super.call(this, props) || this;
+        _this.coverMessageResponse = function (item) {
+            return React.createElement(MessageResponsebox_1.MessageResponsebox, { id: item.id, type: item.type, time: item.time, topicId: item.topicId, topicTitle: item.topicTitle, postId: item.postId, boardId: item.boardId, boardName: item.boardName, isRead: item.isRead });
+        };
+        _this.state = {
+            data: [],
+            from: 0,
+            loading: true
+        };
+        return _this;
     }
+    MessageResponse.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Utility.getMessageResponse(0, this.context.router)];
+                    case 1:
+                        data = _a.sent();
+                        if (data) {
+                            this.setState({ data: data, from: data.length });
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     MessageResponse.prototype.render = function () {
         //给我的回复添加选中样式
         $('.message-nav > div').removeClass('message-nav-focus');
         $('#response').addClass('message-nav-focus');
-        return React.createElement("div", null, "\u8FD9\u91CC\u662F\u6211\u7684\u56DE\u590D");
+        return React.createElement("div", { className: "message-response" }, this.state.data.map(this.coverMessageResponse));
     };
     return MessageResponse;
 }(React.Component));
 exports.MessageResponse = MessageResponse;
-//查找数组arr中是否存在元素的名字为obj
-function contains(arr, obj) {
-    var i = arr.length;
-    while (i--) {
-        if (arr[i].name === obj) {
-            return true;
-        }
-    }
-    return false;
-}
 
 
 /***/ }),
@@ -15535,23 +15674,41 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-/**
- * 我的私信，包括最近联系人列表和聊天窗口两个组件
- */
-var MessageAttme = /** @class */ (function (_super) {
-    __extends(MessageAttme, _super);
-    function MessageAttme() {
+var UbbContainer_1 = __webpack_require__(4);
+var MessageResponsebox = /** @class */ (function (_super) {
+    __extends(MessageResponsebox, _super);
+    function MessageResponsebox() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    MessageAttme.prototype.render = function () {
-        //给我的回复添加选中样式
-        $('.message-nav > div').removeClass('message-nav-focus');
-        $('#attme').addClass('message-nav-focus');
-        return React.createElement("div", null, "\u8FD9\u91CC\u662F@\u6211\u7684\u6D88\u606F");
+    MessageResponsebox.prototype.render = function () {
+        var host = window.location.host;
+        var a = this.props.postId / 10;
+        var b = parseInt(a);
+        var c = this.props.postId - b * 10;
+        var content;
+        var view;
+        if (this.props.isRead) {
+            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=gray]\u6709\u4EBA\u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60[/color][/url]";
+            view = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=gary]\u67E5\u770B[/color][/url]";
+        }
+        else {
+            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=black][b]\u6709\u4EBA\u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60[/b][/color][/url]";
+            view = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=black][b]\u67E5\u770B[/b][/color][/url]";
+        }
+        return (React.createElement("div", { className: "message-response-box" },
+            React.createElement("div", { className: "message-response-box-middle" },
+                React.createElement("div", { className: "message-response-box-middle1" },
+                    React.createElement("div", { className: "message-response-box-middle-title" }, this.props.boardName),
+                    React.createElement("div", { className: "message-response-box-middle-date" }, moment(this.props.time).format('YYYY-MM-DD HH:mm:ss'))),
+                React.createElement("div", { className: "message-response-box-middle-content" },
+                    React.createElement(UbbContainer_1.UbbContainer, { code: content }))),
+            React.createElement("div", { className: "message-response-box-right" },
+                " ",
+                React.createElement(UbbContainer_1.UbbContainer, { code: view }))));
     };
-    return MessageAttme;
+    return MessageResponsebox;
 }(React.Component));
-exports.MessageAttme = MessageAttme;
+exports.MessageResponsebox = MessageResponsebox;
 
 
 /***/ }),
@@ -15610,46 +15767,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MessageSystembox_1 = __webpack_require__(103);
+var MessageAttmebox_1 = __webpack_require__(103);
 var Utility = __webpack_require__(1);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
-var MessageSystem = /** @class */ (function (_super) {
-    __extends(MessageSystem, _super);
-    function MessageSystem(props) {
+var MessageAttme = /** @class */ (function (_super) {
+    __extends(MessageAttme, _super);
+    function MessageAttme(props) {
         var _this = _super.call(this, props) || this;
-        /**
-         * 移除DOM时，为滚动条移除监听事件
-         */
-        /*async componentWillUnmount() {
-            document.removeEventListener('scroll', this.handleScroll);
-        }
-    
-        /**
-         * 处理滚动的函数
-         */
-        /*async handleScroll() {
-            if (Utility.isBottom() && this.state.loading) {
-                //发出第一条fetch请求前将this.state.loading设置为false，防止后面重复发送fetch请求
-                this.setState({ loading: false });
-                try {
-                    var newData = await Utility.getMessageSystem(this.state.from, this.context.router);
-                } catch (err) {
-                    //如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
-                    this.setState({ loading: true });
-                    return;
-                }
-                //如果正确获取到数据，则添加新数据，翻页+1，同时this.state.loading设置为true，后续才可以再次发送fetch请求
-                if (newData && newData != []) {
-                    let data = this.state.data.concat(newData);
-                    this.setState({ data: data, from: data.length, loading: true });
-                    Utility.setLocalStorage("SystemMessage", data);
-                }
-            }
-        }*/
-        _this.coverMessageSystem = function (item) {
-            return React.createElement(MessageSystembox_1.MessageSystembox, { id: item.id, type: item.type, title: item.title, content: item.content, time: item.time, topicId: item.topicId, postId: item.postId, isRead: item.isRead });
+        _this.coverMessageAttme = function (item) {
+            return React.createElement(MessageAttmebox_1.MessageAttmebox, { id: item.id, type: item.type, time: item.time, topicId: item.topicId, topicTitle: item.topicTitle, postId: item.postId, boardId: item.boardId, boardName: item.boardName, isRead: item.isRead });
         };
         _this.state = {
             data: [],
@@ -15658,27 +15786,15 @@ var MessageSystem = /** @class */ (function (_super) {
         };
         return _this;
     }
-    MessageSystem.prototype.componentWillMount = function () {
+    MessageAttme.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var data, oldData, i;
+            var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getMessageSystem(0, this.context.router)];
+                    case 0: return [4 /*yield*/, Utility.getMessageAttme(0, this.context.router)];
                     case 1:
                         data = _a.sent();
-                        if (data && data != []) {
-                            oldData = Utility.getLocalStorage("SystemMessage");
-                            if (oldData) {
-                                for (i = 0; i < data.length; i++) {
-                                    //最新的20条数据跟之前的有重合就组合起来
-                                    if (data[i].id == oldData[0].id) {
-                                        data = data.slice(0, i).concat(oldData);
-                                        break;
-                                    }
-                                }
-                            }
-                            //缓存获取到的数据                      
-                            Utility.setLocalStorage("SystemMessage", data);
+                        if (data) {
                             this.setState({ data: data, from: data.length });
                         }
                         return [2 /*return*/];
@@ -15686,15 +15802,15 @@ var MessageSystem = /** @class */ (function (_super) {
             });
         });
     };
-    MessageSystem.prototype.render = function () {
+    MessageAttme.prototype.render = function () {
         //给我的回复添加选中样式
         $('.message-nav > div').removeClass('message-nav-focus');
-        $('#system').addClass('message-nav-focus');
-        return React.createElement("div", { className: "message-system" }, this.state.data.map(this.coverMessageSystem));
+        $('#attme').addClass('message-nav-focus');
+        return React.createElement("div", { className: "message-response" }, this.state.data.map(this.coverMessageAttme));
     };
-    return MessageSystem;
+    return MessageAttme;
 }(React.Component));
-exports.MessageSystem = MessageSystem;
+exports.MessageAttme = MessageAttme;
 
 
 /***/ }),
@@ -15718,24 +15834,202 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var UbbContainer_1 = __webpack_require__(5);
+var UbbContainer_1 = __webpack_require__(4);
+var MessageAttmebox = /** @class */ (function (_super) {
+    __extends(MessageAttmebox, _super);
+    function MessageAttmebox() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    MessageAttmebox.prototype.render = function () {
+        var host = window.location.host;
+        var a = this.props.postId / 10;
+        var b = parseInt(a);
+        var c = this.props.postId - b * 10;
+        var content;
+        var view;
+        if (this.props.isRead) {
+            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=gray]\u6709\u4EBA\u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D@\u4E86\u4F60[/color][/url]";
+            view = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=gary]\u67E5\u770B[/color][/url]";
+        }
+        else {
+            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=black][b]\u6709\u4EBA\u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D@\u4E86\u4F60[/b][/color][/url]";
+            view = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=black][b]\u67E5\u770B[/b][/color][/url]";
+        }
+        return (React.createElement("div", { className: "message-response-box" },
+            React.createElement("div", { className: "message-response-box-middle" },
+                React.createElement("div", { className: "message-response-box-middle1" },
+                    React.createElement("div", { className: "message-response-box-middle-title" }, this.props.boardName),
+                    React.createElement("div", { className: "message-response-box-middle-date" }, moment(this.props.time).format('YYYY-MM-DD HH:mm:ss'))),
+                React.createElement("div", { className: "message-response-box-middle-content" },
+                    React.createElement(UbbContainer_1.UbbContainer, { code: content }))),
+            React.createElement("div", { className: "message-response-box-right" },
+                " ",
+                React.createElement(UbbContainer_1.UbbContainer, { code: view }))));
+    };
+    return MessageAttmebox;
+}(React.Component));
+exports.MessageAttmebox = MessageAttmebox;
+
+
+/***/ }),
+/* 104 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var React = __webpack_require__(0);
+var MessageSystembox_1 = __webpack_require__(105);
+var Utility = __webpack_require__(1);
+/**
+ * 我的私信，包括最近联系人列表和聊天窗口两个组件
+ */
+var MessageSystem = /** @class */ (function (_super) {
+    __extends(MessageSystem, _super);
+    function MessageSystem(props) {
+        var _this = _super.call(this, props) || this;
+        _this.coverMessageSystem = function (item) {
+            return React.createElement(MessageSystembox_1.MessageSystembox, { id: item.id, type: item.type, title: item.title, content: item.content, time: item.time, topicId: item.topicId, postId: item.postId, isRead: item.isRead });
+        };
+        _this.state = {
+            data: [],
+            from: 0,
+            loading: true
+        };
+        return _this;
+    }
+    MessageSystem.prototype.componentWillMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Utility.getMessageSystem(0, this.context.router)];
+                    case 1:
+                        data = _a.sent();
+                        if (data) {
+                            this.setState({ data: data, from: data.length });
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    MessageSystem.prototype.render = function () {
+        //给我的回复添加选中样式
+        $('.message-nav > div').removeClass('message-nav-focus');
+        $('#system').addClass('message-nav-focus');
+        return React.createElement("div", { className: "message-system" }, this.state.data.map(this.coverMessageSystem));
+    };
+    return MessageSystem;
+}(React.Component));
+exports.MessageSystem = MessageSystem;
+
+
+/***/ }),
+/* 105 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var React = __webpack_require__(0);
+var UbbContainer_1 = __webpack_require__(4);
 var MessageSystembox = /** @class */ (function (_super) {
     __extends(MessageSystembox, _super);
     function MessageSystembox() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     MessageSystembox.prototype.render = function () {
-        var content = this.props.content;
+        var content;
         if (this.props.topicId) {
             var host = window.location.host;
             if (this.props.postId) {
                 var a = this.props.postId / 10;
                 var b = parseInt(a);
                 var c = this.props.postId - b * 10;
-                content = this.props.content + "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=blue]http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "[/color][/url]";
+                if (this.props.isRead) {
+                    content = "[color=gray]" + this.props.content + "[/color][url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=blue]http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "[/color][/url]";
+                }
+                else {
+                    content = "[color=black][b]" + this.props.content + "[/b][/color][url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=blue]http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "[/color][/url]";
+                }
             }
             else {
-                content = this.props.content + "[url=http://" + host + "/topic/" + this.props.topicId + "][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/url]";
+                if (this.props.isRead) {
+                    content = "[color=gray]" + this.props.content + "[/color][url=http://" + host + "/topic/" + this.props.topicId + "][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/url]";
+                }
+                else {
+                    content = "[color=black][b]" + this.props.content + "[/b][/color][url=http://" + host + "/topic/" + this.props.topicId + "][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/url]";
+                }
+            }
+        }
+        else {
+            if (this.props.isRead) {
+                content = "[color=gray]" + this.props.content + "[/color]";
+            }
+            else {
+                content = "[color=black][b]" + this.props.content + "[/b][/color]";
             }
         }
         console.log(content);
@@ -15752,7 +16046,7 @@ exports.MessageSystembox = MessageSystembox;
 
 
 /***/ }),
-/* 104 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15848,6 +16142,7 @@ var FocusBoardArea = /** @class */ (function (_super) {
                         token = Utility.getLocalStorage("accessToken");
                         userInfo = Utility.getLocalStorage("userInfo");
                         boardid = userInfo.customBoards;
+                        console.log(boardid);
                         headers = new Headers();
                         headers.append('Authorization', token);
                         _a = [];
@@ -15924,7 +16219,7 @@ exports.FocusProps = FocusProps;
 
 
 /***/ }),
-/* 105 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16119,7 +16414,7 @@ function coverFocusPost(item) {
 
 
 /***/ }),
-/* 106 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16336,7 +16631,7 @@ exports.FocusBoardTopicProps = FocusBoardTopicProps;
 
 
 /***/ }),
-/* 107 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16380,7 +16675,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 108 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16436,8 +16731,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserExactProfile_1 = __webpack_require__(109);
-var UserRouterActivities_1 = __webpack_require__(110);
+var UserExactProfile_1 = __webpack_require__(111);
+var UserRouterActivities_1 = __webpack_require__(112);
 var UserCenterExactAvatar_1 = __webpack_require__(29);
 var Utility = __webpack_require__(1);
 var UserRouter = /** @class */ (function (_super) {
@@ -16528,7 +16823,7 @@ var UserExact = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 109 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16583,7 +16878,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UbbContainer_1 = __webpack_require__(5);
+var UbbContainer_1 = __webpack_require__(4);
 var Utility = __webpack_require__(1);
 /**
  * 用户中心主页个人资料组件
@@ -16735,7 +17030,7 @@ exports.UserExactProfile = UserExactProfile;
 
 
 /***/ }),
-/* 110 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16791,7 +17086,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var UserCenterExactActivitiesPost_1 = __webpack_require__(11);
-var AppState_1 = __webpack_require__(4);
+var AppState_1 = __webpack_require__(5);
 var Utility = __webpack_require__(1);
 //用户中心主页帖子动态组件
 var UserRouterActivities = /** @class */ (function (_super) {
@@ -16964,7 +17259,7 @@ exports.UserRouterActivities = UserRouterActivities;
 
 
 /***/ }),
-/* 111 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17199,7 +17494,7 @@ exports.default = react_redux_1.connect(mapState, mapDispatch)(LogOnExact);
 
 
 /***/ }),
-/* 112 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17260,7 +17555,7 @@ exports.LogOff = react_redux_1.connect(function () { return null; }, mapDispatch
 
 
 /***/ }),
-/* 113 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17315,7 +17610,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var AppState_1 = __webpack_require__(4);
+var AppState_1 = __webpack_require__(5);
 var UserCenterMyFollowingsUser_1 = __webpack_require__(41);
 var app_1 = __webpack_require__(12);
 var UserCenterPageCount_1 = __webpack_require__(14);
@@ -17427,7 +17722,7 @@ exports.UserCenterMyFans = UserCenterMyFans;
 
 
 /***/ }),
-/* 114 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17483,7 +17778,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var UserCenterExactActivitiesPost_1 = __webpack_require__(11);
-var AppState_1 = __webpack_require__(4);
+var AppState_1 = __webpack_require__(5);
 var app_1 = __webpack_require__(12);
 var UserCenterPageCount_1 = __webpack_require__(14);
 var Utility = __webpack_require__(1);
@@ -17602,7 +17897,7 @@ exports.UserCenterMyPostsExact = UserCenterMyPostsExact;
 
 
 /***/ }),
-/* 115 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17623,8 +17918,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserCenterMyFavoritesPosts_1 = __webpack_require__(116);
-var UserCenterMyFavoritesBoards_1 = __webpack_require__(117);
+var UserCenterMyFavoritesPosts_1 = __webpack_require__(118);
+var UserCenterMyFavoritesBoards_1 = __webpack_require__(119);
 //import { UserCenterMyFavoritesPostsBoards } from './UserCenterMyFavoritesPostsBoards';
 //<Route path='/usercenter/myfavorites/boards' component={UserCenterMyFavoritesPostsBoards} />
 /**
@@ -17657,7 +17952,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 116 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17713,7 +18008,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var UserCenterExactActivitiesPost_1 = __webpack_require__(11);
-var AppState_1 = __webpack_require__(4);
+var AppState_1 = __webpack_require__(5);
 var Utility = __webpack_require__(1);
 var UserCenterPageCount_1 = __webpack_require__(14);
 var app_1 = __webpack_require__(12);
@@ -17816,7 +18111,7 @@ exports.UserCenterMyFavoritesPosts = UserCenterMyFavoritesPosts;
 
 
 /***/ }),
-/* 117 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17872,7 +18167,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
-var UserCenterMyFavoritesBoard_1 = __webpack_require__(118);
+var UserCenterMyFavoritesBoard_1 = __webpack_require__(120);
 var UserCenterMyFavoritesBoards = /** @class */ (function (_super) {
     __extends(UserCenterMyFavoritesBoards, _super);
     function UserCenterMyFavoritesBoards(props) {
@@ -17959,7 +18254,7 @@ exports.UserCenterMyFavoritesBoards = UserCenterMyFavoritesBoards;
 
 
 /***/ }),
-/* 118 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18146,7 +18441,7 @@ exports.UserCenterMyFavoritesBoard = UserCenterMyFavoritesBoard;
 
 
 /***/ }),
-/* 119 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18210,10 +18505,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
-var AppState_1 = __webpack_require__(4);
-var UserCenterConfigAvatar_1 = __webpack_require__(120);
-var UserCenterConfigSignature_1 = __webpack_require__(121);
-var UserCenterConfigOthers_1 = __webpack_require__(122);
+var AppState_1 = __webpack_require__(5);
+var UserCenterConfigAvatar_1 = __webpack_require__(122);
+var UserCenterConfigSignature_1 = __webpack_require__(123);
+var UserCenterConfigOthers_1 = __webpack_require__(124);
 var UserCenterConfig = /** @class */ (function (_super) {
     __extends(UserCenterConfig, _super);
     function UserCenterConfig(props) {
@@ -18352,7 +18647,7 @@ var UserInfo = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 120 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18758,7 +19053,7 @@ exports.default = react_redux_1.connect(function () { return (null); }, mapDispa
 
 
 /***/ }),
-/* 121 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18798,7 +19093,7 @@ exports.UserCenterConfigSignature = UserCenterConfigSignature;
 
 
 /***/ }),
-/* 122 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18818,7 +19113,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var AppState_1 = __webpack_require__(123);
+var AppState_1 = __webpack_require__(125);
 var UserCenterConfigOthers = /** @class */ (function (_super) {
     __extends(UserCenterConfigOthers, _super);
     function UserCenterConfigOthers() {
@@ -18891,7 +19186,7 @@ var UserInfo = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 123 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19127,7 +19422,7 @@ exports.ChangeUserInfo = ChangeUserInfo;
 
 
 /***/ }),
-/* 124 */
+/* 126 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
