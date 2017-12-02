@@ -43,7 +43,8 @@
     <None Remove="Props\FocusBoardProps.tsx" />
     <None Remove="Props\MessageSendReceiveProps.tsx" />
     <None Remove="Props\MessageWindowProps.tsx" />
-    <None Remove="Reducer.tsx" />
+    <None Remove="Reducers\Error.tsx" />
+    <None Remove="Reducers\Post.tsx" />
     <None Remove="States\MessageWindowState.tsx" />
     <None Remove="States\SearchState.tsx" />
     <None Remove="UbbCode.tsx" />
@@ -122,7 +123,9 @@
     <TypeScriptCompile Include="Props\MessagePersonProps.tsx" />
     <TypeScriptCompile Include="Props\MessageSendReceiveProps.tsx" />
     <TypeScriptCompile Include="Props\MessageWindowProps.tsx" />
-    <TypeScriptCompile Include="Reducer.tsx" />
+    <TypeScriptCompile Include="Reducers\Error.tsx" />
+    <TypeScriptCompile Include="Reducers\Post.tsx" />
+    <TypeScriptCompile Include="Reducers\UserInfo.tsx" />
     <TypeScriptCompile Include="States\MessageWindowState.tsx" />
     <TypeScriptCompile Include="States\SearchState.tsx" />
     <TypeScriptCompile Include="Store.tsx" />
