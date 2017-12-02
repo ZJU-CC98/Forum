@@ -657,7 +657,7 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         return <div id={colorId}>
 
             <div className="row topicInList" id={topicId}>
-                <div style={{ display: "flex", marginLeft: "0.5rem", alignItems: "flex-end", lineHeight: "1rem" }}>
+                <div style={{ display: "flex", marginLeft: "0.5rem", alignItems: "flex-end" }}>
                     {icon}
                     <Link to={url}><div className="listTitle" id={titleId} style={{ marginLeft: '0.5rem', }}> {this.props.title}</div></Link>
                     <div style={{ display: "flex", fontSize: "0.75rem", marginBottom: "-2px" }}>

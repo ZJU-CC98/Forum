@@ -177,7 +177,7 @@ export async function getTopicContent(topicid: number, curPage: number, router) 
         const replyCountJson = await replyCountResponse.json();
         const replyCount = replyCountJson.replyCount;
         const content = await topic.json();
-        const post: State.ContentState[] = [];
+        const post = [];
         let topicNumberInPage: number;
         if (curPage !== 1 && curPage * 10 <= replyCount) {
             topicNumberInPage = 10;
@@ -315,7 +315,7 @@ export async function getHotReplyContent(topicid: number, router) {
             //window.location.href = "/status/ServerError";
         }
         const content = await response.json();
-        const post: State.ContentState[] = [];
+        const post = [];
         let topicNumberInPage: number = content.length;
         for (let i = 0; i < topicNumberInPage; i++) {
             if (content[i].isAnonymous != true) {
@@ -484,7 +484,7 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
         }
         const content = await topic.json();
     
-        let post: State.ContentState[] = [];
+        let post = [];
         let topicNumberInPage: number;
         const replyCount = content[0].count;
      
