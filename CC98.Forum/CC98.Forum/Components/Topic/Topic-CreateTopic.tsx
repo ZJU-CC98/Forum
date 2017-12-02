@@ -150,10 +150,13 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
                     <input type="radio" name="option" value="host" />回复仅楼主可见
                     <input type="radio" name="option" value="special" />回复仅特定用户可见
                 </div>
+                <div className="createTopicContent">
+                    <div className="createTopicListName">主题内容</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ width: "13.5rem" }}>切换到Markdown编辑器</div>
+                </div>
                 <UbbEditor update={this.update} />
                 <div className="row" style={{ justifyContent: "center" }}>
-                    <div id="post-topic-button" onClick={this.sendUbbTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", marginBottom: "1.25rem", marginRight:"1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>发帖</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ marginTop: "1.25rem", marginBottom: "1.25rem", width: "13.5rem" }}>切换到Markdown编辑器</div>
+                    <div id="post-topic-button" onClick={this.sendUbbTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", marginBottom: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>发帖</div>
                 </div>
             </div>;
         } else {
@@ -172,10 +175,11 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
                     <input type="radio" name="option" value="host" />回复仅楼主可见
                     <input type="radio" name="option" value="special" />回复仅特定用户可见
                 </div>
-                <InputMdContent onChange={this.sendMdTopic.bind(this)} ready={this.state.ready} />
-                <div className="row" style={{ justifyContent: "center" }}>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ marginTop: "1.25rem", marginBottom:"1.25rem", width: "13.5rem", letterSpacing: "0.3125rem" }}>切换到UBB编辑器</div>
+                <div className="createTopicContent">
+                    <div className="createTopicListName">主题内容</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ width: "13.5rem", letterSpacing: "0.3125rem" }}>切换到UBB编辑器</div>
                 </div>
+                <InputMdContent onChange={this.sendMdTopic.bind(this)} ready={this.state.ready} />
             </div>;
         }
 
@@ -189,10 +193,7 @@ export class InputTitle extends React.Component<{ boardId, onChange }, { title: 
     }
     handleTitleChange(event) {
         this.props.onChange(event.target.value);
-        console.log("value");
-        console.log(event.target.value);
         this.setState({ title: event.target.value });
-        console.log('finished');
     }
 
     render() {
@@ -204,56 +205,7 @@ export class InputTitle extends React.Component<{ boardId, onChange }, { title: 
         </div>
     }
 }
-export class InputUbbContent extends React.Component<{ onChange }, { content }>{
-    constructor(props) {
-        super(props);
-        this.state = ({ content: "" });
-    }
-    handleUbbChange(event) {
-        this.props.onChange(event.target.value);
-        this.setState({ content: event.target.value });
-    }
-    render() {
-        return <div id="sendTopic">
 
-            <div id="sendTopic-options">
-
-                <ul className="editor__menu clearfix" id="wmd-button-row" >
-
-                    <li title="加粗 <strong> Ctrl+B" className="wmd-button" id="wmd-bold-button" ><a className="editor__menu--bold" style={{ backgroundPosition: "0px 0px" }}></a></li>
-
-                    <li title="斜体 <em> Ctrl+I" className="wmd-button" id="wmd-italic-button" style={{ left: " 25px" }}><a className="editor__menu--bold" style={{ backgroundPosition: " -20px 0px" }}></a></li>
-
-                    <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer1"></li>
-
-
-
-                    <li title="链接 <a> Ctrl+L" className="wmd-button" id="wmd-link-button" style={{ left: "75px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-40px 0px" }}></a></li>
-                    <li title="引用 <blockquote> Ctrl+Q" className="wmd-button" id="wmd-quote-button" style={{ left: " 100px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-60px 0px" }}></a></li>
-                    <li title="代码 <pre><code> Ctrl+K" className="wmd-button" id="wmd-code-button" style={{ left: " 125px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-80px 0px" }}></a></li>
-                    <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer2"></li>
-                    <li title="图片 <img> Ctrl+G" className="wmd-button" id="wmd-image-button" style={{ left: "150px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-100px 0px" }}></a></li>
-                    <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer2"></li>
-                    <li title="数字列表 <ol> Ctrl+O" className="wmd-button" id="wmd-olist-button" style={{ left: " 200px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-120px 0px" }}></a></li>
-                    <li title="普通列表 <ul> Ctrl+U" className="wmd-button" id="wmd-ulist-button" style={{ left: "225px" }}><a className="editor__menu--bold" style={{ backgroundPosition: " -140px 0px" }}></a></li>
-                    <li title="标题 <h1>/<h2> Ctrl+H" className="wmd-button" id="wmd-heading-button" style={{ left: "250px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-160px 0px" }}></a></li>
-                    <li title="分割线 <hr> Ctrl+R" className="wmd-button" id="wmd-hr-button" style={{ left: "275px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-180px 0px" }}></a></li>
-                    <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer3"></li>
-                    <li title="撤销 - Ctrl+Z" className="wmd-button" id="wmd-undo-button" style={{ left: "325px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-200px 0px" }}></a></li>
-                    <li title="重做 - Ctrl+Y" className="wmd-button" id="wmd-redo-button" style={{ left: "350px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-220px -20px" }}></a></li>
-                    <li className="editor__menu--divider wmd-spacer1" id="wmd-spacer4"></li>
-
-                    <li title="Markdown 语法" className="wmd-button" id="wmd-help-button" style={{ left: " 400px" }}><a className="editor__menu--bold" style={{ backgroundPosition: "-300px 0px" }}></a></li>
-                </ul>
-            </div>
-            <form>
-                <div >
-                    <textarea id="sendTopic-input" name="sendTopic-input" value={this.state.content} onChange={this.handleUbbChange.bind(this)} />
-                </div>
-            </form>
-        </div>;
-    }
-}
 export class InputMdContent extends React.Component<{ ready, onChange }, { content }>{
     constructor(props) {
         super(props);
