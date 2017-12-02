@@ -1,21 +1,10 @@
 ﻿import * as React from 'react';
-import * as State from '../../States/AppState';
 import * as Utility from '../../Utility';
-import * as $ from 'jquery';
-import {
-    BrowserRouter as Router,
-    Route,
-    Link
-} from 'react-router-dom';
-
-import { match } from "react-router";
-import { UbbContainer } from '.././UbbContainer';
+import { AwardInfo } from './Topic-AwardInfo';
+import { RouteComponent } from '../RouteComponent';
 import { PostManagement } from './Post-Management';
-import { RouteComponent } from './Topic';
-import { AwardInfo } from './Topic'
-declare let moment: any;
+import { UbbContainer } from '../UbbContainer';
 declare let editormd: any;
-
 export class ReplyContent extends RouteComponent<{ masters, userId, content, signature, topicid, postid, contentType }, { postId, likeNumber, dislikeNumber, likeState, awardInfo, info, awardPage }, {}> {
     constructor(props, content) {
         super(props, content);
@@ -101,7 +90,7 @@ export class ReplyContent extends RouteComponent<{ masters, userId, content, sig
     async generateAwardInfo(item) {
         const url = await Utility.getPortraitUrl(item.operatorName);
         return <AwardInfo postId={this.props.postid} userImgUrl={url} content={item.content} reason={item.reason} userName={item.operatorName} />;
-       
+
     }
     async like() {
         const idLike = `#like${this.props.postid}`;

@@ -1,8 +1,4 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-
-import * as React from 'react';
+﻿import * as React from 'react';
 import { connect } from 'react-redux';
 import { throwError } from '../../Actions';
 import { BrowserRouter as Router } from 'react-router-dom';

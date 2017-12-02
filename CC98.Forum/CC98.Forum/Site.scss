@@ -49,7 +49,7 @@ body {
     display: flex;
     flex-direction: column;
     font-family: 微软雅黑;
-
+    width:1140px;
     align-items: center;
     justify-content: center;
     margin-left: 6.25rem;
@@ -2345,7 +2345,7 @@ a {
     color: rgb(255,136,56);
 }
 .listTitle {
-    max-width:20rem;
+    max-width:auto;
     margin-right:1rem;
     white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
     overflow: hidden; //不显示超过对象尺寸的内容

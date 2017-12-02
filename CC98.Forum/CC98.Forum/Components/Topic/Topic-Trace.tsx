@@ -8,8 +8,9 @@ import {
 } from 'react-router-dom';
 
 import { match } from 'react-router';
-import { ReplyContent} from './Topic-Post';
-import { PostTopic,Replier } from './Topic';
+import { ReplyContent } from './Topic-ReplyContent';
+import { Replier } from './Topic-Replier';
+import { PostTopic } from './Topic-Topic';
 declare let moment: any;
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
@@ -105,7 +106,7 @@ export class Reply extends RouteComponent<{}, { masters,contents }, { page, topi
         const masters = this.getMasters(newProps.match.params.topicid);
         this.setState({ contents: realContents, masters: masters });
             }
-    private generateContents(item: State.ContentState) {
+    private generateContents(item: ContentState) {
         return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
             <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} />
             <ReplyContent key={item.content} masters={this.state.masters} userId={item.userId} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postId} contentType={item.contentType} />
@@ -232,4 +233,33 @@ export class TopicPagerDown extends RouteComponent<{ userId, page, topicid, tota
             </div>
         </div>;
     }
+}
+
+/**
+ * 文章内容
+ */
+export class ContentState {
+    constructor(
+    ) {
+
+    }
+    id: number;
+    content: string;
+    time: string;
+    isDelete: boolean;
+    floor: number;
+    isAnonymous: boolean;
+    lastUpdateAuthor: string;
+    lastUpdateTime: string;
+    topicId: number;
+    userName: string;
+    sendTopicNumber: number;
+    userImgUrl: string;
+    signature: string;
+    userId: number;
+    privilege: string;
+    likeNumber: number;
+    dislikeNumber: number;
+    postId: number;
+    contentType: number;
 }

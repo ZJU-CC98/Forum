@@ -1,17 +1,6 @@
 ﻿import * as React from 'react';
-import * as State from '../../States/AppState';
 import * as Utility from '../../Utility';
-import * as $ from 'jquery';
-import {
-    BrowserRouter as Router,
-    Route,
-    Link
-} from 'react-router-dom';
 
-import { match } from "react-router";
-import { UbbContainer } from '.././UbbContainer';
-declare let moment: any;
-declare let editormd: any;
 
 export class Category extends React.Component<{ topicId }, { boardId, topicId, boardName, title }>{
     constructor(props) {
@@ -25,6 +14,6 @@ export class Category extends React.Component<{ topicId }, { boardId, topicId, b
     render() {
         const listUrl = `/list/${this.state.boardId}/normal`;
         const topicUrl = `/topic/${this.state.topicId}`;
-        return <div style={{ color: "blue", fontSize: "1rem" }}>&rsaquo;&rsaquo;<a style={{ color: "blue", fontSize: "1rem" }} href="/">首页</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "1rem" }} href={listUrl} >{this.state.boardName}</a>&nbsp;→&nbsp;<a style={{ color: "blue", fontSize: "1rem" }} href={topicUrl}>{this.state.title}</a></div>;
+        return <div style={{ color: "grey", fontSize: "1rem", display: "flex" }}><i className="fa fa-window-maximize fa-lg"></i><a style={{ color: "grey", fontSize: "1rem", marginLeft: "0.3rem", marginRight: "0.3rem" }} href="/">首页</a><i className="fa fa-arrow-right fa-lg"></i><a style={{ color: "grey", fontSize: "1rem", marginLeft: "0.3rem", marginRight: "0.3rem" }} href={listUrl} >{this.state.boardName}</a><i className="fa fa-arrow-right fa-lg"></i><a style={{ color: "grey", fontSize: "1rem", marginLeft: "0.3rem", marginRight: "0.3rem" }} href={topicUrl}><div style={{ overflow: "hidden", textOverflow: "ellipsis", maxWidth: "15rem", whiteSpace: "nowrap" }}>{this.state.title}</div></a></div>;
     }
 }

@@ -1,20 +1,11 @@
 ﻿import * as React from 'react';
-import * as State from '../../States/AppState';
 import * as Utility from '../../Utility';
-import * as $ from 'jquery';
 import {
     BrowserRouter as Router,
     Route,
     Link
 } from 'react-router-dom';
-
-import { match } from "react-router";
-import { UbbContainer } from '.././UbbContainer';
-import { RouteComponent } from './Topic';
-declare let moment: any;
-declare let editormd: any;
-
-export class TopicPager extends RouteComponent<{ page, topicid, totalPage }, { pager }, {}> {
+export class TopicPager extends React.Component<{ page, topicid, totalPage }, { pager }> {
     constructor(props, content) {
         super(props, content);
         this.state = {
@@ -44,7 +35,7 @@ export class TopicPager extends RouteComponent<{ page, topicid, totalPage }, { p
             ;
     }
 }
-export class TopicPagerDown extends RouteComponent<{ page, topicid, totalPage }, { pager }, {}> {
+export class TopicPagerDown extends React.Component<{ page, topicid, totalPage }, { pager }> {
     constructor(props, content) {
         super(props, content);
         this.state = {
