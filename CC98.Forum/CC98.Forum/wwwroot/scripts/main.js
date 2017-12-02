@@ -4991,15 +4991,14 @@ var Category = /** @class */ (function (_super) {
             });
         });
     };
+    //<i className="fa fa-window-maximize fa-lg"></i> 之前导航中的首页图标，因为不好看暂时去掉了
+    //fa-lg, fa-2x, fa-3x, fa-4x, fa-5x 分别是将icon扩大到原来的133%, 2倍，3倍，4倍和5倍
     Category.prototype.render = function () {
         var listUrl = "/list/" + this.state.boardId;
-        return React.createElement("div", { className: "row", style: {
-                alignItems: "flex-end", width: "100% ", justifyContent: "flex-start", color: "grey", fontSize: "1rem", marginBottom: "1rem"
-            } },
-            React.createElement("i", { className: "fa fa-window-maximize fa-lg" }),
-            React.createElement("a", { style: { color: "grey", fontSize: "1rem", marginLeft: "0.3rem", marginRight: "0.3rem" }, href: " / " }, "\u9996\u9875"),
-            React.createElement("i", { className: "fa fa-arrow-right fa-lg" }),
-            React.createElement("a", { style: { color: "grey", fontSize: "1rem", marginLeft: "0.3rem" }, href: listUrl }, this.state.boardName));
+        return React.createElement("div", { className: "row", style: { alignItems: "baseline", width: "100% ", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" } },
+            React.createElement("a", { style: { color: "grey", fontSize: "1rem", marginRight: "0.5rem" }, href: " / " }, "\u9996\u9875"),
+            React.createElement("i", { className: "fa fa-chevron-right" }),
+            React.createElement("a", { style: { color: "grey", fontSize: "1rem", marginLeft: "0.5rem" }, href: listUrl }, this.state.boardName));
     };
     return Category;
 }(RouteComponent));
@@ -9730,10 +9729,12 @@ var CreateTopic = /** @class */ (function (_super) {
                     "\u56DE\u590D\u4EC5\u697C\u4E3B\u53EF\u89C1",
                     React.createElement("input", { type: "radio", name: "option", value: "special" }),
                     "\u56DE\u590D\u4EC5\u7279\u5B9A\u7528\u6237\u53EF\u89C1"),
+                React.createElement("div", { className: "createTopicContent" },
+                    React.createElement("div", { className: "createTopicListName" }, "\u4E3B\u9898\u5185\u5BB9"),
+                    React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor, className: "button blue", style: { width: "13.5rem" } }, "\u5207\u6362\u5230Markdown\u7F16\u8F91\u5668")),
                 React.createElement(UbbEditor_1.UbbEditor, { update: this.update }),
                 React.createElement("div", { className: "row", style: { justifyContent: "center" } },
-                    React.createElement("div", { id: "post-topic-button", onClick: this.sendUbbTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", marginBottom: "1.25rem", marginRight: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" } }, "\u53D1\u5E16"),
-                    React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor, className: "button blue", style: { marginTop: "1.25rem", marginBottom: "1.25rem", width: "13.5rem" } }, "\u5207\u6362\u5230Markdown\u7F16\u8F91\u5668")));
+                    React.createElement("div", { id: "post-topic-button", onClick: this.sendUbbTopic.bind(this), className: "button blue", style: { marginTop: "1.25rem", marginBottom: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" } }, "\u53D1\u5E16")));
         }
         else {
             return React.createElement("div", { className: "createTopic" },
@@ -9759,9 +9760,10 @@ var CreateTopic = /** @class */ (function (_super) {
                     "\u56DE\u590D\u4EC5\u697C\u4E3B\u53EF\u89C1",
                     React.createElement("input", { type: "radio", name: "option", value: "special" }),
                     "\u56DE\u590D\u4EC5\u7279\u5B9A\u7528\u6237\u53EF\u89C1"),
-                React.createElement(InputMdContent, { onChange: this.sendMdTopic.bind(this), ready: this.state.ready }),
-                React.createElement("div", { className: "row", style: { justifyContent: "center" } },
-                    React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor, className: "button blue", style: { marginTop: "1.25rem", marginBottom: "1.25rem", width: "13.5rem", letterSpacing: "0.3125rem" } }, "\u5207\u6362\u5230UBB\u7F16\u8F91\u5668")));
+                React.createElement("div", { className: "createTopicContent" },
+                    React.createElement("div", { className: "createTopicListName" }, "\u4E3B\u9898\u5185\u5BB9"),
+                    React.createElement("div", { id: "post-topic-changeMode", onClick: this.changeEditor, className: "button blue", style: { width: "13.5rem", letterSpacing: "0.3125rem" } }, "\u5207\u6362\u5230UBB\u7F16\u8F91\u5668")),
+                React.createElement(InputMdContent, { onChange: this.sendMdTopic.bind(this), ready: this.state.ready }));
         }
     };
     return CreateTopic;
@@ -9777,10 +9779,7 @@ var InputTitle = /** @class */ (function (_super) {
     }
     InputTitle.prototype.handleTitleChange = function (event) {
         this.props.onChange(event.target.value);
-        console.log("value");
-        console.log(event.target.value);
         this.setState({ title: event.target.value });
-        console.log('finished');
     };
     InputTitle.prototype.render = function () {
         return React.createElement("div", { className: "createTopicTitle" },
@@ -9792,59 +9791,6 @@ var InputTitle = /** @class */ (function (_super) {
     return InputTitle;
 }(React.Component));
 exports.InputTitle = InputTitle;
-var InputUbbContent = /** @class */ (function (_super) {
-    __extends(InputUbbContent, _super);
-    function InputUbbContent(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = ({ content: "" });
-        return _this;
-    }
-    InputUbbContent.prototype.handleUbbChange = function (event) {
-        this.props.onChange(event.target.value);
-        this.setState({ content: event.target.value });
-    };
-    InputUbbContent.prototype.render = function () {
-        return React.createElement("div", { id: "sendTopic" },
-            React.createElement("div", { id: "sendTopic-options" },
-                React.createElement("ul", { className: "editor__menu clearfix", id: "wmd-button-row" },
-                    React.createElement("li", { title: "加粗 <strong> Ctrl+B", className: "wmd-button", id: "wmd-bold-button" },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "0px 0px" } })),
-                    React.createElement("li", { title: "斜体 <em> Ctrl+I", className: "wmd-button", id: "wmd-italic-button", style: { left: " 25px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: " -20px 0px" } })),
-                    React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer1" }),
-                    React.createElement("li", { title: "链接 <a> Ctrl+L", className: "wmd-button", id: "wmd-link-button", style: { left: "75px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-40px 0px" } })),
-                    React.createElement("li", { title: "引用 <blockquote> Ctrl+Q", className: "wmd-button", id: "wmd-quote-button", style: { left: " 100px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-60px 0px" } })),
-                    React.createElement("li", { title: "代码 <pre><code> Ctrl+K", className: "wmd-button", id: "wmd-code-button", style: { left: " 125px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-80px 0px" } })),
-                    React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer2" }),
-                    React.createElement("li", { title: "图片 <img> Ctrl+G", className: "wmd-button", id: "wmd-image-button", style: { left: "150px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-100px 0px" } })),
-                    React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer2" }),
-                    React.createElement("li", { title: "数字列表 <ol> Ctrl+O", className: "wmd-button", id: "wmd-olist-button", style: { left: " 200px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-120px 0px" } })),
-                    React.createElement("li", { title: "普通列表 <ul> Ctrl+U", className: "wmd-button", id: "wmd-ulist-button", style: { left: "225px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: " -140px 0px" } })),
-                    React.createElement("li", { title: "标题 <h1>/<h2> Ctrl+H", className: "wmd-button", id: "wmd-heading-button", style: { left: "250px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-160px 0px" } })),
-                    React.createElement("li", { title: "分割线 <hr> Ctrl+R", className: "wmd-button", id: "wmd-hr-button", style: { left: "275px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-180px 0px" } })),
-                    React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer3" }),
-                    React.createElement("li", { title: "撤销 - Ctrl+Z", className: "wmd-button", id: "wmd-undo-button", style: { left: "325px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-200px 0px" } })),
-                    React.createElement("li", { title: "重做 - Ctrl+Y", className: "wmd-button", id: "wmd-redo-button", style: { left: "350px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-220px -20px" } })),
-                    React.createElement("li", { className: "editor__menu--divider wmd-spacer1", id: "wmd-spacer4" }),
-                    React.createElement("li", { title: "Markdown 语法", className: "wmd-button", id: "wmd-help-button", style: { left: " 400px" } },
-                        React.createElement("a", { className: "editor__menu--bold", style: { backgroundPosition: "-300px 0px" } })))),
-            React.createElement("form", null,
-                React.createElement("div", null,
-                    React.createElement("textarea", { id: "sendTopic-input", name: "sendTopic-input", value: this.state.content, onChange: this.handleUbbChange.bind(this) }))));
-    };
-    return InputUbbContent;
-}(React.Component));
-exports.InputUbbContent = InputUbbContent;
 var InputMdContent = /** @class */ (function (_super) {
     __extends(InputMdContent, _super);
     function InputMdContent(props) {
@@ -12190,6 +12136,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Ubb = __webpack_require__(2);
+var react_router_dom_1 = __webpack_require__(3);
 var TopicTagHandler = /** @class */ (function (_super) {
     __extends(TopicTagHandler, _super);
     function TopicTagHandler() {
@@ -12210,7 +12157,8 @@ var TopicTagHandler = /** @class */ (function (_super) {
         if (tagData.parameterCount === 2)
             topicID = parseInt(tagData.value(1)); //如果有2个参数,则认为第2个是topicid
         var url = "/topic/" + topicID;
-        return React.createElement("a", { href: url }, topicTagContent);
+        //return <a href={url}>{topicTagContent}</ a> 
+        return React.createElement(react_router_dom_1.Link, { to: url }, topicTagContent);
     };
     return TopicTagHandler;
 }(Ubb.RecursiveTagHandler));
@@ -13556,9 +13504,7 @@ var TopicTitle = /** @class */ (function (_super) {
                             React.createElement("i", { className: "fa fa-eye fa-lg fa-fw" }),
                             "  "),
                         " ",
-                        React.createElement("div", { className: "timeProp tagSize" },
-                            this.props.HitCount,
-                            "\u6B21")))));
+                        React.createElement("div", { className: "timeProp tagSize" }, this.props.HitCount)))));
     };
     return TopicTitle;
 }(React.Component));
