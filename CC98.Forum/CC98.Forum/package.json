@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "3.3.7",
+    "codemirror": "5.32.0",
     "editor.md": "^1.5.0",
     "es6-promise": "4.1.1",
     "install": "^0.10.1",
@@ -16,8 +17,7 @@
     "react-router-dom": "4.1.2",
     "redux": "3.7.2",
     "signalr": "2.2.2",
-    "ssri": "^4.1.6",
-    "codemirror": "5.32.0"
+    "ssri": "^4.1.6"
   },
   "devDependencies": {
     "@types/jquery": "3.2.11",

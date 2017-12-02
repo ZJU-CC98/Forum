@@ -19,6 +19,8 @@ export default (state, action) => {
             return { ...state, currentUserInfo: action.newInfo }
         case ActionTypes.ERROR:
             return { ...state, isError: true, errorMessage: action.errorMessage }
+        case ActionTypes.ADD_AWARD:
+            return;
         default:
             return state;
     }
