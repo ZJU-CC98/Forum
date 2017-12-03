@@ -5113,7 +5113,7 @@ var Category = /** @class */ (function (_super) {
             });
         });
     };
-    //<i className="fa fa-window-maximize fa-lg"></i> 之前导航中的首页图标，因为不好看暂时去掉了
+    //<i className="fa fa-window-maximize fa-lg"></i> 这是之前导航中的首页图标，因为不好看暂时去掉了
     //fa-lg, fa-2x, fa-3x, fa-4x, fa-5x 分别是将icon扩大到原来的133%, 2倍，3倍，4倍和5倍
     Category.prototype.render = function () {
         var listUrl = "/list/" + this.state.boardId;
@@ -9704,7 +9704,7 @@ var CreateTopic = /** @class */ (function (_super) {
         _this.state = ({ topicId: null, title: '', content: '', ready: false, mode: 0, boardName: "" });
         return _this;
     }
-    CreateTopic.prototype.componentDidMount = function () {
+    CreateTopic.prototype.componentWillMount = function () {
         return __awaiter(this, void 0, void 0, function () {
             var token, url, headers, response, data, boardName;
             return __generator(this, function (_a) {
@@ -9828,12 +9828,7 @@ var CreateTopic = /** @class */ (function (_super) {
         var url = "/list/" + this.match.params.boardId;
         if (mode === 0) {
             return React.createElement("div", { className: "createTopic" },
-                React.createElement("div", { className: "createTopicBoardName" },
-                    " ",
-                    React.createElement("a", { href: url },
-                        this.state.boardName,
-                        " >"),
-                    "> \u53D1\u8868\u4E3B\u9898"),
+                React.createElement(Category, { url: url, boardName: this.state.boardName }),
                 React.createElement(InputTitle, { boardId: this.match.params.boardId, onChange: this.onTitleChange.bind(this) }),
                 React.createElement("div", { className: "createTopicType" },
                     React.createElement("div", { className: "createTopicListName" }, "\u53D1\u5E16\u7C7B\u578B"),
@@ -9859,12 +9854,7 @@ var CreateTopic = /** @class */ (function (_super) {
         }
         else {
             return React.createElement("div", { className: "createTopic" },
-                React.createElement("div", { className: "createTopicBoardName" },
-                    " ",
-                    React.createElement("a", { href: url },
-                        this.state.boardName,
-                        " >"),
-                    "> \u53D1\u8868\u4E3B\u9898"),
+                React.createElement(Category, { url: url, boardName: this.state.boardName }),
                 React.createElement(InputTitle, { boardId: this.match.params.boardId, onChange: this.onTitleChange.bind(this) }),
                 React.createElement("div", { className: "createTopicType" },
                     React.createElement("div", { className: "createTopicListName" }, "\u53D1\u5E16\u7C7B\u578B"),
@@ -9890,6 +9880,36 @@ var CreateTopic = /** @class */ (function (_super) {
     return CreateTopic;
 }(RouteComponent));
 exports.CreateTopic = CreateTopic;
+var Category = /** @class */ (function (_super) {
+    __extends(Category, _super);
+    function Category(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = ({
+            url: "",
+            boardName: ""
+        });
+        return _this;
+    }
+    //在子组件中，this.props的值不会自动更新，每当父组件的传值发生变化时，需要在子组件的的componentWillReceiveProps中去手动更新
+    Category.prototype.componentWillReceiveProps = function (nextProps) {
+        this.setState({
+            url: nextProps.url,
+            boardName: nextProps.boardName
+        });
+    };
+    Category.prototype.render = function () {
+        console.log("this.props.boardName=" + this.props.boardName);
+        console.log("this.state.boardName=" + this.state.boardName);
+        return React.createElement("div", { className: "row", style: { alignItems: "baseline", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" } },
+            React.createElement("a", { style: { color: "grey", fontSize: "1rem", marginRight: "0.5rem" }, href: "/" }, "\u9996\u9875"),
+            React.createElement("i", { className: "fa fa-chevron-right" }),
+            React.createElement("a", { style: { color: "grey", fontSize: "1rem", marginLeft: "0.5rem", marginRight: "0.5rem" }, href: this.state.url }, this.state.boardName),
+            React.createElement("i", { className: "fa fa-chevron-right" }),
+            React.createElement("div", { style: { color: "grey", fontSize: "1rem", marginLeft: "0.5rem", marginRight: "0.5rem" } }, "\u53D1\u8868\u4E3B\u9898"));
+    };
+    return Category;
+}(React.Component));
+exports.Category = Category;
 //  <div id="post-topic-button" onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>发帖</div>
 var InputTitle = /** @class */ (function (_super) {
     __extends(InputTitle, _super);
@@ -13125,14 +13145,14 @@ var Category = /** @class */ (function (_super) {
     Category.prototype.render = function () {
         var listUrl = "/list/" + this.state.boardId + "/normal";
         var topicUrl = "/topic/" + this.state.topicId;
-        return React.createElement("div", { style: { color: "grey", fontSize: "1rem", display: "flex" } },
-            React.createElement("i", { className: "fa fa-window-maximize fa-lg" }),
-            React.createElement("a", { style: { color: "grey", fontSize: "1rem", marginLeft: "0.3rem", marginRight: "0.3rem" }, href: "/" }, "\u9996\u9875"),
-            React.createElement("i", { className: "fa fa-arrow-right fa-lg" }),
-            React.createElement("a", { style: { color: "grey", fontSize: "1rem", marginLeft: "0.3rem", marginRight: "0.3rem" }, href: listUrl }, this.state.boardName),
-            React.createElement("i", { className: "fa fa-arrow-right fa-lg" }),
-            React.createElement("a", { style: { color: "grey", fontSize: "1rem", marginLeft: "0.3rem", marginRight: "0.3rem" }, href: topicUrl },
-                React.createElement("div", { style: { overflow: "hidden", textOverflow: "ellipsis", maxWidth: "15rem", whiteSpace: "nowrap" } }, this.state.title)));
+        return React.createElement("div", { className: "row", style: { alignItems: "baseline", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" } },
+            React.createElement("a", { style: { color: "grey", fontSize: "1rem", marginRight: "0.5rem" }, href: "/" }, "\u9996\u9875"),
+            React.createElement("i", { className: "fa fa-chevron-right" }),
+            React.createElement("a", { style: { color: "grey", fontSize: "1rem", marginLeft: "0.5rem", marginRight: "0.5rem" }, href: listUrl }, this.state.boardName),
+            React.createElement("i", { className: "fa fa-chevron-right" }),
+            React.createElement("a", { style: { color: "grey", fontSize: "1rem", marginLeft: "0.5rem", marginRight: "0.5rem" }, href: topicUrl },
+                React.createElement("div", { style: { overflow: "hidden", textOverflow: "ellipsis", maxWidth: "15rem", whiteSpace: "nowrap" } }, this.state.title),
+                " "));
     };
     return Category;
 }(React.Component));

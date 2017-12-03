@@ -105,7 +105,6 @@
     <TypeScriptCompile Include="Components\Topic\Topic-Category.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Pager.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-PostTopic.tsx" />
-    <TypeScriptCompile Include="Components\Topic\Topic-Post.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-SendTopic.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic.tsx" />
     <TypeScriptCompile Include="Components\UbbContainer.tsx" />

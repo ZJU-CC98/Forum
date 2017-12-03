@@ -47,7 +47,7 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
         this.changeEditor = this.changeEditor.bind(this);
         this.state = ({ topicId: null, title: '', content: '', ready: false, mode: 0, boardName: "" });
     }
-    async componentDidMount() {
+    async componentWillMount() {
         const token = Utility.getLocalStorage("accessToken");
         const url = `http://apitest.niconi.cc/Board/${this.match.params.boardId}`;
         const headers = new Headers();
@@ -136,7 +136,7 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
         const url = `/list/${this.match.params.boardId}`;
         if (mode === 0) {
             return <div className="createTopic">
-                <div className="createTopicBoardName"> <a href={url}>{this.state.boardName} ></a>> 发表主题</div>
+                <Category url={url} boardName={this.state.boardName} />
                 <InputTitle boardId={this.match.params.boardId} onChange={this.onTitleChange.bind(this)} />
                 <div className="createTopicType">
                     <div className="createTopicListName">发帖类型</div>
@@ -161,7 +161,7 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
             </div>;
         } else {
             return <div className="createTopic">
-                <div className="createTopicBoardName"> <a href={url}>{this.state.boardName} ></a>> 发表主题</div>
+                <Category url={url} boardName={this.state.boardName} />
                 <InputTitle boardId={this.match.params.boardId} onChange={this.onTitleChange.bind(this)} />
                 <div className="createTopicType">
                     <div className="createTopicListName">发帖类型</div>
@@ -185,6 +185,35 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
 
     }
 }
+
+export class Category extends React.Component<{ url: string, boardName: string }, { url: string, boardName: string }>{
+    constructor(props) {
+        super(props);
+        this.state = ({
+            url: "",
+            boardName: ""
+        });
+    }
+    //在子组件中，this.props的值不会自动更新，每当父组件的传值发生变化时，需要在子组件的的componentWillReceiveProps中去手动更新
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            url: nextProps.url,
+            boardName: nextProps.boardName
+        });
+    }
+    render() {
+        console.log("this.props.boardName=" + this.props.boardName);
+        console.log("this.state.boardName=" + this.state.boardName);
+        return <div className="row" style={{ alignItems: "baseline", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>
+            <a style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} href="/">首页</a>
+            <i className="fa fa-chevron-right"></i>
+            <a style={{ color: "grey", fontSize: "1rem", marginLeft: "0.5rem", marginRight: "0.5rem" }} href={this.state.url} >{this.state.boardName}</a>
+            <i className="fa fa-chevron-right"></i>
+            <div style={{ color: "grey", fontSize: "1rem", marginLeft: "0.5rem", marginRight: "0.5rem" }}>发表主题</div>
+        </div>;
+    }
+}
+
 //  <div id="post-topic-button" onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>发帖</div>
 export class InputTitle extends React.Component<{ boardId, onChange }, { title: string }>{
     constructor(props) {

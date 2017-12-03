@@ -69,16 +69,14 @@ export class Category extends RouteComponent<{ boardId }, { boardId, boardName }
         this.state = ({ boardId: "", boardName: "" });
     }
     async componentDidMount() {
-
         const boardName = await Utility.getListCategory(this.props.boardId, this.context.router);
         this.setState({ boardId: this.props.boardId, boardName: boardName });
     }
-    //<i className="fa fa-window-maximize fa-lg"></i> 之前导航中的首页图标，因为不好看暂时去掉了
+    //<i className="fa fa-window-maximize fa-lg"></i> 这是之前导航中的首页图标，因为不好看暂时去掉了
     //fa-lg, fa-2x, fa-3x, fa-4x, fa-5x 分别是将icon扩大到原来的133%, 2倍，3倍，4倍和5倍
     render() {
         const listUrl = `/list/${this.state.boardId}`;
-        return <div className="row" style={{ alignItems: "baseline", width: "100% ", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>
-           
+        return <div className="row" style={{ alignItems: "baseline", width: "100% ", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>          
             <a style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} href=" / ">首页</a>
             <i className="fa fa-chevron-right"></i>
             <a style={{ color: "grey", fontSize: "1rem", marginLeft: "0.5rem" }} href={listUrl} >{this.state.boardName}</a>
