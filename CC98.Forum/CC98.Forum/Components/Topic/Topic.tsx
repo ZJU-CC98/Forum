@@ -11,7 +11,6 @@ import * as Redux from 'redux';
 import { UbbEditor } from '../UbbEditor';
 import { RouteComponent } from '../RouteComponent';
 import { UbbContainer } from '.././UbbContainer';
-import * as Reducer from '../../reducers';
 import { Replier } from './Topic-Replier';
 import { ReplyContent } from './Topic-ReplyContent';
 import { Provider } from 'react-redux';
@@ -93,7 +92,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
             hotReply = <Route path="/topic/:topicid/:page?" component={HotReply} />;
         }
         return <div className="center" >
-            <div className="row" style={{ width: "100%", justifyContent: 'space-between', borderBottom: '#EAEAEA solid thin', alignItems: "center" }}>
+            <div className="row" style={{ width: "100%", justifyContent: 'space-between',alignItems: "center" }}>
                 <Category topicId={this.state.topicid} />
                 <TopicPager page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} /></div>
             {topic}

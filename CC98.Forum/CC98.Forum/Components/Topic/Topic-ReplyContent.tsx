@@ -5,48 +5,20 @@ import { RouteComponent } from '../RouteComponent';
 import { PostManagement } from './Post-Management';
 import { UbbContainer } from '../UbbContainer';
 declare let editormd: any;
-export class ReplyContent extends RouteComponent<{ masters, userId, content, signature, topicid, postid, contentType }, { postId, likeNumber, dislikeNumber, likeState, awardInfo, info, awardPage }, {}> {
+export class ReplyContent extends React.Component<{ masters, userId, content, signature, topicid, postid, contentType}, { postId, likeNumber, dislikeNumber, likeState }> {
     constructor(props, content) {
         super(props, content);
         this.showManageUI = this.showManageUI.bind(this);
-        this.nextPage = this.nextPage.bind(this);
-        this.lastPage = this.lastPage.bind(this);
         this.state = {
             likeNumber: 1,
             dislikeNumber: 1,
             likeState: 0,
-            awardInfo: [],
-            info: [],
-            awardPage: 1,
             postId: this.props.postid
         }
     }
-    async nextPage() {
-        const page = this.state.awardPage;
-        const award = await Utility.getAwardInfo(this.props.postid, page + 1);
-
-        const info = award.map(this.generateAwardInfo.bind(this));
-        const awardInfo = await Promise.all(info);
-
-        this.setState({ info: awardInfo, awardPage: page + 1 });
-    }
-    async lastPage() {
-        const id = `#awardPager${this.props.postid}`;
-        const page = this.state.awardPage;
-        if (this.state.awardPage === 1) {
-            $(id).css("disabled", "true");
-            return;
-        }
-        const award = await Utility.getAwardInfo(this.props.postid, page - 1);
-        const info = award.map(this.generateAwardInfo.bind(this));
-        const awardInfo = await Promise.all(info);
-
-        this.setState({ info: awardInfo, awardPage: page - 1 });
-    }
+  
     showManageUI() {
-
         const UIId = `#manage${this.props.postid}`;
-
         $(UIId).css("display", "");
     }
     componentDidUpdate() {
@@ -72,9 +44,7 @@ export class ReplyContent extends RouteComponent<{ masters, userId, content, sig
         else if (data.likeState === 2) {
             $(idDislike).css("color", "red");
         }
-        const award = await Utility.getAwardInfo(this.props.postid, 1);
-        const info = award.map(this.generateAwardInfo.bind(this));
-        const awardInfo = await Promise.all(info);
+     
         const divid = `doc-content${this.props.postid}`;
         editormd.markdownToHTML(divid, {
             htmlDecode: "style,script,iframe",
@@ -85,13 +55,9 @@ export class ReplyContent extends RouteComponent<{ masters, userId, content, sig
             sequenceDiagram: true,
             codeFold: true,
         });
-        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState, awardInfo: award, info: awardInfo });
+        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState});
     }
-    async generateAwardInfo(item) {
-        const url = await Utility.getPortraitUrl(item.operatorName);
-        return <AwardInfo postId={this.props.postid} userImgUrl={url} content={item.content} reason={item.reason} userName={item.operatorName} />;
 
-    }
     async like() {
         const idLike = `#like${this.props.postid}`;
         const idDislike = `#dislike${this.props.postid}`;
@@ -181,27 +147,15 @@ export class ReplyContent extends RouteComponent<{ masters, userId, content, sig
                 }
             }
         }
-        const awardPagerId = `awardPager${this.props.postid}`;
-        let awardPager = null;
-
-        if (this.state.info.length !== 0) {
-            awardPager = < div className="row" >
-                <button className="awardPage" id={awardPagerId} onClick={this.lastPage}>上一页</button>
-                <button className="awardPage" onClick={this.nextPage}>下一页</button>
-            </div>;
-
-        } else {
-            $(".awardInfo").css("display", "none");
-        }
+      
         let signature = <div className="signature"><UbbContainer code={this.props.signature} /></div>;
         if (this.props.signature == "") {
             signature = null;
         }
+
         return <div className="root" style={{ marginTop: "-170px" }}>
             <div className="reply-content">
                 <div className="substance">{content}</div>
-                <PostManagement postId={this.props.postid} userId={this.props.userId} />
-
                 <div className="comment1">
                     <div id={idLike} className="upup" style={{ marginRight: "0.7rem" }}><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
                     <div id={idDislike} className="downdown"  ><i title="踩" onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
@@ -211,10 +165,7 @@ export class ReplyContent extends RouteComponent<{ masters, userId, content, sig
                 </div>
 
                 {signature}
-                <div className="column awardInfo" style={{ borderTop: "2px dashed #EAEAEA" }}>
-                    {this.state.info}
-                    {awardPager}
-                </div>
+              
             </div></div>;
     }
 }

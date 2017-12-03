@@ -9,21 +9,32 @@ import {
 import { RouteComponent } from '../RouteComponent';
 import { Replier } from './Topic-Replier';
 import { ReplyContent } from './Topic-ReplyContent';
+import { Award } from './Topic-Award';
+import { PostManagement } from './Post-Management';
 declare let moment: any;
 
-export class Reply extends RouteComponent<{}, { contents, masters}, { page, topicid, userName }>{
-    constructor(props, content) {
-
+export class Reply extends RouteComponent<{}, { contents, masters }, { page, topicid, userName }>{
+    constructor(props, content) {   
         super(props, content);
+        this.update = this.update.bind(this);
         this.state = {
             contents: [],
             masters: [],
         };
-
+    }
+    async update() {
+        console.log("reply update");
+        const page = this.match.params.page || 1;
+        const storageId = `TopicContent_${this.match.params.topicid}_${page}`;
+        let realContents;
+        realContents = await Utility.getTopicContent(this.match.params.topicid, page, this.context.router);
+        const masters = await this.getMasters(this.match.params.topicid);
+        console.log("reply setstate");
+        this.setState({ contents: realContents, masters: masters });
+        console.log("reply setstate finished");
     }
     async getMasters(topicId) {
         return Utility.getMasters(topicId);
-      //  store.dispatch()
     }
     async componentWillReceiveProps(newProps) {
         const page = newProps.match.params.page || 1;
@@ -37,26 +48,28 @@ export class Reply extends RouteComponent<{}, { contents, masters}, { page, topi
              realContents = Utility.getStorage(storageId);
          }*/
 
-realContents = await Utility.getTopicContent(newProps.match.params.topicid, page, this.context.router);
-const masters = await this.getMasters(newProps.match.params.topicid);
-this.setState({ contents: realContents, masters: masters });
+        realContents = await Utility.getTopicContent(newProps.match.params.topicid, page, this.context.router);
+        const masters = await this.getMasters(newProps.match.params.topicid);
+        this.setState({ contents: realContents, masters: masters });
 
     }
 
     private generateContents(item: ContentState) {
-    return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
-        <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} />
-        <ReplyContent key={item.content} masters={this.state.masters} userId={item.userId} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postId} contentType={item.contentType} />
-    </div>
-    </div>;
-}
-render() {
+        return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin", backgroundColor:"#fff" }}>
+            <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} />
+            <PostManagement postId={item.postId} userId={item.userId} update={this.update} />
+            <ReplyContent key={item.content} masters={this.state.masters} userId={item.userId} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postId} contentType={item.contentType} />
+            <Award postId={item.postId} updateTime={Date.now()} />
+        </div>
+        </div>;
+    }
+    render() {
 
-    return <div className="center" style={{ width: "100%" }}>
-        {this.state.contents.map(this.generateContents.bind(this))}
-    </div>
-        ;
-}
+        return <div className="center" style={{ width: "100%" }}>
+            {this.state.contents.map(this.generateContents.bind(this))}
+        </div>
+            ;
+    }
 }
 /**
  * 文章内容
