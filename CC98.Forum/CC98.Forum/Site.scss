@@ -26,7 +26,7 @@ body {
     background-color:$bgcolor2;
 }
 
-.root { //post中的一些组件用到（子裙写的，天知道为什么起这个名字），并非body下的根div元素
+.postRoot { 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -34,6 +34,7 @@ body {
     background-color: #FFFFFF;
     font-family: 微软雅黑;
     width: 100%;
+    border:#eaeaea solid thin;
 }
 
 .replyRoot {
@@ -41,7 +42,7 @@ body {
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    background-color: $bgcolor2;
+    background-color: #fff;
     font-family: 微软雅黑;
 }
 
@@ -85,8 +86,7 @@ body {
     display: flex;
     align-self: flex-start;
     border-bottom: #EAEAEA solid thin;
-    border-left: #EAEAEA solid thin;
-    border-right: #EAEAEA solid thin;
+
     box-sizing: border-box;
 }
 
@@ -294,8 +294,6 @@ body {
     align-self: flex-start;
     flex-direction: column;
     width: 100%;
-    border-left: #EAEAEA solid thin;
-    border-right: #EAEAEA solid thin;
     box-sizing: border-box;
 }
 
@@ -314,6 +312,10 @@ body {
     word-wrap: break-word;
     color: rgb(80,80,80);
     padding-bottom: 1rem;
+   
+}
+.replySubstance {
+    border-top: #eaeaea thin solid;
 }
 
 .signature {
@@ -347,7 +349,6 @@ body {
     justify-content: flex-end;
     font-size: 0.75rem;
     align-items: flex-end;
-    border-bottom: solid thin #eaeaea;
     padding-bottom: 1rem;
     padding-right: 2rem;
 }
@@ -393,7 +394,7 @@ body {
     align-content: center;
     padding: 1.25rem;
     font-size: 0.75rem;
-    border-bottom: #EAEAEA solid thin;
+    border-bottom: #EAEAEA dashed 2px;
     box-sizing: border-box;
 }
 
@@ -530,6 +531,7 @@ body {
     flex-direction: column;
     flex-grow: 1;
     height: 6rem;
+    border-bottom:#eaeaea solid thin;
 }
 
 #ListImg img {
@@ -2741,6 +2743,16 @@ a {
     border: gray solid thin;
     border-radius: 0.3rem;
     cursor:pointer;
+}
+.awardPager{
+    display:flex;
+    margin-bottom:0.5rem;
+    margin-top:0.5rem;
+}
+.awardInfo{
+    margin-left:2rem;
+    margin-right:2rem;
+    background-color:#fff;
 }
 .awardPage{
     width:5rem;

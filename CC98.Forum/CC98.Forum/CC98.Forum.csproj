@@ -25,6 +25,7 @@
     <None Remove="Components\Topic\Post-Management.tsx" />
     <None Remove="Components\Topic\Post.tsx" />
     <None Remove="Components\Topic\Topic-AuthorMessage.tsx" />
+    <None Remove="Components\Topic\Topic-Award.tsx" />
     <None Remove="Components\Topic\Topic-AwardInfo.tsx" />
     <None Remove="Components\Topic\Topic-Category.tsx" />
     <None Remove="Components\Topic\Topic-HotReplier.tsx" />
@@ -104,6 +105,7 @@
     <TypeScriptCompile Include="ActionTypes.tsx" />
     <TypeScriptCompile Include="Components\RouteComponent.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-AuthorMessage.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-Award.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-HotReplier.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-HotReply.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-New.tsx" />

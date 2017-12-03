@@ -1,5 +1,5 @@
 ﻿import * as React from 'react';
-export class AwardInfo extends React.Component<{ postId, userImgUrl, content, userName, reason }, {}> {
+export class AwardInfo extends React.Component<{ postId, userImgUrl, content, userName, reason }> {
     constructor(props, content) {
         super(props, content);
     }

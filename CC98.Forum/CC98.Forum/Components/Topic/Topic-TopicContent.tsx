@@ -136,8 +136,7 @@ export class TopicContent extends React.Component<{ postid: number, topicid: num
         }
         if (this.props.signature == "") {
             return <div className="content">
-                <div className="substance">{content}</div>
-                <PostManagement postId={this.props.postid} userId={this.props.userId} />
+                <div className="substance replySubstance">{content}</div>              
                 <div className="comment1">
                     <div id="commentlike" className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg" ></i></button>   收藏文章 </div>
                     <div id="commentliked" className="upup" style={{ marginRight: "0.7rem" }} ><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
@@ -153,8 +152,8 @@ export class TopicContent extends React.Component<{ postid: number, topicid: num
         } else {
             return <div className="content">
                 <div className="substance">{content} </div>
-                <PostManagement postId={this.props.postid} userId={this.props.userId} />
-                <div className="signature"><UbbContainer code={this.props.signature} /></div>
+                <PostManagement postId={this.props.postid} userId={this.props.userId} update={null} />
+                <div className="signature" style={{ borderTop: "#eaeaea solid thin", paddingTop:"1rem" }}><UbbContainer code={this.props.signature} /></div>
                 <div className="comment">
                     <div id="commentlike" style={{ marginRight: "0.7rem" }} className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg"></i></button>   收藏文章 </div>
                     <div id="commentliked" className="upup" style={{ marginRight: "0.7rem" }}><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
