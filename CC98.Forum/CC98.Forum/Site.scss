@@ -23,7 +23,7 @@ body {
 #root {
     font-size: 16px;
     width: 100%;
-    background-color:$bgcolor2;
+    background-color: $bgcolor2;
 }
 
 .postRoot { 
@@ -50,7 +50,6 @@ body {
     display: flex;
     flex-direction: column;
     font-family: 微软雅黑;
-    width:1140px;
     align-items: center;
     justify-content: center;
     margin-left: 6.25rem;
@@ -103,15 +102,15 @@ body {
 
 #authormes {
     border-right: $bgcolor solid thin;
-    width:26rem;
+    width: 26rem;
 }
 
 
 #authorName {
     margin-left: 1rem;
     justify-content: flex-start;
-    font-size:1rem;
-    width:8rem;
+    font-size: 1rem;
+    width: 8rem;
 }
 
 #authorName p {
@@ -122,7 +121,6 @@ body {
 }
 
 #fans {
-
     margin-top: 1.4375rem;
     font-family: 微软雅黑;
     font-size: 1rem;
@@ -153,19 +151,21 @@ body {
 
 .email {
     width: 5rem;
-    height:1.5rem;
+    height: 1.5rem;
     font-size: 0.75rem;
     font-family: 微软雅黑;
     letter-spacing: 0.2rem;
     border-radius: 0.3rem;
     background: #67B3FF;
     border: 1px solid #2576A8;
-    cursor:pointer;
-    a{
-    color: #fff;
+    cursor: pointer;
+
+    a {
+        color: #fff;
     }
+
     text-align: center;
-    margin-left:1rem;
+    margin-left: 1rem;
 }
 
 #title {
@@ -354,8 +354,8 @@ body {
 }
 
 #commentlike {
-    display:flex;
-    align-items:flex-end;
+    display: flex;
+    align-items: flex-end;
 }
 
 #commentliked {
@@ -384,9 +384,8 @@ body {
 }
 
 .good {
-    height:2rem;
-   
-    align-items:center;
+    height: 2rem;
+    align-items: center;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -473,8 +472,8 @@ body {
 }
 
 .rpyClr {
-    text-align:center;
-    width:8rem;
+    text-align: center;
+    width: 8rem;
     word-break: keep-all;
 }
 
@@ -502,7 +501,7 @@ body {
     font-family: 微软雅黑;
     padding-left: 0.4375rem;
     padding-right: 0.4375rem;
-    padding-top:0.1rem;
+    padding-top: 0.1rem;
     color: #000000;
     margin-left: 0.3125rem;
     outline: none;
@@ -515,7 +514,7 @@ body {
     font-family: 微软雅黑;
     padding-left: 0.4375rem;
     padding-right: 0.4375rem;
-    padding-top:0.1rem;
+    padding-top: 0.1rem;
     border-radius: 0.3125rem;
     background: #FFFFFF;
     border: 1px solid #5CADDD;
@@ -599,7 +598,7 @@ body {
     margin-bottom: 0.625rem;
     border: none;
     background-color: $bgcolor2;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .topicInList {
@@ -619,6 +618,7 @@ body {
 #changeColor:nth-child(odd) {
     background-color: #FCFCFC;
 }
+
 #changeTopColor {
     background-color: #FFFAF0;
 }
@@ -640,6 +640,7 @@ a {
     width: 4.375rem;
     background-color: #F5FAFD;
 }
+
 .follow {
     width: 5rem;
     background-color: #FF6A6A;
@@ -656,12 +657,13 @@ a {
     border: 1px solid #B22222;
     color: #fff;
 }
+
 .followuser {
     width: 6rem;
     background-color: #FF6A6A;
     margin-right: 0.63rem;
     margin-left: 2.5rem;
-    margin-top:2.5rem;
+    margin-top: 2.5rem;
     height: 2.5rem;
     cursor: pointer;
     text-align: center;
@@ -671,12 +673,13 @@ a {
     border: 1px solid #B22222;
     color: #fff;
 }
+
 .center {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width:71.2rem;
+    width: 71.2rem;
 }
 
 .button {
@@ -1015,8 +1018,7 @@ a {
 }
 
 .message-title {
-    margin-top: 30px;
-    font-size: 14px;
+    font-size: 16px;
     color: $color-thinBlack;
 }
 
@@ -1024,7 +1026,7 @@ a {
     display: flex;
 
     margin: {
-        top: 30px;
+        top: 20px;
         bottom: 30px;
     }
 }
@@ -1455,6 +1457,7 @@ a {
     font-family: 微软雅黑;
     border: 1px solid $color-border;
     flex-shrink: 0;
+    overflow-y: auto;
     background-color: $color-post;
 
     .message-system-box { /*一个系统消息的框框*/
@@ -1487,12 +1490,12 @@ a {
         .message-system-box-content { /*一个系统消息内容*/
             font-size: 14px;
             line-height: 24px;
-            color: gray;
             margin: 0px 30px 20px 30px;
         }
     }
 }
 
+/******以下为我的回复部分的样式***/
 .message-response {
     flex-grow: 1;
     display: flex;
@@ -1504,71 +1507,68 @@ a {
     .message-response-box { /*一个消息的框框*/
         flex-shrink: 0;
         display: flex;
-        min-height: 120px;
-        border-bottom: 1px dashed lightgray;
-    }
-
-    .message-response-img { /*头像*/
-        margin: 30px 20px;
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-    }
-
-    .message-response-box-left { /*一个消息框的左边-头像*/
-        flex-basis: 100px;
-    }
-
-    .message-response-box-middle { /*消息框的中间-文字*/
-        display: flex;
         flex-direction: row;
-        flex-wrap: wrap;
-        flex-basis: 750px;
+        min-height: 100px;
+        border-bottom: 1px dashed lightgray;
+        /*.message-response-box-left { 
+            flex-basis: 100px;
+            flex-shrink: 0;
 
-        .message-response-box-middle-name { /*消息框文字第一行 用户名*/
-            height: 30px;
-            flex-basis: 90px;
+            .message-response-img { 
+                margin: 30px 20px;
+                border-radius: 50%;
+                width: 60px;
+                height: 60px;
+            }
+        }*/
+        .message-response-box-middle { /*消息框的中间-文字*/
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            flex-grow: 1;
+            flex-shrink: 0;
+            margin: 20px 30px 0px 30px;
+
+            .message-response-box-middle1 {
+                display: flex;
+                flex-direction: row;
+
+                .message-response-box-middle-title { /*消息框文字第一行 学术信息*/
+                    height: 20px;
+                    flex-basis: 70px;
+                    font-size: 14px;
+                    line-height: 20px;
+                    color: dodgerblue;
+                    flex-shrink: 0;
+                }
+
+                .message-response-box-middle-date { /*消息框文字第一行日期*/
+                    height: 20px;
+                    flex-basis: 300px;
+                    font-size: 12px;
+                    line-height: 20px;
+                    color: gray;
+                    flex-shrink: 0;
+                    flex-grow: 1;
+                }
+            }
+
+            .message-response-box-middle-content { /*消息框文字第二行-主体内容*/
+                height: 20px;
+                font-size: 14px;
+                line-height: 20px;
+                flex-shrink: 0;
+                margin-top: 15px;
+            }
+        }
+
+        .message-response-box-right { /*查看*/
+            flex-basis: 60px;
+            line-height: 100px;
             font-size: 14px;
-            line-height: 30px;
-            color: $color-black;
-            margin-top: 20px;
-        }
-
-        .message-response-box-middle-title { /*消息框文字第一行 学术信息*/
-            height: 30px;
-            flex-basis: 70px;
-            font-size: 14px;
-            line-height: 30px;
-            color: dodgerblue;
-            margin-top: 20px;
-        }
-
-        .message-response-box-middle-date { /*消息框文字第一行日期*/
-            height: 30px;
-            flex-basis: 300px;
-            font-size: 12px;
-            line-height: 30px;
-            color: gray;
-            margin-top: 20px;
-        }
-
-        .message-response-content { /*消息框文字第二行-主体内容*/
-            height: 30px;
-            flex-basis: 750px;
-            font-size: 16px;
-            line-height: 30px;
-            color: black;
             margin-left: 10px;
-            margin-bottom: 50px;
+            flex-shrink: 0;
         }
-    }
-
-    .message-response-box-right { /*查看*/
-        flex-basis: 60px;
-        line-height: 120px;
-        font-size: 14px;
-        color: gray;
-        margin-left: 10px;
     }
 }
 /*****************************************以下为我的关注的样式*********************************/
@@ -1586,10 +1586,9 @@ a {
 }
 
 .focus-title {
-    width: 88px;
-    height: 14px;
-    margin-top: 20px;
-    font-size: 14px;
+    width: 100px;
+    height: 16px;
+    font-size: 16px;
     color: $color-thinBlack;
     padding: 0px 1px 6px;
 }
@@ -1684,15 +1683,15 @@ a {
 
     .focus-topic-authorInfo {
         display: flex;
-        height: 12px;
-        margin: 30px 0px 0px 2px;
-        font-size: 12px;
+        height: 14px;
+        margin: 24px 0px 0px 2px;
+        font-size: 14px;
     }
 
     .focus-topic-title {
-        height: 12px;
+        height: 16px;
         margin: 14px 0px 30px 2px;
-        font-size: 12px;
+        font-size: 16px;
         color: $color-black;
     }
 }
@@ -1701,11 +1700,11 @@ a {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    font-size: 12px;
+    font-size: 14px;
     color: $color-thinBlack;
 
     .focus-topic-board {
-        margin: 30px 18px 0px;
+        margin: 24px 18px 0px;
 
         a {
             color: $color-thinBlack;
@@ -1715,16 +1714,16 @@ a {
     .focus-topic-response {
         display: flex;
         margin: 14px 10px 30px;
-        width: 216px;
+        width: 232px;
 
         div {
-            flex-basis: 54px;
+            flex-basis: 58px;
             display: inline-flex;
             align-items: baseline;
             flex-shrink: 0;
 
             i {
-                font-size: 14px;
+                font-size: 16px;
                 flex-basis: 18px;
             }
         }
@@ -1734,27 +1733,27 @@ a {
 
 .focus-topic-blackText {
     color: $color-thinBlack;
-    min-height: 12px;
+    min-height: 14px;
     flex-basis: 90px;
 }
 
 .focus-topic-redText {
     color: $color-red;
     flex-basis: 26px;
-    min-height: 12px;
+    min-height: 14px;
 }
 
 
 .focus-allNewTopic {
     color: $color-thinBlack;
-    min-height: 14px;
-    font-size: 14px;
+    min-height: 16px;
+    font-size: 16px;
     display: flex;
     align-items: baseline;
 
     i {
         flex-basis: 18px;
-        font-size: 14px;
+        font-size: 16px;
     }
 }
 
@@ -1825,9 +1824,7 @@ a {
     color: rgb(70,70,70);
     margin-top: 12px;
 }
-
 //以下是头部中顶部条下拉菜单的样式~
-
 #dropdown {
     font-size: 12px;
     font-family: 微软雅黑;
@@ -2059,7 +2056,6 @@ a {
     margin-left: 10px;
     margin-right: 10px;
 }
-
 //--------------------------------以下是首页的样式~ --------------------------------------------
 .mainPage {
     display: flex;
@@ -2346,13 +2342,13 @@ a {
     font-family: 微软雅黑;
     color: rgb(255,136,56);
 }
+
 .listTitle {
-    max-width:auto;
-    margin-right:1rem;
     white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
     overflow: hidden; //不显示超过对象尺寸的内容
     text-overflow: ellipsis; //当文本对象溢出时显示...
 }
+
 .topicTitle {
     font-size: 12px;
     font-family: 微软雅黑;
@@ -2416,8 +2412,6 @@ a {
     background-color: rgb(0,157,255);
     margin-top: 20px;
 }
-
-
 /*
 * UBB用
 */
@@ -2683,7 +2677,6 @@ a {
 .userDetails {
     z-index: 1;
 }
-
 /**********************************搜索页的样式*********************************/
 .noRusult {
     font-size: 16px;
@@ -2691,8 +2684,9 @@ a {
     margin-top: 100px;
     text-align: center;
 }
+
 .postManagement {
-    margin-left:30rem;
+    margin-left: 30rem;
     position: absolute;
     z-index: 1000;
     width: 30rem;
@@ -2705,35 +2699,28 @@ a {
     border-radius: .5rem;
     -moz-border-radius: .5rem;
     -webkit-border-radius: .5rem;
-    background-color:#FFFACD;
+    background-color: #FFFACD;
 }
-.manageUI{
-    display:flex;
-    flex-direction:row;
+
+.manageUI {
+    display: flex;
+    flex-direction: row;
 }
-.manageOptions{
-    width:30rem;
-    height:3rem;
+
+.manageOptions {
+    width: 30rem;
+    height: 3rem;
 }
+
 .manageOptions-icon {
-    background-color:#FFDEAD;
     text-align: center;
     width: 10rem;
     height: 3rem;
     line-height: 3rem;
     border-right: #EAEAEA solid thin;
     border-bottom: #EAEAEA solid thin;
-    cursor:pointer;
 }
-.manageObject{
-    width:6rem;
-    margin-right:1rem;
-}
-.manageOperation{
-    width:18rem;
-    margin-left:5rem;
-    margin-top:2rem;
-}
+
 .confirmManagement {
     margin-left: 5rem;
     margin-top: 1rem;
@@ -2744,16 +2731,6 @@ a {
     border-radius: 0.3rem;
     cursor:pointer;
 }
-.awardPager{
-    display:flex;
-    margin-bottom:0.5rem;
-    margin-top:0.5rem;
-}
-.awardInfo{
-    margin-left:2rem;
-    margin-right:2rem;
-    background-color:#fff;
-}
 .awardPage{
     width:5rem;
     height:1.2rem;
@@ -2763,6 +2740,7 @@ a {
     cursor:pointer;
     margin-left:2rem;
 }
+
 .followBoard {
     width: 5rem;
     height: 1.5rem;

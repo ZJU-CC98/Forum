@@ -606,7 +606,7 @@ export async function getAllNewTopic(from: number, router) {
             else {
                 newTopic[i].fanCount = 0;
                 newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-                newTopic[i].userName = "匿名";
+                newTopic[i].userName = "匿名用户";
                 newTopic[i].boardName = "心灵之约";
             }
         }
@@ -706,7 +706,7 @@ export async function getFocusBoardTopic(boardId: number, boardName: string, fro
             else {
                 newTopic[i].fanCount = 0;
                 newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-                newTopic[i].userName = "匿名";
+                newTopic[i].userName = "匿名用户";
                 newTopic[i].boardName = "心灵之约";
             }
         }
@@ -795,7 +795,7 @@ export async function getFocusTopic(from: number, router) {
             else {
                 newTopic[i].fanCount = 0;
                 newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-                newTopic[i].userName = "匿名";
+                newTopic[i].userName = "匿名用户";
                 newTopic[i].boardName = "心灵之约";
             }
         }
@@ -969,7 +969,7 @@ export async function getRecentContact(from: number, size: number, router) {
         }
         let recentContact = await response1.json();
         for (let i in recentContact) {
-            recentContact[i].message = await getRecentMessage(recentContact[i].id, 0, 10, router);
+            recentContact[i].message = [];
         }
         console.log(recentContact);
         return recentContact;
@@ -1084,7 +1084,10 @@ export async function sortContactList(recentContact, router) {
                 flag = 0;
             }
             if (flag == 1) {
-                chatMan.message = await getRecentMessage(chatManId, 0, 10, router);
+                chatMan.message = await getRecentMessage(chatMan.id, 0, 10, router);
+                if (chatMan.message) {
+                    chatMan.lastContent = chatMan.message[0];
+                }
                 let chatContact = [chatMan];
                 recentContact = chatContact.concat(recentContact);
             }
@@ -1127,11 +1130,14 @@ export async function sortContactList(recentContact, router) {
                     flag = 0;
                 }
                 if (flag == 1) {
-                    let chatMan = { id: null, name: '', portraitUrl: '', message: [] };
+                    let chatMan = { id: null, name: '', portraitUrl: '', message: [], lastContent: '' };
                     chatMan.id = response1.id;
                     chatMan.name = response1.name;
                     chatMan.portraitUrl = response1.portraitUrl;
                     chatMan.message = await getRecentMessage(chatMan.id, 0, 10, router);
+                    if (chatMan.message) {
+                        chatMan.lastContent = chatMan.message[0];
+                    }
                     let chatContact = [chatMan];
                     recentContact = chatContact.concat(recentContact);
                 }
@@ -2255,7 +2261,7 @@ export async function getMessageSystem(from: number, router) {
         let token = getLocalStorage("accessToken");
         let myHeaders = new Headers();
         myHeaders.append('Authorization', token);
-        let size = 15;
+        let size = 10;
         const response = await fetch(`http://apitest.niconi.cc/notification/system?from=${from}&size=${size}`, { headers: myHeaders });
         if (response.status === 401) {
             //window.location.href = "/status/UnauthorizedTopic";
@@ -2263,10 +2269,78 @@ export async function getMessageSystem(from: number, router) {
         if (response.status === 500) {
             //window.location.href = "/status/ServerError";
         }
-        let newTopic = response.json();
+        let newTopic = await response.json();
         console.log(newTopic);
         return newTopic;
     } catch (e) {
         //window.location.href = "/status/Disconnected";
     }
 } 
+
+//获取回复我的通知
+export async function getMessageResponse(from: number, router) {
+    console.log("开始获取回复我的通知了");
+    try {
+        let token = getLocalStorage("accessToken");
+        let myHeaders = new Headers();
+        myHeaders.append('Authorization', token);
+        let size = 10;
+        let response = await fetch(`http://apitest.niconi.cc/notification/reply?from=${from}&size=${size}`, { headers: myHeaders });
+        if (response.status === 401) {
+            //window.location.href = "/status/UnauthorizedTopic";
+        }
+        if (response.status === 500) {
+            //window.location.href = "/status/ServerError";
+        }
+        let newTopic = await response.json();
+        console.log(newTopic);
+        //补充帖子标题，版面id和版面名称信息
+        if (newTopic) {
+            for (let i in newTopic) {
+                let response0 = await fetch(`http://apitest.niconi.cc/topic/${newTopic[i].topicId}`, { headers: myHeaders });
+                let response1 = await response0.json();
+                console.log(response1);
+                newTopic[i].topicTitle = response1.title;
+                newTopic[i].boardId = response1.boardId;
+                newTopic[i].boardName = await getBoardName(response1.boardId, router);
+            }
+        }
+        return newTopic;
+    } catch (e) {
+        //window.location.href = "/status/Disconnected";
+    }
+} 
+
+//获取回复我的通知
+export async function getMessageAttme(from: number, router) {
+    console.log("开始获取@我的通知了");
+    try {
+        let token = getLocalStorage("accessToken");
+        let myHeaders = new Headers();
+        myHeaders.append('Authorization', token);
+        let size = 10;
+        let response = await fetch(`http://apitest.niconi.cc/notification/at?from=${from}&size=${size}`, { headers: myHeaders });
+        if (response.status === 401) {
+            //window.location.href = "/status/UnauthorizedTopic";
+        }
+        if (response.status === 500) {
+            //window.location.href = "/status/ServerError";
+        }
+        let newTopic = await response.json();
+        console.log(newTopic);
+        //补充帖子标题，版面id和版面名称信息
+        if (newTopic) {
+            for (let i in newTopic) {
+                let response0 = await fetch(`http://apitest.niconi.cc/topic/${newTopic[i].topicId}`, { headers: myHeaders });
+                let response1 = await response0.json();
+                console.log(response1);
+                newTopic[i].topicTitle = response1.title;
+                newTopic[i].boardId = response1.boardId;
+                newTopic[i].boardName = await getBoardName(response1.boardId, router);
+            }
+        }
+        return newTopic;
+    } catch (e) {
+        //window.location.href = "/status/Disconnected";
+    }
+}

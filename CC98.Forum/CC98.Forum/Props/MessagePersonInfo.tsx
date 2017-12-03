@@ -22,4 +22,8 @@ export class MessagePersonInfo {
     *最近消息列表
     */
     message: MessageProps[];
+    /**
+    *最近一条消息
+    */
+    lastContent: string
 }

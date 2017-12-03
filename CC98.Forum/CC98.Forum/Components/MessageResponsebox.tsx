@@ -2,37 +2,44 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
-import { MessageProps } from '../Props/MessageProps';
+import { MessageResponseProps } from '../Props/MessageResponseProps';
+import * as Utility from '../Utility';
+import { UbbContainer } from './UbbContainer';
+declare let moment: any;
 
-export class MessageResponsebox extends React.Component<MessageProps> {
-    /*
-    componentDidMount() {
-        document.getElementById(String(this.props.id)).innerHTML = '修改后的内容';//UBBCode(this.props.cotent,'')
-    }
-    */
-
+export class MessageResponsebox extends React.Component<MessageResponseProps> {
+    
     render() {
-        return <div></div>;
-        /*return (<div className="message-response-box">
-                    <div className="message-response-box-left">
-                        <img className="message-response-img" src={this.props.chatPortraitUrl} />
-                    </div>
+        let host = window.location.host;
+        let a: any = this.props.postId / 10;
+        let b = parseInt(a);
+        let c = this.props.postId - b * 10;
+        let content;
+        let view;
+        if (this.props.isRead) {
+            content = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=gray]有人在《${this.props.topicTitle}》中回复了你[/color][/url]`;
+            view = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=gary]查看[/color][/url]`;
+        }
+        else {
+            content = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=black][b]有人在《${this.props.topicTitle}》中回复了你[/b][/color][/url]`;
+            view = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=black][b]查看[/b][/color][/url]`;
+        }
+        return (<div className="message-response-box">
                     <div className="message-response-box-middle">
-                        <div className="message-response-box-middle-name">
-                            {this.props.senderName}
-                        </div>
-                        <div className="message-response-box-middle-title">
-                            {this.props.title}
-                        </div>
-                        <div className="message-response-box-middle-date" >
-                            {this.props.sendTime}
+                        <div className="message-response-box-middle1">
+                            <div className="message-response-box-middle-title">
+                                {this.props.boardName}
+                            </div>
+                            <div className="message-response-box-middle-date" >
+                                {moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')}
+                            </div>
                         </div>
                         <div className="message-response-box-middle-content">
-                            {this.props.content}
+                            <UbbContainer code={content}/>
                         </div>
                     </div>
-                    <div className="message-response-box-right">查看</div>
+                    <div className="message-response-box-right"> <UbbContainer code={view} /></div>
                 </div>
-        );*/
+        );
     }
 }
