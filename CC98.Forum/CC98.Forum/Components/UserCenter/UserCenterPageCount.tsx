@@ -8,7 +8,8 @@ export class UserCenterPageCount extends React.Component<UserCenterPageCountProp
     render() {
         let elements = [], i;
         const currentStyle = {
-            backgroundColor: '#ccc'
+            backgroundColor: '#ccc',
+            cursor: 'default'
         };
 
         if (this.props.totalPage <= 7) {
@@ -17,7 +18,7 @@ export class UserCenterPageCount extends React.Component<UserCenterPageCountProp
                 elements.unshift(i + 1);
             }
             elements = elements.map((item, index) => {
-                return <li><a href={`${this.props.href}${item}`}><button type="button" style={(item == this.props.currentPage) ? currentStyle : {}}>{item}</button></a></li>
+                return <li><a href={`${this.props.href}${item}`}><button type="button" disabled={item == this.props.currentPage} style={(item == this.props.currentPage) ? currentStyle : {}}>{item}</button></a></li>
             });
         } else if (this.props.currentPage - 1 <= 3) {
             i = 7;
@@ -25,7 +26,7 @@ export class UserCenterPageCount extends React.Component<UserCenterPageCountProp
                 elements.unshift(i + 1);
             }
             elements = elements.map((item, index) => (
-                <li><a href={`${this.props.href}${item}`}><button type="button" style={(item == this.props.currentPage) ? currentStyle : {}}>{item}</button></a></li>
+                <li><a href={`${this.props.href}${item}`}><button type="button" disabled={item == this.props.currentPage} style={(item == this.props.currentPage) ? currentStyle : {}}>{item}</button></a></li>
             ));
 
             elements.push(<li><button disabled>···</button></li>);
@@ -36,7 +37,7 @@ export class UserCenterPageCount extends React.Component<UserCenterPageCountProp
                 elements.unshift(i - 6 + this.props.totalPage);
             }
             elements = elements.map((item, index) => (
-                <li><a href={`${this.props.href}${item}`}><button type="button" style={(item == this.props.currentPage) ? currentStyle : {}}>{item}</button></a></li>
+                <li><a href={`${this.props.href}${item}`}><button type="button" disabled={item == this.props.currentPage} style={(item == this.props.currentPage) ? currentStyle : {}}>{item}</button></a></li>
             ));
 
             elements.unshift(<li><button disabled>···</button></li>);

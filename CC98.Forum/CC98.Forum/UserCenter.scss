@@ -767,6 +767,7 @@
                 border-radius: 0.5rem;
                 background-color: #fff;
                 border: #ccc 1px solid;
+                cursor: pointer;
 
                 &:hover {
                     background-color: #eee;
@@ -778,6 +779,14 @@
 
                 &:focus {
                     outline: none;
+                }
+            }
+
+            button[disabled] {
+                cursor: default;
+
+                &:hover {
+                    background-color: #fff;
                 }
             }
         }

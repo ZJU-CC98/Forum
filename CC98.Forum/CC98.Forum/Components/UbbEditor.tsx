@@ -141,7 +141,6 @@ export class UbbEditor extends React.Component<{update: Function}, UbbEditorStat
         const size = ['', 1, 2, 3, 4, 5, 6, 7];
         const color = ['颜色', 'aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon', 'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow'];
         const textarea = (<textarea
-            onInput={() => ('')}
             value={this.state.value}
             onChange={(e) => { this.handleTextareaChange(e.target.value); }}
             onBlur={(e) => {
@@ -170,7 +169,7 @@ export class UbbEditor extends React.Component<{update: Function}, UbbEditorStat
                         <select onChange={(e) => { this.handleButtonClick('size', e.target.value); (e.target.value as any) = 0; }} value={0}>
                             {size.map((value, index) => (<option value={index} disabled={index === 0} style={{ display: index === 0 ? 'none' : '' }}>{value}</option>))}
                         </select>
-                        <p className="fa-text-height"></p>
+                        <p className="fa-eyedropper"></p>
                         <select onChange={(e) => { this.handleButtonClick('color', e.target.value); (e.target.value as any) = "颜色"; }} value={"颜色"}>
                             {color.map((value, index) => (<option value={value} disabled={index === 0} style={{ backgroundColor: value, display: index === 0 ? 'none' : '' }}></option>))}
                         </select>
@@ -192,7 +191,7 @@ export class UbbEditor extends React.Component<{update: Function}, UbbEditorStat
                     />
                     {this.state.extendTagName === 'img' ? <label className="fa-upload" htmlFor="upload"></label> : null}
                     <button className="fa-check" type="button" onClick={() => { this.handleButtonClick(this.state.extendTagName, this.state.extendValue) }}></button>
-                    <button className="fa-remove" type="button" onClick={() => { this.setState({ extendTagName: ''}); }}></button>
+                    <button className="fa-remove" type="button" onClick={() => { this.setState({ extendTagName: '', clicked: true}); }}></button>
                     <input type="file" id="upload" accept="image/*" style={{ display: 'none' }} onChange={(e) => { this.handleUpload(e.target.files[0]); }} />
                 </div>
                 <div className="ubb-content">
