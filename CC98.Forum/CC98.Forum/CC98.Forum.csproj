@@ -34,6 +34,7 @@
     <None Remove="Components\Topic\Topic-Pager.tsx" />
     <None Remove="Components\Topic\Topic-PostTopic.tsx" />
     <None Remove="Components\Topic\Topic-Replier.tsx" />
+    <None Remove="Components\Topic\Topic-ReplierSignature.tsx" />
     <None Remove="Components\Topic\Topic-ReplyContent.tsx" />
     <None Remove="Components\Topic\Topic-SendTopic.tsx" />
     <None Remove="Components\Topic\Topic-Topic.tsx" />
@@ -123,6 +124,7 @@
     <TypeScriptCompile Include="Components\Topic\Topic-Category.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Pager.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-PostTopic.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-ReplierSignature.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Reply.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Replier.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-ReplyContent.tsx" />

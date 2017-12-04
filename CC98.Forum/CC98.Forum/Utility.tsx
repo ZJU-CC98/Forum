@@ -190,7 +190,7 @@ export async function getTopicContent(topicid: number, curPage: number, router) 
         }
 
         for (let i = 0; i < topicNumberInPage; i++) {
-            if (content[i].isAnonymous != true) {
+            if (content[i].isAnonymous != true&&content[i].isDeleted!=true) {
 
                 const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
                 if (userMesResponse.status === 404) {
@@ -201,7 +201,7 @@ export async function getTopicContent(topicid: number, curPage: number, router) 
                     ...content[i], ...userMesJson, postId: content[i].id, userImgUrl: userMesJson.portraitUrl, sendTopicNumber: userMesJson.postCount, privilege: userMesJson.privilege, signature: userMesJson.signatureCode
                 }
         
-            } else {
+            } else if (content[i].isAnonymous == true){
                 let purl = 'https://www.cc98.org/pic/anonymous.gif';
                 const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
 
@@ -209,7 +209,11 @@ export async function getTopicContent(topicid: number, curPage: number, router) 
                 post[i] = {
                     ...content[i], userName: anonymousUserName, userImgUrl: purl, userId: null, signature: null, sendTopicNumber: null, postId: content[i].id, privilege: '匿名用户', isAnonymous:true
                 }
-            }
+            }else {
+                post[i] = {
+                    ...content[i], userName: '98Deleter', userImgUrl: 'http://www.cc98.org/images/policeM.png', userId: null, signature: null, sendTopicNumber: null, postId: content[i].id, privilege: '匿名用户', isAnonymous: false,isDeleted:true,content:"该贴已被my cc98, my home"
+                }
+                }
         }
         console.log(post);
         return post;
@@ -1824,13 +1828,30 @@ export async function awardWealth( reason, value, postId) {
         window.location.href = "/status/servererror";
     }
 }
-export async function getAwardInfo(postId,page) {
+export async function deductWealth(reason, value, postId) {
     const token = getLocalStorage("accessToken");
     const headers = new Headers();
     headers.append("Authorization", token);
-    const start = (page-1)*10;
-    const size = 10;
-    const url = `http://apitest.niconi.cc/post/awards?postid=${postId}&from=${start}&size=${size}`;
+    headers.append("Content-Type", "application/json");
+    const body = {
+        reason: reason,
+        value: value
+    }
+    const str = JSON.stringify(body);
+    const url = `http://apitest.niconi.cc/manage/punishment/wealth?postid=${postId}`;
+    const response = await fetch(url, { method: "PUT", headers, body: str });
+    if (response.status === 401) {
+        window.location.href = "/status/unauthorizedoperation";
+    }
+    if (response.status === 500) {
+        window.location.href = "/status/servererror";
+    }
+}
+export async function getAwardInfo(postId) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    const url = `http://apitest.niconi.cc/post/awards?postid=${postId}`;
     const response = await fetch(url, { headers });
     if (response.status === 500) {
         window.location.href = "/status/servererror";
@@ -2431,6 +2452,22 @@ export async function addPrestige(postId,value,reason) {
     headers.append("Content-Type", "application/json");
     const bodyinfo = { value: value, reason: reason };
     const url = `http://apitest.niconi.cc/manage/bonus/prestige?postid=${postId}`;
+    const body = JSON.stringify(bodyinfo);
+    const response = await fetch(url, { method: "PUT", headers, body });
+    if (response.status === 401) {
+        window.location.href = "/status/unauthorizedoperation";
+    }
+    if (response.status === 500) {
+        window.location.href = "/status/servererror";
+    }
+}
+export async function deductPrestige(postId, value, reason) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    headers.append("Content-Type", "application/json");
+    const bodyinfo = { value: value, reason: reason };
+    const url = `http://apitest.niconi.cc/manage/punishment/prestige?postid=${postId}`;
     const body = JSON.stringify(bodyinfo);
     const response = await fetch(url, { method: "PUT", headers, body });
     if (response.status === 401) {

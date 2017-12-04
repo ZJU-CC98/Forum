@@ -3,7 +3,7 @@ import * as Utility from '../../Utility';
 import * as $ from 'jquery';
 import { match } from "react-router";
 
-export class PostManagement extends React.Component<{ userId, postId, update, topicId ,privilege}, { wealth, prestige, reason, tpdays, UI, tips }>{
+export class PostManagement extends React.Component<{ userId, postId, update, topicId, privilege }, { wealth:number, prestige:number, reason:string, tpdays:number, UI, tips:string }>{
 
     constructor(props) {
 
@@ -27,19 +27,19 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
 
         this.close = this.close.bind(this);
 
-        this.state = { wealth: 1000, prestige: null, reason: "", tpdays: null, UI: "Award", tips: "" }
+        this.state = { wealth: 1000, prestige: 0, reason: "", tpdays: 0, UI: "Award", tips: "" }
 
     }
 
     showAwardUI() {
 
-        this.setState({ UI: "Award" });
+        this.setState({ UI: "Award", wealth: 1000 });
 
     }
 
     showPunishUI() {
 
-        this.setState({ UI: "Punish" });
+        this.setState({ UI: "Punish", wealth: 0 });
 
     }
 
@@ -54,13 +54,25 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
             case 'Award':
                 if ($("input[name='reason']:checked").val()) {
                     if ($("input[name='reason']:checked").val() !== '自定义') {
-                        Utility.awardWealth($("input[name='reason']:checked").val(), this.state.wealth, this.props.postId);
-                        if (this.state.prestige)
-                        Utility.addPrestige(this.props.postId, this.state.prestige, $("input[name='reason']:checked").val());
+                        console.log(this.state.wealth);
+                        if (this.state.wealth !== 0) {
+                            console.log("in addaward");
+                            Utility.awardWealth($("input[name='reason']:checked").val(), this.state.wealth, this.props.postId);
+                        }
+
+                        if (this.state.prestige !== 0) {
+                            Utility.addPrestige(this.props.postId, this.state.prestige, $("input[name='reason']:checked").val());
+                        }
+
                     } else {
-                        Utility.awardWealth(this.state.reason, this.state.wealth, this.props.postId);
-                        if (this.state.prestige )
-                        Utility.addPrestige(this.props.postId, this.state.prestige, this.state.reason);
+                        if (this.state.wealth !== 0) {
+                            Utility.awardWealth(this.state.reason, this.state.wealth, this.props.postId);
+                        }
+
+                        if (this.state.prestige !== 0) {
+                            Utility.addPrestige(this.props.postId, this.state.prestige, this.state.reason);
+                        }
+
                     }
                     const UIId = `#manage${this.props.postId}`;
                     $(UIId).css("display", "none");
@@ -72,10 +84,14 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
             case 'Punish':
                 if ($("input[name='reason']:checked").val()) {
                     if ($("input[name='reason']:checked").val() !== '自定义') {
-                       
+                        Utility.deductWealth($("input[name='reason']:checked").val(), this.state.wealth, this.props.postId);
+                        if (this.state.prestige!==0)
+                            Utility.deductPrestige(this.props.postId, this.state.prestige, $("input[name='reason']:checked").val());
                     } else {
                         if (this.state.reason) {
-                           
+                            Utility.deductWealth(this.state.reason, this.state.wealth, this.props.postId);
+                            if (this.state.prestige!==0)
+                                Utility.deductPrestige(this.props.postId, this.state.prestige, this.state.reason);
                         } else {
                             this.setState({ tips: "请输入原因！" });
                         }
@@ -127,13 +143,43 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
         const UIId = `#manage${this.props.postId}`;
         $(UIId).css("display", "none");
     }
+    componentDidMount() {
+        const awardOptionId = `manageOptions-award${this.props.postId}`;
+        const awardOptionJQId = `#manageOptions-award${this.props.postId}`;
+        const punishOptionId = `manageOptions-punish${this.props.postId}`;
+        const punishOptionJQId = `#manageOptions-punish${this.props.postId}`;
+        const deleteOptionId = `manageOptions-delete${this.props.postId}`;
+        const deleteOptionJQId = `#manageOptions-delete${this.props.postId}`;
+        console.log(this.state.UI);
+        if (this.state.UI === "Award") {
+  
+            console.log("in change color");
+            $(awardOptionJQId).css("background-color", "#b9d3ee");
+            $(punishOptionJQId).css("background-color", "#fffacd");
+            $(deleteOptionJQId).css("background-color", "#fffacd");
+        }
+
+        if (this.state.UI === "Punish") {
+   
+            $(awardOptionJQId).css("background-color", "#fffacd");
+            $(punishOptionJQId).css("background-color", "#b9d3ee");
+            $(deleteOptionJQId).css("background-color", "#fffacd");
+        }
+
+        if (this.state.UI === "Delete") {
+ 
+            $(awardOptionJQId).css("background-color", "#fffacd");
+            $(punishOptionJQId).css("background-color", "#fffacd");
+            $(deleteOptionJQId).css("background-color", "#b9d3ee");
+        }
+    }
     render() {
         if (this.props.privilege !== '管理员') {
-            $("#managePrestige").css("display", "none");
+            $(".managePrestige").css("display", "none");
         }
         let UI;
 
-        const awardUI = <div className="column" id="award">
+        const awardUI = <div className="column manageInfo" id="award">
 
             <div className="row manageOperation">
 
@@ -153,10 +199,10 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
 
             <div className="column manageOperation">
 
-                <div className="manageObject">原因</div>
 
-                <div className="row" style={{ justifyContent:"space-around",marginTop:"1rem" }}>
 
+                <div className="row" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
+                    <div >原因</div>
                     <div className="row" >
 
                         <input type="radio" name="reason" value="好文章" /><div>好文章</div>
@@ -177,7 +223,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
                 <div className="row" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                     <div className="row">
                         <input type="radio" name="reason" value="自定义" /><div>自定义</div>
-                        </div>
+                    </div>
                     <input type="text" value={this.state.reason} onChange={this.reasonInput} />
                 </div>
                 <div>{this.state.tips}</div>
@@ -186,8 +232,14 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
 
         </div>;
 
-        const punishUI = <div className="column" id="punish" >
+        const punishUI = <div className="column manageInfo" id="punish" >
+            <div className="row manageOperation">
 
+                <div className="manageObject">扣财富值</div>
+
+                <input type="text" value={this.state.wealth} onChange={this.wealthInput} />
+
+            </div>
             <div className="row manageOperation">
 
                 <div className="manageObject">扣威望</div>
@@ -204,21 +256,41 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
 
             </div>
 
-            <div className="row manageOperation">
-
-                <div className="manageObject">原因</div>
+            <div className="column manageOperation">
 
 
+                <div className="row" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
+                    <div >原因</div>
+                    <div className="row" >
 
-                <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+                        <input type="radio" name="reason" value="人身攻击" /><div>人身攻击</div>
 
+                    </div>
+
+                    <div className="row">
+
+                        <input type="radio" name="reason" value="恶意灌水" /><div>恶意灌水</div>
+
+                    </div>
+
+                    <div className="row">
+
+                        <input type="radio" name="reason" value="违反版规" /><div>违反版规</div></div>
+
+                </div>
+                <div className="row" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
+                    <div className="row">
+                        <input type="radio" name="reason" value="自定义" /><div>自定义</div>
+                    </div>
+                    <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+                </div>
                 <div>{this.state.tips}</div>
 
             </div>
 
         </div>;
 
-        const deleteUI = <div className="column" id="punish" >
+        const deleteUI = <div className="column manageInfo" id="punish" >
 
             <div className="row manageOperation">
 
@@ -242,6 +314,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
         console.log(this.state.UI);
         if (this.state.UI === "Award") {
             UI = awardUI;
+            console.log("in change color");
             $(awardOptionJQId).css("background-color", "#b9d3ee");
             $(punishOptionJQId).css("background-color", "#fffacd");
             $(deleteOptionJQId).css("background-color", "#fffacd");
@@ -278,9 +351,9 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
             </div>
 
             {UI}
-            <div className="row" style={{ justifyContent:"space-around" }}>
+            <div className="row" style={{ justifyContent: "space-around" }}>
                 <button onClick={this.confirm} className="confirmManagement">确认</button>
-                <button onClick={this.close}  className="confirmManagement">关闭</button>
+                <button onClick={this.close} className="confirmManagement">关闭</button>
             </div>
         </div>;
 

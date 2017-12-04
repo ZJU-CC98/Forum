@@ -661,8 +661,10 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
 
             <div className="row topicInList" id={topicId}>
                 <div style={{ display: "flex", marginLeft: "0.5rem", alignItems: "flex-end" }}>
+                    <div className="row" style={{ alignItems: "center" }}>
                     {icon}
-                    <Link to={url}><div className="listTitle" id={titleId} style={{ marginLeft: '0.5rem', }}> {this.props.title}</div></Link>
+                        <Link to={url}><div className="listTitle" id={titleId} style={{ marginLeft: '0.5rem', }}> {this.props.title}</div></Link>
+                        </div>
                     <div style={{ display: "flex", fontSize: "0.75rem", marginBottom: "-2px", marginLeft:"1rem" }}>
                         {this.state.pager.map(this.generateListPager.bind(this))}</div>
                 </div>

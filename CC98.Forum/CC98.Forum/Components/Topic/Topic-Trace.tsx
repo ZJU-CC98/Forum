@@ -11,6 +11,10 @@ import { match } from 'react-router';
 import { ReplyContent } from './Topic-ReplyContent';
 import { Replier } from './Topic-Replier';
 import { PostTopic } from './Topic-Topic';
+import { Award } from './Topic-Award';
+import { ReplierSignature } from './Topic-ReplierSignature';
+import { PostManagement } from './Post-Management';
+import { Judge } from './Topic-Judge';
 declare let moment: any;
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
@@ -71,9 +75,10 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
     }
 
 }
-export class Reply extends RouteComponent<{}, { masters,contents }, { page, topicid, userName }>{
+export class Reply extends RouteComponent<{}, { masters,contents }, { page, topicid, userId }>{
     constructor(props, content) {
         super(props, content);
+        this.update = this.update.bind(this);
         this.state = {
             contents: [],
             masters:[]
@@ -82,6 +87,22 @@ export class Reply extends RouteComponent<{}, { masters,contents }, { page, topi
     }
     async getMasters(topicId) {
         return Utility.getMasters(topicId);
+    }
+    async update() {
+        const page = this.match.params.page || 1;
+        const storageId = `TopicContent_${this.match.params.topicid}_${page}`;
+        let realContents;
+        const token = Utility.getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append("Authorization", token);
+
+        const url = `http://apitest.niconi.cc/user/${this.match.params.userId}`;
+        const response = await fetch(url, { headers });
+        const data = await response.json();
+        const userName = data.name;
+        realContents = await Utility.getCurUserTopicContent(this.match.params.topicid, page, userName, this.match.params.userId, this.context.router);
+        const masters = this.getMasters(this.match.params.topicid);
+        this.setState({ contents: realContents, masters: masters });
     }
     async componentWillReceiveProps(newProps) {
         const page = newProps.match.params.page || 1;
@@ -108,8 +129,12 @@ export class Reply extends RouteComponent<{}, { masters,contents }, { page, topi
             }
     private generateContents(item: ContentState) {
         return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
-            <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} />
-            <ReplyContent key={item.content} masters={this.state.masters} userId={item.userId} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postId} contentType={item.contentType} />
+            <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isDeleted={item.isDeleted} />
+            <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
+            <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={item.privilege} />
+            <ReplyContent key={item.content}content={item.content}  postid={item.postId} contentType={item.contentType} />
+            <Award postId={item.postId} updateTime={Date.now()} />
+            <ReplierSignature signature={item.signature} topicid={item.topicId} userId={item.userId} masters={this.state.masters} postid={item.postId} />
         </div>
         </div>;
     }
@@ -246,7 +271,7 @@ export class ContentState {
     id: number;
     content: string;
     time: string;
-    isDelete: boolean;
+    isDeleted: boolean;
     floor: number;
     isAnonymous: boolean;
     lastUpdateAuthor: string;
