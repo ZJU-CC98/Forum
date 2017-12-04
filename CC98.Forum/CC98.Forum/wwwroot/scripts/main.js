@@ -3065,8 +3065,11 @@ function isFollowThisBoard(boardId) {
         return false;
     for (var _i = 0, customBoards_1 = customBoards; _i < customBoards_1.length; _i++) {
         var item = customBoards_1[_i];
-        if (item === boardId)
+        console.log(item);
+        if (item == boardId) {
+            console.log("版面匹配成功");
             return true;
+        }
     }
     return false;
 }
@@ -3090,6 +3093,8 @@ function followBoard(boardId) {
                     if (response.status === 500) {
                         window.location.href = "/status/servererror";
                     }
+                    storeUserInfo();
+                    removeStorage("focusBoardList");
                     return [2 /*return*/];
             }
         });
@@ -3115,6 +3120,8 @@ function unfollowBoard(boardId) {
                     if (response.status === 500) {
                         window.location.href = "/status/servererror";
                     }
+                    storeUserInfo();
+                    removeStorage("focusBoardList");
                     return [2 /*return*/];
             }
         });
@@ -3481,6 +3488,36 @@ function deletePost(topicId, postId, reason) {
     });
 }
 exports.deletePost = deletePost;
+//缓存用户信息
+function storeUserInfo() {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, userName, userInfo_1, headers, response, userInfo;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    userName = getLocalStorage("userName");
+                    if (!userName) {
+                        userInfo_1 = getLocalStorage("userInfo");
+                        userName = userInfo_1.name;
+                    }
+                    headers = new Headers();
+                    headers.append("Authorization", token);
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + userName, {
+                            headers: headers
+                        })];
+                case 1:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    userInfo = _a.sent();
+                    setLocalStorage("userInfo", userInfo);
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.storeUserInfo = storeUserInfo;
 
 
 /***/ }),
@@ -17192,10 +17229,10 @@ var MessageSystembox = /** @class */ (function (_super) {
                 var b = parseInt(a);
                 var c = this.props.floor + 10 - b * 10;
                 if (this.props.isRead) {
-                    content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=gray]" + this.props.content + "[/color][color=blue]http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "[/color][/url]";
+                    content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=gray]" + this.props.content + "[/color][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/url]";
                 }
                 else {
-                    content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][b][color=black]" + this.props.content + "[/color][color=blue]http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "[/color][/b][/url]";
+                    content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][b][color=black]" + this.props.content + "[/color][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/b][/url]";
                 }
             }
             else {
@@ -18531,7 +18568,7 @@ var LogOnExact = /** @class */ (function (_super) {
     };
     LogOnExact.prototype.handleLogin = function (e) {
         return __awaiter(this, void 0, void 0, function () {
-            var url, requestBody, headers, response, data, token, headers1, response1, userInfo;
+            var url, requestBody, headers, response, data, token;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -18595,17 +18632,8 @@ var LogOnExact = /** @class */ (function (_super) {
                         Utility.setLocalStorage("accessToken", token, data.expires_in);
                         Utility.setLocalStorage("userName", this.state.loginName);
                         Utility.setLocalStorage("password", this.state.loginPassword);
-                        headers1 = new Headers();
-                        headers1.append("Authorization", token);
-                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/user/name/" + this.state.loginName, {
-                                headers: headers1
-                            })];
-                    case 3:
-                        response1 = _a.sent();
-                        return [4 /*yield*/, response1.json()];
-                    case 4:
-                        userInfo = _a.sent();
-                        Utility.setLocalStorage("userInfo", userInfo);
+                        //缓存用户其信息
+                        Utility.storeUserInfo();
                         this.setState({
                             loginMessage: '登录成功 正在返回首页'
                         });

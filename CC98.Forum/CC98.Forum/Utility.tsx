@@ -2292,7 +2292,11 @@ export function isFollowThisBoard(boardId) {
     const customBoards = getLocalStorage("userInfo").customBoards;
     if (!customBoards) return false;
     for (let item of customBoards) {
-        if (item === boardId) return true;
+        console.log(item);
+        if (item == boardId) {
+            console.log("版面匹配成功");
+            return true;
+        }
     }
     return false;
 }
@@ -2308,6 +2312,8 @@ export async function followBoard(boardId) {
     if (response.status === 500) {
         window.location.href = "/status/servererror";
     }
+    storeUserInfo();
+    removeStorage("focusBoardList");
 }
 export async function unfollowBoard(boardId) {
     const token = getLocalStorage("accessToken");
@@ -2321,6 +2327,8 @@ export async function unfollowBoard(boardId) {
     if (response.status === 500) {
         window.location.href = "/status/servererror";
     }
+    storeUserInfo();
+    removeStorage("focusBoardList");
 }
 //获取系统通知
 export async function getMessageSystem(from: number, router) {
@@ -2534,4 +2542,22 @@ export async function deletePost(topicId,postId, reason) {
     if (response.status === 500) {
         window.location.href = "/status/servererror";
     }
+}
+
+
+//缓存用户信息
+export async function storeUserInfo() {
+    const token = getLocalStorage("accessToken");
+    let userName = getLocalStorage("userName");
+    if (!userName) {
+        let userInfo = getLocalStorage("userInfo");
+        userName = userInfo.name;
+    }
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    let response = await fetch(`http://apitest.niconi.cc/user/name/${userName}`, {
+        headers: headers
+    });
+    let userInfo = await response.json();
+    setLocalStorage("userInfo", userInfo);
 }

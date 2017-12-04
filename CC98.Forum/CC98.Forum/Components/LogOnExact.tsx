@@ -111,14 +111,9 @@ class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff}, LogO
         Utility.setLocalStorage("userName", this.state.loginName);
         Utility.setLocalStorage("password", this.state.loginPassword);
 
-        //缓存用户其他数据
-        const headers1 = new Headers();
-        headers1.append("Authorization", token);
-        let response1 = await fetch(`http://apitest.niconi.cc/user/name/${this.state.loginName}`, {
-            headers: headers1
-        });
-        let userInfo = await response1.json();
-        Utility.setLocalStorage("userInfo", userInfo);
+        //缓存用户其信息
+        Utility.storeUserInfo();
+       
 
         this.setState({
             loginMessage: '登录成功 正在返回首页'
