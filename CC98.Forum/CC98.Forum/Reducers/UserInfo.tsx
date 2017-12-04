@@ -18,17 +18,13 @@ class UserInfo {
     * 表示当前登录用户的用户信息
     */
     currentUserInfo: Appstate.UserInfo = Utility.getLocalStorage('userInfo') || new Appstate.UserInfo();
-    /**
-    * 帖子数据包括帖子本身的数据以及所属版面的数据
-    */
-
-};
+}
 
 /**
  * reducer接收到undefined的state时一定要初始化state
  * 这里用ES6方法，在函数定义中初始化state
  */
-export default (state = new UserInfo, action) => {
+export default (state = new UserInfo, action): UserInfo => {
     switch (action.type) {
         case ActionTypes.USER_LOG_ON:
             return { ...state, isLogOn: true };

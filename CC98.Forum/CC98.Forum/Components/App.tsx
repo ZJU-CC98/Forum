@@ -92,4 +92,4 @@ function mapState(state) {
     };
 }
 
-export const App = connect(mapState, ()=>(null))(AppBeforeConnect);
+export const App = connect(mapState, null)(AppBeforeConnect);

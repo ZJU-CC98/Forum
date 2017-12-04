@@ -11,7 +11,6 @@ import * as Redux from 'redux';
 import { UbbEditor } from '../UbbEditor';
 import { RouteComponent } from '../RouteComponent';
 import { UbbContainer } from '.././UbbContainer';
-import * as Reducer from '../../reducers';
 import { Replier } from './Topic-Replier';
 import { ReplyContent } from './Topic-ReplyContent';
 import { Provider } from 'react-redux';

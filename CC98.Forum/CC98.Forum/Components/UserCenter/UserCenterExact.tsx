@@ -44,7 +44,7 @@ class UserCenterExact extends React.Component<{userInfo, changeUserInfo}> {
 
 function mapState(state) {
     return {
-        userInfo: state.userinfo.currentUserInfo
+        userInfo: state.userInfo.currentUserInfo
     };
 }
 

@@ -14,6 +14,12 @@ export class Category extends React.Component<{ topicId }, { boardId, topicId, b
     render() {
         const listUrl = `/list/${this.state.boardId}/normal`;
         const topicUrl = `/topic/${this.state.topicId}`;
-        return <div style={{ color: "grey", fontSize: "1rem", display: "flex" }}><i className="fa fa-window-maximize fa-lg"></i><a style={{ color: "grey", fontSize: "1rem", marginLeft: "0.3rem", marginRight: "0.3rem" }} href="/">首页</a><i className="fa fa-arrow-right fa-lg"></i><a style={{ color: "grey", fontSize: "1rem", marginLeft: "0.3rem", marginRight: "0.3rem" }} href={listUrl} >{this.state.boardName}</a><i className="fa fa-arrow-right fa-lg"></i><a style={{ color: "grey", fontSize: "1rem", marginLeft: "0.3rem", marginRight: "0.3rem" }} href={topicUrl}><div style={{ overflow: "hidden", textOverflow: "ellipsis", maxWidth: "15rem", whiteSpace: "nowrap" }}>{this.state.title}</div></a></div>;
+        return <div className="row" style={{ alignItems: "baseline", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>
+            <a style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} href="/">首页</a>
+            <i className="fa fa-chevron-right"></i>
+            <a style={{ color: "grey", fontSize: "1rem", marginLeft: "0.5rem", marginRight: "0.5rem" }} href={listUrl} >{this.state.boardName}</a>
+            <i className="fa fa-chevron-right"></i>
+            <a style={{ color: "grey", fontSize: "1rem", marginLeft: "0.5rem", marginRight: "0.5rem" }} href={topicUrl}><div style={{ overflow: "hidden", textOverflow: "ellipsis", maxWidth: "15rem", whiteSpace: "nowrap" }}>{this.state.title}</div> </a>
+        </div>;
     }
 }
