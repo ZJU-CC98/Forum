@@ -404,6 +404,7 @@ body {
 }
 
 .userName {
+    width:5rem;
     margin-left: 0.625rem;
 }
 
@@ -575,6 +576,7 @@ body {
     display: flex;
     flex-direction: row;
     align-items: flex-end;
+    font-family:"微软雅黑";
 }
 
 .chooseTag {
@@ -2692,6 +2694,23 @@ a {
     position: absolute;
     z-index: 1000;
     width: 30rem;
+    height: 23rem;
+    border: 1px solid #d5d5d5;
+    background: #fff;
+    box-shadow: 0px 0px 3px rgba(0,0,0,0.25);
+    -moz-box-shadow: 0 0 3px rgba(0,0,0,.25);
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,.25);
+    border-radius: .5rem;
+    -moz-border-radius: .5rem;
+    -webkit-border-radius: .5rem;
+    background-color: #FFFACD;
+}
+.judgeManagement {
+    margin-left: 30rem;
+    margin-top: -15rem;
+    position: absolute;
+    z-index: 1000;
+    width: 30rem;
     height: 20rem;
     border: 1px solid #d5d5d5;
     background: #fff;
@@ -2703,7 +2722,6 @@ a {
     -webkit-border-radius: .5rem;
     background-color: #FFFACD;
 }
-
 .manageUI {
     display: flex;
     flex-direction: row;
@@ -2749,7 +2767,7 @@ a {
     cursor: pointer;
 }
 .confirmManagement {
-    margin-left: 5rem;
+
     margin-top: 1rem;
     width: 5rem;
     height: 2rem;
@@ -2770,6 +2788,7 @@ a {
 .awardInfo{
     margin-left:2rem;
     margin-right:2rem;
+    width:20rem;
 }
 .awardPager{
     margin-bottom:0.5rem;
@@ -2781,8 +2800,12 @@ a {
     margin-right:2rem;
     margin-top:1.5rem;
 }
+.manageInfo{
+    height:15rem;
+    justify-content:space-around;
+}
 .manageObject{
-    width:5rem;
+    width:7rem;
     margin-right:1rem;
 }
 .followBoard {

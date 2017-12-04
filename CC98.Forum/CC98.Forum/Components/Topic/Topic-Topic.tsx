@@ -17,7 +17,9 @@ export class PostTopic extends React.Component<{ userId, imgUrl, page, topicid }
         }
     }
     async update() {
-        this.setState({});
+        let topicMessage = await Utility.getTopic(this.props.topicid, this.context.router);
+
+        this.setState({ topicMessage: topicMessage });
     }
     async componentDidMount() {
         let topicMessage = await Utility.getTopic(this.props.topicid, this.context.router);
@@ -38,7 +40,7 @@ export class PostTopic extends React.Component<{ userId, imgUrl, page, topicid }
                         <TopicTitle Title={this.state.topicMessage.title} Time={this.state.topicMessage.time} HitCount={this.state.topicMessage.hitCount} />
                         <div id="ads"><img width="100%" src={this.props.imgUrl}></img></div>
                     </div>
-                    <PostManagement topicId={this.props.topicid} postId={this.state.topicMessage.postId} userId={this.props.userId} update={this.update} />
+                    <PostManagement topicId={this.props.topicid} postId={this.state.topicMessage.postId} userId={this.props.userId} update={this.update} privilege={this.state.topicMessage.privilege} />
                     <Judge userId={this.state.topicMessage.userId} postId={this.state.topicMessage.postId} update={this.update} topicId={this.props.topicid} />
                     <TopicContent postid={this.state.topicMessage.postId} content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} topicid={this.props.topicid} userId={this.state.topicMessage.userId}
                         contentType={this.state.topicMessage.contentType}

@@ -147,7 +147,7 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
         if (this.state.UI === "minus1") UI = minus1UI;
         else UI = plus1UI;
         const UIId = `judge${this.props.postId}`;  
-        return <div style={{ display: "none" }} id={UIId} className="postManagement">
+        return <div style={{ display: "none" }} id={UIId} className="judgeManagement">
             <div className="judgeUI column">
                 <div className="row judgeName">
                       风评值
@@ -162,7 +162,7 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
                 </div>
             </div>
             {UI}
-            <div className="row">
+            <div className="row" style={{ justifyContent: "space-around" }}>
                 <button onClick={this.confirm} className="confirmManagement">确认</button>
                 <button onClick={this.close} style={{ marginRight: "2rem" }} className="confirmManagement">关闭</button>
             </div>

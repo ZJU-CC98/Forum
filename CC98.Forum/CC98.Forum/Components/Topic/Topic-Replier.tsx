@@ -3,7 +3,7 @@ import { Link} from 'react-router-dom';
 import { RouteComponent } from '../RouteComponent';
 import { UserDetails } from './Topic-UserDetails';
 declare let moment: any;
-export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, userName, replyTime, floor, userImgUrl, sendTopicNumber, privilege }, {}, { topicid }>{
+export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, userName, replyTime, floor, userImgUrl, sendTopicNumber, privilege,isDeleted }, {}, { topicid }>{
     constructor(props, content) {
         super(props, content);
     }
@@ -33,7 +33,7 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
             topicNumber = '';
         }
         let userDetails;
-        if (this.props.isAnonymous != true) {
+        if (this.props.isAnonymous != true && this.props.isDeleted!=true) {
             userDetails = <UserDetails userName={this.props.userName} userId={this.props.userId} />;
         } else {
             userDetails = null;
@@ -74,7 +74,7 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
                         <div><span className="timeProp">{moment(this.props.replyTime).format('YYYY-MM-DD HH:mm:ss')}</span></div>
                     </div>
                 </div>
-                <div style={{ height: "6rem", borderBottom:"#eaeaea solid thin" }}>
+                <div style={{ height: "6rem", borderBottom: "#eaeaea solid thin", marginRight:"2rem" }}>
                 <div id="operation"  >
                     <Link className="operation" to="">引用</Link>
                     <Link className="operation" to="">编辑</Link>
