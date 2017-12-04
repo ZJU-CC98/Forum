@@ -3,7 +3,7 @@ import * as Utility from '../../Utility';
 import * as $ from 'jquery';
 import { match } from "react-router";
 
-export class PostManagement extends React.Component<{ userId, postId,update }, { wealth, prestige, reason, tpdays, UI, tips }>{
+export class PostManagement extends React.Component<{ userId, postId, update, topicId }, { wealth, prestige, reason, tpdays, UI, tips }>{
 
     constructor(props) {
 
@@ -24,6 +24,8 @@ export class PostManagement extends React.Component<{ userId, postId,update }, {
         this.showPunishUI = this.showPunishUI.bind(this);
 
         this.showDeleteUI = this.showDeleteUI.bind(this);
+
+        this.close = this.close.bind(this);
 
         this.state = { wealth: 1000, prestige: 0, reason: "", tpdays: 0, UI: "Award", tips: "" }
 
@@ -48,44 +50,53 @@ export class PostManagement extends React.Component<{ userId, postId,update }, {
     }
 
     confirm() {
-
-        if ($("input[name='reason']:checked").val()) {
-
-            Utility.awardWealth($("input[name='reason']:checked").val(), this.state.wealth, this.props.postId);
-
-            const UIId = `#manage${this.props.postId}`;
-
-            $(UIId).css("display", "none");
-            console.log("confirm update");
-            this.props.update();
-            console.log("confirm update finished");
-        } else {
-
-            if (this.state.reason === "") {
-
-                console.log("请输入原因！");
-
-                this.setState({ tips: "请输入原因！" });
-
-                return false;
-
-            } else {
-
-                Utility.awardWealth(this.state.reason, this.state.wealth, this.props.postId);
-
-                const UIId = `#manage${this.props.postId}`;
-
-                $(UIId).css("display", "none");
-                console.log("confirm update");
-                this.props.update();
-                console.log("confirm update finished");
-                this.setState({ reason: "" });
-                console.log("confirm setstate");
-            }
-
+        switch (this.state.UI) {
+            case 'Award':
+                if ($("input[name='reason']:checked").val()) {
+                    if ($("input[name='reason']:checked").val() !== '自定义') {
+                        Utility.awardWealth($("input[name='reason']:checked").val(), this.state.wealth, this.props.postId);
+                        if (this.state.prestige!==0)
+                        Utility.addPrestige(this.props.postId, this.state.prestige, $("input[name='reason']:checked").val());
+                    } else {
+                        Utility.awardWealth(this.state.reason, this.state.wealth, this.props.postId);
+                        if (this.state.prestige !== 0)
+                        Utility.addPrestige(this.props.postId, this.state.prestige, this.state.reason);
+                    }
+                    const UIId = `#manage${this.props.postId}`;
+                    $(UIId).css("display", "none");
+                    this.props.update();
+                } else {
+                    this.setState({ tips: "请输入原因！" });
+                }
+                break;
+            case 'Punish':
+                if ($("input[name='reason']:checked").val()) {
+                    if ($("input[name='reason']:checked").val() !== '自定义') {
+                       
+                    } else {
+                        if (this.state.reason) {
+                           
+                        } else {
+                            this.setState({ tips: "请输入原因！" });
+                        }
+                    }
+                    const UIId = `#manage${this.props.postId}`;
+                    $(UIId).css("display", "none");
+                    this.props.update();
+                } else {
+                    this.setState({ tips: "请选一个选项！" });
+                }
+                break;
+            case 'Delete':
+                if (this.state.reason) {
+                    Utility.deletePost(this.props.topicId, this.props.postId, this.state.reason);
+                    const UIId = `#manage${this.props.postId}`;
+                    $(UIId).css("display", "none");
+                    this.props.update();
+                } else {
+                    this.setState({ tips: "请输入原因！" });
+                }
         }
-
-
 
     }
 
@@ -112,7 +123,10 @@ export class PostManagement extends React.Component<{ userId, postId,update }, {
         this.setState({ tpdays: e.target.value });
 
     }
-
+    close() {
+        const UIId = `#manage${this.props.postId}`;
+        $(UIId).css("display", "none");
+    }
     render() {
 
         let UI;
@@ -139,7 +153,7 @@ export class PostManagement extends React.Component<{ userId, postId,update }, {
 
                 <div className="manageObject">原因</div>
 
-                <div className="row">
+                <div className="row" style={{ justifyContent:"space-around" }}>
 
                     <div className="row">
 
@@ -158,9 +172,10 @@ export class PostManagement extends React.Component<{ userId, postId,update }, {
                         <input type="radio" name="reason" value="热心回复" /><div>热心回复</div></div>
 
                 </div>
-
-                <input type="text" value={this.state.reason} onChange={this.reasonInput} />
-
+                <div className="row">
+                    <input type="radio" name="reason" value="自定义" /><div>自定义</div>
+                    <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+                </div>
                 <div>{this.state.tips}</div>
 
             </div>
@@ -238,9 +253,10 @@ export class PostManagement extends React.Component<{ userId, postId,update }, {
             </div>
 
             {UI}
-
-            <button onClick={this.confirm} className="confirmManagement">确认</button>
-
+            <div className="row">
+                <button onClick={this.confirm} className="confirmManagement">确认</button>
+                <button onClick={this.close} style={{ marginRight: "2rem" }} className="confirmManagement">关闭</button>
+            </div>
         </div>;
 
     }

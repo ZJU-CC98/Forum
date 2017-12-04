@@ -211,7 +211,7 @@ export async function getTopicContent(topicid: number, curPage: number, router) 
                 }
             }
         }
-  
+        console.log(post);
         return post;
 
     } catch (e) {
@@ -2343,4 +2343,44 @@ export async function getMessageAttme(from: number, router) {
     } catch (e) {
         //window.location.href = "/status/Disconnected";
     }
+}
+export async function plus1(topicId,postId,reason) {
+    const url = `http://apitest.niconi.cc/post/userrating?topicid=${topicId}&postid=${postId}`;
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    headers.append("Content-Type", "application/json");
+    const bodyinfo = { value: 1, reason: reason };
+    const body = JSON.stringify(bodyinfo);
+    const response = await fetch(url, { method: "PUT", headers, body });
+    console.log("plus1");
+}
+export async function minus1(topicId, postId, reason) {
+    const url = `http://apitest.niconi.cc/post/userrating?topicid=${topicId}&postid=${postId}`;
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    headers.append("Content-Type", "application/json");
+    const bodyinfo = { value: -1, reason: reason };
+    const body = JSON.stringify(bodyinfo);
+    const response = await fetch(url, { method: "PUT", headers, body });
+}
+export async function addPrestige(postId,value,reason) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    headers.append("Content-Type", "application/json");
+    const bodyinfo = { value: value, reason: reason };
+    const url = `http://apitest.niconi.cc/manage/bonus/prestige?postid=${postId}`;
+    const body = JSON.stringify(bodyinfo);
+    await fetch(url, { method:"PUT",headers ,body});
+}
+export async function deletePost(topicId,postId, reason) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    headers.append("Content-Type", 'application/json');
+    const bodyinfo = { reason: reason };
+    const url = `http://apitest.niconi.cc/manage/post?topicid=${topicId}&postid=${postId}`;
+    await fetch(url, { method: "DELETE", headers, body: JSON.stringify(bodyinfo) });
 }
