@@ -1314,6 +1314,7 @@ function getRecentContact(from, size, router) {
                     token = getLocalStorage("accessToken");
                     headers = new Headers();
                     headers.append('Authorization', token);
+                    console.log("开始获取联系人数据");
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/message/recentcontactusers?from=" + from + "&size=" + size, { headers: headers })];
                 case 1:
                     response = _a.sent();
@@ -1326,13 +1327,15 @@ function getRecentContact(from, size, router) {
                     return [4 /*yield*/, response.json()];
                 case 2:
                     recentContactId = _a.sent();
+                    console.log("开始获取联系人id数组");
+                    console.log(recentContactId);
                     url = "http://apitest.niconi.cc/user/basic";
                     for (i in recentContactId) {
                         if (i == "0") {
-                            url = url + "?id=" + recentContactId[i];
+                            url = url + "?id=" + recentContactId[i].userId;
                         }
                         else {
-                            url = url + "&id=" + recentContactId[i];
+                            url = url + "&id=" + recentContactId[i].userId;
                         }
                     }
                     return [4 /*yield*/, fetch(url)];
@@ -1349,7 +1352,9 @@ function getRecentContact(from, size, router) {
                     recentContact = _a.sent();
                     for (i in recentContact) {
                         recentContact[i].message = [];
+                        recentContact[i].lastContent = recentContactId[i].lastContent;
                     }
+                    console.log("接收到没有Message的列表");
                     console.log(recentContact);
                     return [2 /*return*/, recentContact];
                 case 5:
@@ -15378,27 +15383,33 @@ var MessageMessage = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         token = Utility.getLocalStorage("accessToken");
-                        console.log("\u8FDB\u5165\u6D88\u606F\u5F00\u59CB\u65F6\u7684token");
                         myInfo = Utility.getLocalStorage("userInfo");
                         recentContact = Utility.getStorage("recentContact");
-                        if (!!recentContact) return [3 /*break*/, 2];
+                        console.log("第一次获取联系人缓存");
+                        console.log(recentContact);
+                        if (!(!recentContact || recentContact.length == 0)) return [3 /*break*/, 2];
+                        console.log("没有获取到缓存，自己取");
                         return [4 /*yield*/, Utility.getRecentContact(0, 7, this.context.router)];
                     case 1:
                         recentContact = _a.sent();
+                        console.log("取到了数据，然后呢");
+                        console.log(recentContact);
                         Utility.setStorage("recentContact", recentContact);
                         _a.label = 2;
                     case 2: return [4 /*yield*/, Utility.sortContactList(recentContact, this.context.router)];
                     case 3:
                         //对联系人列表重新排序，看是否有从其他页面发起的聊天
                         recentContact = _a.sent();
-                        console.log("走远第一步");
+                        console.log("联系人列表重新排序后");
                         console.log(recentContact);
                         if (recentContact) {
                             //默认第一个人为聊天对象
                             this.setState({ data: recentContact, chatObj: recentContact[0] });
                         }
                         chatObj = this.state.chatObj;
-                        $("#" + chatObj.name).addClass('message-message-pFocus');
+                        if (chatObj) {
+                            $("#" + chatObj.name).addClass('message-message-pFocus');
+                        }
                         return [2 /*return*/];
                 }
             });
@@ -15463,13 +15474,13 @@ var MessageMessage = /** @class */ (function (_super) {
         if (!chatObj) {
             chatObj = {
                 id: 9898,
-                name: '系统',
-                portraitUrl: 'http://file.cc98.org/uploadfile/2017/11/24/024368341.gif',
+                name: '',
+                portraitUrl: 'http://file.cc98.org/uploadfile/2017/12/4/1636327542.png',
                 message: [{
                         id: 9898,
                         senderId: 9898,
                         receiverId: 9898,
-                        content: "",
+                        content: '',
                         isRead: true,
                         time: new Date(),
                         showTime: true
@@ -15480,7 +15491,7 @@ var MessageMessage = /** @class */ (function (_super) {
         if (!data) {
             data = [chatObj];
         }
-        console.log("正式开始数据填充的时候");
+        console.log("message正式开始数据填充的时候");
         console.log(data);
         console.log(chatObj);
         //创建联系人列表和聊天窗口
@@ -15533,6 +15544,8 @@ var MessagePerson = /** @class */ (function (_super) {
         if (!data.lastContent) {
             data.lastContent = '';
         }
+        console.log("单个联系人开始渲染");
+        console.log(data);
         return (React.createElement("div", { className: "message-message-person" },
             React.createElement("img", { className: "message-message-pPortraitUrl", src: data.portraitUrl }),
             React.createElement("div", { className: "message-message-pInfo" },
@@ -16129,14 +16142,11 @@ var MessageResponsebox = /** @class */ (function (_super) {
         var b = parseInt(a);
         var c = this.props.postId - b * 10;
         var content;
-        var view;
         if (this.props.isRead) {
-            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=gray]\u6709\u4EBA\u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60[/color][/url]";
-            view = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=gary]\u67E5\u770B[/color][/url]";
+            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=gray]\u6709\u4EBA\u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60[/color][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/url]";
         }
         else {
-            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=black][b]\u6709\u4EBA\u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60[/b][/color][/url]";
-            view = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=black][b]\u67E5\u770B[/b][/color][/url]";
+            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=black][b]\u6709\u4EBA\u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60[/b][/color][color=blue][b]http://" + host + "/topic/" + this.props.topicId + "[/b][/color][/url]";
         }
         return (React.createElement("div", { className: "message-response-box" },
             React.createElement("div", { className: "message-response-box-middle" },
@@ -16144,10 +16154,7 @@ var MessageResponsebox = /** @class */ (function (_super) {
                     React.createElement("div", { className: "message-response-box-middle-title" }, this.props.boardName),
                     React.createElement("div", { className: "message-response-box-middle-date" }, moment(this.props.time).format('YYYY-MM-DD HH:mm:ss'))),
                 React.createElement("div", { className: "message-response-box-middle-content" },
-                    React.createElement(UbbContainer_1.UbbContainer, { code: content }))),
-            React.createElement("div", { className: "message-response-box-right" },
-                " ",
-                React.createElement(UbbContainer_1.UbbContainer, { code: view }))));
+                    React.createElement(UbbContainer_1.UbbContainer, { code: content })))));
     };
     return MessageResponsebox;
 }(React.Component));
@@ -16289,14 +16296,11 @@ var MessageAttmebox = /** @class */ (function (_super) {
         var b = parseInt(a);
         var c = this.props.postId - b * 10;
         var content;
-        var view;
         if (this.props.isRead) {
-            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=gray]\u6709\u4EBA\u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D@\u4E86\u4F60[/color][/url]";
-            view = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=gary]\u67E5\u770B[/color][/url]";
+            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=gray]\u6709\u4EBA\u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60[/color][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/url]";
         }
         else {
-            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=black][b]\u6709\u4EBA\u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D@\u4E86\u4F60[/b][/color][/url]";
-            view = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=black][b]\u67E5\u770B[/b][/color][/url]";
+            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=black][b]\u6709\u4EBA\u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60[/b][/color][color=blue][b]http://" + host + "/topic/" + this.props.topicId + "[/b][/color][/url]";
         }
         return (React.createElement("div", { className: "message-response-box" },
             React.createElement("div", { className: "message-response-box-middle" },
@@ -16304,10 +16308,7 @@ var MessageAttmebox = /** @class */ (function (_super) {
                     React.createElement("div", { className: "message-response-box-middle-title" }, this.props.boardName),
                     React.createElement("div", { className: "message-response-box-middle-date" }, moment(this.props.time).format('YYYY-MM-DD HH:mm:ss'))),
                 React.createElement("div", { className: "message-response-box-middle-content" },
-                    React.createElement(UbbContainer_1.UbbContainer, { code: content }))),
-            React.createElement("div", { className: "message-response-box-right" },
-                " ",
-                React.createElement(UbbContainer_1.UbbContainer, { code: view }))));
+                    React.createElement(UbbContainer_1.UbbContainer, { code: content })))));
     };
     return MessageAttmebox;
 }(React.Component));
@@ -16452,18 +16453,18 @@ var MessageSystembox = /** @class */ (function (_super) {
                 var b = parseInt(a);
                 var c = this.props.postId - b * 10;
                 if (this.props.isRead) {
-                    content = "[color=gray]" + this.props.content + "[/color][url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=blue]http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "[/color][/url]";
+                    content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=gray]" + this.props.content + "[/color][color=blue]http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "[/color][/url]";
                 }
                 else {
-                    content = "[color=black][b]" + this.props.content + "[/b][/color][url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=blue]http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "[/color][/url]";
+                    content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=black][b]" + this.props.content + "[/b][/color][color=blue][b]http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "[/b][/color][/url]";
                 }
             }
             else {
                 if (this.props.isRead) {
-                    content = "[color=gray]" + this.props.content + "[/color][url=http://" + host + "/topic/" + this.props.topicId + "][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/url]";
+                    content = "[url=http://" + host + "/topic/" + this.props.topicId + "][color=gray]" + this.props.content + "[/color][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/url]";
                 }
                 else {
-                    content = "[color=black][b]" + this.props.content + "[/b][/color][url=http://" + host + "/topic/" + this.props.topicId + "][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/url]";
+                    content = "[url=http://" + host + "/topic/" + this.props.topicId + "][color=black][b]" + this.props.content + "[/b][/color][color=blue][b]http://" + host + "/topic/" + this.props.topicId + "[/color][/b][/url]";
                 }
             }
         }

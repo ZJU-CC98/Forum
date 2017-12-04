@@ -1563,13 +1563,13 @@ a {
             }
         }
 
-        .message-response-box-right { /*查看*/
+        /*.message-response-box-right { 
             flex-basis: 60px;
             line-height: 100px;
             font-size: 14px;
             margin-left: 10px;
             flex-shrink: 0;
-        }
+        }*/
     }
 }
 /*****************************************以下为我的关注的样式*********************************/
@@ -1909,7 +1909,7 @@ a {
     width: 94px;
     display: none;
     background-color: rgba(80,80,80,0.5);
-    margin-left: 30px;
+    margin-left: 42px;
     opacity: 0.9999; //暂时不知道原因，但是如果不加上一个小于1的opacity值，下拉会出问题,猜测是opacity把元素及所有子元素合在一起？
 }
 
@@ -1917,7 +1917,7 @@ a {
     width: 94px;
     display: none;
     background-color: rgba(80,80,80,0.5);
-    margin-left: 145px;
+    margin-left: 153px;
     opacity: 0.9999; //暂时不知道原因，但是如果不加上一个小于1的opacity值，下拉会出问题,猜测是opacity把元素及所有子元素合在一起？
 }
 

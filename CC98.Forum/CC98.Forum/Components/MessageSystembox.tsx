@@ -17,18 +17,18 @@ export class MessageSystembox extends React.Component<MessageSystemProps> {
                 let b = parseInt(a);
                 let c = this.props.postId - b * 10;
                 if (this.props.isRead) {
-                    content = `[color=gray]${this.props.content}[/color][url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=blue]http://${host}/topic/${this.props.topicId}/${b}#${c}[/color][/url]`;
+                    content = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=gray]${this.props.content}[/color][color=blue]http://${host}/topic/${this.props.topicId}/${b}#${c}[/color][/url]`;
                 }
                 else {
-                    content = `[color=black][b]${this.props.content}[/b][/color][url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=blue]http://${host}/topic/${this.props.topicId}/${b}#${c}[/color][/url]`;
+                    content = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=black][b]${this.props.content}[/b][/color][color=blue][b]http://${host}/topic/${this.props.topicId}/${b}#${c}[/b][/color][/url]`;
                 }
             }
             else {
                 if (this.props.isRead) {
-                    content = `[color=gray]${this.props.content}[/color][url=http://${host}/topic/${this.props.topicId}][color=blue]http://${host}/topic/${this.props.topicId}[/color][/url]`;
+                    content = `[url=http://${host}/topic/${this.props.topicId}][color=gray]${this.props.content}[/color][color=blue]http://${host}/topic/${this.props.topicId}[/color][/url]`;
                 }
                 else {
-                    content = `[color=black][b]${this.props.content}[/b][/color][url=http://${host}/topic/${this.props.topicId}][color=blue]http://${host}/topic/${this.props.topicId}[/color][/url]`;
+                    content = `[url=http://${host}/topic/${this.props.topicId}][color=black][b]${this.props.content}[/b][/color][color=blue][b]http://${host}/topic/${this.props.topicId}[/color][/b][/url]`;
                 }
             }
         }

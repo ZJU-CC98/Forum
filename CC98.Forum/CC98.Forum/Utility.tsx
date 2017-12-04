@@ -943,6 +943,7 @@ export async function getRecentContact(from: number, size: number, router) {
         let token = getLocalStorage("accessToken");
         const headers = new Headers();
         headers.append('Authorization', token);
+        console.log("开始获取联系人数据");
         let response = await fetch(`http://apitest.niconi.cc/message/recentcontactusers?from=${from}&size=${size}`, { headers });
         if (response.status === 401) {
             //window.location.href="/status/Loggout");
@@ -951,13 +952,15 @@ export async function getRecentContact(from: number, size: number, router) {
             //window.location.href="/status/ServerError");
         }
         let recentContactId = await response.json();
+        console.log("开始获取联系人id数组");
+        console.log(recentContactId);
         let url = "http://apitest.niconi.cc/user/basic"
         for (let i in recentContactId) {
             if (i == "0") {
-                url = `${url}?id=${recentContactId[i]}`;
+                url = `${url}?id=${recentContactId[i].userId}`;
             }
             else {
-                url = `${url}&id=${recentContactId[i]}`;
+                url = `${url}&id=${recentContactId[i].userId}`;
             }
         }
         let response1 = await fetch(url);
@@ -970,7 +973,9 @@ export async function getRecentContact(from: number, size: number, router) {
         let recentContact = await response1.json();
         for (let i in recentContact) {
             recentContact[i].message = [];
+            recentContact[i].lastContent = recentContactId[i].lastContent;
         }
+        console.log("接收到没有Message的列表");
         console.log(recentContact);
         return recentContact;
     } catch (e) {

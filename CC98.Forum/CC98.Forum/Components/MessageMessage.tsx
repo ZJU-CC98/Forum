@@ -26,22 +26,25 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
 
     async componentDidMount() {
         let token = Utility.getLocalStorage("accessToken");
-        console.log(`进入消息开始时的token`);
 
         //获取到本人信息
         let myInfo = Utility.getLocalStorage("userInfo");
 
         //创建一个数组存储联系人信息
         let recentContact = Utility.getStorage("recentContact");
-        if (!recentContact) {
+        console.log("第一次获取联系人缓存");
+        console.log(recentContact);
+        if (!recentContact || recentContact.length == 0) {
+            console.log("没有获取到缓存，自己取");
             recentContact = await Utility.getRecentContact(0, 7, this.context.router);
+            console.log("取到了数据，然后呢");
+            console.log(recentContact);
             Utility.setStorage("recentContact", recentContact);
         }
 
         //对联系人列表重新排序，看是否有从其他页面发起的聊天
         recentContact = await Utility.sortContactList(recentContact, this.context.router);
-
-        console.log("走远第一步");
+        console.log("联系人列表重新排序后");
         console.log(recentContact);
 
         if (recentContact) {
@@ -50,7 +53,9 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
         }
         //默认选中第一个联系人
         let chatObj = this.state.chatObj
-        $(`#${chatObj.name}`).addClass('message-message-pFocus');
+        if (chatObj) {
+            $(`#${chatObj.name}`).addClass('message-message-pFocus');
+        }
     }
 
     //对this.stata.data进行批量化转化为JSX的函数，每个JSX可点击改变state里聊天对象的信息
@@ -109,13 +114,13 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
         if (!chatObj) {
             chatObj = {
                 id: 9898,
-                name: '系统',
-                portraitUrl: 'http://file.cc98.org/uploadfile/2017/11/24/024368341.gif',
+                name: '',
+                portraitUrl: 'http://file.cc98.org/uploadfile/2017/12/4/1636327542.png',
                 message: [{
                     id: 9898,
                     senderId: 9898,
                     receiverId: 9898,
-                    content: "",
+                    content: '',
                     isRead: true,
                     time: new Date(),
                     showTime: true
@@ -126,7 +131,7 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
         if (!data) {
             data = [chatObj];
         }
-        console.log("正式开始数据填充的时候");
+        console.log("message正式开始数据填充的时候");
         console.log(data);
         console.log(chatObj);
         //创建联系人列表和聊天窗口
