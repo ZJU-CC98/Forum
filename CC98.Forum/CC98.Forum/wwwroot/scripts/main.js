@@ -138,10 +138,10 @@ function getBoardTopicAsync(curPage, boardid, router) {
                     totalTopicCountResponse = _a.sent();
                     //找不到版面
                     if (totalTopicCountResponse.status == 404) {
-                        //window.location.href = '/status/NotFoundBoard';
+                        window.location.href = '/status/NotFoundBoard';
                     }
                     if (totalTopicCountResponse.status === 500) {
-                        //window.location.href = '/status/ServerError';
+                        window.location.href = '/status/ServerError';
                     }
                     return [4 /*yield*/, totalTopicCountResponse.json()];
                 case 2:
@@ -166,14 +166,14 @@ function getBoardTopicAsync(curPage, boardid, router) {
                     response = _a.sent();
                     //无权限进版面
                     if (response.status === 401) {
-                        //window.location.href = '/status/UnauthorizedBoard';
+                        window.location.href = '/status/UnauthorizedBoard';
                     }
                     //版面不存在
                     if (response.status === 404) {
-                        //window.location.href = '/status/NotFoundBoard';
+                        window.location.href = '/status/NotFoundBoard';
                     }
                     if (response.status === 500) {
-                        //window.location.href = '/status/ServerError';
+                        window.location.href = '/status/ServerError';
                     }
                     return [4 /*yield*/, response.json()];
                 case 4:
@@ -213,17 +213,19 @@ function getTopic(topicid, router) {
                     str = _a.sent();
                     switch (str) {
                         case 'topic_not_exists':
-                            //window.location.href = "/status/NotFoundTopic";
+                            window.location.href = "/status/NotFoundTopic";
                             break;
                         case 'topic_is_deleted':
-                            //window.location.href = "/status/TopicDeleted";
+                            window.location.href = "/status/TopicDeleted";
                             break;
                         default:
+                            window.location.href = "/status/NotFoundTopic";
                     }
+                    window.location.href = "/status/NotFoundTopic";
                     _a.label = 3;
                 case 3:
                     if (response.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 4:
@@ -237,20 +239,21 @@ function getTopic(topicid, router) {
                     str = _a.sent();
                     switch (str) {
                         case 'topic_not_exists':
-                            //window.location.href = "/status/NotFoundTopic";
+                            window.location.href = "/status/NotFoundTopic";
                             break;
                         case 'topic_is_deleted':
-                            //window.location.href = "/status/TopicDeleted";
+                            window.location.href = "/status/TopicDeleted";
                             break;
                         default:
+                            window.location.href = "/status/NotFoundTopic";
                     }
                     _a.label = 7;
                 case 7:
                     if (hitCountResponse.status === 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
+                        window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (hitCountResponse.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, hitCountResponse.json()];
                 case 8:
@@ -270,7 +273,7 @@ function getTopic(topicid, router) {
                 case 11:
                     userMesResponse = _a.sent();
                     if (userMesResponse.status === 404) {
-                        //window.location.href = "/status/NotFoundUser";
+                        window.location.href = "/status/NotFoundUser";
                     }
                     return [4 /*yield*/, userMesResponse.json()];
                 case 12:
@@ -314,23 +317,23 @@ function getTopicContent(topicid, curPage, router) {
                 case 4:
                     topic = _a;
                     if (topic.status === 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
+                        window.location.href = "/status/UnauthorizedTopic";
                     }
                     //两种
                     if (topic.status === 404) {
-                        //window.location.href = "/status/";
+                        window.location.href = "/status/";
                     }
                     if (topic.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + topicid, { headers: headers })];
                 case 5:
                     replyCountResponse = _b.sent();
                     if (replyCountResponse.status == 404) {
-                        //window.location.href = "/status/NotFoundTopic";
+                        window.location.href = "/status/NotFoundTopic";
                     }
                     if (replyCountResponse.status == 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
+                        window.location.href = "/status/UnauthorizedTopic";
                     }
                     return [4 /*yield*/, replyCountResponse.json()];
                 case 6:
@@ -362,7 +365,7 @@ function getTopicContent(topicid, curPage, router) {
                 case 9:
                     userMesResponse = _b.sent();
                     if (userMesResponse.status === 404) {
-                        //window.location.href = "/status/NotFoundUser";
+                        window.location.href = "/status/NotFoundUser";
                     }
                     return [4 /*yield*/, userMesResponse.json()];
                 case 10:
@@ -404,16 +407,16 @@ function like(topicid, postid, router) {
                 case 1:
                     response = _a.sent();
                     if (response.status === 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
+                        window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 403) {
-                        //window.location.href = "/status/OperationForbidden";
+                        window.location.href = "/status/OperationForbidden";
                     }
                     if (response.status === 404) {
-                        //window.location.href = "/status/NotFoundTopic";
+                        window.location.href = "/status/NotFoundTopic";
                     }
                     if (response.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -442,16 +445,16 @@ function dislike(topicid, postid, router) {
                 case 1:
                     response = _a.sent();
                     if (response.status === 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
+                        window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 403) {
-                        //window.location.href = "/status/OperationForbidden";
+                        window.location.href = "/status/OperationForbidden";
                     }
                     if (response.status === 404) {
-                        //window.location.href = "/status/NotFoundTopic";
+                        window.location.href = "/status/NotFoundTopic";
                     }
                     if (response.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -480,16 +483,16 @@ function getLikeStateAndCount(topicid, postid, router) {
                 case 1:
                     response = _a.sent();
                     if (response.status === 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
+                        window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 403) {
-                        //window.location.href = "/status/OperationForbidden";
+                        window.location.href = "/status/OperationForbidden";
                     }
                     if (response.status === 404) {
-                        //window.location.href = "/status/NotFoundTopic";
+                        window.location.href = "/status/NotFoundTopic";
                     }
                     if (response.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -519,14 +522,14 @@ function getHotReplyContent(topicid, router) {
                     response = _a.sent();
                     //帖子不存在
                     if (response.status === 404) {
-                        //window.location.href = "/status/NotFoundTopic";
+                        window.location.href = "/status/NotFoundTopic";
                     }
                     //无权限进版面
                     if (response.status === 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
+                        window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -542,7 +545,7 @@ function getHotReplyContent(topicid, router) {
                 case 4:
                     userMesResponse = _a.sent();
                     if (userMesResponse.status === 404) {
-                        //window.location.href = "/status/NotFoundUser";
+                        window.location.href = "/status/NotFoundUser";
                     }
                     return [4 /*yield*/, userMesResponse.json()];
                 case 5:
@@ -680,13 +683,13 @@ function getCurUserTopic(topicid, userId, router) {
                 case 1:
                     response = _a.sent();
                     if (response.status === 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
+                        window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 404) {
-                        //window.location.href = "/status/NotFoundTopic";
+                        window.location.href = "/status/NotFoundTopic";
                     }
                     if (response.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -695,10 +698,10 @@ function getCurUserTopic(topicid, userId, router) {
                 case 3:
                     userMesResponse = _a.sent();
                     if (userMesResponse.status === 404) {
-                        //window.location.href = "/status/NotFoundUser";
+                        window.location.href = "/status/NotFoundUser";
                     }
                     if (userMesResponse.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, userMesResponse.json()];
                 case 4:
@@ -744,13 +747,13 @@ function getCurUserTopicContent(topicid, curPage, userName, userId, router) {
                 case 2:
                     topic = _a.sent();
                     if (topic.status === 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
+                        window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (topic.status === 404) {
-                        //window.location.href = "/status/NotFoundTopic";
+                        window.location.href = "/status/NotFoundTopic";
                     }
                     if (topic.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, topic.json()];
                 case 3:
@@ -782,7 +785,7 @@ function getCurUserTopicContent(topicid, curPage, userName, userId, router) {
                 case 5:
                     userMesResponse = _a.sent();
                     if (userMesResponse.status === 404) {
-                        //window.location.href = "/status/NotFoundUser";
+                        window.location.href = "/status/NotFoundUser";
                     }
                     return [4 /*yield*/, userMesResponse.json()];
                 case 6:
@@ -829,10 +832,10 @@ function getAllNewTopic(from, router) {
                 case 1:
                     response = _d.sent();
                     if (response.status === 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
+                        window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -850,10 +853,10 @@ function getAllNewTopic(from, router) {
                 case 4:
                     userFan0 = _d.sent();
                     if (userFan0.status === 404) {
-                        //window.location.href = "/status/NotFoundUser";
+                        window.location.href = "/status/NotFoundUser";
                     }
                     if (userFan0.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, userFan0.json()];
                 case 5:
@@ -863,10 +866,10 @@ function getAllNewTopic(from, router) {
                 case 6:
                     userInfo0 = _d.sent();
                     if (userInfo0.status === 404) {
-                        //window.location.href = "/status/NotFoundUser";
+                        window.location.href = "/status/NotFoundUser";
                     }
                     if (userInfo0.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, userInfo0.json()];
                 case 7:
@@ -950,10 +953,10 @@ function getFocusBoardTopic(boardId, boardName, from, router) {
                     _d.label = 4;
                 case 4:
                     if (response.status === 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
+                        window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 5:
@@ -971,10 +974,10 @@ function getFocusBoardTopic(boardId, boardName, from, router) {
                 case 7:
                     userFan0 = _d.sent();
                     if (userFan0.status === 404) {
-                        //window.location.href = "/status/NotFoundUser";
+                        window.location.href = "/status/NotFoundUser";
                     }
                     if (userFan0.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, userFan0.json()];
                 case 8:
@@ -984,10 +987,10 @@ function getFocusBoardTopic(boardId, boardName, from, router) {
                 case 9:
                     userInfo0 = _d.sent();
                     if (userInfo0.status === 404) {
-                        //window.location.href = "/status/NotFoundUser";
+                        window.location.href = "/status/NotFoundUser";
                     }
                     if (userInfo0.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, userInfo0.json()];
                 case 10:
@@ -1066,10 +1069,10 @@ function getFocusTopic(from, router) {
                 case 1:
                     response = _d.sent();
                     if (response.status === 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
+                        window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -1087,10 +1090,10 @@ function getFocusTopic(from, router) {
                 case 4:
                     userFan0 = _d.sent();
                     if (userFan0.status === 404) {
-                        //window.location.href = "/status/NotFoundUser";
+                        window.location.href = "/status/NotFoundUser";
                     }
                     if (userFan0.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, userFan0.json()];
                 case 5:
@@ -1100,10 +1103,10 @@ function getFocusTopic(from, router) {
                 case 6:
                     userInfo0 = _d.sent();
                     if (userInfo0.status === 404) {
-                        //window.location.href = "/status/NotFoundUser";
+                        window.location.href = "/status/NotFoundUser";
                     }
                     if (userInfo0.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, userInfo0.json()];
                 case 7:
@@ -1269,10 +1272,10 @@ function getBoardName(boardId, router) {
                 case 1:
                     res = _a.sent();
                     if (res.status === 404) {
-                        //window.location.href = "/status/NotFoundBoard";
+                        window.location.href = "/status/NotFoundBoard";
                     }
                     if (res.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, res.json()];
                 case 2:
@@ -1315,10 +1318,10 @@ function getRecentContact(from, size, router) {
                 case 1:
                     response = _a.sent();
                     if (response.status === 401) {
-                        ////window.location.href="/status/Loggout");
+                        //window.location.href="/status/Loggout");
                     }
                     if (response.status === 500) {
-                        ////window.location.href="/status/ServerError");
+                        //window.location.href="/status/ServerError");
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -1336,10 +1339,10 @@ function getRecentContact(from, size, router) {
                 case 3:
                     response1 = _a.sent();
                     if (response1.status === 404) {
-                        ////window.location.href="/status/NotFoundUser");
+                        //window.location.href="/status/NotFoundUser");
                     }
                     if (response1.status === 500) {
-                        ////window.location.href="/status/ServerError");
+                        //window.location.href="/status/ServerError");
                     }
                     return [4 /*yield*/, response1.json()];
                 case 4:
@@ -1375,10 +1378,10 @@ function getRecentMessage(userId, from, size, router) {
                 case 1:
                     response0 = _a.sent();
                     if (response0.status === 401) {
-                        ////window.location.href="/status/Logout");
+                        //window.location.href="/status/Logout");
                     }
                     if (response0.status === 500) {
-                        ////window.location.href="/status/ServerError");
+                        //window.location.href="/status/ServerError");
                     }
                     return [4 /*yield*/, response0.json()];
                 case 2:
@@ -1472,10 +1475,10 @@ function sortContactList(recentContact, router) {
                 case 4:
                     response = _c.sent();
                     if (response.status === 404) {
-                        ////window.location.href="/status/NotFoundUser");
+                        //window.location.href="/status/NotFoundUser");
                     }
                     if (response.status === 500) {
-                        ////window.location.href="/status/ServerError");
+                        //window.location.href="/status/ServerError");
                     }
                     return [4 /*yield*/, response.json()];
                 case 5:
@@ -1483,7 +1486,7 @@ function sortContactList(recentContact, router) {
                     return [3 /*break*/, 7];
                 case 6:
                     e_16 = _c.sent();
-                    ////window.location.href="/status/Disconnected");
+                    //window.location.href="/status/Disconnected");
                     flag = 0;
                     return [3 /*break*/, 7];
                 case 7:
@@ -1528,10 +1531,10 @@ function sortContactList(recentContact, router) {
                 case 14:
                     response0 = _c.sent();
                     if (response0.status === 404) {
-                        ////window.location.href="/status/NotFoundUser");
+                        //window.location.href="/status/NotFoundUser");
                     }
                     if (response0.status === 500) {
-                        ////window.location.href="/status/ServerError");
+                        //window.location.href="/status/ServerError");
                     }
                     return [4 /*yield*/, response0.json()];
                 case 15:
@@ -1539,7 +1542,7 @@ function sortContactList(recentContact, router) {
                     return [3 /*break*/, 17];
                 case 16:
                     e_17 = _c.sent();
-                    ////window.location.href="/status/Disconnected");
+                    //window.location.href="/status/Disconnected");
                     flag = 0;
                     return [3 /*break*/, 17];
                 case 17:
@@ -1578,13 +1581,13 @@ function getTotalReplyCount(topicid, router) {
                 case 1:
                     replyCountResponse = _a.sent();
                     if (replyCountResponse.status === 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
+                        window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (replyCountResponse.status === 404) {
-                        //window.location.href = "/status/NotFoundTopic";
+                        window.location.href = "/status/NotFoundTopic";
                     }
                     if (replyCountResponse.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, replyCountResponse.json()];
                 case 2:
@@ -1620,13 +1623,13 @@ function getCategory(topicid, router) {
                 case 1:
                     response = _a.sent();
                     if (response.status === 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
+                        window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 404) {
-                        //window.location.href = "/status/NotFoundTopic";
+                        window.location.href = "/status/NotFoundTopic";
                     }
                     if (response.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -1666,11 +1669,11 @@ function getUserDetails(userName, router) {
                 case 1:
                     message = _a.sent();
                     if (message.status === 404) {
-                        //window.location.href = "/status/NotFoundUser";
+                        window.location.href = "/status/NotFoundUser";
                         return [2 /*return*/, null];
                     }
                     if (message.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                         return [2 /*return*/, null];
                     }
                     return [4 /*yield*/, message.json()];
@@ -1705,15 +1708,16 @@ function getLikeState(topicid, router) {
                 case 2:
                     response = _a.sent();
                     if (response.status === 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
+                        window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 403) {
-                        //window.location.href = "/status/OperationForbidden";
+                        window.location.href = "/status/OperationForbidden";
                     }
                     if (response.status === 404) {
-                        //window.location.href = "/status/NotFoundTopic";
+                        window.location.href = "/status/NotFoundTopic";
                     }
                     if (!(response.status === 500)) return [3 /*break*/, 3];
+                    window.location.href = "/status/ServerError";
                     return [3 /*break*/, 5];
                 case 3: return [4 /*yield*/, response.json()];
                 case 4:
@@ -1743,16 +1747,16 @@ function refreshLikeState(topicId, postId, router) {
                 case 1:
                     response = _a.sent();
                     if (response.status === 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
+                        window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 403) {
-                        //window.location.href = "/status/OperationForbidden";
+                        window.location.href = "/status/OperationForbidden";
                     }
                     if (response.status === 404) {
-                        //window.location.href = "/status/NotFoundTopic";
+                        window.location.href = "/status/NotFoundTopic";
                     }
                     if (response.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -1794,19 +1798,19 @@ function sendTopic(topicId, router) {
                 case 1:
                     mes = _a.sent();
                     if (mes.status === 401) {
-                        //window.location.href = "/status/Logout";
+                        window.location.href = "/status/Logout";
                     }
                     if (mes.status === 402) {
-                        //window.location.href = "/status/ContentNeeded";
+                        window.location.href = "/status/ContentNeeded";
                     }
                     if (mes.status === 403) {
-                        //window.location.href = "/status/OperationForbidden";
+                        window.location.href = "/status/OperationForbidden";
                     }
                     if (mes.status === 404) {
-                        //window.location.href = "/status/NotFoundTopic";
+                        window.location.href = "/status/NotFoundTopic";
                     }
                     if (mes.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [3 /*break*/, 3];
                 case 2:
@@ -1832,10 +1836,10 @@ function getListCategory(boardId, router) {
                 case 1:
                     boardResponse = _a.sent();
                     if (boardResponse.status === 404) {
-                        //window.location.href = "/status/NotFoundBoard";
+                        window.location.href = "/status/NotFoundBoard";
                     }
                     if (boardResponse.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, boardResponse.json()];
                 case 2:
@@ -1866,10 +1870,10 @@ function getBoardMessage(boardId, router) {
                 case 1:
                     response = _a.sent();
                     if (response.status === 404) {
-                        //window.location.href = "/status/NotFoundBoard";
+                        window.location.href = "/status/NotFoundBoard";
                     }
                     if (response.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -1898,10 +1902,10 @@ function getListTotalPage(boardId, router) {
                 case 1:
                     totalTopicCountResponse = _a.sent();
                     if (totalTopicCountResponse.status === 404) {
-                        //window.location.href = "/status/NotFoundBoard";
+                        window.location.href = "/status/NotFoundBoard";
                     }
                     if (totalTopicCountResponse.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, totalTopicCountResponse.json()];
                 case 2:
@@ -1931,10 +1935,10 @@ function getBasicBoardMessage(boardId, curPage, router) {
                 case 1:
                     response = _a.sent();
                     if (response.status === 404) {
-                        //window.location.href = "/status/NotFoundBoard";
+                        window.location.href = "/status/NotFoundBoard";
                     }
                     if (response.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 2:
@@ -1977,13 +1981,13 @@ function getCurUserTotalReplyPage(topicId, userId, router) {
                 case 1:
                     replyCountResponse = _a.sent();
                     if (replyCountResponse.status === 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
+                        window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (replyCountResponse.status === 404) {
-                        //window.location.href = "/status/NotFoundBoard";
+                        window.location.href = "/status/NotFoundBoard";
                     }
                     if (replyCountResponse.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, replyCountResponse.json()];
                 case 2:
@@ -2027,10 +2031,10 @@ function sendMessage(bodyContent, router) {
                 case 1:
                     response = _a.sent();
                     if (response.status === 401) {
-                        //window.location.href = "/status/Loggout";
+                        window.location.href = "/status/Loggout";
                     }
                     if (response.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [2 /*return*/, response];
             }
@@ -2356,10 +2360,10 @@ function getSearchTopic(boardId, words, from, router) {
                 case 2:
                     response = _d.sent();
                     if (response.status === 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
+                        window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 3:
@@ -2373,10 +2377,10 @@ function getSearchTopic(boardId, words, from, router) {
                 case 5:
                     response = _d.sent();
                     if (response.status === 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
+                        window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 6:
@@ -2397,10 +2401,10 @@ function getSearchTopic(boardId, words, from, router) {
                 case 9:
                     userFan0 = _d.sent();
                     if (userFan0.status === 404) {
-                        //window.location.href = "/status/NotFoundUser";
+                        window.location.href = "/status/NotFoundUser";
                     }
                     if (userFan0.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, userFan0.json()];
                 case 10:
@@ -2410,10 +2414,10 @@ function getSearchTopic(boardId, words, from, router) {
                 case 11:
                     userInfo0 = _d.sent();
                     if (userInfo0.status === 404) {
-                        //window.location.href = "/status/NotFoundUser";
+                        window.location.href = "/status/NotFoundUser";
                     }
                     if (userInfo0.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, userInfo0.json()];
                 case 12:
@@ -2481,6 +2485,15 @@ function getMasters(topicId) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/Topic/" + topicId, { headers: headers })];
                 case 1:
                     response = _a.sent();
+                    if (response.status === 401) {
+                        window.location.href = "/status/unauthorizedboard";
+                    }
+                    if (response.status === 404) {
+                        window.location.href = "/status/notfoundboard";
+                    }
+                    if (response.status === 500) {
+                        window.location.href = "/status/servererror";
+                    }
                     return [4 /*yield*/, response.json()];
                 case 2:
                     data = _a.sent();
@@ -2488,6 +2501,15 @@ function getMasters(topicId) {
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/board/" + boardId, { headers: headers })];
                 case 3:
                     boardResponse = _a.sent();
+                    if (boardResponse.status === 401) {
+                        window.location.href = "/status/unauthorizedboard";
+                    }
+                    if (boardResponse.status === 404) {
+                        window.location.href = "/status/notfoundboard";
+                    }
+                    if (boardResponse.status === 500) {
+                        window.location.href = "/status/servererror";
+                    }
                     return [4 /*yield*/, boardResponse.json()];
                 case 4:
                     boardData = _a.sent();
@@ -2517,6 +2539,12 @@ function awardWealth(reason, value, postId) {
                     return [4 /*yield*/, fetch(url, { method: "PUT", headers: headers, body: str })];
                 case 1:
                     response = _a.sent();
+                    if (response.status === 401) {
+                        window.location.href = "/status/unauthorizedoperation";
+                    }
+                    if (response.status === 500) {
+                        window.location.href = "/status/servererror";
+                    }
                     return [2 /*return*/];
             }
         });
@@ -2538,6 +2566,9 @@ function getAwardInfo(postId, page) {
                     return [4 /*yield*/, fetch(url, { headers: headers })];
                 case 1:
                     response = _a.sent();
+                    if (response.status === 500) {
+                        window.location.href = "/status/servererror";
+                    }
                     return [4 /*yield*/, response.json()];
                 case 2:
                     data = _a.sent();
@@ -2557,6 +2588,9 @@ function getPortraitUrl(userName) {
                     return [4 /*yield*/, fetch(url)];
                 case 1:
                     response = _a.sent();
+                    if (response.status === 500) {
+                        window.location.href = "/status/servererror";
+                    }
                     return [4 /*yield*/, response.json()];
                 case 2:
                     data = _a.sent();
@@ -3011,6 +3045,12 @@ function followBoard(boardId) {
                     return [4 /*yield*/, fetch(url, { method: "POST", headers: headers })];
                 case 1:
                     response = _a.sent();
+                    if (response.status === 404) {
+                        window.location.href = "/status/notfoundboard";
+                    }
+                    if (response.status === 500) {
+                        window.location.href = "/status/servererror";
+                    }
                     return [2 /*return*/];
             }
         });
@@ -3030,6 +3070,12 @@ function unfollowBoard(boardId) {
                     return [4 /*yield*/, fetch(url, { method: "DELETE", headers: headers })];
                 case 1:
                     response = _a.sent();
+                    if (response.status === 404) {
+                        window.location.href = "/status/notfoundboard";
+                    }
+                    if (response.status === 500) {
+                        window.location.href = "/status/servererror";
+                    }
                     return [2 /*return*/];
             }
         });
@@ -3055,10 +3101,10 @@ function getMessageSystem(from, router) {
                 case 2:
                     response = _a.sent();
                     if (response.status === 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
+                        window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 3:
@@ -3093,10 +3139,10 @@ function getMessageResponse(from, router) {
                 case 2:
                     response = _d.sent();
                     if (response.status === 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
+                        window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 3:
@@ -3157,10 +3203,10 @@ function getMessageAttme(from, router) {
                 case 2:
                     response = _d.sent();
                     if (response.status === 401) {
-                        //window.location.href = "/status/UnauthorizedTopic";
+                        window.location.href = "/status/UnauthorizedTopic";
                     }
                     if (response.status === 500) {
-                        //window.location.href = "/status/ServerError";
+                        window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
                 case 3:
@@ -3218,6 +3264,12 @@ function plus1(topicId, postId, reason) {
                     return [4 /*yield*/, fetch(url, { method: "PUT", headers: headers, body: body })];
                 case 1:
                     response = _a.sent();
+                    if (response.status === 401) {
+                        window.location.href = "/status/unauthorizedoperation";
+                    }
+                    if (response.status === 500) {
+                        window.location.href = "/status/servererror";
+                    }
                     console.log("plus1");
                     return [2 /*return*/];
             }
@@ -3241,6 +3293,12 @@ function minus1(topicId, postId, reason) {
                     return [4 /*yield*/, fetch(url, { method: "PUT", headers: headers, body: body })];
                 case 1:
                     response = _a.sent();
+                    if (response.status === 401) {
+                        window.location.href = "/status/unauthorizedoperation";
+                    }
+                    if (response.status === 500) {
+                        window.location.href = "/status/servererror";
+                    }
                     return [2 /*return*/];
             }
         });
@@ -3249,7 +3307,7 @@ function minus1(topicId, postId, reason) {
 exports.minus1 = minus1;
 function addPrestige(postId, value, reason) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, headers, bodyinfo, url, body;
+        var token, headers, bodyinfo, url, body, response;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -3262,7 +3320,13 @@ function addPrestige(postId, value, reason) {
                     body = JSON.stringify(bodyinfo);
                     return [4 /*yield*/, fetch(url, { method: "PUT", headers: headers, body: body })];
                 case 1:
-                    _a.sent();
+                    response = _a.sent();
+                    if (response.status === 401) {
+                        window.location.href = "/status/unauthorizedoperation";
+                    }
+                    if (response.status === 500) {
+                        window.location.href = "/status/servererror";
+                    }
                     return [2 /*return*/];
             }
         });
@@ -3271,7 +3335,7 @@ function addPrestige(postId, value, reason) {
 exports.addPrestige = addPrestige;
 function deletePost(topicId, postId, reason) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, headers, bodyinfo, url;
+        var token, headers, bodyinfo, url, response;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -3283,7 +3347,13 @@ function deletePost(topicId, postId, reason) {
                     url = "http://apitest.niconi.cc/manage/post?topicid=" + topicId + "&postid=" + postId;
                     return [4 /*yield*/, fetch(url, { method: "DELETE", headers: headers, body: JSON.stringify(bodyinfo) })];
                 case 1:
-                    _a.sent();
+                    response = _a.sent();
+                    if (response.status === 401) {
+                        window.location.href = "/status/unauthorizedoperation";
+                    }
+                    if (response.status === 500) {
+                        window.location.href = "/status/servererror";
+                    }
                     return [2 /*return*/];
             }
         });
@@ -4768,17 +4838,17 @@ var react_redux_1 = __webpack_require__(6);
 var react_router_dom_1 = __webpack_require__(3);
 var Topic_1 = __webpack_require__(16);
 var Board_1 = __webpack_require__(15);
-var Topic_Trace_1 = __webpack_require__(27);
-var BoardList_1 = __webpack_require__(28);
-var UserCenter_1 = __webpack_require__(29);
-var Message_1 = __webpack_require__(31);
-var Topic_New_1 = __webpack_require__(32);
-var Focus_1 = __webpack_require__(33);
-var Header_1 = __webpack_require__(34);
-var Footer_1 = __webpack_require__(35);
-var MainPage_1 = __webpack_require__(36);
-var User_1 = __webpack_require__(37);
-var LogOn_1 = __webpack_require__(18);
+var Topic_Trace_1 = __webpack_require__(26);
+var BoardList_1 = __webpack_require__(27);
+var UserCenter_1 = __webpack_require__(28);
+var Message_1 = __webpack_require__(30);
+var Topic_New_1 = __webpack_require__(31);
+var Focus_1 = __webpack_require__(32);
+var Header_1 = __webpack_require__(33);
+var Footer_1 = __webpack_require__(34);
+var MainPage_1 = __webpack_require__(35);
+var User_1 = __webpack_require__(36);
+var LogOn_1 = __webpack_require__(37);
 var Topic_CreateTopic_1 = __webpack_require__(38);
 var Status = __webpack_require__(39);
 var Search_1 = __webpack_require__(40);
@@ -4851,6 +4921,17 @@ var AppBeforeConnect = /** @class */ (function (_super) {
                 React.createElement(react_router_dom_1.Route, { path: "/search", component: Search_1.Search }),
                 React.createElement(react_router_dom_1.Route, { path: "/searchBoard", component: SearchBoard_1.SearchBoard }),
                 React.createElement(react_router_dom_1.Route, { path: "/createtopic/:boardId", component: Topic_CreateTopic_1.CreateTopic }),
+                React.createElement(react_router_dom_1.Route, { path: "/status/notfoundtopic", component: Status.NotFoundTopic }),
+                React.createElement(react_router_dom_1.Route, { path: "/status/notfoundboard", component: Status.NotFoundBoard }),
+                React.createElement(react_router_dom_1.Route, { path: "/status/logout", component: Status.LogOut }),
+                React.createElement(react_router_dom_1.Route, { path: "/status/topicdeleted", component: Status.TopicDeleted }),
+                React.createElement(react_router_dom_1.Route, { path: "/status/unauthorizedtopic", component: Status.UnauthorizedTopic }),
+                React.createElement(react_router_dom_1.Route, { path: "/status/unauthorizedboard", component: Status.UnauthorizedBoard }),
+                React.createElement(react_router_dom_1.Route, { path: "/status/unauthorizedoperation", component: Status.UnauthorizedOperation }),
+                React.createElement(react_router_dom_1.Route, { path: "/status/notfounduser", component: Status.NotFoundUser }),
+                React.createElement(react_router_dom_1.Route, { path: "/status/servererror", component: Status.ServerError }),
+                React.createElement(react_router_dom_1.Route, { path: "/status/contentneeded", component: Status.ContentNeeded }),
+                React.createElement(react_router_dom_1.Route, { path: "/status/operationforbidden", component: Status.OperationForbidden }),
                 React.createElement(Footer_1.Footer, null))) : React.createElement("div", { style: { backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px" } },
                 React.createElement(Header_1.Header, null),
                 errorElement,
@@ -4864,7 +4945,7 @@ function mapState(state) {
         errorMessage: state.error.errorMessage
     };
 }
-exports.App = react_redux_1.connect(mapState, function () { return (null); })(AppBeforeConnect);
+exports.App = react_redux_1.connect(mapState, null)(AppBeforeConnect);
 
 
 /***/ }),
@@ -6041,7 +6122,7 @@ var Topic_HotReply_1 = __webpack_require__(80);
 var Topic_SendTopic_1 = __webpack_require__(82);
 var Topic_Category_1 = __webpack_require__(83);
 var Topic_Pager_1 = __webpack_require__(84);
-var Topic_Topic_1 = __webpack_require__(22);
+var Topic_Topic_1 = __webpack_require__(21);
 var Topic_Reply_1 = __webpack_require__(89);
 var Constants;
 (function (Constants) {
@@ -6055,7 +6136,7 @@ var Post = /** @class */ (function (_super) {
         return _this;
     }
     Post.prototype.componentDidUpdate = function () {
-        scrollTo(0, 0);
+        //scrollTo(0, 0);
     };
     Post.prototype.handleChange = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -6095,6 +6176,10 @@ var Post = /** @class */ (function (_super) {
                         return [4 /*yield*/, this.getTotalPage(this.match.params.topicid)];
                     case 1:
                         totalPage = _a.sent();
+                        console.log(this.state.page);
+                        console.log(newProps.match.params.page);
+                        if (this.state.page !== newProps.match.params.page)
+                            scrollTo(0, 0);
                         this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName });
                         return [2 /*return*/];
                 }
@@ -6438,49 +6523,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var react_router_dom_1 = __webpack_require__(3);
-var LogOnExact_1 = __webpack_require__(115);
-var Logoff_1 = __webpack_require__(116);
-/**
- * 用户中心页面
- */
-var LogOn = /** @class */ (function (_super) {
-    __extends(LogOn, _super);
-    function LogOn() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    LogOn.prototype.render = function () {
-        return (React.createElement(react_router_dom_1.BrowserRouter, null,
-            React.createElement("div", null,
-                React.createElement(react_router_dom_1.Route, { path: "/logon", exact: true, component: LogOnExact_1.default }),
-                React.createElement(react_router_dom_1.Route, { path: "/logon/logoff", component: Logoff_1.LogOff }))));
-    };
-    return LogOn;
-}(React.Component));
-exports.LogOn = LogOn;
-
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
 var Ubb = __webpack_require__(2);
 var ImageTagHandler = /** @class */ (function (_super) {
     __extends(ImageTagHandler, _super);
@@ -6559,7 +6601,7 @@ exports.Image = Image;
 
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6788,7 +6830,7 @@ exports.UserDetails = UserDetails;
 
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6993,7 +7035,7 @@ exports.UbbEditor = UbbEditor;
 
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7049,9 +7091,9 @@ var Utility = __webpack_require__(1);
 var Topic_AuthorMessage_1 = __webpack_require__(85);
 var Topic_TopicTitle_1 = __webpack_require__(86);
 var Topic_TopicContent_1 = __webpack_require__(87);
-var Topic_Award_1 = __webpack_require__(23);
-var Post_Management_1 = __webpack_require__(24);
-var Topic_Judge_1 = __webpack_require__(25);
+var Topic_Award_1 = __webpack_require__(22);
+var Post_Management_1 = __webpack_require__(23);
+var Topic_Judge_1 = __webpack_require__(24);
 var PostTopic = /** @class */ (function (_super) {
     __extends(PostTopic, _super);
     function PostTopic(props, content) {
@@ -7065,9 +7107,15 @@ var PostTopic = /** @class */ (function (_super) {
     }
     PostTopic.prototype.update = function () {
         return __awaiter(this, void 0, void 0, function () {
+            var topicMessage;
             return __generator(this, function (_a) {
-                this.setState({});
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Utility.getTopic(this.props.topicid, this.context.router)];
+                    case 1:
+                        topicMessage = _a.sent();
+                        this.setState({ topicMessage: topicMessage });
+                        return [2 /*return*/];
+                }
             });
         });
     };
@@ -7108,7 +7156,7 @@ var PostTopic = /** @class */ (function (_super) {
                         React.createElement(Topic_TopicTitle_1.TopicTitle, { Title: this.state.topicMessage.title, Time: this.state.topicMessage.time, HitCount: this.state.topicMessage.hitCount }),
                         React.createElement("div", { id: "ads" },
                             React.createElement("img", { width: "100%", src: this.props.imgUrl }))),
-                    React.createElement(Post_Management_1.PostManagement, { topicId: this.props.topicid, postId: this.state.topicMessage.postId, userId: this.props.userId, update: this.update }),
+                    React.createElement(Post_Management_1.PostManagement, { topicId: this.props.topicid, postId: this.state.topicMessage.postId, userId: this.props.userId, update: this.update, privilege: this.state.topicMessage.privilege }),
                     React.createElement(Topic_Judge_1.Judge, { userId: this.state.topicMessage.userId, postId: this.state.topicMessage.postId, update: this.update, topicId: this.props.topicid }),
                     React.createElement(Topic_TopicContent_1.TopicContent, { postid: this.state.topicMessage.postId, content: this.state.topicMessage.content, signature: this.state.topicMessage.signature, topicid: this.props.topicid, userId: this.state.topicMessage.userId, contentType: this.state.topicMessage.contentType, masters: this.state.topicMessage.masters, update: this.update }),
                     React.createElement("div", { className: "column", style: { width: "100%" } },
@@ -7128,7 +7176,7 @@ exports.PostTopic = PostTopic;
 
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7315,7 +7363,7 @@ exports.Award = Award;
 
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7347,7 +7395,7 @@ var PostManagement = /** @class */ (function (_super) {
         _this.showPunishUI = _this.showPunishUI.bind(_this);
         _this.showDeleteUI = _this.showDeleteUI.bind(_this);
         _this.close = _this.close.bind(_this);
-        _this.state = { wealth: 1000, prestige: 0, reason: "", tpdays: 0, UI: "Award", tips: "" };
+        _this.state = { wealth: 1000, prestige: null, reason: "", tpdays: null, UI: "Award", tips: "" };
         return _this;
     }
     PostManagement.prototype.showAwardUI = function () {
@@ -7365,12 +7413,12 @@ var PostManagement = /** @class */ (function (_super) {
                 if ($("input[name='reason']:checked").val()) {
                     if ($("input[name='reason']:checked").val() !== '自定义') {
                         Utility.awardWealth($("input[name='reason']:checked").val(), this.state.wealth, this.props.postId);
-                        if (this.state.prestige !== 0)
+                        if (this.state.prestige)
                             Utility.addPrestige(this.props.postId, this.state.prestige, $("input[name='reason']:checked").val());
                     }
                     else {
                         Utility.awardWealth(this.state.reason, this.state.wealth, this.props.postId);
-                        if (this.state.prestige !== 0)
+                        if (this.state.prestige)
                             Utility.addPrestige(this.props.postId, this.state.prestige, this.state.reason);
                     }
                     var UIId = "#manage" + this.props.postId;
@@ -7429,17 +7477,20 @@ var PostManagement = /** @class */ (function (_super) {
         $(UIId).css("display", "none");
     };
     PostManagement.prototype.render = function () {
+        if (this.props.privilege !== '管理员') {
+            $("#managePrestige").css("display", "none");
+        }
         var UI;
         var awardUI = React.createElement("div", { className: "column", id: "award" },
             React.createElement("div", { className: "row manageOperation" },
                 React.createElement("div", { className: "manageObject" }, "\u8D22\u5BCC\u503C"),
                 React.createElement("input", { type: "text", value: this.state.wealth, onChange: this.wealthInput })),
-            React.createElement("div", { className: "row manageOperation" },
+            React.createElement("div", { className: "row manageOperation managePrestige" },
                 React.createElement("div", { className: "manageObject" }, "\u5A01\u671B"),
                 React.createElement("input", { type: "text", value: this.state.prestige, onChange: this.prestigeInput })),
             React.createElement("div", { className: "column manageOperation" },
                 React.createElement("div", { className: "manageObject" }, "\u539F\u56E0"),
-                React.createElement("div", { className: "row", style: { justifyContent: "space-around" } },
+                React.createElement("div", { className: "row", style: { justifyContent: "space-around", marginTop: "1rem" } },
                     React.createElement("div", { className: "row" },
                         React.createElement("input", { type: "radio", name: "reason", value: "好文章" }),
                         React.createElement("div", null, "\u597D\u6587\u7AE0")),
@@ -7449,9 +7500,10 @@ var PostManagement = /** @class */ (function (_super) {
                     React.createElement("div", { className: "row" },
                         React.createElement("input", { type: "radio", name: "reason", value: "热心回复" }),
                         React.createElement("div", null, "\u70ED\u5FC3\u56DE\u590D"))),
-                React.createElement("div", { className: "row" },
-                    React.createElement("input", { type: "radio", name: "reason", value: "自定义" }),
-                    React.createElement("div", null, "\u81EA\u5B9A\u4E49"),
+                React.createElement("div", { className: "row", style: { justifyContent: "space-around", marginTop: "1rem" } },
+                    React.createElement("div", { className: "row" },
+                        React.createElement("input", { type: "radio", name: "reason", value: "自定义" }),
+                        React.createElement("div", null, "\u81EA\u5B9A\u4E49")),
                     React.createElement("input", { type: "text", value: this.state.reason, onChange: this.reasonInput })),
                 React.createElement("div", null, this.state.tips)));
         var punishUI = React.createElement("div", { className: "column", id: "punish" },
@@ -7471,22 +7523,41 @@ var PostManagement = /** @class */ (function (_super) {
                 React.createElement("input", { type: "text", value: this.state.reason, onChange: this.reasonInput })));
         var UIId = "manage" + this.props.postId;
         UI = awardUI;
-        if (this.state.UI === "Award")
+        var awardOptionId = "manageOptions-award" + this.props.postId;
+        var awardOptionJQId = "#manageOptions-award" + this.props.postId;
+        var punishOptionId = "manageOptions-punish" + this.props.postId;
+        var punishOptionJQId = "#manageOptions-punish" + this.props.postId;
+        var deleteOptionId = "manageOptions-delete" + this.props.postId;
+        var deleteOptionJQId = "#manageOptions-delete" + this.props.postId;
+        console.log(this.state.UI);
+        if (this.state.UI === "Award") {
             UI = awardUI;
-        if (this.state.UI === "Punish")
+            $(awardOptionJQId).css("background-color", "#b9d3ee");
+            $(punishOptionJQId).css("background-color", "#fffacd");
+            $(deleteOptionJQId).css("background-color", "#fffacd");
+        }
+        if (this.state.UI === "Punish") {
             UI = punishUI;
-        if (this.state.UI === "Delete")
+            $(awardOptionJQId).css("background-color", "#fffacd");
+            $(punishOptionJQId).css("background-color", "#b9d3ee");
+            $(deleteOptionJQId).css("background-color", "#fffacd");
+        }
+        if (this.state.UI === "Delete") {
             UI = deleteUI;
+            $(awardOptionJQId).css("background-color", "#fffacd");
+            $(punishOptionJQId).css("background-color", "#fffacd");
+            $(deleteOptionJQId).css("background-color", "#b9d3ee");
+        }
         return React.createElement("div", { style: { display: "none" }, id: UIId, className: "postManagement" },
             React.createElement("div", { className: "manageUI" },
                 React.createElement("div", { className: "row manageOptions" },
-                    React.createElement("div", { className: "manageOptions-icon", onClick: this.showAwardUI, style: { color: "#FF7F00" } }, "\u5956\u52B1"),
-                    React.createElement("div", { className: "manageOptions-icon", onClick: this.showPunishUI, style: { color: "red" } }, "\u60E9\u7F5A"),
-                    React.createElement("div", { className: "manageOptions-icon", onClick: this.showDeleteUI }, "\u5220\u9664"))),
+                    React.createElement("div", { className: "manageOptions-icon", id: awardOptionId, onClick: this.showAwardUI, style: { color: "#FF7F00" } }, "\u5956\u52B1"),
+                    React.createElement("div", { className: "manageOptions-icon", id: punishOptionId, onClick: this.showPunishUI, style: { color: "red" } }, "\u60E9\u7F5A"),
+                    React.createElement("div", { className: "manageOptions-icon", id: deleteOptionId, onClick: this.showDeleteUI }, "\u5220\u9664"))),
             UI,
-            React.createElement("div", { className: "row" },
+            React.createElement("div", { className: "row", style: { justifyContent: "space-around" } },
                 React.createElement("button", { onClick: this.confirm, className: "confirmManagement" }, "\u786E\u8BA4"),
-                React.createElement("button", { onClick: this.close, style: { marginRight: "2rem" }, className: "confirmManagement" }, "\u5173\u95ED")));
+                React.createElement("button", { onClick: this.close, className: "confirmManagement" }, "\u5173\u95ED")));
     };
     return PostManagement;
 }(React.Component));
@@ -7494,7 +7565,7 @@ exports.PostManagement = PostManagement;
 
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7692,7 +7763,7 @@ var Judge = /** @class */ (function (_super) {
                         React.createElement("input", { type: "radio", name: "option", value: "minus1", onClick: this.showMinus1UI }),
                         React.createElement("div", null, "\u98CE\u8BC4-1")))),
             UI,
-            React.createElement("div", { className: "row" },
+            React.createElement("div", { className: "row", style: { justifyContent: "space-around" } },
                 React.createElement("button", { onClick: this.confirm, className: "confirmManagement" }, "\u786E\u8BA4"),
                 React.createElement("button", { onClick: this.close, style: { marginRight: "2rem" }, className: "confirmManagement" }, "\u5173\u95ED")));
     };
@@ -7702,7 +7773,7 @@ exports.Judge = Judge;
 
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7721,7 +7792,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
 var RouteComponent_1 = __webpack_require__(9);
-var Topic_UserDetails_1 = __webpack_require__(20);
+var Topic_UserDetails_1 = __webpack_require__(19);
 var Replier = /** @class */ (function (_super) {
     __extends(Replier, _super);
     function Replier(props, content) {
@@ -7774,6 +7845,9 @@ var Replier = /** @class */ (function (_super) {
         else if (this.props.privilege === "管理员") {
             userName = React.createElement("a", { style: { color: "red" }, href: url }, this.props.userName);
         }
+        else {
+            userName = this.props.userName;
+        }
         return React.createElement("div", { className: "replyRoot" },
             React.createElement("div", { className: "row", style: { width: "100%", display: "flex", marginBottom: "0.625rem" } },
                 React.createElement("div", { className: "row mouse-userDetails", style: { height: "15.625rem" } },
@@ -7796,7 +7870,7 @@ var Replier = /** @class */ (function (_super) {
                             React.createElement("i", { className: "fa fa-clock-o fa-lg fa-fw" })),
                         React.createElement("div", null,
                             React.createElement("span", { className: "timeProp" }, moment(this.props.replyTime).format('YYYY-MM-DD HH:mm:ss'))))),
-                React.createElement("div", { style: { height: "6rem", borderBottom: "#eaeaea solid thin" } },
+                React.createElement("div", { style: { height: "6rem", borderBottom: "#eaeaea solid thin", marginRight: "2rem" } },
                     React.createElement("div", { id: "operation" },
                         React.createElement(react_router_dom_1.Link, { className: "operation", to: "" }, "\u5F15\u7528"),
                         React.createElement(react_router_dom_1.Link, { className: "operation", to: "" }, "\u7F16\u8F91"),
@@ -7810,7 +7884,7 @@ exports.Replier = Replier;
 
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7865,8 +7939,8 @@ var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(3);
 var Topic_ReplyContent_1 = __webpack_require__(17);
-var Topic_Replier_1 = __webpack_require__(26);
-var Topic_Topic_1 = __webpack_require__(22);
+var Topic_Replier_1 = __webpack_require__(25);
+var Topic_Topic_1 = __webpack_require__(21);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -8176,7 +8250,7 @@ exports.ContentState = ContentState;
 
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8402,7 +8476,7 @@ exports.ChildBoard = ChildBoard;
 
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8479,7 +8553,7 @@ exports.UserCenter = react_redux_1.connect(mapState, mapDispatch)(UserCenterBefo
 
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8516,7 +8590,7 @@ exports.UserCenterExactAvatar = UserCenterExactAvatar;
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8572,7 +8646,7 @@ exports.Message = Message;
 
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8769,7 +8843,7 @@ function coverFocusPost(item) {
 
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8843,7 +8917,7 @@ exports.FocusState = FocusState;
 
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9396,7 +9470,7 @@ exports.Header = Header;
 
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9448,7 +9522,7 @@ exports.Footer = Footer;
 
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9963,7 +10037,7 @@ exports.MainPage = MainPage;
 
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10004,6 +10078,49 @@ var User = /** @class */ (function (_super) {
     return User;
 }(React.Component));
 exports.User = User;
+
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var react_router_dom_1 = __webpack_require__(3);
+var LogOnExact_1 = __webpack_require__(115);
+var Logoff_1 = __webpack_require__(116);
+/**
+ * 用户中心页面
+ */
+var LogOn = /** @class */ (function (_super) {
+    __extends(LogOn, _super);
+    function LogOn() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    LogOn.prototype.render = function () {
+        return (React.createElement(react_router_dom_1.BrowserRouter, null,
+            React.createElement("div", null,
+                React.createElement(react_router_dom_1.Route, { path: "/logon", exact: true, component: LogOnExact_1.default }),
+                React.createElement(react_router_dom_1.Route, { path: "/logon/logoff", component: Logoff_1.LogOff }))));
+    };
+    return LogOn;
+}(React.Component));
+exports.LogOn = LogOn;
 
 
 /***/ }),
@@ -10060,7 +10177,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
-var UbbEditor_1 = __webpack_require__(21);
+var UbbEditor_1 = __webpack_require__(20);
 var Constants;
 (function (Constants) {
 })(Constants = exports.Constants || (exports.Constants = {}));
@@ -10381,45 +10498,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var LogOn_1 = __webpack_require__(18);
-var Utility = __webpack_require__(1);
 var LogOut = /** @class */ (function (_super) {
     __extends(LogOut, _super);
     function LogOut() {
@@ -10430,7 +10510,8 @@ var LogOut = /** @class */ (function (_super) {
                 display: "flex", flexDirection: "column"
             } },
             React.createElement("div", null, "\u60A8\u5F53\u524D\u672A\u767B\u5F55"),
-            React.createElement(LogOn_1.LogOn, null));
+            React.createElement("button", null,
+                React.createElement("a", { href: "/logon" }, "\u767B\u5F55")));
     };
     return LogOut;
 }(React.Component));
@@ -10479,35 +10560,42 @@ var UnauthorizedTopic = /** @class */ (function (_super) {
     return UnauthorizedTopic;
 }(React.Component));
 exports.UnauthorizedTopic = UnauthorizedTopic;
+var UnauthorizedOperation = /** @class */ (function (_super) {
+    __extends(UnauthorizedOperation, _super);
+    function UnauthorizedOperation() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UnauthorizedOperation.prototype.render = function () {
+        return React.createElement("div", null, "401\u60A8\u6CA1\u6709\u6743\u9650\u8FDB\u884C\u6B64\u64CD\u4F5C");
+    };
+    return UnauthorizedOperation;
+}(React.Component));
+exports.UnauthorizedOperation = UnauthorizedOperation;
 var NotFoundBoard = /** @class */ (function (_super) {
     __extends(NotFoundBoard, _super);
-    function NotFoundBoard(props, context) {
-        return _super.call(this, props, context) || this;
+    function NotFoundBoard() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    NotFoundBoard.prototype.componentDidMount = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var token, headers, content, response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        token = Utility.getLocalStorage("accessToken");
-                        headers = new Headers();
-                        headers.append("Authorization", token);
-                        headers.append("Content-Type", "application/json");
-                        content = "test";
-                        return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/deletetop?topicid=4739872&boardid=753", {
-                                method: "DELETE",
-                                headers: headers,
-                                body: JSON.stringify(content)
-                            })];
-                    case 1:
-                        response = _a.sent();
-                        console.log("finished");
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
+    /*constructor(props, context) {
+        super(props, context);
+    }
+    async componentDidMount() {
+        const token = Utility.getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append("Authorization", token);
+        headers.append("Content-Type", "application/json");
+        const content =  "test" ;
+        const response = await fetch(
+
+            `http://apitest.niconi.cc/topic/deletetop?topicid=4739872&boardid=753`,
+            {
+                method: "DELETE",
+                headers,
+                body: JSON.stringify(content)
+            }
+        );
+        console.log("finished");
+    }*/
     NotFoundBoard.prototype.render = function () {
         return React.createElement("div", null, "404\u7248\u9762\u4E0D\u5B58\u5728");
     };
@@ -10519,33 +10607,24 @@ var NotFoundTopic = /** @class */ (function (_super) {
     function NotFoundTopic() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    NotFoundTopic.prototype.componentDidMount = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var token, headers, body, str, url;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        token = Utility.getLocalStorage("accessToken");
-                        headers = new Headers();
-                        headers.append("Authorization", token);
-                        headers.append("Content-Type", "application/json");
-                        body = {
-                            isCanceling: false,
-                            isBold: true,
-                            isItalic: true,
-                            color: "red",
-                            duration: null
-                        };
-                        str = JSON.stringify(body);
-                        url = 'http://apitest.niconi.cc/topic/sethighlight?boardid=753&topicid=4740298';
-                        return [4 /*yield*/, fetch(url, { method: "PUT", headers: headers, body: str })];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
+    /* async componentDidMount() {
+         const token = Utility.getLocalStorage("accessToken");
+         const headers = new Headers();
+         headers.append("Authorization", token);
+         headers.append("Content-Type", "application/json");
+         const body = {
+             isCanceling: false,
+             isBold: true,
+             isItalic: true,
+             color: "red",
+             duration:null
+         }
+         const str = JSON.stringify(body);
+         const url = 'http://apitest.niconi.cc/topic/sethighlight?boardid=753&topicid=4740298'
+         await fetch(url, { method: "PUT", headers, body: str });
+ 
+ 
+     }*/
     NotFoundTopic.prototype.render = function () {
         return React.createElement("div", null, "404\u5E16\u5B50\u4E0D\u5B58\u5728");
     };
@@ -10596,153 +10675,6 @@ var OperationForbidden = /** @class */ (function (_super) {
     return OperationForbidden;
 }(React.Component));
 exports.OperationForbidden = OperationForbidden;
-/*
-class student {
-    private:
-        long id;
-        string name;
-        double averageGrade;
-        string major;
-        int gradeClass;
-        string majorClass;
-        double totalGradePoint;
-        enum studentType;
-public:
-    showAllCourseGrade(){
-    //在表四中通过学号找到学生选的所有课程
-    courseNumber[] = search in database4
-   //对于每一门课程，在表二中找到这个学号的成绩并存起来
-    loop
-    foreach course in courseNumber search grade in database 2
-    save in grade[]
-    return grade;
-}
-    //计算平均成绩
-    getAverageGrade(grade[]){
-    double gpa = average(sum of grade[]);
-    return gpa;
-}
-}
-class Course {
-    private:
-        string courseId;
-        string courseName;
-        string teachers;
-        string student;
-        double grade;
-    public:
-    //对某个课程号，找到所有选这门课学生的成绩信息
-    showAllGradesInCourse(){
-    message: { student, grade } [] = search courseId in database2
-    return message[];
-    }
-    //对某个课程、老师，找到所有选这个老师这门课学生的成绩信息
-    showGradeOfTeacher(string teacher){
-    message: { student, grade } [] = search { couseId, teacher }in database 2;
-    return message[];
-    }
-    //对于某个老师的某节课的所有学生找出他们的成绩
-    showGradeOfTeacherClass(string teacher,string time){
-    message: { student, grade } [] = search { couseId, teacher, time }in database 2;
-    return message[];
-}
-    //录入成绩
-    setGrade(courseId,student,grade){
-    add { courseId, student, grade } in database 4;
-    }
-    //修改成绩
-    alterGrade(courseId, student, grade){
-    update { courseId, student, grade } in database 4;
-}
-    //删除成绩
-    deleteGrade(courseId, student, grade){
-    delete { courseId, student, grade } in database 4;
-}
-}
-class CourseAndStudentRelationship {
-    //数据库表4，,记录课程——学生的关系
-    private:
-        string courseId;
-        string courseName;
-        string studentName;
-        long studentId;
-        string teacher;
-    public:
-    //找到一个学生选的所有课
-    getAllStudentCourses(studentId){
-    courses[] = search studentId in database 2 for his or her courses;
-    }
-    //找到一个课所有的学生
-    getAllStudentsInCourse(courseId){
-    students[] = search courseId in database 3 for all students;
-    }
-}
-class Teacher {
-    private:
-        string courses[];
-    public:
-        //找到一个老师打出的所有成绩
-        getGrade(teacher){
-            messages: { student, grade } [] = search teacher in database2 for all grades;
-                 return messages[];
-        }
-        //找到一个老师一门课程打出的所有成绩
-        getGrade(teacher, courseId) {
-            messages: { student, grade } [] = search { teacher, courseId } in database2 for all grades;
-             return messages[];
-    }
-        //找到一个老师某节课全班的成绩
-     getGrade(teacher, courseId,time) {
-         messages: { student, grade }[] = search { teacher, courseId, time } in database2 for all grades;
-            return messages[];
-    }
-}
-class Major {
-    private:
-        string majorName;
-    public:
-        //通过专业名字找到这个专业所有的学生
-        getAllStudents(majorName){
-            students[] = search majorName in database1 for all students in this major;
-            return students[];
-        }
-        //通过学生ID找到所有的平均成绩并组成键值对
-    getGrade(students[]) {
-        messages{ student, grade }[] = search students[] in database1 for all grades in this major;
-        return messages[];
-    }
-}
-class majorClass {
-    private:
-        string className;
-    public:
-        //通过班级名字找到班内所有同学
-        getStudents(className){
-            students[] = search className in database1 for all students in this class;
-            return students[];
-        }
-          //通过学生ID找到所有的平均成绩并组成键值对
-    getGrade(students[]) {
-        messages{ student, grade } [] = search student in database1 for all grades;
-            return messages[];
-    }
-}
-class gradeClass {
-    private:
-        int gradeClass;
-    public:
-        //通过年级找到本年级所有学生
-        getStudent(gradeClass){
-            students[] = search gradeClass in database1 for all students in this gradeClass;
-            return students[];
-        }
-        //通过学生ID找到他们成绩的键值对
-        getGrade() {
-        messages{ student, grade } [] = search students in database1 for grades;
-            return messages[];
-    }
-}
-*/
 
 
 /***/ }),
@@ -11401,13 +11333,9 @@ var UserInfo = /** @class */ (function () {
         * 表示当前登录用户的用户信息
         */
         this.currentUserInfo = Utility.getLocalStorage('userInfo') || new Appstate.UserInfo();
-        /**
-        * 帖子数据包括帖子本身的数据以及所属版面的数据
-        */
     }
     return UserInfo;
 }());
-;
 /**
  * reducer接收到undefined的state时一定要初始化state
  * 这里用ES6方法，在函数定义中初始化state
@@ -11443,7 +11371,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Ubb = __webpack_require__(2);
 var BTagHandler_1 = __webpack_require__(52);
-var ImageTagHandler_1 = __webpack_require__(19);
+var ImageTagHandler_1 = __webpack_require__(18);
 var ITagHandler_1 = __webpack_require__(53);
 var SizeTagHandler_1 = __webpack_require__(54);
 var QuoteTagHandler_1 = __webpack_require__(55);
@@ -11705,7 +11633,9 @@ var QuoteTagHandler = /** @class */ (function (_super) {
             padding: '13px 19px 13px 17px',
             backgroundColor: '#F5FAFF',
             border: '1px solid rgb(204,204,204)',
-            margin: '30px',
+            marginLeft: '30px',
+            marginRight: '30px',
+            marginTop: '30px',
             maxHeight: '800px',
             overflowY: 'auto'
         };
@@ -12331,7 +12261,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Ubb = __webpack_require__(2);
-var ImageTagHandler_1 = __webpack_require__(19);
+var ImageTagHandler_1 = __webpack_require__(18);
 //暂时完成 目前可以区分支持格式的图片和其他格式的文件 
 //对于支持格式的图片，会根据第二个参数的值决定是否默认显示
 //对于其他格式的文件，是否填写第二个参数没有影响（与原版98相同）
@@ -12917,17 +12847,17 @@ var react_redux_1 = __webpack_require__(6);
 var react_router_dom_1 = __webpack_require__(3);
 var Topic_1 = __webpack_require__(16);
 var Board_1 = __webpack_require__(15);
-var Topic_Trace_1 = __webpack_require__(27);
-var BoardList_1 = __webpack_require__(28);
-var UserCenter_1 = __webpack_require__(29);
-var Message_1 = __webpack_require__(31);
-var Topic_New_1 = __webpack_require__(32);
-var Focus_1 = __webpack_require__(33);
-var Header_1 = __webpack_require__(34);
-var Footer_1 = __webpack_require__(35);
-var MainPage_1 = __webpack_require__(36);
-var User_1 = __webpack_require__(37);
-var LogOn_1 = __webpack_require__(18);
+var Topic_Trace_1 = __webpack_require__(26);
+var BoardList_1 = __webpack_require__(27);
+var UserCenter_1 = __webpack_require__(28);
+var Message_1 = __webpack_require__(30);
+var Topic_New_1 = __webpack_require__(31);
+var Focus_1 = __webpack_require__(32);
+var Header_1 = __webpack_require__(33);
+var Footer_1 = __webpack_require__(34);
+var MainPage_1 = __webpack_require__(35);
+var User_1 = __webpack_require__(36);
+var LogOn_1 = __webpack_require__(37);
 var Topic_CreateTopic_1 = __webpack_require__(38);
 var Status = __webpack_require__(39);
 var Search_1 = __webpack_require__(40);
@@ -13000,6 +12930,17 @@ var AppBeforeConnect = /** @class */ (function (_super) {
                 React.createElement(react_router_dom_1.Route, { path: "/search", component: Search_1.Search }),
                 React.createElement(react_router_dom_1.Route, { path: "/searchBoard", component: SearchBoard_1.SearchBoard }),
                 React.createElement(react_router_dom_1.Route, { path: "/createtopic/:boardId", component: Topic_CreateTopic_1.CreateTopic }),
+                React.createElement(react_router_dom_1.Route, { path: "/status/notfoundtopic", component: Status.NotFoundTopic }),
+                React.createElement(react_router_dom_1.Route, { path: "/status/notfoundboard", component: Status.NotFoundBoard }),
+                React.createElement(react_router_dom_1.Route, { path: "/status/logout", component: Status.LogOut }),
+                React.createElement(react_router_dom_1.Route, { path: "/status/topicdeleted", component: Status.TopicDeleted }),
+                React.createElement(react_router_dom_1.Route, { path: "/status/unauthorizedtopic", component: Status.UnauthorizedTopic }),
+                React.createElement(react_router_dom_1.Route, { path: "/status/unauthorizedboard", component: Status.UnauthorizedBoard }),
+                React.createElement(react_router_dom_1.Route, { path: "/status/unauthorizedoperation", component: Status.UnauthorizedOperation }),
+                React.createElement(react_router_dom_1.Route, { path: "/status/notfounduser", component: Status.NotFoundUser }),
+                React.createElement(react_router_dom_1.Route, { path: "/status/servererror", component: Status.ServerError }),
+                React.createElement(react_router_dom_1.Route, { path: "/status/contentneeded", component: Status.ContentNeeded }),
+                React.createElement(react_router_dom_1.Route, { path: "/status/operationforbidden", component: Status.OperationForbidden }),
                 React.createElement(Footer_1.Footer, null))) : React.createElement("div", { style: { backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px" } },
                 React.createElement(Header_1.Header, null),
                 errorElement,
@@ -13013,7 +12954,7 @@ function mapState(state) {
         errorMessage: state.error.errorMessage
     };
 }
-exports.App = react_redux_1.connect(mapState, function () { return (null); })(AppBeforeConnect);
+exports.App = react_redux_1.connect(mapState, null)(AppBeforeConnect);
 
 
 /***/ }),
@@ -13158,7 +13099,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
 var RouteComponent_1 = __webpack_require__(9);
-var Topic_UserDetails_1 = __webpack_require__(20);
+var Topic_UserDetails_1 = __webpack_require__(19);
 var HotReplier = /** @class */ (function (_super) {
     __extends(HotReplier, _super);
     function HotReplier(props, content) {
@@ -13297,7 +13238,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
 var Topic_1 = __webpack_require__(16);
-var UbbEditor_1 = __webpack_require__(21);
+var UbbEditor_1 = __webpack_require__(20);
 var SendTopic = /** @class */ (function (_super) {
     __extends(SendTopic, _super);
     function SendTopic(props) {
@@ -14441,11 +14382,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
 var RouteComponent_1 = __webpack_require__(9);
-var Topic_Replier_1 = __webpack_require__(26);
+var Topic_Replier_1 = __webpack_require__(25);
 var Topic_ReplyContent_1 = __webpack_require__(17);
-var Topic_Award_1 = __webpack_require__(23);
-var Post_Management_1 = __webpack_require__(24);
-var Topic_Judge_1 = __webpack_require__(25);
+var Topic_Award_1 = __webpack_require__(22);
+var Post_Management_1 = __webpack_require__(23);
+var Topic_Judge_1 = __webpack_require__(24);
 var Reply = /** @class */ (function (_super) {
     __extends(Reply, _super);
     function Reply(props, content) {
@@ -14463,7 +14404,6 @@ var Reply = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log("reply update");
                         page = this.match.params.page || 1;
                         storageId = "TopicContent_" + this.match.params.topicid + "_" + page;
                         return [4 /*yield*/, Utility.getTopicContent(this.match.params.topicid, page, this.context.router)];
@@ -14472,9 +14412,7 @@ var Reply = /** @class */ (function (_super) {
                         return [4 /*yield*/, this.getMasters(this.match.params.topicid)];
                     case 2:
                         masters = _a.sent();
-                        console.log("reply setstate");
                         this.setState({ contents: realContents, masters: masters });
-                        console.log("reply setstate finished");
                         return [2 /*return*/];
                 }
             });
@@ -14525,7 +14463,7 @@ var Reply = /** @class */ (function (_super) {
             React.createElement("div", { style: { marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin", backgroundColor: "#fff" } },
                 React.createElement(Topic_Replier_1.Replier, { key: item.postId, isAnonymous: item.isAnonymous, userId: item.userId, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber, privilege: item.privilege }),
                 React.createElement(Topic_Judge_1.Judge, { userId: item.userId, postId: item.postId, update: this.update, topicId: item.topicId }),
-                React.createElement(Post_Management_1.PostManagement, { topicId: item.topicId, postId: item.postId, userId: item.userId, update: this.update }),
+                React.createElement(Post_Management_1.PostManagement, { topicId: item.topicId, postId: item.postId, userId: item.userId, update: this.update, privilege: item.privilege }),
                 React.createElement(Topic_ReplyContent_1.ReplyContent, { key: item.content, masters: this.state.masters, userId: item.userId, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.postId, contentType: item.contentType }),
                 React.createElement(Topic_Award_1.Award, { postId: item.postId, updateTime: Date.now() })));
     };
@@ -14756,7 +14694,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var UserCenterExactProfile_1 = __webpack_require__(93);
 var UserCenterExactActivities_1 = __webpack_require__(94);
-var UserCenterExactAvatar_1 = __webpack_require__(30);
+var UserCenterExactAvatar_1 = __webpack_require__(29);
 var Utility = __webpack_require__(1);
 var Actions_1 = __webpack_require__(8);
 var react_redux_1 = __webpack_require__(6);
@@ -14808,7 +14746,7 @@ var UserCenterExact = /** @class */ (function (_super) {
 }(React.Component));
 function mapState(state) {
     return {
-        userInfo: state.userinfo.currentUserInfo
+        userInfo: state.userInfo.currentUserInfo
     };
 }
 function mapDispatch(dispatch) {
@@ -17238,7 +17176,7 @@ var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
 var UserExactProfile_1 = __webpack_require__(113);
 var UserRouterActivities_1 = __webpack_require__(114);
-var UserCenterExactAvatar_1 = __webpack_require__(30);
+var UserCenterExactAvatar_1 = __webpack_require__(29);
 var Utility = __webpack_require__(1);
 var UserRouter = /** @class */ (function (_super) {
     __extends(UserRouter, _super);

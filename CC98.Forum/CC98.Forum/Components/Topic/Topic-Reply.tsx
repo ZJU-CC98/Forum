@@ -24,15 +24,12 @@ export class Reply extends RouteComponent<{}, { contents, masters }, { page, top
         };
     }
     async update() {
-        console.log("reply update");
         const page = this.match.params.page || 1;
         const storageId = `TopicContent_${this.match.params.topicid}_${page}`;
         let realContents;
         realContents = await Utility.getTopicContent(this.match.params.topicid, page, this.context.router);
         const masters = await this.getMasters(this.match.params.topicid);
-        console.log("reply setstate");
         this.setState({ contents: realContents, masters: masters });
-        console.log("reply setstate finished");
     }
     async getMasters(topicId) {
         return Utility.getMasters(topicId);
@@ -66,7 +63,7 @@ export class Reply extends RouteComponent<{}, { contents, masters }, { page, top
         return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin", backgroundColor:"#fff" }}>
             <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} />
             <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
-            <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} />
+            <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={item.privilege} />
             <ReplyContent key={item.content} masters={this.state.masters} userId={item.userId} content={item.content} signature={item.signature} topicid={item.topicId} postid={item.postId} contentType={item.contentType} />
             <Award postId={item.postId} updateTime={Date.now()} />
         </div>

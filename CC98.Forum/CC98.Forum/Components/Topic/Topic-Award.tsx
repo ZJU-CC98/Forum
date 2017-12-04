@@ -54,6 +54,7 @@ export class Award extends React.Component<{ postId ,updateTime}, {info, awardPa
         this.setState({ info: awardInfo, awardPage: page - 1 });
     }
     render() {
+       
         const lastPageId = `lastPage${this.props.postId}`;
         const awardPagerId = `awardPager${this.props.postId}`;
         const awardPagerJQID = `#awardPager${this.props.postId}`;

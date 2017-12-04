@@ -59,6 +59,15 @@ export class SendTopic extends React.Component<{ topicid, onChange, }, { content
             body: contentJson
         }
         );
+        if (mes.status === 401) {
+            window.location.href = "/status/logout";
+        }
+        if (mes.status === 402) {
+            window.location.href = "/status/contentneeded";
+        }
+        if (mes.status === 500) {
+            window.location.href = "/status/servererror";
+        }
         this.props.onChange();
         this.setState({ content: "" });
     }

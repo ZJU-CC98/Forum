@@ -72,6 +72,17 @@ class AppBeforeConnect extends React.Component<{isError: boolean, errorMessage: 
                         <Route path="/search" component={Search} />
                         <Route path="/searchBoard" component={SearchBoard} />
                         <Route path="/createtopic/:boardId" component={CreateTopic} />
+                        <Route path="/status/notfoundtopic" component={Status.NotFoundTopic} />
+                        <Route path="/status/notfoundboard" component={Status.NotFoundBoard} />
+                        <Route path="/status/logout" component={Status.LogOut} />
+                        <Route path="/status/topicdeleted" component={Status.TopicDeleted} />
+                        <Route path="/status/unauthorizedtopic" component={Status.UnauthorizedTopic} />
+                        <Route path="/status/unauthorizedboard" component={Status.UnauthorizedBoard} />
+                        <Route path="/status/unauthorizedoperation" component={Status.UnauthorizedOperation} />
+                        <Route path="/status/notfounduser" component={Status.NotFoundUser} />
+                        <Route path="/status/servererror" component={Status.ServerError} />
+                        <Route path="/status/contentneeded" component={Status.ContentNeeded} />
+                        <Route path="/status/operationforbidden" component={Status.OperationForbidden} />
                         <Footer />
                     </div>
                 ) : <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px" }}>

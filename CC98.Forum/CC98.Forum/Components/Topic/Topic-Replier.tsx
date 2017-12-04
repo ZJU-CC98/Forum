@@ -74,7 +74,7 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
                         <div><span className="timeProp">{moment(this.props.replyTime).format('YYYY-MM-DD HH:mm:ss')}</span></div>
                     </div>
                 </div>
-                <div style={{ height: "6rem", borderBottom:"#eaeaea solid thin" }}>
+                <div style={{ height: "6rem", borderBottom: "#eaeaea solid thin", marginRight:"2rem" }}>
                 <div id="operation"  >
                     <Link className="operation" to="">引用</Link>
                     <Link className="operation" to="">编辑</Link>
