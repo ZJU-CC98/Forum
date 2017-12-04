@@ -12,15 +12,15 @@ export class MessageSystembox extends React.Component<MessageSystemProps> {
         let content;
         if (this.props.topicId) {
             let host = window.location.host;
-            if (this.props.postId) {
-                let a: any = this.props.postId / 10;
+            if (this.props.floor) {
+                let a: any = (this.props.floor / 10) + 1;
                 let b = parseInt(a);
-                let c = this.props.postId - b * 10;
+                let c = this.props.floor + 10 - b * 10;
                 if (this.props.isRead) {
                     content = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=gray]${this.props.content}[/color][color=blue]http://${host}/topic/${this.props.topicId}/${b}#${c}[/color][/url]`;
                 }
                 else {
-                    content = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=black][b]${this.props.content}[/b][/color][color=blue][b]http://${host}/topic/${this.props.topicId}/${b}#${c}[/b][/color][/url]`;
+                    content = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][b][color=black]${this.props.content}[/color][color=blue]http://${host}/topic/${this.props.topicId}/${b}#${c}[/color][/b][/url]`;
                 }
             }
             else {
@@ -28,7 +28,7 @@ export class MessageSystembox extends React.Component<MessageSystemProps> {
                     content = `[url=http://${host}/topic/${this.props.topicId}][color=gray]${this.props.content}[/color][color=blue]http://${host}/topic/${this.props.topicId}[/color][/url]`;
                 }
                 else {
-                    content = `[url=http://${host}/topic/${this.props.topicId}][color=black][b]${this.props.content}[/b][/color][color=blue][b]http://${host}/topic/${this.props.topicId}[/color][/b][/url]`;
+                    content = `[url=http://${host}/topic/${this.props.topicId}][b][color=black]${this.props.content}[/color][color=blue]http://${host}/topic/${this.props.topicId}[/color][/b][/url]`;
                 }
             }
         }
@@ -40,7 +40,6 @@ export class MessageSystembox extends React.Component<MessageSystemProps> {
                 content = `[color=black][b]${this.props.content}[/b][/color]`;
             }
         }
-        console.log(content);
         return (<div className="message-system-box">
                     <div className="message-system-box-bar">
                             <div className="message-system-box-title">

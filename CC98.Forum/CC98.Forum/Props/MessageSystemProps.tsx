@@ -13,8 +13,8 @@ export class MessageSystemProps {
     content: string;
     //（int?类型， 有值表示这个通知超链接到具体的某个帖，null表示不连接），
     topicId: number;
-    //回复id，表示第多少个回复
-    postId: number;
+    //回复楼层
+    floor: number;
     //时间
     time: Date;
     //是否已读

@@ -22,6 +22,9 @@ export class MessageAttme extends React.Component<{}, MessageResponseState> {
     }
 
     async componentDidMount() {
+        //给@我的添加选中样式
+        $('.message-nav > div').removeClass('message-nav-focus');
+        $('#attme').addClass('message-nav-focus');
         let data = await Utility.getMessageAttme(0, this.context.router);
         if (data) {
             this.setState({ data: data, from: data.length });
@@ -29,13 +32,10 @@ export class MessageAttme extends React.Component<{}, MessageResponseState> {
     }
 
     coverMessageAttme = (item: MessageResponseProps) => {
-        return <MessageAttmebox id={item.id} type={item.type} time={item.time} topicId={item.topicId} topicTitle={item.topicTitle} postId={item.postId} boardId={item.boardId} boardName={item.boardName} isRead={item.isRead} />;
+        return <MessageAttmebox id={item.id} type={item.type} time={item.time} topicId={item.topicId} topicTitle={item.topicTitle} floor={item.floor} userId={item.userId} userName={item.userName} boardId={item.boardId} boardName={item.boardName} isRead={item.isRead} />;
     };
 
 	render() {
-        //给我的回复添加选中样式
-        $('.message-nav > div').removeClass('message-nav-focus');
-        $('#attme').addClass('message-nav-focus');
         return <div className="message-response">{this.state.data.map(this.coverMessageAttme)}</div>;
     }
 }

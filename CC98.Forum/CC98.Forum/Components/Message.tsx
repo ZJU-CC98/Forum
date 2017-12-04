@@ -37,5 +37,4 @@ export class Message extends React.Component<{}, AppState> {
                 </div>
             );
 	}
-
 }

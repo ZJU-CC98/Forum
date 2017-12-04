@@ -3068,7 +3068,20 @@ function getMessageSystem(from, router) {
                     return [4 /*yield*/, response.json()];
                 case 3:
                     newTopic = _a.sent();
+                    console.log("原始系统消息数据");
                     console.log(newTopic);
+                    /*for (let i in newTopic) {
+                        if (newTopic[i].postId) {
+                            let response0 = await fetch(`http://apitest.niconi.cc/post/basicinfo?postid=${newTopic[i].postId}`, { headers: myHeaders });
+                            let response1 = await response0.json();
+                            newTopic[i].floor = response1.floor;
+                            console.log("获取到了楼层");
+                        }
+                        else {
+                            console.log("没有获取到楼层");
+                            newTopic[i].floor = 0;
+                        }
+                    }*/
                     return [2 /*return*/, newTopic];
                 case 4:
                     e_33 = _a.sent();
@@ -3082,20 +3095,18 @@ exports.getMessageSystem = getMessageSystem;
 //获取回复我的通知
 function getMessageResponse(from, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, myHeaders, size, response, newTopic, _a, _b, _i, i, response0, response1, _c, e_34;
+        var result, token, myHeaders, size, response, newTopic, _a, _b, _i, i, response0, response1, _c, response2, response3, e_34;
         return __generator(this, function (_d) {
             switch (_d.label) {
                 case 0:
-                    console.log("开始获取回复我的通知了");
-                    _d.label = 1;
-                case 1:
-                    _d.trys.push([1, 10, , 11]);
+                    _d.trys.push([0, 12, , 13]);
+                    result = [];
                     token = getLocalStorage("accessToken");
                     myHeaders = new Headers();
                     myHeaders.append('Authorization', token);
                     size = 10;
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/notification/reply?from=" + from + "&size=" + size, { headers: myHeaders })];
-                case 2:
+                case 1:
                     response = _d.sent();
                     if (response.status === 401) {
                         //window.location.href = "/status/UnauthorizedTopic";
@@ -3104,62 +3115,76 @@ function getMessageResponse(from, router) {
                         //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
-                case 3:
+                case 2:
                     newTopic = _d.sent();
-                    console.log(newTopic);
-                    if (!newTopic) return [3 /*break*/, 9];
+                    if (!newTopic) return [3 /*break*/, 11];
                     _a = [];
                     for (_b in newTopic)
                         _a.push(_b);
                     _i = 0;
-                    _d.label = 4;
-                case 4:
-                    if (!(_i < _a.length)) return [3 /*break*/, 9];
+                    _d.label = 3;
+                case 3:
+                    if (!(_i < _a.length)) return [3 /*break*/, 11];
                     i = _a[_i];
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/" + newTopic[i].topicId, { headers: myHeaders })];
-                case 5:
+                case 4:
                     response0 = _d.sent();
-                    return [4 /*yield*/, response0.json()];
+                    if (response0.status === 401) {
+                        //window.location.href = "/status/UnauthorizedTopic";
+                    }
+                    if (response0.status === 500) {
+                        //window.location.href = "/status/ServerError";
+                    }
+                    if (!(response0.status === 404)) return [3 /*break*/, 5];
+                    return [3 /*break*/, 10];
+                case 5: return [4 /*yield*/, response0.json()];
                 case 6:
                     response1 = _d.sent();
-                    console.log(response1);
                     newTopic[i].topicTitle = response1.title;
                     newTopic[i].boardId = response1.boardId;
                     _c = newTopic[i];
                     return [4 /*yield*/, getBoardName(response1.boardId, router)];
                 case 7:
                     _c.boardName = _d.sent();
-                    _d.label = 8;
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/basicinfo?postid=" + newTopic[i].postId, { headers: myHeaders })];
                 case 8:
-                    _i++;
-                    return [3 /*break*/, 4];
-                case 9: return [2 /*return*/, newTopic];
+                    response2 = _d.sent();
+                    return [4 /*yield*/, response2.json()];
+                case 9:
+                    response3 = _d.sent();
+                    newTopic[i].floor = response3.floor;
+                    newTopic[i].userId = response3.userId;
+                    newTopic[i].userName = response3.userName;
+                    result.push(newTopic[i]);
+                    _d.label = 10;
                 case 10:
+                    _i++;
+                    return [3 /*break*/, 3];
+                case 11: return [2 /*return*/, result];
+                case 12:
                     e_34 = _d.sent();
-                    return [3 /*break*/, 11];
-                case 11: return [2 /*return*/];
+                    return [3 /*break*/, 13];
+                case 13: return [2 /*return*/];
             }
         });
     });
 }
 exports.getMessageResponse = getMessageResponse;
-//获取回复我的通知
+//获取@我的通知
 function getMessageAttme(from, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, myHeaders, size, response, newTopic, _a, _b, _i, i, response0, response1, _c, e_35;
+        var result, token, myHeaders, size, response, newTopic, _a, _b, _i, i, response0, response1, _c, response2, response3, e_35;
         return __generator(this, function (_d) {
             switch (_d.label) {
                 case 0:
-                    console.log("开始获取@我的通知了");
-                    _d.label = 1;
-                case 1:
-                    _d.trys.push([1, 10, , 11]);
+                    _d.trys.push([0, 12, , 13]);
+                    result = [];
                     token = getLocalStorage("accessToken");
                     myHeaders = new Headers();
                     myHeaders.append('Authorization', token);
                     size = 10;
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/notification/at?from=" + from + "&size=" + size, { headers: myHeaders })];
-                case 2:
+                case 1:
                     response = _d.sent();
                     if (response.status === 401) {
                         //window.location.href = "/status/UnauthorizedTopic";
@@ -3168,40 +3193,56 @@ function getMessageAttme(from, router) {
                         //window.location.href = "/status/ServerError";
                     }
                     return [4 /*yield*/, response.json()];
-                case 3:
+                case 2:
                     newTopic = _d.sent();
-                    console.log(newTopic);
-                    if (!newTopic) return [3 /*break*/, 9];
+                    if (!newTopic) return [3 /*break*/, 11];
                     _a = [];
                     for (_b in newTopic)
                         _a.push(_b);
                     _i = 0;
-                    _d.label = 4;
-                case 4:
-                    if (!(_i < _a.length)) return [3 /*break*/, 9];
+                    _d.label = 3;
+                case 3:
+                    if (!(_i < _a.length)) return [3 /*break*/, 11];
                     i = _a[_i];
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/" + newTopic[i].topicId, { headers: myHeaders })];
-                case 5:
+                case 4:
                     response0 = _d.sent();
-                    return [4 /*yield*/, response0.json()];
+                    if (response0.status === 401) {
+                        //window.location.href = "/status/UnauthorizedTopic";
+                    }
+                    if (response0.status === 500) {
+                        //window.location.href = "/status/ServerError";
+                    }
+                    if (!(response0.status === 404)) return [3 /*break*/, 5];
+                    return [3 /*break*/, 10];
+                case 5: return [4 /*yield*/, response0.json()];
                 case 6:
                     response1 = _d.sent();
-                    console.log(response1);
                     newTopic[i].topicTitle = response1.title;
                     newTopic[i].boardId = response1.boardId;
                     _c = newTopic[i];
                     return [4 /*yield*/, getBoardName(response1.boardId, router)];
                 case 7:
                     _c.boardName = _d.sent();
-                    _d.label = 8;
+                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/basicinfo?postid=" + newTopic[i].postId, { headers: myHeaders })];
                 case 8:
-                    _i++;
-                    return [3 /*break*/, 4];
-                case 9: return [2 /*return*/, newTopic];
+                    response2 = _d.sent();
+                    return [4 /*yield*/, response2.json()];
+                case 9:
+                    response3 = _d.sent();
+                    newTopic[i].floor = response3.floor;
+                    newTopic[i].userId = response3.userId;
+                    newTopic[i].userName = response3.userName;
+                    result.push(newTopic[i]);
+                    _d.label = 10;
                 case 10:
+                    _i++;
+                    return [3 /*break*/, 3];
+                case 11: return [2 /*return*/, result];
+                case 12:
                     e_35 = _d.sent();
-                    return [3 /*break*/, 11];
-                case 11: return [2 /*return*/];
+                    return [3 /*break*/, 13];
+                case 13: return [2 /*return*/];
             }
         });
     });
@@ -9068,7 +9109,7 @@ var DropDownConnect = /** @class */ (function (_super) {
                     React.createElement("div", { className: "topBarText" },
                         React.createElement("a", { href: "/", style: { color: '#fff' } }, "\u9996\u9875")),
                     React.createElement("div", { className: "topBarText", id: "userMessage" },
-                        React.createElement("a", { href: "/message", style: { color: '#fff' } }, "\u6D88\u606F")),
+                        React.createElement("a", { href: "/message/response", style: { color: '#fff' } }, "\u6D88\u606F")),
                     React.createElement("div", { className: "topBarText" },
                         React.createElement("a", { href: "/focus", style: { color: '#fff' } }, "\u5173\u6CE8")),
                     React.createElement("div", { className: "topBarText" },
@@ -16134,7 +16175,7 @@ var MessageResponse = /** @class */ (function (_super) {
     function MessageResponse(props) {
         var _this = _super.call(this, props) || this;
         _this.coverMessageResponse = function (item) {
-            return React.createElement(MessageResponsebox_1.MessageResponsebox, { id: item.id, type: item.type, time: item.time, topicId: item.topicId, topicTitle: item.topicTitle, postId: item.postId, boardId: item.boardId, boardName: item.boardName, isRead: item.isRead });
+            return React.createElement(MessageResponsebox_1.MessageResponsebox, { id: item.id, type: item.type, time: item.time, topicId: item.topicId, topicTitle: item.topicTitle, floor: item.floor, userId: item.userId, userName: item.userName, boardId: item.boardId, boardName: item.boardName, isRead: item.isRead });
         };
         _this.state = {
             data: [],
@@ -16148,9 +16189,15 @@ var MessageResponse = /** @class */ (function (_super) {
             var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getMessageResponse(0, this.context.router)];
+                    case 0:
+                        //给我的回复添加选中样式
+                        $('.message-nav > div').removeClass('message-nav-focus');
+                        $('#response').addClass('message-nav-focus');
+                        return [4 /*yield*/, Utility.getMessageResponse(0, this.context.router)];
                     case 1:
                         data = _a.sent();
+                        console.log("获取到了回复消息");
+                        console.log(data);
                         if (data) {
                             this.setState({ data: data, from: data.length });
                         }
@@ -16160,9 +16207,6 @@ var MessageResponse = /** @class */ (function (_super) {
         });
     };
     MessageResponse.prototype.render = function () {
-        //给我的回复添加选中样式
-        $('.message-nav > div').removeClass('message-nav-focus');
-        $('#response').addClass('message-nav-focus');
         return React.createElement("div", { className: "message-response" }, this.state.data.map(this.coverMessageResponse));
     };
     return MessageResponse;
@@ -16199,15 +16243,15 @@ var MessageResponsebox = /** @class */ (function (_super) {
     }
     MessageResponsebox.prototype.render = function () {
         var host = window.location.host;
-        var a = this.props.postId / 10;
+        var a = (this.props.floor / 10) + 1;
         var b = parseInt(a);
-        var c = this.props.postId - b * 10;
+        var c = this.props.floor + 10 - b * 10;
         var content;
         if (this.props.isRead) {
-            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=gray]\u6709\u4EBA\u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60[/color][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/url]";
+            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=gray]" + this.props.userName + " \u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60\u3002[/color][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/url]";
         }
         else {
-            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=black][b]\u6709\u4EBA\u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60[/b][/color][color=blue][b]http://" + host + "/topic/" + this.props.topicId + "[/b][/color][/url]";
+            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][b][color=black]" + this.props.userName + " \u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60\u3002[/color][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/b][/url]";
         }
         return (React.createElement("div", { className: "message-response-box" },
             React.createElement("div", { className: "message-response-box-middle" },
@@ -16288,7 +16332,7 @@ var MessageAttme = /** @class */ (function (_super) {
     function MessageAttme(props) {
         var _this = _super.call(this, props) || this;
         _this.coverMessageAttme = function (item) {
-            return React.createElement(MessageAttmebox_1.MessageAttmebox, { id: item.id, type: item.type, time: item.time, topicId: item.topicId, topicTitle: item.topicTitle, postId: item.postId, boardId: item.boardId, boardName: item.boardName, isRead: item.isRead });
+            return React.createElement(MessageAttmebox_1.MessageAttmebox, { id: item.id, type: item.type, time: item.time, topicId: item.topicId, topicTitle: item.topicTitle, floor: item.floor, userId: item.userId, userName: item.userName, boardId: item.boardId, boardName: item.boardName, isRead: item.isRead });
         };
         _this.state = {
             data: [],
@@ -16302,7 +16346,11 @@ var MessageAttme = /** @class */ (function (_super) {
             var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getMessageAttme(0, this.context.router)];
+                    case 0:
+                        //给@我的添加选中样式
+                        $('.message-nav > div').removeClass('message-nav-focus');
+                        $('#attme').addClass('message-nav-focus');
+                        return [4 /*yield*/, Utility.getMessageAttme(0, this.context.router)];
                     case 1:
                         data = _a.sent();
                         if (data) {
@@ -16314,9 +16362,6 @@ var MessageAttme = /** @class */ (function (_super) {
         });
     };
     MessageAttme.prototype.render = function () {
-        //给我的回复添加选中样式
-        $('.message-nav > div').removeClass('message-nav-focus');
-        $('#attme').addClass('message-nav-focus');
         return React.createElement("div", { className: "message-response" }, this.state.data.map(this.coverMessageAttme));
     };
     return MessageAttme;
@@ -16353,15 +16398,15 @@ var MessageAttmebox = /** @class */ (function (_super) {
     }
     MessageAttmebox.prototype.render = function () {
         var host = window.location.host;
-        var a = this.props.postId / 10;
+        var a = (this.props.floor / 10) + 1;
         var b = parseInt(a);
-        var c = this.props.postId - b * 10;
+        var c = this.props.floor + 10 - b * 10;
         var content;
         if (this.props.isRead) {
-            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=gray]\u6709\u4EBA\u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60[/color][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/url]";
+            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=gray]" + this.props.userName + " \u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60\u3002[/color][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/url]";
         }
         else {
-            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=black][b]\u6709\u4EBA\u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60[/b][/color][color=blue][b]http://" + host + "/topic/" + this.props.topicId + "[/b][/color][/url]";
+            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][b][color=black]" + this.props.userName + " \u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60\u3002[/color][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/b][/url]";
         }
         return (React.createElement("div", { className: "message-response-box" },
             React.createElement("div", { className: "message-response-box-middle" },
@@ -16442,7 +16487,7 @@ var MessageSystem = /** @class */ (function (_super) {
     function MessageSystem(props) {
         var _this = _super.call(this, props) || this;
         _this.coverMessageSystem = function (item) {
-            return React.createElement(MessageSystembox_1.MessageSystembox, { id: item.id, type: item.type, title: item.title, content: item.content, time: item.time, topicId: item.topicId, postId: item.postId, isRead: item.isRead });
+            return React.createElement(MessageSystembox_1.MessageSystembox, { id: item.id, type: item.type, title: item.title, content: item.content, time: item.time, topicId: item.topicId, floor: item.floor, isRead: item.isRead });
         };
         _this.state = {
             data: [],
@@ -16451,14 +16496,20 @@ var MessageSystem = /** @class */ (function (_super) {
         };
         return _this;
     }
-    MessageSystem.prototype.componentWillMount = function () {
+    MessageSystem.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
             var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getMessageSystem(0, this.context.router)];
+                    case 0:
+                        //给系统消息添加选中样式
+                        $('.message-nav > div').removeClass('message-nav-focus');
+                        $('#system').addClass('message-nav-focus');
+                        return [4 /*yield*/, Utility.getMessageSystem(0, this.context.router)];
                     case 1:
                         data = _a.sent();
+                        console.log("这是获取到的处理后系统消息");
+                        console.log(data);
                         if (data) {
                             this.setState({ data: data, from: data.length });
                         }
@@ -16468,9 +16519,6 @@ var MessageSystem = /** @class */ (function (_super) {
         });
     };
     MessageSystem.prototype.render = function () {
-        //给我的回复添加选中样式
-        $('.message-nav > div').removeClass('message-nav-focus');
-        $('#system').addClass('message-nav-focus');
         return React.createElement("div", { className: "message-system" }, this.state.data.map(this.coverMessageSystem));
     };
     return MessageSystem;
@@ -16509,15 +16557,15 @@ var MessageSystembox = /** @class */ (function (_super) {
         var content;
         if (this.props.topicId) {
             var host = window.location.host;
-            if (this.props.postId) {
-                var a = this.props.postId / 10;
+            if (this.props.floor) {
+                var a = (this.props.floor / 10) + 1;
                 var b = parseInt(a);
-                var c = this.props.postId - b * 10;
+                var c = this.props.floor + 10 - b * 10;
                 if (this.props.isRead) {
                     content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=gray]" + this.props.content + "[/color][color=blue]http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "[/color][/url]";
                 }
                 else {
-                    content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=black][b]" + this.props.content + "[/b][/color][color=blue][b]http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "[/b][/color][/url]";
+                    content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][b][color=black]" + this.props.content + "[/color][color=blue]http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "[/color][/b][/url]";
                 }
             }
             else {
@@ -16525,7 +16573,7 @@ var MessageSystembox = /** @class */ (function (_super) {
                     content = "[url=http://" + host + "/topic/" + this.props.topicId + "][color=gray]" + this.props.content + "[/color][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/url]";
                 }
                 else {
-                    content = "[url=http://" + host + "/topic/" + this.props.topicId + "][color=black][b]" + this.props.content + "[/b][/color][color=blue][b]http://" + host + "/topic/" + this.props.topicId + "[/color][/b][/url]";
+                    content = "[url=http://" + host + "/topic/" + this.props.topicId + "][b][color=black]" + this.props.content + "[/color][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/b][/url]";
                 }
             }
         }
@@ -16537,7 +16585,6 @@ var MessageSystembox = /** @class */ (function (_super) {
                 content = "[color=black][b]" + this.props.content + "[/b][/color]";
             }
         }
-        console.log(content);
         return (React.createElement("div", { className: "message-system-box" },
             React.createElement("div", { className: "message-system-box-bar" },
                 React.createElement("div", { className: "message-system-box-title" }, this.props.title),
