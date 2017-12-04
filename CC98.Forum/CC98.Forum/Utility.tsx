@@ -2340,7 +2340,7 @@ export async function getMessageSystem(from: number, router) {
         let newTopic = await response.json();
         console.log("原始系统消息数据");
         console.log(newTopic);
-        /*for (let i in newTopic) {
+        for (let i in newTopic) {
             if (newTopic[i].postId) {
                 let response0 = await fetch(`http://apitest.niconi.cc/post/basicinfo?postid=${newTopic[i].postId}`, { headers: myHeaders });
                 let response1 = await response0.json();
@@ -2351,7 +2351,7 @@ export async function getMessageSystem(from: number, router) {
                 console.log("没有获取到楼层");
                 newTopic[i].floor = 0;
             }
-        }*/
+        }
         return newTopic;
     } catch (e) {
         //window.location.href = "/status/Disconnected";
