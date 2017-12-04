@@ -5,10 +5,10 @@ export class AwardInfo extends React.Component<{ postId, userImgUrl, content, us
     }
     render() {
         return <div className="good tagSize" >
-            <div id="userImage"><img src={this.props.userImgUrl}></img> </div>
-            <div id="userName"><span>{this.props.userName}</span></div>
-            <div id="grades"><span id="grade">{this.props.content}</span></div>
-            <div id="credit"><span>{this.props.reason}</span></div>
+            <div className="userImage"><img src={this.props.userImgUrl}></img> </div>
+            <div className="userName">{this.props.userName}</div>
+            <div className="grades">{this.props.content}</div>
+            <div className="credit"><span>{this.props.reason}</span></div>
         </div>;
     }
 }

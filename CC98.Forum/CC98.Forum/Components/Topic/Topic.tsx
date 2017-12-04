@@ -42,7 +42,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null };
     }
     componentDidUpdate() {
-        scrollTo(0, 0);
+        //scrollTo(0, 0);
     }
     async handleChange() {
         let page: number;
@@ -62,6 +62,10 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         else { page = parseInt(newProps.match.params.page); }
         const userName = newProps.match.params.userName;
         const totalPage = await this.getTotalPage(this.match.params.topicid);
+        console.log(this.state.page);
+        console.log(newProps.match.params.page);
+        if (this.state.page !== newProps.match.params.page)
+            scrollTo(0, 0);
         this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName });
     }
 

@@ -69,16 +69,14 @@ export class Category extends RouteComponent<{ boardId }, { boardId, boardName }
         this.state = ({ boardId: "", boardName: "" });
     }
     async componentDidMount() {
-
         const boardName = await Utility.getListCategory(this.props.boardId, this.context.router);
         this.setState({ boardId: this.props.boardId, boardName: boardName });
     }
-    //<i className="fa fa-window-maximize fa-lg"></i> 之前导航中的首页图标，因为不好看暂时去掉了
+    //<i className="fa fa-window-maximize fa-lg"></i> 这是之前导航中的首页图标，因为不好看暂时去掉了
     //fa-lg, fa-2x, fa-3x, fa-4x, fa-5x 分别是将icon扩大到原来的133%, 2倍，3倍，4倍和5倍
     render() {
         const listUrl = `/list/${this.state.boardId}`;
-        return <div className="row" style={{ alignItems: "baseline", width: "100% ", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>
-           
+        return <div className="row" style={{ alignItems: "baseline", width: "100% ", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>          
             <a style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} href=" / ">首页</a>
             <i className="fa fa-chevron-right"></i>
             <a style={{ color: "grey", fontSize: "1rem", marginLeft: "0.5rem" }} href={listUrl} >{this.state.boardName}</a>
@@ -665,7 +663,7 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
                 <div style={{ display: "flex", marginLeft: "0.5rem", alignItems: "flex-end" }}>
                     {icon}
                     <Link to={url}><div className="listTitle" id={titleId} style={{ marginLeft: '0.5rem', }}> {this.props.title}</div></Link>
-                    <div style={{ display: "flex", fontSize: "0.75rem", marginBottom: "-2px" }}>
+                    <div style={{ display: "flex", fontSize: "0.75rem", marginBottom: "-2px", marginLeft:"1rem" }}>
                         {this.state.pager.map(this.generateListPager.bind(this))}</div>
                 </div>
                 <div className="row" style={{ width: "50%", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between", fontSize: "0.75rem", marginBottom: "-4px" }}>

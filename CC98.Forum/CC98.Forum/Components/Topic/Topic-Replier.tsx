@@ -50,6 +50,8 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
             userName = <div style={{ color: "black" }} >{this.props.userName}</div>;
         } else if (this.props.privilege === "管理员") {
             userName = <a style={{ color: "red" }} href={url}>{this.props.userName}</a>;
+        } else {
+            userName = this.props.userName;
         }
         return <div className="replyRoot">
             <div className="row" style={{ width: "100%", display: "flex", marginBottom: "0.625rem" }}>
@@ -72,7 +74,7 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
                         <div><span className="timeProp">{moment(this.props.replyTime).format('YYYY-MM-DD HH:mm:ss')}</span></div>
                     </div>
                 </div>
-                <div style={{ height: "6rem", borderBottom:"#eaeaea solid thin" }}>
+                <div style={{ height: "6rem", borderBottom: "#eaeaea solid thin", marginRight:"2rem" }}>
                 <div id="operation"  >
                     <Link className="operation" to="">引用</Link>
                     <Link className="operation" to="">编辑</Link>

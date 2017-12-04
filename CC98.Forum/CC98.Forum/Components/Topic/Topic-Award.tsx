@@ -10,17 +10,18 @@ export class Award extends React.Component<{ postId ,updateTime}, {info, awardPa
         this.state = { info: [], awardPage:1 }
     }
 
-    async componentWillMount() {
+    async componentDidMount() {
+
         const award = await Utility.getAwardInfo(this.props.postId, 1);
         const info = award.map(this.generateAwardInfo.bind(this));
         const awardInfo = await Promise.all(info);
-        console.log("in award didmount");
-        console.log(awardInfo);
         this.setState({ info: awardInfo})
     }
     async componentWillReceiveProps(newProps) {
-        console.log("in award newprops");
-        const award = await Utility.getAwardInfo(this.props.postId, 1);
+
+
+        const award = await Utility.getAwardInfo(newProps.postId, 1);
+
         const info = award.map(this.generateAwardInfo.bind(this));
         const awardInfo = await Promise.all(info);
         this.setState({  info: awardInfo, awardPage: 1 })
@@ -53,14 +54,14 @@ export class Award extends React.Component<{ postId ,updateTime}, {info, awardPa
         this.setState({ info: awardInfo, awardPage: page - 1 });
     }
     render() {
-        console.log("in render");
-        console.log(this.state.info);
+       
         const lastPageId = `lastPage${this.props.postId}`;
         const awardPagerId = `awardPager${this.props.postId}`;
         const awardPagerJQID = `#awardPager${this.props.postId}`;
         const awardInfoJQID = `#awardInfo${this.props.postId}`;
         const awardInfoID = `awardInfo${this.props.postId}`;
         let awardPager = null;
+        $(awardInfoJQID).css("display", "");
         if (this.state.info.length !== 0) {
             awardPager = < div className="awardPager" id={awardPagerId}>
                 <button className="awardPage" id={lastPageId} onClick={this.lastPage}>上一页</button>
@@ -68,11 +69,12 @@ export class Award extends React.Component<{ postId ,updateTime}, {info, awardPa
             </div>;
             if (this.state.info.length < 10) {
                 $(awardPagerJQID).css("display", "none");
+                $(awardInfoJQID).css("display", "");
         } 
         } else{
             $(awardInfoJQID).css("display", "none");
         }
-        return <div className="column awardInfo" id={awardInfoID} style={{ borderTop: "2px dashed #EAEAEA" }}>
+        return <div className="column awardInfo" id={awardInfoID} >
             {this.state.info}
             {awardPager}
         </div>;

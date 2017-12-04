@@ -9,6 +9,7 @@ export class ReplyContent extends React.Component<{ masters, userId, content, si
     constructor(props, content) {
         super(props, content);
         this.showManageUI = this.showManageUI.bind(this);
+        this.showJudgeUI = this.showJudgeUI.bind(this);
         this.state = {
             likeNumber: 1,
             dislikeNumber: 1,
@@ -19,6 +20,11 @@ export class ReplyContent extends React.Component<{ masters, userId, content, si
   
     showManageUI() {
         const UIId = `#manage${this.props.postid}`;
+        $(UIId).css("display", "");
+    }
+    showJudgeUI() {
+        const UIId = `#judge${this.props.postid}`; 
+        console.log(UIId);
         $(UIId).css("display", "");
     }
     componentDidUpdate() {
@@ -148,7 +154,7 @@ export class ReplyContent extends React.Component<{ masters, userId, content, si
             }
         }
       
-        let signature = <div className="signature"><UbbContainer code={this.props.signature} /></div>;
+        let signature = <div className="signature" style={{borderTop:"#eaeaea solid thin"}}><UbbContainer code={this.props.signature} /></div>;
         if (this.props.signature == "") {
             signature = null;
         }
@@ -159,7 +165,7 @@ export class ReplyContent extends React.Component<{ masters, userId, content, si
                 <div className="comment1">
                     <div id={idLike} className="upup" style={{ marginRight: "0.7rem" }}><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
                     <div id={idDislike} className="downdown"  ><i title="踩" onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
-                    <div id="commentlike"> <div className="commentbutton">   评分</div>
+                    <div id="commentlike"> <div style={{  cursor: "pointer" }} className="commentbutton" onClick={this.showJudgeUI}>   评分</div>
                         <div className="operation1" id={manageIcon} style={{ display: "none", cursor: "pointer" }} onClick={this.showManageUI}>管理</div>
                     </div>
                 </div>
