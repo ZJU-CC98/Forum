@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import * as $ from 'jquery';
 import store from './Store';
 import { Provider } from 'react-redux';
+import 'whatwg-fetch';
 
 import { App } from './Components/App';
 

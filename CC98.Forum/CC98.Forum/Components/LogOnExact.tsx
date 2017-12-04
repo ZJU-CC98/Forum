@@ -148,10 +148,10 @@ class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff}, LogO
                         <img src="/images/login_welcome.png" />
                         <form onSubmit={this.handleLogin} autoComplete="on">
                             <div className="login-form">
-                                <p>用户名</p><input type="text" id="loginName" onChange={this.handleNameChange} value={this.state.loginName} autoComplete="on"/>
+                                <p>用户名</p><input name="username" type="text" id="loginName" onChange={this.handleNameChange} value={this.state.loginName} autoComplete="username"/>
                             </div>
                             <div className="login-form">
-                                <p>密码</p><input type="password" id="loginPassword" onChange={this.handlePasswordChange} autoComplete="on"/>
+                                <p>密码</p><input name="password" type="password" id="loginPassword" onChange={this.handlePasswordChange} autoComplete="current-password"/>
                             </div>
                             <p id="loginMessage">{this.state.loginMessage}</p>
                             <button type="submit" disabled={this.props.isLogOn}>登录账号</button>
