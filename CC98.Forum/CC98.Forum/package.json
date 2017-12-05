@@ -41,6 +41,7 @@
     "typescript": "2.6.1",
     "unminified-webpack-plugin": "1.2.0",
     "webpack": "3.4.1",
-    "whatwg-fetch": "2.0.3"
+    "whatwg-fetch": "2.0.3",
+    "core-js": "2.5.1"
   }
 }

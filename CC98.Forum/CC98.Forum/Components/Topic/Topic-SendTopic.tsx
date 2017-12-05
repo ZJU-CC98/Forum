@@ -40,16 +40,17 @@ export class SendTopic extends React.Component<{ topicid, onChange, }, { content
         });
     }
     componentDidUpdate() {
-        Constants.testEditor = editormd("test-editormd", {
-            width: "100%",
-            height: 640,
-            path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false,
-            imageUpload: false,
-            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-            imageUploadURL: "http://apitest.niconi.cc/file/",
-        });
-
+        if (this.state.mode === 1) {
+            Constants.testEditor = editormd("test-editormd", {
+                width: "100%",
+                height: 640,
+                path: "/scripts/lib/editor.md/lib/",
+                saveHTMLToTextarea: false,
+                imageUpload: false,
+                imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                imageUploadURL: "http://apitest.niconi.cc/file/",
+            });
+        }
     }
     async sendUbbTopic() {
         let url = `http://apitest.niconi.cc/post/topic/${this.props.topicid}`;
