@@ -220,22 +220,54 @@ export class Shixijianzhi extends React.Component<{}, MainPageTopicState>{
 export class Test extends React.Component<{}, AppState>{
 
     async test() {
-        const url = 'http://apitest.niconi.cc/me/unreadcount';
+        const url = 'http://apitest.niconi.cc/notification/atuser?topicid=4741756';
         const token = Utility.getLocalStorage("accessToken");
         console.log(token);
         let myHeaders = new Headers();
-        myHeaders.append("Content-Type", 'application/x-www-form-urlencoded');
+        let ats: string[] = new Array();
+        ats[0] = "adddna";
+        ats[1] = "Dearkano";
+        const body = JSON.stringify(ats);
+        myHeaders.append("Content-Type", 'application/json');
         myHeaders.append("Authorization", token);
         let response = await fetch(url, {
-            method: "GET",
+            method: "POST",
             headers: myHeaders,
-            body: { 'token': token }
+            body: body
         });
-        const data = await response.json();
-        console.log(data);
+        console.log("已发送@请求");
+    }
+    atHanderler() {
+        const reg = new RegExp("@[^ \n]{1,10}?[ \n]", "gm");
+        const reg2 = new RegExp("[^@ ]+");
+        const content = "@你数数这刚好是十个字 这有一个空格保证之前的@合法";
+        if (content.match(reg)) {   //如果match方法返回了非null的值（即数组），则说明内容中存在合法的@
+            let atNum = content.match(reg).length;  //合法的@数
+            if (atNum > 10) atNum = 10;            //至多10个
+            let ats: string[] = new Array();
+            /*被临时抛弃的方法*/
+            /*
+            for (let i = 0; i < 10; i++) {
+                let anAt = reg.exec(content)[0];
+                console.log(anAt);
+                let aUserName = reg2.exec(anAt)[0];
+                console.log(aUserName);
+            }
+            */
+            for (let i = 0; i < atNum; i++) {
+                let anAt = content.match(reg)[i];
+                console.log(anAt);
+                let aUserName = reg2.exec(anAt)[0];
+                console.log(aUserName);
+                ats[i] = aUserName;
+            }
+            console.log(ats);
+        } else {
+            console.log("不存在合法的@");
+        }
     }
     render() {
-        return <div onClick={this.test}>这里是萌萌的adddna测试的地方~</div>
+        return <div onClick={this.atHanderler}>这里是萌萌的adddna测试的地方~</div>
     }
 }
 

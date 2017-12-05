@@ -4194,7 +4194,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var Ubb = __webpack_require__(49);
+var Ubb = __webpack_require__(50);
 /**
  * 定义 UBBContainer 组件需要使用的属性。
  */
@@ -4270,6 +4270,33 @@ var PostTopicState = /** @class */ (function () {
     return PostTopicState;
 }());
 exports.PostTopicState = PostTopicState;
+/**
+ * 作者信息状态
+ */
+var AuthorMessageState = /** @class */ (function () {
+    function AuthorMessageState() {
+    }
+    return AuthorMessageState;
+}());
+exports.AuthorMessageState = AuthorMessageState;
+/**
+ * 题目信息状态
+ */
+var TopicTitleState = /** @class */ (function () {
+    function TopicTitleState() {
+    }
+    return TopicTitleState;
+}());
+exports.TopicTitleState = TopicTitleState;
+/**
+ * 文章内容
+ */
+var ContentState = /** @class */ (function () {
+    function ContentState() {
+    }
+    return ContentState;
+}());
+exports.ContentState = ContentState;
 /**
  * 点赞信息状态
  */
@@ -4484,6 +4511,40 @@ module.exports = ReactRedux;
 
 "use strict";
 
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+Object.defineProperty(exports, "__esModule", { value: true });
+var ActionTypes = __webpack_require__(10);
+exports.userLogIn = function () { return ({
+    type: ActionTypes.USER_LOG_ON
+}); };
+exports.userLogOff = function () { return ({
+    type: ActionTypes.USER_LOG_OFF
+}); };
+exports.changeUserInfo = function (newInfo) { return ({
+    type: ActionTypes.CHANGE_USERINFO,
+    newInfo: newInfo
+}); };
+exports.throwError = function (errorMessage) { return ({
+    type: ActionTypes.ERROR,
+    errorMessage: errorMessage
+}); };
+var AddAwardAction = /** @class */ (function () {
+    function AddAwardAction() {
+        this.type = ActionTypes.ADD_AWARD;
+    }
+    return AddAwardAction;
+}());
+exports.AddAwardAction = AddAwardAction;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -4511,40 +4572,6 @@ var RouteComponent = /** @class */ (function (_super) {
     return RouteComponent;
 }(React.Component));
 exports.RouteComponent = RouteComponent;
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-Object.defineProperty(exports, "__esModule", { value: true });
-var ActionTypes = __webpack_require__(10);
-exports.userLogIn = function () { return ({
-    type: ActionTypes.USER_LOG_ON
-}); };
-exports.userLogOff = function () { return ({
-    type: ActionTypes.USER_LOG_OFF
-}); };
-exports.changeUserInfo = function (newInfo) { return ({
-    type: ActionTypes.CHANGE_USERINFO,
-    newInfo: newInfo
-}); };
-exports.throwError = function (errorMessage) { return ({
-    type: ActionTypes.ERROR,
-    errorMessage: errorMessage
-}); };
-var AddAwardAction = /** @class */ (function () {
-    function AddAwardAction() {
-        this.type = ActionTypes.ADD_AWARD;
-    }
-    return AddAwardAction;
-}());
-exports.AddAwardAction = AddAwardAction;
 
 
 /***/ }),
@@ -4661,7 +4688,7 @@ var Header_1 = __webpack_require__(33);
 var Footer_1 = __webpack_require__(34);
 var MainPage_1 = __webpack_require__(35);
 var User_1 = __webpack_require__(36);
-var LogOn_1 = __webpack_require__(18);
+var LogOn_1 = __webpack_require__(19);
 var Topic_CreateTopic_1 = __webpack_require__(37);
 var Status = __webpack_require__(38);
 var Search_1 = __webpack_require__(39);
@@ -4747,7 +4774,7 @@ function mapState(state) {
         errorMessage: state.error.errorMessage
     };
 }
-exports.App = react_redux_1.connect(mapState, function () { return (null); })(AppBeforeConnect);
+exports.App = react_redux_1.connect(mapState, null)(AppBeforeConnect);
 
 
 /***/ }),
@@ -5919,13 +5946,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(3);
-var RouteComponent_1 = __webpack_require__(7);
+var RouteComponent_1 = __webpack_require__(8);
 var Topic_HotReply_1 = __webpack_require__(79);
 var Topic_SendTopic_1 = __webpack_require__(81);
 var Topic_Category_1 = __webpack_require__(82);
 var Topic_Pager_1 = __webpack_require__(83);
-var Topic_Topic_1 = __webpack_require__(24);
-var Topic_Reply_1 = __webpack_require__(87);
+var Topic_Topic_1 = __webpack_require__(23);
+var Topic_Reply_1 = __webpack_require__(88);
 var Constants;
 (function (Constants) {
 })(Constants = exports.Constants || (exports.Constants = {}));
@@ -6024,7 +6051,7 @@ var Post = /** @class */ (function (_super) {
             hotReply = React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: Topic_HotReply_1.HotReply });
         }
         return React.createElement("div", { className: "center" },
-            React.createElement("div", { className: "row", style: { width: "100%", justifyContent: 'space-between', borderBottom: '#EAEAEA solid thin', alignItems: "center" } },
+            React.createElement("div", { className: "row", style: { width: "100%", justifyContent: 'space-between', alignItems: "center" } },
                 React.createElement(Topic_Category_1.Category, { topicId: this.state.topicid }),
                 React.createElement(Topic_Pager_1.TopicPager, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage })),
             topic,
@@ -6092,73 +6119,20 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
-var Topic_AwardInfo_1 = __webpack_require__(21);
-var RouteComponent_1 = __webpack_require__(7);
-var Post_Management_1 = __webpack_require__(22);
 var UbbContainer_1 = __webpack_require__(4);
 var ReplyContent = /** @class */ (function (_super) {
     __extends(ReplyContent, _super);
     function ReplyContent(props, content) {
         var _this = _super.call(this, props, content) || this;
         _this.showManageUI = _this.showManageUI.bind(_this);
-        _this.nextPage = _this.nextPage.bind(_this);
-        _this.lastPage = _this.lastPage.bind(_this);
         _this.state = {
             likeNumber: 1,
             dislikeNumber: 1,
             likeState: 0,
-            awardInfo: [],
-            info: [],
-            awardPage: 1,
             postId: _this.props.postid
         };
         return _this;
     }
-    ReplyContent.prototype.nextPage = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var page, award, info, awardInfo;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        page = this.state.awardPage;
-                        return [4 /*yield*/, Utility.getAwardInfo(this.props.postid, page + 1)];
-                    case 1:
-                        award = _a.sent();
-                        info = award.map(this.generateAwardInfo.bind(this));
-                        return [4 /*yield*/, Promise.all(info)];
-                    case 2:
-                        awardInfo = _a.sent();
-                        this.setState({ info: awardInfo, awardPage: page + 1 });
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    ReplyContent.prototype.lastPage = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var id, page, award, info, awardInfo;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        id = "#awardPager" + this.props.postid;
-                        page = this.state.awardPage;
-                        if (this.state.awardPage === 1) {
-                            $(id).css("disabled", "true");
-                            return [2 /*return*/];
-                        }
-                        return [4 /*yield*/, Utility.getAwardInfo(this.props.postid, page - 1)];
-                    case 1:
-                        award = _a.sent();
-                        info = award.map(this.generateAwardInfo.bind(this));
-                        return [4 /*yield*/, Promise.all(info)];
-                    case 2:
-                        awardInfo = _a.sent();
-                        this.setState({ info: awardInfo, awardPage: page - 1 });
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
     ReplyContent.prototype.showManageUI = function () {
         var UIId = "#manage" + this.props.postid;
         $(UIId).css("display", "");
@@ -6177,7 +6151,7 @@ var ReplyContent = /** @class */ (function (_super) {
     };
     ReplyContent.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var idLike, idDislike, data, award, info, awardInfo, divid;
+            var idLike, idDislike, data, divid;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -6192,13 +6166,6 @@ var ReplyContent = /** @class */ (function (_super) {
                         else if (data.likeState === 2) {
                             $(idDislike).css("color", "red");
                         }
-                        return [4 /*yield*/, Utility.getAwardInfo(this.props.postid, 1)];
-                    case 2:
-                        award = _a.sent();
-                        info = award.map(this.generateAwardInfo.bind(this));
-                        return [4 /*yield*/, Promise.all(info)];
-                    case 3:
-                        awardInfo = _a.sent();
                         divid = "doc-content" + this.props.postid;
                         editormd.markdownToHTML(divid, {
                             htmlDecode: "style,script,iframe",
@@ -6209,21 +6176,8 @@ var ReplyContent = /** @class */ (function (_super) {
                             sequenceDiagram: true,
                             codeFold: true,
                         });
-                        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState, awardInfo: award, info: awardInfo });
+                        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
                         return [2 /*return*/];
-                }
-            });
-        });
-    };
-    ReplyContent.prototype.generateAwardInfo = function (item) {
-        return __awaiter(this, void 0, void 0, function () {
-            var url;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getPortraitUrl(item.operatorName)];
-                    case 1:
-                        url = _a.sent();
-                        return [2 /*return*/, React.createElement(Topic_AwardInfo_1.AwardInfo, { postId: this.props.postid, userImgUrl: url, content: item.content, reason: item.reason, userName: item.operatorName })];
                 }
             });
         });
@@ -6337,16 +6291,6 @@ var ReplyContent = /** @class */ (function (_super) {
                 }
             }
         }
-        var awardPagerId = "awardPager" + this.props.postid;
-        var awardPager = null;
-        if (this.state.info.length !== 0) {
-            awardPager = React.createElement("div", { className: "row" },
-                React.createElement("button", { className: "awardPage", id: awardPagerId, onClick: this.lastPage }, "\u4E0A\u4E00\u9875"),
-                React.createElement("button", { className: "awardPage", onClick: this.nextPage }, "\u4E0B\u4E00\u9875"));
-        }
-        else {
-            $(".awardInfo").css("display", "none");
-        }
         var signature = React.createElement("div", { className: "signature" },
             React.createElement(UbbContainer_1.UbbContainer, { code: this.props.signature }));
         if (this.props.signature == "") {
@@ -6355,7 +6299,6 @@ var ReplyContent = /** @class */ (function (_super) {
         return React.createElement("div", { className: "root", style: { marginTop: "-170px" } },
             React.createElement("div", { className: "reply-content" },
                 React.createElement("div", { className: "substance" }, content),
-                React.createElement(Post_Management_1.PostManagement, { postId: this.props.postid, userId: this.props.userId }),
                 React.createElement("div", { className: "comment1" },
                     React.createElement("div", { id: idLike, className: "upup", style: { marginRight: "0.7rem" } },
                         React.createElement("i", { title: "赞", onClick: this.like.bind(this), className: "fa fa-thumbs-o-up fa-lg" }),
@@ -6371,18 +6314,158 @@ var ReplyContent = /** @class */ (function (_super) {
                         " ",
                         React.createElement("div", { className: "commentbutton" }, "   \u8BC4\u5206"),
                         React.createElement("div", { className: "operation1", id: manageIcon, style: { display: "none", cursor: "pointer" }, onClick: this.showManageUI }, "\u7BA1\u7406"))),
-                signature,
-                React.createElement("div", { className: "column awardInfo", style: { borderTop: "2px dashed #EAEAEA" } },
-                    this.state.info,
-                    awardPager)));
+                signature));
     };
     return ReplyContent;
-}(RouteComponent_1.RouteComponent));
+}(React.Component));
 exports.ReplyContent = ReplyContent;
 
 
 /***/ }),
 /* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var Utility = __webpack_require__(1);
+var $ = __webpack_require__(9);
+var PostManagement = /** @class */ (function (_super) {
+    __extends(PostManagement, _super);
+    function PostManagement(props) {
+        var _this = _super.call(this, props) || this;
+        _this.wealthInput = _this.wealthInput.bind(_this);
+        _this.prestigeInput = _this.prestigeInput.bind(_this);
+        _this.reasonInput = _this.reasonInput.bind(_this);
+        _this.tpdaysInput = _this.tpdaysInput.bind(_this);
+        _this.confirm = _this.confirm.bind(_this);
+        _this.showAwardUI = _this.showAwardUI.bind(_this);
+        _this.showPunishUI = _this.showPunishUI.bind(_this);
+        _this.showDeleteUI = _this.showDeleteUI.bind(_this);
+        _this.state = { wealth: 1000, prestige: 0, reason: "", tpdays: 0, UI: "Award", tips: "" };
+        return _this;
+    }
+    PostManagement.prototype.showAwardUI = function () {
+        this.setState({ UI: "Award" });
+    };
+    PostManagement.prototype.showPunishUI = function () {
+        this.setState({ UI: "Punish" });
+    };
+    PostManagement.prototype.showDeleteUI = function () {
+        this.setState({ UI: "Delete" });
+    };
+    PostManagement.prototype.confirm = function () {
+        if ($("input[name='reason']:checked").val()) {
+            Utility.awardWealth($("input[name='reason']:checked").val(), this.state.wealth, this.props.postId);
+            var UIId = "#manage" + this.props.postId;
+            $(UIId).css("display", "none");
+            console.log("confirm update");
+            this.props.update();
+            console.log("confirm update finished");
+        }
+        else {
+            if (this.state.reason === "") {
+                console.log("请输入原因！");
+                this.setState({ tips: "请输入原因！" });
+                return false;
+            }
+            else {
+                Utility.awardWealth(this.state.reason, this.state.wealth, this.props.postId);
+                var UIId = "#manage" + this.props.postId;
+                $(UIId).css("display", "none");
+                console.log("confirm update");
+                this.props.update();
+                console.log("confirm update finished");
+                this.setState({ reason: "" });
+                console.log("confirm setstate");
+            }
+        }
+    };
+    PostManagement.prototype.wealthInput = function (e) {
+        this.setState({ wealth: e.target.value });
+    };
+    PostManagement.prototype.prestigeInput = function (e) {
+        this.setState({ prestige: e.target.value });
+    };
+    PostManagement.prototype.reasonInput = function (e) {
+        this.setState({ reason: e.target.value });
+    };
+    PostManagement.prototype.tpdaysInput = function (e) {
+        this.setState({ tpdays: e.target.value });
+    };
+    PostManagement.prototype.render = function () {
+        var UI;
+        var awardUI = React.createElement("div", { className: "column", id: "award" },
+            React.createElement("div", { className: "row manageOperation" },
+                React.createElement("div", { className: "manageObject" }, "\u8D22\u5BCC\u503C"),
+                React.createElement("input", { type: "text", value: this.state.wealth, onChange: this.wealthInput })),
+            React.createElement("div", { className: "row manageOperation" },
+                React.createElement("div", { className: "manageObject" }, "\u5A01\u671B"),
+                React.createElement("input", { type: "text", value: this.state.prestige, onChange: this.prestigeInput })),
+            React.createElement("div", { className: "column manageOperation" },
+                React.createElement("div", { className: "manageObject" }, "\u539F\u56E0"),
+                React.createElement("div", { className: "row" },
+                    React.createElement("div", { className: "row" },
+                        React.createElement("input", { type: "radio", name: "reason", value: "好文章" }),
+                        React.createElement("div", null, "\u597D\u6587\u7AE0")),
+                    React.createElement("div", { className: "row" },
+                        React.createElement("input", { type: "radio", name: "reason", value: "有用资源" }),
+                        React.createElement("div", null, "\u6709\u7528\u8D44\u6E90")),
+                    React.createElement("div", { className: "row" },
+                        React.createElement("input", { type: "radio", name: "reason", value: "热心回复" }),
+                        React.createElement("div", null, "\u70ED\u5FC3\u56DE\u590D"))),
+                React.createElement("input", { type: "text", value: this.state.reason, onChange: this.reasonInput }),
+                React.createElement("div", null, this.state.tips)));
+        var punishUI = React.createElement("div", { className: "column", id: "punish" },
+            React.createElement("div", { className: "row manageOperation" },
+                React.createElement("div", { className: "manageObject" }, "\u6263\u5A01\u671B"),
+                React.createElement("input", { type: "text", value: this.state.prestige, onChange: this.prestigeInput })),
+            React.createElement("div", { className: "row manageOperation" },
+                React.createElement("div", { className: "manageObject" }, "\u7981\u6B62\u53D1\u8A00(\u5929)"),
+                React.createElement("input", { type: "text", value: this.state.tpdays, onChange: this.tpdaysInput })),
+            React.createElement("div", { className: "row manageOperation" },
+                React.createElement("div", { className: "manageObject" }, "\u539F\u56E0"),
+                React.createElement("input", { type: "text", value: this.state.reason, onChange: this.reasonInput }),
+                React.createElement("div", null, this.state.tips)));
+        var deleteUI = React.createElement("div", { className: "column", id: "punish" },
+            React.createElement("div", { className: "row manageOperation" },
+                React.createElement("div", { className: "manageObject" }, "\u5220\u9664\u539F\u56E0"),
+                React.createElement("input", { type: "text", value: this.state.reason, onChange: this.reasonInput })));
+        var UIId = "manage" + this.props.postId;
+        UI = awardUI;
+        if (this.state.UI === "Award")
+            UI = awardUI;
+        if (this.state.UI === "Punish")
+            UI = punishUI;
+        if (this.state.UI === "Delete")
+            UI = deleteUI;
+        return React.createElement("div", { style: { display: "none" }, id: UIId, className: "postManagement" },
+            React.createElement("div", { className: "manageUI" },
+                React.createElement("div", { className: "row manageOptions" },
+                    React.createElement("div", { className: "manageOptions-icon", onClick: this.showAwardUI, style: { color: "#FF7F00" } }, "\u5956\u52B1"),
+                    React.createElement("div", { className: "manageOptions-icon", onClick: this.showPunishUI, style: { color: "red" } }, "\u60E9\u7F5A"),
+                    React.createElement("div", { className: "manageOptions-icon", onClick: this.showDeleteUI }, "\u5220\u9664"))),
+            UI,
+            React.createElement("button", { onClick: this.confirm, className: "confirmManagement" }, "\u786E\u8BA4"));
+    };
+    return PostManagement;
+}(React.Component));
+exports.PostManagement = PostManagement;
+
+
+/***/ }),
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6403,8 +6486,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var LogOnExact_1 = __webpack_require__(113);
-var Logoff_1 = __webpack_require__(114);
+var LogOnExact_1 = __webpack_require__(114);
+var Logoff_1 = __webpack_require__(115);
 /**
  * 用户中心页面
  */
@@ -6425,7 +6508,7 @@ exports.LogOn = LogOn;
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6523,7 +6606,7 @@ exports.Image = Image;
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6752,160 +6835,7 @@ exports.UserDetails = UserDetails;
 
 
 /***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var AwardInfo = /** @class */ (function (_super) {
-    __extends(AwardInfo, _super);
-    function AwardInfo(props, content) {
-        return _super.call(this, props, content) || this;
-    }
-    AwardInfo.prototype.render = function () {
-        return React.createElement("div", { className: "good tagSize" },
-            React.createElement("div", { id: "userImage" },
-                React.createElement("img", { src: this.props.userImgUrl }),
-                " "),
-            React.createElement("div", { id: "userName" },
-                React.createElement("span", null, this.props.userName)),
-            React.createElement("div", { id: "grades" },
-                React.createElement("span", { id: "grade" }, this.props.content)),
-            React.createElement("div", { id: "credit" },
-                React.createElement("span", null, this.props.reason)));
-    };
-    return AwardInfo;
-}(React.Component));
-exports.AwardInfo = AwardInfo;
-
-
-/***/ }),
 /* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var Utility = __webpack_require__(1);
-var $ = __webpack_require__(9);
-var PostManagement = /** @class */ (function (_super) {
-    __extends(PostManagement, _super);
-    function PostManagement(props) {
-        var _this = _super.call(this, props) || this;
-        _this.wealthInput = _this.wealthInput.bind(_this);
-        _this.prestigeInput = _this.prestigeInput.bind(_this);
-        _this.reasonInput = _this.reasonInput.bind(_this);
-        _this.tpdaysInput = _this.tpdaysInput.bind(_this);
-        _this.confirm = _this.confirm.bind(_this);
-        _this.showAwardUI = _this.showAwardUI.bind(_this);
-        _this.showPunishUI = _this.showPunishUI.bind(_this);
-        _this.showDeleteUI = _this.showDeleteUI.bind(_this);
-        _this.state = { wealth: 1000, prestige: 0, reason: "", tpdays: 0, UI: "Award" };
-        return _this;
-    }
-    PostManagement.prototype.showAwardUI = function () {
-        this.setState({ UI: "Award" });
-    };
-    PostManagement.prototype.showPunishUI = function () {
-        this.setState({ UI: "Punish" });
-    };
-    PostManagement.prototype.showDeleteUI = function () {
-        this.setState({ UI: "Delete" });
-    };
-    PostManagement.prototype.confirm = function () {
-        Utility.awardWealth(this.state.reason, this.state.wealth, this.props.postId);
-        var UIId = "#manage" + this.props.postId;
-        $(UIId).css("display", "none");
-    };
-    PostManagement.prototype.wealthInput = function (e) {
-        console.log(this.state);
-        this.setState({ wealth: e.target.value });
-    };
-    PostManagement.prototype.prestigeInput = function (e) {
-        console.log(this.state);
-        this.setState({ prestige: e.target.value });
-    };
-    PostManagement.prototype.reasonInput = function (e) {
-        console.log(this.state);
-        this.setState({ reason: e.target.value });
-    };
-    PostManagement.prototype.tpdaysInput = function (e) {
-        console.log(this.state);
-        this.setState({ tpdays: e.target.value });
-    };
-    PostManagement.prototype.render = function () {
-        var UI;
-        var awardUI = React.createElement("div", { className: "column", id: "award" },
-            React.createElement("div", { className: "row manageOperation" },
-                React.createElement("div", { className: "manageObject" }, "\u8D22\u5BCC\u503C"),
-                React.createElement("input", { type: "text", value: this.state.wealth, onChange: this.wealthInput })),
-            React.createElement("div", { className: "row manageOperation" },
-                React.createElement("div", { className: "manageObject" }, "\u5A01\u671B"),
-                React.createElement("input", { type: "text", value: this.state.prestige, onChange: this.prestigeInput })),
-            React.createElement("div", { className: "row manageOperation" },
-                React.createElement("div", { className: "manageObject" }, "\u539F\u56E0"),
-                React.createElement("input", { type: "text", value: this.state.reason, onChange: this.reasonInput })));
-        var punishUI = React.createElement("div", { className: "column", id: "punish" },
-            React.createElement("div", { className: "row manageOperation" },
-                React.createElement("div", { className: "manageObject" }, "\u6263\u5A01\u671B"),
-                React.createElement("input", { type: "text", value: this.state.prestige, onChange: this.prestigeInput })),
-            React.createElement("div", { className: "row manageOperation" },
-                React.createElement("div", { className: "manageObject" }, "\u7981\u6B62\u53D1\u8A00(\u5929)"),
-                React.createElement("input", { type: "text", value: this.state.tpdays, onChange: this.tpdaysInput })),
-            React.createElement("div", { className: "row manageOperation" },
-                React.createElement("div", { className: "manageObject" }, "\u539F\u56E0"),
-                React.createElement("input", { type: "text", value: this.state.reason, onChange: this.reasonInput })));
-        var deleteUI = React.createElement("div", { className: "column", id: "punish" },
-            React.createElement("div", { className: "row manageOperation" },
-                React.createElement("div", { className: "manageObject" }, "\u5220\u9664\u539F\u56E0"),
-                React.createElement("input", { type: "text", value: this.state.reason, onChange: this.reasonInput })));
-        var UIId = "manage" + this.props.postId;
-        UI = awardUI;
-        if (this.state.UI === "Award")
-            UI = awardUI;
-        if (this.state.UI === "Punish")
-            UI = punishUI;
-        if (this.state.UI === "Delete")
-            UI = deleteUI;
-        return React.createElement("div", { style: { display: "none" }, id: UIId, className: "postManagement" },
-            React.createElement("div", { className: "manageUI" },
-                React.createElement("div", { className: "row manageOptions" },
-                    React.createElement("div", { className: "manageOptions-icon", onClick: this.showAwardUI, style: { color: "#FF7F00" } }, "\u5956\u52B1"),
-                    React.createElement("div", { className: "manageOptions-icon", onClick: this.showPunishUI, style: { color: "red" } }, "\u60E9\u7F5A"),
-                    React.createElement("div", { className: "manageOptions-icon", onClick: this.showDeleteUI }, "\u5220\u9664"))),
-            UI,
-            React.createElement("button", { onClick: this.confirm, className: "confirmManagement" }, "\u786E\u8BA4"));
-    };
-    return PostManagement;
-}(React.Component));
-exports.PostManagement = PostManagement;
-
-
-/***/ }),
-/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7110,6 +7040,126 @@ exports.UbbEditor = UbbEditor;
 
 
 /***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var Utility = __webpack_require__(1);
+var Topic_AuthorMessage_1 = __webpack_require__(84);
+var Topic_TopicTitle_1 = __webpack_require__(85);
+var Topic_TopicContent_1 = __webpack_require__(86);
+var Topic_Award_1 = __webpack_require__(24);
+var Post_Management_1 = __webpack_require__(18);
+var PostTopic = /** @class */ (function (_super) {
+    __extends(PostTopic, _super);
+    function PostTopic(props, content) {
+        var _this = _super.call(this, props, content) || this;
+        _this.update = _this.update.bind(_this);
+        _this.state = {
+            topicMessage: { title: "加载中...", time: "", content: "", signature: "", postid: 0 },
+            likeState: 0
+        };
+        return _this;
+    }
+    PostTopic.prototype.update = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.setState({});
+                return [2 /*return*/];
+            });
+        });
+    };
+    PostTopic.prototype.componentWillMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var topicMessage;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Utility.getTopic(this.props.topicid, this.context.router)];
+                    case 1:
+                        topicMessage = _a.sent();
+                        this.setState({ topicMessage: topicMessage });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    PostTopic.prototype.render = function () {
+        if (this.state.topicMessage != null) {
+            if (this.state.topicMessage.userId == this.props.userId || this.props.userId == null) {
+                return React.createElement("div", { className: "postRoot", id: "1" },
+                    React.createElement("div", { className: "essay" },
+                        React.createElement(Topic_AuthorMessage_1.AuthorMessage, { authorId: this.state.topicMessage.userId, authorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl, isAnonymous: this.state.topicMessage.isAnonymous, isFollowing: this.state.topicMessage.isFollowing, fanCount: this.state.topicMessage.fanCount }),
+                        React.createElement(Topic_TopicTitle_1.TopicTitle, { Title: this.state.topicMessage.title, Time: this.state.topicMessage.time, HitCount: this.state.topicMessage.hitCount }),
+                        React.createElement("div", { id: "ads" },
+                            React.createElement("img", { width: "100%", src: this.props.imgUrl }))),
+                    React.createElement(Post_Management_1.PostManagement, { postId: this.state.topicMessage.postId, userId: this.props.userId, update: this.update }),
+                    React.createElement(Topic_TopicContent_1.TopicContent, { postid: this.state.topicMessage.postId, content: this.state.topicMessage.content, signature: this.state.topicMessage.signature, topicid: this.props.topicid, userId: this.state.topicMessage.userId, contentType: this.state.topicMessage.contentType, masters: this.state.topicMessage.masters, update: this.update }),
+                    React.createElement("div", { className: "column", style: { width: "100%" } },
+                        "//\u6CA1\u6709\u8FDB\u884C\u67E5\u8BE2",
+                        React.createElement(Topic_Award_1.Award, { postId: this.state.topicMessage.postId, updateTime: Date.now() })));
+            }
+            else {
+                return null;
+            }
+        }
+        else {
+            return null;
+        }
+    };
+    return PostTopic;
+}(React.Component));
+exports.PostTopic = PostTopic;
+
+
+/***/ }),
 /* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7163,40 +7213,77 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
-var Topic_AwardInfo_1 = __webpack_require__(21);
-var Topic_AuthorMessage_1 = __webpack_require__(84);
-var Topic_TopicTitle_1 = __webpack_require__(85);
-var Topic_TopicContent_1 = __webpack_require__(86);
-var PostTopic = /** @class */ (function (_super) {
-    __extends(PostTopic, _super);
-    function PostTopic(props, content) {
+var Topic_AwardInfo_1 = __webpack_require__(87);
+var Award = /** @class */ (function (_super) {
+    __extends(Award, _super);
+    function Award(props, content) {
         var _this = _super.call(this, props, content) || this;
         _this.nextPage = _this.nextPage.bind(_this);
         _this.lastPage = _this.lastPage.bind(_this);
-        _this.update = _this.update.bind(_this);
-        _this.state = {
-            topicMessage: { title: "加载中...", time: "", content: "", signature: "", postid: 0 },
-            likeState: 0, awardInfo: [], info: [], awardPage: 1
-        };
+        _this.state = { info: [], awardPage: 1 };
         return _this;
     }
-    PostTopic.prototype.update = function () {
+    Award.prototype.componentWillMount = function () {
         return __awaiter(this, void 0, void 0, function () {
+            var award, info, awardInfo;
             return __generator(this, function (_a) {
-                console.log("topic should update");
-                this.setState({});
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Utility.getAwardInfo(this.props.postId, 1)];
+                    case 1:
+                        award = _a.sent();
+                        info = award.map(this.generateAwardInfo.bind(this));
+                        return [4 /*yield*/, Promise.all(info)];
+                    case 2:
+                        awardInfo = _a.sent();
+                        console.log("in award didmount");
+                        console.log(awardInfo);
+                        this.setState({ info: awardInfo });
+                        return [2 /*return*/];
+                }
             });
         });
     };
-    PostTopic.prototype.nextPage = function () {
+    Award.prototype.componentWillReceiveProps = function (newProps) {
+        return __awaiter(this, void 0, void 0, function () {
+            var award, info, awardInfo;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        console.log("in award newprops");
+                        return [4 /*yield*/, Utility.getAwardInfo(this.props.postId, 1)];
+                    case 1:
+                        award = _a.sent();
+                        info = award.map(this.generateAwardInfo.bind(this));
+                        return [4 /*yield*/, Promise.all(info)];
+                    case 2:
+                        awardInfo = _a.sent();
+                        this.setState({ info: awardInfo, awardPage: 1 });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Award.prototype.generateAwardInfo = function (item) {
+        return __awaiter(this, void 0, void 0, function () {
+            var url;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Utility.getPortraitUrl(item.operatorName)];
+                    case 1:
+                        url = _a.sent();
+                        return [2 /*return*/, React.createElement(Topic_AwardInfo_1.AwardInfo, { postId: this.props.postId, userImgUrl: url, content: item.content, reason: item.reason, userName: item.operatorName })];
+                }
+            });
+        });
+    };
+    Award.prototype.nextPage = function () {
         return __awaiter(this, void 0, void 0, function () {
             var page, award, info, awardInfo;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         page = this.state.awardPage;
-                        return [4 /*yield*/, Utility.getAwardInfo(this.state.topicMessage.postId, page + 1)];
+                        return [4 /*yield*/, Utility.getAwardInfo(this.props.postId, page + 1)];
                     case 1:
                         award = _a.sent();
                         info = award.map(this.generateAwardInfo.bind(this));
@@ -7209,19 +7296,19 @@ var PostTopic = /** @class */ (function (_super) {
             });
         });
     };
-    PostTopic.prototype.lastPage = function () {
+    Award.prototype.lastPage = function () {
         return __awaiter(this, void 0, void 0, function () {
             var id, page, award, info, awardInfo;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        id = "#awardPager" + this.state.topicMessage.postId;
+                        id = "#awardPager" + this.props.postId;
                         page = this.state.awardPage;
                         if (this.state.awardPage === 1) {
                             $(id).css("disabled", "true");
                             return [2 /*return*/];
                         }
-                        return [4 /*yield*/, Utility.getAwardInfo(this.state.topicMessage.postId, page - 1)];
+                        return [4 /*yield*/, Utility.getAwardInfo(this.props.postId, page - 1)];
                     case 1:
                         award = _a.sent();
                         info = award.map(this.generateAwardInfo.bind(this));
@@ -7234,72 +7321,33 @@ var PostTopic = /** @class */ (function (_super) {
             });
         });
     };
-    PostTopic.prototype.generateAwardInfo = function (item) {
-        return __awaiter(this, void 0, void 0, function () {
-            var url;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getPortraitUrl(item.operatorName)];
-                    case 1:
-                        url = _a.sent();
-                        return [2 /*return*/, React.createElement(Topic_AwardInfo_1.AwardInfo, { postId: this.state.topicMessage.postId, userImgUrl: url, content: item.content, reason: item.reason, userName: item.operatorName })];
-                }
-            });
-        });
-    };
-    PostTopic.prototype.componentWillMount = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var topicMessage, award, info, awardInfo;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getTopic(this.props.topicid, this.context.router)];
-                    case 1:
-                        topicMessage = _a.sent();
-                        return [4 /*yield*/, Utility.getAwardInfo(topicMessage.postId, 1)];
-                    case 2:
-                        award = _a.sent();
-                        info = award.map(this.generateAwardInfo.bind(this));
-                        return [4 /*yield*/, Promise.all(info)];
-                    case 3:
-                        awardInfo = _a.sent();
-                        this.setState({ topicMessage: topicMessage, awardInfo: award, info: awardInfo });
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    PostTopic.prototype.render = function () {
-        var awardPagerId = "awardPager" + this.state.topicMessage.postId;
+    Award.prototype.render = function () {
+        console.log("in render");
+        console.log(this.state.info);
+        var lastPageId = "lastPage" + this.props.postId;
+        var awardPagerId = "awardPager" + this.props.postId;
+        var awardPagerJQID = "#awardPager" + this.props.postId;
+        var awardInfoJQID = "#awardInfo" + this.props.postId;
+        var awardInfoID = "awardInfo" + this.props.postId;
         var awardPager = null;
         if (this.state.info.length !== 0) {
-            awardPager = React.createElement("div", { className: "row" },
-                React.createElement("button", { className: "awardPage", id: awardPagerId, onClick: this.lastPage }, "\u4E0A\u4E00\u9875"),
+            awardPager = React.createElement("div", { className: "awardPager", id: awardPagerId },
+                React.createElement("button", { className: "awardPage", id: lastPageId, onClick: this.lastPage }, "\u4E0A\u4E00\u9875"),
                 React.createElement("button", { className: "awardPage", onClick: this.nextPage }, "\u4E0B\u4E00\u9875"));
-        }
-        if (this.state.topicMessage != null) {
-            if (this.state.topicMessage.userId == this.props.userId || this.props.userId == null) {
-                return React.createElement("div", { className: "root", id: "1" },
-                    React.createElement("div", { className: "essay" },
-                        React.createElement(Topic_AuthorMessage_1.AuthorMessage, { authorId: this.state.topicMessage.userId, authorName: this.state.topicMessage.userName, authorImgUrl: this.state.topicMessage.userImgUrl, isAnonymous: this.state.topicMessage.isAnonymous, isFollowing: this.state.topicMessage.isFollowing, fanCount: this.state.topicMessage.fanCount }),
-                        React.createElement(Topic_TopicTitle_1.TopicTitle, { Title: this.state.topicMessage.title, Time: this.state.topicMessage.time, HitCount: this.state.topicMessage.hitCount }),
-                        React.createElement("div", { id: "ads" },
-                            React.createElement("img", { width: "100%", src: this.props.imgUrl }))),
-                    React.createElement(Topic_TopicContent_1.TopicContent, { postid: this.state.topicMessage.postId, content: this.state.topicMessage.content, signature: this.state.topicMessage.signature, topicid: this.props.topicid, userId: this.state.topicMessage.userId, contentType: this.state.topicMessage.contentType, masters: this.state.topicMessage.masters, update: this.update }),
-                    React.createElement("div", { className: "column", style: { width: "100%" } },
-                        this.state.info,
-                        awardPager));
-            }
-            else {
-                return null;
+            if (this.state.info.length < 10) {
+                $(awardPagerJQID).css("display", "none");
             }
         }
         else {
-            return null;
+            $(awardInfoJQID).css("display", "none");
         }
+        return React.createElement("div", { className: "column awardInfo", id: awardInfoID, style: { borderTop: "2px dashed #EAEAEA" } },
+            this.state.info,
+            awardPager);
     };
-    return PostTopic;
+    return Award;
 }(React.Component));
-exports.PostTopic = PostTopic;
+exports.Award = Award;
 
 
 /***/ }),
@@ -7321,8 +7369,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var RouteComponent_1 = __webpack_require__(7);
-var Topic_UserDetails_1 = __webpack_require__(20);
+var RouteComponent_1 = __webpack_require__(8);
+var Topic_UserDetails_1 = __webpack_require__(21);
 var Replier = /** @class */ (function (_super) {
     __extends(Replier, _super);
     function Replier(props, content) {
@@ -7378,7 +7426,7 @@ var Replier = /** @class */ (function (_super) {
         return React.createElement("div", { className: "replyRoot" },
             React.createElement("div", { className: "row", style: { width: "100%", display: "flex", marginBottom: "0.625rem" } },
                 React.createElement("div", { className: "row mouse-userDetails", style: { height: "15.625rem" } },
-                    React.createElement("div", { className: "authorImg" }, urlHtml),
+                    React.createElement("div", { className: "authorImg", style: { height: "6rem", borderBottom: "#eaeaea solid thin" } }, urlHtml),
                     React.createElement("div", { className: "userDetails", style: { display: "none", position: "absolute" } }, userDetails)),
                 React.createElement("div", { className: "column", id: "rpymes" },
                     React.createElement("div", { className: "row", id: "replierMes" },
@@ -7397,12 +7445,13 @@ var Replier = /** @class */ (function (_super) {
                             React.createElement("i", { className: "fa fa-clock-o fa-lg fa-fw" })),
                         React.createElement("div", null,
                             React.createElement("span", { className: "timeProp" }, moment(this.props.replyTime).format('YYYY-MM-DD HH:mm:ss'))))),
-                React.createElement("div", { id: "operation" },
-                    React.createElement(react_router_dom_1.Link, { className: "operation", to: "" }, "\u5F15\u7528"),
-                    React.createElement(react_router_dom_1.Link, { className: "operation", to: "" }, "\u7F16\u8F91"),
-                    React.createElement(react_router_dom_1.Link, { className: "operation", to: email }, "\u79C1\u4FE1"),
-                    React.createElement(react_router_dom_1.Link, { className: "operation", to: "" }, "\u4E3E\u62A5"),
-                    React.createElement(react_router_dom_1.Link, { className: "operation", to: curUserPostUrl }, "\u53EA\u770B\u6B64\u7528\u6237"))));
+                React.createElement("div", { style: { height: "6rem", borderBottom: "#eaeaea solid thin" } },
+                    React.createElement("div", { id: "operation" },
+                        React.createElement(react_router_dom_1.Link, { className: "operation", to: "" }, "\u5F15\u7528"),
+                        React.createElement(react_router_dom_1.Link, { className: "operation", to: "" }, "\u7F16\u8F91"),
+                        React.createElement(react_router_dom_1.Link, { className: "operation", to: email }, "\u79C1\u4FE1"),
+                        React.createElement(react_router_dom_1.Link, { className: "operation", to: "" }, "\u4E3E\u62A5"),
+                        React.createElement(react_router_dom_1.Link, { className: "operation", to: curUserPostUrl }, "\u53EA\u770B\u6B64\u7528\u6237")))));
     };
     return Replier;
 }(RouteComponent_1.RouteComponent));
@@ -7466,7 +7515,7 @@ var Utility = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(3);
 var Topic_ReplyContent_1 = __webpack_require__(17);
 var Topic_Replier_1 = __webpack_require__(25);
-var Topic_Topic_1 = __webpack_require__(24);
+var Topic_Topic_1 = __webpack_require__(23);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -8020,10 +8069,10 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_redux_1 = __webpack_require__(6);
-var Actions_1 = __webpack_require__(8);
+var Actions_1 = __webpack_require__(7);
 var react_router_dom_1 = __webpack_require__(3);
-var UserCenterNavigation_1 = __webpack_require__(88);
-var UserCenterRouter_1 = __webpack_require__(89);
+var UserCenterNavigation_1 = __webpack_require__(89);
+var UserCenterRouter_1 = __webpack_require__(90);
 /**
  * 用户中心页面
  */
@@ -8133,10 +8182,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var MessageMessage_1 = __webpack_require__(95);
-var MessageResponse_1 = __webpack_require__(100);
-var MessageAttme_1 = __webpack_require__(102);
-var MessageSystem_1 = __webpack_require__(104);
+var MessageMessage_1 = __webpack_require__(96);
+var MessageResponse_1 = __webpack_require__(101);
+var MessageAttme_1 = __webpack_require__(103);
+var MessageSystem_1 = __webpack_require__(105);
 var react_router_dom_1 = __webpack_require__(3);
 /**
  * 网站的主页面对象。
@@ -8389,9 +8438,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusBoardArea_1 = __webpack_require__(106);
-var FocusTopicArea_1 = __webpack_require__(107);
-var FocusBoardTopicArea_1 = __webpack_require__(108);
+var FocusBoardArea_1 = __webpack_require__(107);
+var FocusTopicArea_1 = __webpack_require__(108);
+var FocusBoardTopicArea_1 = __webpack_require__(109);
 var Utility = __webpack_require__(1);
 var Focus = /** @class */ (function (_super) {
     __extends(Focus, _super);
@@ -8498,7 +8547,7 @@ var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
 var $ = __webpack_require__(9);
 var react_redux_1 = __webpack_require__(6);
-var Actions_1 = __webpack_require__(8);
+var Actions_1 = __webpack_require__(7);
 /*declare global {
     interface JQuery {
         connection: SignalR;
@@ -9377,34 +9426,66 @@ var Test = /** @class */ (function (_super) {
     }
     Test.prototype.test = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var url, token, myHeaders, response, data;
+            var url, token, myHeaders, ats, body, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        url = 'http://apitest.niconi.cc/me/unreadcount';
+                        url = 'http://apitest.niconi.cc/notification/atuser?topicid=4741756';
                         token = Utility.getLocalStorage("accessToken");
                         console.log(token);
                         myHeaders = new Headers();
-                        myHeaders.append("Content-Type", 'application/x-www-form-urlencoded');
+                        ats = new Array();
+                        ats[0] = "adddna";
+                        ats[1] = "Dearkano";
+                        body = JSON.stringify(ats);
+                        myHeaders.append("Content-Type", 'application/json');
                         myHeaders.append("Authorization", token);
                         return [4 /*yield*/, fetch(url, {
-                                method: "GET",
+                                method: "POST",
                                 headers: myHeaders,
-                                body: { 'token': token }
+                                body: body
                             })];
                     case 1:
                         response = _a.sent();
-                        return [4 /*yield*/, response.json()];
-                    case 2:
-                        data = _a.sent();
-                        console.log(data);
+                        console.log("已发送@请求");
                         return [2 /*return*/];
                 }
             });
         });
     };
+    Test.prototype.atHanderler = function () {
+        var reg = new RegExp("@[^ \n]{1,10}?[ \n]", "gm");
+        var reg2 = new RegExp("[^@ ]+");
+        var content = "@你数数这刚好是十个字 这有一个空格保证之前的@合法";
+        if (content.match(reg)) {
+            var atNum = content.match(reg).length; //合法的@数
+            if (atNum > 10)
+                atNum = 10; //至多10个
+            var ats = new Array();
+            /*被临时抛弃的方法*/
+            /*
+            for (let i = 0; i < 10; i++) {
+                let anAt = reg.exec(content)[0];
+                console.log(anAt);
+                let aUserName = reg2.exec(anAt)[0];
+                console.log(aUserName);
+            }
+            */
+            for (var i = 0; i < atNum; i++) {
+                var anAt = content.match(reg)[i];
+                console.log(anAt);
+                var aUserName = reg2.exec(anAt)[0];
+                console.log(aUserName);
+                ats[i] = aUserName;
+            }
+            console.log(ats);
+        }
+        else {
+            console.log("不存在合法的@");
+        }
+    };
     Test.prototype.render = function () {
-        return React.createElement("div", { onClick: this.test }, "\u8FD9\u91CC\u662F\u840C\u840C\u7684adddna\u6D4B\u8BD5\u7684\u5730\u65B9~");
+        return React.createElement("div", { onClick: this.atHanderler }, "\u8FD9\u91CC\u662F\u840C\u840C\u7684adddna\u6D4B\u8BD5\u7684\u5730\u65B9~");
     };
     return Test;
 }(React.Component));
@@ -9584,8 +9665,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserNavigation_1 = __webpack_require__(109);
-var UserRouter_1 = __webpack_require__(110);
+var UserNavigation_1 = __webpack_require__(110);
+var UserRouter_1 = __webpack_require__(111);
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
@@ -9660,7 +9741,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
-var UbbEditor_1 = __webpack_require__(23);
+var UbbEditor_1 = __webpack_require__(22);
 var Constants;
 (function (Constants) {
 })(Constants = exports.Constants || (exports.Constants = {}));
@@ -9786,7 +9867,7 @@ var CreateTopic = /** @class */ (function (_super) {
     };
     CreateTopic.prototype.sendUbbTopic = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var url, content, contentJson, token, myHeaders, mes, topicId;
+            var url, content, contentJson, token, myHeaders, response, topicId, atUsers, atUsersJSON, url2, myHeaders2, response2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -9807,15 +9888,67 @@ var CreateTopic = /** @class */ (function (_super) {
                                 body: contentJson
                             })];
                     case 1:
-                        mes = _a.sent();
-                        return [4 /*yield*/, mes.text()];
+                        response = _a.sent();
+                        return [4 /*yield*/, response.text()];
                     case 2:
                         topicId = _a.sent();
+                        atUsers = this.atHanderler(this.state.content);
+                        if (!atUsers) return [3 /*break*/, 4];
+                        atUsersJSON = JSON.stringify(atUsers);
+                        url2 = "http://apitest.niconi.cc/notification/atuser?topicid=" + topicId;
+                        myHeaders2 = new Headers();
+                        myHeaders2.append("Content-Type", 'application/json');
+                        myHeaders2.append("Authorization", token);
+                        return [4 /*yield*/, fetch(url2, {
+                                method: 'POST',
+                                headers: myHeaders2,
+                                body: atUsersJSON
+                            })];
+                    case 3:
+                        response2 = _a.sent();
+                        _a.label = 4;
+                    case 4:
                         window.location.href = "/topic/" + topicId;
                         return [2 /*return*/];
                 }
             });
         });
+    };
+    /*
+    *处理ubb模式下的发帖内容
+    *如果存在合法的@，则会返回一个字符串数组，包含至多10个合法的被@用户的昵称，否则返回false
+    */
+    CreateTopic.prototype.atHanderler = function (content) {
+        var reg = new RegExp("@[^ \n]{1,10}?[ \n]", "gm");
+        var reg2 = new RegExp("[^@ ]+");
+        if (content.match(reg)) {
+            var atNum = content.match(reg).length; //合法的@数
+            if (atNum > 10)
+                atNum = 10; //至多10个
+            var ats = new Array();
+            /*被临时抛弃的方法*/
+            /*
+            for (let i = 0; i < 10; i++) {
+                let anAt = reg.exec(content)[0];
+                console.log(anAt);
+                let aUserName = reg2.exec(anAt)[0];
+                console.log(aUserName);
+            }
+            */
+            for (var i = 0; i < atNum; i++) {
+                var anAt = content.match(reg)[i];
+                console.log(anAt);
+                var aUserName = reg2.exec(anAt)[0];
+                console.log(aUserName);
+                ats[i] = aUserName;
+            }
+            console.log(ats);
+            return ats;
+        }
+        else {
+            console.log("不存在合法的@");
+            return false;
+        }
     };
     CreateTopic.prototype.onTitleChange = function (title) {
         this.setState({ title: title });
@@ -9825,7 +9958,7 @@ var CreateTopic = /** @class */ (function (_super) {
     };
     CreateTopic.prototype.render = function () {
         var mode = this.state.mode;
-        var url = "/list/" + this.match.params.boardId;
+        var url = "/list/" + this.match.params.boardId + "/normal";
         if (mode === 0) {
             return React.createElement("div", { className: "createTopic" },
                 React.createElement(Category, { url: url, boardName: this.state.boardName }),
@@ -9898,8 +10031,6 @@ var Category = /** @class */ (function (_super) {
         });
     };
     Category.prototype.render = function () {
-        console.log("this.props.boardName=" + this.props.boardName);
-        console.log("this.state.boardName=" + this.state.boardName);
         return React.createElement("div", { className: "row", style: { alignItems: "baseline", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" } },
             React.createElement("a", { style: { color: "grey", fontSize: "1rem", marginRight: "0.5rem" }, href: "/" }, "\u9996\u9875"),
             React.createElement("i", { className: "fa fa-chevron-right" }),
@@ -10018,7 +10149,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var LogOn_1 = __webpack_require__(18);
+var LogOn_1 = __webpack_require__(19);
 var Utility = __webpack_require__(1);
 var LogOut = /** @class */ (function (_super) {
     __extends(LogOut, _super);
@@ -10753,7 +10884,7 @@ exports.UserCenterMyFollowingsUser = UserCenterMyFollowingsUser;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(43);
-module.exports = __webpack_require__(126);
+module.exports = __webpack_require__(127);
 
 
 /***/ }),
@@ -10792,7 +10923,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var redux_1 = __webpack_require__(46);
 var Error_1 = __webpack_require__(47);
 var Post_1 = __webpack_require__(48);
-var UserInfo_1 = __webpack_require__(77);
+var UserInfo_1 = __webpack_require__(49);
 /**
  * 合并reducer
  * 在组件中使用相应的Store时带上这里的前缀
@@ -10867,17 +10998,6 @@ exports.default = function (state, action) {
 
 "use strict";
 
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -10915,41 +11035,63 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var ActionTypes = __webpack_require__(10);
-var Utility = __webpack_require__(1);
 /**
- * 帖子用Store
+ * 帖子store
  */
-var ReplyContentState = /** @class */ (function () {
-    function ReplyContentState() {
+var TopicState = /** @class */ (function () {
+    function TopicState() {
     }
-    return ReplyContentState;
+    return TopicState;
+}());
+/**
+ * 奖赏store
+ */
+var AwardState = /** @class */ (function () {
+    function AwardState() {
+    }
+    return AwardState;
+}());
+/**
+ * 作者信息store
+ */
+var UserState = /** @class */ (function () {
+    function UserState() {
+    }
+    return UserState;
+}());
+/**
+ * 主题信息store
+ */
+var PostTopicState = /** @class */ (function () {
+    function PostTopicState() {
+    }
+    return PostTopicState;
+}());
+/**
+ * 帖子信息store
+ */
+var PostState = /** @class */ (function () {
+    function PostState() {
+    }
+    return PostState;
 }());
 /**
  * reducer接收到undefined的state时一定要初始化state
  * 这里用ES6方法，在函数定义中初始化state
  */
 function post(state, action) {
-    if (state === void 0) { state = new ReplyContentState(); }
+    if (state === void 0) { state = new TopicState(); }
     return __awaiter(this, void 0, void 0, function () {
-        var _a, award, info, awardInfo;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    _a = action.type;
-                    switch (_a) {
-                        case ActionTypes.ADD_AWARD: return [3 /*break*/, 1];
-                    }
-                    return [3 /*break*/, 4];
-                case 1: return [4 /*yield*/, Utility.getAwardInfo(state.postId, 1)];
-                case 2:
-                    award = _b.sent();
-                    info = award.map(this.generateAwardInfo.bind(this));
-                    return [4 /*yield*/, Promise.all(info)];
-                case 3:
-                    awardInfo = _b.sent();
-                    return [2 /*return*/, __assign({}, state, { info: awardInfo, awardInfo: award })];
-                case 4: return [2 /*return*/, state];
+        return __generator(this, function (_a) {
+            switch (action.type) {
+                case ActionTypes.ADD_AWARD:
+                    return [2 /*return*/, {
+                            post: state.post, postTopic: state.postTopic, user: state.user, award: { updateTime: Date.now() }
+                        }];
+                default:
+                    return [2 /*return*/, state];
             }
+            return [2 /*return*/];
         });
     });
 }
@@ -10965,39 +11107,96 @@ exports.default = post;
 // A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var ActionTypes = __webpack_require__(10);
+var Utility = __webpack_require__(1);
+var Appstate = __webpack_require__(5);
+/**
+ * 用户中心用Store
+ */
+var UserInfo = /** @class */ (function () {
+    function UserInfo() {
+        /**
+        * 表示用户是否登录
+        */
+        this.isLogOn = Utility.isLogOn();
+        /**
+        * 表示当前登录用户的用户信息
+        */
+        this.currentUserInfo = Utility.getLocalStorage('userInfo') || new Appstate.UserInfo();
+    }
+    return UserInfo;
+}());
+/**
+ * reducer接收到undefined的state时一定要初始化state
+ * 这里用ES6方法，在函数定义中初始化state
+ */
+exports.default = function (state, action) {
+    if (state === void 0) { state = new UserInfo; }
+    switch (action.type) {
+        case ActionTypes.USER_LOG_ON:
+            return __assign({}, state, { isLogOn: true });
+        case ActionTypes.USER_LOG_OFF:
+            return __assign({}, state, { isLogOn: false });
+        case ActionTypes.CHANGE_USERINFO:
+            Utility.setLocalStorage("userInfo", action.newInfo);
+            return __assign({}, state, { currentUserInfo: action.newInfo });
+        default:
+            return state;
+    }
+};
+
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 var Ubb = __webpack_require__(2);
-var BTagHandler_1 = __webpack_require__(50);
-var ImageTagHandler_1 = __webpack_require__(19);
-var ITagHandler_1 = __webpack_require__(51);
-var SizeTagHandler_1 = __webpack_require__(52);
-var QuoteTagHandler_1 = __webpack_require__(53);
-var ColorTagHandler_1 = __webpack_require__(54);
-var URLTagHandler_1 = __webpack_require__(55);
-var UTagHandler_1 = __webpack_require__(56);
-var DelTagHandler_1 = __webpack_require__(57);
-var MP3TagHandler_1 = __webpack_require__(58);
-var CursorTagHandler_1 = __webpack_require__(59);
-var EnglishTagHandler_1 = __webpack_require__(60);
-var UserTagHandler_1 = __webpack_require__(61);
-var CodeTagHandler_1 = __webpack_require__(62);
-var UnresolvedTagHandler_1 = __webpack_require__(63);
-var FontTagHandler_1 = __webpack_require__(64);
-var AlignTagHandler_1 = __webpack_require__(65);
-var UploadTagHandler_1 = __webpack_require__(66);
-var LeftTagHandler_1 = __webpack_require__(67);
-var CenterTagHandler_1 = __webpack_require__(68);
-var RightTagHandler_1 = __webpack_require__(69);
-var TableTagHandler_1 = __webpack_require__(70);
-var TdTagHandler_1 = __webpack_require__(71);
-var ThTagHandler_1 = __webpack_require__(72);
-var TrTagHandler_1 = __webpack_require__(73);
-var TopicTagHandler_1 = __webpack_require__(74);
-var MdTagHandler_1 = __webpack_require__(75);
-var EmTagHandler_1 = __webpack_require__(76);
+var BTagHandler_1 = __webpack_require__(51);
+var ImageTagHandler_1 = __webpack_require__(20);
+var ITagHandler_1 = __webpack_require__(52);
+var SizeTagHandler_1 = __webpack_require__(53);
+var QuoteTagHandler_1 = __webpack_require__(54);
+var ColorTagHandler_1 = __webpack_require__(55);
+var URLTagHandler_1 = __webpack_require__(56);
+var UTagHandler_1 = __webpack_require__(57);
+var DelTagHandler_1 = __webpack_require__(58);
+var MP3TagHandler_1 = __webpack_require__(59);
+var CursorTagHandler_1 = __webpack_require__(60);
+var EnglishTagHandler_1 = __webpack_require__(61);
+var UserTagHandler_1 = __webpack_require__(62);
+var CodeTagHandler_1 = __webpack_require__(63);
+var UnresolvedTagHandler_1 = __webpack_require__(64);
+var FontTagHandler_1 = __webpack_require__(65);
+var AlignTagHandler_1 = __webpack_require__(66);
+var UploadTagHandler_1 = __webpack_require__(67);
+var LeftTagHandler_1 = __webpack_require__(68);
+var CenterTagHandler_1 = __webpack_require__(69);
+var RightTagHandler_1 = __webpack_require__(70);
+var TableTagHandler_1 = __webpack_require__(71);
+var TdTagHandler_1 = __webpack_require__(72);
+var ThTagHandler_1 = __webpack_require__(73);
+var TrTagHandler_1 = __webpack_require__(74);
+var TopicTagHandler_1 = __webpack_require__(75);
+var MdTagHandler_1 = __webpack_require__(76);
+var EmTagHandler_1 = __webpack_require__(77);
 /**
  * 创建一个具有所有功能的默认引擎。
  */
@@ -11041,7 +11240,7 @@ __export(__webpack_require__(2));
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11094,7 +11293,7 @@ exports.BTagHandler = BTagHandler;
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11139,7 +11338,7 @@ exports.ITagHandler = ITagHandler;
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11193,7 +11392,7 @@ exports.SizeTagHandler = SizeTagHandler;
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11245,7 +11444,7 @@ exports.QuoteTagHandler = QuoteTagHandler;
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11294,7 +11493,7 @@ exports.ColorTagHandler = ColorTagHandler;
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11350,7 +11549,7 @@ exports.UrlTagHandler = UrlTagHandler;
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11403,7 +11602,7 @@ exports.UTagHandler = UTagHandler;
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11451,7 +11650,7 @@ exports.DelTagHandler = DelTagHandler;
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11505,7 +11704,7 @@ exports.MP3TagHandler = MP3TagHandler;
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11553,7 +11752,7 @@ exports.CursorTagHandler = CursorTagHandler;
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11601,7 +11800,7 @@ exports.EnglishTagHandler = EnglishTagHandler;
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11649,7 +11848,7 @@ exports.UserTagHandler = UserTagHandler;
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11697,7 +11896,7 @@ exports.CodeTagHandler = CodeTagHandler;
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11741,7 +11940,7 @@ exports.UnresolvedTagHandler = UnresolvedTagHandler;
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11789,7 +11988,7 @@ exports.FontTagHandler = FontTagHandler;
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11838,7 +12037,7 @@ exports.AlignTagHandler = AlignTagHandler;
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11859,7 +12058,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Ubb = __webpack_require__(2);
-var ImageTagHandler_1 = __webpack_require__(19);
+var ImageTagHandler_1 = __webpack_require__(20);
 //暂时完成 目前可以区分支持格式的图片和其他格式的文件 
 //对于支持格式的图片，会根据第二个参数的值决定是否默认显示
 //对于其他格式的文件，是否填写第二个参数没有影响（与原版98相同）
@@ -11924,7 +12123,7 @@ exports.UploadTagHandler = UploadTagHandler;
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11972,7 +12171,7 @@ exports.LeftTagHandler = LeftTagHandler;
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12020,7 +12219,7 @@ exports.CenterTagHandler = CenterTagHandler;
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12068,7 +12267,7 @@ exports.RightTagHandler = RightTagHandler;
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12112,7 +12311,7 @@ exports.TableTagHandler = TableTagHandler;
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12162,7 +12361,7 @@ exports.TdTagHandler = TdTagHandler;
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12212,7 +12411,7 @@ exports.ThTagHandler = ThTagHandler;
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12256,7 +12455,7 @@ exports.TrTagHandler = TrTagHandler;
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12307,7 +12506,7 @@ exports.TopicTagHandler = TopicTagHandler;
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12377,7 +12576,7 @@ exports.MarkdownParser = MarkdownParser;
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12424,67 +12623,6 @@ exports.EmTagHandler = EmTagHandler;
 
 
 /***/ }),
-/* 77 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var ActionTypes = __webpack_require__(10);
-var Utility = __webpack_require__(1);
-var Appstate = __webpack_require__(5);
-/**
- * 用户中心用Store
- */
-var UserInfo = /** @class */ (function () {
-    function UserInfo() {
-        /**
-        * 表示用户是否登录
-        */
-        this.isLogOn = Utility.isLogOn();
-        /**
-        * 表示当前登录用户的用户信息
-        */
-        this.currentUserInfo = Utility.getLocalStorage('userInfo') || new Appstate.UserInfo();
-        /**
-        * 帖子数据包括帖子本身的数据以及所属版面的数据
-        */
-    }
-    return UserInfo;
-}());
-;
-/**
- * reducer接收到undefined的state时一定要初始化state
- * 这里用ES6方法，在函数定义中初始化state
- */
-exports.default = function (state, action) {
-    if (state === void 0) { state = new UserInfo; }
-    switch (action.type) {
-        case ActionTypes.USER_LOG_ON:
-            return __assign({}, state, { isLogOn: true });
-        case ActionTypes.USER_LOG_OFF:
-            return __assign({}, state, { isLogOn: false });
-        case ActionTypes.CHANGE_USERINFO:
-            Utility.setLocalStorage("userInfo", action.newInfo);
-            return __assign({}, state, { currentUserInfo: action.newInfo });
-        default:
-            return state;
-    }
-};
-
-
-/***/ }),
 /* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12516,7 +12654,7 @@ var Header_1 = __webpack_require__(33);
 var Footer_1 = __webpack_require__(34);
 var MainPage_1 = __webpack_require__(35);
 var User_1 = __webpack_require__(36);
-var LogOn_1 = __webpack_require__(18);
+var LogOn_1 = __webpack_require__(19);
 var Topic_CreateTopic_1 = __webpack_require__(37);
 var Status = __webpack_require__(38);
 var Search_1 = __webpack_require__(39);
@@ -12602,7 +12740,7 @@ function mapState(state) {
         errorMessage: state.error.errorMessage
     };
 }
-exports.App = react_redux_1.connect(mapState, function () { return (null); })(AppBeforeConnect);
+exports.App = react_redux_1.connect(mapState, null)(AppBeforeConnect);
 
 
 /***/ }),
@@ -12659,7 +12797,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
-var RouteComponent_1 = __webpack_require__(7);
+var RouteComponent_1 = __webpack_require__(8);
 var Topic_HotReplier_1 = __webpack_require__(80);
 var Topic_ReplyContent_1 = __webpack_require__(17);
 var HotReply = /** @class */ (function (_super) {
@@ -12746,8 +12884,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var RouteComponent_1 = __webpack_require__(7);
-var Topic_UserDetails_1 = __webpack_require__(20);
+var RouteComponent_1 = __webpack_require__(8);
+var Topic_UserDetails_1 = __webpack_require__(21);
 var HotReplier = /** @class */ (function (_super) {
     __extends(HotReplier, _super);
     function HotReplier(props, content) {
@@ -12886,7 +13024,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
 var Topic_1 = __webpack_require__(16);
-var UbbEditor_1 = __webpack_require__(23);
+var UbbEditor_1 = __webpack_require__(22);
 var SendTopic = /** @class */ (function (_super) {
     __extends(SendTopic, _super);
     function SendTopic(props) {
@@ -13125,7 +13263,10 @@ var Category = /** @class */ (function (_super) {
     __extends(Category, _super);
     function Category(props) {
         var _this = _super.call(this, props) || this;
-        _this.state = ({ boardId: "", topicId: "", boardName: "", title: "" });
+        _this.state = ({
+            boardId: "",
+            topicId: "", boardName: "", title: ""
+        });
         return _this;
     }
     Category.prototype.componentDidMount = function () {
@@ -13706,7 +13847,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
-var Post_Management_1 = __webpack_require__(22);
+var Post_Management_1 = __webpack_require__(18);
 var UbbContainer_1 = __webpack_require__(4);
 var react_router_dom_1 = __webpack_require__(3);
 var TopicContent = /** @class */ (function (_super) {
@@ -13874,8 +14015,7 @@ var TopicContent = /** @class */ (function (_super) {
         }
         if (this.props.signature == "") {
             return React.createElement("div", { className: "content" },
-                React.createElement("div", { className: "substance" }, content),
-                React.createElement(Post_Management_1.PostManagement, { postId: this.props.postid, userId: this.props.userId }),
+                React.createElement("div", { className: "substance replySubstance" }, content),
                 React.createElement("div", { className: "comment1" },
                     React.createElement("div", { id: "commentlike", className: "buttonFont" },
                         React.createElement("button", { className: "commentbutton" },
@@ -13904,8 +14044,8 @@ var TopicContent = /** @class */ (function (_super) {
                 React.createElement("div", { className: "substance" },
                     content,
                     " "),
-                React.createElement(Post_Management_1.PostManagement, { postId: this.props.postid, userId: this.props.userId }),
-                React.createElement("div", { className: "signature" },
+                React.createElement(Post_Management_1.PostManagement, { postId: this.props.postid, userId: this.props.userId, update: null }),
+                React.createElement("div", { className: "signature", style: { borderTop: "#eaeaea solid thin", paddingTop: "1rem" } },
                     React.createElement(UbbContainer_1.UbbContainer, { code: this.props.signature })),
                 React.createElement("div", { className: "comment" },
                     React.createElement("div", { id: "commentlike", style: { marginRight: "0.7rem" }, className: "buttonFont" },
@@ -13938,6 +14078,46 @@ exports.TopicContent = TopicContent;
 
 /***/ }),
 /* 87 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var AwardInfo = /** @class */ (function (_super) {
+    __extends(AwardInfo, _super);
+    function AwardInfo(props, content) {
+        return _super.call(this, props, content) || this;
+    }
+    AwardInfo.prototype.render = function () {
+        return React.createElement("div", { className: "good tagSize" },
+            React.createElement("div", { id: "userImage" },
+                React.createElement("img", { src: this.props.userImgUrl }),
+                " "),
+            React.createElement("div", { id: "userName" },
+                React.createElement("span", null, this.props.userName)),
+            React.createElement("div", { id: "grades" },
+                React.createElement("span", { id: "grade" }, this.props.content)),
+            React.createElement("div", { id: "credit" },
+                React.createElement("span", null, this.props.reason)));
+    };
+    return AwardInfo;
+}(React.Component));
+exports.AwardInfo = AwardInfo;
+
+
+/***/ }),
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13990,19 +14170,45 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
-var RouteComponent_1 = __webpack_require__(7);
+var RouteComponent_1 = __webpack_require__(8);
 var Topic_Replier_1 = __webpack_require__(25);
 var Topic_ReplyContent_1 = __webpack_require__(17);
+var Topic_Award_1 = __webpack_require__(24);
+var Post_Management_1 = __webpack_require__(18);
 var Reply = /** @class */ (function (_super) {
     __extends(Reply, _super);
     function Reply(props, content) {
         var _this = _super.call(this, props, content) || this;
+        _this.update = _this.update.bind(_this);
         _this.state = {
             contents: [],
             masters: [],
         };
         return _this;
     }
+    Reply.prototype.update = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var page, storageId, realContents, masters;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        console.log("reply update");
+                        page = this.match.params.page || 1;
+                        storageId = "TopicContent_" + this.match.params.topicid + "_" + page;
+                        return [4 /*yield*/, Utility.getTopicContent(this.match.params.topicid, page, this.context.router)];
+                    case 1:
+                        realContents = _a.sent();
+                        return [4 /*yield*/, this.getMasters(this.match.params.topicid)];
+                    case 2:
+                        masters = _a.sent();
+                        console.log("reply setstate");
+                        this.setState({ contents: realContents, masters: masters });
+                        console.log("reply setstate finished");
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     Reply.prototype.getMasters = function (topicId) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
@@ -14039,9 +14245,11 @@ var Reply = /** @class */ (function (_super) {
     };
     Reply.prototype.generateContents = function (item) {
         return React.createElement("div", { className: "reply" },
-            React.createElement("div", { style: { marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" } },
+            React.createElement("div", { style: { marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin", backgroundColor: "#fff" } },
                 React.createElement(Topic_Replier_1.Replier, { key: item.postId, isAnonymous: item.isAnonymous, userId: item.userId, topicid: item.topicId, userName: item.userName, replyTime: item.time, floor: item.floor, userImgUrl: item.userImgUrl, sendTopicNumber: item.sendTopicNumber, privilege: item.privilege }),
-                React.createElement(Topic_ReplyContent_1.ReplyContent, { key: item.content, masters: this.state.masters, userId: item.userId, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.postId, contentType: item.contentType })));
+                React.createElement(Post_Management_1.PostManagement, { postId: item.postId, userId: item.userId, update: this.update }),
+                React.createElement(Topic_ReplyContent_1.ReplyContent, { key: item.content, masters: this.state.masters, userId: item.userId, content: item.content, signature: item.signature, topicid: item.topicId, postid: item.postId, contentType: item.contentType }),
+                React.createElement(Topic_Award_1.Award, { postId: item.postId, updateTime: Date.now() })));
     };
     Reply.prototype.render = function () {
         return React.createElement("div", { className: "center", style: { width: "100%" } }, this.state.contents.map(this.generateContents.bind(this)));
@@ -14061,7 +14269,7 @@ exports.ContentState = ContentState;
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14163,7 +14371,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14184,12 +14392,12 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserCenterExact_1 = __webpack_require__(90);
-var UserCenterMyFollowings_1 = __webpack_require__(94);
-var UserCenterMyFans_1 = __webpack_require__(115);
-var UserCenterMyPostsExact_1 = __webpack_require__(116);
-var UserCenterMyFavorites_1 = __webpack_require__(117);
-var UserCenterConfig_1 = __webpack_require__(121);
+var UserCenterExact_1 = __webpack_require__(91);
+var UserCenterMyFollowings_1 = __webpack_require__(95);
+var UserCenterMyFans_1 = __webpack_require__(116);
+var UserCenterMyPostsExact_1 = __webpack_require__(117);
+var UserCenterMyFavorites_1 = __webpack_require__(118);
+var UserCenterConfig_1 = __webpack_require__(122);
 /**
  * 用户中心主体
  */
@@ -14213,7 +14421,7 @@ exports.UserCenterRouter = UserCenterRouter;
 
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14268,11 +14476,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactProfile_1 = __webpack_require__(91);
-var UserCenterExactActivities_1 = __webpack_require__(92);
+var UserCenterExactProfile_1 = __webpack_require__(92);
+var UserCenterExactActivities_1 = __webpack_require__(93);
 var UserCenterExactAvatar_1 = __webpack_require__(29);
 var Utility = __webpack_require__(1);
-var Actions_1 = __webpack_require__(8);
+var Actions_1 = __webpack_require__(7);
 var react_redux_1 = __webpack_require__(6);
 /**
  * 用户中心主页
@@ -14322,7 +14530,7 @@ var UserCenterExact = /** @class */ (function (_super) {
 }(React.Component));
 function mapState(state) {
     return {
-        userInfo: state.userinfo.currentUserInfo
+        userInfo: state.userInfo.currentUserInfo
     };
 }
 function mapDispatch(dispatch) {
@@ -14336,7 +14544,7 @@ exports.default = react_redux_1.connect(mapState, mapDispatch)(UserCenterExact);
 
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14423,7 +14631,7 @@ exports.UserCenterExactProfile = UserCenterExactProfile;
 
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14443,7 +14651,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var UserCenterExactActivitiesPosts_1 = __webpack_require__(93);
+var UserCenterExactActivitiesPosts_1 = __webpack_require__(94);
 /**
  * 用户中心主页近期动态组件
  */
@@ -14463,7 +14671,7 @@ exports.UserCenterExactActivities = UserCenterExactActivities;
 
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14689,7 +14897,7 @@ exports.UserCenterExactActivitiesPosts = UserCenterExactActivitiesPosts;
 
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14862,7 +15070,7 @@ exports.UserCenterMyFollowings = UserCenterMyFollowings;
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14917,8 +15125,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MessagePerson_1 = __webpack_require__(96);
-var MessageWindow_1 = __webpack_require__(97);
+var MessagePerson_1 = __webpack_require__(97);
+var MessageWindow_1 = __webpack_require__(98);
 var Utility = __webpack_require__(1);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
@@ -15078,7 +15286,7 @@ exports.MessageMessage = MessageMessage;
 
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15122,7 +15330,7 @@ exports.MessagePerson = MessagePerson;
 
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15177,8 +15385,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MessageSender_1 = __webpack_require__(98);
-var MessageReceiver_1 = __webpack_require__(99);
+var MessageSender_1 = __webpack_require__(99);
+var MessageReceiver_1 = __webpack_require__(100);
 var Utility = __webpack_require__(1);
 var MessageWindow = /** @class */ (function (_super) {
     __extends(MessageWindow, _super);
@@ -15469,7 +15677,7 @@ exports.MessageWindow = MessageWindow;
 
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15521,7 +15729,7 @@ exports.MessageSender = MessageSender;
 
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15571,7 +15779,7 @@ exports.MessageReceiver = MessageReceiver;
 
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15626,7 +15834,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MessageResponsebox_1 = __webpack_require__(101);
+var MessageResponsebox_1 = __webpack_require__(102);
 var Utility = __webpack_require__(1);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
@@ -15673,7 +15881,7 @@ exports.MessageResponse = MessageResponse;
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15731,7 +15939,7 @@ exports.MessageResponsebox = MessageResponsebox;
 
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15786,7 +15994,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MessageAttmebox_1 = __webpack_require__(103);
+var MessageAttmebox_1 = __webpack_require__(104);
 var Utility = __webpack_require__(1);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
@@ -15833,7 +16041,7 @@ exports.MessageAttme = MessageAttme;
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15891,7 +16099,7 @@ exports.MessageAttmebox = MessageAttmebox;
 
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15946,7 +16154,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MessageSystembox_1 = __webpack_require__(105);
+var MessageSystembox_1 = __webpack_require__(106);
 var Utility = __webpack_require__(1);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
@@ -15993,7 +16201,7 @@ exports.MessageSystem = MessageSystem;
 
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16065,7 +16273,7 @@ exports.MessageSystembox = MessageSystembox;
 
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16238,7 +16446,7 @@ exports.FocusProps = FocusProps;
 
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16433,7 +16641,7 @@ function coverFocusPost(item) {
 
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16650,7 +16858,7 @@ exports.FocusBoardTopicProps = FocusBoardTopicProps;
 
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16694,7 +16902,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16750,8 +16958,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserExactProfile_1 = __webpack_require__(111);
-var UserRouterActivities_1 = __webpack_require__(112);
+var UserExactProfile_1 = __webpack_require__(112);
+var UserRouterActivities_1 = __webpack_require__(113);
 var UserCenterExactAvatar_1 = __webpack_require__(29);
 var Utility = __webpack_require__(1);
 var UserRouter = /** @class */ (function (_super) {
@@ -16842,7 +17050,7 @@ var UserExact = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17049,7 +17257,7 @@ exports.UserExactProfile = UserExactProfile;
 
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17278,7 +17486,7 @@ exports.UserRouterActivities = UserRouterActivities;
 
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17335,7 +17543,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var $ = __webpack_require__(9);
 var Utility = __webpack_require__(1);
-var Actions = __webpack_require__(8);
+var Actions = __webpack_require__(7);
 var react_redux_1 = __webpack_require__(6);
 var LogOnExact = /** @class */ (function (_super) {
     __extends(LogOnExact, _super);
@@ -17513,7 +17721,7 @@ exports.default = react_redux_1.connect(mapState, mapDispatch)(LogOnExact);
 
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17534,7 +17742,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_redux_1 = __webpack_require__(6);
-var Actions_1 = __webpack_require__(8);
+var Actions_1 = __webpack_require__(7);
 var LogOffBefore = /** @class */ (function (_super) {
     __extends(LogOffBefore, _super);
     function LogOffBefore(props) {
@@ -17574,7 +17782,7 @@ exports.LogOff = react_redux_1.connect(function () { return null; }, mapDispatch
 
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17741,7 +17949,7 @@ exports.UserCenterMyFans = UserCenterMyFans;
 
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17916,7 +18124,7 @@ exports.UserCenterMyPostsExact = UserCenterMyPostsExact;
 
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17937,8 +18145,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserCenterMyFavoritesPosts_1 = __webpack_require__(118);
-var UserCenterMyFavoritesBoards_1 = __webpack_require__(119);
+var UserCenterMyFavoritesPosts_1 = __webpack_require__(119);
+var UserCenterMyFavoritesBoards_1 = __webpack_require__(120);
 //import { UserCenterMyFavoritesPostsBoards } from './UserCenterMyFavoritesPostsBoards';
 //<Route path='/usercenter/myfavorites/boards' component={UserCenterMyFavoritesPostsBoards} />
 /**
@@ -17971,7 +18179,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18130,7 +18338,7 @@ exports.UserCenterMyFavoritesPosts = UserCenterMyFavoritesPosts;
 
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18186,7 +18394,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
-var UserCenterMyFavoritesBoard_1 = __webpack_require__(120);
+var UserCenterMyFavoritesBoard_1 = __webpack_require__(121);
 var UserCenterMyFavoritesBoards = /** @class */ (function (_super) {
     __extends(UserCenterMyFavoritesBoards, _super);
     function UserCenterMyFavoritesBoards(props) {
@@ -18273,7 +18481,7 @@ exports.UserCenterMyFavoritesBoards = UserCenterMyFavoritesBoards;
 
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18460,7 +18668,7 @@ exports.UserCenterMyFavoritesBoard = UserCenterMyFavoritesBoard;
 
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18525,9 +18733,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
 var AppState_1 = __webpack_require__(5);
-var UserCenterConfigAvatar_1 = __webpack_require__(122);
-var UserCenterConfigSignature_1 = __webpack_require__(123);
-var UserCenterConfigOthers_1 = __webpack_require__(124);
+var UserCenterConfigAvatar_1 = __webpack_require__(123);
+var UserCenterConfigSignature_1 = __webpack_require__(124);
+var UserCenterConfigOthers_1 = __webpack_require__(125);
 var UserCenterConfig = /** @class */ (function (_super) {
     __extends(UserCenterConfig, _super);
     function UserCenterConfig(props) {
@@ -18666,7 +18874,7 @@ var UserInfo = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18722,7 +18930,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
-var Actions_1 = __webpack_require__(8);
+var Actions_1 = __webpack_require__(7);
 var react_redux_1 = __webpack_require__(6);
 var UserCenterConfigAvatar = /** @class */ (function (_super) {
     __extends(UserCenterConfigAvatar, _super);
@@ -19072,7 +19280,7 @@ exports.default = react_redux_1.connect(function () { return (null); }, mapDispa
 
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19112,7 +19320,7 @@ exports.UserCenterConfigSignature = UserCenterConfigSignature;
 
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19132,7 +19340,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var AppState_1 = __webpack_require__(125);
+var AppState_1 = __webpack_require__(126);
 var UserCenterConfigOthers = /** @class */ (function (_super) {
     __extends(UserCenterConfigOthers, _super);
     function UserCenterConfigOthers() {
@@ -19205,7 +19413,7 @@ var UserInfo = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19238,6 +19446,33 @@ var PostTopicState = /** @class */ (function () {
     return PostTopicState;
 }());
 exports.PostTopicState = PostTopicState;
+/**
+ * 作者信息状态
+ */
+var AuthorMessageState = /** @class */ (function () {
+    function AuthorMessageState() {
+    }
+    return AuthorMessageState;
+}());
+exports.AuthorMessageState = AuthorMessageState;
+/**
+ * 题目信息状态
+ */
+var TopicTitleState = /** @class */ (function () {
+    function TopicTitleState() {
+    }
+    return TopicTitleState;
+}());
+exports.TopicTitleState = TopicTitleState;
+/**
+ * 文章内容
+ */
+var ContentState = /** @class */ (function () {
+    function ContentState() {
+    }
+    return ContentState;
+}());
+exports.ContentState = ContentState;
 /**
  * 点赞信息状态
  */
@@ -19441,7 +19676,7 @@ exports.ChangeUserInfo = ChangeUserInfo;
 
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
