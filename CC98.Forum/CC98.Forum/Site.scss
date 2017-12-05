@@ -1535,13 +1535,14 @@ a {
                 display: flex;
                 flex-direction: row;
 
-                .message-response-box-middle-title { /*消息框文字第一行 学术信息*/
+                .message-response-box-middle-title { /*消息框文字第一行 版面信息*/
                     height: 20px;
-                    flex-basis: 70px;
+                    flex-wrap: nowrap;
                     font-size: 14px;
                     line-height: 20px;
                     color: dodgerblue;
                     flex-shrink: 0;
+                    margin-right: 10px;
                 }
 
                 .message-response-box-middle-date { /*消息框文字第一行日期*/
@@ -1563,7 +1564,6 @@ a {
                 margin-top: 15px;
             }
         }
-
         /*.message-response-box-right { 
             flex-basis: 60px;
             line-height: 100px;
