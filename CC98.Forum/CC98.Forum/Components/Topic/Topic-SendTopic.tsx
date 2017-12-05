@@ -12,11 +12,21 @@ export class SendTopic extends React.Component<{ topicid, onChange, }, { content
         super(props);
         this.sendUbbTopic = this.sendUbbTopic.bind(this);
         this.changeEditor = this.changeEditor.bind(this);
+        this.showManagement = this.showManagement.bind(this);
+        this.close = this.close.bind(this);
         this.update = this.update.bind(this);
         this.state = ({ content: '', mode: 1 });
     }
     update(value) {
         this.setState({ content: value });
+    }
+    showManagement() {
+        const UIId = `#manage${this.props.topicid}`;
+        $(UIId).css("display", "");
+    }
+    close() {
+        const UIId = `#manage${this.props.topicid}`;
+        $(UIId).css("display", "none");
     }
     componentDidMount() {
         Constants.testEditor = editormd("test-editormd", {
@@ -170,6 +180,7 @@ export class SendTopic extends React.Component<{ topicid, onChange, }, { content
                 <input type="file" id="upload-files" onChange={this.upload.bind(this)} />
             </form>
             {editor}
+            <button onClick={this.showManagement}>管理</button>
         </div>;
     }
 }

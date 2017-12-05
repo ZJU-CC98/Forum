@@ -2492,3 +2492,32 @@ export async function deletePost(topicId,postId, reason) {
         window.location.href = "/status/servererror";
     }
 }
+export async function stopBoardPost(postId,reason,days) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    headers.append("Content-Type", 'application/json');
+    const bodyinfo = { reason: reason,value:days };
+    const url = `http://apitest.niconi.cc/manage/punishment/stopboardpost?postid=${postId}`;
+    const response = await fetch(url, { method: "PUT", headers, body: JSON.stringify(bodyinfo) });
+    if (response.status === 401) {
+        window.location.href = "/status/unauthorizedoperation";
+    }
+    if (response.status === 500) {
+        window.location.href = "/status/servererror";
+    }
+}
+export async function cancelStopBoardPost(userId,boardId) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    headers.append("Content-Type", 'application/json');
+    const url = `http://apitest.niconi.cc/manage/punishment/cancelstopboardpost?userid=${userId}$boardid=${boardId}`;
+    const response = await fetch(url, { method: "PUT", headers });
+    if (response.status === 401) {
+        window.location.href = "/status/unauthorizedoperation";
+    }
+    if (response.status === 500) {
+        window.location.href = "/status/servererror";
+    }
+}

@@ -27,6 +27,7 @@ import { AuthorMessage } from './Topic-AuthorMessage';
 import { TopicPagerDown, TopicPager } from './Topic-Pager';
 import { PostTopic } from './Topic-Topic';
 import { Reply } from './Topic-Reply';
+import { TopicManagement } from './TopicManagement';
 declare let moment: any;
 declare let editormd: any;
 
@@ -37,12 +38,12 @@ export module Constants {
 export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName }, { topicid, page, userName }> {
     constructor(props, context) {
         super(props, context);
-       
+        this.update = this.update.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null };
     }
-    componentDidUpdate() {
-        //scrollTo(0, 0);
+    update() {
+        this.setState({});
     }
     async handleChange() {
         let page: number;
@@ -106,6 +107,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
           
             <TopicPagerDown page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
             <SendTopic onChange={this.handleChange} topicid={this.state.topicid} />
+            <TopicManagement topicId={this.match.params.topicid} update={this.update} />
         </div>
             ;
 

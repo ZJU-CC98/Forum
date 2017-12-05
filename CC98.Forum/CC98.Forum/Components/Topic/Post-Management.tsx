@@ -3,7 +3,7 @@ import * as Utility from '../../Utility';
 import * as $ from 'jquery';
 import { match } from "react-router";
 
-export class PostManagement extends React.Component<{ userId, postId, update, topicId, privilege }, { wealth:number, prestige:number, reason:string, tpdays:number, UI, tips:string }>{
+export class PostManagement extends React.Component<{ userId, postId, update, topicId, privilege }, { wealth: number, prestige: number, reason: string, tpdays: number, UI, tips: string }>{
 
     constructor(props) {
 
@@ -85,13 +85,23 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
                 if ($("input[name='reason']:checked").val()) {
                     if ($("input[name='reason']:checked").val() !== '自定义') {
                         Utility.deductWealth($("input[name='reason']:checked").val(), this.state.wealth, this.props.postId);
-                        if (this.state.prestige!==0)
+                        if (this.state.prestige !== 0) {
                             Utility.deductPrestige(this.props.postId, this.state.prestige, $("input[name='reason']:checked").val());
+                        }
+
+                        if (this.state.tpdays !== 0) {
+                            console.log("confirm in tp");
+                            Utility.stopBoardPost(this.props.postId, $("input[name='reason']:checked").val(), this.state.tpdays);
+                        }
                     } else {
                         if (this.state.reason) {
                             Utility.deductWealth(this.state.reason, this.state.wealth, this.props.postId);
-                            if (this.state.prestige!==0)
+                            if (this.state.prestige !== 0)
                                 Utility.deductPrestige(this.props.postId, this.state.prestige, this.state.reason);
+                            if (this.state.tpdays !== 0) {
+                                console.log("confirm in tp");
+                                Utility.stopBoardPost(this.props.postId, this.state.reason, this.state.tpdays);
+                            }
                         } else {
                             this.setState({ tips: "请输入原因！" });
                         }
@@ -152,7 +162,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
         const deleteOptionJQId = `#manageOptions-delete${this.props.postId}`;
         console.log(this.state.UI);
         if (this.state.UI === "Award") {
-  
+
             console.log("in change color");
             $(awardOptionJQId).css("background-color", "#b9d3ee");
             $(punishOptionJQId).css("background-color", "#fffacd");
@@ -160,14 +170,14 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
         }
 
         if (this.state.UI === "Punish") {
-   
+
             $(awardOptionJQId).css("background-color", "#fffacd");
             $(punishOptionJQId).css("background-color", "#b9d3ee");
             $(deleteOptionJQId).css("background-color", "#fffacd");
         }
 
         if (this.state.UI === "Delete") {
- 
+
             $(awardOptionJQId).css("background-color", "#fffacd");
             $(punishOptionJQId).css("background-color", "#fffacd");
             $(deleteOptionJQId).css("background-color", "#b9d3ee");

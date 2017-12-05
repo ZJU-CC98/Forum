@@ -2,24 +2,43 @@
 import * as Utility from '../../Utility';
 import { AwardInfo } from './Topic-AwardInfo';
 import { connect } from 'react-redux';
-export class Award extends React.Component<{ postId ,updateTime}, {info }>{
+export class Award extends React.Component<{ postId ,updateTime}, {info,shortInfo,count,showAll }>{
     constructor(props, content) {
         super(props, content);
-        this.state = { info: [] }
+        this.showAll = this.showAll.bind(this);
+        this.hideAll = this.hideAll.bind(this);
+        this.state = { info: [],shortInfo:[],count:0 ,showAll:false}
     }
-
+    hideAll() {
+        this.setState({ showAll: false});
+    }
+    showAll(){
+        this.setState({ showAll: true });
+    }
     async componentDidMount() {
-
+        let shortInfo=[];
         const award = await Utility.getAwardInfo(this.props.postId);
+        if (award.length > 10) {
+            for (let i = 0; i < 10; i++) {
+                shortInfo[i] = await this.generateAwardInfo(award[i]);
+             }
+        }
+      
         const info = award.map(this.generateAwardInfo.bind(this));
         const awardInfo = await Promise.all(info);
-        this.setState({ info: awardInfo})
+        this.setState({ info: awardInfo,shortInfo:shortInfo,count:award.length})
     }
     async componentWillReceiveProps(newProps) {
+        let shortInfo = [];
         const award = await Utility.getAwardInfo(newProps.postId);
+        if (award.length > 10) {
+            for (let i = 0; i < 10; i++) {
+                shortInfo[i] = await this.generateAwardInfo(award[i]);
+            }
+        }
         const info = award.map(this.generateAwardInfo.bind(this));
         const awardInfo = await Promise.all(info);
-        this.setState({  info: awardInfo})
+        this.setState({ info: awardInfo, shortInfo: shortInfo, count: award.length });
     }
     async generateAwardInfo(item) {
         const url = await Utility.getPortraitUrl(item.operatorName);
@@ -37,13 +56,15 @@ export class Award extends React.Component<{ postId ,updateTime}, {info }>{
         } else{
             $(awardInfoJQID).css("display", "none");
         }
+        const btn = <button onClick={this.state.showAll ? this.hideAll : this.showAll}>{this.state.showAll ? '收起' : '显示全部'}</button>;
         return <div className="column awardInfo" id={awardInfoID} >
-            <div className="row" style={{ width: "20rem", fontSize:"0.8rem" }}>
+            <div className="row" style={{ width: "25rem", fontSize:"0.8rem" }}>
                 <div style={{ marginLeft:"3.1rem" }}>用户</div>
                 <div style={{ marginLeft: "4.7rem" }}>操作</div>
-                <div style={{ marginLeft: "5.9rem" }}>理由</div>
+                <div style={{ marginLeft: "8.9rem" }}>理由</div>
             </div>
-            {this.state.info}
+            {this.state.count > 10 ? (this.state.showAll ? this.state.info : this.state.shortInfo) : this.state.info}
+            {this.state.count>10?btn:null}
         </div>;
     }
 }

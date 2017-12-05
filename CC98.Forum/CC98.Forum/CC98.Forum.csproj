@@ -42,6 +42,7 @@
     <None Remove="Components\Topic\Topic-TopicTitle.tsx" />
     <None Remove="Components\Topic\Topic-UserDetails.tsx" />
     <None Remove="Components\Topic\Topic.tsx" />
+    <None Remove="Components\Topic\TopicManagement.tsx" />
     <None Remove="Components\UbbContainer.tsx" />
     <None Remove="Components\UbbEditor.tsx" />
     <None Remove="Components\UserCenterConfig.tsx" />
@@ -134,6 +135,7 @@
     <TypeScriptCompile Include="Components\Topic\Topic-TopicTitle.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-UserDetails.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic.tsx" />
+    <TypeScriptCompile Include="Components\Topic\TopicManagement.tsx" />
     <TypeScriptCompile Include="Components\UbbContainer.tsx" />
     <TypeScriptCompile Include="Components\UbbEditor.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\UserCenterConfig.tsx" />

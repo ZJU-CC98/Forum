@@ -410,7 +410,7 @@ body {
 
 .grades {
     margin-left: 1.25rem;
-    width:5rem;
+    width:8rem;
 }
 
 .reward {
@@ -2689,6 +2689,9 @@ a {
 }
 
 .postManagement {
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
     margin-left: 30rem;
     margin-top:-15rem;
     position: absolute;
@@ -2706,8 +2709,7 @@ a {
     background-color: #FFFACD;
 }
 .judgeManagement {
-    margin-left: 30rem;
-    margin-top: -15rem;
+
     position: absolute;
     z-index: 1000;
     width: 30rem;
@@ -2788,13 +2790,14 @@ a {
 .awardInfo{
     margin-left:2rem;
     margin-right:2rem;
-    width:20rem;
+    width:25rem;
 }
 .awardPager{
     margin-bottom:0.5rem;
     margin-top:0.5rem;
 }
 .manageOperation{
+    justify-content:space-around;
     width:18rem;
     margin-left:5rem;
     margin-right:2rem;
