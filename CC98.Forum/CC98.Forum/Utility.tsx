@@ -2300,6 +2300,7 @@ export function isFollowThisBoard(boardId) {
     }
     return false;
 }
+
 export async function followBoard(boardId) {
     const token = getLocalStorage("accessToken");
     const headers = new Headers();
@@ -2314,6 +2315,35 @@ export async function followBoard(boardId) {
     }
     refreshUserInfo();
     removeStorage("focusBoardList");
+}
+export async function storeUserInfo() {
+
+    const token = getLocalStorage("accessToken");
+
+    let userName = getLocalStorage("userName");
+
+    if (!userName) {
+
+        let userInfo = getLocalStorage("userInfo");
+
+        userName = userInfo.name;
+
+    }
+
+    const headers = new Headers();
+
+    headers.append("Authorization", token);
+
+    let response = await fetch(`http://apitest.niconi.cc/user/name/${userName}`, {
+
+        headers: headers
+
+    });
+
+    let userInfo = await response.json();
+
+    setLocalStorage("userInfo", userInfo);
+
 }
 export async function unfollowBoard(boardId) {
     const token = getLocalStorage("accessToken");
@@ -2552,20 +2582,32 @@ export async function deletePost(topicId,postId, reason) {
         window.location.href = "/status/servererror";
     }
 }
-
-//缓存用户信息
-export async function refreshUserInfo() {
+export async function stopBoardPost(postId,reason,days) {
     const token = getLocalStorage("accessToken");
-    let userName = getLocalStorage("userName");
-    if (!userName) {
-        let userInfo = getLocalStorage("userInfo");
-        userName = userInfo.name;
-    }
     const headers = new Headers();
     headers.append("Authorization", token);
-    let response = await fetch(`http://apitest.niconi.cc/user/name/${userName}`, {
-        headers: headers
-    });
-    let userInfo = await response.json();
-    setLocalStorage("userInfo", userInfo);
+    headers.append("Content-Type", 'application/json');
+    const bodyinfo = { reason: reason,value:days };
+    const url = `http://apitest.niconi.cc/manage/punishment/stopboardpost?postid=${postId}`;
+    const response = await fetch(url, { method: "PUT", headers, body: JSON.stringify(bodyinfo) });
+    if (response.status === 401) {
+        window.location.href = "/status/unauthorizedoperation";
+    }
+    if (response.status === 500) {
+        window.location.href = "/status/servererror";
+    }
+}
+export async function cancelStopBoardPost(userId,boardId) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    headers.append("Content-Type", 'application/json');
+    const url = `http://apitest.niconi.cc/manage/punishment/cancelstopboardpost?userid=${userId}$boardid=${boardId}`;
+    const response = await fetch(url, { method: "PUT", headers });
+    if (response.status === 401) {
+        window.location.href = "/status/unauthorizedoperation";
+    }
+    if (response.status === 500) {
+        window.location.href = "/status/servererror";
+    }
 }

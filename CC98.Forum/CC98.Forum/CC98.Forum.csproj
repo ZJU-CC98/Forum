@@ -17,9 +17,9 @@
     <None Remove="Actions.tsx" />
     <None Remove="ActionTypes.tsx" />
     <None Remove="CC98.Forum.rar" />
+    <None Remove="Components\Category.tsx" />
     <None Remove="Components\FocusBoardTopicArea.tsx" />
     <None Remove="Components\Footer.tsx" />
-    <None Remove="Components\MessagePager.tsx" />
     <None Remove="Components\RouteComponent.tsx" />
     <None Remove="Components\SearCH.tsx" />
     <None Remove="Components\Status.tsx" />
@@ -43,6 +43,7 @@
     <None Remove="Components\Topic\Topic-TopicTitle.tsx" />
     <None Remove="Components\Topic\Topic-UserDetails.tsx" />
     <None Remove="Components\Topic\Topic.tsx" />
+    <None Remove="Components\Topic\TopicManagement.tsx" />
     <None Remove="Components\UbbContainer.tsx" />
     <None Remove="Components\UbbEditor.tsx" />
     <None Remove="Components\UserCenterConfig.tsx" />
@@ -56,13 +57,10 @@
     <None Remove="Components\UserCenter\UserRouterActivities.tsx" />
     <None Remove="Components\UserExactProfile.tsx" />
     <None Remove="Props\FocusBoardProps.tsx" />
-    <None Remove="Props\MessagePagerProps.tsx" />
     <None Remove="Props\MessageSendReceiveProps.tsx" />
     <None Remove="Props\MessageWindowProps.tsx" />
-    <None Remove="Props\PageModelProps.tsx" />
     <None Remove="Reducers\Error.tsx" />
     <None Remove="Reducers\Post.tsx" />
-    <None Remove="States\MessagePagerState.tsx" />
     <None Remove="States\MessageWindowState.tsx" />
     <None Remove="States\SearchState.tsx" />
     <None Remove="UbbCode.tsx" />
@@ -109,7 +107,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Actions.tsx" />
     <TypeScriptCompile Include="ActionTypes.tsx" />
-    <TypeScriptCompile Include="Components\MessagePager.tsx" />
+    <TypeScriptCompile Include="Components\Category.tsx" />
     <TypeScriptCompile Include="Components\RouteComponent.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-AuthorMessage.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Award.tsx" />
@@ -139,6 +137,7 @@
     <TypeScriptCompile Include="Components\Topic\Topic-TopicTitle.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-UserDetails.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic.tsx" />
+    <TypeScriptCompile Include="Components\Topic\TopicManagement.tsx" />
     <TypeScriptCompile Include="Components\UbbContainer.tsx" />
     <TypeScriptCompile Include="Components\UbbEditor.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\UserCenterConfig.tsx" />
@@ -152,15 +151,12 @@
     <TypeScriptCompile Include="Components\UserCenter\UserExactProfile.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\UserRouterActivities.tsx" />
     <TypeScriptCompile Include="Props\FocusBoardProps.tsx" />
-    <TypeScriptCompile Include="Props\MessagePagerProps.tsx" />
     <TypeScriptCompile Include="Props\MessagePersonProps.tsx" />
     <TypeScriptCompile Include="Props\MessageSendReceiveProps.tsx" />
     <TypeScriptCompile Include="Props\MessageWindowProps.tsx" />
-    <TypeScriptCompile Include="Props\PageModelProps.tsx" />
     <TypeScriptCompile Include="Reducers\Error.tsx" />
     <TypeScriptCompile Include="Reducers\Post.tsx" />
     <TypeScriptCompile Include="Reducers\UserInfo.tsx" />
-    <TypeScriptCompile Include="States\MessagePagerState.tsx" />
     <TypeScriptCompile Include="States\MessageWindowState.tsx" />
     <TypeScriptCompile Include="States\SearchState.tsx" />
     <TypeScriptCompile Include="Store.tsx" />

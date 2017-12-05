@@ -105,25 +105,76 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
         }
     }
     async sendUbbTopic() {
-        let url = `http://apitest.niconi.cc/topic/board/${this.match.params.boardId}`;
-        let content = {
+        const url = `http://apitest.niconi.cc/topic/board/${this.match.params.boardId}`;
+        const content = {
             content: this.state.content,
             contentType: 0,
             title: this.state.title
         }
-        let contentJson = JSON.stringify(content);
-        let token = Utility.getLocalStorage("accessToken");
+        const contentJson = JSON.stringify(content);
+        const token = Utility.getLocalStorage("accessToken");
         let myHeaders = new Headers();
         myHeaders.append("Authorization", token);
         myHeaders.append("Content-Type", 'application/json');
-        let mes = await fetch(url, {
+        let response = await fetch(url, {
             method: 'POST',
             headers: myHeaders,
             body: contentJson
         }
         );
-        const topicId = await mes.text();
+        //发帖成功，api返回topicid
+        const topicId = await response.text();
+        //根据返回的topicid，发送@信息       
+        const atUsers = this.atHanderler(this.state.content);
+        //如果存在合法的@，则发送@信息，否则不发送，直接跳转至所发帖子
+        if (atUsers) {
+            const atUsersJSON = JSON.stringify(atUsers);
+            const url2 = `http://apitest.niconi.cc/notification/atuser?topicid=${topicId}`;
+            let myHeaders2 = new Headers();
+            myHeaders2.append("Content-Type", 'application/json');
+            myHeaders2.append("Authorization", token);
+            let response2 = await fetch(url2, {
+                method: 'POST',
+                headers: myHeaders2,
+                body: atUsersJSON
+            });
+        }
         window.location.href = `/topic/${topicId}`;
+
+    }
+    /*
+    *处理ubb模式下的发帖内容
+    *如果存在合法的@，则会返回一个字符串数组，包含至多10个合法的被@用户的昵称，否则返回false
+    */
+    atHanderler(content: string) {
+        const reg = new RegExp("@[^ \n]{1,10}?[ \n]", "gm");
+        const reg2 = new RegExp("[^@ ]+");
+        if (content.match(reg)) {   //如果match方法返回了非null的值（即数组），则说明内容中存在合法的@
+            let atNum = content.match(reg).length;  //合法的@数
+            if (atNum > 10) atNum = 10;            //至多10个
+            let ats: string[] = new Array();
+            /*被临时抛弃的方法*/
+            /*
+            for (let i = 0; i < 10; i++) {
+                let anAt = reg.exec(content)[0];
+                console.log(anAt);
+                let aUserName = reg2.exec(anAt)[0];
+                console.log(aUserName);
+            }
+            */
+            for (let i = 0; i < atNum; i++) {
+                let anAt = content.match(reg)[i];
+                console.log(anAt);
+                let aUserName = reg2.exec(anAt)[0];
+                console.log(aUserName);
+                ats[i] = aUserName;
+            }
+            console.log(ats);
+            return ats;
+        } else {
+            console.log("不存在合法的@");
+            return false;
+        }
     }
     onTitleChange(title) {
         this.setState({ title: title });
@@ -133,7 +184,7 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
     }
     render() {
         const mode = this.state.mode;
-        const url = `/list/${this.match.params.boardId}`;
+        const url = `/list/${this.match.params.boardId}/normal`;
         if (mode === 0) {
             return <div className="createTopic">
                 <Category url={url} boardName={this.state.boardName} />
@@ -202,8 +253,6 @@ export class Category extends React.Component<{ url: string, boardName: string }
         });
     }
     render() {
-        console.log("this.props.boardName=" + this.props.boardName);
-        console.log("this.state.boardName=" + this.state.boardName);
         return <div className="row" style={{ alignItems: "baseline", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>
             <a style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} href="/">首页</a>
             <i className="fa fa-chevron-right"></i>
