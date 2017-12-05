@@ -608,7 +608,7 @@ function convertHotTopic(item) {
 }
 exports.convertHotTopic = convertHotTopic;
 function getPager(curPage, totalPage) {
-    if (curPage == undefined) {
+    if (!curPage) {
         curPage = 1;
     }
     var pages = [];
@@ -616,7 +616,7 @@ function getPager(curPage, totalPage) {
         pages = [1];
     }
     else if (totalPage < 10 && totalPage > 1) {
-        if (curPage == undefined || curPage == 1) {
+        if (curPage == 1) {
             var i = void 0;
             for (i = 0; i < totalPage; i++) {
                 pages[i] = i + 1;
@@ -654,7 +654,7 @@ function getPager(curPage, totalPage) {
     }
     else {
         if (curPage + 5 <= totalPage) {
-            if (curPage == undefined || curPage == 1) {
+            if (curPage == 1) {
                 pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, -2, -4];
             }
             else if (curPage > 1 && curPage < 6) {
@@ -3093,7 +3093,7 @@ function followBoard(boardId) {
                     if (response.status === 500) {
                         window.location.href = "/status/servererror";
                     }
-                    storeUserInfo();
+                    refreshUserInfo();
                     removeStorage("focusBoardList");
                     return [2 /*return*/];
             }
@@ -3120,7 +3120,7 @@ function unfollowBoard(boardId) {
                     if (response.status === 500) {
                         window.location.href = "/status/servererror";
                     }
-                    storeUserInfo();
+                    refreshUserInfo();
                     removeStorage("focusBoardList");
                     return [2 /*return*/];
             }
@@ -3277,7 +3277,7 @@ function getMessageAttme(from, router) {
         return __generator(this, function (_d) {
             switch (_d.label) {
                 case 0:
-                    _d.trys.push([0, 12, , 13]);
+                    _d.trys.push([0, 14, , 15]);
                     result = [];
                     token = getLocalStorage("accessToken");
                     myHeaders = new Headers();
@@ -3295,14 +3295,15 @@ function getMessageAttme(from, router) {
                     return [4 /*yield*/, response.json()];
                 case 2:
                     newTopic = _d.sent();
-                    if (!newTopic) return [3 /*break*/, 11];
+                    console.log("显示原始接收到的@消息", newTopic);
+                    if (!newTopic) return [3 /*break*/, 13];
                     _a = [];
                     for (_b in newTopic)
                         _a.push(_b);
                     _i = 0;
                     _d.label = 3;
                 case 3:
-                    if (!(_i < _a.length)) return [3 /*break*/, 11];
+                    if (!(_i < _a.length)) return [3 /*break*/, 13];
                     i = _a[_i];
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/topic/" + newTopic[i].topicId, { headers: myHeaders })];
                 case 4:
@@ -3314,35 +3315,43 @@ function getMessageAttme(from, router) {
                         //window.location.href = "/status/ServerError";
                     }
                     if (!(response0.status === 404)) return [3 /*break*/, 5];
-                    return [3 /*break*/, 10];
+                    return [3 /*break*/, 12];
                 case 5: return [4 /*yield*/, response0.json()];
                 case 6:
                     response1 = _d.sent();
+                    console.log("获取帖子信息", response1);
                     newTopic[i].topicTitle = response1.title;
                     newTopic[i].boardId = response1.boardId;
                     _c = newTopic[i];
                     return [4 /*yield*/, getBoardName(response1.boardId, router)];
                 case 7:
                     _c.boardName = _d.sent();
-                    return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/basicinfo?postid=" + newTopic[i].postId, { headers: myHeaders })];
-                case 8:
+                    if (!!newTopic[i].postId) return [3 /*break*/, 8];
+                    newTopic[i].floor = 1;
+                    newTopic[i].userId = response1.userId;
+                    newTopic[i].userName = response1.userName;
+                    return [3 /*break*/, 11];
+                case 8: return [4 /*yield*/, fetch("http://apitest.niconi.cc/post/basicinfo?postid=" + newTopic[i].postId, { headers: myHeaders })];
+                case 9:
                     response2 = _d.sent();
                     return [4 /*yield*/, response2.json()];
-                case 9:
+                case 10:
                     response3 = _d.sent();
                     newTopic[i].floor = response3.floor;
                     newTopic[i].userId = response3.userId;
                     newTopic[i].userName = response3.userName;
+                    _d.label = 11;
+                case 11:
                     result.push(newTopic[i]);
-                    _d.label = 10;
-                case 10:
+                    _d.label = 12;
+                case 12:
                     _i++;
                     return [3 /*break*/, 3];
-                case 11: return [2 /*return*/, result];
-                case 12:
+                case 13: return [2 /*return*/, result];
+                case 14:
                     e_35 = _d.sent();
-                    return [3 /*break*/, 13];
-                case 13: return [2 /*return*/];
+                    return [3 /*break*/, 15];
+                case 15: return [2 /*return*/];
             }
         });
     });
@@ -3489,7 +3498,7 @@ function deletePost(topicId, postId, reason) {
 }
 exports.deletePost = deletePost;
 //缓存用户信息
-function storeUserInfo() {
+function refreshUserInfo() {
     return __awaiter(this, void 0, void 0, function () {
         var token, userName, userInfo_1, headers, response, userInfo;
         return __generator(this, function (_a) {
@@ -3517,7 +3526,7 @@ function storeUserInfo() {
         });
     });
 }
-exports.storeUserInfo = storeUserInfo;
+exports.refreshUserInfo = refreshUserInfo;
 
 
 /***/ }),
@@ -8918,10 +8927,10 @@ var Message = /** @class */ (function (_super) {
                                 React.createElement(react_router_dom_1.NavLink, { to: "/message/system" }, "\u7CFB\u7EDF\u901A\u77E5")),
                             React.createElement("div", { id: "message" },
                                 React.createElement(react_router_dom_1.NavLink, { to: "/message/message" }, "\u6211\u7684\u79C1\u4FE1"))),
-                        React.createElement(react_router_dom_1.Route, { path: "/message/response", component: MessageResponse_1.MessageResponse }),
-                        React.createElement(react_router_dom_1.Route, { path: "/message/attme", component: MessageAttme_1.MessageAttme }),
-                        React.createElement(react_router_dom_1.Route, { path: "/message/system", component: MessageSystem_1.MessageSystem }),
-                        React.createElement(react_router_dom_1.Route, { path: "/message/message", component: MessageMessage_1.MessageMessage }))))));
+                        React.createElement(react_router_dom_1.Route, { path: "/message/response/:page?", component: MessageResponse_1.MessageResponse }),
+                        React.createElement(react_router_dom_1.Route, { path: "/message/attme/:page?", component: MessageAttme_1.MessageAttme }),
+                        React.createElement(react_router_dom_1.Route, { path: "/message/system/:page?", component: MessageSystem_1.MessageSystem }),
+                        React.createElement(react_router_dom_1.Route, { path: "/message/message/:page?", component: MessageMessage_1.MessageMessage }))))));
     };
     return Message;
 }(React.Component));
@@ -16839,11 +16848,12 @@ var Utility = __webpack_require__(1);
  */
 var MessageResponse = /** @class */ (function (_super) {
     __extends(MessageResponse, _super);
-    function MessageResponse(props) {
-        var _this = _super.call(this, props) || this;
+    function MessageResponse(props, context) {
+        var _this = _super.call(this, props, context) || this;
         _this.coverMessageResponse = function (item) {
             return React.createElement(MessageResponsebox_1.MessageResponsebox, { id: item.id, type: item.type, time: item.time, topicId: item.topicId, topicTitle: item.topicTitle, floor: item.floor, userId: item.userId, userName: item.userName, boardId: item.boardId, boardName: item.boardName, isRead: item.isRead });
         };
+        //let curPage = this.props.match.params.page;
         _this.state = {
             data: [],
             from: 0,
@@ -16910,20 +16920,22 @@ var MessageResponsebox = /** @class */ (function (_super) {
     }
     MessageResponsebox.prototype.render = function () {
         var host = window.location.host;
+        var boardName = "[url=http://" + host + "/list/" + this.props.boardId + "/normal][color=dodgerblue]" + this.props.boardName + "[/color][/url]";
         var a = (this.props.floor / 10) + 1;
         var b = parseInt(a);
         var c = this.props.floor + 10 - b * 10;
         var content;
         if (this.props.isRead) {
-            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=gray]" + this.props.userName + " \u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60\u3002[/color][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/url]";
+            content = "[url=http://" + host + "/user/name/" + this.props.userName + "][color=gray]" + this.props.userName + "[/color][/url] [color=gray]\u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60\u3002[/color][url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/url]";
         }
         else {
-            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][b][color=black]" + this.props.userName + " \u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60\u3002[/color][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/b][/url]";
+            content = "[url=http://" + host + "/user/name/" + this.props.userName + "][color=black][b]" + this.props.userName + "[/b][/color][/url] [color=black][b]\u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60\u3002[/b][/color][url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=blue][b]http://" + host + "/topic/" + this.props.topicId + "[/b][/color][/url]";
         }
         return (React.createElement("div", { className: "message-response-box" },
             React.createElement("div", { className: "message-response-box-middle" },
                 React.createElement("div", { className: "message-response-box-middle1" },
-                    React.createElement("div", { className: "message-response-box-middle-title" }, this.props.boardName),
+                    React.createElement("div", { className: "message-response-box-middle-title" },
+                        React.createElement(UbbContainer_1.UbbContainer, { code: boardName })),
                     React.createElement("div", { className: "message-response-box-middle-date" }, moment(this.props.time).format('YYYY-MM-DD HH:mm:ss'))),
                 React.createElement("div", { className: "message-response-box-middle-content" },
                     React.createElement(UbbContainer_1.UbbContainer, { code: content })))));
@@ -17020,6 +17032,7 @@ var MessageAttme = /** @class */ (function (_super) {
                         return [4 /*yield*/, Utility.getMessageAttme(0, this.context.router)];
                     case 1:
                         data = _a.sent();
+                        console.log("显示获取到的@消息", data);
                         if (data) {
                             this.setState({ data: data, from: data.length });
                         }
@@ -17065,20 +17078,22 @@ var MessageAttmebox = /** @class */ (function (_super) {
     }
     MessageAttmebox.prototype.render = function () {
         var host = window.location.host;
+        var boardName = "[url=http://" + host + "/list/" + this.props.boardId + "/normal][color=dodgerblue]" + this.props.boardName + "[/color][/url]";
         var a = (this.props.floor / 10) + 1;
         var b = parseInt(a);
         var c = this.props.floor + 10 - b * 10;
         var content;
         if (this.props.isRead) {
-            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=gray]" + this.props.userName + " \u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60\u3002[/color][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/url]";
+            content = "[url=http://" + host + "/user/name/" + this.props.userName + "][color=gray]" + this.props.userName + "[/color][/url] [color=gray]\u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60\u3002[/color][url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/url]";
         }
         else {
-            content = "[url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][b][color=black]" + this.props.userName + " \u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60\u3002[/color][color=blue]http://" + host + "/topic/" + this.props.topicId + "[/color][/b][/url]";
+            content = "[url=http://" + host + "/user/name/" + this.props.userName + "][color=black][b]" + this.props.userName + "[/b][/color][/url] [color=black][b]\u5728\u300A" + this.props.topicTitle + "\u300B\u4E2D\u56DE\u590D\u4E86\u4F60\u3002[/b][/color][url=http://" + host + "/topic/" + this.props.topicId + "/" + b + "#" + c + "][color=blue][b]http://" + host + "/topic/" + this.props.topicId + "[/b][/color][/url]";
         }
         return (React.createElement("div", { className: "message-response-box" },
             React.createElement("div", { className: "message-response-box-middle" },
                 React.createElement("div", { className: "message-response-box-middle1" },
-                    React.createElement("div", { className: "message-response-box-middle-title" }, this.props.boardName),
+                    React.createElement("div", { className: "message-response-box-middle-title" },
+                        React.createElement(UbbContainer_1.UbbContainer, { code: boardName })),
                     React.createElement("div", { className: "message-response-box-middle-date" }, moment(this.props.time).format('YYYY-MM-DD HH:mm:ss'))),
                 React.createElement("div", { className: "message-response-box-middle-content" },
                     React.createElement(UbbContainer_1.UbbContainer, { code: content })))));
@@ -18633,7 +18648,7 @@ var LogOnExact = /** @class */ (function (_super) {
                         Utility.setLocalStorage("userName", this.state.loginName);
                         Utility.setLocalStorage("password", this.state.loginPassword);
                         //缓存用户其信息
-                        Utility.storeUserInfo();
+                        Utility.refreshUserInfo();
                         this.setState({
                             loginMessage: '登录成功 正在返回首页'
                         });

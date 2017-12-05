@@ -1510,7 +1510,6 @@ a {
         flex-shrink: 0;
         display: flex;
         flex-direction: row;
-        min-height: 100px;
         border-bottom: 1px dashed lightgray;
         /*.message-response-box-left { 
             flex-basis: 100px;
@@ -1529,27 +1528,27 @@ a {
             flex-wrap: wrap;
             flex-grow: 1;
             flex-shrink: 0;
-            margin: 20px 30px 0px 30px;
+            margin: 0px 30px 20px 30px;
 
             .message-response-box-middle1 {
                 display: flex;
                 flex-direction: row;
 
                 .message-response-box-middle-title { /*消息框文字第一行 版面信息*/
-                    height: 20px;
+                    height: 50px;
                     flex-wrap: nowrap;
                     font-size: 14px;
-                    line-height: 20px;
+                    line-height: 50px;
                     color: dodgerblue;
                     flex-shrink: 0;
                     margin-right: 10px;
                 }
 
                 .message-response-box-middle-date { /*消息框文字第一行日期*/
-                    height: 20px;
+                    height: 50px;
                     flex-basis: 300px;
                     font-size: 12px;
-                    line-height: 20px;
+                    line-height: 50px;
                     color: gray;
                     flex-shrink: 0;
                     flex-grow: 1;
@@ -1557,11 +1556,10 @@ a {
             }
 
             .message-response-box-middle-content { /*消息框文字第二行-主体内容*/
-                height: 20px;
+                height: 24px;
                 font-size: 14px;
-                line-height: 20px;
+                line-height: 24px;
                 flex-shrink: 0;
-                margin-top: 15px;
             }
         }
         /*.message-response-box-right { 
@@ -1907,27 +1905,30 @@ a {
 }
 
 #dropdown .dropDownSub {
-    width: 94px;
+    width: 110px;
     display: none;
     background-color: rgba(80,80,80,0.5);
-    margin-left: 42px;
+    margin-left: 40px;
     opacity: 0.9999; //暂时不知道原因，但是如果不加上一个小于1的opacity值，下拉会出问题,猜测是opacity把元素及所有子元素合在一起？
+    z-index: 1;
 }
 
 #dropdown .dropDownSubMessage {
-    width: 94px;
+    width: 110px;
     display: none;
     background-color: rgba(80,80,80,0.5);
-    margin-left: 153px;
+    margin-left: 150px;
     opacity: 0.9999; //暂时不知道原因，但是如果不加上一个小于1的opacity值，下拉会出问题,猜测是opacity把元素及所有子元素合在一起？
+    z-index: 1;
 }
 
 #dropdown li {
     display: flex;
-    height: 25px;
+    height: 30px;
     cursor: pointer;
     justify-content: center;
     align-items: center;
+    z-index: 1;
 }
 
 #dropdown li.hover {

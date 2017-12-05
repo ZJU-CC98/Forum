@@ -26,6 +26,7 @@ export class MessageAttme extends React.Component<{}, MessageResponseState> {
         $('.message-nav > div').removeClass('message-nav-focus');
         $('#attme').addClass('message-nav-focus');
         let data = await Utility.getMessageAttme(0, this.context.router);
+        console.log("显示获取到的@消息", data);
         if (data) {
             this.setState({ data: data, from: data.length });
         }

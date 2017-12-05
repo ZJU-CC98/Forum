@@ -13,8 +13,9 @@ import * as Utility from '../Utility';
 export class MessageResponse extends React.Component<{}, MessageResponseState> {
 
     
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
+        //let curPage = this.props.match.params.page;
         this.state = {
             data: [],
             from: 0,

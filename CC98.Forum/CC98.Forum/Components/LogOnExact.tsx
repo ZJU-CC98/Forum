@@ -112,7 +112,7 @@ class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff}, LogO
         Utility.setLocalStorage("password", this.state.loginPassword);
 
         //缓存用户其信息
-        Utility.storeUserInfo();
+        Utility.refreshUserInfo();
        
 
         this.setState({

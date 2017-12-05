@@ -371,14 +371,14 @@ export function convertHotTopic(item: State.TopicTitleAndContentState) {
         ;
 }
 export function getPager(curPage, totalPage) {
-    if (curPage == undefined) {
+    if (!curPage) {
         curPage = 1;
     }
     let pages: number[] = [];
     if (totalPage == 1) {
         pages = [1];
     } else if (totalPage < 10 && totalPage > 1) {
-        if (curPage == undefined || curPage == 1) {
+        if (curPage == 1) {
             let i;
             for (i = 0; i < totalPage; i++) {
                 pages[i] = i + 1;
@@ -412,7 +412,7 @@ export function getPager(curPage, totalPage) {
         }
     } else {
         if (curPage + 5 <= totalPage) {
-            if (curPage == undefined || curPage == 1) {
+            if (curPage == 1) {
                 pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, - 2, -4];
             } else if (curPage > 1 && curPage < 6) {
                 pages = [-3, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, - 2, -4];
@@ -2312,7 +2312,7 @@ export async function followBoard(boardId) {
     if (response.status === 500) {
         window.location.href = "/status/servererror";
     }
-    storeUserInfo();
+    refreshUserInfo();
     removeStorage("focusBoardList");
 }
 export async function unfollowBoard(boardId) {
@@ -2327,7 +2327,7 @@ export async function unfollowBoard(boardId) {
     if (response.status === 500) {
         window.location.href = "/status/servererror";
     }
-    storeUserInfo();
+    refreshUserInfo();
     removeStorage("focusBoardList");
 }
 //获取系统通知
@@ -2431,6 +2431,7 @@ export async function getMessageAttme(from: number, router) {
             window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
+        console.log("显示原始接收到的@消息", newTopic);
         //补充帖子标题，版面id和版面名称信息
         if (newTopic) {
             for (let i in newTopic) {
@@ -2446,14 +2447,22 @@ export async function getMessageAttme(from: number, router) {
                 }
                 else {
                     let response1 = await response0.json();
+                    console.log("获取帖子信息", response1);
                     newTopic[i].topicTitle = response1.title;
                     newTopic[i].boardId = response1.boardId;
                     newTopic[i].boardName = await getBoardName(response1.boardId, router);
-                    let response2 = await fetch(`http://apitest.niconi.cc/post/basicinfo?postid=${newTopic[i].postId}`, { headers: myHeaders });
-                    let response3 = await response2.json();
-                    newTopic[i].floor = response3.floor;
-                    newTopic[i].userId = response3.userId;
-                    newTopic[i].userName = response3.userName;
+                    if (!newTopic[i].postId) {
+                        newTopic[i].floor = 1;
+                        newTopic[i].userId = response1.userId;
+                        newTopic[i].userName = response1.userName;
+                    }
+                    else {
+                        let response2 = await fetch(`http://apitest.niconi.cc/post/basicinfo?postid=${newTopic[i].postId}`, { headers: myHeaders });
+                        let response3 = await response2.json();
+                        newTopic[i].floor = response3.floor;
+                        newTopic[i].userId = response3.userId;
+                        newTopic[i].userName = response3.userName;
+                    }
                     result.push(newTopic[i]);
                 }
             }
@@ -2544,9 +2553,8 @@ export async function deletePost(topicId,postId, reason) {
     }
 }
 
-
 //缓存用户信息
-export async function storeUserInfo() {
+export async function refreshUserInfo() {
     const token = getLocalStorage("accessToken");
     let userName = getLocalStorage("userName");
     if (!userName) {
