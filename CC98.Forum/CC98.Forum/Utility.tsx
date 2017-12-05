@@ -2316,7 +2316,7 @@ export async function followBoard(boardId) {
     refreshUserInfo();
     removeStorage("focusBoardList");
 }
-export async function storeUserInfo() {
+export async function refreshUserInfo() {
 
     const token = getLocalStorage("accessToken");
 
