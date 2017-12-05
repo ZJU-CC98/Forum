@@ -7,4 +7,5 @@ export class MessageResponseState {
     data: MessageResponseProps[];
     from: number;
     loading: boolean;
+    totalPage: number;
 }
