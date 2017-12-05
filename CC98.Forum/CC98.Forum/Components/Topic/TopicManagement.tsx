@@ -87,11 +87,12 @@ export class TopicManagement extends React.Component<{ topicId, update }, { stat
     componentDidMount() {
         const UIId = `#manage${this.props.topicId}`;
         const ele = $(UIId);
-        const top = $("#root").height()- - ele.height();
-        const left = ($("#root").width()/2 - ele.width()) / 2;
+        const top = $("#root").height() - - ele.height();
+        console.log(top);
+        const left = ($("#root").width() - ele.width() * 1.5);
         const scrollTop = $(document).scrollTop();
         const scrollLeft = $(document).scrollLeft();
-        return ele.css({ position: 'absolute', 'top': top + scrollTop, left: left + scrollLeft }); 
+        return ele.css({ position: 'absolute', 'top': top, left: left  }); 
     }
     render() {
         let info;

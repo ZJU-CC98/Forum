@@ -2300,6 +2300,7 @@ export function isFollowThisBoard(boardId) {
     }
     return false;
 }
+
 export async function followBoard(boardId) {
     const token = getLocalStorage("accessToken");
     const headers = new Headers();
@@ -2314,6 +2315,35 @@ export async function followBoard(boardId) {
     }
     storeUserInfo();
     removeStorage("focusBoardList");
+}
+export async function storeUserInfo() {
+
+    const token = getLocalStorage("accessToken");
+
+    let userName = getLocalStorage("userName");
+
+    if (!userName) {
+
+        let userInfo = getLocalStorage("userInfo");
+
+        userName = userInfo.name;
+
+    }
+
+    const headers = new Headers();
+
+    headers.append("Authorization", token);
+
+    let response = await fetch(`http://apitest.niconi.cc/user/name/${userName}`, {
+
+        headers: headers
+
+    });
+
+    let userInfo = await response.json();
+
+    setLocalStorage("userInfo", userInfo);
+
 }
 export async function unfollowBoard(boardId) {
     const token = getLocalStorage("accessToken");
