@@ -11,18 +11,15 @@ export class MessageAttmebox extends React.Component<MessageResponseProps> {
 
     render() {
         let host = window.location.host;
-        let a: any = this.props.postId / 10;
+        let a: any = (this.props.floor / 10) + 1;
         let b = parseInt(a);
-        let c = this.props.postId - b * 10;
+        let c = this.props.floor + 10 - b * 10;
         let content;
-        let view;
         if (this.props.isRead) {
-            content = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=gray]有人在《${this.props.topicTitle}》中@了你[/color][/url]`;
-            view = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=gary]查看[/color][/url]`;
+            content = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=gray]${this.props.userName} 在《${this.props.topicTitle}》中回复了你。[/color][color=blue]http://${host}/topic/${this.props.topicId}[/color][/url]`;
         }
         else {
-            content = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=black][b]有人在《${this.props.topicTitle}》中@了你[/b][/color][/url]`;
-            view = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=black][b]查看[/b][/color][/url]`;
+            content = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][b][color=black]${this.props.userName} 在《${this.props.topicTitle}》中回复了你。[/color][color=blue]http://${host}/topic/${this.props.topicId}[/color][/b][/url]`;
         }
         return (<div className="message-response-box">
             <div className="message-response-box-middle">
@@ -38,7 +35,6 @@ export class MessageAttmebox extends React.Component<MessageResponseProps> {
                     <UbbContainer code={content} />
                 </div>
             </div>
-            <div className="message-response-box-right"> <UbbContainer code={view} /></div>
         </div>
         );
     }

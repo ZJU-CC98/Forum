@@ -20,21 +20,23 @@ export class MessageSystem extends React.Component<{}, MessageSystemState> {
         };
     }
 
-    async componentWillMount() {
+    async componentDidMount() {
+        //给系统消息添加选中样式
+        $('.message-nav > div').removeClass('message-nav-focus');
+        $('#system').addClass('message-nav-focus');
         let data = await Utility.getMessageSystem(0, this.context.router);
+        console.log("这是获取到的处理后系统消息");
+        console.log(data);
         if (data) {
             this.setState({ data: data, from: data.length });
         }
     }
     
     coverMessageSystem = (item: MessageSystemProps) => {
-        return <MessageSystembox id={item.id} type={item.type} title={item.title} content={item.content} time={item.time} topicId={item.topicId} postId={item.postId} isRead={item.isRead} />;
+        return <MessageSystembox id={item.id} type={item.type} title={item.title} content={item.content} time={item.time} topicId={item.topicId} floor={item.floor} isRead={item.isRead} />;
     };
 
     render() {
-        //给我的回复添加选中样式
-        $('.message-nav > div').removeClass('message-nav-focus');
-        $('#system').addClass('message-nav-focus');
         return <div className="message-system">{this.state.data.map(this.coverMessageSystem)}</div>;
     }
 }

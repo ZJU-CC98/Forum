@@ -31,9 +31,11 @@
     <None Remove="Components\Topic\Topic-Category.tsx" />
     <None Remove="Components\Topic\Topic-HotReplier.tsx" />
     <None Remove="Components\Topic\Topic-HotReply.tsx" />
+    <None Remove="Components\Topic\Topic-Judge.tsx" />
     <None Remove="Components\Topic\Topic-Pager.tsx" />
     <None Remove="Components\Topic\Topic-PostTopic.tsx" />
     <None Remove="Components\Topic\Topic-Replier.tsx" />
+    <None Remove="Components\Topic\Topic-ReplierSignature.tsx" />
     <None Remove="Components\Topic\Topic-ReplyContent.tsx" />
     <None Remove="Components\Topic\Topic-SendTopic.tsx" />
     <None Remove="Components\Topic\Topic-Topic.tsx" />
@@ -41,6 +43,7 @@
     <None Remove="Components\Topic\Topic-TopicTitle.tsx" />
     <None Remove="Components\Topic\Topic-UserDetails.tsx" />
     <None Remove="Components\Topic\Topic.tsx" />
+    <None Remove="Components\Topic\TopicManagement.tsx" />
     <None Remove="Components\UbbContainer.tsx" />
     <None Remove="Components\UbbEditor.tsx" />
     <None Remove="Components\UserCenterConfig.tsx" />
@@ -110,6 +113,7 @@
     <TypeScriptCompile Include="Components\Topic\Topic-Award.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-HotReplier.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-HotReply.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-Judge.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-New.tsx" />
     <TypeScriptCompile Include="Components\FocusBoardTopicArea.tsx" />
     <TypeScriptCompile Include="Components\Footer.tsx" />
@@ -123,6 +127,7 @@
     <TypeScriptCompile Include="Components\Topic\Topic-Category.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Pager.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-PostTopic.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-ReplierSignature.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Reply.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Replier.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-ReplyContent.tsx" />
@@ -132,6 +137,7 @@
     <TypeScriptCompile Include="Components\Topic\Topic-TopicTitle.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-UserDetails.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic.tsx" />
+    <TypeScriptCompile Include="Components\Topic\TopicManagement.tsx" />
     <TypeScriptCompile Include="Components\UbbContainer.tsx" />
     <TypeScriptCompile Include="Components\UbbEditor.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\UserCenterConfig.tsx" />

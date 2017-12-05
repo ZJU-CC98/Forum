@@ -2,7 +2,7 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 
 import error from './Reducers/Error';
 import post from './Reducers/Post';
@@ -17,5 +17,15 @@ const reducer = combineReducers({
     post,
     userInfo
 });
+/**
+ * 记录Action与Store
+ * @param store
+ */
+const logger = store => next => action => {
+    console.log(action.type);
+    let result = next(action);
+    console.log(store.getState());
+    return result;
+}
 
-export default createStore(reducer);
+export default createStore(reducer, applyMiddleware(logger));

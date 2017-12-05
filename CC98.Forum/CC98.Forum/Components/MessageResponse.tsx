@@ -23,20 +23,22 @@ export class MessageResponse extends React.Component<{}, MessageResponseState> {
     }
 
     async componentDidMount() {
+        //给我的回复添加选中样式
+        $('.message-nav > div').removeClass('message-nav-focus');
+        $('#response').addClass('message-nav-focus');
         let data = await Utility.getMessageResponse(0, this.context.router);
+        console.log("获取到了回复消息");
+        console.log(data)
         if (data) {
             this.setState({ data: data, from: data.length });
         }
     }
     
     coverMessageResponse = (item: MessageResponseProps) => {
-        return <MessageResponsebox id={item.id} type={item.type} time={item.time} topicId={item.topicId} topicTitle={item.topicTitle} postId={item.postId} boardId={item.boardId} boardName={item.boardName} isRead={item.isRead} />;
+        return <MessageResponsebox id={item.id} type={item.type} time={item.time} topicId={item.topicId} topicTitle={item.topicTitle} floor={item.floor} userId={item.userId} userName={item.userName} boardId={item.boardId} boardName={item.boardName} isRead={item.isRead} />;
     };
 
 	render() {
-        //给我的回复添加选中样式
-        $('.message-nav > div').removeClass('message-nav-focus');
-        $('#response').addClass('message-nav-focus');
         return <div className="message-response">{this.state.data.map(this.coverMessageResponse)}</div>;
     }
 }

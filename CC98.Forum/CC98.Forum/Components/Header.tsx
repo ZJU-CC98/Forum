@@ -159,7 +159,7 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
                         <div className="userName">{this.state.userName}</div>
                     </div>
                     <div className="topBarText"><a href="/" style={{ color: '#fff' }}>首页</a></div>
-                    <div className="topBarText" id="userMessage"><a href="/message" style={{ color: '#fff' }}>消息</a></div>     
+                    <div className="topBarText" id="userMessage"><a href="/message/response" style={{ color: '#fff' }}>消息</a></div>     
                     <div className="topBarText"><a href="/focus" style={{ color: '#fff' }}>关注</a></div>
                     <div className="topBarText"><a href="/newTopics" style={{ color: '#fff' }}>新帖</a></div>
                     <a href="/boardList"><div className="boardListLink" style={{ margin: '0 0 0 10px' }}><div style={{ marginTop: '16px', color: '#fff' }}>版面</div></div></a>
