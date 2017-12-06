@@ -23,7 +23,7 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
     }
 }
 
-export class List extends RouteComponent<{}, { page:number,bigPaper: string, boardId: number }, { page: string, boardId: number }>  {
+export class List extends RouteComponent<{}, { page:number,bigPaper: string, boardId: number }, { boardId: number }>  {
 
     constructor(props, context) {
         super(props, context);
@@ -34,16 +34,16 @@ export class List extends RouteComponent<{}, { page:number,bigPaper: string, boa
   
     async componentWillReceiveProps(newProps) {
 
-        const data = await Utility.getBasicBoardMessage(newProps.match.params.boardId, newProps.match.params.page, this.context.router);
+        const data = await Utility.getBasicBoardMessage(newProps.match.params.boardId, this.context.router);
 
         // 设置状态
-        this.setState({ bigPaper: data.bigPaper, page: data.page,  boardId: newProps.match.params.boardId });
+        this.setState({ bigPaper: data.bigPaper, boardId: newProps.match.params.boardId });
     }
     async componentDidMount() {
 
-        const data = await Utility.getBasicBoardMessage(this.match.params.boardId, this.match.params.page, this.context.router);
+        const data = await Utility.getBasicBoardMessage(this.match.params.boardId, this.context.router);
         // 设置状态
-        this.setState({ bigPaper: data.bigPaper, page: data.page,  boardId: this.match.params.boardId });
+        this.setState({ bigPaper: data.bigPaper,boardId: this.match.params.boardId });
     }
     render() {
         return  <div id="listRoot">

@@ -137,13 +137,13 @@ export async function getTopic(topicid: number, router) {
             topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, userMesJson.fanCount, masters, hitCountJson.highLightInfo, hitCountJson.totalVoteUserCount,
                 hitCountJson.topState,
                 hitCountJson.bestState,
-                hitCountJson.isVote);
+                hitCountJson.isVote, hitCountJson.disableHot);
         } else {
             topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, -9898, masters, data[0].highLightInfo,
                 data[0].totalVoteUserCount,
                 data[0].topState,
                 data[0].bestState,
-                data[0].isVote);
+                data[0].isVote, hitCountJson.disableHot);
 
         }
 
@@ -1388,7 +1388,7 @@ export async function getListTotalPage(boardId, router) {
         //window.location.href = "/status/Disconnected";
     }
 }
-export async function getBasicBoardMessage(boardId, curPage, router) {
+export async function getBasicBoardMessage(boardId, router) {
     try {
         const token = getLocalStorage("accessToken");
         const headers = new Headers();
@@ -1402,16 +1402,9 @@ export async function getBasicBoardMessage(boardId, curPage, router) {
         }
         const json = await response.json();
         const bigPaper: string = json.bigPaper;
-        let page: number;
-        // 未提供页码，防止出错不进行后续处理
-        if (!curPage) {
-            page = 1;
-        }
-        // 转换类型
-        else { page = parseInt(curPage); }
         const boardid = boardId;
         const totalPage = await getListTotalPage(boardid, router);
-        const data = { bigPaper: bigPaper, totalPage: totalPage, page: page };
+        const data = { bigPaper: bigPaper, totalPage: totalPage};
         return data;
 
     } catch (e) {
@@ -2634,19 +2627,19 @@ export async function cancelStopBoardPost(userId, boardId) {
         window.location.href = "/status/servererror";
     }
 }
-export async function addBoardTopTopic(topicId, boardId, topState) {
+export async function addBoardTopTopic(topicId, boardId, topState,days,reason) {
     const token = getLocalStorage("accessToken");
     const headers = new Headers();
     headers.append("Authorization", token);
     headers.append("Content-Type", "application/json");
-    const content = { 'topState': topState };
+    const content = { 'topState': topState, 'duration': days, 'reason': reason };
     console.log("add top");
     console.log(content);
     const response = await fetch(
 
         `http://apitest.niconi.cc/manage/settop?topicid=${topicId}&boardid=${boardId}`,
         {
-            method: "POST",
+            method: "PUT",
             headers,
             body: JSON.stringify(content)
         }
@@ -2702,4 +2695,74 @@ export async function getTotalPage(type: number) {
 
     }
 
+}
+export async function deleteTopic(topicId, reason) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    headers.append("Content-Type", "application/json");
+    const url = `http://apitest.niconi.cc/manage/topic?topicid=${topicId}`;
+    const bodyInfo = { 'reason': reason };
+    const body = JSON.stringify(bodyInfo);
+    const response = await fetch(url, { method:"DELETE", headers,body })
+}
+export async function lockTopic(topicId,boardId, reason,days) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    headers.append("Content-Type", "application/json");
+    const url = `http://apitest.niconi.cc/manage/locktopic?topicid=${topicId}&boardid=${boardId}`;
+    const bodyInfo = { 'reason': reason,'value':days };
+    const body = JSON.stringify(bodyInfo);
+    const response = await fetch(url, { method: "PUT", headers, body });
+}
+export async function unLockTopic(topicId, boardId, reason) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    headers.append("Content-Type", "application/json");
+    const url = `http://apitest.niconi.cc/manage/unlocktopic?topicid=${topicId}&boardid=${boardId}`;
+    const bodyInfo = { 'reason': reason };
+    const body = JSON.stringify(bodyInfo);
+    const response = await fetch(url, { method: "DELETE", headers, body });
+}
+export async function setBestTopic(topicId, boardId, reason) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    headers.append("Content-Type", "application/json");
+    const url = `http://apitest.niconi.cc/manage/setbest?topicid=${topicId}&boardid=${boardId}`;
+    const bodyInfo = { 'reason': reason };
+    const body = JSON.stringify(bodyInfo);
+    const response = await fetch(url, { method: "PUT", headers, body });
+}
+export async function cancelBestTopic(topicId, boardId, reason) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    headers.append("Content-Type", "application/json");
+    const url = `http://apitest.niconi.cc/manage/cancelbest?topicid=${topicId}&boardid=${boardId}`;
+    const bodyInfo = { 'reason': reason };
+    const body = JSON.stringify(bodyInfo);
+    const response = await fetch(url, { method: "DELETE", headers, body });
+}
+export async function setDisableHot(topicId, reason) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    headers.append("Content-Type", "application/json");
+    const url = `http://apitest.niconi.cc/manage/settopicnothot?topicid=${topicId}`;
+    const bodyInfo = { 'reason': reason };
+    const body = JSON.stringify(bodyInfo);
+    const response = await fetch(url, { method: "PUT", headers, body });
+}
+export async function cancelDisableHot(topicId, reason) {
+    const token = getLocalStorage("accessToken");
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    headers.append("Content-Type", "application/json");
+    const url = `http://apitest.niconi.cc/manage/canceltopicnothot?topicid=${topicId}`;
+    const bodyInfo = { 'reason': reason };
+    const body = JSON.stringify(bodyInfo);
+    const response = await fetch(url, { method: "DELETE", headers, body });
 }

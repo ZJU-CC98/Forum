@@ -278,10 +278,10 @@ function getTopic(topicid, router) {
                     return [4 /*yield*/, userMesResponse.json()];
                 case 12:
                     userMesJson = _a.sent();
-                    topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, userMesJson.fanCount, masters, hitCountJson.highLightInfo, hitCountJson.totalVoteUserCount, hitCountJson.topState, hitCountJson.bestState, hitCountJson.isVote);
+                    topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, userMesJson.fanCount, masters, hitCountJson.highLightInfo, hitCountJson.totalVoteUserCount, hitCountJson.topState, hitCountJson.bestState, hitCountJson.isVote, hitCountJson.disableHot);
                     return [3 /*break*/, 14];
                 case 13:
-                    topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, -9898, masters, data[0].highLightInfo, data[0].totalVoteUserCount, data[0].topState, data[0].bestState, data[0].isVote);
+                    topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, -9898, masters, data[0].highLightInfo, data[0].totalVoteUserCount, data[0].topState, data[0].bestState, data[0].isVote, hitCountJson.disableHot);
                     _a.label = 14;
                 case 14: return [2 /*return*/, topicMessage];
                 case 15:
@@ -1931,9 +1931,9 @@ function getListTotalPage(boardId, router) {
     });
 }
 exports.getListTotalPage = getListTotalPage;
-function getBasicBoardMessage(boardId, curPage, router) {
+function getBasicBoardMessage(boardId, router) {
     return __awaiter(this, void 0, void 0, function () {
-        var token, headers, response, json, bigPaper, page, boardid, totalPage, data, e_27;
+        var token, headers, response, json, bigPaper, boardid, totalPage, data, e_27;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1954,19 +1954,11 @@ function getBasicBoardMessage(boardId, curPage, router) {
                 case 2:
                     json = _a.sent();
                     bigPaper = json.bigPaper;
-                    page = void 0;
-                    // 未提供页码，防止出错不进行后续处理
-                    if (!curPage) {
-                        page = 1;
-                    }
-                    else {
-                        page = parseInt(curPage);
-                    }
                     boardid = boardId;
                     return [4 /*yield*/, getListTotalPage(boardid, router)];
                 case 3:
                     totalPage = _a.sent();
-                    data = { bigPaper: bigPaper, totalPage: totalPage, page: page };
+                    data = { bigPaper: bigPaper, totalPage: totalPage };
                     return [2 /*return*/, data];
                 case 4:
                     e_27 = _a.sent();
@@ -3611,7 +3603,7 @@ function cancelStopBoardPost(userId, boardId) {
     });
 }
 exports.cancelStopBoardPost = cancelStopBoardPost;
-function addBoardTopTopic(topicId, boardId, topState) {
+function addBoardTopTopic(topicId, boardId, topState, days, reason) {
     return __awaiter(this, void 0, void 0, function () {
         var token, headers, content, response;
         return __generator(this, function (_a) {
@@ -3621,11 +3613,11 @@ function addBoardTopTopic(topicId, boardId, topState) {
                     headers = new Headers();
                     headers.append("Authorization", token);
                     headers.append("Content-Type", "application/json");
-                    content = { 'topState': topState };
+                    content = { 'topState': topState, 'duration': days, 'reason': reason };
                     console.log("add top");
                     console.log(content);
                     return [4 /*yield*/, fetch("http://apitest.niconi.cc/manage/settop?topicid=" + topicId + "&boardid=" + boardId, {
-                            method: "POST",
+                            method: "PUT",
                             headers: headers,
                             body: JSON.stringify(content)
                         })];
@@ -3693,6 +3685,160 @@ function getTotalPage(type) {
     });
 }
 exports.getTotalPage = getTotalPage;
+function deleteTopic(topicId, reason) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, url, bodyInfo, body, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append("Authorization", token);
+                    headers.append("Content-Type", "application/json");
+                    url = "http://apitest.niconi.cc/manage/topic?topicid=" + topicId;
+                    bodyInfo = { 'reason': reason };
+                    body = JSON.stringify(bodyInfo);
+                    return [4 /*yield*/, fetch(url, { method: "DELETE", headers: headers, body: body })];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.deleteTopic = deleteTopic;
+function lockTopic(topicId, boardId, reason, days) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, url, bodyInfo, body, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append("Authorization", token);
+                    headers.append("Content-Type", "application/json");
+                    url = "http://apitest.niconi.cc/manage/locktopic?topicid=" + topicId + "&boardid=" + boardId;
+                    bodyInfo = { 'reason': reason, 'value': days };
+                    body = JSON.stringify(bodyInfo);
+                    return [4 /*yield*/, fetch(url, { method: "PUT", headers: headers, body: body })];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.lockTopic = lockTopic;
+function unLockTopic(topicId, boardId, reason) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, url, bodyInfo, body, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append("Authorization", token);
+                    headers.append("Content-Type", "application/json");
+                    url = "http://apitest.niconi.cc/manage/unlocktopic?topicid=" + topicId + "&boardid=" + boardId;
+                    bodyInfo = { 'reason': reason };
+                    body = JSON.stringify(bodyInfo);
+                    return [4 /*yield*/, fetch(url, { method: "DELETE", headers: headers, body: body })];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.unLockTopic = unLockTopic;
+function setBestTopic(topicId, boardId, reason) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, url, bodyInfo, body, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append("Authorization", token);
+                    headers.append("Content-Type", "application/json");
+                    url = "http://apitest.niconi.cc/manage/setbest?topicid=" + topicId + "&boardid=" + boardId;
+                    bodyInfo = { 'reason': reason };
+                    body = JSON.stringify(bodyInfo);
+                    return [4 /*yield*/, fetch(url, { method: "PUT", headers: headers, body: body })];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.setBestTopic = setBestTopic;
+function cancelBestTopic(topicId, boardId, reason) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, url, bodyInfo, body, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append("Authorization", token);
+                    headers.append("Content-Type", "application/json");
+                    url = "http://apitest.niconi.cc/manage/cancelbest?topicid=" + topicId + "&boardid=" + boardId;
+                    bodyInfo = { 'reason': reason };
+                    body = JSON.stringify(bodyInfo);
+                    return [4 /*yield*/, fetch(url, { method: "DELETE", headers: headers, body: body })];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.cancelBestTopic = cancelBestTopic;
+function setDisableHot(topicId, reason) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, url, bodyInfo, body, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append("Authorization", token);
+                    headers.append("Content-Type", "application/json");
+                    url = "http://apitest.niconi.cc/manage/settopicnothot?topicid=" + topicId;
+                    bodyInfo = { 'reason': reason };
+                    body = JSON.stringify(bodyInfo);
+                    return [4 /*yield*/, fetch(url, { method: "PUT", headers: headers, body: body })];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.setDisableHot = setDisableHot;
+function cancelDisableHot(topicId, reason) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, headers, url, bodyInfo, body, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = getLocalStorage("accessToken");
+                    headers = new Headers();
+                    headers.append("Authorization", token);
+                    headers.append("Content-Type", "application/json");
+                    url = "http://apitest.niconi.cc/manage/canceltopicnothot?topicid=" + topicId;
+                    bodyInfo = { 'reason': reason };
+                    body = JSON.stringify(bodyInfo);
+                    return [4 /*yield*/, fetch(url, { method: "DELETE", headers: headers, body: body })];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.cancelDisableHot = cancelDisableHot;
 
 
 /***/ }),
@@ -4885,7 +5031,7 @@ var PagerState = /** @class */ (function () {
 }());
 exports.PagerState = PagerState;
 var TopicState = /** @class */ (function () {
-    function TopicState(userName, title, content, time, signature, userImgUrl, hitCount, userId, likeNumber, dislikeNumber, postId, isAnonymous, contentType, isFollowing, fanCount, masters, highLightInfo, totalVoteUserCount, topState, bestState, isVote) {
+    function TopicState(userName, title, content, time, signature, userImgUrl, hitCount, userId, likeNumber, dislikeNumber, postId, isAnonymous, contentType, isFollowing, fanCount, masters, highLightInfo, totalVoteUserCount, topState, bestState, isVote, disableHot) {
         this.userName = userName;
         this.time = time;
         this.title = title;
@@ -4907,6 +5053,7 @@ var TopicState = /** @class */ (function () {
         this.highLightInfo = highLightInfo;
         this.isVote = isVote;
         this.totalVoteUserCount = totalVoteUserCount;
+        this.disableHot = disableHot;
     }
     return TopicState;
 }());
@@ -6261,11 +6408,11 @@ var List = /** @class */ (function (_super) {
             var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getBasicBoardMessage(newProps.match.params.boardId, newProps.match.params.page, this.context.router)];
+                    case 0: return [4 /*yield*/, Utility.getBasicBoardMessage(newProps.match.params.boardId, this.context.router)];
                     case 1:
                         data = _a.sent();
                         // 设置状态
-                        this.setState({ bigPaper: data.bigPaper, page: data.page, boardId: newProps.match.params.boardId });
+                        this.setState({ bigPaper: data.bigPaper, boardId: newProps.match.params.boardId });
                         return [2 /*return*/];
                 }
             });
@@ -6276,11 +6423,11 @@ var List = /** @class */ (function (_super) {
             var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, Utility.getBasicBoardMessage(this.match.params.boardId, this.match.params.page, this.context.router)];
+                    case 0: return [4 /*yield*/, Utility.getBasicBoardMessage(this.match.params.boardId, this.context.router)];
                     case 1:
                         data = _a.sent();
                         // 设置状态
-                        this.setState({ bigPaper: data.bigPaper, page: data.page, boardId: this.match.params.boardId });
+                        this.setState({ bigPaper: data.bigPaper, boardId: this.match.params.boardId });
                         return [2 /*return*/];
                 }
             });
@@ -9167,8 +9314,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var MessageMessage_1 = __webpack_require__(101);
 var MessageResponse_1 = __webpack_require__(106);
-var MessageAttme_1 = __webpack_require__(109);
-var MessageSystem_1 = __webpack_require__(111);
+var MessageAttme_1 = __webpack_require__(108);
+var MessageSystem_1 = __webpack_require__(110);
 var react_router_dom_1 = __webpack_require__(3);
 /**
  * 网站的主页面对象。
@@ -9421,9 +9568,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var FocusBoardArea_1 = __webpack_require__(113);
-var FocusTopicArea_1 = __webpack_require__(114);
-var FocusBoardTopicArea_1 = __webpack_require__(115);
+var FocusBoardArea_1 = __webpack_require__(112);
+var FocusTopicArea_1 = __webpack_require__(113);
+var FocusBoardTopicArea_1 = __webpack_require__(114);
 var Utility = __webpack_require__(1);
 var Focus = /** @class */ (function (_super) {
     __extends(Focus, _super);
@@ -10648,8 +10795,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserNavigation_1 = __webpack_require__(116);
-var UserRouter_1 = __webpack_require__(117);
+var UserNavigation_1 = __webpack_require__(115);
+var UserRouter_1 = __webpack_require__(116);
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
@@ -10692,8 +10839,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var LogOnExact_1 = __webpack_require__(120);
-var Logoff_1 = __webpack_require__(121);
+var LogOnExact_1 = __webpack_require__(119);
+var Logoff_1 = __webpack_require__(120);
 /**
  * 用户中心页面
  */
@@ -11610,9 +11757,9 @@ var UserCenterMyFollowingsUser = /** @class */ (function (_super) {
     function UserCenterMyFollowingsUser(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
-            buttonInfo: '已关注',
+            buttonInfo: _this.props.userFanInfo.isFollowing ? '已关注' : '关注',
             buttonIsDisabled: false,
-            isFollowing: true
+            isFollowing: _this.props.userFanInfo.isFollowing
         };
         _this.unfollow = _this.unfollow.bind(_this);
         _this.follow = _this.follow.bind(_this);
@@ -11700,7 +11847,10 @@ var UserCenterMyFollowingsUser = /** @class */ (function (_super) {
                             buttonInfo: '已关注'
                         });
                     }
-                }, onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo)));
+                }, onClick: this.state.isFollowing ? this.unfollow : this.follow, disabled: this.state.buttonIsDisabled }, this.state.buttonInfo),
+            React.createElement("button", { className: "user-message", type: "button", onClick: function () {
+                    location.href = "/message/message?id=" + _this.props.userFanInfo.id;
+                } }, "\u79C1\u4FE1")));
     };
     return UserCenterMyFollowingsUser;
 }(React.Component));
@@ -11712,7 +11862,7 @@ exports.UserCenterMyFollowingsUser = UserCenterMyFollowingsUser;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(46);
-module.exports = __webpack_require__(133);
+module.exports = __webpack_require__(132);
 
 
 /***/ }),
@@ -13487,8 +13637,8 @@ var PageModel = /** @class */ (function (_super) {
     function PageModel() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    PageModel.prototype.blur = function () {
-        this.blur();
+    PageModel.prototype.cancelFocus = function () {
+        // this.blur();
     };
     PageModel.prototype.render = function () {
         var pageUrl;
@@ -13496,34 +13646,34 @@ var PageModel = /** @class */ (function (_super) {
             pageUrl = "" + this.props.url + this.props.pageNumber;
             if (this.props.pageNumber !== this.props.curPage) {
                 return React.createElement("li", { className: "page-item" },
-                    React.createElement(react_router_dom_1.Link, { to: pageUrl, className: "page-link", onClick: this.blur }, this.props.pageNumber));
+                    React.createElement(react_router_dom_1.Link, { to: pageUrl, className: "page-link", onClick: this.cancelFocus }, this.props.pageNumber));
             }
             else {
                 return React.createElement("li", { className: "page-item active" },
-                    React.createElement(react_router_dom_1.Link, { to: pageUrl, onClick: this.blur, className: "page-link " }, this.props
+                    React.createElement(react_router_dom_1.Link, { to: pageUrl, onClick: this.cancelFocus, className: "page-link " }, this.props
                         .pageNumber));
             }
         }
         else if (this.props.pageNumber == -1) {
             pageUrl = "" + this.props.url + (this.props.curPage - 1);
             return React.createElement("li", { className: "page-item" },
-                React.createElement(react_router_dom_1.Link, { onClick: this.blur, className: "page-link", to: pageUrl }, "\u2039"));
+                React.createElement(react_router_dom_1.Link, { onClick: this.cancelFocus, className: "page-link", to: pageUrl }, "\u2039"));
         }
         else if (this.props.pageNumber == -2) {
             pageUrl = "" + this.props.url + (this.props.curPage + 1);
             return React.createElement("li", { className: "page-item" },
-                React.createElement(react_router_dom_1.Link, { onClick: this.blur, className: "page-link", to: pageUrl }, "\u203A"));
+                React.createElement(react_router_dom_1.Link, { onClick: this.cancelFocus, className: "page-link", to: pageUrl }, "\u203A"));
         }
         else if (this.props.pageNumber == -3) {
             pageUrl = this.props.url + "1";
             return React.createElement("li", { className: "page-item" },
                 " ",
-                React.createElement(react_router_dom_1.Link, { onClick: this.blur, className: "page-link", to: pageUrl }, "\u00AB"));
+                React.createElement(react_router_dom_1.Link, { onClick: this.cancelFocus, className: "page-link", to: pageUrl }, "\u00AB"));
         }
         else if (this.props.pageNumber == -4) {
             pageUrl = "" + this.props.url + this.props.totalPage;
             return React.createElement("li", { className: "page-item" },
-                React.createElement(react_router_dom_1.Link, { onClick: this.blur, className: "page-link", to: pageUrl }, "\u00BB"));
+                React.createElement(react_router_dom_1.Link, { onClick: this.cancelFocus, className: "page-link", to: pageUrl }, "\u00BB"));
         }
         else {
             return null;
@@ -14663,7 +14813,7 @@ var SendTopic = /** @class */ (function (_super) {
                 React.createElement("input", { type: "file", id: "upload-files", onChange: this.upload.bind(this) })),
             editor,
             React.createElement("button", { onClick: this.showManagement }, "\u7BA1\u7406"),
-            React.createElement(Topic_TopicManagement_1.TopicManagement, { topicId: this.props.topicid, update: this.onChange, boardId: this.props.boardId }));
+            React.createElement(Topic_TopicManagement_1.TopicManagement, { topicId: this.props.topicid, update: this.onChange, boardId: this.props.boardId, updateTime: Date.now() }));
     };
     return SendTopic;
 }(React.Component));
@@ -14761,17 +14911,31 @@ var TopicManagement = /** @class */ (function (_super) {
     TopicManagement.prototype.confirm = function () {
         switch (this.state.state) {
             case 'normal':
-                console.log("in normal");
-                console.log("in if");
-                console.log($("input[name='option']:checked").val());
                 console.log(this.state.topicInfo);
                 if (this.state.reason !== "") {
                     switch ($("input[name='option']:checked").val()) {
-                        case '固顶':
-                            Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 2);
-                            break;
                         case '取消固顶':
                             Utility.removeBoardTopTopic(this.props.topicId, this.props.boardId, this.state.reason);
+                        case '取消全站固顶':
+                            Utility.removeBoardTopTopic(this.props.topicId, this.props.boardId, this.state.reason);
+                            break;
+                        case '删除':
+                            Utility.deleteTopic(this.props.topicId, this.state.reason);
+                            break;
+                        case '加精':
+                            Utility.setBestTopic(this.props.topicId, this.props.boardId, this.state.reason);
+                            break;
+                        case '解除精华':
+                            Utility.cancelBestTopic(this.props.topicId, this.props.boardId, this.state.reason);
+                            break;
+                        case '解除锁定':
+                            Utility.unLockTopic(this.props.topicId, this.props.boardId, this.state.reason);
+                            break;
+                        case '禁止热门':
+                            Utility.setDisableHot(this.props.topicId, this.state.reason);
+                            break;
+                        case '取消禁止热门':
+                            Utility.cancelDisableHot(this.props.topicId, this.state.reason);
                             break;
                     }
                 }
@@ -14786,6 +14950,18 @@ var TopicManagement = /** @class */ (function (_super) {
                     this.setState({ tips: "请输入原因！" });
                 }
                 break;
+            case 'days':
+                switch ($("input[name='option']:checked").val()) {
+                    case '固顶':
+                        Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 2, this.state.days, this.state.reason);
+                        break;
+                    case '全站固顶':
+                        Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 4, this.state.days, this.state.reason);
+                        break;
+                    case '锁定':
+                        Utility.lockTopic(this.props.topicId, this.props.boardId, this.state.reason, this.state.days);
+                        break;
+                }
         }
         var UIId = "#manage" + this.props.topicId;
         $(UIId).css("display", "none");
@@ -14810,6 +14986,20 @@ var TopicManagement = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, Utility.getTopic(this.props.topicId, 1)];
+                    case 1:
+                        data = _a.sent();
+                        this.setState({ topicInfo: data });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    TopicManagement.prototype.componentWillRecieveProps = function (newProps) {
+        return __awaiter(this, void 0, void 0, function () {
+            var data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Utility.getTopic(newProps.topicId, 1)];
                     case 1:
                         data = _a.sent();
                         this.setState({ topicInfo: data });
@@ -14863,14 +15053,11 @@ var TopicManagement = /** @class */ (function (_super) {
                         React.createElement("input", { type: "radio", name: "option", value: "查看IP", onClick: this.showNoReason }),
                         React.createElement("div", null, "\u67E5\u770BIP")),
                     React.createElement("div", { className: "row" },
-                        React.createElement("input", { type: "radio", name: "option", value: this.state.topicInfo.state === 1 ? '解锁' : "锁定", onClick: this.showNormal }),
+                        React.createElement("input", { type: "radio", name: "option", value: this.state.topicInfo.state === 1 ? '解锁' : "锁定", onClick: this.showDays }),
                         React.createElement("div", null, this.state.topicInfo.state === 1 ? '解锁' : "锁定")),
                     React.createElement("div", { className: "row" },
-                        React.createElement("input", { type: "radio", name: "option", value: "下沉", onClick: this.showDays }),
-                        React.createElement("div", null, "\u4E0B\u6C89")),
-                    React.createElement("div", { className: "row" },
-                        React.createElement("input", { type: "radio", name: "option", value: "禁止热门", onClick: this.showNormal }),
-                        React.createElement("div", null, "\u7981\u6B62\u70ED\u95E8"))),
+                        React.createElement("input", { type: "radio", name: "option", value: this.state.topicInfo.disableHot ? "取消禁止热门" : "禁止热门", onClick: this.showNormal }),
+                        React.createElement("div", null, this.state.topicInfo.disableHot ? "取消禁止热门" : "禁止热门"))),
                 React.createElement("div", { className: "row", style: { marginTop: "1rem" } },
                     React.createElement("div", { className: "row" },
                         React.createElement("input", { type: "radio", name: "option", value: "删除", onClick: this.showNormal }),
@@ -14880,16 +15067,13 @@ var TopicManagement = /** @class */ (function (_super) {
                         React.createElement("div", null, "\u4FEE\u590D")),
                     React.createElement("div", { className: "row" },
                         React.createElement("input", { type: "radio", name: "option", value: "移动", onClick: this.showBoard }),
-                        React.createElement("div", null, "\u79FB\u52A8")),
-                    React.createElement("div", { className: "row" },
-                        React.createElement("input", { type: "radio", name: "option", value: "提升", onClick: this.showDays }),
-                        React.createElement("div", null, "\u63D0\u5347"))),
+                        React.createElement("div", null, "\u79FB\u52A8"))),
                 React.createElement("div", { className: "row", style: { marginTop: "1rem" } },
                     React.createElement("div", { className: "row" },
-                        React.createElement("input", { type: "radio", name: "option", value: this.state.topicInfo.topState === 2 ? '取消固顶' : '固顶', onClick: this.showNormal }),
+                        React.createElement("input", { type: "radio", name: "option", value: this.state.topicInfo.topState === 2 ? '取消固顶' : '固顶', onClick: this.state.topicInfo.topState === 2 ? this.showNormal : this.showDays }),
                         React.createElement("div", null, this.state.topicInfo.topState === 2 ? '取消固顶' : '固顶')),
                     React.createElement("div", { className: "row" },
-                        React.createElement("input", { type: "radio", name: "option", value: this.state.topicInfo.topState === 4 ? '取消全站固顶' : '全站固顶', onClick: this.showNormal }),
+                        React.createElement("input", { type: "radio", name: "option", value: this.state.topicInfo.topState === 4 ? '取消全站固顶' : '全站固顶', onClick: this.state.topicInfo.topState === 4 ? this.showNormal : this.showDays }),
                         React.createElement("div", null, this.state.topicInfo.topState === 4 ? '取消全站固顶' : '全站固顶')),
                     React.createElement("div", { className: "row" },
                         React.createElement("input", { type: "radio", name: "option", value: this.state.topicInfo.bestState === 1 ? "解除精华" : "加精", onClick: this.showNormal }),
@@ -15875,10 +16059,10 @@ var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
 var UserCenterExact_1 = __webpack_require__(96);
 var UserCenterMyFollowings_1 = __webpack_require__(100);
-var UserCenterMyFans_1 = __webpack_require__(122);
-var UserCenterMyPostsExact_1 = __webpack_require__(123);
-var UserCenterMyFavorites_1 = __webpack_require__(124);
-var UserCenterConfig_1 = __webpack_require__(128);
+var UserCenterMyFans_1 = __webpack_require__(121);
+var UserCenterMyPostsExact_1 = __webpack_require__(122);
+var UserCenterMyFavorites_1 = __webpack_require__(123);
+var UserCenterConfig_1 = __webpack_require__(127);
 /**
  * 用户中心主体
  */
@@ -16502,7 +16686,8 @@ var UserCenterMyFollowings = /** @class */ (function (_super) {
                         userFanInfo.posts = data2.postCount;
                         userFanInfo.id = userid_1;
                         userFanInfo.fans = data2.fanCount;
-                        fans.push(userFanInfo);
+                        userFanInfo.isFollowing = true;
+                        fans.unshift(userFanInfo);
                         return [3 /*break*/, 3];
                     case 6:
                         userid = Utility.getLocalStorage('userInfo').id;
@@ -17324,7 +17509,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
 var MessageResponsebox_1 = __webpack_require__(107);
-var MessagePager_1 = __webpack_require__(108);
 var Utility = __webpack_require__(1);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
@@ -17393,8 +17577,7 @@ var MessageResponse = /** @class */ (function (_super) {
     MessageResponse.prototype.render = function () {
         return (React.createElement("div", { className: "message-right" },
             React.createElement("div", { className: "message-response" }, this.state.data.map(this.coverMessageResponse)),
-            React.createElement("div", { className: "message-pager" },
-                React.createElement(MessagePager_1.MessagePager, { page: this.state.from, messageType: "response", totalPage: this.state.totalPage }))));
+            React.createElement("div", { className: "message-pager" })));
     };
     return MessageResponse;
 }(React.Component));
@@ -17507,154 +17690,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var Utility = __webpack_require__(1);
-var react_router_dom_1 = __webpack_require__(3);
-var MessagePager = /** @class */ (function (_super) {
-    __extends(MessagePager, _super);
-    function MessagePager(props, content) {
-        var _this = _super.call(this, props, content) || this;
-        _this.state = {
-            pager: [1, 2, 3, 4, 5]
-        };
-        return _this;
-    }
-    /**
-     * 将页码转换为 UI 界面。
-     * @param pageNumber 要转换的页码。
-     * @returns {JSX.Element} 页码对应的 UI 元素。
-     */
-    MessagePager.prototype.generatePageLink = function (pageNumber) {
-        return React.createElement(PageModel, { pageNumber: pageNumber, messageType: this.props.messageType, curPage: this.props.page, totalPage: this.props.totalPage });
-    };
-    MessagePager.prototype.componentWillReceiveProps = function (newProps) {
-        return __awaiter(this, void 0, void 0, function () {
-            var pages;
-            return __generator(this, function (_a) {
-                pages = Utility.getPager(newProps.page, newProps.totalPage);
-                this.setState({ pager: pages });
-                return [2 /*return*/];
-            });
-        });
-    };
-    MessagePager.prototype.componentDidMount = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var pages;
-            return __generator(this, function (_a) {
-                pages = Utility.getPager(this.props.page, this.props.totalPage);
-                this.setState({ pager: pages });
-                return [2 /*return*/];
-            });
-        });
-    };
-    MessagePager.prototype.render = function () {
-        return React.createElement("div", { id: "messagePager" },
-            React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this))));
-    };
-    return MessagePager;
-}(React.Component));
-exports.MessagePager = MessagePager;
-var PageModel = /** @class */ (function (_super) {
-    __extends(PageModel, _super);
-    function PageModel() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    PageModel.prototype.render = function () {
-        var pageUrl;
-        if (this.props.pageNumber > 0) {
-            pageUrl = "/message/" + this.props.messageType + "/" + this.props.pageNumber;
-            if (this.props.pageNumber != this.props.curPage) {
-                return React.createElement("li", { className: "page-item" },
-                    React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, this.props.pageNumber));
-            }
-            else {
-                return React.createElement("li", { className: "page-item active" },
-                    React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, this.props.pageNumber));
-            }
-        }
-        else if (this.props.pageNumber == -1) {
-            pageUrl = "/message/" + this.props.messageType + "/" + (this.props.curPage - 1);
-            return React.createElement("li", { className: "page-item" },
-                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u2039"));
-        }
-        else if (this.props.pageNumber == -2) {
-            pageUrl = "/message/" + this.props.messageType + "/" + (this.props.curPage + 1);
-            return React.createElement("li", { className: "page-item" },
-                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u203A"));
-        }
-        else if (this.props.pageNumber == -3) {
-            pageUrl = "/message/" + this.props.messageType;
-            return React.createElement("li", { className: "page-item" },
-                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u2039\u2039"));
-        }
-        else {
-            pageUrl = "/message/" + this.props.messageType + "/" + this.props.totalPage;
-            return React.createElement("li", { className: "page-item" },
-                React.createElement(react_router_dom_1.Link, { className: "page-link", to: pageUrl }, "\u203A\u203A"));
-        }
-    };
-    return PageModel;
-}(React.Component));
-exports.PageModel = PageModel;
-
-
-/***/ }),
-/* 109 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-Object.defineProperty(exports, "__esModule", { value: true });
 // A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MessageAttmebox_1 = __webpack_require__(110);
+var MessageAttmebox_1 = __webpack_require__(109);
 var Utility = __webpack_require__(1);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
@@ -17674,29 +17714,56 @@ var MessageAttme = /** @class */ (function (_super) {
         };
         return _this;
     }
-    MessageAttme.prototype.componentDidMount = function () {
+    MessageAttme.prototype.getData = function (props) {
         return __awaiter(this, void 0, void 0, function () {
-            var data;
+            var totalCount, index, totalPage, curPage, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         //给@我的添加选中样式
                         $('.message-nav > div').removeClass('message-nav-focus');
                         $('#attme').addClass('message-nav-focus');
-                        return [4 /*yield*/, Utility.getMessageAttme(0, 7, this.context.router)];
+                        return [4 /*yield*/, Utility.getTotalPage(2)];
                     case 1:
+                        totalCount = _a.sent();
+                        index = totalCount / 7;
+                        totalPage = parseInt(index);
+                        curPage = props.match.params.page - 1;
+                        if (!curPage) {
+                            curPage = 0;
+                        }
+                        return [4 /*yield*/, Utility.getMessageAttme(curPage * 7, 7, this.context.router)];
+                    case 2:
                         data = _a.sent();
                         console.log("显示获取到的@消息", data);
                         if (data) {
-                            this.setState({ data: data, from: data.length });
+                            this.setState({ data: data, from: curPage + 1, totalPage: totalPage });
                         }
                         return [2 /*return*/];
                 }
             });
         });
     };
+    MessageAttme.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.getData(this.props);
+                return [2 /*return*/];
+            });
+        });
+    };
+    MessageAttme.prototype.componentWillReceiveProps = function (nextProps) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.getData(nextProps);
+                return [2 /*return*/];
+            });
+        });
+    };
     MessageAttme.prototype.render = function () {
-        return React.createElement("div", { className: "message-response" }, this.state.data.map(this.coverMessageAttme));
+        return (React.createElement("div", { className: "message-right" },
+            React.createElement("div", { className: "message-response" }, this.state.data.map(this.coverMessageAttme)),
+            React.createElement("div", { className: "message-pager" })));
     };
     return MessageAttme;
 }(React.Component));
@@ -17704,7 +17771,7 @@ exports.MessageAttme = MessageAttme;
 
 
 /***/ }),
-/* 110 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17758,7 +17825,7 @@ exports.MessageAttmebox = MessageAttmebox;
 
 
 /***/ }),
-/* 111 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17813,7 +17880,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 var React = __webpack_require__(0);
-var MessageSystembox_1 = __webpack_require__(112);
+var MessageSystembox_1 = __webpack_require__(111);
 var Utility = __webpack_require__(1);
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
@@ -17863,7 +17930,7 @@ exports.MessageSystem = MessageSystem;
 
 
 /***/ }),
-/* 112 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17934,7 +18001,7 @@ exports.MessageSystembox = MessageSystembox;
 
 
 /***/ }),
-/* 113 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18107,7 +18174,7 @@ exports.FocusProps = FocusProps;
 
 
 /***/ }),
-/* 114 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18302,7 +18369,7 @@ function coverFocusPost(item) {
 
 
 /***/ }),
-/* 115 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18519,7 +18586,7 @@ exports.FocusBoardTopicProps = FocusBoardTopicProps;
 
 
 /***/ }),
-/* 116 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18563,7 +18630,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 117 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18619,8 +18686,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserExactProfile_1 = __webpack_require__(118);
-var UserRouterActivities_1 = __webpack_require__(119);
+var UserExactProfile_1 = __webpack_require__(117);
+var UserRouterActivities_1 = __webpack_require__(118);
 var UserCenterExactAvatar_1 = __webpack_require__(31);
 var Utility = __webpack_require__(1);
 var UserRouter = /** @class */ (function (_super) {
@@ -18711,7 +18778,7 @@ var UserExact = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 118 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18918,7 +18985,7 @@ exports.UserExactProfile = UserExactProfile;
 
 
 /***/ }),
-/* 119 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19147,7 +19214,7 @@ exports.UserRouterActivities = UserRouterActivities;
 
 
 /***/ }),
-/* 120 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19373,7 +19440,7 @@ exports.default = react_redux_1.connect(mapState, mapDispatch)(LogOnExact);
 
 
 /***/ }),
-/* 121 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19434,7 +19501,7 @@ exports.LogOff = react_redux_1.connect(function () { return null; }, mapDispatch
 
 
 /***/ }),
-/* 122 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19542,18 +19609,20 @@ var UserCenterMyFans = /** @class */ (function (_super) {
                         userid_1 = data[i];
                         userFanInfo = new AppState_1.UserFanInfo();
                         url = "http://apitest.niconi.cc/user/" + userid_1;
-                        return [4 /*yield*/, fetch(url)];
+                        return [4 /*yield*/, fetch(url, { headers: headers })];
                     case 4:
                         res = _a.sent();
                         return [4 /*yield*/, res.json()];
                     case 5:
                         data2 = _a.sent();
+                        console.log(data2);
                         userFanInfo.name = data2.name;
                         userFanInfo.avatarImgURL = data2.portraitUrl;
                         userFanInfo.posts = data2.postCount;
                         userFanInfo.id = userid_1;
                         userFanInfo.fans = data2.fanCount;
-                        fans.push(userFanInfo);
+                        userFanInfo.isFollowing = data2.isFollowing;
+                        fans.unshift(userFanInfo);
                         return [3 /*break*/, 3];
                     case 6:
                         userid = Utility.getLocalStorage('userInfo').id;
@@ -19601,7 +19670,7 @@ exports.UserCenterMyFans = UserCenterMyFans;
 
 
 /***/ }),
-/* 123 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19776,7 +19845,7 @@ exports.UserCenterMyPostsExact = UserCenterMyPostsExact;
 
 
 /***/ }),
-/* 124 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19797,8 +19866,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var react_router_dom_1 = __webpack_require__(3);
-var UserCenterMyFavoritesPosts_1 = __webpack_require__(125);
-var UserCenterMyFavoritesBoards_1 = __webpack_require__(126);
+var UserCenterMyFavoritesPosts_1 = __webpack_require__(124);
+var UserCenterMyFavoritesBoards_1 = __webpack_require__(125);
 //import { UserCenterMyFavoritesPostsBoards } from './UserCenterMyFavoritesPostsBoards';
 //<Route path='/usercenter/myfavorites/boards' component={UserCenterMyFavoritesPostsBoards} />
 /**
@@ -19831,7 +19900,7 @@ var CustomLink = function (_a) {
 
 
 /***/ }),
-/* 125 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19990,7 +20059,7 @@ exports.UserCenterMyFavoritesPosts = UserCenterMyFavoritesPosts;
 
 
 /***/ }),
-/* 126 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20046,7 +20115,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
-var UserCenterMyFavoritesBoard_1 = __webpack_require__(127);
+var UserCenterMyFavoritesBoard_1 = __webpack_require__(126);
 var UserCenterMyFavoritesBoards = /** @class */ (function (_super) {
     __extends(UserCenterMyFavoritesBoards, _super);
     function UserCenterMyFavoritesBoards(props) {
@@ -20133,7 +20202,7 @@ exports.UserCenterMyFavoritesBoards = UserCenterMyFavoritesBoards;
 
 
 /***/ }),
-/* 127 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20320,7 +20389,7 @@ exports.UserCenterMyFavoritesBoard = UserCenterMyFavoritesBoard;
 
 
 /***/ }),
-/* 128 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20385,9 +20454,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
 var AppState_1 = __webpack_require__(5);
-var UserCenterConfigAvatar_1 = __webpack_require__(129);
-var UserCenterConfigSignature_1 = __webpack_require__(130);
-var UserCenterConfigOthers_1 = __webpack_require__(131);
+var UserCenterConfigAvatar_1 = __webpack_require__(128);
+var UserCenterConfigSignature_1 = __webpack_require__(129);
+var UserCenterConfigOthers_1 = __webpack_require__(130);
 var UserCenterConfig = /** @class */ (function (_super) {
     __extends(UserCenterConfig, _super);
     function UserCenterConfig(props) {
@@ -20400,9 +20469,9 @@ var UserCenterConfig = /** @class */ (function (_super) {
             QQ: info.qq,
             SignatureCode: info.signatureCode,
             Birthday: info.birthday,
-            birthdayYear: Number.parseInt(info.birthday.slice(0, 4)),
-            birthdayMouth: Number.parseInt(info.birthday.slice(5, 7)),
-            birthdayDay: Number.parseInt(info.birthday.slice(8, 10)),
+            birthdayYear: info.birthday ? Number.parseInt(info.birthday.slice(0, 4)) : 0,
+            birthdayMouth: info.birthday ? Number.parseInt(info.birthday.slice(5, 7)) : 0,
+            birthdayDay: info.birthday ? Number.parseInt(info.birthday.slice(8, 10)) : 0
         };
         _this.state = {
             userInfo: myInfo,
@@ -20526,7 +20595,7 @@ var UserInfo = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 129 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20932,7 +21001,7 @@ exports.default = react_redux_1.connect(function () { return (null); }, mapDispa
 
 
 /***/ }),
-/* 130 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20972,7 +21041,7 @@ exports.UserCenterConfigSignature = UserCenterConfigSignature;
 
 
 /***/ }),
-/* 131 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20992,7 +21061,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var AppState_1 = __webpack_require__(132);
+var AppState_1 = __webpack_require__(131);
 var UserCenterConfigOthers = /** @class */ (function (_super) {
     __extends(UserCenterConfigOthers, _super);
     function UserCenterConfigOthers() {
@@ -21065,7 +21134,7 @@ var UserInfo = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 132 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21220,7 +21289,7 @@ var PagerState = /** @class */ (function () {
 }());
 exports.PagerState = PagerState;
 var TopicState = /** @class */ (function () {
-    function TopicState(userName, title, content, time, signature, userImgUrl, hitCount, userId, likeNumber, dislikeNumber, postId, isAnonymous, contentType, isFollowing, fanCount, masters, highLightInfo, totalVoteUserCount, topState, bestState, isVote) {
+    function TopicState(userName, title, content, time, signature, userImgUrl, hitCount, userId, likeNumber, dislikeNumber, postId, isAnonymous, contentType, isFollowing, fanCount, masters, highLightInfo, totalVoteUserCount, topState, bestState, isVote, disableHot) {
         this.userName = userName;
         this.time = time;
         this.title = title;
@@ -21242,6 +21311,7 @@ var TopicState = /** @class */ (function () {
         this.highLightInfo = highLightInfo;
         this.isVote = isVote;
         this.totalVoteUserCount = totalVoteUserCount;
+        this.disableHot = disableHot;
     }
     return TopicState;
 }());
@@ -21333,7 +21403,7 @@ exports.ChangeUserInfo = ChangeUserInfo;
 
 
 /***/ }),
-/* 133 */
+/* 132 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

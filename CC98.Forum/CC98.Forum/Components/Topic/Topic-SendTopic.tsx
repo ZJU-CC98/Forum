@@ -187,7 +187,7 @@ export class SendTopic extends React.Component<{ topicid,boardId, onChange }, { 
             </form>
             {editor}
             <button onClick={this.showManagement}>管理</button>
-            <TopicManagement topicId={this.props.topicid} update={this.onChange} boardId={this.props.boardId} />
+            <TopicManagement topicId={this.props.topicid} update={this.onChange} boardId={this.props.boardId} updateTime={Date.now()} />
         </div>;
     }
 }

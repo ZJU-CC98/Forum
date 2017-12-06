@@ -205,7 +205,7 @@ export class TopicState {
         topState: number,
         bestState: number,
         isVote: boolean,
-
+        disableHot: boolean
     ) {
         this.userName = userName;
         this.time = time;
@@ -228,7 +228,7 @@ export class TopicState {
         this.highLightInfo = highLightInfo;
         this.isVote = isVote;
         this.totalVoteUserCount = totalVoteUserCount;
-
+        this.disableHot = disableHot;
     }
     userName: string;
     title: string;
@@ -251,7 +251,7 @@ export class TopicState {
     topState: number;
     bestState: number;
     isVote: boolean;
-
+    disableHot: boolean;
 }
 
 /**
