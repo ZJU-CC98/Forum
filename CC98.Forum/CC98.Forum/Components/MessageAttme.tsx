@@ -10,7 +10,7 @@ import * as Utility from '../Utility';
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
-export class MessageAttme extends React.Component<{}, MessageResponseState> {
+export class MessageAttme extends React.Component<{match}, MessageResponseState> {
 
     constructor(props) {
         super(props);
@@ -22,15 +22,30 @@ export class MessageAttme extends React.Component<{}, MessageResponseState> {
         };
     }
 
-    async componentDidMount() {
+    async getData(props) {
         //给@我的添加选中样式
         $('.message-nav > div').removeClass('message-nav-focus');
         $('#attme').addClass('message-nav-focus');
-        let data = await Utility.getMessageAttme(0, 7, this.context.router);
+        let totalCount = await Utility.getTotalPage(2);
+        let index: any = totalCount / 7;
+        let totalPage = parseInt(index);
+        let curPage = props.match.params.page - 1;
+        if (!curPage) {
+            curPage = 0;
+        }
+        let data = await Utility.getMessageAttme(curPage * 7, 7, this.context.router);
         console.log("显示获取到的@消息", data);
         if (data) {
-            this.setState({ data: data, from: data.length });
+            this.setState({ data: data, from: curPage + 1, totalPage: totalPage });
         }
+    }
+
+    async componentDidMount() {
+        this.getData(this.props);
+    }
+
+    async componentWillReceiveProps(nextProps) {
+        this.getData(nextProps);
     }
 
     coverMessageAttme = (item: MessageResponseProps) => {
@@ -38,6 +53,9 @@ export class MessageAttme extends React.Component<{}, MessageResponseState> {
     };
 
 	render() {
-        return <div className="message-response">{this.state.data.map(this.coverMessageAttme)}</div>;
+        return (<div className="message-right">
+                    <div className="message-response">{this.state.data.map(this.coverMessageAttme)}</div>
+                    <div className="message-pager"></div>
+                </div>);
     }
 }

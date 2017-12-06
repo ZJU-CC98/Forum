@@ -439,6 +439,10 @@ export class UserFanInfo {
     * 用户id
     */
     id: number;
+    /**
+    * 是否关注了该用户
+    */
+    isFollowing: boolean;
 }
 /**
 * 用户收藏的版面信息
