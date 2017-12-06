@@ -177,7 +177,10 @@ class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCente
         canvas.height = width;
         ctx.drawImage(this.state.img, x, y, width, width, 0, 0, width, width);
         canvas.toBlob(async (result) => {
-            let file = new File([result], '头像.jpg', { type: 'image/jpeg', lastModified: Date.now() });
+            
+            let file: any = new Blob([result], { type: 'image/jpeg'});
+            file.lastModifiedDate = Date.now();
+            file.name = '头像.jpg';
             const avatar = await Utility.uploadFile(file);
             try {
                 this.setState({
@@ -311,7 +314,7 @@ class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCente
                     <div className="user-center-config-avatar-preview" style={this.state.isShown ? { opacity: 1, marginTop: '2rem' } : { zIndex: -1 }}>
                         <div style={{ position: 'absolute', width: '824px', overflow: 'hidden', paddingBottom: '50px' }}>
                             <canvas id="newAvatar" style={style} ref={(a) => { this.newAvatar = a;}}></canvas>
-                            <canvas ref={(canvas) => { this.myCanvas = canvas }} style={{ position: 'relative' }} />
+                            <canvas ref={(canvas) => { this.myCanvas = canvas }} style={this.state.isShown ? { position: 'relative' } : {display: 'none'}} />
                             <div id="cover" ref={(div) => { this.cover = div; }} style={{ width: `${this.state.divWidth}px`, height: `${this.state.divheight}px`, top: 0 }}></div>
                             <div className="imgdata" ref={(div) => { this.selector = div; }} style={this.state.isShown ? { width: `${this.state.selectorWidth}px`, height: `${this.state.selectorWidth}px`, borderRadius: `${this.state.selectorWidth / 2}px`, top: `${this.state.selectorTop}px`, left: `${this.state.selectorLeft}px` }: style}>
                                 <img src={this.state.avatarURL} style={{ position: 'relative', top: `-${this.state.selectorTop}px`, left: `-${this.state.selectorLeft}px` }} />
