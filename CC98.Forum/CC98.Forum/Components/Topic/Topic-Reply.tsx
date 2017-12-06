@@ -10,7 +10,7 @@ import { RouteComponent } from '../RouteComponent';
 import { Replier } from './Topic-Replier';
 import { ReplyContent } from './Topic-ReplyContent';
 import { Award } from './Topic-Award';
-import { PostManagement } from './Post-Management';
+import { PostManagement } from './Topic-PostManagement';
 import { Judge } from './Topic-Judge';
 import { ReplierSignature } from './Topic-ReplierSignature';
 declare let moment: any;

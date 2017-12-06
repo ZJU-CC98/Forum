@@ -25,6 +25,8 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
 
         this.showDeleteUI = this.showDeleteUI.bind(this);
 
+        this.showOtherUI = this.showOtherUI.bind(this);
+
         this.close = this.close.bind(this);
 
         this.state = { wealth: 1000, prestige: 0, reason: "", tpdays: 0, UI: "Award", tips: "" }
@@ -49,6 +51,9 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
 
     }
 
+    showOtherUI() {
+        this.setState({ UI: "Other" });
+    }
     confirm() {
         switch (this.state.UI) {
             case 'Award':
@@ -311,7 +316,23 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
             </div>
 
         </div>;
+        const otherUI = <div className="column manageInfo" id="other" >
+            <div className="row manageOperation">
 
+                <div className="manageObject">消费财富值</div>
+
+                <input type="text" value={this.state.wealth} onChange={this.wealthInput} />
+
+            </div>
+            <div className="row manageOperation">
+
+                <div className="manageObject">原因</div>
+
+                <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+
+            </div>
+
+        </div>;
         const UIId = `manage${this.props.postId}`;
 
         UI = awardUI;
@@ -321,6 +342,8 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
         const punishOptionJQId = `#manageOptions-punish${this.props.postId}`;
         const deleteOptionId = `manageOptions-delete${this.props.postId}`;
         const deleteOptionJQId = `#manageOptions-delete${this.props.postId}`;
+        const otherOptionId = `manageOptions-other${this.props.postId}`;
+        const otherOptionJQId = `#manageOptions-other${this.props.postId}`;
         console.log(this.state.UI);
         if (this.state.UI === "Award") {
             UI = awardUI;
@@ -328,6 +351,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
             $(awardOptionJQId).css("background-color", "#b9d3ee");
             $(punishOptionJQId).css("background-color", "#fffacd");
             $(deleteOptionJQId).css("background-color", "#fffacd");
+            $(otherOptionJQId).css("background-color", "#fffacd");
         }
 
         if (this.state.UI === "Punish") {
@@ -335,6 +359,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
             $(awardOptionJQId).css("background-color", "#fffacd");
             $(punishOptionJQId).css("background-color", "#b9d3ee");
             $(deleteOptionJQId).css("background-color", "#fffacd");
+            $(otherOptionJQId).css("background-color", "#fffacd");
         }
 
         if (this.state.UI === "Delete") {
@@ -342,8 +367,16 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
             $(awardOptionJQId).css("background-color", "#fffacd");
             $(punishOptionJQId).css("background-color", "#fffacd");
             $(deleteOptionJQId).css("background-color", "#b9d3ee");
+            $(otherOptionJQId).css("background-color", "#fffacd");
         }
 
+        if (this.state.UI === 'Other') {
+            UI = otherUI;
+            $(awardOptionJQId).css("background-color", "#fffacd");
+            $(punishOptionJQId).css("background-color", "#fffacd");
+            $(deleteOptionJQId).css("background-color", "#fffacd");
+            $(otherOptionJQId).css("background-color", "#b9d3ee");
+        }
         return <div style={{ display: "none" }} id={UIId} className="postManagement">
 
             <div className="manageUI">
@@ -355,7 +388,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
                     <div className="manageOptions-icon" id={punishOptionId} onClick={this.showPunishUI} style={{ color: "red" }}>惩罚</div>
 
                     <div className="manageOptions-icon" id={deleteOptionId} onClick={this.showDeleteUI}>删除</div>
-
+                    <div className="manageOptions-icon" id={otherOptionId} onClick={this.showOtherUI}>其他</div>
                 </div>
 
             </div>

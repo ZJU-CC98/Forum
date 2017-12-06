@@ -4,21 +4,26 @@ import * as $ from 'jquery';
 import { UbbContainer } from '.././UbbContainer';
 import { Constants } from './Topic';
 import { UbbEditor } from '../UbbEditor';
+import { TopicManagement } from './Topic-TopicManagement';
 declare let moment: any;
 declare let editormd: any;
 
-export class SendTopic extends React.Component<{ topicid, onChange, }, { content: string, mode: number }>{
+export class SendTopic extends React.Component<{ topicid,boardId, onChange }, { content: string, mode: number }>{
     constructor(props) {
         super(props);
         this.sendUbbTopic = this.sendUbbTopic.bind(this);
         this.changeEditor = this.changeEditor.bind(this);
         this.showManagement = this.showManagement.bind(this);
+        this.onChange = this.onChange.bind(this);
         this.close = this.close.bind(this);
         this.update = this.update.bind(this);
         this.state = ({ content: '', mode: 1 });
     }
     update(value) {
         this.setState({ content: value });
+    }
+    onChange() {
+        this.props.onChange();
     }
     showManagement() {
         const UIId = `#manage${this.props.topicid}`;
@@ -182,6 +187,7 @@ export class SendTopic extends React.Component<{ topicid, onChange, }, { content
             </form>
             {editor}
             <button onClick={this.showManagement}>管理</button>
+            <TopicManagement topicId={this.props.topicid} update={this.onChange} boardId={this.props.boardId} />
         </div>;
     }
 }

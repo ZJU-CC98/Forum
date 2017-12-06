@@ -24,7 +24,7 @@ export class MessageSystem extends React.Component<{}, MessageSystemState> {
         //给系统消息添加选中样式
         $('.message-nav > div').removeClass('message-nav-focus');
         $('#system').addClass('message-nav-focus');
-        let data = await Utility.getMessageSystem(0, this.context.router);
+        let data = await Utility.getMessageSystem(0, 7, this.context.router);
         console.log("这是获取到的处理后系统消息");
         console.log(data);
         if (data) {
