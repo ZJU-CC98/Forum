@@ -34,7 +34,7 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
         let recentContact = Utility.getStorage("recentContact");
         console.log("第一次获取联系人缓存");
         console.log(recentContact);
-        if (!recentContact || recentContact.length == 0) {
+        if (!recentContact || recentContact.length === 0) {
             console.log("没有获取到缓存，自己取");
             recentContact = await Utility.getRecentContact(0, 7, this.context.router);
             console.log("取到了数据，然后呢");

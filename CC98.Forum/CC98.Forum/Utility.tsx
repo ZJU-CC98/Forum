@@ -2753,3 +2753,10 @@ export async function cancelDisableHot(topicId, reason) {
     const body = JSON.stringify(bodyInfo);
     const response = await fetch(url, { method: "DELETE", headers, body });
 }
+
+//自动识别内容中的链接并添加ubb代码
+export function autoAddUrl(v: string) {
+    var reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
+    let result = v.replace(reg, "[url='$1$2'][color=blue]$1$2[/color][/url]").replace(/\n/g, "<br />");
+    return result;
+}
