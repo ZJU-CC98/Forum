@@ -23,7 +23,7 @@ import { SendTopic } from './Topic-SendTopic';
 import { Category } from './Topic-Category';
 import { TopicTitle } from './Topic-TopicTitle';
 import { AuthorMessage } from './Topic-AuthorMessage';
-import { TopicPagerDown, TopicPager } from './Topic-Pager';
+import { Pager } from '../Pager';
 import { PostTopic } from './Topic-Topic';
 import { Reply } from './Topic-Reply';
 
@@ -102,16 +102,17 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
             topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} />;
             hotReply = <Route path="/topic/:topicid/:page?" component={HotReply} />;
         }
+        const pagerUrl = `/topic/${this.state.topicid}/`;
         return <div className="center" >
             <div className="row" style={{ width: "100%", justifyContent: 'space-between',alignItems: "center" }}>
                 <Category topicId={this.state.topicid} />
-                <TopicPager page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} /></div>
+                <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
             {topic}
             {hotReply}
         
                 <Route path="/topic/:topicid/:page?" component={Reply} />
-          
-            <TopicPagerDown page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
+
+            <div style={{ display: "flex",width:"100%", justifyContent: "flex-end" }}><Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
             <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardId} />
             
         </div>

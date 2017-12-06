@@ -21,6 +21,7 @@
     <None Remove="Components\Footer.tsx" />
     <None Remove="Components\MessagePager.tsx" />
     <None Remove="Components\PageModel.tsx" />
+    <None Remove="Components\Pager.tsx" />
     <None Remove="Components\RouteComponent.tsx" />
     <None Remove="Components\SearCH.tsx" />
     <None Remove="Components\Status.tsx" />
@@ -107,6 +108,7 @@
     <TypeScriptCompile Include="ActionTypes.tsx" />
     <TypeScriptCompile Include="Components\MessagePager.tsx" />
     <TypeScriptCompile Include="Components\PageModel.tsx" />
+    <TypeScriptCompile Include="Components\Pager.tsx" />
     <TypeScriptCompile Include="Components\RouteComponent.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-AuthorMessage.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Award.tsx" />

@@ -59,9 +59,9 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
             case 'Award':
                 if ($("input[name='reason']:checked").val()) {
                     if ($("input[name='reason']:checked").val() !== '自定义') {
-                        console.log(this.state.wealth);
+                   
                         if (this.state.wealth !== 0) {
-                            console.log("in addaward");
+                          
                             Utility.awardWealth($("input[name='reason']:checked").val(), this.state.wealth, this.props.postId);
                         }
 
@@ -95,7 +95,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
                         }
 
                         if (this.state.tpdays !== 0) {
-                            console.log("confirm in tp");
+                          
                             Utility.stopBoardPost(this.props.postId, $("input[name='reason']:checked").val(), this.state.tpdays);
                         }
                     } else {
@@ -104,7 +104,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
                             if (this.state.prestige !== 0)
                                 Utility.deductPrestige(this.props.postId, this.state.prestige, this.state.reason);
                             if (this.state.tpdays !== 0) {
-                                console.log("confirm in tp");
+                         
                                 Utility.stopBoardPost(this.props.postId, this.state.reason, this.state.tpdays);
                             }
                         } else {
@@ -165,10 +165,8 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
         const punishOptionJQId = `#manageOptions-punish${this.props.postId}`;
         const deleteOptionId = `manageOptions-delete${this.props.postId}`;
         const deleteOptionJQId = `#manageOptions-delete${this.props.postId}`;
-        console.log(this.state.UI);
+  
         if (this.state.UI === "Award") {
-
-            console.log("in change color");
             $(awardOptionJQId).css("background-color", "#b9d3ee");
             $(punishOptionJQId).css("background-color", "#fffacd");
             $(deleteOptionJQId).css("background-color", "#fffacd");
@@ -344,11 +342,10 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
         const deleteOptionJQId = `#manageOptions-delete${this.props.postId}`;
         const otherOptionId = `manageOptions-other${this.props.postId}`;
         const otherOptionJQId = `#manageOptions-other${this.props.postId}`;
-        console.log(this.state.UI);
+  
         if (this.state.UI === "Award") {
             UI = awardUI;
-            console.log("in change color");
-            $(awardOptionJQId).css("background-color", "#b9d3ee");
+             $(awardOptionJQId).css("background-color", "#b9d3ee");
             $(punishOptionJQId).css("background-color", "#fffacd");
             $(deleteOptionJQId).css("background-color", "#fffacd");
             $(otherOptionJQId).css("background-color", "#fffacd");

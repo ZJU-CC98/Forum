@@ -58,10 +58,12 @@ body {
     margin-top: 2.5rem;
     min-width: 71.2px;
 }
-
+#boardTopics{
+    border:#eaeaea thin solid;
+}
 .listContent {
     display: flex;
-    border: #EAEAEA solid thin;
+
     border-radius: 0.3125rem;
     background-color: $bgcolor2;
     display: flex;
@@ -2708,7 +2710,7 @@ a {
     flex-direction: column;
     justify-content: center;
     margin-left: 30rem;
-    margin-top: 40rem;
+    margin-top: 20rem;
     position: absolute;
     z-index: 1000;
     width: 30rem;
