@@ -19,6 +19,7 @@
     <None Remove="CC98.Forum.rar" />
     <None Remove="Components\FocusBoardTopicArea.tsx" />
     <None Remove="Components\Footer.tsx" />
+    <None Remove="Components\MessagePager.tsx" />
     <None Remove="Components\PageModel.tsx" />
     <None Remove="Components\Pager.tsx" />
     <None Remove="Components\RouteComponent.tsx" />
@@ -105,6 +106,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Actions.tsx" />
     <TypeScriptCompile Include="ActionTypes.tsx" />
+    <TypeScriptCompile Include="Components\MessagePager.tsx" />
     <TypeScriptCompile Include="Components\PageModel.tsx" />
     <TypeScriptCompile Include="Components\Pager.tsx" />
     <TypeScriptCompile Include="Components\RouteComponent.tsx" />

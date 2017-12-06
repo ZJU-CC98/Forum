@@ -7,4 +7,5 @@ export class MessageSystemState {
     data: MessageSystemProps[];
     from: number;
     loading: boolean;
+    totalPage: number;
 }

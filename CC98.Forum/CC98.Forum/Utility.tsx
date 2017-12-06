@@ -963,11 +963,10 @@ export async function getRecentContact(from: number, size: number, router) {
             //window.location.href="/status/ServerError");
         }
         let recentContactId = await response.json();
-        console.log("开始获取联系人id数组");
-        console.log(recentContactId);
+        console.log("开始获取联系人id数组", recentContactId);
         let url = "http://apitest.niconi.cc/user/basic"
         for (let i in recentContactId) {
-            if (i == "0") {
+            if (i === "0") {
                 url = `${url}?id=${recentContactId[i].userId}`;
             }
             else {
@@ -2372,7 +2371,6 @@ export async function unfollowBoard(boardId) {
 }
 //获取系统通知
 export async function getMessageSystem(from: number, size: number, router) {
-    console.log("开始获取系统通知了");
     try {
         let token = getLocalStorage("accessToken");
         let myHeaders = new Headers();
@@ -2385,17 +2383,14 @@ export async function getMessageSystem(from: number, size: number, router) {
             window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
-        console.log("原始系统消息数据");
         console.log(newTopic);
         for (let i in newTopic) {
             if (newTopic[i].postId) {
                 let response0 = await fetch(`http://apitest.niconi.cc/post/basicinfo?postid=${newTopic[i].postId}`, { headers: myHeaders });
                 let response1 = await response0.json();
                 newTopic[i].floor = response1.floor;
-                console.log("获取到了楼层");
             }
             else {
-                console.log("没有获取到楼层");
                 newTopic[i].floor = 0;
             }
         }
@@ -2414,7 +2409,6 @@ export async function getMessageResponse(from: number, size: number, router) {
         myHeaders.append('Authorization', token);
         console.log("from: number, size: number, router", from);
         let response = await fetch(`http://apitest.niconi.cc/notification/reply?from=${from}&size=${size}`, { headers: myHeaders });
-        console.log("测试测试测试1");
         if (response.status === 401) {
             window.location.href = "/status/UnauthorizedTopic";
         }
@@ -2422,11 +2416,9 @@ export async function getMessageResponse(from: number, size: number, router) {
             window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
-        console.log("测试测试测试2", newTopic);
         //补充帖子标题，版面id和版面名称信息
         if (newTopic) {
             for (let i in newTopic) {
-                console.log("测试测试测试3");
                 let response0 = await fetch(`http://apitest.niconi.cc/topic/${newTopic[i].topicId}`, { headers: myHeaders });
                 if (response0.status === 401) {
                     //window.location.href = "/status/UnauthorizedTopic";
@@ -2438,7 +2430,6 @@ export async function getMessageResponse(from: number, size: number, router) {
                     //window.location.href = "/status/ServerError";
                 }
                 else {
-                    console.log("测试测试测试4");
                     let response1 = await response0.json();
                     newTopic[i].topicTitle = response1.title;
                     newTopic[i].boardId = response1.boardId;
@@ -2450,12 +2441,10 @@ export async function getMessageResponse(from: number, size: number, router) {
                         newTopic[i].userId = response3.userId;
                         newTopic[i].userName = response3.userName;
                         result.push(newTopic[i]);
-                        console.log("测试测试测试5");
                     }
                 }
             }
         }
-        console.log("输出返回前结果", result);
         return result;
     } catch (e) {
         //window.location.href = "/status/Disconnected";
@@ -2477,7 +2466,6 @@ export async function getMessageAttme(from: number, size: number, router) {
             window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
-        console.log("显示原始接收到的@消息", newTopic);
         //补充帖子标题，版面id和版面名称信息
         if (newTopic) {
             for (let i in newTopic) {
@@ -2493,7 +2481,6 @@ export async function getMessageAttme(from: number, size: number, router) {
                 }
                 else {
                     let response1 = await response0.json();
-                    console.log("获取帖子信息", response1);
                     newTopic[i].topicTitle = response1.title;
                     newTopic[i].boardId = response1.boardId;
                     newTopic[i].boardName = await getBoardName(response1.boardId, router);

@@ -17,8 +17,6 @@ export class PageModel extends React.Component<{ url: string, pageNumber: number
                     .pageNumber}</Link></li>
                     ;
             }
-
-
         } else if (this.props.pageNumber == -1) {
             pageUrl = `${this.props.url}${this.props.curPage - 1}`;
             return <li className="page-item"><Link onClick={this.cancelFocus} className="page-link" to={pageUrl}>&lsaquo;</Link></li>

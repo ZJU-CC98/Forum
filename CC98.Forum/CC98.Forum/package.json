@@ -17,7 +17,8 @@
     "react-router-dom": "4.1.2",
     "redux": "3.7.2",
     "signalr": "2.2.2",
-    "ssri": "^4.1.6"
+    "ssri": "^4.1.6",
+    "blueimp-canvas-to-blob": "3.14.0"
   },
   "devDependencies": {
     "@types/jquery": "3.2.11",
