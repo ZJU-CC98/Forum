@@ -6,6 +6,7 @@ import { MessageResponseState } from '../States/MessageResponseState';
 import { MessageResponseProps } from '../Props/MessageResponseProps';
 import { MessageAttmebox } from './MessageAttmebox';
 import * as Utility from '../Utility';
+import { MessagePager } from './MessagePager';
 
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
@@ -30,7 +31,7 @@ export class MessageAttme extends React.Component<{match}, MessageResponseState>
         let index: any = totalCount / 7;
         let totalPage = parseInt(index);
         let curPage = props.match.params.page - 1;
-        if (!curPage) {
+        if (!curPage || curPage < 0) {
             curPage = 0;
         }
         let data = await Utility.getMessageAttme(curPage * 7, 7, this.context.router);
@@ -55,7 +56,7 @@ export class MessageAttme extends React.Component<{match}, MessageResponseState>
 	render() {
         return (<div className="message-right">
                     <div className="message-response">{this.state.data.map(this.coverMessageAttme)}</div>
-                    <div className="message-pager"></div>
+                    <div className="message-pager"><MessagePager url="/message/attme/" page={this.state.from} totalPage={this.state.totalPage} /></div>
                 </div>);
     }
 }
