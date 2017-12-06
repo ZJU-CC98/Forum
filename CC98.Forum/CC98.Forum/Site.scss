@@ -58,10 +58,12 @@ body {
     margin-top: 2.5rem;
     min-width: 71.2px;
 }
-
+#boardTopics{
+    border:#eaeaea thin solid;
+}
 .listContent {
     display: flex;
-    border: #EAEAEA solid thin;
+
     border-radius: 0.3125rem;
     background-color: $bgcolor2;
     display: flex;

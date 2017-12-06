@@ -134,11 +134,10 @@ export async function getTopic(topicid: number, router) {
                 window.location.href = "/status/NotFoundUser";
             }
             const userMesJson = await userMesResponse.json();
-            topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, userMesJson.fanCount, masters, data[0].highLightInfo,
-                data[0].totalVoteUserCount,
-                data[0].topState,
-                data[0].bestState,
-                data[0].isVote);
+            topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, userMesJson.fanCount, masters, hitCountJson.highLightInfo, hitCountJson.totalVoteUserCount,
+                hitCountJson.topState,
+                hitCountJson.bestState,
+                hitCountJson.isVote);
         } else {
             topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, -9898, masters, data[0].highLightInfo,
                 data[0].totalVoteUserCount,

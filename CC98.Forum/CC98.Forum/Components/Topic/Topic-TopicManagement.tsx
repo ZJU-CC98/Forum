@@ -40,11 +40,11 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId 
 
                 console.log("in if");
                 console.log($("input[name='option']:checked").val());
-                console.log(this.state.reason);
+                console.log(this.state.topicInfo);
                 if (this.state.reason !== "") {
                     switch ($("input[name='option']:checked").val()) {
                         case '固顶':
-                            Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, this.state.topicInfo.topState);
+                            Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 2);
                             break;
                         case '取消固顶':
                             Utility.removeBoardTopTopic(this.props.topicId, this.props.boardId, this.state.reason);

@@ -140,7 +140,7 @@ export class TopicContent extends React.Component<{ postid: number, topicid: num
         }
         if (this.props.signature == "") {
             return <div className="content">
-                <div className="substance replySubstance">{content}</div>              
+                <div className="substance">{content}</div>              
                 <div className="comment1">
                     <div id="commentlike" className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg" ></i></button>   收藏文章 </div>
                     <div id="commentliked" className="upup" style={{ marginRight: "0.7rem" }} ><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>

@@ -278,7 +278,7 @@ function getTopic(topicid, router) {
                     return [4 /*yield*/, userMesResponse.json()];
                 case 12:
                     userMesJson = _a.sent();
-                    topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, userMesJson.fanCount, masters, data[0].highLightInfo, data[0].totalVoteUserCount, data[0].topState, data[0].bestState, data[0].isVote);
+                    topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', hitCount, data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, userMesJson.fanCount, masters, hitCountJson.highLightInfo, hitCountJson.totalVoteUserCount, hitCountJson.topState, hitCountJson.bestState, hitCountJson.isVote);
                     return [3 /*break*/, 14];
                 case 13:
                     topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', hitCount, null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, -9898, masters, data[0].highLightInfo, data[0].totalVoteUserCount, data[0].topState, data[0].bestState, data[0].isVote);
@@ -5162,7 +5162,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
-var Topic_AwardInfo_1 = __webpack_require__(85);
+var Topic_AwardInfo_1 = __webpack_require__(86);
 var Award = /** @class */ (function (_super) {
     __extends(Award, _super);
     function Award(props, content) {
@@ -5549,9 +5549,7 @@ var PostManagement = /** @class */ (function (_super) {
             case 'Award':
                 if ($("input[name='reason']:checked").val()) {
                     if ($("input[name='reason']:checked").val() !== '自定义') {
-                        console.log(this.state.wealth);
                         if (this.state.wealth !== 0) {
-                            console.log("in addaward");
                             Utility.awardWealth($("input[name='reason']:checked").val(), this.state.wealth, this.props.postId);
                         }
                         if (this.state.prestige !== 0) {
@@ -5582,7 +5580,6 @@ var PostManagement = /** @class */ (function (_super) {
                             Utility.deductPrestige(this.props.postId, this.state.prestige, $("input[name='reason']:checked").val());
                         }
                         if (this.state.tpdays !== 0) {
-                            console.log("confirm in tp");
                             Utility.stopBoardPost(this.props.postId, $("input[name='reason']:checked").val(), this.state.tpdays);
                         }
                     }
@@ -5592,7 +5589,6 @@ var PostManagement = /** @class */ (function (_super) {
                             if (this.state.prestige !== 0)
                                 Utility.deductPrestige(this.props.postId, this.state.prestige, this.state.reason);
                             if (this.state.tpdays !== 0) {
-                                console.log("confirm in tp");
                                 Utility.stopBoardPost(this.props.postId, this.state.reason, this.state.tpdays);
                             }
                         }
@@ -5643,9 +5639,7 @@ var PostManagement = /** @class */ (function (_super) {
         var punishOptionJQId = "#manageOptions-punish" + this.props.postId;
         var deleteOptionId = "manageOptions-delete" + this.props.postId;
         var deleteOptionJQId = "#manageOptions-delete" + this.props.postId;
-        console.log(this.state.UI);
         if (this.state.UI === "Award") {
-            console.log("in change color");
             $(awardOptionJQId).css("background-color", "#b9d3ee");
             $(punishOptionJQId).css("background-color", "#fffacd");
             $(deleteOptionJQId).css("background-color", "#fffacd");
@@ -5740,10 +5734,8 @@ var PostManagement = /** @class */ (function (_super) {
         var deleteOptionJQId = "#manageOptions-delete" + this.props.postId;
         var otherOptionId = "manageOptions-other" + this.props.postId;
         var otherOptionJQId = "#manageOptions-other" + this.props.postId;
-        console.log(this.state.UI);
         if (this.state.UI === "Award") {
             UI = awardUI;
-            console.log("in change color");
             $(awardOptionJQId).css("background-color", "#b9d3ee");
             $(punishOptionJQId).css("background-color", "#fffacd");
             $(deleteOptionJQId).css("background-color", "#fffacd");
@@ -6240,7 +6232,7 @@ var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
 var UbbContainer_1 = __webpack_require__(4);
 var react_router_dom_1 = __webpack_require__(3);
-var PageModel_1 = __webpack_require__(23);
+var Pager_1 = __webpack_require__(23);
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(props, context) {
@@ -6486,14 +6478,6 @@ var ListButtonAndPager = /** @class */ (function (_super) {
         };
         return _this;
     }
-    /**
-     * 将页码转换为 UI 界面。
-     * @param pageNumber 要转换的页码。
-     * @returns {JSX.Element} 页码对应的 UI 元素。
-     */
-    ListButtonAndPager.prototype.generatePageLink = function (pageNumber) {
-        return React.createElement(PageModel_1.PageModel, { pageNumber: pageNumber, url: this.props.url, curPage: this.props.page, totalPage: this.props.totalPage });
-    };
     ListButtonAndPager.prototype.componentWillReceiveProps = function (newProps) {
         return __awaiter(this, void 0, void 0, function () {
             var pages;
@@ -6520,57 +6504,11 @@ var ListButtonAndPager = /** @class */ (function (_super) {
             React.createElement("div", { style: { marginBottom: '1.25rem' } },
                 React.createElement(react_router_dom_1.Link, { className: "button orange", to: createTopicUrl }, "\u53D1\u4E3B\u9898"),
                 React.createElement("button", { className: "button green", style: { marginLeft: '1.25rem' } }, "\u53D1\u6295\u7968")),
-            React.createElement("div", { id: "pager" },
-                React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this)))));
+            React.createElement(Pager_1.Pager, { page: this.props.page, url: this.props.url, totalPage: this.props.totalPage }));
     };
     return ListButtonAndPager;
 }(React.Component));
 exports.ListButtonAndPager = ListButtonAndPager;
-var PagerDown = /** @class */ (function (_super) {
-    __extends(PagerDown, _super);
-    function PagerDown(props, content) {
-        var _this = _super.call(this, props, content) || this;
-        _this.state = {
-            pager: [1, 2, 3, 4, 5]
-        };
-        return _this;
-    }
-    /**
-     * 将页码转换为 UI 界面。
-     * @param pageNumber 要转换的页码。
-     * @returns {JSX.Element} 页码对应的 UI 元素。
-     */
-    PagerDown.prototype.generatePageLink = function (pageNumber) {
-        return React.createElement(PageModel_1.PageModel, { pageNumber: pageNumber, url: this.props.url, curPage: this.props.page, totalPage: this.props.totalPage });
-    };
-    PagerDown.prototype.componentWillReceiveProps = function (newProps) {
-        return __awaiter(this, void 0, void 0, function () {
-            var pages;
-            return __generator(this, function (_a) {
-                pages = Utility.getPager(newProps.page, newProps.totalPage);
-                this.setState({ pager: pages });
-                return [2 /*return*/];
-            });
-        });
-    };
-    PagerDown.prototype.componentDidMount = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var pages;
-            return __generator(this, function (_a) {
-                pages = Utility.getPager(this.props.page, this.props.totalPage);
-                this.setState({ pager: pages });
-                return [2 /*return*/];
-            });
-        });
-    };
-    PagerDown.prototype.render = function () {
-        return React.createElement("div", { className: "row", style: { width: '100%', marginTop: '0.9375rem', justifyContent: 'space-between', alignItems: 'flex-end' } },
-            React.createElement("div", { id: "pager" },
-                React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this)))));
-    };
-    return PagerDown;
-}(React.Component));
-exports.PagerDown = PagerDown;
 var ListTag = /** @class */ (function (_super) {
     __extends(ListTag, _super);
     function ListTag() {
@@ -6742,7 +6680,7 @@ var ListContent = /** @class */ (function (_super) {
                         React.createElement("span", null, "\u6700\u540E\u56DE\u590D")))),
             topTopics,
             React.createElement("div", null, topics),
-            React.createElement(PagerDown, { page: curPage, totalPage: this.state.totalPage, boardid: this.match.params.boardId, url: normalTopicsUrl }));
+            React.createElement(Pager_1.Pager, { page: curPage, totalPage: this.state.totalPage, url: normalTopicsUrl }));
     };
     return ListContent;
 }(RouteComponent));
@@ -6829,7 +6767,7 @@ var ListBestContent = /** @class */ (function (_super) {
                         React.createElement("span", null, "\u6700\u540E\u56DE\u590D")))),
             topTopics,
             React.createElement("div", null, topics),
-            React.createElement(PagerDown, { page: curPage, totalPage: this.state.totalPage, boardid: this.match.params.boardId, url: bestTopicsUrl }));
+            React.createElement(Pager_1.Pager, { page: curPage, totalPage: this.state.totalPage, url: bestTopicsUrl }));
     };
     return ListBestContent;
 }(RouteComponent));
@@ -6898,20 +6836,21 @@ var ListSaveContent = /** @class */ (function (_super) {
             React.createElement(ListButtonAndPager, { page: curPage, totalPage: this.state.totalPage, boardid: this.match.params.boardId, url: normalTopicsUrl }),
             React.createElement(ListTag, null),
             React.createElement("div", { className: "row", style: { justifyContent: 'space-between', } },
-                React.createElement("div", { className: "row", style: { alignItems: 'center' } },
-                    React.createElement("div", { className: "listContentTag" },
-                        React.createElement("a", { href: normalTopicsUrl }, "\u5168\u90E8")),
-                    React.createElement("div", { className: "listContentTag" },
-                        React.createElement("a", { href: bestTopicsUrl }, "\u7CBE\u534E")),
-                    React.createElement("div", { className: "listContentTag" }, "\u4FDD\u5B58")),
-                React.createElement("div", { className: "row", style: { alignItems: 'center' } },
-                    React.createElement("div", { style: { marginRight: '14rem' } },
-                        React.createElement("span", null, "\u4F5C\u8005")),
-                    React.createElement("div", { style: { marginRight: '7.6875rem' } },
-                        React.createElement("span", null, "\u6700\u540E\u56DE\u590D")))),
-            topTopics,
-            React.createElement("div", null, topics),
-            React.createElement(PagerDown, { page: curPage, totalPage: this.state.totalPage, boardid: this.match.params.boardId, url: normalTopicsUrl }));
+                React.createElement("div", { className: "column", style: { width: "100%" }, id: "boardTopics" },
+                    React.createElement("div", { className: "row", style: { alignItems: 'center' } },
+                        React.createElement("div", { className: "listContentTag" },
+                            React.createElement("a", { href: normalTopicsUrl }, "\u5168\u90E8")),
+                        React.createElement("div", { className: "listContentTag" },
+                            React.createElement("a", { href: bestTopicsUrl }, "\u7CBE\u534E")),
+                        React.createElement("div", { className: "listContentTag" }, "\u4FDD\u5B58")),
+                    React.createElement("div", { className: "row", style: { alignItems: 'center' } },
+                        React.createElement("div", { style: { marginRight: '14rem' } },
+                            React.createElement("span", null, "\u4F5C\u8005")),
+                        React.createElement("div", { style: { marginRight: '7.6875rem' } },
+                            React.createElement("span", null, "\u6700\u540E\u56DE\u590D")))),
+                topTopics,
+                React.createElement("div", null, topics)),
+            React.createElement(Pager_1.Pager, { page: curPage, totalPage: this.state.totalPage, url: normalTopicsUrl }));
     };
     return ListSaveContent;
 }(RouteComponent));
@@ -7091,10 +7030,10 @@ var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
 var react_router_dom_1 = __webpack_require__(3);
 var RouteComponent_1 = __webpack_require__(9);
-var Topic_HotReply_1 = __webpack_require__(83);
-var Topic_SendTopic_1 = __webpack_require__(86);
-var Topic_Category_1 = __webpack_require__(88);
-var Topic_Pager_1 = __webpack_require__(89);
+var Topic_HotReply_1 = __webpack_require__(84);
+var Topic_SendTopic_1 = __webpack_require__(87);
+var Topic_Category_1 = __webpack_require__(89);
+var Pager_1 = __webpack_require__(23);
 var Topic_Topic_1 = __webpack_require__(26);
 var Topic_Reply_1 = __webpack_require__(93);
 var Constants;
@@ -7220,14 +7159,16 @@ var Post = /** @class */ (function (_super) {
             topic = React.createElement(Topic_Topic_1.PostTopic, { imgUrl: "/images/ads.jpg", page: this.state.page, topicid: this.state.topicid, userId: null });
             hotReply = React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: Topic_HotReply_1.HotReply });
         }
+        var pagerUrl = "/topic/" + this.state.topicid + "/";
         return React.createElement("div", { className: "center" },
             React.createElement("div", { className: "row", style: { width: "100%", justifyContent: 'space-between', alignItems: "center" } },
                 React.createElement(Topic_Category_1.Category, { topicId: this.state.topicid }),
-                React.createElement(Topic_Pager_1.TopicPager, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage })),
+                React.createElement(Pager_1.Pager, { page: this.state.page, url: pagerUrl, totalPage: this.state.totalPage })),
             topic,
             hotReply,
             React.createElement(react_router_dom_1.Route, { path: "/topic/:topicid/:page?", component: Topic_Reply_1.Reply }),
-            React.createElement(Topic_Pager_1.TopicPagerDown, { page: this.state.page, topicid: this.state.topicid, totalPage: this.state.totalPage }),
+            React.createElement("div", { style: { display: "flex", width: "100%", justifyContent: "flex-end" } },
+                React.createElement(Pager_1.Pager, { page: this.state.page, url: pagerUrl, totalPage: this.state.totalPage })),
             React.createElement(Topic_SendTopic_1.SendTopic, { onChange: this.handleChange, topicid: this.state.topicid, boardId: this.state.boardId }));
     };
     return Post;
@@ -7691,59 +7632,89 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var react_router_dom_1 = __webpack_require__(3);
-var PageModel = /** @class */ (function (_super) {
-    __extends(PageModel, _super);
-    function PageModel() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var Utility = __webpack_require__(1);
+var PageModel_1 = __webpack_require__(81);
+var Pager = /** @class */ (function (_super) {
+    __extends(Pager, _super);
+    function Pager(props, content) {
+        var _this = _super.call(this, props, content) || this;
+        _this.state = {
+            pager: [1, 2, 3, 4, 5]
+        };
+        return _this;
     }
-    PageModel.prototype.blur = function () {
-        this.blur();
+    /**
+     * 将页码转换为 UI 界面。
+     * @param pageNumber 要转换的页码。
+     * @returns {JSX.Element} 页码对应的 UI 元素。
+     */
+    Pager.prototype.generatePageLink = function (pageNumber) {
+        return React.createElement(PageModel_1.PageModel, { pageNumber: pageNumber, url: this.props.url, curPage: this.props.page, totalPage: this.props.totalPage });
     };
-    PageModel.prototype.render = function () {
-        var pageUrl;
-        if (this.props.pageNumber > 0) {
-            pageUrl = "" + this.props.url + this.props.pageNumber;
-            if (this.props.pageNumber !== this.props.curPage) {
-                return React.createElement("li", { className: "page-item" },
-                    React.createElement(react_router_dom_1.Link, { to: pageUrl, className: "page-link", onClick: this.blur }, this.props.pageNumber));
-            }
-            else {
-                return React.createElement("li", { className: "page-item active" },
-                    React.createElement(react_router_dom_1.Link, { to: pageUrl, onClick: this.blur, className: "page-link " }, this.props
-                        .pageNumber));
-            }
-        }
-        else if (this.props.pageNumber == -1) {
-            pageUrl = "" + this.props.url + (this.props.curPage - 1);
-            return React.createElement("li", { className: "page-item" },
-                React.createElement(react_router_dom_1.Link, { onClick: this.blur, className: "page-link", to: pageUrl }, "\u2039"));
-        }
-        else if (this.props.pageNumber == -2) {
-            pageUrl = "" + this.props.url + (this.props.curPage + 1);
-            return React.createElement("li", { className: "page-item" },
-                React.createElement(react_router_dom_1.Link, { onClick: this.blur, className: "page-link", to: pageUrl }, "\u203A"));
-        }
-        else if (this.props.pageNumber == -3) {
-            pageUrl = this.props.url + "1";
-            return React.createElement("li", { className: "page-item" },
-                " ",
-                React.createElement(react_router_dom_1.Link, { onClick: this.blur, className: "page-link", to: pageUrl }, "\u00AB"));
-        }
-        else if (this.props.pageNumber == -4) {
-            pageUrl = "" + this.props.url + this.props.totalPage;
-            return React.createElement("li", { className: "page-item" },
-                React.createElement(react_router_dom_1.Link, { onClick: this.blur, className: "page-link", to: pageUrl }, "\u00BB"));
-        }
-        else {
-            return null;
-        }
+    Pager.prototype.componentWillReceiveProps = function (newProps) {
+        return __awaiter(this, void 0, void 0, function () {
+            var pages;
+            return __generator(this, function (_a) {
+                pages = Utility.getPager(newProps.page, newProps.totalPage);
+                this.setState({ pager: pages });
+                return [2 /*return*/];
+            });
+        });
     };
-    return PageModel;
+    Pager.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var pages;
+            return __generator(this, function (_a) {
+                pages = Utility.getPager(this.props.page, this.props.totalPage);
+                this.setState({ pager: pages });
+                return [2 /*return*/];
+            });
+        });
+    };
+    Pager.prototype.render = function () {
+        return React.createElement("div", { id: "pager" },
+            React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this))));
+    };
+    return Pager;
 }(React.Component));
-exports.PageModel = PageModel;
+exports.Pager = Pager;
 
 
 /***/ }),
@@ -11755,8 +11726,8 @@ var React = __webpack_require__(0);
 var ReactDOM = __webpack_require__(47);
 var Store_1 = __webpack_require__(48);
 var react_redux_1 = __webpack_require__(6);
-__webpack_require__(81);
-var App_1 = __webpack_require__(82);
+__webpack_require__(82);
+var App_1 = __webpack_require__(83);
 // 显示应用程序核心内容
 ReactDOM.render(React.createElement(react_redux_1.Provider, { store: Store_1.default },
     React.createElement(App_1.App, null)), document.getElementById('root'));
@@ -13494,6 +13465,77 @@ exports.EmTagHandler = EmTagHandler;
 
 /***/ }),
 /* 81 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var react_router_dom_1 = __webpack_require__(3);
+var PageModel = /** @class */ (function (_super) {
+    __extends(PageModel, _super);
+    function PageModel() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    PageModel.prototype.blur = function () {
+        this.blur();
+    };
+    PageModel.prototype.render = function () {
+        var pageUrl;
+        if (this.props.pageNumber > 0) {
+            pageUrl = "" + this.props.url + this.props.pageNumber;
+            if (this.props.pageNumber !== this.props.curPage) {
+                return React.createElement("li", { className: "page-item" },
+                    React.createElement(react_router_dom_1.Link, { to: pageUrl, className: "page-link", onClick: this.blur }, this.props.pageNumber));
+            }
+            else {
+                return React.createElement("li", { className: "page-item active" },
+                    React.createElement(react_router_dom_1.Link, { to: pageUrl, onClick: this.blur, className: "page-link " }, this.props
+                        .pageNumber));
+            }
+        }
+        else if (this.props.pageNumber == -1) {
+            pageUrl = "" + this.props.url + (this.props.curPage - 1);
+            return React.createElement("li", { className: "page-item" },
+                React.createElement(react_router_dom_1.Link, { onClick: this.blur, className: "page-link", to: pageUrl }, "\u2039"));
+        }
+        else if (this.props.pageNumber == -2) {
+            pageUrl = "" + this.props.url + (this.props.curPage + 1);
+            return React.createElement("li", { className: "page-item" },
+                React.createElement(react_router_dom_1.Link, { onClick: this.blur, className: "page-link", to: pageUrl }, "\u203A"));
+        }
+        else if (this.props.pageNumber == -3) {
+            pageUrl = this.props.url + "1";
+            return React.createElement("li", { className: "page-item" },
+                " ",
+                React.createElement(react_router_dom_1.Link, { onClick: this.blur, className: "page-link", to: pageUrl }, "\u00AB"));
+        }
+        else if (this.props.pageNumber == -4) {
+            pageUrl = "" + this.props.url + this.props.totalPage;
+            return React.createElement("li", { className: "page-item" },
+                React.createElement(react_router_dom_1.Link, { onClick: this.blur, className: "page-link", to: pageUrl }, "\u00BB"));
+        }
+        else {
+            return null;
+        }
+    };
+    return PageModel;
+}(React.Component));
+exports.PageModel = PageModel;
+
+
+/***/ }),
+/* 82 */
 /***/ (function(module, exports) {
 
 (function(self) {
@@ -13960,7 +14002,7 @@ exports.EmTagHandler = EmTagHandler;
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14092,7 +14134,7 @@ exports.App = react_redux_1.connect(mapState, null)(AppBeforeConnect);
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14146,7 +14188,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Utility = __webpack_require__(1);
 var RouteComponent_1 = __webpack_require__(9);
-var Topic_HotReplier_1 = __webpack_require__(84);
+var Topic_HotReplier_1 = __webpack_require__(85);
 var Topic_ReplyContent_1 = __webpack_require__(20);
 var Topic_Award_1 = __webpack_require__(11);
 var Topic_Judge_1 = __webpack_require__(12);
@@ -14222,7 +14264,7 @@ exports.ContentState = ContentState;
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14326,7 +14368,7 @@ exports.HotReplier = HotReplier;
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14364,7 +14406,7 @@ exports.AwardInfo = AwardInfo;
 
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14420,7 +14462,7 @@ var Utility = __webpack_require__(1);
 var $ = __webpack_require__(7);
 var Topic_1 = __webpack_require__(19);
 var UbbEditor_1 = __webpack_require__(25);
-var Topic_TopicManagement_1 = __webpack_require__(87);
+var Topic_TopicManagement_1 = __webpack_require__(88);
 var SendTopic = /** @class */ (function (_super) {
     __extends(SendTopic, _super);
     function SendTopic(props) {
@@ -14629,7 +14671,7 @@ exports.SendTopic = SendTopic;
 
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14722,11 +14764,11 @@ var TopicManagement = /** @class */ (function (_super) {
                 console.log("in normal");
                 console.log("in if");
                 console.log($("input[name='option']:checked").val());
-                console.log(this.state.reason);
+                console.log(this.state.topicInfo);
                 if (this.state.reason !== "") {
                     switch ($("input[name='option']:checked").val()) {
                         case '固顶':
-                            Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, this.state.topicInfo.topState);
+                            Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 2);
                             break;
                         case '取消固顶':
                             Utility.removeBoardTopTopic(this.props.topicId, this.props.boardId, this.state.reason);
@@ -14870,7 +14912,7 @@ exports.TopicManagement = TopicManagement;
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14962,154 +15004,6 @@ var Category = /** @class */ (function (_super) {
     return Category;
 }(React.Component));
 exports.Category = Category;
-
-
-/***/ }),
-/* 89 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var Utility = __webpack_require__(1);
-var PageModel_1 = __webpack_require__(23);
-var TopicPager = /** @class */ (function (_super) {
-    __extends(TopicPager, _super);
-    function TopicPager(props, content) {
-        var _this = _super.call(this, props, content) || this;
-        _this.state = {
-            pager: [1, 2, 3, 4, 5]
-        };
-        return _this;
-    }
-    /**
-     * 将页码转换为 UI 界面。
-     * @param pageNumber 要转换的页码。
-     * @returns {JSX.Element} 页码对应的 UI 元素。
-     */
-    TopicPager.prototype.generatePageLink = function (pageNumber) {
-        var url = "/topic/" + this.props.topicid + "/";
-        return React.createElement(PageModel_1.PageModel, { pageNumber: pageNumber, url: url, curPage: this.props.page, totalPage: this.props.totalPage });
-    };
-    TopicPager.prototype.componentWillReceiveProps = function (newProps) {
-        return __awaiter(this, void 0, void 0, function () {
-            var pages;
-            return __generator(this, function (_a) {
-                pages = Utility.getPager(newProps.page, newProps.totalPage);
-                this.setState({ pager: pages });
-                return [2 /*return*/];
-            });
-        });
-    };
-    TopicPager.prototype.componentDidMount = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var pages;
-            return __generator(this, function (_a) {
-                pages = Utility.getPager(this.props.page, this.props.totalPage);
-                this.setState({ pager: pages });
-                return [2 /*return*/];
-            });
-        });
-    };
-    TopicPager.prototype.render = function () {
-        return React.createElement("div", { id: "pager" },
-            React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this))));
-    };
-    return TopicPager;
-}(React.Component));
-exports.TopicPager = TopicPager;
-var TopicPagerDown = /** @class */ (function (_super) {
-    __extends(TopicPagerDown, _super);
-    function TopicPagerDown(props, content) {
-        var _this = _super.call(this, props, content) || this;
-        _this.state = {
-            pager: [1, 2, 3, 4, 5]
-        };
-        return _this;
-    }
-    /**
-     * 将页码转换为 UI 界面。
-     * @param pageNumber 要转换的页码。
-     * @returns {JSX.Element} 页码对应的 UI 元素。
-     */
-    TopicPagerDown.prototype.generatePageLink = function (pageNumber) {
-        var url = "/topic/" + this.props.topicid + "/";
-        return React.createElement(PageModel_1.PageModel, { pageNumber: pageNumber, url: url, curPage: this.props.page, totalPage: this.props.totalPage });
-    };
-    TopicPagerDown.prototype.componentWillReceiveProps = function (newProps) {
-        return __awaiter(this, void 0, void 0, function () {
-            var pages;
-            return __generator(this, function (_a) {
-                pages = Utility.getPager(newProps.page, newProps.totalPage);
-                this.setState({ pager: pages });
-                return [2 /*return*/];
-            });
-        });
-    };
-    TopicPagerDown.prototype.componentDidMount = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var pages;
-            return __generator(this, function (_a) {
-                pages = Utility.getPager(this.props.page, this.props.totalPage);
-                this.setState({ pager: pages });
-                return [2 /*return*/];
-            });
-        });
-    };
-    TopicPagerDown.prototype.render = function () {
-        return React.createElement("div", { className: "row", style: { width: '100%', justifyContent: 'space-between', alignItems: 'flex-end' } },
-            React.createElement("div", { id: "pager" },
-                React.createElement("div", { className: "row pagination" }, this.state.pager.map(this.generatePageLink.bind(this)))));
-    };
-    return TopicPagerDown;
-}(React.Component));
-exports.TopicPagerDown = TopicPagerDown;
 
 
 /***/ }),
@@ -15642,7 +15536,7 @@ var TopicContent = /** @class */ (function (_super) {
         }
         if (this.props.signature == "") {
             return React.createElement("div", { className: "content" },
-                React.createElement("div", { className: "substance replySubstance" }, content),
+                React.createElement("div", { className: "substance" }, content),
                 React.createElement("div", { className: "comment1" },
                     React.createElement("div", { id: "commentlike", className: "buttonFont" },
                         React.createElement("button", { className: "commentbutton" },
