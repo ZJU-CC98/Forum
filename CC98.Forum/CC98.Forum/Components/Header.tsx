@@ -108,12 +108,11 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
     render() {
         if (Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName")) {
             $(document).ready(function () {
-
                 const userInfo = $('.userInfo').eq(0);
-                const userMessage = $('#userMessage'); 
                 const dropDownSub = $('.dropDownSub').eq(0);
-                const dropDownSubMessage = $('.dropDownSubMessage').eq(0);
                 const dropDownLi = dropDownSub.find('li');
+                const userMessage = $('#userMessage'); 
+                const dropDownSubMessage = $('.dropDownSubMessage').eq(0);
                 const dropDownLiMessage = dropDownSubMessage.find('li');
                 //点击名字之后出现的下拉列表
                 userInfo.hover(function () {
@@ -124,12 +123,11 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
                 dropDownSub.hover(function () {
                     dropDownSub.css('display', 'block');
                 }, function () {
-                    dropDownSub.slideUp("fast");
+                    dropDownSub.slideUp(200);
                 });
                 dropDownLi.mouseover(function () {
                     this.className = 'hover';
                 });
-
                 dropDownLi.mouseout(function () {
                     this.className = '';
                 });
@@ -142,15 +140,15 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
                 dropDownSubMessage.hover(function () {
                     dropDownSubMessage.css('display', 'block');
                 }, function () {
-                    dropDownSubMessage.slideUp("fast");
+                    dropDownSubMessage.slideUp(200);
                 });
                 dropDownLiMessage.mouseover(function () {
                     this.className = 'hover';
                 });
-
                 dropDownLiMessage.mouseout(function () {
                     this.className = '';
                 });
+                
             });
             return <div id="dropdown">
                 <div className="box">

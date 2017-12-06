@@ -1046,26 +1046,25 @@ a {
     flex-direction: column;
     background-color: $color-post;
 
-    .message-nav-focus {
-        a {
-            color: $color-red;
-        }
-    }
 
     div {
         height: 14px;
         padding: 18px 0px 22px 30px;
         font-size: 14px;
         border-bottom: 1px dashed lightgray;
+    }
 
-        a {
-            text-decoration: none;
-            color: $color-black;
+    a {
+        text-decoration: none;
+        color: $color-black;
 
-            &:hover {
-                color: $color-red;
-            }
+        &:hover {
+            color: $color-red;
         }
+    }
+
+    a.active {
+        color: $color-red;
     }
 }
 
@@ -1752,6 +1751,12 @@ a {
     color: $color-thinBlack;
     min-height: 14px;
     flex-basis: 90px;
+}
+
+.focus-topic-fans {
+    color: $color-thinBlack;
+    min-height: 14px;
+    flex-basis: 34px;
 }
 
 .focus-topic-redText {

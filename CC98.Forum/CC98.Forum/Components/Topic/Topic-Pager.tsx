@@ -1,6 +1,5 @@
 ﻿import * as React from "../../node_modules/@types/react/index";
 
-
 export class TopicPagerDown extends React.Component<{ page, topicid, totalPage }, { pager }> {
     constructor(props, content) {
         super(props, content);

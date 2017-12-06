@@ -16,9 +16,9 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
                     <PortaritrUrl userId={this.props.userId} portraitUrl={this.props.portraitUrl} />
                     <div className="focus-topic-info1">
                     <div className="focus-topic-authorInfo">
-                            <UserName userId={this.props.userId} userName={this.props.userName} />
+                    <UserName userId={this.props.userId} userName={this.props.userName} />
+                            <div className="focus-topic-fans">粉丝</div>
                             <div className="focus-topic-redText">{this.props.fanCount}</div>
-                            <div className="focus-topic-blackText">粉丝</div>
                         </div>
                         <div className="focus-topic-title"><a href={topicUrl} target="_blank">{this.props.title}</a></div>
                     </div>
@@ -26,9 +26,9 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
                         <div className="focus-topic-board"><a href={boardUrl} target="_blank">{this.props.boardName}</a>&nbsp;&nbsp;/&nbsp;&nbsp;{moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')}</div>
                         <div className="focus-topic-response">
                         <div><i className="fa fa-thumbs-o-up" aria-hidden="true"></i>{this.props.likeCount}</div>
-                        <div><i className="fa fa-thumbs-o-down" aria-hidden="true"></i>{this.props.dislikeCount}</div>
-                            <div><i className="fa fa-commenting-o" aria-hidden="true"></i>{this.props.replyCount}</div>
+                    <div><i className="fa fa-thumbs-o-down" aria-hidden="true"></i>{this.props.dislikeCount}</div>
                             <div><i className="fa fa-eye" aria-hidden="true"></i>{this.props.hitCount}</div>
+                            <div><i className="fa fa-commenting-o" aria-hidden="true"></i>{this.props.replyCount}</div>
                         </div>
                     </div>
                 </div>);
