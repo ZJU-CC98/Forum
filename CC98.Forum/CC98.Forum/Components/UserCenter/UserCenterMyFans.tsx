@@ -52,16 +52,16 @@ export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState
                     let userid = data[i];
                     let userFanInfo = new UserFanInfo();
                     url = `http://apitest.niconi.cc/user/${userid}`;
-                    res = await fetch(url);
+                    res = await fetch(url, { headers });
                     data2 = await res.json();
-
+                    console.log(data2);
                     userFanInfo.name = data2.name;
                     userFanInfo.avatarImgURL = data2.portraitUrl;
                     userFanInfo.posts = data2.postCount;
                     userFanInfo.id = userid;
                     userFanInfo.fans = data2.fanCount;
-
-                    fans.push(userFanInfo);
+                    userFanInfo.isFollowing = data2.isFollowing;
+                    fans.unshift(userFanInfo);
                 }
 
 

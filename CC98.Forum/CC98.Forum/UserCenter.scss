@@ -394,6 +394,7 @@
 
                 p {
                     flex-grow: 1;
+                    display: inline-flex;
                 }
 
                 img {
@@ -422,9 +423,11 @@
                     }
                 }
 
-                #follow {
+                #follow, .user-message {
                     background-color: #68b3ff;
                     color: #fff;
+                    margin-left: 3rem;
+                    margin-right: 2rem;
 
                     &:hover {
                         background-color: rgb(41,174,223);
@@ -437,11 +440,13 @@
 
                 .user-center-myfollowings-user-id {
                     margin-right: 20px;
+                    min-width: 7rem;
                 }
 
                 .user-center-myfollowings-user-posts {
                     margin: 0 14px 0 12px;
                     color: rgb(53,167,255);
+                    min-width: 2rem;
                 }
 
                 .user-center-myfollowings-user-fans {
@@ -458,12 +463,6 @@
             .user-center-myfans-exact {
                 flex-grow: 1;
                 min-height: 40rem;
-            }
-
-            .user-center-myfollowings-user {
-                button {
-                    display: none;
-                }
             }
         }
 

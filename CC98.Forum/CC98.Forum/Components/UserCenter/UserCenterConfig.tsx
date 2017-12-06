@@ -22,11 +22,10 @@ export class UserCenterConfig extends React.Component<null, UserCenterConfigStat
             QQ: info.qq,
             SignatureCode: info.signatureCode,
             Birthday: info.birthday,
-            birthdayYear: Number.parseInt(info.birthday.slice(0, 4)),
-            birthdayMouth: Number.parseInt(info.birthday.slice(5, 7)),
-            birthdayDay: Number.parseInt(info.birthday.slice(8, 10)),
+            birthdayYear: info.birthday ? Number.parseInt(info.birthday.slice(0, 4)): 0,
+            birthdayMouth: info.birthday ? Number.parseInt(info.birthday.slice(5, 7)): 0,
+            birthdayDay: info.birthday ? Number.parseInt(info.birthday.slice(8, 10)): 0
         };
-
         this.state = {
             userInfo: myInfo,
             info: '',

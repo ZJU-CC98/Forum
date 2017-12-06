@@ -62,8 +62,8 @@ export class UserCenterMyFollowings extends RouteComponent<null, UserCenterMyFol
                 userFanInfo.posts = data2.postCount;
                 userFanInfo.id = userid;
                 userFanInfo.fans = data2.fanCount;
-
-                fans.push(userFanInfo);
+                userFanInfo.isFollowing = true;
+                fans.unshift(userFanInfo);
             }
 
 
