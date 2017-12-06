@@ -5,7 +5,6 @@ import * as React from 'react';
 import { MessageResponseState } from '../States/MessageResponseState';
 import { MessageResponseProps } from '../Props/MessageResponseProps';
 import { MessageResponsebox } from './MessageResponsebox';
-import { MessagePager } from './MessagePager';
 import * as Utility from '../Utility';
 
 /**
@@ -57,7 +56,7 @@ export class MessageResponse extends React.Component<{match}, MessageResponseSta
     render() {
         return (<div className="message-right">
                     <div className="message-response">{this.state.data.map(this.coverMessageResponse)}</div>
-                    <div className="message-pager"><MessagePager page={this.state.from} messageType="response" totalPage={this.state.totalPage} /></div>
+                    <div className="message-pager"></div>
                 </div>);
     }
 }
