@@ -21,13 +21,12 @@ import { HotReply } from './Topic-HotReply';
 import { TopicContent } from './Topic-TopicContent';
 import { SendTopic } from './Topic-SendTopic';
 import { Category } from './Topic-Category';
-import { PostManagement } from './Post-Management';
 import { TopicTitle } from './Topic-TopicTitle';
 import { AuthorMessage } from './Topic-AuthorMessage';
 import { TopicPagerDown, TopicPager } from './Topic-Pager';
 import { PostTopic } from './Topic-Topic';
 import { Reply } from './Topic-Reply';
-import { TopicManagement } from './TopicManagement';
+
 declare let moment: any;
 declare let editormd: any;
 
@@ -35,12 +34,12 @@ declare let editormd: any;
 export module Constants {
     export var testEditor;
 }
-export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName }, { topicid, page, userName }> {
+export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName,boardId }, { topicid, page, userName }> {
     constructor(props, context) {
         super(props, context);
         this.update = this.update.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null };
+        this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null, boardId:null };
     }
     update() {
         this.setState({});
@@ -67,7 +66,8 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         console.log(newProps.match.params.page);
         if (this.state.page !== newProps.match.params.page)
             scrollTo(0, 0);
-        this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName });
+        const boardId = await this.getBoardId(newProps.match.params.topicid);
+        this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId});
     }
 
     async componentDidMount() {
@@ -79,12 +79,18 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         else { page = parseInt(this.match.params.page); }
         const totalPage = await this.getTotalPage(this.match.params.topicid);
         const userName = this.match.params.userName;
-        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName });
+        const boardId = await this.getBoardId(this.match.params.topicid);
+        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId });
     }
     async getTotalPage(topicId) {
-        return Utility.getTotalReplyCount(topicId, this.context.router);
+        return  Utility.getTotalReplyCount(topicId, this.context.router);
     }
-
+    async getBoardId(topicId) {
+        const boardId = await Utility.getBoardIdFromTopicId(topicId);
+        console.log("get boardId");
+        console.log(boardId);
+        return boardId;
+    }
     returnTopic() {
         return <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} />;
 
@@ -106,8 +112,8 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
                 <Route path="/topic/:topicid/:page?" component={Reply} />
           
             <TopicPagerDown page={this.state.page} topicid={this.state.topicid} totalPage={this.state.totalPage} />
-            <SendTopic onChange={this.handleChange} topicid={this.state.topicid} />
-            <TopicManagement topicId={this.match.params.topicid} update={this.update} />
+            <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardId} />
+            
         </div>
             ;
 

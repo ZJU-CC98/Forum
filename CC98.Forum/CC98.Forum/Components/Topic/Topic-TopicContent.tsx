@@ -1,6 +1,6 @@
 ﻿import * as React from 'react';
 import * as Utility from '../../Utility';
-import { PostManagement } from './Post-Management';
+import { PostManagement } from './Topic-PostManagement';
 import { UbbContainer } from '../UbbContainer';
 import { Link } from 'react-router-dom';
 declare let editormd: any;

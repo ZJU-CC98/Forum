@@ -2,7 +2,7 @@
 import * as Utility from '../../Utility';
 import { AwardInfo } from './Topic-AwardInfo';
 import { RouteComponent } from '../RouteComponent';
-import { PostManagement } from './Post-Management';
+import { PostManagement } from './Topic-PostManagement';
 import { UbbContainer } from '../UbbContainer';
 declare let editormd: any;
 export class ReplyContent extends React.Component<{postid,content,  contentType}, { postId }> {
