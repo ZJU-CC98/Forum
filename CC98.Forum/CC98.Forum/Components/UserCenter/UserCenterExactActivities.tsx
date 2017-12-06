@@ -15,7 +15,7 @@ export class UserCenterExactActivities extends React.Component {
     render() {
         return (
             <div className="user-activities">
-                <p>近期动态</p>
+                <p>发表的主题</p>
                 <UserCenterExactActivitiesPosts />
             </div>
         );

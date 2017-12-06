@@ -26,7 +26,7 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
             try {
                 this.setState({ isLoading: true });
 
-                const url = `http://apitest.niconi.cc/me/recenttopics?from=${this.state.userRecentPosts.length}&size=10`
+                const url = `http://apitest.niconi.cc/me/recenttopics?from=${this.state.userRecentPosts.length}&size=11`
                 const token = Utility.getLocalStorage("accessToken");
                 const headers = new Headers();
                 headers.append('Authorization', token);
@@ -37,12 +37,12 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
                 if (res.status === 200) {
                     let data: itemType[] = await res.json();
 
-                    if (data.length < 10) {
+                    if (data.length < 11) {
                         window.removeEventListener('scroll', this.scrollHandler);
                     }
 
                     let posts = this.state.userRecentPosts;
-                    let i = data.length;
+                    let i = data.length === 11 ? 10 : data.length;
 
                     while (i--) {
                         let post = await this.item2post(data[i]);
