@@ -5,7 +5,10 @@ import * as Utility from '../../Utility';
 export class Category extends React.Component<{ topicId }, { boardId, topicId, boardName, title }>{
     constructor(props) {
         super(props);
-        this.state = ({ boardId: "", topicId: "", boardName: "", title: "" });
+        this.state = ({
+            boardId: "",
+            topicId: "", boardName: "", title: ""
+        });
     }
     async componentDidMount() {
         const body = await Utility.getCategory(this.props.topicId, this.context.router);

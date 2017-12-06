@@ -27,10 +27,10 @@ export class Message extends React.Component<{}, AppState> {
                                         <div id="system"><NavLink to={`/message/system`}>系统通知</NavLink></div>
                                         <div id="message"><NavLink to={`/message/message`}>我的私信</NavLink></div>
                                     </div>
-                                    <Route path="/message/response" component={MessageResponse} />
-                                    <Route path="/message/attme" component={MessageAttme} />
-                                    <Route path="/message/system" component={MessageSystem} />
-                                    <Route path="/message/message" component={MessageMessage} />
+                                    <Route path="/message/response/:page?" component={MessageResponse} />
+                                    <Route path="/message/attme/:page?" component={MessageAttme} />
+                                    <Route path="/message/system/:page?" component={MessageSystem} />
+                                    <Route path="/message/message/:page?" component={MessageMessage} />
                                 </div>
                             </Router>
                     </div>

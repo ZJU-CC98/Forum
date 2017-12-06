@@ -379,14 +379,14 @@ export function convertHotTopic(item: State.TopicTitleAndContentState) {
         ;
 }
 export function getPager(curPage, totalPage) {
-    if (curPage == undefined) {
+    if (!curPage) {
         curPage = 1;
     }
     let pages: number[] = [];
     if (totalPage == 1) {
         pages = [1];
     } else if (totalPage < 10 && totalPage > 1) {
-        if (curPage == undefined || curPage == 1) {
+        if (curPage == 1) {
             let i;
             for (i = 0; i < totalPage; i++) {
                 pages[i] = i + 1;
@@ -420,7 +420,7 @@ export function getPager(curPage, totalPage) {
         }
     } else {
         if (curPage + 5 <= totalPage) {
-            if (curPage == undefined || curPage == 1) {
+            if (curPage == 1) {
                 pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, - 2, -4];
             } else if (curPage > 1 && curPage < 6) {
                 pages = [-3, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, - 2, -4];
@@ -2331,10 +2331,10 @@ export async function followBoard(boardId) {
     if (response.status === 500) {
         window.location.href = "/status/servererror";
     }
-    storeUserInfo();
+    refreshUserInfo();
     removeStorage("focusBoardList");
 }
-export async function storeUserInfo() {
+export async function refreshUserInfo() {
 
     const token = getLocalStorage("accessToken");
 
@@ -2361,7 +2361,7 @@ export async function storeUserInfo() {
     let userInfo = await response.json();
 
     setLocalStorage("userInfo", userInfo);
-
+    setLocalStorage("userName", userInfo.name);
 }
 export async function unfollowBoard(boardId) {
     const token = getLocalStorage("accessToken");
@@ -2375,17 +2375,16 @@ export async function unfollowBoard(boardId) {
     if (response.status === 500) {
         window.location.href = "/status/servererror";
     }
-    storeUserInfo();
+    refreshUserInfo();
     removeStorage("focusBoardList");
 }
 //获取系统通知
-export async function getMessageSystem(from: number, router) {
+export async function getMessageSystem(from: number, size: number, router) {
     console.log("开始获取系统通知了");
     try {
         let token = getLocalStorage("accessToken");
         let myHeaders = new Headers();
         myHeaders.append('Authorization', token);
-        let size = 10;
         let response = await fetch(`http://apitest.niconi.cc/notification/system?from=${from}&size=${size}`, { headers: myHeaders });
         if (response.status === 401) {
             window.location.href = "/status/UnauthorizedTopic";
@@ -2415,14 +2414,15 @@ export async function getMessageSystem(from: number, router) {
 }
 
 //获取回复我的通知
-export async function getMessageResponse(from: number, router) {
+export async function getMessageResponse(from: number, size: number, router) {
     try {
         let result = [];
         let token = getLocalStorage("accessToken");
         let myHeaders = new Headers();
         myHeaders.append('Authorization', token);
-        let size = 10;
+        console.log("from: number, size: number, router", from);
         let response = await fetch(`http://apitest.niconi.cc/notification/reply?from=${from}&size=${size}`, { headers: myHeaders });
+        console.log("测试测试测试1");
         if (response.status === 401) {
             window.location.href = "/status/UnauthorizedTopic";
         }
@@ -2430,33 +2430,40 @@ export async function getMessageResponse(from: number, router) {
             window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
+        console.log("测试测试测试2", newTopic);
         //补充帖子标题，版面id和版面名称信息
         if (newTopic) {
             for (let i in newTopic) {
+                console.log("测试测试测试3");
                 let response0 = await fetch(`http://apitest.niconi.cc/topic/${newTopic[i].topicId}`, { headers: myHeaders });
                 if (response0.status === 401) {
                     //window.location.href = "/status/UnauthorizedTopic";
                 }
-                if (response0.status === 500) {
+                else  if (response0.status === 500) {
                     //window.location.href = "/status/ServerError";
                 }
-                if (response0.status === 404) {
+                else if (response0.status === 404) {
                     //window.location.href = "/status/ServerError";
                 }
                 else {
+                    console.log("测试测试测试4");
                     let response1 = await response0.json();
                     newTopic[i].topicTitle = response1.title;
                     newTopic[i].boardId = response1.boardId;
                     newTopic[i].boardName = await getBoardName(response1.boardId, router);
-                    let response2 = await fetch(`http://apitest.niconi.cc/post/basicinfo?postid=${newTopic[i].postId}`, { headers: myHeaders });
-                    let response3 = await response2.json();
-                    newTopic[i].floor = response3.floor;
-                    newTopic[i].userId = response3.userId;
-                    newTopic[i].userName = response3.userName;
-                    result.push(newTopic[i]);
+                    if (newTopic[i].postId) {
+                        let response2 = await fetch(`http://apitest.niconi.cc/post/basicinfo?postid=${newTopic[i].postId}`, { headers: myHeaders });
+                        let response3 = await response2.json();
+                        newTopic[i].floor = response3.floor;
+                        newTopic[i].userId = response3.userId;
+                        newTopic[i].userName = response3.userName;
+                        result.push(newTopic[i]);
+                        console.log("测试测试测试5");
+                    }
                 }
             }
         }
+        console.log("输出返回前结果", result);
         return result;
     } catch (e) {
         //window.location.href = "/status/Disconnected";
@@ -2464,13 +2471,12 @@ export async function getMessageResponse(from: number, router) {
 }
 
 //获取@我的通知
-export async function getMessageAttme(from: number, router) {
+export async function getMessageAttme(from: number, size: number, router) {
     try {
         let result = [];
         let token = getLocalStorage("accessToken");
         let myHeaders = new Headers();
         myHeaders.append('Authorization', token);
-        let size = 10;
         let response = await fetch(`http://apitest.niconi.cc/notification/at?from=${from}&size=${size}`, { headers: myHeaders });
         if (response.status === 401) {
             window.location.href = "/status/UnauthorizedTopic";
@@ -2479,6 +2485,7 @@ export async function getMessageAttme(from: number, router) {
             window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
+        console.log("显示原始接收到的@消息", newTopic);
         //补充帖子标题，版面id和版面名称信息
         if (newTopic) {
             for (let i in newTopic) {
@@ -2494,14 +2501,22 @@ export async function getMessageAttme(from: number, router) {
                 }
                 else {
                     let response1 = await response0.json();
+                    console.log("获取帖子信息", response1);
                     newTopic[i].topicTitle = response1.title;
                     newTopic[i].boardId = response1.boardId;
                     newTopic[i].boardName = await getBoardName(response1.boardId, router);
-                    let response2 = await fetch(`http://apitest.niconi.cc/post/basicinfo?postid=${newTopic[i].postId}`, { headers: myHeaders });
-                    let response3 = await response2.json();
-                    newTopic[i].floor = response3.floor;
-                    newTopic[i].userId = response3.userId;
-                    newTopic[i].userName = response3.userName;
+                    if (!newTopic[i].postId) {
+                        newTopic[i].floor = 1;
+                        newTopic[i].userId = response1.userId;
+                        newTopic[i].userName = response1.userName;
+                    }
+                    else {
+                        let response2 = await fetch(`http://apitest.niconi.cc/post/basicinfo?postid=${newTopic[i].postId}`, { headers: myHeaders });
+                        let response3 = await response2.json();
+                        newTopic[i].floor = response3.floor;
+                        newTopic[i].userId = response3.userId;
+                        newTopic[i].userName = response3.userName;
+                    }
                     result.push(newTopic[i]);
                 }
             }

@@ -5,40 +5,59 @@ import * as React from 'react';
 import { MessageResponseState } from '../States/MessageResponseState';
 import { MessageResponseProps } from '../Props/MessageResponseProps';
 import { MessageResponsebox } from './MessageResponsebox';
+import { MessagePager } from './MessagePager';
 import * as Utility from '../Utility';
 
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
  */
-export class MessageResponse extends React.Component<{}, MessageResponseState> {
+export class MessageResponse extends React.Component<{match}, MessageResponseState> {
 
     
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
         this.state = {
             data: [],
             from: 0,
-            loading: true
+            loading: true,
+            totalPage: 1
         };
     }
 
-    async componentDidMount() {
+    async getData(props) {
         //给我的回复添加选中样式
         $('.message-nav > div').removeClass('message-nav-focus');
         $('#response').addClass('message-nav-focus');
-        let data = await Utility.getMessageResponse(0, this.context.router);
-        console.log("获取到了回复消息");
-        console.log(data)
-        if (data) {
-            this.setState({ data: data, from: data.length });
+        let totalCount = await Utility.getTotalPage(1);
+        let index: any = totalCount / 7;
+        let totalPage = parseInt(index);
+        let curPage = props.match.params.page - 1;
+        if (!curPage) {
+            curPage = 0;
         }
+        let data = await Utility.getMessageResponse(curPage * 7, 7, this.context.router);
+        console.log("获取到了回复消息", data);
+        if (data) {
+            this.setState({ data: data, from: curPage+1, totalPage: totalPage });
+        }
+    }
+
+    async componentDidMount() {
+        this.getData(this.props);
+    }
+
+    async componentWillReceiveProps(nextProps) {
+        this.getData(nextProps);
     }
     
     coverMessageResponse = (item: MessageResponseProps) => {
         return <MessageResponsebox id={item.id} type={item.type} time={item.time} topicId={item.topicId} topicTitle={item.topicTitle} floor={item.floor} userId={item.userId} userName={item.userName} boardId={item.boardId} boardName={item.boardName} isRead={item.isRead} />;
     };
 
-	render() {
-        return <div className="message-response">{this.state.data.map(this.coverMessageResponse)}</div>;
+    render() {
+        return (<div className="message-right">
+                    <div className="message-response">{this.state.data.map(this.coverMessageResponse)}</div>
+                    <div className="message-pager"><MessagePager page={this.state.from} messageType="response" totalPage={this.state.totalPage} /></div>
+                </div>);
     }
 }
