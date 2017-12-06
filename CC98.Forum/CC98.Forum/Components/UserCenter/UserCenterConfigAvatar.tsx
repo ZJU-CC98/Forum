@@ -309,7 +309,6 @@ class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCente
                         </div>
                     </div>
                     <div className="user-center-config-avatar-preview" style={this.state.isShown ? { opacity: 1, marginTop: '2rem' } : { zIndex: -1 }}>
-                        <hr />
                         <div style={{ position: 'absolute', width: '824px', overflow: 'hidden', paddingBottom: '50px' }}>
                             <canvas id="newAvatar" style={style} ref={(a) => { this.newAvatar = a;}}></canvas>
                             <canvas ref={(canvas) => { this.myCanvas = canvas }} style={{ position: 'relative' }} />

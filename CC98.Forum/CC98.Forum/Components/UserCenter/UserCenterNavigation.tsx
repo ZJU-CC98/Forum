@@ -4,7 +4,7 @@
 
 import * as React from 'react';
 import {
-    Link,
+    NavLink,
     Route
 } from 'react-router-dom';
 import * as $ from 'jquery';
@@ -64,30 +64,22 @@ export class UserCenterNavigation extends React.Component<null, UserCenterNaviga
     render() {
         return (<div className={this.state.navigationClassName} id="userCenterNavigation" >
             <ul>
-                <CustomLink to="/usercenter" label="主页" activeOnlyWhenExact={true} myClassName="fa-home" />
+                <li><NavLink to="/usercenter" exact activeClassName="user-center-navigation-active" className="fa-home"><p>主页</p></NavLink></li>
                 <hr />
-                <CustomLink to="/usercenter/config" label="修改个人资料" myClassName="fa-cog" />
+                <li><NavLink to="/usercenter/config" activeClassName="user-center-navigation-active" className="fa-cog"><p>修改个人资料</p></NavLink></li>
                 <hr />
-                <CustomLink to="/usercenter/myposts" label="我的主题" myClassName="fa-pencil-square-o"/>
+                <li><NavLink to="/usercenter/myposts" activeClassName="user-center-navigation-active" className="fa-pencil-square-o"><p>我的主题</p></NavLink></li>
                 <hr />
-                <CustomLink to="/usercenter/myfavorites" label="我的收藏" myClassName="fa-star" />
+                <li><NavLink to="/usercenter/myfavorites" activeClassName="user-center-navigation-active" className="fa-star"><p>我的收藏</p></NavLink></li>
                 <hr />
-                <CustomLink to="/usercenter/myfollowings" label="我的关注" myClassName="fa-heart" />
+                <li><NavLink to="/usercenter/myfollowings" activeClassName="user-center-navigation-active" className="fa-heart"><p>我的关注</p></NavLink></li>
                 <hr />
-                <CustomLink to="/usercenter/myfans" label="我的粉丝" myClassName="fa-users" />
+                <li><NavLink to="/usercenter/myfans" activeClassName="user-center-navigation-active" className="fa-users"><p>我的粉丝</p></NavLink></li>
             </ul>
             <button type="button" id="scrollToTop" className={this.state.buttonClassName} onClick={this.scrollToTop}>回到顶部</button>
         </div>);
     }
 }
-
-const CustomLink = ({ label, to, activeOnlyWhenExact = false, myClassName }) => (
-    <Route path={to} exact={activeOnlyWhenExact} children={({ match }) => (
-        <li className={match ? `user-center-navigation-active` : ``}>
-            <Link className={`${myClassName}`} to={to}><p>{label}</p></Link>
-        </li>
-    )} />
-);
 
 interface UserCenterNavigationState {
     isScroll: boolean;
