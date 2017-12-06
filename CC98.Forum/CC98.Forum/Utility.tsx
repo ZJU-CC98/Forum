@@ -2669,3 +2669,38 @@ export async function removeBoardTopTopic(topicId, boardId, reason) {
         }
     );
 }
+//获取特定类型的消息的总数，1为回复消息，2为@消息，3为系统消息
+
+export async function getTotalPage(type: number) {
+
+    const token = getLocalStorage("accessToken");
+
+    const headers = new Headers();
+
+    headers.append("Authorization", token);
+
+    let response = await fetch("http://apitest.niconi.cc/me/allmessagecount", { headers });
+
+    let totalPage = await response.json();
+
+    switch (type) {
+
+        case 1:
+
+            return totalPage.replyCount;
+
+        case 2:
+
+            return totalPage.atCount;
+
+        case 3:
+
+            return totalPage.systemCount;
+
+        default:
+
+            break;
+
+    }
+
+}
