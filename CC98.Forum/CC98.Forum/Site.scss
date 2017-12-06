@@ -1721,7 +1721,8 @@ a {
 
     .focus-topic-board {
         margin: 24px 18px 0px;
-
+        word-break: keep-all; /* 不换行 */
+        white-space: nowrap; /* 不换行 */
         a {
             color: $color-thinBlack;
         }
@@ -1924,22 +1925,28 @@ a {
 
 #dropdown .dropDownSubBox {
     margin-top: -5px;
+    width: 110px;
+    margin-left: 40px;
+}
+
+#dropdown .dropDownSubBoxMessage {
+    margin-top: -5px;
+    width: 110px;
+    margin-left: 150px;
 }
 
 #dropdown .dropDownSub {
-    width: 110px;
+    width: 100px;
     display: none;
     background-color: rgba(80,80,80,0.5);
-    margin-left: 35px;
     opacity: 0.9999; //暂时不知道原因，但是如果不加上一个小于1的opacity值，下拉会出问题,猜测是opacity把元素及所有子元素合在一起？
     z-index: 1;
 }
 
 #dropdown .dropDownSubMessage {
-    width: 110px;
+    width: 100px;
     display: none;
     background-color: rgba(80,80,80,0.5);
-    margin-left: 145px;
     opacity: 0.9999; //暂时不知道原因，但是如果不加上一个小于1的opacity值，下拉会出问题,猜测是opacity把元素及所有子元素合在一起？
     z-index: 1;
 }

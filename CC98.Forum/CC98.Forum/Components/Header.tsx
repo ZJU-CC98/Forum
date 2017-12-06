@@ -123,7 +123,7 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
                 dropDownSub.hover(function () {
                     dropDownSub.css('display', 'block');
                 }, function () {
-                    dropDownSub.slideUp(200);
+                    dropDownSub.css('display', 'none');
                 });
                 dropDownLi.mouseover(function () {
                     this.className = 'hover';
@@ -140,7 +140,7 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
                 dropDownSubMessage.hover(function () {
                     dropDownSubMessage.css('display', 'block');
                 }, function () {
-                    dropDownSubMessage.slideUp(200);
+                    dropDownSubMessage.css('display', 'none');
                 });
                 dropDownLiMessage.mouseover(function () {
                     this.className = 'hover';
@@ -148,7 +148,6 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
                 dropDownLiMessage.mouseout(function () {
                     this.className = '';
                 });
-                
             });
             return <div id="dropdown">
                 <div className="box">
@@ -169,7 +168,7 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
                         <li onClick={this.logOff.bind(this)}>注销</li>
                     </ul>
                 </div>
-                <div className="dropDownSubBox">
+                <div className="dropDownSubBoxMessage">
                     <ul className="dropDownSubMessage">
                         <a href="/message/response"> <li>回复我的</li></a>
                         <a href="/message/attme"><li>@ 我的</li></a>
