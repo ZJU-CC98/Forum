@@ -1,6 +1,6 @@
 ﻿import * as React from 'react';
 import * as Utility from '../../Utility';
-export class TopicManagement extends React.Component<{ topicId, update }, { state, reason, tips, days, board }>{
+export class TopicManagement extends React.Component<{ topicId, update, boardId }, { state, reason, tips, days, board, topicInfo }>{
     constructor(props) {
         super(props);
         this.confirm = this.confirm.bind(this);
@@ -13,7 +13,9 @@ export class TopicManagement extends React.Component<{ topicId, update }, { stat
         this.reasonInput = this.reasonInput.bind(this);
         this.daysInput = this.daysInput.bind(this);
         this.boardInput = this.boardInput.bind(this);
-        this.state = { state: "normal", reason: "", tips: "", days: 0, board: null };
+        this.state = {
+            state: "normal", reason: "", tips: "", days: 0, board: null, topicInfo: { state: 0, topState: 0, bestState: 0 }
+        };
     }
     showNormal() {
         this.setState({ state: 'normal' });
@@ -32,37 +34,37 @@ export class TopicManagement extends React.Component<{ topicId, update }, { stat
     }
     confirm() {
         switch (this.state.state) {
-            case 'noraml':
-                if ($("input[name='reason']:checked").val()) {
-                    if (this.state.reason === "") {
 
-                    } else {
-                        this.setState({ tips: "请输入原因！" });
+            case 'normal':
+                console.log("in normal");
+
+                console.log("in if");
+                console.log($("input[name='option']:checked").val());
+                console.log(this.state.reason);
+                if (this.state.reason !== "") {
+                    switch ($("input[name='option']:checked").val()) {
+                        case '固顶':
+                            Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, this.state.topicInfo.topState);
+                            break;
+                        case '取消固顶':
+                            Utility.removeBoardTopTopic(this.props.topicId, this.props.boardId, this.state.reason);
+                            break;
                     }
-                    const UIId = `#manage${this.props.topicId}`;
-                    $(UIId).css("display", "none");
-                    this.props.update();
                 } else {
                     this.setState({ tips: "请输入原因！" });
                 }
                 break;
             case 'highlight':
-                if ($("input[name='reason']:checked").val()) {
-                    if (this.state.reason === "") {
+                if (this.state.reason === "") {
 
-                    } else {
-                        this.setState({ tips: "请输入原因！" });
-                    }
-
-                    const UIId = `#manage${this.props.topicId}`;
-                    $(UIId).css("display", "none");
-                    this.props.update();
                 } else {
-                    this.setState({ tips: "请选一个选项！" });
+                    this.setState({ tips: "请输入原因！" });
                 }
                 break;
-
         }
+        const UIId = `#manage${this.props.topicId}`;
+        $(UIId).css("display", "none");
+        this.props.update();
 
     }
     close() {
@@ -84,15 +86,9 @@ export class TopicManagement extends React.Component<{ topicId, update }, { stat
         this.setState({ board: e.target.value });
 
     }
-    componentDidMount() {
-        const UIId = `#manage${this.props.topicId}`;
-        const ele = $(UIId);
-        const top = $("#root").height() - - ele.height();
-        console.log(top);
-        const left = ($("#root").width() - ele.width() * 1.5);
-        const scrollTop = $(document).scrollTop();
-        const scrollLeft = $(document).scrollLeft();
-        return ele.css({ position: 'absolute', 'top': top, left: left  }); 
+    async componentDidMount() {
+        const data = await Utility.getTopic(this.props.topicId, 1);
+        this.setState({ topicInfo: data });
     }
     render() {
         let info;
@@ -142,7 +138,7 @@ export class TopicManagement extends React.Component<{ topicId, update }, { stat
         }
         const UI = <div className="column manageInfo" id="award">
 
-            <div className="column" style={{ alignItems:'center' }}>
+            <div className="column" style={{ alignItems: 'center' }}>
 
                 <div className="row">
                     <div className="row">
@@ -151,8 +147,8 @@ export class TopicManagement extends React.Component<{ topicId, update }, { stat
                     </div>
 
                     <div className="row">
-                        <input type="radio" name="option" value="锁定" onClick={this.showNormal} />
-                        <div>锁定</div>
+                        <input type="radio" name="option" value={this.state.topicInfo.state === 1 ? '解锁' : "锁定"} onClick={this.showNormal} />
+                        <div>{this.state.topicInfo.state === 1 ? '解锁' : "锁定"}</div>
                     </div>
 
                     <div className="row">
@@ -165,7 +161,7 @@ export class TopicManagement extends React.Component<{ topicId, update }, { stat
                         <div>禁止热门</div>
                     </div>
                 </div>
-                <div className="row" style={{ marginTop:"1rem" }}>
+                <div className="row" style={{ marginTop: "1rem" }}>
                     <div className="row">
                         <input type="radio" name="option" value="删除" onClick={this.showNormal} />
                         <div>删除</div>
@@ -189,18 +185,18 @@ export class TopicManagement extends React.Component<{ topicId, update }, { stat
 
                 <div className="row" style={{ marginTop: "1rem" }}>
                     <div className="row">
-                        <input type="radio" name="option" value="固顶" onClick={this.showNormal} />
-                        <div>固顶</div>
+                        <input type="radio" name="option" value={this.state.topicInfo.topState === 2 ? '取消固顶' : '固顶'} onClick={this.showNormal} />
+                        <div>{this.state.topicInfo.topState === 2 ? '取消固顶' : '固顶'}</div>
                     </div>
 
                     <div className="row">
-                        <input type="radio" name="option" value="全站固顶" onClick={this.showNormal} />
-                        <div>全站固顶</div>
+                        <input type="radio" name="option" value={this.state.topicInfo.topState === 4 ? '取消全站固顶' : '全站固顶'} onClick={this.showNormal} />
+                        <div>{this.state.topicInfo.topState === 4 ? '取消全站固顶' : '全站固顶'}</div>
                     </div>
 
                     <div className="row">
-                        <input type="radio" name="option" value="加精" onClick={this.showNormal} />
-                        <div>加精</div>
+                        <input type="radio" name="option" value={this.state.topicInfo.bestState === 1 ? "解除精华" : "加精"} onClick={this.showNormal} />
+                        <div>{this.state.topicInfo.bestState === 1 ? "解除精华" : "加精"}</div>
                     </div>
 
                     <div className="row">
@@ -214,7 +210,7 @@ export class TopicManagement extends React.Component<{ topicId, update }, { stat
         </div>;
         const UIId = `manage${this.props.topicId}`;
         const highlightOptionId = `manage${this.props.topicId}`;
-        return <div style={{ display: "none" }} id={UIId} className="postManagement" >
+        return <div style={{ display: "none" }} id={UIId} className="topicManagement" >
             {UI}
             < div className="row" style={{ justifyContent: "space-around" }}>
                 <button onClick={this.confirm} className="confirmManagement">确认</button>

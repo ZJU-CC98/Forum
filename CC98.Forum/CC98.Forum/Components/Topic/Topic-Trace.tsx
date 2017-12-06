@@ -13,7 +13,7 @@ import { Replier } from './Topic-Replier';
 import { PostTopic } from './Topic-Topic';
 import { Award } from './Topic-Award';
 import { ReplierSignature } from './Topic-ReplierSignature';
-import { PostManagement } from './Post-Management';
+import { PostManagement } from './Topic-PostManagement';
 import { Judge } from './Topic-Judge';
 declare let moment: any;
 
