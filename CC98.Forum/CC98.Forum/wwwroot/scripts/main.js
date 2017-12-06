@@ -14911,7 +14911,6 @@ var TopicManagement = /** @class */ (function (_super) {
     TopicManagement.prototype.confirm = function () {
         switch (this.state.state) {
             case 'normal':
-                console.log(this.state.topicInfo);
                 if (this.state.reason !== "") {
                     switch ($("input[name='option']:checked").val()) {
                         case '取消固顶':
@@ -14934,7 +14933,7 @@ var TopicManagement = /** @class */ (function (_super) {
                         case '禁止热门':
                             Utility.setDisableHot(this.props.topicId, this.state.reason);
                             break;
-                        case '取消禁止热门':
+                        case '允许热门':
                             Utility.cancelDisableHot(this.props.topicId, this.state.reason);
                             break;
                     }
@@ -14951,17 +14950,23 @@ var TopicManagement = /** @class */ (function (_super) {
                 }
                 break;
             case 'days':
-                switch ($("input[name='option']:checked").val()) {
-                    case '固顶':
-                        Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 2, this.state.days, this.state.reason);
-                        break;
-                    case '全站固顶':
-                        Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 4, this.state.days, this.state.reason);
-                        break;
-                    case '锁定':
-                        Utility.lockTopic(this.props.topicId, this.props.boardId, this.state.reason, this.state.days);
-                        break;
+                if (this.state.reason !== "") {
+                    switch ($("input[name='option']:checked").val()) {
+                        case '固顶':
+                            Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 2, this.state.days, this.state.reason);
+                            break;
+                        case '全站固顶':
+                            Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 4, this.state.days, this.state.reason);
+                            break;
+                        case '锁定':
+                            Utility.lockTopic(this.props.topicId, this.props.boardId, this.state.reason, this.state.days);
+                            break;
+                    }
                 }
+                else {
+                    this.setState({ tips: "请输入原因！" });
+                }
+                break;
         }
         var UIId = "#manage" + this.props.topicId;
         $(UIId).css("display", "none");
@@ -15056,8 +15061,8 @@ var TopicManagement = /** @class */ (function (_super) {
                         React.createElement("input", { type: "radio", name: "option", value: this.state.topicInfo.state === 1 ? '解锁' : "锁定", onClick: this.showDays }),
                         React.createElement("div", null, this.state.topicInfo.state === 1 ? '解锁' : "锁定")),
                     React.createElement("div", { className: "row" },
-                        React.createElement("input", { type: "radio", name: "option", value: this.state.topicInfo.disableHot ? "取消禁止热门" : "禁止热门", onClick: this.showNormal }),
-                        React.createElement("div", null, this.state.topicInfo.disableHot ? "取消禁止热门" : "禁止热门"))),
+                        React.createElement("input", { type: "radio", name: "option", value: this.state.topicInfo.disableHot ? "允许热门" : "禁止热门", onClick: this.showNormal }),
+                        React.createElement("div", null, this.state.topicInfo.disableHot ? "允许热门" : "禁止热门"))),
                 React.createElement("div", { className: "row", style: { marginTop: "1rem" } },
                     React.createElement("div", { className: "row" },
                         React.createElement("input", { type: "radio", name: "option", value: "删除", onClick: this.showNormal }),
