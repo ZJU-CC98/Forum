@@ -615,13 +615,18 @@
                 flex-grow: 1;
                 font-size: 12px;
             }
-            button {
-                background-color: white;
-            }
-            textarea {
-                min-height: 15rem;
-                height: 15rem;
+
+            #signature {
+                margin: 0px;
+                padding: 20px;
+                width: 787px;
+                height: 252px;
+                border: 1px solid rgb(233, 233, 233);
                 resize: vertical;
+            }
+
+            div {
+                display: flex;
             }
         }
 
