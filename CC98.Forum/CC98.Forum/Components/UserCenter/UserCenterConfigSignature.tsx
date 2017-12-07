@@ -14,7 +14,7 @@ export class UserCenterConfigSignature extends React.Component<{ signature: stri
                 <div className="user-center-config-signature">
                     <textarea id="signature" onChange={(e) => { this.props.onchange(e.target.value) }} value={this.props.signature} />
                     <div>
-                        <p>注* 个性签名将在个人主页、发布文章、回复文章中显示</p>
+                        <p>注* 个性签名将在个人主页、发布文章、回复文章中显示，允许使用UBB代码</p>
                     </div>
                 </div>
             </div>);

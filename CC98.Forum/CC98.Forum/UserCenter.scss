@@ -93,18 +93,6 @@
         outline: none;
     }
 
-    .user-center-navigation-fixed {
-        animation-name: fixnavigation;
-        animation-duration: 500ms;
-        animation-fill-mode: both;
-    }
-
-    .user-center-navigation-unfixed {
-        animation-name: unfixnavigation;
-        animation-duration: 500ms;
-        animation-fill-mode: both;
-    }
-
     .user-center-navigation {
         height: 33rem;
         padding: 1rem;
@@ -413,6 +401,8 @@
                     background-color: rgb(230,230,230);
                     color: rgb(160,160,160);
                     cursor: pointer;
+                    margin-left: 1rem;
+                    margin-right: 1rem;
 
                     &:hover {
                         background-color: rgb(210,210,210);
@@ -423,11 +413,9 @@
                     }
                 }
 
-                #follow, .user-message {
+                .user-follow, .user-message {
                     background-color: #68b3ff;
                     color: #fff;
-                    margin-left: 3rem;
-                    margin-right: 2rem;
 
                     &:hover {
                         background-color: rgb(41,174,223);
@@ -611,6 +599,11 @@
         }
 
         .user-center-config-signature {
+            p {
+                flex-grow: 1;
+                font-size: 12px;
+            }
+
             #signature {
                 margin: 0px;
                 padding: 20px;
@@ -622,11 +615,6 @@
 
             div {
                 display: flex;
-            }
-
-            p {
-                flex-grow: 1;
-                font-size: 12px;
             }
         }
 
@@ -822,7 +810,7 @@
         }
     }
 
-    .follow {
+    .user-follow-board {
         background-color: #68b3ff;
         color: #FFFFFF;
 

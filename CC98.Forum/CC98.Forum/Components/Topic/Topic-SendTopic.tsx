@@ -159,7 +159,7 @@ export class SendTopic extends React.Component<{ topicid, boardId, onChange }, {
         if (this.state.mode === 0) {
             mode = '使用UBB模式编辑';
             editor = <div>
-                <UbbEditor update={this.update} />
+                <UbbEditor update={this.update} value={this.state.content}/>
                 <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
                     <div id="post-topic-button" onClick={this.sendUbbTopic} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复
                     </div>

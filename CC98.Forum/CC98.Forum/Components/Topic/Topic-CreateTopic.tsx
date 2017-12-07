@@ -205,7 +205,7 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
                     <div className="createTopicListName">主题内容</div>
                     <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ width: "13.5rem" }}>切换到Markdown编辑器</div>
                 </div>
-                <UbbEditor update={this.update} />
+                <UbbEditor update={this.update} value={this.state.content}/>
                 <div className="row" style={{ justifyContent: "center" }}>
                     <div id="post-topic-button" onClick={this.sendUbbTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", marginBottom: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>发帖</div>
                 </div>

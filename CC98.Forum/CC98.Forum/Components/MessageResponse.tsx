@@ -6,7 +6,7 @@ import { MessageResponseState } from '../States/MessageResponseState';
 import { MessageResponseProps } from '../Props/MessageResponseProps';
 import { MessageResponsebox } from './MessageResponsebox';
 import * as Utility from '../Utility';
-import { MessagePager } from './MessagePager';
+import { Pager } from './Pager';
 
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
@@ -31,6 +31,7 @@ export class MessageResponse extends React.Component<{match}, MessageResponseSta
         let totalCount = await Utility.getTotalPage(1);
         let index: any = totalCount / 7;
         let totalPage = parseInt(index) + 1;
+        console.log("总消息条数和页码", totalCount, totalPage);
         let curPage = props.match.params.page - 1;
         if (!curPage || curPage < 0) {
             curPage = 0;
@@ -57,7 +58,7 @@ export class MessageResponse extends React.Component<{match}, MessageResponseSta
     render() {
         return (<div className="message-right">
             <div className="message-response">{this.state.data.map(this.coverMessageResponse)}</div>
-            <div className="message-pager"><MessagePager url="/message/response/" page={this.state.from} totalPage={this.state.totalPage} /></div>
+            <div className="message-pager"><Pager url="/message/response/" page={this.state.from} totalPage={this.state.totalPage} /></div>
                 </div>);
     }
 }

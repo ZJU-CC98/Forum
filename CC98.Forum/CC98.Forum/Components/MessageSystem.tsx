@@ -6,7 +6,7 @@ import { MessageSystemState } from '../States/MessageSystemState';
 import { MessageSystemProps } from '../Props/MessageSystemProps';
 import { MessageSystembox } from './MessageSystembox';
 import * as Utility from '../Utility';
-import { MessagePager } from './MessagePager';
+import { Pager } from './Pager';
 
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
@@ -56,7 +56,7 @@ export class MessageSystem extends React.Component<{}, MessageSystemState> {
     render() {
         return (<div className="message-right">
             <div className="message-system">{this.state.data.map(this.coverMessageSystem)}</div>
-            <div className="message-pager"><MessagePager url="/message/system/" page={this.state.from} totalPage={this.state.totalPage} /></div>
+            <div className="message-pager"><Pager url="/message/system/" page={this.state.from} totalPage={this.state.totalPage} /></div>
         </div>);
     }
 }

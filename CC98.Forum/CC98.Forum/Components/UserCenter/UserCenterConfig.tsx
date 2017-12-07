@@ -72,9 +72,12 @@ export class UserCenterConfig extends React.Component<null, UserCenterConfigStat
             if (newInfo.EmailAddress && !newInfo.EmailAddress.match(/[\S]+@[\S]+\.[\S]+/)) {
                 throw new Error('请检查邮箱地址');
             }
+            if (newInfo.QQ && (Number.parseInt(newInfo.QQ) <= 0)) {
+                throw new Error('请检查QQ是否正确');
+            }
 
             const token = Utility.getLocalStorage('accessToken');
-            const url = `http://apitest.niconi.cc/user`;
+            const url = `http://apitest.niconi.cc/me`;
 
             let myHeaders = new Headers();
             myHeaders.append('Authorization', token);
@@ -124,7 +127,7 @@ export class UserCenterConfig extends React.Component<null, UserCenterConfigStat
             <div className="config-submit">
                 <h2>提交修改</h2>
                 <button type="button" disabled={this.state.isLoading} onClick={this.handleSubmit}>提交</button>
-                <p style={{height: this.state.info === '' ? '0' : '1rem' }}>{this.state.info}</p>
+                <p style={{height: this.state.info === '' ? '0' : '1rem', color: 'red' }}>{this.state.info}</p>
             </div>
         </div>);
     }

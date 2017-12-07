@@ -74,7 +74,7 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
                 </p>
                 <button
                     type="button"
-                    id={this.state.isFollowing ? '' : 'follow'}
+                    className={this.state.isFollowing ? '' : 'user-follow'}
                     onMouseOver={() => {
                         if (this.state.isFollowing && !this.state.buttonIsDisabled) {
                             this.setState({

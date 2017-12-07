@@ -49,7 +49,6 @@ function mapState(state) {
 function mapDispatch(dispatch) {
     return {
         throwError: (errorMessage) => {
-            console.log(errorMessage);
             dispatch(throwError(errorMessage));
         }
     };

@@ -27,7 +27,7 @@ export class UserCenterMyFavoritesPosts extends RouteComponent<null, UserCenterM
         try {
             const token = Utility.getLocalStorage('accessToken');
             const page = this.match.params.page || 1;
-            const url = `http://apitest.niconi.cc/topic/favorite?from=${(page - 1) * 10}&size=11`;
+            const url = `http://apitest.niconi.cc/me/favorite?from=${(page - 1) * 10}&size=11`;
 
             let myHeaders = new Headers();
             myHeaders.append('Authorization', token);
@@ -93,7 +93,7 @@ export class UserCenterMyFavoritesPosts extends RouteComponent<null, UserCenterM
         return (
             <div className="user-posts">
                 {userRecentPosts}
-                <UserCenterPageCount currentPage={this.match.params.page || 1} totalPage={this.state.totalPage} href="/usercenter/myfavorites/" />
+                <UserCenterPageCount currentPage={this.match.params.page || 1} totalPage={this.state.totalPage} href="/usercenter/myfavorites/" hasTotal={false}/>
             </div>
 
         );

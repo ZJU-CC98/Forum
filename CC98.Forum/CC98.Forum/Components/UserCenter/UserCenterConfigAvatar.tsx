@@ -33,8 +33,8 @@ class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCente
             naturalWidth: 0,
             naturalHeight: 0,
             img: null,
-            NUM_MAX: 0
-            
+            NUM_MAX: 0,
+            scaling: 1
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -76,30 +76,29 @@ class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCente
                 divheight: 0
             });
             return;
-        } else if (width > 800) {
-            this.setState({
-                info: '图片宽度至多为 800',
-                isShown: false,
-                divheight: 0
-            });
-            return;
         }
         let ctx = this.myCanvas.getContext('2d');
-        this.myCanvas.width = width;
-        this.myCanvas.height = height;
-        ctx.drawImage(img, 0, 0, width, height, 0, 0, width, height);
+        let scaling = this.state.scaling;
+        while (width / scaling > 800) {
+            scaling = scaling * 1.1;
+        }
+        this.myCanvas.width = width / scaling;
+        this.myCanvas.height = height / scaling;
+        
+        ctx.drawImage(img, 0, 0, width, height, 0, 0, width / scaling, height / scaling);
         this.setState({
-            divheight: height + 50,
-            divWidth: width + 50,
+            divheight: height / scaling + 50,
+            divWidth: width / scaling + 50,
             isShown: true,
             info: '请选择要显示的区域',
-            selectorLeft: width / 4,
-            selectorTop: height / 4,
-            selectorWidth: Math.min(height, width) / 2,
-            naturalWidth: width,
-            naturalHeight: height,
+            selectorLeft: width / scaling / 4,
+            selectorTop: height / scaling / 4,
+            selectorWidth: Math.min(height / scaling, width / scaling) / 2,
+            naturalWidth: width / scaling,
+            naturalHeight: height / scaling,
             img: img,
-            NUM_MAX: Math.min(500, width, height)
+            NUM_MAX: Math.min(500, width / scaling, height / scaling),
+            scaling: scaling
         });
     }
 
@@ -175,16 +174,19 @@ class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCente
             width = this.state.selectorWidth;
         canvas.width = width;
         canvas.height = width;
-        ctx.drawImage(this.state.img, x, y, width, width, 0, 0, width, width);
+        ctx.drawImage(this.state.img, x * this.state.scaling, y * this.state.scaling, width * this.state.scaling, width * this.state.scaling, 0, 0, width, width);
         canvas.toBlob(async (result) => {
-            let file = new File([result], '头像.jpg', { type: 'image/jpeg', lastModified: Date.now() });
+            
+            let file: any = new Blob([result], { type: 'image/jpeg'});
+            file.lastModifiedDate = Date.now();
+            file.name = '头像.jpg';
             const avatar = await Utility.uploadFile(file);
             try {
                 this.setState({
                     isLoading: true
                 });
                 const token = Utility.getLocalStorage('accessToken');
-                const url = 'http://apitest.niconi.cc/user/portrait';
+                const url = 'http://apitest.niconi.cc/me/portrait';
                 let myHeaders = new Headers();
                 myHeaders.append('Content-Type', 'application/json');
                 myHeaders.append('Authorization', token);
@@ -311,10 +313,10 @@ class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCente
                     <div className="user-center-config-avatar-preview" style={this.state.isShown ? { opacity: 1, marginTop: '2rem' } : { zIndex: -1 }}>
                         <div style={{ position: 'absolute', width: '824px', overflow: 'hidden', paddingBottom: '50px' }}>
                             <canvas id="newAvatar" style={style} ref={(a) => { this.newAvatar = a;}}></canvas>
-                            <canvas ref={(canvas) => { this.myCanvas = canvas }} style={{ position: 'relative' }} />
+                            <canvas ref={(canvas) => { this.myCanvas = canvas }} style={this.state.isShown ? { position: 'relative' } : {display: 'none'}} />
                             <div id="cover" ref={(div) => { this.cover = div; }} style={{ width: `${this.state.divWidth}px`, height: `${this.state.divheight}px`, top: 0 }}></div>
-                            <div className="imgdata" ref={(div) => { this.selector = div; }} style={this.state.isShown ? { width: `${this.state.selectorWidth}px`, height: `${this.state.selectorWidth}px`, borderRadius: `${this.state.selectorWidth / 2}px`, top: `${this.state.selectorTop}px`, left: `${this.state.selectorLeft}px` }: style}>
-                                <img src={this.state.avatarURL} style={{ position: 'relative', top: `-${this.state.selectorTop}px`, left: `-${this.state.selectorLeft}px` }} />
+                            <div className="imgdata" style={this.state.isShown ? { width: `${this.state.selectorWidth}px`, height: `${this.state.selectorWidth}px`, borderRadius: `${this.state.selectorWidth / 2}px`, top: `${this.state.selectorTop}px`, left: `${this.state.selectorLeft}px` }: style}>
+                                <img src={this.state.avatarURL} style={{ position: 'relative', top: `-${this.state.selectorTop}px`, left: `-${this.state.selectorLeft}px`, width: `${this.state.naturalWidth}px`, height: `${this.state.naturalHeight}px` }} />
                             </div>
                             <div id="selector" ref={(div) => { this.selector = div; }} style={this.state.isShown ? {width: `${this.state.selectorWidth}px`, height: `${this.state.selectorWidth}px`, borderRadius: `${this.state.selectorWidth / 2}px`, top: `${this.state.selectorTop}px`, left: `${this.state.selectorLeft}px` } : style}></div>
                             <span id="resize" ref={(span) => { this.resize = span; }} style={{ top: `${this.state.selectorWidth + this.state.selectorTop}px`, left: `${this.state.selectorWidth + this.state.selectorLeft}px` }}></span>
@@ -343,6 +345,7 @@ interface UserCenterConfigAvatarState {
     naturalHeight: number;
     img: HTMLImageElement;
     NUM_MAX: number;
+    scaling: number;
 }
 
 function mapDispatch(dispatch) {
