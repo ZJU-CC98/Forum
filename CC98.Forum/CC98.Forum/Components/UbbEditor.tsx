@@ -9,10 +9,6 @@ import * as Utility from '../Utility';
  */
 class UbbEditorState {
     /**
-    * 表示UBB编辑器的内容
-    */
-    value: string;
-    /**
     * 用户所选文字的起始位置
     */
     selectionStart: number;
@@ -37,7 +33,7 @@ class UbbEditorState {
 /**
  * UBB编辑器组件
  */
-export class UbbEditor extends React.Component<{update: Function}, UbbEditorState> {
+export class UbbEditor extends React.Component<{update: Function, value: string}, UbbEditorState> {
     /**
     * 对textarea的引用
     */
@@ -50,7 +46,6 @@ export class UbbEditor extends React.Component<{update: Function}, UbbEditorStat
     constructor(props) {
         super(props);
         this.state = {
-            value: '',
             selectionEnd: 0,
             selectionStart: 0,
             clicked: false,
@@ -78,9 +73,6 @@ export class UbbEditor extends React.Component<{update: Function}, UbbEditorStat
 
     handleTextareaChange(value: string) {
         this.props.update(value);
-        this.setState({
-            value: value
-        });
     }
 
     handleTextareaBlur(start: number, end: number) {
@@ -100,9 +92,9 @@ export class UbbEditor extends React.Component<{update: Function}, UbbEditorStat
         const hasDefaultSelection = ['url'].indexOf(name) !== -1;
 
         this.setState((prevState: UbbEditorState) => {
-            let before = prevState.value.slice(0, prevState.selectionStart),
-                selected = prevState.value.slice(prevState.selectionStart, prevState.selectionEnd),
-                after = prevState.value.slice(prevState.selectionEnd, prevState.value.length);
+            let before = this.props.value.slice(0, prevState.selectionStart),
+                selected = this.props.value.slice(prevState.selectionStart, prevState.selectionEnd),
+                after = this.props.value.slice(prevState.selectionEnd, this.props.value.length);
             if (shouldReplaceSelection) {
                 before = `${before}[${name}]`;
                 selected = value;
@@ -115,8 +107,8 @@ export class UbbEditor extends React.Component<{update: Function}, UbbEditorStat
                 before = `${before}[${name}${value ? `=${value}` : ''}]`;
                 after = `[/${name}]${after}`;
             }
+            this.props.update(before + selected + after);
             return {
-                value: before + selected + after,
                 selectionStart: before.length,
                 selectionEnd: before.length + selected.length,
                 clicked: true,
@@ -141,7 +133,7 @@ export class UbbEditor extends React.Component<{update: Function}, UbbEditorStat
         const size = ['', 1, 2, 3, 4, 5, 6, 7];
         const color = ['颜色', 'aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon', 'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow'];
         const textarea = (<textarea
-            value={this.state.value}
+            value={this.props.value}
             onChange={(e) => { this.handleTextareaChange(e.target.value); }}
             onBlur={(e) => {
                 let target: any = e.target;
