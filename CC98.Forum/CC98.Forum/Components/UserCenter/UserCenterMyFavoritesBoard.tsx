@@ -89,7 +89,7 @@ export class UserCenterMyFavoritesBoard extends React.Component<UserCenterMyFavo
     render() {
         return (
             <div className='user-center-myfavorite-board'>
-                <a href={`/list/${this.props.UserFavoritesBoard.id}`} title={this.props.UserFavoritesBoard.name}><img></img></a>
+                <a href={`/list/${this.props.UserFavoritesBoard.id}/normal`} title={this.props.UserFavoritesBoard.name}><img></img></a>
                 <div className='user-center-myfavorite-board-info'>
                     <p>版主：{this.props.UserFavoritesBoard.boardMasters.join(' ')}</p>
                     <p>今日主题 {this.props.UserFavoritesBoard.todayCount} / 总主题 {this.props.UserFavoritesBoard.topicCount}</p>
