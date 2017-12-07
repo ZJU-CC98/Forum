@@ -2695,7 +2695,7 @@ export async function lockTopic(topicId,boardId, reason,days) {
     const headers = new Headers();
     headers.append("Authorization", token);
     headers.append("Content-Type", "application/json");
-    const url = `http://apitest.niconi.cc/manage/locktopic?topicid=${topicId}&boardid=${boardId}`;
+    const url = `http://apitest.niconi.cc/topic/${topicId}/lock`;
     const bodyInfo = { 'reason': reason,'value':days };
     const body = JSON.stringify(bodyInfo);
     const response = await fetch(url, { method: "PUT", headers, body });
@@ -2705,7 +2705,7 @@ export async function unLockTopic(topicId, boardId, reason) {
     const headers = new Headers();
     headers.append("Authorization", token);
     headers.append("Content-Type", "application/json");
-    const url = `http://apitest.niconi.cc/manage/unlocktopic?topicid=${topicId}&boardid=${boardId}`;
+    const url = `http://apitest.niconi.cc/topic/${topicId}/lock`;
     const bodyInfo = { 'reason': reason };
     const body = JSON.stringify(bodyInfo);
     const response = await fetch(url, { method: "DELETE", headers, body });

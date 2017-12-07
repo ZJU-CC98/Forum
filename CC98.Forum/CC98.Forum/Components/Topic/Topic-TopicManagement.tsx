@@ -81,7 +81,9 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
                 }
                 break;
             case 'days':
-                if (this.state.reason !== "") {
+                console.log("in daysinfo");
+                console.log(this.state.reason);
+                if (!this.state.reason ) {
                     switch ($("input[name='option']:checked").val()) {
                         case '固顶':
                             Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 2, this.state.days, this.state.reason);
@@ -90,6 +92,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
                             Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 4, this.state.days, this.state.reason);
                             break;
                         case '锁定':
+                            console.log("suoding");
                             Utility.lockTopic(this.props.topicId, this.props.boardId, this.state.reason, this.state.days);
                             break;
                     }
