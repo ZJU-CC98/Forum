@@ -62,8 +62,6 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         else { page = parseInt(newProps.match.params.page); }
         const userName = newProps.match.params.userName;
         const totalPage = await this.getTotalPage(this.match.params.topicid);
-        console.log(this.state.page);
-        console.log(newProps.match.params.page);
         if (this.state.page !== newProps.match.params.page)
             scrollTo(0, 0);
         const boardId = await this.getBoardId(newProps.match.params.topicid);
@@ -87,8 +85,6 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
     }
     async getBoardId(topicId) {
         const boardId = await Utility.getBoardIdFromTopicId(topicId);
-        console.log("get boardId");
-        console.log(boardId);
         return boardId;
     }
     returnTopic() {

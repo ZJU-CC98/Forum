@@ -54,7 +54,7 @@ export class Reply extends RouteComponent<{}, { contents, masters }, { page, top
     }
 
     private generateContents(item: ContentState) {
-        
+     
         return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin", backgroundColor: "#fff" }}>
             <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isDeleted={item.isDeleted} />
             <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />

@@ -126,7 +126,6 @@
     <TypeScriptCompile Include="Components\Topic\Topic-PostManagement.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-AwardInfo.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Category.tsx" />
-    <TypeScriptCompile Include="Components\Topic\Topic-Pager.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-ReplierSignature.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Reply.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Replier.tsx" />

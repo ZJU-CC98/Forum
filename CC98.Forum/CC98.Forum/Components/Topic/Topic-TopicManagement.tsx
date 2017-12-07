@@ -1,6 +1,10 @@
 ﻿import * as React from 'react';
 import * as Utility from '../../Utility';
-export class TopicManagement extends React.Component<{ topicId, update, boardId ,updateTime}, { state, reason, tips, days, board, topicInfo }>{
+declare global {
+    interface JQuery { spectrum: ({ flat, showInput, allowEmpty }) => JQuery; }
+}
+
+export class TopicManagement extends React.Component<{ topicId, update, boardId, updateTime }, { state, reason, tips, days, board, topicInfo }>{
     constructor(props) {
         super(props);
         this.confirm = this.confirm.bind(this);
@@ -38,7 +42,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId 
             case 'normal':
                 if (this.state.reason !== "") {
                     switch ($("input[name='option']:checked").val()) {
-                       
+
                         case '取消固顶':
                             Utility.removeBoardTopTopic(this.props.topicId, this.props.boardId, this.state.reason);
                         case '取消全站固顶':
@@ -69,28 +73,30 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId 
                 break;
             case 'highlight':
                 if (this.state.reason === "") {
-
+                    console.log('isBold' + $("input[name='bold']:checked"));
+                    console.log('isItalic' + $("input[name='italic']:checked"));
+                    console.log("color" + $("#colorInput").val());
                 } else {
                     this.setState({ tips: "请输入原因！" });
                 }
                 break;
             case 'days':
                 if (this.state.reason !== "") {
-                switch ($("input[name='option']:checked").val()) {
-                    case '固顶':
-                        Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 2, this.state.days, this.state.reason);
-                        break;
-                    case '全站固顶':
-                        Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 4, this.state.days, this.state.reason);
-                        break;
-                    case '锁定':
-                        Utility.lockTopic(this.props.topicId, this.props.boardId, this.state.reason, this.state.days);
-                        break;
+                    switch ($("input[name='option']:checked").val()) {
+                        case '固顶':
+                            Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 2, this.state.days, this.state.reason);
+                            break;
+                        case '全站固顶':
+                            Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 4, this.state.days, this.state.reason);
+                            break;
+                        case '锁定':
+                            Utility.lockTopic(this.props.topicId, this.props.boardId, this.state.reason, this.state.days);
+                            break;
                     }
                 } else {
                     this.setState({ tips: "请输入原因！" });
                 }
-                break;    
+                break;
         }
         const UIId = `#manage${this.props.topicId}`;
         $(UIId).css("display", "none");
@@ -116,6 +122,11 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId 
 
     }
     async componentDidMount() {
+        $("#flat").spectrum({
+            flat: true,
+            showInput: true,
+            allowEmpty: true
+        });
         const data = await Utility.getTopic(this.props.topicId, 1);
         this.setState({ topicInfo: data });
     }
@@ -124,6 +135,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId 
         this.setState({ topicInfo: data });
     }
     render() {
+
         let info;
 
         const normalInfo = <div className="column">
@@ -159,6 +171,27 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId 
             </div>
             <div>{this.state.tips}</div>
         </div>;
+        const highlightInfo = <div className="column">
+            <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
+                <div >加粗</div>
+                <input type="radio" value='加粗' name='bold' />
+            </div>
+            <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
+                <div >斜体</div>
+                <input type="radio" value='斜体' name='italic' />
+            </div>
+            <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
+                <div >颜色</div>
+                <input type='text' id="flat" />
+
+            </div>
+            <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
+                <div >原因</div>
+                <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+
+            </div>
+            <div>{this.state.tips}</div>
+        </div>;
         switch (this.state.state) {
             case 'normal':
                 info = normalInfo; break;
@@ -168,6 +201,8 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId 
                 info = daysInfo; break;
             case 'board':
                 info = boardInfo; break;
+            case 'highlight':
+                info = highlightInfo; break;
         }
         const UI = <div className="column manageInfo" id="award">
 
@@ -209,12 +244,12 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId 
 
                 <div className="row" style={{ marginTop: "1rem" }}>
                     <div className="row">
-                        <input type="radio" name="option" value={this.state.topicInfo.topState === 2 ? '取消固顶' : '固顶'} onClick={this.state.topicInfo.topState === 2 ? this.showNormal:this.showDays} />
+                        <input type="radio" name="option" value={this.state.topicInfo.topState === 2 ? '取消固顶' : '固顶'} onClick={this.state.topicInfo.topState === 2 ? this.showNormal : this.showDays} />
                         <div>{this.state.topicInfo.topState === 2 ? '取消固顶' : '固顶'}</div>
                     </div>
 
                     <div className="row">
-                        <input type="radio" name="option" value={this.state.topicInfo.topState === 4 ? '取消全站固顶' : '全站固顶'} onClick = { this.state.topicInfo.topState === 4? this.showNormal : this.showDays } />
+                        <input type="radio" name="option" value={this.state.topicInfo.topState === 4 ? '取消全站固顶' : '全站固顶'} onClick={this.state.topicInfo.topState === 4 ? this.showNormal : this.showDays} />
                         <div>{this.state.topicInfo.topState === 4 ? '取消全站固顶' : '全站固顶'}</div>
                     </div>
 

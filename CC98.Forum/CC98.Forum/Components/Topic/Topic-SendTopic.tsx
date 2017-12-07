@@ -8,7 +8,7 @@ import { TopicManagement } from './Topic-TopicManagement';
 declare let moment: any;
 declare let editormd: any;
 
-export class SendTopic extends React.Component<{ topicid,boardId, onChange }, { content: string, mode: number }>{
+export class SendTopic extends React.Component<{ topicid, boardId, onChange }, { content: string, mode: number, masters: string[]}>{
     constructor(props) {
         super(props);
         this.sendUbbTopic = this.sendUbbTopic.bind(this);
@@ -17,7 +17,7 @@ export class SendTopic extends React.Component<{ topicid,boardId, onChange }, { 
         this.onChange = this.onChange.bind(this);
         this.close = this.close.bind(this);
         this.update = this.update.bind(this);
-        this.state = ({ content: '', mode: 1 });
+        this.state = ({ content: '', mode: 1, masters:[] });
     }
     update(value) {
         this.setState({ content: value });
@@ -33,7 +33,7 @@ export class SendTopic extends React.Component<{ topicid,boardId, onChange }, { 
         const UIId = `#manage${this.props.topicid}`;
         $(UIId).css("display", "none");
     }
-    componentDidMount() {
+    async componentDidMount() {
         Constants.testEditor = editormd("test-editormd", {
             width: "100%",
             height: 640,
@@ -43,6 +43,8 @@ export class SendTopic extends React.Component<{ topicid,boardId, onChange }, { 
             imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
             imageUploadURL: "http://apitest.niconi.cc/file/",
         });
+        const masters = await Utility.getMasters(this.props.topicid);
+        this.setState({ masters: masters });
     }
     componentDidUpdate() {
         if (this.state.mode === 1) {
@@ -181,12 +183,27 @@ export class SendTopic extends React.Component<{ topicid,boardId, onChange }, { 
 
             </div>;
         }
+        const privilege = Utility.getLocalStorage("userInfo").privilege;
+        const myName = Utility.getLocalStorage("userInfo").name;
+        console.log(privilege);
+        if (privilege === '管理员' || privilege === '超级版主') {
+            $("#topicManagementBTN").css("display", "");
+        }
+
+        if (this.state.masters) {
+            for (let i = 0; i < this.state.masters.length; i++) {
+                if (myName === this.state.masters[i]) {
+                    $("#topicManagementBTN").css("display", "");
+                }
+            }
+        }
+    
         return <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
             <form method="post" encType="multipart/form-data">
                 <input type="file" id="upload-files" onChange={this.upload.bind(this)} />
             </form>
             {editor}
-            <button onClick={this.showManagement}>管理</button>
+            <button id="topicManagementBTN" style={{display:"none"}} onClick={this.showManagement}>管理</button>
             <TopicManagement topicId={this.props.topicid} update={this.onChange} boardId={this.props.boardId} updateTime={Date.now()} />
         </div>;
     }

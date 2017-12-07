@@ -66,7 +66,8 @@ const config: webpack.Configuration = {
             { from: 'node_modules/moment', to: 'scripts/lib/moment' },
             { from: 'node_modules/editor.md', to: 'scripts/lib/editor.md/' },
             { from: 'node_modules/codemirror', to: 'scripts/lib/editor.md/lib/codemirror' },
-            { from: 'node_modules/blueimp-canvas-to-blob/js', to: 'scripts/lib/blueimp-canvas-to-blob'}
+            { from: 'node_modules/blueimp-canvas-to-blob/js', to: 'scripts/lib/blueimp-canvas-to-blob' },
+            { from: 'node_modules/spectrum', to: 'scripts/lib/spectrum/' }
 		]),
 		new ExtractTextPlugin('content/site.min.css')
 	]

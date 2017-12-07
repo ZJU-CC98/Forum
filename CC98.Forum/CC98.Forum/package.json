@@ -21,7 +21,7 @@
     "blueimp-canvas-to-blob": "3.14.0"
   },
   "devDependencies": {
-    "@types/jquery": "3.2.11",
+    "@types/jquery": "3.2.16",
     "@types/node": "8.0.19",
     "@types/react": "15.6.0",
     "@types/react-dom": "15.5.1",
