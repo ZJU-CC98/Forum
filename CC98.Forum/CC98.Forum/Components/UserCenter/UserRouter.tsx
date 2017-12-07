@@ -48,7 +48,6 @@ class UserExact extends React.Component<null, UserCenterExactState> {
                 throw {};
             }
             const data = await response.json();
-            console.log(data);
             this.setState({
                 userInfo: data,
                 userAvatarImgURL: data.portraitUrl,

@@ -93,7 +93,7 @@ export class UserCenterMyFavoritesPosts extends RouteComponent<null, UserCenterM
         return (
             <div className="user-posts">
                 {userRecentPosts}
-                <UserCenterPageCount currentPage={this.match.params.page || 1} totalPage={this.state.totalPage} href="/usercenter/myfavorites/" />
+                <UserCenterPageCount currentPage={this.match.params.page || 1} totalPage={this.state.totalPage} href="/usercenter/myfavorites/" hasTotal={false}/>
             </div>
 
         );

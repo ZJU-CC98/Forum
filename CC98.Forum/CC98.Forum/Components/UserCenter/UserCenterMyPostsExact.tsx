@@ -95,7 +95,7 @@ export class UserCenterMyPostsExact extends RouteComponent<null, UserCenterMyPos
         return (
             <div className="user-posts">
                 {userRecentPosts}
-                <UserCenterPageCount currentPage={this.match.params.page || 1} totalPage={this.state.totalPage} href="/usercenter/myposts/" />
+                <UserCenterPageCount currentPage={this.match.params.page || 1} totalPage={this.state.totalPage} href="/usercenter/myposts/" hasTotal={false}/>
             </div>
         );
     }

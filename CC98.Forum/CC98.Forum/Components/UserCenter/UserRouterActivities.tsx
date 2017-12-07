@@ -75,7 +75,6 @@ export class UserRouterActivities extends React.Component<{id: string}, UserCent
 
             if (res.status === 200) {
                 let data = await res.json();
-                console.log(data);
                 let posts: UserRecentPost[] = [],
                     i = data.length;
 
@@ -118,7 +117,6 @@ export class UserRouterActivities extends React.Component<{id: string}, UserCent
     }
 
     render() {
-        //console.log(this.state.userRecentPosts);
         if (this.state.userRecentPosts.length === 0) {
             const style = {
                 marginLeft: '2rem'

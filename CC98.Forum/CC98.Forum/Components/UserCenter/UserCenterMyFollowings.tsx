@@ -106,7 +106,7 @@ export class UserCenterMyFollowings extends RouteComponent<null, UserCenterMyFol
             <div className="user-center-myfollowings-exact">
                 {userFollowings}
             </div>
-            <UserCenterPageCount currentPage={page} totalPage={this.state.totalPage} href="/usercenter/myfollowings/" />
+            <UserCenterPageCount currentPage={page} totalPage={this.state.totalPage} href="/usercenter/myfollowings/" hasTotal={true}/>
         </div>);
     }
 }

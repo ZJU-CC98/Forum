@@ -76,7 +76,7 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
             
             if (res.status === 200) {
                 let data = await res.json();
-
+                console.log(data);
                 let posts: UserRecentPost[] = [],
                     i = data.length;
 
@@ -119,7 +119,6 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
     }
 
     render() {
-        //console.log(this.state.userRecentPosts);
         if (this.state.userRecentPosts.length === 0) {
             const style = {
                 marginLeft: '2rem'

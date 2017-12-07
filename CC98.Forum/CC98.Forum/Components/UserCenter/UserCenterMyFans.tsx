@@ -54,7 +54,6 @@ export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState
                     url = `http://apitest.niconi.cc/user/${userid}`;
                     res = await fetch(url, { headers });
                     data2 = await res.json();
-                    console.log(data2);
                     userFanInfo.name = data2.name;
                     userFanInfo.avatarImgURL = data2.portraitUrl;
                     userFanInfo.posts = data2.postCount;
@@ -102,7 +101,7 @@ export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState
             <div className="user-center-myfans-exact">
                 {userFans}
             </div>
-            <UserCenterPageCount currentPage={parseInt(page)} totalPage={this.state.totalPage} href="/usercenter/myfans/" />
+            <UserCenterPageCount currentPage={parseInt(page)} totalPage={this.state.totalPage} href="/usercenter/myfans/" hasTotal={true}/>
         </div>);
     }
 }

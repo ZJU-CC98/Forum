@@ -68,7 +68,6 @@ export class UserCenterMyFavoritesBoard extends React.Component<UserCenterMyFavo
                 method: 'POST',
                 headers: myHeaders
             });
-            console.log(res);
             if (res.status === 200) {
                 this.setState({
                     buttonIsDisabled: false,

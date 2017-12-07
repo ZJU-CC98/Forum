@@ -19,8 +19,8 @@ export class UserCenterExactActivitiesPost extends React.Component<UserCenterExa
                 </div>
                 <div className="user-post-content">
                     <p><a href={`/topic/${this.props.userRecentPost.id}`}>{this.props.userRecentPost.content}</a></p>
-                    {this.props.userRecentPost.approval ? <a className="fa-thumbs-o-up">{` ${this.props.userRecentPost.approval}`}</a> : null}
-                    {this.props.userRecentPost.disapproval ? <a className="fa-thumbs-o-down">{` ${this.props.userRecentPost.disapproval}`}</a> : null}
+                    {this.props.userRecentPost.approval !== undefined ? <a className="fa-thumbs-o-up">{` ${this.props.userRecentPost.approval}`}</a> : null}
+                    {this.props.userRecentPost.disapproval !== undefined ? <a className="fa-thumbs-o-down">{` ${this.props.userRecentPost.disapproval}`}</a> : null}
                 </div>
             </div>    
         );
