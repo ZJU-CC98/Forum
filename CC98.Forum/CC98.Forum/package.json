@@ -43,6 +43,7 @@
     "unminified-webpack-plugin": "1.2.0",
     "webpack": "3.4.1",
     "whatwg-fetch": "2.0.3",
-    "core-js": "2.5.1"
+    "core-js": "2.5.1",
+    "spectrum": "1.0.1"
   }
 }
