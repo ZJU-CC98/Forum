@@ -25,7 +25,7 @@ export class UserCenterMyPostsExact extends RouteComponent<null, UserCenterMyPos
     async componentDidMount() {
         try {
             const page = this.match.params.page || 1;
-            const url = `http://apitest.niconi.cc/me/recenttopics?from=${(page - 1) * 10}&size=11`
+            const url = `http://apitest.niconi.cc/me/recent-topic?from=${(page - 1) * 10}&size=11`
             const token = Utility.getLocalStorage("accessToken");
             const headers = new Headers();
             headers.append('Authorization', token);

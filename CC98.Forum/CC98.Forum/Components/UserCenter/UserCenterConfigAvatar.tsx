@@ -186,7 +186,7 @@ class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCente
                     isLoading: true
                 });
                 const token = Utility.getLocalStorage('accessToken');
-                const url = 'http://apitest.niconi.cc/user/portrait';
+                const url = 'http://apitest.niconi.cc/me/portrait';
                 let myHeaders = new Headers();
                 myHeaders.append('Content-Type', 'application/json');
                 myHeaders.append('Authorization', token);

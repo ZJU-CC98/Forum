@@ -26,7 +26,7 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
             try {
                 this.setState({ isLoading: true });
 
-                const url = `http://apitest.niconi.cc/me/recenttopics?from=${this.state.userRecentPosts.length}&size=11`
+                const url = `http://apitest.niconi.cc/me/recent-topic?from=${this.state.userRecentPosts.length}&size=11`
                 const token = Utility.getLocalStorage("accessToken");
                 const headers = new Headers();
                 headers.append('Authorization', token);
@@ -66,7 +66,7 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
 
     async componentDidMount() {
         try {
-            const url = `http://apitest.niconi.cc/me/recenttopics?from=0&size=10`
+            const url = `http://apitest.niconi.cc/me/recent-topic?from=0&size=10`
             const token = Utility.getLocalStorage("accessToken");
             const headers = new Headers();
             headers.append('Authorization', token);

@@ -186,7 +186,7 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
                     className="dropDownSubBoxMessage"
                     onMouseOut={(e) => { this.handleMouseEvent(e.type, "topBarText"); }}
                     onMouseOver={(e) => { this.handleMouseEvent(e.type, "topBarText"); }}
-                    style={{ ...style, overflow: 'hidden', position: 'absolute', top: '55px', height: this.state.hoverElement === 'topBarText' ? '120px' : '0px'}}
+                    style={{...style, overflow: 'hidden', zIndex: 100 , position: 'absolute', top: '55px', height: this.state.hoverElement === 'topBarText' ? '120px' : '0px'}}
                 >
                     <ul className="dropDownSubMessage" style={{ display: 'inherit' }}>
                         <a href="/message/response"> <li>回复我的</li></a>

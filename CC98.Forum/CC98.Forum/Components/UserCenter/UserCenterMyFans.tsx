@@ -25,7 +25,7 @@ export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState
         try {
             const token = Utility.getLocalStorage("accessToken");
             const page = this.match.params.page || 1;
-            let url = `http://apitest.niconi.cc/user/follow/fan?from=${(page - 1) * 10}&size=10`;
+            let url = `http://apitest.niconi.cc/me/follower?from=${(page - 1) * 10}&size=10`;
             const headers = new Headers();
             headers.append('Authorization', token);
             let res = await fetch(url, {
@@ -66,7 +66,7 @@ export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState
 
                 const userid = Utility.getLocalStorage('userInfo').id;
 
-                url = `http://apitest.niconi.cc/user/follow/fancount?userid=${userid}`
+                url = `http://apitest.niconi.cc/user/follower/count?userid=${userid}`
                 res = await fetch(url);
                 let fanCounts: number = await res.json();
                 this.setState({

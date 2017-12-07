@@ -77,7 +77,7 @@ export class UserCenterConfig extends React.Component<null, UserCenterConfigStat
             }
 
             const token = Utility.getLocalStorage('accessToken');
-            const url = `http://apitest.niconi.cc/user`;
+            const url = `http://apitest.niconi.cc/me`;
 
             let myHeaders = new Headers();
             myHeaders.append('Authorization', token);

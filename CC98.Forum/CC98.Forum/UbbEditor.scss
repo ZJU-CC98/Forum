@@ -68,6 +68,10 @@
             -moz-appearance: none;
             cursor: pointer;
         }
+
+        select::-ms-expand {
+            display: none;
+        }
     }
 
     .ubb-extend {

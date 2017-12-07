@@ -1566,11 +1566,11 @@ export async function uploadFile(file: File) {
 export async function followUser(userId: number) {
     try {
         const token = getLocalStorage("accessToken");
-        const url = `http://apitest.niconi.cc/user/follow/${userId}`;
+        const url = `http://apitest.niconi.cc/me/followee/${userId}`;
         const headers = new Headers();
         headers.append('Authorization', token);
         let res = await fetch(url, {
-            method: 'POST',
+            method: 'PUT',
             headers
         });
         if (res.status === 200) {
@@ -1590,7 +1590,7 @@ export async function followUser(userId: number) {
 export async function unfollowUser(userId: number) {
     try {
         const token = getLocalStorage("accessToken");
-        const url = `http://apitest.niconi.cc/user/unfollow/${userId}`;
+        const url = `http://apitest.niconi.cc/me/followee/${userId}`;
         const headers = new Headers();
         headers.append('Authorization', token);
         let res = await fetch(url, {
