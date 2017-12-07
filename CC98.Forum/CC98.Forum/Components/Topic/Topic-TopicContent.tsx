@@ -156,18 +156,19 @@ export class TopicContent extends React.Component<{ postid: number, topicid: num
         } else {
             return <div className="content">
                 <div className="substance">{content} </div>
-                <div className="signature" style={{ borderTop: "#eaeaea solid thin", paddingTop:"1rem" }}><UbbContainer code={this.props.signature} /></div>
                 <div className="comment">
                     <div id="commentlike" style={{ marginRight: "0.7rem" }} className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg"></i></button>   收藏文章 </div>
                     <div id="commentliked" className="upup" style={{ marginRight: "0.7rem" }}><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
                     <div id="commentdisliked" className="downdown"><i title="踩" onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
-                    <div id="commentlike" className="buttonFont row"> <div className="commentbutton" style={{cursor: "pointer" }}onClick={this.showJudgeUI}>   评分</div><div className="commentbutton">   编辑</div></div>
+                    <div id="commentlike" className="buttonFont row"> <div className="commentbutton" style={{ cursor: "pointer" }} onClick={this.showJudgeUI}>   评分</div><div className="commentbutton">   编辑</div></div>
 
                     <div className="operation1">引用</div>
                     <Link className="operation1" to={curUserPostUrl}>只看此用户</Link>
                     <div className="operation1" id="postTopicManage" onClick={this.showManageUI} style={{ display: "none", cursor: "pointer" }}>管理</div>
 
                 </div>
+                <div className="signature" style={{ borderTop: "#eaeaea solid thin", paddingTop:"1rem" }}><UbbContainer code={this.props.signature} /></div>
+             
             </div>;
         }
     }

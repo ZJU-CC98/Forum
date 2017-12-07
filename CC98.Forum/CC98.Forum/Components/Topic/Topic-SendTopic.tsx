@@ -60,7 +60,7 @@ export class SendTopic extends React.Component<{ topicid, boardId, onChange }, {
         }
     }
     async sendUbbTopic() {
-        let url = `http://apitest.niconi.cc/post/topic/${this.props.topicid}`;
+        let url = `http://apitest.niconi.cc/topic/${this.props.topicid}/post`;
         let content = {
             content: this.state.content,
             contentType: 0,
@@ -91,7 +91,7 @@ export class SendTopic extends React.Component<{ topicid, boardId, onChange }, {
     }
     async sendMdTopic() {
         try {
-            let url = `http://apitest.niconi.cc/post/topic/${this.props.topicid}`;
+            let url = `http://apitest.niconi.cc/topic/${this.props.topicid}/post`;
             let c = Constants.testEditor.getMarkdown();
             let content = {
                 content: c,

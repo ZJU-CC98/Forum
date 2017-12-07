@@ -72,7 +72,7 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
     }
     async sendMdTopic(content1) {
         try {
-            let url = `http://apitest.niconi.cc/topic/board/${this.match.params.boardId}`;
+            let url = `http://apitest.niconi.cc/board/${this.match.params.boardId}/topic`;
             let content = {
                 content: content1,
                 contentType: 1,
@@ -105,7 +105,7 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
         }
     }
     async sendUbbTopic() {
-        const url = `http://apitest.niconi.cc/topic/board/${this.match.params.boardId}`;
+        const url = `http://apitest.niconi.cc/board/${this.match.params.boardId}/topic`;
         const content = {
             content: this.state.content,
             contentType: 0,

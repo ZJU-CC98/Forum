@@ -333,6 +333,7 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
         return <div className="listContent ">
             <ListButtonAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl}/>
             <ListTag />
+            <div className="column" style={{width:"100%",border:"#eaeaea solid thin"}}>
             <div className="row" style={{ justifyContent: 'space-between', }}>
                 <div className="row" style={{ alignItems: 'center' }} >
 
@@ -346,7 +347,8 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
                 </div>
             </div>
             {topTopics}
-            <div>{topics}</div>
+                <div>{topics}</div>
+                </div>
             <Pager page={curPage} totalPage={this.state.totalPage}  url={normalTopicsUrl} />
         </div>;
 
@@ -436,7 +438,6 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
     }
     async componentDidMount() {
         const data = await Utility.getSaveTopics(1, this.match.params.boardId);
-        console.log(data);
         const totalPage = data.totalPage;
         this.setState({ items: data.boardtopics, totalPage: totalPage });
     }

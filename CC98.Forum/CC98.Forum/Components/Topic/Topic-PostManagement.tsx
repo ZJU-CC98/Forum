@@ -185,11 +185,15 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
             $(punishOptionJQId).css("background-color", "#fffacd");
             $(deleteOptionJQId).css("background-color", "#b9d3ee");
         }
-    }
-    render() {
+
         if (this.props.privilege !== '管理员') {
             $(".managePrestige").css("display", "none");
+        } else {
+            $(".managePrestige").css("display", "");
         }
+    }
+    render() {
+     
         let UI;
 
         const awardUI = <div className="column manageInfo" id="award">

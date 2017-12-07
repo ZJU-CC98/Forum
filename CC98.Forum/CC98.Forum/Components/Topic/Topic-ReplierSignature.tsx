@@ -18,7 +18,7 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
     }
     showJudgeUI() {
         const UIId = `#judge${this.props.postid}`;
-        console.log(UIId);
+    
         $(UIId).css("display", "");
     }
     async like() {
@@ -80,18 +80,15 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
         else if (data.likeState === 2) {
             $(idDislike).css("color", "red");
         }
-        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
-    }
- 
-    render() {
         const manageIcon = `icon${this.props.postid}`;
         const manageId = `#icon${this.props.postid}`;
         if (Utility.getLocalStorage("userInfo")) {
             const privilege = Utility.getLocalStorage("userInfo").privilege;
             const myName = Utility.getLocalStorage("userInfo").name;
             const myId = Utility.getLocalStorage("userInfo").id;
-
+   
             if (privilege === '管理员' || privilege === '超级版主' || (privilege === '全站贵宾' && myId === this.props.userId)) {
+           
                 $(manageId).css("display", "");
             }
 
@@ -103,6 +100,11 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
                 }
             }
         }
+        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
+    }
+ 
+    render() {
+        const manageIcon = `icon${this.props.postid}`;
         const idLike = `like${this.props.postid}`;
         const idDislike = `dislike${this.props.postid}`;
         let signature = <div className="signature" style={{ borderTop: "#eaeaea solid thin",width:"100%" }}><UbbContainer code={this.props.signature} /></div>;
