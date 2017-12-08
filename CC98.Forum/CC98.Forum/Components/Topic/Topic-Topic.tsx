@@ -5,7 +5,7 @@ import { AuthorMessage } from './Topic-AuthorMessage';
 import { TopicTitle } from './Topic-TopicTitle';
 import { TopicContent } from './Topic-TopicContent';
 import { Award } from './Topic-Award';
-import { PostManagement } from './Post-Management';
+import { PostManagement } from './Topic-PostManagement';
 import { Judge } from './Topic-Judge';
 export class PostTopic extends React.Component<{ userId, imgUrl, page, topicid }, { topicMessage, likeState}> {
     constructor(props, content) {

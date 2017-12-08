@@ -4,21 +4,26 @@ import * as $ from 'jquery';
 import { UbbContainer } from '.././UbbContainer';
 import { Constants } from './Topic';
 import { UbbEditor } from '../UbbEditor';
+import { TopicManagement } from './Topic-TopicManagement';
 declare let moment: any;
 declare let editormd: any;
 
-export class SendTopic extends React.Component<{ topicid, onChange, }, { content: string, mode: number }>{
+export class SendTopic extends React.Component<{ topicid, boardId, onChange }, { content: string, mode: number, masters: string[]}>{
     constructor(props) {
         super(props);
         this.sendUbbTopic = this.sendUbbTopic.bind(this);
         this.changeEditor = this.changeEditor.bind(this);
         this.showManagement = this.showManagement.bind(this);
+        this.onChange = this.onChange.bind(this);
         this.close = this.close.bind(this);
         this.update = this.update.bind(this);
-        this.state = ({ content: '', mode: 1 });
+        this.state = ({ content: '', mode: 1, masters:[] });
     }
     update(value) {
         this.setState({ content: value });
+    }
+    onChange() {
+        this.props.onChange();
     }
     showManagement() {
         const UIId = `#manage${this.props.topicid}`;
@@ -28,7 +33,7 @@ export class SendTopic extends React.Component<{ topicid, onChange, }, { content
         const UIId = `#manage${this.props.topicid}`;
         $(UIId).css("display", "none");
     }
-    componentDidMount() {
+    async componentDidMount() {
         Constants.testEditor = editormd("test-editormd", {
             width: "100%",
             height: 640,
@@ -38,6 +43,8 @@ export class SendTopic extends React.Component<{ topicid, onChange, }, { content
             imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
             imageUploadURL: "http://apitest.niconi.cc/file/",
         });
+        const masters = await Utility.getMasters(this.props.topicid);
+        this.setState({ masters: masters });
     }
     componentDidUpdate() {
         if (this.state.mode === 1) {
@@ -53,7 +60,7 @@ export class SendTopic extends React.Component<{ topicid, onChange, }, { content
         }
     }
     async sendUbbTopic() {
-        let url = `http://apitest.niconi.cc/post/topic/${this.props.topicid}`;
+        let url = `http://apitest.niconi.cc/topic/${this.props.topicid}/post`;
         let content = {
             content: this.state.content,
             contentType: 0,
@@ -84,7 +91,7 @@ export class SendTopic extends React.Component<{ topicid, onChange, }, { content
     }
     async sendMdTopic() {
         try {
-            let url = `http://apitest.niconi.cc/post/topic/${this.props.topicid}`;
+            let url = `http://apitest.niconi.cc/topic/${this.props.topicid}/post`;
             let c = Constants.testEditor.getMarkdown();
             let content = {
                 content: c,
@@ -152,7 +159,7 @@ export class SendTopic extends React.Component<{ topicid, onChange, }, { content
         if (this.state.mode === 0) {
             mode = '使用UBB模式编辑';
             editor = <div>
-                <UbbEditor update={this.update} />
+                <UbbEditor update={this.update} value={this.state.content}/>
                 <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
                     <div id="post-topic-button" onClick={this.sendUbbTopic} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复
                     </div>
@@ -176,12 +183,28 @@ export class SendTopic extends React.Component<{ topicid, onChange, }, { content
 
             </div>;
         }
+        const privilege = Utility.getLocalStorage("userInfo").privilege;
+        const myName = Utility.getLocalStorage("userInfo").name;
+        console.log(privilege);
+        if (privilege === '管理员' || privilege === '超级版主') {
+            $("#topicManagementBTN").css("display", "");
+        }
+
+        if (this.state.masters) {
+            for (let i = 0; i < this.state.masters.length; i++) {
+                if (myName === this.state.masters[i]) {
+                    $("#topicManagementBTN").css("display", "");
+                }
+            }
+        }
+    
         return <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
             <form method="post" encType="multipart/form-data">
                 <input type="file" id="upload-files" onChange={this.upload.bind(this)} />
             </form>
             {editor}
-            <button onClick={this.showManagement}>管理</button>
+            <button id="topicManagementBTN" style={{display:"none"}} onClick={this.showManagement}>管理</button>
+            <TopicManagement topicId={this.props.topicid} update={this.onChange} boardId={this.props.boardId} updateTime={Date.now()} />
         </div>;
     }
 }

@@ -93,18 +93,6 @@
         outline: none;
     }
 
-    .user-center-navigation-fixed {
-        animation-name: fixnavigation;
-        animation-duration: 500ms;
-        animation-fill-mode: both;
-    }
-
-    .user-center-navigation-unfixed {
-        animation-name: unfixnavigation;
-        animation-duration: 500ms;
-        animation-fill-mode: both;
-    }
-
     .user-center-navigation {
         height: 33rem;
         padding: 1rem;
@@ -160,7 +148,7 @@
         }
 
         .user-center-navigation-active {
-            * {
+            &, * {
                 color: red;
             }
         }
@@ -213,7 +201,7 @@
                 display: flex;
                 flex-direction: column;
                 padding: 0 2rem;
-                max-width: 550px;
+                width: 300px;
 
                 & > * {
                     margin-bottom: 1rem;
@@ -394,6 +382,7 @@
 
                 p {
                     flex-grow: 1;
+                    display: inline-flex;
                 }
 
                 img {
@@ -412,6 +401,8 @@
                     background-color: rgb(230,230,230);
                     color: rgb(160,160,160);
                     cursor: pointer;
+                    margin-left: 1rem;
+                    margin-right: 1rem;
 
                     &:hover {
                         background-color: rgb(210,210,210);
@@ -422,7 +413,7 @@
                     }
                 }
 
-                #follow {
+                .user-follow, .user-message {
                     background-color: #68b3ff;
                     color: #fff;
 
@@ -437,11 +428,13 @@
 
                 .user-center-myfollowings-user-id {
                     margin-right: 20px;
+                    min-width: 7rem;
                 }
 
                 .user-center-myfollowings-user-posts {
                     margin: 0 14px 0 12px;
                     color: rgb(53,167,255);
+                    min-width: 2rem;
                 }
 
                 .user-center-myfollowings-user-fans {
@@ -458,12 +451,6 @@
             .user-center-myfans-exact {
                 flex-grow: 1;
                 min-height: 40rem;
-            }
-
-            .user-center-myfollowings-user {
-                button {
-                    display: none;
-                }
             }
         }
 
@@ -563,6 +550,7 @@
             #cover {
                 z-index: 2;
                 position: absolute;
+                left: 0px;
                 width: 100%;
                 height: 100%;
                 background-color: #000000;
@@ -611,6 +599,11 @@
         }
 
         .user-center-config-signature {
+            p {
+                flex-grow: 1;
+                font-size: 12px;
+            }
+
             #signature {
                 margin: 0px;
                 padding: 20px;
@@ -622,11 +615,6 @@
 
             div {
                 display: flex;
-            }
-
-            p {
-                flex-grow: 1;
-                font-size: 12px;
             }
         }
 
@@ -822,7 +810,7 @@
         }
     }
 
-    .follow {
+    .user-follow-board {
         background-color: #68b3ff;
         color: #FFFFFF;
 

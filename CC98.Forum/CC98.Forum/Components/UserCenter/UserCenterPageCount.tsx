@@ -57,7 +57,9 @@ export class UserCenterPageCount extends React.Component<UserCenterPageCountProp
             elements.unshift(<li><button disabled>···</button></li>);
             elements.unshift(<li><a href={`${this.props.href}1`}><button type="button">{1}</button></a></li>);
         }
-
+        if (!this.props.hasTotal) {
+            elements.push(<li><button disabled>···</button></li>);
+        }
         return (<div id="userCenterPageCount"><ul>
             {elements}
         </ul></div>);
@@ -68,4 +70,5 @@ class UserCenterPageCountProps {
     currentPage: number;
     totalPage: number;
     href: string;
+    hasTotal: boolean;
 }

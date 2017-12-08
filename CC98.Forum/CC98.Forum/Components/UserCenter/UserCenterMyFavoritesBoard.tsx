@@ -26,7 +26,7 @@ export class UserCenterMyFavoritesBoard extends React.Component<UserCenterMyFavo
         try {
             const token = Utility.getLocalStorage("accessToken");
             const boardId = this.props.UserFavoritesBoard.id;
-            const url = `http://apitest.niconi.cc/me/removecustomboard/${boardId}/normal`;
+            const url = `http://apitest.niconi.cc/me/custom-board/${boardId}`;
             let myHeaders = new Headers();
             myHeaders.append('Authorization', token);
 
@@ -61,14 +61,13 @@ export class UserCenterMyFavoritesBoard extends React.Component<UserCenterMyFavo
             const token = Utility.getLocalStorage("accessToken");
 
             const boardId = this.props.UserFavoritesBoard.id;
-            const url = `http://apitest.niconi.cc/me/addcustomboard/${boardId}`;
+            const url = `http://apitest.niconi.cc/me/custom-board/${boardId}`;
             let myHeaders = new Headers();
             myHeaders.append('Authorization', token);
             let res = await fetch(url, {
-                method: 'POST',
+                method: 'PUT',
                 headers: myHeaders
             });
-            console.log(res);
             if (res.status === 200) {
                 this.setState({
                     buttonIsDisabled: false,
@@ -90,12 +89,12 @@ export class UserCenterMyFavoritesBoard extends React.Component<UserCenterMyFavo
     render() {
         return (
             <div className='user-center-myfavorite-board'>
-                <a href={`/list/${this.props.UserFavoritesBoard.id}`} title={this.props.UserFavoritesBoard.name}><img></img></a>
+                <a href={`/list/${this.props.UserFavoritesBoard.id}/normal`} title={this.props.UserFavoritesBoard.name}><img></img></a>
                 <div className='user-center-myfavorite-board-info'>
                     <p>版主：{this.props.UserFavoritesBoard.boardMasters.join(' ')}</p>
                     <p>今日主题 {this.props.UserFavoritesBoard.todayCount} / 总主题 {this.props.UserFavoritesBoard.topicCount}</p>
                 </div>
-                <button type="button" className={this.state.isFollowing ? '' : 'follow'}  onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
+                <button type="button" className={this.state.isFollowing ? '' : 'user-follow-board'}  onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
             </div>
             );
     }

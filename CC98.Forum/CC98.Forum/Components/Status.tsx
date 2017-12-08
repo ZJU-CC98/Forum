@@ -41,20 +41,7 @@ export class NotFoundBoard extends React.Component<{}, {}>{
         super(props, context);
     }
     async componentDidMount() {
-        const token = Utility.getLocalStorage("accessToken");
-        const headers = new Headers();
-        headers.append("Authorization", token);
-        headers.append("Content-Type", "application/json");
-        const content =  "test" ;
-        const response = await fetch(
-
-            `http://apitest.niconi.cc/topic/deletetop?topicid=4739872&boardid=753`,
-            {
-                method: "DELETE",
-                headers,
-                body: JSON.stringify(content)
-            }
-        );
+      
         console.log("finished");
     }*/
     render() {

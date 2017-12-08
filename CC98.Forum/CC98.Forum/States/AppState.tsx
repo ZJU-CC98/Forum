@@ -164,7 +164,7 @@ export class TopicTitleAndContentState {
     userId: number;
     highlightInfo: any;
     topState: number;
-    topicState: number;
+    state: number;
     hitCount:number;
 }
 
@@ -199,7 +199,13 @@ export class TopicState {
         contentType: number,
         isFollowing: boolean,
         fanCount: number,
-        masters
+        masters: string[],
+        highLightInfo: { color: string, isBold: boolean, isItalic: boolean },
+        totalVoteUserCount: number,
+        topState: number,
+        bestState: number,
+        isVote: boolean,
+        disableHot: boolean
     ) {
         this.userName = userName;
         this.time = time;
@@ -217,6 +223,12 @@ export class TopicState {
         this.isFollowing = isFollowing;
         this.fanCount = fanCount;
         this.masters = masters;
+        this.bestState = bestState;
+        this.topState = topState;
+        this.highLightInfo = highLightInfo;
+        this.isVote = isVote;
+        this.totalVoteUserCount = totalVoteUserCount;
+        this.disableHot = disableHot;
     }
     userName: string;
     title: string;
@@ -234,6 +246,12 @@ export class TopicState {
     isFollowing: boolean;
     fanCount: number;
     masters: string[];
+    highLightInfo: { color: string, isBold: boolean, isItalic: boolean };
+    totalVoteUserCount: number;
+    topState: number;
+    bestState: number;
+    isVote: boolean;
+    disableHot: boolean;
 }
 
 /**
@@ -421,6 +439,10 @@ export class UserFanInfo {
     * 用户id
     */
     id: number;
+    /**
+    * 是否关注了该用户
+    */
+    isFollowing: boolean;
 }
 /**
 * 用户收藏的版面信息

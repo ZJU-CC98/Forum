@@ -17,10 +17,11 @@
     "react-router-dom": "4.1.2",
     "redux": "3.7.2",
     "signalr": "2.2.2",
-    "ssri": "^4.1.6"
+    "ssri": "^4.1.6",
+    "blueimp-canvas-to-blob": "3.14.0"
   },
   "devDependencies": {
-    "@types/jquery": "3.2.11",
+    "@types/jquery": "3.2.16",
     "@types/node": "8.0.19",
     "@types/react": "15.6.0",
     "@types/react-dom": "15.5.1",
@@ -42,6 +43,7 @@
     "unminified-webpack-plugin": "1.2.0",
     "webpack": "3.4.1",
     "whatwg-fetch": "2.0.3",
-    "core-js": "2.5.1"
+    "core-js": "2.5.1",
+    "spectrum": "1.0.1"
   }
 }

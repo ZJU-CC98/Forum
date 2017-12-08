@@ -102,8 +102,11 @@ export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>
     }
 
     async componentDidMount() {
+        const token = Utility.getLocalStorage("accessToken");
+        const headers = new Headers();
+        headers.append("Authorization", token);
         const boards: Board[] = [];
-        const response = await fetch(`http://apitest.niconi.cc/Board/${this.props.boardid}/Sub`);
+        const response = await fetch(`http://apitest.niconi.cc/Board/${this.props.boardid}/Sub`, {headers});
         const data = await response.json();
         for (let i = 0; i < data.length; i++) {
             boards[i] = new Board(data[i].name, data[i].todayCount, data[i].postCount, data[i].id, data[i].masters);

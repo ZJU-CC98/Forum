@@ -1,5 +1,4 @@
 ﻿.ubb-editor {
-    width: 1140px;
     background-color: white;
     border: 1px solid rgb(204,204,204);
 
@@ -68,6 +67,10 @@
             -webkit-appearance: none;
             -moz-appearance: none;
             cursor: pointer;
+        }
+
+        select::-ms-expand {
+            display: none;
         }
     }
 

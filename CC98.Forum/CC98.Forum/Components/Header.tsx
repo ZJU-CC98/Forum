@@ -12,12 +12,13 @@ import { userLogOff } from '../Actions';
 }*/
 
 
-class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName, userImgUrl }> {   //顶部条的下拉菜单组件
+class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName, userImgUrl, hoverElement }> {   //顶部条的下拉菜单组件
     constructor(props?, context?) {
         super(props, context);
         this.state = ({
             userName: "载入中……",
-            userImgUrl: "/images/unLoggedOn.png"
+            userImgUrl: "/images/unLoggedOn.png",
+            hoverElement: null
         });
     }
     async componentDidMount() {
@@ -105,81 +106,96 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
         location = window.location;     //刷新当前页面
     }
 
+    handleMouseEvent(type, className) {
+        switch (type) {
+            case 'mouseover': {
+                this.setState({
+                    hoverElement: className
+                });
+                break;
+            }
+            case 'mouseout': {
+                this.setState({
+                    hoverElement: null
+                });
+                break;
+            }
+        }
+    }
+
     render() {
         if (Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName")) {
             $(document).ready(function () {
-
-                const userInfo = $('.userInfo').eq(0);
-                const userMessage = $('#userMessage'); 
                 const dropDownSub = $('.dropDownSub').eq(0);
-                const dropDownSubMessage = $('.dropDownSubMessage').eq(0);
                 const dropDownLi = dropDownSub.find('li');
-                const dropDownLiMessage = dropDownSubMessage.find('li');
-                //点击名字之后出现的下拉列表
-                userInfo.hover(function () {
-                    dropDownSub.slideDown("fast");
-                }, function () {
-                    dropDownSub.css('display', 'none');
-                });
-                dropDownSub.hover(function () {
-                    dropDownSub.css('display', 'block');
-                }, function () {
-                    dropDownSub.slideUp("fast");
-                });
+                const dropDownSubMessage = $('.dropDownSubMessage').eq(0);
+                const dropDownLiMessage = dropDownSubMessage.find('li');                
                 dropDownLi.mouseover(function () {
                     this.className = 'hover';
                 });
-
                 dropDownLi.mouseout(function () {
                     this.className = '';
-                });
-                //点击消息之后出现的下拉列表
-                userMessage.hover(function () {
-                    dropDownSubMessage.slideDown("fast");
-                }, function () {
-                    dropDownSubMessage.css('display', 'none');
-                });
-                dropDownSubMessage.hover(function () {
-                    dropDownSubMessage.css('display', 'block');
-                }, function () {
-                    dropDownSubMessage.slideUp("fast");
                 });
                 dropDownLiMessage.mouseover(function () {
                     this.className = 'hover';
                 });
-
                 dropDownLiMessage.mouseout(function () {
                     this.className = '';
                 });
             });
-            return <div id="dropdown">
+
+            const style = {
+                display: 'block',
+                transitionDuration: '.2s',
+                height: '0px'
+            };
+            return (<div id="dropdown">
                 <div className="box">
                     <div className="userInfo">
                         <div className="userImg"><img src={this.props.userImgUrl||this.state.userImgUrl}></img></div>
-                        <div className="userName">{this.state.userName}</div>
+                        <div
+                            className="userName"
+                            onMouseOut={(e) => { this.handleMouseEvent(e.type, "userName"); }}
+                            onMouseOver={(e) => { this.handleMouseEvent(e.type, "userName"); }}
+                        >{this.state.userName}</div>
                     </div>
                     <div className="topBarText"><a href="/" style={{ color: '#fff' }}>首页</a></div>
-                    <div className="topBarText" id="userMessage"><a href="/message/response" style={{ color: '#fff' }}>消息</a></div>     
+                    <div
+                        className="topBarText"
+                        id="userMessage"
+                        onMouseOut={(e) => { this.handleMouseEvent(e.type, 'topBarText'); }}
+                        onMouseOver={(e) => { this.handleMouseEvent(e.type, 'topBarText'); }}
+                    ><a href="/message/response" style={{ color: '#fff' }}>消息</a></div>     
                     <div className="topBarText"><a href="/focus" style={{ color: '#fff' }}>关注</a></div>
                     <div className="topBarText"><a href="/newTopics" style={{ color: '#fff' }}>新帖</a></div>
                     <a href="/boardList"><div className="boardListLink" style={{ margin: '0 0 0 10px' }}><div style={{ marginTop: '16px', color: '#fff' }}>版面</div></div></a>
                 </div>
-                <div className="dropDownSubBox">
-                    <ul className="dropDownSub">
+                <div
+                    className="dropDownSubBox"
+                    onMouseOut={(e) => { this.handleMouseEvent(e.type, "userName"); }}
+                    onMouseOver={(e) => { this.handleMouseEvent(e.type, "userName"); }}
+                    style={{ ...style, overflow: 'hidden', height: this.state.hoverElement ==='userName'?'90px':'0px' }}
+                >
+                    <ul className="dropDownSub" style={{ display: 'inherit'}}>
                         <a href="/userCenter"> <li>个人中心</li></a>
                         <a href="/"><li>签到（暂无）</li></a>
                         <li onClick={this.logOff.bind(this)}>注销</li>
                     </ul>
                 </div>
-                <div className="dropDownSubBox">
-                    <ul className="dropDownSubMessage">
+                <div
+                    className="dropDownSubBoxMessage"
+                    onMouseOut={(e) => { this.handleMouseEvent(e.type, "topBarText"); }}
+                    onMouseOver={(e) => { this.handleMouseEvent(e.type, "topBarText"); }}
+                    style={{...style, overflow: 'hidden', zIndex: 100 , position: 'absolute', top: '55px', height: this.state.hoverElement === 'topBarText' ? '120px' : '0px'}}
+                >
+                    <ul className="dropDownSubMessage" style={{ display: 'inherit' }}>
                         <a href="/message/response"> <li>回复我的</li></a>
                         <a href="/message/attme"><li>@ 我的</li></a>
                         <a href="/message/system"><li>系统通知</li></a>
                         <a href="/message/message"><li>我的私信</li></a>
                     </ul>
                 </div>
-            </div>;
+            </div>);
         }
         else {
             return <div id="dropdown">

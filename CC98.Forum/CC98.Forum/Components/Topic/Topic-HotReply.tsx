@@ -5,7 +5,7 @@ import { HotReplier } from './Topic-HotReplier';
 import { ReplyContent } from './Topic-ReplyContent';
 import { Award } from './Topic-Award';
 import { Judge } from './Topic-Judge';
-import { PostManagement } from './Post-Management';
+import { PostManagement } from './Topic-PostManagement';
 import { ReplierSignature } from './Topic-ReplierSignature';
 export class HotReply extends RouteComponent<{}, { masters, contents }, { page, topicid }>{
     constructor(props, content) {

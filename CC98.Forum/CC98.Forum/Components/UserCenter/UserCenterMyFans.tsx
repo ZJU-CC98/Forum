@@ -25,7 +25,7 @@ export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState
         try {
             const token = Utility.getLocalStorage("accessToken");
             const page = this.match.params.page || 1;
-            let url = `http://apitest.niconi.cc/user/follow/fan?from=${(page - 1) * 10}&size=10`;
+            let url = `http://apitest.niconi.cc/me/follower?from=${(page - 1) * 10}&size=10`;
             const headers = new Headers();
             headers.append('Authorization', token);
             let res = await fetch(url, {
@@ -52,22 +52,21 @@ export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState
                     let userid = data[i];
                     let userFanInfo = new UserFanInfo();
                     url = `http://apitest.niconi.cc/user/${userid}`;
-                    res = await fetch(url);
+                    res = await fetch(url, { headers });
                     data2 = await res.json();
-
                     userFanInfo.name = data2.name;
                     userFanInfo.avatarImgURL = data2.portraitUrl;
                     userFanInfo.posts = data2.postCount;
                     userFanInfo.id = userid;
                     userFanInfo.fans = data2.fanCount;
-
-                    fans.push(userFanInfo);
+                    userFanInfo.isFollowing = data2.isFollowing;
+                    fans.unshift(userFanInfo);
                 }
 
 
                 const userid = Utility.getLocalStorage('userInfo').id;
 
-                url = `http://apitest.niconi.cc/user/follow/fancount?userid=${userid}`
+                url = `http://apitest.niconi.cc/user/follower/count?userid=${userid}`
                 res = await fetch(url);
                 let fanCounts: number = await res.json();
                 this.setState({
@@ -102,7 +101,7 @@ export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState
             <div className="user-center-myfans-exact">
                 {userFans}
             </div>
-            <UserCenterPageCount currentPage={parseInt(page)} totalPage={this.state.totalPage} href="/usercenter/myfans/" />
+            <UserCenterPageCount currentPage={parseInt(page)} totalPage={this.state.totalPage} href="/usercenter/myfans/" hasTotal={true}/>
         </div>);
     }
 }

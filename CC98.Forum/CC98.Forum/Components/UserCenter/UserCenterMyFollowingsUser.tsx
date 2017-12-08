@@ -11,9 +11,9 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
     constructor(props) {
         super(props);
         this.state = {
-            buttonInfo: '已关注',
+            buttonInfo: this.props.userFanInfo.isFollowing ? '已关注' : '关注',
             buttonIsDisabled: false,
-            isFollowing: true
+            isFollowing: this.props.userFanInfo.isFollowing
         }
         this.unfollow = this.unfollow.bind(this);
         this.follow = this.follow.bind(this);
@@ -74,7 +74,7 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
                 </p>
                 <button
                     type="button"
-                    id={this.state.isFollowing ? '' : 'follow'}
+                    className={this.state.isFollowing ? '' : 'user-follow'}
                     onMouseOver={() => {
                         if (this.state.isFollowing && !this.state.buttonIsDisabled) {
                             this.setState({
@@ -92,6 +92,13 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
                     onClick={this.state.isFollowing ? this.unfollow : this.follow}
                     disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}
                 </button>
+                <button
+                    className="user-message"
+                    type="button"
+                    onClick={() => {
+                        location.href = `/message/message?id=${this.props.userFanInfo.id}`;
+                    }}
+                >私信</button>
             </div>
         );
     }

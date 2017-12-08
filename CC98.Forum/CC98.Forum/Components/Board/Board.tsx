@@ -10,6 +10,7 @@ import {
     Link
 } from 'react-router-dom';
 import TopicTitleAndContentState = State.TopicTitleAndContentState;
+import { Pager } from '../Pager';
 declare let moment: any;
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
@@ -22,7 +23,7 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
     }
 }
 
-export class List extends RouteComponent<{}, { page:number,bigPaper: string, boardId: number }, { page: string, boardId: number }>  {
+export class List extends RouteComponent<{}, { page:number,bigPaper: string, boardId: number }, { boardId: number }>  {
 
     constructor(props, context) {
         super(props, context);
@@ -33,16 +34,16 @@ export class List extends RouteComponent<{}, { page:number,bigPaper: string, boa
   
     async componentWillReceiveProps(newProps) {
 
-        const data = await Utility.getBasicBoardMessage(newProps.match.params.boardId, newProps.match.params.page, this.context.router);
+        const data = await Utility.getBasicBoardMessage(newProps.match.params.boardId, this.context.router);
 
         // 设置状态
-        this.setState({ bigPaper: data.bigPaper, page: data.page,  boardId: newProps.match.params.boardId });
+        this.setState({ bigPaper: data.bigPaper, boardId: newProps.match.params.boardId });
     }
     async componentDidMount() {
 
-        const data = await Utility.getBasicBoardMessage(this.match.params.boardId, this.match.params.page, this.context.router);
+        const data = await Utility.getBasicBoardMessage(this.match.params.boardId, this.context.router);
         // 设置状态
-        this.setState({ bigPaper: data.bigPaper, page: data.page,  boardId: this.match.params.boardId });
+        this.setState({ bigPaper: data.bigPaper,boardId: this.match.params.boardId });
     }
     render() {
         return  <div id="listRoot">
@@ -180,15 +181,6 @@ export class ListButtonAndPager extends React.Component<{ url:string,boardid: nu
         };
     }
 
-	/**
-	 * 将页码转换为 UI 界面。
-	 * @param pageNumber 要转换的页码。
-	 * @returns {JSX.Element} 页码对应的 UI 元素。
-	 */
-    generatePageLink(pageNumber: number) {
-     
-        return <PageModel pageNumber={pageNumber} url={this.props.url} curPage={this.props.page} totalPage={this.props.totalPage} />;
-    }
 
     async componentWillReceiveProps(newProps) {
         const pages = Utility.getPager(newProps.page, newProps.totalPage);
@@ -205,85 +197,12 @@ export class ListButtonAndPager extends React.Component<{ url:string,boardid: nu
                 <Link className="button orange" to={createTopicUrl}>发主题</Link>
                 <button className="button green" style={{ marginLeft: '1.25rem' }}>发投票</button>
             </div>
-            <div id="pager" >
-                <div className="row pagination">{this.state.pager.map(this.generatePageLink.bind(this))}</div>
-            </div>
+            <Pager page={this.props.page} url={this.props.url} totalPage={this.props.totalPage} />
         </div>;
     }
 }
-export class PagerDown extends React.Component<{ url:string,boardid: number, page: number, totalPage: number }, { pager }> {
-    constructor(props, content) {
-        super(props, content);
-        this.state = {
-            pager: [1, 2, 3, 4, 5]
-        };
-    }
-
-	/**
-	 * 将页码转换为 UI 界面。
-	 * @param pageNumber 要转换的页码。
-	 * @returns {JSX.Element} 页码对应的 UI 元素。
-	 */
-    generatePageLink(pageNumber: number) {
-        return <PageModel pageNumber={pageNumber} url={this.props.url} curPage={this.props.page} totalPage={this.props.totalPage} />;
-    }
-
-    async componentWillReceiveProps(newProps) {
-        const pages = Utility.getPager(newProps.page, newProps.totalPage);
-        this.setState({ pager: pages });
-    }
-    async componentDidMount() {
-        const pages = Utility.getPager(this.props.page, this.props.totalPage);
-        this.setState({ pager: pages });
-    }
-    render() {
-        return <div className="row" style={{ width: '100%', marginTop: '0.9375rem', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-            <div id="pager" >
-                <div className="row pagination">{this.state.pager.map(this.generatePageLink.bind(this))}</div>
-            </div>
-        </div>;
-    }
-}
-export class PageModel extends React.Component<{ url: string, pageNumber: number, curPage: number, totalPage: number }, {}> {
-
-    render() {
-        let pageUrl: string;
-        if (this.props.pageNumber > 0) {
-            pageUrl = `${this.props.url}${this.props.pageNumber}`;
-            if (this.props.pageNumber !== this.props.curPage) {
-                return <li className="page-item"><Link to={pageUrl} className="page-link" >{this.props.pageNumber}</Link></li>
-                    ;
-            } else {
-                return <li className="page-item active"><Link to={pageUrl} className="page-link " >{this.props
-                    .pageNumber}</Link></li>
-                    ;
-            }
 
 
-        } else if (this.props.pageNumber == -1) {
-            pageUrl = `${this.props.url}${this.props.curPage - 1}`;
-            return <li className="page-item"><Link className="page-link" to={pageUrl}>&lsaquo;</Link></li>
-                ;
-        } else if (this.props.pageNumber == -2) {
-            pageUrl = `${this.props.url}${this.props.curPage + 1}`;
-            return <li className="page-item"><Link className="page-link" to={pageUrl}>&rsaquo;</Link></li>
-                ;
-        }
-        else if (this.props.pageNumber == -3) {
-            pageUrl = `${this.props.url}1`;
-            return <li className="page-item"> <Link className="page-link" to={pageUrl}>&laquo;</Link></li>
-                ;
-        }
-        else if (this.props.pageNumber == -4) {
-            pageUrl = `${this.props.url}${this.props.totalPage}`;
-            return <li className="page-item"><Link className="page-link" to={pageUrl}>&raquo;</Link></li>
-                ;
-        }
-        else {
-            return null;
-        }
-    }
-}
 export class ListTag extends React.Component<{}> {
 
     render() {
@@ -312,7 +231,7 @@ export class ListTopContent extends React.Component<{ boardId }, { data }>{
             replyCount={item.replyCount}
             highlightInfo={item.highlightInfo}
             topState={item.topState}
-            topicState={item.topicState}
+            state={item.state}
             hitCount={item.hitCount}
         />;
     }
@@ -347,7 +266,7 @@ export class BestTopics extends React.Component<{ boardId, curPage }, { data }>{
             replyCount={item.replyCount}
             highlightInfo={item.highlightInfo}
             topState={item.topState}
-            topicState={item.topicState}
+            state={item.state}
             hitCount={item.hitCount}
         />;
     }
@@ -379,7 +298,7 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
             replyCount={item.replyCount}
             highlightInfo={item.highlightInfo}
             topState={item.topState}
-            topicState={item.topicState}
+            state={item.state}
             hitCount={item.hitCount}
         />;
     }
@@ -414,6 +333,7 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
         return <div className="listContent ">
             <ListButtonAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl}/>
             <ListTag />
+            <div className="column" style={{width:"100%",border:"#eaeaea solid thin"}}>
             <div className="row" style={{ justifyContent: 'space-between', }}>
                 <div className="row" style={{ alignItems: 'center' }} >
 
@@ -427,8 +347,9 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
                 </div>
             </div>
             {topTopics}
-            <div>{topics}</div>
-            <PagerDown page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} />
+                <div>{topics}</div>
+                </div>
+            <Pager page={curPage} totalPage={this.state.totalPage}  url={normalTopicsUrl} />
         </div>;
 
     }
@@ -460,7 +381,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
             replyCount={item.replyCount}
             highlightInfo={item.highlightInfo}
             topState={item.topState}
-            topicState={item.topicState}
+            state={item.state}
             hitCount={item.hitCount}
         />;
     }
@@ -506,7 +427,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
             </div>
             {topTopics}
             <div>{topics}</div>
-            <PagerDown page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={bestTopicsUrl} />
+            <Pager page={curPage} totalPage={this.state.totalPage}  url={bestTopicsUrl} />
         </div>;
 
     }
@@ -517,7 +438,6 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
     }
     async componentDidMount() {
         const data = await Utility.getSaveTopics(1, this.match.params.boardId);
-        console.log(data);
         const totalPage = data.totalPage;
         this.setState({ items: data.boardtopics, totalPage: totalPage });
     }
@@ -535,7 +455,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
             replyCount={item.replyCount}
             highlightInfo={item.highlightInfo}
             topState={item.topState}
-            topicState={item.topicState}
+            state={item.state}
             hitCount={item.hitCount}
         />;
     }
@@ -565,6 +485,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
             <ListButtonAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} />
             <ListTag />
             <div className="row" style={{ justifyContent: 'space-between', }}>
+                <div className="column" style={{ width: "100%" }} id="boardTopics">
                 <div className="row" style={{ alignItems: 'center' }} >
                     <div className="listContentTag"><a href={normalTopicsUrl}>全部</a></div>
                     <div className="listContentTag"><a href={bestTopicsUrl}>精华</a></div>
@@ -576,8 +497,9 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
                 </div>
             </div>
             {topTopics}
-            <div>{topics}</div>
-            <PagerDown page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} />
+                <div>{topics}</div>
+                </div>
+            <Pager page={curPage} totalPage={this.state.totalPage}  url={normalTopicsUrl} />
         </div>;
 
     }
@@ -648,7 +570,7 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
             icon = <i style={{ color: "#FFC90E" }} className="fa fa-envelope fa-lg"></i>
         }
         //1是锁贴
-        if (this.props.topicState === 1) {
+        if (this.props.state === 1) {
             icon = <i style={{ color: "#B0B0B0" }} className="fa fa-lock fa-lg"></i>
         }
         let hitCount: any = this.props.hitCount;

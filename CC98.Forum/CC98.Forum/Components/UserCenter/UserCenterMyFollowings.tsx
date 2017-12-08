@@ -24,7 +24,7 @@ export class UserCenterMyFollowings extends RouteComponent<null, UserCenterMyFol
         try {
             const token = Utility.getLocalStorage("accessToken");
             const page = this.match.params.page || 1;
-            let url = `http://apitest.niconi.cc/user/follow/follower?from=${(page - 1) * 10}&size=10`;
+            let url = `http://apitest.niconi.cc/me/followee?from=${(page - 1) * 10}&size=10`;
             const headers = new Headers();
             headers.append('Authorization', token);
             let res = await fetch(url, {
@@ -62,14 +62,14 @@ export class UserCenterMyFollowings extends RouteComponent<null, UserCenterMyFol
                 userFanInfo.posts = data2.postCount;
                 userFanInfo.id = userid;
                 userFanInfo.fans = data2.fanCount;
-
-                fans.push(userFanInfo);
+                userFanInfo.isFollowing = true;
+                fans.unshift(userFanInfo);
             }
 
 
             const userid = Utility.getLocalStorage('userInfo').id;
 
-            url = `http://apitest.niconi.cc/user/follow/followcount?userid=${userid}`
+            url = `http://apitest.niconi.cc/user/followee/count?userid=${userid}`
             res = await fetch(url);
             if (res.status !== 200) {
                 throw {};
@@ -106,7 +106,7 @@ export class UserCenterMyFollowings extends RouteComponent<null, UserCenterMyFol
             <div className="user-center-myfollowings-exact">
                 {userFollowings}
             </div>
-            <UserCenterPageCount currentPage={page} totalPage={this.state.totalPage} href="/usercenter/myfollowings/" />
+            <UserCenterPageCount currentPage={page} totalPage={this.state.totalPage} href="/usercenter/myfollowings/" hasTotal={true}/>
         </div>);
     }
 }
