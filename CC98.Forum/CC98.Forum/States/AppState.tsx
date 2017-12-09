@@ -190,7 +190,6 @@ export class TopicState {
         time: string,
         signature: string,
         userImgUrl: string,
-        hitCount: number,
         userId: number,
         likeNumber: number,
         dislikeNumber: number,
@@ -199,13 +198,8 @@ export class TopicState {
         contentType: number,
         isFollowing: boolean,
         fanCount: number,
-        masters: string[],
-        highLightInfo: { color: string, isBold: boolean, isItalic: boolean },
-        totalVoteUserCount: number,
-        topState: number,
-        bestState: number,
-        isVote: boolean,
-        disableHot: boolean
+      
+
     ) {
         this.userName = userName;
         this.time = time;
@@ -213,7 +207,6 @@ export class TopicState {
         this.content = content;
         this.signature = signature;
         this.userImgUrl = userImgUrl;
-        this.hitCount = hitCount;
         this.userId = userId;
         this.likeNumber = likeNumber;
         this.dislikeNumber = dislikeNumber;
@@ -222,13 +215,8 @@ export class TopicState {
         this.contentType = contentType;
         this.isFollowing = isFollowing;
         this.fanCount = fanCount;
-        this.masters = masters;
-        this.bestState = bestState;
-        this.topState = topState;
-        this.highLightInfo = highLightInfo;
-        this.isVote = isVote;
-        this.totalVoteUserCount = totalVoteUserCount;
-        this.disableHot = disableHot;
+
+   
     }
     userName: string;
     title: string;
@@ -236,7 +224,6 @@ export class TopicState {
     time: string;
     signature: string;
     userImgUrl: string;
-    hitCount: number;
     userId: number;
     likeNumber: number;
     dislikeNumber: number;
@@ -245,13 +232,7 @@ export class TopicState {
     contentType: number;
     isFollowing: boolean;
     fanCount: number;
-    masters: string[];
-    highLightInfo: { color: string, isBold: boolean, isItalic: boolean };
-    totalVoteUserCount: number;
-    topState: number;
-    bestState: number;
-    isVote: boolean;
-    disableHot: boolean;
+
 }
 
 /**

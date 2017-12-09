@@ -27,10 +27,10 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
     }
 }
 
-export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, userId }, { topicid, page, userId }> {
+export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, userId,topicInfo,boardInfo }, { topicid, page, userId }> {
     constructor(props, context) {
         super(props, context);
-        this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userId: 559244 };
+        this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userId: 559244, topicInfo: { replyCount: 0 }, boardInfo: null};
     }
     async componentWillReceiveProps(newProps) {
         let page: number;
@@ -40,8 +40,10 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
         else { page = parseInt(newProps.match.params.page); }
         const userId = newProps.match.params.userId;
         const totalPage = await this.getTotalPage.bind(this)(this.match.params.topicid);
-        console.log("kk" + newProps.match.params.userId);
-        this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userId: newProps.match.params.userId });
+        const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
+        const boardId = topicInfo.boardId;
+        const boardInfo = Utility.getBoardInfo(boardId);
+        this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userId: newProps.match.params.userId, topicInfo: topicInfo, boardInfo: boardInfo });
     }
     async componentDidMount() {
         let page: number;
@@ -51,8 +53,10 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
         else { page = parseInt(this.match.params.page); }
         const totalPage = await this.getTotalPage.bind(this)(this.match.params.topicid);
         const userId = this.match.params.userId;
-        console.log("this" + userId);
-        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userId: userId });
+        const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
+        const boardId = topicInfo.boardId;
+        const boardInfo = Utility.getBoardInfo(boardId);
+        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userId: userId, topicInfo: topicInfo, boardInfo: boardInfo });
     }
     async getTotalPage(topicId) {
         return await Utility.getCurUserTotalReplyPage(topicId, this.match.params.userId, this.context.router);
@@ -60,8 +64,8 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
 
     render() {
         let topic = null;
-		if (this.state.page == 1) {
-			topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={this.state.userId} />;
+        if (this.state.page == 1) {
+            topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={this.state.userId} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} />;
 		}    
 			
         return <div className="center" style={{width:"1140px"}} >

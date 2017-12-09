@@ -246,13 +246,13 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
         let boardName = '全站';
         if (url1) {
             let topicId = url1[1];
-            let response = await Utility.getCategory(topicId, this.context.router);
+            let response = await Utility.getTopicInfo(topicId);
             boardId = response.boardId;
-            boardName = response.boardName;
+            boardName = await Utility.getBoardName(boardId);
         }
         else if (url2) {
             boardId = parseInt(url2[1]);
-            boardName = await Utility.getBoardName(boardId, this.context.router);
+            boardName = await Utility.getBoardName(boardId, );
         }
         else if (url3) {
             let searchInfo = Utility.getStorage("searchInfo");

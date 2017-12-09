@@ -23,6 +23,7 @@
     <None Remove="Components\Pager.tsx" />
     <None Remove="Components\RouteComponent.tsx" />
     <None Remove="Components\SearCH.tsx" />
+    <None Remove="Components\Signin.tsx" />
     <None Remove="Components\Status.tsx" />
     <None Remove="Components\Topic\Post.tsx" />
     <None Remove="Components\Topic\Topic-AuthorMessage.tsx" />
@@ -108,6 +109,7 @@
     <TypeScriptCompile Include="Components\PageModel.tsx" />
     <TypeScriptCompile Include="Components\Pager.tsx" />
     <TypeScriptCompile Include="Components\RouteComponent.tsx" />
+    <TypeScriptCompile Include="Components\Signin.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-AuthorMessage.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Award.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-HotReplier.tsx" />

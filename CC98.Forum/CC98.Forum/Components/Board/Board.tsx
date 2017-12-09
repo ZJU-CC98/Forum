@@ -113,13 +113,13 @@ export class ListHead extends RouteComponent<{ boardId }, State.ListHeadState, {
         this.setState({ isFollow: false });
     }
     async componentDidMount() {
-        const data = await Utility.getBoardMessage(this.props.boardId, this.context.router);
+        const data = await Utility.getBoardInfo(this.props.boardId );
         this.setState({
             listName: data.name, todayTopics: data.todayCount, totalTopics: data.topicCount, listManager: data.boardMasters
         });
     }
     async componentWillRecieveProps(newProps) {
-        const data = await Utility.getBoardMessage(newProps.boardId, this.context.router);
+        const data = await Utility.getBoardInfo(newProps.boardId);
         this.setState({
             listName: data.name, todayTopics: data.todayCount, totalTopics: data.topicCount, listManager: data.boardMasters
         });

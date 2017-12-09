@@ -106,7 +106,7 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
     async item2post(item: itemType) {
         let userRecentPost = new UserRecentPost();
         userRecentPost.approval = item.likeCount;
-        userRecentPost.board = await Utility.getBoardName(item.boardId, this.context.router);
+        userRecentPost.board = await Utility.getBoardName(item.boardId);
         userRecentPost.date = item.time.replace('T', ' ').slice(0,19);
         userRecentPost.disapproval = item.dislikeCount;
         userRecentPost.content = item.title;

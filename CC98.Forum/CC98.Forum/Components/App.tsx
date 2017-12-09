@@ -24,7 +24,7 @@ import * as Status from './Status';
 import { UbbContainer } from './UbbContainer';
 import { Search } from './Search';
 import { SearchBoard } from './SearchBoard';
-
+import { Signin } from './Signin';
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
 	match: match<TMatch>;
@@ -72,6 +72,7 @@ class AppBeforeConnect extends React.Component<{isError: boolean, errorMessage: 
                         <Route path="/search" component={Search} />
                         <Route path="/searchBoard" component={SearchBoard} />
                         <Route path="/createtopic/:boardId" component={CreateTopic} />
+                        <Route path="/signin" component={Signin} />
                         <Route path="/status/notfoundtopic" component={Status.NotFoundTopic} />
                         <Route path="/status/notfoundboard" component={Status.NotFoundBoard} />
                         <Route path="/status/logout" component={Status.LogOut} />
