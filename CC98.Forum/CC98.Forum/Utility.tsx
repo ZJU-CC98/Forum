@@ -575,7 +575,7 @@ export async function getAllNewTopic(from: number, router) {
         for (let i in newTopic) {
             if (newTopic[i].userId) {
                 //获取作者粉丝数目
-                let userFan0 = await fetch(`http://apitest.niconi.cc/user/follow/fanCount?userid=${newTopic[i].userId}`);
+                let userFan0 = await fetch(`http://apitest.niconi.cc/user/follower/count?userid=${newTopic[i].userId}`);
                 if (userFan0.status === 404) {
                     //window.location.href = "/status/NotFoundUser";
                 }
@@ -654,7 +654,7 @@ export async function getFocusBoardTopic(boardId: number, boardName: string, fro
          */
         let response;
         if (boardId == 0) {
-            response = await fetch(`http://apitest.niconi.cc/topic/followusers?from=${from}&size=${size}`, { headers });
+            response = await fetch(`http://apitest.niconi.cc/me/followee/topic?from=${from}&size=${size}`, { headers });
         }
         else {
             response = await fetch(`http://apitest.niconi.cc/board/${boardId}/topic?from=${from}&size=${size}`, { headers });
@@ -670,7 +670,7 @@ export async function getFocusBoardTopic(boardId: number, boardName: string, fro
         for (let i in newTopic) {
             if (newTopic[i].userId) {
                 //获取作者粉丝数目
-                let userFan0 = await fetch(`http://apitest.niconi.cc/user/follow/fanCount?userid=${newTopic[i].userId}`);
+                let userFan0 = await fetch(`http://apitest.niconi.cc/user/follower/count?userid=${newTopic[i].userId}`);
                 if (userFan0.status === 404) {
                     //window.location.href = "/status/NotFoundUser";
                 }
@@ -752,7 +752,7 @@ export async function getFocusTopic(from: number, router) {
         /**
          * 通过api获取到主题之后转成json格式
          */
-        const response = await fetch(`http://apitest.niconi.cc/topic/customboards?from=${from}&size=${size}`, { headers });
+        const response = await fetch(`http://apitest.niconi.cc/me/custom-board/topic?from=${from}&size=${size}`, { headers });
         if (response.status === 401) {
             //window.location.href = "/status/UnauthorizedTopic";
         }
@@ -764,7 +764,7 @@ export async function getFocusTopic(from: number, router) {
         for (let i in newTopic) {
             if (newTopic[i].userId) {
                 //获取作者粉丝数目
-                let userFan0 = await fetch(`http://apitest.niconi.cc/user/follow/fanCount?userid=${newTopic[i].userId}`);
+                let userFan0 = await fetch(`http://apitest.niconi.cc/user/follower/count?userid=${newTopic[i].userId}`);
                 if (userFan0.status === 404) {
                     //window.location.href = "/status/NotFoundUser";
                 }
@@ -961,7 +961,7 @@ export async function getRecentContact(from: number, size: number, router) {
         const headers = new Headers();
         headers.append('Authorization', token);
         console.log("开始获取联系人数据");
-        let response = await fetch(`http://apitest.niconi.cc/message/recentcontactusers?from=${from}&size=${size}`, { headers });
+        let response = await fetch(`http://apitest.niconi.cc/message/recent-contact-users?from=${from}&size=${size}`, { headers });
         if (response.status === 401) {
             ////window.location.href="/status/Loggout");
         }
@@ -1007,7 +1007,7 @@ export async function getRecentMessage(userId: number, from: number, size: numbe
         let token = getLocalStorage("accessToken");
         const headers = new Headers();
         headers.append('Authorization', token);
-        let response0 = await fetch(`http://apitest.niconi.cc/message/${userId}?from=${from}&size=${size}`, { headers });
+        let response0 = await fetch(`http://apitest.niconi.cc/message/user/${userId}?from=${from}&size=${size}`, { headers });
         if (response0.status === 401) {
             ////window.location.href="/status/Logout");
         }
@@ -1452,7 +1452,7 @@ export async function sendMessage(bodyContent: string, router) {
     let myHeaders = new Headers();
     myHeaders.append('Authorization', token);
     myHeaders.append('content-type', 'application/json');
-    let response = await fetch('http://apitest.niconi.cc/message/send', {
+    let response = await fetch('http://apitest.niconi.cc/message', {
         method: 'POST',
         headers: myHeaders,
         body: bodyContent
@@ -1719,7 +1719,7 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
             for (let i in newTopic) {
                 if (newTopic[i].userId) {
                     //获取作者粉丝数目
-                    let userFan0 = await fetch(`http://apitest.niconi.cc/user/follow/fanCount?userid=${newTopic[i].userId}`);
+                    let userFan0 = await fetch(`http://apitest.niconi.cc/user/follower/count?userid=${newTopic[i].userId}`);
                     if (userFan0.status === 404) {
                         //window.location.href = "/status/NotFoundUser";
                     }
@@ -1767,7 +1767,7 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                 else {
                     newTopic[i].fanCount = 0;
                     newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-                    newTopic[i].userName = "匿名";
+                    newTopic[i].userName = "匿名用户";
                     newTopic[i].boardName = "心灵之约";
                 }
             }
@@ -2386,7 +2386,7 @@ export async function getMessageSystem(from: number, size: number, router) {
         console.log(newTopic);
         for (let i in newTopic) {
             if (newTopic[i].postId) {
-                let response0 = await fetch(`http://apitest.niconi.cc/post/basicinfo?postid=${newTopic[i].postId}`, { headers: myHeaders });
+                let response0 = await fetch(`http://apitest.niconi.cc/post/${newTopic[i].postId}/basic`, { headers: myHeaders });
                 let response1 = await response0.json();
                 newTopic[i].floor = response1.floor;
             }
@@ -2435,7 +2435,7 @@ export async function getMessageResponse(from: number, size: number, router) {
                     newTopic[i].boardId = response1.boardId;
                     newTopic[i].boardName = await getBoardName(response1.boardId, router);
                     if (newTopic[i].postId) {
-                        let response2 = await fetch(`http://apitest.niconi.cc/post/basicinfo?postid=${newTopic[i].postId}`, { headers: myHeaders });
+                        let response2 = await fetch(`http://apitest.niconi.cc/post/${newTopic[i].postId}/basic`, { headers: myHeaders });
                         let response3 = await response2.json();
                         newTopic[i].floor = response3.floor;
                         newTopic[i].userId = response3.userId;
@@ -2490,7 +2490,7 @@ export async function getMessageAttme(from: number, size: number, router) {
                         newTopic[i].userName = response1.userName;
                     }
                     else {
-                        let response2 = await fetch(`http://apitest.niconi.cc/post/basicinfo?postid=${newTopic[i].postId}`, { headers: myHeaders });
+                        let response2 = await fetch(`http://apitest.niconi.cc/post/${newTopic[i].postId}/basic`, { headers: myHeaders });
                         let response3 = await response2.json();
                         newTopic[i].floor = response3.floor;
                         newTopic[i].userId = response3.userId;
@@ -2655,7 +2655,7 @@ export async function getTotalPage(type: number) {
 
     headers.append("Authorization", token);
 
-    let response = await fetch("http://apitest.niconi.cc/me/allmessagecount", { headers });
+    let response = await fetch("http://apitest.niconi.cc/me/all-message-count", { headers });
 
     let totalPage = await response.json();
 
@@ -2753,7 +2753,21 @@ export async function cancelDisableHot(topicId, reason) {
 
 //自动识别内容中的链接并添加ubb代码
 export function autoAddUrl(v: string) {
-    var reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
-    let result = v.replace(reg, "[url='$1$2'][color=blue]$1$2[/color][/url]").replace(/\n/g, "<br />");
-    return result;
+    let flag = /(http|ftp|https)/g;
+    let arr = v.match(flag);
+    if (arr) {
+        console.log("确实匹配到了");
+        let reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/g;
+        let abb = v.match(reg);
+        let result = v.replace(reg, `[url=${abb}][color=blue]${abb}[/color][/url]`).replace(/\n/g, "<br />");
+        return result;
+    }
+    else {
+        console.log("没有匹配到了");
+        let reg = /[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/g;
+        let abb = v.match(reg);
+        console.log(abb);
+        let result = v.replace(reg, `[url="http://${abb}"][color=blue]${abb}[/color][/url]`).replace(/\n/g, "<br />");
+        return result;
+    } 
 }
