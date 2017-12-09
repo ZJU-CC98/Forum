@@ -125,13 +125,15 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
 
     }
     async componentDidMount() {
-        $("#flat").spectrum({
+        const data = await Utility.getTopic(this.props.topicId, 1);
+        this.setState({ topicInfo: data });
+    }
+    componentDidUpdate() {
+        $("#custom").spectrum({
             flat: true,
             showInput: true,
             allowEmpty: true
         });
-        const data = await Utility.getTopic(this.props.topicId, 1);
-        this.setState({ topicInfo: data });
     }
     async componentWillRecieveProps(newProps) {
         const data = await Utility.getTopic(newProps.topicId, 1);
@@ -185,8 +187,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
             </div>
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                 <div >颜色</div>
-                <input type='text' id="flat" />
-
+                <input type='text' id="custom" />
             </div>
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                 <div >原因</div>

@@ -61,20 +61,20 @@ export class SendTopic extends React.Component<{ topicid, boardId, onChange }, {
     }
     async sendUbbTopic() {
         let url = `http://apitest.niconi.cc/topic/${this.props.topicid}/post`;
-        let content = {
+        let bodyInfo = {
             content: this.state.content,
             contentType: 0,
             title: ""
         }
-        let contentJson = JSON.stringify(content);
+        let body = JSON.stringify(bodyInfo);
         let token = Utility.getLocalStorage("accessToken");
-        let myHeaders = new Headers();
-        myHeaders.append("Authorization", token);
-        myHeaders.append("Content-Type", 'application/json');
+        let headers = new Headers();
+        headers.append("Authorization", token);
+        headers.append("Content-Type", 'application/json');
         let mes = await fetch(url, {
             method: 'POST',
-            headers: myHeaders,
-            body: contentJson
+            headers,
+            body
         }
         );
         if (mes.status === 401) {
@@ -126,7 +126,6 @@ export class SendTopic extends React.Component<{ topicid, boardId, onChange }, {
     }
     changeEditor() {
         if (this.state.mode === 0) {
-
             this.setState({ mode: 1 });
         } else {
             this.setState({ mode: 0 });

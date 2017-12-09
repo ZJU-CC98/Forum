@@ -102,7 +102,8 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         return <div className="center" >
             <div className="row" style={{ width: "100%", justifyContent: 'space-between',alignItems: "center" }}>
                 <Category topicId={this.state.topicid} />
-                <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
+                <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} />
+            </div>
             {topic}
             {hotReply}
         

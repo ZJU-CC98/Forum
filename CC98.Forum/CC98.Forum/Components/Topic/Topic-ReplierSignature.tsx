@@ -17,8 +17,7 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
         $(UIId).css("display", "");
     }
     showJudgeUI() {
-        const UIId = `#judge${this.props.postid}`;
-    
+        const UIId = `#judge${this.props.postid}`;    
         $(UIId).css("display", "");
     }
     async like() {
