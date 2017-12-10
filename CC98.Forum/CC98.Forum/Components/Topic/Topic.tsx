@@ -52,7 +52,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
             page = 1;
         }
         else { page = parseInt(this.match.params.page); }
-        const totalPage = await this.getTotalPage();
+        const totalPage = await this.getTotalPage(this.state.topicInfo.replyCount);
         const userName = this.match.params.userName;
         this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName });
     }
@@ -69,7 +69,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
         const boardId = topicInfo.boardId;
         const boardInfo = await Utility.getBoardInfo(boardId);
-        const totalPage = await this.getTotalPage();
+        const totalPage = this.getTotalPage(topicInfo.replyCount);
         this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo });
     }
 
@@ -85,11 +85,11 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
         const boardId = topicInfo.boardId;
         const boardInfo = await Utility.getBoardInfo(boardId);
-        const totalPage = this.getTotalPage();
+        const totalPage = this.getTotalPage(topicInfo.replyCount);
+        console.log("totalpage=" + totalPage);
         this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo ,boardInfo:boardInfo});
     }
-     getTotalPage() {
-        const count = this.state.topicInfo.replyCount;
+    getTotalPage(count) {
         return Utility.getTotalPageof10(count);
     }
 
