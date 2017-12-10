@@ -2,6 +2,7 @@
 import { Board } from '../../States/AppState';
 import * as Utility from '../../Utility';
 import * as $ from 'jquery';
+import { Link } from 'react-router-dom';
 //链接到的地址是  /list/boardid
 
 export class BoardList extends React.Component<{}, { thisBoardState: Board[] }> {
@@ -25,11 +26,13 @@ export class BoardList extends React.Component<{}, { thisBoardState: Board[] }> 
                 boardNameList[i] = `board_${data[i].id.toString()}`;
             }
             Utility.setStorage('boardList', boardNameList);
+            console.log("boardlist from api");
         } else {
             boardNameList = Utility.getStorage('boardList');
             for (let i = 0; i < 20; i++) {
                 board[i] = Utility.getStorage(boardNameList[i]);
             }
+            console.log("boardlist from cache");
         }
 
         this.setState({
@@ -73,7 +76,7 @@ export class RootBoard extends React.Component<{ board }, { isExpanded: boolean 
             return <div className="anArea">
                 <div className="column" style={{ border: '2px solid #e9e9e9' }}>
                     <div className="row" style={{ marginTop: '15px', marginBottom: '15px' }}>
-                        <div className="areaName"><a href="/list/758/normal">{boards.name}</a></div>
+                        <div className="areaName"><Link to="/list/758/normal">{boards.name}</Link></div>
                         <div className="areaName">主管：{boards.masters}</div>
                     </div>
                 </div>
@@ -117,14 +120,14 @@ export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>
     }
     convertChildBoard(item: Board) {    //暂无各版面图片，以绿色背景方块替代
         return <div className="boardContent">
-            <a href={`/list/${item.id}/normal`}><div className="greenBackdrop"></div></a>
-            <a href={`/list/${item.id}/normal`}><div className="boardName2">{item.name}</div></a>
+            <Link to={`/list/${item.id}/normal`}><div className="greenBackdrop"></div></Link>
+            <Link to={`/list/${item.id}/normal`}><div className="boardName2">{item.name}</div></Link>
             <div className="boardInfo">今日发帖 {item.todayPostCount} / 总主题数 {item.totalPostCount}</div>
         </div>;
     }
     convertNoImgChildBoard(item: Board) {
         return <div className="noImgBoardContent">
-            <a href={`/list/${item.id}/normal`}><div className="boardName2">{item.name}</div></a>
+            <Link to={`/list/${item.id}/normal`}><div className="boardName2">{item.name}</div></Link>
         </div>;
     }
     render() {

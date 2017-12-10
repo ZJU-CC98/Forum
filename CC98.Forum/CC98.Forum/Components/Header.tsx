@@ -4,6 +4,7 @@ import { AppState } from '../States/AppState';
 import * as $ from 'jquery';
 import { connect } from 'react-redux';
 import { userLogOff } from '../Actions';
+import { Link } from 'react-router-dom';
 
 /*declare global {
     interface JQuery {
@@ -159,16 +160,16 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
                             onMouseOver={(e) => { this.handleMouseEvent(e.type, "userName"); }}
                         >{this.state.userName}</div>
                     </div>
-                    <div className="topBarText"><a href="/" style={{ color: '#fff' }}>首页</a></div>
+                    <div className="topBarText"> <Link to="/" style={{ color: '#fff' }}>首页</Link></div>
                     <div
                         className="topBarText"
                         id="userMessage"
                         onMouseOut={(e) => { this.handleMouseEvent(e.type, 'topBarText'); }}
                         onMouseOver={(e) => { this.handleMouseEvent(e.type, 'topBarText'); }}
-                    ><a href="/message/response" style={{ color: '#fff' }}>消息</a></div>     
-                    <div className="topBarText"><a href="/focus" style={{ color: '#fff' }}>关注</a></div>
-                    <div className="topBarText"><a href="/newTopics" style={{ color: '#fff' }}>新帖</a></div>
-                    <a href="/boardList"><div className="boardListLink" style={{ margin: '0 0 0 10px' }}><div style={{ marginTop: '16px', color: '#fff' }}>版面</div></div></a>
+                    > <Link to="/message/response" style={{ color: '#fff' }}>消息</Link></div>     
+                    <div className="topBarText"> <Link to="/focus" style={{ color: '#fff' }}>关注</Link></div>
+                    <div className="topBarText"> <Link to="/newTopics" style={{ color: '#fff' }}>新帖</Link></div>
+                    <Link to="/boardList"><div className="boardListLink" style={{ margin: '0 0 0 10px' }}><div style={{ marginTop: '16px', color: '#fff' }}>版面</div></div></Link>
                 </div>
                 <div
                     className="dropDownSubBox"
@@ -177,8 +178,8 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
                     style={{ ...style, overflow: 'hidden', height: this.state.hoverElement ==='userName'?'90px':'0px' }}
                 >
                     <ul className="dropDownSub" style={{ display: 'inherit'}}>
-                        <a href="/userCenter"> <li>个人中心</li></a>
-                        <a href="/"><li>签到（暂无）</li></a>
+                        <Link to="/userCenter"> <li>个人中心</li></Link>
+                        <Link to="/signin"><li>签到</li></Link>
                         <li onClick={this.logOff.bind(this)}>注销</li>
                     </ul>
                 </div>
@@ -189,10 +190,10 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
                     style={{...style, overflow: 'hidden', zIndex: 100 , position: 'absolute', top: '55px', height: this.state.hoverElement === 'topBarText' ? '120px' : '0px'}}
                 >
                     <ul className="dropDownSubMessage" style={{ display: 'inherit' }}>
-                        <a href="/message/response"> <li>回复我的</li></a>
-                        <a href="/message/attme"><li>@ 我的</li></a>
-                        <a href="/message/system"><li>系统通知</li></a>
-                        <a href="/message/message"><li>我的私信</li></a>
+                        <Link to="/message/response"> <li>回复我的</li></Link>
+                        <Link to="/message/attme"><li>@ 我的</li></Link>
+                        <Link to="/message/system"><li>系统通知</li></Link>
+                        <Link to="/message/message"><li>我的私信</li></Link>
                     </ul>
                 </div>
             </div>);
@@ -200,10 +201,10 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
         else {
             return <div id="dropdown">
                 <div className="box">
-                    <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/" style={{ color: '#fff' }}>首页</a></div>
-                    <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/logOn" style={{ color: '#fff' }}>登录</a></div>
-                    <div className="topBarText" style={{ margin: '0 10px 0 10px' }}><a href="/newTopics" style={{ color: '#fff' }}>新帖</a></div>
-                    <a href="/boardList"><div className="boardListLink" style={{ margin: '0 0 0 10px' }}><div style={{ marginTop: '16px', color: '#fff' }}>版面</div></div></a>
+                    <div className="topBarText" style={{ margin: '0 10px 0 10px' }}> <Link to="/" style={{ color: '#fff' }}>首页</Link></div>
+                    <div className="topBarText" style={{ margin: '0 10px 0 10px' }}> <Link to="/logOn" style={{ color: '#fff' }}>登录</Link></div>
+                    <div className="topBarText" style={{ margin: '0 10px 0 10px' }}> <Link to="/newTopics" style={{ color: '#fff' }}>新帖</Link></div>
+                    <Link to="/boardList"><div className="boardListLink" style={{ margin: '0 0 0 10px' }}><div style={{ marginTop: '16px', color: '#fff' }}>版面</div></div></Link>
                 </div>
             </div>
         }
@@ -246,13 +247,13 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
         let boardName = '全站';
         if (url1) {
             let topicId = url1[1];
-            let response = await Utility.getCategory(topicId, this.context.router);
+            let response = await Utility.getTopicInfo(topicId);
             boardId = response.boardId;
-            boardName = response.boardName;
+            boardName = await Utility.getBoardName(boardId);
         }
         else if (url2) {
             boardId = parseInt(url2[1]);
-            boardName = await Utility.getBoardName(boardId, this.context.router);
+            boardName = await Utility.getBoardName(boardId, );
         }
         else if (url3) {
             let searchInfo = Utility.getStorage("searchInfo");
@@ -429,7 +430,7 @@ export class Header extends React.Component<{}, AppState> {
         return <div className="header">
             <div className="topBar">
                 <div className="topBarRow">
-                    <div className="row"><div style={{ margin: '10px 0 0 0' }}><a href="/"><img src="/images/矢量智能对象.ico" /></a></div><div style={{ margin: '15px 0 0 5px' }}><a href="/"><img src="/images/CC98.ico" /></a></div></div>
+                    <div className="row"><div style={{ margin: '10px 0 0 0' }}> <Link to="/"><img src="/images/矢量智能对象.ico" /></Link></div><div style={{ margin: '15px 0 0 5px' }}><Link to="/"><img src="/images/CC98.ico" /></Link></div></div>
                     <DropDown />
                 </div>
             </div>

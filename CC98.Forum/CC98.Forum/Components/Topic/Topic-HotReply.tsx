@@ -7,7 +7,7 @@ import { Award } from './Topic-Award';
 import { Judge } from './Topic-Judge';
 import { PostManagement } from './Topic-PostManagement';
 import { ReplierSignature } from './Topic-ReplierSignature';
-export class HotReply extends RouteComponent<{}, { masters, contents }, { page, topicid }>{
+export class HotReply extends React.Component<{topicId,boardInfo,topicInfo,page}, { masters, contents }>{
     constructor(props, content) {
         super(props, content);
         this.update = this.update.bind(this);
@@ -20,15 +20,12 @@ export class HotReply extends RouteComponent<{}, { masters, contents }, { page, 
     update() {
         this.setState({});
     }
-    async getMasters(topicId) {
-        return Utility.getMasters(topicId);
-    }
     async componentWillReceiveProps(newProps) {
 
-        const page = newProps.match.params.page || 1;
+        const page = newProps.page || 1;
         if (page == 1) {
-            const realContents = await Utility.getHotReplyContent(newProps.match.params.topicid, this.context.router);
-            const masters = this.getMasters(newProps.match.params.topicid);
+            const realContents = await Utility.getHotReplyContent(newProps.topicId);
+            const masters = newProps.boardInfo.masters;
             this.setState({ contents: realContents, masters: masters });
         }
 

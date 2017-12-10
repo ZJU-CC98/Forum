@@ -8,7 +8,7 @@ import { TopicManagement } from './Topic-TopicManagement';
 declare let moment: any;
 declare let editormd: any;
 
-export class SendTopic extends React.Component<{ topicid, boardId, onChange }, { content: string, mode: number, masters: string[]}>{
+export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onChange }, { content: string, mode: number, masters: string[]}>{
     constructor(props) {
         super(props);
         this.sendUbbTopic = this.sendUbbTopic.bind(this);
@@ -43,7 +43,7 @@ export class SendTopic extends React.Component<{ topicid, boardId, onChange }, {
             imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
             imageUploadURL: "http://apitest.niconi.cc/file/",
         });
-        const masters = await Utility.getMasters(this.props.topicid);
+        const masters = this.props.boardInfo.masters;
         this.setState({ masters: masters });
     }
     componentDidUpdate() {
@@ -61,20 +61,20 @@ export class SendTopic extends React.Component<{ topicid, boardId, onChange }, {
     }
     async sendUbbTopic() {
         let url = `http://apitest.niconi.cc/topic/${this.props.topicid}/post`;
-        let content = {
+        let bodyInfo = {
             content: this.state.content,
             contentType: 0,
             title: ""
         }
-        let contentJson = JSON.stringify(content);
+        let body = JSON.stringify(bodyInfo);
         let token = Utility.getLocalStorage("accessToken");
-        let myHeaders = new Headers();
-        myHeaders.append("Authorization", token);
-        myHeaders.append("Content-Type", 'application/json');
+        let headers = new Headers();
+        headers.append("Authorization", token);
+        headers.append("Content-Type", 'application/json');
         let mes = await fetch(url, {
             method: 'POST',
-            headers: myHeaders,
-            body: contentJson
+            headers,
+            body
         }
         );
         if (mes.status === 401) {
@@ -126,7 +126,6 @@ export class SendTopic extends React.Component<{ topicid, boardId, onChange }, {
     }
     changeEditor() {
         if (this.state.mode === 0) {
-
             this.setState({ mode: 1 });
         } else {
             this.setState({ mode: 0 });

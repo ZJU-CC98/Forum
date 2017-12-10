@@ -23,34 +23,35 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
     }
 }
 
-export class List extends RouteComponent<{}, { page:number,bigPaper: string, boardId: number }, { boardId: number }>  {
+export class List extends RouteComponent<{}, { page:number, boardId: number,boardInfo }, { boardId: number }>  {
 
     constructor(props, context) {
         super(props, context);
 
         // 默认页码
-        this.state = { boardId: null, bigPaper: "",page:1 };
+        this.state = {
+            boardId: null, boardInfo: {bigPaper:"",masters:[]},page:1 };
     }
   
     async componentWillReceiveProps(newProps) {
 
-        const data = await Utility.getBasicBoardMessage(newProps.match.params.boardId, this.context.router);
+        const boardInfo = await Utility.getBoardInfo(newProps.match.params.boardId);
 
         // 设置状态
-        this.setState({ bigPaper: data.bigPaper, boardId: newProps.match.params.boardId });
+        this.setState({ boardInfo: boardInfo, boardId: this.match.params.boardId });
     }
     async componentDidMount() {
 
-        const data = await Utility.getBasicBoardMessage(this.match.params.boardId, this.context.router);
+        const boardInfo= await Utility.getBoardInfo(this.match.params.boardId);
         // 设置状态
-        this.setState({ bigPaper: data.bigPaper,boardId: this.match.params.boardId });
+        this.setState({ boardInfo: boardInfo, boardId: this.match.params.boardId });
     }
     render() {
         return  <div id="listRoot">
-           
-            <Category boardId={this.match.params.boardId} />
+
+            <Category boardId={this.match.params.boardId} boardInfo={this.state.boardInfo} />
             <ListHead key={this.state.page} boardId={this.match.params.boardId} />
-            <ListNotice bigPaper={this.state.bigPaper} />
+            <ListNotice bigPaper={this.state.boardInfo.bigPaper} />
       
 
             <Route exact path="/list/:boardId/normal/:page?" component={ListContent} />
@@ -64,23 +65,15 @@ export class List extends RouteComponent<{}, { page:number,bigPaper: string, boa
  
  */
 
-export class Category extends RouteComponent<{ boardId }, { boardId, boardName }, { boardId, page }>{
-    constructor(props) {
-        super(props);
-        this.state = ({ boardId: "", boardName: "" });
-    }
-    async componentDidMount() {
-        const boardName = await Utility.getListCategory(this.props.boardId, this.context.router);
-        this.setState({ boardId: this.props.boardId, boardName: boardName });
-    }
+export class Category extends React.Component<{ boardId, boardInfo }, {}>{
     //<i className="fa fa-window-maximize fa-lg"></i> 这是之前导航中的首页图标，因为不好看暂时去掉了
     //fa-lg, fa-2x, fa-3x, fa-4x, fa-5x 分别是将icon扩大到原来的133%, 2倍，3倍，4倍和5倍
     render() {
-        const listUrl = `/list/${this.state.boardId}`;
+        const listUrl = `/list/${this.props.boardId}`;
         return <div className="row" style={{ alignItems: "baseline", width: "100% ", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>          
             <a style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} href=" / ">首页</a>
             <i className="fa fa-chevron-right"></i>
-            <a style={{ color: "grey", fontSize: "1rem", marginLeft: "0.5rem" }} href={listUrl} >{this.state.boardName}</a>
+            <a style={{ color: "grey", fontSize: "1rem", marginLeft: "0.5rem" }} href={listUrl} >{this.props.boardInfo.name}</a>
         </div>;
     }
 }
@@ -113,13 +106,13 @@ export class ListHead extends RouteComponent<{ boardId }, State.ListHeadState, {
         this.setState({ isFollow: false });
     }
     async componentDidMount() {
-        const data = await Utility.getBoardMessage(this.props.boardId, this.context.router);
+        const data = await Utility.getBoardInfo(this.props.boardId );
         this.setState({
             listName: data.name, todayTopics: data.todayCount, totalTopics: data.topicCount, listManager: data.boardMasters
         });
     }
     async componentWillRecieveProps(newProps) {
-        const data = await Utility.getBoardMessage(newProps.boardId, this.context.router);
+        const data = await Utility.getBoardInfo(newProps.boardId);
         this.setState({
             listName: data.name, todayTopics: data.todayCount, totalTopics: data.topicCount, listManager: data.boardMasters
         });
@@ -274,15 +267,17 @@ export class BestTopics extends React.Component<{ boardId, curPage }, { data }>{
         return <div>{this.state.data.map(this.convertTopicToElement)}</div>;
     }
 }
-export class ListContent extends RouteComponent<{}, { items: TopicTitleAndContentState[] ,totalPage:number}, { page: string, boardId: number }> {
+export class ListContent extends RouteComponent<{}, { items: TopicTitleAndContentState[] ,totalPage:number,boardInfo}, { page: string, boardId: number }> {
     constructor(props, context) {
         super(props, context);
-        this.state = { items: [], totalPage:0 };
+        this.state = {
+            items: [], totalPage: 0, boardInfo: {masters:[],topicCount:1} };
     }
     async componentDidMount() {
-        const data = await Utility.getBoardTopicAsync(1, this.match.params.boardId, this.context.router);
-        const totalPage = await this.getTotalListPage(this.match.params.boardId);
-        this.setState({ items: data, totalPage: totalPage });
+        const boardInfo = await Utility.getBoardInfo(this.match.params.boardId);
+        const data = await Utility.getBoardTopicAsync(1, this.match.params.boardId, boardInfo.topicCount);
+        const totalPage = this.getTotalListPage(boardInfo.topicCount);
+        this.setState({ items: data, totalPage: totalPage, boardInfo: boardInfo });
     }
     private convertTopicToElement(item: TopicTitleAndContentState) {
 
@@ -311,15 +306,17 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
         }
         // 转换类型
         else { page = parseInt(p); }
-        const data = await Utility.getBoardTopicAsync(page, newProps.match.params.boardId, this.context.router);
-        this.setState({ items: data});
+        const totalPage = this.getTotalListPage(this.state.boardInfo.topicCount);
+        const data = await Utility.getBoardTopicAsync(page, newProps.match.params.boardId, this.state.boardInfo.topicCount);
+        this.setState({ items: data,totalPage:totalPage});
     }
 
-    async getTotalListPage(boardId) {
-        const page = await Utility.getListTotalPage(boardId, this.context.router);
+     getTotalListPage(count) {
+        const page =  Utility.getListTotalPage(count);
         return page;
     }
     render() {
+        console.log(this.state.items);
         const curPage = this.match.params.page ? parseInt(this.match.params.page) : 1;
         let topTopics = null;
         if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
@@ -580,12 +577,12 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
             hitCount = (this.props.hitCount / 10000).toFixed(1).toString() + '万';
         }
         return <div id={colorId}>
-
-            <div className="row topicInList" id={topicId}>
+            <Link to={url}>
+            <div className="row topicInList" id={topicId}> 
                 <div style={{ display: "flex", marginLeft: "0.5rem", alignItems: "flex-end" }}>
                     <div className="row" style={{ alignItems: "center" }}>
                     {icon}
-                        <Link to={url}><div className="listTitle" id={titleId} style={{ marginLeft: '0.5rem', }}> {this.props.title}</div></Link>
+                       <div className="listTitle" id={titleId} style={{ marginLeft: '0.5rem', }}> {this.props.title}</div>
                         </div>
                     <div style={{ display: "flex", fontSize: "0.75rem",marginLeft:"1rem" }}>
                         {this.state.pager.map(this.generateListPager.bind(this))}</div>
@@ -611,7 +608,7 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
                 </div>
 
             </div>
-
+                </Link>
         </div>;
 
     }

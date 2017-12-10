@@ -34,12 +34,14 @@ declare let editormd: any;
 export module Constants {
     export var testEditor;
 }
-export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName,boardId }, { topicid, page, userName }> {
+export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName,boardId,topicInfo,boardInfo }, { topicid, page, userName }> {
     constructor(props, context) {
         super(props, context);
         this.update = this.update.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null, boardId:null };
+        this.state = {
+            page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null, boardId: 7, topicInfo: { replyCount: 0 }, boardInfo: {masters:[],id:7}
+        };
     }
     update() {
         this.setState({});
@@ -50,7 +52,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
             page = 1;
         }
         else { page = parseInt(this.match.params.page); }
-        const totalPage = await this.getTotalPage(this.match.params.topicid);
+        const totalPage = await this.getTotalPage(this.state.topicInfo.replyCount);
         const userName = this.match.params.userName;
         this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName });
     }
@@ -61,11 +63,14 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         }
         else { page = parseInt(newProps.match.params.page); }
         const userName = newProps.match.params.userName;
-        const totalPage = await this.getTotalPage(this.match.params.topicid);
+       
         if (this.state.page !== newProps.match.params.page)
             scrollTo(0, 0);
-        const boardId = await this.getBoardId(newProps.match.params.topicid);
-        this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId});
+        const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
+        const boardId = topicInfo.boardId;
+        const boardInfo = await Utility.getBoardInfo(boardId);
+        const totalPage = this.getTotalPage(topicInfo.replyCount);
+        this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo });
     }
 
     async componentDidMount() {
@@ -75,41 +80,43 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
             page = 1;
         }
         else { page = parseInt(this.match.params.page); }
-        const totalPage = await this.getTotalPage(this.match.params.topicid);
+       
         const userName = this.match.params.userName;
-        const boardId = await this.getBoardId(this.match.params.topicid);
-        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId });
+        const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
+        const boardId = topicInfo.boardId;
+        const boardInfo = await Utility.getBoardInfo(boardId);
+        const totalPage = this.getTotalPage(topicInfo.replyCount);
+        console.log("totalpage=" + totalPage);
+        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo ,boardInfo:boardInfo});
     }
-    async getTotalPage(topicId) {
-        return  Utility.getTotalReplyCount(topicId, this.context.router);
+    getTotalPage(count) {
+        return Utility.getTotalPageof10(count);
     }
-    async getBoardId(topicId) {
-        const boardId = await Utility.getBoardIdFromTopicId(topicId);
-        return boardId;
-    }
+
     returnTopic() {
-        return <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} />;
+        return <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} />;
 
     }
     render() {
         let topic = null;
         let hotReply = null;
         if (this.state.page === 1) {
-            topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} />;
-            hotReply = <Route path="/topic/:topicid/:page?" component={HotReply} />;
+            topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo}/>;
+            hotReply = <HotReply topicInfo={this.state.topicInfo} page={this.match.params.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} />
         }
         const pagerUrl = `/topic/${this.state.topicid}/`;
         return <div className="center" >
-            <div className="row" style={{ width: "100%", justifyContent: 'space-between',alignItems: "center" }}>
-                <Category topicId={this.state.topicid} />
-                <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
+            <div className="row" style={{ width: "100%", justifyContent: 'space-between', alignItems: "center" }}>
+                <Category topicId={this.state.topicid} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} />
+                <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} />
+            </div>
             {topic}
             {hotReply}
-        
-                <Route path="/topic/:topicid/:page?" component={Reply} />
 
-            <div style={{ display: "flex",width:"100%", justifyContent: "flex-end" }}><Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
-            <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardId} />
+            <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} />
+
+            <div style={{ display: "flex", width: "100%", justifyContent: "flex-end" }}><Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
+            <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardId} boardInfo={this.state.boardInfo} />
             
         </div>
             ;

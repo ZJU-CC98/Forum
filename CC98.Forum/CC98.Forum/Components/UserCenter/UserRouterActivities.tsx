@@ -25,7 +25,7 @@ export class UserRouterActivities extends React.Component<{id: string}, UserCent
         if (pageYLeft < 1500 && this.state.isLoading === false) {
             try {
                 this.setState({ isLoading: true });
-                const url = `http://apitest.niconi.cc/topic/userrecent?userid=${this.props.id}&from=${this.state.userRecentPosts.length}&size=10`;
+                const url = `http://apitest.niconi.cc/user/${this.props.id}/recent-topic?userid=${this.props.id}&from=${this.state.userRecentPosts.length}&size=11`;
                 const token = Utility.getLocalStorage("accessToken");
                 const headers = new Headers();
                 headers.append('Authorization', token);
@@ -41,7 +41,7 @@ export class UserRouterActivities extends React.Component<{id: string}, UserCent
                     }
 
                     let posts = this.state.userRecentPosts;
-                    let i = data.length;
+                    let i = data.length === 11 ? 10 : data.length;
 
                     while (i--) {
                         let post = await this.item2post(data[i]);
@@ -65,7 +65,7 @@ export class UserRouterActivities extends React.Component<{id: string}, UserCent
 
     async componentDidMount() {
         try {
-            const url = `http://apitest.niconi.cc/topic/userrecent?userid=${this.props.id}&from=0&size=10`
+            const url = `http://apitest.niconi.cc/user/${this.props.id}/recent-topic?userid=${this.props.id}&from=${this.state.userRecentPosts.length}&size=11`;
             const token = Utility.getLocalStorage("accessToken");
             const headers = new Headers();
             headers.append('Authorization', token);
@@ -104,7 +104,7 @@ export class UserRouterActivities extends React.Component<{id: string}, UserCent
     async item2post(item: itemType) {
         let userRecentPost = new UserRecentPost();
         userRecentPost.approval = item.likeCount;
-        userRecentPost.board = await Utility.getBoardName(item.boardId, this.context.router);
+        userRecentPost.board = await Utility.getBoardName(item.boardId);
         userRecentPost.date = item.time.replace('T', ' ').slice(0, 19);
         userRecentPost.disapproval = item.dislikeCount;
         userRecentPost.content = item.title;

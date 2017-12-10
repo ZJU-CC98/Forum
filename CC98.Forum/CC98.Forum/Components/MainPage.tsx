@@ -4,6 +4,7 @@ import { MainPageTopicState } from '../States/AppState';
 import * as $ from 'jquery';
 import * as Utility from '../Utility';
 import { UbbContainer } from './UbbContainer';
+import { Link } from 'react-router-dom';
 
 /**
  * 全站公告组件
@@ -160,8 +161,8 @@ export class HotTopicComponent extends React.Component<{}, MainPageTopicState> {
         const boardUrl = `/list/${item.boardid}/normal/`;
         const topicUrl = `/topic/${item.id}`;
         return <div className="listRow">
-            <div className="boardName"> <a href={boardUrl}>[{item.boardName}]</a></div >
-            <div className="topicTitle"><a href={topicUrl}>{item.title}</a></div>
+            <div className="boardName"> <Link to={boardUrl}>[{item.boardName}]</Link></div >
+            <div className="topicTitle"><Link to={topicUrl}>{item.title}</Link></div>
         </div >;
     }
 
