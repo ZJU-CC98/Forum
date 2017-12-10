@@ -22,7 +22,7 @@ export class PostTopic extends React.Component<{ userId, imgUrl, page, topicid }
         this.setState({ topicMessage: topicMessage });
     }
     async componentDidMount() {
-        let topicMessage = await Utility.getTopic(this.props.topicid, this.context.router);
+        const topicMessage = await Utility.getTopic(this.props.topicid, this.context.router);
 
         this.setState({ topicMessage: topicMessage });
     }

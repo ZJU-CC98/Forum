@@ -34,10 +34,16 @@ export class UbbContainer extends React.Component<UbbContainerProps, {}> {
 		const engine = this.props.engine || Ubb.createEngine();
 		// 获取选项，如果不设置选项则创建一个默认的
 		const options = this.props.options || new Ubb.UbbCodeOptions();
+        //code为一段UBB字符串
+        let { code } = this.props;
 
-		const ubbHtml = engine.exec(this.props.code || '', options);
+        //替换掉code中形如&#\d{5};的部分
+        //let r = /&#(\d{5});/gi;
+        //code = code.replace(r, (match, grp) => (String.fromCharCode(grp)));
 
-		//打开回车与空格00
+        const ubbHtml = engine.exec(code || '', options);
+        
+		//打开回车与空格
 		const style = {
 			whiteSpace: 'pre-wrap',
             width: "100%"

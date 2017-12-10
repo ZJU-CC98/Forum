@@ -81,7 +81,9 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
                 }
                 break;
             case 'days':
-                if (this.state.reason !== "") {
+                console.log("in daysinfo");
+                console.log(this.state.reason);
+                if (!this.state.reason ) {
                     switch ($("input[name='option']:checked").val()) {
                         case '固顶':
                             Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 2, this.state.days, this.state.reason);
@@ -90,6 +92,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
                             Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 4, this.state.days, this.state.reason);
                             break;
                         case '锁定':
+                            console.log("suoding");
                             Utility.lockTopic(this.props.topicId, this.props.boardId, this.state.reason, this.state.days);
                             break;
                     }
@@ -122,13 +125,15 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
 
     }
     async componentDidMount() {
-        $("#flat").spectrum({
+        const data = await Utility.getTopic(this.props.topicId, 1);
+        this.setState({ topicInfo: data });
+    }
+    componentDidUpdate() {
+        $("#custom").spectrum({
             flat: true,
             showInput: true,
             allowEmpty: true
         });
-        const data = await Utility.getTopic(this.props.topicId, 1);
-        this.setState({ topicInfo: data });
     }
     async componentWillRecieveProps(newProps) {
         const data = await Utility.getTopic(newProps.topicId, 1);
@@ -182,8 +187,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
             </div>
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                 <div >颜色</div>
-                <input type='text' id="flat" />
-
+                <input type='text' id="custom" />
             </div>
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                 <div >原因</div>

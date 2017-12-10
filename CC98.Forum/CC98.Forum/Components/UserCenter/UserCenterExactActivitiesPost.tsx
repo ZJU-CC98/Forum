@@ -13,12 +13,12 @@ export class UserCenterExactActivitiesPost extends React.Component<UserCenterExa
         return (
             <div className="user-post">
                 <div className="user-post-info">
-                    <a className="user-post-board" href={`/list/${this.props.userRecentPost.boardId}`}>{this.props.userRecentPost.board}</a>
+                    <a className="user-post-board" href={`/list/${this.props.userRecentPost.boardId}/normal`}>{this.props.userRecentPost.board}</a>
                     <a className="user-post-date">{this.props.userRecentPost.date}</a>
                     <a className="user-post-title">{this.props.userRecentPost.title}</a>
                 </div>
                 <div className="user-post-content">
-                    <p><a href={`/topic/${this.props.userRecentPost.id}/normal`}>{this.props.userRecentPost.content}</a></p>
+                    <p><a href={`/topic/${this.props.userRecentPost.id}`}>{this.props.userRecentPost.content}</a></p>
                     {this.props.userRecentPost.approval !== undefined ? <a className="fa-thumbs-o-up">{` ${this.props.userRecentPost.approval}`}</a> : null}
                     {this.props.userRecentPost.disapproval !== undefined ? <a className="fa-thumbs-o-down">{` ${this.props.userRecentPost.disapproval}`}</a> : null}
                 </div>
