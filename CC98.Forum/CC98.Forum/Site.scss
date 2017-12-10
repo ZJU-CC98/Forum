@@ -1796,6 +1796,23 @@ a {
     z-index: 2;
 }
 
+.message-counter {
+    position: absolute;
+    top: -1px;
+    right: -15px;
+    min-width: 10px;
+    height: 16px;
+    line-height: 16px;
+    margin-top: -11px;
+    padding: 2px 6px;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    background: red;
+    border-radius: 16px;
+}
+
 .topBar {
     display: flex;
     flex-direction: row;
@@ -1803,6 +1820,11 @@ a {
     width: 100%;
     justify-content: center;
     background-color: rgba(80,80,80,0.5); //仅背景条半透明，内层元素无半透明效果
+}
+
+.messageTopBar {
+    position: relative;
+    color: #fff;
 }
 
 .topBarRow {
