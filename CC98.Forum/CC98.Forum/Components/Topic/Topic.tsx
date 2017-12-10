@@ -63,12 +63,13 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         }
         else { page = parseInt(newProps.match.params.page); }
         const userName = newProps.match.params.userName;
-        const totalPage = await this.getTotalPage();
+       
         if (this.state.page !== newProps.match.params.page)
             scrollTo(0, 0);
         const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
         const boardId = topicInfo.boardId;
-        const boardInfo = Utility.getBoardInfo(boardId);
+        const boardInfo = await Utility.getBoardInfo(boardId);
+        const totalPage = await this.getTotalPage();
         this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo });
     }
 
@@ -79,11 +80,12 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
             page = 1;
         }
         else { page = parseInt(this.match.params.page); }
-        const totalPage =  this.getTotalPage();
+       
         const userName = this.match.params.userName;
         const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
         const boardId = topicInfo.boardId;
-        const boardInfo = Utility.getBoardInfo(boardId);
+        const boardInfo = await Utility.getBoardInfo(boardId);
+        const totalPage = this.getTotalPage();
         this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo ,boardInfo:boardInfo});
     }
      getTotalPage() {

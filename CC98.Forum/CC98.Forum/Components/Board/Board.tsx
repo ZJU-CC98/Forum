@@ -316,6 +316,7 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
         return page;
     }
     render() {
+        console.log(this.state.items);
         const curPage = this.match.params.page ? parseInt(this.match.params.page) : 1;
         let topTopics = null;
         if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
