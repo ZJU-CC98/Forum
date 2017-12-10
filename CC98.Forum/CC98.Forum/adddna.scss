@@ -63,11 +63,27 @@
 }
 
 //ubb解析图片默认不显示的样式
+//相当与bootstrap4的"btn btn-outline-primary"
 .hiddenImage {
-    border: #EAEAEA solid 2px;
-    border-radius: 5px;
-    padding: 2px;
-    width: 100px;
+    display: block;
+    color: #007bff;
+    width: 7rem;
+    background-color: transparent;
+    text-align: center;
+    vertical-align: middle; //设置元素的垂直对齐方式
+    border: 1px solid #007bff;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    border-radius: .25rem;
+    line-height: normal;
+    white-space: nowrap;
+    margin-top: 1rem;
+}
+
+.hiddenImage:hover {
+    background-color: #007bff;
+    color: rgb(255,255,255);
+    cursor: pointer;
 }
 
 //ubb解析[table]标签时的默认样式
