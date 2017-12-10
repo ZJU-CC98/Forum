@@ -40,7 +40,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         this.update = this.update.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.state = {
-            page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null, boardId: null, topicInfo: { replyCount: 0 }, boardInfo:null
+            page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null, boardId: 7, topicInfo: { replyCount: 0 }, boardInfo: {masters:[],id:7}
         };
     }
     update() {
@@ -100,21 +100,21 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         let hotReply = null;
         if (this.state.page === 1) {
             topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo}/>;
-            hotReply = <Route path="/topic/:topicid/:page?" component={HotReply} />;
+            hotReply = <HotReply topicInfo={this.state.topicInfo} page={this.match.params.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} />
         }
         const pagerUrl = `/topic/${this.state.topicid}/`;
         return <div className="center" >
             <div className="row" style={{ width: "100%", justifyContent: 'space-between', alignItems: "center" }}>
-                <Category topicId={this.state.topicid} topicInfo={this.state.topicInfo} />
+                <Category topicId={this.state.topicid} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} />
                 <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} />
             </div>
             {topic}
             {hotReply}
-        
-                <Route path="/topic/:topicid/:page?" component={Reply} />
 
-            <div style={{ display: "flex",width:"100%", justifyContent: "flex-end" }}><Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
-            <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardId} />
+            <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} />
+
+            <div style={{ display: "flex", width: "100%", justifyContent: "flex-end" }}><Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
+            <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardId} boardInfo={this.state.boardInfo} />
             
         </div>
             ;

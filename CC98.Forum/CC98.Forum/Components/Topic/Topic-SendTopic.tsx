@@ -8,7 +8,7 @@ import { TopicManagement } from './Topic-TopicManagement';
 declare let moment: any;
 declare let editormd: any;
 
-export class SendTopic extends React.Component<{ topicid, boardId, onChange }, { content: string, mode: number, masters: string[]}>{
+export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onChange }, { content: string, mode: number, masters: string[]}>{
     constructor(props) {
         super(props);
         this.sendUbbTopic = this.sendUbbTopic.bind(this);
@@ -43,7 +43,7 @@ export class SendTopic extends React.Component<{ topicid, boardId, onChange }, {
             imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
             imageUploadURL: "http://apitest.niconi.cc/file/",
         });
-        const masters = await Utility.getMasters(this.props.topicid);
+        const masters = this.props.boardInfo.masters;
         this.setState({ masters: masters });
     }
     componentDidUpdate() {

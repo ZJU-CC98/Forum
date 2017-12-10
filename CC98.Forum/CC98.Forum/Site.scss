@@ -614,7 +614,9 @@ body {
     align-items: center;
     margin-right: 0.625rem;
 }
-
+.topicInList:hover{
+    background-color:#eaeaea;
+}
 #commentsAmount img {
     width: 10px;
     height: 10px;

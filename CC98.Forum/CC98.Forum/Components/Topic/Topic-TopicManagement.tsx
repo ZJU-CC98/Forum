@@ -125,7 +125,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
 
     }
     async componentDidMount() {
-        const data = await Utility.getTopic(this.props.topicId, 1);
+        const data = await Utility.getTopic(this.props.topicId);
         this.setState({ topicInfo: data });
     }
     componentDidUpdate() {
@@ -136,7 +136,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
         });
     }
     async componentWillRecieveProps(newProps) {
-        const data = await Utility.getTopic(newProps.topicId, 1);
+        const data = await Utility.getTopic(newProps.topicId);
         this.setState({ topicInfo: data });
     }
     render() {

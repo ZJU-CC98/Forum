@@ -2,7 +2,7 @@
 import * as Utility from '../../Utility';
 
 
-export class Category extends React.Component<{ topicInfo,topicId }, { boardId, topicId, boardName, title }>{
+export class Category extends React.Component<{ topicInfo,topicId,boardInfo }, { boardId, topicId, boardName, title }>{
     constructor(props) {
         super(props);
         this.state = ({
@@ -11,8 +11,7 @@ export class Category extends React.Component<{ topicInfo,topicId }, { boardId, 
         });
     }
     async componentDidMount() {
-        const boardName = await Utility.getBoardName(this.props.topicInfo.boardId);
-        this.setState({ boardId: this.props.topicInfo.boardId, topicId: this.props.topicId, boardName: boardName, title: this.props.topicInfo.title });
+        this.setState({ boardId: this.props.topicInfo.boardId, topicId: this.props.topicId, boardName: this.props.boardInfo.name, title: this.props.topicInfo.title });
     }
     render() {
         const listUrl = `/list/${this.state.boardId}/normal`;

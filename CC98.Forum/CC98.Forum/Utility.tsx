@@ -14,14 +14,12 @@ declare let editormd: any;
 declare let testEditor: any;
 declare let moment: any;
 
-export async function getBoardTopicAsync(curPage, boardId, router) {
+export async function getBoardTopicAsync(curPage, boardId,totalTopicCount) {
     try {
 
         const startPage = (curPage - 1) * 20;
         const endPage = curPage * 20 - 1;
         const headers = formAuthorizeHeader();
-        const totalTopicCountJson = await getBoardInfo(boardId);
-        const totalTopicCount = totalTopicCountJson.topicCount;
         let topicNumberInPage;
         if (curPage * 20 <= totalTopicCount) {
             topicNumberInPage = 20;
@@ -63,7 +61,7 @@ export async function getBoardTopicAsync(curPage, boardId, router) {
     }
 
 }
-export async function getTopic(topicid: number, router) {
+export async function getTopic(topicid: number) {
     try {
         const headers = formAuthorizeHeader();
         const response = await fetch(`http://apitest.niconi.cc/Topic/${topicid}/post?from=0&size=1`, {
@@ -103,7 +101,7 @@ export async function getTopic(topicid: number, router) {
         ////window.location.href = "/status/Disconnected";
     }
 }
-export async function getTopicContent(topicid: number, curPage: number, router) {
+export async function getTopicContent(topicid: number, curPage: number,replyCount:number) {
     try {
         const startPage = (curPage - 1) * 10;
         const endPage = curPage * 10 - 1;
@@ -121,8 +119,6 @@ export async function getTopicContent(topicid: number, curPage: number, router) 
         if (topic.status === 500) {
             //window.location.href = "/status/ServerError";
         }
-        const replyCountJson= await getTopicInfo(topicid);
-        const replyCount = replyCountJson.replyCount;
         const content = await topic.json();
         const post = [];
         let topicNumberInPage: number;
@@ -241,7 +237,7 @@ export async function getLikeStateAndCount(topicid, postid, router) {
         ////window.location.href = "/status/Disconnected";
     }
 }
-export async function getHotReplyContent(topicid: number, router) {
+export async function getHotReplyContent(topicid: number) {
     try {
         const headers = formAuthorizeHeader();
         const response = await fetch(`http://apitest.niconi.cc/Topic/${topicid}/hot-post`, { headers });
@@ -368,7 +364,7 @@ export function getPager(curPage, totalPage) {
 export async function getCurUserTopic(topicid: number, userId: number, router) {
     try {
         const headers = formAuthorizeHeader();
-        const response = await fetch(`http://apitest.niconi.cc/post/user?topicid=${topicid}&userid=${userId}&from=0&size=1`, { headers });
+        const response = await fetch(`http://apitest.niconi.cc/post/topic/user?topicid=${topicid}&userid=${userId}&from=0&size=1`, { headers });
         if (response.status === 401) {
             //window.location.href = "/status/UnauthorizedTopic";
         }
@@ -393,9 +389,9 @@ export async function getCurUserTopic(topicid: number, userId: number, router) {
         ////window.location.href = "/status/Disconnected";
     }
 }
-export async function getCurUserTopicContent(topicid: number, curPage: number, userName: string, userId: number, router) {
+export async function getCurUserTopicContent(topicid: number, curPage: number, userName: string, userId: number) {
     try {
-        const topicMessage = await getTopic(topicid, router);
+        const topicMessage = await getTopic(topicid);
         let start: number;
         let isUserPoster: boolean;
         if (topicMessage.userName === userName) {
@@ -412,7 +408,7 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
         const token = getLocalStorage("accessToken");
         const headers = new Headers();
         headers.append('Authorization', token);
-        const topic = await fetch(`http://apitest.niconi.cc/Post/user?topicid=${topicid}&userId=${userId}&from=${start}&size=10`, { headers });
+        const topic = await fetch(`http://apitest.niconi.cc/Post/topic/user?topicid=${topicid}&userId=${userId}&from=${start}&size=10`, { headers });
         if (topic.status === 401) {
             //window.location.href = "/status/UnauthorizedTopic";
         }
@@ -442,11 +438,7 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
 
         for (let i = 0; i < topicNumberInPage; i++) {
             if (content[i].isAnonymous != true) {
-                const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
-                if (userMesResponse.status === 404) {
-                    //window.location.href = "/status/NotFoundUser";
-                }
-                const userMesJson = await userMesResponse.json();
+                const userMesJson = await getUserInfo(content[i].userId);
                 post[i] = {
                     ...content[i], ...userMesJson, postId: content[i].id, userImgUrl: userMesJson.portraitUrl, sendTopicNumber: userMesJson.postCount
                 }
@@ -1134,7 +1126,7 @@ export async function getUserDetails(userName, router) {
 export async function getLikeState(topicid, router) {
     try {
         const headers = formAuthorizeHeader();
-        const topic = await getTopic(topicid, router);
+        const topic = await getTopic(topicid);
         const postId = topic.postId;
         const response = await fetch(`http://apitest.niconi.cc/post/${postId}/like`, { headers });
         if (response.status === 401) {
@@ -1217,40 +1209,10 @@ export async function sendTopic(topicId, router) {
         ////window.location.href = "/status/Disconnected";
     }
 }
-export async function getListCategory(boardId, router) {
-    try {
-        const headers = formAuthorizeHeader();
-        const boardData = await getBoardInfo(boardId);
-        const boardName = boardData.name;
-        return boardName;
-    } catch (e) {
-        ////window.location.href = "/status/Disconnected";
-    }
-}
 
-export async function getListTotalPage(boardId, router) {
-    try {
-        const headers = formAuthorizeHeader();
-        const totalTopicCountJson = await getBoardInfo(boardId);
-        const totalTopicCount = totalTopicCountJson.topicCount;
+
+export function getListTotalPage(totalTopicCount) {
         return (totalTopicCount - totalTopicCount % 20) / 20 + 1;
-    } catch (e) {
-        ////window.location.href = "/status/Disconnected";
-    }
-}
-export async function getBasicBoardMessage(boardId, router) {
-    try {
-        const headers = formAuthorizeHeader();
-        const json = await getBoardInfo(boardId);
-        const bigPaper: string = json.bigPaper;
-        const boardid = boardId;
-        const totalPage = await getListTotalPage(boardid, router);
-        const data = { bigPaper: bigPaper, totalPage: totalPage };
-        return data;
-
-    } catch (e) {
-        ////window.location.href = "/status/Disconnected";
-    }
 }
 export async function getCurUserTotalReplyPage(topicId, userId, router) {
     try {
@@ -1600,13 +1562,6 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
     } catch (e) {
         ////window.location.href = "/status/Disconnected";
     }
-}
-export async function getMasters(topicId) {
-    const headers = formAuthorizeHeader();
-    const data = await getTopicInfo(topicId);
-    const boardId = data.boardId;
-    const masters = await getBoardInfo(boardId);
-    return masters;
 }
 export async function awardWealth(reason, value, postId) {
     const headers = formAuthorizeHeader();
@@ -2556,9 +2511,12 @@ export function getTotalPageof10(replyCount) {
     }
 }
 export async function getUserInfo(userId) {
+    const key = `user_${userId}`;
+    if (getLocalStorage(key)) return getLocalStorage(key);
     const headers = formAuthorizeHeader();
     const url = `http://apitest.niconi.cc/user/${userId}`;
     const response = await fetch(url, { headers });
     const data = await response.json();
+    setLocalStorage(key, data,3600);
     return data;
 }

@@ -17,17 +17,17 @@ export class PostTopic extends React.Component<{ boardInfo,topicInfo,userId, img
         }
     }
     async update() {
-        let topicMessage = await Utility.getTopic(this.props.topicid, this.context.router);
+        let topicMessage = await Utility.getTopic(this.props.topicid);
 
         this.setState({ topicMessage: topicMessage });
     }
     async componentDidMount() {
-        const topicMessage = await Utility.getTopic(this.props.topicid, this.context.router);
+        const topicMessage = await Utility.getTopic(this.props.topicid);
 
         this.setState({ topicMessage: topicMessage });
     }
     async componentWillReceiveProps(newProps) {
-        let topicMessage = await Utility.getTopic(newProps.topicid, this.context.router);
+        let topicMessage = await Utility.getTopic(newProps.topicid);
         this.setState({ topicMessage: topicMessage });
     }
     render() {

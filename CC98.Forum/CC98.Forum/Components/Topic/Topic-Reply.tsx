@@ -15,7 +15,7 @@ import { Judge } from './Topic-Judge';
 import { ReplierSignature } from './Topic-ReplierSignature';
 declare let moment: any;
 
-export class Reply extends RouteComponent<{}, { contents, masters }, { page, topicid, userName }>{
+export class Reply extends React.Component<{topicId,page,topicInfo,boardInfo}, { contents, masters }>{
     constructor(props, content) {   
         super(props, content);
         this.update = this.update.bind(this);
@@ -25,30 +25,18 @@ export class Reply extends RouteComponent<{}, { contents, masters }, { page, top
         };
     }
     async update() {
-        const page = this.match.params.page || 1;
-        const storageId = `TopicContent_${this.match.params.topicid}_${page}`;
-        let realContents;
-        realContents = await Utility.getTopicContent(this.match.params.topicid, page, this.context.router);
-        const masters = await this.getMasters(this.match.params.topicid);
+        const page = this.props.page || 1;
+        const storageId = `TopicContent_${this.props.topicId}_${page}`;
+        const realContents = await Utility.getTopicContent(this.props.topicId, page, this.props.topicInfo.replyCount);
+        const masters = this.props.boardInfo.masters;
         this.setState({ contents: realContents, masters: masters });
     }
-    async getMasters(topicId) {
-        return Utility.getMasters(topicId);
-    }
-    async componentWillReceiveProps(newProps) {
-        const page = newProps.match.params.page || 1;
-        const storageId = `TopicContent_${newProps.match.params.topicid}_${page}`;
-        let realContents;
-        /* if (!Utility.getStorage(storageId)) {
-             realContents = await Utility.getTopicContent(newProps.match.params.topicid, page);
-             Utility.setStorage(storageId, realContents);
-         }
-         else {
-             realContents = Utility.getStorage(storageId);
-         }*/
 
-        realContents = await Utility.getTopicContent(newProps.match.params.topicid, page, this.context.router);
-        const masters = await this.getMasters(newProps.match.params.topicid);
+    async componentWillReceiveProps(newProps) {
+        const page = newProps.page || 1;
+        const storageId = `TopicContent_${newProps.topicId}_${page}`;
+        const realContents = await Utility.getTopicContent(newProps.topicId, page, newProps.topicInfo.replyCount);
+        const masters = newProps.boardInfo.masters;
         this.setState({ contents: realContents, masters: masters });
 
     }
