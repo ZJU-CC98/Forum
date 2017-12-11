@@ -1,7 +1,7 @@
 ﻿import * as React from 'react';
 import * as Utility from '../../Utility';
 declare global {
-    interface JQuery { spectrum: ({ flat, showInput, allowEmpty }) => JQuery; }
+    interface JQuery { spectrum: ({ color }) => JQuery; }
 }
 
 export class TopicManagement extends React.Component<{ topicId, update, boardId, updateTime }, { state, reason, tips, days, board, topicInfo }>{
@@ -131,9 +131,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
     }
     componentDidUpdate() {
         $("#custom").spectrum({
-            flat: true,
-            showInput: true,
-            allowEmpty: true
+            color: "#f00"
         });
     }
     async componentWillRecieveProps(newProps) {

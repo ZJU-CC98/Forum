@@ -26,10 +26,7 @@ export class PostTopic extends React.Component<{ boardInfo,topicInfo,userId, img
 
         this.setState({ topicMessage: topicMessage });
     }
-    async componentWillReceiveProps(newProps) {
-        let topicMessage = await Utility.getTopic(newProps.topicid);
-        this.setState({ topicMessage: topicMessage });
-    }
+
     render() {
         if (this.state.topicMessage != null) {
             if (this.state.topicMessage.userId == this.props.userId || this.props.userId == null) {

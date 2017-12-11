@@ -20,7 +20,7 @@ export class UserDetails extends React.Component<{ userName, userId }, { portrai
             });
             const token = Utility.getLocalStorage("accessToken");
             const userId = this.props.userId;
-            const url = `http://apitest.niconi.cc/user/unfollow/${userId}`;
+            const url = `http://apitest.niconi.cc/me/followee/${userId}`;
             const headers = new Headers();
             headers.append('Authorization', token);
             let res = await fetch(url, {
@@ -54,11 +54,11 @@ export class UserDetails extends React.Component<{ userName, userId }, { portrai
             const token = Utility.getLocalStorage("accessToken");
 
             const userId = this.props.userId;
-            const url = `http://apitest.niconi.cc/user/follow/${userId}`;
+            const url = `http://apitest.niconi.cc/me/followee/${userId}`;
             const headers = new Headers();
             headers.append('Authorization', token);
             let res = await fetch(url, {
-                method: 'POST',
+                method: 'PUT',
                 headers
             });
             if (res.status === 200) {
@@ -80,7 +80,7 @@ export class UserDetails extends React.Component<{ userName, userId }, { portrai
     }
 
     async componentDidMount() {
-        const data = await Utility.getUserDetails(this.props.userName, this.context.router);
+        const data = await Utility.getUserDetails(this.props.userId);
         this.setState({ portraitUrl: data.portraitUrl, userName: data.userName, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle, isFollowing: data.isFollowing, buttonInfo: data.isFollowing ? '取消关注' : '关注' });
     }
     render() {

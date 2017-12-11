@@ -329,7 +329,7 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
                     }
                 }
                 else if (searchBoxSelect.text() == '用户') {
-                    let body = await Utility.getUserDetails(val, self.context.router);
+                    let body = await Utility.getUserInfoByName(val);
                     let host = window.location.host;
                     if (body) {
                         window.location.href = `http://${host}/user/name/${val}`;

@@ -23,6 +23,7 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
         this.setState({ content: value });
     }
     onChange() {
+        console.log("in sendtopic onchange");
         this.props.onChange();
     }
     showManagement() {
@@ -34,6 +35,7 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
         $(UIId).css("display", "none");
     }
     async componentDidMount() {
+        editormd.emoji.path = '/images/emoji/';
         Constants.testEditor = editormd("test-editormd", {
             width: "100%",
             height: 640,
@@ -42,11 +44,22 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
             imageUpload: false,
             imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
             imageUploadURL: "http://apitest.niconi.cc/file/",
+            emoji: true,
+            toolbarIcons: function () {
+                return [
+                    "undo", "redo", "|", "emoji",
+                    "bold", "del", "italic", "quote", "|",
+                    "h1", "h2", "h3", "h4", "|",
+                    "list-ul", "list-ol", "hr", "|",
+                    "link", "image", "code", "table", "html-entities",
+                ]
+            },
         });
         const masters = this.props.boardInfo.masters;
         this.setState({ masters: masters });
     }
     componentDidUpdate() {
+        editormd.emoji.path = '/images/emoji/';
         if (this.state.mode === 1) {
             Constants.testEditor = editormd("test-editormd", {
                 width: "100%",
@@ -56,6 +69,16 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
                 imageUpload: false,
                 imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
                 imageUploadURL: "http://apitest.niconi.cc/file/",
+                emoji: true,
+                toolbarIcons: function () {
+                    return [
+                        "undo", "redo", "|", "emoji", 
+                        "bold", "del", "italic", "quote", "|",
+                        "h1", "h2", "h3", "h4", "|",
+                        "list-ul", "list-ol", "hr", "|",
+                        "link", "image", "code", "table", "html-entities", 
+                    ]
+                },
             });
         }
     }
@@ -118,6 +141,28 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
             }
             Constants.testEditor.setMarkdown("");
             this.props.onChange();
+            editormd.emoji.path = '/images/emoji/';
+            if (this.state.mode === 1) {
+                Constants.testEditor = editormd("test-editormd", {
+                    width: "100%",
+                    height: 640,
+                    path: "/scripts/lib/editor.md/lib/",
+                    saveHTMLToTextarea: false,
+                    imageUpload: false,
+                    imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                    imageUploadURL: "http://apitest.niconi.cc/file/",
+                    emoji: true,
+                    toolbarIcons: function () {
+                        return [
+                            "undo", "redo", "|", "emoji",
+                            "bold", "del", "italic", "quote", "|",
+                            "h1", "h2", "h3", "h4", "|",
+                            "list-ul", "list-ol", "hr", "|",
+                            "link", "image", "code", "table", "html-entities",
+                        ]
+                    },
+                });
+            }
             this.setState({ content: "" });
         } catch (e) {
             console.log("Error");
@@ -184,7 +229,6 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
         }
         const privilege = Utility.getLocalStorage("userInfo").privilege;
         const myName = Utility.getLocalStorage("userInfo").name;
-        console.log(privilege);
         if (privilege === '管理员' || privilege === '超级版主') {
             $("#topicManagementBTN").css("display", "");
         }
