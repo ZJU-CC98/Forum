@@ -6,13 +6,6 @@ import { connect } from 'react-redux';
 import { userLogOff } from '../Actions';
 import { Link } from 'react-router-dom';
 
-/*declare global {
-    interface JQuery {
-        connection: SignalR;
-    }
-}*/
-
-
 class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName, userImgUrl, hoverElement }> {   //顶部条的下拉菜单组件
     constructor(props?, context?) {
         super(props, context);
@@ -190,7 +183,7 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
                     style={{...style, overflow: 'hidden', zIndex: 100 , position: 'absolute', top: '55px', height: this.state.hoverElement === 'topBarText' ? '120px' : '0px'}}
                 >
                     <ul className="dropDownSubMessage" style={{ display: 'inherit' }}>
-                        <Link to="/message/response"> <li>回复我的</li></Link>
+                        <Link to="/message/response"><li>回复我的</li></Link>
                         <Link to="/message/attme"><li>@ 我的</li></Link>
                         <Link to="/message/system"><li>系统通知</li></Link>
                         <Link to="/message/message"><li>我的私信</li></Link>
