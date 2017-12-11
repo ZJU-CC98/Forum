@@ -48,13 +48,17 @@ export class List extends RouteComponent<{}, { page:number, boardId: number,boar
         this.setState({ boardInfo: boardInfo, boardId: this.match.params.boardId});
     }
     render() {
-        
-        
+        let bigPaper;
+        if (!this.state.boardInfo.bigPaper) {
+            bigPaper = null;
+        } else {
+            bigPaper = <ListNotice bigPaper={this.state.boardInfo.bigPaper} />;
+        }
         return  <div id="listRoot">
 
             <Category boardId={this.match.params.boardId} boardInfo={this.state.boardInfo} />
             <ListHead key={this.state.page} boardId={this.match.params.boardId} />
-            <ListNotice bigPaper={this.state.boardInfo.bigPaper} />
+            {bigPaper}
       
 
             <Route exact path="/list/:boardId/normal/:page?" component={ListContent} />
@@ -199,14 +203,19 @@ export class ListButtonAndPager extends React.Component<{ url:string,boardid: nu
 }
 
 
-export class ListTag extends React.Component<{}> {
-
-    render() {
+export class ListTag extends React.Component<{tags}> {
+    generateTagLayer(item) {
         return <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginTop: '1.5625rem', marginBottom: '25px' }}>
-            <div className="row">  <button id="tagButton">全部</button>
-                <button className="chooseTag">dota <span className="tagNumber">1234</span></button>
-                <button className="chooseTag">csgo <span className="tagNumber">5687</span ></button></div>
+            <div className="row">  <button id="tagButton">全部</button>    
+                {item.tags.map(this.generateTagButton)}
+            </div>
         </div >;
+    }
+    generateTagButton(item) {
+        return <button className="chooseTag">{item}<span className="tagNumber"></span></button>;
+    }
+    render() {
+        return <div className="column" style={{ width: "100%" }}>{this.props.tags.map(this.generateTagLayer.bind(this))}</div>;
     }
 }
 export class ListTopContent extends React.Component<{ boardId }, { data }>{
@@ -270,19 +279,19 @@ export class BestTopics extends React.Component<{ boardId, curPage }, { data }>{
         return <div>{this.state.data.map(this.convertTopicToElement)}</div>;
     }
 }
-export class ListContent extends RouteComponent<{}, { items,totalPage:number,boardInfo,fetchState}, { page: string, boardId: number }> {
+export class ListContent extends RouteComponent<{}, { items,totalPage:number,boardInfo,tags,fetchState}, { page: string, boardId: number }> {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            items: [], totalPage: 0, boardInfo: { masters: [], topicCount: 1 }, fetchState:"ok"
+            items: [], totalPage: 0, boardInfo: { masters: [], topicCount: 1 }, fetchState:"ok",tags:[]
         };
     }
     async componentDidMount() {
         const boardInfo = await Utility.getBoardInfo(this.match.params.boardId);
         const data = await Utility.getBoardTopicAsync(1, this.match.params.boardId, boardInfo.topicCount);
         const totalPage = this.getTotalListPage(boardInfo.topicCount);
-
-        this.setState({ items: data, totalPage: totalPage, boardInfo: boardInfo ,fetchState:data});
+        const tags = await Utility.getBoardTag(this.match.params.boardId);
+        this.setState({ items: data, totalPage: totalPage, boardInfo: boardInfo ,fetchState:data,tags:tags});
     }
     private convertTopicToElement(item) {
 
@@ -342,8 +351,8 @@ export class ListContent extends RouteComponent<{}, { items,totalPage:number,boa
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
         const normalTopicsUrl = `/list/${this.match.params.boardId}/normal/`;
         return <div className="listContent ">
-            <ListButtonAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl}/>
-            <ListTag />
+            <ListButtonAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} />
+            <ListTag tags={this.state.tags} />
             <div className="column" style={{width:"100%",border:"#eaeaea solid thin"}}>
             <div className="row" style={{ justifyContent: 'space-between', }}>
                 <div className="row" style={{ alignItems: 'center' }} >
@@ -353,7 +362,7 @@ export class ListContent extends RouteComponent<{}, { items,totalPage:number,boa
                     <div className="listContentTag"><a href={saveTopicsUrl}>保存</a></div>
                 </div>
                 <div className="row" style={{ alignItems: 'center' }}>
-                    <div style={{ marginRight: '14rem' }}><span>作者</span></div>
+                    <div style={{ marginRight: '19.3rem' }}><span>作者</span></div>
                     <div style={{ marginRight: '7.6875rem' }}><span>最后回复</span></div>
                 </div>
             </div>
@@ -365,17 +374,17 @@ export class ListContent extends RouteComponent<{}, { items,totalPage:number,boa
 
     }
 }
-export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndContentState[], totalPage: number }, { page: string, boardId: number }> {
+export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndContentState[], totalPage: number,tags }, { page: string, boardId: number }> {
     constructor(props, context) {
         super(props, context);
-        this.state = { items: [], totalPage: 0 };
+        this.state = { items: [], totalPage: 0,tags:[] };
     }
     async componentDidMount() {
         const data = await Utility.getBestTopics( 1,this.match.params.boardId);
-    
+        const tags = await Utility.getBoardTag(this.match.params.boardId);
         const totalPage = data.totalPage;
         this.setState({
-            items: data.boardtopics, totalPage: totalPage
+            items: data.boardtopics, totalPage: totalPage,tags:tags
         });;
     }
     private convertTopicToElement(item: TopicTitleAndContentState) {
@@ -423,7 +432,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
         const normalTopicsUrl = `/list/${this.match.params.boardId}/normal/`;
         return <div className="listContent ">
             <ListButtonAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={bestTopicsUrl} />
-            <ListTag />
+            <ListTag tags={this.state.tags} />
             <div className="row" style={{ justifyContent: 'space-between', }}>
                 <div className="row" style={{ alignItems: 'center' }} >
 
@@ -432,7 +441,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
                     <div className="listContentTag"><a href={saveTopicsUrl}>保存</a></div>
                 </div>
                 <div className="row" style={{ alignItems: 'center' }}>
-                    <div style={{ marginRight: '14rem' }}><span>作者</span></div>
+                    <div style={{ marginRight: '19.3rem' }}><span>作者</span></div>
                     <div style={{ marginRight: '7.6875rem' }}><span>最后回复</span></div>
                 </div>
             </div>
@@ -442,15 +451,16 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
         </div>;
 
     }
-} export class ListSaveContent extends RouteComponent<{}, { items: TopicTitleAndContentState[], totalPage: number }, { page: string, boardId: number }> {
+} export class ListSaveContent extends RouteComponent<{}, { items: TopicTitleAndContentState[], totalPage: number,tags }, { page: string, boardId: number }> {
     constructor(props, context) {
         super(props, context);
-        this.state = { items: [], totalPage: 0 };
+        this.state = { items: [], totalPage: 0,tags:[] };
     }
     async componentDidMount() {
         const data = await Utility.getSaveTopics(1, this.match.params.boardId);
         const totalPage = data.totalPage;
-        this.setState({ items: data.boardtopics, totalPage: totalPage });
+        const tags = await Utility.getBoardTag(this.match.params.boardId);
+        this.setState({ items: data.boardtopics, totalPage: totalPage,tags:tags });
     }
     private convertTopicToElement(item: TopicTitleAndContentState) {
 
@@ -494,7 +504,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
         const normalTopicsUrl = `/list/${this.match.params.boardId}/normal/`;
         return <div className="listContent ">
             <ListButtonAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} />
-            <ListTag />
+            <ListTag tags={this.state.tags} />
             <div className="row" style={{ justifyContent: 'space-between', }}>
                 <div className="column" style={{ width: "100%" }} id="boardTopics">
                 <div className="row" style={{ alignItems: 'center' }} >
@@ -503,7 +513,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
                     <div className="listContentTag">保存</div>
                 </div>
                 <div className="row" style={{ alignItems: 'center' }}>
-                    <div style={{ marginRight: '14rem' }}><span>作者</span></div>
+                    <div style={{ marginRight: '19.3rem' }}><span>作者</span></div>
                     <div style={{ marginRight: '7.6875rem' }}><span>最后回复</span></div>
                 </div>
             </div>

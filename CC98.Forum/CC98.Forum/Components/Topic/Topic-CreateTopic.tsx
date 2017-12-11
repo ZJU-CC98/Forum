@@ -40,12 +40,12 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
         return (this.props as any).match;
     }
 }
-export class CreateTopic extends RouteComponent<{}, { title, content, topicId, ready, mode, boardName }, { boardId }> {   //发帖
+export class CreateTopic extends RouteComponent<{}, { title, content, topicId, ready, mode, boardName ,tags}, { boardId }> {   //发帖
     constructor(props) {
         super(props);
         this.update = this.update.bind(this);
         this.changeEditor = this.changeEditor.bind(this);
-        this.state = ({ topicId: null, title: '', content: '', ready: false, mode: 0, boardName: "" });
+        this.state = ({ topicId: null, title: '', content: '', ready: false, mode: 0, boardName: "",tags:[] });
     }
     async componentWillMount() {
         const token = Utility.getLocalStorage("accessToken");
@@ -55,7 +55,9 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
         const response = await fetch(url, { headers });
         const data = await response.json();
         const boardName = data.name;
-        this.setState({ boardName: boardName });
+        //获取标签
+        const tags = await Utility.getBoardTag(this.match.params.boardId);
+        this.setState({ boardName: boardName,tags:tags });
     }
     ready() {
         this.setState({ ready: true });

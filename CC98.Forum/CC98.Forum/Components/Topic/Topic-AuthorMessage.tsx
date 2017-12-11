@@ -128,7 +128,7 @@ export class AuthorMessage extends React.Component<{ isAnonymous: boolean, autho
 
                 <div className="row">
                     <button className="follow" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
-                    <button className="email"><a href={email}>私信</a></button>
+                    <a href={email}><button className="email">私信</button></a>
                 </div>
             </div>
         </div>;

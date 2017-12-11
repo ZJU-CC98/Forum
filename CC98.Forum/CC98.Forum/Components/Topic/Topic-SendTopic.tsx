@@ -17,7 +17,7 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
         this.onChange = this.onChange.bind(this);
         this.close = this.close.bind(this);
         this.update = this.update.bind(this);
-        this.state = ({ content: '', mode: 1, masters:[] });
+        this.state = ({ content: '', mode: 0, masters:[] });
     }
     update(value) {
         this.setState({ content: value });
@@ -207,7 +207,7 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
                 <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
                     <div id="post-topic-button" onClick={this.sendUbbTopic} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复
                     </div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>切换到Markdown编辑器            </div> </div></div>;
+                    </div></div>;
         }
         else {
             mode = '使用Markdown编辑';
@@ -220,9 +220,7 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
                 <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
                     <div id="post-topic-button" onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复</div>
 
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>切换到UBB编辑器
 
-                    </div>
                 </div>
 
             </div>;
@@ -230,9 +228,12 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
         if (Utility.isMaster(this.props.boardInfo.masters))
         $("#topicManagementBTN").css("display", "");
         return <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
+            <div className="row" style={{ justifyContent:"space-around" }}>
             <form method="post" encType="multipart/form-data">
-                <input type="file" id="upload-files" onChange={this.upload.bind(this)} />
-            </form>
+                    <input type="file" id="upload-files" onChange={this.upload.bind(this)} />                              
+                </form>
+                <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ width: "16rem", height: "0.8rem", letterSpacing: "0.3125rem" }}>{this.state.mode === 1 ? "切换到Ubb编辑器" : "切换到Markdown编辑器"}
+                </div></div>
             {editor}
             <button id="topicManagementBTN" style={{display:"none"}} onClick={this.showManagement}>管理</button>
             <TopicManagement topicId={this.props.topicid} update={this.onChange} boardId={this.props.boardId} updateTime={Date.now()} />
