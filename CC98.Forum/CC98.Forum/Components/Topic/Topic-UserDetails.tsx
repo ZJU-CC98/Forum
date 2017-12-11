@@ -106,7 +106,10 @@ export class UserDetails extends React.Component<{ userName, userId }, { portrai
         }
         const url = `/user/name/${this.props.userName}`;
         const userUrl = encodeURI(url);
-        const urlHtml = <a href={userUrl}> <img src={this.state.portraitUrl}></img></a>;
+        const urlHtml = <a href={userUrl}>
+            <img src={this.state.portraitUrl}></img>
+            <div className="photoFrame"><img src="/images/圣诞帽.png" ></img></div>
+        </a >;
         return <div className='popup'>
             <div className='popup_title'>
                 <div className="row">

@@ -78,6 +78,7 @@
     line-height: normal;
     white-space: nowrap;
     margin-top: 1rem;
+    font-family: 微软雅黑;
 }
 
 .hiddenImage:hover {
@@ -93,4 +94,16 @@
 
 .UBBTableTag th, td {
     border: 1px solid rgb(0,0,0);
+}
+
+//相框样式
+.photoFrame {
+    position: absolute;
+    left: -10px;
+    top: -8px;
+}
+
+.photoFrame img {
+    width: 100px !important;
+    height: 100px !important;
 }
