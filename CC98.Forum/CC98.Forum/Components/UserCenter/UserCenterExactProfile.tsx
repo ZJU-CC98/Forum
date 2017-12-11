@@ -3,6 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import { UserInfo } from '../../States/AppState';
 import { UbbContainer } from '../UbbContainer'
 
@@ -29,7 +30,10 @@ export class UserCenterExactProfile extends React.Component<UserCenterExactProfi
         }
         return (
             <div className="user-profile">
-                <div id="userId"><p>{this.props.userInfo.name}      <span style={{ fontSize: '12px', color: this.getPrivilegeColor() }}>{this.props.userInfo.privilege}</span></p><button type="button" onClick={() => { location.pathname = '/message/message' }}>私信</button></div>
+                <div id="userId">
+                    <p>{this.props.userInfo.name}<span style={{ fontSize: '12px', color: this.getPrivilegeColor(), marginLeft: '2rem' }}>{this.props.userInfo.privilege}</span></p>
+                    <Link to="/message/message"><button type="button">私信</button></Link>
+                </div>
                 <div id="userIntroducion">{this.props.userInfo.introduction}</div>
                 <div id="userGenderAndBirthday">
                     <p>性别：  {(this.props.userInfo.gender === 1) ? '男' : '女'} </p>

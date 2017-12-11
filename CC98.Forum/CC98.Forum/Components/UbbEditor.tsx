@@ -132,20 +132,8 @@ export class UbbEditor extends React.Component<{update: Function, value: string}
     render() {
         const size = ['', 1, 2, 3, 4, 5, 6, 7];
         const color = ['颜色', 'aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon', 'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow'];
-        const textarea = (<textarea
-            value={this.props.value}
-            onChange={(e) => { this.handleTextareaChange(e.target.value); }}
-            onBlur={(e) => {
-                let target: any = e.target;
-                this.handleTextareaBlur(target.selectionStart, target.selectionEnd);
-            }}
-            ref={(textarea) => {
-                this.content = textarea;
-            }}
-        ></textarea>);
-
+        
         return (
-            
             <div className="ubb-editor">
                 <div className="editor-buttons">
                     <div className="editor-buttons-styles">
@@ -187,7 +175,17 @@ export class UbbEditor extends React.Component<{update: Function, value: string}
                     <input type="file" id="upload" accept="image/*" style={{ display: 'none' }} onChange={(e) => { this.handleUpload(e.target.files[0]); }} />
                 </div>
                 <div className="ubb-content">
-                    {textarea}
+                    <textarea
+                        value={this.props.value}
+                        onChange={(e) => { this.handleTextareaChange(e.target.value); }}
+                        onBlur={(e) => {
+                            let target: any = e.target;
+                            this.handleTextareaBlur(target.selectionStart, target.selectionEnd);
+                        }}
+                        ref={(textarea) => {
+                            this.content = textarea;
+                        }}
+                    ></textarea>
                 </div>
             </div>
         );

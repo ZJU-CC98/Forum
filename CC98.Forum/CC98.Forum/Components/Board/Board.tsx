@@ -11,6 +11,7 @@ import {
 } from 'react-router-dom';
 import TopicTitleAndContentState = State.TopicTitleAndContentState;
 import { Pager } from '../Pager';
+import { NotFoundTopic, UnauthorizedTopic, UnauthorizedBoard } from '../Status';
 declare let moment: any;
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
@@ -23,14 +24,14 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
     }
 }
 
-export class List extends RouteComponent<{}, { page:number, boardId: number,boardInfo }, { boardId: number }>  {
+export class List extends RouteComponent<{}, { page:number, boardId: number,boardInfo}, { boardId: number }>  {
 
     constructor(props, context) {
         super(props, context);
 
         // 默认页码
         this.state = {
-            boardId: null, boardInfo: {bigPaper:"",masters:[]},page:1 };
+            boardId: null, boardInfo: {bigPaper:"",masters:[],name:""},page:1 };
     }
   
     async componentWillReceiveProps(newProps) {
@@ -40,13 +41,15 @@ export class List extends RouteComponent<{}, { page:number, boardId: number,boar
         // 设置状态
         this.setState({ boardInfo: boardInfo, boardId: this.match.params.boardId });
     }
-    async componentDidMount() {
+    async componentWillMount() {
 
         const boardInfo= await Utility.getBoardInfo(this.match.params.boardId);
         // 设置状态
-        this.setState({ boardInfo: boardInfo, boardId: this.match.params.boardId });
+        this.setState({ boardInfo: boardInfo, boardId: this.match.params.boardId});
     }
     render() {
+        
+        
         return  <div id="listRoot">
 
             <Category boardId={this.match.params.boardId} boardInfo={this.state.boardInfo} />
@@ -267,19 +270,21 @@ export class BestTopics extends React.Component<{ boardId, curPage }, { data }>{
         return <div>{this.state.data.map(this.convertTopicToElement)}</div>;
     }
 }
-export class ListContent extends RouteComponent<{}, { items: TopicTitleAndContentState[] ,totalPage:number,boardInfo}, { page: string, boardId: number }> {
+export class ListContent extends RouteComponent<{}, { items,totalPage:number,boardInfo,fetchState}, { page: string, boardId: number }> {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            items: [], totalPage: 0, boardInfo: {masters:[],topicCount:1} };
+            items: [], totalPage: 0, boardInfo: { masters: [], topicCount: 1 }, fetchState:"ok"
+        };
     }
     async componentDidMount() {
         const boardInfo = await Utility.getBoardInfo(this.match.params.boardId);
         const data = await Utility.getBoardTopicAsync(1, this.match.params.boardId, boardInfo.topicCount);
         const totalPage = this.getTotalListPage(boardInfo.topicCount);
-        this.setState({ items: data, totalPage: totalPage, boardInfo: boardInfo });
+
+        this.setState({ items: data, totalPage: totalPage, boardInfo: boardInfo ,fetchState:data});
     }
-    private convertTopicToElement(item: TopicTitleAndContentState) {
+    private convertTopicToElement(item) {
 
         return <TopicTitleAndContent key={item.id}
             title={item.title}
@@ -304,10 +309,12 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
         if (!p) {
             page = 1;
         }
+        
         // 转换类型
         else { page = parseInt(p); }
+        const boardInfo = await Utility.getBoardInfo(this.match.params.boardId);
         const totalPage = this.getTotalListPage(this.state.boardInfo.topicCount);
-        const data = await Utility.getBoardTopicAsync(page, newProps.match.params.boardId, this.state.boardInfo.topicCount);
+        const data = await Utility.getBoardTopicAsync(page, newProps.match.params.boardId, boardInfo.topicCount);
         this.setState({ items: data,totalPage:totalPage});
     }
 
@@ -316,7 +323,14 @@ export class ListContent extends RouteComponent<{}, { items: TopicTitleAndConten
         return page;
     }
     render() {
-        console.log(this.state.items);
+        switch (this.state.fetchState) {
+            case 'ok':
+                return <div></div>;
+            case 'not found':
+                return <NotFoundTopic />;
+            case 'unauthorized':
+                return <UnauthorizedBoard />;
+        }
         const curPage = this.match.params.page ? parseInt(this.match.params.page) : 1;
         let topTopics = null;
         if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
@@ -561,8 +575,11 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         if (this.props.replyCount > 100 && this.props.topState === 0) {
             icon = <i style={{ color: "red" }} className="fa fa-envelope-open fa-lg"></i>
         }
-        let curName = Utility.getLocalStorage("userInfo").name;
-        if (!curName) curName = "";
+        let curName;
+        if (Utility.getLocalStorage("userInfo"))
+            curName = Utility.getLocalStorage("userInfo").name;
+        else
+            curName = "";
         if (curName === this.props.userName) {
             icon = <i style={{ color: "#FFC90E" }} className="fa fa-envelope fa-lg"></i>
         }

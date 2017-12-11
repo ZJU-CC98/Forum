@@ -81,24 +81,8 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
         }
         const manageIcon = `icon${this.props.postid}`;
         const manageId = `#icon${this.props.postid}`;
-        if (Utility.getLocalStorage("userInfo")) {
-            const privilege = Utility.getLocalStorage("userInfo").privilege;
-            const myName = Utility.getLocalStorage("userInfo").name;
-            const myId = Utility.getLocalStorage("userInfo").id;
-   
-            if (privilege === '管理员' || privilege === '超级版主' || (privilege === '全站贵宾' && myId === this.props.userId)) {
-           
-                $(manageId).css("display", "");
-            }
-
-            if (this.props.masters) {
-                for (let i = 0; i < this.props.masters.length; i++) {
-                    if (myName === this.props.masters[i]) {
-                        $(manageId).css("display", "");
-                    }
-                }
-            }
-        }
+        if (Utility.isMaster(this.props.masters))
+        $(manageId).css("display", "");
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
  

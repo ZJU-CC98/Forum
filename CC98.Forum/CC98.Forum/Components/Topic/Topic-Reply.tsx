@@ -15,7 +15,7 @@ import { Judge } from './Topic-Judge';
 import { ReplierSignature } from './Topic-ReplierSignature';
 declare let moment: any;
 
-export class Reply extends React.Component<{topicId,page,topicInfo,boardInfo}, { contents, masters }>{
+export class Reply extends React.Component<{topicId,page,topicInfo,boardInfo,updateTime}, { contents, masters }>{
     constructor(props, content) {   
         super(props, content);
         this.update = this.update.bind(this);
@@ -25,19 +25,28 @@ export class Reply extends React.Component<{topicId,page,topicInfo,boardInfo}, {
         };
     }
     async update() {
+        console.log("replycount=" + this.props.topicInfo.replyCount);
         const page = this.props.page || 1;
         const storageId = `TopicContent_${this.props.topicId}_${page}`;
         const realContents = await Utility.getTopicContent(this.props.topicId, page, this.props.topicInfo.replyCount);
         const masters = this.props.boardInfo.masters;
         this.setState({ contents: realContents, masters: masters });
     }
-
+    async componentDidMount() {
+        console.log("in did mount");
+        const page = this.props.page || 1;
+        const storageId = `TopicContent_${this.props.topicId}_${page}`;
+        const realContents = await Utility.getTopicContent(this.props.topicId, page, this.props.topicInfo.replyCount);
+        console.log(realContents);
+        this.setState({ contents: realContents });
+    }
     async componentWillReceiveProps(newProps) {
+        console.log("recieve newprops");
         const page = newProps.page || 1;
         const storageId = `TopicContent_${newProps.topicId}_${page}`;
         const realContents = await Utility.getTopicContent(newProps.topicId, page, newProps.topicInfo.replyCount);
-        const masters = newProps.boardInfo.masters;
-        this.setState({ contents: realContents, masters: masters });
+        console.log(realContents);
+        this.setState({ contents: realContents });
 
     }
 

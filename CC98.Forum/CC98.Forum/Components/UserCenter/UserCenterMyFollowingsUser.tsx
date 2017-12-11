@@ -5,6 +5,7 @@
 import * as React from 'react';
 import { UserFanInfo } from '../../States/AppState';
 import * as Utility from '../../Utility';
+import { Link } from 'react-router-dom';
 
 //用户中心我的关注&我的粉丝用户通用组件
 export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFollowingsUserProps, UserCenterMyFollowingsUserState> {
@@ -17,6 +18,14 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
         }
         this.unfollow = this.unfollow.bind(this);
         this.follow = this.follow.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            buttonInfo: nextProps.userFanInfo.isFollowing ? '已关注' : '关注',
+            buttonIsDisabled: false,
+            isFollowing: nextProps.userFanInfo.isFollowing
+        });
     }
 
     async unfollow() {
@@ -73,6 +82,7 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
                     <span className="user-center-myfollowings-user-fans">{this.props.userFanInfo.fans}</span>
                 </p>
                 <button
+                    key={this.props.userFanInfo.id}
                     type="button"
                     className={this.state.isFollowing ? '' : 'user-follow'}
                     onMouseOver={() => {
@@ -92,13 +102,10 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
                     onClick={this.state.isFollowing ? this.unfollow : this.follow}
                     disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}
                 </button>
-                <button
+                <Link to={`/message/message?id=${this.props.userFanInfo.id}`}><button
                     className="user-message"
                     type="button"
-                    onClick={() => {
-                        location.href = `/message/message?id=${this.props.userFanInfo.id}`;
-                    }}
-                >私信</button>
+                >私信</button></Link>                    
             </div>
         );
     }

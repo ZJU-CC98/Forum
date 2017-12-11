@@ -13,12 +13,14 @@ export class UserCenterMyFavoritesBoards extends React.Component<null, UserCente
         super(props);
         this.state = {
             boards: [],
-            info: '加载中'
+            info: '加载中',
+            isLoading: false
         };
     }
 
     async componentDidMount() {
         try {
+            this.setState({ isLoading: true });
             const token = Utility.getLocalStorage('accessToken');
             const loginName = Utility.getLocalStorage('userName');
             let myHeaders = new Headers();
@@ -52,7 +54,8 @@ export class UserCenterMyFavoritesBoards extends React.Component<null, UserCente
             }
             let data = await res.json();
             this.setState({
-                boards: data
+                boards: data,
+                isLoading: false
             });
         } catch (e) {
             console.log('版面加载失败');
@@ -66,7 +69,9 @@ export class UserCenterMyFavoritesBoards extends React.Component<null, UserCente
         if (this.state.boards.length === 0) {
             return (<div style={style}>{this.state.info}</div>);
         }
-
+        if (this.state.isLoading) {
+            return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
+        }
         let elements = this.state.boards.map((item) => (<UserCenterMyFavoritesBoard UserFavoritesBoard={item} />));
         for (let i = 1; i < elements.length; i += 2) {
             elements.splice(i, 0, <hr />);
@@ -78,4 +83,5 @@ export class UserCenterMyFavoritesBoards extends React.Component<null, UserCente
 interface UserCenterMyFavoritesBoardsState {
     boards: UserFavoritesBoardInfo[];
     info: string;
+    isLoading: boolean;
 }

@@ -34,6 +34,25 @@ export class UserCenterConfig extends React.Component<null, UserCenterConfigStat
         this.handleSignatureChange = this.handleSignatureChange.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleReset = this.handleReset.bind(this);
+    }
+
+    handleReset() {
+        let info = Utility.getLocalStorage('userInfo');
+        let userInfo: UserInfo = {
+            EmailAddress: info.emailAddress,
+            Gender: info.gender,
+            Introduction: info.introduction,
+            QQ: info.qq,
+            SignatureCode: info.signatureCode,
+            Birthday: info.birthday,
+            birthdayYear: info.birthday ? Number.parseInt(info.birthday.slice(0, 4)) : 0,
+            birthdayMouth: info.birthday ? Number.parseInt(info.birthday.slice(5, 7)) : 0,
+            birthdayDay: info.birthday ? Number.parseInt(info.birthday.slice(8, 10)) : 0
+        };
+        this.setState({
+            userInfo
+        });
     }
 
     handleSignatureChange(str: string) {
@@ -72,7 +91,7 @@ export class UserCenterConfig extends React.Component<null, UserCenterConfigStat
             if (newInfo.EmailAddress && !newInfo.EmailAddress.match(/[\S]+@[\S]+\.[\S]+/)) {
                 throw new Error('请检查邮箱地址');
             }
-            if (newInfo.QQ && (Number.parseInt(newInfo.QQ) <= 0)) {
+            if (newInfo.QQ && (Number.parseInt(newInfo.QQ) <= 0 || Number.parseInt(newInfo.QQ).toString() !== newInfo.QQ)) {
                 throw new Error('请检查QQ是否正确');
             }
 
@@ -126,7 +145,10 @@ export class UserCenterConfig extends React.Component<null, UserCenterConfigStat
             <hr />
             <div className="config-submit">
                 <h2>提交修改</h2>
-                <button type="button" disabled={this.state.isLoading} onClick={this.handleSubmit}>提交</button>
+                <div className="config-buttons">
+                    <button className="config-submit-button" type="button" disabled={this.state.isLoading} onClick={this.handleSubmit}>提交</button>
+                    <button type="button" onClick={this.handleReset}>重置</button>
+                </div>
                 <p style={{height: this.state.info === '' ? '0' : '1rem', color: 'red' }}>{this.state.info}</p>
             </div>
         </div>);

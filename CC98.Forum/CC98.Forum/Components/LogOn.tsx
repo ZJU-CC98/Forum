@@ -17,12 +17,10 @@ import { LogOff } from './Logoff'
 export class LogOn extends React.Component {
     render() {
         return (
-            <Router>
-                <div>
-                    <Route path="/logon" exact component={LogOnExact} />
-                    <Route path="/logon/logoff" component={LogOff} />
-                </div>
-            </Router>
+            <div>
+                <Route path="/logon" exact component={LogOnExact} />
+                <Route path="/logon/logoff" component={LogOff} />
+            </div>
         );
     }
 }

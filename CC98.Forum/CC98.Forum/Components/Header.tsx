@@ -6,13 +6,6 @@ import { connect } from 'react-redux';
 import { userLogOff } from '../Actions';
 import { Link } from 'react-router-dom';
 
-/*declare global {
-    interface JQuery {
-        connection: SignalR;
-    }
-}*/
-
-
 class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName, userImgUrl, hoverElement }> {   //顶部条的下拉菜单组件
     constructor(props?, context?) {
         super(props, context);
@@ -166,7 +159,7 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
                         id="userMessage"
                         onMouseOut={(e) => { this.handleMouseEvent(e.type, 'topBarText'); }}
                         onMouseOver={(e) => { this.handleMouseEvent(e.type, 'topBarText'); }}
-                    > <Link to="/message/response" style={{ color: '#fff' }}>消息</Link></div>     
+                    > <Link to="/message/response" className="messageTopBar">消息<div className="message-counter">99</div></Link></div>     
                     <div className="topBarText"> <Link to="/focus" style={{ color: '#fff' }}>关注</Link></div>
                     <div className="topBarText"> <Link to="/newTopics" style={{ color: '#fff' }}>新帖</Link></div>
                     <Link to="/boardList"><div className="boardListLink" style={{ margin: '0 0 0 10px' }}><div style={{ marginTop: '16px', color: '#fff' }}>版面</div></div></Link>
@@ -190,7 +183,7 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
                     style={{...style, overflow: 'hidden', zIndex: 100 , position: 'absolute', top: '55px', height: this.state.hoverElement === 'topBarText' ? '120px' : '0px'}}
                 >
                     <ul className="dropDownSubMessage" style={{ display: 'inherit' }}>
-                        <Link to="/message/response"> <li>回复我的</li></Link>
+                        <Link to="/message/response"><li>回复我的</li></Link>
                         <Link to="/message/attme"><li>@ 我的</li></Link>
                         <Link to="/message/system"><li>系统通知</li></Link>
                         <Link to="/message/message"><li>我的私信</li></Link>
@@ -329,7 +322,7 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
                     }
                 }
                 else if (searchBoxSelect.text() == '用户') {
-                    let body = await Utility.getUserDetails(val, self.context.router);
+                    let body = await Utility.getUserInfoByName(val);
                     let host = window.location.host;
                     if (body) {
                         window.location.href = `http://${host}/user/name/${val}`;

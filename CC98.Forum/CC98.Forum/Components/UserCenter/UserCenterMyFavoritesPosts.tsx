@@ -12,21 +12,35 @@ import { RouteComponent } from '../app';
 /**
  * 用户中心我收藏的帖子组件
  */
-export class UserCenterMyFavoritesPosts extends RouteComponent<null, UserCenterMyFavoritesPostsState, {page}> {
-    constructor(props,c) {
-        super(props,c);
-        //临时填充数据
+export class UserCenterMyFavoritesPosts extends React.Component<{match}, UserCenterMyFavoritesPostsState> {
+    constructor(props) {
+        super(props);
         this.state = {
             userRecentPosts: [],
             info: '加载中',
-            totalPage: (Number.parseInt(this.match.params.page) || 1) + 1
+            totalPage: (Number.parseInt(this.props.match.params.page) || 1) + 1,
+            currentPage: this.props.match.params.page,
+            hasTotal: false,
+            isLoading: true
         };
     }
 
-    async componentDidMount() {
+    componentDidUpdate() {
+        if (this.state.currentPage !== this.props.match.params.page) {
+            this.setState({ currentPage: this.props.match.params.page });
+            this.getInfo(this.props.match.params.page);
+        }
+    }
+
+    componentDidMount() {
+        this.getInfo(this.props.match.params.page);
+    }
+
+    getInfo = async (page = 1) => {
         try {
+            window.scroll(0, 0);
+            this.setState({ isLoading: true });
             const token = Utility.getLocalStorage('accessToken');
-            const page = this.match.params.page || 1;
             const url = `http://apitest.niconi.cc/topic/me/favorite?from=${(page - 1) * 10}&size=11`;
 
             let myHeaders = new Headers();
@@ -41,23 +55,22 @@ export class UserCenterMyFavoritesPosts extends RouteComponent<null, UserCenterM
             let data = await res.json();
             if (data.length === 0) {
                 this.setState({
-                    info: '没有主题'
+                    info: '没有主题',
+                    isLoading: false
                 });
                 return;
             }
 
-            let posts: UserRecentPost[] = [];
-            let i = data.length;
+            let userRecentPosts: UserRecentPost[] = [],
+                i = data.length,
+                totalPage: number;
 
-            if (i < 10) {
-                this.setState({
-                    totalPage: Number.parseInt(this.match.params.page) || 1
-                });
+            if (i <= 10) {
+                totalPage = Number.parseInt(this.props.match.params.page) || 1;
+                this.setState({hasTotal: true});
             } else {
                 i = 10;
-                this.setState({
-                    totalPage: (Number.parseInt(this.match.params.page) || 1) + 1
-                });
+                totalPage = Math.max((Number.parseInt(this.props.match.params.page) || 1) + 1, this.state.totalPage);
             }
 
             while (i--) {
@@ -67,11 +80,13 @@ export class UserCenterMyFavoritesPosts extends RouteComponent<null, UserCenterM
                 post.content = data[i].title;
                 post.date = data[i].time.replace('T', ' ').slice(0, 19);
                 post.id = data[i].id;
-                posts.unshift(post);
+                userRecentPosts.unshift(post);
             }
 
             this.setState({
-                userRecentPosts: posts
+                userRecentPosts,
+                totalPage,
+                isLoading: false
             });
         } catch (e) {
             console.log('加载收藏失败');
@@ -79,6 +94,9 @@ export class UserCenterMyFavoritesPosts extends RouteComponent<null, UserCenterM
     }
 
     render() {
+        if (this.state.isLoading) {
+            return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
+        }
         if (!this.state.userRecentPosts || this.state.userRecentPosts.length === 0) {
             return (<div className="user-posts">
                 {this.state.info}
@@ -93,7 +111,7 @@ export class UserCenterMyFavoritesPosts extends RouteComponent<null, UserCenterM
         return (
             <div className="user-posts">
                 {userRecentPosts}
-                <UserCenterPageCount currentPage={this.match.params.page || 1} totalPage={this.state.totalPage} href="/usercenter/myfavorites/" hasTotal={false}/>
+                <UserCenterPageCount currentPage={this.props.match.params.page || 1} totalPage={this.state.totalPage} href="/usercenter/myfavorites/posts/" hasTotal={this.state.hasTotal}/>
             </div>
 
         );
@@ -104,4 +122,7 @@ interface UserCenterMyFavoritesPostsState {
     userRecentPosts: UserRecentPost[];
     info: string;
     totalPage: number;
+    currentPage: number;
+    hasTotal: boolean;
+    isLoading: boolean;
 }

@@ -3,28 +3,43 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
+import * as Utility from '../../Utility';
 import { UserCenterExactActivitiesPost } from './UserCenterExactActivitiesPost';
 import { UserRecentPost } from '../../States/AppState';
 import { RouteComponent } from '../app';
 import { UserCenterPageCount } from './UserCenterPageCount';
-import * as Utility from '../../Utility';
 
 /**
  * 用户中心我的主题组件
  */
-export class UserCenterMyPostsExact extends RouteComponent<null, UserCenterMyPostsExactState, {page}> {
+export class UserCenterMyPostsExact extends React.Component<{match}, UserCenterMyPostsExactState> {
     constructor(props, contest) {
         super(props, contest);
         const postCount = Utility.getLocalStorage('userInfo').postCount;
         this.state = {
             userRecentPosts: [],
-            totalPage: this.match.params.page || 1
+            totalPage: (this.props.match.params.page || 1) + 1,
+            currentPage: this.props.match.params.page,
+            hasTotal: false,
+            isLoading: true
         };
     }
 
-    async componentDidMount() {
+    componentDidUpdate() {
+        if (this.state.currentPage !== this.props.match.params.page) {
+            this.setState({ currentPage: this.props.match.params.page });
+            this.getInfo(this.props.match.params.page);
+        }
+    }
+
+    componentDidMount() {
+        this.getInfo(this.props.match.params.page);
+    }
+
+    getInfo = async (page = 1) => {
         try {
-            const page = this.match.params.page || 1;
+            window.scroll(0, 0);
+            this.setState({ isLoading: true });
             const url = `http://apitest.niconi.cc/me/recent-topic?from=${(page - 1) * 10}&size=11`
             const token = Utility.getLocalStorage("accessToken");
             const headers = new Headers();
@@ -36,27 +51,27 @@ export class UserCenterMyPostsExact extends RouteComponent<null, UserCenterMyPos
                 throw {};
             }
             let data = await res.json();
-            let posts: UserRecentPost[] = [],
-                i = data.length;
+            let userRecentPosts: UserRecentPost[] = [],
+                i = data.length,
+                totalPage: number;
 
             if (i <= 10) {
-                this.setState({
-                    totalPage: Number.parseInt(page)
-                });
+                totalPage = Number.parseInt(this.props.match.params.page);
+                this.setState({ hasTotal: true });
             } else {
-                this.setState({
-                    totalPage: Number.parseInt(page) + 1
-                });
+                totalPage = Math.max(Number.parseInt(this.props.match.params.page || 1) + 1, this.state.totalPage);
                 i = 10;
             }
 
             while (i--) {
                 let post = await this.item2post(data[i]);
-                posts.unshift(post);
+                userRecentPosts.unshift(post);
             }
 
             this.setState({
-                userRecentPosts: posts
+                userRecentPosts,
+                totalPage,
+                isLoading: false
             });
         } catch (e) {
             console.log('我的主题加载失败');
@@ -79,13 +94,15 @@ export class UserCenterMyPostsExact extends RouteComponent<null, UserCenterMyPos
     }
 
     render() {
+        if (this.state.isLoading) {
+            return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
+        }
         if (this.state.userRecentPosts.length === 0) {
             return (<div className="user-posts">
                 没有主题
             </div>
                 );
-        }
-
+        }        
         //state转换为JSX
         const userRecentPosts = this.state.userRecentPosts.map((item) => (<UserCenterExactActivitiesPost userRecentPost={item} />));
         //添加分隔线
@@ -95,7 +112,7 @@ export class UserCenterMyPostsExact extends RouteComponent<null, UserCenterMyPos
         return (
             <div className="user-posts">
                 {userRecentPosts}
-                <UserCenterPageCount currentPage={this.match.params.page || 1} totalPage={this.state.totalPage} href="/usercenter/myposts/" hasTotal={false}/>
+                <UserCenterPageCount currentPage={this.props.match.params.page || 1} totalPage={this.state.totalPage} href="/usercenter/myposts/" hasTotal={this.state.hasTotal}/>
             </div>
         );
     }
@@ -104,6 +121,9 @@ export class UserCenterMyPostsExact extends RouteComponent<null, UserCenterMyPos
 interface UserCenterMyPostsExactState {
     userRecentPosts: UserRecentPost[];
     totalPage: number;
+    currentPage: number;
+    hasTotal: boolean;
+    isLoading: boolean;
 }
 
 interface itemType {
