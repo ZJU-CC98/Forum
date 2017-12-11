@@ -3,6 +3,7 @@
   "name": "cc98-forum",
   "private": true,
   "dependencies": {
+    "blueimp-canvas-to-blob": "3.14.0",
     "bootstrap": "3.3.7",
     "codemirror": "5.32.0",
     "editor.md": "^1.5.0",
@@ -17,8 +18,7 @@
     "react-router-dom": "4.1.2",
     "redux": "3.7.2",
     "signalr": "2.2.2",
-    "ssri": "^4.1.6",
-    "blueimp-canvas-to-blob": "3.14.0"
+    "ssri": "^4.1.6"
   },
   "devDependencies": {
     "@types/jquery": "3.2.16",

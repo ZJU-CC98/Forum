@@ -20,12 +20,10 @@ export class UserCenterBeforeConnect extends React.Component<{ isLogOn, throwErr
                     <div className="user-center-head">
                         <p>个人中心</p>
                     </div>
-                    <Router>
-                        <div className="user-center-body">
-                            <UserCenterNavigation />
-                            <UserCenterRouter />
-                        </div>
-                    </Router>
+                    <div className="user-center-body">
+                        <UserCenterNavigation />
+                        <UserCenterRouter />
+                    </div>
                 </div>
             </div>
         );

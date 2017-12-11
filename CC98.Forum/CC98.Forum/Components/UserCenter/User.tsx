@@ -16,12 +16,10 @@ export class User extends React.Component {
                 <div className="user-center-head">
                     <p>用户详情</p>
                 </div>
-                <Router>
-                    <div className="user-center-body">
-                        <UserNavigation />
-                        <UserRouter />
-                    </div>
-                </Router>
+                <div className="user-center-body">
+                    <UserNavigation />
+                    <UserRouter />
+                </div>
             </div>
         </div>);
     }

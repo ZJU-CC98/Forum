@@ -5,6 +5,7 @@
 import * as React from 'react';
 import { UserFavoritesBoardInfo } from '../../states/AppState';
 import * as Utility from '../../Utility';
+import { Link } from 'react-router-dom';
 
 export class UserCenterMyFavoritesBoard extends React.Component<UserCenterMyFavoritesBoardProps, UserCenterMyFavoritesBoardState> {
     constructor(props) {
@@ -89,7 +90,7 @@ export class UserCenterMyFavoritesBoard extends React.Component<UserCenterMyFavo
     render() {
         return (
             <div className='user-center-myfavorite-board'>
-                <a href={`/list/${this.props.UserFavoritesBoard.id}/normal`} title={this.props.UserFavoritesBoard.name}><img></img></a>
+                <Link to={`/list/${this.props.UserFavoritesBoard.id}/normal`} title={this.props.UserFavoritesBoard.name}><img></img></Link>
                 <div className='user-center-myfavorite-board-info'>
                     <p>版主：{this.props.UserFavoritesBoard.boardMasters.join(' ')}</p>
                     <p>今日主题 {this.props.UserFavoritesBoard.todayCount} / 总主题 {this.props.UserFavoritesBoard.topicCount}</p>
