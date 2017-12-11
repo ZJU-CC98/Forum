@@ -11,20 +11,42 @@ import { UserCenterPageCount } from './UserCenterPageCount';
 import * as Utility from '../../Utility';
 
 //用户中心我的粉丝组件
-export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState, {page}> {
+export class UserCenterMyFans extends React.Component<{match}, UserCenterMyFansState> {
     constructor(props, contest) {
         super(props, contest);
         this.state = {
             userFans: [],
             totalPage: 2,
-            info: '加载中'
+            info: '加载中',
+            currentPage: this.props.match.params.page
         };
     }
 
+    componentDidUpdate() {
+        if (this.state.currentPage !== this.props.match.params.page) {
+            this.setState({ currentPage: this.props.match.params.page});
+            this.getInfo(this.props.match.params.page);
+        }
+    }
+
     async componentDidMount() {
+        this.getInfo(this.props.match.params.page);
+        const userid = Utility.getLocalStorage('userInfo').id;
+        try {
+            const url = `http://apitest.niconi.cc/user/follower/count?userid=${userid}`
+            let res = await fetch(url);
+            let fanCounts: number = await res.json();
+            this.setState({
+                totalPage: fanCounts % 10 === 0 ? fanCounts / 10 : Math.floor((fanCounts / 10)) + 1
+            });
+        } catch (e) {
+
+        }
+    }
+
+    getInfo = async (page = 1) => {
         try {
             const token = Utility.getLocalStorage("accessToken");
-            const page = this.match.params.page || 1;
             let url = `http://apitest.niconi.cc/me/follower?from=${(page - 1) * 10}&size=10`;
             const headers = new Headers();
             headers.append('Authorization', token);
@@ -62,17 +84,11 @@ export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState
                     userFanInfo.isFollowing = data2.isFollowing;
                     fans.unshift(userFanInfo);
                 }
-
-
-                const userid = Utility.getLocalStorage('userInfo').id;
-
-                url = `http://apitest.niconi.cc/user/follower/count?userid=${userid}`
-                res = await fetch(url);
-                let fanCounts: number = await res.json();
+                
                 this.setState({
-                    userFans: fans,
-                    totalPage: fanCounts % 10 === 0 ? fanCounts / 10 : Math.floor((fanCounts / 10)) + 1
+                    userFans: fans
                 });
+                window.scroll(0,0);
             } else {
                 throw {};
             }
@@ -82,8 +98,6 @@ export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState
     }
 
     render() {
-        let page = this.match.params.page || 1;
-
         if (this.state.userFans.length === 0) {
             return (<div className="user-center-myfans">
                 {this.state.info}
@@ -101,7 +115,7 @@ export class UserCenterMyFans extends RouteComponent<null, UserCenterMyFansState
             <div className="user-center-myfans-exact">
                 {userFans}
             </div>
-            <UserCenterPageCount currentPage={parseInt(page)} totalPage={this.state.totalPage} href="/usercenter/myfans/" hasTotal={true}/>
+            <UserCenterPageCount currentPage={parseInt(this.props.match.params.page || 1)} totalPage={this.state.totalPage} href="/usercenter/myfans/" hasTotal={true}/>
         </div>);
     }
 }
@@ -110,4 +124,5 @@ interface UserCenterMyFansState {
     userFans: UserFanInfo[];
     totalPage: number;
     info: string;
+    currentPage: number;
 }

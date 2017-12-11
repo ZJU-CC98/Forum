@@ -16,22 +16,13 @@ import { ReplierSignature } from './Topic-ReplierSignature';
 import { PostManagement } from './Topic-PostManagement';
 import { Judge } from './Topic-Judge';
 import { Pager } from '../Pager';
+import { RouteComponent } from '../RouteComponent';
 declare let moment: any;
-
-export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
-
-    constructor(props?, context?) {
-        super(props, context);
-    }
-    get match(): match<TMatch> {
-        return (this.props as any).match;
-    }
-}
-
 export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, userId,topicInfo,boardInfo }, { topicid, page, userId }> {
     constructor(props, context) {
         super(props, context);
-        this.state = { page: 1, topicid: this.match.params.topicid, totalPage: 1, userId: 559244, topicInfo: { replyCount: 0 }, boardInfo: null};
+        this.state = {
+            page: 1, topicid: this.match.params.topicid, totalPage: 1, userId: this.match.params.userId, topicInfo: { replyCount: 0 }, boardInfo: {masters:[],id:7} };
     }
     async componentWillReceiveProps(newProps) {
         let page: number;
@@ -69,11 +60,13 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
             topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={this.state.userId} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} />;
         }
         const url = `/topic/${this.match.params.topicid}/user/${this.match.params.userId}/`;
-        return <div className="center" style={{width:"1140px"}} >
-            <Pager page={this.state.page} totalPage={this.state.totalPage} url={url}/>
+        return <div className="center" style={{ width: "1140px" }} >
+            <div style={{ width:"100%" }}>
+            <Pager page={this.state.page} totalPage={this.state.totalPage} url={url}/></div>
             {topic}
             <Reply topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} page={this.state.page} topicId={this.state.topicid} userId={this.state.userId} />
-            <Pager page={this.state.page} totalPage={this.state.totalPage} url={url} />
+            <div style={{ width: "100%" }}>
+            <Pager page={this.state.page} totalPage={this.state.totalPage} url={url} /></div>
         </div>
             ;
 
@@ -112,7 +105,7 @@ export class Reply extends React.Component<{ topicId, page, topicInfo, boardInfo
         this.setState({ contents: realContents, masters: masters });
             }
     private generateContents(item: ContentState) {
-        return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin" }}>
+        return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin", backgroundColor:"#fff" }}>
             <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isDeleted={item.isDeleted} />
             <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
             <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={item.privilege} />

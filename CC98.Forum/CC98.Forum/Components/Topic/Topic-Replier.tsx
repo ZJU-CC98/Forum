@@ -3,11 +3,15 @@ import { Link} from 'react-router-dom';
 import { RouteComponent } from '../RouteComponent';
 import { UserDetails } from './Topic-UserDetails';
 declare let moment: any;
-export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, userName, replyTime, floor, userImgUrl, sendTopicNumber, privilege,isDeleted }, {}, { topicid }>{
+export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, userName, replyTime, floor, userImgUrl, sendTopicNumber, privilege,isDeleted }, {traceMode}, { topicid}>{
     constructor(props, content) {
         super(props, content);
+        this.changeTraceMode = this.changeTraceMode.bind(this);
+        this.state = { traceMode: false };
     }
-
+    changeTraceMode() {
+        this.setState({ traceMode: this.state.traceMode === true ? false : true });
+    }
     render() {
         const url = `/user/${this.props.userId}`;
         const realUrl = encodeURI(url);
@@ -17,6 +21,7 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
             urlHtml = <img src={this.props.userImgUrl}></img>;
         }
         const curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userId}`;
+        const normalUrl = `/topic/${this.props.topicid}`;
         $(document).ready(function () {
             $(".authorImg").mouseenter(function (event: JQuery.Event) {
                 const currentImage = event.currentTarget;
@@ -79,8 +84,8 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
                     <Link className="operation" to="">引用</Link>
                     <Link className="operation" to="">编辑</Link>
                     <Link className="operation" to={email}>私信</Link>
-                    <Link className="operation" to="">举报</Link>
-                    <Link className="operation" to={curUserPostUrl}>只看此用户</Link>
+                        <Link className="operation" to="">举报</Link>
+                        <Link className="operation" to={this.state.traceMode === true ? normalUrl : curUserPostUrl} onClick={this.changeTraceMode}>{this.state.traceMode === true ? "返回":"只看此用户"}</Link>
                     </div>
                    </div>
             </div></div>;

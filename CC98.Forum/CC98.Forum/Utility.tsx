@@ -2331,7 +2331,7 @@ export async function addBoardTopTopic(topicId, boardId, topState, days, reason)
     const content = { 'topState': topState, 'duration': days, 'reason': reason };
     const response = await fetch(
 
-        `http://apitest.niconi.cc/manage/settop?topicid=${topicId}&boardid=${boardId}`,
+        `http://apitest.niconi.cc/topic/${topicId}/top`,
         {
             method: "PUT",
             headers,
@@ -2345,7 +2345,7 @@ export async function removeBoardTopTopic(topicId, boardId, reason) {
     const content = reason;
     const response = await fetch(
 
-        `http://apitest.niconi.cc/manage/deletetop?topicid=${topicId}&boardid=${boardId}`,
+        `http://apitest.niconi.cc/topic/${topicId}/top`,
         {
             method: "DELETE",
             headers,

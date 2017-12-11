@@ -78,7 +78,7 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
         return (
             <div className="user-profile">
                 <div id="userId">
-                    <div id="userId"><p>{this.props.userInfo.name}
+                    <div id="userId"><p>{this.props.userInfo.name}      
                         <span style={{ fontSize: '12px', color: this.getPrivilegeColor() }}>{this.props.userInfo.privilege}</span></p>
                         <button type="button" onClick={() => { location.href = `/message/message?id=${this.props.userInfo.id}`; }}>私信</button>
                         <button type="button"

@@ -89,6 +89,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
                             Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 2, this.state.days, this.state.reason);
                             break;
                         case '全站固顶':
+                            console.log("全站固定");
                             Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 4, this.state.days, this.state.reason);
                             break;
                         case '锁定':

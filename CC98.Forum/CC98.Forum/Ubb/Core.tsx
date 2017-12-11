@@ -314,8 +314,8 @@ class UbbTagSegment extends UbbSegment {
 
 				console.warn('标签 %s 没有正确关闭，已经被转换为纯文字。', seg.tagData.tagName);
 
-                // 未关闭标签，自己将被转换为纯文字
-                newParent._subSegments.push(new UbbTextSegment(seg.tagData.startTagString, segment.parent));
+				// 未关闭标签，自己将被转换为纯文字
+				newParent._subSegments.push(new UbbTextSegment(seg.tagData.startTagString, segment.parent));
 
 				// 自己的下级将被递归强制关闭，并提升为和自己同级
 				for (const sub of seg._subSegments) {
@@ -639,8 +639,8 @@ export class UbbTagData {
 	 */
 	value(indexOrName: number | string): string {
 
-        if (typeof indexOrName === 'number') {
-            return this._parameters[indexOrName].value;
+		if (typeof indexOrName === 'number') {
+			return this._parameters[indexOrName].value;
 		} else if (typeof indexOrName === 'string') {
 			return this._namedParameters[indexOrName];
 		} else {
@@ -655,14 +655,14 @@ export class UbbTagData {
 	 */
 	name(index: number) {
 		return this._parameters[index].name;
-    }
+	}
 
     /**
      * 获取当前标签中包含的参数的个数。
      */
-    get parameterCount(): number {
-        return this._parameters.length;
-    }
+	get parameterCount(): number {
+		return this._parameters.length;
+	}
 
 	/**
 	 * 获取给定的参数。
@@ -713,6 +713,44 @@ class UbbTagParameter {
 }
 
 /**
+ * 定义标签的处理模式。
+ */
+export enum UbbTagMode {
+
+	/**
+	 * 标签内部允许其它 UBB 标签。处理程序将递归处理子内容，直到遇到该标签的结束标签。
+	 */
+	Recursive,
+	/**
+	 * 标签内部只允许纯文字，处理程序将不在递归解析内容，而是直接寻找结束标签，并将中间的内容作为纯文字进行处理。
+	 */
+	Text,
+	/**
+	 * 标签是不允许内容。在这种状况下，标签之后的内容将被视为和标签同级的新内容；一个例外情况是在标签标记后直接写入结束标记，如果遇到这种情况，则忽略结束标记。
+	 */
+	Empty
+}
+
+/**
+ * 表示 UBB 文字处理程序的基类。
+ */
+export abstract class UbbTextHandler {
+
+	/**
+	 * 获取或设置该文字处理程序支持的内容。
+	 */
+	abstract get supportedContent(): string | RegExp;
+
+	/**
+	 * 处理给定的内容并返回处理结果。
+	 * @param match 通过对内容使用 supportedContent 属性进行正则匹配产生的匹配结果。
+	 * @param context UBB 处理上下文对象。
+	 * @returns {string} 处理后返回的结果。
+	 */
+	abstract exec(match: RegExpMatchArray, context: UbbCodeContext): ReactNode;
+}
+
+/**
  * 定义 UBB 处理程序的基类。
  */
 export abstract class UbbTagHandler {
@@ -729,6 +767,15 @@ export abstract class UbbTagHandler {
 	 * @param context UBB 处理上下文。
 	 */
 	abstract exec(tagSegment: UbbTagSegment, context: UbbCodeContext): ReactNode;
+
+	/**
+	 * 调用该处理程序处理给定的 UBB 内容。
+	 * @param tagSegment 标签
+	 * @param context
+	 */
+	getTagMode(tagSegment: UbbTagSegment, context: UbbCodeContext): UbbTagMode {
+		return UbbTagMode.Recursive;
+	}
 
 	/**
 	 * 在解析完成处理标签内部的内容后，将标签本身作为文本处理。
@@ -806,6 +853,11 @@ class UbbHandlerList {
 	private _unnamedTagHanlderList: UbbTagHandler[] = [];
 
 	/**
+	 * 文字处理标签程序列表。
+	 */
+	private _textHandlers: UbbTextHandler[] = [];
+
+	/**
 	 * 获取给定标签名称的处理程序。
 	 * @param supportedTagNames 标签名称。
 	 * @returns {UbbTagHandler} 标签处理程序。
@@ -860,6 +912,28 @@ class UbbHandlerList {
 	}
 
 	/**
+	 * 注册一个给定的文字处理程序。
+	 * @param textHandlerClass 文字处理程序对象的类型。
+	 */
+	registerText(textHandlerClass: (new () => UbbTextHandler)) {
+		// ReSharper disable once InconsistentNaming
+		this.registerTextInstance(new textHandlerClass());
+	}
+
+	/**
+	 * 注册一个文本处理程序实例。
+	 * @param textHandler 要注册的文本处理程序。
+	 */
+	registerTextInstance(textHandler: UbbTextHandler) {
+
+		if (!textHandler) {
+			throw new Error('参数 textHandler 无效。');
+		}
+
+		this._textHandlers.push(textHandler);
+	}
+
+	/**
 	 * 注册命名处理程序的核心方法。
 	 * @param tagNames 处理程序关联的一个或多个标签名。
 	 * @param tagHandler 处理程序对象。
@@ -894,6 +968,19 @@ export class UbbCodeEngine {
 	 * 获取该引擎中注册的处理程序。
 	 */
 	private _tagHandlers = new UbbHandlerList();
+
+	/**
+	 * 获取或设置该引擎中注册的文字处理程序。
+	 */
+	private _textHandlers: UbbTextHandler[] = [];
+
+	/**
+	 * 获取该引擎中注册的文字处理程序。
+	 * @returns {UbbTextHandler[]} 该引擎中注册的文字处理程序。
+	 */
+	get textHandlers(): UbbTextHandler[] {
+		return this._textHandlers;
+	}
 
 	/**
 	 * 该引擎中注册的处理程序。
@@ -1030,8 +1117,8 @@ export class UbbCodeEngine {
 	private execCore(content: string, context: UbbCodeContext): ReactNode {
 
 		const root = new UbbTagSegment(null, null);
-        UbbCodeEngine.buildSegmentsCore(content, root);
-        root.close();
+		UbbCodeEngine.buildSegmentsCore(content, root);
+		root.close();
 
 		const result: ReactNode[] = [];
 
@@ -1042,10 +1129,53 @@ export class UbbCodeEngine {
 		return result;
 	}
 
+	/**
+	 * 执行文本替换的核心方法。
+	 * @param text 文本内容。
+	 * @param context UBB 上下文对象。
+	 */
+	execTextCore(text: string, context: UbbCodeContext): ReactNode {
+
+		for (const textHandler of this.textHandlers) {
+
+			// 尝试匹配内容
+			const matchResult = text.match(textHandler.supportedContent);
+
+			// 如果未匹配到内容，返回下一个
+			if (!matchResult) {
+				continue;
+			}
+
+			const before = text.substr(0, matchResult.index);
+			const after = text.substr(matchResult.index + matchResult[0].length);
+
+
+			const result: ReactNode[] = [];
+
+			if (before) {
+				result.push(this.execTextCore(before, context));
+			}
+
+			result.push(textHandler.exec(matchResult, context));
+
+			if (after) {
+				result.push(this.execTextCore(after, context));
+			}
+
+			return result;
+		}
+
+		// 未找到任何处理程序
+		return text;
+	}
+
 	execSegment(segment: UbbSegment, context: UbbCodeContext): ReactNode {
 
 		if (segment.type === UbbSegmentType.Text) {
-			return (segment as UbbTextSegment).text;
+
+			const text = (segment as UbbTextSegment).text;
+			return this.execTextCore(text, context);
+
 		} else {
 			const tag = segment as UbbTagSegment;
 			const handler = this.getHandler(tag.tagData.tagName);

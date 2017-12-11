@@ -87,6 +87,7 @@
     <None Remove="Ubb\UnresolvedTagHandler.tsx" />
     <None Remove="Ubb\UploadTagHandler.tsx" />
     <None Remove="Ubb\URLTagHandler.tsx" />
+    <None Remove="Ubb\UrlTextHandler.tsx" />
     <None Remove="Ubb\UserTagHandler.tsx" />
     <None Remove="Ubb\UTagHandler.tsx" />
   </ItemGroup>
@@ -184,6 +185,7 @@
     <TypeScriptCompile Include="Ubb\UnresolvedTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\UploadTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\UrlTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\UrlTextHandler.tsx" />
     <TypeScriptCompile Include="Ubb\UserTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\UTagHandler.tsx" />
   </ItemGroup>
