@@ -54,7 +54,7 @@ export class UserCenterConfigOthers extends React.Component<{ userinfo: UserInfo
             </div>
             <div className="config-text">
                 <p>QQ：</p>
-                <input type="number" name="QQ" value={this.props.userinfo.QQ} maxLength={20} onChange={(e) => { this.props.handleChange(e.target.name, e.target.value) }}></input>
+                <input type="text" name="QQ" value={this.props.userinfo.QQ} maxLength={20} onChange={(e) => { this.props.handleChange(e.target.name, e.target.value) }}></input>
             </div>
             <div className="config-text">
                 <p>邮箱：</p>

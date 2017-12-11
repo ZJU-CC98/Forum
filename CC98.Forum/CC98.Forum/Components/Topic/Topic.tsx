@@ -26,6 +26,7 @@ import { AuthorMessage } from './Topic-AuthorMessage';
 import { Pager } from '../Pager';
 import { PostTopic } from './Topic-Topic';
 import { Reply } from './Topic-Reply';
+import { NotFoundTopic, UnauthorizedTopic } from '../Status';
 
 declare let moment: any;
 declare let editormd: any;
@@ -34,19 +35,20 @@ declare let editormd: any;
 export module Constants {
     export var testEditor;
 }
-export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName,boardId,topicInfo,boardInfo }, { topicid, page, userName }> {
+export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName,boardId,topicInfo,boardInfo,fetchState }, { topicid, page, userName }> {
     constructor(props, context) {
         super(props, context);
         this.update = this.update.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.state = {
-            page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null, boardId: 7, topicInfo: { replyCount: 0 }, boardInfo: {masters:[],id:7}
+            page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null, boardId: 7, topicInfo: { replyCount: 0 }, boardInfo: { masters: [], id: 7 }, fetchState:'ok'
         };
     }
     update() {
         this.setState({});
     }
     async handleChange() {
+        const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
         let page: number;
         if (!this.match.params.page) {
             page = 1;
@@ -54,7 +56,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         else { page = parseInt(this.match.params.page); }
         const totalPage = await this.getTotalPage(this.state.topicInfo.replyCount);
         const userName = this.match.params.userName;
-        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName });
+        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName ,topicInfo:topicInfo});
     }
     async componentWillReceiveProps(newProps) {
         let page: number;
@@ -73,31 +75,39 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo });
     }
 
-    async componentDidMount() {
+    async componentWillMount() {
 
         let page: number;
         if (!this.match.params.page) {
             page = 1;
         }
-        else { page = parseInt(this.match.params.page); }
-       
+        else { page = parseInt(this.match.params.page); }    
         const userName = this.match.params.userName;
         const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
-        const boardId = topicInfo.boardId;
-        const boardInfo = await Utility.getBoardInfo(boardId);
-        const totalPage = this.getTotalPage(topicInfo.replyCount);
-        console.log("totalpage=" + totalPage);
-        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo ,boardInfo:boardInfo});
+        if (typeof topicInfo !== 'string') {
+            const boardId = topicInfo.boardId;
+            const boardInfo = await Utility.getBoardInfo(boardId);
+            const totalPage = this.getTotalPage(topicInfo.replyCount);
+            this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo, fetchState: topicInfo });
+        } else {
+            this.setState({ fetchState: topicInfo });
+        }
+        
     }
     getTotalPage(count) {
         return Utility.getTotalPageof10(count);
     }
 
-    returnTopic() {
-        return <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} />;
 
-    }
     render() {
+        switch (this.state.fetchState) {
+            case 'ok':
+                return <div></div>;
+            case 'not found':
+                return <NotFoundTopic />;
+            case 'unauthorized':
+                return <UnauthorizedTopic />;
+        }
         let topic = null;
         let hotReply = null;
         if (this.state.page === 1) {
@@ -113,7 +123,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
             {topic}
             {hotReply}
 
-            <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} />
+            <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} updateTime={Date.now()} />
 
             <div style={{ display: "flex", width: "100%", justifyContent: "flex-end" }}><Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
             <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardId} boardInfo={this.state.boardInfo} />

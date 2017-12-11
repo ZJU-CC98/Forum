@@ -289,12 +289,42 @@ export class InputMdContent extends React.Component<{ ready, onChange }, { conte
         super(props);
         this.state = ({ content: "" });
     }
-    componentDidMount() {
+    componentDidUpdate() {
+        editormd.emoji.path = '/images/emoji/';
         Constants.testEditor = editormd("test-editormd", {
             width: "100%",
             height: 680,
             path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false
+            saveHTMLToTextarea: false,
+            emoji: true,
+            toolbarIcons: function () {
+                return [
+                    "undo", "redo", "|", "emoji",
+                    "bold", "del", "italic", "quote",  "|",
+                    "h1", "h2", "h3", "h4", "|",
+                    "list-ul", "list-ol", "hr", "|",
+                    "link", "image", "code", "table", "html-entities",
+                ]
+            },
+        });
+    }
+    componentDidMount() {
+        editormd.emoji.path = '/images/emoji/';
+        Constants.testEditor = editormd("test-editormd", {
+            width: "100%",
+            height: 680,
+            path: "/scripts/lib/editor.md/lib/",
+            saveHTMLToTextarea: false,
+            emoji: true,
+            toolbarIcons: function () {
+                return [
+                    "undo", "redo", "|", "emoji",
+                    "bold", "del", "italic", "quote", "|",
+                    "h1", "h2", "h3", "h4", "|",
+                    "list-ul", "list-ol", "hr", "|",
+                    "link", "image", "code", "table", "html-entities",
+                ]
+            },
         });
     }
     send() {

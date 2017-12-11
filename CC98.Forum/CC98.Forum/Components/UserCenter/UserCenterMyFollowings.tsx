@@ -17,7 +17,8 @@ export class UserCenterMyFollowings extends React.Component<{match}, UserCenterM
             userFollowings: [],
             totalPage: 2,
             info: '加载中',
-            currentPage: this.props.match.params.page
+            currentPage: this.props.match.params.page,
+            isLoading: true
         };
     }
 
@@ -50,6 +51,8 @@ export class UserCenterMyFollowings extends React.Component<{match}, UserCenterM
 
     getInfo = async (page = 1) => {
         try {
+            window.scroll(0, 0);
+            this.setState({ isLoading: true });
             const token = Utility.getLocalStorage("accessToken");
             let url = `http://apitest.niconi.cc/me/followee?from=${(page - 1) * 10}&size=10`;
             const headers = new Headers();
@@ -66,7 +69,8 @@ export class UserCenterMyFollowings extends React.Component<{match}, UserCenterM
 
             if (!data || !data.length) {
                 this.setState({
-                    info: '没有关注'
+                    info: '没有关注',
+                    isLoading: false
                 });
                 return false;
             }
@@ -94,15 +98,18 @@ export class UserCenterMyFollowings extends React.Component<{match}, UserCenterM
             }
 
             this.setState({
-                userFollowings: fans
+                userFollowings: fans,
+                isLoading: false
             });
-            window.scroll(0,0);
         } catch (e) {
 
         }
     }
 
     render() {
+        if (this.state.isLoading) {
+            return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
+        }
         if (this.state.userFollowings.length === 0) {
             return (
                 <div className="user-center-myfollowings">
@@ -110,7 +117,6 @@ export class UserCenterMyFollowings extends React.Component<{match}, UserCenterM
                 </div>
                 );
         }
-
         //state转换为JSX
         const userFollowings = this.state.userFollowings.map((item) => (<UserCenterMyFollowingsUser userFanInfo={item} />));
         //添加分隔线
@@ -133,4 +139,5 @@ interface UserCenterMyFollowingsState {
     totalPage: number;
     info: string;
     currentPage: number;
+    isLoading: boolean;
 }

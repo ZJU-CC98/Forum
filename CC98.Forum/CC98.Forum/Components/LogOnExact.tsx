@@ -14,7 +14,8 @@ class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff}, LogO
         this.state = {
             loginName: '',
             loginPassword: '',
-            loginMessage: ''
+            loginMessage: '',
+            isLoging: false
         };
 
         this.handleNameChange = this.handleNameChange.bind(this);
@@ -45,7 +46,7 @@ class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff}, LogO
         e.preventDefault();
 
         //如果在登录中则无视提交
-        if (this.props.isLogOn) {
+        if (this.state.isLoging) {
             return false;
         }
 
@@ -68,7 +69,8 @@ class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff}, LogO
 
         //登录
         this.setState({
-            loginMessage: '登录中'
+            loginMessage: '登录中',
+            isLoging: true
         });
         this.props.logOff();
 
@@ -129,7 +131,8 @@ class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff}, LogO
         //alert(e.error);     这行好像没什么用……暂时还不会处理不同的error……
         console.log("Oops, error", e);
         this.setState({
-            loginMessage: `登录失败`
+            loginMessage: `登录失败`,
+            isLoging: false
         });
         this.props.logOff();
     }
@@ -149,7 +152,7 @@ class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff}, LogO
                                 <p>密码</p><input name="password" type="password" id="loginPassword" onChange={this.handlePasswordChange} autoComplete="current-password"/>
                             </div>
                             <p id="loginMessage">{this.state.loginMessage}</p>
-                            <button type="submit" disabled={this.props.isLogOn}>登录账号</button>
+                            <button type="submit" disabled={this.state.isLoging}>登录账号</button>
                         </form>
                         <p><span>还没账号？我要 <a href="">注册</a></span></p>
                     </div>
@@ -175,6 +178,10 @@ class LogOnState {
     * 登录信息
     */
     loginMessage: string;
+    /**
+     * 是否在登录过程中
+     */
+    isLoging: boolean;
 }
 
 function mapState(state) {

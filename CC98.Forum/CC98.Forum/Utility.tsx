@@ -35,15 +35,11 @@ export async function getBoardTopicAsync(curPage, boardId,totalTopicCount) {
         const response = await fetch(url,
             { headers });
         //无权限进版面
-        if (response.status === 401) {
-            //window.location.href = '/status/UnauthorizedBoard';
-        }
-        //版面不存在
-        if (response.status === 404) {
-            //window.location.href = '/status/NotFoundBoard';
-        }
-        if (response.status === 500) {
-            //window.location.href = '/status/ServerError';
+        switch (response.status) {
+            case 401:
+                return 'unauthorized';
+            case 404:
+                return 'not found';
         }
         const data: State.TopicTitleAndContentState[] = await response.json();
         for (let i = 0; i < topicNumberInPage; i++) {
@@ -1102,21 +1098,9 @@ export async function sortContactList(recentContact, router) {
 }
 */
 
-export async function getUserDetails(userName, router) {
+export async function getUserDetails(userId) {
     try {
-        const headers = formAuthorizeHeader();
-        let url = `http://apitest.niconi.cc/user/name/${userName}`;
-        let message = await fetch(url, { headers });
-        if (message.status === 404) {
-            //window.location.href = "/status/NotFoundUser";
-            return null;
-        }
-        if (message.status === 500) {
-            //window.location.href = "/status/ServerError";
-            return null;
-        }
-        let data = await message.json();
-
+        const data = await getUserInfo(userId);
         const body = { portraitUrl: data.portraitUrl, userName: data.name, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle, isFollowing: data.isFollowing }
         return body;
     } catch (e) {
@@ -2036,8 +2020,8 @@ export function getBoardId(boardName: string) {
     return boardResult;
 }
 export function isFollowThisBoard(boardId) {
+    if (!getLocalStorage("userInfo")) return false;
     const customBoards = getLocalStorage("userInfo").customBoards;
-    if (!customBoards) return false;
     for (let item of customBoards) {
         console.log(item);
         if (item == boardId) {
@@ -2111,7 +2095,7 @@ export async function getMessageSystem(from: number, size: number, router) {
             //window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
-        console.log(newTopic);
+   
         for (let i in newTopic) {
             if (newTopic[i].postId) {
                 let response0 = await fetch(`http://apitest.niconi.cc/post/${newTopic[i].postId}/basic`, { headers: myHeaders });
@@ -2493,6 +2477,8 @@ export async function getTopicInfo(topicId) {
     const headers = formAuthorizeHeader();
     const url = `http://apitest.niconi.cc/topic/${topicId}`;
     const response = await fetch(url, { headers });
+   
+
     const data = await response.json();
     return data;
 }
@@ -2500,6 +2486,12 @@ export async function getBoardInfo(boardId) {
     const headers = formAuthorizeHeader();
     const url = `http://apitest.niconi.cc/board/${boardId}`;
     const response = await fetch(url, { headers });
+    switch (response.status) {
+        case 401:
+            return 'unauthorized';
+        case 404:
+            return 'not found';
+    }
     const data = await response.json();
     return data;
 }
@@ -2511,12 +2503,46 @@ export function getTotalPageof10(replyCount) {
     }
 }
 export async function getUserInfo(userId) {
-    const key = `user_${userId}`;
+    const key = `userId_${userId}`;
     if (getLocalStorage(key)) return getLocalStorage(key);
     const headers = formAuthorizeHeader();
     const url = `http://apitest.niconi.cc/user/${userId}`;
     const response = await fetch(url, { headers });
     const data = await response.json();
-    setLocalStorage(key, data,3600);
+    const key1 = `userName_${data.name}`;
+    setLocalStorage(key, data, 3600);
+    setLocalStorage(key1, data, 3600);
     return data;
+}
+export async function getUserInfoByName(userName) {
+    const key = `userName_${userName}`;
+    if (getLocalStorage(key)) return getLocalStorage(key);
+    const headers = formAuthorizeHeader();
+    const url = `http://apitest.niconi.cc/user/name/${userName}`;
+    const response = await fetch(url, { headers });
+    const data = await response.json();
+    const key1 = `userId_${data.id}`;
+    setLocalStorage(key, data, 3600);
+    setLocalStorage(key1, data, 3600);
+    return data;
+}
+export function isMaster(masters) {
+    if (getLocalStorage("userInfo")) {
+        const privilege = getLocalStorage("userInfo").privilege;
+        const myName = getLocalStorage("userInfo").name;
+        const myId = getLocalStorage("userInfo").id;
+
+        if (privilege === '管理员' || privilege === '超级版主' || (privilege === '全站贵宾' && myId === this.props.userId)) {
+            return true;
+ 
+        }
+
+        if (this.props.masters) {
+            for (let i = 0; i < this.props.masters.length; i++) {
+                if (myName === this.props.masters[i]) {
+                    return true;
+                }
+            }
+        }
+    }
 }
