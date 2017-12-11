@@ -12,19 +12,31 @@ import * as Utility from '../../Utility';
 /**
  * 用户中心我的主题组件
  */
-export class UserCenterMyPostsExact extends RouteComponent<null, UserCenterMyPostsExactState, {page}> {
+export class UserCenterMyPostsExact extends React.Component<{match}, UserCenterMyPostsExactState> {
     constructor(props, contest) {
         super(props, contest);
         const postCount = Utility.getLocalStorage('userInfo').postCount;
         this.state = {
             userRecentPosts: [],
-            totalPage: this.match.params.page || 1
+            totalPage: (this.props.match.params.page || 1) + 1,
+            currentPage: this.props.match.params.page,
+            hasTotal: false
         };
     }
 
-    async componentDidMount() {
+    componentDidUpdate() {
+        if (this.state.currentPage !== this.props.match.params.page) {
+            this.setState({ currentPage: this.props.match.params.page });
+            this.getInfo(this.props.match.params.page);
+        }
+    }
+
+    componentDidMount() {
+        this.getInfo(this.props.match.params.page);
+    }
+
+    getInfo = async (page = 1) => {
         try {
-            const page = this.match.params.page || 1;
             const url = `http://apitest.niconi.cc/me/recent-topic?from=${(page - 1) * 10}&size=11`
             const token = Utility.getLocalStorage("accessToken");
             const headers = new Headers();
@@ -36,28 +48,28 @@ export class UserCenterMyPostsExact extends RouteComponent<null, UserCenterMyPos
                 throw {};
             }
             let data = await res.json();
-            let posts: UserRecentPost[] = [],
-                i = data.length;
+            let userRecentPosts: UserRecentPost[] = [],
+                i = data.length,
+                totalPage: number;
 
             if (i <= 10) {
-                this.setState({
-                    totalPage: Number.parseInt(page)
-                });
+                totalPage = Number.parseInt(this.props.match.params.page);
+                this.setState({ hasTotal: true });
             } else {
-                this.setState({
-                    totalPage: Number.parseInt(page) + 1
-                });
+                totalPage = Math.max(Number.parseInt(this.props.match.params.page || 1) + 1, this.state.totalPage);
                 i = 10;
             }
 
             while (i--) {
                 let post = await this.item2post(data[i]);
-                posts.unshift(post);
+                userRecentPosts.unshift(post);
             }
 
             this.setState({
-                userRecentPosts: posts
+                userRecentPosts,
+                totalPage
             });
+            window.scroll(0,0);
         } catch (e) {
             console.log('我的主题加载失败');
         }
@@ -95,7 +107,7 @@ export class UserCenterMyPostsExact extends RouteComponent<null, UserCenterMyPos
         return (
             <div className="user-posts">
                 {userRecentPosts}
-                <UserCenterPageCount currentPage={this.match.params.page || 1} totalPage={this.state.totalPage} href="/usercenter/myposts/" hasTotal={false}/>
+                <UserCenterPageCount currentPage={this.props.match.params.page || 1} totalPage={this.state.totalPage} href="/usercenter/myposts/" hasTotal={this.state.hasTotal}/>
             </div>
         );
     }
@@ -104,6 +116,8 @@ export class UserCenterMyPostsExact extends RouteComponent<null, UserCenterMyPos
 interface UserCenterMyPostsExactState {
     userRecentPosts: UserRecentPost[];
     totalPage: number;
+    currentPage: number;
+    hasTotal: boolean;
 }
 
 interface itemType {

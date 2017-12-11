@@ -18,13 +18,11 @@ import { UserCenterMyFavoritesBoards } from './UserCenterMyFavoritesBoards';
 export class UserCenterMyFavorites extends React.Component {
     render() {
         return (
-            <Router>
-                <div className="user-center-myfavorites">
-                    <CustomLink to="/usercenter/myfavorites" label="文章" activeOnlyWhenExact={true} /> | <CustomLink to="/usercenter/myfavorites/boards/1" label="版面" activeOnlyWhenExact={false} />
-                    <Route path="/usercenter/myfavorites/boards/1" component={UserCenterMyFavoritesBoards} />
-                    <Route exact path="/usercenter/myfavorites/:page?" component={UserCenterMyFavoritesPosts} />
-                </div>
-            </Router>
+            <div className="user-center-myfavorites">
+                <CustomLink to="/usercenter/myfavorites" label="文章" activeOnlyWhenExact={true} /> | <CustomLink to="/usercenter/myfavorites/boards/1" label="版面" activeOnlyWhenExact={false} />
+                <Route path="/usercenter/myfavorites/boards/1" component={UserCenterMyFavoritesBoards} />
+                <Route exact path="/usercenter/myfavorites/:page?" component={UserCenterMyFavoritesPosts} />
+            </div>
         );
     }
 }
