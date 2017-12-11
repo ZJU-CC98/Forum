@@ -31,7 +31,7 @@ export class List extends RouteComponent<{}, { page:number, boardId: number,boar
 
         // 默认页码
         this.state = {
-            boardId: null, boardInfo: {bigPaper:"",masters:[]},page:1 };
+            boardId: null, boardInfo: {bigPaper:"",masters:[],name:""},page:1 };
     }
   
     async componentWillReceiveProps(newProps) {
@@ -575,8 +575,11 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         if (this.props.replyCount > 100 && this.props.topState === 0) {
             icon = <i style={{ color: "red" }} className="fa fa-envelope-open fa-lg"></i>
         }
-        let curName = Utility.getLocalStorage("userInfo").name;
-        if (!curName) curName = "";
+        let curName;
+        if (Utility.getLocalStorage("userInfo"))
+            curName = Utility.getLocalStorage("userInfo").name;
+        else
+            curName = "";
         if (curName === this.props.userName) {
             icon = <i style={{ color: "#FFC90E" }} className="fa fa-envelope fa-lg"></i>
         }

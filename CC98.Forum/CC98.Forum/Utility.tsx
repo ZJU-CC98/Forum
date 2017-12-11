@@ -2568,3 +2568,10 @@ export function isMaster(masters) {
         }
     }
 }
+export async function getBoardTag(boardId) {
+    const headers = await formAuthorizeHeader();
+    const url = `http://apitest.niconi.cc/board/${boardId}/tag`;
+    const response = await fetch(url, { headers });
+    const data = await response.json();
+    return data;
+}
