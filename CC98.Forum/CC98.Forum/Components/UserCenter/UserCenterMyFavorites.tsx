@@ -19,16 +19,16 @@ export class UserCenterMyFavorites extends React.Component {
     render() {
         return (
             <div className="user-center-myfavorites">
-                <CustomLink to="/usercenter/myfavorites" label="文章" activeOnlyWhenExact={true} /> | <CustomLink to="/usercenter/myfavorites/boards/1" label="版面" activeOnlyWhenExact={false} />
-                <Route path="/usercenter/myfavorites/boards/1" component={UserCenterMyFavoritesBoards} />
-                <Route exact path="/usercenter/myfavorites/:page?" component={UserCenterMyFavoritesPosts} />
+                <CustomLink to="/usercenter/myfavorites/posts" label="文章" /> | <CustomLink to="/usercenter/myfavorites/boards" label="版面" />
+                <Route path="/usercenter/myfavorites/boards" component={UserCenterMyFavoritesBoards} />
+                <Route exact path="/usercenter/myfavorites/posts/:page?" component={UserCenterMyFavoritesPosts} />
             </div>
         );
     }
 }
 
-const CustomLink = ({ label, to, activeOnlyWhenExact }) => (
-    <Route path={to} exact={activeOnlyWhenExact} children={({ match }) => (
+const CustomLink = ({ label, to }) => (
+    <Route path={to} children={({ match }) => (
         <Link className={match ? 'user-activities-active' : ''} to={to}>{label}</Link>
     )} />
 );

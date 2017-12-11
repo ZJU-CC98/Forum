@@ -314,6 +314,7 @@
 
         .user-activities-active {
             color: rgb(160,160,160);
+            cursor: text;
         }
 
         .user-posts {
@@ -822,4 +823,9 @@
             background-color: rgb(38,154,196);
         }
     }
+}
+
+.user-center-loading {
+    display: flex;
+    justify-content: center;
 }

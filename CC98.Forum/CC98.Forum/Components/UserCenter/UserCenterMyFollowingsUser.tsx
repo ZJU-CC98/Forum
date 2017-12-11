@@ -20,6 +20,14 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
         this.follow = this.follow.bind(this);
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            buttonInfo: nextProps.userFanInfo.isFollowing ? '已关注' : '关注',
+            buttonIsDisabled: false,
+            isFollowing: nextProps.userFanInfo.isFollowing
+        });
+    }
+
     async unfollow() {
         this.setState({
             buttonIsDisabled: true,
@@ -74,6 +82,7 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
                     <span className="user-center-myfollowings-user-fans">{this.props.userFanInfo.fans}</span>
                 </p>
                 <button
+                    key={this.props.userFanInfo.id}
                     type="button"
                     className={this.state.isFollowing ? '' : 'user-follow'}
                     onMouseOver={() => {

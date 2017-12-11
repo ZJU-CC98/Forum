@@ -18,13 +18,14 @@ export class UserCenterMyFans extends React.Component<{match}, UserCenterMyFansS
             userFans: [],
             totalPage: 2,
             info: '加载中',
-            currentPage: this.props.match.params.page
+            currentPage: this.props.match.params.page,
+            isLoading: true
         };
     }
 
     componentDidUpdate() {
         if (this.state.currentPage !== this.props.match.params.page) {
-            this.setState({ currentPage: this.props.match.params.page});
+            this.setState({ currentPage: this.props.match.params.page });
             this.getInfo(this.props.match.params.page);
         }
     }
@@ -46,6 +47,8 @@ export class UserCenterMyFans extends React.Component<{match}, UserCenterMyFansS
 
     getInfo = async (page = 1) => {
         try {
+            window.scroll(0, 0);
+            this.setState({ isLoading: true });
             const token = Utility.getLocalStorage("accessToken");
             let url = `http://apitest.niconi.cc/me/follower?from=${(page - 1) * 10}&size=10`;
             const headers = new Headers();
@@ -61,7 +64,8 @@ export class UserCenterMyFans extends React.Component<{match}, UserCenterMyFansS
 
                 if (!data || !data.length) {
                     this.setState({
-                        info: '没有粉丝'
+                        info: '没有粉丝',
+                        isLoading: false
                     });
                     return false;
                 }
@@ -86,9 +90,9 @@ export class UserCenterMyFans extends React.Component<{match}, UserCenterMyFansS
                 }
                 
                 this.setState({
-                    userFans: fans
+                    userFans: fans,
+                    isLoading: false
                 });
-                window.scroll(0,0);
             } else {
                 throw {};
             }
@@ -98,12 +102,14 @@ export class UserCenterMyFans extends React.Component<{match}, UserCenterMyFansS
     }
 
     render() {
+        if (this.state.isLoading) {
+            return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
+        }
         if (this.state.userFans.length === 0) {
             return (<div className="user-center-myfans">
                 {this.state.info}
             </div>);
-        }
-
+        }        
         //state转换为JSX
         const userFans = this.state.userFans.map((item) => (<UserCenterMyFollowingsUser userFanInfo={item} />));
         //添加分隔线
@@ -125,4 +131,5 @@ interface UserCenterMyFansState {
     totalPage: number;
     info: string;
     currentPage: number;
+    isLoading: boolean;
 }

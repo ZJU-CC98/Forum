@@ -3,11 +3,11 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
+import * as Utility from '../../Utility';
 import { UserCenterExactActivitiesPost } from './UserCenterExactActivitiesPost';
 import { UserRecentPost } from '../../States/AppState';
 import { RouteComponent } from '../app';
 import { UserCenterPageCount } from './UserCenterPageCount';
-import * as Utility from '../../Utility';
 
 /**
  * 用户中心我的主题组件
@@ -20,7 +20,8 @@ export class UserCenterMyPostsExact extends React.Component<{match}, UserCenterM
             userRecentPosts: [],
             totalPage: (this.props.match.params.page || 1) + 1,
             currentPage: this.props.match.params.page,
-            hasTotal: false
+            hasTotal: false,
+            isLoading: true
         };
     }
 
@@ -37,6 +38,8 @@ export class UserCenterMyPostsExact extends React.Component<{match}, UserCenterM
 
     getInfo = async (page = 1) => {
         try {
+            window.scroll(0, 0);
+            this.setState({ isLoading: true });
             const url = `http://apitest.niconi.cc/me/recent-topic?from=${(page - 1) * 10}&size=11`
             const token = Utility.getLocalStorage("accessToken");
             const headers = new Headers();
@@ -67,9 +70,9 @@ export class UserCenterMyPostsExact extends React.Component<{match}, UserCenterM
 
             this.setState({
                 userRecentPosts,
-                totalPage
+                totalPage,
+                isLoading: false
             });
-            window.scroll(0,0);
         } catch (e) {
             console.log('我的主题加载失败');
         }
@@ -91,13 +94,15 @@ export class UserCenterMyPostsExact extends React.Component<{match}, UserCenterM
     }
 
     render() {
+        if (this.state.isLoading) {
+            return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
+        }
         if (this.state.userRecentPosts.length === 0) {
             return (<div className="user-posts">
                 没有主题
             </div>
                 );
-        }
-
+        }        
         //state转换为JSX
         const userRecentPosts = this.state.userRecentPosts.map((item) => (<UserCenterExactActivitiesPost userRecentPost={item} />));
         //添加分隔线
@@ -118,6 +123,7 @@ interface UserCenterMyPostsExactState {
     totalPage: number;
     currentPage: number;
     hasTotal: boolean;
+    isLoading: boolean;
 }
 
 interface itemType {
