@@ -500,6 +500,19 @@
             -webkit-user-select: none;
             -ms-user-select: none;
 
+            .config-submit-button {
+                background-color: #68b3ff;
+                color: #fff;
+
+                &:hover {
+                    background-color: rgb(41,174,223);
+                }
+
+                &:active {
+                    background-color: rgb(38,154,196);
+                }
+            }
+
             .user-center-config-avatar-preview {
                 transition-duration: 1s;
                 width: 100%;
@@ -632,10 +645,10 @@
                 width: 100px;
                 height: 30px;
                 border-radius: 5px;
+                margin: 0 3rem;
             }
 
-            #submit {
-                margin-left: 10rem;
+            .config-submit-button {
                 background-color: #68b3ff;
                 color: #fff;
 
