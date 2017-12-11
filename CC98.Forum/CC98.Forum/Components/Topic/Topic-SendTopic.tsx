@@ -227,20 +227,8 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
 
             </div>;
         }
-        const privilege = Utility.getLocalStorage("userInfo").privilege;
-        const myName = Utility.getLocalStorage("userInfo").name;
-        if (privilege === '管理员' || privilege === '超级版主') {
-            $("#topicManagementBTN").css("display", "");
-        }
-
-        if (this.state.masters) {
-            for (let i = 0; i < this.state.masters.length; i++) {
-                if (myName === this.state.masters[i]) {
-                    $("#topicManagementBTN").css("display", "");
-                }
-            }
-        }
-    
+        if (Utility.isMaster(this.props.boardInfo.masters))
+        $("#topicManagementBTN").css("display", "");
         return <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
             <form method="post" encType="multipart/form-data">
                 <input type="file" id="upload-files" onChange={this.upload.bind(this)} />

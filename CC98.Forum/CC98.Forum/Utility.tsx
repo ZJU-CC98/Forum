@@ -2526,3 +2526,23 @@ export async function getUserInfoByName(userName) {
     setLocalStorage(key1, data, 3600);
     return data;
 }
+export function isMaster(masters) {
+    if (getLocalStorage("userInfo")) {
+        const privilege = getLocalStorage("userInfo").privilege;
+        const myName = getLocalStorage("userInfo").name;
+        const myId = getLocalStorage("userInfo").id;
+
+        if (privilege === '管理员' || privilege === '超级版主' || (privilege === '全站贵宾' && myId === this.props.userId)) {
+            return true;
+ 
+        }
+
+        if (this.props.masters) {
+            for (let i = 0; i < this.props.masters.length; i++) {
+                if (myName === this.props.masters[i]) {
+                    return true;
+                }
+            }
+        }
+    }
+}
