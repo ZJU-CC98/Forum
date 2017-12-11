@@ -237,8 +237,8 @@ export class Test extends React.Component<{}, { testContent: string }>{
     async urlTextHanderler() {
         const reg = /[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+/gim;
         const reg2 = /cc98\.org/i;
-        const reg3 = /zju\.edu\.cn/;
-        const reg4 = /nexushd\.org/;
+        const reg3 = /zju\.edu\.cn/i;
+        const reg4 = /nexushd\.org/i;
         const url = this.state.testContent;
         const matchResult = url.match(reg);
         if (matchResult) {
