@@ -123,9 +123,12 @@ export class UserRouterActivities extends React.Component<{id: string}, UserCent
             }
 
             return (
-                <div className="user-posts" style={style}>
-                    没有主题
-                </div>
+                <div className="user-activities">
+                    <p>发表的主题</p>
+                    <div className="user-posts" style={style}>
+                        没有主题
+                    </div>
+                </div>          
             );
         }
 
@@ -137,11 +140,11 @@ export class UserRouterActivities extends React.Component<{id: string}, UserCent
         }
         return (
             <div className="user-activities">
-                <p>近期动态</p>
+                <p>发表的主题</p>
                 <div className="user-posts">
                     {userRecentPosts}
                 </div>
-            </div>            
+            </div>          
         );
     }
 }
