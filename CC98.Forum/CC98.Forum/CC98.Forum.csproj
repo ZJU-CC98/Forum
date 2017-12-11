@@ -71,6 +71,7 @@
     <None Remove="Ubb\CursorTagHandler.tsx" />
     <None Remove="Ubb\DelTagHandler.tsx" />
     <None Remove="Ubb\emTagHandler.tsx" />
+    <None Remove="Ubb\EmTextHandler.tsx" />
     <None Remove="Ubb\EnglishTagHandler.tsx" />
     <None Remove="Ubb\FlashTagHandler.tsx" />
     <None Remove="Ubb\ImageTagHandler.tsx" />
@@ -168,6 +169,7 @@
     <TypeScriptCompile Include="Ubb\CursorTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\DelTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\EmTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\EmTextHandler.tsx" />
     <TypeScriptCompile Include="Ubb\EnglishTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\ImageTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\Core.tsx" />
