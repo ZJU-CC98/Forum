@@ -166,7 +166,7 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
                         id="userMessage"
                         onMouseOut={(e) => { this.handleMouseEvent(e.type, 'topBarText'); }}
                         onMouseOver={(e) => { this.handleMouseEvent(e.type, 'topBarText'); }}
-                    > <Link to="/message/response" style={{ color: '#fff' }}>消息</Link></div>     
+                    > <Link to="/message/response" className="messageTopBar">消息<div className="message-counter">99</div></Link></div>     
                     <div className="topBarText"> <Link to="/focus" style={{ color: '#fff' }}>关注</Link></div>
                     <div className="topBarText"> <Link to="/newTopics" style={{ color: '#fff' }}>新帖</Link></div>
                     <Link to="/boardList"><div className="boardListLink" style={{ margin: '0 0 0 10px' }}><div style={{ marginTop: '16px', color: '#fff' }}>版面</div></div></Link>
