@@ -187,7 +187,7 @@ export class Shixijianzhi extends React.Component<{}, MainPageTopicState>{
         const mainPageTopics: MainPageTopic[] = [];
         const url = 'http://apitest.niconi.cc/Board/459/topic?from=0&size=10';
         const headers = new Headers();
-    
+
         const response = await fetch(url,
             { headers });   //该api要求提供返回主题的数量，这里需要返回10条
         const data = await response.json();
@@ -218,57 +218,44 @@ export class Shixijianzhi extends React.Component<{}, MainPageTopicState>{
 /*
  测试用组件~
  */
-export class Test extends React.Component<{}, AppState>{
-
-    async test() {
-        const url = 'http://apitest.niconi.cc/notification/atuser?topicid=4741756';
-        const token = Utility.getLocalStorage("accessToken");
-        console.log(token);
-        let myHeaders = new Headers();
-        let ats: string[] = new Array();
-        ats[0] = "adddna";
-        ats[1] = "Dearkano";
-        const body = JSON.stringify(ats);
-        myHeaders.append("Content-Type", 'application/json');
-        myHeaders.append("Authorization", token);
-        let response = await fetch(url, {
-            method: "POST",
-            headers: myHeaders,
-            body: body
-        });
-        console.log("已发送@请求");
+export class Test extends React.Component<{}, { testContent: string }>{
+    constructor(props) {
+        super(props);
+        this.state = {
+            testContent: '',
+        };
+        this.handleChange = this.handleChange.bind(this);
+        this.urlTextHanderler = this.urlTextHanderler.bind(this);
     }
-    atHanderler() {
-        const reg = new RegExp("@[^ \n]{1,10}?[ \n]", "gm");
-        const reg2 = new RegExp("[^@ ]+");
-        const content = "@你数数这刚好是十个字 这有一个空格保证之前的@合法";
-        if (content.match(reg)) {   //如果match方法返回了非null的值（即数组），则说明内容中存在合法的@
-            let atNum = content.match(reg).length;  //合法的@数
-            if (atNum > 10) atNum = 10;            //至多10个
-            let ats: string[] = new Array();
-            /*被临时抛弃的方法*/
-            /*
-            for (let i = 0; i < 10; i++) {
-                let anAt = reg.exec(content)[0];
-                console.log(anAt);
-                let aUserName = reg2.exec(anAt)[0];
-                console.log(aUserName);
-            }
-            */
-            for (let i = 0; i < atNum; i++) {
-                let anAt = content.match(reg)[i];
-                console.log(anAt);
-                let aUserName = reg2.exec(anAt)[0];
-                console.log(aUserName);
-                ats[i] = aUserName;
-            }
-            console.log(ats);
+
+    handleChange(e) {
+        this.setState({
+            testContent: e.target.value
+        });
+    }
+
+    async urlTextHanderler() {
+        const reg = /[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+/gim;
+        const reg2 = /cc98\.org/i;
+        const reg3 = /zju\.edu\.cn/i;
+        const reg4 = /nexushd\.org/i;
+        const url = this.state.testContent;
+        const matchResult = url.match(reg);
+        if (matchResult) {
+            const domainName = matchResult[0];
+            let isInternalLink = reg2.test(domainName) || reg3.test(domainName) || reg4.test(domainName);
+            console.log(isInternalLink);
+            //return isInternalLink;
         } else {
-            console.log("不存在合法的@");
+            console.log("这不是链接！");
         }
     }
     render() {
-        return <div onClick={this.atHanderler}>这里是萌萌的adddna测试的地方~</div>
+        return <div>
+            <div>这里是可爱的adddna测试的地方~</div>
+            <input name="testContent" type="text" id="loginName" onChange={this.handleChange} value={this.state.testContent} />
+            <div onClick={this.urlTextHanderler}>点这里测试输入的内容是否是内链</div>
+        </div>
     }
 }
 
