@@ -7,8 +7,10 @@ import * as $ from 'jquery';
 import * as Utility from '../Utility';
 import * as Actions from '../Actions';
 import { connect } from 'react-redux';
+import { changeUserInfo } from '../Actions';
+import { withRouter } from 'react-router-dom';
 
-class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff}, LogOnState> {
+class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff, history, changeUserInfo}, LogOnState> {
     constructor(props) {
         super(props);
         this.state = {
@@ -114,18 +116,18 @@ class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff}, LogO
         Utility.setLocalStorage("password", this.state.loginPassword);
 
         //缓存用户其信息
-        Utility.refreshUserInfo();
+        await Utility.refreshUserInfo();
        
 
         this.setState({
             loginMessage: '登录成功 正在返回首页'
         });
         this.props.logOn();
-
+        this.props.changeUserInfo(Utility.getLocalStorage('userInfo'));
         //跳转至首页
         setTimeout(() => {
-            location.pathname = "/";
-        }, 1000); 
+            this.props.history.push('/');
+        }, 100); 
 
     } catch(e) {    //捕捉到例外，开始执行catch语句，否则跳过
         //alert(e.error);     这行好像没什么用……暂时还不会处理不同的error……
@@ -197,8 +199,11 @@ function mapDispatch(disPatch) {
         },
         logOff: () => {
             disPatch(Actions.userLogOff());
+        },
+        changeUserInfo: (newInfo) => {
+            disPatch(changeUserInfo(newInfo));
         }
     };
 }
 
-export default connect(mapState, mapDispatch)(LogOnExact);
+export default connect(mapState, mapDispatch)(withRouter(LogOnExact));
