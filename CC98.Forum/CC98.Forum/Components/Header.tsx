@@ -40,6 +40,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { u
     }
     
     logOff() {
+        this.handleMouseEvent('mouseout', "userName");
         Utility.removeLocalStorage("accessToken");
         console.log("after remove token=" + Utility.getLocalStorage("accessToken"));
         Utility.removeLocalStorage("userName");
@@ -100,7 +101,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { u
                             className="userName"
                             onMouseOut={(e) => { this.handleMouseEvent(e.type, "userName"); }}
                             onMouseOver={(e) => { this.handleMouseEvent(e.type, "userName"); }}
-                        >{this.state.userName}</div>
+                        >{this.props.userInfo.name||this.state.userName}</div>
                     </div>
                     <div className="topBarText"> <Link to="/" style={{ color: '#fff' }}>首页</Link></div>
                     <div
