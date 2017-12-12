@@ -49,7 +49,7 @@ export class UserCenterMyFans extends React.Component<{match}, UserCenterMyFansS
         try {
             window.scroll(0, 0);
             this.setState({ isLoading: true });
-            const token = Utility.getLocalStorage("accessToken");
+            const token = await Utility.getToken();
             let url = `http://apitest.niconi.cc/me/follower?from=${(page - 1) * 10}&size=10`;
             const headers = new Headers();
             headers.append('Authorization', token);

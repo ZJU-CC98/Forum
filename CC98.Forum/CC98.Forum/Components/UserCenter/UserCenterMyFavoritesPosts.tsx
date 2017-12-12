@@ -40,7 +40,7 @@ export class UserCenterMyFavoritesPosts extends React.Component<{match}, UserCen
         try {
             window.scroll(0, 0);
             this.setState({ isLoading: true });
-            const token = Utility.getLocalStorage('accessToken');
+            const token = await Utility.getToken();
             const url = `http://apitest.niconi.cc/topic/me/favorite?from=${(page - 1) * 10}&size=11`;
 
             let myHeaders = new Headers();

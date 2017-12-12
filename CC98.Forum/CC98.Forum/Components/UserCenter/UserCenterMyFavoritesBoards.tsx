@@ -21,7 +21,7 @@ export class UserCenterMyFavoritesBoards extends React.Component<null, UserCente
     async componentDidMount() {
         try {
             this.setState({ isLoading: true });
-            const token = Utility.getLocalStorage('accessToken');
+            const token = await Utility.getToken();
             const loginName = Utility.getLocalStorage('userName');
             let myHeaders = new Headers();
             myHeaders.append("Authorization", token);

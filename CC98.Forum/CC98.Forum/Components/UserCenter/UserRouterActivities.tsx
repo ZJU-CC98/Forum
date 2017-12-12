@@ -26,7 +26,7 @@ export class UserRouterActivities extends React.Component<{id: string}, UserCent
             try {
                 this.setState({ isLoading: true });
                 const url = `http://apitest.niconi.cc/user/${this.props.id}/recent-topic?userid=${this.props.id}&from=${this.state.userRecentPosts.length}&size=11`;
-                const token = Utility.getLocalStorage("accessToken");
+                const token = await Utility.getToken();
                 const headers = new Headers();
                 headers.append('Authorization', token);
                 let res = await fetch(url, {
@@ -66,7 +66,7 @@ export class UserRouterActivities extends React.Component<{id: string}, UserCent
     async componentDidMount() {
         try {
             const url = `http://apitest.niconi.cc/user/${this.props.id}/recent-topic?userid=${this.props.id}&from=${this.state.userRecentPosts.length}&size=11`;
-            const token = Utility.getLocalStorage("accessToken");
+            const token = await Utility.getToken();
             const headers = new Headers();
             headers.append('Authorization', token);
             let res = await fetch(url, {

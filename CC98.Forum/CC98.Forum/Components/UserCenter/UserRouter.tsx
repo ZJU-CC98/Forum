@@ -27,7 +27,7 @@ class UserExact extends React.Component<null, UserCenterExactState> {
             let myHeaders;
             if (Utility.isLogOn()) {
                 myHeaders = {
-                    'Authorization': Utility.getLocalStorage("accessToken")
+                    'Authorization':  await Utility.getToken()
                 };
             }
 
