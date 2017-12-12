@@ -38,7 +38,7 @@ export class HotReply extends React.Component<{ topicId, boardInfo, topicInfo, p
     private generateContents(item: ContentState) {
         const floor = (item.floor % 10).toString();
         return <div className="reply" id={floor}>
-            <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isDeleted={item.isDeleted} content={item.content} quote={this.quote} traceMode={false} isHot={true} />
+            <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isDeleted={item.isDeleted} content={item.content} quote={this.quote} traceMode={false} isHot={true} popularity={item.popularity} />
             <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
             <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={item.privilege} />
             <ReplyContent key={item.content} content={item.content} postid={item.id} contentType={item.contentType} />
@@ -84,4 +84,5 @@ export class ContentState {
     dislikeNumber: number;
     postId: number;
     contentType: number;
+    popularity: number;
 }

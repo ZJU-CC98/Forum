@@ -58,7 +58,7 @@ export class Reply extends React.Component<{topicId,page,topicInfo,boardInfo,upd
             privilege = Utility.getLocalStorage("userInfo").privilege;
         const id = item.floor % 10;
         return <div className="reply" id={id.toString()} >
-            <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isDeleted={item.isDeleted} content={item.content} quote={this.quote} traceMode={false} isHot={false} />
+            <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isDeleted={item.isDeleted} content={item.content} quote={this.quote} traceMode={false} isHot={false} popularity={item.popularity} />
             <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
             <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} />
             <ReplyContent key={item.content} postid={item.postId} content={item.content} contentType={item.contentType} />
@@ -102,4 +102,5 @@ export class ContentState {
     dislikeNumber: number;
     postId: number;
     contentType: number;
+    popularity: number;
 }

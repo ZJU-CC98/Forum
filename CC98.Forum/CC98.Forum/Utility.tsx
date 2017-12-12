@@ -133,7 +133,7 @@ export async function getTopicContent(topicid: number, curPage: number,replyCoun
 
                 const userMesJson= await getUserInfo(content[i].userId);
                 post[i] = {
-                    ...content[i], ...userMesJson, postId: content[i].id, userImgUrl: userMesJson.portraitUrl, sendTopicNumber: userMesJson.postCount, privilege: userMesJson.privilege, signature: userMesJson.signatureCode
+                    ...content[i], ...userMesJson, postId: content[i].id, userImgUrl: userMesJson.portraitUrl, sendTopicNumber: userMesJson.postCount, privilege: userMesJson.privilege, signature: userMesJson.signatureCode, popularity: userMesJson.popularity
                 }
 
             } else if (content[i].isAnonymous == true) {
@@ -142,11 +142,11 @@ export async function getTopicContent(topicid: number, curPage: number,replyCoun
 
 
                 post[i] = {
-                    ...content[i], userName: anonymousUserName, userImgUrl: purl, userId: null, signature: null, sendTopicNumber: null, postId: content[i].id, privilege: '匿名用户', isAnonymous: true
+                    ...content[i], userName: anonymousUserName, userImgUrl: purl, userId: null, signature: null, sendTopicNumber: null, postId: content[i].id, privilege: '匿名用户', isAnonymous: true,popularity:0
                 }
             } else {
                 post[i] = {
-                    ...content[i], userName: '98Deleter', userImgUrl: 'http://www.cc98.org/images/policeM.png', userId: null, signature: null, sendTopicNumber: null, postId: content[i].id, privilege: '匿名用户', isAnonymous: false, isDeleted: true, content: "该贴已被my cc98, my home"
+                    ...content[i], userName: '98Deleter', userImgUrl: 'http://www.cc98.org/images/policeM.png', userId: null, signature: null, sendTopicNumber: null, postId: content[i].id, privilege: '匿名用户', isAnonymous: false, isDeleted: true, content: "该贴已被my cc98, my home",popularity:0
                 }
             }
         }
@@ -268,7 +268,7 @@ export async function getHotReplyContent(topicid: number) {
                 const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
                 const anonymousLastReplierName = `匿名${content[i].lastUpdateAuthor.toUpperCase()}`;
                 post[i] = {
-                    ...content[i], userName: anonymousUserName, userImgUrl: purl, userId: null, lastUpdateAuthor: anonymousLastReplierName, signature: null, sendTopicNumber: null
+                    ...content[i], userName: anonymousUserName, userImgUrl: purl, userId: null, lastUpdateAuthor: anonymousLastReplierName, signature: null, sendTopicNumber: null,popularity:0
                 }
             }
         }
