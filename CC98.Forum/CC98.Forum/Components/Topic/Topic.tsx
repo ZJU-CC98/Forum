@@ -26,7 +26,7 @@ import { AuthorMessage } from './Topic-AuthorMessage';
 import { Pager } from '../Pager';
 import { PostTopic } from './Topic-Topic';
 import { Reply } from './Topic-Reply';
-import { NotFoundTopic, UnauthorizedTopic } from '../Status';
+import { NotFoundTopic, UnauthorizedTopic, ServerError } from '../Status';
 
 declare let moment: any;
 declare let editormd: any;
@@ -35,30 +35,39 @@ declare let editormd: any;
 export module Constants {
     export var testEditor;
 }
-export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName,boardId,topicInfo,boardInfo,fetchState }, { topicid, page, userName }> {
+export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName,boardId,topicInfo,boardInfo,fetchState,quote }, { topicid, page, userName }> {
     constructor(props, context) {
         super(props, context);
         this.update = this.update.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.quote = this.quote.bind(this);
         this.state = {
-            page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null, boardId: 7, topicInfo: { replyCount: 0 }, boardInfo: { masters: [], id: 7 }, fetchState:'ok'
+            page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null, boardId: 7, topicInfo: { replyCount: 0 }, boardInfo: { masters: [], id: 7 }, fetchState: 'ok', quote:""
         };
     }
+    quote(content, userName, replyTime, floor) {
+  
+        this.setState({ quote: { content: content, userName: userName, replyTime: replyTime, floor: floor } });
+    }
     update() {
+ 
         this.setState({});
     }
     async handleChange() {
+
         const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
         let page: number;
         if (!this.match.params.page) {
             page = 1;
         }
         else { page = parseInt(this.match.params.page); }
-        const totalPage = await this.getTotalPage(this.state.topicInfo.replyCount);
+        const totalPage = await this.getTotalPage(topicInfo.replyCount);
         const userName = this.match.params.userName;
-        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName ,topicInfo:topicInfo});
+        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName ,topicInfo:topicInfo,quote:""});
     }
     async componentWillReceiveProps(newProps) {
+      
+        console.log(newProps);
         let page: number;
         if (!newProps.match.params.page) {
             page = 1;
@@ -76,7 +85,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
     }
 
     async componentWillMount() {
-
+       
         let page: number;
         if (!this.match.params.page) {
             page = 1;
@@ -100,6 +109,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
 
 
     render() {
+    
         switch (this.state.fetchState) {
             case 'ok':
                 return <div></div>;
@@ -107,6 +117,8 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
                 return <NotFoundTopic />;
             case 'unauthorized':
                 return <UnauthorizedTopic />;
+            case 'server error':
+                return <ServerError />
         }
         let topic = null;
         let hotReply = null;
@@ -123,10 +135,10 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
             {topic}
             {hotReply}
 
-            <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} updateTime={Date.now()} />
+            <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} updateTime={Date.now()} quote={this.quote} />
 
-            <div style={{ display: "flex", width: "100%", justifyContent: "flex-end" }}><Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
-            <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardId} boardInfo={this.state.boardInfo} />
+            <div style={{ display: "flex", width: "100%", justifyContent: "flex-end", marginTop: "3rem" }}><Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
+            <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardId} boardInfo={this.state.boardInfo} content={this.state.quote} />
             
         </div>
             ;

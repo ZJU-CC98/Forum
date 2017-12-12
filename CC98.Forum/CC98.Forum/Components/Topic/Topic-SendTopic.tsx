@@ -8,7 +8,7 @@ import { TopicManagement } from './Topic-TopicManagement';
 declare let moment: any;
 declare let editormd: any;
 
-export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onChange }, { content: string, mode: number, masters: string[]}>{
+export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onChange,content }, { content: string, mode: number, masters: string[]}>{
     constructor(props) {
         super(props);
         this.sendUbbTopic = this.sendUbbTopic.bind(this);
@@ -57,6 +57,21 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
         });
         const masters = this.props.boardInfo.masters;
         this.setState({ masters: masters });
+    }
+    componentWillReceiveProps(newProps) {
+        const time = moment(newProps.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
+        if (newProps.content) {
+            if (this.state.mode === 1) {
+                const str = `>**以下是引用${newProps.content.floor}楼：用户${newProps.content.userName}在${time}的发言：**`;
+                const content = newProps.content.content;
+                Constants.testEditor.appendMarkdown(str);
+                Constants.testEditor.appendMarkdown(content);
+            } else {
+               
+                const str = `[quote][b]以下是引用${newProps.content.floor}楼：用户${newProps.content.userName}在${time}的发言：[/b]${newProps.content.content}[/quote]`;
+                this.setState({ content: this.state.content+newProps.content.content });
+            }
+        }
     }
     componentDidUpdate() {
         editormd.emoji.path = '/images/emoji/';
@@ -226,12 +241,19 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
             </div>;
         }
         if (Utility.isMaster(this.props.boardInfo.masters))
-        $("#topicManagementBTN").css("display", "");
+            $("#topicManagementBTN").css("display", "");
+        let uploadInfo = null;
+        if (this.state.mode === 1) {
+            uploadInfo = <form method="post" encType="multipart/form-data">
+                <input type="file" id="upload-files" style={{ display: "none" }} onChange={this.upload.bind(this)} />
+                <div className="row"><div style={{ fontSize: "0.8rem" }}>在此上传本地图片</div>
+                <label className="fa-upload" htmlFor="upload-files" style={{ fontFamily: "fontAwesome", cursor: "pointer" }}></label></div>
+               
+            </form>;
+        }
         return <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
-            <div className="row" style={{ justifyContent:"space-around" }}>
-            <form method="post" encType="multipart/form-data">
-                    <input type="file" id="upload-files" onChange={this.upload.bind(this)} />                              
-                </form>
+            <div className="row" style={{ justifyContent: this.state.mode === 1 ? "space-between" : "flex-end" }}>
+                {uploadInfo}
                 <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ width: "16rem", height: "0.8rem", letterSpacing: "0.3125rem" }}>{this.state.mode === 1 ? "切换到Ubb编辑器" : "切换到Markdown编辑器"}
                 </div></div>
             {editor}

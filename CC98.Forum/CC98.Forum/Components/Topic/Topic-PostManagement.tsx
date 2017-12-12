@@ -3,7 +3,7 @@ import * as Utility from '../../Utility';
 import * as $ from 'jquery';
 import { match } from "react-router";
 
-export class PostManagement extends React.Component<{ userId, postId, update, topicId, privilege }, { wealth: number, prestige: number, reason: string, tpdays: number, UI, tips: string }>{
+export class PostManagement extends React.Component<{ userId, postId, update, topicId, privilege }, { wealth: number, prestige: number, reason: string, tpdays: number, UI, tips: string, fetchState }>{
 
     constructor(props) {
 
@@ -29,7 +29,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
 
         this.close = this.close.bind(this);
 
-        this.state = { wealth: 1000, prestige: 0, reason: "", tpdays: 0, UI: "Award", tips: "" }
+        this.state = { wealth: 1000, prestige: 0, reason: "", tpdays: 0, UI: "Award", tips: "", fetchState: 'ok' }
 
     }
 
@@ -54,34 +54,63 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
     showOtherUI() {
         this.setState({ UI: "Other" });
     }
-    confirm() {
+    async  confirm() {
+        let status = 'ok';
+        let status1 = 'ok';
+        let status2 = 'ok';
         switch (this.state.UI) {
             case 'Award':
                 if ($("input[name='reason']:checked").val()) {
                     if ($("input[name='reason']:checked").val() !== '自定义') {
-                   
+
                         if (this.state.wealth !== 0) {
-                          
-                            Utility.awardWealth($("input[name='reason']:checked").val(), this.state.wealth, this.props.postId);
+
+                            status = await Utility.awardWealth($("input[name='reason']:checked").val(), this.state.wealth, this.props.postId);
+
                         }
 
                         if (this.state.prestige !== 0) {
-                            Utility.addPrestige(this.props.postId, this.state.prestige, $("input[name='reason']:checked").val());
+                            status1 = await Utility.addPrestige(this.props.postId, this.state.prestige, $("input[name='reason']:checked").val());
+
                         }
 
                     } else {
                         if (this.state.wealth !== 0) {
-                            Utility.awardWealth(this.state.reason, this.state.wealth, this.props.postId);
+                            status = await Utility.awardWealth(this.state.reason, this.state.wealth, this.props.postId);
+
                         }
 
                         if (this.state.prestige !== 0) {
-                            Utility.addPrestige(this.props.postId, this.state.prestige, this.state.reason);
+                            status1 = await Utility.addPrestige(this.props.postId, this.state.prestige, this.state.reason);
+
                         }
 
                     }
-                    const UIId = `#manage${this.props.postId}`;
-                    $(UIId).css("display", "none");
-                    this.props.update();
+                    if (typeof status !== 'string' && typeof status1 !== 'string') {
+                        const UIId = `#manage${this.props.postId}`;
+                        $(UIId).css("display", "none");
+                        this.props.update();
+                    }
+                    else if (typeof status !== 'string' && status1 === 'ok') {
+                        const UIId = `#manage${this.props.postId}`;
+                        $(UIId).css("display", "none");
+                        this.props.update();
+                    }
+                    else {
+                        switch (status) {
+                            case 'wrong input':
+                                this.setState({ tips: "输入错误" });
+                            case 'unauthorized':
+                                this.setState({ tips: "你没有权限进行此操作" });
+                        }
+                        switch (status1) {
+                            case 'wrong input':
+                                this.setState({ tips: "输入错误" });
+                            case 'unauthorized':
+                                this.setState({ tips: "你没有权限进行此操作" });
+                        }
+
+                    }
                 } else {
                     this.setState({ tips: "请输入原因！" });
                 }
@@ -89,41 +118,89 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
             case 'Punish':
                 if ($("input[name='reason']:checked").val()) {
                     if ($("input[name='reason']:checked").val() !== '自定义') {
-                        Utility.deductWealth($("input[name='reason']:checked").val(), this.state.wealth, this.props.postId);
-                        if (this.state.prestige !== 0) {
-                            Utility.deductPrestige(this.props.postId, this.state.prestige, $("input[name='reason']:checked").val());
-                        }
+                        status = await Utility.deductWealth($("input[name='reason']:checked").val(), this.state.wealth, this.props.postId);
 
-                        if (this.state.tpdays !== 0) {
-                          
-                            Utility.stopBoardPost(this.props.postId, $("input[name='reason']:checked").val(), this.state.tpdays);
-                        }
-                    } else {
+                        if (this.state.prestige !== 0)
+                            status1 = await Utility.deductPrestige(this.props.postId, this.state.prestige, $("input[name='reason']:checked").val());
+
+
+                        if (this.state.tpdays !== 0)
+
+                            status2 = await Utility.stopBoardPost(this.props.postId, $("input[name='reason']:checked").val(), this.state.tpdays);
+                    }
+
+                    else {
                         if (this.state.reason) {
-                            Utility.deductWealth(this.state.reason, this.state.wealth, this.props.postId);
+                            status = await Utility.deductWealth(this.state.reason, this.state.wealth, this.props.postId);
                             if (this.state.prestige !== 0)
-                                Utility.deductPrestige(this.props.postId, this.state.prestige, this.state.reason);
-                            if (this.state.tpdays !== 0) {
-                         
-                                Utility.stopBoardPost(this.props.postId, this.state.reason, this.state.tpdays);
-                            }
+                                status1 = await Utility.deductPrestige(this.props.postId, this.state.prestige, this.state.reason);
+                            if (this.state.tpdays !== 0)
+
+                                status2 = await Utility.stopBoardPost(this.props.postId, this.state.reason, this.state.tpdays);
+
+
                         } else {
                             this.setState({ tips: "请输入原因！" });
                         }
+
+                        if (typeof status !== 'string' && typeof status1 !== 'string' && typeof status2 !== 'string') {
+                            const UIId = `#manage${this.props.postId}`;
+                            $(UIId).css("display", "none");
+                            this.props.update();
+                        }
+                        else if (typeof status !== 'string' && status1 === 'ok' && typeof status2 !== 'string') {
+                            const UIId = `#manage${this.props.postId}`;
+                            $(UIId).css("display", "none");
+                            this.props.update();
+                        }
+                        else if (typeof status !== 'string' &&typeof status1 !== 'string' &&  status2 === 'ok') {
+                            const UIId = `#manage${this.props.postId}`;
+                            $(UIId).css("display", "none");
+                            this.props.update();
+                        }
+                        else if (typeof status !== 'string' && status1 === 'ok' && status2 === 'ok') {
+                            const UIId = `#manage${this.props.postId}`;
+                            $(UIId).css("display", "none");
+                            this.props.update();
+                        }
+                        else {
+                            switch (status) {
+                                case 'wrong input':
+                                    this.setState({ tips: "输入错误" });
+                                case 'unauthorized':
+                                    this.setState({ tips: "你没有权限进行此操作" });
+                            }
+                            switch (status1) {
+                                case 'wrong input':
+                                    this.setState({ tips: "输入错误" });
+                                case 'unauthorized':
+                                    this.setState({ tips: "你没有权限进行此操作" });
+                            }
+
+                        }
+
+
                     }
-                    const UIId = `#manage${this.props.postId}`;
-                    $(UIId).css("display", "none");
-                    this.props.update();
                 } else {
                     this.setState({ tips: "请选一个选项！" });
                 }
                 break;
             case 'Delete':
                 if (this.state.reason) {
-                    Utility.deletePost(this.props.topicId, this.props.postId, this.state.reason);
-                    const UIId = `#manage${this.props.postId}`;
-                    $(UIId).css("display", "none");
-                    this.props.update();
+                    status = await Utility.deletePost(this.props.topicId, this.props.postId, this.state.reason);
+                    if (typeof status !== 'string') {
+                        const UIId = `#manage${this.props.postId}`;
+                        $(UIId).css("display", "none");
+                        this.props.update();
+                    } else {
+                        switch (status) {
+                            case 'wrong input':
+                                this.setState({ tips: "输入错误" });
+                            case 'unauthorized':
+                                this.setState({ tips: "你没有权限进行此操作" });
+                        }
+
+                    }
                 } else {
                     this.setState({ tips: "请输入原因！" });
                 }
@@ -165,7 +242,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
         const punishOptionJQId = `#manageOptions-punish${this.props.postId}`;
         const deleteOptionId = `manageOptions-delete${this.props.postId}`;
         const deleteOptionJQId = `#manageOptions-delete${this.props.postId}`;
-  
+
         if (this.state.UI === "Award") {
             $(awardOptionJQId).css("background-color", "#b9d3ee");
             $(punishOptionJQId).css("background-color", "#fffacd");
@@ -185,7 +262,13 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
             $(punishOptionJQId).css("background-color", "#fffacd");
             $(deleteOptionJQId).css("background-color", "#b9d3ee");
         }
-
+        if (this.props.privilege !== '管理员') {
+            $(".managePrestige").css("display", "none");
+        } else {
+            $(".managePrestige").css("display", "");
+        }
+    }
+    componentDidUpdate() {
         if (this.props.privilege !== '管理员') {
             $(".managePrestige").css("display", "none");
         } else {
@@ -193,7 +276,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
         }
     }
     render() {
-     
+
         let UI;
 
         const awardUI = <div className="column manageInfo" id="award">
@@ -346,10 +429,10 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
         const deleteOptionJQId = `#manageOptions-delete${this.props.postId}`;
         const otherOptionId = `manageOptions-other${this.props.postId}`;
         const otherOptionJQId = `#manageOptions-other${this.props.postId}`;
-  
+
         if (this.state.UI === "Award") {
             UI = awardUI;
-             $(awardOptionJQId).css("background-color", "#b9d3ee");
+            $(awardOptionJQId).css("background-color", "#b9d3ee");
             $(punishOptionJQId).css("background-color", "#fffacd");
             $(deleteOptionJQId).css("background-color", "#fffacd");
             $(otherOptionJQId).css("background-color", "#fffacd");

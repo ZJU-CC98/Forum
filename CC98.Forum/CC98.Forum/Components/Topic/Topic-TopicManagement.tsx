@@ -4,7 +4,7 @@ declare global {
     interface JQuery { spectrum: ({ color }) => JQuery; }
 }
 
-export class TopicManagement extends React.Component<{ topicId, update, boardId, updateTime }, { state, reason, tips, days, board, topicInfo }>{
+export class TopicManagement extends React.Component<{ topicId, update, boardId, updateTime }, { state, reason, tips, days, board, topicInfo,fetchState }>{
     constructor(props) {
         super(props);
         this.confirm = this.confirm.bind(this);
@@ -18,7 +18,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
         this.daysInput = this.daysInput.bind(this);
         this.boardInput = this.boardInput.bind(this);
         this.state = {
-            state: "normal", reason: "", tips: "", days: 0, board: null, topicInfo: { state: 0, topState: 0, bestState: 0 }
+            state: "normal", reason: "", tips: "", days: 0, board: null, topicInfo: { state: 0, topState: 0, bestState: 0 }, fetchState:'ok'
         };
     }
     showNormal() {
@@ -36,7 +36,8 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
     showBoard() {
         this.setState({ state: 'board' });
     }
-    confirm() {
+    async confirm() {
+        let status = 'ok';
         switch (this.state.state) {
 
             case 'normal':
@@ -44,27 +45,35 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
                     switch ($("input[name='option']:checked").val()) {
 
                         case '取消固顶':
-                            Utility.removeBoardTopTopic(this.props.topicId, this.props.boardId, this.state.reason);
+                            status = await Utility.removeBoardTopTopic(this.props.topicId, this.props.boardId, this.state.reason);
+                            this.setState({ fetchState: status });
                         case '取消全站固顶':
-                            Utility.removeBoardTopTopic(this.props.topicId, this.props.boardId, this.state.reason);
+                            status = await Utility.removeBoardTopTopic(this.props.topicId, this.props.boardId, this.state.reason);
+                            this.setState({ fetchState: status });
                             break;
                         case '删除':
-                            Utility.deleteTopic(this.props.topicId, this.state.reason);
+                            status =  await Utility.deleteTopic(this.props.topicId, this.state.reason);
+                            this.setState({ fetchState: status });
                             break;
                         case '加精':
-                            Utility.setBestTopic(this.props.topicId, this.props.boardId, this.state.reason);
+                            status = await Utility.setBestTopic(this.props.topicId, this.state.reason);
+                            this.setState({ fetchState: status });
                             break;
                         case '解除精华':
-                            Utility.cancelBestTopic(this.props.topicId, this.props.boardId, this.state.reason);
+                            status =  await Utility.cancelBestTopic(this.props.topicId,  this.state.reason);
+                            this.setState({ fetchState: status });
                             break;
                         case '解除锁定':
-                            Utility.unLockTopic(this.props.topicId, this.props.boardId, this.state.reason);
+                            status =  await Utility.unLockTopic(this.props.topicId, this.props.boardId, this.state.reason);
+                            this.setState({ fetchState: status });
                             break;
                         case '禁止热门':
-                            Utility.setDisableHot(this.props.topicId, this.state.reason);
+                            status =  await Utility.setDisableHot(this.props.topicId, this.state.reason);
+                            this.setState({ fetchState: status });
                             break;
                         case '允许热门':
-                            Utility.cancelDisableHot(this.props.topicId, this.state.reason);
+                            status =   await Utility.cancelDisableHot(this.props.topicId, this.state.reason);
+                            this.setState({ fetchState: status });
                             break;
                     }
                 } else {
@@ -81,20 +90,22 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
                 }
                 break;
             case 'days':
-                console.log("in daysinfo");
-                console.log(this.state.reason);
+            
                 if (!this.state.reason ) {
                     switch ($("input[name='option']:checked").val()) {
                         case '固顶':
-                            Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 2, this.state.days, this.state.reason);
+                           status =  await Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 2, this.state.days, this.state.reason);
+                            this.setState({ fetchState: status });
                             break;
                         case '全站固顶':
                             console.log("全站固定");
-                            Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 4, this.state.days, this.state.reason);
+                           status =  await Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 4, this.state.days, this.state.reason);
+                            this.setState({ fetchState: status });
                             break;
                         case '锁定':
                             console.log("suoding");
-                            Utility.lockTopic(this.props.topicId, this.props.boardId, this.state.reason, this.state.days);
+                           status =  await Utility.lockTopic(this.props.topicId, this.props.boardId, this.state.reason, this.state.days);
+                            this.setState({ fetchState: status });
                             break;
                     }
                 } else {

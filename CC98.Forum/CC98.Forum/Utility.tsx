@@ -1557,12 +1557,19 @@ export async function awardWealth(reason, value, postId) {
     const str = JSON.stringify(body);
     const url = `http://apitest.niconi.cc/manage/bonus/wealth?postid=${postId}`;
     const response = await fetch(url, { method: "PUT", headers, body: str });
-    if (response.status === 401) {
-        //window.location.href = "/status/unauthorizedoperation";
+    switch (response.status) {
+        case 400:
+            return 'wrong input';
+        case 401:
+            return 'unauthorized';
+        case 404:
+            return 'not found';
+        case 500:
+            return 'server error';
     }
-    if (response.status === 500) {
-        //window.location.href = "/status/servererror";
-    }
+
+    const data = await response.json();
+    return data;
 }
 export async function deductWealth(reason, value, postId) {
     const headers = await formAuthorizeHeader();
@@ -1574,29 +1581,30 @@ export async function deductWealth(reason, value, postId) {
     const str = JSON.stringify(body);
     const url = `http://apitest.niconi.cc/manage/punishment/wealth?postid=${postId}`;
     const response = await fetch(url, { method: "PUT", headers, body: str });
-    if (response.status === 401) {
-        //window.location.href = "/status/unauthorizedoperation";
+    switch (response.status) {
+        case 400:
+            return 'wrong input';
+        case 401:
+            return 'unauthorized';
+        case 404:
+            return 'not found';
+        case 500:
+            return 'server error';
     }
-    if (response.status === 500) {
-        //window.location.href = "/status/servererror";
-    }
+
+    const data = await response.json();
+    return data;
 }
 export async function getAwardInfo(postId) {
     const headers = await formAuthorizeHeader();
     const url = `http://apitest.niconi.cc/post/${postId}/awards`;
     const response = await fetch(url, { headers });
-    if (response.status === 500) {
-        //window.location.href = "/status/servererror";
-    }
     const data = await response.json();
     return data;
 }
 export async function getPortraitUrl(userName) {
     const url = `http://apitest.niconi.cc/user/name/${userName}`;
     const response = await fetch(url);
-    if (response.status === 500) {
-        //window.location.href = "/status/servererror";
-    }
     const data = await response.json();
     return data.portraitUrl;
 }
@@ -2222,12 +2230,15 @@ export async function plus1(topicId, postId, reason) {
     const bodyinfo = { value: 1, reason: reason };
     const body = JSON.stringify(bodyinfo);
     const response = await fetch(url, { method: "PUT", headers, body });
-    if (response.status === 401) {
-        //window.location.href = "/status/unauthorizedoperation";
+    switch (response.status) {
+        case 401:
+            return 'unauthorized';
+        case 404:
+            return 'not found';
+        case 500:
+            return 'server error';
     }
-    if (response.status === 500) {
-        //window.location.href = "/status/servererror";
-    }
+    return await response.json();
 }
 export async function minus1(topicId, postId, reason) {
     const url = `http://apitest.niconi.cc/post/${postId}/rating`;
@@ -2236,12 +2247,15 @@ export async function minus1(topicId, postId, reason) {
     const bodyinfo = { value: -1, reason: reason };
     const body = JSON.stringify(bodyinfo);
     const response = await fetch(url, { method: "PUT", headers, body });
-    if (response.status === 401) {
-        //window.location.href = "/status/unauthorizedoperation";
+    switch (response.status) {
+        case 401:
+            return 'unauthorized';
+        case 404:
+            return 'not found';
+        case 500:
+            return 'server error';
     }
-    if (response.status === 500) {
-        //window.location.href = "/status/servererror";
-    }
+    return await response.json();
 }
 export async function addPrestige(postId, value, reason) {
     const headers = await formAuthorizeHeader();
@@ -2250,12 +2264,17 @@ export async function addPrestige(postId, value, reason) {
     const url = `http://apitest.niconi.cc/manage/bonus/prestige?postid=${postId}`;
     const body = JSON.stringify(bodyinfo);
     const response = await fetch(url, { method: "PUT", headers, body });
-    if (response.status === 401) {
-        //window.location.href = "/status/unauthorizedoperation";
+    switch (response.status) {
+        case 400:
+            return 'wrong input';
+        case 401:
+            return 'unauthorized';
+        case 404:
+            return 'not found';
+        case 500:
+            return 'server error';
     }
-    if (response.status === 500) {
-        //window.location.href = "/status/servererror";
-    }
+    return await response.json();
 }
 export async function deductPrestige(postId, value, reason) {
     const headers = await formAuthorizeHeader();
@@ -2264,12 +2283,17 @@ export async function deductPrestige(postId, value, reason) {
     const url = `http://apitest.niconi.cc/manage/punishment/prestige?postid=${postId}`;
     const body = JSON.stringify(bodyinfo);
     const response = await fetch(url, { method: "PUT", headers, body });
-    if (response.status === 401) {
-        //window.location.href = "/status/unauthorizedoperation";
+    switch (response.status) {
+        case 400:
+            return 'wrong input';
+        case 401:
+            return 'unauthorized';
+        case 404:
+            return 'not found';
+        case 500:
+            return 'server error';
     }
-    if (response.status === 500) {
-        //window.location.href = "/status/servererror";
-    }
+    return await response.json();
 }
 export async function deletePost(topicId, postId, reason) {
     const headers = await formAuthorizeHeader();
@@ -2277,12 +2301,15 @@ export async function deletePost(topicId, postId, reason) {
     const bodyinfo = { reason: reason };
     const url = `http://apitest.niconi.cc/manage/post?topicid=${topicId}&postid=${postId}`;
     const response = await fetch(url, { method: "DELETE", headers, body: JSON.stringify(bodyinfo) });
-    if (response.status === 401) {
-        //window.location.href = "/status/unauthorizedoperation";
+    switch (response.status) {
+        case 401:
+            return 'unauthorized';
+        case 404:
+            return 'not found';
+        case 500:
+            return 'server error';
     }
-    if (response.status === 500) {
-        //window.location.href = "/status/servererror";
-    }
+    return await response.json();
 }
 export async function stopBoardPost(postId, reason, days) {
     const headers = await formAuthorizeHeader();
@@ -2290,24 +2317,30 @@ export async function stopBoardPost(postId, reason, days) {
     const bodyinfo = { reason: reason, value: days };
     const url = `http://apitest.niconi.cc/manage/punishment/stopboardpost?postid=${postId}`;
     const response = await fetch(url, { method: "PUT", headers, body: JSON.stringify(bodyinfo) });
-    if (response.status === 401) {
-        //window.location.href = "/status/unauthorizedoperation";
+    switch (response.status) {
+        case 401:
+            return 'unauthorized';
+        case 404:
+            return 'not found';
+        case 500:
+            return 'server error';
     }
-    if (response.status === 500) {
-        //window.location.href = "/status/servererror";
-    }
+    return await response.json();
 }
 export async function cancelStopBoardPost(userId, boardId) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", 'application/json');
     const url = `http://apitest.niconi.cc/manage/punishment/cancelstopboardpost?userid=${userId}$boardid=${boardId}`;
     const response = await fetch(url, { method: "PUT", headers });
-    if (response.status === 401) {
-        //window.location.href = "/status/unauthorizedoperation";
+    switch (response.status) {
+        case 401:
+            return 'unauthorized';
+        case 404:
+            return 'not found';
+        case 500:
+            return 'server error';
     }
-    if (response.status === 500) {
-        //window.location.href = "/status/servererror";
-    }
+    return await response.json();
 }
 export async function addBoardTopTopic(topicId, boardId, topState, days, reason) {
     const headers = await formAuthorizeHeader();
@@ -2322,6 +2355,15 @@ export async function addBoardTopTopic(topicId, boardId, topState, days, reason)
             body: JSON.stringify(content)
         }
     );
+    switch (response.status) {
+        case 401:
+            return 'unauthorized';
+        case 404:
+            return 'not found';
+        case 500:
+            return 'server error';
+    }
+    return await response.json();
 }
 export async function removeBoardTopTopic(topicId, boardId, reason) {
     const headers = await formAuthorizeHeader();
@@ -2336,6 +2378,15 @@ export async function removeBoardTopTopic(topicId, boardId, reason) {
             body: JSON.stringify(content)
         }
     );
+    switch (response.status) {
+        case 401:
+            return 'unauthorized';
+        case 404:
+            return 'not found';
+        case 500:
+            return 'server error';
+    }
+    return await response.json();
 }
 //获取特定类型的消息的总数，1为回复消息，2为@消息，3为系统消息
 
@@ -2370,10 +2421,18 @@ export async function getTotalPage(type: number) {
 export async function deleteTopic(topicId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const url = `http://apitest.niconi.cc/manage/topic?topicid=${topicId}`;
+    const url = `http://apitest.niconi.cc/manage/topic/${topicId}`;
     const bodyInfo = { 'reason': reason };
     const body = JSON.stringify(bodyInfo);
-    const response = await fetch(url, { method: "DELETE", headers, body })
+    const response = await fetch(url, { method: "DELETE", headers, body }); switch (response.status) {
+        case 401:
+            return 'unauthorized';
+        case 404:
+            return 'not found';
+        case 500:
+            return 'server error';
+    }
+    return await response.json();
 }
 export async function lockTopic(topicId, boardId, reason, days) {
     const headers = await formAuthorizeHeader();
@@ -2382,6 +2441,15 @@ export async function lockTopic(topicId, boardId, reason, days) {
     const bodyInfo = { 'reason': reason, 'value': days };
     const body = JSON.stringify(bodyInfo);
     const response = await fetch(url, { method: "PUT", headers, body });
+    switch (response.status) {
+        case 401:
+            return 'unauthorized';
+        case 404:
+            return 'not found';
+        case 500:
+            return 'server error';
+    }
+    return await response.json();
 }
 export async function unLockTopic(topicId, boardId, reason) {
     const headers = await formAuthorizeHeader();
@@ -2390,38 +2458,83 @@ export async function unLockTopic(topicId, boardId, reason) {
     const bodyInfo = { 'reason': reason };
     const body = JSON.stringify(bodyInfo);
     const response = await fetch(url, { method: "DELETE", headers, body });
+    switch (response.status) {
+        case 401:
+            return 'unauthorized';
+        case 404:
+            return 'not found';
+        case 500:
+            return 'server error';
+    }
+    return await response.json();
 }
-export async function setBestTopic(topicId, boardId, reason) {
+export async function setBestTopic(topicId,reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const url = `http://apitest.niconi.cc/manage/setbest?topicid=${topicId}&boardid=${boardId}`;
+    const url = `http://apitest.niconi.cc/manage/topic/${topicId}/best`;
     const bodyInfo = { 'reason': reason };
     const body = JSON.stringify(bodyInfo);
     const response = await fetch(url, { method: "PUT", headers, body });
+    switch (response.status) {
+        case 401:
+            return 'unauthorized';
+        case 404:
+            return 'not found';
+        case 500:
+            return 'server error';
+    }
+    return await response.json();
 }
-export async function cancelBestTopic(topicId, boardId, reason) {
+export async function cancelBestTopic(topicId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const url = `http://apitest.niconi.cc/manage/cancelbest?topicid=${topicId}&boardid=${boardId}`;
+    const url = `http://apitest.niconi.cc/manage/topic/${topicId}/best`;
     const bodyInfo = { 'reason': reason };
     const body = JSON.stringify(bodyInfo);
     const response = await fetch(url, { method: "DELETE", headers, body });
+    switch (response.status) {
+        case 401:
+            return 'unauthorized';
+        case 404:
+            return 'not found';
+        case 500:
+            return 'server error';
+    }
+    return await response.json();
 }
 export async function setDisableHot(topicId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const url = `http://apitest.niconi.cc/manage/settopicnothot?topicid=${topicId}`;
+    const url = `http://apitest.niconi.cc/manage/topic/${topicId}/not-hot`;
     const bodyInfo = { 'reason': reason };
     const body = JSON.stringify(bodyInfo);
     const response = await fetch(url, { method: "PUT", headers, body });
+    switch (response.status) {
+        case 401:
+            return 'unauthorized';
+        case 404:
+            return 'not found';
+        case 500:
+            return 'server error';
+    }
+    return await response.json();
 }
 export async function cancelDisableHot(topicId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const url = `http://apitest.niconi.cc/manage/canceltopicnothot?topicid=${topicId}`;
+    const url = `http://apitest.niconi.cc/manage/topic/${topicId}/not-hot`;
     const bodyInfo = { 'reason': reason };
     const body = JSON.stringify(bodyInfo);
     const response = await fetch(url, { method: "DELETE", headers, body });
+    switch (response.status) {
+        case 401:
+            return 'unauthorized';
+        case 404:
+            return 'not found';
+        case 500:
+            return 'server error';
+    }
+    return await response.json();
 }
 
 //自动识别内容中的链接并添加ubb代码
@@ -2444,30 +2557,34 @@ export function autoAddUrl(v: string) {
         return result;
     }
 }
-export async function  getToken() {
-    if (!getLocalStorage("accessToken")) {
-        let url = 'https://openid.cc98.org/connect/token';
-        const requestBody = {
-            'client_id': '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
-            'client_secret': '8b53f727-08e2-4509-8857-e34bf92b27f2',
-            'grant_type': 'password',
-            'username': getLocalStorage("userName"),
-            'password': getLocalStorage("password"),
-            'scope': "cc98-api openid"
-        }
-        const headers = new Headers();
-        headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        const response = await fetch(url, {
-            method: "POST",
-            headers,
-            body: $.param(requestBody)
+export async function getToken() {
+    if (getLocalStorage("userName") && getLocalStorage("password")) {
+        if (!getLocalStorage("accessToken")) {
+            let url = 'https://openid.cc98.org/connect/token';
+            const requestBody = {
+                'client_id': '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
+                'client_secret': '8b53f727-08e2-4509-8857-e34bf92b27f2',
+                'grant_type': 'password',
+                'username': getLocalStorage("userName"),
+                'password': getLocalStorage("password"),
+                'scope': "cc98-api openid"
+            }
+            const headers = new Headers();
+            headers.append('Content-Type', 'application/x-www-form-urlencoded');
+            const response = await fetch(url, {
+                method: "POST",
+                headers,
+                body: $.param(requestBody)
 
-        });
-        const data = await response.json();
-        const token = "Bearer " + encodeURIComponent(data.access_token);
-        setLocalStorage("accessToken", token, data.expires_in);
+            });
+            const data = await response.json();
+            const token = "Bearer " + encodeURIComponent(data.access_token);
+            setLocalStorage("accessToken", token, data.expires_in);
+        }
+        return getLocalStorage("accessToken");
+    } else {
+        return null;
     }
-    return  getLocalStorage("accessToken");
 }
 export async function  formAuthorizeHeader() {
     const token = await getToken();
@@ -2499,7 +2616,14 @@ export async function getTopicInfo(topicId) {
     const headers = await formAuthorizeHeader();
     const url = `http://apitest.niconi.cc/topic/${topicId}`;
     const response = await fetch(url, { headers });
-   
+    switch (response.status) {
+        case 401:
+            return 'unauthorized';
+        case 404:
+            return 'not found';
+        case 500:
+            return 'server error';
+    }
 
     const data = await response.json();
     return data;
@@ -2509,12 +2633,16 @@ export async function getBoardInfo(boardId) {
     const url = `http://apitest.niconi.cc/board/${boardId}`;
     const response = await fetch(url, { headers });
     switch (response.status) {
-        case 401:
-            return 'unauthorized';
         case 404:
             return 'not found';
+        case 500:
+            return 'server error';
     }
-    const data = await response.json();
+    const data = await response.json(); 
+    console.log(data);
+    if (data.canentry===false) {
+            return 'unauthorized';
+    }
     return data;
 }
 export function getTotalPageof10(replyCount) {
@@ -2574,4 +2702,22 @@ export async function getBoardTag(boardId) {
     const response = await fetch(url, { headers });
     const data = await response.json();
     return data;
+}
+export async function setHighlight(topicId,isBold, isItalic, color,duration, reason) {
+    const headers = await formAuthorizeHeader();
+    headers.append("Content-Type", "application/json");
+    const url = `http://apitest.niconi.cc/manage/topic/${topicId}/highlight`;
+    const bodyInfo = {highlightInfo:{ isBold: isBold, isItalic: isItalic, color: color,duration:duration,reason:reason }
+    };
+    const body = JSON.stringify(bodyInfo);
+    const response = await fetch(url, { method: "PUT", headers, body });
+    switch (response.status) {
+        case 401:
+            return 'unauthorized';
+        case 404:
+            return 'not found';
+        case 500:
+            return 'server error';
+    }
+    return await response.json();
 }

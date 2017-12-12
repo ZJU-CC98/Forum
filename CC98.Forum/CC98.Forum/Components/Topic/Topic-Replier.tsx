@@ -3,11 +3,15 @@ import { Link} from 'react-router-dom';
 import { RouteComponent } from '../RouteComponent';
 import { UserDetails } from './Topic-UserDetails';
 declare let moment: any;
-export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, userName, replyTime, floor, userImgUrl, sendTopicNumber, privilege,isDeleted }, {traceMode}, { topicid}>{
+export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, userName, replyTime, floor, userImgUrl, sendTopicNumber, privilege,isDeleted ,quote,content}, {traceMode}, { topicid}>{
     constructor(props, content) {
         super(props, content);
+        this.quote = this.quote.bind(this);
         this.changeTraceMode = this.changeTraceMode.bind(this);
         this.state = { traceMode: false };
+    }
+    quote() {
+        this.props.quote(this.props.content, this.props.userName, this.props.replyTime, this.props.floor);
     }
     changeTraceMode() {
         this.setState({ traceMode: this.state.traceMode === true ? false : true });
@@ -80,11 +84,11 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
                     </div>
                 </div>
                 <div style={{ height: "6rem", borderBottom: "#eaeaea solid thin", marginRight:"2rem" }}>
-                <div id="operation"  >
-                    <Link className="operation" to="">引用</Link>
-                    <Link className="operation" to="">编辑</Link>
-                    <Link className="operation" to={email}>私信</Link>
-                        <Link className="operation" to="">举报</Link>
+                    <div id="operation"  >
+                        <button className="operation" onClick={this.quote}>引用</button>
+                        <button className="operation"><Link  to="">编辑</Link></button>
+                    <button className="operation"><Link to={email}>私信</Link></button>
+                        <button className="operation" ><Link to="">举报</Link></button>
                         <Link className="operation" to={this.state.traceMode === true ? normalUrl : curUserPostUrl} onClick={this.changeTraceMode}>{this.state.traceMode === true ? "返回":"只看此用户"}</Link>
                     </div>
                    </div>
