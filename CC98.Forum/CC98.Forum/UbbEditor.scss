@@ -1,6 +1,7 @@
 ﻿.ubb-editor {
     background-color: white;
     border: 1px solid rgb(204,204,204);
+    max-height: 38.875rem;
 
     .editor-buttons {
         display: flex;
@@ -98,6 +99,7 @@
         padding: 1rem;
 
         textarea {
+            transition-duration: .5s;
             border: none;
             width: 100%;
             padding: 0;
@@ -105,5 +107,41 @@
             resize: none;
             font-size: 1rem;
         }
+    }
+
+    .ubb-emoji {
+        position: relative;
+        width: 50%;
+        transition-duration: .4s;
+        top: -36.8rem;
+        left: 22rem;
+        background-color: white;
+        border: 0px solid #ccc;
+        overflow: hidden;
+    }
+
+    .ubb-emoji-content {
+        border-top: 1px solid #ccc;
+        overflow-y: scroll;
+        max-height: 20rem;
+    }
+
+    .ubb-emoji-buttons {
+        display: flex;
+        flex-direction: row;
+
+        button {
+            margin: 0;
+            width: 8rem;
+        }
+    }
+
+    .ubb-emoji-button-active {
+        flex-grow: 1;
+        background-color: #ccc;
+    }
+
+    .ubb-emoji-content-em img {
+        margin: 0.5rem;
     }
 }

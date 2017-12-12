@@ -5,6 +5,19 @@
 import * as React from 'react';
 import * as Utility from '../Utility';
 /**
+ * 组件属性
+ */
+class UbbEditorProps {
+    /**
+     * value变动后调用函数，接受一个参数为变动后的value
+     */
+    update: Function;
+    /**
+     * Ubb编辑器的内容
+     */
+    value: string;
+}
+/**
  * 组件状态
  */
 class UbbEditorState {
@@ -28,12 +41,20 @@ class UbbEditorState {
     * 额外信息的内容
     */
     extendValue: string;
+    /**
+     * 是否显示表情栏
+     */
+    emojiIsShown: boolean;
+    /**
+     * 表情类型
+     */
+    emojiType: 'em' | 'ac' | 'majiang'
 }
 
 /**
  * UBB编辑器组件
  */
-export class UbbEditor extends React.Component<{update: Function, value: string}, UbbEditorState> {
+export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
     /**
     * 对textarea的引用
     */
@@ -50,17 +71,21 @@ export class UbbEditor extends React.Component<{update: Function, value: string}
             selectionStart: 0,
             clicked: false,
             extendValue: '',
-            extendTagName: ''
+            extendTagName: '',
+            emojiType: 'em',
+            emojiIsShown: false
         };
         this.handleExtendValueChange = this.handleExtendValueChange.bind(this);
         this.handleTextareaChange = this.handleTextareaChange.bind(this);
         this.handleTextareaBlur = this.handleTextareaBlur.bind(this);
         this.handleButtonClick = this.handleButtonClick.bind(this);
+        this.handleEmojiButtonClick = this.handleEmojiButtonClick.bind(this);
     }
 
     handleExtendButtonClick(tagName: string) {
         this.setState((prevState)=>({
-            extendTagName: prevState.extendTagName !== tagName ? tagName : ''
+            extendTagName: prevState.extendTagName !== tagName ? tagName : '',
+            emojiIsShown: false
         }));
         this.input.focus();
     }
@@ -113,10 +138,28 @@ export class UbbEditor extends React.Component<{update: Function, value: string}
                 selectionEnd: before.length + selected.length,
                 clicked: true,
                 extendTagName: '',
-                extendValue: ''
+                extendValue: '',
+                emojiIsShown: false
             };
         });
         
+    }
+
+    handleEmojiButtonClick(index: string) {
+        this.setState((prevState) => {
+            let before = this.props.value.slice(0, prevState.selectionStart),
+                selected = `[${this.state.emojiType}${index}]`,
+                after = this.props.value.slice(prevState.selectionEnd, this.props.value.length);
+            this.props.update(before + selected + after);
+            return {
+                selectionStart: before.length,
+                selectionEnd: before.length + selected.length,
+                emojiIsShown: false,
+                clicked: true,
+                extendTagName: '',
+                extendValue: ''
+            };
+        });
     }
 
     componentDidUpdate() {
@@ -132,7 +175,23 @@ export class UbbEditor extends React.Component<{update: Function, value: string}
     render() {
         const size = ['', 1, 2, 3, 4, 5, 6, 7];
         const color = ['颜色', 'aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon', 'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow'];
-        
+        const emoji = {
+            'em': new Array(92).fill(0)
+                .map((item, index) => {
+                    if (index < 10) {
+                        return `0${index}`;
+                    } else if ((index < 43) || (70 < index && index< 92)) {
+                        return `${index}`;
+                    }
+                })
+                .map((item) => (
+                    item ? (<img
+                        src={`http://www.cc98.org/emot/emot${item}.gif`}
+                        onClick={() => { this.handleEmojiButtonClick(item) }}
+                    ></img>) : null
+                ))
+        };
+
         return (
             <div className="ubb-editor">
                 <div className="editor-buttons">
@@ -146,15 +205,35 @@ export class UbbEditor extends React.Component<{update: Function, value: string}
                     </div>
                     <div className="editor-buttons-selects">
                         <p className="fa-text-height"></p>
-                        <select onChange={(e) => { this.handleButtonClick('size', e.target.value); (e.target.value as any) = 0; }} value={0}>
+                        <select
+                            onChange={(e) => { this.handleButtonClick('size', e.target.value); (e.target.value as any) = 0; }}
+                            onClick={() => { this.setState({ extendTagName: '', extendValue: '', emojiIsShown: false}); }}
+                            value={0}
+                        >
                             {size.map((value, index) => (<option value={index} disabled={index === 0} style={{ display: index === 0 ? 'none' : '' }}>{value}</option>))}
                         </select>
                         <p className="fa-eyedropper"></p>
-                        <select onChange={(e) => { this.handleButtonClick('color', e.target.value); (e.target.value as any) = "颜色"; }} value={"颜色"}>
+                        <select
+                            onChange={(e) => { this.handleButtonClick('color', e.target.value); (e.target.value as any) = "颜色"; }}
+                            onClick={() => { this.setState({ extendTagName: '', extendValue: '', emojiIsShown: false}); }}
+                            value={"颜色"}
+                        >
                             {color.map((value, index) => (<option value={value} disabled={index === 0} style={{ backgroundColor: value, display: index === 0 ? 'none' : '' }}></option>))}
                         </select>
                     </div>
                     <div className="editor-buttons-extends">
+                        <button
+                            className="fa-smile-o"
+                            type="button"
+                            title="插入表情"
+                            onClick={() => {
+                            this.setState((prev) => ({
+                                emojiIsShown: !prev.emojiIsShown,
+                                extendTagName: '',
+                                extendValue: ''
+                                }));
+                            }}
+                        ></button>
                         <button className="fa-link" type="button" title="插入url" onClick={() => { this.handleExtendButtonClick('url'); }}></button>
                         <button className="fa-picture-o" type="button" title="插入图片" onClick={() => { this.handleExtendButtonClick('img'); }}></button>
                         <button className="fa-film" type="button" title="插入视频" onClick={() => { this.handleExtendButtonClick('video'); }}></button>
@@ -185,7 +264,20 @@ export class UbbEditor extends React.Component<{update: Function, value: string}
                         ref={(textarea) => {
                             this.content = textarea;
                         }}
+                        style={{ height: this.state.extendTagName ? '32.5rem' : '34.5rem' }}
                     ></textarea>
+                </div>
+                <div className="ubb-emoji" style={this.state.emojiIsShown ? { height: '22rem', borderWidth: '1px' } : {height: '0rem'}}>
+                    <div className="ubb-emoji-buttons">
+                        <button type="button" className={this.state.emojiType === 'ac' ? 'ubb-emoji-button-active': ''} onClick={() => { this.setState({ emojiType: 'ac' }); }}>AC娘</button>
+                        <button type="button" className={this.state.emojiType === 'majiang' ? 'ubb-emoji-button-active' : ''} onClick={() => { this.setState({ emojiType: 'majiang' }); }}>麻将脸</button>
+                        <button type="button" className={this.state.emojiType === 'em' ? 'ubb-emoji-button-active' : ''} onClick={() => { this.setState({ emojiType: 'em' }); }}>经典</button>
+                        <button type="button" onClick={() => { this.setState({ emojiIsShown: false }); }}>返回</button>
+                        
+                    </div>
+                    <div className={`ubb-emoji-content ubb-emoji-content-${this.state.emojiType}`}>
+                        {emoji[this.state.emojiType]}
+                    </div>
                 </div>
             </div>
         );
