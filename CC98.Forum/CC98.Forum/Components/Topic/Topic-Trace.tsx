@@ -74,7 +74,7 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
     render() {
         let topic = null;
         if (this.state.page == 1) {
-            topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={this.state.userId} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} />;
+            topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={this.state.userId} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} quote={this.quote} />;
         }
         const url = `/topic/${this.match.params.topicid}/user/${this.match.params.userId}/`;
         return <div className="center" style={{ width: "1140px" }} >
@@ -127,7 +127,7 @@ export class Reply extends React.Component<{ topicId, page, topicInfo, boardInfo
             }
     private generateContents(item: ContentState) {
         return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin", backgroundColor: "#fff" }}>
-            <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isDeleted={item.isDeleted} quote={this.quote} content={item.content} />
+            <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isDeleted={item.isDeleted} quote={this.quote} content={item.content} traceMode={true}/>
             <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
             <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={item.privilege} />
             <ReplyContent key={item.content}content={item.content}  postid={item.postId} contentType={item.contentType} />

@@ -16,7 +16,6 @@ import { ReplyContent } from './Topic-ReplyContent';
 import { Provider } from 'react-redux';
 import { AwardInfo } from './Topic-AwardInfo';
 import { UserDetails } from './Topic-UserDetails';
-import { HotReplier } from './Topic-HotReplier';
 import { HotReply } from './Topic-HotReply';
 import { TopicContent } from './Topic-TopicContent';
 import { SendTopic } from './Topic-SendTopic';
@@ -46,7 +45,9 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         };
     }
     quote(content, userName, replyTime, floor) {
-  
+        const y = $("#sendTopicInfo").offset().top;
+        console.log("y=" + y);
+        scrollTo(0,y);
         this.setState({ quote: { content: content, userName: userName, replyTime: replyTime, floor: floor } });
     }
     update() {
@@ -123,8 +124,8 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         let topic = null;
         let hotReply = null;
         if (this.state.page === 1) {
-            topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo}/>;
-            hotReply = <HotReply topicInfo={this.state.topicInfo} page={this.match.params.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} />
+            topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} quote={this.quote} />;
+            hotReply = <HotReply topicInfo={this.state.topicInfo} page={this.match.params.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} updateTime={Date.now()} quote={this.quote} />
         }
         const pagerUrl = `/topic/${this.state.topicid}/`;
         return <div className="center" >

@@ -57,7 +57,7 @@ export class Reply extends React.Component<{topicId,page,topicInfo,boardInfo,upd
              privilege = Utility.getLocalStorage("userInfo").privilege;
 
         return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin", backgroundColor: "#fff" }}>
-            <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isDeleted={item.isDeleted} content={item.content} quote={this.quote} />
+            <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isDeleted={item.isDeleted} content={item.content} quote={this.quote} traceMode={false} isHot={false} />
             <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
             <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} />
             <ReplyContent key={item.content} postid={item.postId} content={item.content} contentType={item.contentType} />

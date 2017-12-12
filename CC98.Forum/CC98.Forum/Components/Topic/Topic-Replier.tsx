@@ -3,12 +3,12 @@ import { Link} from 'react-router-dom';
 import { RouteComponent } from '../RouteComponent';
 import { UserDetails } from './Topic-UserDetails';
 declare let moment: any;
-export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, userName, replyTime, floor, userImgUrl, sendTopicNumber, privilege,isDeleted ,quote,content}, {traceMode}, { topicid}>{
+export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, userName, replyTime, floor, userImgUrl, sendTopicNumber, privilege,isDeleted ,quote,content,traceMode,isHot}, {traceMode}, { topicid}>{
     constructor(props, content) {
         super(props, content);
         this.quote = this.quote.bind(this);
         this.changeTraceMode = this.changeTraceMode.bind(this);
-        this.state = { traceMode: false };
+        this.state = { traceMode: this.props.traceMode };
     }
     quote() {
         this.props.quote(this.props.content, this.props.userName, this.props.replyTime, this.props.floor);

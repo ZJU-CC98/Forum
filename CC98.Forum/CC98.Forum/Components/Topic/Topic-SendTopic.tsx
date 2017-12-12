@@ -55,8 +55,22 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
                 ]
             },
         });
+        const time = moment(this.props.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
         const masters = this.props.boardInfo.masters;
-        this.setState({ masters: masters });
+        if (this.props.content) {
+            if (this.state.mode === 1) {
+                const str = `>**以下是引用${this.props.content.floor}楼：用户${this.props.content.userName}在${time}的发言：**`;
+                const content = this.props.content.content;
+                Constants.testEditor.appendMarkdown(str);
+                Constants.testEditor.appendMarkdown(content);
+                this.setState({ masters: masters });
+            } else {
+                const str = `[quote][b]以下是引用${this.props.content.floor}楼：用户${this.props.content.userName}在${time}的发言：[/b]${this.props.content.content}[/quote]`;
+                this.setState({ masters: masters, content: this.state.content + str });
+            }
+        }
+       
+    
     }
     componentWillReceiveProps(newProps) {
         const time = moment(newProps.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
@@ -69,7 +83,7 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
             } else {
                
                 const str = `[quote][b]以下是引用${newProps.content.floor}楼：用户${newProps.content.userName}在${time}的发言：[/b]${newProps.content.content}[/quote]`;
-                this.setState({ content: this.state.content+newProps.content.content });
+                this.setState({ content: this.state.content+str });
             }
         }
     }
@@ -229,7 +243,7 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
             editor = <div id="sendTopic">
                 <form>
                     <div id="test-editormd" className="editormd">
-                        <textarea className="editormd-markdown-textarea" name="test-editormd-markdown-doc" value={this.state.content}  ></textarea>
+                        <textarea className="editormd-markdown-textarea" name="test-editormd-markdown-doc"   ></textarea>
                     </div>
                 </form>
                 <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
@@ -251,7 +265,7 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
                
             </form>;
         }
-        return <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
+        return <div id="sendTopicInfo" style={{ width: "100%", display: "flex", flexDirection: "column" }}>
             <div className="row" style={{ justifyContent: this.state.mode === 1 ? "space-between" : "flex-end" }}>
                 {uploadInfo}
                 <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ width: "16rem", height: "0.8rem", letterSpacing: "0.3125rem" }}>{this.state.mode === 1 ? "切换到Ubb编辑器" : "切换到Markdown编辑器"}

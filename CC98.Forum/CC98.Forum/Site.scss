@@ -510,6 +510,7 @@ body {
     color: #000000;
     margin-left: 0.3125rem;
     outline: none;
+    cursor:pointer;
 }
 
 .operation {
@@ -2784,7 +2785,8 @@ a {
     background-color: #FFFACD;
 }
 .judgeManagement {
-
+    margin-left:15rem;
+    margin-top:-15rem;
     position: absolute;
     z-index: 1000;
     width: 30rem;
