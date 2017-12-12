@@ -127,7 +127,7 @@ export class Reply extends React.Component<{ topicId, page, topicInfo, boardInfo
             }
     private generateContents(item: ContentState) {
         return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin", backgroundColor: "#fff" }}>
-            <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isDeleted={item.isDeleted} quote={this.quote} content={item.content} traceMode={true}/>
+            <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isDeleted={item.isDeleted} quote={this.quote} content={item.content} traceMode={true} isHot={false} />
             <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
             <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={item.privilege} />
             <ReplyContent key={item.content}content={item.content}  postid={item.postId} contentType={item.contentType} />
