@@ -46,9 +46,11 @@ export class List extends RouteComponent<{}, { page:number, boardId: number,boar
 
         const boardInfo = await Utility.getBoardInfo(this.match.params.boardId);
         // 设置状态
+        console.log(boardInfo);
         this.setState({ boardInfo: boardInfo, boardId: this.match.params.boardId, fetchState: boardInfo });
     }
     render() {
+        console.log(this.state.fetchState);
         switch (this.state.fetchState) {
             case 'ok':
                 return <div></div>;

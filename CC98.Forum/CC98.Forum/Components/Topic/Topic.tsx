@@ -45,6 +45,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         };
     }
     quote(content, userName, replyTime, floor) {
+        console.log("in topic quote" + content);
         const y = $("#sendTopicInfo").offset().top;
         scrollTo(0,y);
         this.setState({ quote: { content: content, userName: userName, replyTime: replyTime, floor: floor } });
@@ -138,7 +139,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
             <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} updateTime={Date.now()} quote={this.quote} />
 
             <div style={{ display: "flex", width: "100%", justifyContent: "flex-end", marginTop: "3rem" }}><Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
-            <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardId} boardInfo={this.state.boardInfo} content={this.state.quote} />
+            <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardId} boardInfo={this.state.boardInfo} content={this.state.quote} userId={this.state.topicInfo.userId} />
             
         </div>
             ;

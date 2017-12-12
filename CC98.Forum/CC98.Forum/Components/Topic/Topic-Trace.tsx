@@ -84,7 +84,7 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
             <Reply topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} page={this.state.page} topicId={this.state.topicid} userId={this.state.userId} quote={this.quote} />
             <div style={{ width: "100%" }}>
                 <Pager page={this.state.page} totalPage={this.state.totalPage} url={url} /></div>
-            <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardInfo.id} boardInfo={this.state.boardInfo} content={this.state.content} />
+            <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardInfo.id} boardInfo={this.state.boardInfo} content={this.state.content} userId={this.state.userId} />
         </div>
             ;
 
