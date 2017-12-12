@@ -181,11 +181,13 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    align-items:center;
+    align-items:flex-start;
 }
 
 
-
+#essay1{
+    margin-left:2rem;
+}
 .titleProp {
     color: #FF8838;
     font-size: 1rem;
@@ -199,6 +201,7 @@ body {
 }
 
 #essayProp {
+    margin-left:1rem;
     display: flex;
     font-size: 0.625rem;
 }
@@ -308,11 +311,13 @@ body {
 .substance {
     display: flex;
     line-height: 200%;
-    margin: 1.25rem;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
     word-wrap: break-word;
     color: rgb(80,80,80);
     padding-bottom: 1rem;
-   
 }
 .replySubstance {
     border-top: #eaeaea thin solid;
@@ -978,7 +983,7 @@ a {
 
 .boardContent {
     display: flex;
-    flex-direction: column;
+
     margin: 18px 15px 18px 18px;
     width: 250px;
 }
@@ -989,11 +994,14 @@ a {
     margin: 0px 15px 18px 18px;
     width: 250px;
 }
-
+.boardBlock{
+    margin-left:0.5rem
+}
 .greenBackdrop {
-    height: 88px;
-    width: 250px;
-    background-color: rgb(41,197,133);
+    height: 140px;
+    width: 140px;
+    background-image: url(/images/board.jpg) ;
+    background-size:100%;
 }
 
 .boardName2 {
@@ -2893,4 +2901,7 @@ a {
     border: gray solid thin;
     border-radius: 0.3rem;
     cursor: pointer;
+}
+.followBoard :hover {
+    background-color: #eea9b8;
 }

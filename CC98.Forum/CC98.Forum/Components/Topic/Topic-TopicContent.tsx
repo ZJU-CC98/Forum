@@ -158,7 +158,7 @@ export class TopicContent extends React.Component<{ postid: number, topicid: num
             return <div className="content">
                 <div className="substance">{content}</div>              
                 <div className="comment1">
-                    <div id="commentlike" className="buttonFont" onClick={this.state.favState ? this.cancelFav : this.setFav}><button className="commentbutton"><i className="fa fa-star-o fa-lg" ></i></button>   {this.state.favState ? "取消收藏" : "收藏文章"} </div>
+                    <div id="commentlike" className="buttonFont" onClick={this.state.favState ? this.cancelFav : this.setFav} style={{cursor:"pointer"}}><button className="commentbutton"><i style={this.state.favState ? { color: "red" } : null} className="fa fa-star-o fa-lg"></i></button>   {this.state.favState ? "取消收藏" : "收藏文章"} </div>
                     <div id="commentliked" onClick={this.like.bind(this)} className="upup" style={{ marginRight: "0.7rem" }} ><i title="赞"  className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
                     <div id="commentdisliked" className="downdown" onClick={this.dislike.bind(this)} ><i title="踩" className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
                     <div id="commentlike" className="buttonFont row"> <div className="commentbutton" style={{cursor: "pointer" }} onClick={this.showJudgeUI}>   评分</div><div className="commentbutton">   编辑</div></div>

@@ -121,8 +121,11 @@ export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>
     convertChildBoard(item: Board) {    //暂无各版面图片，以绿色背景方块替代
         return <div className="boardContent">
             <Link to={`/list/${item.id}/normal`}><div className="greenBackdrop"></div></Link>
+            <div className="column boardBlock" >
             <Link to={`/list/${item.id}/normal`}><div className="boardName2">{item.name}</div></Link>
-            <div className="boardInfo">今日发帖 {item.todayPostCount} / 总主题数 {item.totalPostCount}</div>
+                <div className="boardInfo">今日发帖 {item.todayPostCount} </div>
+                <div className="boardInfo">总主题数 {item.totalPostCount}</div>
+                </div>
         </div>;
     }
     convertNoImgChildBoard(item: Board) {
