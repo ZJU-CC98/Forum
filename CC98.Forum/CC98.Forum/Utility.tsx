@@ -852,7 +852,7 @@ export async function getBoardName(boardId: number) {
 */
 
 export function isLogOn(): boolean {
-    const token = getLocalStorage("accessToken");
+    const token = getLocalStorage("userName");
 
     return !!token;
 }

@@ -25,7 +25,7 @@ export class UserCenterMyFavoritesBoard extends React.Component<UserCenterMyFavo
             buttonInfo: '取关中'
         });
         try {
-            const token = Utility.getLocalStorage("accessToken");
+            const token = await Utility.getToken();
             const boardId = this.props.UserFavoritesBoard.id;
             const url = `http://apitest.niconi.cc/me/custom-board/${boardId}`;
             let myHeaders = new Headers();
@@ -59,7 +59,7 @@ export class UserCenterMyFavoritesBoard extends React.Component<UserCenterMyFavo
             buttonInfo: '关注中'
         });
         try {
-            const token = Utility.getLocalStorage("accessToken");
+            const token = await Utility.getToken();
 
             const boardId = this.props.UserFavoritesBoard.id;
             const url = `http://apitest.niconi.cc/me/custom-board/${boardId}`;

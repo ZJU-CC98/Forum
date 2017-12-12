@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { userLogOff } from '../Actions';
 import { Link } from 'react-router-dom';
 
-class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName, userImgUrl, hoverElement }> {   //顶部条的下拉菜单组件
+class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { userName, userImgUrl, hoverElement }> {   //顶部条的下拉菜单组件
     constructor(props?, context?) {
         super(props, context);
         this.state = ({
@@ -15,20 +15,11 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
             hoverElement: null
         });
     }
-    async componentDidMount() {
-        if (Utility.getLocalStorage("accessToken")) {
-            console.log("token未过期");
-            let userName = Utility.getLocalStorage("userName");
-            let response = await fetch(`http://apitest.niconi.cc/User/Name/${userName}`);
-            let data = await response.json();
-            let userImgUrl = data.portraitUrl;
-            this.setState({ userName: userName, userImgUrl: userImgUrl });
-        } else if (Utility.getLocalStorage("userName")) {   //如果缓存中没有token但是存在userName，说明token已过期，尝试自动刷新token
-            console.log("token已过期，正在重新获取");
-            this.reLogOn();
-        }
-
-        
+    componentDidMount() {
+        let userName = this.props.userInfo.name;
+        let userImgUrl = this.props.userInfo.portraitUrl;
+        this.setState({ userName: userName, userImgUrl: userImgUrl });
+                
 
         //以下是明一写的signalr，有锅找他
         /*var chat = $.connection.messageHub;
@@ -47,48 +38,7 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
         $.connection.hub.start();
         console.log("signal测试完毕");*/
     }
-    async reLogOn() {
-        let url = 'https://openid.cc98.org/connect/token';
-        const requestBody = {
-            'client_id': '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
-            'client_secret': '8b53f727-08e2-4509-8857-e34bf92b27f2',
-            'grant_type': 'password',
-            'username': Utility.getLocalStorage("userName"),
-            'password': Utility.getLocalStorage("password"),
-            'scope': "cc98-api openid"
-        }
-        const headers = new Headers();
-        headers.append('Content-Type','application/x-www-form-urlencoded');
-        let reLogOnResponse = await fetch(url, {
-            method: "POST",
-            headers,
-            body: $.param(requestBody)
-
-        });
-        //请求是否成功
-        if (reLogOnResponse.status !== 200) {
-            console.log('自动刷新token失败，请重新登录');//因为logOff会刷新页面，所以这里可能看不到
-            this.logOff();
-        }
-
-        //缓存数据
-        let reLogOnData = await reLogOnResponse.json();
-        const token = "Bearer " + encodeURIComponent(reLogOnData.access_token);
-        Utility.setLocalStorage("accessToken", token, reLogOnData.expires_in);
-        console.log("刷新token成功");
-
-        //刷新token成功，改变state
-        let userName = Utility.getLocalStorage("userName");
-        let response = await fetch(`http://apitest.niconi.cc/User/Name/${userName}`);
-        let data = await response.json();
-        let userImgUrl = data.portraitUrl;
-        this.setState({ userName: userName, userImgUrl: userImgUrl });
-    } catch(e) {    //捕捉到例外，开始执行catch语句，否则跳过
-        console.log("Oops, error", e);
-        console.log('自动刷新token失败，请重新登录');//因为logOff会刷新页面，所以这里可能看不到
-        this.logOff();
-    }
-
+    
     logOff() {
         Utility.removeLocalStorage("accessToken");
         console.log("after remove token=" + Utility.getLocalStorage("accessToken"));
@@ -97,7 +47,6 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
         Utility.removeLocalStorage("userInfo");
         Utility.removeStorage("all");
         this.props.logOff();            //更新redux中的状态
-        location = window.location;     //刷新当前页面
     }
 
     handleMouseEvent(type, className) {
@@ -118,7 +67,7 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
     }
 
     render() {
-        if (Utility.getLocalStorage("accessToken") && Utility.getLocalStorage("userName")) {
+        if (this.props.isLogOn) {
             $(document).ready(function () {
                 const dropDownSub = $('.dropDownSub').eq(0);
                 const dropDownLi = dropDownSub.find('li');
@@ -146,7 +95,7 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
             return (<div id="dropdown">
                 <div className="box">
                     <div className="userInfo">
-                        <div className="userImg"><img src={this.props.userImgUrl||this.state.userImgUrl}></img></div>
+                        <div className="userImg"><img src={this.props.userInfo.portraitUrl||this.state.userImgUrl}></img></div>
                         <div
                             className="userName"
                             onMouseOut={(e) => { this.handleMouseEvent(e.type, "userName"); }}
@@ -207,7 +156,8 @@ class DropDownConnect extends React.Component<{ userImgUrl, logOff }, { userName
 // 这里是董松松的修改，加了redux
 function mapState(state) {
     return {
-        userImgUrl: state.userInfo.currentUserInfo.portraitUrl
+        userInfo: state.userInfo.currentUserInfo,
+        isLogOn: state.userInfo.isLogOn
     }
 }
 
