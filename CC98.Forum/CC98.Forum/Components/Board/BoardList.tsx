@@ -39,16 +39,28 @@ export class BoardList extends React.Component<{}, { thisBoardState: Board[] }> 
             thisBoardState: board,
         })
     }
-
+    scroll(id) {
+        console.log("id=" + id);
+        document.getElementById(id).scrollIntoView();
+    }
     generateRootBoard(item: Board) {    //返回一条父版信息
         return <RootBoard board={item} />;
     }
-
+    generateBoardGuide(item) {
+        const name = `${item.name}`;
+        return <div onClick={() => this.scroll(name)} className="row boardOption">{item.name}</div>;
+    }
+   
     render() {
 
-        return <div className="boardList">
-            {this.state.thisBoardState.map(this.generateRootBoard)}
-        </div>
+        return <div className="row" style={{ width:"1140px" }}>
+            <div className="boardList">
+                {this.state.thisBoardState.map(this.generateRootBoard)}
+            </div>
+            <div className="boardGuide">
+                {this.state.thisBoardState.map(this.generateBoardGuide.bind(this))}
+            </div>
+        </div>;
     }
 }
 export class RootBoard extends React.Component<{ board }, { isExpanded: boolean }>{
@@ -69,11 +81,11 @@ export class RootBoard extends React.Component<{ board }, { isExpanded: boolean 
 
     render() {
         let display = this.state.isExpanded ? "flex" : "none";    //根据 isExpanded 状态定义样式
-        let buttonContent = this.state.isExpanded ? "-" : "+";      //根据 isExpanded 状态定义按钮内容
+        let buttonContent = this.state.isExpanded ? <div style={{ fontSize: "0.75rem" }}>收起</div> : <div style={{ fontSize: "0.75rem" }}>展开</div>;      //根据 isExpanded 状态定义按钮内容
         let boards = this.props.board;
 
         if (boards.id === 758) {    //似水流年版 没有子版
-            return <div className="anArea">
+            return <div className="anArea" id="似水流年">
                 <div className="column" style={{ border: '2px solid #e9e9e9' }}>
                     <div className="row" style={{ marginTop: '15px', marginBottom: '15px' }}>
                         <div className="areaName"><Link to="/list/758/normal">{boards.name}</Link></div>
@@ -83,12 +95,12 @@ export class RootBoard extends React.Component<{ board }, { isExpanded: boolean 
             </div>;
         }
         else {  //其他版
-            return <div className="anArea">
+            return <div className="anArea" id={boards.name}>
                 <div className="column" style={{ border: '2px solid #e9e9e9' }}>
                     <div className="row" style={{ marginTop: '15px', marginBottom: '15px' }}>
                         <div className="areaName">{boards.name}</div>
                         <div className="areaName">主管：{boards.masters}</div>
-                        <div className="hideBoard" onClick={this.toggleIsExpanded} > {buttonContent}</div>
+                        <div onClick={this.toggleIsExpanded} style={{ marginLeft: "1rem", cursor:"pointer" }}> {buttonContent}</div>
                     </div>
                     <div className="hiddenContent" style={{ display: display }}> <ChildBoard boardid={boards.id} /></div>
                 </div>

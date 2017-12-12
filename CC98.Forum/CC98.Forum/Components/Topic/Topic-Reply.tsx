@@ -57,14 +57,14 @@ export class Reply extends React.Component<{topicId,page,topicInfo,boardInfo,upd
         if (Utility.getLocalStorage("userInfo"))
             privilege = Utility.getLocalStorage("userInfo").privilege;
         const id = item.floor % 10;
-        return <div className="reply" id={id.toString()} ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin", backgroundColor: "#fff" }}>
+        return <div className="reply" id={id.toString()} >
             <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isDeleted={item.isDeleted} content={item.content} quote={this.quote} traceMode={false} isHot={false} />
             <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
             <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} />
             <ReplyContent key={item.content} postid={item.postId} content={item.content} contentType={item.contentType} />
             <Award postId={item.postId} updateTime={Date.now()} />
             <ReplierSignature signature={item.signature} topicid={item.topicId} userId={item.userId} masters={this.state.masters} postid={item.postId} />
-        </div>
+  
         </div>;
     }
     render() {

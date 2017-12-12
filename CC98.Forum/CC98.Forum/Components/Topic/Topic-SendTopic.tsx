@@ -77,6 +77,7 @@ ${this.props.content.content}`;
             } else {
                 const str = `[quote][b]以下是引用${this.props.content.floor}楼：用户${this.props.content.userName}在${time}的发言：
 [color=blue][url=${url}]>>查看原帖<<[/url][/color][/b]${this.props.content.content}[/quote]`;
+    
                 this.setState({ masters: masters, content: this.state.content + str });
             }
         }
@@ -128,6 +129,7 @@ ${newProps.content.content}[/quote]`;
                 },
             });
         }
+
     }
     async sendUbbTopic() {
         let url = `http://apitest.niconi.cc/topic/${this.props.topicid}/post`;
@@ -282,6 +284,7 @@ ${newProps.content.content}[/quote]`;
                 <label className="fa-upload" htmlFor="upload-files" style={{ fontFamily: "fontAwesome", cursor: "pointer" }}></label></div>
                
             </form>;
+            $(".fa-copyright").parent("a").parent("li").append(uploadInfo);
         }
         return <div id="sendTopicInfo" style={{ width: "100%", display: "flex", flexDirection: "column" }}>
             <div className="row" style={{ justifyContent: this.state.mode === 1 ? "space-between" : "flex-end" }}>

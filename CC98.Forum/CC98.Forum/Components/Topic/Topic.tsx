@@ -76,8 +76,8 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         else { page = parseInt(newProps.match.params.page); }
         const userName = newProps.match.params.userName;
        
-        if (this.state.page !== newProps.match.params.page)
-            scrollTo(0, 0);
+       // if (this.state.page !== newProps.match.params.page)
+           
         const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
         const boardId = topicInfo.boardId;
         const boardInfo = await Utility.getBoardInfo(boardId);
