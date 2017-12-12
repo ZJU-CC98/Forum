@@ -2681,15 +2681,15 @@ export function isMaster(masters) {
         const privilege = getLocalStorage("userInfo").privilege;
         const myName = getLocalStorage("userInfo").name;
         const myId = getLocalStorage("userInfo").id;
-
-        if (privilege === '管理员' || privilege === '超级版主' || (privilege === '全站贵宾' && myId === this.props.userId)) {
+        // || (privilege === '全站贵宾' && myId ===userId)
+        if (privilege === '管理员' || privilege === '超级版主') {
             return true;
  
         }
 
-        if (this.props.masters) {
-            for (let i = 0; i < this.props.masters.length; i++) {
-                if (myName === this.props.masters[i]) {
+        if (masters) {
+            for (let i = 0; i < masters.length; i++) {
+                if (myName === masters[i]) {
                     return true;
                 }
             }

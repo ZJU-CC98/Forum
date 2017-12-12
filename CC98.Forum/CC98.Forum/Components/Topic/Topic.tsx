@@ -46,7 +46,6 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
     }
     quote(content, userName, replyTime, floor) {
         const y = $("#sendTopicInfo").offset().top;
-        console.log("y=" + y);
         scrollTo(0,y);
         this.setState({ quote: { content: content, userName: userName, replyTime: replyTime, floor: floor } });
     }
