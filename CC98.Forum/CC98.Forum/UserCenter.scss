@@ -93,6 +93,10 @@
         outline: none;
     }
 
+    button，label {
+        cursor: pointer;
+    }
+
     .user-center-navigation {
         height: 33rem;
         padding: 1rem;
