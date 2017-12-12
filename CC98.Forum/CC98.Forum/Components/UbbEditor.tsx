@@ -72,7 +72,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
             clicked: false,
             extendValue: '',
             extendTagName: '',
-            emojiType: 'em',
+            emojiType: 'ac',
             emojiIsShown: false
         };
         this.handleExtendValueChange = this.handleExtendValueChange.bind(this);
@@ -84,8 +84,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
 
     handleExtendButtonClick(tagName: string) {
         this.setState((prevState)=>({
-            extendTagName: prevState.extendTagName !== tagName ? tagName : '',
-            emojiIsShown: false
+            extendTagName: prevState.extendTagName !== tagName ? tagName : ''
         }));
         this.input.focus();
     }
@@ -136,10 +135,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
             return {
                 selectionStart: before.length,
                 selectionEnd: before.length + selected.length,
-                clicked: true,
-                extendTagName: '',
-                extendValue: '',
-                emojiIsShown: false
+                clicked: true
             };
         });
         
@@ -154,10 +150,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
             return {
                 selectionStart: before.length,
                 selectionEnd: before.length + selected.length,
-                emojiIsShown: false,
-                clicked: true,
-                extendTagName: '',
-                extendValue: ''
+                clicked: true
             };
         });
     }
@@ -189,7 +182,17 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                         src={`http://www.cc98.org/emot/emot${item}.gif`}
                         onClick={() => { this.handleEmojiButtonClick(item) }}
                     ></img>) : null
-                ))
+                )),
+            'ac': new Array(149).fill(0)
+                .map((item, index) => {
+                    if (index < 9) { return `0${index + 1}`; }
+                    else if (index < 54) { return `${index + 1}`; }
+                    else if (index < 94) { return `${index + 947}`; }
+                    else { return `${index + 1907}`; }
+                }).map((item) => (<img
+                    src={`/images/ac/${item}.png`}
+                    onClick={() => { this.handleEmojiButtonClick(item) }}
+                ></img>))
         };
 
         return (
@@ -257,6 +260,9 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                     <textarea
                         value={this.props.value}
                         onChange={(e) => { this.handleTextareaChange(e.target.value); }}
+                        onFocus={() => {
+                            this.setState({ extendTagName: '', extendValue: '', emojiIsShown: false });
+                        }}
                         onBlur={(e) => {
                             let target: any = e.target;
                             this.handleTextareaBlur(target.selectionStart, target.selectionEnd);
@@ -265,6 +271,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                             this.content = textarea;
                         }}
                         style={{ height: this.state.extendTagName ? '32.5rem' : '34.5rem' }}
+                        spellCheck={false}
                     ></textarea>
                 </div>
                 <div className="ubb-emoji" style={this.state.emojiIsShown ? { height: '22rem', borderWidth: '1px' } : {height: '0rem'}}>
