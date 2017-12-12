@@ -1,5 +1,6 @@
 ﻿import * as React from 'react';
 import { LogOn } from './LogOn';
+import { Link } from 'react-router-dom';
 import * as Utility from '../Utility';
 export class LogOut extends React.Component<{}, {}>{
     render() {
@@ -7,7 +8,7 @@ export class LogOut extends React.Component<{}, {}>{
             display: "flex", flexDirection: "column"
         }}>
             <div>您当前未登录</div>
-            <button><a href="/logon">登录</a></button>
+            <Link to="/logon"><button>登录</button></Link>
         </div>;
     }
 }

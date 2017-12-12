@@ -59,6 +59,11 @@
     display: flex;
     align-self: flex-start;
     align-items: center;
+
+    p {
+        color: grey;
+        font-size: 1rem;
+    }
 }
 
 @keyframes fixnavigation {

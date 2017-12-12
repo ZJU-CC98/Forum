@@ -38,9 +38,11 @@
         align-items: center;
     }
 
-    .editor-buttons-extends, .editor-buttons-styles {
+    .editor-buttons-extends, .editor-buttons-styles, .editor-buttons-selects {
         display: flex;
         align-items: center;
+        overflow: hidden;
+        transition: .5s;
     }
 
     .editor-buttons-extends {
@@ -48,8 +50,6 @@
     }
 
     .editor-buttons-selects {
-        display: flex;
-        align-items: center;
         padding-left: 1.2rem;
 
         p {
@@ -97,6 +97,7 @@
 
     .ubb-content {
         padding: 1rem;
+        height: 36.5rem;
 
         textarea {
             transition-duration: .5s;
@@ -107,13 +108,21 @@
             resize: none;
             font-size: 1rem;
         }
+
+        article {
+            height: 34.5rem;
+            overflow-y: scroll;
+            overflow-x: scroll;
+            word-wrap: break-word;
+            user-select: none;
+        }
     }
 
     .ubb-emoji {
         position: relative;
         width: 50%;
         transition-duration: .4s;
-        top: -36.8rem;
+        top: -38.5rem;
         left: 22rem;
         background-color: white;
         border: 0px solid #ccc;
@@ -129,19 +138,24 @@
     .ubb-emoji-buttons {
         display: flex;
         flex-direction: row;
+    }
 
-        button {
-            margin: 0;
-            width: 8rem;
-        }
+    .ubb-emoji-button {
+        flex-grow: 1;
     }
 
     .ubb-emoji-button-active {
-        flex-grow: 1;
+        flex-grow: 2;
         background-color: #ccc;
     }
 
     .ubb-emoji-content-em img {
+        margin: 0.5rem;
+    }
+
+    .ubb-emoji-content-ac img {
+        width: 75px;
+        height: 65px;
         margin: 0.5rem;
     }
 }
