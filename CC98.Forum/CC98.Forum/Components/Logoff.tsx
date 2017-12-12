@@ -6,8 +6,9 @@ import * as React from 'react';
 import * as Utility from '../Utility';
 import { connect } from 'react-redux';
 import { userLogOff } from '../Actions';
+import { withRouter } from 'react-router-dom';
 
-class LogOffBefore extends React.Component<{logOff}, LogOffState> {
+class LogOffBefore extends React.Component<{logOff,  history}, LogOffState> {
     constructor(props) {
         super(props);
 
@@ -25,7 +26,7 @@ class LogOffBefore extends React.Component<{logOff}, LogOffState> {
         });
 
         setTimeout(() => {
-            location.pathname = "/logon";
+            this.props.history.push("/logon");
         },2000);        
     }
 
@@ -55,4 +56,4 @@ function mapDispatch(dispatch) {
     };
 }
 
-export const LogOff = connect(() => null, mapDispatch)(LogOffBefore);
+export const LogOff = connect(() => null, mapDispatch)(withRouter(LogOffBefore));
