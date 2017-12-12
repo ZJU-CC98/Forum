@@ -2640,7 +2640,8 @@ export async function getBoardInfo(boardId) {
     }
     const data = await response.json(); 
     console.log(data);
-    if (data.canentry===false) {
+    if (data.canEntry === false) {
+
             return 'unauthorized';
     }
     return data;
@@ -2681,7 +2682,7 @@ export function isMaster(masters) {
         const privilege = getLocalStorage("userInfo").privilege;
         const myName = getLocalStorage("userInfo").name;
         const myId = getLocalStorage("userInfo").id;
-        // || (privilege === '全站贵宾' && myId ===userId)
+       
         if (privilege === '管理员' || privilege === '超级版主') {
             return true;
  
@@ -2720,4 +2721,21 @@ export async function setHighlight(topicId,isBold, isItalic, color,duration, rea
             return 'server error';
     }
     return await response.json();
+}
+export async function setFavoriteTopic(topicId) {
+    const headers = await formAuthorizeHeader();
+    const url = `http://apitest.niconi.cc/me/favorite/${topicId}`;
+    const reponse = await fetch(url, {method:"PUT", headers });
+}
+export async function deleteFavoriteTopic(topicId) {
+    const headers = await formAuthorizeHeader();
+    const url = `http://apitest.niconi.cc/me/favorite/${topicId}`;
+    const reponse = await fetch(url, { method:"DELETE", headers });
+}
+export async function getFavState(topicId) {
+    const headers = await formAuthorizeHeader();
+    const url = `http://apitest.niconi.cc/topic/${topicId}/isfavorite`;
+    const response = await fetch(url, { headers });
+    const data = await response.json();
+    return data;
 }

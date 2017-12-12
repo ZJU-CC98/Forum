@@ -11,6 +11,7 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
         this.state = { traceMode: this.props.traceMode };
     }
     quote() {
+        console.log("in replier quote" + this.props.content);
         this.props.quote(this.props.content, this.props.userName, this.props.replyTime, this.props.floor);
     }
     changeTraceMode() {

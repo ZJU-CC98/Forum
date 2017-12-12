@@ -8,7 +8,7 @@ import { TopicManagement } from './Topic-TopicManagement';
 declare let moment: any;
 declare let editormd: any;
 
-export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onChange,content }, { content: string, mode: number, masters: string[]}>{
+export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onChange,content ,userId}, { content: string, mode: number, masters: string[]}>{
     constructor(props) {
         super(props);
         this.sendUbbTopic = this.sendUbbTopic.bind(this);
@@ -35,6 +35,13 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
         $(UIId).css("display", "none");
     }
     async componentDidMount() {
+        if (Utility.isMaster(this.props.boardInfo.masters))
+            $("#topicManagementBTN").css("display", "");
+        if (Utility.getLocalStorage("userInfo")) {
+            const myId = Utility.getLocalStorage("userInfo").id;
+            if ((Utility.getLocalStorage("userInfo").privilege === '全站贵宾' && myId === this.props.userId))
+                $("#topicManagementBTN").css("display", "");
+        }
         editormd.emoji.path = '/images/emoji/';
         Constants.testEditor = editormd("test-editormd", {
             width: "100%",
@@ -56,16 +63,20 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
             },
         });
         const time = moment(this.props.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
+        const url = `/topic/${this.props.topicid}#${this.props.content.floor}`;
         const masters = this.props.boardInfo.masters;
+        console.log("in sendtopic quote didmount");
+        console.log(this.props.content.content);
         if (this.props.content) {
             if (this.state.mode === 1) {
-                const str = `>**以下是引用${this.props.content.floor}楼：用户${this.props.content.userName}在${time}的发言：**`;
-                const content = this.props.content.content;
+                const str = `>**以下是引用${this.props.content.floor}楼：用户${this.props.content.userName}在${time}的发言：**
+${this.props.content.content}`;
                 Constants.testEditor.appendMarkdown(str);
-                Constants.testEditor.appendMarkdown(content);
+
                 this.setState({ masters: masters });
             } else {
-                const str = `[quote][b]以下是引用${this.props.content.floor}楼：用户${this.props.content.userName}在${time}的发言：[/b]${this.props.content.content}[/quote]`;
+                const str = `[quote][b]以下是引用${this.props.content.floor}楼：用户${this.props.content.userName}在${time}的发言：
+[color=blue][url=${url}]>>查看原帖<<[/url][/color][/b]${this.props.content.content}[/quote]`;
                 this.setState({ masters: masters, content: this.state.content + str });
             }
         }
@@ -73,16 +84,23 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
     
     }
     componentWillReceiveProps(newProps) {
+        if (Utility.isMaster(newProps.boardInfo.masters))
+            $("#topicManagementBTN").css("display", "");
+        if (Utility.getLocalStorage("userInfo")) {
+            const myId = Utility.getLocalStorage("userInfo").id;
+            if ((Utility.getLocalStorage("userInfo").privilege === '全站贵宾' && myId === newProps.userId))
+                $("#topicManagementBTN").css("display", "");
+        }
         const time = moment(newProps.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
         if (newProps.content) {
             if (this.state.mode === 1) {
-                const str = `>**以下是引用${newProps.content.floor}楼：用户${newProps.content.userName}在${time}的发言：**`;
-                const content = newProps.content.content;
+                const str = `>**以下是引用${newProps.content.floor}楼：用户${newProps.content.userName}在${time}的发言：**
+${newProps.content.content}`;
                 Constants.testEditor.appendMarkdown(str);
-                Constants.testEditor.appendMarkdown(content);
             } else {
-               
-                const str = `[quote][b]以下是引用${newProps.content.floor}楼：用户${newProps.content.userName}在${time}的发言：[/b]${newProps.content.content}[/quote]`;
+                const url = `/topic/${this.props.topicid}#${newProps.content.floor}`;
+                const str = `[quote][b]以下是引用${newProps.content.floor}楼：用户${newProps.content.userName}在${time}的发言：[color=blue][url=${url}]>>查看原帖<<[/url][/color][/b]
+${newProps.content.content}[/quote]`;
                 this.setState({ content: this.state.content+str });
             }
         }
@@ -254,8 +272,8 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
 
             </div>;
         }
-        if (Utility.isMaster(this.props.boardInfo.masters))
-            $("#topicManagementBTN").css("display", "");
+    
+      
         let uploadInfo = null;
         if (this.state.mode === 1) {
             uploadInfo = <form method="post" encType="multipart/form-data">
