@@ -18,6 +18,7 @@ import { Judge } from './Topic-Judge';
 import { Pager } from '../Pager';
 import { RouteComponent } from '../RouteComponent';
 import { SendTopic } from './Topic-SendTopic';
+import { Reply } from './Topic-Reply';
 declare let moment: any;
 export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, userId,topicInfo,boardInfo ,content}, { topicid, page, userId }> {
     constructor(props, context) {
@@ -81,7 +82,7 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
             <div style={{ width:"100%" }}>
             <Pager page={this.state.page} totalPage={this.state.totalPage} url={url}/></div>
             {topic}
-            <Reply topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} page={this.state.page} topicId={this.state.topicid} userId={this.state.userId} quote={this.quote} />
+            <Reply topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} page={this.state.page} topicId={this.state.topicid} userId={this.state.userId} quote={this.quote} isTrace={true} isHot={false} updateTime={Date.now()} />
             <div style={{ width: "100%" }}>
                 <Pager page={this.state.page} totalPage={this.state.totalPage} url={url} /></div>
             <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardInfo.id} boardInfo={this.state.boardInfo} content={this.state.content} userId={this.state.userId} />
@@ -91,7 +92,7 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
     }
 
 }
-export class Reply extends React.Component<{ topicId, page, topicInfo, boardInfo,userId,quote }, { masters,contents }>{
+/*export class Reply extends React.Component<{ topicId, page, topicInfo, boardInfo,userId,quote }, { masters,contents }>{
     constructor(props, content) {
         super(props, content);
         this.update = this.update.bind(this);
@@ -142,7 +143,7 @@ export class Reply extends React.Component<{ topicId, page, topicInfo, boardInfo
         </div>
             ;
     }
-}
+}*/
 
 /**
  * 文章内容

@@ -260,7 +260,7 @@ export async function getHotReplyContent(topicid: number) {
                 }
                 const userMesJson = await userMesResponse.json();
                 post[i] = {
-                    ...content[i], ...userMesJson
+                    ...content[i], ...userMesJson, postId: content[i].id, userImgUrl: userMesJson.portraitUrl
                 }
 
             } else {
@@ -268,7 +268,7 @@ export async function getHotReplyContent(topicid: number) {
                 const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
                 const anonymousLastReplierName = `匿名${content[i].lastUpdateAuthor.toUpperCase()}`;
                 post[i] = {
-                    ...content[i], userName: anonymousUserName, userImgUrl: purl, userId: null, lastUpdateAuthor: anonymousLastReplierName, signature: null, sendTopicNumber: null,popularity:0
+                    ...content[i], userName: anonymousUserName, userImgUrl: purl, userId: null, lastUpdateAuthor: anonymousLastReplierName, signature: null, sendTopicNumber: null, popularity: 0, postId: content[i].id
                 }
             }
         }
