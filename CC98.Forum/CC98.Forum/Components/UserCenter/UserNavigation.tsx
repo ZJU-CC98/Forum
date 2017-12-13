@@ -1,24 +1,27 @@
 ﻿import * as React from 'react';
 import {
     Link,
-    Route
-} from 'react-router-dom';
+    withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-export class UserNavigation extends React.Component {    
+class UserNavigationBeforeConnect extends React.Component<{ isManager: boolean, currentVisitingUserPage , id }> {
     render() {
         return (<div className="user-center-navigation" id="userCenterNavigation">
             <ul>
-                <CustomLink to={`${location.pathname}`} label="主页" activeOnlyWhenExact={true} myClassName="fa-home" />
+                <li><Link to={`/user/id/${this.props.id}`} className={this.props.currentVisitingUserPage === 'exact' ? "user-center-navigation-active fa-home" : "fa-home"}><span style={{width: '0.5rem'}}></span>主页</Link></li>
                 <hr />
+                <li><Link to={`/user/id/${this.props.id}/manage`} className={this.props.currentVisitingUserPage === 'manage' ? "user-center-navigation-active fa-home" : "fa-home"}><span style={{ width: '0.5rem' }}></span>管理</Link></li>
             </ul>
         </div>);
     }
 }
 
-const CustomLink = ({ label, to, activeOnlyWhenExact = false, myClassName }) => (
-    <Route path={to} exact={activeOnlyWhenExact} children={({ match }) => (
-        <li className={match ? `user-center-navigation-active` : ``}>
-            <Link className={`${myClassName}`} to={to}><p>{label}</p></Link>
-        </li>
-    )} />
-);
+function mapState(state) {
+    return {
+        isManager: state.userInfo.currentUserInfo.privilege === '管理员',
+        currentVisitingUserPage: state.userInfo.currentVisitingUserPage,
+        id: state.userInfo.currentVisitingUserId
+    };
+}
+
+export const UserNavigation = connect(mapState, null)(UserNavigationBeforeConnect);

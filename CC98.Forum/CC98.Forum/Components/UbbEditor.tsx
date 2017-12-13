@@ -283,7 +283,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                             }}
                             style={{ height: this.state.extendTagName ? '32.5rem' : '34.5rem' }}
                             spellCheck={false}
-                        ></textarea>) : (<UbbContainer code={this.props.value} />)}
+                        ></textarea>) : (<div className="ubb-editor-preview"><UbbContainer code={this.props.value} /></div>)}
                 </div>
                 <div className="ubb-emoji" style={this.state.emojiIsShown ? { height: '22rem', borderWidth: '1px' } : {height: '0rem'}}>
                     <div className="ubb-emoji-buttons">

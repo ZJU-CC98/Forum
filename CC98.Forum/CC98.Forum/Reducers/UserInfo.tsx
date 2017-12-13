@@ -18,6 +18,14 @@ class UserInfo {
     * 表示当前登录用户的用户信息
     */
     currentUserInfo: Appstate.UserInfo = Utility.getLocalStorage('userInfo') || new Appstate.UserInfo();
+    /**
+     * 表示当前访问的用户页的页面状态
+     */
+    currentVisitingUserPage: 'exact' | 'manage' = 'exact';
+    /**
+     * 表示当前访问的用户的id
+     */
+    currentVisitingUserId: number = 0;
 }
 
 /**
@@ -33,6 +41,8 @@ export default (state = new UserInfo, action): UserInfo => {
         case ActionTypes.CHANGE_USERINFO:
             Utility.setLocalStorage("userInfo", action.newInfo);
             return { ...state, currentUserInfo: action.newInfo }
+        case ActionTypes.CHANGE_VISITING_USER:
+            return { ...state, currentVisitingUserPage: action.page, currentVisitingUserId: action.id }
         default:
             return state;
     }

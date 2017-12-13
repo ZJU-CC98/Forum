@@ -121,7 +121,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { u
                     style={{ ...style, overflow: 'hidden', height: this.state.hoverElement ==='userName'?'90px':'0px' }}
                 >
                     <ul className="dropDownSub" style={{ display: 'inherit'}}>
-                        <Link to="/userCenter"> <li>个人中心</li></Link>
+                        <Link to="/usercenter"> <li>个人中心</li></Link>
                         <Link to="/signin"><li>签到</li></Link>
                         <li onClick={this.logOff.bind(this)}>注销</li>
                     </ul>
