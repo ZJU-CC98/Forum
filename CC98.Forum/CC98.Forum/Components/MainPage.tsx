@@ -66,7 +66,7 @@ export class RecommendedReadingComponent extends React.Component<{}, {}> {
             </div>
             <div className="recommendedReadingContent">
                 <div className="recommendedReadingImage">
-                    <img src="/images/recommended2Img.jpg" />
+                    <img src="/images/推荐阅读.jpg" />
                 </div>
                 <div className="column" style={{ flexGrow: 1 }}>
                     <div className="recommendedReadingTitle">推荐阅读标题</div>
@@ -263,25 +263,25 @@ export class RecommendedFunctionComponent extends React.Component<{}, {}>{
             </div>
             <div className="recommendedFunctionContent">
                 <div className="recommendedFunctionRow">
-                    <div className="recommendedFunctionImage"><img src="/images/recommended2Img.jpg"></img></div>
+                    <div className="recommendedFunctionImage"><img src="/images/推荐功能.jpg"></img></div>
+                    <div className="recommendedFunctionTitle">广播台点歌通道</div>
+                </div>
+                <div className="recommendedFunctionRow">
+                    <div className="recommendedFunctionImage"><img src="/images/推荐功能.jpg"></img></div>
                     <div className="recommendedFunctionTitle">CC98抽卡游戏</div>
                 </div>
                 <div className="recommendedFunctionRow">
-                    <div className="recommendedFunctionImage"><img src="/images/recommended2Img.jpg"></img></div>
+                    <div className="recommendedFunctionImage"><img src="/images/推荐功能.jpg"></img></div>
                     <div className="recommendedFunctionTitle">CC98 share</div>
                 </div>
                 <div className="recommendedFunctionRow">
-                    <div className="recommendedFunctionImage"><img src="/images/recommended2Img.jpg"></img></div>
+                    <div className="recommendedFunctionImage"><img src="/images/推荐功能.jpg"></img></div>
                     <div className="recommendedFunctionTitle">推荐阅读投稿</div>
                 </div>
                 <div className="recommendedFunctionRow">
-                    <div className="recommendedFunctionImage"><img src="/images/recommended2Img.jpg"></img></div>
+                    <div className="recommendedFunctionImage"><img src="/images/推荐功能.jpg"></img></div>
                     <div className="recommendedFunctionTitle">社团及学生组织用户申请</div>
-                </div>
-                <div className="recommendedFunctionRow">
-                    <div className="recommendedFunctionImage"><img src="/images/recommended2Img.jpg"></img></div>
-                    <div className="recommendedFunctionTitle">广播台点歌通道</div>
-                </div>
+                </div>            
             </div>
         </div>
     }

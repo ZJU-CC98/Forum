@@ -115,6 +115,7 @@
     flex-direction: row;
     justify-content: center;
     min-width: 71.25rem;
+    margin-bottom: 2.5rem;
     z-index: 0;
 }
 
@@ -139,7 +140,7 @@
     align-items: center;
     font-size: 1.25rem;
     font-family: 微软雅黑;
-    padding-left: 1.25rem;
+    padding-left: 0.75rem;
     color: rgb(121,184,202);
 }
 
@@ -149,7 +150,7 @@
     justify-content: space-between;
     font-size: 1.25rem;
     font-family: 微软雅黑;
-    padding-left: 1.25rem;
+    padding-left: 0.75rem;
     color: rgb(107,113,120);
 }
 
@@ -168,14 +169,14 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin-top: 2.5rem;
+    margin-top: 2rem;
 }
 
 .announcementContent {
     display: flex;
     flex-direction: row;
     min-height: 10rem;
-    margin-top: 1.25rem;
+    margin-top: 1rem;
     padding: 1rem 1.25rem;
     border-width: 8px 1px 1px 1px;
     border-style: solid;
@@ -189,14 +190,14 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin-top: 2.5rem;
+    margin-top: 2em;
 }
 
 .recommendedReadingContent {
     display: flex;
     flex-direction: row;
     height: 7.5rem;
-    margin-top: 1.25rem;
+    margin-top: 1rem;
     padding-left: 1.25rem;
     padding-top: 1.25rem;
     border-width: 8px 1px 1px 1px;
@@ -263,15 +264,14 @@
     display: flex;
     flex-direction: column;
     width: 25rem;
-    margin-top: 2.5rem;
-    //margin-right: 1.25rem;
+    margin-top: 2rem;
 }
 
 .mainPageListContent1 {
     display: flex;
     flex-direction: column;
     height: 20rem;
-    margin-top: 1.25rem;
+    margin-top: 1rem;
     padding: 1rem 1.25rem;
     border-width: 8px 1px 1px 1px;
     border-style: solid;
@@ -284,7 +284,7 @@
     display: flex;
     flex-direction: column;
     height: 20rem;
-    margin-top: 1.25rem;
+    margin-top: 1rem;
     padding: 1rem 1.25rem;
     border-width: 8px 1px 1px 1px;
     border-style: solid;
@@ -328,17 +328,15 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin-top: 2.5rem;
+    margin-top: 2rem;
 }
 
 .recommendedFunctionContent {
     display: flex;
     flex-direction: column;
     height: 21.25rem;
-    margin-top: 1.25rem;
-    padding-top: 1rem;
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
+    margin-top: 1rem;
+    padding: 1rem 1.25rem;
     border: 0;
     border-right: 0.5rem;
     border-style: solid;
@@ -376,14 +374,14 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin-top: 2.5rem;
+    margin-top: 2rem;
 }
 
 .schoolNewsContent {
     display: flex;
     flex-direction: column;
     height: 21.25rem;
-    margin-top: 1.25rem;
+    margin-top: 1rem;
     padding-top: 1rem;
     padding-left: 1.25rem;
     padding-right: 1.25rem;
@@ -413,7 +411,7 @@
 
 //首页广告
 .mainPageAd {
-    margin-top: 50px;
+    margin-top: 3.125rem;
     width: 100%;
 }
 
