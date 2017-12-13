@@ -1339,7 +1339,18 @@ export async function uploadFile(file: File) {
         };
     }
 }
-
+export function clickUploadIcon() {
+    console.log("click");
+    $("#upload-files").click();
+}
+export async function uploadEvent(e){
+    const files = e.target.files;
+    const res = await uploadFile(files[0]);
+    const url = res.content;
+    const str = `![](http://apitest.niconi.cc${url})`;
+    testEditor.appendMarkdown(str);
+    console.log("upload and append");
+}
 /**
  * 关注指定id的用户
  * @param userId
