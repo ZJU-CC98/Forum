@@ -3,11 +3,15 @@ import { Link} from 'react-router-dom';
 import { RouteComponent } from '../RouteComponent';
 import { UserDetails } from './Topic-UserDetails';
 declare let moment: any;
-export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, userName, replyTime, floor, userImgUrl, sendTopicNumber, privilege,isDeleted }, {traceMode}, { topicid}>{
+export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, userName, replyTime, floor, userImgUrl, sendTopicNumber, privilege,isDeleted ,quote,content,traceMode,isHot,popularity}, {traceMode}, { topicid}>{
     constructor(props, content) {
         super(props, content);
+        this.quote = this.quote.bind(this);
         this.changeTraceMode = this.changeTraceMode.bind(this);
-        this.state = { traceMode: false };
+        this.state = { traceMode: this.props.traceMode };
+    }
+    quote() {
+        this.props.quote(this.props.content, this.props.userName, this.props.replyTime, this.props.floor);
     }
     changeTraceMode() {
         this.setState({ traceMode: this.state.traceMode === true ? false : true });
@@ -58,6 +62,8 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
         } else {
             userName = this.props.userName;
         }
+        const hotInfo = <div style={{ color: "red", marginLeft: "1rem" }}><span>最热回复</span><span>(第</span><span>{this.props.floor}</span><span>楼)</span></div>;
+        const normalInfo = <div style={{ marginLeft: "0.625rem" }}><span>第</span><span style={{ color: "red" }}>{this.props.floor}</span><span>楼</span></div>;
         return <div className="replyRoot">
             <div className="row" style={{ width: "100%", display: "flex", marginBottom: "0.625rem" }}>
 
@@ -70,21 +76,23 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
                 </div>
                 <div className="column" id="rpymes" >
                     <div className="row" id="replierMes">
-                        <div style={{ marginLeft: "0.625rem" }}><span>第</span><span style={{ color: "red" }}>{this.props.floor}</span><span>楼</span></div>
+                        {this.props.isHot ? hotInfo : normalInfo}
                         <div className="rpyClr" style={{ marginLeft: "0.625rem" }}>{userName}</div>
                         <div id="topicsNumber" style={{ marginLeft: "0.625rem", display: "flex", flexWrap: "nowrap", wordBreak: "keepAll", marginRight: "0.75rem" }}>{topicNumber}&nbsp;<span style={{ color: "red" }}>{this.props.sendTopicNumber}</span> </div>
                     </div>
                     <div className="row" style={{ display: "flex", flexWrap: "nowrap" }}>
                         <div id="clockimg" style={{ marginLeft: "0.375rem" }}><i className="fa fa-clock-o fa-lg fa-fw"></i></div>
                         <div><span className="timeProp">{moment(this.props.replyTime).format('YYYY-MM-DD HH:mm:ss')}</span></div>
+                        <div className="reputation">风评值：{this.props.popularity}
+                            </div>
                     </div>
                 </div>
                 <div style={{ height: "6rem", borderBottom: "#eaeaea solid thin", marginRight:"2rem" }}>
-                <div id="operation"  >
-                    <Link className="operation" to="">引用</Link>
-                    <Link className="operation" to="">编辑</Link>
-                    <Link className="operation" to={email}>私信</Link>
-                        <Link className="operation" to="">举报</Link>
+                    <div id="operation"  >
+                        <button className="operation" onClick={this.quote}>引用</button>
+                        <button className="operation"><Link  to="">编辑</Link></button>
+                    <button className="operation"><Link to={email}>私信</Link></button>
+                        <button className="operation" ><Link to="">举报</Link></button>
                         <Link className="operation" to={this.state.traceMode === true ? normalUrl : curUserPostUrl} onClick={this.changeTraceMode}>{this.state.traceMode === true ? "返回":"只看此用户"}</Link>
                     </div>
                    </div>

@@ -59,6 +59,11 @@
     display: flex;
     align-self: flex-start;
     align-items: center;
+
+    p {
+        color: grey;
+        font-size: 1rem;
+    }
 }
 
 @keyframes fixnavigation {
@@ -91,6 +96,10 @@
 
     *:focus {
         outline: none;
+    }
+
+    button，label {
+        cursor: pointer;
     }
 
     .user-center-navigation {

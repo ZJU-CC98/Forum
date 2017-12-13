@@ -18,7 +18,7 @@ class UserCenterExact extends React.Component<{userInfo, changeUserInfo}> {
 
     async componentDidMount() {
         try {
-            const token = Utility.getLocalStorage('accessToken');
+            const token = await Utility.getToken();
 
             let headers1 = new Headers();
             headers1.append("Authorization", token);

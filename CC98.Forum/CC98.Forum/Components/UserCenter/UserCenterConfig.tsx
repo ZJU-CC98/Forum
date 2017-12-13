@@ -95,7 +95,7 @@ export class UserCenterConfig extends React.Component<null, UserCenterConfigStat
                 throw new Error('请检查QQ是否正确');
             }
 
-            const token = Utility.getLocalStorage('accessToken');
+            const token = await Utility.getToken();
             const url = `http://apitest.niconi.cc/me`;
 
             let myHeaders = new Headers();

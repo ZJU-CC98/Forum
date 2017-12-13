@@ -23,7 +23,7 @@ body {
 #root {
     font-size: 16px;
     width: 100%;
-    background-color: $bgcolor2;
+    background-image: linear-gradient(to top, rgba(121, 184, 202,0.5), rgba(121, 184, 202,0.02));
 }
 
 .postRoot { 
@@ -35,6 +35,7 @@ body {
     font-family: 微软雅黑;
     width: 100%;
     border:#eaeaea solid thin;
+    box-shadow:0 0 10px 1px rgba(0,0,0,0.2);
 }
 
 .replyRoot {
@@ -42,7 +43,7 @@ body {
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    background-color: #fff;
+    min-height:16rem;
     font-family: 微软雅黑;
 }
 
@@ -86,9 +87,7 @@ body {
     height: 6rem;
     width: 100%;
     display: flex;
-    align-self: flex-start;
     border-bottom: #EAEAEA solid thin;
-
     box-sizing: border-box;
 }
 
@@ -153,6 +152,7 @@ body {
 }
 
 .email {
+    color:#fff;
     width: 5rem;
     height: 1.5rem;
     font-size: 0.75rem;
@@ -178,32 +178,34 @@ body {
 }
 
 #topicTitleProp {
+    width:100%;
     height: 6rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
+    align-items:flex-start;
 }
 
-#title1 {
-    margin-top: 1.5rem;
-    margin-left: 1.5rem;
-}
 
+#essay1{
+    margin-left:2rem;
+}
 .titleProp {
     color: #FF8838;
     font-size: 1rem;
 }
 
 #essayTitle {
-    word-break: keep-all;
+    max-width:30rem;
+
     color: #000000;
     font-size: 16px;
 }
 
 #essayProp {
+    margin-left:1rem;
     display: flex;
     font-size: 0.625rem;
-    margin-bottom: 0.625rem;
 }
 
 #like {
@@ -311,11 +313,13 @@ body {
 .substance {
     display: flex;
     line-height: 200%;
-    margin: 1.25rem;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
     word-wrap: break-word;
     color: rgb(80,80,80);
     padding-bottom: 1rem;
-   
 }
 .replySubstance {
     border-top: #eaeaea thin solid;
@@ -472,7 +476,10 @@ body {
 
 .reply {
     width: 100%;
-    background-color:#f5fafe;
+    box-shadow:0px 0px 5px 1px rgba(0,0,0,0.2);
+    margin-top:1rem;
+    border:#eaeaea solid thin;
+    background-color:#fff;
 }
 
 .rpyClr {
@@ -497,6 +504,7 @@ body {
     height: 3rem;
     display: flex;
     justify-content: flex-end;
+
 }
 
 .operation1 {
@@ -509,6 +517,7 @@ body {
     color: #000000;
     margin-left: 0.3125rem;
     outline: none;
+    cursor:pointer;
 }
 
 .operation {
@@ -527,6 +536,7 @@ body {
     margin-right: 0.625rem;
     margin-bottom: 0.625rem;
     outline: none;
+    cursor: pointer;
 }
 
 #rpymes {
@@ -935,16 +945,34 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-width: 1140px;
+    width: 1140px;
     align-items: center;
 }
-
+.boardGuide{
+    position:fixed;
+    margin-left:1140px;
+    width:80px;
+    height:33rem;
+    background-color:#fff;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    border:#eaeaea solid thin;
+    color:#505050;
+    font-size:0.75rem;
+}
+.boardOption{
+    border-bottom:#eaeaea dashed 3px;
+    margin-top:0.4rem;
+    white-space:nowrap;
+    cursor:pointer;
+}
 .anArea {
     display: flex;
     flex-direction: column;
     width: 1140px;
     box-sizing: border-box;
-    background-color: rgb(252,252,252);
+    background-color:#fff;
     margin-bottom: 30px;
 }
 
@@ -978,7 +1006,7 @@ a {
 
 .boardContent {
     display: flex;
-    flex-direction: column;
+
     margin: 18px 15px 18px 18px;
     width: 250px;
 }
@@ -989,11 +1017,14 @@ a {
     margin: 0px 15px 18px 18px;
     width: 250px;
 }
-
+.boardBlock{
+    margin-left:0.5rem
+}
 .greenBackdrop {
-    height: 88px;
-    width: 250px;
-    background-color: rgb(41,197,133);
+    height: 120px;
+    width: 120px;
+    background-image: url(/images/board.jpg) ;
+    background-size:100%;
 }
 
 .boardName2 {
@@ -2426,7 +2457,8 @@ a {
     background-color: #FFFACD;
 }
 .judgeManagement {
-
+    margin-left:15rem;
+    margin-top:-15rem;
     position: absolute;
     z-index: 1000;
     width: 30rem;
@@ -2536,4 +2568,7 @@ a {
     border: gray solid thin;
     border-radius: 0.3rem;
     cursor: pointer;
+}
+.followBoard :hover {
+    background-color: #eea9b8;
 }

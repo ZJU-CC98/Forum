@@ -1,18 +1,17 @@
 ﻿import * as React from 'react';
 import { connect } from 'react-redux';
-import { throwError } from '../../Actions';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { UserCenterNavigation } from './UserCenterNavigation';
 import { UserCenterRouter } from './UserCenterRouter';
+import { LogOut } from '../Status';
 
 /**
  * 用户中心页面
  */
-export class UserCenterBeforeConnect extends React.Component<{ isLogOn, throwError }> {
+export class UserCenterBeforeConnect extends React.Component<{ isLogOn }> {
     render() {
         if (!this.props.isLogOn) {
-            this.props.throwError('LogOut');
-            return <div></div>;
+            return <LogOut />;
         }
         return (
             <div className="user-center">
@@ -39,19 +38,6 @@ function mapState(state) {
     };
 }
 /**
- * 把dispatch(throwError(errorMessage))赋给props中的throwError
- * 其中throwError(errorMessage)是action的构造函数
- * 用类方法定义的action我就不知道怎么dispatch了
- * @param dispatch
- */
-function mapDispatch(dispatch) {
-    return {
-        throwError: (errorMessage) => {
-            dispatch(throwError(errorMessage));
-        }
-    };
-}
-/**
  * 连接UserCenterBeforeConnect与store，默认导出UserCenter替换掉原来的导出
  */
-export const UserCenter = connect(mapState, mapDispatch)(UserCenterBeforeConnect);
+export const UserCenter = connect(mapState, null)(UserCenterBeforeConnect);

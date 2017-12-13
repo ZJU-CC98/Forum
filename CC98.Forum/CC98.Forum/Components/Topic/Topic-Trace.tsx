@@ -17,12 +17,30 @@ import { PostManagement } from './Topic-PostManagement';
 import { Judge } from './Topic-Judge';
 import { Pager } from '../Pager';
 import { RouteComponent } from '../RouteComponent';
+import { SendTopic } from './Topic-SendTopic';
+import { Reply } from './Topic-Reply';
 declare let moment: any;
-export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, userId,topicInfo,boardInfo }, { topicid, page, userId }> {
+export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, userId,topicInfo,boardInfo ,content}, { topicid, page, userId }> {
     constructor(props, context) {
         super(props, context);
+        this.quote = this.quote.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.state = {
-            page: 1, topicid: this.match.params.topicid, totalPage: 1, userId: this.match.params.userId, topicInfo: { replyCount: 0 }, boardInfo: {masters:[],id:7} };
+            page: 1, topicid: this.match.params.topicid, totalPage: 1, userId: this.match.params.userId, topicInfo: { replyCount: 0 }, boardInfo: {masters:[],id:7} ,content:""};
+    }
+    quote(content) {
+        this.setState({ content: content });
+    }
+    async handleChange() {
+
+        const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
+        let page: number;
+        if (!this.match.params.page) {
+            page = 1;
+        }
+        else { page = parseInt(this.match.params.page); }
+        const totalPage = await this.getTotalPage(this.state.topicInfo.replyCount);
+        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, topicInfo: topicInfo });
     }
     async componentWillReceiveProps(newProps) {
         let page: number;
@@ -57,33 +75,37 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
     render() {
         let topic = null;
         if (this.state.page == 1) {
-            topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={this.state.userId} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} />;
+            topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={this.state.userId} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} quote={this.quote} />;
         }
         const url = `/topic/${this.match.params.topicid}/user/${this.match.params.userId}/`;
         return <div className="center" style={{ width: "1140px" }} >
             <div style={{ width:"100%" }}>
             <Pager page={this.state.page} totalPage={this.state.totalPage} url={url}/></div>
             {topic}
-            <Reply topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} page={this.state.page} topicId={this.state.topicid} userId={this.state.userId} />
+            <Reply topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} page={this.state.page} topicId={this.state.topicid} userId={this.state.userId} quote={this.quote} isTrace={true} isHot={false} updateTime={Date.now()} />
             <div style={{ width: "100%" }}>
-            <Pager page={this.state.page} totalPage={this.state.totalPage} url={url} /></div>
+                <Pager page={this.state.page} totalPage={this.state.totalPage} url={url} /></div>
+            <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardInfo.id} boardInfo={this.state.boardInfo} content={this.state.content} userId={this.state.userId} />
         </div>
             ;
 
     }
 
 }
-export class Reply extends React.Component<{ topicId, page, topicInfo, boardInfo,userId }, { masters,contents }>{
+/*export class Reply extends React.Component<{ topicId, page, topicInfo, boardInfo,userId,quote }, { masters,contents }>{
     constructor(props, content) {
         super(props, content);
         this.update = this.update.bind(this);
+        this.quote = this.quote.bind(this);
         this.state = {
             contents: [],
             masters:[]
         };
 
     }
-
+    quote() {
+        this.props.quote(this.state.contents);
+    }
     async update() {
         const page = this.props.page || 1;
         const storageId = `TopicContent_${this.props.topicId}_${page}`;
@@ -105,8 +127,8 @@ export class Reply extends React.Component<{ topicId, page, topicInfo, boardInfo
         this.setState({ contents: realContents, masters: masters });
             }
     private generateContents(item: ContentState) {
-        return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin", backgroundColor:"#fff" }}>
-            <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isDeleted={item.isDeleted} />
+        return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin", backgroundColor: "#fff" }}>
+            <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isDeleted={item.isDeleted} quote={this.quote} content={item.content} traceMode={true} isHot={false} popularity={item.popularity} />
             <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
             <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={item.privilege} />
             <ReplyContent key={item.content}content={item.content}  postid={item.postId} contentType={item.contentType} />
@@ -121,7 +143,7 @@ export class Reply extends React.Component<{ topicId, page, topicInfo, boardInfo
         </div>
             ;
     }
-}
+}*/
 
 /**
  * 文章内容
@@ -150,4 +172,5 @@ export class ContentState {
     dislikeNumber: number;
     postId: number;
     contentType: number;
+    popularity: number;
 }

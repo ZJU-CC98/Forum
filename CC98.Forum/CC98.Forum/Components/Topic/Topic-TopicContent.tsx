@@ -4,17 +4,24 @@ import { PostManagement } from './Topic-PostManagement';
 import { UbbContainer } from '../UbbContainer';
 import { Link } from 'react-router-dom';
 declare let editormd: any;
-export class TopicContent extends React.Component<{ postid: number, topicid: number, content: string, signature: string, userId: number, contentType: number, masters: string[], update }, { likeState: number, likeNumber: number, dislikeNumber: number }> {
+export class TopicContent extends React.Component<{ postid: number, topicid: number, content: string, signature: string, userId: number, contentType: number, masters: string[], update ,quote,userName,replyTime}, { likeState: number, likeNumber: number, dislikeNumber: number ,favState}> {
     constructor(props, content) {
         super(props, content);
         this.showManageUI = this.showManageUI.bind(this);
         this.showJudgeUI = this.showJudgeUI.bind(this);
+        this.quote = this.quote.bind(this);
         this.update = this.update.bind(this);
+        this.setFav = this.setFav.bind(this);
+        this.cancelFav = this.cancelFav.bind(this);
         this.state = {
             likeNumber: 666,
             dislikeNumber: 233,
-            likeState: 0
+            likeState: 0,
+            favState:false
         }
+    }
+    quote() {
+        this.props.quote(this.props.content, this.props.userName, this.props.replyTime, 1);
     }
     update() {
         this.props.update();
@@ -49,7 +56,8 @@ export class TopicContent extends React.Component<{ postid: number, topicid: num
             sequenceDiagram: true,
             codeFold: true,
         });
-        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
+        const favState = await Utility.getFavState(this.props.topicid);
+        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState ,favState:favState});
     }
     async like() {
         //取消赞
@@ -103,6 +111,14 @@ export class TopicContent extends React.Component<{ postid: number, topicid: num
         const UIId = `#judge${this.props.postid}`;
         $(UIId).css("display", "");
     }
+    setFav() {
+        Utility.setFavoriteTopic(this.props.topicid);
+        this.setState({ favState: true });
+    }
+    cancelFav() {
+        Utility.deleteFavoriteTopic(this.props.topicid);
+        this.setState({ favState:false});
+    }
     render() {
         const divid = `doc-content${this.props.postid}`;
         let curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userId}`;
@@ -142,12 +158,12 @@ export class TopicContent extends React.Component<{ postid: number, topicid: num
             return <div className="content">
                 <div className="substance">{content}</div>              
                 <div className="comment1">
-                    <div id="commentlike" className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg" ></i></button>   收藏文章 </div>
-                    <div id="commentliked" className="upup" style={{ marginRight: "0.7rem" }} ><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
-                    <div id="commentdisliked" className="downdown" ><i title="踩" onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
+                    <div id="commentlike" className="buttonFont" onClick={this.state.favState ? this.cancelFav : this.setFav} style={{cursor:"pointer"}}><button className="commentbutton"><i style={this.state.favState ? { color: "red" } : null} className="fa fa-star-o fa-lg"></i></button>   {this.state.favState ? "取消收藏" : "收藏文章"} </div>
+                    <div id="commentliked" onClick={this.like.bind(this)} className="upup" style={{ marginRight: "0.7rem" }} ><i title="赞"  className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
+                    <div id="commentdisliked" className="downdown" onClick={this.dislike.bind(this)} ><i title="踩" className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
                     <div id="commentlike" className="buttonFont row"> <div className="commentbutton" style={{cursor: "pointer" }} onClick={this.showJudgeUI}>   评分</div><div className="commentbutton">   编辑</div></div>
 
-                    <div className="operation1">引用</div>
+                    <div className="operation1" onClick={this.quote}>引用</div>
                     <Link className="operation1" to={curUserPostUrl}>只看此用户</Link>
                     <div className="operation1" id="postTopicManage" onClick={this.showManageUI} style={{ display: "none", cursor: "pointer" }}>管理</div>
 
@@ -157,9 +173,12 @@ export class TopicContent extends React.Component<{ postid: number, topicid: num
             return <div className="content">
                 <div className="substance">{content} </div>
                 <div className="comment">
-                    <div id="commentlike" style={{ marginRight: "0.7rem" }} className="buttonFont"><button className="commentbutton"><i className="fa fa-star-o fa-lg"></i></button>   收藏文章 </div>
-                    <div id="commentliked" className="upup" style={{ marginRight: "0.7rem" }}><i title="赞" onClick={this.like.bind(this)} className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
-                    <div id="commentdisliked" className="downdown"><i title="踩" onClick={this.dislike.bind(this)} className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
+                    <div id="commentlike" style={{ marginRight: "0.7rem",cursor:"pointer" }} className="buttonFont" onClick={this.state.favState ? this.cancelFav : this.setFav}>
+
+                        <button className="commentbutton"><i style={this.state.favState ? {color:"red"}:null} className="fa fa-star-o fa-lg"></i></button>  {this.state.favState ? "取消收藏" : "收藏文章"}
+                        </div>
+                    <div id="commentliked" className="upup" style={{ marginRight: "0.7rem" }}onClick={this.like.bind(this)}><i title="赞"  className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
+                    <div id="commentdisliked" className="downdown" onClick={this.dislike.bind(this)}><i title="踩" className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
                     <div id="commentlike" className="buttonFont row"> <div className="commentbutton" style={{ cursor: "pointer" }} onClick={this.showJudgeUI}>   评分</div><div className="commentbutton">   编辑</div></div>
 
                     <div className="operation1">引用</div>

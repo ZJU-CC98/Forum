@@ -11,7 +11,7 @@ import {
 } from 'react-router-dom';
 import TopicTitleAndContentState = State.TopicTitleAndContentState;
 import { Pager } from '../Pager';
-import { NotFoundTopic, UnauthorizedTopic, UnauthorizedBoard } from '../Status';
+import { NotFoundTopic, UnauthorizedTopic, UnauthorizedBoard, ServerError } from '../Status';
 declare let moment: any;
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
@@ -24,14 +24,15 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
     }
 }
 
-export class List extends RouteComponent<{}, { page:number, boardId: number,boardInfo}, { boardId: number }>  {
+export class List extends RouteComponent<{}, { page:number, boardId: number,boardInfo,fetchState}, { boardId: number }>  {
 
     constructor(props, context) {
         super(props, context);
 
         // 默认页码
         this.state = {
-            boardId: null, boardInfo: {bigPaper:"",masters:[],name:""},page:1 };
+            boardId: null, boardInfo: { bigPaper: "", masters: [], name: "" }, page: 1, fetchState:'ok'
+        };
     }
   
     async componentWillReceiveProps(newProps) {
@@ -43,11 +44,23 @@ export class List extends RouteComponent<{}, { page:number, boardId: number,boar
     }
     async componentWillMount() {
 
-        const boardInfo= await Utility.getBoardInfo(this.match.params.boardId);
+        const boardInfo = await Utility.getBoardInfo(this.match.params.boardId);
         // 设置状态
-        this.setState({ boardInfo: boardInfo, boardId: this.match.params.boardId});
+        console.log(boardInfo);
+        this.setState({ boardInfo: boardInfo, boardId: this.match.params.boardId, fetchState: boardInfo });
     }
     render() {
+        console.log(this.state.fetchState);
+        switch (this.state.fetchState) {
+            case 'ok':
+                return <div></div>;
+            case 'not found':
+                return <NotFoundTopic />;
+            case 'unauthorized':
+                return <UnauthorizedBoard />;
+            case 'server error':
+                return <ServerError />
+        }
         let bigPaper;
         if (!this.state.boardInfo.bigPaper) {
             bigPaper = null;
@@ -332,14 +345,7 @@ export class ListContent extends RouteComponent<{}, { items,totalPage:number,boa
         return page;
     }
     render() {
-        switch (this.state.fetchState) {
-            case 'ok':
-                return <div></div>;
-            case 'not found':
-                return <NotFoundTopic />;
-            case 'unauthorized':
-                return <UnauthorizedBoard />;
-        }
+    
         const curPage = this.match.params.page ? parseInt(this.match.params.page) : 1;
         let topTopics = null;
         if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {

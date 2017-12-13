@@ -1,5 +1,4 @@
 ﻿import * as React from 'react';
-import { connect } from 'react-redux';
 import { AppState } from '../States/AppState';
 import { match } from 'react-router';
 import {
@@ -25,6 +24,7 @@ import { UbbContainer } from './UbbContainer';
 import { Search } from './Search';
 import { SearchBoard } from './SearchBoard';
 import { Signin } from './Signin';
+import { SiteManage } from './SiteManage';
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
 	match: match<TMatch>;
@@ -34,28 +34,11 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
 	}
 }
 
-class AppBeforeConnect extends React.Component<{isError: boolean, errorMessage: string}, AppState> {
+export class App extends React.Component<null, AppState> {
 
     render() {
-        let errorElement: JSX.Element;
-        if (this.props.isError) {
-            switch (this.props.errorMessage) {
-                case 'LogOut': errorElement = <Status.LogOut />; break;
-                case 'UnauthorizedBoard': errorElement = <Status.UnauthorizedBoard />; break;
-                case 'UnauthorizedTopic': errorElement = <Status.UnauthorizedTopic />; break;
-                case 'NotFoundTopic': errorElement = <Status.NotFoundTopic />; break;
-                case 'NotFoundBoard': errorElement = <Status.NotFoundBoard />; break;
-                case 'NotFoundUser': errorElement = <Status.NotFoundUser />; break;
-                case 'ServerError': errorElement = <Status.ServerError />; break;
-                case 'OperationForbidden': errorElement = <Status.OperationForbidden />; break;
-                case 'Disconnected': errorElement = <Status.Disconnected />; break;
-                case 'TopicDeleted': errorElement = <Status.TopicDeleted />; break;
-            }
-        }
-
-        return <div style={{ width: "100%" }}>
+        return (<div style={{ width: "100%" }}>
                 <Router>
-                {!this.props.isError ? (
                     <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px" }}>
                         <Header />
                         <Route exact path="/" component={MainPage}></Route>
@@ -67,12 +50,13 @@ class AppBeforeConnect extends React.Component<{isError: boolean, errorMessage: 
                         <Route path="/message" component={Message} />
                         <Route path="/focus" component={Focus} />
                         <Route path="/newtopics" component={AllNewTopic} />
-                        <Route path="/user" component={User} />
+                        <Route path="/user/:method/:id" component={User} />
                         <Route path="/logon" component={LogOn} />
                         <Route path="/search" component={Search} />
                         <Route path="/searchBoard" component={SearchBoard} />
                         <Route path="/createtopic/:boardId" component={CreateTopic} />
                         <Route path="/signin" component={Signin} />
+                        <Route path="/sitemanage" component={SiteManage} />
                         <Route path="/status/notfoundtopic" component={Status.NotFoundTopic} />
                         <Route path="/status/notfoundboard" component={Status.NotFoundBoard} />
                         <Route path="/status/logout" component={Status.LogOut} />
@@ -86,22 +70,7 @@ class AppBeforeConnect extends React.Component<{isError: boolean, errorMessage: 
                         <Route path="/status/operationforbidden" component={Status.OperationForbidden} />
                         <Footer />
                     </div>
-                ) : <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px" }}>
-                        <Header />
-                        {errorElement}
-                        <Footer />
-                    </div>
-                }
                 </Router>
-        </div>;
+            </div>);
 	}
 }
-
-function mapState(state) {
-    return {
-        isError: state.error.isError,
-        errorMessage: state.error.errorMessage
-    };
-}
-
-export const App = connect(mapState, null)(AppBeforeConnect);
