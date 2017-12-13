@@ -34,12 +34,12 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
     }
 }
 
-export class CreateTopic extends RouteComponent<{}, { title, content, topicId, ready, mode, boardName ,tags}, { boardId }> {   //发帖
+export class CreateTopic extends RouteComponent<{}, { title, content, topicId, ready, mode, boardName, tags }, { boardId }> {   //发帖
     constructor(props) {
         super(props);
         this.update = this.update.bind(this);
         this.changeEditor = this.changeEditor.bind(this);
-        this.state = ({ topicId: null, title: '', content: '', ready: false, mode: 0, boardName: "",tags:[] });
+        this.state = ({ topicId: null, title: '', content: '', ready: false, mode: 0, boardName: "", tags: [] });
     }
     async componentWillMount() {
         const token = Utility.getLocalStorage("accessToken");
@@ -51,7 +51,7 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
         const boardName = data.name;
         //获取标签
         const tags = await Utility.getBoardTag(this.match.params.boardId);
-        this.setState({ boardName: boardName,tags:tags });
+        this.setState({ boardName: boardName, tags: tags });
     }
     ready() {
         this.setState({ ready: true });
@@ -184,7 +184,7 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
         if (mode === 0) {
             return <div className="createTopic">
                 <Category url={url} boardName={this.state.boardName} />
-                <InputTitle boardId={this.match.params.boardId} onChange={this.onTitleChange.bind(this)} />
+                <InputTitle boardId={this.match.params.boardId} tags={this.state.tags} onChange={this.onTitleChange.bind(this)} />
                 <div className="createTopicType">
                     <div className="createTopicListName">发帖类型</div>
                     <input type="radio" checked={true} name="type" value="normal" /> 普通
@@ -201,7 +201,7 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
                     <div className="createTopicListName">主题内容</div>
                     <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ width: "13.5rem" }}>切换到Markdown编辑器</div>
                 </div>
-                <UbbEditor update={this.update} value={this.state.content}/>
+                <UbbEditor update={this.update} value={this.state.content} />
                 <div className="row" style={{ justifyContent: "center" }}>
                     <div id="post-topic-button" onClick={this.sendUbbTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", marginBottom: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>发帖</div>
                 </div>
@@ -209,7 +209,7 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
         } else {
             return <div className="createTopic">
                 <Category url={url} boardName={this.state.boardName} />
-                <InputTitle boardId={this.match.params.boardId} onChange={this.onTitleChange.bind(this)} />
+                <InputTitle boardId={this.match.params.boardId} tags={this.state.tags} onChange={this.onTitleChange.bind(this)} />
                 <div className="createTopicType">
                     <div className="createTopicListName">发帖类型</div>
                     <input type="radio" checked={true} name="type" value="normal" /> 普通
@@ -260,16 +260,23 @@ export class Category extends React.Component<{ url: string, boardName: string }
 }
 //  <div id="post-topic-button" onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>发帖</div>
 
-export class InputTitle extends React.Component<{ boardId, onChange }, { title: string }>{
+export class InputTitle extends React.Component<{ boardId, onChange, tags }, { title: string }>{
     constructor(props) {
         super(props);
         this.state = ({ title: "" });
     }
+
     handleTitleChange(event) {
         this.props.onChange(event.target.value);
         this.setState({ title: event.target.value });
     }
 
+    componentWillReceiveProps(newProps) {
+        const tags = newProps.tags;
+        const tagsNum = tags.length;
+        console.log("tags:" + tags);
+        console.log("tagsNum" + tagsNum);
+    }
     render() {
         return <div className="createTopicTitle">
             <div className="createTopicListName">主题标题</div>
@@ -296,7 +303,7 @@ export class InputMdContent extends React.Component<{ ready, onChange }, { conte
             toolbarIcons: function () {
                 return [
                     "undo", "redo", "|", "emoji",
-                    "bold", "del", "italic", "quote",  "|",
+                    "bold", "del", "italic", "quote", "|",
                     "h1", "h2", "h3", "h4", "|",
                     "list-ul", "list-ol", "hr", "|",
                     "link", "image", "code", "table", "html-entities",
