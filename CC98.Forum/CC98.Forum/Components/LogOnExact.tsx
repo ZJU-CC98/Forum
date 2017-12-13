@@ -75,68 +75,67 @@ class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff, histo
             isLoging: true
         });
         this.props.logOff();
+        try {
+            let url = 'https://openid.cc98.org/connect/token';
 
-        let url = 'https://openid.cc98.org/connect/token';
+            /*
+            请求的正文部分，密码模式需要5个参数，其中client_id和client_secret来自申请的应用，grant_type值固定为"password"
+            */
+            const requestBody = {
+                'client_id': '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
+                'client_secret': '8b53f727-08e2-4509-8857-e34bf92b27f2',
+                'grant_type': 'password',
+                'username': this.state.loginName,
+                'password': this.state.loginPassword,
+                'scope': "cc98-api openid"
+            }
+            const headers = new Headers();
+            headers.append('Content-Type', 'application/x-www-form-urlencoded');
+            let response = await fetch(url, {
+                method: "POST",
+                headers,
+                body: $.param(requestBody)
 
-        /*
-        请求的正文部分，密码模式需要5个参数，其中client_id和client_secret来自申请的应用，grant_type值固定为"password"
-        */
-        const requestBody = {
-            'client_id': '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
-            'client_secret': '8b53f727-08e2-4509-8857-e34bf92b27f2',
-            'grant_type': 'password',
-            'username': this.state.loginName,
-            'password': this.state.loginPassword,
-            'scope':"cc98-api openid"
-        }
-        const headers = new Headers();
-        headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        let response = await fetch(url, {
-            method: "POST",          
-            headers,
-            body: $.param(requestBody)
+            });
 
-        });
+            //请求是否成功
+            if (response.status !== 200) {
+                throw new Error(response.status.toString());
+            }
 
-        //请求是否成功
-        if (response.status !== 200) {
+            let data = await response.json();
+            const token = "Bearer " + encodeURIComponent(data.access_token);
+
+            //缓存数据
+            Utility.setLocalStorage("accessToken", token, data.expires_in);
+            Utility.setLocalStorage("userName", this.state.loginName);
+            Utility.setLocalStorage("password", this.state.loginPassword);
+
+            //缓存用户其信息
+            await Utility.refreshUserInfo();
+
+
             this.setState({
-                loginMessage: `登录失败 ${response.status}`
+                loginMessage: '登录成功 正在返回首页'
+            });
+            this.props.logOn();
+            this.props.changeUserInfo(Utility.getLocalStorage('userInfo'));
+            //跳转至首页
+            setTimeout(() => {
+                this.props.history.push('/');
+            }, 100);
+        } catch (e) {
+            let info: string;
+            switch (e.message) {
+                case '400': info = '密码错误'; break;
+                default: info = '未知错误 ' + e.message;
+            }
+            this.setState({
+                loginMessage: `登录失败 ${info}`,
+                isLoging: false
             });
             this.props.logOff();
-            return false;
         }
-
-        let data = await response.json();
-        const token = "Bearer " + encodeURIComponent(data.access_token);
-
-        //缓存数据
-        Utility.setLocalStorage("accessToken", token, data.expires_in);
-        Utility.setLocalStorage("userName", this.state.loginName);
-        Utility.setLocalStorage("password", this.state.loginPassword);
-
-        //缓存用户其信息
-        await Utility.refreshUserInfo();
-       
-
-        this.setState({
-            loginMessage: '登录成功 正在返回首页'
-        });
-        this.props.logOn();
-        this.props.changeUserInfo(Utility.getLocalStorage('userInfo'));
-        //跳转至首页
-        setTimeout(() => {
-            this.props.history.push('/');
-        }, 100); 
-
-    } catch(e) {    //捕捉到例外，开始执行catch语句，否则跳过
-        //alert(e.error);     这行好像没什么用……暂时还不会处理不同的error……
-        console.log("Oops, error", e);
-        this.setState({
-            loginMessage: `登录失败`,
-            isLoging: false
-        });
-        this.props.logOff();
     }
 
     render() {
