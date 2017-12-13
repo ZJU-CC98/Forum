@@ -109,12 +109,16 @@
             font-size: 1rem;
         }
 
-        article {
-            height: 34.5rem;
+        .ubb-editor-preview {
             overflow-y: scroll;
             overflow-x: scroll;
-            word-wrap: break-word;
             user-select: none;
+            height: 34.5rem;
+        }
+
+        article {
+            word-wrap: break-word;
+            pointer-events: none;
         }
     }
 

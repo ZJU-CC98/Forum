@@ -50,7 +50,7 @@ export class App extends React.Component<null, AppState> {
                         <Route path="/message" component={Message} />
                         <Route path="/focus" component={Focus} />
                         <Route path="/newtopics" component={AllNewTopic} />
-                        <Route path="/user" component={User} />
+                        <Route path="/user/:method/:id" component={User} />
                         <Route path="/logon" component={LogOn} />
                         <Route path="/search" component={Search} />
                         <Route path="/searchBoard" component={SearchBoard} />

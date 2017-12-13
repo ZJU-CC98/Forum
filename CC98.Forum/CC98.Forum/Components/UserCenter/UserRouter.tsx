@@ -4,50 +4,49 @@
 
 import * as React from 'react';
 import {
-    Route
+    Route,
+    withRouter
 } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { UserInfo } from '../../States/AppState';
+import UserManage from './UserManage';
 import { UserExactProfile } from './UserExactProfile';
 import { UserRouterActivities } from './UserRouterActivities';
-import { UserCenterExactAvatar } from './UserCenterExactAvatar'
+import { UserCenterExactAvatar } from './UserCenterExactAvatar';
+import { changeCurrentVisitingUserPage } from '../../Actions';
 import * as Utility from '../../Utility';
 
 export class UserRouter extends React.Component {
     render() {
         return (<div className="user-center-router">
-            <Route path="/user/" component={UserExact} />
+            <Route path="/user/:method/:id?" exact component={UserExactWithRouter} />
+            <Route path="/user/:method/:id/manage" component={UserManage} />
         </div>);
     }
 }
 
-class UserExact extends React.Component<null, UserCenterExactState> {
+class UserExact extends React.Component<{ match, history, changePage}, UserCenterExactState> {
 
     async componentDidMount() {
         try {
-            let myHeaders;
-            if (Utility.isLogOn()) {
-                myHeaders = {
-                    'Authorization':  await Utility.getToken()
-                };
+            let url: string,
+                { id, method } = this.props.match.params,
+                myHeaders = new Headers();
+            if (!id) {
+                throw new Error();
+            } else if (method === 'name') {
+                url = `http://apitest.niconi.cc/User/Name/${id}`;
             }
-
-            let response: Response;
-            if (!location.pathname.split('/')[2]) {
-                return 0;
+            else if (method === 'id') {
+                url = `http://apitest.niconi.cc/User/${id}`;
             }
-            if (location.pathname.split('/')[2] === 'name') {
-                response = await fetch(`http://apitest.niconi.cc/User/Name/${location.pathname.split('/')[3]}`, {
-                    headers: myHeaders
-                });
-            } else {
-                response = await fetch(`http://apitest.niconi.cc/User/${location.pathname.split('/')[2]}`, {
-                    headers: myHeaders
-                });
-            }
-            if (response.status !== 200) {
-                throw {};
-            }
+            myHeaders.append('Authorization', await Utility.getToken());
+            let response = await fetch(url ,{
+                headers: myHeaders
+            });
             const data = await response.json();
+            this.props.history.replace(`/user/id/${data.id}`);
+            this.props.changePage('exact', data.id);
             this.setState({
                 userInfo: data,
                 userAvatarImgURL: data.portraitUrl,
@@ -67,7 +66,7 @@ class UserExact extends React.Component<null, UserCenterExactState> {
                 <UserRouterActivities id={this.state.userInfo.id} />
             </div>);
         } else {
-            element = <p>加载中</p>;
+            element = <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>;
         }
         return element;
     }
@@ -87,3 +86,13 @@ interface UserCenterExactState {
     */
     responseState: number;
 }
+
+function mapDispatch(dispatch) {
+    return {
+        changePage: (page, id) => {
+            dispatch(changeCurrentVisitingUserPage(page, id));
+        }
+    };
+}
+
+const UserExactWithRouter = connect(null, mapDispatch)(withRouter(UserExact));

@@ -22,16 +22,9 @@ declare let testEditor: any;
 
 /*
 *react中用户在表单填入的内容，属于用户跟组件的互动，所以不能用this.props读取，而要定义一个 onChange 事件的回调函数，通过 event.target.value 读取用户输入的值
-*这里单选框设置默认选中也有些bug未修复，可能是出于以上原因
+*这里单选框设置默认选中也有Bug，大概也是出于以上原因
 */
 
-/*
-*编辑器基本复制了回帖的，很多功能尚未实现
-*另外这个编辑器还没做好
-*/
-/*
-*不明白handleChange是做什么的QAQ
-*/
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
     constructor(props?, context?) {
         super(props, context);
@@ -40,6 +33,7 @@ export class RouteComponent<TProps, TState, TMatch> extends React.Component<TPro
         return (this.props as any).match;
     }
 }
+
 export class CreateTopic extends RouteComponent<{}, { title, content, topicId, ready, mode, boardName ,tags}, { boardId }> {   //发帖
     constructor(props) {
         super(props);
@@ -264,8 +258,8 @@ export class Category extends React.Component<{ url: string, boardName: string }
         </div>;
     }
 }
-
 //  <div id="post-topic-button" onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>发帖</div>
+
 export class InputTitle extends React.Component<{ boardId, onChange }, { title: string }>{
     constructor(props) {
         super(props);

@@ -23,6 +23,12 @@ export const throwError = (errorMessage: string) => ({
     errorMessage: errorMessage
 });
 
+export const changeCurrentVisitingUserPage = (page, id) => ({
+    type: ActionTypes.CHANGE_VISITING_USER,
+    page: page,
+    id: id
+});
+
 export class AddAwardAction implements Redux.Action {
     type: string = ActionTypes.ADD_AWARD;
 }
