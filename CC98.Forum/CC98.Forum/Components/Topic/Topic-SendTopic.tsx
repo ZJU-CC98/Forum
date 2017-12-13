@@ -23,7 +23,6 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
         this.setState({ content: value });
     }
     onChange() {
-        console.log("in sendtopic onchange");
         this.props.onChange();
     }
     showManagement() {
@@ -35,6 +34,7 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
         $(UIId).css("display", "none");
     }
     async componentDidMount() {
+     
         if (Utility.isMaster(this.props.boardInfo.masters))
             $("#topicManagementBTN").css("display", "");
         if (Utility.getLocalStorage("userInfo")) {
@@ -61,12 +61,14 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
                     "link", "image", "code", "table", "html-entities",
                 ]
             },
+            toolbarCustomIcons: {
+                file: "<input type='file' id='upload-files' style=' display: none ' onchange='uploadEvent()' />",
+                faicon: "<i class='fa fa-upload' onclick='clickUploadIcon()' style='cursor: pointer '></i>"
+            },
         });
         const time = moment(this.props.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
         const url = `/topic/${this.props.topicid}#${this.props.content.floor}`;
         const masters = this.props.boardInfo.masters;
-        console.log("in sendtopic quote didmount");
-        console.log(this.props.content.content);
         if (this.props.content) {
             if (this.state.mode === 1) {
                 const str = `>**以下是引用${this.props.content.floor}楼：用户${this.props.content.userName}在${time}的发言：**
@@ -106,7 +108,9 @@ ${newProps.content.content}[/quote]`;
             }
         }
     }
-    componentDidUpdate() {
+    componentDidUpdate() {       
+
+
         editormd.emoji.path = '/images/emoji/';
         if (this.state.mode === 1) {
             Constants.testEditor = editormd("test-editormd", {
@@ -126,10 +130,16 @@ ${newProps.content.content}[/quote]`;
                         "list-ul", "list-ol", "hr", "|",
                         "link", "image", "code", "table", "html-entities", 
                     ]
-                },
+                },   
+                toolbarCustomIcons: {
+                    file: "<input type='file' id='upload-files' style=' display: none ' onchange='uploadEvent()' />",
+                    faicon: "<i class='fa-upload' onclick='clickUploadIcon()' style='cursor: pointer '></i>"
+        },
             });
+            console.log("append");
+            let uploadInfo = "<li><form method='post' enctype='multipart/form-data'><input type='file' id='upload-files' style=' display: none ' onchange='uploadEvent()' /><div class='row'><label class='fa-upload' htmlfor='upload-files' style='font-family: fontAwesome;cursor: pointer '></label></div></form></li>";
+            $(".fa-copyright").parent("a").parent("li").parent("ul").append(uploadInfo);
         }
-
     }
     async sendUbbTopic() {
         let url = `http://apitest.niconi.cc/topic/${this.props.topicid}/post`;
@@ -225,29 +235,14 @@ ${newProps.content.content}[/quote]`;
             this.setState({ mode: 0 });
         }
     }
-    async upload(e) {
-        const files = e.target.files;
-        const res = await Utility.uploadFile(files[0]);
-        const url = res.content;
-        if (this.state.mode === 1) {
-            const str = `![](http://apitest.niconi.cc${url})`;
-            Constants.testEditor.appendMarkdown(str);
-        } else {
-            const str = `[img]http://apitest.niconi.cc${url}[/img]`;
-            const ex = this.state.content;
-            const cur = ex + str;
-            this.setState({ content: cur });
-        }
-    }
+
     getInitialState() {
         return { value: '' };
     }
     handleChange(event) {
-
         this.setState({ content: event.target.value });
     }
     render() {
-
         let mode, editor;
         if (this.state.mode === 0) {
             mode = '使用UBB模式编辑';
@@ -278,13 +273,7 @@ ${newProps.content.content}[/quote]`;
       
         let uploadInfo = null;
         if (this.state.mode === 1) {
-            uploadInfo = <form method="post" encType="multipart/form-data">
-                <input type="file" id="upload-files" style={{ display: "none" }} onChange={this.upload.bind(this)} />
-                <div className="row"><div style={{ fontSize: "0.8rem" }}>在此上传本地图片</div>
-                <label className="fa-upload" htmlFor="upload-files" style={{ fontFamily: "fontAwesome", cursor: "pointer" }}></label></div>
-               
-            </form>;
-            $(".fa-copyright").parent("a").parent("li").append(uploadInfo);
+
         }
         return <div id="sendTopicInfo" style={{ width: "100%", display: "flex", flexDirection: "column" }}>
             <div className="row" style={{ justifyContent: this.state.mode === 1 ? "space-between" : "flex-end" }}>

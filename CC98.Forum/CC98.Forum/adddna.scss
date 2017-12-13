@@ -1,4 +1,5 @@
-﻿.createTopic {
+﻿//发帖
+.createTopic {
     display: flex;
     flex-direction: column;
     width: 1140px;
@@ -63,7 +64,7 @@
 }
 
 //ubb解析图片默认不显示的样式
-//相当与bootstrap4的"btn btn-outline-primary"
+//类似bootstrap4的"btn btn-outline-primary"
 .hiddenImage {
     display: block;
     color: #007bff;
@@ -107,3 +108,313 @@
     width: 100px !important;
     height: 100px !important;
 }
+
+//--------------------------------以下是首页的样式~ --------------------------------------------
+.mainPage {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    min-width: 71.25rem;
+    z-index: 0;
+}
+
+.leftPart {
+    display: flex;
+    flex-direction: column;
+    width: 52.5rem;
+    margin-right: 2.5rem;
+}
+
+.rightPart {
+    display: flex;
+    flex-direction: column;
+    width: 16.25rem;
+}
+
+//首页各栏目的标题
+.mainPageTitle1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.25rem;
+    font-family: 微软雅黑;
+    padding-left: 1.25rem;
+    color: rgb(121,184,202);
+}
+
+.mainPageTitle2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 1.25rem;
+    font-family: 微软雅黑;
+    padding-left: 1.25rem;
+    color: rgb(107,113,120);
+}
+
+.mainPageTitleRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.mainPageTitleText {
+    margin-left: 0.5rem;
+}
+
+//全站公告~
+.announcement {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 2.5rem;
+}
+
+.announcementContent {
+    display: flex;
+    flex-direction: row;
+    min-height: 10rem;
+    margin-top: 1.25rem;
+    padding-left: 1.25rem;
+    border-width: 8px 1px 1px 1px;
+    border-style: solid;
+    border-color: rgb(121,184,202);
+    box-sizing: border-box;
+    background-color: rgb(252,252,252);
+}
+
+//推荐阅读~
+.recommendedReading {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 2.5rem;
+}
+
+.recommendedReadingContent {
+    display: flex;
+    flex-direction: row;
+    height: 7.5rem;
+    margin-top: 1.25rem;
+    padding-left: 1.25rem;
+    padding-top: 1.25rem;
+    border-width: 8px 1px 1px 1px;
+    border-style: solid;
+    border-color: rgb(107,113,120);
+    box-sizing: border-box;
+    background-color: rgb(252,252,252);
+}
+
+.recommendedReadingImage {
+    display: flex;
+    flex-direction: row;
+    margin-right: 1.25rem;
+
+    img {
+        border-radius: 50%;
+        width: 3.75rem;
+        height: 3.75rem;
+    }
+}
+
+.recommendedReadingTitle {
+    display: flex;
+    flex-direction: row;
+    font-size: 1rem;
+    font-family: 微软雅黑;
+    color: rgb(107,113,120);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recommendedReadingAbstract {
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    font-family: 微软雅黑;
+    color: rgb(107,113,120);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recommendedReadingButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-right: 1.25rem;
+}
+
+.recommended1Button { //暂时没用到
+    width: 10px;
+    height: 10px;
+    border-style: solid;
+    border-color: rgb(160,160,160);
+    border-width: 1px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    margin: 0 5px 0 5px;
+}
+//列表区~
+.mainPageList {
+    display: flex;
+    flex-direction: column;
+    width: 25rem;
+    margin-top: 2.5rem;
+    //margin-right: 1.25rem;
+}
+
+.mainPageListContent1 {
+    display: flex;
+    flex-direction: column;
+    height: 20rem;
+    margin-top: 1.25rem;
+    padding: 1rem 1.25rem;
+    border-width: 8px 1px 1px 1px;
+    border-style: solid;
+    border-color: rgb(121,184,202);
+    box-sizing: border-box;
+    background-color: rgb(252,252,252);
+}
+
+.mainPageListContent2 {
+    display: flex;
+    flex-direction: column;
+    height: 20rem;
+    margin-top: 1.25rem;
+    padding: 1rem 1.25rem;
+    border-width: 8px 1px 1px 1px;
+    border-style: solid;
+    border-color: rgb(107,113,120);
+    box-sizing: border-box;
+    background-color: rgb(252,252,252);
+}
+
+.mainPageListRow {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
+    overflow: hidden; //不显示超过对象尺寸的内容
+}
+
+.mainPageListBoardName {
+    margin-right: 0.375rem;
+
+    a {
+        font-size: 0.75rem;
+        font-family: 微软雅黑;
+        color: rgb(251,97,101);
+    }
+}
+
+.mainPageListTitle {
+    flex-grow: 1;
+    white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
+    overflow: hidden; //不显示超过对象尺寸的内容
+    text-overflow: ellipsis; //当文本对象溢出时显示...
+    a {
+        font-size: 0.75rem;
+        font-family: 微软雅黑;
+        color: rgb(102,102,102);
+    }
+}
+
+//推荐功能
+.recommendedFunction {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 2.5rem;
+}
+
+.recommendedFunctionContent {
+    display: flex;
+    flex-direction: column;
+    height: 21.25rem;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    border: 0;
+    border-right: 0.5rem;
+    border-style: solid;
+    border-color: rgb(107,113,120);
+    box-sizing: border-box;
+    background-color: rgb(121,184,202);
+}
+
+.recommendedFunctionRow {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    align-items: center;
+}
+
+.recommendedFunctionImage {
+    margin-right: 1.25rem;
+
+    img {
+        border-radius: 50%;
+        width: 3.125rem;
+        height: 3.125rem;
+    }
+}
+
+.recommendedFunctionTitle {
+    flex-grow: 1;
+    font-size: 1rem;
+    font-family: 微软雅黑;
+    color: rgb(255,255,255);
+}
+
+//校园新闻
+.schoolNews {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 2.5rem;
+}
+
+.schoolNewsContent {
+    display: flex;
+    flex-direction: column;
+    height: 21.25rem;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    border: 0;
+    border-right: 0.5rem;
+    border-style: solid;
+    border-color: rgb(107,113,120);
+    box-sizing: border-box;
+    background-color: rgb(121,184,202);
+}
+
+.schoolNewsRow {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+.schoolNewsTitle {
+    flex-grow: 1;
+    font-size: 0.75rem;
+    font-family: 微软雅黑;
+    color: rgb(255,255,255);
+    white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
+    overflow: hidden; //不显示超过对象尺寸的内容
+    text-overflow: ellipsis; //当文本对象溢出时显示...
+}
+
+//首页广告
+.mainPageAd {
+    margin-top: 50px;
+    width: 100%;
+}
+
+//------------首页就到此为止啦----------------------

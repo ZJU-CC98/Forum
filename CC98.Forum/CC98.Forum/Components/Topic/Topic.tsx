@@ -34,24 +34,24 @@ declare let editormd: any;
 export module Constants {
     export var testEditor;
 }
-export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName,boardId,topicInfo,boardInfo,fetchState,quote }, { topicid, page, userName }> {
+export class Post extends RouteComponent<{}, { topicid, page, totalPage, userName, boardId, topicInfo, boardInfo, fetchState, quote }, { topicid, page, userName }> {
     constructor(props, context) {
         super(props, context);
         this.update = this.update.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.quote = this.quote.bind(this);
         this.state = {
-            page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null, boardId: 7, topicInfo: { replyCount: 0 }, boardInfo: { masters: [], id: 7 }, fetchState: 'ok', quote:""
+            page: 1, topicid: this.match.params.topicid, totalPage: 1, userName: null, boardId: 7, topicInfo: { replyCount: 0 }, boardInfo: { masters: [], id: 7 }, fetchState: 'ok', quote: ""
         };
     }
     quote(content, userName, replyTime, floor) {
         console.log("in topic quote" + content);
         const y = $("#sendTopicInfo").offset().top;
-        scrollTo(0,y);
+        scrollTo(0, y);
         this.setState({ quote: { content: content, userName: userName, replyTime: replyTime, floor: floor } });
     }
     update() {
- 
+
         this.setState({});
     }
     async handleChange() {
@@ -64,34 +64,43 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         else { page = parseInt(this.match.params.page); }
         const totalPage = await this.getTotalPage(topicInfo.replyCount);
         const userName = this.match.params.userName;
-        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName ,topicInfo:topicInfo,quote:""});
+        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName, topicInfo: topicInfo, quote: "" });
     }
     async componentWillReceiveProps(newProps) {
-      
-        console.log(newProps);
+
         let page: number;
         if (!newProps.match.params.page) {
             page = 1;
         }
         else { page = parseInt(newProps.match.params.page); }
         const userName = newProps.match.params.userName;
-       
-       // if (this.state.page !== newProps.match.params.page)
-           
+
+        // if (this.state.page !== newProps.match.params.page)
+
         const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
         const boardId = topicInfo.boardId;
         const boardInfo = await Utility.getBoardInfo(boardId);
         const totalPage = this.getTotalPage(topicInfo.replyCount);
         this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo });
     }
+    componentDidUpdate() {
 
+        if (window.location.hash && window.location.hash!=='#') {
+            console.log("scroll");
+            const hash = window.location.hash;
+            const eleId = hash.split("#");
+            const Id = eleId[1];
+            document.getElementById(Id).scrollIntoView();
+        }
+
+    }
     async componentWillMount() {
-       
+
         let page: number;
         if (!this.match.params.page) {
             page = 1;
         }
-        else { page = parseInt(this.match.params.page); }    
+        else { page = parseInt(this.match.params.page); }
         const userName = this.match.params.userName;
         const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
         if (typeof topicInfo !== 'string') {
@@ -102,7 +111,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         } else {
             this.setState({ fetchState: topicInfo });
         }
-        
+
     }
     getTotalPage(count) {
         return Utility.getTotalPageof10(count);
@@ -110,7 +119,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
 
 
     render() {
-    
+
         switch (this.state.fetchState) {
             case 'ok':
                 return <div></div>;
@@ -140,7 +149,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
 
             <div style={{ display: "flex", width: "100%", justifyContent: "flex-end", marginTop: "3rem" }}><Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
             <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardId} boardInfo={this.state.boardInfo} content={this.state.quote} userId={this.state.topicInfo.userId} />
-            
+
         </div>
             ;
 
