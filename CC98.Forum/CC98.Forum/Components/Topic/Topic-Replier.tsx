@@ -17,14 +17,14 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
         this.setState({ traceMode: this.state.traceMode === true ? false : true });
     }
     render() {
-        const url = `/user/${this.props.userId}`;
+        const url = `/user/id/${this.props.userId}`;
         const realUrl = encodeURI(url);
         const email = `/message/message?id=${this.props.userId}`;
         let urlHtml = <a href={realUrl}><img src={this.props.userImgUrl}></img></a>;
         if (this.props.isAnonymous == true) {
             urlHtml = <img src={this.props.userImgUrl}></img>;
         }
-        const curUserPostUrl = `/topic/${this.props.topicid}/user/${this.props.userId}`;
+        const curUserPostUrl = `/topic/${this.props.topicid}/user/id/${this.props.userId}`;
         const normalUrl = `/topic/${this.props.topicid}`;
         $(document).ready(function () {
             $(".authorImg").mouseenter(function (event: JQuery.Event) {

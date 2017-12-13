@@ -57,6 +57,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
     async handleChange() {
 
         const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
+        const newPage = topicInfo.replyCount % 10 === 0 ? topicInfo.replyCount / 10 : (topicInfo.replyCount - topicInfo.replyCount%10) / 10 + 1;
         let page: number;
         if (!this.match.params.page) {
             page = 1;
@@ -64,7 +65,13 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         else { page = parseInt(this.match.params.page); }
         const totalPage = await this.getTotalPage(topicInfo.replyCount);
         const userName = this.match.params.userName;
-        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName, topicInfo: topicInfo, quote: "" });
+        const floor = topicInfo.replyCount % 10;
+        if (page !== newPage) {
+            page = newPage;
+            const url = `/topic/${topicInfo.id}/${page}#${floor}`;
+            window.history.pushState({}, '0', 'http://' + window.location.host  + url); 
+        }
+        this.setState({ page:page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName, topicInfo: topicInfo, quote: "" });
     }
     async componentWillReceiveProps(newProps) {
 
@@ -85,13 +92,6 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
     }
     componentDidUpdate() {
 
-        if (window.location.hash && window.location.hash!=='#') {
-            console.log("scroll");
-            const hash = window.location.hash;
-            const eleId = hash.split("#");
-            const Id = eleId[1];
-            document.getElementById(Id).scrollIntoView();
-        }
 
     }
     async componentWillMount() {
@@ -145,7 +145,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
             {topic}
             {hotReply}
 
-            <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} updateTime={Date.now()} quote={this.quote} isHot={false} isTrace={false} userId={null} />
+            <Reply topicInfo={this.state.topicInfo} page={this.state.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} updateTime={Date.now()} quote={this.quote} isHot={false} isTrace={false} userId={null} />
 
             <div style={{ display: "flex", width: "100%", justifyContent: "flex-end", marginTop: "3rem" }}><Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
             <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardId} boardInfo={this.state.boardInfo} content={this.state.quote} userId={this.state.topicInfo.userId} />

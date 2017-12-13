@@ -159,6 +159,9 @@ ${newProps.content.content}[/quote]`;
             body
         }
         );
+        if (mes.status === 403) {
+            alert("你太快啦 请慢一点~")
+        }
         if (mes.status === 401) {
             window.location.href = "/status/logout";
         }
@@ -195,6 +198,9 @@ ${newProps.content.content}[/quote]`;
 
             }
             );
+            if (mes.status === 403) {
+                alert("你太快啦 请慢一点~")
+            }
             if (mes.status === 402) {
                 alert("请输入内容");
             }
