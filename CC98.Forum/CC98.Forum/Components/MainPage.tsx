@@ -21,7 +21,16 @@ export class AnnouncementComponent extends React.Component<{}, { announcementCon
         const response = await fetch('http://apitest.niconi.cc/config/global');
         const data = await response.json();
         const announcement: string = data.announcement;
-        return announcement;
+        console.log(announcement);
+        //return announcement;
+
+        //这里开始是临时功能
+        const reg = /\list[\s\S]*?list/gim;
+        const newAnnouncement = announcement.match(reg);
+        let x = newAnnouncement[0];
+        x = x.replace("list]", "");
+        x = x.replace("[/list", "");
+        return x;
     }
     async componentDidMount() {
         const x = await this.getAnnouncement();
@@ -363,7 +372,7 @@ export class MainPage extends React.Component<{}, AppState> {
                 <RecommendedFunctionComponent />
                 <SchoolNewsComponent />
                 <div className="mainPageAd">
-                    <img src="/images/首页广告.jpg"/>
+                    <img src="/images/首页广告.jpg" />
                 </div>
             </div>
         </div>;
