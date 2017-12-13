@@ -539,9 +539,8 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         this.state = ({ pager: [] });
     }
     componentWillMount() {
-        const count = this.props.replyCount + 1;
-        let totalPage = (count - count % 10) / 10 + 1;
-        if (count % 10 === 0) totalPage = count / 10;
+        const count = this.props.replyCount ;
+        let totalPage = count/10===0?count/10:(count - count % 10) / 10 + 1;
         const pager = Utility.getListPager(totalPage);
         const titleId = `#title${this.props.id}`;
         this.setState({ pager: pager });
@@ -559,13 +558,12 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
                 $(titleId).css("color", this.props.highlightInfo.color);
             }
         }
-
-        this.setState({});
     }
     generateListPager(item: number) {
+        console.log("listpage=" + item);
         const url = `/topic/${this.props.id}/${item}`;
         if (item != -1) {
-            return <div style={{ marginRight: "0.3rem" }}><a style={{ color: "red" }} href={url}>{item}</a></div>;
+            return <div style={{ marginRight: "0.3rem" }}><Link style={{ color: "red" }} to={url}>{item}</Link></div>;
         } else {
             return <div style={{ marginRight: "0.3rem" }}>...</div>;
         }

@@ -102,7 +102,7 @@ export class AuthorMessage extends React.Component<{ isAnonymous: boolean, autho
     }
     render() {
         const email = `/message/message?id=${this.props.authorId}`;
-        const url = `/user/${this.props.authorId}`;
+        const url = `/user/id/${this.props.authorId}`;
         let urlHtml = <a href={url}><img src={this.props.authorImgUrl}></img></a>;
         let userHtml = <div id="authorName"><p><a href={url}>{this.props.authorName}</a></p></div>;
         if (this.props.isAnonymous == true) {

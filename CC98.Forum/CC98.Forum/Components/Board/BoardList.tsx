@@ -40,7 +40,6 @@ export class BoardList extends React.Component<{}, { thisBoardState: Board[] }> 
         })
     }
     scroll(id) {
-        console.log("id=" + id);
         document.getElementById(id).scrollIntoView();
     }
     generateRootBoard(item: Board) {    //返回一条父版信息

@@ -64,7 +64,7 @@ body {
 }
 .listContent {
     display: flex;
-
+    margin-bottom:1rem;
     border-radius: 0.3125rem;
     background-color: $bgcolor2;
     display: flex;
@@ -590,6 +590,8 @@ body {
     flex-direction: row;
     align-items: flex-end;
     font-family:"微软雅黑";
+    margin-left:1rem;
+    margin-right:1rem;
 }
 
 .chooseTag {
@@ -640,7 +642,10 @@ body {
     background-color: #FFFAF0;
 }
 
-
+.reputation{
+    font-size:0.75rem;
+    margin-left:1rem;
+}
 #lastReply {
     margin-right: -1.8rem;
     margin-left: 1rem;
@@ -2120,7 +2125,7 @@ a {
     display: flex;
     flex-direction: column;
     text-align: center;
-    background-color: rgb(242,242,242);
+    margin-top:5rem;
     padding-top: 15px;
     width: 100%;
     min-width: 1140px;

@@ -25,6 +25,10 @@
         margin: 0;
         padding: 0;
     }
+    
+    button, label {
+        cursor: pointer;
+    }
 
     display: flex;
     flex-direction: column;
@@ -96,10 +100,6 @@
 
     *:focus {
         outline: none;
-    }
-
-    button，label {
-        cursor: pointer;
     }
 
     .user-center-navigation {

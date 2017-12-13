@@ -57,11 +57,9 @@ export class UserCenterMyFans extends React.Component<{match}, UserCenterMyFansS
                 headers
             });
             if (res.status === 200) {
-                let data = await res.json();
-
-
+                let data: number[] = await res.json();
+                
                 //没有粉丝
-
                 if (!data || !data.length) {
                     this.setState({
                         info: '没有粉丝',
@@ -69,30 +67,32 @@ export class UserCenterMyFans extends React.Component<{match}, UserCenterMyFansS
                     });
                     return false;
                 }
-
-                let fans: UserFanInfo[] = [];
-
-                let i = data.length, data2;
-
-                while (i--) {
-                    let userid = data[i];
-                    let userFanInfo = new UserFanInfo();
-                    url = `http://apitest.niconi.cc/user/${userid}`;
-                    res = await fetch(url, { headers });
-                    data2 = await res.json();
-                    userFanInfo.name = data2.name;
-                    userFanInfo.avatarImgURL = data2.portraitUrl;
-                    userFanInfo.posts = data2.postCount;
-                    userFanInfo.id = userid;
-                    userFanInfo.fans = data2.fanCount;
-                    userFanInfo.isFollowing = data2.isFollowing;
-                    fans.unshift(userFanInfo);
-                }
                 
-                this.setState({
-                    userFans: fans,
-                    isLoading: false
+                let fanData = data.map((item) => {
+                    url = `http://apitest.niconi.cc/user/${item}`;
+                    return fetch(url, { headers }).then((value) => {
+                        return value.json();
+                    });
                 });
+
+                Promise.all(fanData).then((value) => {
+                    let fans = value.map((item) => {
+                        let userFanInfo = new UserFanInfo();
+                        userFanInfo.name = item.name;
+                        userFanInfo.avatarImgURL = item.portraitUrl;
+                        userFanInfo.posts = item.postCount;
+                        userFanInfo.id = item.id;
+                        userFanInfo.fans = item.fanCount;
+                        userFanInfo.isFollowing = item.isFollowing;
+                        return userFanInfo;
+                        
+                    });
+                    this.setState({
+                        userFans: fans,
+                        isLoading: false
+                    });
+                });
+                
             } else {
                 throw {};
             }

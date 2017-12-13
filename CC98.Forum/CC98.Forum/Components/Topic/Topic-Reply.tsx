@@ -90,6 +90,16 @@ export class Reply extends React.Component<{ topicId, page, topicInfo, boardInfo
 
         </div>;
     }
+    componentDidUpdate() {
+
+        if (window.location.hash && window.location.hash !== '#') {
+            console.log("scroll");
+            const hash = window.location.hash;
+            const eleId = hash.split("#");
+            const Id = eleId[1];
+            document.getElementById(Id).scrollIntoView();
+        }
+    }
     render() {
 
         return <div className="center" style={{ width: "100%" }}>
