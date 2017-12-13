@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 
 /**
  * 全站公告组件
+ * 为同时兼容新旧版98 临时调整了显示的内容
  **/
 export class AnnouncementComponent extends React.Component<{}, { announcementContent: string }> {
 
@@ -21,15 +22,14 @@ export class AnnouncementComponent extends React.Component<{}, { announcementCon
         const response = await fetch('http://apitest.niconi.cc/config/global');
         const data = await response.json();
         const announcement: string = data.announcement;
-        console.log(announcement);
         //return announcement;
 
-        //这里开始是临时功能
-        const reg = /\list[\s\S]*?list/gim;
+        //这里开始是临时功能 只保留了公告中[list][/list]之间的内容
+        const reg = /\[list\][\s\S]*?\[\/list\]/gim;
         const newAnnouncement = announcement.match(reg);
         let x = newAnnouncement[0];
-        x = x.replace("list]", "");
-        x = x.replace("[/list", "");
+        x = x.replace("[list]", "");
+        x = x.replace("[/list]", "");
         return x;
     }
     async componentDidMount() {
