@@ -50,8 +50,7 @@ export class UserCenterMyPostsExact extends React.Component<{match}, UserCenterM
             if (res.status !== 200) {
                 throw {};
             }
-            let data = await res.json();
-            let userRecentPosts: UserRecentPost[] = [],
+            let data: any[] = await res.json(),
                 i = data.length,
                 totalPage: number;
 
@@ -63,10 +62,7 @@ export class UserCenterMyPostsExact extends React.Component<{match}, UserCenterM
                 i = 10;
             }
 
-            while (i--) {
-                let post = await this.item2post(data[i]);
-                userRecentPosts.unshift(post);
-            }
+            let userRecentPosts = await Promise.all(data.map((item) => (this.item2post(item))));
 
             this.setState({
                 userRecentPosts,
