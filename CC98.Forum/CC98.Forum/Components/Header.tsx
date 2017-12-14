@@ -5,33 +5,59 @@ import * as $ from 'jquery';
 import { connect } from 'react-redux';
 import { userLogOff } from '../Actions';
 import { Link } from 'react-router-dom';
+import * as signalR from '../node_modules/@aspnet/signalr-client/dist/src/index'
 
-class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { hoverElement}> {   //顶部条的下拉菜单组件
+class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { hoverElement: string, unreadCount: number}> {   //顶部条的下拉菜单组件
     constructor(props) {
         super(props);
         this.state = ({
-            hoverElement: null
+            hoverElement: null,
+            unreadCount: 0
         });
     }
-    async componentDidMount() {
-        //以下是明一写的signalr，有锅找他
-        /*var chat = $.connection.messageHub;
-        console.log("signal通知测试");
-        $.connection.hub.url = "http://apitest.niconi.cc/signalr";
-        var token = Utility.getLocalStorage("accessToken");
-        console.log(`signalr的${token}`);
-        $.connection.hub.qs = {
-            'Authorization': token
-        };
-        $.connection.hub.logging = "true";
-        chat.client.newUserMessage = view;
-        console.log($.connection);
-        console.log($.connection.hub);
-        console.log($.connection.hub.start());
-        $.connection.hub.start();
-        console.log("signal测试完毕");*/
+    /**
+     * 这里是signalR的部分
+     * 等服务器可以Authorization了再说
+     * 反正就差认证了
+     */
+    componentDidMount() {
+        //如果用户已经登录则开始signalR链接
+        if (this.props.isLogOn) {
+            this.signalRConnect();
+        }
     }
-    
+
+    componentWillReceiveProps(nextProps) {
+        if (!this.props.isLogOn && nextProps.isLogOn) {
+            //如果用户重新登录则开始signalR链接
+            this.signalRConnect();
+        } else if (!nextProps.isLogOn) {
+            //如果用户注销则关闭signalR链接
+            this.connection.stop();
+        }
+    }
+    connection = new signalR.HubConnection('http://apitest.niconi.cc/signalr/notification');;
+    signalRConnect = async ()=> {
+        const token = await Utility.getToken();
+        const url = 'http://apitest.niconi.cc/signalr/notification';
+        let myHeaders = new Headers();
+        myHeaders.append('Authorization', token);
+        this.connection = new signalR.HubConnection(url);
+        this.connection.on('NotifyMessageReceive', (value) => {
+            console.log('NotifyMessageReceive');
+            console.log(value);
+        });
+        this.connection.on('NotifyTopicChange', (value) => {
+            console.log('NotifyTopicChange');
+            console.log(value);
+        });
+        this.connection.on('NotifyNotificationChange', (value) => {
+            console.log('NotifyNotificationChange');
+            console.log(value);
+        });
+        this.connection.start();
+    }
+
     logOff() {
         this.handleMouseEvent('mouseout', "userName");
         Utility.removeLocalStorage("accessToken");

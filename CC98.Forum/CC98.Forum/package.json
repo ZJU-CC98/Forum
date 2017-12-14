@@ -18,7 +18,8 @@
     "react-router-dom": "4.1.2",
     "redux": "3.7.2",
     "signalr": "2.2.2",
-    "ssri": "^4.1.6"
+    "ssri": "^4.1.6",
+    "@aspnet/signalr-client": "1.0.0-alpha2-final"
   },
   "devDependencies": {
     "@types/jquery": "3.2.16",
