@@ -39,8 +39,8 @@ export class App extends React.Component<null, AppState> {
 
     render() {
         return (<div style={{ width: "100%" }}>
-                <Router>
-                    <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px" }}>
+            <Router>
+                <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px" }}>
                     <Header />
                     <Switch>
                         <Route exact path="/" component={MainPage}></Route>
@@ -70,11 +70,11 @@ export class App extends React.Component<null, AppState> {
                         <Route path="/status/servererror" component={Status.ServerError} />
                         <Route path="/status/contentneeded" component={Status.ContentNeeded} />
                         <Route path="/status/operationforbidden" component={Status.OperationForbidden} />
-                        <Route component={()=>(<div>页面不存在</div>)} />
+                        <Route component={() => (<div>页面不存在</div>)} />
                     </Switch>
-                        <Footer />
-                    </div>
-                </Router>
-            </div>);
+                    <Footer />
+                </div>
+            </Router>
+        </div>);
 	}
 }

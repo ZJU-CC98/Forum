@@ -1,7 +1,6 @@
 ﻿.ubb-editor {
     background-color: white;
     border: 1px solid rgb(204,204,204);
-    max-height: 38.875rem;
 
     .editor-buttons {
         display: flex;
@@ -24,7 +23,7 @@
     label, button {
         transition-duration: .5s;
         height: 2rem;
-        font-size: 14px;
+        font-size: 0.88rem;
         background-color: white;
         padding: 0;
         border: none;
@@ -55,7 +54,7 @@
         p {
             margin: 0;
             margin-right: -2.5rem;
-            font-size: 14px;
+            font-size: 0.88rem;
             z-index: 1;
             pointer-events: none;
         }
@@ -86,7 +85,7 @@
 
         p {
             margin: 0;
-            font-size: 14px;
+            font-size: 0.88rem;
         }
 
         input {
@@ -97,7 +96,8 @@
 
     .ubb-content {
         padding: 1rem;
-        height: 36.5rem;
+        display: flex;
+        flex-direction: column;
 
         textarea {
             transition-duration: .5s;
@@ -125,8 +125,7 @@
     .ubb-emoji {
         position: relative;
         width: 50%;
-        transition-duration: .4s;
-        top: -38.5rem;
+        transition-duration: .4s;        
         left: 22rem;
         background-color: white;
         border: 0px solid #ccc;
@@ -158,8 +157,8 @@
     }
 
     .ubb-emoji-content-ac img {
-        width: 75px;
-        height: 65px;
+        width: 4.6875rem;
+        height: 4.0625rem;
         margin: 0.5rem;
     }
 }

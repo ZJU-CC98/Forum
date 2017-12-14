@@ -17,6 +17,10 @@ class UbbEditorProps {
      * Ubb编辑器的内容
      */
     value: string;
+    /**
+     * textarea的高度(rem)
+     */
+    height?: number;
 }
 /**
  * 组件状态
@@ -172,6 +176,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
     }
 
     render() {
+        const height = this.props.height || 32.5;
         const size = ['', 1, 2, 3, 4, 5, 6, 7];
         const color = ['颜色', 'aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon', 'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow'];
         const emoji = {
@@ -202,7 +207,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
         };
 
         return (
-            <div className="ubb-editor">
+            <div className="ubb-editor" style={{maxHeight: `${height + 6.875}rem`}}>
                 <div className="editor-buttons">
                     <div style={{ height: '2rem', display: 'flex', transitionDuration: '.5s', width: this.state.isPreviewing ? '0rem' : '40rem' }}>
                         <div className="editor-buttons-styles">
@@ -281,11 +286,11 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                             ref={(textarea) => {
                                 this.content = textarea;
                             }}
-                            style={{ height: this.state.extendTagName ? '32.5rem' : '34.5rem' }}
+                            style={{ height: this.state.extendTagName ? `${height}rem` : `${height + 2}rem` }}
                             spellCheck={false}
                         ></textarea>) : (<div className="ubb-editor-preview"><UbbContainer code={this.props.value} /></div>)}
                 </div>
-                <div className="ubb-emoji" style={this.state.emojiIsShown ? { height: '22rem', borderWidth: '1px' } : {height: '0rem'}}>
+                <div className="ubb-emoji" style={this.state.emojiIsShown ? { height: '22rem', borderWidth: '1px', top: `-${height + 4 }rem` } : { height: '0rem', top: `-${height + 4}rem` }}>
                     <div className="ubb-emoji-buttons">
                         <button type="button" className={this.state.emojiType === 'ac' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} onClick={() => { this.setState({ emojiType: 'ac' }); }}>AC娘</button>
                         <button type="button" className={this.state.emojiType === 'majiang' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} onClick={() => { this.setState({ emojiType: 'majiang' }); }}>麻将脸</button>

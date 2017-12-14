@@ -6,22 +6,14 @@ import { connect } from 'react-redux';
 import { userLogOff } from '../Actions';
 import { Link } from 'react-router-dom';
 
-class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { userName, userImgUrl, hoverElement}> {   //顶部条的下拉菜单组件
-    constructor(props?, context?) {
-        super(props, context);
+class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { hoverElement}> {   //顶部条的下拉菜单组件
+    constructor(props) {
+        super(props);
         this.state = ({
-            userName: "载入中……",
-            userImgUrl: "/images/unLoggedOn.png",
             hoverElement: null
         });
     }
-
     async componentDidMount() {
-        let userName = this.props.userInfo.name;
-        let userImgUrl = this.props.userInfo.portraitUrl;
-        Utility.refreshUnReadCount(); 
-        this.setState({ userName: userName, userImgUrl: userImgUrl });    
-
         //以下是明一写的signalr，有锅找他
         /*var chat = $.connection.messageHub;
         console.log("signal通知测试");
@@ -70,25 +62,6 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { u
 
     render() {
         if (this.props.isLogOn) {
-            $(document).ready(function () {
-                const dropDownSub = $('.dropDownSub').eq(0);
-                const dropDownLi = dropDownSub.find('li');
-                const dropDownSubMessage = $('.dropDownSubMessage').eq(0);
-                const dropDownLiMessage = dropDownSubMessage.find('li');                
-                dropDownLi.mouseover(function () {
-                    this.className = 'hover';
-                });
-                dropDownLi.mouseout(function () {
-                    this.className = '';
-                });
-                dropDownLiMessage.mouseover(function () {
-                    this.className = 'hover';
-                });
-                dropDownLiMessage.mouseout(function () {
-                    this.className = '';
-                });
-                Utility.refreshUnReadCount();
-            });
 
             const style = {
                 display: 'block',
@@ -105,12 +78,12 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { u
             return (<div id="dropdown">
                 <div className="box">
                     <div className="userInfo">
-                        <div className="userImg"><img src={this.props.userInfo.portraitUrl||this.state.userImgUrl}></img></div>
+                        <div className="userImg"><img src={this.props.userInfo.portraitUrl}></img></div>
                         <div
                             className="userName"
                             onMouseOut={(e) => { this.handleMouseEvent(e.type, "userName"); }}
                             onMouseOver={(e) => { this.handleMouseEvent(e.type, "userName"); }}
-                        >{this.props.userInfo.name||this.state.userName}</div>
+                        >{this.props.userInfo.name}</div>
                     </div>
                     <div className="topBarText"> <Link to="/" style={{ color: '#fff' }}>首页</Link></div>
                     <div

@@ -63,30 +63,15 @@ export async function getTopic(topicid: number) {
         const response = await fetch(`http://apitest.niconi.cc/Topic/${topicid}/post?from=0&size=1`, {
             headers
         });
-        if (response.status === 404) {
-            const str = await response.text();
-            switch (str) {
-                case 'topic_not_exists':
-                    //window.location.href = "/status/NotFoundTopic";
-                    break;
-                case 'topic_is_deleted':
-                    //window.location.href = "/status/TopicDeleted";
-                    break;
-                default:
-                //window.location.href = "/status/NotFoundTopic";
-            }
-            //window.location.href = "/status/NotFoundTopic";
-        }
-        if (response.status === 500) {
-            //window.location.href = "/status/ServerError";
-        }
         const data = await response.json();
         let topicMessage = null;
-        if (data[0].isAnonymous != true) {
+        const likeInfo = await refreshLikeState(topicid, data[0].id);
+        const awardInfo = await getAwardInfo(data[0].id);
+        if (data[0].isAnonymous != true) {      
             const userMesJson = await getUserInfo(data[0].userId);
-            topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, userMesJson.fanCount,  );
+            topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, userMesJson.fanCount,  likeInfo,awardInfo);
         } else {
-            topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif',  null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, -9898);
+            topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, -9898, likeInfo,  awardInfo);
 
         }
 
@@ -105,16 +90,6 @@ export async function getTopicContent(topicid: number, curPage: number,replyCoun
         const topic = curPage !== 1
             ? await fetch(`http://apitest.niconi.cc/Topic/${topicid}/post?from=${startPage}&size=10`, { headers })
             : await fetch(`http://apitest.niconi.cc/Topic/${topicid}/post?from=1&size=9`, { headers });
-        if (topic.status === 401) {
-            //window.location.href = "/status/UnauthorizedTopic";
-        }
-        //两种
-        if (topic.status === 404) {
-            //window.location.href = "/status/";
-        }
-        if (topic.status === 500) {
-            //window.location.href = "/status/ServerError";
-        }
         const content = await topic.json();
         const post = [];
         let topicNumberInPage: number;
@@ -127,13 +102,15 @@ export async function getTopicContent(topicid: number, curPage: number,replyCoun
         } else {
             topicNumberInPage = (replyCount - (curPage - 1) * 10 + 1);
         }
-
+        
         for (let i = 0; i < topicNumberInPage; i++) {
+            const likeInfo = await refreshLikeState(topicid, content[i].id);
+            const awardInfo = await getAwardInfo(content[i].id);
             if (content[i].isAnonymous != true && content[i].isDeleted != true) {
 
                 const userMesJson= await getUserInfo(content[i].userId);
                 post[i] = {
-                    ...content[i], ...userMesJson, postId: content[i].id, userImgUrl: userMesJson.portraitUrl, sendTopicNumber: userMesJson.postCount, privilege: userMesJson.privilege, signature: userMesJson.signatureCode, popularity: userMesJson.popularity
+                    ...content[i], ...userMesJson, postId: content[i].id, userImgUrl: userMesJson.portraitUrl, sendTopicNumber: userMesJson.postCount, privilege: userMesJson.privilege, signature: userMesJson.signatureCode, popularity: userMesJson.popularity, likeInfo: likeInfo, awardInfo: awardInfo
                 }
 
             } else if (content[i].isAnonymous == true) {
@@ -142,11 +119,11 @@ export async function getTopicContent(topicid: number, curPage: number,replyCoun
 
 
                 post[i] = {
-                    ...content[i], userName: anonymousUserName, userImgUrl: purl, userId: null, signature: null, sendTopicNumber: null, postId: content[i].id, privilege: '匿名用户', isAnonymous: true,popularity:0
+                    ...content[i], userName: anonymousUserName, userImgUrl: purl, userId: null, signature: null, sendTopicNumber: null, postId: content[i].id, privilege: '匿名用户', isAnonymous: true, popularity: 0, likeInfo: likeInfo, awardInfo: awardInfo
                 }
             } else {
                 post[i] = {
-                    ...content[i], userName: '98Deleter', userImgUrl: 'http://www.cc98.org/images/policeM.png', userId: null, signature: null, sendTopicNumber: null, postId: content[i].id, privilege: '匿名用户', isAnonymous: false, isDeleted: true, content: "该贴已被my cc98, my home",popularity:0
+                    ...content[i], userName: '98Deleter', userImgUrl: 'http://www.cc98.org/images/policeM.png', userId: null, signature: null, sendTopicNumber: null, postId: content[i].id, privilege: '匿名用户', isAnonymous: false, isDeleted: true, content: "该贴已被my cc98, my home", popularity: 0, likeInfo: likeInfo, awardInfo: awardInfo
                 }
             }
         }
@@ -237,30 +214,18 @@ export async function getHotReplyContent(topicid: number) {
     try {
         const headers = await formAuthorizeHeader();
         const response = await fetch(`http://apitest.niconi.cc/Topic/${topicid}/hot-post`, { headers });
-        //帖子不存在
-        if (response.status === 404) {
-            //window.location.href = "/status/NotFoundTopic";
-        }
-        //无权限进版面
-        if (response.status === 401) {
-            //window.location.href = "/status/UnauthorizedTopic";
-        }
-        if (response.status === 500) {
-            //window.location.href = "/status/ServerError";
-        }
         const content = await response.json();
         const post = [];
         let topicNumberInPage: number = content.length;
         for (let i = 0; i < topicNumberInPage; i++) {
+            const likeInfo = await refreshLikeState(topicid, content[i].id);
+            const awardInfo = await getAwardInfo(content[i].id);
             if (content[i].isAnonymous != true) {
 
                 const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
-                if (userMesResponse.status === 404) {
-                    //window.location.href = "/status/NotFoundUser";
-                }
                 const userMesJson = await userMesResponse.json();
                 post[i] = {
-                    ...content[i], ...userMesJson, postId: content[i].id, userImgUrl: userMesJson.portraitUrl
+                    ...content[i], ...userMesJson, postId: content[i].id, userImgUrl: userMesJson.portraitUrl, likeInfo: likeInfo, awardInfo: awardInfo
                 }
 
             } else {
@@ -268,7 +233,7 @@ export async function getHotReplyContent(topicid: number) {
                 const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
                 const anonymousLastReplierName = `匿名${content[i].lastUpdateAuthor.toUpperCase()}`;
                 post[i] = {
-                    ...content[i], userName: anonymousUserName, userImgUrl: purl, userId: null, lastUpdateAuthor: anonymousLastReplierName, signature: null, sendTopicNumber: null, popularity: 0, postId: content[i].id
+                    ...content[i], userName: anonymousUserName, userImgUrl: purl, userId: null, lastUpdateAuthor: anonymousLastReplierName, signature: null, sendTopicNumber: null, popularity: 0, postId: content[i].id, likeInfo: likeInfo, awardInfo: awardInfo
                 }
             }
         }
@@ -405,15 +370,6 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
         const headers = new Headers();
         headers.append('Authorization', token);
         const topic = await fetch(`http://apitest.niconi.cc/Post/topic/user?topicid=${topicid}&userId=${userId}&from=${start}&size=10`, { headers });
-        if (topic.status === 401) {
-            //window.location.href = "/status/UnauthorizedTopic";
-        }
-        if (topic.status === 404) {
-            //window.location.href = "/status/NotFoundTopic";
-        }
-        if (topic.status === 500) {
-            //window.location.href = "/status/ServerError";
-        }
         const content = await topic.json();
 
         let post = [];
@@ -433,10 +389,12 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
         }
 
         for (let i = 0; i < topicNumberInPage; i++) {
+            const likeInfo = await refreshLikeState(topicid, content[i].id);
+            const awardInfo = await getAwardInfo(content[i].id);
             if (content[i].isAnonymous != true) {
                 const userMesJson = await getUserInfo(content[i].userId);
                 post[i] = {
-                    ...content[i], ...userMesJson, postId: content[i].id, userImgUrl: userMesJson.portraitUrl, sendTopicNumber: userMesJson.postCount
+                    ...content[i], ...userMesJson, postId: content[i].id, userImgUrl: userMesJson.portraitUrl, sendTopicNumber: userMesJson.postCount, likeInfo: likeInfo, awardInfo: awardInfo
                 }
 
             } else {
@@ -444,7 +402,7 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
                 const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
 
                 post[i] = {
-                    ...content[i], userName: anonymousUserName, userImgUrl: purl, userId: null, signature: null, sendTopicNumber: null
+                    ...content[i], userName: anonymousUserName, userImgUrl: purl, userId: null, signature: null, sendTopicNumber: null, likeInfo: likeInfo, awardInfo: awardInfo
                 }
             }
         }
@@ -1132,7 +1090,7 @@ export async function getLikeState(topicid, router) {
         ////window.location.href = "/status/Disconnected";
     }
 }
-export async function refreshLikeState(topicId, postId, router) {
+export async function refreshLikeState(topicId, postId) {
     try {
         const headers = await formAuthorizeHeader();
         const response = await fetch(`http://apitest.niconi.cc/post/${postId}/like`, { headers });
@@ -1440,7 +1398,7 @@ export async function getSaveTopics(curPage, boardId) {
     const response = await fetch(url, { headers });
     const data = await response.json();
     let boardtopics: State.TopicTitleAndContentState[] = [];
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.topics.length; i++) {
         boardtopics[i] = { ...data.topics[i], replyCount: data.topics[i].replyCount || 0 };
     } const totalPage = data.count % 20 === 0 ? data.count / 20 : (data.count - data.count % 20) / 20 + 1;
     const obj = { boardtopics: boardtopics, totalPage: totalPage };

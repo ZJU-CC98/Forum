@@ -31,7 +31,6 @@
     <None Remove="Components\Topic\Topic-Award.tsx" />
     <None Remove="Components\Topic\Topic-AwardInfo.tsx" />
     <None Remove="Components\Topic\Topic-Category.tsx" />
-    <None Remove="Components\Topic\Topic-HotReply.tsx" />
     <None Remove="Components\Topic\Topic-Judge.tsx" />
     <None Remove="Components\Topic\Topic-Pager.tsx" />
     <None Remove="Components\Topic\Topic-Replier.tsx" />
@@ -116,7 +115,6 @@
     <TypeScriptCompile Include="Components\SiteManage.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-AuthorMessage.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Award.tsx" />
-    <TypeScriptCompile Include="Components\Topic\Topic-HotReply.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Judge.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-New.tsx" />
     <TypeScriptCompile Include="Components\FocusBoardTopicArea.tsx" />

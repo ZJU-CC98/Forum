@@ -5,7 +5,10 @@
 import * as React from 'react';
 import {
     BrowserRouter as Router,
-    Route, Link
+    Route,
+    Link,
+    Switch,
+    Redirect
 } from 'react-router-dom';
 import { UserCenterMyFavoritesPosts } from './UserCenterMyFavoritesPosts';
 import { UserCenterMyFavoritesBoards } from './UserCenterMyFavoritesBoards';
@@ -20,8 +23,11 @@ export class UserCenterMyFavorites extends React.Component {
         return (
             <div className="user-center-myfavorites">
                 <CustomLink to="/usercenter/myfavorites/posts" label="文章" /> | <CustomLink to="/usercenter/myfavorites/boards" label="版面" />
-                <Route path="/usercenter/myfavorites/boards" component={UserCenterMyFavoritesBoards} />
-                <Route exact path="/usercenter/myfavorites/posts/:page?" component={UserCenterMyFavoritesPosts} />
+                <Switch>
+                    <Route path="/usercenter/myfavorites/boards" component={UserCenterMyFavoritesBoards} />
+                    <Route path="/usercenter/myfavorites/posts/:page?" component={UserCenterMyFavoritesPosts} />
+                    <Redirect to="/usercenter/myfavorites/posts" />
+                </Switch>
             </div>
         );
     }
