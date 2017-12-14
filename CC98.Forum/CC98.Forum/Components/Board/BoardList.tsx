@@ -26,13 +26,11 @@ export class BoardList extends React.Component<{}, { thisBoardState: Board[] }> 
                 boardNameList[i] = `board_${data[i].id.toString()}`;
             }
             Utility.setStorage('boardList', boardNameList);
-            console.log("boardlist from api");
         } else {
             boardNameList = Utility.getStorage('boardList');
             for (let i = 0; i < 20; i++) {
                 board[i] = Utility.getStorage(boardNameList[i]);
             }
-            console.log("boardlist from cache");
         }
 
         this.setState({
@@ -80,13 +78,13 @@ export class RootBoard extends React.Component<{ board }, { isExpanded: boolean 
 
     render() {
         let display = this.state.isExpanded ? "flex" : "none";    //根据 isExpanded 状态定义样式
-        let buttonContent = this.state.isExpanded ? <div style={{ fontSize: "0.75rem" }}>收起</div> : <div style={{ fontSize: "0.75rem" }}>展开</div>;      //根据 isExpanded 状态定义按钮内容
+        let buttonContent = this.state.isExpanded ? <div >收起</div> : <div>展开</div>;      //根据 isExpanded 状态定义按钮内容
         let boards = this.props.board;
 
         if (boards.id === 758) {    //似水流年版 没有子版
             return <div className="anArea" id="似水流年">
                 <div className="column" style={{ border: '2px solid #e9e9e9' }}>
-                    <div className="row" style={{ marginTop: '15px', marginBottom: '15px' }}>
+                    <div className="row" style={{ marginTop: '15px', marginBottom: '15px', justifyContent:"space-around" }}>
                         <div className="areaName"><Link to="/list/758">{boards.name}</Link></div>
                         <div className="areaName">主管：{boards.masters}</div>
                     </div>
@@ -96,10 +94,12 @@ export class RootBoard extends React.Component<{ board }, { isExpanded: boolean 
         else {  //其他版
             return <div className="anArea" id={boards.name}>
                 <div className="column" style={{ border: '2px solid #e9e9e9' }}>
-                    <div className="row" style={{ marginTop: '15px', marginBottom: '15px' }}>
+                    <div className="row" style={{ marginTop: '15px', marginBottom: '15px', justifyContent:"space-around" }}>
                         <div className="areaName">{boards.name}</div>
+                        <div className="row">
                         <div className="areaName">主管：{boards.masters}</div>
-                        <div onClick={this.toggleIsExpanded} style={{ marginLeft: "1rem", cursor:"pointer" }}> {buttonContent}</div>
+                            <div onClick={this.toggleIsExpanded} style={{ marginLeft: "1rem", cursor: "pointer" }}> {buttonContent}</div>
+                            </div>
                     </div>
                     <div className="hiddenContent" style={{ display: display }}> <ChildBoard boardid={boards.id} /></div>
                 </div>

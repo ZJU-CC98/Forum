@@ -62,6 +62,12 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
         } else {
             userName = this.props.userName;
         }
+        let emailButton;
+        if (this.props.isAnonymous) emailButton = null; 
+        else emailButton = <button className="operation" ><Link to={email}>私信</Link></button>;
+        let traceButton;
+        if (this.props.isAnonymous) traceButton = null;
+        else traceButton = <Link className="operation" to={this.state.traceMode === true ? normalUrl : curUserPostUrl} onClick={this.changeTraceMode}>{this.state.traceMode === true ? "返回" : "只看此用户"}</Link>;
         const hotInfo = <div style={{ color: "red", marginLeft: "1rem" }}><span>最热回复</span><span>(第</span><span>{this.props.floor}</span><span>楼)</span></div>;
         const normalInfo = <div style={{ marginLeft: "0.625rem" }}><span>第</span><span style={{ color: "red" }}>{this.props.floor}</span><span>楼</span></div>;
         return <div className="replyRoot">
@@ -80,7 +86,7 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
                         <div className="rpyClr" style={{ marginLeft: "0.625rem" }}>{userName}</div>
                         <div id="topicsNumber" style={{ marginLeft: "0.625rem", display: "flex", flexWrap: "nowrap", wordBreak: "keepAll", marginRight: "0.75rem" }}>{topicNumber}&nbsp;<span style={{ color: "red" }}>{this.props.sendTopicNumber}</span> </div>
                     </div>
-                    <div className="row" style={{ display: "flex", flexWrap: "nowrap" }}>
+                    <div className="row" style={{ alignItems:"center", display: "flex", flexWrap: "nowrap" }}>
                         <div id="clockimg" style={{ marginLeft: "0.375rem" }}><i className="fa fa-clock-o fa-lg fa-fw"></i></div>
                         <div><span className="timeProp">{moment(this.props.replyTime).format('YYYY-MM-DD HH:mm:ss')}</span></div>
                         <div className="reputation">风评值：{this.props.popularity}
@@ -90,10 +96,10 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
                 <div style={{ height: "6rem", borderBottom: "#eaeaea solid thin", marginRight:"2rem" }}>
                     <div id="operation"  >
                         <button className="operation" onClick={this.quote}>引用</button>
-                        <button className="operation"><Link  to="">编辑</Link></button>
-                    <button className="operation"><Link to={email}>私信</Link></button>
-                        <button className="operation" ><Link to="">举报</Link></button>
-                        <Link className="operation" to={this.state.traceMode === true ? normalUrl : curUserPostUrl} onClick={this.changeTraceMode}>{this.state.traceMode === true ? "返回":"只看此用户"}</Link>
+                        <button className="operation"><Link to="">编辑</Link></button>
+                        {emailButton}
+                  
+                   
                     </div>
                    </div>
             </div></div>;

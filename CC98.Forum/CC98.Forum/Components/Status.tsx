@@ -14,7 +14,13 @@ export class LogOut extends React.Component<{}, {}>{
 }
 export class TopicDeleted extends React.Component<{}, {}>{
     render() {
-        return <div>帖子被删除</div>;
+        return <div className="errorState" >
+            <div>
+                <img className="errorIcon" src="/images/404.png"></img>
+            </div>
+            <div className="errorText">帖子被删除</div>
+            </div>
+       ;
     }
 }
 export class Disconnected extends React.Component<{}, {}>{
@@ -24,71 +30,96 @@ export class Disconnected extends React.Component<{}, {}>{
 }
 export class UnauthorizedBoard extends React.Component<{}, {}>{
     render() {
-        return <div>401您没有权限进入这个版面</div>;
+        return <div className="errorState" >
+            <div>
+                <img className="errorIcon" src="/images/401.png"></img>
+            </div>
+            <div className="errorText">您没有权限进入这个版面</div>
+        </div>
+            ;
     }
 }
 export class UnauthorizedTopic extends React.Component<{}, {}>{
     render() {
-        return <div>401您没有权限进入这个帖子</div>;
+        return <div className="errorState" >
+            <div>
+                <img className="errorIcon" src="/images/401.png"></img>
+            </div>
+            <div className="errorText">您没有权限进入这个主题</div>
+        </div>
+            ;
     }
 }
 export class UnauthorizedOperation extends React.Component<{}, {}>{
     render() {
-        return <div>401您没有权限进行此操作</div>;
+        return <div className="errorState" >
+            <div>
+                <img className="errorIcon" src="/images/401.png"></img>
+            </div>
+            <div className="errorText">您没有权限进行这个操作</div>
+        </div>
+            ;
     }
 }
 export class NotFoundBoard extends React.Component<{}, {}>{
-    /*constructor(props, context) {
-        super(props, context);
-    }
-    async componentDidMount() {
-      
-        console.log("finished");
-    }*/
+
     render() {
-        return <div>404版面不存在</div>;
+        return <div className="errorState" >
+            <div>
+                <img className="errorIcon" src="/images/404.png"></img>
+            </div>
+            <div className="errorText">版面不存在</div>
+        </div>
+            ;
     }
 }
 export class NotFoundTopic extends React.Component<{}, {}>{
-   /* async componentDidMount() {
-        const token = Utility.getLocalStorage("accessToken");
-        const headers = new Headers();
-        headers.append("Authorization", token);
-        headers.append("Content-Type", "application/json");
-        const body = {
-            isCanceling: false,
-            isBold: true,
-            isItalic: true,
-            color: "red",
-            duration:null
-        }
-        const str = JSON.stringify(body);
-        const url = 'http://apitest.niconi.cc/topic/sethighlight?boardid=753&topicid=4740298'
-        await fetch(url, { method: "PUT", headers, body: str });
 
-
-    }*/
     render() {
-        return <div>404帖子不存在</div>;
+        return <div className="errorState" >
+            <div>
+                <img className="errorIcon" src="/images/404.png"></img>
+            </div>
+            <div className="errorText">帖子不存在</div>
+        </div>
+            ;
     }
 }
 export class NotFoundUser extends React.Component<{}, {}>{
     render() {
-        return <div>404用户不存在</div>;
+        return <div className="errorState" >
+            <div>
+                <img className="errorIcon" src="/images/404.png"></img>
+            </div>
+            <div className="errorText">用户不存在</div>
+        </div>
+            ;
     }
 }
 export class ServerError extends React.Component<{}, {}>{
     render() {
-        return <div>500服务器错误</div>;
+        return <div className="errorState" >
+            <div>
+                <img className="errorIcon" src="/images/500.png"></img>
+            </div>
+            <div className="errorText">服务器发送错误</div>
+        </div>
+            ;
     }
 }
 export class ContentNeeded extends React.Component<{}, {}>{
     render() {
-        return <div>402需要输入内容</div>
+        return <div className="errorText">402需要输入内容</div>
     }
 }
 export class OperationForbidden extends React.Component<{}, {}>{
     render() {
-        return <div>403操作被拒绝</div>
+        return <div className="errorState" >
+            <div>
+                <img className="errorIcon" src="/images/403.png"></img>
+            </div>
+            <div className="errorText">操作失败或被拒绝</div>
+        </div>
+            ;
     }
 }

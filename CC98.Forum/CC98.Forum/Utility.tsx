@@ -1398,7 +1398,7 @@ export async function getSaveTopics(curPage, boardId) {
     const response = await fetch(url, { headers });
     const data = await response.json();
     let boardtopics: State.TopicTitleAndContentState[] = [];
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.topics.length; i++) {
         boardtopics[i] = { ...data.topics[i], replyCount: data.topics[i].replyCount || 0 };
     } const totalPage = data.count % 20 === 0 ? data.count / 20 : (data.count - data.count % 20) / 20 + 1;
     const obj = { boardtopics: boardtopics, totalPage: totalPage };

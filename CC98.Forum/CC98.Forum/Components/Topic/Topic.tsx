@@ -44,7 +44,6 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         };
     }
     quote(content, userName, replyTime, floor) {
-        console.log("in topic quote" + content);
         const y = $("#sendTopicInfo").offset().top;
         scrollTo(0, y);
         this.setState({ quote: { content: content, userName: userName, replyTime: replyTime, floor: floor } });
@@ -54,7 +53,6 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         this.setState({});
     }
     async handleChange() {
-        console.log("handle change");
         const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
         const newPage = topicInfo.replyCount % 10 === 0 ? topicInfo.replyCount / 10 : (topicInfo.replyCount - topicInfo.replyCount%10) / 10 + 1;
         let page: number;
@@ -73,8 +71,6 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         this.setState({ page:page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName, topicInfo: topicInfo, quote: "" });
     }
     async componentWillReceiveProps(newProps) {
-        console.log("in new props");
-        console.log(newProps);
         //page 是否变了
         let page: number;
         if (!newProps.match.params.page) {
@@ -91,8 +87,6 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo });
     }
     async componentWillMount() {
-        console.log("will mount");
-        console.log(this.props);
         let page: number;
         if (!this.match.params.page) {
             page = 1;
@@ -116,7 +110,6 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
 
 
     render() {
-        console.log("in render");
         switch (this.state.fetchState) {
             case 'ok':
                 return <div></div>;

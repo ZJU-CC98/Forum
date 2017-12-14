@@ -52,7 +52,7 @@ export class Reply extends React.Component<{ topicId, page, topicInfo, boardInfo
         let realContents;
         if (this.props.isHot) {
             realContents = await Utility.getHotReplyContent(this.props.topicId);
-            console.log("hot");
+
             console.log(realContents);
             if (!realContents) this.setState({ inWaiting: false, contents: [] });
         } else if (this.props.isTrace) {
@@ -101,7 +101,6 @@ export class Reply extends React.Component<{ topicId, page, topicInfo, boardInfo
     componentDidUpdate() {
 
         if (window.location.hash && window.location.hash !== '#') {
-            console.log("scroll");
             const hash = window.location.hash;
             const eleId = hash.split("#");
             const Id = eleId[1];

@@ -2593,3 +2593,16 @@ a {
 .followBoard :hover {
     background-color: #eea9b8;
 }
+.errorState{
+    display:flex;
+    flex-direction:column;
+    font-size:1.5rem;
+    letter-spacing:2px;
+}
+.errorIcon{
+    width:48rem;
+    height:27rem;
+}
+.errorText{
+    text-align:center;
+}

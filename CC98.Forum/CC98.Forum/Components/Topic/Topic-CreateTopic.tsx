@@ -274,8 +274,7 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags }, { t
     componentWillReceiveProps(newProps) {
         const tags = newProps.tags;
         const tagsNum = tags.length;
-        console.log("tags:" + tags);
-        console.log("tagsNum" + tagsNum);
+
     }
     render() {
         return <div className="createTopicTitle">
