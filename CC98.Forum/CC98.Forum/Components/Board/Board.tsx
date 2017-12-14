@@ -74,10 +74,10 @@ export class List extends RouteComponent<{}, { page:number, boardId: number,boar
             {bigPaper}
       
 
-            <Route exact path="/list/:boardId/normal/:page?" component={ListContent} />
+            <Route exact path="/list/:boardId/:page(\d+)?" component={ListContent} />
 
-            <Route exact path="/list/:boardId/best/:page?" component={ListBestContent} />
-                <Route exact path="/list/:boardId/save/:page?" component={ListSaveContent} />
+            <Route exact path="/list/:boardId/best/:page(\d+)?" component={ListBestContent} />
+            <Route exact path="/list/:boardId/save/:page(\d+)?" component={ListSaveContent} />
         </div> ;
     }
 }
@@ -355,7 +355,7 @@ export class ListContent extends RouteComponent<{}, { items,totalPage:number,boa
      
         const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
-        const normalTopicsUrl = `/list/${this.match.params.boardId}/normal/`;
+        const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
         return <div className="listContent ">
             <ListButtonAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} />
             <ListTag tags={this.state.tags} />
@@ -435,7 +435,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
         const topics = this.state.items.map(this.convertTopicToElement);
         const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
-        const normalTopicsUrl = `/list/${this.match.params.boardId}/normal/`;
+        const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
         return <div className="listContent ">
             <ListButtonAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={bestTopicsUrl} />
             <ListTag tags={this.state.tags} />
@@ -507,7 +507,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
         const topics = this.state.items.map(this.convertTopicToElement);
         const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
-        const normalTopicsUrl = `/list/${this.match.params.boardId}/normal/`;
+        const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
         return <div className="listContent ">
             <ListButtonAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} />
             <ListTag tags={this.state.tags} />

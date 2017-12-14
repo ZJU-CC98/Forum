@@ -87,7 +87,7 @@ export class RootBoard extends React.Component<{ board }, { isExpanded: boolean 
             return <div className="anArea" id="似水流年">
                 <div className="column" style={{ border: '2px solid #e9e9e9' }}>
                     <div className="row" style={{ marginTop: '15px', marginBottom: '15px' }}>
-                        <div className="areaName"><Link to="/list/758/normal">{boards.name}</Link></div>
+                        <div className="areaName"><Link to="/list/758">{boards.name}</Link></div>
                         <div className="areaName">主管：{boards.masters}</div>
                     </div>
                 </div>
@@ -131,9 +131,9 @@ export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>
     }
     convertChildBoard(item: Board) {    //暂无各版面图片，以绿色背景方块替代
         return <div className="boardContent">
-            <Link to={`/list/${item.id}/normal`}><div className="greenBackdrop"></div></Link>
+            <Link to={`/list/${item.id}`}><div className="greenBackdrop"></div></Link>
             <div className="column boardBlock" >
-                <Link to={`/list/${item.id}/normal`}><div className="boardName2" style={{ fontSize:"1.2rem", fontWeight:"bold" }}>{item.name}</div></Link>
+                <Link to={`/list/${item.id}`}><div className="boardName2" style={{ fontSize:"1.2rem", fontWeight:"bold" }}>{item.name}</div></Link>
                 <div className="boardInfo"> {item.todayPostCount} /{item.totalPostCount}</div>
                 
                 </div>
@@ -141,7 +141,7 @@ export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>
     }
     convertNoImgChildBoard(item: Board) {
         return <div className="noImgBoardContent">
-            <Link to={`/list/${item.id}/normal`}><div className="boardName2">{item.name}</div></Link>
+            <Link to={`/list/${item.id}`}><div className="boardName2">{item.name}</div></Link>
         </div>;
     }
     render() {
