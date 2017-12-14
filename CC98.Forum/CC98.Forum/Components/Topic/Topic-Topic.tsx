@@ -7,14 +7,14 @@ import { TopicContent } from './Topic-TopicContent';
 import { Award } from './Topic-Award';
 import { PostManagement } from './Topic-PostManagement';
 import { Judge } from './Topic-Judge';
-export class PostTopic extends React.Component<{ boardInfo,topicInfo,userId, imgUrl, page, topicid,quote }, { topicMessage, likeState}> {
+export class PostTopic extends React.Component<{ boardInfo,topicInfo,userId, imgUrl, page, topicid,quote }, { topicMessage}> {
     constructor(props, content) {
         super(props, content);
         this.update = this.update.bind(this);
         this.quote = this.quote.bind(this);
         this.state = {
-            topicMessage: { title: "加载中...", time: "", content: "", signature: "", postId: 0 }
-            , likeState: 0
+            topicMessage: {
+                title: "加载中...", time: "", content: "", signature: "", postId: 0, likeInfo: {likeCount:0,dislikeCount:0,likeState:0} ,awardInfo:[]}         
         }
     }
     quote(content, userName, replyTime, floor) {
@@ -46,10 +46,10 @@ export class PostTopic extends React.Component<{ boardInfo,topicInfo,userId, img
                     <TopicContent postid={this.state.topicMessage.postId} content={this.state.topicMessage.content} signature={this.state.topicMessage.signature} topicid={this.props.topicid} userId={this.state.topicMessage.userId}
                         contentType={this.state.topicMessage.contentType}
                         masters={this.props.boardInfo.masters}
-                        update={this.update} quote={this.quote} replyTime={this.state.topicMessage.time} userName={this.state.topicMessage.userName} />
+                        update={this.update} quote={this.quote} replyTime={this.state.topicMessage.time} userName={this.state.topicMessage.userName} likeInfo={this.state.topicMessage.likeInfo} />
                     <div className="column" style={{ width: "100%" }}>
-                        
-                        <Award postId={this.state.topicMessage.postId} updateTime={Date.now()} />
+
+                        <Award postId={this.state.topicMessage.postId} updateTime={Date.now()} awardInfo={this.state.topicMessage.awardInfo} />
                     </div>
                 </div>;
             }

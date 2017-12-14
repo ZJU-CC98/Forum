@@ -16,7 +16,6 @@ import { ReplyContent } from './Topic-ReplyContent';
 import { Provider } from 'react-redux';
 import { AwardInfo } from './Topic-AwardInfo';
 import { UserDetails } from './Topic-UserDetails';
-import { HotReply } from './Topic-HotReply';
 import { TopicContent } from './Topic-TopicContent';
 import { SendTopic } from './Topic-SendTopic';
 import { Category } from './Topic-Category';
@@ -55,7 +54,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         this.setState({});
     }
     async handleChange() {
-
+        console.log("handle change");
         const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
         const newPage = topicInfo.replyCount % 10 === 0 ? topicInfo.replyCount / 10 : (topicInfo.replyCount - topicInfo.replyCount%10) / 10 + 1;
         let page: number;
@@ -74,7 +73,9 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         this.setState({ page:page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName, topicInfo: topicInfo, quote: "" });
     }
     async componentWillReceiveProps(newProps) {
-
+        console.log("in new props");
+        console.log(newProps);
+        //page 是否变了
         let page: number;
         if (!newProps.match.params.page) {
             page = 1;
@@ -82,7 +83,6 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         else { page = parseInt(newProps.match.params.page); }
         const userName = newProps.match.params.userName;
 
-        // if (this.state.page !== newProps.match.params.page)
 
         const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
         const boardId = topicInfo.boardId;
@@ -90,12 +90,9 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         const totalPage = this.getTotalPage(topicInfo.replyCount);
         this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo });
     }
-    componentDidUpdate() {
-
-
-    }
     async componentWillMount() {
-
+        console.log("will mount");
+        console.log(this.props);
         let page: number;
         if (!this.match.params.page) {
             page = 1;
@@ -119,7 +116,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
 
 
     render() {
-
+        console.log("in render");
         switch (this.state.fetchState) {
             case 'ok':
                 return <div></div>;
@@ -134,7 +131,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
         let hotReply = null;
         if (this.state.page === 1) {
             topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} quote={this.quote} />;
-            hotReply = <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} updateTime={Date.now()} quote={this.quote} isTrace={false} isHot={true} userId={null} />
+            hotReply = <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo}  quote={this.quote} isTrace={false} isHot={true} userId={null} />
         }
         const pagerUrl = `/topic/${this.state.topicid}/`;
         return <div className="center" >
@@ -144,8 +141,7 @@ export class Post extends RouteComponent<{}, { topicid, page, totalPage, userNam
             </div>
             {topic}
             {hotReply}
-
-            <Reply topicInfo={this.state.topicInfo} page={this.state.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} updateTime={Date.now()} quote={this.quote} isHot={false} isTrace={false} userId={null} />
+            <Reply topicInfo={this.state.topicInfo} page={this.state.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo}  quote={this.quote} isHot={false} isTrace={false} userId={null} />
 
             <div style={{ display: "flex", width: "100%", justifyContent: "flex-end", marginTop: "3rem" }}><Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
             <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardId} boardInfo={this.state.boardInfo} content={this.state.quote} userId={this.state.topicInfo.userId} />

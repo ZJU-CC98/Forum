@@ -4,7 +4,7 @@ import { PostManagement } from './Topic-PostManagement';
 import { UbbContainer } from '../UbbContainer';
 import { Link } from 'react-router-dom';
 declare let editormd: any;
-export class TopicContent extends React.Component<{ postid: number, topicid: number, content: string, signature: string, userId: number, contentType: number, masters: string[], update ,quote,userName,replyTime}, { likeState: number, likeNumber: number, dislikeNumber: number ,favState}> {
+export class TopicContent extends React.Component<{ postid: number, topicid: number, content: string, signature: string, userId: number, contentType: number, masters: string[], update ,quote,userName,replyTime,likeInfo}, { likeState: number, likeNumber: number, dislikeNumber: number ,favState}> {
     constructor(props, content) {
         super(props, content);
         this.showManageUI = this.showManageUI.bind(this);
@@ -14,9 +14,9 @@ export class TopicContent extends React.Component<{ postid: number, topicid: num
         this.setFav = this.setFav.bind(this);
         this.cancelFav = this.cancelFav.bind(this);
         this.state = {
-            likeNumber: 666,
-            dislikeNumber: 233,
-            likeState: 0,
+            likeNumber: this.props.likeInfo.likeCount,
+            dislikeNumber: this.props.likeInfo.dislikeCount,
+            likeState: this.props.likeInfo.likeState,
             favState:false
         }
     }
@@ -39,11 +39,11 @@ export class TopicContent extends React.Component<{ postid: number, topicid: num
         });
     }
     async componentDidMount() {
-        const data = await Utility.getLikeState(this.props.topicid, this.context.router);
-        if (data.likeState === 1) {
+        //    const data = await Utility.getLikeState(this.props.topicid, this.context.router);
+        if (this.state.likeState === 1) {
             $("#commentliked").css("color", "red");
         }
-        else if (data.likeState === 2) {
+        else if (this.state.likeState === 2) {
             $("#commentdisliked").css("color", "red");
         }
         const divid = `doc-content${this.props.postid}`;
@@ -57,7 +57,7 @@ export class TopicContent extends React.Component<{ postid: number, topicid: num
             codeFold: true,
         });
         const favState = await Utility.getFavState(this.props.topicid);
-        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState ,favState:favState});
+        this.setState({favState:favState});
     }
     async like() {
         //取消赞
@@ -77,7 +77,7 @@ export class TopicContent extends React.Component<{ postid: number, topicid: num
             await Utility.like(this.props.topicid, this.props.postid, this.context.router);
             $("#commentliked").css("color", "red");
         }
-        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
+        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid);
 
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
@@ -99,7 +99,7 @@ export class TopicContent extends React.Component<{ postid: number, topicid: num
             await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
             $("#commentdisliked").css("color", "red");
         }
-        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
+        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid);
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
     showManageUI() {

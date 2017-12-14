@@ -133,9 +133,9 @@ export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>
         return <div className="boardContent">
             <Link to={`/list/${item.id}/normal`}><div className="greenBackdrop"></div></Link>
             <div className="column boardBlock" >
-            <Link to={`/list/${item.id}/normal`}><div className="boardName2">{item.name}</div></Link>
-                <div className="boardInfo">今日发帖 {item.todayPostCount} </div>
-                <div className="boardInfo">总主题数 {item.totalPostCount}</div>
+                <Link to={`/list/${item.id}/normal`}><div className="boardName2" style={{ fontSize:"1.2rem", fontWeight:"bold" }}>{item.name}</div></Link>
+                <div className="boardInfo"> {item.todayPostCount} /{item.totalPostCount}</div>
+                
                 </div>
         </div>;
     }
