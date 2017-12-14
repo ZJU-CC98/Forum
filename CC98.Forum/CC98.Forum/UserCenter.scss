@@ -33,7 +33,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 14px;
+    font-size: 0.88rem;
     font-family: 微软雅黑;
     width: 100%;
     min-width: 1140px;
@@ -59,37 +59,15 @@
 }
 
 .user-center-head {
-    height: 4.5rem;
     display: flex;
     align-self: flex-start;
     align-items: center;
+    margin-bottom: 1.25rem;
 
     p {
         color: grey;
         font-size: 1rem;
-    }
-}
-
-@keyframes fixnavigation {
-    from {
-        position: sticky;
-        top: 0px;
-    }
-    to {
-        position: sticky;
-        top: 100px;
-    }
-}
-
-@keyframes unfixnavigation {
-    from {
-        position: sticky;
-        top: 100px;
-    }
-
-    to {
-        position: sticky;
-        top: 0px;
+        margin: 0;
     }
 }
 
@@ -97,6 +75,7 @@
     width: 100%;
     display: flex;
     margin-bottom: 3rem;
+    justify-content: space-between;
 
     *:focus {
         outline: none;
@@ -104,9 +83,9 @@
 
     .user-center-navigation {
         height: 33rem;
-        padding: 1rem;
+        padding: 0 0.625rem;
         background-color: white;
-        border: 1px solid rgb(204,204,204);
+        border: 1px solid #e9e9e9;
 
         button {
             width: 5rem;
@@ -150,9 +129,10 @@
             padding: 0;
 
             hr {
+                margin: 0;
                 background-color: #fff;
-                border-top: 1px dashed rgb(204,204,204);
-                width: 11rem;
+                border-top: 1px dashed #e9e9e9;
+                width: 11.125rem;
             }
         }
 
@@ -181,11 +161,10 @@
     }
 
     .user-center-router {
-        width: 72.5%;
-        margin-left: auto;
+        width: 52.75rem;
         padding: 2rem;
         background-color: white;
-        border: 1px solid rgb(204,204,204);
+        border: 1px solid #e9e9e9;
         min-height: 40rem;
 
         .user-center-exact {
@@ -199,9 +178,9 @@
                 align-items: center;
 
                 .user-avatar-img {
-                    width: 160px;
-                    height: 160px;
-                    border-radius: 80px;
+                    width: 10rem;
+                    height: 10rem;
+                    border-radius: 5rem;
                 }
             }
 
@@ -210,14 +189,14 @@
                 display: flex;
                 flex-direction: column;
                 padding: 0 2rem;
-                width: 300px;
+                width: 18.75rem;
 
                 & > * {
                     margin-bottom: 1rem;
                 }
 
                 #userId {
-                    font-size: 18px;
+                    font-size: 1.125rem;
                     margin-top: 0.5rem;
                     display: flex;
                     align-items: center;
@@ -268,7 +247,7 @@
 
                 #userIntroducion {
                     margin-left: 2rem;
-                    font-size: 12px;
+                    font-size: 0.75rem;
                 }
 
                 #userGenderAndBirthday {
@@ -293,7 +272,7 @@
                 .user-description {
                     display: flex;
                     flex-wrap: wrap;
-                    max-width: 580px;
+                    max-width: 36.25rem;
                     overflow-x: hidden;
 
                     & > p {
@@ -304,7 +283,7 @@
                     article {
                         width: 100%;
                         padding: 1rem;
-                        font-size: 12px;
+                        font-size: 0.75rem;
                         text-indent: 2em;
                         white-space: pre;
                     }
@@ -315,7 +294,7 @@
                 width: 100%;
 
                 & > p {
-                    font-size: 18px;
+                    font-size: 1.125rem;
                     margin-bottom: 2rem;
                 }
             }
@@ -335,7 +314,7 @@
 
             hr {
                 background-color: #fff;
-                border-top: 1px dashed rgb(204,204,204);
+                border-top: 1px dashed #e9e9e9;
             }
 
             .user-post-info a {
@@ -351,7 +330,7 @@
             }
 
             .user-post-content {
-                font-size: 14px;
+                font-size: 0.88rem;
                 display: flex;
 
                 p {
@@ -375,9 +354,9 @@
 
         .user-center-myfans, .user-center-myfollowings {
             hr {
-                margin-bottom: 30px;
+                margin-bottom: 1.875rem;
                 background-color: #fff;
-                border-top: 1px dashed rgb(204,204,204);
+                border-top: 1px dashed #e9e9e9;
             }
 
             .user-center-myfollowings-exact {
@@ -388,7 +367,7 @@
             .user-center-myfollowings-user {
                 display: flex;
                 align-items: center;
-                margin-bottom: 30px;
+                margin-bottom: 1.875rem;
 
                 p {
                     flex-grow: 1;
@@ -396,17 +375,17 @@
                 }
 
                 img {
-                    width: 60px;
-                    height: 60px;
-                    border-radius: 30px;
-                    margin-right: 20px;
+                    width: 3.75rem;
+                    height: 3.75rem;
+                    border-radius: 1.875rem;
+                    margin-right: 1.25rem;
                 }
 
                 button {
                     transition-duration: .4s;
-                    width: 70px;
-                    height: 26px;
-                    font-size: 12px;
+                    width: 4.375rem;
+                    height: 1.625rem;
+                    font-size: 0.75rem;
                     border-radius: 3px;
                     background-color: rgb(230,230,230);
                     color: rgb(160,160,160);
@@ -437,18 +416,18 @@
                 }
 
                 .user-center-myfollowings-user-id {
-                    margin-right: 20px;
+                    margin-right: 1.25rem;
                     min-width: 7rem;
                 }
 
                 .user-center-myfollowings-user-posts {
-                    margin: 0 14px 0 12px;
+                    margin: 0 0.88rem 0 0.75rem;
                     color: rgb(53,167,255);
                     min-width: 2rem;
                 }
 
                 .user-center-myfollowings-user-fans {
-                    margin: 0 14px 0 12px;
+                    margin: 0 0.88rem 0 0.75rem;
                     color: rgb(255,54,54);
                 }
             }
@@ -466,7 +445,7 @@
 
         .user-center-config {
             h2 {
-                font-size: 12px;
+                font-size: 0.75rem;
                 margin: 0 0 2rem 0;
             }
 
@@ -497,7 +476,7 @@
 
         hr {
             border-top: 1px dashed #ccc;
-            margin: 30px 0;
+            margin: 1.875rem 0;
         }
 
         .user-center-config-avatar {
@@ -624,15 +603,15 @@
         .user-center-config-signature {
             p {
                 flex-grow: 1;
-                font-size: 12px;
+                font-size: 0.75rem;
             }
 
             #signature {
-                margin: 0px;
-                padding: 20px;
-                width: 787px;
-                height: 252px;
-                border: 1px solid rgb(233, 233, 233);
+                margin: 0;
+                padding: 1.25rem;
+                width: 49.1875rem;
+                height: 15.75rem;
+                border: 1px solid #e9e9e9;
                 resize: vertical;
             }
 
@@ -651,8 +630,8 @@
             }
 
             button {
-                width: 100px;
-                height: 30px;
+                width: 6.25rem;
+                height: 1.875rem;
                 border-radius: 5px;
                 margin: 0 3rem;
             }
@@ -744,7 +723,7 @@
                 }
 
                 div p {
-                    font-size: 12px;
+                    font-size: 0.75rem;
                     margin: 0;
                 }
 
@@ -777,7 +756,7 @@
                 height: 2.5rem;
                 border-radius: 0.5rem;
                 background-color: #fff;
-                border: #ccc 1px solid;
+                border: #e9e9e9 1px solid;
                 cursor: pointer;
 
                 &:hover {
@@ -809,8 +788,8 @@
     align-items: center;
 
     img {
-        width: 260px;
-        height: 80px;
+        width: 16.25rem;
+        height: 5rem;
         margin: 1rem 1rem 0 0;
     }
 

@@ -24,7 +24,7 @@
     label, button {
         transition-duration: .5s;
         height: 2rem;
-        font-size: 14px;
+        font-size: 0.88rem;
         background-color: white;
         padding: 0;
         border: none;
@@ -55,7 +55,7 @@
         p {
             margin: 0;
             margin-right: -2.5rem;
-            font-size: 14px;
+            font-size: 0.88rem;
             z-index: 1;
             pointer-events: none;
         }
@@ -86,7 +86,7 @@
 
         p {
             margin: 0;
-            font-size: 14px;
+            font-size: 0.88rem;
         }
 
         input {
@@ -158,8 +158,8 @@
     }
 
     .ubb-emoji-content-ac img {
-        width: 75px;
-        height: 65px;
+        width: 4.6875rem;
+        height: 4.0625rem;
         margin: 0.5rem;
     }
 }
