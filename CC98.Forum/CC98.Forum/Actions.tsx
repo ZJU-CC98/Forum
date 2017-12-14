@@ -29,6 +29,10 @@ export const changeCurrentVisitingUserPage = (page, id) => ({
     id: id
 });
 
+export const userNotFound = () => ({
+    type: ActionTypes.USER_NOT_FOUND
+});
+
 export class AddAwardAction implements Redux.Action {
     type: string = ActionTypes.ADD_AWARD;
 }

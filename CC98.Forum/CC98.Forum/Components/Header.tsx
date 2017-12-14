@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { userLogOff } from '../Actions';
 import { Link } from 'react-router-dom';
 
-class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { userName, userImgUrl, hoverElement }> {   //顶部条的下拉菜单组件
+class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { userName, userImgUrl, hoverElement}> {   //顶部条的下拉菜单组件
     constructor(props?, context?) {
         super(props, context);
         this.state = ({
@@ -15,11 +15,12 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { u
             hoverElement: null
         });
     }
-    componentDidMount() {
+
+    async componentDidMount() {
         let userName = this.props.userInfo.name;
         let userImgUrl = this.props.userInfo.portraitUrl;
-        this.setState({ userName: userName, userImgUrl: userImgUrl });
-                
+        Utility.refreshUnReadCount(); 
+        this.setState({ userName: userName, userImgUrl: userImgUrl });    
 
         //以下是明一写的signalr，有锅找他
         /*var chat = $.connection.messageHub;
@@ -86,6 +87,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { u
                 dropDownLiMessage.mouseout(function () {
                     this.className = '';
                 });
+                Utility.refreshUnReadCount();
             });
 
             const style = {
@@ -93,6 +95,13 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { u
                 transitionDuration: '.2s',
                 height: '0px'
             };
+            
+            Utility.refreshUnReadCount();   
+            let unreadCount = { totalCount: 0, replyCount: 0, atCount: 0, systemCount: 0, messageCount: 0};
+            if (Utility.getStorage("unreadCount")) {
+                unreadCount = Utility.getStorage("unreadCount")
+            } 
+            
             return (<div id="dropdown">
                 <div className="box">
                     <div className="userInfo">
@@ -109,7 +118,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { u
                         id="userMessage"
                         onMouseOut={(e) => { this.handleMouseEvent(e.type, 'topBarText'); }}
                         onMouseOver={(e) => { this.handleMouseEvent(e.type, 'topBarText'); }}
-                    > <Link to="/message/response" className="messageTopBar">消息<div className="message-counter">99</div></Link></div>     
+                    > <Link to="/message/response" className="messageTopBar">消息<div className="message-counter displaynone" id="unreadCount-totalCount">{unreadCount.totalCount}</div></Link></div>     
                     <div className="topBarText"> <Link to="/focus" style={{ color: '#fff' }}>关注</Link></div>
                     <div className="topBarText"> <Link to="/newTopics" style={{ color: '#fff' }}>新帖</Link></div>
                     <Link to="/boardList"><div className="boardListLink" style={{ margin: '0 0 0 10px' }}><div style={{ marginTop: '16px', color: '#fff' }}>版面</div></div></Link>
@@ -133,10 +142,10 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { u
                     style={{...style, overflow: 'hidden', zIndex: 100 , position: 'absolute', top: '55px', height: this.state.hoverElement === 'topBarText' ? '120px' : '0px'}}
                 >
                     <ul className="dropDownSubMessage" style={{ display: 'inherit' }}>
-                        <Link to="/message/response"><li>回复我的</li></Link>
-                        <Link to="/message/attme"><li>@ 我的</li></Link>
-                        <Link to="/message/system"><li>系统通知</li></Link>
-                        <Link to="/message/message"><li>我的私信</li></Link>
+                        <Link to="/message/response"><li>回复我的<div className="message-counterLi displaynone" id="unreadCount-replyCount">{unreadCount.replyCount}</div></li></Link>
+                        <Link to="/message/attme"><li>@ 我的<div className="message-counterLi displaynone" id="unreadCount-atCount">{unreadCount.atCount}</div></li></Link>
+                        <Link to="/message/system"><li>系统通知<div className="message-counterLi displaynone" id="unreadCount-systemCount">{unreadCount.systemCount}</div></li></Link>
+                        <Link to="/message/message"><li>我的私信<div className="message-counterLi displaynone" id="unreadCount-messageCount">{unreadCount.messageCount}</div></li></Link>
                     </ul>
                 </div>
             </div>);

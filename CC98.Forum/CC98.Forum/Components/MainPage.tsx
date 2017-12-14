@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 
 /**
  * 全站公告组件
+ * 为同时兼容新旧版98 临时调整了显示的内容
  **/
 export class AnnouncementComponent extends React.Component<{}, { announcementContent: string }> {
 
@@ -21,15 +22,18 @@ export class AnnouncementComponent extends React.Component<{}, { announcementCon
         const response = await fetch('http://apitest.niconi.cc/config/global');
         const data = await response.json();
         const announcement: string = data.announcement;
-        console.log(announcement);
         //return announcement;
 
-        //这里开始是临时功能
-        const reg = /\list[\s\S]*?list/gim;
+        //这里开始是临时功能 只保留了公告中[list][/list]之间的内容
+        const reg = /\[list\][\s\S]*?\[align=left\]/gim;
+        const reg2 = /\[\*\]/gim;
+        const reg3 = /red/gim;
         const newAnnouncement = announcement.match(reg);
         let x = newAnnouncement[0];
-        x = x.replace("list]", "");
-        x = x.replace("[/list", "");
+        x = x.replace("[list]", "");
+        x = x.replace("[align=left]", "");
+        x = x.replace(reg2, "");   //去掉了因未关闭暂时无法解析的[*]
+        x = x.replace(reg3, "orchid");  //把恶心的大红色换成梦幻的紫色
         return x;
     }
     async componentDidMount() {
@@ -132,7 +136,7 @@ export class HotTopicComponent extends React.Component<{}, MainPageTopicState> {
 
 
     convertMainPageTopic(item: MainPageTopic) {
-        const boardUrl = `/list/${item.boardid}/normal/`;
+        const boardUrl = `/list/${item.boardid}/normal`;
         const topicUrl = `/topic/${item.id}`;
         return <div className="mainPageListRow">
             <div className="mainPageListBoardName"> <Link to={boardUrl}>[{item.boardName}]</Link></div >
@@ -281,7 +285,7 @@ export class RecommendedFunctionComponent extends React.Component<{}, {}>{
                 <div className="recommendedFunctionRow">
                     <div className="recommendedFunctionImage"><img src="/images/推荐功能.jpg"></img></div>
                     <div className="recommendedFunctionTitle">社团及学生组织用户申请</div>
-                </div>            
+                </div>
             </div>
         </div>
     }

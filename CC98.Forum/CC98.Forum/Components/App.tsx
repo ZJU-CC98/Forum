@@ -3,7 +3,8 @@ import { AppState } from '../States/AppState';
 import { match } from 'react-router';
 import {
 	BrowserRouter as Router,
-	Route
+    Route,
+    Switch
 } from 'react-router-dom';
 import { Post } from './Topic/Topic';
 import { List } from './Board/Board';
@@ -40,7 +41,8 @@ export class App extends React.Component<null, AppState> {
         return (<div style={{ width: "100%" }}>
                 <Router>
                     <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px" }}>
-                        <Header />
+                    <Header />
+                    <Switch>
                         <Route exact path="/" component={MainPage}></Route>
                         <Route exact path="/topic/:topicid/:page?" component={Post} />
                         <Route exact path="/topic/:topicid/user/:userId/:page?" component={CurUserPost} />
@@ -68,6 +70,8 @@ export class App extends React.Component<null, AppState> {
                         <Route path="/status/servererror" component={Status.ServerError} />
                         <Route path="/status/contentneeded" component={Status.ContentNeeded} />
                         <Route path="/status/operationforbidden" component={Status.OperationForbidden} />
+                        <Route component={()=>(<div>页面不存在</div>)} />
+                    </Switch>
                         <Footer />
                     </div>
                 </Router>

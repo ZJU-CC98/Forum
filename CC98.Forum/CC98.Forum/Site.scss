@@ -1092,11 +1092,12 @@ a {
     background-color: $color-post;
 
 
-    div {
+    .nav-div {
         height: 14px;
         padding: 18px 0px 22px 30px;
         font-size: 14px;
         border-bottom: 1px dashed lightgray;
+        position: relative;
     }
 
     a {
@@ -1301,11 +1302,6 @@ a {
         flex-direction: column-reverse;
         overflow-y: auto;
         overflow-x: hidden;
-
-        .quickToTheBottom {
-            width: 100px;
-            height: 0px;
-        }
 
         .message-message-wcLoading {
             flex-shrink: 0;
@@ -1841,10 +1837,8 @@ a {
     z-index: 2;
 }
 
-.message-counter {
+.message-counter, .message-counterLi, .message-counterNav {
     position: absolute;
-    top: -5px;
-    right: -20px;
     min-width: 10px;
     height: 14px;
     line-height: 14px;
@@ -1856,6 +1850,20 @@ a {
     text-align: center;
     background: red;
     border-radius: 14px;
+}
+
+.message-counter {
+    top: -5px;
+    right: -20px;
+}
+.message-counterLi {
+    top: 5px;
+    right: 10px;
+}
+
+.message-counterNav {
+    top: 31px;
+    right: 70px;
 }
 
 .topBar {
@@ -2025,6 +2033,7 @@ a {
     justify-content: center;
     align-items: center;
     z-index: 1;
+    position: relative;
 }
 
 #dropdown li.hover {

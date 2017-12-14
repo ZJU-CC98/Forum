@@ -13,7 +13,7 @@ import UserManage from './UserManage';
 import { UserExactProfile } from './UserExactProfile';
 import { UserRouterActivities } from './UserRouterActivities';
 import { UserCenterExactAvatar } from './UserCenterExactAvatar';
-import { changeCurrentVisitingUserPage } from '../../Actions';
+import { changeCurrentVisitingUserPage, userNotFound } from '../../Actions';
 import * as Utility from '../../Utility';
 
 export class UserRouter extends React.Component {
@@ -25,7 +25,7 @@ export class UserRouter extends React.Component {
     }
 }
 
-class UserExact extends React.Component<{ match, history, changePage}, UserCenterExactState> {
+class UserExact extends React.Component<{ match, history, changePage, notFoundUser}, UserCenterExactState> {
 
     async componentDidMount() {
         try {
@@ -45,6 +45,7 @@ class UserExact extends React.Component<{ match, history, changePage}, UserCente
                 headers: myHeaders
             });
             const data = await response.json();
+            console.log(data);
             this.props.history.replace(`/user/id/${data.id}`);
             this.props.changePage('exact', data.id);
             this.setState({
@@ -53,7 +54,7 @@ class UserExact extends React.Component<{ match, history, changePage}, UserCente
                 responseState: response.status
             });
         } catch (e) {
-            console.log('加载失败');
+            this.props.notFoundUser();
         }
     }
 
@@ -91,6 +92,9 @@ function mapDispatch(dispatch) {
     return {
         changePage: (page, id) => {
             dispatch(changeCurrentVisitingUserPage(page, id));
+        },
+        notFoundUser: () => {
+            dispatch(userNotFound());
         }
     };
 }

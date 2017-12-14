@@ -63,40 +63,34 @@ export class UserCenterMyFollowings extends React.Component<{match}, UserCenterM
             if (res.status !== 200) {
                 throw {};
             }
-            let data = await res.json();
+            let data: number[] = await res.json();
 
-            //没有关注
-
+            //没有粉丝
             if (!data || !data.length) {
                 this.setState({
-                    info: '没有关注',
+                    info: '没有粉丝',
                     isLoading: false
                 });
                 return false;
             }
 
-            let fans: UserFanInfo[] = [];
-
-            let i = data.length, data2;
-
-            while (i--) {
-                let userid = data[i];
+            
+            let requests = await Promise.all(data.map((item) => {
+                url = `http://apitest.niconi.cc/user/${item}`;
+                return fetch(url, { headers });
+            }));
+                           
+            let fanData = await Promise.all(requests.map((item)=>(item.json())));
+            let fans = fanData.map((item) => {
                 let userFanInfo = new UserFanInfo();
-                url = `http://apitest.niconi.cc/user/${userid}`;
-                res = await fetch(url);
-                if (res.status !== 200) {
-                    throw {};
-                }
-                data2 = await res.json();
-                userFanInfo.name = data2.name;
-                userFanInfo.avatarImgURL = data2.portraitUrl;
-                userFanInfo.posts = data2.postCount;
-                userFanInfo.id = userid;
-                userFanInfo.fans = data2.fanCount;
-                userFanInfo.isFollowing = true;
-                fans.unshift(userFanInfo);
-            }
-
+                userFanInfo.name = item.name;
+                userFanInfo.avatarImgURL = item.portraitUrl;
+                userFanInfo.posts = item.postCount;
+                userFanInfo.id = item.id;
+                userFanInfo.fans = item.fanCount;
+                userFanInfo.isFollowing = item.isFollowing;
+                return userFanInfo;
+            });
             this.setState({
                 userFollowings: fans,
                 isLoading: false

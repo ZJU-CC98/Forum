@@ -3,6 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import { UserInfo } from '../../States/AppState';
 import { UbbContainer } from '../UbbContainer';
 import * as Utility from '../../Utility';
@@ -80,7 +81,7 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
                 <div id="userId">
                     <div id="userId"><p>{this.props.userInfo.name}
                         <span style={{ fontSize: '12px', color: this.getPrivilegeColor(), marginLeft: '2rem' }}>{this.props.userInfo.privilege}</span></p>
-                        <button type="button" onClick={() => { location.href = `/message/message?id=${this.props.userInfo.id}`; }}>私信</button>
+                        <Link to={`/message/message?id=${this.props.userInfo.id}`}><button type="button">私信</button></Link>
                         <button type="button"
                             id={this.state.isFollowing ? 'unfollow' : ''}
                             onClick={this.state.isFollowing ? this.unfollow : this.follow}

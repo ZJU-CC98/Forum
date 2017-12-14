@@ -26,6 +26,10 @@ class UserInfo {
      * 表示当前访问的用户的id
      */
     currentVisitingUserId: number = 0;
+    /*
+     * 表示当前访问的用户是否存在
+     */
+    currentVisitingUserIsExisted: boolean = true;
 }
 
 /**
@@ -43,6 +47,8 @@ export default (state = new UserInfo, action): UserInfo => {
             return { ...state, currentUserInfo: action.newInfo }
         case ActionTypes.CHANGE_VISITING_USER:
             return { ...state, currentVisitingUserPage: action.page, currentVisitingUserId: action.id }
+        case ActionTypes.USER_NOT_FOUND:
+            return { ...state, currentVisitingUserIsExisted: false}
         default:
             return state;
     }

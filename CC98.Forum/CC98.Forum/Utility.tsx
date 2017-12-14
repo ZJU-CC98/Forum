@@ -2708,3 +2708,52 @@ export async function getFavState(topicId) {
     const data = await response.json();
     return data;
 }
+
+export async function refreshUnReadCount() {
+    const headers = await formAuthorizeHeader();
+    const url = `http://apitest.niconi.cc/me/unread-count`;
+    const response = await fetch(url, { headers });
+    let unreadCount = await response.json();
+    unreadCount.totalCount = unreadCount.systemCount + unreadCount.atCount + unreadCount.replyCount + unreadCount.messageCount;
+    setStorage("unreadCount", unreadCount);
+    if (unreadCount.totalCount > 0) {
+        $('#unreadCount-totalCount').removeClass('displaynone');
+        $('#unreadCount-totalCount1').removeClass('displaynone');
+    }
+    else {
+        $('#unreadCount-totalCount').addClass('displaynone');
+        $('#unreadCount-totalCount1').addClass('displaynone');
+    }
+    if (unreadCount.replyCount > 0) {
+        $('#unreadCount-replyCount').removeClass('displaynone');
+        $('#unreadCount-replyCount1').removeClass('displaynone');
+    }
+    else {
+        $('#unreadCount-replyCount').addClass('displaynone');
+        $('#unreadCount-replyCount1').addClass('displaynone');
+    }
+    if (unreadCount.atCount > 0) {
+        $('#unreadCount-atCount').removeClass('displaynone');
+        $('#unreadCount-atCount1').removeClass('displaynone');
+    }
+    else {
+        $('#unreadCount-atCount').addClass('displaynone');
+        $('#unreadCount-atCount1').addClass('displaynone');
+    }
+    if (unreadCount.systemCount > 0) {
+        $('#unreadCount-systemCount').removeClass('displaynone');
+        $('#unreadCount-systemCount1').removeClass('displaynone');
+    }
+    else {
+        $('#unreadCount-systemCount').addClass('displaynone');
+        $('#unreadCount-systemCount1').addClass('displaynone');
+    }
+    if (unreadCount.messageCount > 0) {
+        $('#unreadCount-messageCount').removeClass('displaynone');
+        $('#unreadCount-messageCount1').removeClass('displaynone');
+    }
+    else {
+        $('#unreadCount-messageCount').addClass('displaynone');
+        $('#unreadCount-messageCount1').addClass('displaynone');
+    }
+}
