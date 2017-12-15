@@ -5,40 +5,59 @@ import * as $ from 'jquery';
 import { connect } from 'react-redux';
 import { userLogOff } from '../Actions';
 import { Link } from 'react-router-dom';
+import * as signalR from '../node_modules/@aspnet/signalr-client/dist/src/index'
 
-class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { userName, userImgUrl, hoverElement }> {   //顶部条的下拉菜单组件
-    constructor(props?, context?) {
-        super(props, context);
+class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { hoverElement: string, unreadCount: number}> {   //顶部条的下拉菜单组件
+    constructor(props) {
+        super(props);
         this.state = ({
-            userName: "载入中……",
-            userImgUrl: "/images/unLoggedOn.png",
-            hoverElement: null
+            hoverElement: null,
+            unreadCount: 0
         });
     }
+    /**
+     * 这里是signalR的部分
+     * 等服务器可以Authorization了再说
+     * 反正就差认证了
+     */
     componentDidMount() {
-        let userName = this.props.userInfo.name;
-        let userImgUrl = this.props.userInfo.portraitUrl;
-        this.setState({ userName: userName, userImgUrl: userImgUrl });
-                
-
-        //以下是明一写的signalr，有锅找他
-        /*var chat = $.connection.messageHub;
-        console.log("signal通知测试");
-        $.connection.hub.url = "http://apitest.niconi.cc/signalr";
-        var token = Utility.getLocalStorage("accessToken");
-        console.log(`signalr的${token}`);
-        $.connection.hub.qs = {
-            'Authorization': token
-        };
-        $.connection.hub.logging = "true";
-        chat.client.newUserMessage = view;
-        console.log($.connection);
-        console.log($.connection.hub);
-        console.log($.connection.hub.start());
-        $.connection.hub.start();
-        console.log("signal测试完毕");*/
+        //如果用户已经登录则开始signalR链接
+        if (this.props.isLogOn) {
+            this.signalRConnect();
+        }
     }
-    
+
+    componentWillReceiveProps(nextProps) {
+        if (!this.props.isLogOn && nextProps.isLogOn) {
+            //如果用户重新登录则开始signalR链接
+            this.signalRConnect();
+        } else if (!nextProps.isLogOn) {
+            //如果用户注销则关闭signalR链接
+            this.connection.stop();
+        }
+    }
+    connection = new signalR.HubConnection('http://apitest.niconi.cc/signalr/notification');;
+    signalRConnect = async ()=> {
+        const token = await Utility.getToken();
+        const url = 'http://apitest.niconi.cc/signalr/notification';
+        let myHeaders = new Headers();
+        myHeaders.append('Authorization', token);
+        this.connection = new signalR.HubConnection(url);
+        this.connection.on('NotifyMessageReceive', (value) => {
+            console.log('NotifyMessageReceive');
+            console.log(value);
+        });
+        this.connection.on('NotifyTopicChange', (value) => {
+            console.log('NotifyTopicChange');
+            console.log(value);
+        });
+        this.connection.on('NotifyNotificationChange', (value) => {
+            console.log('NotifyNotificationChange');
+            console.log(value);
+        });
+        this.connection.start();
+    }
+
     logOff() {
         this.handleMouseEvent('mouseout', "userName");
         Utility.removeLocalStorage("accessToken");
@@ -69,39 +88,28 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { u
 
     render() {
         if (this.props.isLogOn) {
-            $(document).ready(function () {
-                const dropDownSub = $('.dropDownSub').eq(0);
-                const dropDownLi = dropDownSub.find('li');
-                const dropDownSubMessage = $('.dropDownSubMessage').eq(0);
-                const dropDownLiMessage = dropDownSubMessage.find('li');                
-                dropDownLi.mouseover(function () {
-                    this.className = 'hover';
-                });
-                dropDownLi.mouseout(function () {
-                    this.className = '';
-                });
-                dropDownLiMessage.mouseover(function () {
-                    this.className = 'hover';
-                });
-                dropDownLiMessage.mouseout(function () {
-                    this.className = '';
-                });
-            });
 
             const style = {
                 display: 'block',
                 transitionDuration: '.2s',
                 height: '0px'
             };
+            
+            Utility.refreshUnReadCount();   
+            let unreadCount = { totalCount: 0, replyCount: 0, atCount: 0, systemCount: 0, messageCount: 0};
+            if (Utility.getStorage("unreadCount")) {
+                unreadCount = Utility.getStorage("unreadCount")
+            } 
+            
             return (<div id="dropdown">
                 <div className="box">
                     <div className="userInfo">
-                        <div className="userImg"><img src={this.props.userInfo.portraitUrl||this.state.userImgUrl}></img></div>
+                        <div className="userImg"><img src={this.props.userInfo.portraitUrl}></img></div>
                         <div
                             className="userName"
                             onMouseOut={(e) => { this.handleMouseEvent(e.type, "userName"); }}
                             onMouseOver={(e) => { this.handleMouseEvent(e.type, "userName"); }}
-                        >{this.props.userInfo.name||this.state.userName}</div>
+                        >{this.props.userInfo.name}</div>
                     </div>
                     <div className="topBarText"> <Link to="/" style={{ color: '#fff' }}>首页</Link></div>
                     <div
@@ -109,7 +117,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { u
                         id="userMessage"
                         onMouseOut={(e) => { this.handleMouseEvent(e.type, 'topBarText'); }}
                         onMouseOver={(e) => { this.handleMouseEvent(e.type, 'topBarText'); }}
-                    > <Link to="/message/response" className="messageTopBar">消息<div className="message-counter">99</div></Link></div>     
+                    > <Link to="/message/response" className="messageTopBar">消息<div className="message-counter displaynone" id="unreadCount-totalCount">{unreadCount.totalCount}</div></Link></div>     
                     <div className="topBarText"> <Link to="/focus" style={{ color: '#fff' }}>关注</Link></div>
                     <div className="topBarText"> <Link to="/newTopics" style={{ color: '#fff' }}>新帖</Link></div>
                     <Link to="/boardList"><div className="boardListLink" style={{ margin: '0 0 0 10px' }}><div style={{ marginTop: '16px', color: '#fff' }}>版面</div></div></Link>
@@ -133,10 +141,10 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { u
                     style={{...style, overflow: 'hidden', zIndex: 100 , position: 'absolute', top: '55px', height: this.state.hoverElement === 'topBarText' ? '120px' : '0px'}}
                 >
                     <ul className="dropDownSubMessage" style={{ display: 'inherit' }}>
-                        <Link to="/message/response"><li>回复我的</li></Link>
-                        <Link to="/message/attme"><li>@ 我的</li></Link>
-                        <Link to="/message/system"><li>系统通知</li></Link>
-                        <Link to="/message/message"><li>我的私信</li></Link>
+                        <Link to="/message/response"><li>回复我的<div className="message-counterLi displaynone" id="unreadCount-replyCount">{unreadCount.replyCount}</div></li></Link>
+                        <Link to="/message/attme"><li>@ 我的<div className="message-counterLi displaynone" id="unreadCount-atCount">{unreadCount.atCount}</div></li></Link>
+                        <Link to="/message/system"><li>系统通知<div className="message-counterLi displaynone" id="unreadCount-systemCount">{unreadCount.systemCount}</div></li></Link>
+                        <Link to="/message/message"><li>我的私信<div className="message-counterLi displaynone" id="unreadCount-messageCount">{unreadCount.messageCount}</div></li></Link>
                     </ul>
                 </div>
             </div>);

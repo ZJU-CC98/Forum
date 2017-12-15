@@ -2,7 +2,7 @@
 import * as Utility from '../../Utility';
 import { AwardInfo } from './Topic-AwardInfo';
 import { connect } from 'react-redux';
-export class Award extends React.Component<{ postId ,updateTime}, {info,shortInfo,count,showAll }>{
+export class Award extends React.Component<{ postId ,updateTime,awardInfo}, {info,shortInfo,count,showAll }>{
     constructor(props, content) {
         super(props, content);
         this.showAll = this.showAll.bind(this);
@@ -16,8 +16,8 @@ export class Award extends React.Component<{ postId ,updateTime}, {info,shortInf
         this.setState({ showAll: true });
     }
     async componentDidMount() {
-        let shortInfo=[];
-        const award = await Utility.getAwardInfo(this.props.postId);
+        let shortInfo = [];
+        const award = this.props.awardInfo;
         if (award.length > 10) {
             for (let i = 0; i < 10; i++) {
                 shortInfo[i] = await this.generateAwardInfo(award[i]);
@@ -30,7 +30,7 @@ export class Award extends React.Component<{ postId ,updateTime}, {info,shortInf
     }
     async componentWillReceiveProps(newProps) {
         let shortInfo = [];
-        const award = await Utility.getAwardInfo(newProps.postId);
+        const award = newProps.awardInfo;
         if (award.length > 10) {
             for (let i = 0; i < 10; i++) {
                 shortInfo[i] = await this.generateAwardInfo(award[i]);

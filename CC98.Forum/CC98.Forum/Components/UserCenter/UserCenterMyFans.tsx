@@ -56,46 +56,38 @@ export class UserCenterMyFans extends React.Component<{match}, UserCenterMyFansS
             let res = await fetch(url, {
                 headers
             });
-            if (res.status === 200) {
-                let data: number[] = await res.json();
-                
-                //没有粉丝
-                if (!data || !data.length) {
-                    this.setState({
-                        info: '没有粉丝',
-                        isLoading: false
-                    });
-                    return false;
-                }
-                
-                let fanData = data.map((item) => {
-                    url = `http://apitest.niconi.cc/user/${item}`;
-                    return fetch(url, { headers }).then((value) => {
-                        return value.json();
-                    });
-                });
+            let data: number[] = await res.json();
 
-                Promise.all(fanData).then((value) => {
-                    let fans = value.map((item) => {
-                        let userFanInfo = new UserFanInfo();
-                        userFanInfo.name = item.name;
-                        userFanInfo.avatarImgURL = item.portraitUrl;
-                        userFanInfo.posts = item.postCount;
-                        userFanInfo.id = item.id;
-                        userFanInfo.fans = item.fanCount;
-                        userFanInfo.isFollowing = item.isFollowing;
-                        return userFanInfo;
-                        
-                    });
-                    this.setState({
-                        userFans: fans,
-                        isLoading: false
-                    });
+            //没有粉丝
+            if (!data || !data.length) {
+                this.setState({
+                    info: '没有粉丝',
+                    isLoading: false
                 });
-                
-            } else {
-                throw {};
+                return false;
             }
+
+            
+            let requests = await Promise.all(data.map((item) => {
+                url = `http://apitest.niconi.cc/user/${item}`;
+                return fetch(url, { headers });
+            }));
+                           
+            let fanData = await Promise.all(requests.map((item)=>(item.json())));
+            let fans = fanData.map((item) => {
+                let userFanInfo = new UserFanInfo();
+                userFanInfo.name = item.name;
+                userFanInfo.avatarImgURL = item.portraitUrl;
+                userFanInfo.posts = item.postCount;
+                userFanInfo.id = item.id;
+                userFanInfo.fans = item.fanCount;
+                userFanInfo.isFollowing = item.isFollowing;
+                return userFanInfo;
+            });
+            this.setState({
+                userFans: fans,
+                isLoading: false
+            });
         } catch (e) {
             console.log('我的粉丝加载失败');
         }

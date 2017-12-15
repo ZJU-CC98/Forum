@@ -1,15 +1,15 @@
 ﻿import * as React from 'react';
 import * as Utility from '../../Utility';
 import { UbbContainer } from '../UbbContainer';
-export class ReplierSignature extends React.Component<{ signature,postid ,topicid,masters,userId}, {likeNumber,dislikeNumber,likeState}>{
+export class ReplierSignature extends React.Component<{ signature,postid ,topicid,masters,userId,likeInfo}, {likeNumber,dislikeNumber,likeState}>{
     constructor(props, content) {
         super(props, content);
         this.showManageUI = this.showManageUI.bind(this);
         this.showJudgeUI = this.showJudgeUI.bind(this);
         this.state = {
-            likeNumber: 1,
-            dislikeNumber: 1,
-            likeState: 0,
+            likeNumber: this.props.likeInfo.likeCount,
+            dislikeNumber: this.props.likeInfo.dislikeCount,
+            likeState: this.props.likeInfo.likeState,
         }
     }
     showManageUI() {
@@ -40,7 +40,7 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
             await Utility.like(this.props.topicid, this.props.postid, this.context.router);
             $(idLike).css("color", "red");
         }
-        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
+        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid);
 
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
@@ -66,24 +66,24 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
             await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
             $(idDislike).css("color", "red");
         }
-        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
+        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid);
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
     async componentDidMount() {
         const idLike = `#like${this.props.postid}`;
         const idDislike = `#dislike${this.props.postid}`;
-        const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
-        if (data.likeState === 1) {
+        //const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
+        if (this.state.likeState === 1) {
             $(idLike).css("color", "red");
         }
-        else if (data.likeState === 2) {
+        else if (this.state.likeState === 2) {
             $(idDislike).css("color", "red");
         }
         const manageIcon = `icon${this.props.postid}`;
         const manageId = `#icon${this.props.postid}`;
         if (Utility.isMaster(this.props.masters))
         $(manageId).css("display", "");
-        this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
+      //  this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
  
     render() {

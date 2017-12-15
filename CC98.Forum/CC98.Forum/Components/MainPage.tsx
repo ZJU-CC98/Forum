@@ -10,12 +10,12 @@ import { Link } from 'react-router-dom';
  * 全站公告组件
  * 为同时兼容新旧版98 临时调整了显示的内容
  **/
-export class AnnouncementComponent extends React.Component<{}, { announcementContent: string }> {
+export class AnnouncementComponent extends React.Component<{}, { announcementContent }> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
         this.state = {
-            announcementContent: '加载中……'
+            announcementContent: { announcement: '加载中……', todayCount: 0 }
         };
     }
     async getAnnouncement() {
@@ -34,12 +34,12 @@ export class AnnouncementComponent extends React.Component<{}, { announcementCon
         x = x.replace("[align=left]", "");
         x = x.replace(reg2, "");   //去掉了因未关闭暂时无法解析的[*]
         x = x.replace(reg3, "orchid");  //把恶心的大红色换成梦幻的紫色
-        return x;
+        return {announcement:x,todayCount:data.todayCount};
     }
     async componentDidMount() {
         const x = await this.getAnnouncement();
         this.setState({
-            announcementContent: x,
+            announcementContent:x,
         });
     }
     render() {
@@ -48,9 +48,10 @@ export class AnnouncementComponent extends React.Component<{}, { announcementCon
                 <div className="mainPageTitleRow">
                     <i className="fa fa-volume-up"></i>
                     <div className="mainPageTitleText">全站公告</div>
+                    <div style={{ marginLeft: "1rem", fontSize:"1rem" }}>今日帖数 {this.state.announcementContent.todayCount}</div>
                 </div>
             </div>
-            <div className="announcementContent"><UbbContainer code={this.state.announcementContent} /></div>
+            <div className="announcementContent"><UbbContainer code={this.state.announcementContent.announcement} /></div>
         </div>
     }
 }

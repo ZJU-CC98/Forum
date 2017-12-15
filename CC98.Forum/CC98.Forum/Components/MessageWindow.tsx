@@ -58,7 +58,8 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
      */
     async componentWillReceiveProps(nextProps) {
         //把聊天窗口滚动栏拉到最底部
-        document.getElementById("quickToTheBottom").scrollIntoView();
+        let scrollDiv = document.getElementById("messageContent");
+        scrollDiv.scrollTop = scrollDiv.scrollHeight;
         this.getData(nextProps);
     }
 
@@ -102,7 +103,9 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
     */
     async getNewMessage() {
         //把聊天窗口滚动栏拉到最底部
-        document.getElementById("quickToTheBottom").scrollIntoView();
+        let scrollDiv = document.getElementById("messageContent");
+        scrollDiv.scrollTop = scrollDiv.scrollHeight;
+
         //获取新私信信息
         let data = await Utility.getRecentMessage(this.props.data.id, 0, 10, this.context.router);
 
@@ -238,7 +241,6 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
                         <div className="message-message-wReport"><button onClick={this.report}>举报</button></div>
                     </div>
                     <div className="message-message-wContent" id="messageContent">
-                        <div id="quickToTheBottom" className="quickToTheBottom"></div>
                         {this.state.data.map(this.coverMessageProps)}
                         <div className="message-message-wcLoading">
                             <img src="http://file.cc98.org/uploadfile/2017/11/19/2348481046.gif" id="wcLoadingImg" className="displaynone"></img>

@@ -328,6 +328,7 @@ body {
 .signature {
     color: rgb(80,80,80);
     margin: 1.25rem;
+    padding-top:1rem;
 }
 
 .upup {
@@ -956,7 +957,7 @@ a {
 .boardGuide{
     position:fixed;
     margin-left:1140px;
-    width:80px;
+    width:5rem;
     height:33rem;
     background-color:#fff;
     display:flex;
@@ -978,18 +979,18 @@ a {
     width: 1140px;
     box-sizing: border-box;
     background-color:#fff;
-    margin-bottom: 30px;
+    margin-bottom: 2rem;
 }
 
 .hideBoard {
-    width: 30px;
-    height: 20px;
-    margin-left: 30px;
+    width: 2rem;
+    height: 1.25rem;
+    margin-left: 2rem;
     border-radius: 5px;
     border-width: 1px;
     border-style: solid;
     border-color: #000000;
-    font-size: 14px;
+    font-size: 0.88rem;
     font-family: 微软雅黑;
     color: rgb(80,80,80);
     text-align: center;
@@ -997,10 +998,10 @@ a {
 }
 
 .areaName {
-    font-size: 14px;
+    font-size: 0.87rem;
     font-family: 微软雅黑;
     color: rgb(80,80,80);
-    margin-left: 18px;
+    margin-left: 1.1rem;
 }
 
 .areaContent {
@@ -1011,39 +1012,45 @@ a {
 
 .boardContent {
     display: flex;
-
-    margin: 18px 15px 18px 18px;
-    width: 250px;
+    margin: 1.1rem 1rem 1.1rem 1.1rem;
+    width: 15.6rem;
 }
 
 .noImgBoardContent {
     display: flex;
     flex-direction: column;
-    margin: 0px 15px 18px 18px;
-    width: 250px;
+    margin: 0px 1rem 1.1rem 1.1rem;
+    width: 15.6rem;
 }
 .boardBlock{
     margin-left:0.5rem
 }
 .greenBackdrop {
-    height: 120px;
-    width: 120px;
-    background-image: url(/images/board.jpg) ;
+    height: 6rem;
+    width: 6rem;
+    background-image: url(/images/sample4.png) ;
     background-size:100%;
+}
+.listTitle {
+    max-width: 25rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .boardName2 {
-    font-size: 14px;
+    font-size: 0.88rem;
     font-family: 微软雅黑;
     color: rgb(80,80,80);
-    margin-top: 12px;
+    margin-top: 0.75rem;
+    letter-spacing:2px;
 }
 
 .boardInfo {
-    font-size: 12px;
+    font-size: 0.75rem;
     font-family: 微软雅黑;
     color: rgb(80,80,80);
-    margin-top: 12px;
+    margin-top: 8px;
 }
 
 /*****************************************以下为我的消息的样式*********************************/
@@ -1085,11 +1092,12 @@ a {
     background-color: $color-post;
 
 
-    div {
+    .nav-div {
         height: 14px;
         padding: 18px 0px 22px 30px;
         font-size: 14px;
         border-bottom: 1px dashed lightgray;
+        position: relative;
     }
 
     a {
@@ -1294,11 +1302,6 @@ a {
         flex-direction: column-reverse;
         overflow-y: auto;
         overflow-x: hidden;
-
-        .quickToTheBottom {
-            width: 100px;
-            height: 0px;
-        }
 
         .message-message-wcLoading {
             flex-shrink: 0;
@@ -1834,10 +1837,8 @@ a {
     z-index: 2;
 }
 
-.message-counter {
+.message-counter, .message-counterLi, .message-counterNav {
     position: absolute;
-    top: -5px;
-    right: -20px;
     min-width: 10px;
     height: 14px;
     line-height: 14px;
@@ -1849,6 +1850,20 @@ a {
     text-align: center;
     background: red;
     border-radius: 14px;
+}
+
+.message-counter {
+    top: -5px;
+    right: -20px;
+}
+.message-counterLi {
+    top: 5px;
+    right: 10px;
+}
+
+.message-counterNav {
+    top: 31px;
+    right: 70px;
 }
 
 .topBar {
@@ -2018,9 +2033,10 @@ a {
     justify-content: center;
     align-items: center;
     z-index: 1;
+    position: relative;
 }
 
-#dropdown li.hover {
+#dropdown li:hover {
     background: rgb(53,177,255);
 }
 //以下是头部中搜索条的样式
@@ -2576,4 +2592,17 @@ a {
 }
 .followBoard :hover {
     background-color: #eea9b8;
+}
+.errorState{
+    display:flex;
+    flex-direction:column;
+    font-size:1.5rem;
+    letter-spacing:2px;
+}
+.errorIcon{
+    width:48rem;
+    height:27rem;
+}
+.errorText{
+    text-align:center;
 }

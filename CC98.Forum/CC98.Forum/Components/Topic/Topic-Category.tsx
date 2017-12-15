@@ -12,16 +12,13 @@ export class Category extends React.Component<{ topicInfo,topicId,boardInfo }, {
         });
     }
     componentDidMount() {
-        console.log(this.props.boardInfo);
         this.setState({ boardId: this.props.topicInfo.boardId, topicId: this.props.topicId, boardName: this.props.boardInfo.name, title: this.props.topicInfo.title });
     }
     componentWillReceiveProps(newProps) {
         this.setState({ boardId: newProps.topicInfo.boardId, topicId: newProps.topicId, boardName: newProps.boardInfo.name, title: newProps.topicInfo.title });
     }
     render() {
-        console.log("boardname");
-        console.log(this.state.boardName);
-        const listUrl = `/list/${this.state.boardId}/normal`;
+        const listUrl = `/list/${this.state.boardId}`;
         const topicUrl = `/topic/${this.state.topicId}`;
         return <div className="row" style={{ alignItems: "baseline", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>
             <Link style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} to="/">首页</Link>

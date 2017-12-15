@@ -41,10 +41,10 @@ const config: webpack.Configuration = {
 		'redux': 'Redux',
 		'react-redux': 'ReactRedux',
 		'jquery': '$',
-        'signalr': '$.connection',
         'moment' : 'moment',
         'editor.md': 'editormd',
-        'codemirror':'CodeMirror'
+        'codemirror': 'CodeMirror',
+        '../node_modules/@aspnet/signalr-client/dist/src/index': 'signalR'
 	},
 	plugins: [
 		new webpack.optimize.UglifyJsPlugin(), // 简化 JS
@@ -52,7 +52,6 @@ const config: webpack.Configuration = {
 		new CleanWebpackPlugin(['wwwroot/scripts', 'wwwroot/content']), // 发布之前清理 wwwroot
 		new CopyWebpackPlugin([// 将 node 库复制到发布目录
 			{ from: 'node_modules/jquery/dist', to: 'scripts/lib/jquery' },
-			{ from: 'node_modules/signalr', to: 'scripts/lib/signalr' },
 			{ from: 'node_modules/react/dist', to: 'scripts/lib/react' },
 			{ from: 'node_modules/react-dom/dist', to: 'scripts/lib/react-dom' },
 			{ from: 'node_modules/react-router/umd', to: 'scripts/lib/react-router' },
@@ -67,6 +66,7 @@ const config: webpack.Configuration = {
             { from: 'node_modules/editor.md', to: 'scripts/lib/editor.md/' },
             { from: 'node_modules/codemirror', to: 'scripts/lib/editor.md/lib/codemirror' },
             { from: 'node_modules/blueimp-canvas-to-blob/js', to: 'scripts/lib/blueimp-canvas-to-blob' },
+            { from: 'node_modules/@aspnet/signalr-client/dist/browser', to: 'scripts/lib/signalr-client'},
             { from: 'spectrum/', to: 'scripts/lib/spectrum' },       
 		]),
 		new ExtractTextPlugin('content/site.min.css')

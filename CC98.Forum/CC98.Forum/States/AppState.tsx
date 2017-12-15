@@ -198,7 +198,8 @@ export class TopicState {
         contentType: number,
         isFollowing: boolean,
         fanCount: number,
-      
+        likeInfo,
+        awardInfo,
 
     ) {
         this.userName = userName;
@@ -215,7 +216,8 @@ export class TopicState {
         this.contentType = contentType;
         this.isFollowing = isFollowing;
         this.fanCount = fanCount;
-
+        this.likeInfo = likeInfo;
+        this.awardInfo = awardInfo;
    
     }
     userName: string;
@@ -232,7 +234,8 @@ export class TopicState {
     contentType: number;
     isFollowing: boolean;
     fanCount: number;
-
+    likeInfo;
+    awardInfo;
 }
 
 /**

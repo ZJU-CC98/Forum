@@ -46,11 +46,9 @@ export class List extends RouteComponent<{}, { page:number, boardId: number,boar
 
         const boardInfo = await Utility.getBoardInfo(this.match.params.boardId);
         // 设置状态
-        console.log(boardInfo);
         this.setState({ boardInfo: boardInfo, boardId: this.match.params.boardId, fetchState: boardInfo });
     }
     render() {
-        console.log(this.state.fetchState);
         switch (this.state.fetchState) {
             case 'ok':
                 return <div></div>;
@@ -74,10 +72,10 @@ export class List extends RouteComponent<{}, { page:number, boardId: number,boar
             {bigPaper}
       
 
-            <Route exact path="/list/:boardId/normal/:page?" component={ListContent} />
+            <Route exact path="/list/:boardId/:page(\d+)?" component={ListContent} />
 
-            <Route exact path="/list/:boardId/best/:page?" component={ListBestContent} />
-                <Route exact path="/list/:boardId/save/:page?" component={ListSaveContent} />
+            <Route exact path="/list/:boardId/best/:page(\d+)?" component={ListBestContent} />
+            <Route exact path="/list/:boardId/save/:page(\d+)?" component={ListSaveContent} />
         </div> ;
     }
 }
@@ -355,7 +353,7 @@ export class ListContent extends RouteComponent<{}, { items,totalPage:number,boa
      
         const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
-        const normalTopicsUrl = `/list/${this.match.params.boardId}/normal/`;
+        const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
         return <div className="listContent ">
             <ListButtonAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} />
             <ListTag tags={this.state.tags} />
@@ -364,8 +362,8 @@ export class ListContent extends RouteComponent<{}, { items,totalPage:number,boa
                 <div className="row" style={{ alignItems: 'center' }} >
 
                     <div className="listContentTag">全部</div>
-                    <div className="listContentTag"><a href={bestTopicsUrl}>精华</a></div>
-                    <div className="listContentTag"><a href={saveTopicsUrl}>保存</a></div>
+                    <div className="listContentTag"><Link to={bestTopicsUrl}>精华</Link></div>
+                    <div className="listContentTag"><Link to={saveTopicsUrl}>保存</Link></div>
                 </div>
                 <div className="row" style={{ alignItems: 'center' }}>
                     <div style={{ marginRight: '19.3rem' }}><span>作者</span></div>
@@ -435,16 +433,16 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
         const topics = this.state.items.map(this.convertTopicToElement);
         const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
-        const normalTopicsUrl = `/list/${this.match.params.boardId}/normal/`;
+        const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
         return <div className="listContent ">
             <ListButtonAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={bestTopicsUrl} />
             <ListTag tags={this.state.tags} />
             <div className="row" style={{ justifyContent: 'space-between', }}>
                 <div className="row" style={{ alignItems: 'center' }} >
 
-                    <div className="listContentTag"><a href={normalTopicsUrl} >全部</a></div>
+                    <div className="listContentTag"><Link to={normalTopicsUrl} >全部</Link></div>
                     <div className="listContentTag">精华</div>
-                    <div className="listContentTag"><a href={saveTopicsUrl}>保存</a></div>
+                    <div className="listContentTag"><Link to={saveTopicsUrl}>保存</Link></div>
                 </div>
                 <div className="row" style={{ alignItems: 'center' }}>
                     <div style={{ marginRight: '19.3rem' }}><span>作者</span></div>
@@ -504,19 +502,20 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
         if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
             topTopics = <div><ListTopContent boardId={this.match.params.boardId} /></div>;
         }
+        console.log(this.state.items);
         const topics = this.state.items.map(this.convertTopicToElement);
         const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
-        const normalTopicsUrl = `/list/${this.match.params.boardId}/normal/`;
+        const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
         return <div className="listContent ">
-            <ListButtonAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} />
+            <ListButtonAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={saveTopicsUrl} />
             <ListTag tags={this.state.tags} />
             <div className="row" style={{ justifyContent: 'space-between', }}>
-                <div className="column" style={{ width: "100%" }} id="boardTopics">
                 <div className="row" style={{ alignItems: 'center' }} >
-                    <div className="listContentTag"><a href={normalTopicsUrl}>全部</a></div>
-                    <div className="listContentTag"><a href={bestTopicsUrl}>精华</a></div>
-                    <div className="listContentTag">保存</div>
+
+                    <div className="listContentTag"><Link to={normalTopicsUrl} >全部</Link></div>
+                    <div className="listContentTag">精华</div>
+                    <div className="listContentTag"><Link to={saveTopicsUrl}>保存</Link></div>
                 </div>
                 <div className="row" style={{ alignItems: 'center' }}>
                     <div style={{ marginRight: '19.3rem' }}><span>作者</span></div>
@@ -524,9 +523,8 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
                 </div>
             </div>
             {topTopics}
-                <div>{topics}</div>
-                </div>
-            <Pager page={curPage} totalPage={this.state.totalPage}  url={normalTopicsUrl} />
+            <div>{topics}</div>
+            <Pager page={curPage} totalPage={this.state.totalPage} url={saveTopicsUrl} />
         </div>;
 
     }
@@ -560,7 +558,6 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         }
     }
     generateListPager(item: number) {
-        console.log("listpage=" + item);
         const url = `/topic/${this.props.id}/${item}`;
         if (item != -1) {
             return <div style={{ marginRight: "0.3rem" }}><Link style={{ color: "red" }} to={url}>{item}</Link></div>;

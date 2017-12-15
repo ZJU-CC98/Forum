@@ -66,11 +66,11 @@ export class UserCenterMyFavoritesBoards extends React.Component<null, UserCente
         const style = {
             marginTop: '2rem'
         };
-        if (this.state.boards.length === 0) {
-            return (<div style={style}>{this.state.info}</div>);
-        }
         if (this.state.isLoading) {
             return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
+        }
+        if (this.state.boards.length === 0) {
+            return (<div style={style}>{this.state.info}</div>);
         }
         let elements = this.state.boards.map((item) => (<UserCenterMyFavoritesBoard UserFavoritesBoard={item} />));
         for (let i = 1; i < elements.length; i += 2) {
