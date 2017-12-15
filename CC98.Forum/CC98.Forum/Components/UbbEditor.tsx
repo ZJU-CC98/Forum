@@ -12,15 +12,25 @@ class UbbEditorProps {
     /**
      * value变动后调用函数，接受一个参数为变动后的value
      */
-    update: Function;
+    update: (value: string) => void;
     /**
      * Ubb编辑器的内容
      */
     value: string;
     /**
-     * textarea的高度(rem)
+     * 可选选项
      */
-    height?: number;
+    option?: UbbEditorOption = new UbbEditorOption();
+}
+/**
+ * UBB编辑器可选选项
+ */
+class UbbEditorOption {
+    /**
+     * textarea的高度(以rem为单位)
+     * 整个组件实际高度大概高2-4rem
+     */
+    height = 32.5;
 }
 /**
  * 组件状态
@@ -53,7 +63,7 @@ class UbbEditorState {
     /**
      * 表情类型
      */
-    emojiType: 'em' | 'ac' | 'majiang';
+    emojiType: 'em' | 'ac' | 'mj';
     /**
      * 是否在预览状态
      */
@@ -83,7 +93,11 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
     /**
      * Ubb编辑器的redo堆栈
      */
-    redoStack: string[] =[]
+    redoStack: string[] = []
+    /**
+     * UBB编辑器的选项
+     */
+    option: UbbEditorOption;
     constructor(props) {
         super(props);
         this.state = {
@@ -97,6 +111,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
             isPreviewing: false,
             value: ''
         };
+        this.option = props.option || new UbbEditorOption();
         this.handleExtendValueChange = this.handleExtendValueChange.bind(this);
         this.handleTextareaChange = this.handleTextareaChange.bind(this);
         this.handleTextareaBlur = this.handleTextareaBlur.bind(this);
@@ -204,10 +219,10 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
         
     }
 
-    handleEmojiButtonClick(index: string) {
+    handleEmojiButtonClick(emojiUbb: string) {
         this.setState((prevState) => {
             let before = this.state.value.slice(0, prevState.selectionStart),
-                selected = `[${this.state.emojiType}${index}]`,
+                selected = emojiUbb,
                 after = this.state.value.slice(prevState.selectionEnd, this.state.value.length);
             this.props.update(before + selected + after);
             this.valueStack.push(before + selected + after);
@@ -239,9 +254,30 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
     }
 
     render() {
-        const height = this.props.height || 32.5;
+        const height = this.option.height;
         const size = ['', 1, 2, 3, 4, 5, 6, 7];
         const color = ['颜色', 'aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon', 'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow'];
+        const mohjong = {
+            animal: ['001', '002', '003', '004', '005', '006', '007', '008', '009', '010', '011', '012', '013', '014', '015', '016'].map((item) => (<img
+                src={`/images/mahjong/animal2017/${item}.png`}
+                onClick={() => { this.handleEmojiButtonClick(`[a:${item}]`) }}
+            ></img>)),
+            carton: ['003.png', '018.gif', '019.png', '046.png', '049.gif', '059.png', '096.gif', '134.png', '189.png', '217.png'].map((item) => (<img
+                src={`/images/mahjong/carton2017/${item}`}
+                onClick={() => { this.handleEmojiButtonClick(`[c:${item.slice(0, 3)}]`) }}
+            ></img>)),
+            face: new Array(208).fill(0).map((item, index) => {
+                if (index < 9) { return `00${index + 1}`; }
+                else if (index < 99) { return `0${index + 1}`; }
+                else { return `${index + 1}` }
+            }).map((item, index) => {
+                if ([4, 9, 56, 61, 62, 87, 115, 120, 137, 168, 169, 175, 206].indexOf(index + 1) !== -1) { return `${item}.gif`; }
+                else { return `${item}.png`; }
+            }).map((item) => (<img
+                src={`/images/mahjong/face2017/${item}`}
+                onClick={() => { this.handleEmojiButtonClick(`[f:${item.slice(0, 3)}]`) }}
+            ></img>))
+        };
         const emoji = {
             'em': new Array(92).fill(0)
                 .map((item, index) => {
@@ -254,7 +290,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                 .map((item) => (
                     item ? (<img
                         src={`http://www.cc98.org/emot/emot${item}.gif`}
-                        onClick={() => { this.handleEmojiButtonClick(item) }}
+                        onClick={() => { this.handleEmojiButtonClick(`[em${item}]`) }}
                     ></img>) : null
                 )),
             'ac': new Array(149).fill(0)
@@ -265,8 +301,9 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                     else { return `${index + 1907}`; }
                 }).map((item) => (<img
                     src={`/images/ac/${item}.png`}
-                    onClick={() => { this.handleEmojiButtonClick(item) }}
-                ></img>))
+                    onClick={() => { this.handleEmojiButtonClick(`[ac${item}]`) }}
+                ></img>)),
+            'mj': [...mohjong.animal, ...mohjong.carton, ...mohjong.face]
         };
 
         return (
@@ -382,10 +419,13 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                             spellCheck={false}
                         ></textarea>) : (<div className="ubb-editor-preview"><UbbContainer code={this.props.value} /></div>)}
                 </div>
-                <div className="ubb-emoji" style={this.state.emojiIsShown ? { height: '22rem', borderWidth: '1px', top: `-${height + 4 }rem` } : { height: '0rem', top: `-${height + 4}rem` }}>
+                <div
+                    className="ubb-emoji"
+                    style={this.state.emojiIsShown ? { height: '22rem', borderWidth: '1px', top: `-${height + 4}rem` } : { height: '0rem', top: `-${height + 4}rem` }}
+                >
                     <div className="ubb-emoji-buttons">
                         <button type="button" className={this.state.emojiType === 'ac' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} onClick={() => { this.setState({ emojiType: 'ac' }); }}>AC娘</button>
-                        <button type="button" className={this.state.emojiType === 'majiang' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} onClick={() => { this.setState({ emojiType: 'majiang' }); }}>麻将脸</button>
+                        <button type="button" className={this.state.emojiType === 'mj' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} onClick={() => { this.setState({ emojiType: 'mj' }); }}>麻将脸</button>
                         <button type="button" className={this.state.emojiType === 'em' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} onClick={() => { this.setState({ emojiType: 'em' }); }}>经典</button>
                     </div>
                     <div className={`ubb-emoji-content ubb-emoji-content-${this.state.emojiType}`}>

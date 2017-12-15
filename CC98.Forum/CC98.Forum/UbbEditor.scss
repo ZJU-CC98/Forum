@@ -125,7 +125,7 @@
     .ubb-emoji {
         position: relative;
         width: 50%;
-        transition-duration: .4s;        
+        transition-duration: .4s;
         left: 22rem;
         background-color: white;
         border: 0px solid #ccc;
@@ -136,6 +136,11 @@
         border-top: 1px solid #ccc;
         overflow-y: scroll;
         max-height: 20rem;
+
+        img {
+            margin: 0.5rem;
+            cursor: pointer;
+        }
     }
 
     .ubb-emoji-buttons {
@@ -152,13 +157,13 @@
         background-color: #ccc;
     }
 
-    .ubb-emoji-content-em img {
-        margin: 0.5rem;
-    }
-
     .ubb-emoji-content-ac img {
         width: 4.6875rem;
         height: 4.0625rem;
-        margin: 0.5rem;
+    }
+
+    .ubb-emoji-content-mj img {
+        height: 2rem;
+        width: 2rem;
     }
 }

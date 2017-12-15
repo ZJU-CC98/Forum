@@ -75,7 +75,7 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
             <div className="user-center-myfollowings-user">
                 <img src={this.props.userFanInfo.avatarImgURL} />
                 <p>
-                    <span className="user-center-myfollowings-user-id"><a href={`/user/${this.props.userFanInfo.id}`}>{this.props.userFanInfo.name}</a></span>
+                    <span className="user-center-myfollowings-user-id"><Link to={`/user/id/${this.props.userFanInfo.id}`}>{this.props.userFanInfo.name}</Link></span>
                     主题
                     <span className="user-center-myfollowings-user-posts">{this.props.userFanInfo.posts}</span>
                     粉丝
