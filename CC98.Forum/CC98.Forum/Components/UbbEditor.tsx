@@ -111,7 +111,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
             isPreviewing: false,
             value: ''
         };
-        this.option = props.option || new UbbEditorOption()
+        this.option = props.option || new UbbEditorOption();
         this.handleExtendValueChange = this.handleExtendValueChange.bind(this);
         this.handleTextareaChange = this.handleTextareaChange.bind(this);
         this.handleTextareaBlur = this.handleTextareaBlur.bind(this);
