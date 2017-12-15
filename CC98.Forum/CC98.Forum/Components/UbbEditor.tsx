@@ -272,7 +272,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
         return (
             <div className="ubb-editor" style={{maxHeight: `${height + 6.125}rem`}}>
                 <div className="editor-buttons">
-                    <div style={{ height: '2rem', display: 'flex', transitionDuration: '.5s', width: this.state.isPreviewing ? '0rem' : '50rem' }}>
+                    <div style={{ height: '2rem', display: 'flex', transitionDuration: '.5s', overflow: 'hidden', width: this.state.isPreviewing ? '0rem' : '50rem' }}>
                         <div className="editor-buttons-styles">
                             <button className="fa-bold" type="button" title="加粗" onClick={() => { this.handleButtonClick('b'); }}></button>
                             <button className="fa-italic" type="button" title="斜体" onClick={() => { this.handleButtonClick('i'); }}></button>
