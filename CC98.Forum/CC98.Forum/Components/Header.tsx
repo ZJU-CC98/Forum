@@ -261,8 +261,7 @@ export class SearchBeforeConnent extends React.Component<{history}, AppState> { 
                         else {
                             let searchInfo = { boardId: 0, boardName: '全站', words: words };
                             Utility.setStorage('searchInfo', searchInfo);
-                            let host = window.location.host;
-                            window.location.href = `http://${host}/search`;
+                            this.props.history.push('/search');
                         }
                     }
                 }
