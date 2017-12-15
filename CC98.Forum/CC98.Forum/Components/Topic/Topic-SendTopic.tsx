@@ -77,7 +77,8 @@ ${this.props.content.content}`;
 
                 this.setState({ masters: masters });
             } else {
-                const str = `[quote][b]以下是引用${this.props.content.floor}楼：用户${this.props.content.userName}在${time}的发言：
+                const str = `
+[quote][b]以下是引用${this.props.content.floor}楼：用户${this.props.content.userName}在${time}的发言：
 [color=blue][url=${url}]>>查看原帖<<[/url][/color][/b]${this.props.content.content}[/quote]`;
     
                 this.setState({ masters: masters, content: this.state.content + str });
