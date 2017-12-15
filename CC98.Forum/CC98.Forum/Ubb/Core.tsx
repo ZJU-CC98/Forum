@@ -1097,7 +1097,7 @@ export class UbbCodeEngine {
 					// 没有处理程序，输出警告
 					if (!handler) {
 						console.warn('标签字符串 %s 中给定的标签名 %s 没有有效的处理程序，将被视为一般文字', tagString, tagData.tagName);
-						parent.subSegments.push(new UbbTextSegment(tagString, parent));
+						parent.subSegments.push(new UbbTextSegment(tagData.startTagString, parent));
 						continue;
 					}
 
@@ -1116,8 +1116,8 @@ export class UbbCodeEngine {
 							const endTagMatch = content.indexOf(tagData.endTagString, tagMatchRegExp.lastIndex);
 							// 没找到结束标签
 							if (endTagMatch === -1) {
-								console.warn('找不到标签字符串 %s 对应的结束标签，该内容将被视为一般文字。', tagString);
-								parent.subSegments.push(new UbbTextSegment(tagString, parent));
+								console.warn('找不到标签字符串 %s 对应的结束标签，该内容将被视为一般文字。', tagData.startTagString);
+								parent.subSegments.push(new UbbTextSegment(tagData.startTagString, parent));
 							} else {
 								// 直接创建新标签及其子标签，忽略中间内容
 								const innerContent = content.substring(tagMatchRegExp.lastIndex, endTagMatch);
