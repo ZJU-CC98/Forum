@@ -63,6 +63,7 @@
     <None Remove="States\MessageWindowState.tsx" />
     <None Remove="States\SearchState.tsx" />
     <None Remove="UbbCode.tsx" />
+    <None Remove="Ubb\AcTagHandler.tsx" />
     <None Remove="Ubb\AlignTagHandler.tsx" />
     <None Remove="Ubb\BTagHandler.tsx" />
     <None Remove="Ubb\CenterTagHandler.tsx" />
@@ -159,6 +160,7 @@
     <TypeScriptCompile Include="States\MessageWindowState.tsx" />
     <TypeScriptCompile Include="States\SearchState.tsx" />
     <TypeScriptCompile Include="Store.tsx" />
+    <TypeScriptCompile Include="Ubb\AcTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\AlignTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\BTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\CenterTagHandler.tsx" />
