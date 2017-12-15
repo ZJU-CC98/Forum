@@ -10,12 +10,12 @@ import { Link } from 'react-router-dom';
  * 全站公告组件
  * 为同时兼容新旧版98 临时调整了显示的内容
  **/
-export class AnnouncementComponent extends React.Component<{}, { announcementContent }> {
+export class AnnouncementComponent extends React.Component<{}, { announcementContent: string }> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
         this.state = {
-            announcementContent: { announcement: '加载中……', todayCount: 0 }
+            announcementContent: '加载中……'
         };
     }
     async getAnnouncement() {
@@ -34,12 +34,12 @@ export class AnnouncementComponent extends React.Component<{}, { announcementCon
         x = x.replace("[align=left]", "");
         x = x.replace(reg2, "");   //去掉了因未关闭暂时无法解析的[*]
         x = x.replace(reg3, "orchid");  //把恶心的大红色换成梦幻的紫色
-        return {announcement:x,todayCount:data.todayCount};
+        return x;
     }
     async componentDidMount() {
         const x = await this.getAnnouncement();
         this.setState({
-            announcementContent:x,
+            announcementContent: x,
         });
     }
     render() {
@@ -48,10 +48,9 @@ export class AnnouncementComponent extends React.Component<{}, { announcementCon
                 <div className="mainPageTitleRow">
                     <i className="fa fa-volume-up"></i>
                     <div className="mainPageTitleText">全站公告</div>
-                    <div style={{ marginLeft: "1rem", fontSize:"1rem" }}>今日帖数 {this.state.announcementContent.todayCount}</div>
                 </div>
             </div>
-            <div className="announcementContent"><UbbContainer code={this.state.announcementContent.announcement} /></div>
+            <div className="announcementContent"><UbbContainer code={this.state.announcementContent} /></div>
         </div>
     }
 }
@@ -174,7 +173,7 @@ export class HotTopicComponent extends React.Component<{}, MainPageTopicState> {
         const boardUrl = `/list/${item.boardid}`;
         const topicUrl = `/topic/${item.id}`;
         return <div className="mainPageListRow">
-            <div className="mainPageListBoardName"> <Link to={boardUrl}>[{item.boardName}]</Link></div >
+            <div className="mainPageListBoardName"> <Link to={boardUrl}>[{item.boardName}]</Link></div>
             <div className="mainPageListTitle"><Link to={topicUrl}>{item.title}</Link></div>
         </div >;
     }
@@ -196,7 +195,6 @@ export class HotTopicComponent extends React.Component<{}, MainPageTopicState> {
 
 /**
  * 实习兼职组件
- * 首页重画后尚未更新
  **/
 export class Shixijianzhi extends React.Component<{}, MainPageTopicState>{
 
@@ -230,13 +228,24 @@ export class Shixijianzhi extends React.Component<{}, MainPageTopicState>{
 
     convertMainPageTopic(item: MainPageTopic) {
         const topicUrl = `/topic/${item.id}`;
-        return <div className="listRow">
-            <div className="topicTitle"><a href={topicUrl}>{item.title}</a></div>
-        </div >;
+        return <div className="mainPageListRow">
+            <div className="mainPageListTitle"><Link to={topicUrl}>{item.title}</Link></div>
+        </div>
     }
 
     render() {
-        return <div>{this.state.mainPageTopicState.map(this.convertMainPageTopic)}</div>;
+        return <div className="mainPageList">
+            <div className="mainPageTitle2">
+                <div className="mainPageTitleRow">
+                    <i className="fa fa-volume-up"></i>
+                    <div className="mainPageTitleText">实习兼职</div>
+                </div>
+                <div className="mainPageTitleText"><Link to="/list/459">更多</Link></div>
+            </div>
+            <div className="mainPageListContent2">
+                {this.state.mainPageTopicState.map(this.convertMainPageTopic)}
+            </div>
+        </div>
     }
 }
 
@@ -392,16 +401,16 @@ export class MainPage extends React.Component<{}, AppState> {
                     <HotTopicComponent />
                 </div>
                 <div className="row" style={{ justifyContent: "space-between" }}>
-                    <HotTopicComponent />
-                    <HotTopicComponent />
+                    <Shixijianzhi />
+                    <Shixijianzhi />
                 </div>
                 <div className="row" style={{ justifyContent: "space-between" }}>
                     <HotTopicComponent />
                     <HotTopicComponent />
                 </div>
                 <div className="row" style={{ justifyContent: "space-between" }}>
-                    <HotTopicComponent />
-                    <HotTopicComponent />
+                    <Shixijianzhi />
+                    <Shixijianzhi />
                 </div>
             </div>
             <div className="rightPart">
