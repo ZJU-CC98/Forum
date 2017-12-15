@@ -12,15 +12,25 @@ class UbbEditorProps {
     /**
      * value变动后调用函数，接受一个参数为变动后的value
      */
-    update: Function;
+    update: (value: string) => void;
     /**
      * Ubb编辑器的内容
      */
     value: string;
     /**
-     * textarea的高度(rem)
+     * 可选选项
      */
-    height?: number;
+    option?: UbbEditorOption = new UbbEditorOption();
+}
+/**
+ * UBB编辑器可选选项
+ */
+class UbbEditorOption {
+    /**
+     * textarea的高度(以rem为单位)
+     * 整个组件实际高度大概高2-4rem
+     */
+    height = 32.5;
 }
 /**
  * 组件状态
@@ -83,7 +93,11 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
     /**
      * Ubb编辑器的redo堆栈
      */
-    redoStack: string[] =[]
+    redoStack: string[] = []
+    /**
+     * UBB编辑器的选项
+     */
+    option: UbbEditorOption;
     constructor(props) {
         super(props);
         this.state = {
@@ -97,6 +111,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
             isPreviewing: false,
             value: ''
         };
+        this.option = props.option || new UbbEditorOption()
         this.handleExtendValueChange = this.handleExtendValueChange.bind(this);
         this.handleTextareaChange = this.handleTextareaChange.bind(this);
         this.handleTextareaBlur = this.handleTextareaBlur.bind(this);
@@ -239,7 +254,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
     }
 
     render() {
-        const height = this.props.height || 32.5;
+        const height = this.option.height;
         const size = ['', 1, 2, 3, 4, 5, 6, 7];
         const color = ['颜色', 'aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon', 'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow'];
         const mohjong = {
