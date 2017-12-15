@@ -4,7 +4,7 @@ import { AppState } from '../States/AppState';
 import * as $ from 'jquery';
 import { connect } from 'react-redux';
 import { userLogOff } from '../Actions';
-import { Link } from 'react-router-dom';
+import { Link, withRouter, Route } from 'react-router-dom';
 import * as signalR from '../node_modules/@aspnet/signalr-client/dist/src/index'
 
 class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { hoverElement: string, unreadCount: number}> {   //顶部条的下拉菜单组件
@@ -182,7 +182,7 @@ let DropDown = connect(mapState, mapDispatch)(DropDownConnect);
 
 //到此结束
 
-export class Search extends React.Component<{}, AppState> {     //搜索框组件
+export class SearchBeforeConnent extends React.Component<{history}, AppState> {     //搜索框组件
 
     async componentDidMount() {
         const searchBoxSelect = $('.searchBoxSelect');
@@ -249,7 +249,7 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
         
         //获取搜索关键词
         let self = this;
-        searchIco.click(async function () {
+        searchIco.click(async  () => {
             let val: any = $('#searchText').val();
             if (val && val != '') {
                 if (searchBoxSelect.text() == '主题' || searchBoxSelect.text() == '全站') {
@@ -275,20 +275,17 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
                         else {
                             let searchInfo = { boardId: boardId, boardName: boardName, words: words };
                             Utility.setStorage('searchInfo', searchInfo);
-                            let host = window.location.host;
-                            window.location.href = `http://${host}/search`;
+                            this.props.history.push('/search');
                         }
                     }
                 }
                 else if (searchBoxSelect.text() == '用户') {
-                    let body = await Utility.getUserInfoByName(val);
-                    let host = window.location.host;
-                    if (body) {
-                        window.location.href = `http://${host}/user/name/${val}`;
+                    if (await Utility.getUserInfoByName(val)) {
+                        this.props.history.push(`/user/name/${val}`);
                     }
                     else {
                         Utility.removeStorage('searchInfo');
-                        window.location.href = `http://${host}/search`;
+                        this.props.history.push('/search');
                     }
                 }
                 else if (searchBoxSelect.text() == '版面') {
@@ -297,23 +294,23 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
                     if (boardResult) {
                         if (boardResult == []) {
                             Utility.removeStorage('searchInfo');
-                            window.location.href = `http://${host}/search`;
+                            this.props.history.push('/search');
                         }
                         else if (boardResult.length == 1) {
-                            window.location.href = `http://${host}/list/${boardResult[0].id}/normal/`;
+                            this.props.history.push(`/list/${boardResult[0].id}/normal/`);
                         }
                         else if (boardResult.length > 1) {
                             Utility.setStorage("searchBoardInfo", boardResult);
-                            window.location.href = `http://${host}/searchBoard`;
+                            this.props.history.push('/searchBoard');
                         }
                         else {
                             Utility.removeStorage('searchInfo');
-                            window.location.href = `http://${host}/search`;
+                            this.props.history.push('/search');
                         }
                     }
                     else {
                         Utility.removeStorage('searchInfo');
-                        window.location.href = `http://${host}/search`;
+                        this.props.history.push('/search');
                     }
                 }
             }
@@ -377,6 +374,8 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
     }
 }
 
+export const Search = withRouter(SearchBeforeConnent);
+
 export class Header extends React.Component<{}, AppState> {
     render() {
         return <div className="header">
@@ -414,7 +413,7 @@ export class Header extends React.Component<{}, AppState> {
                             <div><a href="http://www.nexushd.org" className="linkText">NexusHD</a></div>
                         </div>
                     </div>
-                    <Search />
+                    <Route component={Search}/>
                 </div>
             </div>
         </div>;
