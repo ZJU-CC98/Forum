@@ -56,10 +56,40 @@ export class AnnouncementComponent extends React.Component<{}, { announcementCon
 }
 
 /**
+ * 推荐阅读内容
+ **/
+interface RecommendedReadingContent {
+    imageUrl: string;
+    title: string;
+    abstract: string;
+}
+
+/**
  * 推荐阅读组件
  **/
 export class RecommendedReadingComponent extends React.Component<{}, {}> {
-
+    /*
+    constructor(props) {
+        super(props);
+        this.state = {
+            contents: "",
+            showedContent: { imageUrl: "", title: "", abstract: "" },
+            index: Math.floor(Math.random() * 5),    //生成0-4的随机数
+        };
+    }
+    //获取推荐阅读内容
+    componentWillMount() {
+        let defaultContents: any = "";
+        for (let i = 0; i < 5; i++) {
+            defaultContents[i].imageUrl = "/images/推荐阅读.jpg";
+            defaultContents[i].title = "推荐阅读标题" + i;
+            defaultContents[i].abstract = "推荐阅读摘要" + i;
+        }
+        this.setState({
+            contents: defaultContents
+        })
+    }
+    */
     render() {
         return <div className="recommendedReading">
             <div className="mainPageTitle2">
@@ -76,7 +106,11 @@ export class RecommendedReadingComponent extends React.Component<{}, {}> {
                     <div className="recommendedReadingTitle">推荐阅读标题</div>
                     <div className="recommendedReadingAbstract">推荐阅读内容</div>
                     <div className="recommendedReadingButtons">
-                        <div>推荐阅读按钮</div>
+                        <div className="recommendedReadingButton" />
+                        <div className="recommendedReadingButton" />
+                        <div className="recommendedReadingButton" />
+                        <div className="recommendedReadingButton" />
+                        <div className="recommendedReadingButton" />
                     </div>
                 </div>
             </div>
@@ -136,7 +170,7 @@ export class HotTopicComponent extends React.Component<{}, MainPageTopicState> {
 
 
     convertMainPageTopic(item: MainPageTopic) {
-        const boardUrl = `/list/${item.boardid}/normal`;
+        const boardUrl = `/list/${item.boardid}`;
         const topicUrl = `/topic/${item.id}`;
         return <div className="mainPageListRow">
             <div className="mainPageListBoardName"> <Link to={boardUrl}>[{item.boardName}]</Link></div >
@@ -308,9 +342,6 @@ export class SchoolNewsComponent extends React.Component<{}, {}>{
                 </div>
             </div>
             <div className="schoolNewsContent">
-                <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle">[公告] 浙江杭州 Dead论坛 CC98 倒闭啦 王八蛋站长带着小姨子主席逃跑了!</div>
-                </div>
                 <div className="schoolNewsRow">
                     <div className="schoolNewsTitle">[公告] 浙江杭州 Dead论坛 CC98 倒闭啦 王八蛋站长带着小姨子主席逃跑了!</div>
                 </div>
