@@ -769,11 +769,10 @@ export abstract class UbbTagHandler {
 	abstract exec(tagSegment: UbbTagSegment, context: UbbCodeContext): ReactNode;
 
 	/**
-	 * 调用该处理程序处理给定的 UBB 内容。
-	 * @param tagSegment 标签
-	 * @param context
+	 * 通过对标签的分析，判断该标签的类型。
+	 * @param tagData 标签中包含的内容。
 	 */
-	getTagMode(tagSegment: UbbTagSegment, context: UbbCodeContext): UbbTagMode {
+	getTagMode(tagData: UbbTagData): UbbTagMode {
 		return UbbTagMode.Recursive;
 	}
 
@@ -1054,14 +1053,14 @@ export class UbbCodeEngine {
 	 * @param content 包含多个标签的字符串。
 	 * @param parent 字符串的上级容器。
 	 */
-	private static buildSegmentsCore(content: string, parent: UbbTagSegment) {
+	private buildSegmentsCore(content: string, parent: UbbTagSegment) {
 
-		const regExp = /([\s\S]*?)\[(.+?)]/gi;
+		const tagMatchRegExp = /([\s\S]*?)\[(.+?)]/gi;
 
 		while (true) {
 
-			const startIndex = regExp.lastIndex;
-			const tagMatch = regExp.exec(content);
+			const startIndex = tagMatchRegExp.lastIndex;
+			const tagMatch = tagMatchRegExp.exec(content);
 
 			// 未找到标记，则这是最后一个标签。
 			if (!tagMatch) {
@@ -1091,12 +1090,67 @@ export class UbbCodeEngine {
 
 					// 提取新的标签数据
 					const tagData = UbbTagData.parse(tagString);
-					const newTag = new UbbTagSegment(tagData, parent);
-					parent.subSegments.push(newTag);
 
-					// 新上级
-					parent = newTag;
-					continue;
+					// 获得处理程序
+					const handler = this._tagHandlers.getHandler(tagData.tagName);
+
+					// 没有处理程序，输出警告
+					if (!handler) {
+						console.warn('标签字符串 %s 中给定的标签名 %s 没有有效的处理程序，将被视为一般文字', tagString, tagData.tagName);
+						parent.subSegments.push(new UbbTextSegment(tagString, parent));
+						continue;
+					}
+
+					// 获取标签类型。
+					const tagMode = handler.getTagMode(tagData);
+
+					switch (tagMode) {
+						// 递归处理
+						case UbbTagMode.Recursive:
+							const newTag = new UbbTagSegment(tagData, parent);
+							parent.subSegments.push(newTag);
+							parent = newTag;
+							break;
+						// 文本模式下，直接寻找结束标签
+						case UbbTagMode.Text:
+							const endTagMatch = content.indexOf(tagData.endTagString, tagMatchRegExp.lastIndex);
+							// 没找到结束标签
+							if (endTagMatch === -1) {
+								console.warn('找不到标签字符串 %s 对应的结束标签，该内容将被视为一般文字。', tagString);
+								parent.subSegments.push(new UbbTextSegment(tagString, parent));
+							} else {
+								// 直接创建新标签及其子标签，忽略中间内容
+								const innerContent = content.substring(tagMatchRegExp.lastIndex, endTagMatch);
+
+								const newTag = new UbbTagSegment(tagData, parent);
+								parent.subSegments.push(newTag);
+								parent = newTag;
+
+								const subTag = new UbbTextSegment(innerContent, newTag);
+								newTag.subSegments.push(subTag);
+								newTag.close();
+
+								// 让下次标签搜索直接从之后开始
+								tagMatchRegExp.lastIndex = endTagMatch + tagData.endTagString.length;
+							}
+							break;
+						// 单模式标签
+						case UbbTagMode.Empty:
+
+							// 创建新标签并直接结束
+							const newEmptyTag = new UbbTagSegment(tagData, parent);
+							parent.subSegments.push(newEmptyTag);
+							newEmptyTag.close();
+
+							// 如果紧跟着结束标签，则忽略结束标签
+							if (content.startsWith(tagData.endTagString, tagMatchRegExp.lastIndex)) {
+								tagMatchRegExp.lastIndex += tagData.endTagString.length;
+							}
+
+							break;
+						default:
+							throw new Error(`标签 ${tagData.tagName} 的处理程序发生错误`);
+					}
 
 				} catch (error) {
 
@@ -1117,7 +1171,7 @@ export class UbbCodeEngine {
 	private execCore(content: string, context: UbbCodeContext): ReactNode {
 
 		const root = new UbbTagSegment(null, null);
-		UbbCodeEngine.buildSegmentsCore(content, root);
+		this.buildSegmentsCore(content, root);
 		root.close();
 
 		const result: ReactNode[] = [];
@@ -1134,7 +1188,7 @@ export class UbbCodeEngine {
 	 * @param text 文本内容。
 	 * @param context UBB 上下文对象。
 	 */
-	execTextCore(text: string, context: UbbCodeContext): ReactNode {
+	private execTextCore(text: string, context: UbbCodeContext): ReactNode {
 
 		for (const textHandler of this.textHandlers) {
 
@@ -1167,6 +1221,15 @@ export class UbbCodeEngine {
 
 		// 未找到任何处理程序
 		return text;
+	}
+
+	/**
+	 * 对给定的 UBB 文本执行文本替换。
+	 * @param text 要替换的内容。
+	 * @param context 替换后的结果。
+	 */
+	execText(text: string, context: UbbCodeContext): ReactNode {
+		return this.execCore(text, context);
 	}
 
 	execSegment(segment: UbbSegment, context: UbbCodeContext): ReactNode {

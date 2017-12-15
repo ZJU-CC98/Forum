@@ -35,16 +35,16 @@
     "awesome-typescript-loader": "^3.3.0",
     "clean-webpack-plugin": "0.1.16",
     "copy-webpack-plugin": "4.0.1",
+    "core-js": "2.5.1",
     "css-loader": "^0.28.7",
     "extract-text-webpack-plugin": "3.0.0",
     "font-awesome": "4.7.0",
-    "node-sass": "4.7.2",
+    "node-sass": "^4.7.2",
     "sass-loader": "6.0.6",
+    "spectrum": "1.0.1",
     "typescript": "2.6.1",
     "unminified-webpack-plugin": "1.2.0",
     "webpack": "3.4.1",
-    "whatwg-fetch": "2.0.3",
-    "core-js": "2.5.1",
-    "spectrum": "1.0.1"
+    "whatwg-fetch": "2.0.3"
   }
 }
