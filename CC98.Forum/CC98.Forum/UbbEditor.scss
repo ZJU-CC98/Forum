@@ -159,10 +159,12 @@
 
     .ubb-emoji-button {
         flex-grow: 1;
+        margin: 0;
     }
 
     .ubb-emoji-button-active {
         flex-grow: 2;
+        margin: 0;
         background-color: #ccc;
     }
 

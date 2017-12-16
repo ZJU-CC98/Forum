@@ -20,7 +20,7 @@ class UbbEditorProps {
     /**
      * 可选选项
      */
-    option?: UbbEditorOption = new UbbEditorOption();
+    option?: UbbEditorOption;
 }
 /**
  * UBB编辑器可选选项
@@ -30,7 +30,11 @@ class UbbEditorOption {
      * textarea的高度(以rem为单位)
      * 整个组件实际高度大概高2-4rem
      */
-    height = 32.5;
+    height? = 32.5;
+    /**
+     * 打开的UBB标签
+     */
+    allowUbbTag?: 'all' | string[] = 'all'
 }
 /**
  * 组件状态
@@ -275,7 +279,6 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
     }
 
     render() {
-
         const height = this.option.height;
         const size = ['', 1, 2, 3, 4, 5, 6, 7];
         const mohjong = {
