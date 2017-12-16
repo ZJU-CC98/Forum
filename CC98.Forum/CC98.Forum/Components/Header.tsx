@@ -5,7 +5,7 @@ import * as $ from 'jquery';
 import { connect } from 'react-redux';
 import { userLogOff } from '../Actions';
 import { Link, withRouter, Route } from 'react-router-dom';
-import * as signalR from '../node_modules/@aspnet/signalr-client/dist/src/index'
+import * as SignalR from '../SignalR';
 
 class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { hoverElement: string, unreadCount: number}> {   //顶部条的下拉菜单组件
     constructor(props) {
@@ -23,39 +23,24 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
     componentDidMount() {
         //如果用户已经登录则开始signalR链接
         if (this.props.isLogOn) {
-            this.signalRConnect();
+            SignalR.startSignalRConnection();
         }
+        SignalR.addSignalRListener({
+            type: 'NotifyMessageReceive', handler: (text) => {
+                console.log('NotifyMessageReceive');
+                console.log(text);
+            }
+        });
     }
 
     componentWillReceiveProps(nextProps) {
         if (!this.props.isLogOn && nextProps.isLogOn) {
             //如果用户重新登录则开始signalR链接
-            this.signalRConnect();
+            SignalR.startSignalRConnection();
         } else if (!nextProps.isLogOn) {
             //如果用户注销则关闭signalR链接
-            this.connection.stop();
+            SignalR.stopSignalRConnection();
         }
-    }
-    connection = new signalR.HubConnection('http://apitest.niconi.cc/signalr/notification');;
-    signalRConnect = async ()=> {
-        const token = await Utility.getToken();
-        const url = 'http://apitest.niconi.cc/signalr/notification';
-        let myHeaders = new Headers();
-        myHeaders.append('Authorization', token);
-        this.connection = new signalR.HubConnection(url);
-        this.connection.on('NotifyMessageReceive', (value) => {
-            console.log('NotifyMessageReceive');
-            console.log(value);
-        });
-        this.connection.on('NotifyTopicChange', (value) => {
-            console.log('NotifyTopicChange');
-            console.log(value);
-        });
-        this.connection.on('NotifyNotificationChange', (value) => {
-            console.log('NotifyNotificationChange');
-            console.log(value);
-        });
-        this.connection.start();
     }
 
     logOff() {
