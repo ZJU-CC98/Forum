@@ -31,8 +31,10 @@ import { TopicTagHandler } from './TopicTagHandler';
 import { MdTagHandler } from './MdTagHandler';
 import EmTagHandler from './EmTagHandler';
 import AcTagHandler from './AcTagHandler';
+import MahjongTagHandler from './MahjongTagHandler';
 
 import UrlTextHandler from './UrlTextHandler';
+
 /**
  * 创建一个具有所有功能的默认引擎。
  */
@@ -72,6 +74,7 @@ export function createEngine(): Ubb.UbbCodeEngine {
     // 以下是未命名标签处理程序，注意未命名标签处理程序的命中和注册顺序有关
     engine.tagHandlers.register(EmTagHandler);
     engine.tagHandlers.register(AcTagHandler);
+    engine.tagHandlers.register(MahjongTagHandler);
 
 
     // 以下是文字处理程序，注意文字的处理顺序完全取决于处理程序，请注意控制处理程序的顺序

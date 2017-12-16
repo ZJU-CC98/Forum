@@ -8,7 +8,7 @@ import * as Ubb from './Core';
 export default class AcTagHandler extends Ubb.RecursiveTagHandler {
     get supportedTagNames(): RegExp {
         return /ac\d{2}/i;
-    }   //正则表达式，意为em+两位数字,i表示区分大小写
+    }
 
     getTagMode(tagData: Ubb.UbbTagData): Ubb.UbbTagMode {
         return Ubb.UbbTagMode.Empty;
