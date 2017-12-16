@@ -62,16 +62,11 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
             case 'Award':
                 if ($("input[name='reason']:checked").val()) {
                     if ($("input[name='reason']:checked").val() !== '自定义') {
-
                         if (this.state.wealth !== 0) {
-
                             status = await Utility.awardWealth($("input[name='reason']:checked").val(), this.state.wealth, this.props.postId);
-
                         }
-
                         if (this.state.prestige !== 0) {
                             status1 = await Utility.addPrestige(this.props.postId, this.state.prestige, $("input[name='reason']:checked").val());
-
                         }
 
                     } else {
@@ -86,16 +81,12 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
                         }
 
                     }
-                    if (typeof status !== 'string' && typeof status1 !== 'string') {
+                    if ( status === 'ok' && status1 ==='ok') {
                         const UIId = `#manage${this.props.postId}`;
                         $(UIId).css("display", "none");
                         this.props.update();
                     }
-                    else if (typeof status !== 'string' && status1 === 'ok') {
-                        const UIId = `#manage${this.props.postId}`;
-                        $(UIId).css("display", "none");
-                        this.props.update();
-                    }
+                  
                     else {
                         switch (status) {
                             case 'wrong input':
@@ -143,26 +134,12 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
                             this.setState({ tips: "请输入原因！" });
                         }
 
-                        if (typeof status !== 'string' && typeof status1 !== 'string' && typeof status2 !== 'string') {
+                        if (status === 'ok' && status1 === 'ok'&&status2==='ok') {
                             const UIId = `#manage${this.props.postId}`;
                             $(UIId).css("display", "none");
                             this.props.update();
                         }
-                        else if (typeof status !== 'string' && status1 === 'ok' && typeof status2 !== 'string') {
-                            const UIId = `#manage${this.props.postId}`;
-                            $(UIId).css("display", "none");
-                            this.props.update();
-                        }
-                        else if (typeof status !== 'string' &&typeof status1 !== 'string' &&  status2 === 'ok') {
-                            const UIId = `#manage${this.props.postId}`;
-                            $(UIId).css("display", "none");
-                            this.props.update();
-                        }
-                        else if (typeof status !== 'string' && status1 === 'ok' && status2 === 'ok') {
-                            const UIId = `#manage${this.props.postId}`;
-                            $(UIId).css("display", "none");
-                            this.props.update();
-                        }
+                     
                         else {
                             switch (status) {
                                 case 'wrong input':
@@ -188,7 +165,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
             case 'Delete':
                 if (this.state.reason) {
                     status = await Utility.deletePost(this.props.topicId, this.props.postId, this.state.reason);
-                    if (typeof status !== 'string') {
+                    if (status ==='ok') {
                         const UIId = `#manage${this.props.postId}`;
                         $(UIId).css("display", "none");
                         this.props.update();

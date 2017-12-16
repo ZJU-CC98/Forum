@@ -18,7 +18,9 @@ export class TopicDeleted extends React.Component<{}, {}>{
             <div>
                 <img className="errorIcon" src="/images/404.png"></img>
             </div>
+            <div className="errorTitle">糟糕！好像出错了</div>
             <div className="errorText">帖子被删除</div>
+            <div className="row returnIndexBtn" ><Link to="/" >返回首页</Link></div>
             </div>
        ;
     }
@@ -34,7 +36,9 @@ export class UnauthorizedBoard extends React.Component<{}, {}>{
             <div>
                 <img className="errorIcon" src="/images/401.png"></img>
             </div>
+            <div className="errorTitle">糟糕！好像出错了</div>
             <div className="errorText">您没有权限进入这个版面</div>
+            <div className="row returnIndexBtn" ><Link to="/" >返回首页</Link></div>
         </div>
             ;
     }
@@ -45,7 +49,10 @@ export class UnauthorizedTopic extends React.Component<{}, {}>{
             <div>
                 <img className="errorIcon" src="/images/401.png"></img>
             </div>
+            <div className="errorTitle">糟糕！好像出错了</div>
             <div className="errorText">您没有权限进入这个主题</div>
+            <div className="row returnIndexBtn" ><Link to="/" >返回首页</Link></div>
+
         </div>
             ;
     }
@@ -56,7 +63,9 @@ export class UnauthorizedOperation extends React.Component<{}, {}>{
             <div>
                 <img className="errorIcon" src="/images/401.png"></img>
             </div>
+            <div className="errorTitle">糟糕！好像出错了</div>
             <div className="errorText">您没有权限进行这个操作</div>
+            <div className="row returnIndexBtn" ><Link to="/" >返回首页</Link></div>
         </div>
             ;
     }
@@ -68,7 +77,9 @@ export class NotFoundBoard extends React.Component<{}, {}>{
             <div>
                 <img className="errorIcon" src="/images/404.png"></img>
             </div>
+            <div className="errorTitle">糟糕！好像出错了</div>
             <div className="errorText">版面不存在</div>
+            <div className="row returnIndexBtn" ><Link to="/" >返回首页</Link></div>
         </div>
             ;
     }
@@ -80,7 +91,9 @@ export class NotFoundTopic extends React.Component<{}, {}>{
             <div>
                 <img className="errorIcon" src="/images/404.png"></img>
             </div>
+            <div className="errorTitle">糟糕！好像出错了</div>
             <div className="errorText">帖子不存在</div>
+            <div className="row returnIndexBtn" ><Link to="/" >返回首页</Link></div>
         </div>
             ;
     }
@@ -91,7 +104,9 @@ export class NotFoundUser extends React.Component<{}, {}>{
             <div>
                 <img className="errorIcon" src="/images/404.png"></img>
             </div>
+            <div className="errorTitle">糟糕！好像出错了</div>
             <div className="errorText">用户不存在</div>
+            <div className="row returnIndexBtn" ><Link to="/" >返回首页</Link></div>
         </div>
             ;
     }
@@ -102,7 +117,9 @@ export class ServerError extends React.Component<{}, {}>{
             <div>
                 <img className="errorIcon" src="/images/500.png"></img>
             </div>
+            <div className="errorTitle">糟糕！好像出错了</div>
             <div className="errorText">服务器发送错误</div>
+            <div className="row returnIndexBtn" ><Link to="/" >返回首页</Link></div>
         </div>
             ;
     }
@@ -118,7 +135,9 @@ export class OperationForbidden extends React.Component<{}, {}>{
             <div>
                 <img className="errorIcon" src="/images/403.png"></img>
             </div>
+            <div className="errorTitle">糟糕！好像出错了</div>
             <div className="errorText">操作失败或被拒绝</div>
+            <div className="row returnIndexBtn" ><Link to="/" >返回首页</Link></div>
         </div>
             ;
     }

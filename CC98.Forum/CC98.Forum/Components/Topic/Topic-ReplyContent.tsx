@@ -54,9 +54,8 @@ export class ReplyContent extends React.Component<{postid,content,  contentType}
             content = mdMode;
         }
       
-        return <div className="root" style={{ marginTop: "-170px" }}>
-            <div className="reply-content">
+        return  <div className="reply-content">
                 <div className="substance">{content}</div>        
-            </div></div>;
+            </div>;
     }
 }

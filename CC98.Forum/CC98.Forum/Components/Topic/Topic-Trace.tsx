@@ -20,13 +20,15 @@ import { RouteComponent } from '../RouteComponent';
 import { SendTopic } from './Topic-SendTopic';
 import { Reply } from './Topic-Reply';
 declare let moment: any;
-export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, userId,topicInfo,boardInfo ,content}, { topicid, page, userId }> {
+export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, userId, topicInfo, boardInfo, content, shouldRender }, { topicid, page, userId }> {
     constructor(props, context) {
         super(props, context);
         this.quote = this.quote.bind(this);
+        this.shouldRender = this.shouldRender.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.state = {
-            page: 1, topicid: this.match.params.topicid, totalPage: 1, userId: this.match.params.userId, topicInfo: { replyCount: 0 }, boardInfo: {masters:[],id:7} ,content:""};
+            page: 1, topicid: this.match.params.topicid, totalPage: 1, userId: this.match.params.userId, topicInfo: { replyCount: 0 }, boardInfo: { masters: [], id: 7 }, content: "", shouldRender: false
+        };
     }
     quote(content) {
         this.setState({ content: content });
@@ -55,6 +57,14 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
         const boardInfo = Utility.getBoardInfo(boardId);
         this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userId: newProps.match.params.userId, topicInfo: topicInfo, boardInfo: boardInfo });
     }
+    shouldRender(fetchState) {
+        if (fetchState) {
+            this.setState({ shouldRender: true });
+        }
+        else {
+            this.setState({ shouldRender: false });
+        }
+    }
     async componentDidMount() {
         let page: number;
         if (!this.match.params.page) {
@@ -78,16 +88,20 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
             topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={this.state.userId} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} quote={this.quote} />;
         }
         const url = `/topic/${this.match.params.topicid}/user/${this.match.params.userId}/`;
-        return <div className="center" style={{ width: "1140px" }} >
-            <div style={{ width:"100%" }}>
-            <Pager page={this.state.page} totalPage={this.state.totalPage} url={url}/></div>
-            {topic}
-            <Reply topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} page={this.state.page} topicId={this.state.topicid} userId={this.state.userId} quote={this.quote} isTrace={true} isHot={false} />
-            <div style={{ width: "100%" }}>
-                <Pager page={this.state.page} totalPage={this.state.totalPage} url={url} /></div>
-            <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardInfo.id} boardInfo={this.state.boardInfo} content={this.state.content} userId={this.state.userId} />
-        </div>
-            ;
+        if (this.state.shouldRender) {
+            return <div className="center" style={{ width: "1140px" }} >
+                <div style={{ width: "100%" }}>
+                    <Pager page={this.state.page} totalPage={this.state.totalPage} url={url} /></div>
+                {topic}
+                <Reply topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} page={this.state.page} topicId={this.state.topicid} userId={this.state.userId} quote={this.quote} isTrace={true} isHot={false}  />
+                <div style={{ width: "100%" }}>
+                    <Pager page={this.state.page} totalPage={this.state.totalPage} url={url} /></div>
+                <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardInfo.id} boardInfo={this.state.boardInfo} content={this.state.content} userId={this.state.userId} />
+            </div>
+                ;
+        } else {
+            return <img src="/images/waiting.gif" />;
+        }
 
     }
 

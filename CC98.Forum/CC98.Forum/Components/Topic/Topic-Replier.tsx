@@ -2,66 +2,109 @@
 import { Link} from 'react-router-dom';
 import { RouteComponent } from '../RouteComponent';
 import { UserDetails } from './Topic-UserDetails';
+import * as Utility from '../../Utility';
 declare let moment: any;
-export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, userName, replyTime, floor, userImgUrl, sendTopicNumber, privilege,isDeleted ,quote,content,traceMode,isHot,popularity}, {traceMode}, { topicid}>{
+export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, replyTime, floor, isDeleted, quote, content, traceMode, isHot }, { traceMode, buttonIsDisabled, buttonInfo, isFollowing}, { topicid}>{
     constructor(props, content) {
         super(props, content);
         this.quote = this.quote.bind(this);
+        this.follow = this.follow.bind(this);
+        this.unfollow = this.unfollow.bind(this);
         this.changeTraceMode = this.changeTraceMode.bind(this);
-        this.state = { traceMode: this.props.traceMode };
+        this.state = {
+            traceMode: this.props.traceMode, buttonInfo: '关注',
+            buttonIsDisabled: false,
+            isFollowing: false };
     }
     quote() {
-        this.props.quote(this.props.content, this.props.userName, this.props.replyTime, this.props.floor);
+        this.props.quote(this.props.content, this.props.userInfo.name, this.props.replyTime, this.props.floor);
     }
     changeTraceMode() {
         this.setState({ traceMode: this.state.traceMode === true ? false : true });
     }
-    render() {
-        const url = `/user/id/${this.props.userId}`;
-        const realUrl = encodeURI(url);
-        const email = `/message/message?id=${this.props.userId}`;
-        let urlHtml = <a href={realUrl}><img src={this.props.userImgUrl}></img></a>;
-        if (this.props.isAnonymous == true) {
-            urlHtml = <img src={this.props.userImgUrl}></img>;
+    async unfollow() {
+        try {
+            this.setState({
+                buttonIsDisabled: true,
+                buttonInfo: '...'
+            });
+            const token = Utility.getLocalStorage("accessToken");
+            const userId = this.props.userInfo.id;
+            const url = `http://apitest.niconi.cc/me/followee/${userId}`;
+            const headers = new Headers();
+            headers.append('Authorization', token);
+            let res = await fetch(url, {
+                method: 'DELETE',
+                headers
+            });
+            if (res.status === 200) {
+                this.setState({
+                    buttonIsDisabled: false,
+                    buttonInfo: '关注',
+                    isFollowing: false
+                });
+            } else {
+                throw {};
+            }
+        } catch (e) {
+            alert("网络错误");
         }
-        const curUserPostUrl = `/topic/${this.props.topicid}/user/id/${this.props.userId}`;
-        const normalUrl = `/topic/${this.props.topicid}`;
-        $(document).ready(function () {
-            $(".authorImg").mouseenter(function (event: JQuery.Event) {
-                const currentImage = event.currentTarget;
-                $(currentImage).next(".userDetails").show();
-            });
-            $(".mouse-userDetails").mouseleave(function (event: JQuery.Event) {
-                const currentImage = event.currentTarget;
-                $(currentImage).find(".userDetails").hide();
-            });
+    }
 
-        });
+    async follow() {
+        try {
+            this.setState({
+                buttonIsDisabled: true,
+                buttonInfo: '...'
+            });
+            const token = Utility.getLocalStorage("accessToken");
+
+            const userId = this.props.userInfo.id;
+            const url = `http://apitest.niconi.cc/me/followee/${userId}`;
+            const headers = new Headers();
+            headers.append('Authorization', token);
+            let res = await fetch(url, {
+                method: 'PUT',
+                headers
+            });
+            if (res.status === 200) {
+                this.setState({
+                    buttonIsDisabled: false,
+                    buttonInfo: '取关',
+                    isFollowing: true
+                });
+            } else {
+                throw {};
+            }
+        } catch (e) {
+            alert("网络错误");
+        }
+    }
+    render() {
+        const url = `/user/id/${this.props.userInfo.id}`;
+        const realUrl = encodeURI(url);
+        const email = `/message/message?id=${this.props.userInfo.id}`;
+        let urlHtml = <a href={realUrl}><img className="userPortrait" src={this.props.userInfo.portraitUrl}></img></a>;
+        if (this.props.isAnonymous == true) {
+            urlHtml = <img src={this.props.userInfo.portraitUrl}></img>;
+        }
+        const curUserPostUrl = `/topic/${this.props.topicid}/user/id/${this.props.userInfo.id}`;
+        const normalUrl = `/topic/${this.props.topicid}`;
         let topicNumber = '帖数';
-        if (!this.props.userId) {
+        if (!this.props.userInfo.id) {
             topicNumber = '';
         }
         let userDetails;
         if (this.props.isAnonymous != true && this.props.isDeleted!=true) {
-            userDetails = <UserDetails userName={this.props.userName} userId={this.props.userId} />;
+            userDetails = <UserDetails userName={this.props.userInfo.name} userId={this.props.userInfo.id} />;
         } else {
             userDetails = null;
         }
-        let userName;
+        let userName  = <Link style={{ color: "#fff" }} to={url}>{this.props.userInfo.name}</Link>;
 
-        if (this.props.privilege === "超级版主") {
-            userName = <a style={{ color: "pink" }} href={url}>{this.props.userName}</a>;
-        } else if (this.props.privilege === "全站贵宾") {
-            userName = <a style={{ color: "blue" }} href={url}>{this.props.userName}</a>;
-        } else if (this.props.privilege === "注册用户") {
-            userName = <a style={{ color: "black" }} href={url}>{this.props.userName}</a>;
-        } else if (this.props.privilege == "匿名" || this.props.privilege === "匿名用户") {
-            userName = <div style={{ color: "black" }} >{this.props.userName}</div>;
-        } else if (this.props.privilege === "管理员") {
-            userName = <a style={{ color: "red" }} href={url}>{this.props.userName}</a>;
-        } else {
-            userName = this.props.userName;
-        }
+         if (this.props.userInfo.privilege == "匿名" || this.props.userInfo.privilege === "匿名用户") {
+            userName = <div style={{ color: "white" }} >{this.props.userInfo.name}</div>;
+        } 
         let emailButton;
         if (this.props.isAnonymous) emailButton = null; 
         else emailButton = <button className="operation" ><Link to={email}>私信</Link></button>;
@@ -70,11 +113,53 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
         else traceButton = <Link className="operation" to={this.state.traceMode === true ? normalUrl : curUserPostUrl} onClick={this.changeTraceMode}>{this.state.traceMode === true ? "返回" : "只看此用户"}</Link>;
         const hotInfo = <div style={{ color: "red", marginLeft: "1rem" }}><span>最热回复</span><span>(第</span><span>{this.props.floor}</span><span>楼)</span></div>;
         const normalInfo = <div style={{ marginLeft: "0.625rem" }}><span>第</span><span style={{ color: "red" }}>{this.props.floor}</span><span>楼</span></div>;
-        return <div className="replyRoot">
+        return <div className="userMessage">
+            <div className="userGender">
+                {this.props.userInfo.gender === 0 ? <i className="fa fa-venus" style={{ color: "#fff" }}></i> : <i className="fa fa-mars" style={{ color: "#fff" }}></i>}
+            </div>
+
+            <div style={{ width: "100%", justifyContent: "center", display:"flex" }}>
+                {urlHtml}
+            </div>
+
+            <div className="rpyClr" style={{ width: "100%", marginTop: "1rem", paddingLeft:"3rem" }}>
+                {userName}
+            </div>
+
+            <div className="row" style={{ width: "100%", paddingLeft: "3rem", marginTop: "0.4rem", alignItems:"center" }}>
+                <div>{this.props.userInfo.birthday ? moment(this.props.userInfo.birthday).format('YYYY-MM-DD') : null}</div>
+                <div style={{ marginLeft: "0.6rem" }}>
+                    粉丝 {this.props.userInfo.fanCount}</div>
+            </div>
+
+            <div className="row" style={{ width: "100%" }}>
+                <div className="column" style={{ width: "60%", alignItems: "flex-start", paddingLeft:"1.6rem" }}>
+            <div className="userMessageOpt">
+                帖数 {this.props.userInfo.postCount}
+            </div>
+
+            <div className="userMessageOpt">
+                威望 {this.props.userInfo.prestige}
+            </div>
+
+            <div className="userMessageOpt">
+                风评 {this.props.userInfo.popularity}
+            </div>
+                </div>
+                <div className="column" style={{ width: "40%", alignItems: "flex-start", paddingLeft: "1rem", justifyContent: "flex-end", marginBottom:"-0.25rem" }}>
+                    <button className="replierBtn" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled} style={{ border: "none", marginBottom:"0.6rem" }}>{this.state.buttonInfo}</button>
+                    <Link to={email}><button className="replierBtn">私信</button></Link>
+                </div>
+            </div>
+        </div>;
+        
+    }
+}
+/*return <div className="replyRoot">
             <div className="row" style={{ width: "100%", display: "flex", marginBottom: "0.625rem" }}>
 
                 <div className="row mouse-userDetails" style={{ height: "15.625rem" }} >
-                    <div className="authorImg" style={{ height: "6rem", borderBottom:"#eaeaea solid thin" }}>{urlHtml}</div>
+                    <div className="authorImg" style={{ height: "6rem" }}>{urlHtml}</div>
                     <div className="userDetails" style={{ display: "none", position: "absolute" }}>
                         {userDetails}
                     </div>
@@ -86,22 +171,19 @@ export class Replier extends RouteComponent<{ isAnonymous, userId, topicid, user
                         <div className="rpyClr" style={{ marginLeft: "0.625rem" }}>{userName}</div>
                         <div id="topicsNumber" style={{ marginLeft: "0.625rem", display: "flex", flexWrap: "nowrap", wordBreak: "keepAll", marginRight: "0.75rem" }}>{topicNumber}&nbsp;<span style={{ color: "red" }}>{this.props.sendTopicNumber}</span> </div>
                     </div>
-                    <div className="row" style={{ alignItems:"center", display: "flex", flexWrap: "nowrap" }}>
-                        <div id="clockimg" style={{ marginLeft: "0.375rem" }}><i className="fa fa-clock-o fa-lg fa-fw"></i></div>
+                    <div className="row" style={{ alignItems: "center", display: "flex", flexWrap: "nowrap" }}>
+                        <div id="clockimg" style={{ marginLeft: "0.375rem" }}><i className="fa fa-clock-o fa-lg fa-fw" style={{ fontSize:"1rem" }}></i></div>
                         <div><span className="timeProp">{moment(this.props.replyTime).format('YYYY-MM-DD HH:mm:ss')}</span></div>
                         <div className="reputation">风评值：{this.props.popularity}
                             </div>
                     </div>
                 </div>
-                <div style={{ height: "6rem", borderBottom: "#eaeaea solid thin", marginRight:"2rem" }}>
+                <div style={{ height: "6rem", marginRight:"2rem" }}>
                     <div id="operation"  >
                         <button className="operation" onClick={this.quote}>引用</button>
                         <button className="operation"><Link to="">编辑</Link></button>
                         {emailButton}
-                  
-                   
+                        {traceButton}                 
                     </div>
                    </div>
-            </div></div>;
-    }
-}
+            </div></div>;*/

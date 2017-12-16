@@ -45,8 +45,11 @@ body {
     justify-content: flex-start;
     min-height:16rem;
     font-family: 微软雅黑;
+    background-color:#7ab7c9;
 }
-
+.replyContentRoot {
+    background-color: #fff;
+}
 #listRoot {
     display: flex;
     width:1140px;
@@ -182,13 +185,16 @@ body {
     height: 6rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
     align-items:flex-start;
 }
 
 
 #essay1{
-    margin-left:2rem;
+    margin-left:1.5rem;
+    margin-top:0.5rem;
+    align-items:center;
+    height:4rem;
+    font-size:1.25rem;
 }
 .titleProp {
     color: #FF8838;
@@ -203,9 +209,10 @@ body {
 }
 
 #essayProp {
-    margin-left:1rem;
+    margin-left:1.5rem;
     display: flex;
-    font-size: 0.625rem;
+    font-size: 0.75rem;
+    color:rgb(121,184,201);
 }
 
 #like {
@@ -240,9 +247,7 @@ body {
 
 
 
-.tagProp {
-    margin-left: 1.5625rem;
-}
+
 
 #time {
     display: flex;
@@ -313,24 +318,46 @@ body {
 .substance {
     display: flex;
     line-height: 200%;
-    margin-top: 1.25rem;
-    margin-bottom: 1.25rem;
-    margin-left: 1.25rem;
-    margin-right: 1.25rem;
+    margin-top:2rem;
+    margin-left: 1.5rem;
+    width:56.25rem;
     word-wrap: break-word;
     color: rgb(80,80,80);
-    padding-bottom: 1rem;
 }
 .replySubstance {
     border-top: #eaeaea thin solid;
 }
-
+.replierBtn{
+    background-color:#fb6165;
+    color:#fff;
+    border:none;
+    border-radius:0.63rem;
+    width:2.5rem;
+    height:1.5rem;
+}
+.userMessageOpt{
+    margin-top:0.4rem;
+}
+.userGender{
+    display:flex;
+    justify-content:flex-end;
+    width:80%;
+    font-size:1rem;
+}
+.userPortrait{
+    width:7.5rem;
+    height:7.5rem;  
+    border-radius:50%;
+}
 .signature {
     color: rgb(80,80,80);
     margin: 1.25rem;
     padding-top:1rem;
 }
-
+.signature img{
+    max-height:12.5rem;
+    max-width:32.5rem;
+}
 .upup {
     cursor: pointer;
 }
@@ -477,14 +504,28 @@ body {
 
 .reply {
     width: 100%;
-    box-shadow:0px 0px 5px 1px rgba(0,0,0,0.2);
     margin-top:1rem;
-    border:#eaeaea solid thin;
+    border:rgb(125,186,203) solid 1.5px;
     background-color:#fff;
+    flex-direction:row;
+    display:flex;
 }
-
+.userMessage {
+    align-items: center;
+    background-color: rgb(120,177,193);
+    color: #fff;
+    width: 10.6rem;
+    display: flex;
+    flex-direction: column;
+    padding-top:1rem;
+    padding-bottom:1rem;
+    font-size:0.75rem;
+}
+.userMessageOpt{
+    
+}
 .rpyClr {
-    text-align: center;
+    font-size:1.25rem;
     width: 8rem;
     word-break: keep-all;
 }
@@ -545,7 +586,6 @@ body {
     flex-direction: column;
     flex-grow: 1;
     height: 6rem;
-    border-bottom:#eaeaea solid thin;
 }
 
 #ListImg img {
@@ -2597,12 +2637,74 @@ a {
     display:flex;
     flex-direction:column;
     font-size:1.5rem;
+    margin-top:-5rem;
     letter-spacing:2px;
+    align-items:center;
+    font-family:黑体;
 }
 .errorIcon{
     width:48rem;
     height:27rem;
+    margin-top:-5rem;
 }
 .errorText{
     text-align:center;
+    font-size:0.88rem;
+    margin-top:0.6rem;
+}
+.errorTitle{
+    width:18rem;
+    justify-content:center;
+    margin-top:-7.5rem;
+    text-align:center;
+    font-size:1.5rem;
+    border-bottom:black solid thin;
+    padding-bottom:0.6rem;
+}
+.returnIndexBtn {
+    justify-content: center;
+    font-size: 0.75rem;
+    margin-top:2.5rem;
+    text-decoration:underline;
+
+}
+.topicInfo-info{
+    display:flex;
+    flex-direction:row;
+    width:100%;
+    height:6.25rem;
+    border:rgb(106,113,119) solid 1.5px;
+    font-family:微软雅黑;
+}
+.topicInfo-boardInfo {
+    width: 10.6rem;
+    height: 6.25rem;
+    display:flex;
+    background-color:rgb(106,113,119);
+    align-items:center;
+}
+.topicInfo-boardImage{
+    width:4rem;
+    height:4rem;
+    margin-left:0.5rem;
+
+}
+.topicInfo-boardMessage{
+    display:flex;
+    flex-direction:column;
+    margin-left:1rem;
+    color:#fff;
+}
+.topicInfo-title {
+    width: 42rem;
+    height: 6.25rem;
+    display:flex;
+    flex-direction:column;
+    background-color:#fff;
+    color:#6b7178;
+    font-size:1rem;
+}
+.topicInfo-ads {
+    width: 18.65rem;
+    height: 6.25rem;
 }

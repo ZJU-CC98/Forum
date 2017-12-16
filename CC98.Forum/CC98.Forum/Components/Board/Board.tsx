@@ -7,7 +7,8 @@ import { match } from 'react-router';
 import {
     BrowserRouter as Router, 
     Route,
-    Link
+    Link,
+    Switch
 } from 'react-router-dom';
 import TopicTitleAndContentState = State.TopicTitleAndContentState;
 import { Pager } from '../Pager';
@@ -70,12 +71,13 @@ export class List extends RouteComponent<{}, { page:number, boardId: number,boar
             <Category boardId={this.match.params.boardId} boardInfo={this.state.boardInfo} />
             <ListHead key={this.state.page} boardId={this.match.params.boardId} />
             {bigPaper}
-      
 
-            <Route exact path="/list/:boardId/:page(\d+)?" component={ListContent} />
+            <Switch>
+            <Route exact path="/list/:boardId/:page?" component={ListContent} />
 
-            <Route exact path="/list/:boardId/best/:page(\d+)?" component={ListBestContent} />
-            <Route exact path="/list/:boardId/save/:page(\d+)?" component={ListSaveContent} />
+            <Route exact path="/list/:boardId/best/:page?" component={ListBestContent} />
+                <Route exact path="/list/:boardId/save/:page?" component={ListSaveContent} />
+            </Switch>
         </div> ;
     }
 }

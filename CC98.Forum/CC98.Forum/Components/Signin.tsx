@@ -41,7 +41,7 @@ export class Signin extends React.Component<{}, { signinInfo ,content}>{
             info = <div className="column">
                 <div className="row">你今天还未签到</div>
                 <div style={{ marginTop: "1.5rem" }}>
-                <UbbEditor update={this.update} value={this.state.content} />
+                    <UbbEditor update={this.update} value={this.state.content} />
                 <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
                     <div id="post-topic-button" onClick={this.signin} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>签到
                     </div>

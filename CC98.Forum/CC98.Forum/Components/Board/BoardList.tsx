@@ -94,9 +94,9 @@ export class RootBoard extends React.Component<{ board }, { isExpanded: boolean 
         else {  //其他版
             return <div className="anArea" id={boards.name}>
                 <div className="column" style={{ border: '2px solid #e9e9e9' }}>
-                    <div className="row" style={{ marginTop: '15px', marginBottom: '15px', justifyContent:"space-around" }}>
+                    <div className="row" style={{ marginTop: '15px', marginBottom: '15px', justifyContent:"space-between" }}>
                         <div className="areaName">{boards.name}</div>
-                        <div className="row">
+                        <div className="row" style={{ marginRight:"1rem" }}>
                         <div className="areaName">主管：{boards.masters}</div>
                             <div onClick={this.toggleIsExpanded} style={{ marginLeft: "1rem", cursor: "pointer" }}> {buttonContent}</div>
                             </div>
@@ -129,12 +129,14 @@ export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>
             thisBoardState: boards,
         });
     }
-    convertChildBoard(item: Board) {    //暂无各版面图片，以绿色背景方块替代
+    convertChildBoard(item: Board) {   
+        const url =`url(/images/_${item.name}.png)`
         return <div className="boardContent">
-            <Link to={`/list/${item.id}`}><div className="greenBackdrop"></div></Link>
+            <Link to={`/list/${item.id}`}><div className="greenBackdrop" style={{ backgroundImage: url}}></div></Link>
             <div className="column boardBlock" >
                 <Link to={`/list/${item.id}`}><div className="boardName2" style={{ fontSize:"1.2rem", fontWeight:"bold" }}>{item.name}</div></Link>
-                <div className="boardInfo"> {item.todayPostCount} /{item.totalPostCount}</div>
+                <div className="boardInfo">
+                    {item.todayPostCount} / {item.totalPostCount}</div> 
                 
                 </div>
         </div>;

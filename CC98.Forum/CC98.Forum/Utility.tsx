@@ -67,11 +67,15 @@ export async function getTopic(topicid: number) {
         let topicMessage = null;
         const likeInfo = await refreshLikeState(topicid, data[0].id);
         const awardInfo = await getAwardInfo(data[0].id);
-        if (data[0].isAnonymous != true) {      
+        if (data[0].isAnonymous != true) {   
+            
             const userMesJson = await getUserInfo(data[0].userId);
-            topicMessage = new State.TopicState(data[0].userName, data[0].title, data[0].content, data[0].time, userMesJson.signatureCode, userMesJson.portraitUrl || 'https://www.cc98.org/pic/anonymous.gif', data[0].userId, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, userMesJson.fanCount,  likeInfo,awardInfo);
+            topicMessage = { ...data[0], userInfo: userMesJson, postId: data[0].id, likeInfo: likeInfo, awardInfo: awardInfo }
         } else {
-            topicMessage = new State.TopicState('匿名' + data[0].userName.toUpperCase(), data[0].title, data[0].content, data[0].time, '', 'https://www.cc98.org/pic/anonymous.gif', null, data[0].likeCount, data[0].dislikeCount, data[0].id, data[0].isAnonymous, data[0].contentType, data[0].isFollowing, -9898, likeInfo,  awardInfo);
+            const anonymousUserName = `匿名${data[0].userName.toUpperCase()}`;
+            let purl = 'https://www.cc98.org/pic/anonymous.gif';
+            const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount:0 };
+            topicMessage = { ...data[0], userInfo: userMesJson, postId: data[0].id, isAnonymous: true, likeInfo: likeInfo, awardInfo: awardInfo}
 
         }
 
@@ -108,22 +112,24 @@ export async function getTopicContent(topicid: number, curPage: number,replyCoun
             const awardInfo = await getAwardInfo(content[i].id);
             if (content[i].isAnonymous != true && content[i].isDeleted != true) {
 
-                const userMesJson= await getUserInfo(content[i].userId);
+                const userMesJson = await getUserInfo(content[i].userId);
                 post[i] = {
-                    ...content[i], ...userMesJson, postId: content[i].id, userImgUrl: userMesJson.portraitUrl, sendTopicNumber: userMesJson.postCount, privilege: userMesJson.privilege, signature: userMesJson.signatureCode, popularity: userMesJson.popularity, likeInfo: likeInfo, awardInfo: awardInfo
+                    ...content[i], userInfo:userMesJson, postId: content[i].id, likeInfo: likeInfo, awardInfo: awardInfo
                 }
 
             } else if (content[i].isAnonymous == true) {
                 let purl = 'https://www.cc98.org/pic/anonymous.gif';
                 const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
 
-
+                const userMesJson = {name: anonymousUserName, portraitUrl: purl, id: null,privilege: '匿名用户', popularity: 0,signatureCode: null, postCount: 0};
                 post[i] = {
-                    ...content[i], userName: anonymousUserName, userImgUrl: purl, userId: null, signature: null, sendTopicNumber: null, postId: content[i].id, privilege: '匿名用户', isAnonymous: true, popularity: 0, likeInfo: likeInfo, awardInfo: awardInfo
+                    
+                    ...content[i], userInfo: userMesJson ,postId: content[i].id,  isAnonymous: true, likeInfo: likeInfo, awardInfo: awardInfo
                 }
             } else {
+                const userMesJson = {name: '98Deleter', portraitUrl: 'http://www.cc98.org/images/policeM.png', id: null, privilege: '匿名用户', popularity: 0 , signatureCode: null,postCount: 0};
                 post[i] = {
-                    ...content[i], userName: '98Deleter', userImgUrl: 'http://www.cc98.org/images/policeM.png', userId: null, signature: null, sendTopicNumber: null, postId: content[i].id, privilege: '匿名用户', isAnonymous: false, isDeleted: true, content: "该贴已被my cc98, my home", popularity: 0, likeInfo: likeInfo, awardInfo: awardInfo
+                    ...content[i], postId: content[i].id,  isAnonymous: false, isDeleted: true, content: "该贴已被my cc98, my home", likeInfo: likeInfo, awardInfo: awardInfo
                 }
             }
         }
@@ -225,15 +231,16 @@ export async function getHotReplyContent(topicid: number) {
                 const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
                 const userMesJson = await userMesResponse.json();
                 post[i] = {
-                    ...content[i], ...userMesJson, postId: content[i].id, userImgUrl: userMesJson.portraitUrl, likeInfo: likeInfo, awardInfo: awardInfo
+                    ...content[i], userInfo: userMesJson, postId: content[i].id,  likeInfo: likeInfo, awardInfo: awardInfo
                 }
 
             } else {
                 let purl = 'https://www.cc98.org/pic/anonymous.gif';
                 const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
                 const anonymousLastReplierName = `匿名${content[i].lastUpdateAuthor.toUpperCase()}`;
+                const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null,postCount: 0 };
                 post[i] = {
-                    ...content[i], userName: anonymousUserName, userImgUrl: purl, userId: null, lastUpdateAuthor: anonymousLastReplierName, signature: null, sendTopicNumber: null, popularity: 0, postId: content[i].id, likeInfo: likeInfo, awardInfo: awardInfo
+                    ...content[i], userInfo: userMesJson, postId: content[i].id, likeInfo: likeInfo, awardInfo: awardInfo
                 }
             }
         }
@@ -394,15 +401,15 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
             if (content[i].isAnonymous != true) {
                 const userMesJson = await getUserInfo(content[i].userId);
                 post[i] = {
-                    ...content[i], ...userMesJson, postId: content[i].id, userImgUrl: userMesJson.portraitUrl, sendTopicNumber: userMesJson.postCount, likeInfo: likeInfo, awardInfo: awardInfo
+                    ...content[i], userInfo: userMesJson, postId: content[i].id,  likeInfo: likeInfo, awardInfo: awardInfo
                 }
 
             } else {
                 let purl = 'https://www.cc98.org/pic/anonymous.gif';
                 const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
-
+                const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null,postCount:0 };
                 post[i] = {
-                    ...content[i], userName: anonymousUserName, userImgUrl: purl, userId: null, signature: null, sendTopicNumber: null, likeInfo: likeInfo, awardInfo: awardInfo
+                    ...content[i], userInfo: userMesJson,  likeInfo: likeInfo, awardInfo: awardInfo
                 }
             }
         }
@@ -1520,12 +1527,13 @@ export async function awardWealth(reason, value, postId) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
     const body = {
+        operationType:0,
         reason: reason,
-        value: value
+        wealth: value
     }
     const str = JSON.stringify(body);
-    const url = `http://apitest.niconi.cc/manage/bonus/wealth?postid=${postId}`;
-    const response = await fetch(url, { method: "PUT", headers, body: str });
+    const url = `http://apitest.niconi.cc/post/${postId}/operation`;
+    const response = await fetch(url, { method: "POST", headers, body: str });
     switch (response.status) {
         case 400:
             return 'wrong input';
@@ -1536,20 +1544,19 @@ export async function awardWealth(reason, value, postId) {
         case 500:
             return 'server error';
     }
-
-    const data = await response.json();
-    return data;
+    return 'ok';
 }
 export async function deductWealth(reason, value, postId) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
     const body = {
+        operationType:1,
         reason: reason,
-        value: value
+        wealth: value
     }
     const str = JSON.stringify(body);
-    const url = `http://apitest.niconi.cc/manage/punishment/wealth?postid=${postId}`;
-    const response = await fetch(url, { method: "PUT", headers, body: str });
+    const url = `http://apitest.niconi.cc/post/${postId}/operation`;
+    const response = await fetch(url, { method: "POST", headers, body: str });
     switch (response.status) {
         case 400:
             return 'wrong input';
@@ -1560,9 +1567,7 @@ export async function deductWealth(reason, value, postId) {
         case 500:
             return 'server error';
     }
-
-    const data = await response.json();
-    return data;
+    return 'ok';
 }
 export async function getAwardInfo(postId) {
     const headers = await formAuthorizeHeader();
@@ -2207,7 +2212,7 @@ export async function plus1(topicId, postId, reason) {
         case 500:
             return 'server error';
     }
-    return await response.json();
+    return 'ok'
 }
 export async function minus1(topicId, postId, reason) {
     const url = `http://apitest.niconi.cc/post/${postId}/rating`;
@@ -2224,15 +2229,15 @@ export async function minus1(topicId, postId, reason) {
         case 500:
             return 'server error';
     }
-    return await response.json();
+    return 'ok'
 }
 export async function addPrestige(postId, value, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const bodyinfo = { value: value, reason: reason };
-    const url = `http://apitest.niconi.cc/manage/bonus/prestige?postid=${postId}`;
+    const bodyinfo = { operationType:0,prestige: value, reason: reason };
+    const url = `http://apitest.niconi.cc/post/${postId}/operation`;
     const body = JSON.stringify(bodyinfo);
-    const response = await fetch(url, { method: "PUT", headers, body });
+    const response = await fetch(url, { method: "POST", headers, body });
     switch (response.status) {
         case 400:
             return 'wrong input';
@@ -2243,13 +2248,13 @@ export async function addPrestige(postId, value, reason) {
         case 500:
             return 'server error';
     }
-    return await response.json();
+    return 'ok';
 }
 export async function deductPrestige(postId, value, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const bodyinfo = { value: value, reason: reason };
-    const url = `http://apitest.niconi.cc/manage/punishment/prestige?postid=${postId}`;
+    const bodyinfo = { operationType:1,prestige: value, reason: reason };
+    const url = `http://apitest.niconi.cc/post/${postId}/operation`;
     const body = JSON.stringify(bodyinfo);
     const response = await fetch(url, { method: "PUT", headers, body });
     switch (response.status) {
@@ -2262,7 +2267,7 @@ export async function deductPrestige(postId, value, reason) {
         case 500:
             return 'server error';
     }
-    return await response.json();
+    return 'ok';
 }
 export async function deletePost(topicId, postId, reason) {
     const headers = await formAuthorizeHeader();
@@ -2278,14 +2283,14 @@ export async function deletePost(topicId, postId, reason) {
         case 500:
             return 'server error';
     }
-    return await response.json();
+    return 'ok';
 }
 export async function stopBoardPost(postId, reason, days) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", 'application/json');
-    const bodyinfo = { reason: reason, value: days };
-    const url = `http://apitest.niconi.cc/manage/punishment/stopboardpost?postid=${postId}`;
-    const response = await fetch(url, { method: "PUT", headers, body: JSON.stringify(bodyinfo) });
+    const bodyinfo = {operationType:1, reason: reason, stopPostDays: days };
+    const url = `http://apitest.niconi.cc/post/${postId}/operation`;
+    const response = await fetch(url, { method: "POST", headers, body: JSON.stringify(bodyinfo) });
     switch (response.status) {
         case 401:
             return 'unauthorized';
@@ -2294,7 +2299,7 @@ export async function stopBoardPost(postId, reason, days) {
         case 500:
             return 'server error';
     }
-    return await response.json();
+    return 'ok';
 }
 export async function cancelStopBoardPost(userId, boardId) {
     const headers = await formAuthorizeHeader();

@@ -16,7 +16,7 @@ export class Footer extends React.Component<{}, AppState> {   //底部
                     <a href="http://www.nexushd.org/login.php">NexusHD</a>|
                     <a href="https://www.zdgd.zju.edu.cn/">浙江大学广播电视网</a>|
                     <a href="http://zy.zju.edu.cn/">浙大搜索</a></div>
-                <div className="footerRow">Copyright © 2003-2017 CC98 Network Association. Email: contact@cc98.org
+                <div className="footerRow">Copyright © 2003-2017 CC98 . Email: contact@cc98.org
                     <a href="http://www.cc98.org/onlineshow.asp"> 论坛统计</a></div>
             </div>
         </div>
