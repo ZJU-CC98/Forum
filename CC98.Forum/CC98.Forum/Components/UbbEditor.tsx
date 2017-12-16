@@ -186,7 +186,6 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
             let before = this.state.value.slice(0, prevState.selectionStart),
                 selected = this.state.value.slice(prevState.selectionStart, prevState.selectionEnd),
                 after = this.state.value.slice(prevState.selectionEnd, this.state.value.length);
-            console.log(selected);
             if (shouldReplaceSelection) {
                 selected = `[${name}]${value}[/${name}]`;
             } else if (hasDefaultSelection) {
