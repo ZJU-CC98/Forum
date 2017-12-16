@@ -133,9 +133,9 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
     }
 
     handleTextareaChange(value: string) {
-        this.setState({ value });
         this.valueStack.push(value);
         this.props.update(value);
+        this.setState({value});
     }
 
     handleTextareaBlur(start: number, end: number) {
@@ -147,29 +147,26 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
 
     async handleUpload(file: File) {
         let res = await Utility.uploadFile(file);
-        console.log(this.state.extendTagName);
         this.handleButtonClick(this.state.extendTagName, `http://apitest.niconi.cc${res.content}`);
     }
 
     handleUndo(redo: boolean) {
-        console.log(this.valueStack);
-        console.log(this.redoStack);
         if (!redo) {
             this.setState((prevState) => {
                 if (this.valueStack.length === 1) {
                     return {value: ''}
                 }
                 let prevValue = this.valueStack.pop();
+                this.redoStack.push(prevValue);
                 if (prevValue !== undefined) {
-                    this.redoStack.push(prevValue);
                     if (prevValue === prevState.value) {
                         if (this.valueStack.length > 0) {
-                            prevValue = this.valueStack.pop();
-                            this.redoStack.push(prevValue);
+                            prevValue = this.valueStack[this.valueStack.length - 1];
                         } else {
                             prevValue = '';
                         }
                     }
+                    this.props.update(prevValue);
                     return { value: prevValue || '' };
                 }
             });
@@ -178,14 +175,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                 let prevValue = this.redoStack.pop();
                 if (prevValue !== undefined) {
                     this.valueStack.push(prevValue);
-                    if (prevValue === prevState.value) {
-                        if (this.redoStack.length > 0) {
-                            prevValue = this.redoStack.pop();
-                            this.valueStack.push(prevValue);
-                        } else {
-                            prevValue = '';
-                        }
-                    }
+                    this.props.update(prevValue);
                     return { value: prevValue };
                 }                
             });
@@ -194,7 +184,6 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
 
     handleButtonClick(name: string, value = '') {
         const shouldReplaceSelection = ['video', 'audio', 'img', 'upload'].indexOf(name) !== -1;
-        const hasDefaultSelection = ['url'].indexOf(name) !== -1;
 
         this.setState((prevState: UbbEditorState) => {
             let before = this.state.value.slice(0, prevState.selectionStart),
@@ -202,8 +191,6 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                 after = this.state.value.slice(prevState.selectionEnd, this.state.value.length);
             if (shouldReplaceSelection) {
                 selected = `[${name}]${value}[/${name}]`;
-            } else if (hasDefaultSelection) {
-                selected = `[${name}${value ? `=${value}` : ''}]${selected || value}[/${name}]`;
             } else {
                 selected = `[${name}${value ? `=${value}` : ''}]${selected || value}[/${name}]`;
             }
@@ -236,7 +223,9 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.state.value !== nextProps.value) {
+        if (this.valueStack[this.valueStack.length - 1] !== nextProps.value) {
+            this.valueStack.push(nextProps.value);
+            this.redoStack = [];
             this.setState({
                 value: nextProps.value
             });
@@ -244,6 +233,8 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
     }
 
     componentDidUpdate() {
+        console.log(this.valueStack);
+        console.log(this.redoStack);
         if (this.state.clicked && !this.state.isPreviewing) {
             this.content.focus();
             this.content.setSelectionRange(this.state.selectionStart, this.state.selectionEnd);
