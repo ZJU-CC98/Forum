@@ -38,19 +38,16 @@ export class UserRouterActivities extends React.Component<{id: string}, UserCent
 
                     if (data.length < 10) {
                         window.removeEventListener('scroll', this.scrollHandler);
+                    } else {
+                        data.pop();
                     }
 
-                    let posts = this.state.userRecentPosts;
-                    let i = data.length === 11 ? 10 : data.length;
+                    let posts = await Promise.all(data.map((item) => (this.item2post(item))));
 
-                    while (i--) {
-                        let post = await this.item2post(data[i]);
-                        posts.push(post);
-                    }
-                    this.setState({
-                        userRecentPosts: posts,
+                    this.setState((prevState)=>({
+                        userRecentPosts: prevState.userRecentPosts.concat(posts),
                         isLoading: false
-                    });
+                    }));
                 } else {
                     throw {};
                 }

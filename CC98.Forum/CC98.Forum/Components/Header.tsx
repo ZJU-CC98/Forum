@@ -4,42 +4,60 @@ import { AppState } from '../States/AppState';
 import * as $ from 'jquery';
 import { connect } from 'react-redux';
 import { userLogOff } from '../Actions';
-import { Link } from 'react-router-dom';
+import { Link, withRouter, Route } from 'react-router-dom';
+import * as signalR from '../node_modules/@aspnet/signalr-client/dist/src/index'
 
-class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { userName, userImgUrl, hoverElement}> {   //顶部条的下拉菜单组件
-    constructor(props?, context?) {
-        super(props, context);
+class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { hoverElement: string, unreadCount: number}> {   //顶部条的下拉菜单组件
+    constructor(props) {
+        super(props);
         this.state = ({
-            userName: "载入中……",
-            userImgUrl: "/images/unLoggedOn.png",
-            hoverElement: null
+            hoverElement: null,
+            unreadCount: 0
         });
     }
-
-    async componentDidMount() {
-        let userName = this.props.userInfo.name;
-        let userImgUrl = this.props.userInfo.portraitUrl;
-        Utility.refreshUnReadCount(); 
-        this.setState({ userName: userName, userImgUrl: userImgUrl });    
-
-        //以下是明一写的signalr，有锅找他
-        /*var chat = $.connection.messageHub;
-        console.log("signal通知测试");
-        $.connection.hub.url = "http://apitest.niconi.cc/signalr";
-        var token = Utility.getLocalStorage("accessToken");
-        console.log(`signalr的${token}`);
-        $.connection.hub.qs = {
-            'Authorization': token
-        };
-        $.connection.hub.logging = "true";
-        chat.client.newUserMessage = view;
-        console.log($.connection);
-        console.log($.connection.hub);
-        console.log($.connection.hub.start());
-        $.connection.hub.start();
-        console.log("signal测试完毕");*/
+    /**
+     * 这里是signalR的部分
+     * 等服务器可以Authorization了再说
+     * 反正就差认证了
+     */
+    componentDidMount() {
+        //如果用户已经登录则开始signalR链接
+        if (this.props.isLogOn) {
+            this.signalRConnect();
+        }
     }
-    
+
+    componentWillReceiveProps(nextProps) {
+        if (!this.props.isLogOn && nextProps.isLogOn) {
+            //如果用户重新登录则开始signalR链接
+            this.signalRConnect();
+        } else if (!nextProps.isLogOn) {
+            //如果用户注销则关闭signalR链接
+            this.connection.stop();
+        }
+    }
+    connection = new signalR.HubConnection('http://apitest.niconi.cc/signalr/notification');;
+    signalRConnect = async ()=> {
+        const token = await Utility.getToken();
+        const url = 'http://apitest.niconi.cc/signalr/notification';
+        let myHeaders = new Headers();
+        myHeaders.append('Authorization', token);
+        this.connection = new signalR.HubConnection(url);
+        this.connection.on('NotifyMessageReceive', (value) => {
+            console.log('NotifyMessageReceive');
+            console.log(value);
+        });
+        this.connection.on('NotifyTopicChange', (value) => {
+            console.log('NotifyTopicChange');
+            console.log(value);
+        });
+        this.connection.on('NotifyNotificationChange', (value) => {
+            console.log('NotifyNotificationChange');
+            console.log(value);
+        });
+        this.connection.start();
+    }
+
     logOff() {
         this.handleMouseEvent('mouseout', "userName");
         Utility.removeLocalStorage("accessToken");
@@ -70,25 +88,6 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { u
 
     render() {
         if (this.props.isLogOn) {
-            $(document).ready(function () {
-                const dropDownSub = $('.dropDownSub').eq(0);
-                const dropDownLi = dropDownSub.find('li');
-                const dropDownSubMessage = $('.dropDownSubMessage').eq(0);
-                const dropDownLiMessage = dropDownSubMessage.find('li');                
-                dropDownLi.mouseover(function () {
-                    this.className = 'hover';
-                });
-                dropDownLi.mouseout(function () {
-                    this.className = '';
-                });
-                dropDownLiMessage.mouseover(function () {
-                    this.className = 'hover';
-                });
-                dropDownLiMessage.mouseout(function () {
-                    this.className = '';
-                });
-                Utility.refreshUnReadCount();
-            });
 
             const style = {
                 display: 'block',
@@ -105,12 +104,12 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { u
             return (<div id="dropdown">
                 <div className="box">
                     <div className="userInfo">
-                        <div className="userImg"><img src={this.props.userInfo.portraitUrl||this.state.userImgUrl}></img></div>
+                        <div className="userImg"><img src={this.props.userInfo.portraitUrl}></img></div>
                         <div
                             className="userName"
                             onMouseOut={(e) => { this.handleMouseEvent(e.type, "userName"); }}
                             onMouseOver={(e) => { this.handleMouseEvent(e.type, "userName"); }}
-                        >{this.props.userInfo.name||this.state.userName}</div>
+                        >{this.props.userInfo.name}</div>
                     </div>
                     <div className="topBarText"> <Link to="/" style={{ color: '#fff' }}>首页</Link></div>
                     <div
@@ -183,7 +182,7 @@ let DropDown = connect(mapState, mapDispatch)(DropDownConnect);
 
 //到此结束
 
-export class Search extends React.Component<{}, AppState> {     //搜索框组件
+export class SearchBeforeConnent extends React.Component<{history}, AppState> {     //搜索框组件
 
     async componentDidMount() {
         const searchBoxSelect = $('.searchBoxSelect');
@@ -250,7 +249,7 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
         
         //获取搜索关键词
         let self = this;
-        searchIco.click(async function () {
+        searchIco.click(async  () => {
             let val: any = $('#searchText').val();
             if (val && val != '') {
                 if (searchBoxSelect.text() == '主题' || searchBoxSelect.text() == '全站') {
@@ -262,8 +261,7 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
                         else {
                             let searchInfo = { boardId: 0, boardName: '全站', words: words };
                             Utility.setStorage('searchInfo', searchInfo);
-                            let host = window.location.host;
-                            window.location.href = `http://${host}/search`;
+                            this.props.history.push('/search');
                         }
                     }
                 }
@@ -276,20 +274,17 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
                         else {
                             let searchInfo = { boardId: boardId, boardName: boardName, words: words };
                             Utility.setStorage('searchInfo', searchInfo);
-                            let host = window.location.host;
-                            window.location.href = `http://${host}/search`;
+                            this.props.history.push('/search');
                         }
                     }
                 }
                 else if (searchBoxSelect.text() == '用户') {
-                    let body = await Utility.getUserInfoByName(val);
-                    let host = window.location.host;
-                    if (body) {
-                        window.location.href = `http://${host}/user/name/${val}`;
+                    if (await Utility.getUserInfoByName(val)) {
+                        this.props.history.push(`/user/name/${val}`);
                     }
                     else {
                         Utility.removeStorage('searchInfo');
-                        window.location.href = `http://${host}/search`;
+                        this.props.history.push('/search');
                     }
                 }
                 else if (searchBoxSelect.text() == '版面') {
@@ -298,23 +293,23 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
                     if (boardResult) {
                         if (boardResult == []) {
                             Utility.removeStorage('searchInfo');
-                            window.location.href = `http://${host}/search`;
+                            this.props.history.push('/search');
                         }
                         else if (boardResult.length == 1) {
-                            window.location.href = `http://${host}/list/${boardResult[0].id}/normal/`;
+                            this.props.history.push(`/list/${boardResult[0].id}/normal/`);
                         }
                         else if (boardResult.length > 1) {
                             Utility.setStorage("searchBoardInfo", boardResult);
-                            window.location.href = `http://${host}/searchBoard`;
+                            this.props.history.push('/searchBoard');
                         }
                         else {
                             Utility.removeStorage('searchInfo');
-                            window.location.href = `http://${host}/search`;
+                            this.props.history.push('/search');
                         }
                     }
                     else {
                         Utility.removeStorage('searchInfo');
-                        window.location.href = `http://${host}/search`;
+                        this.props.history.push('/search');
                     }
                 }
             }
@@ -378,6 +373,8 @@ export class Search extends React.Component<{}, AppState> {     //搜索框组�
     }
 }
 
+export const Search = withRouter(SearchBeforeConnent);
+
 export class Header extends React.Component<{}, AppState> {
     render() {
         return <div className="header">
@@ -415,7 +412,7 @@ export class Header extends React.Component<{}, AppState> {
                             <div><a href="http://www.nexushd.org" className="linkText">NexusHD</a></div>
                         </div>
                     </div>
-                    <Search />
+                    <Route component={Search}/>
                 </div>
             </div>
         </div>;

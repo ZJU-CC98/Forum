@@ -36,10 +36,10 @@ var config = {
         'redux': 'Redux',
         'react-redux': 'ReactRedux',
         'jquery': '$',
-        'signalr': '$.connection',
         'moment': 'moment',
         'editor.md': 'editormd',
-        'codemirror': 'CodeMirror'
+        'codemirror': 'CodeMirror',
+        '../node_modules/@aspnet/signalr-client/dist/src/index': 'signalR'
     },
     plugins: [
         new webpack.optimize.UglifyJsPlugin(),
@@ -47,7 +47,6 @@ var config = {
         new CleanWebpackPlugin(['wwwroot/scripts', 'wwwroot/content']),
         new CopyWebpackPlugin([
             { from: 'node_modules/jquery/dist', to: 'scripts/lib/jquery' },
-            { from: 'node_modules/signalr', to: 'scripts/lib/signalr' },
             { from: 'node_modules/react/dist', to: 'scripts/lib/react' },
             { from: 'node_modules/react-dom/dist', to: 'scripts/lib/react-dom' },
             { from: 'node_modules/react-router/umd', to: 'scripts/lib/react-router' },
@@ -62,6 +61,7 @@ var config = {
             { from: 'node_modules/editor.md', to: 'scripts/lib/editor.md/' },
             { from: 'node_modules/codemirror', to: 'scripts/lib/editor.md/lib/codemirror' },
             { from: 'node_modules/blueimp-canvas-to-blob/js', to: 'scripts/lib/blueimp-canvas-to-blob' },
+            { from: 'node_modules/@aspnet/signalr-client/dist/browser', to: 'scripts/lib/signalr-client' },
             { from: 'spectrum/', to: 'scripts/lib/spectrum' },
         ]),
         new ExtractTextPlugin('content/site.min.css')

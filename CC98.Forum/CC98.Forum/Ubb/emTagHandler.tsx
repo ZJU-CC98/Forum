@@ -5,16 +5,24 @@
 import * as React from 'react';
 import * as Ubb from './Core';
 
-export class EmTagHandler extends Ubb.RecursiveTagHandler {
-    get supportedTagNames(): RegExp { return /em\d{2}/i }   //正则表达式，意为em+两位数字,i表示区分大小写
+export default class EmTagHandler extends Ubb.RecursiveTagHandler {
+	get supportedTagNames(): RegExp {
+		return /em\d{2}/i;
+	}   //正则表达式，意为em+两位数字,i表示区分大小写
 
-    execCore(innerContent: React.ReactNode, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
+	getTagMode(tagData: Ubb.UbbTagData): Ubb.UbbTagMode {
+		return Ubb.UbbTagMode.Empty;
+	}
 
-        const tagName = tagData.tagName;
-        const emoticonID = tagName.match(/\d{2}/).toString();
-        const emoticonNum = parseInt(emoticonID) + 1;
-        const url = `http://www.cc98.org/emot/em${emoticonNum}.gif`;
+	execCore(innerContent: React.ReactNode, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
 
-        return <div><img src={url} />{innerContent}</div>
-    }
+		const tagName = tagData.tagName;
+		const emoticonId = tagName.match(/\d{2}/).toString();
+		const emoticonNum = parseInt(emoticonId) + 1;
+		const url = `http://www.cc98.org/emot/em${emoticonNum}.gif`;
+
+		return <div>
+			<img src={url} alt="" />{innerContent}
+		</div>;
+	}
 }

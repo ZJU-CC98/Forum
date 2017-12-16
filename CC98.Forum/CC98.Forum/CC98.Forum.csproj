@@ -64,6 +64,7 @@
     <None Remove="States\MessageWindowState.tsx" />
     <None Remove="States\SearchState.tsx" />
     <None Remove="UbbCode.tsx" />
+    <None Remove="Ubb\AcTagHandler.tsx" />
     <None Remove="Ubb\AlignTagHandler.tsx" />
     <None Remove="Ubb\BTagHandler.tsx" />
     <None Remove="Ubb\CenterTagHandler.tsx" />
@@ -72,11 +73,11 @@
     <None Remove="Ubb\CursorTagHandler.tsx" />
     <None Remove="Ubb\DelTagHandler.tsx" />
     <None Remove="Ubb\emTagHandler.tsx" />
-    <None Remove="Ubb\EmTextHandler.tsx" />
     <None Remove="Ubb\EnglishTagHandler.tsx" />
     <None Remove="Ubb\FlashTagHandler.tsx" />
     <None Remove="Ubb\ImageTagHandler.tsx" />
     <None Remove="Ubb\LeftTagHandler.tsx" />
+    <None Remove="Ubb\mahjongTagHandler.tsx" />
     <None Remove="Ubb\mdTagHandler.tsx" />
     <None Remove="Ubb\MP3TagHandler.tsx" />
     <None Remove="Ubb\NoUbbTagHandler.tsx" />
@@ -86,7 +87,6 @@
     <None Remove="Ubb\TdTagHandler.tsx" />
     <None Remove="Ubb\ThTagHandler.tsx" />
     <None Remove="Ubb\TrTagHandler.tsx" />
-    <None Remove="Ubb\UnresolvedTagHandler.tsx" />
     <None Remove="Ubb\UploadTagHandler.tsx" />
     <None Remove="Ubb\URLTagHandler.tsx" />
     <None Remove="Ubb\UrlTextHandler.tsx" />
@@ -163,6 +163,7 @@
     <TypeScriptCompile Include="States\MessageWindowState.tsx" />
     <TypeScriptCompile Include="States\SearchState.tsx" />
     <TypeScriptCompile Include="Store.tsx" />
+    <TypeScriptCompile Include="Ubb\AcTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\AlignTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\BTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\CenterTagHandler.tsx" />
@@ -171,11 +172,11 @@
     <TypeScriptCompile Include="Ubb\CursorTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\DelTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\EmTagHandler.tsx" />
-    <TypeScriptCompile Include="Ubb\EmTextHandler.tsx" />
     <TypeScriptCompile Include="Ubb\EnglishTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\ImageTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\Core.tsx" />
     <TypeScriptCompile Include="Ubb\LeftTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\MahjongTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\MdTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\MP3TagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\NoUbbTagHandler.tsx" />
@@ -186,7 +187,6 @@
     <TypeScriptCompile Include="Ubb\ThTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\TopicTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\TrTagHandler.tsx" />
-    <TypeScriptCompile Include="Ubb\UnresolvedTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\UploadTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\UrlTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\UrlTextHandler.tsx" />

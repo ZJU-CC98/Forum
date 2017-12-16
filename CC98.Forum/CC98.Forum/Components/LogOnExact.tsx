@@ -116,13 +116,17 @@ class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff, histo
 
 
             this.setState({
-                loginMessage: '登录成功 正在返回首页'
+                loginMessage: '登录成功 正在返回'
             });
             this.props.logOn();
             this.props.changeUserInfo(Utility.getLocalStorage('userInfo'));
-            //跳转至首页
+            //跳转
             setTimeout(() => {
-                this.props.history.push('/');
+                if (this.props.history.length === 1) {
+                    this.props.history.push('/');
+                } else {
+                    this.props.history.go(-1);
+                }
             }, 100);
         } catch (e) {
             let info: string;

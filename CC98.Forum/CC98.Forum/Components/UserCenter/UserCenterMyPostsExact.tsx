@@ -59,6 +59,7 @@ export class UserCenterMyPostsExact extends React.Component<{match}, UserCenterM
                 this.setState({ hasTotal: true });
             } else {
                 totalPage = Math.max(Number.parseInt(this.props.match.params.page || 1) + 1, this.state.totalPage);
+                data.pop();
                 i = 10;
             }
 

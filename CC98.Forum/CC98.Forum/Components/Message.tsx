@@ -17,11 +17,12 @@ import {
 export class Message extends React.Component<{}, AppState> {
     
     render() {
-        let unreadCount = Utility.getStorage("unreadCount");
-        if (!unreadCount) {
-            Utility.refreshUnReadCount();
-            unreadCount = Utility.getStorage("unreadCount");
-        }
+        Utility.refreshUnReadCount();
+        let unreadCount = { totalCount: 0, replyCount: 0, atCount: 0, systemCount: 0, messageCount: 0 };
+        if (Utility.getStorage("unreadCount")) {
+            unreadCount = Utility.getStorage("unreadCount")
+        } 
+
         return (<div className="message-root">
                     <div className="message">
                             <div className="message-title">我的消息</div>

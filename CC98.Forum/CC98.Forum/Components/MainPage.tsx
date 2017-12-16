@@ -10,12 +10,12 @@ import { Link } from 'react-router-dom';
  * 全站公告组件
  * 为同时兼容新旧版98 临时调整了显示的内容
  **/
-export class AnnouncementComponent extends React.Component<{}, { announcementContent }> {
+export class AnnouncementComponent extends React.Component<{}, { announcementContent: string }> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
         this.state = {
-            announcementContent: { announcement: '加载中……', todayCount: 0 }
+            announcementContent: '加载中……'
         };
     }
     async getAnnouncement() {
@@ -34,12 +34,12 @@ export class AnnouncementComponent extends React.Component<{}, { announcementCon
         x = x.replace("[align=left]", "");
         x = x.replace(reg2, "");   //去掉了因未关闭暂时无法解析的[*]
         x = x.replace(reg3, "orchid");  //把恶心的大红色换成梦幻的紫色
-        return {announcement:x,todayCount:data.todayCount};
+        return x;
     }
     async componentDidMount() {
         const x = await this.getAnnouncement();
         this.setState({
-            announcementContent:x,
+            announcementContent: x,
         });
     }
     render() {
@@ -48,19 +48,48 @@ export class AnnouncementComponent extends React.Component<{}, { announcementCon
                 <div className="mainPageTitleRow">
                     <i className="fa fa-volume-up"></i>
                     <div className="mainPageTitleText">全站公告</div>
-                    <div style={{ marginLeft: "1rem", fontSize:"1rem" }}>今日帖数 {this.state.announcementContent.todayCount}</div>
                 </div>
             </div>
-            <div className="announcementContent"><UbbContainer code={this.state.announcementContent.announcement} /></div>
+            <div className="announcementContent"><UbbContainer code={this.state.announcementContent} /></div>
         </div>
     }
+}
+
+/**
+ * 推荐阅读内容
+ **/
+interface RecommendedReadingContent {
+    imageUrl: string;
+    title: string;
+    abstract: string;
 }
 
 /**
  * 推荐阅读组件
  **/
 export class RecommendedReadingComponent extends React.Component<{}, {}> {
-
+    /*
+    constructor(props) {
+        super(props);
+        this.state = {
+            contents: "",
+            showedContent: { imageUrl: "", title: "", abstract: "" },
+            index: Math.floor(Math.random() * 5),    //生成0-4的随机数
+        };
+    }
+    //获取推荐阅读内容
+    componentWillMount() {
+        let defaultContents: any = "";
+        for (let i = 0; i < 5; i++) {
+            defaultContents[i].imageUrl = "/images/推荐阅读.jpg";
+            defaultContents[i].title = "推荐阅读标题" + i;
+            defaultContents[i].abstract = "推荐阅读摘要" + i;
+        }
+        this.setState({
+            contents: defaultContents
+        })
+    }
+    */
     render() {
         return <div className="recommendedReading">
             <div className="mainPageTitle2">
@@ -77,7 +106,11 @@ export class RecommendedReadingComponent extends React.Component<{}, {}> {
                     <div className="recommendedReadingTitle">推荐阅读标题</div>
                     <div className="recommendedReadingAbstract">推荐阅读内容</div>
                     <div className="recommendedReadingButtons">
-                        <div>推荐阅读按钮</div>
+                        <div className="recommendedReadingButton" />
+                        <div className="recommendedReadingButton" />
+                        <div className="recommendedReadingButton" />
+                        <div className="recommendedReadingButton" />
+                        <div className="recommendedReadingButton" />
                     </div>
                 </div>
             </div>
@@ -140,7 +173,7 @@ export class HotTopicComponent extends React.Component<{}, MainPageTopicState> {
         const boardUrl = `/list/${item.boardid}`;
         const topicUrl = `/topic/${item.id}`;
         return <div className="mainPageListRow">
-            <div className="mainPageListBoardName"> <Link to={boardUrl}>[{item.boardName}]</Link></div >
+            <div className="mainPageListBoardName"> <Link to={boardUrl}>[{item.boardName}]</Link></div>
             <div className="mainPageListTitle"><Link to={topicUrl}>{item.title}</Link></div>
         </div >;
     }
@@ -162,7 +195,6 @@ export class HotTopicComponent extends React.Component<{}, MainPageTopicState> {
 
 /**
  * 实习兼职组件
- * 首页重画后尚未更新
  **/
 export class Shixijianzhi extends React.Component<{}, MainPageTopicState>{
 
@@ -196,13 +228,24 @@ export class Shixijianzhi extends React.Component<{}, MainPageTopicState>{
 
     convertMainPageTopic(item: MainPageTopic) {
         const topicUrl = `/topic/${item.id}`;
-        return <div className="listRow">
-            <div className="topicTitle"><a href={topicUrl}>{item.title}</a></div>
-        </div >;
+        return <div className="mainPageListRow">
+            <div className="mainPageListTitle"><Link to={topicUrl}>{item.title}</Link></div>
+        </div>
     }
 
     render() {
-        return <div>{this.state.mainPageTopicState.map(this.convertMainPageTopic)}</div>;
+        return <div className="mainPageList">
+            <div className="mainPageTitle2">
+                <div className="mainPageTitleRow">
+                    <i className="fa fa-volume-up"></i>
+                    <div className="mainPageTitleText">实习兼职</div>
+                </div>
+                <div className="mainPageTitleText"><Link to="/list/459">更多</Link></div>
+            </div>
+            <div className="mainPageListContent2">
+                {this.state.mainPageTopicState.map(this.convertMainPageTopic)}
+            </div>
+        </div>
     }
 }
 
@@ -339,9 +382,6 @@ export class SchoolNewsComponent extends React.Component<{}, {}>{
                 <div className="schoolNewsRow">
                     <div className="schoolNewsTitle">[公告] 浙江杭州 Dead论坛 CC98 倒闭啦 王八蛋站长带着小姨子主席逃跑了!</div>
                 </div>
-                <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle">[公告] 浙江杭州 Dead论坛 CC98 倒闭啦 王八蛋站长带着小姨子主席逃跑了!</div>
-                </div>
             </div>
         </div>
     }
@@ -361,16 +401,16 @@ export class MainPage extends React.Component<{}, AppState> {
                     <HotTopicComponent />
                 </div>
                 <div className="row" style={{ justifyContent: "space-between" }}>
-                    <HotTopicComponent />
-                    <HotTopicComponent />
+                    <Shixijianzhi />
+                    <Shixijianzhi />
                 </div>
                 <div className="row" style={{ justifyContent: "space-between" }}>
                     <HotTopicComponent />
                     <HotTopicComponent />
                 </div>
                 <div className="row" style={{ justifyContent: "space-between" }}>
-                    <HotTopicComponent />
-                    <HotTopicComponent />
+                    <Shixijianzhi />
+                    <Shixijianzhi />
                 </div>
             </div>
             <div className="rightPart">

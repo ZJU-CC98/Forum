@@ -142,6 +142,12 @@
     font-family: 微软雅黑;
     padding-left: 0.75rem;
     color: rgb(121,184,202);
+
+    a {
+        font-size: 1rem;
+        font-family: 微软雅黑;
+        color: rgb(121,184,202);
+    }
 }
 
 .mainPageTitle2 {
@@ -151,7 +157,13 @@
     font-size: 1.25rem;
     font-family: 微软雅黑;
     padding-left: 0.75rem;
-    color: #79b8ca;
+    color: rgb(107,113,120);
+
+    a {
+        font-size: 1rem;
+        font-family: 微软雅黑;
+        color: rgb(102,102,102);
+    }
 }
 
 .mainPageTitleRow {
@@ -198,8 +210,7 @@
     flex-direction: row;
     height: 7.5rem;
     margin-top: 1rem;
-    padding-left: 1.25rem;
-    padding-top: 1.25rem;
+    padding: 1.25rem;
     border-width: 8px 1px 1px 1px;
     border-style: solid;
     border-color: #79b8ca;
@@ -233,6 +244,7 @@
 .recommendedReadingAbstract {
     display: flex;
     flex-direction: row;
+    flex-grow: 1;
     margin-top: 0.75rem;
     font-size: 0.75rem;
     font-family: 微软雅黑;
@@ -246,18 +258,17 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    margin-right: 1.25rem;
 }
 
-.recommended1Button { //暂时没用到
-    width: 10px;
-    height: 10px;
+.recommendedReadingButton {
+    width: 0.625rem;
+    height: 0.625rem;
+    margin: 0 0.25rem;
     border-style: solid;
-    border-color: rgb(160,160,160);
+    border-color: rgb(107,113,120);
     border-width: 1px;
     border-radius: 50%;
     box-sizing: border-box;
-    margin: 0 5px 0 5px;
 }
 //列表区~
 .mainPageList {
@@ -337,7 +348,6 @@
     height: 21.25rem;
     margin-top: 1rem;
     padding: 1rem 1.25rem;
-    border: 0;
     box-sizing: border-box;
     background-color: rgb(121,184,202);
 }
@@ -377,13 +387,13 @@
 .schoolNewsContent {
     display: flex;
     flex-direction: column;
-    height: 21.25rem;
+    height: 20rem;
     margin-top: 1rem;
     padding-top: 1rem;
     padding-left: 1.25rem;
     padding-right: 1.25rem;
     box-sizing: border-box;
-    background-color: rgb(121,184,202);
+    background-color: rgb(107,113,120);
 }
 
 .schoolNewsRow {
