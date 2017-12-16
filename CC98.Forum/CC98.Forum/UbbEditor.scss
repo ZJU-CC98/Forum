@@ -37,6 +37,15 @@
         align-items: center;
     }
 
+    .ubb-color-picker {
+        opacity: 0;
+        width: 2rem;
+        height: 2rem;
+        margin: 0 1rem;
+        padding-bottom: 0;
+        padding-top: 0;
+    }
+
     .editor-buttons-extends, .editor-buttons-styles, .editor-buttons-selects {
         display: flex;
         align-items: center;
@@ -150,10 +159,12 @@
 
     .ubb-emoji-button {
         flex-grow: 1;
+        margin: 0;
     }
 
     .ubb-emoji-button-active {
         flex-grow: 2;
+        margin: 0;
         background-color: #ccc;
     }
 

@@ -42,30 +42,33 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
             if ((Utility.getLocalStorage("userInfo").privilege === '全站贵宾' && myId === this.props.userId))
                 $("#topicManagementBTN").css("display", "");
         }
-        editormd.emoji.path = '/images/emoji/';
-        Constants.testEditor = editormd("test-editormd", {
-            width: "100%",
-            height: 640,
-            path: "/scripts/lib/editor.md/lib/",
-            saveHTMLToTextarea: false,
-            imageUpload: false,
-            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-            imageUploadURL: "http://apitest.niconi.cc/file/",
-            emoji: true,
-            toolbarIcons: function () {
-                return [
-                    "undo", "redo", "|", "emoji",
-                    "bold", "del", "italic", "quote", "|",
-                    "h1", "h2", "h3", "h4", "|",
-                    "list-ul", "list-ol", "hr", "|",
-                    "link", "image", "code", "table", "html-entities",
-                ]
-            },
-            toolbarCustomIcons: {
-                file: "<input type='file' id='upload-files' style=' display: none ' onchange='uploadEvent()' />",
-                faicon: "<i class='fa fa-upload' onclick='clickUploadIcon()' style='cursor: pointer '></i>"
-            },
-        });
+
+        if (this.state.mode === 1) {
+            editormd.emoji.path = '/images/emoji/';
+            Constants.testEditor = editormd("test-editormd", {
+                width: "100%",
+                height: 640,
+                path: "/scripts/lib/editor.md/lib/",
+                saveHTMLToTextarea: false,
+                imageUpload: false,
+                imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                imageUploadURL: "http://apitest.niconi.cc/file/",
+                emoji: true,
+                toolbarIcons: function () {
+                    return [
+                        "undo", "redo", "|", "emoji",
+                        "bold", "del", "italic", "quote", "|",
+                        "h1", "h2", "h3", "h4", "|",
+                        "list-ul", "list-ol", "hr", "|",
+                        "link", "image", "code", "table", "html-entities",
+                    ]
+                },
+                toolbarCustomIcons: {
+                    file: "<input type='file' id='upload-files' style=' display: none ' onchange='uploadEvent()' />",
+                    faicon: "<i class='fa fa-upload' onclick='clickUploadIcon()' style='cursor: pointer '></i>"
+                },
+            });
+        }
         const time = moment(this.props.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
         const url = `/topic/${this.props.topicid}#${this.props.content.floor}`;
         const masters = this.props.boardInfo.masters;
