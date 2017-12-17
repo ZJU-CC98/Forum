@@ -38,6 +38,11 @@ class SignalRConnection {
     private _connection = new SignalR.HubConnection(this._url);
 
     /**
+     * 是否在链接状态
+     */
+    private _isConneting: boolean;
+
+    /**
      * 当前注册在connection上的事件监听
      */
     private _eventListeners: EventListener[] = [];
@@ -45,14 +50,14 @@ class SignalRConnection {
     /**
      * 为SignalR链接注册事件回掉函数
      */
-    public addSignalRListener(type: EventListenerType, handler: (message: any) => void);
+    public addListener(type: EventListenerType, handler: (message: any) => void);
 
     /**
      * 为SignalR链接注册多个事件回掉函数
      */
-    public addSignalRListener(listeners: EventListener[]): void;
+    public addListener(listeners: EventListener[]): void;
     
-    public addSignalRListener(x: EventListenerType | EventListener[], y?: (message: any) => void):void {
+    public addListener(x: EventListenerType | EventListener[], y?: (message: any) => void):void {
         if (Array.isArray(x)) {
             x.map((item) => {
                 this._eventListeners.push(item);
@@ -67,13 +72,13 @@ class SignalRConnection {
     /**
      * 为SignalR链接删除事件回掉函数
      */
-    public removeSignalRListener(listenerType: EventListenerType, listenerHandler: (message: any) => void);
+    public removeListener(listenerType: EventListenerType, listenerHandler: (message: any) => void);
 
     /**
      * 为SignalR链接删除事件多个回掉函数
      */
-    public removeSignalRListener(listeners: EventListener[]): void;
-    public removeSignalRListener(x: EventListenerType | EventListener[], y?: (message: any) => void): void {
+    public removeListener(listeners: EventListener[]): void;
+    public removeListener(x: EventListenerType | EventListener[], y?: (message: any) => void): void {
         if (Array.isArray(x)) {
             x.map((listener) => {
                 if (this._eventListeners.indexOf(listener) !== -1) {
@@ -107,16 +112,22 @@ class SignalRConnection {
          */
         if (this._currentToken !== token) {
             this._connection = new SignalR.HubConnection(this._url, { jwtBearer: ()=> token, logging: new SignalR.ConsoleLogger(SignalR.LogLevel.Trace) });
-            this.addSignalRListener(this._eventListeners);
+            this.addListener(this._eventListeners);
         }
-
-        this._connection.start();
+        this._connection.onclose(() => {
+            this.startSignalRConnection();
+            console.log('restarting...');
+        });
+        await this._connection.start();
+        this.sendMessage('TestNotify', "569380");
+        this._isConneting = true;
     }
 
     /**
      * 关闭SignalR链接
      */
     public stopSignalRConnection = () => {
+        this._isConneting = false;
         this._connection.stop();
     }
 }

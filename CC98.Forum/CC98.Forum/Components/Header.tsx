@@ -33,23 +33,20 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
         if (this.props.isLogOn) {
             SignalR.startSignalRConnection();
         }
-        /**
-         * 添加handler
-         * 添加的handler一定要卸载掉
-         * 卸载写在componentWillUnmount里
-         * 这里以NotifyMessageReceive事件和handleNotifyMessageReceive方法为例演示如何正确添加和卸载handler
-         * 注意只有有name的handler才能被正确的卸载
-         * 所以不要直接向addSignalRListener传入匿名函数
-         */
-        SignalR.addSignalRListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
 
+        SignalR.addListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
+        SignalR.addListener('NotifyNotificationChange', this.handleNotifyMessageReceive);
+        SignalR.addListener('NotifyTopicChange', this.handleNotifyMessageReceive);
     }
 
     componentWillUnmount() {
-        SignalR.removeSignalRListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
+        SignalR.removeListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
+        SignalR.removeListener('NotifyNotificationChange', this.handleNotifyMessageReceive);
+        SignalR.removeListener('NotifyTopicChange', this.handleNotifyMessageReceive);
     }
 
     async handleNotifyMessageReceive() {
+        console.log('好像收到了什么东西');
         await Utility.refreshUnReadCount();
         this.setState({
             unreadCount: Utility.getStorage("unreadCount")
@@ -73,7 +70,6 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
     logOff() {
         this.handleMouseEvent('mouseout', "userName");
         Utility.removeLocalStorage("accessToken");
-        console.log("after remove token=" + Utility.getLocalStorage("accessToken"));
         Utility.removeLocalStorage("userName");
         Utility.removeLocalStorage("password");
         Utility.removeLocalStorage("userInfo");
