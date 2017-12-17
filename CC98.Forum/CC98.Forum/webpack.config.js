@@ -38,8 +38,7 @@ var config = {
         'jquery': '$',
         'moment': 'moment',
         'editor.md': 'editormd',
-        'codemirror': 'CodeMirror',
-        '../node_modules/@aspnet/signalr-client/dist/src/index': 'signalR'
+        'codemirror': 'CodeMirror'
     },
     plugins: [
         new webpack.optimize.UglifyJsPlugin(),

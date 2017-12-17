@@ -11,8 +11,9 @@ import UserCenterExact from './UserCenterExact';
 import { UserCenterMyFollowings } from './UserCenterMyFollowings';
 import { UserCenterMyFans } from './UserCenterMyFans';
 import { UserCenterMyPostsExact } from './UserCenterMyPostsExact';
-import { UserCenterMyFavorites } from './UserCenterMyFavorites'; 
 import { UserCenterConfig } from './UserCenterConfig';
+import { UserCenterMyFavoritesBoards } from './UserCenterMyFavoritesBoards';
+import { UserCenterMyFavoritesPosts } from './UserCenterMyFavoritesPosts';
 
 
 /**
@@ -25,8 +26,9 @@ export class UserCenterRouter extends React.Component {
             <Route path="/usercenter/myfollowings/:page?" component={UserCenterMyFollowings} />
             <Route path="/usercenter/myfans/:page?" component={UserCenterMyFans} />
             <Route path="/usercenter/myposts/:page?" component={UserCenterMyPostsExact} />
-            <Route path="/usercenter/myfavorites" component={UserCenterMyFavorites} />
+            <Route path="/usercenter/myfavorites/:page?" component={UserCenterMyFavoritesPosts} />
             <Route path="/usercenter/config" component={UserCenterConfig} />
+            <Route path="/usercenter/mycustomboards" component={UserCenterMyFavoritesBoards} />
         </div>);
     }
 }

@@ -111,7 +111,7 @@ export class UserCenterMyFavoritesPosts extends React.Component<{match}, UserCen
         return (
             <div className="user-posts">
                 {userRecentPosts}
-                <UserCenterPageCount currentPage={this.props.match.params.page || 1} totalPage={this.state.totalPage} href="/usercenter/myfavorites/posts/" hasTotal={this.state.hasTotal}/>
+                <UserCenterPageCount currentPage={this.props.match.params.page || 1} totalPage={this.state.totalPage} href="/usercenter/myfavorites/" hasTotal={this.state.hasTotal}/>
             </div>
 
         );
