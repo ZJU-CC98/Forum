@@ -5,7 +5,7 @@ import * as $ from 'jquery';
 import { connect } from 'react-redux';
 import { userLogOff } from '../Actions';
 import { Link, withRouter, Route } from 'react-router-dom';
-import * as SignalR from '../SignalR';
+import SignalR from '../SignalR';
 
 class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { hoverElement: string, unreadCount: number}> {   //顶部条的下拉菜单组件
     constructor(props) {
@@ -25,13 +25,10 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
         if (this.props.isLogOn) {
             SignalR.startSignalRConnection();
         }
-        SignalR.addSignalRListener({
-            type: 'NotifyMessageReceive', handler: (text) => {
+        SignalR.addSignalRListener('NotifyMessageReceive', (text) => {
                 console.log('NotifyMessageReceive');
                 console.log(text);
-            }
         });
-        window.addEventListener('storage', e => console.log(e),false);
     }
 
     componentWillReceiveProps(nextProps) {

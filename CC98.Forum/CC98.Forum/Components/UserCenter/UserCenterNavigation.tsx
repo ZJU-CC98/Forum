@@ -72,7 +72,9 @@ export class UserCenterNavigation extends React.Component<null, UserCenterNaviga
                 <hr />
                 <li><NavLink to="/usercenter/myfavorites" activeClassName="user-center-navigation-active" className="fa-star"><p>我的收藏</p></NavLink></li>
                 <hr />
-                <li><NavLink to="/usercenter/myfollowings" activeClassName="user-center-navigation-active" className="fa-heart"><p>我的关注</p></NavLink></li>
+                <li><NavLink to="/usercenter/mycustomboards" activeClassName="user-center-navigation-active" className="fa-rss"><p>关注版面</p></NavLink></li>
+                <hr />
+                <li><NavLink to="/usercenter/myfollowings" activeClassName="user-center-navigation-active" className="fa-heart"><p>关注用户</p></NavLink></li>
                 <hr />
                 <li><NavLink to="/usercenter/myfans" activeClassName="user-center-navigation-active" className="fa-users"><p>我的粉丝</p></NavLink></li>
             </ul>
