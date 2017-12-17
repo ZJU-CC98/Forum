@@ -350,6 +350,10 @@ export class UserInfo {
     * 自定义头衔
     */
     customTitle: string;
+    /**
+     * 用户锁定状态，0正常  1锁定  2屏蔽  3全站TP
+     */
+    lockState: 0 | 1 | 2 | 3;
 }
 
 /**

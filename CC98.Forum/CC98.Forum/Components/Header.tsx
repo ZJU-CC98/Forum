@@ -31,6 +31,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
                 console.log(text);
             }
         });
+        window.addEventListener('storage', e => console.log(e),false);
     }
 
     componentWillReceiveProps(nextProps) {
