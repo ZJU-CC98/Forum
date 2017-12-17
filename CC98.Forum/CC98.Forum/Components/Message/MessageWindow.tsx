@@ -2,12 +2,12 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
-import { MessageProps } from '../Props/MessageProps';
-import { MessageWindowState } from '../States/MessageWindowState';
+import { MessageProps } from '../../Props/MessageProps';
+import { MessageWindowState } from '../../States/MessageWindowState';
 import { MessageSender } from './MessageSender';
 import { MessageReceiver } from './MessageReceiver';
-import { MessageWindowProps } from '../Props/MessageWindowProps';
-import * as Utility from '../Utility';
+import { MessageWindowProps } from '../../Props/MessageWindowProps';
+import * as Utility from '../../Utility';
 
 export class MessageWindow extends React.Component<MessageWindowProps, MessageWindowState>{
 

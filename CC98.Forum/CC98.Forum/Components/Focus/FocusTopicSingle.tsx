@@ -2,7 +2,7 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
-import { FocusTopic } from '../Props/FocusTopic';
+import { FocusTopic } from '../../Props/FocusTopic';
 declare let moment: any;
 /**
  * 我关注的某个版面的单个主题
@@ -40,7 +40,7 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
 export class PortaritrUrl extends React.Component<PortaritrUrlProps> {
     render() {
         if (this.props.userId) {
-            let userUrl = `/user/${this.props.userId}`;
+            let userUrl = `/user/id/${this.props.userId}`;
             return (<a href={userUrl} target="_blank">
                 <img className="focus-topic-portraitUrl" src={this.props.portraitUrl}></img>
             </a>);
@@ -55,7 +55,7 @@ export class PortaritrUrl extends React.Component<PortaritrUrlProps> {
 export class UserName extends React.Component<UserNameProps> {
     render() {
         if (this.props.userId) {
-            let userUrl = `/user/${this.props.userId}`;
+            let userUrl = `/user/id/${this.props.userId}`;
             return (<a href={userUrl} target="_blank" className="focus-topic-blackText">
                         <div className="focus-topic-blackText">{this.props.userName}</div>
                     </a>);

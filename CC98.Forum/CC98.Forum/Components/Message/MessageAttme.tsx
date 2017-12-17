@@ -2,11 +2,11 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
-import { MessageResponseState } from '../States/MessageResponseState';
-import { MessageResponseProps } from '../Props/MessageResponseProps';
+import { MessageResponseState } from '../../States/MessageResponseState';
+import { MessageResponseProps } from '../../Props/MessageResponseProps';
 import { MessageAttmebox } from './MessageAttmebox';
-import * as Utility from '../Utility';
-import { Pager } from './Pager';
+import * as Utility from '../../Utility';
+import { Pager } from '../Pager';
 
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件

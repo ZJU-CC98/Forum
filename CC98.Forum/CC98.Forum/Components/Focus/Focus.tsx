@@ -5,7 +5,7 @@ import * as React from 'react';
 import { FocusBoardArea } from './FocusBoardArea';
 import { FocusTopicArea } from './FocusTopicArea';
 import { FocusBoardTopicArea } from './FocusBoardTopicArea';
-import * as Utility from '../Utility';
+import * as Utility from '../../Utility';
 
 export class Focus extends React.Component<{}, FocusState> {
 

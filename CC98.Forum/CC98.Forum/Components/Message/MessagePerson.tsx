@@ -2,8 +2,8 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
-import { MessagePersonProps } from '../Props/MessagePersonProps';
-import { UbbContainer } from './UbbContainer'
+import { MessagePersonProps } from '../../Props/MessagePersonProps';
+import { UbbContainer } from '../UbbContainer'
 
 export class MessagePerson extends React.Component<MessagePersonProps> {
     
