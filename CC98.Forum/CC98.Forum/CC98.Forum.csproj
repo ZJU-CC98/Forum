@@ -119,12 +119,12 @@
     <TypeScriptCompile Include="Components\Topic\Topic-Award.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Judge.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-New.tsx" />
-    <TypeScriptCompile Include="Components\FocusBoardTopicArea.tsx" />
+    <TypeScriptCompile Include="Components\Focus\FocusBoardTopicArea.tsx" />
     <TypeScriptCompile Include="Components\Footer.tsx" />
     <TypeScriptCompile Include="Components\LogOn.tsx" />
     <TypeScriptCompile Include="Components\LogOnExact.tsx" />
     <TypeScriptCompile Include="Components\LogOff.tsx" />
-    <TypeScriptCompile Include="Components\Search.tsx" />
+    <TypeScriptCompile Include="Components\Search\Search.tsx" />
     <TypeScriptCompile Include="Components\Status.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-PostManagement.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-AwardInfo.tsx" />

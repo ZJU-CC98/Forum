@@ -2,11 +2,11 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
-import { MessageMessageState } from '../States/MessageMessageState';
-import { MessagePersonInfo } from '../Props/MessagePersonInfo';
+import { MessageMessageState } from '../../States/MessageMessageState';
+import { MessagePersonInfo } from '../../Props/MessagePersonInfo';
 import { MessagePerson } from './MessagePerson';
 import { MessageWindow } from './MessageWindow';
-import * as Utility from '../Utility';
+import * as Utility from '../../Utility';
 
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
