@@ -82,8 +82,8 @@ class SignalRConnection {
     /**
      * 向SignalR服务器发送信息
      */
-    public sendMessage() {
-
+    public sendMessage(methodName: string, ...message:string[]) {
+        this._connection.invoke(methodName, ...message);
     }
 
     /**
@@ -96,7 +96,7 @@ class SignalRConnection {
          * 然后把注册在旧的上的事件监听移到新的上
          */
         if (this._currentToken !== token) {
-            this._connection = new SignalR.HubConnection(this._url, { jwtBearer: ()=> token });
+            this._connection = new SignalR.HubConnection(this._url, { jwtBearer: ()=> token, logging: new SignalR.ConsoleLogger(SignalR.LogLevel.Trace) });
             this.addSignalRListener(this._eventListeners);
         }
 

@@ -112,7 +112,7 @@ class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff, histo
             Utility.setLocalStorage("userName", this.state.loginName);
             await Utility.refreshUserInfo();
             let userInfo = Utility.getLocalStorage('userInfo');
-            if (userInfo.lockState === 1 || userInfo.lockState === 3) {
+            if (userInfo.lockState === 1 || userInfo.lockState === 2) {
                 throw new Error('账号已锁定');
             }
             this.setState({
