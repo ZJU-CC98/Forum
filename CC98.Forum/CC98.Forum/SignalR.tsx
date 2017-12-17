@@ -1,9 +1,11 @@
 ﻿import * as SignalR from './SignalRClient/index';
 import { getToken } from './Utility';
+
 /**
 * 客户端事件类型，由服务器定义
 */
-type EventListenerType = 'NotifyMessageReceive' | 'NotifyTopicChange' | 'NotifyNotificationChange';
+type EventListenerType = 'NotifyMessageReceive' | 'NotifyTopicChange' | 'NotifyNotificationChange' | 'NotifyTest';
+
 /**
  * EventListenerType
  */
@@ -16,21 +18,25 @@ interface EventListener {
      * 事件对应的回掉函数
      * @param message 服务器返回的信息
      */
-    handler: (message: any)=>any
+    handler: (message: any) => void;
 }
+
 class SignalRConnection {
     /**
      * SignalR服务器地址
      */
     private readonly _url = 'http://apitest.niconi.cc/signalr/notification';
+
     /**
      * 当前connection所用的token
      */
     private _currentToken: string;
+
     /**
      * 当前正在进行的connection对象
      */
     private _connection = new SignalR.HubConnection(this._url);
+
     /**
      * 当前注册在connection上的事件监听
      */
@@ -39,11 +45,13 @@ class SignalRConnection {
     /**
      * 为SignalR链接注册事件回掉函数
      */
-    public addSignalRListener(listenerType: EventListenerType, listenerHandler: (message: any) => void);
+    public addSignalRListener(type: EventListenerType, handler: (message: any) => void);
+
     /**
      * 为SignalR链接注册多个事件回掉函数
      */
     public addSignalRListener(listeners: EventListener[]): void;
+    
     public addSignalRListener(x: EventListenerType | EventListener[], y?: (message: any) => void):void {
         if (Array.isArray(x)) {
             x.map((item) => {
@@ -55,10 +63,12 @@ class SignalRConnection {
             this._connection.on(x, y);
         }
     }
+
     /**
      * 为SignalR链接删除事件回掉函数
      */
     public removeSignalRListener(listenerType: EventListenerType, listenerHandler: (message: any) => void);
+
     /**
      * 为SignalR链接删除事件多个回掉函数
      */
@@ -82,14 +92,14 @@ class SignalRConnection {
     /**
      * 向SignalR服务器发送信息
      */
-    public sendMessage(methodName: string, ...message:string[]) {
+    public sendMessage(methodName: string, ...message:any[]) {
         this._connection.invoke(methodName, ...message);
     }
 
     /**
      * 开始SignalR链接
      */
-    public startSignalRConnection = async () => {
+    public async startSignalRConnection() {
         const token = await getToken();
         /**
          * token更换过就创建一个新的
@@ -100,7 +110,7 @@ class SignalRConnection {
             this.addSignalRListener(this._eventListeners);
         }
 
-        this._connection.start()
+        this._connection.start();
     }
 
     /**
@@ -110,7 +120,5 @@ class SignalRConnection {
         this._connection.stop();
     }
 }
-/**
- * 创建一个实例并默认导出
- */
+
 export default new SignalRConnection();

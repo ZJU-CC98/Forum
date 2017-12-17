@@ -7,28 +7,57 @@ import { userLogOff } from '../Actions';
 import { Link, withRouter, Route } from 'react-router-dom';
 import SignalR from '../SignalR';
 
-class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { hoverElement: string, unreadCount: number}> {   //顶部条的下拉菜单组件
+class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { hoverElement: string, unreadCount:{ totalCount: number, replyCount: number, atCount: number, systemCount: number, messageCount: number }}> {   //顶部条的下拉菜单组件
     constructor(props) {
         super(props);
         this.state = ({
             hoverElement: null,
-            unreadCount: 0
+            unreadCount: {
+                totalCount: 0,
+                atCount: 0,
+                messageCount: 0,
+                replyCount: 0,
+                systemCount: 0
+            }
         });
+        this.handleNotifyMessageReceive = this.handleNotifyMessageReceive.bind(this);
     }
     /**
      * 这里是signalR的部分
-     * 等服务器可以Authorization了再说
-     * 反正就差认证了
      */
     componentDidMount() {
-        //如果用户已经登录则开始signalR链接
+        /**
+         * SignalR的开始与结束全部由header来控制
+         * 其他组件只负责添加handler即可
+         */
         if (this.props.isLogOn) {
             SignalR.startSignalRConnection();
         }
-        SignalR.addSignalRListener('NotifyMessageReceive', (text) => {
-                console.log('NotifyMessageReceive');
-                console.log(text);
+        /**
+         * 添加handler
+         * 添加的handler一定要卸载掉
+         * 卸载写在componentWillUnmount里
+         * 这里以NotifyMessageReceive事件和handleNotifyMessageReceive方法为例演示如何正确添加和卸载handler
+         * 注意只有有name的handler才能被正确的卸载
+         * 所以不要直接向addSignalRListener传入匿名函数
+         */
+        SignalR.addSignalRListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
+
+    }
+
+    componentWillUnmount() {
+        SignalR.removeSignalRListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
+    }
+
+    async handleNotifyMessageReceive() {
+        await Utility.refreshUnReadCount();
+        this.setState({
+            unreadCount: Utility.getStorage("unreadCount")
         });
+    }
+
+    componentWillMount() {
+        this.handleNotifyMessageReceive();
     }
 
     componentWillReceiveProps(nextProps) {
