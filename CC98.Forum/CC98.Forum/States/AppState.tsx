@@ -52,7 +52,7 @@ export class TopicTitleState {
 export class ContentState {
     constructor(
     ) {
-       
+
     }
     id: number;
     content: string;
@@ -94,13 +94,6 @@ export class ReplierState {
     replyTime: string;
     imgUrl: string;
     timeImgUrl: string;
-}
-/**
- * 首页话题信息状态
- * 拥有一个属性mainPageTopicState，为MainPageTopic类数组，用于存放组件所需的主题信息（一般为10条）
- **/
-export class MainPageTopicState {
-    mainPageTopicState: MainPageTopic[];
 }
 
 export class ListHeadState {
@@ -165,7 +158,7 @@ export class TopicTitleAndContentState {
     highlightInfo: any;
     topState: number;
     state: number;
-    hitCount:number;
+    hitCount: number;
 }
 
 /**
@@ -218,7 +211,7 @@ export class TopicState {
         this.fanCount = fanCount;
         this.likeInfo = likeInfo;
         this.awardInfo = awardInfo;
-   
+
     }
     userName: string;
     title: string;
@@ -350,6 +343,10 @@ export class UserInfo {
     * 自定义头衔
     */
     customTitle: string;
+    /**
+     * 用户锁定状态，0正常  1锁定  2屏蔽  3全站TP
+     */
+    lockState: 0 | 1 | 2 | 3;
 }
 
 /**

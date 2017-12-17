@@ -69,8 +69,6 @@ export class HttpConnection implements IConnection {
                     method: 'OPTIONS',
                     headers
                 });//this.httpClient.post(this.baseUrl, "", headers);
-                console.log("negotiatePayloadafter");
-                console.log(negotiatePayload);
                 let negotiateResponse: INegotiateResponse = await negotiatePayload.json();
                 this.connectionId = negotiateResponse.connectionId;
 

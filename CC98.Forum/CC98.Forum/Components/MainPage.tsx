@@ -1,6 +1,5 @@
 ﻿import * as React from 'react';
 import { AppState } from '../States/AppState';
-import { MainPageTopicState } from '../States/AppState';
 import * as $ from 'jquery';
 import * as Utility from '../Utility';
 import { UbbContainer } from './UbbContainer';
@@ -142,7 +141,7 @@ export class MainPageTopic {
 /**
  * 热门话题组件
  **/
-export class HotTopicComponent extends React.Component<{}, MainPageTopicState> {
+export class HotTopicComponent extends React.Component<{}, { mainPageTopicState: MainPageTopic[] }> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
@@ -196,7 +195,7 @@ export class HotTopicComponent extends React.Component<{}, MainPageTopicState> {
 /**
  * 实习兼职组件
  **/
-export class Shixijianzhi extends React.Component<{}, MainPageTopicState>{
+export class Shixijianzhi extends React.Component<{}, { mainPageTopicState: MainPageTopic[] }> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
@@ -294,6 +293,29 @@ export class Test extends React.Component<{}, { testContent: string }>{
 }
 
 /**
+ * 首页栏目类
+ * 用于首页的栏目，包括推荐阅读、推荐功能以及校园新闻。
+ * 该类的成员对象包括：图片url（校园新闻不需要），标题，url，以及摘要（仅推荐阅读需要）
+ * 这部分栏目均设置在新窗口打开链接
+ **/
+export class MainPageColumn {
+
+    //属性
+    imageUrl: string;
+    title: string;
+    url: string;
+    content: string;
+
+    //构造方法
+    constructor(imageUrl, title, url, content) {
+        this.imageUrl = imageUrl;
+        this.title = title;
+        this.url = url;
+        this.content = content;
+    }
+}
+
+/**
  * 推荐功能组件
  */
 export class RecommendedFunctionComponent extends React.Component<{}, {}>{
@@ -338,11 +360,37 @@ export class RecommendedFunctionComponent extends React.Component<{}, {}>{
 /**
  * 校园新闻组件
  */
-export class SchoolNewsComponent extends React.Component<{}, {}>{
+export class SchoolNewsComponent extends React.Component<{}, { schoolNews: MainPageColumn[] }>{
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            schoolNews: new Array<MainPageColumn>(),
+        };
     }
+
+    async getSchoolNews() {
+        const schoolnews: MainPageColumn[] = new Array<MainPageColumn>();
+        const response = await fetch('http://apitest.niconi.cc/index/column/schoolnews');
+        const data = await response.json();
+        for (let i = 0; i < 10; i++) {
+            schoolnews[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
+        }
+        return schoolnews;
+    }
+
+    async componentWillMount() {
+        const x = await this.getSchoolNews();
+        this.setState({
+            schoolNews: x
+        });
+    }
+
+    convertSchoolNews(item: MainPageColumn) {
+        return <div className="schoolNewsRow">
+            <div className="schoolNewsTitle"><a href={item.url} target="view_window">{item.title}</a></div>
+        </div>
+    }
+
     render() {
         return <div className="schoolNews">
             <div className="mainPageTitle2">
@@ -352,36 +400,7 @@ export class SchoolNewsComponent extends React.Component<{}, {}>{
                 </div>
             </div>
             <div className="schoolNewsContent">
-                <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle">[公告] 浙江杭州 Dead论坛 CC98 倒闭啦 王八蛋站长带着小姨子主席逃跑了!</div>
-                </div>
-                <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle">[公告] 浙江杭州 Dead论坛 CC98 倒闭啦 王八蛋站长带着小姨子主席逃跑了!</div>
-                </div>
-                <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle">[公告] 浙江杭州 Dead论坛 CC98 倒闭啦 王八蛋站长带着小姨子主席逃跑了!</div>
-                </div>
-                <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle">[公告] 浙江杭州 Dead论坛 CC98 倒闭啦 王八蛋站长带着小姨子主席逃跑了!</div>
-                </div>
-                <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle">[公告] 浙江杭州 Dead论坛 CC98 倒闭啦 王八蛋站长带着小姨子主席逃跑了!</div>
-                </div>
-                <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle">[公告] 浙江杭州 Dead论坛 CC98 倒闭啦 王八蛋站长带着小姨子主席逃跑了!</div>
-                </div>
-                <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle">[公告] 浙江杭州 Dead论坛 CC98 倒闭啦 王八蛋站长带着小姨子主席逃跑了!</div>
-                </div>
-                <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle">[公告] 浙江杭州 Dead论坛 CC98 倒闭啦 王八蛋站长带着小姨子主席逃跑了!</div>
-                </div>
-                <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle">[公告] 浙江杭州 Dead论坛 CC98 倒闭啦 王八蛋站长带着小姨子主席逃跑了!</div>
-                </div>
-                <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle">[公告] 浙江杭州 Dead论坛 CC98 倒闭啦 王八蛋站长带着小姨子主席逃跑了!</div>
-                </div>
+                {this.state.schoolNews.map(this.convertSchoolNews)}
             </div>
         </div>
     }

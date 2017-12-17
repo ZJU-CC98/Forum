@@ -213,7 +213,7 @@
     padding: 1.25rem;
     border-width: 8px 1px 1px 1px;
     border-style: solid;
-    border-color: #79b8ca;
+    border-color: rgb(107,113,120);
     box-sizing: border-box;
     background-color: rgb(252,252,252);
 }
@@ -308,12 +308,16 @@
     display: flex;
     flex-direction: row;
     flex-grow: 1;
+    align-content: center;
     white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
     overflow: hidden; //不显示超过对象尺寸的内容
 }
 
 .mainPageListBoardName {
     margin-right: 0.375rem;
+    font-size: 0.75rem;
+    font-family: 微软雅黑;
+    color: rgb(251,97,101);
 
     a {
         font-size: 0.75rem;
@@ -324,6 +328,9 @@
 
 .mainPageListTitle {
     flex-grow: 1;
+    font-size: 0.75rem;
+    font-family: 微软雅黑;
+    color: rgb(102,102,102);
     white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
     overflow: hidden; //不显示超过对象尺寸的内容
     text-overflow: ellipsis; //当文本对象溢出时显示...
@@ -389,9 +396,7 @@
     flex-direction: column;
     height: 20rem;
     margin-top: 1rem;
-    padding-top: 1rem;
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
+    padding: 1.5rem 1.25rem 1rem 1.25rem;
     box-sizing: border-box;
     background-color: rgb(107,113,120);
 }
@@ -410,6 +415,11 @@
     white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
     overflow: hidden; //不显示超过对象尺寸的内容
     text-overflow: ellipsis; //当文本对象溢出时显示...
+    a {
+        font-size: 0.75rem;
+        font-family: 微软雅黑;
+        color: rgb(255,255,255);
+    }
 }
 
 //首页广告

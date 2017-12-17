@@ -7,6 +7,7 @@ import * as Ubb from './Core';
 
 /**
  * 处理 [url] 标签的处理器。
+ * TODO:对于外链的判断
  */
 export class UrlTagHandler extends Ubb.RecursiveTagHandler {
     get supportedTagNames(): string {
@@ -14,7 +15,7 @@ export class UrlTagHandler extends Ubb.RecursiveTagHandler {
     }
 
     execCore(innerContent: string, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
-        
+
         let url = tagData.value('url');
         if (!url) {
             url = innerContent;
