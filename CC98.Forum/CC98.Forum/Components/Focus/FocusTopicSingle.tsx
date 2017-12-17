@@ -40,7 +40,7 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
 export class PortaritrUrl extends React.Component<PortaritrUrlProps> {
     render() {
         if (this.props.userId) {
-            let userUrl = `/user/${this.props.userId}`;
+            let userUrl = `/user/id/${this.props.userId}`;
             return (<a href={userUrl} target="_blank">
                 <img className="focus-topic-portraitUrl" src={this.props.portraitUrl}></img>
             </a>);
@@ -55,7 +55,7 @@ export class PortaritrUrl extends React.Component<PortaritrUrlProps> {
 export class UserName extends React.Component<UserNameProps> {
     render() {
         if (this.props.userId) {
-            let userUrl = `/user/${this.props.userId}`;
+            let userUrl = `/user/id/${this.props.userId}`;
             return (<a href={userUrl} target="_blank" className="focus-topic-blackText">
                         <div className="focus-topic-blackText">{this.props.userName}</div>
                     </a>);
