@@ -84,7 +84,7 @@ export class RecommendedReadingComponent extends React.Component<{}, { recommend
             recommendedReading: x
         });
     }
-    //在componentWillMount前似乎会render一次 这时this.state还是初值 所以整个主页就崩啦
+    //在componentWillMount前似乎会render一次 这时this.state还是初值  所以需要先判断一次
     render() {
         let recommendedReading = this.state.recommendedReading;
         let index = this.state.index;
