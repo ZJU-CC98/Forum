@@ -44,7 +44,6 @@ export class App extends React.Component<null, AppState> {
             <Router>
                 <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px", backgroundColor:"#f5fafe" }}>
                     <Header />
-                    <Test1 />
                     <Switch>
                         <Route exact path="/" component={MainPage}></Route>
                         <Route exact path="/topic/:topicid/:page?" component={ShowTopic} />

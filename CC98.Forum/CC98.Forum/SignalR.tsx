@@ -50,7 +50,7 @@ class SignalRConnection {
     /**
      * 为SignalR链接注册事件回掉函数
      */
-    public addListener(type: EventListenerType, handler: (message: any) => void);
+    public addListener(type: EventListenerType, handler: (message: any) => void):void;
 
     /**
      * 为SignalR链接注册多个事件回掉函数
@@ -72,7 +72,7 @@ class SignalRConnection {
     /**
      * 为SignalR链接删除事件回掉函数
      */
-    public removeListener(listenerType: EventListenerType, listenerHandler: (message: any) => void);
+    public removeListener(type: EventListenerType, handler: (message: any) => void): void;
 
     /**
      * 为SignalR链接删除事件多个回掉函数
@@ -104,33 +104,47 @@ class SignalRConnection {
     /**
      * 开始SignalR链接
      */
-    public async startSignalRConnection() {
+    public async start() {
         const token = await getToken();
         /**
-         * token更换过就创建一个新的
-         * 然后把注册在旧的上的事件监听移到新的上
-         */
+            * token更换过就创建一个新的
+            * 然后把注册在旧的上的事件监听移到新的上
+            */
         if (this._currentToken !== token) {
-            this._connection = new SignalR.HubConnection(this._url, { jwtBearer: ()=> token, logging: new SignalR.ConsoleLogger(SignalR.LogLevel.Trace) });
+            this._connection = new SignalR.HubConnection(this._url, { jwtBearer: () => token, logging: new SignalR.ConsoleLogger(SignalR.LogLevel.Trace) });
             this.addListener(this._eventListeners);
         }
-        //this._connection.onclose(() => {
-        //    if (this._isConneting) {
-        //        this.startSignalRConnection();
-        //        console.log('restarting...');
-        //    }
-        //});
+        /**
+            * 自动重新开始链接
+            */
+        this._connection.onclose(() => {
+            if (this._isConneting) {
+                this.start();
+                console.log('restarting...');
+            }
+        });
+
         await this._connection.start();
-        this.sendMessage('TestNotify', "569380");
+        console.log('starting...');
+        //this.sendMessage('TestNotify', "569380");
+
         this._isConneting = true;
+        
     }
 
     /**
      * 关闭SignalR链接
      */
-    public stopSignalRConnection = () => {
+    public stop() {
         this._isConneting = false;
         this._connection.stop();
+    }
+
+    /**
+     * 
+     */
+    public get status() {
+        return this._isConneting;
     }
 }
 
