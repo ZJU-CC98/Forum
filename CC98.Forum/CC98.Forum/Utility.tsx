@@ -2620,8 +2620,7 @@ export async function refreshUnReadCount() {
     const url = `/me/unread-count`;
     const response = await cc98Fetch(url, { headers });
     let unreadCount = await response.json();
-    unreadCount.totalCount = unreadCount.systemCount + unreadCount.atCount + unreadCount.replyCount + unreadCount.messageCount;
-    setStorage("unreadCount", unreadCount);
+    unreadCount.totalCount = unreadCount.systemCount + unreadCount.atCount + unreadCount.replyCount + unreadCount.messageCount;   
     if (unreadCount.totalCount > 0) {
         $('#unreadCount-totalCount').removeClass('displaynone');
         $('#unreadCount-totalCount1').removeClass('displaynone');
@@ -2662,6 +2661,7 @@ export async function refreshUnReadCount() {
         $('#unreadCount-messageCount').addClass('displaynone');
         $('#unreadCount-messageCount1').addClass('displaynone');
     }
+    setStorage("unreadCount", unreadCount);
     return unreadCount;
 }
 export async function editPost(postId, contentType, title, content) {
@@ -2687,7 +2687,7 @@ export async function cc98Fetch(url, init?: RequestInit) {
     console.log("base");
     console.log(baseUrl);*/
     const baseUrl = 'http://apitest.niconi.cc';
-    const _url = urljoin(baseUrl, url);
+    const _url = `${baseUrl}${url}`;
     let response;
     if (init) {
         response = await fetch(_url, init);

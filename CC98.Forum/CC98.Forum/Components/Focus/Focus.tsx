@@ -18,6 +18,7 @@ export class Focus extends React.Component {
                         <div className="focus">
                                 <div className="focus-nav">
                                     <Link to='/focus/board'> <div className="focus-title">关注版面</div></Link>
+                                    <div className="focus-title-bar"></div>
                                     <Link to='/focus/user'> <div className="focus-title">关注用户</div></Link>
                         </div>
                                 <Route exact path="/focus" component={FocusBoardArea}></Route>
