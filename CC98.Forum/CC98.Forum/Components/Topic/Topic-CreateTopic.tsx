@@ -43,10 +43,10 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
     }
     async componentWillMount() {
         const token = Utility.getLocalStorage("accessToken");
-        const url = `http://apitest.niconi.cc/Board/${this.match.params.boardId}`;
+        const url = `/Board/${this.match.params.boardId}`;
         const headers = new Headers();
         headers.append("Authorization", token);
-        const response = await fetch(url, { headers });
+        const response = await Utility.cc98Fetch(url, { headers });
         const data = await response.json();
         const boardName = data.name;
         //获取标签
@@ -68,7 +68,7 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
     }
     async sendMdTopic(content1) {
         try {
-            let url = `http://apitest.niconi.cc/board/${this.match.params.boardId}/topic`;
+            let url = `/board/${this.match.params.boardId}/topic`;
             let content = {
                 content: content1,
                 contentType: 1,
@@ -79,7 +79,7 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
             let myHeaders = new Headers();
             myHeaders.append("Authorization", token);
             myHeaders.append("Content-Type", 'application/json');
-            let mes = await fetch(url, {
+            let mes = await Utility.cc98Fetch(url, {
 
                 method: 'POST',
 
@@ -101,7 +101,7 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
         }
     }
     async sendUbbTopic() {
-        const url = `http://apitest.niconi.cc/board/${this.match.params.boardId}/topic`;
+        const url = `/board/${this.match.params.boardId}/topic`;
         const content = {
             content: this.state.content,
             contentType: 0,
@@ -112,7 +112,7 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
         let myHeaders = new Headers();
         myHeaders.append("Authorization", token);
         myHeaders.append("Content-Type", 'application/json');
-        let response = await fetch(url, {
+        let response = await Utility.cc98Fetch(url, {
             method: 'POST',
             headers: myHeaders,
             body: contentJson
@@ -125,11 +125,11 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
         //如果存在合法的@，则发送@信息，否则不发送，直接跳转至所发帖子
         if (atUsers) {
             const atUsersJSON = JSON.stringify(atUsers);
-            const url2 = `http://apitest.niconi.cc/notification/atuser?topicid=${topicId}`;
+            const url2 = `/notification/atuser?topicid=${topicId}`;
             let myHeaders2 = new Headers();
             myHeaders2.append("Content-Type", 'application/json');
             myHeaders2.append("Authorization", token);
-            let response2 = await fetch(url2, {
+            let response2 = await Utility.cc98Fetch(url2, {
                 method: 'POST',
                 headers: myHeaders2,
                 body: atUsersJSON

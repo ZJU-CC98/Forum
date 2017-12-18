@@ -30,10 +30,10 @@ class UserManage extends React.Component<{ id, changePage, match, notFoundUser }
         const id = this.props.id === 0 ? this.props.match.params.id : this.props.id;
         this.props.changePage('manage', id);
         try {
-            const url = `http://apitest.niconi.cc/User/${id}`;
+            const url = `/User/${id}`;
             let myHeaders = new Headers();
             myHeaders.append('Authorization', await Utility.getToken());
-            let response = await fetch(url, {
+            let response = await Utility.cc98Fetch(url, {
                 headers: myHeaders
             });
             const data: UserInfo = await response.json();

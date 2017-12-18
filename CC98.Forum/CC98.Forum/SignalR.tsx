@@ -1,6 +1,6 @@
 ﻿import * as SignalR from './SignalRClient/index';
 import { getToken } from './Utility';
-
+import * as Utility from './Utility';
 /**
 * 客户端事件类型，由服务器定义
 */
@@ -25,7 +25,7 @@ class SignalRConnection {
     /**
      * SignalR服务器地址
      */
-    private readonly _url = 'http://apitest.niconi.cc/signalr/notification';
+    private readonly _url = `${Utility.getApiUrl()}/signalr/notification`;
 
     /**
      * 当前connection所用的token

@@ -18,7 +18,7 @@ export class AnnouncementComponent extends React.Component<{}, { announcementCon
         };
     }
     async getAnnouncement() {
-        const response = await fetch('http://apitest.niconi.cc/config/global');
+        const response = await Utility.cc98Fetch('/config/global');
         const data = await response.json();
         const announcement: string = data.announcement;
         //return announcement;
@@ -157,7 +157,7 @@ export class HotTopicComponent extends React.Component<{}, { mainPageTopicState:
 
     async getTopicInfo() {
         const mainPageTopics: MainPageTopic[] = [];
-        const response = await fetch('http://apitest.niconi.cc/Topic/Hot');
+        const response = await Utility.cc98Fetch('/Topic/Hot');
         const data = await response.json();
         for (let i = 0; i < 10; i++) {
             mainPageTopics[i] = new MainPageTopic(data[i].title, data[i].id, data[i].boardName, data[i].boardId);
@@ -211,10 +211,10 @@ export class Shixijianzhi extends React.Component<{}, { mainPageTopicState: Main
 
     async getTopicInfo() {
         const mainPageTopics: MainPageTopic[] = [];
-        const url = 'http://apitest.niconi.cc/Board/459/topic?from=0&size=10';
+        const url = '/Board/459/topic?from=0&size=10';
         const headers = new Headers();
 
-        const response = await fetch(url,
+        const response = await Utility.cc98Fetch(url,
             { headers });   //该api要求提供返回主题的数量，这里需要返回10条
         const data = await response.json();
         for (let i = 0; i < 10; i++) {
@@ -415,7 +415,7 @@ export class SchoolNewsComponent extends React.Component<{}, { schoolNews: MainP
 
     async getSchoolNews() {
         const schoolnews: MainPageColumn[] = new Array<MainPageColumn>();
-        const response = await fetch('http://apitest.niconi.cc/index/column/schoolnews');
+        const response = await Utility.cc98Fetch('/index/column/schoolnews');
         const data = await response.json();
         for (let i = 0; i < 10; i++) {
             schoolnews[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);

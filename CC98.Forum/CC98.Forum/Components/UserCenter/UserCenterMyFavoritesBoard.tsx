@@ -27,11 +27,11 @@ export class UserCenterMyFavoritesBoard extends React.Component<UserCenterMyFavo
         try {
             const token = await Utility.getToken();
             const boardId = this.props.UserFavoritesBoard.id;
-            const url = `http://apitest.niconi.cc/me/custom-board/${boardId}`;
+            const url = `/me/custom-board/${boardId}`;
             let myHeaders = new Headers();
             myHeaders.append('Authorization', token);
 
-            let res = await fetch(url, {
+            let res = await Utility.cc98Fetch(url, {
                 method: 'DELETE',
                 headers: myHeaders
             });
@@ -62,10 +62,10 @@ export class UserCenterMyFavoritesBoard extends React.Component<UserCenterMyFavo
             const token = await Utility.getToken();
 
             const boardId = this.props.UserFavoritesBoard.id;
-            const url = `http://apitest.niconi.cc/me/custom-board/${boardId}`;
+            const url = `/me/custom-board/${boardId}`;
             let myHeaders = new Headers();
             myHeaders.append('Authorization', token);
-            let res = await fetch(url, {
+            let res = await Utility.cc98Fetch(url, {
                 method: 'PUT',
                 headers: myHeaders
             });

@@ -18,7 +18,7 @@ export class BoardList extends React.Component<{}, { thisBoardState: Board[] }> 
         let boardNameList = [];
         const board: Board[] = [];
         if (!Utility.getStorage('board_2')) {   //缓存
-            const response = await fetch('http://apitest.niconi.cc/Board/Root');
+            const response = await Utility.cc98Fetch('/Board/Root');
             const data = await response.json();
             for (let i = 0; i < 20; i++) {
                 board[i] = new Board(data[i].name, data[i].todayCount, data[i].postCount, data[i].id, data[i].boardMastersString);
@@ -120,7 +120,7 @@ export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>
         const headers = new Headers();
         headers.append("Authorization", token);
         const boards: Board[] = [];
-        const response = await fetch(`http://apitest.niconi.cc/Board/${this.props.boardid}/Sub`, {headers});
+        const response = await Utility.cc98Fetch(`/Board/${this.props.boardid}/Sub`, {headers});
         const data = await response.json();
         for (let i = 0; i < data.length; i++) {
             boards[i] = new Board(data[i].name, data[i].todayCount, data[i].postCount, data[i].id, data[i].masters);

@@ -33,8 +33,8 @@ export class UserCenterMyFollowings extends React.Component<{match}, UserCenterM
         this.getInfo(this.props.match.params.page);
         try {            
             const userid = Utility.getLocalStorage('userInfo').id;
-            const url = `http://apitest.niconi.cc/user/followee/count?userid=${userid}`
-            let res = await fetch(url);
+            const url = `/user/followee/count?userid=${userid}`
+            let res = await Utility.cc98Fetch(url);
 
             if (res.status !== 200) {
                 throw new Error();
@@ -54,10 +54,10 @@ export class UserCenterMyFollowings extends React.Component<{match}, UserCenterM
             window.scroll(0, 0);
             this.setState({ isLoading: true });
             const token = await Utility.getToken();
-            let url = `http://apitest.niconi.cc/me/followee?from=${(page - 1) * 10}&size=10`;
+            let url = `/me/followee?from=${(page - 1) * 10}&size=10`;
             const headers = new Headers();
             headers.append('Authorization', token);
-            let res = await fetch(url, {
+            let res = await Utility.cc98Fetch(url, {
                 headers
             });
             if (res.status !== 200) {
@@ -76,8 +76,8 @@ export class UserCenterMyFollowings extends React.Component<{match}, UserCenterM
 
             
             let requests = await Promise.all(data.map((item) => {
-                url = `http://apitest.niconi.cc/user/${item}`;
-                return fetch(url, { headers });
+                url = `/user/${item}`;
+                return Utility.cc98Fetch(url, { headers });
             }));
                            
             let fanData = await Promise.all(requests.map((item)=>(item.json())));
