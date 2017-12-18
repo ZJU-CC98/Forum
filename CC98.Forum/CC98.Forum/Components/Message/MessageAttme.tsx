@@ -39,6 +39,8 @@ export class MessageAttme extends React.Component<{match}, MessageResponseState>
         if (data) {
             this.setState({ data: data, from: curPage + 1, totalPage: totalPage });
         }
+        //更新消息数量
+        await Utility.refreshUnReadCount();
     }
 
     async componentDidMount() {

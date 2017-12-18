@@ -3,56 +3,28 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
 import { FocusBoardArea } from './FocusBoardArea';
-import { FocusTopicArea } from './FocusTopicArea';
-import { FocusBoardTopicArea } from './FocusBoardTopicArea';
+import { FocusUserArea } from './FocusUserArea';
 import * as Utility from '../../Utility';
+import { Link, BrowserRouter as Router, Route } from 'react-router-dom';
 
-export class Focus extends React.Component<{}, FocusState> {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            id: null,
-            name: null
-        }
-    }
-
-    changeFocusBoard = () => {
-        let currentFocusBoard = Utility.getStorage("currentFocusBoard");
-        if (currentFocusBoard) {
-            this.setState({ id: currentFocusBoard.boardId, name: currentFocusBoard.boardName });
-        }
-        else {
-            this.setState({ id: null, name: null });
-        }
-    }
-
+export class Focus extends React.Component {
+    
     /**
-     * 从上往下分别为：页面标题、关注版面列表区域、关注版面的主题列表区域，分别用三个组件表示
+     * 从上往下分别为：页面标题(关注版面或者关注用户)、关注版面列表区域、主题列表区域，分别用三个组件表示
      */
     render() {
-        if (!this.state.id) {
-            return (<div className="focus-root">
-                <div className="focus">
-                    <div className="focus-title">我的关注</div>
-                    <FocusBoardArea onChange={this.changeFocusBoard} />
-                    <FocusTopicArea />
-                </div>
-            </div>);
+        return (<div className="focus-root">
+                    <Router>
+                        <div className="focus">
+                                <div className="focus-nav">
+                                    <Link to='/focus/board'> <div className="focus-title">关注版面</div></Link>
+                                    <Link to='/focus/user'> <div className="focus-title">关注用户</div></Link>
+                        </div>
+                                <Route exact path="/focus" component={FocusBoardArea}></Route>
+                                <Route path='/focus/board' component={FocusBoardArea} />
+                                <Route path='/focus/user' component={FocusUserArea} />
+                        </div>
+                    </Router>
+                    </div>);
         }
-        else {
-            return (<div className="focus-root">
-                <div className="focus">
-                    <div className="focus-title">我的关注</div>
-                    <FocusBoardArea onChange={this.changeFocusBoard} />
-                    <FocusBoardTopicArea boardId={this.state.id} boardNme={this.state.name} />
-                </div>
-            </div>);
-        }
-    }
-}
-
-export class FocusState {
-    id: number;
-    name: string;
 }

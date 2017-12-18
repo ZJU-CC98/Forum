@@ -507,14 +507,15 @@ body {
 .reply {
     width: 100%;
     margin-top:1rem;
-    border:rgb(125,186,203) solid 1.5px;
+    border:#8dc9db solid 1.5px;
     background-color:#fff;
     flex-direction:row;
     display:flex;
+    box-shadow:0 0 5px grey;
 }
 .userMessage {
     align-items: center;
-    background-color: #79b8ca;
+    background-color: #8dc9db;
     color: #fff;
     width: 10.6rem;
     display: flex;
@@ -522,7 +523,6 @@ body {
     padding-top:1rem;
     padding-bottom:2rem;
     font-size:0.75rem;
-    box-shadow:0 0 5px 2px #eaeaea;
 }
 .userMessageOpt{
     
@@ -1089,9 +1089,7 @@ a {
     background-size:100%;
 }
 .listTitle {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+
 }
 
 .boardName2 {
@@ -1698,6 +1696,11 @@ a {
     margin-bottom: 60px;
 }
 
+.focus-nav {
+    display: flex;
+    flex-direction: row;
+}
+
 .focus-title {
     width: 100px;
     height: 16px;
@@ -1712,20 +1715,14 @@ a {
     min-height: 30px;
 
     .focus-board {
-        height: 14px;
+        height: 16px;
         flex-shrink: 0;
         cursor: pointer;
-
-        border: {
-            style: solid;
-            width: 1px;
-            color: $color-board;
-            radius: 2px;
-        }
-
-        font-size: 14px;
-        color: $color-board;
-        padding: 4px 11px 10px;
+        border-radius: 10px;
+        border: solid 1px #79b8ca;
+        font-size: 16px;
+        color: #79b8ca;
+        padding: 2px 8px 8px 8px;
         margin-right: 20px;
         margin-top: 20px;
 
@@ -1896,30 +1893,30 @@ a {
 .message-counter, .message-counterLi, .message-counterNav {
     position: absolute;
     min-width: 10px;
-    height: 14px;
-    line-height: 14px;
+    height: 12px;
+    line-height: 12px;
     margin-top: -11px;
-    padding: 1px 6px;
-    font-size: 12px;
+    padding: 1px 5px;
+    font-size: 10px;
     font-weight: normal;
     color: white;
     text-align: center;
     background: red;
-    border-radius: 14px;
+    border-radius: 8px;
 }
 
 .message-counter {
-    top: -5px;
-    right: -20px;
+    top: -2px;
+    left: 20px;
 }
 .message-counterLi {
-    top: 5px;
-    right: 10px;
+    top: 19px;
+    left: 69px;
 }
 
 .message-counterNav {
-    top: 31px;
-    right: 70px;
+    top: 32px;
+    left: 110px;
 }
 
 .topBar {
@@ -2082,11 +2079,22 @@ a {
     z-index: 1;
 }
 
-#dropdown li {
+#dropdown .dropDownSub li {
     display: flex;
     height: 30px;
     cursor: pointer;
     justify-content: center;
+    align-items: center;
+    z-index: 1;
+    position: relative;
+}
+
+#dropdown .dropDownSubMessage li {
+    display: flex;
+    height: 30px;
+    cursor: pointer;
+    justify-content: flex-start;
+    padding-left: 11px;
     align-items: center;
     z-index: 1;
     position: relative;
@@ -2651,7 +2659,6 @@ a {
     display:flex;
     flex-direction:column;
     font-size:1.5rem;
-    margin-top:-5rem;
     letter-spacing:2px;
     align-items:center;
     font-family:黑体;

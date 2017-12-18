@@ -76,7 +76,6 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
             
             if (res.status === 200) {
                 let data = await res.json();
-                console.log(data);
                 let posts: UserRecentPost[] = [],
                     i = data.length;
 
