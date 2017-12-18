@@ -2715,3 +2715,56 @@ a {
     width: 18.65rem;
     height: 6.25rem;
 }
+.boardMessage{
+    width:15rem;
+    display:flex;
+    flex-direction:column;
+    color:#fff;
+    background-color:#6b7178;
+    font-family:微软雅黑;
+}
+.boardMessage img{
+    width:4rem;
+    height:4rem;
+}
+.boardMessageDetails{
+    height:2.5rem;
+    width:4.5rem;
+    display:flex;
+    flex-direction:column;
+    margin-right:1rem;
+}
+.boardFollow {
+    width: 3rem;
+    height: 1.25rem;
+    border-radius: 10px;
+    background-color: #79b8ca;
+    border: solid 1px #79b8ca;
+    font-size:0.75rem;
+    color:#fff;
+}
+.boardDescription {
+    display: flex;
+    flex-direction: column;
+    margin-top:2rem;
+}
+.boardMasters {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+}
+.bigPaper {
+    width: 56.25rem;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    border: solid 1px #6b7178;
+    padding:1.5rem;
+    font-size:1rem;
+    font-family:微软雅黑;
+}
+.bigPaperTitle{
+    font-size:1.25rem;
+    color:#fb6165;
+    margin-bottom:2rem;
+}

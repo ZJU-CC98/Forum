@@ -60,17 +60,11 @@ export class List extends RouteComponent<{}, { page:number, boardId: number,boar
             case 'server error':
                 return <ServerError />
         }
-        let bigPaper;
-        if (!this.state.boardInfo.bigPaper) {
-            bigPaper = null;
-        } else {
-            bigPaper = <ListNotice bigPaper={this.state.boardInfo.bigPaper} />;
-        }
+
         return  <div id="listRoot">
 
             <Category boardId={this.match.params.boardId} boardInfo={this.state.boardInfo} />
             <ListHead key={this.state.page} boardId={this.match.params.boardId} boardInfo={this.state.boardInfo} />
-            {bigPaper}
 
             <Switch>
             <Route exact path="/list/:boardId/:page?" component={ListContent} />
@@ -86,8 +80,6 @@ export class List extends RouteComponent<{}, { page:number, boardId: number,boar
  */
 
 export class Category extends React.Component<{ boardId, boardInfo }, {}>{
-    //<i className="fa fa-window-maximize fa-lg"></i> 这是之前导航中的首页图标，因为不好看暂时去掉了
-    //fa-lg, fa-2x, fa-3x, fa-4x, fa-5x 分别是将icon扩大到原来的133%, 2倍，3倍，4倍和5倍
     render() {
         const listUrl = `/list/${this.props.boardId}`;
         return <div className="row" style={{ alignItems: "baseline", width: "100% ", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>          
@@ -120,44 +112,38 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, {}, { board
     }
     render() {
         const url = `/images/_${this.props.boardInfo.name}.png`
-        return <div className="column" style={{ width: "100%" }} >
-            <div className="row" style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <div style={{ flexgrow: '1', flexDirection: 'row', display: 'flex' }}>
-                    <div id="ListImg" ><img src={url}></img></div>
-                    <div className="column" style={{ marginTop: '1.25rem', marginLeft: '0.625rem' }}>
-
-                        <div className="row" style={{ marginTop: '0.625rem' }}><div>今日主题</div><div style={{ marginLeft: '0.625rem' }}>{this.props.boardInfo.todayCount}</div></div>
-                        <div className="row" style={{ marginTop: '0.625rem' }}><div>总主题</div><div style={{ marginLeft: '1.25rem' }}>{this.props.boardInfo.topicCount}</div></div>
+        return <div className="row">
+            <div className="boardMessage">
+                <div className="row" style={{ height: "4rem", marginTop: "2rem" }}>
+                    <img style={{ marginLeft:"1.25rem"}}src={url}></img>
+                    <div className="boardMessageDetails">
+                        <div>
+                            {this.props.boardInfo.name}
+                        </div>
+                        <div style={{ fontSize:"0.75rem"}}>
+                            {this.props.boardInfo.todayCount}/{this.props.boardInfo.topicCount}
+                        </div>
                     </div>
+                    <div className="boardFollow"><button onClick={this.props.boardInfo.isFollow ? this.unfollow : this.follow} className="boardFollow">{this.props.boardInfo.isFollow ? "已关注" : "关注"}</button>  </div>
                 </div>
-                <div className="column" style={{ flexgrow: '0' }}>
-                    <div id="like"><button onClick={this.props.boardInfo.isFollow ? this.unfollow : this.follow} className="followBoard">{this.props.boardInfo.isFollow ? "取消关注" : "关注版面"}</button>  </div>
-                    <div ><img src={'/images/ads.jpg'} style={{ width: '15.625rem', height: '3.75rem' }}></img></div>
+                <div className="boardDescription">
+                    <div>版面简介:</div>
+                    <div>{this.props.boardInfo.description}</div>
+                </div>
+                <div className="boardMasters">
+                    <div>版主:</div>
+                    <div>{this.props.boardInfo.boardMasters.map(this.generateMasters)}</div>
                 </div>
             </div>
-            <div className="row" style={{ marginTop: '0.3125rem' }}>
-                <span>版主 : </span><div className="row" style={{ marginLeft: '0.3125rem' }}>{this.props.boardInfo.boardMasters.map(this.generateMasters)}</div>
+            <div className="bigPaper" >
+                <div className="bigPaperTitle">版面公告</div>
+                <div><UbbContainer code={this.props.boardInfo.bigPaper} /></div>
             </div>
-        </div>;
+         </div>;
 
     }
 }
-export class ListNotice extends RouteComponent<{ bigPaper: string }, State.ListNoticeState, {}> {
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
-            notice: ''
-        };
-    }
-    render() {
-        return <div className="notice" style={{ marginTop: '0.625rem' }}>
-            <div style={{ backgroundColor: "#79b8ca" }}>
-                <div style={{ marginLeft: '1rem', marginTop: '0.5rem', marginBottom: '0.5rem', fontSize: '1rem', color: '#FFFFFF' }}>本版公告</div>
-            </div>
-            <div className="substance"><UbbContainer code={this.props.bigPaper} /></div>
-        </div>;
-    }
-}
+
 
 /**
  * 提供显示连续页码的交互效果。
