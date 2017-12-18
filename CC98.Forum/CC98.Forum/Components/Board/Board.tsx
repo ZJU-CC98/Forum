@@ -129,11 +129,11 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, {}, { board
                     </div>
                 </div>
                 <div className="boardDescription">
-                    <div>版面简介:</div>
+                    <div>版面简介</div>
                     <div>{this.props.boardInfo.description}</div>
                 </div>
                 <div className="boardMasters">
-                    <div>版主:</div>
+                    <div>版主</div>
                     <div>{this.props.boardInfo.boardMasters.map(this.generateMasters)}</div>
                 </div>
             </div>

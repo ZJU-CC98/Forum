@@ -27,10 +27,10 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
             });
             const token = Utility.getLocalStorage("accessToken");
             const userId = this.props.userInfo.id;
-            const url = `http://apitest.niconi.cc/me/followee/${userId}`;
+            const url = `/me/followee/${userId}`;
             const headers = new Headers();
             headers.append('Authorization', token);
-            let res = await fetch(url, {
+            let res = await Utility.cc98Fetch(url, {
                 method: 'DELETE',
                 headers
             });
@@ -57,10 +57,10 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
             const token = Utility.getLocalStorage("accessToken");
 
             const userId = this.props.userInfo.id;
-            const url = `http://apitest.niconi.cc/me/followee/${userId}`;
+            const url = `/me/followee/${userId}`;
             const headers = new Headers();
             headers.append('Authorization', token);
-            let res = await fetch(url, {
+            let res = await Utility.cc98Fetch(url, {
                 method: 'PUT',
                 headers
             });

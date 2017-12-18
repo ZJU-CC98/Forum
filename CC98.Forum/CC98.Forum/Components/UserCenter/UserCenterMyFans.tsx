@@ -34,8 +34,8 @@ export class UserCenterMyFans extends React.Component<{match}, UserCenterMyFansS
         this.getInfo(this.props.match.params.page);
         const userid = Utility.getLocalStorage('userInfo').id;
         try {
-            const url = `http://apitest.niconi.cc/user/follower/count?userid=${userid}`
-            let res = await fetch(url);
+            const url = `/user/follower/count?userid=${userid}`
+            let res = await Utility.cc98Fetch(url);
             let fanCounts: number = await res.json();
             this.setState({
                 totalPage: fanCounts % 10 === 0 ? fanCounts / 10 : Math.floor((fanCounts / 10)) + 1
@@ -50,10 +50,10 @@ export class UserCenterMyFans extends React.Component<{match}, UserCenterMyFansS
             window.scroll(0, 0);
             this.setState({ isLoading: true });
             const token = await Utility.getToken();
-            let url = `http://apitest.niconi.cc/me/follower?from=${(page - 1) * 10}&size=10`;
+            let url = `/me/follower?from=${(page - 1) * 10}&size=10`;
             const headers = new Headers();
             headers.append('Authorization', token);
-            let res = await fetch(url, {
+            let res = await Utility.cc98Fetch(url, {
                 headers
             });
             let data: number[] = await res.json();
@@ -69,8 +69,8 @@ export class UserCenterMyFans extends React.Component<{match}, UserCenterMyFansS
 
             
             let requests = await Promise.all(data.map((item) => {
-                url = `http://apitest.niconi.cc/user/${item}`;
-                return fetch(url, { headers });
+                url = `/user/${item}`;
+                return Utility.cc98Fetch(url, { headers });
             }));
                            
             let fanData = await Promise.all(requests.map((item)=>(item.json())));

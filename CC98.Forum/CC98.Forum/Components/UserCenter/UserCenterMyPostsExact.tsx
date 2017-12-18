@@ -40,11 +40,11 @@ export class UserCenterMyPostsExact extends React.Component<{match}, UserCenterM
         try {
             window.scroll(0, 0);
             this.setState({ isLoading: true });
-            const url = `http://apitest.niconi.cc/me/recent-topic?from=${(page - 1) * 10}&size=11`;
+            const url = `/me/recent-topic?from=${(page - 1) * 10}&size=11`;
             const token = await Utility.getToken();
             const headers = new Headers();
             headers.append('Authorization', token);
-            let res = await fetch(url, {
+            let res = await Utility.cc98Fetch(url, {
                 headers
             });
             if (res.status !== 200) {

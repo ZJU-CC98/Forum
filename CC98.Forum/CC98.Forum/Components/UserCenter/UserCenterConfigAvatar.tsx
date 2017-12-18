@@ -186,12 +186,13 @@ class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCente
                     isLoading: true
                 });
                 const token = Utility.getLocalStorage('accessToken');
-                const url = 'http://apitest.niconi.cc/me/portrait';
+                const url = '/me/portrait';
                 let myHeaders = new Headers();
                 myHeaders.append('Content-Type', 'application/json');
                 myHeaders.append('Authorization', token);
-                let data = `http://apitest.niconi.cc${avatar.content}`;
-                let res = await fetch(url, {
+                const baseUrl = Utility.getApiUrl();
+                let data = `${baseUrl}${avatar.content}`;
+                let res = await Utility.cc98Fetch(url, {
                     method: 'PUT',
                     headers: myHeaders,
                     body: JSON.stringify(data)

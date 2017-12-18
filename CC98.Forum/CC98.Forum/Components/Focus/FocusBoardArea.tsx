@@ -48,7 +48,7 @@ export class FocusBoardArea extends React.Component<FocusProps, FocusBoardProps>
             const headers = new Headers();
             headers.append('Authorization', token);
             for (let i in boardid) {
-                let response = await fetch(`http://apitest.niconi.cc/board/${boardid[i]}`, {
+                let response = await Utility.cc98Fetch(`/board/${boardid[i]}`, {
                     headers
                 });
                 let boardInfo = await response.json();

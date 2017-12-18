@@ -152,7 +152,19 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
 
     async handleUpload(file: File) {
         let res = await Utility.uploadFile(file);
-        this.handleButtonClick(this.state.extendTagName, `http://apitest.niconi.cc${res.content}`);
+        const response1 = await fetch("/config.production.json");
+        let data;
+        if (response1.status !== 404) {
+            const data1 = await response1.json();
+            const response2 = await fetch("/config.json");
+            const data2 = await response2.json();
+            data = { ...data2, ...data1 };
+        } else {
+            const response2 = await fetch("/config.json");
+            data = await response2.json();
+        }
+        const baseUrl = data.apiUrl;
+        this.handleButtonClick(this.state.extendTagName, `${baseUrl}${res.content}`);
     }
 
     handleUndo() {

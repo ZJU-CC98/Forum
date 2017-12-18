@@ -25,7 +25,7 @@ export class UserCenterMyFavoritesBoards extends React.Component<null, UserCente
             const loginName = Utility.getLocalStorage('userName');
             let myHeaders = new Headers();
             myHeaders.append("Authorization", token);
-            let response1 = await fetch(`http://apitest.niconi.cc/user/name/${loginName}`, {
+            let response1 = await Utility.cc98Fetch(`/user/name/${loginName}`, {
                 headers: myHeaders
             });
             if (response1.status !== 200) {
@@ -41,12 +41,12 @@ export class UserCenterMyFavoritesBoards extends React.Component<null, UserCente
             }
 
             const query = customBoardsId.join('&id=');
-            const url = `http://apitest.niconi.cc/board/?id=${query}`;
+            const url = `/board/?id=${query}`;
 
             myHeaders = new Headers();
             myHeaders.append('Authorization', token);
 
-            let res = await fetch(url, {
+            let res = await Utility.cc98Fetch(url, {
                 headers: myHeaders
             });
             if (res.status !== 200) {
