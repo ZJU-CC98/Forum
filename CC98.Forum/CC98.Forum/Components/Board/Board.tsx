@@ -193,7 +193,7 @@ export class ListButtonAndAds extends React.Component<{boardInfo,adsUrl}> {
  
     render() {
         const adsUrl = `/images/ads.jpg`;
-        const createTopicUrl = `/createTopic/${this.props.boardInfo.id}`;
+        const createTopicUrl = `/editor/post/${this.props.boardInfo.id}`;
         return <div className="row" style={{ width: "100%", height: "6.25rem", alignItems: "flex-end", justifyContent: "space-between", marginTop:"1rem" }}>
             <Link className="button bgcolor" to={createTopicUrl}>发主题</Link>
             <div><img style={{ width: "18.75rem", height: "6.25rem" }} src={adsUrl}></img></div>
@@ -587,7 +587,9 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         return <div id={colorId}>
             <Link to={url}>
             <div className="row topicInList" id={topicId}> 
-                <div style={{ display: "flex", marginLeft: "0.5rem", alignItems: "flex-end" }}>
+                    <div style={{
+                        display: "flex", marginLeft: "0.5rem", alignItems: "flex-end", overflow: "hidden",
+                        textOverflow: "ellipsis",whiteSpace: "nowrap",maxWidth:"48%" }}>
                     <div className="row" style={{ alignItems: "center" }}>
                     {icon}
                        <div className="listTitle" id={titleId} style={{ marginLeft: '1rem', }}> <span>{this.props.title}</span></div>

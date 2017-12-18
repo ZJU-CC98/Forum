@@ -44,7 +44,7 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
         }
 
         if (this.state.mode === 1) {
-            const response1 = await fetch("/config.production.json");
+            /*const response1 = await fetch("/config.production.json");
             let data;
             if (response1.status !== 404) {
                 const data1 = await response1.json();
@@ -55,7 +55,8 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
                 const response2 = await fetch("/config.json");
                 data = await response2.json();
             }
-            const fileUrl = data.imageUploadUrl;
+            const fileUrl = data.imageUploadUrl;*/
+            const fileUrl = `${Utility.getApiUrl}/file`
             editormd.emoji.path = '/images/emoji/';
             Constants.testEditor = editormd("test-editormd", {
                 width: "100%",
@@ -126,7 +127,7 @@ ${newProps.content.content}[/quote]`;
     }
 
     async componentDidUpdate() {       
-        const response1 = await fetch("/config.production.json");
+        /*const response1 = await fetch("/config.production.json");
         let data;
         if (response1.status !== 404) {
             const data1 = await response1.json();
@@ -137,10 +138,12 @@ ${newProps.content.content}[/quote]`;
             const response2 = await fetch("/config.json");
             data = await response2.json();
         }
-        const fileUrl = data.imageUploadUrl;
+        const fileUrl = data.imageUploadUrl;*/
 
-        editormd.emoji.path = '/images/emoji/';
+      //  editormd.emoji.path = '/images/emoji/';
         if (this.state.mode === 1) {
+            const fileUrl = `${Utility.getApiUrl}/file`
+            editormd.emoji.path = '/images/emoji/';
             Constants.testEditor = editormd("test-editormd", {
                 width: "100%",
                 height: 640,
@@ -152,18 +155,18 @@ ${newProps.content.content}[/quote]`;
                 emoji: true,
                 toolbarIcons: function () {
                     return [
-                        "undo", "redo", "|", "emoji", 
+                        "undo", "redo", "|", "emoji",
                         "bold", "del", "italic", "quote", "|",
                         "h1", "h2", "h3", "h4", "|",
                         "list-ul", "list-ol", "hr", "|",
-                        "link", "image", "code", "table", "html-entities", 
+                        "link", "image", "code", "table", "html-entities",
                     ]
-                },   
+                },
                 toolbarCustomIcons: {
                     file: "<input type='file' id='upload-files' style=' display: none ' onchange='uploadEvent()' />",
-                    faicon: "<i class='fa-upload' onclick='clickUploadIcon()' style='cursor: pointer '></i>"
-        },
-            });           
+                    faicon: "<i class='fa fa-upload' onclick='clickUploadIcon()' style='cursor: pointer '></i>"
+                },
+            });
             $(".fa-copyright").parent("a").parent("li").parent("ul").append("<li><label class='fa-upload' for='upload-files' style='font-family: fontAwesome;cursor: pointer '></label></li>");
         }
     }
@@ -221,7 +224,7 @@ ${newProps.content.content}[/quote]`;
             }   
             this.props.onChange();
 
-            editormd.emoji.path = '/images/emoji/';
+           /* editormd.emoji.path = '/images/emoji/';
             const response1 = await fetch("/config.production.json");
             let data;
             if (response1.status !== 404) {
@@ -233,26 +236,32 @@ ${newProps.content.content}[/quote]`;
                 const response2 = await fetch("/config.json");
                 data = await response2.json();
             }
-            const fileUrl = data.imageUploadUrl;
-                Constants.testEditor = editormd("test-editormd", {
-                    width: "100%",
-                    height: 640,
-                    path: "/scripts/lib/editor.md/lib/",
-                    saveHTMLToTextarea: false,
-                    imageUpload: false,
-                    imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-                    imageUploadURL: fileUrl,
-                    emoji: true,
-                    toolbarIcons: function () {
-                        return [
-                            "undo", "redo", "|", "emoji",
-                            "bold", "del", "italic", "quote", "|",
-                            "h1", "h2", "h3", "h4", "|",
-                            "list-ul", "list-ol", "hr", "|",
-                            "link", "image", "code", "table", "html-entities",
-                        ]
-                    },
-                });           
+            const fileUrl = data.imageUploadUrl;*/
+            const fileUrl = `${Utility.getApiUrl}/file`
+            editormd.emoji.path = '/images/emoji/';
+            Constants.testEditor = editormd("test-editormd", {
+                width: "100%",
+                height: 640,
+                path: "/scripts/lib/editor.md/lib/",
+                saveHTMLToTextarea: false,
+                imageUpload: false,
+                imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                imageUploadURL: fileUrl,
+                emoji: true,
+                toolbarIcons: function () {
+                    return [
+                        "undo", "redo", "|", "emoji",
+                        "bold", "del", "italic", "quote", "|",
+                        "h1", "h2", "h3", "h4", "|",
+                        "list-ul", "list-ol", "hr", "|",
+                        "link", "image", "code", "table", "html-entities",
+                    ]
+                },
+                toolbarCustomIcons: {
+                    file: "<input type='file' id='upload-files' style=' display: none ' onchange='uploadEvent()' />",
+                    faicon: "<i class='fa fa-upload' onclick='clickUploadIcon()' style='cursor: pointer '></i>"
+                },
+            });
             this.setState({ content: "" });
         } catch (e) {
             console.log("Error");

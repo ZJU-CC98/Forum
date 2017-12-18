@@ -96,15 +96,16 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
                 break;
             case 'days':
             
-                if (!this.state.reason ) {
+                if (this.state.reason ) {
                     switch ($("input[name='option']:checked").val()) {
                         case '固顶':
                            status =  await Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 2, this.state.days, this.state.reason);
                             this.setState({ fetchState: status });
                             break;
                         case '全站固顶':
-                   
-                           status =  await Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 4, this.state.days, this.state.reason);
+                            console.log("quanzhanguding");
+                            status = await Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 4, this.state.days, this.state.reason);
+                            console.log(status);
                             this.setState({ fetchState: status });
                             break;
                         case '锁定':
@@ -120,6 +121,8 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
         }
         const UIId = `#manage${this.props.topicId}`;
         $(UIId).css("display", "none");
+        const data = await Utility.getTopicInfo(this.props.topicId);
+        this.setState({ topicInfo: data });
         this.props.update();
     }
     close() {
@@ -142,16 +145,18 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
 
     }
     async componentDidMount() {
-        const data = await Utility.getTopic(this.props.topicId);
+        const data = await Utility.getTopicInfo(this.props.topicId);
+        console.log(data);
         this.setState({ topicInfo: data });
     }
-    componentDidUpdate() {
+   async componentDidUpdate() {
+        
         $("#custom").spectrum({
             color: "#f00"
         });
     }
     async componentWillRecieveProps(newProps) {
-        const data = await Utility.getTopic(newProps.topicId);
+        const data = await Utility.getTopicInfo(newProps.topicId);
         this.setState({ topicInfo: data });
     }
     render() {

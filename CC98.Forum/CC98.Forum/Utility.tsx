@@ -2296,7 +2296,7 @@ export async function getTotalPage(type: number) {
 export async function deleteTopic(topicId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const url = `/manage/topic/${topicId}`;
+    const url = `/topic/${topicId}`;
     const bodyInfo = { 'reason': reason };
     const body = JSON.stringify(bodyInfo);
     const response = await cc98Fetch(url, { method: "DELETE", headers, body }); switch (response.status) {
@@ -2346,7 +2346,7 @@ export async function unLockTopic(topicId, boardId, reason) {
 export async function setBestTopic(topicId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const url = `/manage/topic/${topicId}/best`;
+    const url = `/topic/${topicId}/best`;
     const bodyInfo = { 'reason': reason };
     const body = JSON.stringify(bodyInfo);
     const response = await cc98Fetch(url, { method: "PUT", headers, body });
@@ -2363,7 +2363,7 @@ export async function setBestTopic(topicId, reason) {
 export async function cancelBestTopic(topicId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const url = `/manage/topic/${topicId}/best`;
+    const url = `/topic/${topicId}/best`;
     const bodyInfo = { 'reason': reason };
     const body = JSON.stringify(bodyInfo);
     const response = await cc98Fetch(url, { method: "DELETE", headers, body });
