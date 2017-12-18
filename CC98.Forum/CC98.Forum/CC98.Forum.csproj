@@ -23,6 +23,7 @@
     <None Remove="Components\Pager.tsx" />
     <None Remove="Components\RouteComponent.tsx" />
     <None Remove="Components\SearCH.tsx" />
+    <None Remove="Components\SignalR.tsx" />
     <None Remove="Components\Signin.tsx" />
     <None Remove="Components\SiteManage.tsx" />
     <None Remove="Components\Status.tsx" />
@@ -112,6 +113,7 @@
     <TypeScriptCompile Include="Components\PageModel.tsx" />
     <TypeScriptCompile Include="Components\Pager.tsx" />
     <TypeScriptCompile Include="Components\RouteComponent.tsx" />
+    <TypeScriptCompile Include="Components\SignalR.tsx" />
     <TypeScriptCompile Include="Components\Signin.tsx" />
     <TypeScriptCompile Include="Components\SiteManage.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Award.tsx" />
