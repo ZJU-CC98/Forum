@@ -2762,3 +2762,10 @@ export async function refreshUnReadCount() {
         $('#unreadCount-messageCount1').addClass('displaynone');
     }
 }
+export async function editPost(postId, contentType,title, content) {
+    const headers = await formAuthorizeHeader();
+    const url = `http://apitest.niconi.cc/post/${postId}`;
+    const bodyInfo = { content: content, title: title, contentType: contentType };
+    const body = JSON.stringify(bodyInfo);
+    const response = await fetch(url, { method:"PUT",headers,body });
+}

@@ -27,7 +27,6 @@
     <None Remove="Components\SiteManage.tsx" />
     <None Remove="Components\Status.tsx" />
     <None Remove="Components\Topic\Post.tsx" />
-    <None Remove="Components\Topic\Topic-AuthorMessage.tsx" />
     <None Remove="Components\Topic\Topic-Award.tsx" />
     <None Remove="Components\Topic\Topic-AwardInfo.tsx" />
     <None Remove="Components\Topic\Topic-Category.tsx" />
@@ -38,10 +37,7 @@
     <None Remove="Components\Topic\Topic-ReplyContent.tsx" />
     <None Remove="Components\Topic\Topic-SendTopic.tsx" />
     <None Remove="Components\Topic\Topic-Topic.tsx" />
-    <None Remove="Components\Topic\Topic-TopicContent.tsx" />
     <None Remove="Components\Topic\Topic-TopicInfo.tsx" />
-    <None Remove="Components\Topic\Topic-TopicTitle.tsx" />
-    <None Remove="Components\Topic\Topic-UserDetails.tsx" />
     <None Remove="Components\Topic\Topic.tsx" />
     <None Remove="Components\UbbContainer.tsx" />
     <None Remove="Components\UbbEditor.tsx" />
@@ -114,7 +110,6 @@
     <TypeScriptCompile Include="Components\RouteComponent.tsx" />
     <TypeScriptCompile Include="Components\Signin.tsx" />
     <TypeScriptCompile Include="Components\SiteManage.tsx" />
-    <TypeScriptCompile Include="Components\Topic\Topic-AuthorMessage.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Award.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Judge.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-New.tsx" />
@@ -134,10 +129,7 @@
     <TypeScriptCompile Include="Components\Topic\Topic-ReplyContent.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-SendTopic.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Topic.tsx" />
-    <TypeScriptCompile Include="Components\Topic\Topic-TopicContent.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-TopicInfo.tsx" />
-    <TypeScriptCompile Include="Components\Topic\Topic-TopicTitle.tsx" />
-    <TypeScriptCompile Include="Components\Topic\Topic-UserDetails.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-TopicManagement.tsx" />
     <TypeScriptCompile Include="Components\UbbContainer.tsx" />
