@@ -64,13 +64,14 @@ export class RecommendedReadingComponent extends React.Component<{}, { recommend
         this.state = {
             recommendedReading: new Array<MainPageColumn>(),
             index: Math.floor(Math.random() * 5)    //0-5的随机数
-
         };
+        this.handleMouseEnter = this.handleMouseEnter.bind(this);
+        this.convertButton = this.convertButton.bind(this);
     }
 
     async getRecommendedReading() {
         const recommendedReading: MainPageColumn[] = new Array<MainPageColumn>();
-        const response = await fetch('http://apitest.niconi.cc/index/column/recommandationreading');
+        const response = await Utility.cc98Fetch('/index/column/recommandationreading');
         const data = await response.json();
         for (let i = 0; i < 5; i++) {
             recommendedReading[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
@@ -84,15 +85,33 @@ export class RecommendedReadingComponent extends React.Component<{}, { recommend
             recommendedReading: x
         });
     }
+
+    handleMouseEnter(index) {
+        this.setState({
+            index: index,
+        })
+    }
+
+    //使用箭头函数传参 记得用到this的函数都要先bind
+    convertButton(value: number, index: number, array: number[]) {
+        let className: string = value ? "recommendedReadingButtonSelected" : "recommendedReadingButton";
+        return <div className={className} onMouseEnter={() => { this.handleMouseEnter(index) }}></div>
+
+    }
+
     //在componentWillMount前似乎会render一次 这时this.state还是初值  所以需要先判断一次
     render() {
         let recommendedReading = this.state.recommendedReading;
         let index = this.state.index;
+        let styles = new Array(0, 0, 0, 0, 0);
+        styles[index] = 1;
+        let buttons = styles.map(this.convertButton);
 
         let imageUrl = recommendedReading.length ? recommendedReading[index].imageUrl : "";
         let title = recommendedReading.length ? recommendedReading[index].title : "";
         let url = recommendedReading.length ? recommendedReading[index].url : "";
         let content = recommendedReading.length ? recommendedReading[index].content : "";
+
 
         return <div className="recommendedReading">
             <div className="mainPageTitle2">
@@ -108,13 +127,7 @@ export class RecommendedReadingComponent extends React.Component<{}, { recommend
                 <div className="column" style={{ flexGrow: 1 }}>
                     <div className="recommendedReadingTitle"><a href={url} target="view_window">{title}</a></div>
                     <div className="recommendedReadingAbstract">{content}</div>
-                    <div className="recommendedReadingButtons">
-                        <div className="recommendedReadingButton" />
-                        <div className="recommendedReadingButton" />
-                        <div className="recommendedReadingButton" />
-                        <div className="recommendedReadingButton" />
-                        <div className="recommendedReadingButton" />
-                    </div>
+                    <div className="recommendedReadingButtons">{buttons}</div>
                 </div>
             </div>
         </div>
@@ -123,10 +136,10 @@ export class RecommendedReadingComponent extends React.Component<{}, { recommend
 }
 
 /**
- * 首页话题类
- * 用于首页左侧下方的几栏，该类的对象（一条主题)需要标题，id，所在版面，及所在版面id等几个属性
+ * 首页热门话题类
+ * 用于首页的热门话题(十大），该类的对象（一条热门话题)需要标题，id，所在版面，及所在版面id等几个属性
  **/
-export class MainPageTopic {
+export class HotTopicState {
 
     //属性
     title: string;
@@ -146,21 +159,21 @@ export class MainPageTopic {
 /**
  * 热门话题组件
  **/
-export class HotTopicComponent extends React.Component<{}, { mainPageTopicState: MainPageTopic[] }> {
+export class HotTopicComponent extends React.Component<{}, { mainPageTopicState: HotTopicState[] }> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
         this.state = {
-            mainPageTopicState: new Array<MainPageTopic>(),
+            mainPageTopicState: new Array<HotTopicState>(),
         };
     }
 
     async getTopicInfo() {
-        const mainPageTopics: MainPageTopic[] = [];
+        const mainPageTopics: HotTopicState[] = [];
         const response = await Utility.cc98Fetch('/Topic/Hot');
         const data = await response.json();
         for (let i = 0; i < 10; i++) {
-            mainPageTopics[i] = new MainPageTopic(data[i].title, data[i].id, data[i].boardName, data[i].boardId);
+            mainPageTopics[i] = new HotTopicState(data[i].title, data[i].id, data[i].boardName, data[i].boardId);
         }
         return mainPageTopics;
     }
@@ -173,7 +186,7 @@ export class HotTopicComponent extends React.Component<{}, { mainPageTopicState:
     }
 
 
-    convertMainPageTopic(item: MainPageTopic) {
+    convertMainPageTopic(item: HotTopicState) {
         const boardUrl = `/list/${item.boardid}`;
         const topicUrl = `/topic/${item.id}`;
         return <div className="mainPageListRow">
@@ -198,27 +211,42 @@ export class HotTopicComponent extends React.Component<{}, { mainPageTopicState:
 }
 
 /**
- * 实习兼职组件
+ * 首页话题类
+ * 用于首页左侧下方的几栏，该类的对象（一条主题)需要标题和id
  **/
-export class Shixijianzhi extends React.Component<{}, { mainPageTopicState: MainPageTopic[] }> {
+export class MainPageTopicState {
+
+    //属性
+    title: string;
+    id: number;
+
+    //构造方法
+    constructor(title, id) {
+        this.title = title;
+        this.id = id;
+    }
+}
+
+/**
+ * 首页话题组件
+ * 需要列表名，fetchUrl和样式三个参数
+ **/
+export class MainPageTopicComponent extends React.Component<{ name: string, fetchUrl: string, style: string }, { mainPageTopic: MainPageTopicState[] }> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
         this.state = {
-            mainPageTopicState: new Array<MainPageTopic>(),
+            mainPageTopic: new Array<MainPageTopicState>(),
         };
     }
 
     async getTopicInfo() {
-        const mainPageTopics: MainPageTopic[] = [];
-        const url = '/Board/459/topic?from=0&size=10';
-        const headers = new Headers();
-
-        const response = await Utility.cc98Fetch(url,
-            { headers });   //该api要求提供返回主题的数量，这里需要返回10条
+        const mainPageTopics: MainPageTopicState[] = [];
+        const url = this.props.fetchUrl;
+        const response = await Utility.cc98Fetch(url);   //该api要求提供返回主题的数量，这里需要返回10条
         const data = await response.json();
         for (let i = 0; i < 10; i++) {
-            mainPageTopics[i] = new MainPageTopic(data[i].title, data[i].id, data[i].boardName, data[i].boardId);
+            mainPageTopics[i] = new MainPageTopicState(data[i].title, data[i].id);
         }
         return mainPageTopics;
     }
@@ -226,11 +254,11 @@ export class Shixijianzhi extends React.Component<{}, { mainPageTopicState: Main
     async componentDidMount() {
         const x = await this.getTopicInfo();
         this.setState({
-            mainPageTopicState: x,
+            mainPageTopic: x,
         });
     }
 
-    convertMainPageTopic(item: MainPageTopic) {
+    convertMainPageTopic(item: MainPageTopicState) {
         const topicUrl = `/topic/${item.id}`;
         return <div className="mainPageListRow">
             <div className="mainPageListTitle"><Link to={topicUrl}>{item.title}</Link></div>
@@ -238,18 +266,32 @@ export class Shixijianzhi extends React.Component<{}, { mainPageTopicState: Main
     }
 
     render() {
-        return <div className="mainPageList">
-            <div className="mainPageTitle2">
-                <div className="mainPageTitleRow">
-                    <i className="fa fa-volume-up"></i>
-                    <div className="mainPageTitleText">实习兼职</div>
+        const style: string = this.props.style;
+        if (style === "black") {
+            return <div className="mainPageList">
+                <div className="mainPageTitle2">
+                    <div className="mainPageTitleRow">
+                        <i className="fa fa-volume-up"></i>
+                        <div className="mainPageTitleText">{this.props.name}</div>
+                    </div>
                 </div>
-                <div className="mainPageTitleText"><Link to="/list/459">更多</Link></div>
+                <div className="mainPageListContent2">
+                    {this.state.mainPageTopic.map(this.convertMainPageTopic)}
+                </div>
             </div>
-            <div className="mainPageListContent2">
-                {this.state.mainPageTopicState.map(this.convertMainPageTopic)}
+        } else if (style === "blue") {
+            return <div className="mainPageList">
+                <div className="mainPageTitle1">
+                    <div className="mainPageTitleRow">
+                        <i className="fa fa-volume-up"></i>
+                        <div className="mainPageTitleText">{this.props.name}</div>
+                    </div>
+                </div>
+                <div className="mainPageListContent1">
+                    {this.state.mainPageTopic.map(this.convertMainPageTopic)}
+                </div>
             </div>
-        </div>
+        }
     }
 }
 
@@ -305,7 +347,7 @@ export class Test extends React.Component<{}, { testContent: string }>{
         let myHeaders = new Headers();
         myHeaders.append("Authorization", token);
         myHeaders.append("Content-Type", 'application/json');
-        let response = await fetch(url, {
+        let response = await Utility.cc98Fetch(url, {
             method: 'POST',
             headers: myHeaders,
             body: postForumIndexColumnInfo,
@@ -365,7 +407,7 @@ export class RecommendedFunctionComponent extends React.Component<{}, { recommen
 
     async getRecommendedFunction() {
         const recommendedFuction: MainPageColumn[] = new Array<MainPageColumn>();
-        const response = await fetch('http://apitest.niconi.cc/index/column/recommandationfunction');
+        const response = await Utility.cc98Fetch('/index/column/recommandationfunction');
         const data = await response.json();
         for (let i = 0; i < 5; i++) {
             recommendedFuction[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
@@ -462,19 +504,19 @@ export class MainPage extends React.Component<{}, AppState> {
                 <RecommendedReadingComponent />
                 <div className="row" style={{ justifyContent: "space-between" }}>
                     <HotTopicComponent />
-                    <HotTopicComponent />
+                    <MainPageTopicComponent name="感性·情感" fetchUrl="/topic/emotion" style="blue" />
                 </div>
                 <div className="row" style={{ justifyContent: "space-between" }}>
-                    <Shixijianzhi />
-                    <Shixijianzhi />
+                    <MainPageTopicComponent name="校园活动" fetchUrl="/topic/school-event" style="black" />
+                    <MainPageTopicComponent name="学术信息" fetchUrl="/topic/academics" style="black" />
                 </div>
                 <div className="row" style={{ justifyContent: "space-between" }}>
-                    <HotTopicComponent />
-                    <HotTopicComponent />
+                    <MainPageTopicComponent name="求职广场" fetchUrl="/topic/full-time-job" style="blue" />
+                    <MainPageTopicComponent name="实习兼职" fetchUrl="/topic/part-time-job" style="blue" />
                 </div>
                 <div className="row" style={{ justifyContent: "space-between" }}>
-                    <Shixijianzhi />
-                    <Test />
+                    <MainPageTopicComponent name="学习园地" fetchUrl="/topic/study" style="black" />
+                    <MainPageTopicComponent name="跳蚤市场" fetchUrl="/topic/flea-market" style="black" />
                 </div>
             </div>
             <div className="rightPart">
