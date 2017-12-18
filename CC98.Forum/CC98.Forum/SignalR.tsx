@@ -82,8 +82,7 @@ class SignalRConnection {
         * 然后把注册在旧的上的事件监听移到新的上
         */
         if (this._currentToken !== token) {
-            this._connection = new SignalR.HubConnection(this._url, { jwtBearer: () => token, logging: new SignalR.ConsoleLogger(SignalR.LogLevel.Trace) });
-            console.log(this._eventListeners);
+            this._connection = new SignalR.HubConnection(this._url, { jwtBearer: () => token, logging: new SignalR.NullLogger() });
             this._eventListeners.map(item => this._connection.on(item.type, item.handler));
         }
         /**
