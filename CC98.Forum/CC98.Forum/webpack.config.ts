@@ -43,8 +43,7 @@ const config: webpack.Configuration = {
 		'jquery': '$',
         'moment' : 'moment',
         'editor.md': 'editormd',
-        'codemirror': 'CodeMirror',
-        '../node_modules/@aspnet/signalr-client/dist/src/index': 'signalR'
+        'codemirror': 'CodeMirror'
 	},
 	plugins: [
 		new webpack.optimize.UglifyJsPlugin(), // 简化 JS

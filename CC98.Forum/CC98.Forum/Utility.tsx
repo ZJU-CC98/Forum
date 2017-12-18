@@ -1,6 +1,7 @@
 ﻿import * as Prop from './Props/AppProps'
 import * as State from './States/AppState'
 import * as React from 'react';
+import store from './Store';
 //import { browserHistory } from 'react-router';
 import { TopicTitleAndContent } from './Components/Board/Board'
 import {
@@ -9,6 +10,7 @@ import {
     Link
 } from 'react-router-dom';
 import * as $ from 'jquery';
+import { changeUserInfo } from './Actions';
 
 declare let editormd: any;
 declare let testEditor: any;
@@ -2048,7 +2050,7 @@ export async function refreshUserInfo() {
     });
 
     let userInfo = await response.json();
-
+    store.dispatch(changeUserInfo(userInfo));
     setLocalStorage("userInfo", userInfo);
     setLocalStorage("userName", userInfo.name);
 }

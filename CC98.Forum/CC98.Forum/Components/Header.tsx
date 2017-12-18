@@ -5,63 +5,71 @@ import * as $ from 'jquery';
 import { connect } from 'react-redux';
 import { userLogOff } from '../Actions';
 import { Link, withRouter, Route } from 'react-router-dom';
-import * as signalR from '../node_modules/@aspnet/signalr-client/dist/src/index'
+import SignalR from '../SignalR';
 
-class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { hoverElement: string, unreadCount: number}> {   //顶部条的下拉菜单组件
+class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { hoverElement: string, unreadCount:{ totalCount: number, replyCount: number, atCount: number, systemCount: number, messageCount: number }}> {   //顶部条的下拉菜单组件
     constructor(props) {
         super(props);
         this.state = ({
             hoverElement: null,
-            unreadCount: 0
+            unreadCount: {
+                totalCount: 0,
+                atCount: 0,
+                messageCount: 0,
+                replyCount: 0,
+                systemCount: 0
+            }
         });
+        this.handleNotifyMessageReceive = this.handleNotifyMessageReceive.bind(this);
     }
     /**
      * 这里是signalR的部分
-     * 等服务器可以Authorization了再说
-     * 反正就差认证了
      */
     componentDidMount() {
-        //如果用户已经登录则开始signalR链接
+        /**
+         * SignalR的开始与结束全部由header来控制
+         * 其他组件只负责添加handler即可
+         */
         if (this.props.isLogOn) {
-            this.signalRConnect();
+            SignalR.startSignalRConnection();
         }
+
+        SignalR.addListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
+        SignalR.addListener('NotifyNotificationChange', this.handleNotifyMessageReceive);
+        SignalR.addListener('NotifyTopicChange', this.handleNotifyMessageReceive);
+    }
+
+    componentWillUnmount() {
+        SignalR.removeListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
+        SignalR.removeListener('NotifyNotificationChange', this.handleNotifyMessageReceive);
+        SignalR.removeListener('NotifyTopicChange', this.handleNotifyMessageReceive);
+    }
+
+    async handleNotifyMessageReceive() {
+        console.log('好像收到了什么东西');
+        await Utility.refreshUnReadCount();
+        this.setState({
+            unreadCount: Utility.getStorage("unreadCount")
+        });
+    }
+
+    componentWillMount() {
+        this.handleNotifyMessageReceive();
     }
 
     componentWillReceiveProps(nextProps) {
         if (!this.props.isLogOn && nextProps.isLogOn) {
             //如果用户重新登录则开始signalR链接
-            this.signalRConnect();
+            SignalR.startSignalRConnection();
         } else if (!nextProps.isLogOn) {
             //如果用户注销则关闭signalR链接
-            this.connection.stop();
+            SignalR.stopSignalRConnection();
         }
-    }
-    connection = new signalR.HubConnection('http://apitest.niconi.cc/signalr/notification');;
-    signalRConnect = async ()=> {
-        const token = await Utility.getToken();
-        const url = 'http://apitest.niconi.cc/signalr/notification';
-        let myHeaders = new Headers();
-        myHeaders.append('Authorization', token);
-        this.connection = new signalR.HubConnection(url);
-        this.connection.on('NotifyMessageReceive', (value) => {
-            console.log('NotifyMessageReceive');
-            console.log(value);
-        });
-        this.connection.on('NotifyTopicChange', (value) => {
-            console.log('NotifyTopicChange');
-            console.log(value);
-        });
-        this.connection.on('NotifyNotificationChange', (value) => {
-            console.log('NotifyNotificationChange');
-            console.log(value);
-        });
-        this.connection.start();
     }
 
     logOff() {
         this.handleMouseEvent('mouseout', "userName");
         Utility.removeLocalStorage("accessToken");
-        console.log("after remove token=" + Utility.getLocalStorage("accessToken"));
         Utility.removeLocalStorage("userName");
         Utility.removeLocalStorage("password");
         Utility.removeLocalStorage("userInfo");

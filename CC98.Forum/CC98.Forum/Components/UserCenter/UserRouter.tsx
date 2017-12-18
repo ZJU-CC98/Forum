@@ -45,7 +45,6 @@ class UserExact extends React.Component<{ match, history, changePage, notFoundUs
                 headers: myHeaders
             });
             const data = await response.json();
-            console.log(data);
             this.props.history.replace(`/user/id/${data.id}`);
             this.props.changePage('exact', data.id);
             this.setState({
@@ -99,4 +98,4 @@ function mapDispatch(dispatch) {
     };
 }
 
-const UserExactWithRouter = connect(null, mapDispatch)(withRouter(UserExact));
+const UserExactWithRouter = withRouter(connect(null, mapDispatch)(UserExact));

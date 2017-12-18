@@ -19,7 +19,8 @@
     "react-router-dom": "4.1.2",
     "redux": "3.7.2",
     "signalr": "2.2.2",
-    "ssri": "^4.1.6"
+    "ssri": "^4.1.6",
+    "msgpack5": "3.6.0"
   },
   "devDependencies": {
     "@types/jquery": "3.2.16",
@@ -32,6 +33,7 @@
     "@types/redux": "3.6.31",
     "@types/signalr": "2.2.34",
     "@types/webpack": "3.0.5",
+    "@types/msgpack5": "^3.4.0",
     "awesome-typescript-loader": "^3.3.0",
     "clean-webpack-plugin": "0.1.16",
     "copy-webpack-plugin": "4.0.1",

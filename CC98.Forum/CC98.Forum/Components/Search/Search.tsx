@@ -2,10 +2,10 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
-import { FocusTopicSingle } from './FocusTopicSingle';
-import { SearchState } from '../States/SearchState';
-import * as Utility from '../Utility';
-import { FocusTopic } from '../Props/FocusTopic';
+import { FocusTopicSingle } from '../Focus/FocusTopicSingle';
+import { SearchState } from '../../States/SearchState';
+import * as Utility from '../../Utility';
+import { FocusTopic } from '../../Props/FocusTopic';
 
 /**
  * 表示搜索结果的帖子列表

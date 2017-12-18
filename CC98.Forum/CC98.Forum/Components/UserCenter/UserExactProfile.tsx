@@ -76,6 +76,14 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
     }
 
     render() {
+        let isBirthDay = false;
+        if (!!this.props.userInfo.birthday) {
+            const match = this.props.userInfo.birthday.match(/\d+-(\d+)-(\d+)/);
+            const now = new Date();
+            if (Number.parseInt(match[1]) === (now.getMonth() + 1) && Number.parseInt(match[2]) === now.getDate()) {
+                isBirthDay = true;
+            }
+        }
         return (
             <div className="user-profile">
                 <div id="userId">
@@ -103,16 +111,19 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
                         >{this.state.buttonInfo}</button>
                     </div>
                 </div>
+                <div id="userIntroducion">{this.props.userInfo.introduction}</div>
                 <div id="userGenderAndBirthday">
                     <p>性别：  {(this.props.userInfo.gender === 1) ? '男' : '女'} </p>
-                    {this.props.userInfo.birthday === null ? null : <p>生日：  {this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T'))}</p>}
+                    {this.props.userInfo.birthday === null ? null : <p>生日：  {this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T')).replace('9999-', '')}{isBirthDay ? <span style={{ fontFamily: 'FontAwesome', marginLeft: '1rem' }} className="fa-birthday-cake" title="生日快乐~"></span> : null}</p>}
                     {this.props.userInfo.emailAddress ? <p>邮箱：  {this.props.userInfo.emailAddress}</p> : null}
                     {this.props.userInfo.qq ? <p>QQ：  {this.props.userInfo.qq}</p> : null}
                     {this.props.userInfo.postCount ? <p>发帖数：  {this.props.userInfo.postCount}</p> : null}
                     {this.props.userInfo.prestige ? <p>威望：  {this.props.userInfo.prestige}</p> : null}
                     {this.props.userInfo.displayTitle ? <p>用户组：  {this.props.userInfo.displayTitle}</p> : null}
-                    {this.props.userInfo.registerTime ? <p>注册时间：  {this.props.userInfo.registerTime.replace('T', ' ')}</p> : null}
-                    {this.props.userInfo.lastLogOnTime ? <p>最后登录时间：  {this.props.userInfo.lastLogOnTime.replace('T', ' ')}</p> : null}
+                    <div>
+                        {this.props.userInfo.registerTime ? <p>注册时间：  {this.props.userInfo.registerTime.replace('T', ' ')}</p> : null}
+                        {this.props.userInfo.lastLogOnTime ? <p>最后登录时间：  {this.props.userInfo.lastLogOnTime.replace('T', ' ')}</p> : null}
+                    </div>
                 </div>
                 {this.props.userInfo.signatureCode ?
                     <div className="user-description">

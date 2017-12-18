@@ -1,10 +1,10 @@
 ﻿import * as React from 'react';
-import { AppState } from '../States/AppState';
+import { AppState } from '../../States/AppState';
 import { MessageMessage } from './MessageMessage';
 import { MessageResponse } from './MessageResponse';
 import { MessageAttme } from './MessageAttme';
 import { MessageSystem } from './MessageSystem';
-import * as Utility from '../Utility';
+import * as Utility from '../../Utility';
 import {
     BrowserRouter as Router,
     Route,

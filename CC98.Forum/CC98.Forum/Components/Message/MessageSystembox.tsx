@@ -2,8 +2,8 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
-import { MessageSystemProps } from '../Props/MessageSystemProps';
-import { UbbContainer } from './UbbContainer'
+import { MessageSystemProps } from '../../Props/MessageSystemProps';
+import { UbbContainer } from '../UbbContainer'
 declare let moment: any;
 
 export class MessageSystembox extends React.Component<MessageSystemProps> {

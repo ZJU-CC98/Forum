@@ -2,9 +2,9 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
-import { MessageResponseProps } from '../Props/MessageResponseProps';
-import * as Utility from '../Utility';
-import { UbbContainer } from './UbbContainer';
+import { MessageResponseProps } from '../../Props/MessageResponseProps';
+import * as Utility from '../../Utility';
+import { UbbContainer } from '../UbbContainer';
 declare let moment: any;
 
 export class MessageAttmebox extends React.Component<MessageResponseProps> {

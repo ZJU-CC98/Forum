@@ -75,7 +75,7 @@ class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff, histo
             isLoging: true
         });
         this.props.logOff();
-        try {
+        try {            
             let url = 'https://openid.cc98.org/connect/token';
 
             /*
@@ -108,18 +108,18 @@ class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff, histo
 
             //缓存数据
             Utility.setLocalStorage("accessToken", token, data.expires_in);
-            Utility.setLocalStorage("userName", this.state.loginName);
             Utility.setLocalStorage("password", this.state.loginPassword);
-
-            //缓存用户其信息
+            Utility.setLocalStorage("userName", this.state.loginName);
             await Utility.refreshUserInfo();
-
-
+            let userInfo = Utility.getLocalStorage('userInfo');
+            if (userInfo.lockState === 1 || userInfo.lockState === 2) {
+                throw new Error('账号已锁定');
+            }
             this.setState({
                 loginMessage: '登录成功 正在返回'
             });
             this.props.logOn();
-            this.props.changeUserInfo(Utility.getLocalStorage('userInfo'));
+            this.props.changeUserInfo(userInfo);
             //跳转
             setTimeout(() => {
                 if (this.props.history.length === 1) {
@@ -130,6 +130,10 @@ class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff, histo
             }, 100);
         } catch (e) {
             let info: string;
+            Utility.removeLocalStorage('userName');
+            Utility.removeLocalStorage('userInfo');
+            Utility.removeLocalStorage("accessToken");
+            Utility.removeLocalStorage("password");
             switch (e.message) {
                 case '400': info = '密码错误'; break;
                 default: info = '未知错误 ' + e.message;
