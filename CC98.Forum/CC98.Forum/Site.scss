@@ -507,14 +507,15 @@ body {
 .reply {
     width: 100%;
     margin-top:1rem;
-    border:rgb(125,186,203) solid 1.5px;
+    border:#8dc9db solid 1.5px;
     background-color:#fff;
     flex-direction:row;
     display:flex;
+    box-shadow:0 0 5px grey;
 }
 .userMessage {
     align-items: center;
-    background-color: #79b8ca;
+    background-color: #8dc9db;
     color: #fff;
     width: 10.6rem;
     display: flex;
@@ -522,7 +523,6 @@ body {
     padding-top:1rem;
     padding-bottom:2rem;
     font-size:0.75rem;
-    box-shadow:0 0 5px 2px #eaeaea;
 }
 .userMessageOpt{
     
@@ -1089,9 +1089,7 @@ a {
     background-size:100%;
 }
 .listTitle {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+
 }
 
 .boardName2 {
@@ -2651,7 +2649,6 @@ a {
     display:flex;
     flex-direction:column;
     font-size:1.5rem;
-    margin-top:-5rem;
     letter-spacing:2px;
     align-items:center;
     font-family:黑体;
