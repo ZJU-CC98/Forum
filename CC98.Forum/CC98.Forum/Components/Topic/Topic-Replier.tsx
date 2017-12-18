@@ -1,13 +1,12 @@
 ﻿import * as React from 'react';
 import { Link} from 'react-router-dom';
 import { RouteComponent } from '../RouteComponent';
-import { UserDetails } from './Topic-UserDetails';
 import * as Utility from '../../Utility';
 declare let moment: any;
-export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, replyTime, floor, isDeleted, quote, content, traceMode, isHot }, { traceMode, buttonIsDisabled, buttonInfo, isFollowing}, { topicid}>{
+export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, floor, isDeleted, traceMode, isHot }, { traceMode, buttonIsDisabled, buttonInfo, isFollowing}, { topicid}>{
     constructor(props, content) {
         super(props, content);
-        this.quote = this.quote.bind(this);
+
         this.follow = this.follow.bind(this);
         this.unfollow = this.unfollow.bind(this);
         this.changeTraceMode = this.changeTraceMode.bind(this);
@@ -16,9 +15,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, re
             buttonIsDisabled: false,
             isFollowing: false };
     }
-    quote() {
-        this.props.quote(this.props.content, this.props.userInfo.name, this.props.replyTime, this.props.floor);
-    }
+
     changeTraceMode() {
         this.setState({ traceMode: this.state.traceMode === true ? false : true });
     }
@@ -94,12 +91,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, re
         if (!this.props.userInfo.id) {
             topicNumber = '';
         }
-        let userDetails;
-        if (this.props.isAnonymous != true && this.props.isDeleted!=true) {
-            userDetails = <UserDetails userName={this.props.userInfo.name} userId={this.props.userInfo.id} />;
-        } else {
-            userDetails = null;
-        }
+       
         let userName  = <Link style={{ color: "#fff" }} to={url}>{this.props.userInfo.name}</Link>;
 
          if (this.props.userInfo.privilege == "匿名" || this.props.userInfo.privilege === "匿名用户") {
@@ -113,6 +105,16 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, re
         else traceButton = <Link className="operation" to={this.state.traceMode === true ? normalUrl : curUserPostUrl} onClick={this.changeTraceMode}>{this.state.traceMode === true ? "返回" : "只看此用户"}</Link>;
         const hotInfo = <div style={{ color: "red", marginLeft: "1rem" }}><span>最热回复</span><span>(第</span><span>{this.props.floor}</span><span>楼)</span></div>;
         const normalInfo = <div style={{ marginLeft: "0.625rem" }}><span>第</span><span style={{ color: "red" }}>{this.props.floor}</span><span>楼</span></div>;
+        let btn = null;
+        if (Utility.getLocalStorage("userInfo")) {
+            if (Utility.getLocalStorage("userInfo").name !== this.props.userInfo.name) {
+                btn = <div className="column" style={{ width: "40%", alignItems: "flex-start", paddingLeft: "1rem", justifyContent: "flex-end", marginBottom: "-0.25rem" }}>
+                    <button className="replierBtn" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled} style={{ border: "none", marginBottom: "0.6rem" }}>{this.state.buttonInfo}</button>
+                    <Link to={email}><button className="replierBtn">私信</button></Link>
+                </div>;
+            }
+        }
+       
         return <div className="userMessage">
             <div className="userGender">
                 {this.props.userInfo.gender === 0 ? <i className="fa fa-venus" style={{ color: "#fff" }}></i> : <i className="fa fa-mars" style={{ color: "#fff" }}></i>}
@@ -126,14 +128,14 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, re
                 {userName}
             </div>
 
-            <div className="row" style={{ width: "100%", paddingLeft: "3rem", marginTop: "0.4rem", alignItems:"center" }}>
-                <div>{this.props.userInfo.birthday ? moment(this.props.userInfo.birthday).format('YYYY-MM-DD') : null}</div>
-                <div style={{ marginLeft: "0.6rem" }}>
+            <div className="row" style={{ width: "100%", paddingLeft: "3rem", marginTop: "0.4rem", alignItems: "center", fontFamily:"微软雅黑" }}>
+                <div style={this.props.userInfo.birthday ? { marginRight: "0.6rem" } : null}>{this.props.userInfo.birthday ? moment(this.props.userInfo.birthday).format('YYYY-MM-DD') : null}</div>
+                <div >
                     粉丝 {this.props.userInfo.fanCount}</div>
             </div>
 
             <div className="row" style={{ width: "100%" }}>
-                <div className="column" style={{ width: "60%", alignItems: "flex-start", paddingLeft:"1.6rem" }}>
+                <div className="column" style={{ width: "60%", alignItems: "flex-start", paddingLeft:"1.5rem" }}>
             <div className="userMessageOpt">
                 帖数 {this.props.userInfo.postCount}
             </div>
@@ -146,10 +148,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, re
                 风评 {this.props.userInfo.popularity}
             </div>
                 </div>
-                <div className="column" style={{ width: "40%", alignItems: "flex-start", paddingLeft: "1rem", justifyContent: "flex-end", marginBottom:"-0.25rem" }}>
-                    <button className="replierBtn" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled} style={{ border: "none", marginBottom:"0.6rem" }}>{this.state.buttonInfo}</button>
-                    <Link to={email}><button className="replierBtn">私信</button></Link>
-                </div>
+                {btn}
             </div>
         </div>;
         

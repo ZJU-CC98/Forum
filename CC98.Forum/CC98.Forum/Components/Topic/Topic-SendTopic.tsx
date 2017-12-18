@@ -166,15 +166,6 @@ ${newProps.content.content}[/quote]`;
         if (mes.status === 403) {
             alert("你太快啦 请慢一点~")
         }
-        if (mes.status === 401) {
-            window.location.href = "/status/logout";
-        }
-        if (mes.status === 402) {
-            window.location.href = "/status/contentneeded";
-        }
-        if (mes.status === 500) {
-            window.location.href = "/status/servererror";
-        }
         this.props.onChange();
         this.setState({ content: "" });
     }
@@ -182,6 +173,7 @@ ${newProps.content.content}[/quote]`;
         try {
             let url = `http://apitest.niconi.cc/topic/${this.props.topicid}/post`;
             let c = Constants.testEditor.getMarkdown();
+            console.log("content=" + c);
             let content = {
                 content: c,
                 contentType: 1,
@@ -193,13 +185,9 @@ ${newProps.content.content}[/quote]`;
             myHeaders.append("Authorization", token);
             myHeaders.append("Content-Type", 'application/json');
             let mes = await fetch(url, {
-
                 method: 'POST',
-
                 headers: myHeaders,
-
                 body: contentJson
-
             }
             );
             if (mes.status === 403) {
@@ -207,9 +195,9 @@ ${newProps.content.content}[/quote]`;
             }
             if (mes.status === 402) {
                 alert("请输入内容");
-            }
-            Constants.testEditor.setMarkdown("");
+            }   
             this.props.onChange();
+            Constants.testEditor.setMarkdown("");
             editormd.emoji.path = '/images/emoji/';
             if (this.state.mode === 1) {
                 Constants.testEditor = editormd("test-editormd", {

@@ -1,13 +1,15 @@
 ﻿import * as React from 'react';
+import { Link } from 'react-router-dom';
 declare let moment: any;
 export class TopicInfo extends React.Component<{topicInfo,boardInfo,tag,adsUrl}>{
     render() {
-        const url = `/images/_${this.props.boardInfo.name}.png`
+        const url = `/images/_${this.props.boardInfo.name}.png`;
+        const boardUrl = `/list/${this.props.boardInfo.id}`;
         return <div className="topicInfo-info">
             <div className="topicInfo-boardInfo">
-                <div className="topicInfo-boardImage"><img className="topicInfo-boardImage" src={url} /></div>
+                <Link to={boardUrl}><div className="topicInfo-boardImage"><img className="topicInfo-boardImage" src={url} /></div></Link>
                 <div className="topicInfo-boardMessage">
-                    <div>{this.props.boardInfo.name}</div>
+                    <Link to={boardUrl}><div style={{color:"#fff"}}>{this.props.boardInfo.name}</div></Link>
                     <div style={{ marginTop: "0.5rem", fontSize:"0.75rem" }}>{this.props.boardInfo.todayCount} / {this.props.boardInfo.topicCount}</div>
                 </div>
             </div>

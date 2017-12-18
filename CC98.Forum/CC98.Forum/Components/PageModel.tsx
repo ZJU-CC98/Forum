@@ -2,8 +2,9 @@
 import { Link } from "react-router-dom";
 
 export class PageModel extends React.Component<{ url: string, pageNumber: number, curPage: number, totalPage: number }, {}> {
-    cancelFocus() {
-       // this.blur();
+    cancelFocus(e) {
+        const ele = e.target;
+        ele.blur();
     }
     render() {
         let pageUrl: string;

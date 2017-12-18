@@ -6,7 +6,7 @@ import {
     Route,
     Switch
 } from 'react-router-dom';
-import { Post } from './Topic/Topic';
+import { Post, ShowTopic } from './Topic/Topic';
 import { List } from './Board/Board';
 import { CurUserPost } from './Topic/Topic-Trace';
 import { BoardList } from './Board/BoardList';
@@ -27,6 +27,8 @@ import { SearchBoard } from './Search/SearchBoard';
 import { Signin } from './Signin';
 import { SiteManage } from './SiteManage';
 
+import { Test1 } from './Topic/Topic';
+
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
 	match: match<TMatch>;
 	constructor(props, context) {
@@ -40,11 +42,12 @@ export class App extends React.Component<null, AppState> {
     render() {
         return (<div style={{ width: "100%" }}>
             <Router>
-                <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px" }}>
+                <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px", backgroundColor:"#f5fafe" }}>
                     <Header />
+                    <Test1 />
                     <Switch>
                         <Route exact path="/" component={MainPage}></Route>
-                        <Route exact path="/topic/:topicid/:page?" component={Post} />
+                        <Route exact path="/topic/:topicid/:page?" component={ShowTopic} />
                         <Route exact path="/topic/:topicid/user/:userId/:page?" component={CurUserPost} />
                         <Route path="/list/:boardId/:type?/:page?" component={List} />
                         <Route exact path="/boardlist" component={BoardList} />
