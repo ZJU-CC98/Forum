@@ -98,4 +98,4 @@ function mapDispatch(dispatch) {
     };
 }
 
-const UserExactWithRouter = connect(null, mapDispatch)(withRouter(UserExact));
+const UserExactWithRouter = withRouter(connect(null, mapDispatch)(UserExact));

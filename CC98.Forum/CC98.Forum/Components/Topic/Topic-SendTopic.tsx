@@ -166,15 +166,6 @@ ${newProps.content.content}[/quote]`;
         if (mes.status === 403) {
             alert("你太快啦 请慢一点~")
         }
-        if (mes.status === 401) {
-            window.location.href = "/status/logout";
-        }
-        if (mes.status === 402) {
-            window.location.href = "/status/contentneeded";
-        }
-        if (mes.status === 500) {
-            window.location.href = "/status/servererror";
-        }
         this.props.onChange();
         this.setState({ content: "" });
     }
@@ -182,6 +173,7 @@ ${newProps.content.content}[/quote]`;
         try {
             let url = `http://apitest.niconi.cc/topic/${this.props.topicid}/post`;
             let c = Constants.testEditor.getMarkdown();
+            console.log("content=" + c);
             let content = {
                 content: c,
                 contentType: 1,
@@ -193,13 +185,9 @@ ${newProps.content.content}[/quote]`;
             myHeaders.append("Authorization", token);
             myHeaders.append("Content-Type", 'application/json');
             let mes = await fetch(url, {
-
                 method: 'POST',
-
                 headers: myHeaders,
-
                 body: contentJson
-
             }
             );
             if (mes.status === 403) {
@@ -207,9 +195,9 @@ ${newProps.content.content}[/quote]`;
             }
             if (mes.status === 402) {
                 alert("请输入内容");
-            }
-            Constants.testEditor.setMarkdown("");
+            }   
             this.props.onChange();
+            Constants.testEditor.setMarkdown("");
             editormd.emoji.path = '/images/emoji/';
             if (this.state.mode === 1) {
                 Constants.testEditor = editormd("test-editormd", {
@@ -259,7 +247,7 @@ ${newProps.content.content}[/quote]`;
             editor = <div>
                 <UbbEditor update={this.update} value={this.state.content}/>
                 <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
-                    <div id="post-topic-button" onClick={this.sendUbbTopic} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复
+                    <div id="post-topic-button" onClick={this.sendUbbTopic} className="button blue" style={{ marginTop: "1.25rem", width: "6rem", height: "2rem", lineHeight:"2rem", letterSpacing: "0.3125rem" }}>回复
                     </div>
                     </div></div>;
         }
@@ -288,7 +276,7 @@ ${newProps.content.content}[/quote]`;
         return <div id="sendTopicInfo" style={{ width: "100%", display: "flex", flexDirection: "column" }}>
             <div className="row" style={{ justifyContent: this.state.mode === 1 ? "space-between" : "flex-end" }}>
                 {uploadInfo}
-                <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ width: "16rem", height: "0.8rem", letterSpacing: "0.3125rem" }}>{this.state.mode === 1 ? "切换到Ubb编辑器" : "切换到Markdown编辑器"}
+                <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ width: "20rem", height: "2rem", lineHeight:"2rem",letterSpacing: "0.3125rem" }}>{this.state.mode === 1 ? "切换到Ubb编辑器" : "切换到Markdown编辑器"}
                 </div></div>
             {editor}
             <button id="topicManagementBTN" style={{display:"none"}} onClick={this.showManagement}>管理</button>

@@ -1,16 +1,21 @@
 ﻿import * as React from 'react';
 import * as Utility from '../../Utility';
 import { UbbContainer } from '../UbbContainer';
-export class ReplierSignature extends React.Component<{ signature,postid ,topicid,masters,userId,likeInfo}, {likeNumber,dislikeNumber,likeState}>{
+export class ReplierSignature extends React.Component<{ signature,postid ,topicid,masters,userId,likeInfo,quote,content,userInfo,replyTime,floor}, {likeNumber,dislikeNumber,likeState}>{
     constructor(props, content) {
         super(props, content);
         this.showManageUI = this.showManageUI.bind(this);
         this.showJudgeUI = this.showJudgeUI.bind(this);
+        this.quote = this.quote.bind(this);
+        this.edit = this.edit.bind(this);
         this.state = {
             likeNumber: this.props.likeInfo.likeCount,
             dislikeNumber: this.props.likeInfo.dislikeCount,
             likeState: this.props.likeInfo.likeState,
         }
+    }
+    quote() {
+        this.props.quote(this.props.content, this.props.userInfo.name, this.props.replyTime, this.props.floor);
     }
     showManageUI() {
         const UIId = `#manage${this.props.postid}`;
@@ -19,6 +24,20 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
     showJudgeUI() {
         const UIId = `#judge${this.props.postid}`;    
         $(UIId).css("display", "");
+    }
+    edit() {
+
+    }
+    isAllowedtoEdit(userPrivilege) {
+        if (Utility.getLocalStorage("userInfo")) {
+            const myPrivilege = Utility.getLocalStorage("userInfo").privilege;
+            if (myPrivilege === '管理员') return true;
+            if (userPrivilege === '管理员') return false;
+            if (Utility.isMaster(this.props.masters)) return true;
+        } else {
+            return false;
+        }
+      
     }
     async like() {
         const idLike = `#like${this.props.postid}`;
@@ -94,12 +113,18 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
         if (!this.props.signature ) {
             signature = null;
         }
+        let editIcon = null;
+        if (this.isAllowedtoEdit(this.props.userInfo.privilege)) {
+            editIcon = <div className="operation1" onClick={this.edit}>   编辑</div>;
+        }
         return <div className="column">
             <div className="comment1">
                 <div id={idLike} className="upup" style={{ marginRight: "0.7rem" }} onClick={ this.like.bind(this) }><i title="赞"  className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
                 <div id={idDislike} className="downdown" onClick={this.dislike.bind(this)}><i title="踩"  className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
                 <div id="commentlike">
-                    <div style={{ cursor: "pointer" }} className="commentbutton" onClick={this.showJudgeUI}>   评分</div>
+                    <div className="operation1" onClick={this.showJudgeUI}>   评分</div>
+                    <div className="operation1" onClick={this.quote}>   引用</div>
+                    {editIcon}
                     <div className="operation1" id={manageIcon} style={{ display: "none", cursor: "pointer" }} onClick={this.showManageUI}>管理</div>
                 </div>
             </div>

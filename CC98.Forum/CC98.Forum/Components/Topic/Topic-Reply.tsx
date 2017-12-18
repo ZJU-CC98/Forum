@@ -15,7 +15,7 @@ import { Judge } from './Topic-Judge';
 import { ReplierSignature } from './Topic-ReplierSignature';
 declare let moment: any;
 
-export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,  quote, isTrace, isHot, userId }, { inWaiting, contents, masters }>{
+export class Reply extends React.Component<{DateTime,topicId, page, topicInfo, boardInfo,  quote, isTrace, isHot, userId }, { inWaiting, contents, masters }>{
     constructor(props, content) {
         super(props, content);
         this.update = this.update.bind(this);
@@ -46,7 +46,6 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
         this.setState({ contents: realContents });
     }
     async componentDidMount() {
-        //  this.props.render(false);
         this.setState({inWaiting:true});
         const page = this.props.page || 1;
         let realContents;
@@ -61,15 +60,11 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
             realContents = await Utility.getTopicContent(this.props.topicId, page, this.props.topicInfo.replyCount);
         }
         const masters = this.props.boardInfo.boardMasters;
-     //  this.props.render(true);
         this.setState({ inWaiting:false,contents: realContents,masters:masters });
     }
     async componentWillReceiveProps(newProps) {
-      //  this.props.render(false);
         this.setState({ inWaiting: true });
         const page = newProps.page || 1;
-        console.log("newprops reply");
-        console.log(page);
         let realContents;
         if (newProps.isHot) {
             realContents = await Utility.getHotReplyContent(newProps.topicId);
@@ -81,7 +76,6 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
         } else {
             realContents = await Utility.getTopicContent(newProps.topicId, page, newProps.topicInfo.replyCount);
         }
-      //  this.props.render(true);
         this.setState({inWaiting:false,contents: realContents });
 
     }
@@ -92,13 +86,13 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
             privilege = Utility.getLocalStorage("userInfo").privilege;
         const id = item.floor % 10;
         return <div className="reply" id={id.toString()} >
-            <Replier key={item.postId} userInfo={item.userInfo} isAnonymous={item.isAnonymous} topicid={item.topicId} replyTime={item.time} floor={item.floor} isDeleted={item.isDeleted} content={item.content} quote={this.quote} traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
+            <Replier key={item.postId} userInfo={item.userInfo} isAnonymous={item.isAnonymous} topicid={item.topicId}  floor={item.floor} isDeleted={item.isDeleted}  traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
             <div className="column" style={{ justifyContent:"space-between",width:"85%" }}>
             <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
             <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} />
             <ReplyContent key={item.content} postid={item.postId} content={item.content} contentType={item.contentType} />
             <Award postId={item.postId} updateTime={Date.now()} awardInfo={item.awardInfo} />
-            <ReplierSignature signature={item.userInfo.signatureCode} topicid={item.topicId} userId={item.userId} masters={this.state.masters} postid={item.postId} likeInfo={item.likeInfo} />
+                <ReplierSignature floor={item.floor} userInfo={item.userInfo} replyTime={item.time} content={item.content} quote={this.quote}signature={item.userInfo.signatureCode} topicid={item.topicId} userId={item.userId} masters={this.state.masters} postid={item.postId} likeInfo={item.likeInfo} />
                 </div>
         </div>;
     }

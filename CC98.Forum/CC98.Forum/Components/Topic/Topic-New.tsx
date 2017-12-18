@@ -1,7 +1,7 @@
 ﻿
 import * as React from 'react';
 import { FocusTopic } from '../../Props/FocusTopic';
-import { FocusTopicSingle } from '.././FocusTopicSingle';
+import { FocusTopicSingle } from '../Focus/FocusTopicSingle';
 import { FocusTopicAreaState } from '../../States/FocusTopicAreaState';
 import * as Utility from '../../Utility';
 /**

@@ -6,14 +6,14 @@ import {
     Route,
     Switch
 } from 'react-router-dom';
-import { Post } from './Topic/Topic';
+import { Post, ShowTopic } from './Topic/Topic';
 import { List } from './Board/Board';
 import { CurUserPost } from './Topic/Topic-Trace';
 import { BoardList } from './Board/BoardList';
 import { UserCenter } from './UserCenter/UserCenter';
-import { Message } from './Message';
+import { Message } from './Message/Message';
 import { AllNewTopic } from './Topic/Topic-New';
-import { Focus } from './Focus';
+import { Focus } from './Focus/Focus';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { MainPage } from './MainPage';
@@ -22,10 +22,12 @@ import { LogOn } from './LogOn';
 import { CreateTopic } from './Topic/Topic-CreateTopic';
 import * as Status from './Status';
 import { UbbContainer } from './UbbContainer';
-import { Search } from './Search';
-import { SearchBoard } from './SearchBoard';
+import { Search } from './Search/Search';
+import { SearchBoard } from './Search/SearchBoard';
 import { Signin } from './Signin';
 import { SiteManage } from './SiteManage';
+import { SignalRComponent } from './SignalR';
+import { Test1 } from './Topic/Topic';
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
 	match: match<TMatch>;
@@ -40,11 +42,11 @@ export class App extends React.Component<null, AppState> {
     render() {
         return (<div style={{ width: "100%" }}>
             <Router>
-                <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px" }}>
+                <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px", background:"linear-gradient(to top,rgba(121,184,202,0.3),rgba(121,184,202,0.02))"}}>
                     <Header />
                     <Switch>
                         <Route exact path="/" component={MainPage}></Route>
-                        <Route exact path="/topic/:topicid/:page?" component={Post} />
+                        <Route exact path="/topic/:topicid/:page?" component={ShowTopic} />
                         <Route exact path="/topic/:topicid/user/:userId/:page?" component={CurUserPost} />
                         <Route path="/list/:boardId/:type?/:page?" component={List} />
                         <Route exact path="/boardlist" component={BoardList} />
@@ -59,6 +61,7 @@ export class App extends React.Component<null, AppState> {
                         <Route path="/createtopic/:boardId" component={CreateTopic} />
                         <Route path="/signin" component={Signin} />
                         <Route path="/sitemanage" component={SiteManage} />
+                        <Route path="/signalr" component={SignalRComponent} />
                         <Route path="/status/notfoundtopic" component={Status.NotFoundTopic} />
                         <Route path="/status/notfoundboard" component={Status.NotFoundBoard} />
                         <Route path="/status/logout" component={Status.LogOut} />

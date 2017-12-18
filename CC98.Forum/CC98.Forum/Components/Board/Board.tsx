@@ -60,18 +60,12 @@ export class List extends RouteComponent<{}, { page:number, boardId: number,boar
             case 'server error':
                 return <ServerError />
         }
-        let bigPaper;
-        if (!this.state.boardInfo.bigPaper) {
-            bigPaper = null;
-        } else {
-            bigPaper = <ListNotice bigPaper={this.state.boardInfo.bigPaper} />;
-        }
+
         return  <div id="listRoot">
 
             <Category boardId={this.match.params.boardId} boardInfo={this.state.boardInfo} />
-            <ListHead key={this.state.page} boardId={this.match.params.boardId} />
-            {bigPaper}
-
+            <ListHead key={this.state.page} boardId={this.match.params.boardId} boardInfo={this.state.boardInfo} />
+            <ListButtonAndAds boardInfo={this.state.boardInfo} adsUrl={null} />
             <Switch>
             <Route exact path="/list/:boardId/:page?" component={ListContent} />
 
@@ -86,8 +80,6 @@ export class List extends RouteComponent<{}, { page:number, boardId: number,boar
  */
 
 export class Category extends React.Component<{ boardId, boardInfo }, {}>{
-    //<i className="fa fa-window-maximize fa-lg"></i> 这是之前导航中的首页图标，因为不好看暂时去掉了
-    //fa-lg, fa-2x, fa-3x, fa-4x, fa-5x 分别是将icon扩大到原来的133%, 2倍，3倍，4倍和5倍
     render() {
         const listUrl = `/list/${this.props.boardId}`;
         return <div className="row" style={{ alignItems: "baseline", width: "100% ", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>          
@@ -97,25 +89,12 @@ export class Category extends React.Component<{ boardId, boardInfo }, {}>{
         </div>;
     }
 }
-export class ListHead extends RouteComponent<{ boardId }, State.ListHeadState, { boardId }> {
+export class ListHead extends RouteComponent<{ boardId, boardInfo }, {}, { boardId }> {
     constructor(props, content) {
         super(props, content);
         const initFollow = Utility.isFollowThisBoard(this.props.boardId);
         this.follow = this.follow.bind(this);
-        this.unfollow = this.unfollow.bind(this);
-        this.state = {
-            imgUrl: '/images/ListImg.jpg',
-            listName: '学术信息',
-            todayTopics: 210,
-            totalTopics: 12000,
-            adsUrl: '/images/ads.jpg',
-            listManager: [],
-            isAnomynous: false,
-            isEncrypted: false,
-            isHidden: false,
-            isLocked: false,
-            isFollow: initFollow
-        };
+        this.unfollow = this.unfollow.bind(this);       
     }
     async follow() {
         await Utility.followBoard(this.props.boardId);
@@ -125,68 +104,51 @@ export class ListHead extends RouteComponent<{ boardId }, State.ListHeadState, {
         await Utility.unfollowBoard(this.props.boardId);
         this.setState({ isFollow: false });
     }
-    async componentDidMount() {
-        const data = await Utility.getBoardInfo(this.props.boardId );
-        this.setState({
-            listName: data.name, todayTopics: data.todayCount, totalTopics: data.topicCount, listManager: data.boardMasters
-        });
-    }
-    async componentWillRecieveProps(newProps) {
-        const data = await Utility.getBoardInfo(newProps.boardId);
-        this.setState({
-            listName: data.name, todayTopics: data.todayCount, totalTopics: data.topicCount, listManager: data.boardMasters
-        });
-    }
     generateMasters(item) {
         const name = item.toString();
         const userName = encodeURIComponent(item.toString());
         const webUrl = `/user/name/${userName}`;
-        return <div style={{ marginRight: '10px' }}><a href={webUrl}>{name}</a></div>;
+        return <div style={{ marginRight: '10px', fontSize: "0.75rem" }}><a style={{color:"#fff"}} href={webUrl}>{name}</a></div>;
     }
     render() {
-        return <div className="column" style={{ width: "100%" }} >
-            <div className="row" style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <div style={{ flexgrow: '1', flexDirection: 'row', display: 'flex' }}>
-                    <div id="ListImg" ><img src={this.state.imgUrl}></img></div>
-                    <div className="column" style={{ marginTop: '1.25rem', marginLeft: '0.625rem' }}>
-
-                        <div className="row" style={{ marginTop: '0.625rem' }}><div>今日主题</div><div style={{ marginLeft: '0.625rem' }}>{this.state.todayTopics}</div></div>
-                        <div className="row" style={{ marginTop: '0.625rem' }}><div>总主题</div><div style={{ marginLeft: '1.25rem' }}>{this.state.totalTopics}</div></div>
+        const url = `/images/_${this.props.boardInfo.name}.png`
+        return <div className="row" style={{width:"100%"}}>
+            <div className="boardMessage">
+                <div className="row" style={{ height: "4rem", marginTop: "1.25rem" }}>
+                    <img style={{ marginLeft:"1.25rem"}}src={url}></img>
+                    <div className="boardMessageDetails">
+                        <div>
+                            {this.props.boardInfo.name}
+                        </div>
+                        <div style={{ fontSize:"0.75rem"}}>
+                            {this.props.boardInfo.todayCount}/{this.props.boardInfo.topicCount}
+                        </div>
                     </div>
+                    <div className="boardFollow"><button onClick={this.props.boardInfo.isFollow ? this.unfollow : this.follow} className="boardFollow">{this.props.boardInfo.isFollow ? "已关注" : "关注"}</button>  </div>
                 </div>
-                <div className="column" style={{ flexgrow: '0' }}>
-                    <div id="like"><button onClick={this.state.isFollow ? this.unfollow : this.follow} className="followBoard">{this.state.isFollow?"取消关注":"关注版面"}</button>  </div>
-                    <div ><img src={this.state.adsUrl} style={{ width: '15.625rem', height: '3.75rem' }}></img></div>
+                <div className="boardDescription">
+                    <div>版面简介:</div>
+                    <div>{this.props.boardInfo.description}</div>
+                </div>
+                <div className="boardMasters">
+                    <div>版主:</div>
+                    <div>{this.props.boardInfo.boardMasters.map(this.generateMasters)}</div>
                 </div>
             </div>
-            <div className="row" style={{ marginTop: '0.3125rem' }}>
-                <span>版主 : </span><div className="row" style={{ marginLeft: '0.3125rem' }}>{this.state.listManager.map(this.generateMasters)}</div>
+            <div className="bigPaper" >
+                <div className="bigPaperTitle">版面公告</div>
+                <div><UbbContainer code={this.props.boardInfo.bigPaper} /></div>
             </div>
-        </div>;
+         </div>;
 
     }
 }
-export class ListNotice extends RouteComponent<{ bigPaper: string }, State.ListNoticeState, {}> {
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
-            notice: '1. 请大家首先阅读心灵之约版规再发帖，如有违规不接受pm卖萌求情；2. 诚征新版主，请去论坛事务版搜之前的版面负责人申请帖并遵循格式发帖，如有不明可以站短站务组组长咨询。3. 不要留联系方式！不要留联系方式！不要留联系方式！重要的事说三遍！，留任何联系方式tp1000天。 4. 更新了版规，增加了tp规则：成功诱导对方留联系方式的，tp1000天；修订了锁沉规则：有意义言之有物、希望继续讨论的长篇读后感将给予保留。5. 请理性讨论，不要人身攻击。违者tp1天起，累犯或严重的，上不封顶。',
-        };
-    }
-    render() {
-        return <div className="notice" style={{ marginTop: '0.625rem' }}>
-            <div style={{ backgroundColor: "#3399FE" }}>
-                <div style={{ marginLeft: '0.9375rem', marginTop: '0.5rem', marginBottom: '0.5rem', fontSize: '1rem', color: '#FFFFFF' }}>本版公告</div>
-            </div>
-            <div className="substance"><UbbContainer code={this.props.bigPaper} /></div>
-        </div>;
-    }
-}
+
 
 /**
  * 提供显示连续页码的交互效果。
  */
-export class ListButtonAndPager extends React.Component<{ url:string,boardid: number, page: number, totalPage: number }, { pager }> {
+export class ListTagAndPager extends React.Component<{ url:string,boardid: number, page: number, totalPage: number,tag }, { pager }> {
     constructor(props, content) {
         super(props, content);
         this.state = {
@@ -194,7 +156,16 @@ export class ListButtonAndPager extends React.Component<{ url:string,boardid: nu
         };
     }
 
-
+    generateTagLayer(item) {
+        return <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginBottom: "0.5rem" }}>
+            <div className="row">  <button id="tagButton">全部</button>
+                {item.tags.map(this.generateTagButton)}
+            </div>
+        </div >;
+    }
+    generateTagButton(item) {
+        return <button className="chooseTag">{item}<span className="tagNumber"></span></button>;
+    }
     async componentWillReceiveProps(newProps) {
         const pages = Utility.getPager(newProps.page, newProps.totalPage);
         this.setState({ pager: pages });
@@ -204,11 +175,10 @@ export class ListButtonAndPager extends React.Component<{ url:string,boardid: nu
         this.setState({ pager: pages });
     }
     render() {
-        const createTopicUrl = `/createTopic/${this.props.boardid}`;
+        
         return <div className="row" style={{ width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", marginTop: '0.9375rem', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-            <div style={{ marginBottom: '1.25rem' }}>
-                <Link className="button orange" to={createTopicUrl}>发主题</Link>
-                <button className="button green" style={{ marginLeft: '1.25rem' }}>发投票</button>
+            <div >
+                {this.props.tag.map(this.generateTagLayer.bind(this))}            
             </div>
             <Pager page={this.props.page} url={this.props.url} totalPage={this.props.totalPage} />
         </div>;
@@ -216,19 +186,16 @@ export class ListButtonAndPager extends React.Component<{ url:string,boardid: nu
 }
 
 
-export class ListTag extends React.Component<{tags}> {
-    generateTagLayer(item) {
-        return <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginTop: '1.5625rem', marginBottom: '25px' }}>
-            <div className="row">  <button id="tagButton">全部</button>    
-                {item.tags.map(this.generateTagButton)}
-            </div>
-        </div >;
-    }
-    generateTagButton(item) {
-        return <button className="chooseTag">{item}<span className="tagNumber"></span></button>;
-    }
+export class ListButtonAndAds extends React.Component<{boardInfo,adsUrl}> {
+    
+ 
     render() {
-        return <div className="column" style={{ width: "100%" }}>{this.props.tags.map(this.generateTagLayer.bind(this))}</div>;
+        const adsUrl = `/images/ads.jpg`;
+        const createTopicUrl = `/createTopic/${this.props.boardInfo.id}`;
+        return <div className="row" style={{ width: "100%", height: "6.25rem", alignItems: "flex-end", justifyContent: "space-between", marginTop:"1rem" }}>
+            <Link className="button bgcolor" to={createTopicUrl}>发主题</Link>
+            <div><img style={{ width: "18.75rem", height: "6.25rem" }} src={adsUrl}></img></div>
+        </div>;
     }
 }
 export class ListTopContent extends React.Component<{ boardId }, { data }>{
@@ -357,9 +324,8 @@ export class ListContent extends RouteComponent<{}, { items,totalPage:number,boa
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
         const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
         return <div className="listContent ">
-            <ListButtonAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} />
-            <ListTag tags={this.state.tags} />
-            <div className="column" style={{width:"100%",border:"#eaeaea solid thin"}}>
+            <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} tag={this.state.tags} />
+            <div className="column" style={{width:"100%"}}>
             <div className="row" style={{ justifyContent: 'space-between', }}>
                 <div className="row" style={{ alignItems: 'center' }} >
 
@@ -437,8 +403,8 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
         const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
         return <div className="listContent ">
-            <ListButtonAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={bestTopicsUrl} />
-            <ListTag tags={this.state.tags} />
+            <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={bestTopicsUrl} tag={this.state.tags} />
+        
             <div className="row" style={{ justifyContent: 'space-between', }}>
                 <div className="row" style={{ alignItems: 'center' }} >
 
@@ -510,8 +476,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
         const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
         return <div className="listContent ">
-            <ListButtonAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={saveTopicsUrl} />
-            <ListTag tags={this.state.tags} />
+            <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={saveTopicsUrl} tag={this.state.tags} />
             <div className="row" style={{ justifyContent: 'space-between', }}>
                 <div className="row" style={{ alignItems: 'center' }} >
 
@@ -579,14 +544,21 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         const titleId = `title${this.props.id}`;
         let icon;
         if (this.props.topState === 0) {
-            icon = <i style={{ color: "#B0B0B0" }} className="fa fa-envelope fa-lg"></i>
+            icon = <div style={{
+                width: "1rem", justifyContent: "flex-start" }}><i style={{ color: "#B0B0B0" }} className="fa fa-envelope fa-lg"></i></div>
         } else if (this.props.topState === 2) {
-            icon = <i style={{ color: "orange" }} className="fa fa-chevron-circle-up fa-lg"></i>
+            icon = <div style={{
+                width: "1rem", justifyContent: "flex-start"
+            }}><i style={{ color: "orange" }} className="fa fa-chevron-circle-up fa-lg"></i></div>
         } else if (this.props.topState === 4) {
-            icon = <i style={{ color: "red" }} className="fa fa-arrow-circle-up fa-lg"></i>
+            icon = <div style={{
+                width: "1rem", justifyContent: "flex-start"
+            }}><i style={{ color: "red" }} className="fa fa-arrow-circle-up fa-lg"></i></div>
         }
         if (this.props.replyCount > 100 && this.props.topState === 0) {
-            icon = <i style={{ color: "red" }} className="fa fa-envelope-open fa-lg"></i>
+            icon = <div style={{
+                width: "1rem", justifyContent: "flex-start"
+            }}><i style={{ color: "red" }} className="fa fa-envelope-open fa-lg"></i></div>
         }
         let curName;
         if (Utility.getLocalStorage("userInfo"))
@@ -594,11 +566,15 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         else
             curName = "";
         if (curName === this.props.userName) {
-            icon = <i style={{ color: "#FFC90E" }} className="fa fa-envelope fa-lg"></i>
+            icon = <div style={{
+                width: "1rem", justifyContent: "flex-start"
+            }}><i style={{ color: "#FFC90E" }} className="fa fa-envelope fa-lg"></i></div>
         }
         //1是锁贴
         if (this.props.state === 1) {
-            icon = <i style={{ color: "#B0B0B0" }} className="fa fa-lock fa-lg"></i>
+            icon = <div style={{
+                width: "1rem", justifyContent: "flex-start"
+            }}><i style={{ color: "#B0B0B0" }} className="fa fa-lock fa-lg"></i></div>
         }
         let hitCount: any = this.props.hitCount;
         if (this.props.hitCount > 100000) {
@@ -612,14 +588,14 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
                 <div style={{ display: "flex", marginLeft: "0.5rem", alignItems: "flex-end" }}>
                     <div className="row" style={{ alignItems: "center" }}>
                     {icon}
-                       <div className="listTitle" id={titleId} style={{ marginLeft: '0.5rem', }}> {this.props.title}</div>
+                       <div className="listTitle" id={titleId} style={{ marginLeft: '1rem', }}> {this.props.title}</div>
                         </div>
                     <div style={{ display: "flex", fontSize: "0.75rem",marginLeft:"1rem" }}>
                         {this.state.pager.map(this.generateListPager.bind(this))}</div>
                 </div>
                 <div className="row" style={{ width: "50%", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between", fontSize: "0.75rem", marginBottom: "-4px" }}>
 
-                    <div style={{ width: "8rem", textAlign: "center" }}> <span ><a >{this.props.userName || '匿名'}</a></span></div>
+                    <div style={{ width: "7.5rem", textAlign: "left" }}> <span ><a >{this.props.userName || '匿名'}</a></span></div>
 
                     <div className="row" style={{ width: "10rem" }}>
 
