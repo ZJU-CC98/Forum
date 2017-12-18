@@ -114,10 +114,12 @@ class SignalRConnection {
             this._connection = new SignalR.HubConnection(this._url, { jwtBearer: ()=> token, logging: new SignalR.ConsoleLogger(SignalR.LogLevel.Trace) });
             this.addListener(this._eventListeners);
         }
-        this._connection.onclose(() => {
-            this.startSignalRConnection();
-            console.log('restarting...');
-        });
+        //this._connection.onclose(() => {
+        //    if (this._isConneting) {
+        //        this.startSignalRConnection();
+        //        console.log('restarting...');
+        //    }
+        //});
         await this._connection.start();
         this.sendMessage('TestNotify', "569380");
         this._isConneting = true;
