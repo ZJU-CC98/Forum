@@ -55,41 +55,45 @@ export class AnnouncementComponent extends React.Component<{}, { announcementCon
 }
 
 /**
- * 推荐阅读内容
- **/
-interface RecommendedReadingContent {
-    imageUrl: string;
-    title: string;
-    abstract: string;
-}
-
-/**
  * 推荐阅读组件
  **/
-export class RecommendedReadingComponent extends React.Component<{}, {}> {
-    /*
+export class RecommendedReadingComponent extends React.Component<{}, { recommendedReading: MainPageColumn[], index: number }> {
+
     constructor(props) {
         super(props);
         this.state = {
-            contents: "",
-            showedContent: { imageUrl: "", title: "", abstract: "" },
-            index: Math.floor(Math.random() * 5),    //生成0-4的随机数
+            recommendedReading: new Array<MainPageColumn>(),
+            index: Math.floor(Math.random() * 5)    //0-5的随机数
+
         };
     }
-    //获取推荐阅读内容
-    componentWillMount() {
-        let defaultContents: any = "";
+
+    async getRecommendedReading() {
+        const recommendedReading: MainPageColumn[] = new Array<MainPageColumn>();
+        const response = await fetch('http://apitest.niconi.cc/index/column/recommandationreading');
+        const data = await response.json();
         for (let i = 0; i < 5; i++) {
-            defaultContents[i].imageUrl = "/images/推荐阅读.jpg";
-            defaultContents[i].title = "推荐阅读标题" + i;
-            defaultContents[i].abstract = "推荐阅读摘要" + i;
+            recommendedReading[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
         }
-        this.setState({
-            contents: defaultContents
-        })
+        return recommendedReading;
     }
-    */
+
+    async componentWillMount() {
+        const x = await this.getRecommendedReading();
+        this.setState({
+            recommendedReading: x
+        });
+    }
+    //在componentWillMount前似乎会render一次 这时this.state还是初值  所以需要先判断一次
     render() {
+        let recommendedReading = this.state.recommendedReading;
+        let index = this.state.index;
+
+        let imageUrl = recommendedReading.length ? recommendedReading[index].imageUrl : "";
+        let title = recommendedReading.length ? recommendedReading[index].title : "";
+        let url = recommendedReading.length ? recommendedReading[index].url : "";
+        let content = recommendedReading.length ? recommendedReading[index].content : "";
+
         return <div className="recommendedReading">
             <div className="mainPageTitle2">
                 <div className="mainPageTitleRow">
@@ -99,11 +103,11 @@ export class RecommendedReadingComponent extends React.Component<{}, {}> {
             </div>
             <div className="recommendedReadingContent">
                 <div className="recommendedReadingImage">
-                    <img src="/images/推荐阅读.jpg" />
+                    <img src={imageUrl} />
                 </div>
                 <div className="column" style={{ flexGrow: 1 }}>
-                    <div className="recommendedReadingTitle">推荐阅读标题</div>
-                    <div className="recommendedReadingAbstract">推荐阅读内容</div>
+                    <div className="recommendedReadingTitle"><a href={url} target="view_window">{title}</a></div>
+                    <div className="recommendedReadingAbstract">{content}</div>
                     <div className="recommendedReadingButtons">
                         <div className="recommendedReadingButton" />
                         <div className="recommendedReadingButton" />
@@ -114,12 +118,13 @@ export class RecommendedReadingComponent extends React.Component<{}, {}> {
                 </div>
             </div>
         </div>
+
     }
 }
 
 /**
  * 首页话题类
- * 用于首页左侧的几个信息栏，该类的对象（一条主题)需要标题，id，所在版面，及所在版面id等几个属性
+ * 用于首页左侧下方的几栏，该类的对象（一条主题)需要标题，id，所在版面，及所在版面id等几个属性
  **/
 export class MainPageTopic {
 
@@ -283,11 +288,43 @@ export class Test extends React.Component<{}, { testContent: string }>{
             console.log("这不是链接！");
         }
     }
+
+    async postRecommandationReading() {
+        const url = `http://apitest.niconi.cc/index/column`;
+        const content = {
+            type: 1,
+            title: "推荐阅读标题5",
+            content: "推荐阅读摘要5",
+            url: "http://www.cc98.org",
+            imageUrl: "/images/推荐阅读.jpg",
+            orderWeight: 1,
+            enable: true,
+        }
+        const postForumIndexColumnInfo = JSON.stringify(content);
+        const token = Utility.getLocalStorage("accessToken");
+        let myHeaders = new Headers();
+        myHeaders.append("Authorization", token);
+        myHeaders.append("Content-Type", 'application/json');
+        let response = await fetch(url, {
+            method: 'POST',
+            headers: myHeaders,
+            body: postForumIndexColumnInfo,
+        });
+        console.log("发送成功！")
+    }
     render() {
-        return <div>
-            <div>这里是可爱的adddna测试的地方~</div>
-            <input name="testContent" type="text" id="loginName" onChange={this.handleChange} value={this.state.testContent} />
-            <div onClick={this.urlTextHanderler}>点这里测试输入的内容是否是内链</div>
+        return <div className="mainPageList">
+            <div className="mainPageTitle2">
+                <div className="mainPageTitleRow">
+                    <i className="fa fa-volume-up"></i>
+                    <div className="mainPageTitleText">测试区</div>
+                </div>
+            </div>
+            <div className="mainPageListContent2">
+                <div>这里是可爱的adddna测试的地方~</div>
+                <input name="testContent" type="text" id="loginName" onChange={this.handleChange} value={this.state.testContent} />
+                <div>这里被封印了！</div>
+            </div>
         </div>
     }
 }
@@ -318,10 +355,36 @@ export class MainPageColumn {
 /**
  * 推荐功能组件
  */
-export class RecommendedFunctionComponent extends React.Component<{}, {}>{
+export class RecommendedFunctionComponent extends React.Component<{}, { recommendedFuctions: MainPageColumn[] }>{
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            recommendedFuctions: new Array<MainPageColumn>(),
+        };
+    }
+
+    async getRecommendedFunction() {
+        const recommendedFuction: MainPageColumn[] = new Array<MainPageColumn>();
+        const response = await fetch('http://apitest.niconi.cc/index/column/recommandationfunction');
+        const data = await response.json();
+        for (let i = 0; i < 5; i++) {
+            recommendedFuction[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
+        }
+        return recommendedFuction;
+    }
+
+    async componentWillMount() {
+        const x = await this.getRecommendedFunction();
+        this.setState({
+            recommendedFuctions: x
+        });
+    }
+
+    convertRecommendedFunction(item: MainPageColumn) {
+        return <div className="recommendedFunctionRow">
+            <div className="recommendedFunctionImage"><img src={item.imageUrl}></img></div>
+            <div className="recommendedFunctionTitle"><a href={item.url} target="view_window">{item.title}</a></div>
+        </div>
     }
     render() {
         return <div className="recommendedFunction">
@@ -332,26 +395,7 @@ export class RecommendedFunctionComponent extends React.Component<{}, {}>{
                 </div>
             </div>
             <div className="recommendedFunctionContent">
-                <div className="recommendedFunctionRow">
-                    <div className="recommendedFunctionImage"><img src="/images/推荐功能.jpg"></img></div>
-                    <div className="recommendedFunctionTitle">广播台点歌通道</div>
-                </div>
-                <div className="recommendedFunctionRow">
-                    <div className="recommendedFunctionImage"><img src="/images/推荐功能.jpg"></img></div>
-                    <div className="recommendedFunctionTitle">CC98抽卡游戏</div>
-                </div>
-                <div className="recommendedFunctionRow">
-                    <div className="recommendedFunctionImage"><img src="/images/推荐功能.jpg"></img></div>
-                    <div className="recommendedFunctionTitle">CC98 share</div>
-                </div>
-                <div className="recommendedFunctionRow">
-                    <div className="recommendedFunctionImage"><img src="/images/推荐功能.jpg"></img></div>
-                    <div className="recommendedFunctionTitle">推荐阅读投稿</div>
-                </div>
-                <div className="recommendedFunctionRow">
-                    <div className="recommendedFunctionImage"><img src="/images/推荐功能.jpg"></img></div>
-                    <div className="recommendedFunctionTitle">社团及学生组织用户申请</div>
-                </div>
+                {this.state.recommendedFuctions.map(this.convertRecommendedFunction)}
             </div>
         </div>
     }
@@ -366,6 +410,7 @@ export class SchoolNewsComponent extends React.Component<{}, { schoolNews: MainP
         this.state = {
             schoolNews: new Array<MainPageColumn>(),
         };
+        this.getSchoolNews = this.getSchoolNews.bind(this);
     }
 
     async getSchoolNews() {
@@ -429,7 +474,7 @@ export class MainPage extends React.Component<{}, AppState> {
                 </div>
                 <div className="row" style={{ justifyContent: "space-between" }}>
                     <Shixijianzhi />
-                    <Shixijianzhi />
+                    <Test />
                 </div>
             </div>
             <div className="rightPart">

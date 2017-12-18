@@ -67,7 +67,7 @@ class UbbEditorState {
     /**
      * 表情类型
      */
-    emojiType: 'em' | 'ac' | 'mj';
+    emojiType: 'em' | 'ac' | 'mj' | 'tb';
     /**
      * 是否在预览状态
      */
@@ -338,7 +338,15 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                     src={`/images/ac/${item}.png`}
                     onClick={() => { this.handleEmojiButtonClick(`[ac${item}]`) }}
                 ></img>)),
-            'mj': [...mohjong.animal, ...mohjong.carton, ...mohjong.face]
+            'mj': [...mohjong.animal, ...mohjong.carton, ...mohjong.face],
+            'tb': new Array(33).fill(0)
+                .map((item, index) => {
+                    if (index < 9) { return `0${index + 1}`; }
+                    else { return `${index + 1}`; }
+                }).map((item) => (<img
+                    src={`/images/tb/tb${item}.png`}
+                    onClick={() => { this.handleEmojiButtonClick(`[tb${item}]`) }}
+                ></img>))
         };
 
         return (
@@ -458,9 +466,11 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                     <div className="ubb-emoji-buttons">
                         <button type="button" className={this.state.emojiType === 'ac' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} onClick={(e) => { e.stopPropagation(); this.setState({ emojiType: 'ac' }); }}>AC娘</button>
                         <button type="button" className={this.state.emojiType === 'mj' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} onClick={(e) => { e.stopPropagation(); this.setState({ emojiType: 'mj' }); }}>麻将脸</button>
+                        <button type="button" className={this.state.emojiType === 'tb' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} onClick={(e) => { e.stopPropagation(); this.setState({ emojiType: 'tb' }); }}>贴吧</button>
                         <button type="button" className={this.state.emojiType === 'em' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} onClick={(e) => { e.stopPropagation(); this.setState({ emojiType: 'em' }); }}>经典</button>
                     </div>
                     <div className={`ubb-emoji-content ubb-emoji-content-${this.state.emojiType}`}>
+                        {this.state.emojiType === 'tb' ? <p style={{ color: 'red', fontSize: '0.75rem', textAlign: 'center' }}>该组表情由百度贴吧提供</p> : null}
                         {emoji[this.state.emojiType]}
                     </div>
                 </div>

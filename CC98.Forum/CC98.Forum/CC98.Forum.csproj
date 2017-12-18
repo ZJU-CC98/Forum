@@ -17,6 +17,7 @@
     <None Remove="Actions.tsx" />
     <None Remove="ActionTypes.tsx" />
     <None Remove="CC98.Forum.rar" />
+    <None Remove="Components\Edit.tsx" />
     <None Remove="Components\FocusBoardTopicArea.tsx" />
     <None Remove="Components\Footer.tsx" />
     <None Remove="Components\PageModel.tsx" />
@@ -85,6 +86,7 @@
     <None Remove="Ubb\RightTagHandler.tsx" />
     <None Remove="Ubb\SandboxTagHandler.tsx" />
     <None Remove="Ubb\TableTagHandler.tsx" />
+    <None Remove="Ubb\TbTagHandler.tsx" />
     <None Remove="Ubb\TdTagHandler.tsx" />
     <None Remove="Ubb\ThTagHandler.tsx" />
     <None Remove="Ubb\TrTagHandler.tsx" />
@@ -110,6 +112,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Actions.tsx" />
     <TypeScriptCompile Include="ActionTypes.tsx" />
+    <TypeScriptCompile Include="Components\Edit.tsx" />
     <TypeScriptCompile Include="Components\PageModel.tsx" />
     <TypeScriptCompile Include="Components\Pager.tsx" />
     <TypeScriptCompile Include="Components\RouteComponent.tsx" />
@@ -185,6 +188,7 @@
     <TypeScriptCompile Include="Ubb\RightTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\SandboxTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\TableTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\TbTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\TdTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\ThTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\TopicTagHandler.tsx" />
