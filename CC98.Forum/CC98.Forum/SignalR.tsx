@@ -1,10 +1,9 @@
 ﻿import * as SignalR from './SignalRClient/index';
-import { getToken } from './Utility';
-import * as Utility from './Utility';
+import { getToken, getApiUrl } from './Utility';
 /**
 * 客户端事件类型，由服务器定义
 */
-type EventListenerType = 'NotifyMessageReceive' | 'NotifyTopicChange' | 'NotifyNotificationChange' | 'NotifyTest';
+type EventListenerType = 'NotifyMessageReceive' | 'NotifyTopicChange' | 'NotifyNotificationChange';
 
 /**
  * EventListenerType
@@ -25,7 +24,7 @@ class SignalRConnection {
     /**
      * SignalR服务器地址
      */
-    private readonly _url = `${Utility.getApiUrl()}/signalr/notification`;
+    private readonly _url = `${getApiUrl()}/signalr/notification`;
 
     /**
      * 当前connection所用的token
@@ -88,17 +87,13 @@ class SignalRConnection {
         /**
         * 自动重新开始链接
         */
-        this._connection.onclose(() => {
+        this._connection.onclose((e) => {
             if (this._isConneting) {
                 this.start();
-                console.log('restarting...');
             }
         });
 
         await this._connection.start();
-        console.log('starting...');
-        //this.sendMessage('TestNotify', "569380");
-        
         this._isConneting = true;
         
     }
