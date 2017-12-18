@@ -127,7 +127,7 @@ class SignalRConnection {
         await this._connection.start();
         console.log('starting...');
         //this.sendMessage('TestNotify', "569380");
-
+        
         this._isConneting = true;
         
     }

@@ -26,7 +26,7 @@ import { Search } from './Search/Search';
 import { SearchBoard } from './Search/SearchBoard';
 import { Signin } from './Signin';
 import { SiteManage } from './SiteManage';
-
+import { SignalRComponent } from './SignalR';
 import { Test1 } from './Topic/Topic';
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
@@ -61,6 +61,7 @@ export class App extends React.Component<null, AppState> {
                         <Route path="/createtopic/:boardId" component={CreateTopic} />
                         <Route path="/signin" component={Signin} />
                         <Route path="/sitemanage" component={SiteManage} />
+                        <Route path="/signalr" component={SignalRComponent} />
                         <Route path="/status/notfoundtopic" component={Status.NotFoundTopic} />
                         <Route path="/status/notfoundboard" component={Status.NotFoundBoard} />
                         <Route path="/status/logout" component={Status.LogOut} />
