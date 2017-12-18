@@ -115,6 +115,8 @@ export class UserCenterConfig extends React.Component<null, UserCenterConfigStat
                 });
                 let userInfo = await response1.json();
                 Utility.setLocalStorage("userInfo", userInfo);
+                Utility.setLocalStorage(`userId_${userInfo.id}`, userInfo, 3600);
+                Utility.setLocalStorage(`userName_${userInfo.name}`, userInfo, 3600);
                 this.setState({
                     info: '修改成功',
                     isLoading: false

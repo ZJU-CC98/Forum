@@ -458,7 +458,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                         <button type="button" className={this.state.emojiType === 'em' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} onClick={(e) => { e.stopPropagation(); this.setState({ emojiType: 'em' }); }}>经典</button>
                     </div>
                     <div className={`ubb-emoji-content ubb-emoji-content-${this.state.emojiType}`}>
-                        {this.state.emojiType === 'tb' ? <p style={{ color: 'red', fontSize: '0.75rem', textAlign: 'right' }}>该组表情由百度贴吧提供</p> : null}
+                        {this.state.emojiType === 'tb' ? <p style={{ color: 'red', fontSize: '0.75rem', textAlign: 'center' }}>该组表情由百度贴吧提供</p> : null}
                         {emoji[this.state.emojiType]}
                     </div>
                 </div>

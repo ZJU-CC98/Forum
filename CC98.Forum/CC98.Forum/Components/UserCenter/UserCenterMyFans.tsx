@@ -73,7 +73,8 @@ export class UserCenterMyFans extends React.Component<{match}, UserCenterMyFansS
                 return fetch(url, { headers });
             }));
                            
-            let fanData = await Promise.all(requests.map((item)=>(item.json())));
+            let fanData = await Promise.all(requests.map(item => item.json()));
+
             let fans = fanData.map((item) => {
                 let userFanInfo = new UserFanInfo();
                 userFanInfo.name = item.name;

@@ -207,6 +207,9 @@ class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCente
                     let userInfo = Utility.getLocalStorage('userInfo');
                     userInfo.portraitUrl = data;
                     this.props.changeUserInfo(userInfo);
+                    Utility.setLocalStorage("userInfo", userInfo);
+                    Utility.setLocalStorage(`userId_${userInfo.id}`, userInfo, 3600);
+                    Utility.setLocalStorage(`userName_${userInfo.name}`, userInfo, 3600);
                 } else {
                     throw {};
                 }
