@@ -36,6 +36,9 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
     }
 }
 
+
+
+
 //返回可点击或者不可点击的头像
 export class PortaritrUrl extends React.Component<PortaritrUrlProps> {
     render() {

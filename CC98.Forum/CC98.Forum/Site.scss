@@ -1692,6 +1692,11 @@ a {
     margin-bottom: 60px;
 }
 
+.focus-nav {
+    display: flex;
+    flex-direction: row;
+}
+
 .focus-title {
     width: 100px;
     height: 16px;
@@ -1884,30 +1889,30 @@ a {
 .message-counter, .message-counterLi, .message-counterNav {
     position: absolute;
     min-width: 10px;
-    height: 14px;
-    line-height: 14px;
+    height: 12px;
+    line-height: 12px;
     margin-top: -11px;
-    padding: 1px 6px;
-    font-size: 12px;
+    padding: 1px 5px;
+    font-size: 10px;
     font-weight: normal;
     color: white;
     text-align: center;
     background: red;
-    border-radius: 14px;
+    border-radius: 8px;
 }
 
 .message-counter {
-    top: -5px;
-    right: -20px;
+    top: -2px;
+    left: 20px;
 }
 .message-counterLi {
-    top: 5px;
-    right: 10px;
+    top: 19px;
+    left: 69px;
 }
 
 .message-counterNav {
-    top: 31px;
-    right: 70px;
+    top: 32px;
+    left: 110px;
 }
 
 .topBar {
@@ -2070,11 +2075,22 @@ a {
     z-index: 1;
 }
 
-#dropdown li {
+#dropdown .dropDownSub li {
     display: flex;
     height: 30px;
     cursor: pointer;
     justify-content: center;
+    align-items: center;
+    z-index: 1;
+    position: relative;
+}
+
+#dropdown .dropDownSubMessage li {
+    display: flex;
+    height: 30px;
+    cursor: pointer;
+    justify-content: flex-start;
+    padding-left: 11px;
     align-items: center;
     z-index: 1;
     position: relative;

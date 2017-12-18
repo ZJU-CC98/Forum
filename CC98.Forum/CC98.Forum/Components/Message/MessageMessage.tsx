@@ -56,6 +56,9 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
         if (chatObj) {
             $(`#${chatObj.name}`).addClass('message-message-pFocus');
         }
+
+        //更新消息数量
+        await Utility.refreshUnReadCount();
     }
 
     //对this.stata.data进行批量化转化为JSX的函数，每个JSX可点击改变state里聊天对象的信息

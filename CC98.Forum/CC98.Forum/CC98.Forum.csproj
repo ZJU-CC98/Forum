@@ -110,6 +110,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Actions.tsx" />
     <TypeScriptCompile Include="ActionTypes.tsx" />
+    <TypeScriptCompile Include="Components\Focus\FocusTopicArea.tsx" />
     <TypeScriptCompile Include="Components\PageModel.tsx" />
     <TypeScriptCompile Include="Components\Pager.tsx" />
     <TypeScriptCompile Include="Components\RouteComponent.tsx" />
@@ -119,7 +120,7 @@
     <TypeScriptCompile Include="Components\Topic\Topic-Award.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Judge.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-New.tsx" />
-    <TypeScriptCompile Include="Components\Focus\FocusBoardTopicArea.tsx" />
+    <TypeScriptCompile Include="Components\Focus\FocusUserArea.tsx" />
     <TypeScriptCompile Include="Components\Footer.tsx" />
     <TypeScriptCompile Include="Components\LogOn.tsx" />
     <TypeScriptCompile Include="Components\LogOnExact.tsx" />
@@ -154,7 +155,6 @@
     <TypeScriptCompile Include="Components\UserCenter\UserExactProfile.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\UserManage.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\UserRouterActivities.tsx" />
-    <TypeScriptCompile Include="Props\FocusBoardProps.tsx" />
     <TypeScriptCompile Include="Props\MessagePersonProps.tsx" />
     <TypeScriptCompile Include="Props\MessageSendReceiveProps.tsx" />
     <TypeScriptCompile Include="Props\MessageWindowProps.tsx" />
