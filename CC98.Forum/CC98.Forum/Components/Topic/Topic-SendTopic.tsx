@@ -141,8 +141,8 @@ ${newProps.content.content}[/quote]`;
         },
             });
             console.log("append");
-            let uploadInfo = "<li><form method='post' enctype='multipart/form-data'><input type='file' id='upload-files' style=' display: none ' onchange='uploadEvent()' /><div class='row'><label class='fa-upload' htmlfor='upload-files' style='font-family: fontAwesome;cursor: pointer '></label></div></form></li>";
-            $(".fa-copyright").parent("a").parent("li").parent("ul").append(uploadInfo);
+           
+            $(".fa-copyright").parent("a").parent("li").parent("ul").append("<li><label class='fa-upload' for='upload-files' style='font-family: fontAwesome;cursor: pointer '></label></li>");
         }
     }
     async sendUbbTopic() {
@@ -241,6 +241,7 @@ ${newProps.content.content}[/quote]`;
         this.setState({ content: event.target.value });
     }
     render() {
+        $(".fa-copyright").parent("a").parent("li").parent("ul").append("<li><label class='fa-upload' for='upload-files' style='font-family: fontAwesome;cursor: pointer '></label></li>");
         let mode, editor;
         if (this.state.mode === 0) {
             mode = '使用UBB模式编辑';
@@ -255,6 +256,7 @@ ${newProps.content.content}[/quote]`;
             mode = '使用Markdown编辑';
             editor = <div id="sendTopic">
                 <form>
+                    <input type='file' id='upload-files' style={{display: 'none '}} onChange={Utility.uploadEvent} />
                     <div id="test-editormd" className="editormd">
                         <textarea className="editormd-markdown-textarea" name="test-editormd-markdown-doc"   ></textarea>
                     </div>

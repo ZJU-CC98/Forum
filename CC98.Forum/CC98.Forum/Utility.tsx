@@ -2018,14 +2018,8 @@ export function isFollowThisBoard(boardId) {
 
 export async function followBoard(boardId) {
     const headers = await formAuthorizeHeader();
-    const url = `http://apitest.niconi.cc/me/addcustomboard/${boardId}`;
-    const response = await fetch(url, { method: "POST", headers });
-    if (response.status === 404) {
-        //window.location.href = "/status/notfoundboard";
-    }
-    if (response.status === 500) {
-        //window.location.href = "/status/servererror";
-    }
+    const url = `http://apitest.niconi.cc/me/custom-board/${boardId}`;
+    const response = await fetch(url, { method: "PUT", headers });
     refreshUserInfo();
     removeStorage("focusBoardList");
 }
@@ -2056,14 +2050,8 @@ export async function refreshUserInfo() {
 }
 export async function unfollowBoard(boardId) {
     const headers = await formAuthorizeHeader();
-    const url = `http://apitest.niconi.cc/me/removecustomboard/${boardId}`;
+    const url = `http://apitest.niconi.cc/me/custom-board/${boardId}`;
     const response = await fetch(url, { method: "DELETE", headers });
-    if (response.status === 404) {
-        //window.location.href = "/status/notfoundboard";
-    }
-    if (response.status === 500) {
-        //window.location.href = "/status/servererror";
-    }
     refreshUserInfo();
     removeStorage("focusBoardList");
 }
@@ -2683,7 +2671,7 @@ export async function getBoardTag(boardId) {
 export async function setHighlight(topicId,isBold, isItalic, color,duration, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const url = `http://apitest.niconi.cc/manage/topic/${topicId}/highlight`;
+    const url = `http://apitest.niconi.cc/topic/${topicId}/highlight`;
     const bodyInfo = {highlightInfo:{ isBold: isBold, isItalic: isItalic, color: color,duration:duration,reason:reason }
     };
     const body = JSON.stringify(bodyInfo);
@@ -2770,4 +2758,12 @@ export async function editPost(postId, contentType,title, content) {
     const bodyInfo = { content: content, title: title, contentType: contentType };
     const body = JSON.stringify(bodyInfo);
     const response = await fetch(url, { method:"PUT",headers,body });
+}
+export async function cc98Fetch(url,requestInfo) {
+    const baseUrl = 'http://apitest.niconi.cc'
+    const token = await getToken();
+    requestInfo.headers.append("authorization", token);
+    const _url = baseUrl + url;
+    const response = await fetch(_url, requestInfo);
+    return response;
 }
