@@ -300,7 +300,7 @@ async function send(httpClient: IHttpClient, url: string, jwtBearer: () => strin
     let headers;
     if (jwtBearer) {
         headers = new Map<string, string>();
-        headers.set("Authorization", `Bearer ${jwtBearer()}`)
+        headers.set("Authorization", jwtBearer())
     }
 
     await httpClient.post(url, data, headers);

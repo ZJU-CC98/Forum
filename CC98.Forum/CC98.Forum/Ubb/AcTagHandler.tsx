@@ -21,7 +21,7 @@ export default class AcTagHandler extends Ubb.RecursiveTagHandler {
         const acId = tagName.replace(reg, "");
         const url = `/images/ac/${acId}.png`;
 
-        return <div>
+        return <div style={{ display: "inline" }}>
             <img src={url} alt="" />{innerContent}
         </div>;
     }
