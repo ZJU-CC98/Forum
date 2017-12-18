@@ -26,11 +26,11 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
             try {
                 this.setState({ isLoading: true });
 
-                const url = `http://apitest.niconi.cc/me/recent-topic?from=${this.state.userRecentPosts.length}&size=11`
+                const url = `/me/recent-topic?from=${this.state.userRecentPosts.length}&size=11`
                 const token = await Utility.getToken();
                 const headers = new Headers();
                 headers.append('Authorization', token);
-                let res = await fetch(url, {
+                let res = await Utility.cc98Fetch(url, {
                     headers
                 });
 
@@ -66,17 +66,16 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
 
     async componentDidMount() {
         try {
-            const url = `http://apitest.niconi.cc/me/recent-topic?from=0&size=10`
+            const url = `/me/recent-topic?from=0&size=10`
             const token = Utility.getLocalStorage("accessToken");
             const headers = new Headers();
             headers.append('Authorization', token);
-            let res = await fetch(url, {
+            let res = await Utility.cc98Fetch(url, {
                 headers
             });
             
             if (res.status === 200) {
                 let data = await res.json();
-                console.log(data);
                 let posts: UserRecentPost[] = [],
                     i = data.length;
 

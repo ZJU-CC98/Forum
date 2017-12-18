@@ -567,6 +567,7 @@ body {
     height:1.25rem;
     text-align:center;
     margin-left:0.5rem;
+    line-height:1.25rem;
 }
 
 .operation {
@@ -663,10 +664,11 @@ body {
     margin-left: 1.25rem;
     margin-bottom: 0.625rem;
     border: none;
-    background-color: $bgcolor2;
     cursor: pointer;
 }
-
+.listContentTag a{
+    color:#fff;
+}
 .topicInList {
     height: 4rem;
     width: 100%;
@@ -686,11 +688,16 @@ body {
 #changeColor:nth-child(odd) {
     background-color: #FCFCFC;
 }
-
-#changeTopColor {
- 
+#changeColor:nth-child(odd) span{
+    color:#000;
 }
-
+#changeColor {
+    background-color: #ebf5f8;
+   
+}
+#changeColor span {
+    color: #6b7178;
+}
 .reputation{
     font-size:0.75rem;
     margin-left:1rem;
@@ -1082,7 +1089,6 @@ a {
     background-size:100%;
 }
 .listTitle {
-    max-width: 25rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -2538,7 +2544,6 @@ a {
 }
 .judgeManagement {
     margin-left:15rem;
-    margin-top:-15rem;
     position: absolute;
     z-index: 1000;
     width: 30rem;
@@ -2740,23 +2745,24 @@ a {
     height:4rem;
 }
 .boardMessageDetails{
-    height:2.5rem;
-    width:4.5rem;
+    height:3rem;
+    width:8rem;
     display:flex;
     flex-direction:column;
     margin-left:1rem;
-    line-height:1.6rem;
-    margin-top:0.2rem;
+    line-height:2rem;
+    margin-top:0.1rem;
     
 }
 .boardFollow {
-    width: 3rem;
-    height: 1.25rem;
+    width: 2.5rem;
+    height: 1.5rem;
     border-radius: 1rem;
-    background-color: #6b7178;
-    border: solid 0.5px #fff;
+    background-color: #fb6165;
     font-size:0.75rem;
     color:#fff;
+    text-align:center;
+    line-height:1.25rem;
 }
 .boardDescription {
     display: flex;
@@ -2765,6 +2771,7 @@ a {
     margin-left:1rem;
     font-size:0.75rem;
     margin-right:1rem;
+    line-height:1.4rem;
 }
 .boardMasters {
     display: flex;
@@ -2773,6 +2780,7 @@ a {
     font-size: 0.75rem;
     margin-left:1rem;
     margin-right:1rem;
+    line-height:1.4rem;
 }
 .bigPaper {
     width: 56.25rem;

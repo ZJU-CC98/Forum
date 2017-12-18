@@ -5,9 +5,9 @@
 import * as React from 'react';
 import * as Ubb from './Core';
 
-export default class AcTagHandler extends Ubb.RecursiveTagHandler {
+export default class TbTagHandler extends Ubb.RecursiveTagHandler {
     get supportedTagNames(): RegExp {
-        return /ac\d{2}/i;
+        return /tb\d{2}/i;
     }
 
     getTagMode(tagData: Ubb.UbbTagData): Ubb.UbbTagMode {
@@ -16,10 +16,9 @@ export default class AcTagHandler extends Ubb.RecursiveTagHandler {
 
     execCore(innerContent: React.ReactNode, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
 
-        const reg = /ac/g;
         const tagName = tagData.tagName;
-        const acId = tagName.replace(reg, "");
-        const url = `/images/ac/${acId}.png`;
+        const emoticonId = tagName.match(/\d{2}/).toString();
+        const url = `/images/tb/tb${emoticonId}.png`;
 
         return <div style={{ display: "inline" }}>
             <img src={url} alt="" />{innerContent}

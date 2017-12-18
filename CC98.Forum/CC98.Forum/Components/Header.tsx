@@ -25,28 +25,30 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
     /**
      * 这里是signalR的部分
      */
-    async componentDidMount() {
+    componentDidMount() {
         /**
          * SignalR的开始与结束全部由header来控制
          * 其他组件只负责添加handler即可
          */
         SignalR.addListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
         SignalR.addListener('NotifyNotificationChange', this.handleNotifyMessageReceive);
-        SignalR.addListener('NotifyTopicChange', this.handleNotifyMessageReceive);
         if (this.props.isLogOn) {
-            await SignalR.start();
+            SignalR.start();
         }
         //更新消息数量
         await Utility.refreshUnReadCount();
         this.setState({
             unreadCount: Utility.getStorage("unreadCount")
         });
+        /**
+         * 第一次加载的时候获取初始状态
+         */
+        this.handleNotifyMessageReceive();
     }
 
     componentWillUnmount() {
         SignalR.removeListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
         SignalR.removeListener('NotifyNotificationChange', this.handleNotifyMessageReceive);
-        SignalR.removeListener('NotifyTopicChange', this.handleNotifyMessageReceive);
     }
 
     async handleNotifyMessageReceive() {
@@ -56,11 +58,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
         });
     }
 
-    componentWillMount() {
-        this.handleNotifyMessageReceive();
-    }
-
-    async componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps) {
         if (!this.props.isLogOn && nextProps.isLogOn) {
             //如果用户重新登录则开始signalR链接
             SignalR.start();

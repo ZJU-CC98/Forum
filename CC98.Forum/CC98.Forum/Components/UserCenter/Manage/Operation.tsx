@@ -1,4 +1,5 @@
 ﻿import * as React from 'react';
+import * as Utility from '../../../Utility';
 import { getToken } from '../../../Utility';
 /**
  * 全站TP需提交的BODY类型
@@ -69,12 +70,12 @@ export default class Operation extends React.Component<OperationProps, Operation
             } else if (!isCancle && PunishmentType === 3 && (Days < -1 || Days > 1000 || (Days < 7 && Days > -1))) {
                 throw new Error('不合法的TP天数');
             }
-            const url = `http://apitest.niconi.cc/user/${this.props.id}/operation`;
+            const url = `/user/${this.props.id}/operation`;
             const token = await getToken();
             let headers = new Headers();
             headers.append('Authorization', token);
             headers.append('Content-Type', 'application/json');
-            let res = await fetch(url, {
+            let res = await Utility.cc98Fetch(url, {
                 method: 'PUT',
                 headers,
                 body: JSON.stringify({

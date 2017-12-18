@@ -1,4 +1,5 @@
 ﻿import * as React from 'react';
+import * as Utility from '../../../Utility';
 import { getToken, getBoardName } from '../../../Utility';
 import { Link } from 'react-router-dom';
 
@@ -88,10 +89,10 @@ export default class ShowTopic extends React.Component<Props, State> {
             const token = await getToken();
             const { id } = this.props;
             const { days } = this.state;
-            const url = `http://apitest.niconi.cc/User/${id}/post?days=${days}&from=${from}&size=10`;
+            const url = `/User/${id}/post?days=${days}&from=${from}&size=10`;
             let headers = new Headers();
             headers.append('Authorization', token);
-            let res = await fetch(url, { headers });
+            let res = await Utility.cc98Fetch(url, { headers });
             let data = await res.json();
             let posts = data.postInfos.map(async (item) => ({ ...item, boardName: await getBoardName(item.boardId) }));
             posts = await Promise.all(posts);

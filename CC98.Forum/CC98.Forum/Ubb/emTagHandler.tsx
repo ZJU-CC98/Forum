@@ -21,7 +21,7 @@ export default class EmTagHandler extends Ubb.RecursiveTagHandler {
 		const emoticonNum = parseInt(emoticonId) + 1;
 		const url = `http://www.cc98.org/emot/em${emoticonNum}.gif`;
 
-		return <div>
+        return <div style={{ display: "inline" }}>
 			<img src={url} alt="" />{innerContent}
 		</div>;
 	}

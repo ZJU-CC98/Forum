@@ -35,13 +35,13 @@ class UserExact extends React.Component<{ match, history, changePage, notFoundUs
             if (!id) {
                 throw new Error();
             } else if (method === 'name') {
-                url = `http://apitest.niconi.cc/User/Name/${id}`;
+                url = `/User/Name/${id}`;
             }
             else if (method === 'id') {
-                url = `http://apitest.niconi.cc/User/${id}`;
+                url = `/User/${id}`;
             }
             myHeaders.append('Authorization', await Utility.getToken());
-            let response = await fetch(url ,{
+            let response = await Utility.cc98Fetch(url ,{
                 headers: myHeaders
             });
             const data = await response.json();

@@ -1,4 +1,5 @@
 ﻿import * as React from 'react';
+import * as Utility from '../../../Utility'
 import { getToken } from '../../../Utility';
 
 interface State {
@@ -36,11 +37,11 @@ export default class Delete extends React.Component<Props, State> {
             if (days < 1 || days > 365) {
                 throw new Error('请检查日期');
             }
-            const url = `http://apitest.niconi.cc/user/${id}/${item}?days=${days}`;
+            const url = `/user/${id}/${item}?days=${days}`;
             const token = await getToken();
             let headers = new Headers();
             headers.append('Authorization', token);
-            let res = await fetch(url, {
+            let res = await Utility.cc98Fetch(url, {
                 method: 'DELETE',
                 headers
             });

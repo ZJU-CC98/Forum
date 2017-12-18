@@ -1,10 +1,10 @@
 ﻿import * as React from 'react';
 import * as Utility from '../../Utility';
 declare global {
-    interface JQuery { spectrum: ({ color }) => JQuery; }
+    interface JQuery { spectrum: any}
 }
 
-export class TopicManagement extends React.Component<{ topicId, update, boardId, updateTime }, { state, reason, tips, days, board, topicInfo,fetchState }>{
+export class TopicManagement extends React.Component<{ topicId, update, boardId, updateTime }, { state, reason, tips, days, board, topicInfo,fetchState ,color}>{
     constructor(props) {
         super(props);
         this.confirm = this.confirm.bind(this);
@@ -18,7 +18,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
         this.daysInput = this.daysInput.bind(this);
         this.boardInput = this.boardInput.bind(this);
         this.state = {
-            state: "normal", reason: "", tips: "", days: 0, board: null, topicInfo: { state: 0, topState: 0, bestState: 0 }, fetchState:'ok'
+            state: "normal", reason: "", tips: "", days: 0, board: null, topicInfo: { state: 0, topState: 0, bestState: 0 }, fetchState: 'ok',color:"#fff"
         };
     }
     showNormal() {
@@ -38,8 +38,10 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
     }
     async confirm() {
         let status = 'ok';
+        console.log("state");
+        console.log(this.state.state);
         switch (this.state.state) {
-
+     
             case 'normal':
                 if (this.state.reason !== "") {
                     switch ($("input[name='option']:checked").val()) {
@@ -81,10 +83,13 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
                 }
                 break;
             case 'highlight':
-                if (this.state.reason === "") {
-                    console.log('isBold' + $("input[name='bold']:checked"));
-                    console.log('isItalic' + $("input[name='italic']:checked"));
-                    console.log("color" + $("#colorInput").val());
+                const color = $("#custom").spectrum("get").toHexString($("#custom").spectrum("get"));
+                if (this.state.reason !== "") {
+                    console.log("color");
+                    console.log("color is" + this.state.color);
+                    const bold = $("input[name='bold']:checked") ? true : false;
+                    const italic = $("input[name='italic']:checked") ? true : false;
+                    await Utility.setHighlight(this.props.topicId, bold, italic, color, this.state.days, this.state.reason);
                 } else {
                     this.setState({ tips: "请输入原因！" });
                 }
@@ -98,12 +103,12 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
                             this.setState({ fetchState: status });
                             break;
                         case '全站固顶':
-                            console.log("全站固定");
+                   
                            status =  await Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 4, this.state.days, this.state.reason);
                             this.setState({ fetchState: status });
                             break;
                         case '锁定':
-                            console.log("suoding");
+                        
                            status =  await Utility.lockTopic(this.props.topicId, this.props.boardId, this.state.reason, this.state.days);
                             this.setState({ fetchState: status });
                             break;
@@ -200,6 +205,10 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
                 <input type='text' id="custom" />
             </div>
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
+            <div >天数</div>
+                <input type="text" value={this.state.days} onChange={this.daysInput} />
+            </div>
+            <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                 <div >原因</div>
                 <input type="text" value={this.state.reason} onChange={this.reasonInput} />
 
@@ -285,7 +294,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
         const highlightOptionId = `manage${this.props.topicId}`;
         return <div style={{ display: "none" }} id={UIId} className="topicManagement" >
             {UI}
-            < div className="row" style={{ justifyContent: "space-around" }}>
+            < div className="row" style={{ justifyContent: "space-around", marginTop:"1rem" }}>
                 <button onClick={this.confirm} className="confirmManagement">确认</button>
                 <button onClick={this.close} className="confirmManagement">关闭</button>
             </div >
