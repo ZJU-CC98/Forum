@@ -50,48 +50,19 @@ class SignalRConnection {
     /**
      * 为SignalR链接注册事件回掉函数
      */
-    public addListener(type: EventListenerType, handler: (message: any) => void):void;
-
-    /**
-     * 为SignalR链接注册多个事件回掉函数
-     */
-    public addListener(listeners: EventListener[]): void;
-    
-    public addListener(x: EventListenerType | EventListener[], y?: (message: any) => void):void {
-        if (Array.isArray(x)) {
-            x.map((item) => {
-                this._eventListeners.push(item);
-                this._connection.on(item.type, item.handler);
-            });
-        } else {
-            this._eventListeners.push({type: x, handler: y});
-            this._connection.on(x, y);
-        }
+    public addListener(type: EventListenerType, handler: (message: any) => void):void {
+        this._eventListeners.push({ type, handler });
+        this._connection.on(type, handler);
     }
 
     /**
      * 为SignalR链接删除事件回掉函数
      */
-    public removeListener(type: EventListenerType, handler: (message: any) => void): void;
-
-    /**
-     * 为SignalR链接删除事件多个回掉函数
-     */
-    public removeListener(listeners: EventListener[]): void;
-    public removeListener(x: EventListenerType | EventListener[], y?: (message: any) => void): void {
-        if (Array.isArray(x)) {
-            x.map((listener) => {
-                if (this._eventListeners.indexOf(listener) !== -1) {
-                    this._eventListeners.splice(this._eventListeners.indexOf(listener), 1)
-                }
-                this._connection.off(listener.type, listener.handler);
-            });
-        } else {
-            if (this._eventListeners.indexOf({ type: x, handler: y }) !== -1) {
-                this._eventListeners.splice(this._eventListeners.indexOf({ type: x, handler: y }), 1)
-            }
-            this._connection.off(x, y);
+    public removeListener(type: EventListenerType, handler: (message: any) => void) {
+        if (this._eventListeners.indexOf({ type, handler }) !== -1) {
+            this._eventListeners.splice(this._eventListeners.indexOf({ type, handler }), 1)
         }
+        this._connection.off(type, handler);
     }
 
     /**
@@ -107,16 +78,17 @@ class SignalRConnection {
     public async start() {
         const token = await getToken();
         /**
-            * token更换过就创建一个新的
-            * 然后把注册在旧的上的事件监听移到新的上
-            */
+        * token更换过就创建一个新的
+        * 然后把注册在旧的上的事件监听移到新的上
+        */
         if (this._currentToken !== token) {
             this._connection = new SignalR.HubConnection(this._url, { jwtBearer: () => token, logging: new SignalR.ConsoleLogger(SignalR.LogLevel.Trace) });
-            this.addListener(this._eventListeners);
+            console.log(this._eventListeners);
+            this._eventListeners.map(item => this._connection.on(item.type, item.handler));
         }
         /**
-            * 自动重新开始链接
-            */
+        * 自动重新开始链接
+        */
         this._connection.onclose(() => {
             if (this._isConneting) {
                 this.start();

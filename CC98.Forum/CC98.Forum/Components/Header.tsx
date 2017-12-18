@@ -32,7 +32,6 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
          */
         SignalR.addListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
         SignalR.addListener('NotifyNotificationChange', this.handleNotifyMessageReceive);
-        SignalR.addListener('NotifyTopicChange', this.handleNotifyMessageReceive);
         if (this.props.isLogOn) {
             await SignalR.start();
         }
@@ -41,7 +40,6 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
     componentWillUnmount() {
         SignalR.removeListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
         SignalR.removeListener('NotifyNotificationChange', this.handleNotifyMessageReceive);
-        SignalR.removeListener('NotifyTopicChange', this.handleNotifyMessageReceive);
     }
 
     async handleNotifyMessageReceive() {
