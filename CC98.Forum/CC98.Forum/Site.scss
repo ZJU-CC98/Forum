@@ -68,7 +68,6 @@ body {
     display: flex;
     margin-bottom:1rem;
     border-radius: 0.3125rem;
-    background-color: $bgcolor2;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -208,7 +207,7 @@ body {
 }
 
 #essayProp {
-    margin-left:1.5rem;
+    margin-left:0.7rem;
     display: flex;
     font-size: 0.75rem;
     color:rgb(121,184,201);
@@ -228,6 +227,7 @@ body {
     display: flex;
     flex-wrap: nowrap;
     word-break: keep-all;
+    margin-right:0.6rem;
 }
 
 .tagSize {
@@ -251,7 +251,6 @@ body {
 #time {
     display: flex;
     flex-direction: row;
-    margin-left: 0.625rem;
 }
 
 .timeProp {
@@ -567,6 +566,7 @@ body {
     width:2.25rem;
     height:1.25rem;
     text-align:center;
+    margin-left:0.5rem;
 }
 
 .operation {
@@ -688,7 +688,7 @@ body {
 }
 
 #changeTopColor {
-    background-color: #FFFAF0;
+ 
 }
 
 .reputation{
@@ -757,19 +757,21 @@ a {
     display: inline-block;
     outline: none;
     cursor: pointer;
+    width:7rem;
+    height:4rem;
     text-align: center;
     text-decoration: none;
-    font: 14px/100% Arial, Helvetica, sans-serif;
-    padding: .5em 2em .55em;
+    font-size:1.25rem;
+    font-family:微软雅黑;
     text-shadow: 0 1px 1px rgba(0,0,0,.3);
-    -webkit-border-radius: .5em;
-    -moz-border-radius: .5em;
-    border-radius: .5em;
-    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    border-radius: 1rem;
     box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    line-height:4rem;
 }
-
+.bgcolor{
+    color:#fff;
+    background-color:#79b8ca;
+}
 .orange {
     color: #fef4e9;
     border: solid 1px #da7c0c;
@@ -2732,14 +2734,17 @@ a {
     width:4.5rem;
     display:flex;
     flex-direction:column;
-    margin-right:1rem;
+    margin-left:1rem;
+    line-height:1.6rem;
+    margin-top:0.2rem;
+    
 }
 .boardFollow {
     width: 3rem;
     height: 1.25rem;
-    border-radius: 10px;
-    background-color: #79b8ca;
-    border: solid 1px #79b8ca;
+    border-radius: 1rem;
+    background-color: #6b7178;
+    border: solid 0.5px #fff;
     font-size:0.75rem;
     color:#fff;
 }
@@ -2747,11 +2752,17 @@ a {
     display: flex;
     flex-direction: column;
     margin-top:2rem;
+    margin-left:1rem;
+    font-size:0.75rem;
+    margin-right:1rem;
 }
 .boardMasters {
     display: flex;
     flex-direction: column;
     margin-top: 2rem;
+    font-size: 0.75rem;
+    margin-left:1rem;
+    margin-right:1rem;
 }
 .bigPaper {
     width: 56.25rem;

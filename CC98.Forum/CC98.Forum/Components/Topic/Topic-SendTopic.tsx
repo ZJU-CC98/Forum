@@ -247,7 +247,7 @@ ${newProps.content.content}[/quote]`;
             editor = <div>
                 <UbbEditor update={this.update} value={this.state.content}/>
                 <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
-                    <div id="post-topic-button" onClick={this.sendUbbTopic} className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }}>回复
+                    <div id="post-topic-button" onClick={this.sendUbbTopic} className="button blue" style={{ marginTop: "1.25rem", width: "6rem", height: "2rem", lineHeight:"2rem", letterSpacing: "0.3125rem" }}>回复
                     </div>
                     </div></div>;
         }
@@ -276,7 +276,7 @@ ${newProps.content.content}[/quote]`;
         return <div id="sendTopicInfo" style={{ width: "100%", display: "flex", flexDirection: "column" }}>
             <div className="row" style={{ justifyContent: this.state.mode === 1 ? "space-between" : "flex-end" }}>
                 {uploadInfo}
-                <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ width: "16rem", height: "0.8rem", letterSpacing: "0.3125rem" }}>{this.state.mode === 1 ? "切换到Ubb编辑器" : "切换到Markdown编辑器"}
+                <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ width: "20rem", height: "2rem", lineHeight:"2rem",letterSpacing: "0.3125rem" }}>{this.state.mode === 1 ? "切换到Ubb编辑器" : "切换到Markdown编辑器"}
                 </div></div>
             {editor}
             <button id="topicManagementBTN" style={{display:"none"}} onClick={this.showManagement}>管理</button>

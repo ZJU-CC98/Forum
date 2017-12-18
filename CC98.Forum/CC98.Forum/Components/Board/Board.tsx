@@ -65,7 +65,7 @@ export class List extends RouteComponent<{}, { page:number, boardId: number,boar
 
             <Category boardId={this.match.params.boardId} boardInfo={this.state.boardInfo} />
             <ListHead key={this.state.page} boardId={this.match.params.boardId} boardInfo={this.state.boardInfo} />
-
+            <ListButtonAndAds boardInfo={this.state.boardInfo} adsUrl={null} />
             <Switch>
             <Route exact path="/list/:boardId/:page?" component={ListContent} />
 
@@ -108,13 +108,13 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, {}, { board
         const name = item.toString();
         const userName = encodeURIComponent(item.toString());
         const webUrl = `/user/name/${userName}`;
-        return <div style={{ marginRight: '10px' }}><a href={webUrl}>{name}</a></div>;
+        return <div style={{ marginRight: '10px', fontSize: "0.75rem" }}><a style={{color:"#fff"}} href={webUrl}>{name}</a></div>;
     }
     render() {
         const url = `/images/_${this.props.boardInfo.name}.png`
-        return <div className="row">
+        return <div className="row" style={{width:"100%"}}>
             <div className="boardMessage">
-                <div className="row" style={{ height: "4rem", marginTop: "2rem" }}>
+                <div className="row" style={{ height: "4rem", marginTop: "1.25rem" }}>
                     <img style={{ marginLeft:"1.25rem"}}src={url}></img>
                     <div className="boardMessageDetails">
                         <div>
@@ -148,7 +148,7 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, {}, { board
 /**
  * 提供显示连续页码的交互效果。
  */
-export class ListButtonAndPager extends React.Component<{ url:string,boardid: number, page: number, totalPage: number }, { pager }> {
+export class ListTagAndPager extends React.Component<{ url:string,boardid: number, page: number, totalPage: number,tag }, { pager }> {
     constructor(props, content) {
         super(props, content);
         this.state = {
@@ -156,7 +156,16 @@ export class ListButtonAndPager extends React.Component<{ url:string,boardid: nu
         };
     }
 
-
+    generateTagLayer(item) {
+        return <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginBottom: "0.5rem" }}>
+            <div className="row">  <button id="tagButton">全部</button>
+                {item.tags.map(this.generateTagButton)}
+            </div>
+        </div >;
+    }
+    generateTagButton(item) {
+        return <button className="chooseTag">{item}<span className="tagNumber"></span></button>;
+    }
     async componentWillReceiveProps(newProps) {
         const pages = Utility.getPager(newProps.page, newProps.totalPage);
         this.setState({ pager: pages });
@@ -166,11 +175,10 @@ export class ListButtonAndPager extends React.Component<{ url:string,boardid: nu
         this.setState({ pager: pages });
     }
     render() {
-        const createTopicUrl = `/createTopic/${this.props.boardid}`;
+        
         return <div className="row" style={{ width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", marginTop: '0.9375rem', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-            <div style={{ marginBottom: '1.25rem' }}>
-                <Link className="button orange" to={createTopicUrl}>发主题</Link>
-                <button className="button green" style={{ marginLeft: '1.25rem' }}>发投票</button>
+            <div >
+                {this.props.tag.map(this.generateTagLayer.bind(this))}            
             </div>
             <Pager page={this.props.page} url={this.props.url} totalPage={this.props.totalPage} />
         </div>;
@@ -178,19 +186,16 @@ export class ListButtonAndPager extends React.Component<{ url:string,boardid: nu
 }
 
 
-export class ListTag extends React.Component<{tags}> {
-    generateTagLayer(item) {
-        return <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginBottom:"0.5rem" }}>
-            <div className="row">  <button id="tagButton">全部</button>    
-                {item.tags.map(this.generateTagButton)}
-            </div>
-        </div >;
-    }
-    generateTagButton(item) {
-        return <button className="chooseTag">{item}<span className="tagNumber"></span></button>;
-    }
+export class ListButtonAndAds extends React.Component<{boardInfo,adsUrl}> {
+    
+ 
     render() {
-        return <div className="column" style={{ width: "100%" }}>{this.props.tags.map(this.generateTagLayer.bind(this))}</div>;
+        const adsUrl = `/images/ads.jpg`;
+        const createTopicUrl = `/createTopic/${this.props.boardInfo.id}`;
+        return <div className="row" style={{ width: "100%", height: "6.25rem", alignItems: "flex-end", justifyContent: "space-between", marginTop:"1rem" }}>
+            <Link className="button bgcolor" to={createTopicUrl}>发主题</Link>
+            <div><img style={{ width: "18.75rem", height: "6.25rem" }} src={adsUrl}></img></div>
+        </div>;
     }
 }
 export class ListTopContent extends React.Component<{ boardId }, { data }>{
@@ -319,9 +324,8 @@ export class ListContent extends RouteComponent<{}, { items,totalPage:number,boa
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
         const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
         return <div className="listContent ">
-            <ListButtonAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} />
-            <ListTag tags={this.state.tags} />
-            <div className="column" style={{width:"100%",border:"#eaeaea solid thin"}}>
+            <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} tag={this.state.tags} />
+            <div className="column" style={{width:"100%"}}>
             <div className="row" style={{ justifyContent: 'space-between', }}>
                 <div className="row" style={{ alignItems: 'center' }} >
 
@@ -399,8 +403,8 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
         const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
         return <div className="listContent ">
-            <ListButtonAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={bestTopicsUrl} />
-            <ListTag tags={this.state.tags} />
+            <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={bestTopicsUrl} tag={this.state.tags} />
+        
             <div className="row" style={{ justifyContent: 'space-between', }}>
                 <div className="row" style={{ alignItems: 'center' }} >
 
@@ -472,8 +476,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
         const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
         return <div className="listContent ">
-            <ListButtonAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={saveTopicsUrl} />
-            <ListTag tags={this.state.tags} />
+            <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={saveTopicsUrl} tag={this.state.tags} />
             <div className="row" style={{ justifyContent: 'space-between', }}>
                 <div className="row" style={{ alignItems: 'center' }} >
 
