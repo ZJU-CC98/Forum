@@ -25,7 +25,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
     /**
      * 这里是signalR的部分
      */
-    componentDidMount() {
+    async componentDidMount() {
         /**
          * SignalR的开始与结束全部由header来控制
          * 其他组件只负责添加handler即可
@@ -58,7 +58,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
         });
     }
 
-    componentWillReceiveProps(nextProps) {
+    async componentWillReceiveProps(nextProps) {
         if (!this.props.isLogOn && nextProps.isLogOn) {
             //如果用户重新登录则开始signalR链接
             SignalR.start();

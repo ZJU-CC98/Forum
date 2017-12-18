@@ -528,10 +528,10 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
          */
         let response;
         if (boardId === -1) {
-            response = await cc98fetch(`/me/followee/topic?from=${from}&size=${size}`, { headers });
+            response = await cc98Fetch(`/me/followee/topic?from=${from}&size=${size}`, { headers });
         }
         else if(boardId === 0) {
-            response = await cc98fetch(`/me/custom-board/topic?from=${from}&size=${size}`, { headers });
+            response = await cc98Fetch(`/me/custom-board/topic?from=${from}&size=${size}`, { headers });
         }
         else {
             response = await cc98Fetch(`/board/${boardId}/topic?from=${from}&size=${size}`, { headers });
