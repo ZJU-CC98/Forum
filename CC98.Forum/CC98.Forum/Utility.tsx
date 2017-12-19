@@ -93,7 +93,7 @@ export async function getTopicContent(topicid: number, curPage: number, replyCou
         const startPage = (curPage - 1) * 10;
         const endPage = curPage * 10 - 1;
         const headers = await formAuthorizeHeader();
-        const topic = curPage !== 1
+        const topic = curPage != 1
             ? await cc98Fetch(`/Topic/${topicid}/post?from=${startPage}&size=10`, { headers })
             : await cc98Fetch(`/Topic/${topicid}/post?from=1&size=9`, { headers });
         const content = await topic.json();
@@ -856,20 +856,39 @@ export function transerRecentTime(time) {
     let thisTime = new Date().getTime();
     let delta = (new Date(new Date().toLocaleDateString()).getTime() + 86400000 - thatTime)/1000;
     if (delta > 259200) {
-        let month = thatDate.getMonth() + 1;
-        let strTime = `${thatDate.getFullYear()}:${month}:${thatDate.getDate()} ${thatDate.getHours()}:${thatDate.getMinutes()}:${thatDate.getSeconds()}`;
+        let month: any = thatDate.getMonth() + 1;
+        if (month < 10) { month = `0${month}`; }
+        let date: any = thatDate.getDate();
+        if (date < 10) { date = `0${date}`; }
+        let min: any = thatDate.getMinutes();
+        if (min < 10) { min = `0${min}`; }
+        let sec: any = thatDate.getSeconds();
+        if (sec < 10) { sec = `0${sec}`; }
+        let strTime = `${thatDate.getFullYear()}-${month}-${date} ${thatDate.getHours()}:${min}:${sec}`;
         return strTime;
     }
     else if (delta > 172800) {
-        let strTime = `${thatDate.getHours()}:${thatDate.getMinutes()}:${thatDate.getSeconds()}`;
+        let min: any = thatDate.getMinutes();
+        if (min < 10) { min = `0${min}`; }
+        let sec: any = thatDate.getSeconds();
+        if (sec < 10) { sec = `0${sec}`; }
+        let strTime = `${thatDate.getHours()}:${min}:${sec}`;
         return `前天 ${strTime}`;
     }
     else if (delta > 86400) {
-        let strTime = `${thatDate.getHours()}:${thatDate.getMinutes()}:${thatDate.getSeconds()}`;
+        let min: any = thatDate.getMinutes();
+        if (min < 10) { min = `0${min}`; }
+        let sec: any = thatDate.getSeconds();
+        if (sec < 10) { sec = `0${sec}`; }
+        let strTime = `${thatDate.getHours()}:${min}:${sec}`;
         return `昨天 ${strTime}`;
     }
     else if (thisTime - thatTime > 3600) {
-        let strTime = `${thatDate.getHours()}:${thatDate.getMinutes()}:${thatDate.getSeconds()}`;
+        let min: any = thatDate.getMinutes();
+        if (min < 10) { min = `0${min}`; }
+        let sec: any = thatDate.getSeconds();
+        if (sec < 10) { sec = `0${sec}`; }
+        let strTime = `${thatDate.getHours()}:${min}:${sec}`;
         return `今天 ${strTime}`;
     }
     else {
@@ -2669,15 +2688,17 @@ export async function refreshUnReadCount() {
     unreadCount.totalCount = unreadCount.systemCount + unreadCount.atCount + unreadCount.replyCount + unreadCount.messageCount;   
     if (unreadCount.totalCount > 0) {
         $('#unreadCount-totalCount').removeClass('displaynone');
-        $('#unreadCount-totalCount1').removeClass('displaynone');
+        $('#unreadCount-totalCount').text(unreadCount.totalCount);
+
     }
     else {
         $('#unreadCount-totalCount').addClass('displaynone');
-        $('#unreadCount-totalCount1').addClass('displaynone');
     }
     if (unreadCount.replyCount > 0) {
         $('#unreadCount-replyCount').removeClass('displaynone');
+        $('#unreadCount-replyCount').text(unreadCount.replyCount);
         $('#unreadCount-replyCount1').removeClass('displaynone');
+        $('#unreadCount-replyCount1').text(unreadCount.replyCount);
     }
     else {
         $('#unreadCount-replyCount').addClass('displaynone');
@@ -2685,7 +2706,9 @@ export async function refreshUnReadCount() {
     }
     if (unreadCount.atCount > 0) {
         $('#unreadCount-atCount').removeClass('displaynone');
+        $('#unreadCount-atCount').text(unreadCount.atCount);
         $('#unreadCount-atCount1').removeClass('displaynone');
+        $('#unreadCount-atCount1').text(unreadCount.atCount);
     }
     else {
         $('#unreadCount-atCount').addClass('displaynone');
@@ -2693,7 +2716,9 @@ export async function refreshUnReadCount() {
     }
     if (unreadCount.systemCount > 0) {
         $('#unreadCount-systemCount').removeClass('displaynone');
+        $('#unreadCount-systemCount').text(unreadCount.systemCount);
         $('#unreadCount-systemCount1').removeClass('displaynone');
+        $('#unreadCount-systemCount1').text(unreadCount.systemCount);
     }
     else {
         $('#unreadCount-systemCount').addClass('displaynone');
@@ -2701,7 +2726,10 @@ export async function refreshUnReadCount() {
     }
     if (unreadCount.messageCount > 0) {
         $('#unreadCount-messageCount').removeClass('displaynone');
+        $('#unreadCount-messageCount').text(unreadCount.messageCount);
         $('#unreadCount-messageCount1').removeClass('displaynone');
+        $('#unreadCount-messageCount1').text(unreadCount.messageCount);
+
     }
     else {
         $('#unreadCount-messageCount').addClass('displaynone');
@@ -2771,9 +2799,16 @@ export async function getTagNamebyId(id) {
     }
     return false;
 }
-export async function getTopicByOneTag(tagId, boardId, page) {
+export async function getTopicByOneTag(tagId, boardId,layer, page) {
     const start = (page - 1) * 10 ;
-    const url = `/topic/search/board/${boardId}/tag?tag1=${tagId}&from=${start}&size=20`;
+    const url = `/topic/search/board/${boardId}/tag?tag${layer}=${tagId}&from=${start}&size=20`;
+    const headers = await formAuthorizeHeader();
+    const response = await cc98Fetch(url, { headers });
+    return await response.json();
+}
+export async function getTopicByTwoTags(tag1Id, tag2Id, boardId, page) {
+    const start = (page - 1) * 10;
+    const url = `/topic/search/board/${boardId}/tag?tag1=${tag1Id}&tag2=${tag2Id}&from=${start}&size=20`;
     const headers = await formAuthorizeHeader();
     const response = await cc98Fetch(url, { headers });
     return await response.json();
@@ -2786,4 +2821,12 @@ export async function updateUserInfo(id) {
     removeLocalStorage(key);
     removeLocalStorage(key1);
     await getUserInfo(id);
+}
+export function getTagLayer(tagId:number, tags) {
+    for (let item of tags) {
+        for (let tag of item.tags) {
+            if (tag.id == tagId) return item.layer;
+        }
+    }
+    return false;
 }

@@ -58,6 +58,10 @@ export class Reply extends React.Component<{DateTime,topicId, page, topicInfo, b
             realContents = await Utility.getCurUserTopicContent(this.props.topicId, page, userName, this.props.userId);
         } else {
             realContents = await Utility.getTopicContent(this.props.topicId, page, this.props.topicInfo.replyCount);
+            console.log("message");
+            console.log(realContents);
+            console.log(page);
+            console.log(this.props);
         }
         const masters = this.props.boardInfo.boardMasters;
         this.setState({ inWaiting:false,contents: realContents,masters:masters });
@@ -75,6 +79,7 @@ export class Reply extends React.Component<{DateTime,topicId, page, topicInfo, b
             realContents = await Utility.getCurUserTopicContent(newProps.topicId, page, userName, newProps.userId);
         } else {
             realContents = await Utility.getTopicContent(newProps.topicId, page, newProps.topicInfo.replyCount);
+          
         }
         this.setState({inWaiting:false,contents: realContents });
 

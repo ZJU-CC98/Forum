@@ -13,6 +13,10 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
         if (!this.props.tag1) {
             $(`#tag_${this.props.id}`).addClass('displaynone');
         }
+
+        if (!this.props.userId) {
+            $(`#user_${this.props.id}`).attr('href','');
+        }
     }
 
     render() {
@@ -25,26 +29,33 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
                 tagInfo = `标签：${this.props.tag1}`;
             }
         }
+        let topicUrl = `/topic/${this.props.id}`;
+        let userUrl = `/user/id/${this.props.userId}`;
+        let boardUrl = `/list/${this.props.boardId}`;
+        let a: any = parseInt(this.props.replyCount+1) / 10;
+        let b = parseInt(a) + 1;
+        let c = parseInt(this.props.replyCount) - (b - 1) * 10;
+        let lastPostUrl = `${topicUrl}/${b}#${c}`;
         return (<div className="focus-topic">
-                    <div className="focus-topic-left">
-                        <img className="focus-topic-portraitUrl" src={this.props.portraitUrl}></img>
-                        <div className="focus-topic-text">
-                            <div className="focus-topic-userName">{this.props.userName}</div>
-                            <div className="focus-topic-fans">粉丝   {this.props.fanCount}</div>
-                                </div>
-                            </div>
-                    <div className="focus-topic-middle">
-                        <div className="focus-topic-title">{this.props.title}</div>
+                            <a className="focus-topic-left" href={userUrl} target="_blank" id={`user_${this.props.id}`}>
+                                        <img className="focus-topic-portraitUrl" src={this.props.portraitUrl}></img>
+                                        <div className="focus-topic-text">
+                                            <div className="focus-topic-userName">{this.props.userName}</div>
+                                            <div className="focus-topic-fans">{`粉丝   ${this.props.fanCount}`}</div>
+                                        </div>
+                            </a>
+                            <div className="focus-topic-middle">
+                                <a className="focus-topic-title" href={topicUrl} target="_blank">{this.props.title}</a>
                                 <div className="focus-topic-info">
                                     <div id={`tag_${this.props.id}`}>{tagInfo}</div>
                                     <div><i className="fa fa-clock-o fa-lg"></i>{this.props.time}</div>
                                     <div><i className="fa fa-eye fa-lg"></i> {this.props.hitCount}</div>
-                                    <div>最后回复：{this.props.lastPostUser}</div>
-                    <div>{this.props.lastPostTime}</div>
+                                    <div><a href={lastPostUrl} target="_blank">最后回复：{this.props.lastPostUser}</a></div>
+                                    <div><a href={lastPostUrl} target="_blank">{this.props.lastPostTime}</a></div>
                                 </div>
-            </div>
+                            </div>
                     <div className="focus-topic-rightBar"></div>
-                    <div className="focus-topic-right">{this.props.boardName}</div>
+                    <a className="focus-topic-right" href={boardUrl} target="_blank">{this.props.boardName}</a>
                 </div>);
     }
 }

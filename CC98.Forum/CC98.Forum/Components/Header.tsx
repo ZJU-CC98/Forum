@@ -39,11 +39,6 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
          * 第一次加载的时候获取初始状态
          */
         this.handleNotifyMessageReceive();
-        //更新消息数量
-        await Utility.refreshUnReadCount();
-        this.setState({
-            unreadCount: Utility.getStorage("unreadCount")
-        });
     }
 
     componentWillUnmount() {
@@ -52,6 +47,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
     }
 
     async handleNotifyMessageReceive() {
+        //更新消息数量
         await Utility.refreshUnReadCount();
         this.setState({
             unreadCount: Utility.getStorage("unreadCount")

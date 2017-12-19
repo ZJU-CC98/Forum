@@ -100,13 +100,16 @@
 //相框样式
 .photoFrame {
     position: absolute;
-    left: -10px;
-    top: -8px;
+    left: 50%;
+    top: 50%;
 }
 
 .photoFrame img {
-    width: 100px !important;
-    height: 100px !important;
+    width: 9rem;
+    height: 9rem;
+    position: absolute;
+    left: -4.5rem;
+    top: -4.5rem;
 }
 
 //--------------------------------以下是首页的样式~ --------------------------------------------
