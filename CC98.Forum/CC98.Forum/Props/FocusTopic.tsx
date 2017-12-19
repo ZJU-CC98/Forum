@@ -44,7 +44,7 @@ export class FocusTopic {
     /**
     *主题的创建时间
     */
-    time: Date;
+    time: string;
     /**
     *主题被赞的次数
     */
@@ -64,5 +64,13 @@ export class FocusTopic {
     /**
     *最后回复时间
     */
-    lastPostTime: Date;
+    lastPostTime: string;
+    /**
+    *标签1
+    */
+    tag1: string;
+    /**
+    *标签2
+    */
+    tag2: string;
 } 
