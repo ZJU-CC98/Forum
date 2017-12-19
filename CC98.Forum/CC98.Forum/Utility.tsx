@@ -472,28 +472,6 @@ export async function getAllNewTopic(from: number, router) {
                 newTopic[i].portraitUrl = userInfo1.portraitUrl;
                 //获取所在版面名称
                 newTopic[i].boardName = await getBoardName(newTopic[i].boardId);
-                //阅读数转换
-                if (newTopic[i].hitCount > 10000) {
-                    if (newTopic[i].hitCount > 100000) {
-                        let index = parseInt(`${newTopic[i].hitCount / 10000}`);
-                        newTopic[i].hitCount = `${index}万`;
-                    }
-                    else {
-                        let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
-                        newTopic[i].hitCount = `${index}万`;
-                    }
-                }
-                //回复数转换
-                if (newTopic[i].replyCount > 10000) {
-                    if (newTopic[i].replyCount > 100000) {
-                        let index = parseInt(`${newTopic[i].replyCount / 10000}`);
-                        newTopic[i].replyCount = `${index}万`;
-                    }
-                    else {
-                        let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
-                        newTopic[i].replyCount = `${index}万`;
-                    }
-                }
             }
             //匿名时粉丝数显示0
             else {
@@ -501,6 +479,31 @@ export async function getAllNewTopic(from: number, router) {
                 newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
                 newTopic[i].userName = "匿名用户";
                 newTopic[i].boardName = "心灵之约";
+            }
+            //时间转换
+            newTopic[i].time = transerRecentTime(newTopic[i].time);
+            newTopic[i].lastPostTime = transerRecentTime(newTopic[i].lastPostTime);
+            //阅读数转换
+            if (newTopic[i].hitCount > 10000) {
+                if (newTopic[i].hitCount > 100000) {
+                    let index = parseInt(`${newTopic[i].hitCount / 10000}`);
+                    newTopic[i].hitCount = `${index}万`;
+                }
+                else {
+                    let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
+                    newTopic[i].hitCount = `${index}万`;
+                }
+            }
+            //回复数转换
+            if (newTopic[i].replyCount > 10000) {
+                if (newTopic[i].replyCount > 100000) {
+                    let index = parseInt(`${newTopic[i].replyCount / 10000}`);
+                    newTopic[i].replyCount = `${index}万`;
+                }
+                else {
+                    let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
+                    newTopic[i].replyCount = `${index}万`;
+                }
             }
         }
         return newTopic;
@@ -568,29 +571,6 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
                 newTopic[i].portraitUrl = userInfo1.portraitUrl;
                 //获取所在版面名称
                 newTopic[i].boardName = await getBoardName(newTopic[i].boardId);
-                
-                //阅读数转换
-                if (newTopic[i].hitCount > 10000) {
-                    if (newTopic[i].hitCount > 100000) {
-                        let index = parseInt(`${newTopic[i].hitCount / 10000}`);
-                        newTopic[i].hitCount = `${index}万`;
-                    }
-                    else {
-                        let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
-                        newTopic[i].hitCount = `${index}万`;
-                    }
-                }
-                //回复数转换
-                if (newTopic[i].replyCount > 10000) {
-                    if (newTopic[i].replyCount > 100000) {
-                        let index = parseInt(`${newTopic[i].replyCount / 10000}`);
-                        newTopic[i].replyCount = `${index}万`;
-                    }
-                    else {
-                        let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
-                        newTopic[i].replyCount = `${index}万`;
-                    }
-                }
             }
             //匿名时粉丝数显示0
             else {
@@ -598,6 +578,32 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
                 newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
                 newTopic[i].userName = "匿名用户";
                 newTopic[i].boardName = "心灵之约";
+            }
+            //时间转换
+            newTopic[i].time = transerRecentTime(newTopic[i].time);
+            newTopic[i].lastPostTime = transerRecentTime(newTopic[i].lastPostTime);
+
+            //阅读数转换
+            if (newTopic[i].hitCount > 10000) {
+                if (newTopic[i].hitCount > 100000) {
+                    let index = parseInt(`${newTopic[i].hitCount / 10000}`);
+                    newTopic[i].hitCount = `${index}万`;
+                }
+                else {
+                    let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
+                    newTopic[i].hitCount = `${index}万`;
+                }
+            }
+            //回复数转换
+            if (newTopic[i].replyCount > 10000) {
+                if (newTopic[i].replyCount > 100000) {
+                    let index = parseInt(`${newTopic[i].replyCount / 10000}`);
+                    newTopic[i].replyCount = `${index}万`;
+                }
+                else {
+                    let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
+                    newTopic[i].replyCount = `${index}万`;
+                }
             }
         }
         return newTopic;
@@ -831,14 +837,46 @@ export function sortRecentMessage(recentMessage) {
 }
 
 /**
- * api返回的时间格式转换成时间戳的函数
+ * api返回的UTC时间格式转换成时间戳的函数
  * @param time
  */
 export function transerTime(time) {
-    let timeStr = moment(time).format('YYYY-MM-DD HH:mm:ss')
-    let timeDate = timeStr.replace(/-/g, '/');
-    let timestamp = new Date(timeDate).getTime();
+    let timestamp = new Date(time).getTime();
     return timestamp;
+}
+
+/**
+ * api返回的UTC时间格式转换成"1分钟前，昨天18：45"这样的形式
+ * @param time
+ */
+export function transerRecentTime(time) {
+    let thatDate = new Date(time);
+    let thatTime = thatDate.getTime();
+    let thisDate = new Date();
+    let thisTime = new Date().getTime();
+    let delta = (new Date(new Date().toLocaleDateString()).getTime() + 86400000 - thatTime)/1000;
+    if (delta > 259200) {
+        let month = thatDate.getMonth() + 1;
+        let strTime = `${thatDate.getFullYear()}:${month}:${thatDate.getDate()} ${thatDate.getHours()}:${thatDate.getMinutes()}:${thatDate.getSeconds()}`;
+        return strTime;
+    }
+    else if (delta > 172800) {
+        let strTime = `${thatDate.getHours()}:${thatDate.getMinutes()}:${thatDate.getSeconds()}`;
+        return `前天 ${strTime}`;
+    }
+    else if (delta > 86400) {
+        let strTime = `${thatDate.getHours()}:${thatDate.getMinutes()}:${thatDate.getSeconds()}`;
+        return `昨天 ${strTime}`;
+    }
+    else if (thisTime - thatTime > 3600) {
+        let strTime = `${thatDate.getHours()}:${thatDate.getMinutes()}:${thatDate.getSeconds()}`;
+        return `今天 ${strTime}`;
+    }
+    else {
+        let min0: any = (thisTime - thatTime) / 60;
+        let min = parseInt(min0);
+        return `${min}分钟前`;
+    }
 }
 
 /**

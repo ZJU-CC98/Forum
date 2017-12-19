@@ -385,8 +385,8 @@ body {
     align-items: flex-end;
     padding-bottom: 1rem;
     padding-right: 2rem;
-    color:#79b8ca;
-    align-items:center;
+    color: #8bc9db;
+    align-items: center;
 }
 
 #commentlike {
@@ -560,14 +560,14 @@ body {
     color: #000000;
     outline: none;
     cursor: pointer;
-    color: #79b8ca;
-    border: #79b8ca solid thin;
-    border-radius:1rem;
-    width:2.25rem;
-    height:1.25rem;
-    text-align:center;
-    margin-left:0.5rem;
-    line-height:1.25rem;
+    color: #8bc9db;
+    border: #8bc9db solid thin;
+    border-radius: 1rem;
+    width: 2.25rem;
+    height: 1.25rem;
+    text-align: center;
+    margin-left: 0.5rem;
+    line-height: 1.25rem;
 }
 
 .operation {
@@ -775,9 +775,9 @@ a {
     box-shadow: 0 1px 2px rgba(0,0,0,.2);
     line-height:4rem;
 }
-.bgcolor{
-    color:#fff;
-    background-color:#79b8ca;
+.bgcolor {
+    color: #fff;
+    background-color:#8bc9db;
 }
 .orange {
     color: #fef4e9;
@@ -1728,9 +1728,9 @@ a {
         flex-shrink: 0;
         cursor: pointer;
         border-radius: 10px;
-        border: solid 1px #79b8ca;
+        border: solid 1px #8bc9db;
         font-size: 16px;
-        color: #79b8ca;
+        color: #8bc9db;
         padding: 2px 8px 8px 8px;
         margin-right: 20px;
         margin-top: 20px;
@@ -1793,23 +1793,23 @@ a {
 .focus-topic {
     display: flex;
     flex-direction: row;
-    min-height: 108px;
+    min-height: 80px;
     margin-top: 12px;
     overflow: hidden;
     background-color: #ffffff;
-    border: solid 1px #79b8ca;
+    border: solid 1px #8bc9db;
 
     .focus-topic-left {
         display: flex;
         flex-direction: row;
         flex-basis: 180px;
-        background-color: #79b8ca;
+        background-color: #8bc9db;
         flex-shrink: 0;
 
         .focus-topic-portraitUrl {
             width: 60px;
             height: 60px;
-            margin: 24px 10px 24px 16px;
+            margin: 10px;
             border-radius: 50%;
         }
 
@@ -1820,17 +1820,16 @@ a {
 
             .focus-topic-userName {
                 font-size: 16px;
-                height: 18px;
-                line-height: 18px;
-                margin-top: 32px;
+                height: 28px;
+                line-height: 28px;
+                margin-top: 14px;
             }
 
             .focus-topic-fans {
                 font-size: 12px;
-                margin-top: 12px;
-                margin-bottom: 32px;
-                height: 14px;
-                line-height: 14px;
+                margin-bottom: 14px;
+                height: 24px;
+                line-height: 24px;
             }
         }
     }
@@ -1846,52 +1845,55 @@ a {
         .focus-topic-title {
             font-size: 20px;
             color: #6b7178;
-            word-wrap: break-word;
-            overflow: hidden;
-            height: 80px;
-            line-height: 80px;
-            margin-left: 20px;
-            margin-right: 20px;
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            white-space: nowrap; 
+            height: 30px;
+            line-height: 30px;
+            margin: 10px 20px auto 20px;
+            max-width: 800px;
         }
 
         .focus-topic-info {
             display: flex;
             flex-direction: row;
-            margin: 0px 20px 16px 20px;
+            margin: auto 20px 14px 20px;
             height: 14px;
             line-height: 14px;
             font-size: 12px;
 
-            .focus-topic-infoTag {
-                flex-basis: 100px;
-            }
+            div {
+                flex-shrink: 0;
+                margin-right: 20px;
+                overflow: hidden;
+                position: relative;
 
-            .focus-topic-infoTime {
-                flex-basis: 220px;
-            }
-
-            .focus-topic-infoHit {
-                flex-basis: 40px;
-            }
-
-            .focus-topic-infoLastPostUser {
-                flex-basis: 80px;
-            }
-
-            .focus-topic-infoLastPostTime {
-                flex-basis: 220px;
+                i {
+                    position: relative;
+                    bottom: 2px;
+                    margin-right: 2px;
+                }
             }
         }
     }
 
+    .focus-topic-rightBar {
+        width: 0px;
+        height: 48px;
+        border-left: 1px solid #6b7178;
+        margin-top: 16px;
+    }
+
     .focus-topic-right {
         text-align: center;
-        height: 110px;
-        line-height: 110px;
-        background-color: #79b8ca;
-        padding-left: 17px;
-        padding-right: 19px;
-        color: #ffffff;
+        min-width: 80px;
+        height: 80px;
+        line-height: 80px;
+        background-color: #ffffff;
+        padding-left: 10px;
+        padding-right: 10px;
+        color: #6b7178;
+        flex-shrink: 0;
     }
 }
     /*.focus-topic {
