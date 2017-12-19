@@ -63,7 +63,7 @@ export class RecommendedReadingComponent extends React.Component<{}, { recommend
         super(props);
         this.state = {
             recommendedReading: new Array<MainPageColumn>(),
-            index: Math.floor(Math.random() * 5)    //0-5的随机数
+            index: Math.floor(Math.random() * 5)    //0-4的随机数
         };
         this.handleMouseEnter = this.handleMouseEnter.bind(this);
         this.convertButton = this.convertButton.bind(this);
@@ -125,7 +125,7 @@ export class RecommendedReadingComponent extends React.Component<{}, { recommend
                     <img src={imageUrl} />
                 </div>
                 <div className="column" style={{ flexGrow: 1 }}>
-                    <div className="recommendedReadingTitle"><a href={url} target="view_window">{title}</a></div>
+                    <div className="recommendedReadingTitle"><a href={url} target="_blank">{title}</a></div>
                     <div className="recommendedReadingAbstract">{content}</div>
                     <div className="recommendedReadingButtons">{buttons}</div>
                 </div>
@@ -331,16 +331,15 @@ export class Test extends React.Component<{}, { testContent: string }>{
         }
     }
 
-    async postRecommandationReading() {
-        const url = `http://apitest.niconi.cc/index/column`;
+    async postAd() {
+        const url = `/index/column/24`;
         const content = {
-            type: 1,
-            title: "推荐阅读标题5",
-            content: "推荐阅读摘要5",
-            url: "http://www.cc98.org",
-            imageUrl: "/images/推荐阅读.jpg",
-            orderWeight: 1,
+            type: 4,
+            title: "一个图片不一样的广告",
+            url: "www.cc98.org",
+            imageUrl: "/images/推荐功能.jpg",
             enable: true,
+            days: 10,
         }
         const postForumIndexColumnInfo = JSON.stringify(content);
         const token = Utility.getLocalStorage("accessToken");
@@ -348,7 +347,7 @@ export class Test extends React.Component<{}, { testContent: string }>{
         myHeaders.append("Authorization", token);
         myHeaders.append("Content-Type", 'application/json');
         let response = await Utility.cc98Fetch(url, {
-            method: 'POST',
+            method: 'PUT',
             headers: myHeaders,
             body: postForumIndexColumnInfo,
         });
@@ -365,7 +364,7 @@ export class Test extends React.Component<{}, { testContent: string }>{
             <div className="mainPageListContent2">
                 <div>这里是可爱的adddna测试的地方~</div>
                 <input name="testContent" type="text" id="loginName" onChange={this.handleChange} value={this.state.testContent} />
-                <div>这里被封印了！</div>
+                <div>封印</div>
             </div>
         </div>
     }
@@ -425,7 +424,7 @@ export class RecommendedFunctionComponent extends React.Component<{}, { recommen
     convertRecommendedFunction(item: MainPageColumn) {
         return <div className="recommendedFunctionRow">
             <div className="recommendedFunctionImage"><img src={item.imageUrl}></img></div>
-            <div className="recommendedFunctionTitle"><a href={item.url} target="view_window">{item.title}</a></div>
+            <div className="recommendedFunctionTitle"><a href={item.url} target="_blank">{item.title}</a></div>
         </div>
     }
     render() {
@@ -452,7 +451,6 @@ export class SchoolNewsComponent extends React.Component<{}, { schoolNews: MainP
         this.state = {
             schoolNews: new Array<MainPageColumn>(),
         };
-        this.getSchoolNews = this.getSchoolNews.bind(this);
     }
 
     async getSchoolNews() {
@@ -474,7 +472,7 @@ export class SchoolNewsComponent extends React.Component<{}, { schoolNews: MainP
 
     convertSchoolNews(item: MainPageColumn) {
         return <div className="schoolNewsRow">
-            <div className="schoolNewsTitle"><a href={item.url} target="view_window">{item.title}</a></div>
+            <div className="schoolNewsTitle"><a href={item.url} target="_blank">{item.title}</a></div>
         </div>
     }
 
@@ -494,6 +492,132 @@ export class SchoolNewsComponent extends React.Component<{}, { schoolNews: MainP
 }
 
 /**
+ * 首页广告组件
+ * 每30s切换一条
+ */
+export class MainPageAdComponent extends React.Component<{}, { ads: MainPageColumn[], index: number }>{
+
+    private timer: any;
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            ads: new Array<MainPageColumn>(),
+            index: 0,
+        };
+        this.changeIndex = this.changeIndex.bind(this);
+    }
+
+    async getAds() {
+        const ads: MainPageColumn[] = new Array<MainPageColumn>();
+        const response = await Utility.cc98Fetch('/config/global/advertisement');
+        const data = await response.json();
+        for (let i = 0; i < data.length; i++) {
+            ads[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
+        }
+        return ads;
+    }
+
+    async componentWillMount() {
+        const x = await this.getAds();
+        const length = x.length;
+        this.setState({
+            ads: x,
+            index: Math.floor(Math.random() * length)
+        });
+    }
+
+    //设定定时器 每30s调用一次changeIndex()
+    componentDidMount() {
+        this.timer = setInterval(() => { this.changeIndex(this.state.index) }, 30000);
+    }
+
+    //当组件从页面上移除时移除定时器
+    componentWillUnmount() {
+        clearInterval(this.timer);
+    }
+
+    //根据当前广告角标返回下一角标
+    changeIndex(index) {
+        let total = this.state.ads.length;
+        let nextIndex = index + 1;
+        if (index >= total) nextIndex = 0;
+        this.setState({
+            index: nextIndex,
+        })
+    }
+
+    render() {
+        let ads = this.state.ads;
+        let index = this.state.index;
+
+        let url = ads.length ? ads[index].url : "";
+        let imageUrl = ads.length ? ads[index].imageUrl : "";
+
+        return <div style={{ marginTop: "2.5rem" }}>
+            <Link to={url}><img src={imageUrl} style={{ maxWidth: "16.25rem" }} /></Link>
+        </div>
+    }
+}
+
+/**
+ * 论坛统计组件
+ * TODO:样式调整
+ **/
+export class Count extends React.Component<{}, { data }> {
+
+    constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
+        super(props);       //super 表示调用基类（Component系统类型）构造方法
+        this.state = {
+            data: []
+        };
+    }
+    async getData() {
+        const response = await Utility.cc98Fetch('/config/global');
+        const data = await response.json();
+        return data;
+
+    }
+    async componentDidMount() {
+        const x = await this.getData();
+        this.setState({
+            data: x,
+        });
+    }
+    render() {
+        const data = this.state.data;
+        return <div className="recommendedFunction">
+            <div className="mainPageTitle1">
+                <div className="mainPageTitleRow">
+                    <i className="fa fa-volume-up"></i>
+                    <div className="mainPageTitleText">论坛统计</div>
+                </div>
+            </div>
+            <div className="recommendedFunctionContent">
+                <div className="recommendedFunctionRow">
+                    今日帖数{data.todayCount}
+                </div>
+                <div className="recommendedFunctionRow">
+                    总主题数{data.topicCount}
+                </div>
+                <div className="recommendedFunctionRow">
+                    最高帖数{data.maxPostCount}
+                </div>
+                <div className="recommendedFunctionRow">
+                    发生于{data.maxPostDate}
+                </div>
+                <div className="recommendedFunctionRow">
+                    最新用户{data.lastUserName}
+                </div>
+                <div className="recommendedFunctionRow">
+                    总用户数{data.userCount}
+                </div>
+            </div>
+        </div>
+    }
+}
+
+/**
  * 主页
  */
 export class MainPage extends React.Component<{}, AppState> {
@@ -504,27 +628,28 @@ export class MainPage extends React.Component<{}, AppState> {
                 <RecommendedReadingComponent />
                 <div className="row" style={{ justifyContent: "space-between" }}>
                     <HotTopicComponent />
-                    <MainPageTopicComponent name="感性·情感" fetchUrl="/topic/emotion" style="blue" />
+                    <MainPageTopicComponent name="校园活动" fetchUrl="/topic/school-event" style="blue" />
                 </div>
                 <div className="row" style={{ justifyContent: "space-between" }}>
-                    <MainPageTopicComponent name="校园活动" fetchUrl="/topic/school-event" style="black" />
+
                     <MainPageTopicComponent name="学术信息" fetchUrl="/topic/academics" style="black" />
-                </div>
-                <div className="row" style={{ justifyContent: "space-between" }}>
-                    <MainPageTopicComponent name="求职广场" fetchUrl="/topic/full-time-job" style="blue" />
-                    <MainPageTopicComponent name="实习兼职" fetchUrl="/topic/part-time-job" style="blue" />
-                </div>
-                <div className="row" style={{ justifyContent: "space-between" }}>
                     <MainPageTopicComponent name="学习园地" fetchUrl="/topic/study" style="black" />
-                    <MainPageTopicComponent name="跳蚤市场" fetchUrl="/topic/flea-market" style="black" />
+                </div>
+                <div className="row" style={{ justifyContent: "space-between" }}>
+                    <MainPageTopicComponent name="感性·情感" fetchUrl="/topic/emotion" style="blue" />
+                    <MainPageTopicComponent name="跳蚤市场" fetchUrl="/topic/flea-market" style="blue" />
+
+                </div>
+                <div className="row" style={{ justifyContent: "space-between" }}>
+                    <MainPageTopicComponent name="求职广场" fetchUrl="/topic/full-time-job" style="black" />
+                    <MainPageTopicComponent name="实习兼职" fetchUrl="/topic/part-time-job" style="black" />
                 </div>
             </div>
             <div className="rightPart">
                 <RecommendedFunctionComponent />
                 <SchoolNewsComponent />
-                <div className="mainPageAd">
-                    <img src="/images/首页广告.jpg" />
-                </div>
+                <MainPageAdComponent />
+                <Count />
             </div>
         </div>;
     }
