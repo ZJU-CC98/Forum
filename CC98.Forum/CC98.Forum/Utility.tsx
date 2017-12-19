@@ -13,7 +13,7 @@ import * as $ from 'jquery';
 import { changeUserInfo } from './Actions';
 
 declare let editormd: any;
-declare let testEditor: any;
+import { Constants } from './Components/Constant';
 declare let moment: any;
 declare let urljoin: any;
 export async function getBoardTopicAsync(curPage, boardId, totalTopicCount) {
@@ -777,6 +777,7 @@ export async function getRecentContact(from: number, size: number, router) {
         for (let i in recentContact) {
             recentContact[i].message = [];
             recentContact[i].lastContent = recentContactId[i].lastContent;
+            recentContact[i].isRead = recentContactId[i].isRead;
         }
         console.log("接收到没有Message的列表");
         console.log(recentContact);
@@ -856,20 +857,39 @@ export function transerRecentTime(time) {
     let thisTime = new Date().getTime();
     let delta = (new Date(new Date().toLocaleDateString()).getTime() + 86400000 - thatTime)/1000;
     if (delta > 259200) {
-        let month = thatDate.getMonth() + 1;
-        let strTime = `${thatDate.getFullYear()}:${month}:${thatDate.getDate()} ${thatDate.getHours()}:${thatDate.getMinutes()}:${thatDate.getSeconds()}`;
+        let month: any = thatDate.getMonth() + 1;
+        if (month < 10) { month = `0${month}`; }
+        let date: any = thatDate.getDate();
+        if (date < 10) { date = `0${date}`; }
+        let min: any = thatDate.getMinutes();
+        if (min < 10) { min = `0${min}`; }
+        let sec: any = thatDate.getSeconds();
+        if (sec < 10) { sec = `0${sec}`; }
+        let strTime = `${thatDate.getFullYear()}-${month}-${date} ${thatDate.getHours()}:${min}:${sec}`;
         return strTime;
     }
     else if (delta > 172800) {
-        let strTime = `${thatDate.getHours()}:${thatDate.getMinutes()}:${thatDate.getSeconds()}`;
+        let min: any = thatDate.getMinutes();
+        if (min < 10) { min = `0${min}`; }
+        let sec: any = thatDate.getSeconds();
+        if (sec < 10) { sec = `0${sec}`; }
+        let strTime = `${thatDate.getHours()}:${min}:${sec}`;
         return `前天 ${strTime}`;
     }
     else if (delta > 86400) {
-        let strTime = `${thatDate.getHours()}:${thatDate.getMinutes()}:${thatDate.getSeconds()}`;
+        let min: any = thatDate.getMinutes();
+        if (min < 10) { min = `0${min}`; }
+        let sec: any = thatDate.getSeconds();
+        if (sec < 10) { sec = `0${sec}`; }
+        let strTime = `${thatDate.getHours()}:${min}:${sec}`;
         return `昨天 ${strTime}`;
     }
     else if (thisTime - thatTime > 3600) {
-        let strTime = `${thatDate.getHours()}:${thatDate.getMinutes()}:${thatDate.getSeconds()}`;
+        let min: any = thatDate.getMinutes();
+        if (min < 10) { min = `0${min}`; }
+        let sec: any = thatDate.getSeconds();
+        if (sec < 10) { sec = `0${sec}`; }
+        let strTime = `${thatDate.getHours()}:${min}:${sec}`;
         return `今天 ${strTime}`;
     }
     else {
@@ -1073,7 +1093,7 @@ export async function refreshLikeState(topicId, postId) {
 export async function sendTopic(topicId, router) {
     try {
         const url = `/post/topic/${topicId}`;
-        const c = testEditor.getMarkdown();
+        const c = Constants.testEditor.getMarkdown();
         const content = {
             content: c,
             contentType: 1,
@@ -1263,9 +1283,9 @@ export async function uploadEvent(e) {
     const files = e.target.files;
     const res = await uploadFile(files[0]);
     const url = res.content;
-    const str = `![](${url})`;
-    testEditor.appendMarkdown(str);
-    console.log("upload and append");
+    const baseUrl = getApiUrl();
+    const str = `![](${baseUrl}${url})`;
+    Constants.testEditor.appendMarkdown(str);
 }
 /**
  * 关注指定id的用户
@@ -1283,10 +1303,10 @@ export async function followUser(userId: number) {
         if (res.status === 200) {
             return true;
         } else {
-            throw {};
+            throw new Error(res.status.toString());
         }
     } catch (e) {
-        return false;
+        return e.message;
     }
 }
 
@@ -1306,7 +1326,7 @@ export async function unfollowUser(userId: number) {
         if (res.status === 200) {
             return true;
         } else {
-            throw {};
+            throw new Error(res.statusText);
         }
     } catch (e) {
         return false;
@@ -2220,7 +2240,7 @@ export async function deletePost(topicId, postId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", 'application/json');
     const bodyinfo = { reason: reason };
-    const url = `/post?topicid=${topicId}&postid=${postId}`;
+    const url = `/post/${postId}`;
     const response = await cc98Fetch(url, { method: "DELETE", headers, body: JSON.stringify(bodyinfo) });
     switch (response.status) {
         case 401:
@@ -2669,15 +2689,17 @@ export async function refreshUnReadCount() {
     unreadCount.totalCount = unreadCount.systemCount + unreadCount.atCount + unreadCount.replyCount + unreadCount.messageCount;   
     if (unreadCount.totalCount > 0) {
         $('#unreadCount-totalCount').removeClass('displaynone');
-        $('#unreadCount-totalCount1').removeClass('displaynone');
+        $('#unreadCount-totalCount').text(unreadCount.totalCount);
+
     }
     else {
         $('#unreadCount-totalCount').addClass('displaynone');
-        $('#unreadCount-totalCount1').addClass('displaynone');
     }
     if (unreadCount.replyCount > 0) {
         $('#unreadCount-replyCount').removeClass('displaynone');
+        $('#unreadCount-replyCount').text(unreadCount.replyCount);
         $('#unreadCount-replyCount1').removeClass('displaynone');
+        $('#unreadCount-replyCount1').text(unreadCount.replyCount);
     }
     else {
         $('#unreadCount-replyCount').addClass('displaynone');
@@ -2685,7 +2707,9 @@ export async function refreshUnReadCount() {
     }
     if (unreadCount.atCount > 0) {
         $('#unreadCount-atCount').removeClass('displaynone');
+        $('#unreadCount-atCount').text(unreadCount.atCount);
         $('#unreadCount-atCount1').removeClass('displaynone');
+        $('#unreadCount-atCount1').text(unreadCount.atCount);
     }
     else {
         $('#unreadCount-atCount').addClass('displaynone');
@@ -2693,7 +2717,9 @@ export async function refreshUnReadCount() {
     }
     if (unreadCount.systemCount > 0) {
         $('#unreadCount-systemCount').removeClass('displaynone');
+        $('#unreadCount-systemCount').text(unreadCount.systemCount);
         $('#unreadCount-systemCount1').removeClass('displaynone');
+        $('#unreadCount-systemCount1').text(unreadCount.systemCount);
     }
     else {
         $('#unreadCount-systemCount').addClass('displaynone');
@@ -2701,7 +2727,10 @@ export async function refreshUnReadCount() {
     }
     if (unreadCount.messageCount > 0) {
         $('#unreadCount-messageCount').removeClass('displaynone');
+        $('#unreadCount-messageCount').text(unreadCount.messageCount);
         $('#unreadCount-messageCount1').removeClass('displaynone');
+        $('#unreadCount-messageCount1').text(unreadCount.messageCount);
+
     }
     else {
         $('#unreadCount-messageCount').addClass('displaynone');
@@ -2734,7 +2763,7 @@ export async function cc98Fetch(url, init?: RequestInit) {
     console.log(baseUrl);*/
     const baseUrl = 'http://apitest.niconi.cc';
     const _url = `${baseUrl}${url}`;
-    let response;
+    let response: Response;
     if (init) {
         response = await fetch(_url, init);
     } else {
@@ -2801,4 +2830,18 @@ export function getTagLayer(tagId:number, tags) {
         }
     }
     return false;
+}
+export async function findIP(topicId) {
+    const url = `/topic/${topicId}/look-ip`;
+    const headers = await formAuthorizeHeader();
+    const response = await cc98Fetch(url, { headers });
+    return await response.json();
+}
+export async function moveTopic(topicId, boardId,reason) {
+    const url = `topic/${topicId}/moveto/${boardId}`;
+    const headers = await formAuthorizeHeader();
+    const response = await cc98Fetch(url, { method: "PUT", headers, body: JSON.stringify(reason) });
+    if (response.status === 200)
+        return 'ok';
+    else return 'error';
 }

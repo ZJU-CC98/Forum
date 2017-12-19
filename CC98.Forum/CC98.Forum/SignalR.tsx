@@ -4,7 +4,7 @@ import { getToken, getApiUrl } from './Utility';
 /**
 * 客户端事件类型，由服务器定义
 */
-type EventListenerType = 'NotifyMessageReceive' | 'NotifyTopicChange' | 'NotifyNotificationChange';
+type EventListenerType = 'NotifyMessageReceive' | 'NotifyTopicChange' | 'NotifyNotificationReceive';
 
 /**
 * 事件对应的回掉函数
@@ -15,7 +15,7 @@ type EventListenerhandler = (message: any) => void;
 class EventListener {
     NotifyMessageReceive: EventListenerhandler[] = [];
     NotifyTopicChange: EventListenerhandler[] = [];
-    NotifyNotificationChange: EventListenerhandler[] = [];
+    NotifyNotificationReceive: EventListenerhandler[] = [];
 }
 
 class SignalRConnection {

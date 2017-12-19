@@ -21,6 +21,9 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
             state: "normal", reason: "", tips: "", days: 0, board: null, topicInfo: { state: 0, topState: 0, bestState: 0 }, fetchState: 'ok',color:"#fff"
         };
     }
+    showIP() {
+        
+    }
     showNormal() {
         this.setState({ state: 'normal' });
     }
@@ -113,11 +116,23 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
                            status =  await Utility.lockTopic(this.props.topicId, this.props.boardId, this.state.reason, this.state.days);
                             this.setState({ fetchState: status });
                             break;
-                    }
+                    }           
                 } else {
                     this.setState({ tips: "请输入原因！" });
                 }
                 break;
+            case 'board':
+                if (this.state.reason) {
+                    status = await Utility.moveTopic(this.props.topicId, this.state.board, this.state.reason);
+                    if (status === 'ok') {
+                        this.setState({ fetchState: status });
+                        break;
+                    } else {
+                        this.setState({ tips: "输入有误！" });
+                    }
+                } else{
+                    this.setState({ tips: "请输入原因！" });
+                }
         }
         const UIId = `#manage${this.props.topicId}`;
         $(UIId).css("display", "none");
@@ -238,7 +253,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
 
                 <div className="row">
                     <div className="row">
-                        <input type="radio" name="option" value="查看IP" onClick={this.showNoReason} />
+                        <input type="radio" name="option" value="查看IP" onClick={this.showIP} />
                         <div>查看IP</div>
                     </div>
 

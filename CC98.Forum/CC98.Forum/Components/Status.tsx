@@ -1,5 +1,5 @@
 ﻿import * as React from 'react';
-import { LogOn } from './LogOn';
+import LogOn from './LogOn';
 import { Link } from 'react-router-dom';
 import * as Utility from '../Utility';
 export class LogOut extends React.Component<{}, {}>{
@@ -142,3 +142,13 @@ export class OperationForbidden extends React.Component<{}, {}>{
             ;
     }
 }
+export const PageNotFound = () => (
+    <div className="errorState" >
+        <div>
+            <img className="errorIcon" src="/images/404.png"></img>
+        </div>
+        <div className="errorTitle">糟糕！好像出错了</div>
+        <div className="errorText">页面不存在</div>
+        <div className="row returnIndexBtn" ><Link to="/" >返回首页</Link></div>
+    </div>
+)

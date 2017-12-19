@@ -2,7 +2,7 @@
 import * as Utility from '../../Utility';
 import * as $ from 'jquery';
 import { UbbContainer } from '.././UbbContainer';
-import { Constants } from './Topic';
+import { Constants } from '../Constant';
 import { UbbEditor } from '../UbbEditor';
 import { TopicManagement } from './Topic-TopicManagement';
 declare let moment: any;
@@ -35,13 +35,11 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
     }
     async componentDidMount() {
      
-        if (Utility.isMaster(this.props.boardInfo.masters))
+        if (Utility.isMaster(this.props.boardInfo.masters)) {
             $("#topicManagementBTN").css("display", "");
-        if (Utility.getLocalStorage("userInfo")) {
-            const myId = Utility.getLocalStorage("userInfo").id;
-            if ((Utility.getLocalStorage("userInfo").privilege === '全站贵宾' && myId === this.props.userId))
-                $("#topicManagementBTN").css("display", "");
+            $("#showIPBTN").css("display", "");
         }
+          
 
         if (this.state.mode === 1) {
             /*const response1 = await fetch("/config.production.json");
@@ -73,12 +71,18 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
                         "bold", "del", "italic", "quote", "|",
                         "h1", "h2", "h3", "h4", "|",
                         "list-ul", "list-ol", "hr", "|",
-                        "link", "image", "code", "table", "html-entities",
+                        "link", "image","testIcon", "code", "table", "html-entities",
                     ]
                 },
-                toolbarCustomIcons: {
-                    file: "<input type='file' id='upload-files' style=' display: none ' onchange='uploadEvent()' />",
-                    faicon: "<i class='fa fa-upload' onclick='clickUploadIcon()' style='cursor: pointer '></i>"
+                toolbarIconsClass: {
+                    testIcon: "fa-upload"  // 指定一个FontAawsome的图标类
+                },
+                // 自定义工具栏按钮的事件处理
+                toolbarHandlers: {
+                    testIcon: function (cm, icon, cursor, selection) {
+                        var str = $("#upload-files").click();
+                       
+                    }
                 },
             });
         }
@@ -88,14 +92,16 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
         if (this.props.content) {
             if (this.state.mode === 1) {
                 const str = `>**以下是引用${this.props.content.floor}楼：用户${this.props.content.userName}在${time}的发言：**
-${this.props.content.content}`;
+${this.props.content.content}
+`;
                 Constants.testEditor.appendMarkdown(str);
 
                 this.setState({ masters: masters });
             } else {
                 const str = `
 [quote][b]以下是引用${this.props.content.floor}楼：用户${this.props.content.userName}在${time}的发言：
-[color=blue][url=${url}]>>查看原帖<<[/url][/color][/b]${this.props.content.content}[/quote]`;
+[color=blue][url=${url}]>>查看原帖<<[/url][/color][/b]${this.props.content.content}[/quote]
+`;
     
                 this.setState({ masters: masters, content: this.state.content + str });
             }
@@ -108,8 +114,11 @@ ${this.props.content.content}`;
             $("#topicManagementBTN").css("display", "");
         if (Utility.getLocalStorage("userInfo")) {
             const myId = Utility.getLocalStorage("userInfo").id;
-            if ((Utility.getLocalStorage("userInfo").privilege === '全站贵宾' && myId === newProps.userId))
+            if ((Utility.getLocalStorage("userInfo").privilege === '全站贵宾' && myId === newProps.userId)) {
                 $("#topicManagementBTN").css("display", "");
+                $("#showIPBTN").css("display", "");
+            }
+             
         }
         const time = moment(newProps.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
         if (newProps.content.userName) {
@@ -159,15 +168,20 @@ ${newProps.content.content}[/quote]`;
                         "bold", "del", "italic", "quote", "|",
                         "h1", "h2", "h3", "h4", "|",
                         "list-ul", "list-ol", "hr", "|",
-                        "link", "image", "code", "table", "html-entities",
+                        "link", "image", "testIcon", "code", "table", "html-entities",
                     ]
                 },
-                toolbarCustomIcons: {
-                    file: "<input type='file' id='upload-files' style=' display: none ' onchange='uploadEvent()' />",
-                    faicon: "<i class='fa fa-upload' onclick='clickUploadIcon()' style='cursor: pointer '></i>"
+                toolbarIconsClass: {
+                    testIcon: "fa-upload"  // 指定一个FontAawsome的图标类
+                },
+                // 自定义工具栏按钮的事件处理
+                toolbarHandlers: {
+                    testIcon: function (cm, icon, cursor, selection) {
+                        var str = $("#upload-files").click();
+                       
+                    }
                 },
             });
-            $(".fa-copyright").parent("a").parent("li").parent("ul").append("<li><label class='fa-upload' for='upload-files' style='font-family: fontAwesome;cursor: pointer '></label></li>");
         }
     }
     async sendUbbTopic() {
@@ -257,12 +271,18 @@ ${newProps.content.content}[/quote]`;
                         "bold", "del", "italic", "quote", "|",
                         "h1", "h2", "h3", "h4", "|",
                         "list-ul", "list-ol", "hr", "|",
-                        "link", "image", "code", "table", "html-entities",
+                        "link", "image", "testIcon", "code", "table", "html-entities",
                     ]
                 },
-                toolbarCustomIcons: {
-                    file: "<input type='file' id='upload-files' style=' display: none ' onchange='uploadEvent()' />",
-                    faicon: "<i class='fa fa-upload' onclick='clickUploadIcon()' style='cursor: pointer '></i>"
+                toolbarIconsClass: {
+                    testIcon: "fa-upload"  // 指定一个FontAawsome的图标类
+                },
+                // 自定义工具栏按钮的事件处理
+                toolbarHandlers: {
+                    testIcon: function (cm, icon, cursor, selection) {
+                        var str = $("#upload-files").click();
+                       
+                    }
                 },
             });
             this.setState({ content: "" });
@@ -270,6 +290,9 @@ ${newProps.content.content}[/quote]`;
             console.log("Error");
             console.log(e);
         }
+    }
+    showIP() {
+        $(".findIP").css("display", "flex");
     }
     changeEditor() {
         if (this.state.mode === 0) {
@@ -286,7 +309,6 @@ ${newProps.content.content}[/quote]`;
         this.setState({ content: event.target.value });
     }
     render() {
-        $(".fa-copyright").parent("a").parent("li").parent("ul").append("<li><label class='fa-upload' for='upload-files' style='font-family: fontAwesome;cursor: pointer '></label></li>");
         let mode, editor;
         if (this.state.mode === 0) {
             mode = '使用UBB模式编辑';
@@ -326,7 +348,8 @@ ${newProps.content.content}[/quote]`;
                 <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ width: "20rem", height: "2rem", lineHeight:"2rem",letterSpacing: "0.3125rem" }}>{this.state.mode === 1 ? "切换到Ubb编辑器" : "切换到Markdown编辑器"}
                 </div></div>
             {editor}
-            <button id="topicManagementBTN" style={{display:"none"}} onClick={this.showManagement}>管理</button>
+            <button id="topicManagementBTN" style={{ display: "none", width: "5rem" }} onClick={this.showManagement}>管理</button>
+            <button id="showIPBTN" style={{ display: "none", width: "5rem" }} onClick={this.showIP}>查看IP</button>
             <TopicManagement topicId={this.props.topicid} update={this.onChange} boardId={this.props.boardId} updateTime={Date.now()} />
         </div>;
     }

@@ -31,8 +31,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
          * 其他组件只负责添加handler即可
          */
         SignalR.addListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
-        SignalR.addListener('NotifyNotificationChange', this.handleNotifyMessageReceive);
-        SignalR.removeListener('NotifyNotificationChange', this.handleNotifyMessageReceive);
+        SignalR.addListener('NotifyNotificationReceive', this.handleNotifyMessageReceive);
         if (this.props.isLogOn) {
             SignalR.start();
         }
@@ -40,19 +39,16 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
          * 第一次加载的时候获取初始状态
          */
         this.handleNotifyMessageReceive();
-        //更新消息数量
-        await Utility.refreshUnReadCount();
-        this.setState({
-            unreadCount: Utility.getStorage("unreadCount")
-        });
     }
 
     componentWillUnmount() {
         SignalR.removeListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
-        SignalR.removeListener('NotifyNotificationChange', this.handleNotifyMessageReceive);
+        SignalR.removeListener('NotifyNotificationReceive', this.handleNotifyMessageReceive);
     }
 
     async handleNotifyMessageReceive() {
+        console.log("接收到了signalr消息");
+        //更新消息数量
         await Utility.refreshUnReadCount();
         this.setState({
             unreadCount: Utility.getStorage("unreadCount")
@@ -67,11 +63,6 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
             //如果用户注销则关闭signalR链接
             SignalR.stop();
         }
-        //更新消息数量
-        await Utility.refreshUnReadCount();
-        this.setState({
-            unreadCount: Utility.getStorage("unreadCount")
-        });
     }
 
     logOff() {
@@ -156,10 +147,10 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
                     style={{...style, overflow: 'hidden', zIndex: 100 , position: 'absolute', top: '55px', height: this.state.hoverElement === 'topBarText' ? '120px' : '0px'}}
                 >
                     <ul className="dropDownSubMessage" style={{ display: 'inherit' }}>
-                        <Link to="/message/response"><li>回复我的<div className="message-counterLi displaynone" id="unreadCount-replyCount">{unreadCount.replyCount}</div></li></Link>
-                        <Link to="/message/attme"><li>@ 我的<div className="message-counterLi displaynone" id="unreadCount-atCount">{unreadCount.atCount}</div></li></Link>
-                        <Link to="/message/system"><li>系统通知<div className="message-counterLi displaynone" id="unreadCount-systemCount">{unreadCount.systemCount}</div></li></Link>
-                        <Link to="/message/message"><li>我的私信<div className="message-counterLi displaynone" id="unreadCount-messageCount">{unreadCount.messageCount}</div></li></Link>
+                        <a href="/message/response"><li>回复我的<div className="message-counterLi displaynone" id="unreadCount-replyCount">{unreadCount.replyCount}</div></li></a>
+                        <a href="/message/attme"><li>@ 我的<div className="message-counterLi displaynone" id="unreadCount-atCount">{unreadCount.atCount}</div></li></a>
+                        <a href="/message/system"><li>系统通知<div className="message-counterLi displaynone" id="unreadCount-systemCount">{unreadCount.systemCount}</div></li></a>
+                        <a href="/message/message"><li>我的私信<div className="message-counterLi displaynone" id="unreadCount-messageCount">{unreadCount.messageCount}</div></li></a>
                     </ul>
                 </div>
             </div>);
