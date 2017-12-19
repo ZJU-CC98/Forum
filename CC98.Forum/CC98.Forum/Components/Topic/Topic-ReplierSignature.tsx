@@ -1,6 +1,7 @@
 ﻿import * as React from 'react';
 import * as Utility from '../../Utility';
 import { UbbContainer } from '../UbbContainer';
+import { Link } from 'react-router-dom';
 export class ReplierSignature extends React.Component<{ signature,postid ,topicid,masters,userId,likeInfo,quote,content,userInfo,replyTime,floor}, {likeNumber,dislikeNumber,likeState}>{
     constructor(props, content) {
         super(props, content);
@@ -114,8 +115,9 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
             signature = null;
         }
         let editIcon = null;
+        const editUrl = `/editor/edit/${this.props.postid}`;
         if (this.isAllowedtoEdit(this.props.userInfo.privilege)) {
-            editIcon = <div className="operation1" onClick={this.edit}>   编辑</div>;
+            editIcon = <Link to={editUrl}><div className="operation1" onClick={this.edit}>   编辑</div></Link>;
         }
         return <div className="column">
             <div className="comment1">

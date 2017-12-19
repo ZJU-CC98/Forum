@@ -16,7 +16,7 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
     constructor(props) {
         super(props);
         this.state = {
-            data: null,
+            data: [],
             chatObj: null
         };
         //如果没有设置默认的state，render第一次渲染的时候state为空，MessageWindow组件会报错
@@ -30,10 +30,15 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
         //获取到本人信息
         let myInfo = Utility.getLocalStorage("userInfo");
 
+
+        //如果有未读消息则清空联系人缓存
+        if ($('#unreadCount-messageCount1').attr('class') === 'message-counterNav') {
+            Utility.removeStorage('recentContact');
+        }
+
         //创建一个数组存储联系人信息
-        let recentContact = Utility.getStorage("recentContact");
-        console.log("第一次获取联系人缓存");
-        console.log(recentContact);
+        let recentContact = Utility.getStorage('recentContact');
+
         if (!recentContact || recentContact.length === 0) {
             console.log("没有获取到缓存，自己取");
             recentContact = await Utility.getRecentContact(0, 7, this.context.router);
@@ -60,11 +65,13 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
 
     //对this.stata.data进行批量化转化为JSX的函数，每个JSX可点击改变state里聊天对象的信息
     coverMessagePerson = (item: MessagePersonInfo) => {
-        const changeChatName = () => {
-            this.setState({ chatObj: item });
+        let self = this;
+        async function changeChatName(){
+            self.setState({ chatObj: item });
 		    //给选中的聊天对象添加选中效果
 		    $('.message-message-pList > div').removeClass('message-message-pFocus');
-		    $(`#${item.name}`).addClass('message-message-pFocus');
+            $(`#${item.name}`).addClass('message-message-pFocus');
+            await Utility.refreshUnReadCount();
         };
         return <div onClick={changeChatName} id={`${item.name}`}><MessagePerson data={item} /></div>;
     };
@@ -125,15 +132,11 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
                     time: new Date(),
                     showTime: true
                 }],
-                lastContent: ''
+                lastContent: '',
+                isRead: true
             }
-        }
-        if (!data) {
             data = [chatObj];
         }
-        console.log("message正式开始数据填充的时候");
-        console.log(data);
-        console.log(chatObj);
         //创建联系人列表和聊天窗口
         return (<div className="message-message">
                 <div className="message-message-people">

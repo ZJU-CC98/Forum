@@ -3,15 +3,15 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
 import { FocusTopic } from '../../Props/FocusTopic';
+import { FocusBoard } from '../../Props/FocusBoard';
 import { FocusTopicSingle } from './FocusTopicSingle';
-import { FocusBoardProps } from '../../Props/FocusBoardProps'
 import { FocusTopicAreaState } from '../../States/FocusTopicAreaState';
 import * as Utility from '../../Utility';
 /**
  * 表示我关注的版面的主题列表
  */
-export class FocusTopicArea extends React.Component<{}, FocusTopicAreaState> {
-    
+export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaState> {
+
     /**
      * 构造函数
      * @param props
@@ -19,7 +19,7 @@ export class FocusTopicArea extends React.Component<{}, FocusTopicAreaState> {
     constructor(props) {
         super(props);
         //先看一下有没有缓存的帖子数据
-        var data = Utility.getStorage("focusBoardTopic");
+        var data = Utility.getStorage(`focusBoard_${this.props.id}`);
         if (!data) {
             data = [];
         }
@@ -28,35 +28,43 @@ export class FocusTopicArea extends React.Component<{}, FocusTopicAreaState> {
             from: 0,
             loading: true
         };
-	    this.handleScroll = this.handleScroll.bind(this);
+        this.handleScroll = this.handleScroll.bind(this);
+    }
+
+    async componentWillReceiveProps(nextProps) {
+        this.getData(nextProps);
     }
 
     /**
      * 进入立即获取20条新帖的数据，同时为滚动条添加监听事件
      */
     async componentDidMount() {
-        let data = await Utility.getFocusTopic(this.state.from, this.context.router);
+        this.getData(this.props);
+    }
+
+    async getData(props) {
+        let data = await Utility.getFocusTopic(props.id, props.name, 0, this.context.router);
 
         //先看一下有没有缓存的数据，如果有的话新数据跟缓存数据组合一下
-        let oldData =  Utility.getStorage("focusBoardTopic");
-        if(oldData) {
-             for (var i = 0; i < data.length; i++) {
+        let oldData = Utility.getStorage(`focusBoard_${props.id}`);
+        if (oldData) {
+            for (var i = 0; i < data.length; i++) {
                 // 最新的20 条数据跟之前的有重合就组合起来
                 if (data[i].id == oldData[0].id) {
-                    data = data.slice(0,i).concat(oldData);
+                    data = data.slice(0, i).concat(oldData);
                     break;
                 }
-             }
-        } 
+            }
+        }
 
         //最多100条新帖
-        if(data.length > 100) {
-            data = data.slice(0,100);
+        if (data.length > 100) {
+            data = data.slice(0, 100);
         }
 
         this.setState({ data: data, from: data.length });
         //缓存获取到的数据
-        Utility.setStorage("focusBoardTopic", data);
+        Utility.setStorage(`focusBoard_${props.id}`, data);
 
         //滚动条监听
         document.addEventListener('scroll', this.handleScroll);
@@ -68,7 +76,7 @@ export class FocusTopicArea extends React.Component<{}, FocusTopicAreaState> {
     async componentWillUnmount() {
         document.removeEventListener('scroll', this.handleScroll);
     }
-    
+
     /**
      * 处理滚动的函数
      */
@@ -87,7 +95,7 @@ export class FocusTopicArea extends React.Component<{}, FocusTopicAreaState> {
             */
             this.setState({ loading: false });
             try {
-                var newData = await Utility.getFocusTopic(this.state.from, this.context.router);
+                var newData = await Utility.getFocusTopic(this.props.id, this.props.name, this.state.from, this.context.router);
             } catch (err) {
                 /**
                 *如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
@@ -100,25 +108,25 @@ export class FocusTopicArea extends React.Component<{}, FocusTopicAreaState> {
             */
             let data = this.state.data.concat(newData);
             this.setState({ data: data, from: data.length, loading: true });
-            Utility.setStorage("focusBoardTopic", data);
+            Utility.setStorage(`focusBoard_${this.props.id}`, data);
         }
     }
     /**
      * 将主题排列好
      */
-    render() {                                                                                           
+    render() {
         return <div className="focus-topic-area">
-                    <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
-                    <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif"></img></div>
-                    <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">已加载100条新帖，无法加载更多了~</div>
-               </div>;
+            <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
+            <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif"></img></div>
+            <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">已加载100条新帖，无法加载更多了~</div>
+        </div>;
     }
-    
+
 }
 
 /**
 * 单个主题数据转换成单个主题组件
 */
 function coverFocusPost(item: FocusTopic) {
-    return <FocusTopicSingle title={item.title} hitCount={item.hitCount} id={item.id} boardId={item.boardId} boardName={item.boardName} replyCount={item.replyCount} userId={item.userId} userName={item.userName} portraitUrl={item.portraitUrl} time={item.time} likeCount={item.likeCount} dislikeCount={item.dislikeCount} fanCount={item.fanCount} />;
+    return <FocusTopicSingle title={item.title} hitCount={item.hitCount} id={item.id} boardId={item.boardId} boardName={item.boardName} replyCount={item.replyCount} userId={item.userId} userName={item.userName} portraitUrl={item.portraitUrl} time={item.time} likeCount={item.likeCount} dislikeCount={item.dislikeCount} fanCount={item.fanCount} lastPostUser={item.lastPostUser} lastPostTime={item.lastPostTime} />;
 }
