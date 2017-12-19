@@ -351,8 +351,10 @@ body {
 }
 .signature {
     color: rgb(80,80,80);
-    margin: 1.25rem;
-    padding-top:1rem;
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
+    margin-bottom: 1.25rem;
+    padding-top: 1rem;
 }
 .signature img{
     max-height:12.5rem;
@@ -380,13 +382,13 @@ body {
 .comment1 {
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
     font-size: 0.75rem;
     align-items: flex-end;
     padding-bottom: 1rem;
     padding-right: 2rem;
     color: #8bc9db;
     align-items: center;
+    justify-content: space-between;
 }
 
 #commentlike {
@@ -525,7 +527,7 @@ body {
     font-size:0.75rem;
 }
 .userMessageOpt{
-    
+    white-space:nowrap;
 }
 .rpyClr {
     font-size:1.25rem;
@@ -665,6 +667,7 @@ body {
     margin-bottom: 0.625rem;
     border: none;
     cursor: pointer;
+    color:#fff;
 }
 .listContentTag a{
     color:#fff;
@@ -691,22 +694,55 @@ body {
 #changeColor:nth-child(odd) span{
     color:#000;
 }
+#changeColor:nth-child(odd) i {
+    color: #000;
+}
+#changeColor:nth-child(odd) a {
+    color: #000;
+}
 #changeColor {
     background-color: #ebf5f8;
    
 }
 #changeColor span {
-    color: #6b7178;
+    color: #000;
+}
+#changeColor i {
+    color: #000;
+}
+#changeColor a{
+    color: #000;
 }
 .reputation{
     font-size:0.75rem;
     margin-left:1rem;
 }
-#lastReply {
-    margin-right: -1.8rem;
-    margin-left: 1rem;
+#changeTopColor{
+    background-color:#FFFAF0;
 }
-
+.lastReply {
+    width:12rem;
+    white-space:nowrap;
+    text-align:left;
+}
+.listTitleAndPager {
+    display: flex;
+    margin-left: 0.5rem;
+    align-items: flex-end;
+    width: 40rem;
+    padding-left:1rem;
+}
+.listTitleAndIcon{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    align-items:center;
+}
+.listTitle {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    align-items: center;
+}
 a {
     text-decoration: none; /*超链接无下划线*/
     color: #000000;
@@ -2903,6 +2939,7 @@ a {
         color: #fff;
         text-align: center;
         line-height: 1.25rem;
+        cursor:pointer;
     }
 
     .boardDescription {

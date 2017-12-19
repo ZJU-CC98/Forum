@@ -112,7 +112,7 @@ ${this.props.content.content}`;
                 $("#topicManagementBTN").css("display", "");
         }
         const time = moment(newProps.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
-        if (newProps.content) {
+        if (newProps.content.userName) {
             if (this.state.mode === 1) {
                 const str = `>**以下是引用${newProps.content.floor}楼：用户${newProps.content.userName}在${time}的发言：**
 ${newProps.content.content}`;
@@ -191,8 +191,11 @@ ${newProps.content.content}[/quote]`;
         if (mes.status === 403) {
             alert("你太快啦 请慢一点~")
         }
-        this.props.onChange();
         this.setState({ content: "" });
+        console.log("clear content");
+        console.log(this.state.content);
+        this.props.onChange();
+        
     }
     async sendMdTopic() {
         try {
@@ -319,7 +322,7 @@ ${newProps.content.content}[/quote]`;
         }
         return <div id="sendTopicInfo" style={{ width: "100%", display: "flex", flexDirection: "column" }}>
             <div className="row" style={{ justifyContent: this.state.mode === 1 ? "space-between" : "flex-end" }}>
-                {uploadInfo}
+             
                 <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ width: "20rem", height: "2rem", lineHeight:"2rem",letterSpacing: "0.3125rem" }}>{this.state.mode === 1 ? "切换到Ubb编辑器" : "切换到Markdown编辑器"}
                 </div></div>
             {editor}

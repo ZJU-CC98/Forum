@@ -50,7 +50,8 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
     }
     quote(content, userName, replyTime, floor) {
         const y = $("#sendTopicInfo").offset().top;
-        scrollTo(0, y);
+        const url = `/topic/${this.state.topicid}/${this.match.params.page}#sendTopicInfo`;
+        this.props.history.push(url);
         this.setState({ quote: { content: content, userName: userName, replyTime: replyTime, floor: floor } });
     }
     update() {
@@ -67,13 +68,14 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         else { page = parseInt(this.match.params.page); }
         const totalPage = await this.getTotalPage(topicInfo.replyCount);
         const userName = this.match.params.userName;
-        const floor = topicInfo.replyCount % 10+1;
+        const floor = (topicInfo.replyCount +1)% 10+1;
         if (page !== newPage) {
             page = newPage;
             const url = `/topic/${topicInfo.id}/${page}#${floor}`;
+            this.setState({ topicInfo: topicInfo, quote: { userName: "", content: "", replyTime: "" } });
             this.props.history.push(url);
         }
-        this.setState({topicInfo:topicInfo});
+        this.setState({ topicInfo: topicInfo, quote: {userName:"",content:"",replyTime:""}});
       
     }
     async componentWillReceiveProps(newProps) {

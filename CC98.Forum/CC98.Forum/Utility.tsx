@@ -1484,16 +1484,18 @@ export async function awardWealth(reason, value, postId) {
     }
     const str = JSON.stringify(body);
     const url = `/post/${postId}/operation`;
-    const response = await cc98Fetch(url, { method: "POST", headers, body: str });
-    switch (response.status) {
-        case 400:
-            return 'wrong input';
-        case 401:
-            return 'unauthorized';
-        case 404:
-            return 'not found';
-        case 500:
-            return 'server error';
+    if (value) {
+        const response = await cc98Fetch(url, { method: "POST", headers, body: str });
+        switch (response.status) {
+            case 400:
+                return 'wrong input';
+            case 401:
+                return 'unauthorized';
+            case 404:
+                return 'not found';
+            case 500:
+                return 'server error';
+        }
     }
     return 'ok';
 }
@@ -1507,16 +1509,18 @@ export async function deductWealth(reason, value, postId) {
     }
     const str = JSON.stringify(body);
     const url = `/post/${postId}/operation`;
-    const response = await cc98Fetch(url, { method: "POST", headers, body: str });
-    switch (response.status) {
-        case 400:
-            return 'wrong input';
-        case 401:
-            return 'unauthorized';
-        case 404:
-            return 'not found';
-        case 500:
-            return 'server error';
+    if (value!=0) {
+        const response = await cc98Fetch(url, { method: "POST", headers, body: str });
+        switch (response.status) {
+            case 400:
+                return 'wrong input';
+            case 401:
+                return 'unauthorized';
+            case 404:
+                return 'not found';
+            case 500:
+                return 'server error';
+        }
     }
     return 'ok';
 }
@@ -2176,16 +2180,18 @@ export async function addPrestige(postId, value, reason) {
     const bodyinfo = { operationType: 0, prestige: value, reason: reason };
     const url = `/post/${postId}/operation`;
     const body = JSON.stringify(bodyinfo);
-    const response = await cc98Fetch(url, { method: "POST", headers, body });
-    switch (response.status) {
-        case 400:
-            return 'wrong input';
-        case 401:
-            return 'unauthorized';
-        case 404:
-            return 'not found';
-        case 500:
-            return 'server error';
+    if (value) {
+        const response = await cc98Fetch(url, { method: "POST", headers, body });
+        switch (response.status) {
+            case 400:
+                return 'wrong input';
+            case 401:
+                return 'unauthorized';
+            case 404:
+                return 'not found';
+            case 500:
+                return 'server error';
+        }
     }
     return 'ok';
 }
@@ -2195,16 +2201,18 @@ export async function deductPrestige(postId, value, reason) {
     const bodyinfo = { operationType: 1, prestige: value, reason: reason };
     const url = `/post/${postId}/operation`;
     const body = JSON.stringify(bodyinfo);
-    const response = await cc98Fetch(url, { method: "PUT", headers, body });
-    switch (response.status) {
-        case 400:
-            return 'wrong input';
-        case 401:
-            return 'unauthorized';
-        case 404:
-            return 'not found';
-        case 500:
-            return 'server error';
+    if (value) {
+        const response = await cc98Fetch(url, { method: "POST", headers, body });
+        switch (response.status) {
+            case 400:
+                return 'wrong input';
+            case 401:
+                return 'unauthorized';
+            case 404:
+                return 'not found';
+            case 500:
+                return 'server error';
+        }
     }
     return 'ok';
 }
@@ -2212,7 +2220,7 @@ export async function deletePost(topicId, postId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", 'application/json');
     const bodyinfo = { reason: reason };
-    const url = `/manage/post?topicid=${topicId}&postid=${postId}`;
+    const url = `/post?topicid=${topicId}&postid=${postId}`;
     const response = await cc98Fetch(url, { method: "DELETE", headers, body: JSON.stringify(bodyinfo) });
     switch (response.status) {
         case 401:
@@ -2418,7 +2426,7 @@ export async function cancelBestTopic(topicId, reason) {
 export async function setDisableHot(topicId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const url = `/manage/topic/${topicId}/not-hot`;
+    const url = `/topic/${topicId}/not-hot`;
     const bodyInfo = { 'reason': reason };
     const body = JSON.stringify(bodyInfo);
     const response = await cc98Fetch(url, { method: "PUT", headers, body });
@@ -2435,7 +2443,7 @@ export async function setDisableHot(topicId, reason) {
 export async function cancelDisableHot(topicId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const url = `/manage/topic/${topicId}/not-hot`;
+    const url = `/topic/${topicId}/not-hot`;
     const bodyInfo = { 'reason': reason };
     const body = JSON.stringify(bodyInfo);
     const response = await cc98Fetch(url, { method: "DELETE", headers, body });
@@ -2736,4 +2744,46 @@ export async function cc98Fetch(url, init?: RequestInit) {
 }
 export function getApiUrl() {
     return 'http://apitest.niconi.cc';
+}
+export async function getTagInfo() {
+    if (getLocalStorage("tagInfo")) {
+        return getLocalStorage("tagInfo");
+    } else {
+        const url = `/config/global/alltag`;
+        const headers = await formAuthorizeHeader();
+        const response = await cc98Fetch(url, { headers });
+        const data = await response.json();
+        setLocalStorage("tagInfo", data);
+        return data;
+    }
+}
+export async function getTagIdbyName(name) {
+    const tagInfo = await getTagInfo();
+    for (let item of tagInfo) {
+        if (item.name === name) return item.id;
+    }
+    return false;
+}
+export async function getTagNamebyId(id) {
+    const tagInfo = await getTagInfo();
+    for (let item of tagInfo) {
+        if (item.id === id) return item.name;
+    }
+    return false;
+}
+export async function getTopicByOneTag(tagId, boardId, page) {
+    const start = (page - 1) * 10 ;
+    const url = `/topic/search/board/${boardId}/tag?tag1=${tagId}&from=${start}&size=20`;
+    const headers = await formAuthorizeHeader();
+    const response = await cc98Fetch(url, { headers });
+    return await response.json();
+}
+export async function updateUserInfo(id) {
+    const key = `userId_${id}`;
+    const userInfo = await getUserInfo(id);
+    const name = userInfo.name;
+    const key1 = `userName_${name}`;
+    removeLocalStorage(key);
+    removeLocalStorage(key1);
+    await getUserInfo(id);
 }
