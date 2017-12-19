@@ -1264,7 +1264,7 @@ export async function uploadEvent(e) {
     const res = await uploadFile(files[0]);
     const url = res.content;
     const str = `![](${url})`;
-    testEditor.appendMarkdown(str);
+    window["testEditor"].appendMarkdown(str);
 }
 /**
  * 关注指定id的用户

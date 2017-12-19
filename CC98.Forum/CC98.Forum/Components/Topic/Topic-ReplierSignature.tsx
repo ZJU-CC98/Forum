@@ -130,7 +130,7 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
         return <div className="column" style={{ marginTop:"1rem" }}>
             <div className="comment1">
                 <div style={{ width: "40rem", marginLeft: "2rem", fontSize:"0.8rem" }}>
-                    <span>{moment(this.props.replyTime).format('YYYY-MM-DD HH:mm:ss')}</span><span style={{ marginLeft: "1rem" }}>{lastUpdate}</span></div>
+                    <span>发表于 {moment(this.props.replyTime).format('YYYY-MM-DD HH:mm:ss')}</span><span style={{ marginLeft: "1rem" }}>{lastUpdate}</span></div>
                 <div className="row" style={{ alignItems:"center" }}>
                 <div id={idLike} className="upup" style={{ marginRight: "0.7rem" }} onClick={ this.like.bind(this) }><i title="赞"  className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
                 <div id={idDislike} className="downdown" onClick={this.dislike.bind(this)}><i title="踩"  className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
