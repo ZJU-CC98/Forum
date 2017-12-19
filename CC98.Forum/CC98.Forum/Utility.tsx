@@ -2740,3 +2740,12 @@ export async function getTopicByOneTag(tagId, boardId, page) {
     const response = await cc98Fetch(url, { headers });
     return await response.json();
 }
+export async function updateUserInfo(id) {
+    const key = `userId_${id}`;
+    const userInfo = await getUserInfo(id);
+    const name = userInfo.name;
+    const key1 = `userName_${name}`;
+    removeLocalStorage(key);
+    removeLocalStorage(key1);
+    await getUserInfo(id);
+}

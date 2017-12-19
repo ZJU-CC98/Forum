@@ -36,6 +36,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                 headers
             });
             if (res.status === 200) {
+                await Utility.updateUserInfo(this.props.userInfo.id);
                 this.setState({
                     buttonIsDisabled: false,
                     buttonInfo: '关注',
@@ -67,6 +68,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                 headers
             });
             if (res.status === 200) {
+                await Utility.updateUserInfo(this.props.userInfo.id);
                 this.setState({
                     buttonIsDisabled: false,
                     buttonInfo: '取关',

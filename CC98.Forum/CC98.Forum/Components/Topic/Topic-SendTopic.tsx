@@ -112,7 +112,7 @@ ${this.props.content.content}`;
                 $("#topicManagementBTN").css("display", "");
         }
         const time = moment(newProps.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
-        if (newProps.content) {
+        if (newProps.content.userName) {
             if (this.state.mode === 1) {
                 const str = `>**以下是引用${newProps.content.floor}楼：用户${newProps.content.userName}在${time}的发言：**
 ${newProps.content.content}`;
