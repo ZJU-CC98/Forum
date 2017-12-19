@@ -219,11 +219,14 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
         const punishOptionJQId = `#manageOptions-punish${this.props.postId}`;
         const deleteOptionId = `manageOptions-delete${this.props.postId}`;
         const deleteOptionJQId = `#manageOptions-delete${this.props.postId}`;
+        const otherOptionId = `manageOptions-other${this.props.postId}`;
+        const otherOptionJQId = `#manageOptions-other${this.props.postId}`;
 
         if (this.state.UI === "Award") {
             $(awardOptionJQId).css("background-color", "#b9d3ee");
             $(punishOptionJQId).css("background-color", "#fffacd");
             $(deleteOptionJQId).css("background-color", "#fffacd");
+            $(otherOptionJQId).css("background-color", "#fffacd");
         }
 
         if (this.state.UI === "Punish") {
@@ -231,6 +234,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
             $(awardOptionJQId).css("background-color", "#fffacd");
             $(punishOptionJQId).css("background-color", "#b9d3ee");
             $(deleteOptionJQId).css("background-color", "#fffacd");
+            $(otherOptionJQId).css("background-color", "#fffacd");
         }
 
         if (this.state.UI === "Delete") {
@@ -238,6 +242,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
             $(awardOptionJQId).css("background-color", "#fffacd");
             $(punishOptionJQId).css("background-color", "#fffacd");
             $(deleteOptionJQId).css("background-color", "#b9d3ee");
+            $(otherOptionJQId).css("background-color", "#fffacd");
         }
         if (this.props.privilege !== '管理员') {
             $(".managePrestige").css("display", "none");
@@ -278,7 +283,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
 
 
 
-                <div className="row" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
+                <div className="row" style={{ justifyContent: "flex-start", marginLeft: "3rem", marginTop: "1rem", color: "#fff" }}>
                     <div >原因</div>
                     <div className="row" >
 
@@ -297,7 +302,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
                         <input type="radio" name="reason" value="热心回复" /><div>热心回复</div></div>
 
                 </div>
-                <div className="row" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
+                <div className="row" style={{ justifyContent: "flex-start", marginLeft:"3rem",color:"#fff", marginTop: "1rem" }}>
                     <div className="row">
                         <input type="radio" name="reason" value="自定义" /><div>自定义</div>
                     </div>
@@ -336,7 +341,9 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
             <div className="column manageOperation">
 
 
-                <div className="row" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
+                <div className="row" style={{
+                    justifyContent: "flex-start", marginLeft: "3rem", color:"#fff", marginTop: "1rem"
+                }}>
                     <div >原因</div>
                     <div className="row" >
 
@@ -355,7 +362,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
                         <input type="radio" name="reason" value="违反版规" /><div>违反版规</div></div>
 
                 </div>
-                <div className="row" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
+                <div className="row" style={{ justifyContent: "flex-start", marginLeft: "3rem",color:"#fff", marginTop: "1rem" }}>
                     <div className="row">
                         <input type="radio" name="reason" value="自定义" /><div>自定义</div>
                     </div>
@@ -379,20 +386,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
 
         </div>;
         const otherUI = <div className="column manageInfo" id="other" >
-            <div className="row manageOperation">
-
-                <div className="manageObject">消费财富值</div>
-
-                <input type="text" value={this.state.wealth} onChange={this.wealthInput} />
-
-            </div>
-            <div className="row manageOperation">
-
-                <div className="manageObject">原因</div>
-
-                <input type="text" value={this.state.reason} onChange={this.reasonInput} />
-
-            </div>
+            
 
         </div>;
         const UIId = `manage${this.props.postId}`;

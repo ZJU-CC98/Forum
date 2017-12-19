@@ -67,7 +67,7 @@ export class List extends RouteComponent<{}, { page: number, boardId: number, bo
             <ListHead key={this.state.page} boardId={this.match.params.boardId} boardInfo={this.state.boardInfo} />
             <ListButtonAndAds boardInfo={this.state.boardInfo} adsUrl={null} />
             <Switch>
-
+                <Route exact path="/list/:boardid/tags/:tag1Id/:tag2Id/:page?" component={ListTagsContent} />
                 <Route exact path="/list/:boardId/tag/tag1/:tagId/:page?" component={ListTagContent} />
                 <Route exact path="/list/:boardId/best/:page?" component={ListBestContent} />
                 <Route exact path="/list/:boardId/save/:page?" component={ListSaveContent} />
@@ -196,8 +196,9 @@ export class ListTagAndPager extends React.Component<{ url: string, boardid: num
     }
 
     generateTagLayer(item) {
+        const url = `/list/${this.props.boardid}`;
         return <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginBottom: "0.5rem" }}>
-            <div className="row">  <button id="tagButton">全部</button>
+            <div className="row">  <button id="tagButton"><Link to={url}>全部</Link></button>
                 {item.tags.map(this.generateTagButton.bind(this))}
             </div>
         </div >;
@@ -386,7 +387,99 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
 
     }
 }
-export class ListTagContent extends RouteComponent<{}, { items, totalPage: number, boardInfo, tags, fetchState }, { tagId: number, page: string, boardId: number }> {
+export class ListTagContent extends RouteComponent<{}, { items, totalPage: number, boardInfo, tags, fetchState ,layer}, { tagId: number, page: string, boardId: number }> {
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            items: [], totalPage: 0, boardInfo: { masters: [], topicCount: 1 }, fetchState: "ok", tags: [],layer:1
+        };
+    }
+    async componentDidMount() {
+        const boardInfo = await Utility.getBoardInfo(this.match.params.boardId);
+        const tags = await Utility.getBoardTag(this.match.params.boardId);      
+        const layer = Utility.getTagLayer(this.match.params.tagId, tags);
+        const data = await Utility.getTopicByOneTag(this.match.params.tagId, this.match.params.boardId, layer,1);
+        const totalPage = this.getTotalListPage(boardInfo.topicCount);
+
+        this.setState({ items: data, totalPage: totalPage, boardInfo: boardInfo, fetchState: data, tags: tags,layer:layer });
+    }
+    private convertTopicToElement(item) {
+
+        return <TopicTitleAndContent key={item.id}
+            title={item.title}
+            userName={item.userName}
+            id={item.id}
+            userId={item.userId}
+            lastPostTime={item.lastPostTime}
+            lastPostUser={item.lastPostUser}
+            likeCount={item.likeCount}
+            dislikeCount={item.dislikeCount}
+            replyCount={item.replyCount}
+            highlightInfo={item.highlightInfo}
+            topState={item.topState}
+            state={item.state}
+            hitCount={item.hitCount}
+        />;
+    }
+    async componentWillReceiveProps(newProps) {
+        let page: number;
+        const p = newProps.match.params.page;
+        // 未提供页码，防止出错不进行后续处理
+        if (!p) {
+            page = 1;
+        }
+
+        // 转换类型
+        else { page = parseInt(p); }
+        const boardInfo = await Utility.getBoardInfo(newProps.match.params.boardId);
+        const tags = await Utility.getBoardTag(newProps.match.params.boardId);
+        const layer = Utility.getTagLayer(newProps.match.params.tagId, tags);
+        const data = await Utility.getTopicByOneTag(newProps.match.params.tagId, newProps.match.params.boardId, layer, 1);
+        const totalPage = this.getTotalListPage(boardInfo.topicCount);
+
+        this.setState({ items: data, totalPage: totalPage, boardInfo: boardInfo, fetchState: data, tags: tags ,layer:layer});
+    }
+
+    getTotalListPage(count) {
+        const page = Utility.getListTotalPage(count);
+        return page;
+    }
+    render() {
+
+        const curPage = this.match.params.page ? parseInt(this.match.params.page) : 1;
+        let topTopics = null;
+        if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
+            topTopics = <div><ListTopContent boardId={this.match.params.boardId} /></div>;
+        }
+        const topics = this.state.items.map(this.convertTopicToElement);
+
+        const tagUrl = `/list/${this.match.params.boardId}/tag/tag${this.state.layer}/${this.match.params.tagId}/`;
+        const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
+        const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
+        const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
+        return <div className="listContent ">
+            <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={tagUrl} tag={this.state.tags} />
+            <div className="column" style={{ width: "100%", border: "#79b8ca solid thin" }}>
+                <div className="row" style={{ justifyContent: 'space-between', backgroundColor: "#79b8ca", color: "#fff" }}>
+                    <div className="row" style={{ alignItems: 'center' }} >
+
+                        <div className="listContentTag"><Link to={normalTopicsUrl}> 全部</Link></div>
+                        <div className="listContentTag"><Link to={bestTopicsUrl}>精华</Link></div>
+                        <div className="listContentTag"><Link to={saveTopicsUrl}>保存</Link></div>
+                    </div>
+                    <div className="row" style={{ alignItems: 'center' }}>
+                        <div style={{ marginRight: '19.3rem' }}><span>作者</span></div>
+                        <div style={{ marginRight: '7.6875rem' }}><span>最后回复</span></div>
+                    </div>
+                </div>
+                <div>{topics}</div>
+            </div>
+            <Pager page={curPage} totalPage={this.state.totalPage} url={tagUrl} />
+        </div>;
+
+    }
+}
+export class ListTagsContent extends RouteComponent<{}, { items, totalPage: number, boardInfo, tags, fetchState }, { tag1Id: number,tag2Id:number, page: string, boardId: number }> {
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -395,9 +488,10 @@ export class ListTagContent extends RouteComponent<{}, { items, totalPage: numbe
     }
     async componentDidMount() {
         const boardInfo = await Utility.getBoardInfo(this.match.params.boardId);
-        const data = await Utility.getTopicByOneTag(this.match.params.tagId, this.match.params.boardId, 1);
-        const totalPage = this.getTotalListPage(boardInfo.topicCount);
+        const data = await Utility.getTopicByTwoTags(this.match.params.tag1Id, this.match.params.tag2Id, this.match.params.boardId, 1);
         const tags = await Utility.getBoardTag(this.match.params.boardId);
+        const totalPage = this.getTotalListPage(boardInfo.topicCount);
+
         this.setState({ items: data, totalPage: totalPage, boardInfo: boardInfo, fetchState: data, tags: tags });
     }
     private convertTopicToElement(item) {
@@ -428,10 +522,12 @@ export class ListTagContent extends RouteComponent<{}, { items, totalPage: numbe
 
         // 转换类型
         else { page = parseInt(p); }
-        const boardInfo = await Utility.getBoardInfo(this.match.params.boardId);
-        const totalPage = this.getTotalListPage(this.state.boardInfo.topicCount);
-        const data = await Utility.getBoardTopicAsync(page, newProps.match.params.boardId, boardInfo.topicCount);
-        this.setState({ items: data, totalPage: totalPage });
+        const boardInfo = await Utility.getBoardInfo(newProps.match.params.boardId);
+        const tags = await Utility.getBoardTag(newProps.match.params.boardId);
+        const data = await Utility.getTopicByTwoTags(newProps.match.params.tag1Id, newProps.match.params.tag2Id, newProps.match.params.boardId,1);
+        const totalPage = this.getTotalListPage(boardInfo.topicCount);
+
+        this.setState({ items: data, totalPage: totalPage, boardInfo: boardInfo, fetchState: data, tags: tags });
     }
 
     getTotalListPage(count) {
@@ -447,16 +543,17 @@ export class ListTagContent extends RouteComponent<{}, { items, totalPage: numbe
         }
         const topics = this.state.items.map(this.convertTopicToElement);
 
+        const tagUrl = `/list/${this.match.params.boardId}/tags/tag1/${this.match.params.tag1Id}/tag2/${this.match.params.tag2Id}/`;
+        const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
         const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
-        const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
         return <div className="listContent ">
-            <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} tag={this.state.tags} />
+            <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={tagUrl} tag={this.state.tags} />
             <div className="column" style={{ width: "100%", border: "#79b8ca solid thin" }}>
                 <div className="row" style={{ justifyContent: 'space-between', backgroundColor: "#79b8ca", color: "#fff" }}>
                     <div className="row" style={{ alignItems: 'center' }} >
 
-                        <div className="listContentTag">全部</div>
+                        <div className="listContentTag"><Link to={normalTopicsUrl}> 全部</Link></div>
                         <div className="listContentTag"><Link to={bestTopicsUrl}>精华</Link></div>
                         <div className="listContentTag"><Link to={saveTopicsUrl}>保存</Link></div>
                     </div>
@@ -465,10 +562,9 @@ export class ListTagContent extends RouteComponent<{}, { items, totalPage: numbe
                         <div style={{ marginRight: '7.6875rem' }}><span>最后回复</span></div>
                     </div>
                 </div>
-                {topTopics}
                 <div>{topics}</div>
             </div>
-            <Pager page={curPage} totalPage={this.state.totalPage} url={normalTopicsUrl} />
+            <Pager page={curPage} totalPage={this.state.totalPage} url={tagUrl} />
         </div>;
 
     }
