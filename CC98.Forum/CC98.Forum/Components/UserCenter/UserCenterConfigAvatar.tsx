@@ -306,11 +306,11 @@ class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCente
                 <div className="user-center-config-avatar">
                     <img src={this.state.avatarNow}></img>
                     <div>
-                        <button id="chooseDefaultAvatar" type="button" >选择论坛头像</button>
+                        <button id="chooseDefaultAvatar" type="button" onClick={() => this.setState({info: '竟然连默认头像都没有！'})}>选择论坛头像</button>
                         <div>
                             <input onChange={this.handleChange} id="uploadAvatar" type="file" accept="image/*" style={style} />
                             <label htmlFor="uploadAvatar"><p>选择本地图片</p></label>
-                            <p style={{ color: 'red' }}>{this.state.info}</p>
+                            <p style={{ color: 'red', margin: '0' }}>{this.state.info}</p>
                             <button type="button" className="config-submit-button" style={this.state.isShown ? {} : style} onClick={this.handleSubmit} disabled={this.state.isLoading}>提交</button>
                         </div>
                     </div>

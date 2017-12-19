@@ -1,8 +1,8 @@
 ﻿import * as React from 'react';
-import * as Utility from '../Utility';
-import { UbbContainer } from './UbbContainer';
+import * as Utility from '../../Utility';
+import { UbbContainer } from '../UbbContainer';
 
-class SiteManageState {
+class AnnouncementState {
     /**
      * 全站公告内容
      */
@@ -13,7 +13,7 @@ class SiteManageState {
     info: string;
 }
 
-export class SiteManage extends React.Component<null, SiteManageState> {
+export class Announcement extends React.Component<null, AnnouncementState> {
     constructor(props) {
         super(props);
         this.state = {
@@ -52,20 +52,19 @@ export class SiteManage extends React.Component<null, SiteManageState> {
     }
 
     render() {
-        return (<div>
-            <p>全站管理</p>
+        return (
             <div>
-                <p style={{height: '2rem'}}>{this.state.info}</p>
+                <p style={{ height: '2rem' }}>{this.state.info}</p>
                 <div>
-                    <p>全站公告<button type="button" onClick={this.changeSiteAnnouncement}>提交修改</button></p>                    
+                    <p>全站公告<button type="button" onClick={this.changeSiteAnnouncement}>提交修改</button></p>
                     <textarea
-                        style={{width: '100%', height: '20rem', resize: 'none'}}
+                        style={{ width: '100%', height: '20rem', resize: 'none' ,boxSizing: 'border-box'}}
                         onChange={(e) => { this.setState({ announcement: e.target.value }); }}
                         value={this.state.announcement}
                     ></textarea>
                     <UbbContainer code={this.state.announcement} />
                 </div>
             </div>
-        </div>);
+            );
     }
 }

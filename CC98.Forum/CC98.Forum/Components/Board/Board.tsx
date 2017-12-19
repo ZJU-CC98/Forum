@@ -90,13 +90,14 @@ export class Category extends React.Component<{ boardId, boardInfo }, {}>{
         </div>;
     }
 }
-export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow }, { boardId }> {
+export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow , isExtend: boolean}, { boardId }> {
     constructor(props, content) {
         super(props, content);
-        this.state = { isFollow: this.props.boardInfo.isFollow };
+        this.state = { isFollow: this.props.boardInfo.isFollow, isExtend: false };
         const initFollow = Utility.isFollowThisBoard(this.props.boardId);
         this.follow = this.follow.bind(this);
         this.unfollow = this.unfollow.bind(this);
+        this.generateMasters = this.generateMasters.bind(this);
     }
     async follow() {
         await Utility.followBoard(this.props.boardId);
@@ -110,14 +111,45 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
         const name = item.toString();
         const userName = encodeURIComponent(item.toString());
         const webUrl = `/user/name/${userName}`;
-        return <div style={{ marginRight: '10px', fontSize: "0.75rem" }}><a style={{ color: "#fff" }} href={webUrl}>{name}</a></div>;
+        return <div style={{ marginRight: '10px', fontSize: "0.75rem" }}><a style={{ color: this.state.isExtend ? "#fff" : '#000' }} href={webUrl}>{name}</a></div>
     }
     componentWillReceiveProps(newProps) {
         this.setState({ isFollow: newProps.boardInfo.isFollow });
     }
     render() {
-        const url = `/images/_${this.props.boardInfo.name}.png`
-        return <div className="row" style={{ width: "100%" }}>
+        const url = `/images/_${this.props.boardInfo.name}.png`;
+        if (!this.props.boardInfo.bigPaper || !this.state.isExtend) {
+            return (
+                <div className="row" style={{ width: "100%", overflow: 'hidden', maxHeight: '6rem', transition: 'max-height 1s'}}>
+                    <div className="boardMessage">
+                        <div className="row" style={{ height: "4rem", marginTop: "1.25rem" }}>
+                            <img style={{ marginLeft: "1.25rem" }} src={url}></img>
+                            <div className="boardMessageDetails">
+                                <div className="row" style={{ width: "100%" }}>
+                                    {this.props.boardInfo.name}
+                                </div>
+                                <div className="row" style={{ width: "100%", alignItems: "center" }}>
+                                    <div style={{ fontSize: "0.75rem", width: "4.5rem" }}>
+                                        {this.props.boardInfo.todayCount}/{this.props.boardInfo.topicCount}
+                                    </div>
+                                    <div className="boardFollow" onClick={this.state.isFollow ? this.unfollow : this.follow} >{this.state.isFollow ? "取关" : "关注"} </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="bigPaper" style={{display: 'block'}}>
+                        {this.props.boardInfo.bigPaper ? <button className="fa fa-angle-double-down" style={{ float: 'right', backgroundColor: '#fff', cursor: 'pointer', border: 'none' }} type="button" onClick={() => this.setState({ isExtend: true })}>展开</button> : null}
+                        <div>
+                            <div>版面简介：{this.props.boardInfo.description}</div>
+                        </div>
+                        <div>
+                            <div style={{display: 'flex', marginTop: '.5rem', fontSize:'0.75rem'}}>版主：{this.props.boardInfo.boardMasters.map(this.generateMasters)}</div>
+                        </div>
+                    </div>
+                </div>
+                );
+        }
+        return <div className="row" style={{ width: "100%", overflow: 'hidden', maxHeight: '50rem', transition: 'max-height 1.5s' }}>
             <div className="boardMessage">
                 <div className="row" style={{ height: "4rem", marginTop: "1.25rem" }}>
                     <img style={{ marginLeft: "1.25rem" }} src={url}></img>
