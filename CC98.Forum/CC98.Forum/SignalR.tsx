@@ -60,7 +60,6 @@ class SignalRConnection {
             this._eventListeners[type].splice(this._eventListeners[type].indexOf(handler), 1)
         }
         this._connection.off(type, handler);
-        console.log(this._eventListeners);
     }
 
     /**
