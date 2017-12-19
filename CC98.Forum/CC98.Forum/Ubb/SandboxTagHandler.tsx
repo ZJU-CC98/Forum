@@ -25,7 +25,7 @@ export default class SandBoxTagHandler extends Ubb.RecursiveTagHandler {
 			return innerContent;
 		}
 
-		const url = tagData.mainValue;
+		const url = tagData.value('url');
 		const width = tagData.value('width');
 		const height = tagData.value('height');
 
