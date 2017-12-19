@@ -3,15 +3,59 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
 import { FocusTopic } from '../../Props/FocusTopic';
-declare let moment: any;
+import * as Utility from '../../Utility';
 /**
  * 我关注的某个版面的单个主题
  */
 export class FocusTopicSingle extends React.Component<FocusTopic> {
+
+    componentDidMount() {
+        if (!this.props.tag1) {
+            $(`#tag_${this.props.id}`).addClass('displaynone');
+        }
+    }
+
+    render() {
+        let tagInfo = '';
+        if (this.props.tag1) {
+            if (this.props.tag2) {
+                tagInfo = `标签：${this.props.tag1}/${this.props.tag2}`;
+            }
+            else {
+                tagInfo = `标签：${this.props.tag1}`;
+            }
+        }
+        return (<div className="focus-topic">
+                    <div className="focus-topic-left">
+                        <img className="focus-topic-portraitUrl" src={this.props.portraitUrl}></img>
+                        <div className="focus-topic-text">
+                            <div className="focus-topic-userName">{this.props.userName}</div>
+                            <div className="focus-topic-fans">粉丝   {this.props.fanCount}</div>
+                                </div>
+                            </div>
+                    <div className="focus-topic-middle">
+                        <div className="focus-topic-title">{this.props.title}</div>
+                                <div className="focus-topic-info">
+                                    <div id={`tag_${this.props.id}`}>{tagInfo}</div>
+                                    <div><i className="fa fa-clock-o fa-lg"></i>{this.props.time}</div>
+                                    <div><i className="fa fa-eye fa-lg"></i> {this.props.hitCount}</div>
+                                    <div>最后回复：{this.props.lastPostUser}</div>
+                    <div>{this.props.lastPostTime}</div>
+                                </div>
+            </div>
+                    <div className="focus-topic-rightBar"></div>
+                    <div className="focus-topic-right">{this.props.boardName}</div>
+                </div>);
+    }
+}
+
+
+/*
+export class FocusTopicSingle extends React.Component<FocusTopic> {
    
     render() {
         let topicUrl = `/topic/${this.props.id}`;
-        let boardUrl = `/list/${this.props.boardId}/normal`;
+        let boardUrl = `/list/${this.props.boardId}`;
         return (<div className="focus-topic">
                     <PortaritrUrl userId={this.props.userId} portraitUrl={this.props.portraitUrl} />
                     <div className="focus-topic-info1">
@@ -82,4 +126,4 @@ export class UserNameProps {
     userId: number;
     //用户名称
     userName: string;
-}
+}*/

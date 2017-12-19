@@ -8,6 +8,7 @@ import * as Ubb from './Core';
 /**
  * 处理 [i] 标签的处理器。
  */
+// ReSharper disable once InconsistentNaming
 export class ITagHandler extends Ubb.RecursiveTagHandler {
     get supportedTagNames(): string {
         return 'i';

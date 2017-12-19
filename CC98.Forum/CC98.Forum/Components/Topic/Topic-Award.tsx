@@ -56,9 +56,9 @@ export class Award extends React.Component<{ postId ,updateTime,awardInfo}, {inf
         } else{
             $(awardInfoJQID).css("display", "none");
         }
-        const btn = <button onClick={this.state.showAll ? this.hideAll : this.showAll}>{this.state.showAll ? '收起' : '显示全部'}</button>;
+        const btn = <button style={{ border: "#eaeaea solid thin", cursor:"pointer" }} onClick={this.state.showAll ? this.hideAll : this.showAll}>{this.state.showAll ? '收起' : '显示全部'}</button>;
         return <div className="column awardInfo" id={awardInfoID} >
-            <div className="row" style={{ width: "25rem", fontSize:"0.8rem" }}>
+            <div className="row" style={{ width: "25rem", fontSize: "0.8rem", marginBottom:"0.2rem" }}>
                 <div style={{ marginLeft:"3.1rem" }}>用户</div>
                 <div style={{ marginLeft: "4.7rem" }}>操作</div>
                 <div style={{ marginLeft: "8.9rem" }}>理由</div>

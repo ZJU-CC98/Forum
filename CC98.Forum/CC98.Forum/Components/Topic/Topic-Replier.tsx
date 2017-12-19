@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { RouteComponent } from '../RouteComponent';
 import * as Utility from '../../Utility';
 declare let moment: any;
-export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, floor, isDeleted, traceMode, isHot }, { traceMode, buttonIsDisabled, buttonInfo, isFollowing }, { topicid }>{
+export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, floor, isDeleted, traceMode, isHot }, { traceMode, buttonIsDisabled, buttonInfo, isFollowing,fanCount}, { topicid}>{
     constructor(props, content) {
         super(props, content);
 
@@ -13,7 +13,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         this.state = {
             traceMode: this.props.traceMode, buttonInfo: '关注',
             buttonIsDisabled: false,
-            isFollowing: false
+            isFollowing: false, fanCount: this.props.userInfo.fanCount
         };
     }
 
@@ -36,10 +36,12 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                 headers
             });
             if (res.status === 200) {
+                await Utility.updateUserInfo(this.props.userInfo.id);
                 this.setState({
                     buttonIsDisabled: false,
                     buttonInfo: '关注',
-                    isFollowing: false
+                    isFollowing: false,
+                    fanCount: this.props.userInfo.fanCount-1
                 });
             } else {
                 throw {};
@@ -66,10 +68,12 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                 headers
             });
             if (res.status === 200) {
+                await Utility.updateUserInfo(this.props.userInfo.id);
                 this.setState({
                     buttonIsDisabled: false,
                     buttonInfo: '取关',
-                    isFollowing: true
+                    isFollowing: true,
+                    fanCount: this.props.userInfo.fanCount +1
                 });
             } else {
                 throw {};
@@ -108,14 +112,24 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         const normalInfo = <div style={{ marginLeft: "0.625rem" }}><span>第</span><span style={{ color: "red" }}>{this.props.floor}</span><span>楼</span></div>;
         let btn = null;
         if (Utility.getLocalStorage("userInfo")) {
-            if (Utility.getLocalStorage("userInfo").name !== this.props.userInfo.name) {
-                btn = <div className="column" style={{ width: "40%", alignItems: "flex-start", paddingLeft: "1rem", justifyContent: "flex-end", marginBottom: "-0.25rem" }}>
+            if (Utility.getLocalStorage("userInfo").name !== this.props.userInfo.name && !this.props.isAnonymous) {
+                btn = <div className="column" style={{ width: "40%", alignItems: "flex-start", justifyContent: "flex-end", marginBottom: "1rem" }}>
                     <button className="replierBtn" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled} style={{ border: "none", marginBottom: "0.6rem" }}>{this.state.buttonInfo}</button>
                     <Link to={email}><button className="replierBtn">私信</button></Link>
                 </div>;
             }
         }
-
+        let lastLogOn;
+        const curTime = new Date().getTime();
+        const lastTime = new Date(this.props.userInfo.lastLogOnTime).getTime();
+        const days = parseInt((Math.abs(lastTime - curTime) / 1000 / 60 / 60 / 24).toString());
+        const hours = parseInt((Math.abs(lastTime - curTime) / 1000 / 60 / 60).toString());
+        if (days > 365) lastLogOn = '一年前';
+        else if (days > 30) lastLogOn = '一月前';
+        else if (days > 7) lastLogOn = '一周前';
+        else if (days > 1) lastLogOn = `${days}天前`;
+        else if (hours > 1) lastLogOn = `${hours}小时前`;
+        else lastLogOn = '一小时内';
         return <div className="userMessage">
             <div className="userGender">
                 {this.props.userInfo.gender === 0 ? <i className="fa fa-venus" style={{ color: "#fff" }}></i> : <i className="fa fa-mars" style={{ color: "#fff" }}></i>}
@@ -129,26 +143,25 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
             <div className="rpyClr" style={{ width: "100%", marginTop: "1rem", paddingLeft: "3rem" }}>
                 {userName}
             </div>
-
-            <div className="row" style={{ width: "100%", paddingLeft: "3rem", marginTop: "0.4rem", alignItems: "center", fontFamily: "微软雅黑" }}>
-                <div style={this.props.userInfo.birthday ? { marginRight: "0.6rem" } : null}>{this.props.userInfo.birthday ? moment(this.props.userInfo.birthday).format('YYYY-MM-DD') : null}</div>
-                <div >
-                    粉丝 {this.props.userInfo.fanCount}</div>
-            </div>
-
             <div className="row" style={{ width: "100%" }}>
-                <div className="column" style={{ width: "60%", alignItems: "flex-start", paddingLeft: "1.5rem" }}>
-                    <div className="userMessageOpt">
-                        帖数 {this.props.userInfo.postCount}
-                    </div>
+                <div className="column" style={{ width: "60%", alignItems: "flex-start", paddingLeft:"1.5rem" }}>
+            <div className="userMessageOpt">
+                帖数 {this.props.userInfo.postCount}
+            </div>
+            <div className="userMessageOpt">
+                粉丝 {this.state.fanCount}
+            </div>
 
                     <div className="userMessageOpt">
                         威望 {this.props.userInfo.prestige}
                     </div>
 
-                    <div className="userMessageOpt">
-                        风评 {this.props.userInfo.popularity}
-                    </div>
+            <div className="userMessageOpt">
+                风评 {this.props.userInfo.popularity}
+            </div>
+            <div className="userMessageOpt">
+                最后登录 {lastLogOn}
+            </div>
                 </div>
                 {btn}
             </div>

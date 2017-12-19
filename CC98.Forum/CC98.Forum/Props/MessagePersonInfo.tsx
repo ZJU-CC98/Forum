@@ -25,5 +25,9 @@ export class MessagePersonInfo {
     /**
     *最近一条消息
     */
-    lastContent: string
+    lastContent: string;
+    /**
+    *是否已读
+    */
+    isRead: boolean;
 }

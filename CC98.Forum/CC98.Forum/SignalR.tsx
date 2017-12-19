@@ -1,23 +1,21 @@
 ﻿import * as SignalR from './SignalRClient/index';
 import { getToken, getApiUrl } from './Utility';
+
 /**
 * 客户端事件类型，由服务器定义
 */
 type EventListenerType = 'NotifyMessageReceive' | 'NotifyTopicChange' | 'NotifyNotificationChange';
 
 /**
- * EventListenerType
- */
-interface EventListener {
-    /**
-     * 事件类型
-     */
-    type: EventListenerType;
-    /**
-     * 事件对应的回掉函数
-     * @param message 服务器返回的信息
-     */
-    handler: (message: any) => void;
+* 事件对应的回掉函数
+* @param message 服务器返回的信息
+*/
+type EventListenerhandler = (message: any) => void;
+
+class EventListener {
+    NotifyMessageReceive: EventListenerhandler[] = [];
+    NotifyTopicChange: EventListenerhandler[] = [];
+    NotifyNotificationChange: EventListenerhandler[] = [];
 }
 
 class SignalRConnection {
@@ -44,22 +42,22 @@ class SignalRConnection {
     /**
      * 当前注册在connection上的事件监听
      */
-    private _eventListeners: EventListener[] = [];
+    private _eventListeners = new EventListener();
 
     /**
      * 为SignalR链接注册事件回掉函数
      */
-    public addListener(type: EventListenerType, handler: (message: any) => void):void {
-        this._eventListeners.push({ type, handler });
+    public addListener(type: EventListenerType, handler: EventListenerhandler): void {
+        this._eventListeners[type].push(handler);
         this._connection.on(type, handler);
     }
 
     /**
      * 为SignalR链接删除事件回掉函数
      */
-    public removeListener(type: EventListenerType, handler: (message: any) => void) {
-        if (this._eventListeners.indexOf({ type, handler }) !== -1) {
-            this._eventListeners.splice(this._eventListeners.indexOf({ type, handler }), 1)
+    public removeListener(type: EventListenerType, handler: EventListenerhandler): void {
+        if (this._eventListeners[type].indexOf(handler) !== -1) {
+            this._eventListeners[type].splice(this._eventListeners[type].indexOf(handler), 1)
         }
         this._connection.off(type, handler);
     }
@@ -82,7 +80,10 @@ class SignalRConnection {
         */
         if (this._currentToken !== token) {
             this._connection = new SignalR.HubConnection(this._url, { jwtBearer: () => token, logging: new SignalR.NullLogger() });
-            this._eventListeners.map(item => this._connection.on(item.type, item.handler));
+            let key: EventListenerType;
+            for (key in this._eventListeners) {
+                this._eventListeners[key].map(item => this._connection.on(key, item));
+            }
         }
         /**
         * 自动重新开始链接

@@ -2,7 +2,8 @@
 import * as Utility from '../../Utility';
 import { UbbContainer } from '../UbbContainer';
 import { Link } from 'react-router-dom';
-export class ReplierSignature extends React.Component<{ signature,postid ,topicid,masters,userId,likeInfo,quote,content,userInfo,replyTime,floor}, {likeNumber,dislikeNumber,likeState}>{
+declare let moment: any;
+export class ReplierSignature extends React.Component<{ signature,postid ,topicid,masters,userId,likeInfo,quote,content,userInfo,replyTime,floor,lastUpdateTime,lastUpdateAuthor}, {likeNumber,dislikeNumber,likeState}>{
     constructor(props, content) {
         super(props, content);
         this.showManageUI = this.showManageUI.bind(this);
@@ -110,8 +111,8 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
         const manageIcon = `icon${this.props.postid}`;
         const idLike = `like${this.props.postid}`;
         const idDislike = `dislike${this.props.postid}`;
-        let signature = <div className="signature" style={{ borderTop: "#eaeaea solid thin",width:"100%" }}><UbbContainer code={this.props.signature} /></div>;
-        if (!this.props.signature ) {
+        let signature = <div className="signature" style={{ borderTop: "#8dc9db solid thin", width: "100%" }}><UbbContainer code={this.props.signature} /></div>;
+        if (!this.props.signature) {
             signature = null;
         }
         let editIcon = null;
@@ -119,8 +120,18 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
         if (this.isAllowedtoEdit(this.props.userInfo.privilege)) {
             editIcon = <Link to={editUrl}><div className="operation1" onClick={this.edit}>   编辑</div></Link>;
         }
-        return <div className="column">
+        let lastUpdate = null;
+        if (this.props.lastUpdateAuthor && this.props.lastUpdateTime) {
+            const time = moment(this.props.lastUpdateTime).format('YYYY-MM-DD HH:mm:ss');
+            const name = this.props.userInfo.name === this.props.lastUpdateAuthor ? '作者' : this.props.lastUpdateAuthor;
+            const str = `该帖最后由 ${name} 在 ${time} 编辑`;
+            lastUpdate = str;
+        }
+        return <div className="column" style={{ marginTop:"1rem" }}>
             <div className="comment1">
+                <div style={{ width: "40rem", marginLeft: "2rem", fontSize:"0.8rem" }}>
+                    <span>{moment(this.props.replyTime).format('YYYY-MM-DD HH:mm:ss')}</span><span style={{ marginLeft: "1rem" }}>{lastUpdate}</span></div>
+                <div className="row" style={{ alignItems:"center" }}>
                 <div id={idLike} className="upup" style={{ marginRight: "0.7rem" }} onClick={ this.like.bind(this) }><i title="赞"  className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
                 <div id={idDislike} className="downdown" onClick={this.dislike.bind(this)}><i title="踩"  className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
                 <div id="commentlike">
@@ -128,7 +139,8 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
                     <div className="operation1" onClick={this.quote}>   引用</div>
                     {editIcon}
                     <div className="operation1" id={manageIcon} style={{ display: "none", cursor: "pointer" }} onClick={this.showManageUI}>管理</div>
-                </div>
+                    </div>
+                    </div>
             </div>
             <div className="row" style={{ width: "100%" }}>  {signature}
             </div>

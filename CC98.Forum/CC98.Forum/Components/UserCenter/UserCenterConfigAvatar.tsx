@@ -34,7 +34,8 @@ class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCente
             naturalHeight: 0,
             img: null,
             NUM_MAX: 0,
-            scaling: 1
+            scaling: 1,
+            choosingDefault: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -181,49 +182,54 @@ class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCente
             file.lastModifiedDate = Date.now();
             file.name = '头像.jpg';
             const avatar = await Utility.uploadFile(file);
-            try {
+            const baseUrl = Utility.getApiUrl();
+            this.changeAvatar(baseUrl + avatar.content);
+        },'image/jpeg',0.75);
+    }
+
+    changeAvatar = async (avatarUrl: string) => {
+        try {
+            this.setState({
+                isLoading: true
+            });
+            const token = await Utility.getToken();
+            const url = '/me/portrait';
+            let myHeaders = new Headers();
+            myHeaders.append('Content-Type', 'application/json');
+            myHeaders.append('Authorization', token);
+            let res = await Utility.cc98Fetch(url, {
+                method: 'PUT',
+                headers: myHeaders,
+                body: JSON.stringify(avatarUrl)
+            });
+            if (res.status === 200) {
                 this.setState({
-                    isLoading: true
-                });
-                const token = Utility.getLocalStorage('accessToken');
-                const url = '/me/portrait';
-                let myHeaders = new Headers();
-                myHeaders.append('Content-Type', 'application/json');
-                myHeaders.append('Authorization', token);
-                const baseUrl = Utility.getApiUrl();
-                let data = `${baseUrl}${avatar.content}`;
-                let res = await Utility.cc98Fetch(url, {
-                    method: 'PUT',
-                    headers: myHeaders,
-                    body: JSON.stringify(data)
-                });
-                if (res.status === 200) {
-                    this.setState({
-                        info: '修改成功',
-                        avatarNow: data,
-                        isLoading: false,
-                        isShown: false,
-                        divheight: 0
-                    });
-                    let userInfo = Utility.getLocalStorage('userInfo');
-                    userInfo.portraitUrl = data;
-                    this.props.changeUserInfo(userInfo);
-                    Utility.setLocalStorage("userInfo", userInfo);
-                    Utility.setLocalStorage(`userId_${userInfo.id}`, userInfo, 3600);
-                    Utility.setLocalStorage(`userName_${userInfo.name}`, userInfo, 3600);
-                } else {
-                    throw {};
-                }
-                
-            } catch (e) {
-                this.setState({
-                    info: '修改失败',
+                    info: '修改成功',
+                    avatarNow: avatarUrl,
                     isLoading: false,
                     isShown: false,
-                    divheight: 0
+                    divheight: 0,
+                    choosingDefault: false
                 });
+                let userInfo = Utility.getLocalStorage('userInfo');
+                userInfo.portraitUrl = avatarUrl;
+                this.props.changeUserInfo(userInfo);
+                Utility.setLocalStorage("userInfo", userInfo);
+                Utility.setLocalStorage(`userId_${userInfo.id}`, userInfo, 3600);
+                Utility.setLocalStorage(`userName_${userInfo.name}`, userInfo, 3600);
+            } else {
+                throw {};
             }
-        },'image/jpeg',0.75);
+
+        } catch (e) {
+            this.setState({
+                info: '修改失败',
+                isLoading: false,
+                isShown: false,
+                divheight: 0,
+                choosingDefault: false
+            });
+        }
     }
 
     handleResizeMove(event) {
@@ -306,11 +312,11 @@ class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCente
                 <div className="user-center-config-avatar">
                     <img src={this.state.avatarNow}></img>
                     <div>
-                        <button id="chooseDefaultAvatar" type="button" >选择论坛头像</button>
+                        <button id="chooseDefaultAvatar" type="button" onClick={() => this.setState({ choosingDefault: true})}>选择论坛头像</button>
                         <div>
                             <input onChange={this.handleChange} id="uploadAvatar" type="file" accept="image/*" style={style} />
-                            <label htmlFor="uploadAvatar"><p>选择本地图片</p></label>
-                            <p style={{ color: 'red' }}>{this.state.info}</p>
+                            <label htmlFor="uploadAvatar" onClick={() => this.setState({ choosingDefault: false, info: '暂时只有两枚' })}><p>选择本地图片</p></label>
+                            <p style={{ color: 'red', margin: '0' }}>{this.state.info}</p>
                             <button type="button" className="config-submit-button" style={this.state.isShown ? {} : style} onClick={this.handleSubmit} disabled={this.state.isLoading}>提交</button>
                         </div>
                     </div>
@@ -328,6 +334,10 @@ class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCente
                         <img onLoad={(e) => { this.handleIMGLoad((e as any).target.naturalWidth, (e as any).target.naturalHeight, (e as any).target); }} style={style} src={this.state.avatarURL} />
                     </div>
                     <div style={{ width: '100%', height: `${this.state.divheight}px`, transitionDuration: '.5s' }}></div>
+                    <div style={this.state.choosingDefault ? { display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'center' } : { display: 'none' }}>
+                        <img style={{ margin: '3rem', cursor: 'pointer' }} onClick={(e) => { this.changeAvatar('/images/default_avatar_boy.png'); }} src="/images/default_avatar_boy.png" />
+                        <img style={{ margin: '3rem', cursor: 'pointer' }} onClick={(e) => { this.changeAvatar('/images/default_avatar_boy.png'); }} src="/images/default_avatar_girl.png" />
+                    </div>
                 </div>
             </div>
         );
@@ -350,6 +360,7 @@ interface UserCenterConfigAvatarState {
     img: HTMLImageElement;
     NUM_MAX: number;
     scaling: number;
+    choosingDefault: boolean;
 }
 
 function mapDispatch(dispatch) {

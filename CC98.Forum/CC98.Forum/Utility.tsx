@@ -472,28 +472,6 @@ export async function getAllNewTopic(from: number, router) {
                 newTopic[i].portraitUrl = userInfo1.portraitUrl;
                 //获取所在版面名称
                 newTopic[i].boardName = await getBoardName(newTopic[i].boardId);
-                //阅读数转换
-                if (newTopic[i].hitCount > 10000) {
-                    if (newTopic[i].hitCount > 100000) {
-                        let index = parseInt(`${newTopic[i].hitCount / 10000}`);
-                        newTopic[i].hitCount = `${index}万`;
-                    }
-                    else {
-                        let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
-                        newTopic[i].hitCount = `${index}万`;
-                    }
-                }
-                //回复数转换
-                if (newTopic[i].replyCount > 10000) {
-                    if (newTopic[i].replyCount > 100000) {
-                        let index = parseInt(`${newTopic[i].replyCount / 10000}`);
-                        newTopic[i].replyCount = `${index}万`;
-                    }
-                    else {
-                        let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
-                        newTopic[i].replyCount = `${index}万`;
-                    }
-                }
             }
             //匿名时粉丝数显示0
             else {
@@ -501,6 +479,31 @@ export async function getAllNewTopic(from: number, router) {
                 newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
                 newTopic[i].userName = "匿名用户";
                 newTopic[i].boardName = "心灵之约";
+            }
+            //时间转换
+            newTopic[i].time = transerRecentTime(newTopic[i].time);
+            newTopic[i].lastPostTime = transerRecentTime(newTopic[i].lastPostTime);
+            //阅读数转换
+            if (newTopic[i].hitCount > 10000) {
+                if (newTopic[i].hitCount > 100000) {
+                    let index = parseInt(`${newTopic[i].hitCount / 10000}`);
+                    newTopic[i].hitCount = `${index}万`;
+                }
+                else {
+                    let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
+                    newTopic[i].hitCount = `${index}万`;
+                }
+            }
+            //回复数转换
+            if (newTopic[i].replyCount > 10000) {
+                if (newTopic[i].replyCount > 100000) {
+                    let index = parseInt(`${newTopic[i].replyCount / 10000}`);
+                    newTopic[i].replyCount = `${index}万`;
+                }
+                else {
+                    let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
+                    newTopic[i].replyCount = `${index}万`;
+                }
             }
         }
         return newTopic;
@@ -568,29 +571,6 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
                 newTopic[i].portraitUrl = userInfo1.portraitUrl;
                 //获取所在版面名称
                 newTopic[i].boardName = await getBoardName(newTopic[i].boardId);
-                
-                //阅读数转换
-                if (newTopic[i].hitCount > 10000) {
-                    if (newTopic[i].hitCount > 100000) {
-                        let index = parseInt(`${newTopic[i].hitCount / 10000}`);
-                        newTopic[i].hitCount = `${index}万`;
-                    }
-                    else {
-                        let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
-                        newTopic[i].hitCount = `${index}万`;
-                    }
-                }
-                //回复数转换
-                if (newTopic[i].replyCount > 10000) {
-                    if (newTopic[i].replyCount > 100000) {
-                        let index = parseInt(`${newTopic[i].replyCount / 10000}`);
-                        newTopic[i].replyCount = `${index}万`;
-                    }
-                    else {
-                        let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
-                        newTopic[i].replyCount = `${index}万`;
-                    }
-                }
             }
             //匿名时粉丝数显示0
             else {
@@ -598,6 +578,32 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
                 newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
                 newTopic[i].userName = "匿名用户";
                 newTopic[i].boardName = "心灵之约";
+            }
+            //时间转换
+            newTopic[i].time = transerRecentTime(newTopic[i].time);
+            newTopic[i].lastPostTime = transerRecentTime(newTopic[i].lastPostTime);
+
+            //阅读数转换
+            if (newTopic[i].hitCount > 10000) {
+                if (newTopic[i].hitCount > 100000) {
+                    let index = parseInt(`${newTopic[i].hitCount / 10000}`);
+                    newTopic[i].hitCount = `${index}万`;
+                }
+                else {
+                    let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
+                    newTopic[i].hitCount = `${index}万`;
+                }
+            }
+            //回复数转换
+            if (newTopic[i].replyCount > 10000) {
+                if (newTopic[i].replyCount > 100000) {
+                    let index = parseInt(`${newTopic[i].replyCount / 10000}`);
+                    newTopic[i].replyCount = `${index}万`;
+                }
+                else {
+                    let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
+                    newTopic[i].replyCount = `${index}万`;
+                }
             }
         }
         return newTopic;
@@ -831,14 +837,46 @@ export function sortRecentMessage(recentMessage) {
 }
 
 /**
- * api返回的时间格式转换成时间戳的函数
+ * api返回的UTC时间格式转换成时间戳的函数
  * @param time
  */
 export function transerTime(time) {
-    let timeStr = moment(time).format('YYYY-MM-DD HH:mm:ss')
-    let timeDate = timeStr.replace(/-/g, '/');
-    let timestamp = new Date(timeDate).getTime();
+    let timestamp = new Date(time).getTime();
     return timestamp;
+}
+
+/**
+ * api返回的UTC时间格式转换成"1分钟前，昨天18：45"这样的形式
+ * @param time
+ */
+export function transerRecentTime(time) {
+    let thatDate = new Date(time);
+    let thatTime = thatDate.getTime();
+    let thisDate = new Date();
+    let thisTime = new Date().getTime();
+    let delta = (new Date(new Date().toLocaleDateString()).getTime() + 86400000 - thatTime)/1000;
+    if (delta > 259200) {
+        let month = thatDate.getMonth() + 1;
+        let strTime = `${thatDate.getFullYear()}:${month}:${thatDate.getDate()} ${thatDate.getHours()}:${thatDate.getMinutes()}:${thatDate.getSeconds()}`;
+        return strTime;
+    }
+    else if (delta > 172800) {
+        let strTime = `${thatDate.getHours()}:${thatDate.getMinutes()}:${thatDate.getSeconds()}`;
+        return `前天 ${strTime}`;
+    }
+    else if (delta > 86400) {
+        let strTime = `${thatDate.getHours()}:${thatDate.getMinutes()}:${thatDate.getSeconds()}`;
+        return `昨天 ${strTime}`;
+    }
+    else if (thisTime - thatTime > 3600) {
+        let strTime = `${thatDate.getHours()}:${thatDate.getMinutes()}:${thatDate.getSeconds()}`;
+        return `今天 ${strTime}`;
+    }
+    else {
+        let min0: any = (thisTime - thatTime) / 60;
+        let min = parseInt(min0);
+        return `${min}分钟前`;
+    }
 }
 
 /**
@@ -1446,16 +1484,18 @@ export async function awardWealth(reason, value, postId) {
     }
     const str = JSON.stringify(body);
     const url = `/post/${postId}/operation`;
-    const response = await cc98Fetch(url, { method: "POST", headers, body: str });
-    switch (response.status) {
-        case 400:
-            return 'wrong input';
-        case 401:
-            return 'unauthorized';
-        case 404:
-            return 'not found';
-        case 500:
-            return 'server error';
+    if (value) {
+        const response = await cc98Fetch(url, { method: "POST", headers, body: str });
+        switch (response.status) {
+            case 400:
+                return 'wrong input';
+            case 401:
+                return 'unauthorized';
+            case 404:
+                return 'not found';
+            case 500:
+                return 'server error';
+        }
     }
     return 'ok';
 }
@@ -1469,16 +1509,18 @@ export async function deductWealth(reason, value, postId) {
     }
     const str = JSON.stringify(body);
     const url = `/post/${postId}/operation`;
-    const response = await cc98Fetch(url, { method: "POST", headers, body: str });
-    switch (response.status) {
-        case 400:
-            return 'wrong input';
-        case 401:
-            return 'unauthorized';
-        case 404:
-            return 'not found';
-        case 500:
-            return 'server error';
+    if (value!=0) {
+        const response = await cc98Fetch(url, { method: "POST", headers, body: str });
+        switch (response.status) {
+            case 400:
+                return 'wrong input';
+            case 401:
+                return 'unauthorized';
+            case 404:
+                return 'not found';
+            case 500:
+                return 'server error';
+        }
     }
     return 'ok';
 }
@@ -2138,16 +2180,18 @@ export async function addPrestige(postId, value, reason) {
     const bodyinfo = { operationType: 0, prestige: value, reason: reason };
     const url = `/post/${postId}/operation`;
     const body = JSON.stringify(bodyinfo);
-    const response = await cc98Fetch(url, { method: "POST", headers, body });
-    switch (response.status) {
-        case 400:
-            return 'wrong input';
-        case 401:
-            return 'unauthorized';
-        case 404:
-            return 'not found';
-        case 500:
-            return 'server error';
+    if (value) {
+        const response = await cc98Fetch(url, { method: "POST", headers, body });
+        switch (response.status) {
+            case 400:
+                return 'wrong input';
+            case 401:
+                return 'unauthorized';
+            case 404:
+                return 'not found';
+            case 500:
+                return 'server error';
+        }
     }
     return 'ok';
 }
@@ -2157,16 +2201,18 @@ export async function deductPrestige(postId, value, reason) {
     const bodyinfo = { operationType: 1, prestige: value, reason: reason };
     const url = `/post/${postId}/operation`;
     const body = JSON.stringify(bodyinfo);
-    const response = await cc98Fetch(url, { method: "PUT", headers, body });
-    switch (response.status) {
-        case 400:
-            return 'wrong input';
-        case 401:
-            return 'unauthorized';
-        case 404:
-            return 'not found';
-        case 500:
-            return 'server error';
+    if (value) {
+        const response = await cc98Fetch(url, { method: "POST", headers, body });
+        switch (response.status) {
+            case 400:
+                return 'wrong input';
+            case 401:
+                return 'unauthorized';
+            case 404:
+                return 'not found';
+            case 500:
+                return 'server error';
+        }
     }
     return 'ok';
 }
@@ -2174,7 +2220,7 @@ export async function deletePost(topicId, postId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", 'application/json');
     const bodyinfo = { reason: reason };
-    const url = `/manage/post?topicid=${topicId}&postid=${postId}`;
+    const url = `/post?topicid=${topicId}&postid=${postId}`;
     const response = await cc98Fetch(url, { method: "DELETE", headers, body: JSON.stringify(bodyinfo) });
     switch (response.status) {
         case 401:
@@ -2380,7 +2426,7 @@ export async function cancelBestTopic(topicId, reason) {
 export async function setDisableHot(topicId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const url = `/manage/topic/${topicId}/not-hot`;
+    const url = `/topic/${topicId}/not-hot`;
     const bodyInfo = { 'reason': reason };
     const body = JSON.stringify(bodyInfo);
     const response = await cc98Fetch(url, { method: "PUT", headers, body });
@@ -2397,7 +2443,7 @@ export async function setDisableHot(topicId, reason) {
 export async function cancelDisableHot(topicId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const url = `/manage/topic/${topicId}/not-hot`;
+    const url = `/topic/${topicId}/not-hot`;
     const bodyInfo = { 'reason': reason };
     const body = JSON.stringify(bodyInfo);
     const response = await cc98Fetch(url, { method: "DELETE", headers, body });
@@ -2620,8 +2666,7 @@ export async function refreshUnReadCount() {
     const url = `/me/unread-count`;
     const response = await cc98Fetch(url, { headers });
     let unreadCount = await response.json();
-    unreadCount.totalCount = unreadCount.systemCount + unreadCount.atCount + unreadCount.replyCount + unreadCount.messageCount;
-    setStorage("unreadCount", unreadCount);
+    unreadCount.totalCount = unreadCount.systemCount + unreadCount.atCount + unreadCount.replyCount + unreadCount.messageCount;   
     if (unreadCount.totalCount > 0) {
         $('#unreadCount-totalCount').removeClass('displaynone');
         $('#unreadCount-totalCount1').removeClass('displaynone');
@@ -2662,6 +2707,7 @@ export async function refreshUnReadCount() {
         $('#unreadCount-messageCount').addClass('displaynone');
         $('#unreadCount-messageCount1').addClass('displaynone');
     }
+    setStorage("unreadCount", unreadCount);
     return unreadCount;
 }
 export async function editPost(postId, contentType, title, content) {
@@ -2687,7 +2733,7 @@ export async function cc98Fetch(url, init?: RequestInit) {
     console.log("base");
     console.log(baseUrl);*/
     const baseUrl = 'http://apitest.niconi.cc';
-    const _url = urljoin(baseUrl, url);
+    const _url = `${baseUrl}${url}`;
     let response;
     if (init) {
         response = await fetch(_url, init);
@@ -2698,4 +2744,46 @@ export async function cc98Fetch(url, init?: RequestInit) {
 }
 export function getApiUrl() {
     return 'http://apitest.niconi.cc';
+}
+export async function getTagInfo() {
+    if (getLocalStorage("tagInfo")) {
+        return getLocalStorage("tagInfo");
+    } else {
+        const url = `/config/global/alltag`;
+        const headers = await formAuthorizeHeader();
+        const response = await cc98Fetch(url, { headers });
+        const data = await response.json();
+        setLocalStorage("tagInfo", data);
+        return data;
+    }
+}
+export async function getTagIdbyName(name) {
+    const tagInfo = await getTagInfo();
+    for (let item of tagInfo) {
+        if (item.name === name) return item.id;
+    }
+    return false;
+}
+export async function getTagNamebyId(id) {
+    const tagInfo = await getTagInfo();
+    for (let item of tagInfo) {
+        if (item.id === id) return item.name;
+    }
+    return false;
+}
+export async function getTopicByOneTag(tagId, boardId, page) {
+    const start = (page - 1) * 10 ;
+    const url = `/topic/search/board/${boardId}/tag?tag1=${tagId}&from=${start}&size=20`;
+    const headers = await formAuthorizeHeader();
+    const response = await cc98Fetch(url, { headers });
+    return await response.json();
+}
+export async function updateUserInfo(id) {
+    const key = `userId_${id}`;
+    const userInfo = await getUserInfo(id);
+    const name = userInfo.name;
+    const key1 = `userName_${name}`;
+    removeLocalStorage(key);
+    removeLocalStorage(key1);
+    await getUserInfo(id);
 }
