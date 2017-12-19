@@ -129,7 +129,7 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
                             <div style={{ fontSize: "0.75rem", width: "4.5rem" }}>
                                 {this.props.boardInfo.todayCount}/{this.props.boardInfo.topicCount}
                             </div>
-                            <div className="boardFollow" onClick={this.state.isFollow ? this.unfollow : this.follow} >{this.state.isFollow ? "已关注" : "关注"} </div>
+                            <div className="boardFollow" onClick={this.state.isFollow ? this.unfollow : this.follow} >{this.state.isFollow ? "取关" : "关注"} </div>
                         </div>
                     </div>
                 </div>

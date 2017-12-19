@@ -152,7 +152,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
 
     async handleUpload(file: File) {
         let res = await Utility.uploadFile(file);
-        const response1 = await fetch("/config.production.json");
+       /* const response1 = await fetch("/config.production.json");
         let data;
         if (response1.status !== 404) {
             const data1 = await response1.json();
@@ -162,8 +162,8 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
         } else {
             const response2 = await fetch("/config.json");
             data = await response2.json();
-        }
-        const baseUrl = data.apiUrl;
+        }*/
+        const baseUrl = Utility.getApiUrl();
         this.handleButtonClick(this.state.extendTagName, `${baseUrl}${res.content}`);
     }
 

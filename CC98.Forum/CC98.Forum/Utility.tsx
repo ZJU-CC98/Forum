@@ -2735,7 +2735,7 @@ export async function getTagNamebyId(id) {
 }
 export async function getTopicByOneTag(tagId, boardId, page) {
     const start = (page - 1) * 10 ;
-    const url = `/topic/search/${boardId}/tag?tag1=${tagId}&from=${start}&size=20`;
+    const url = `/topic/search/board/${boardId}/tag?tag1=${tagId}&from=${start}&size=20`;
     const headers = await formAuthorizeHeader();
     const response = await cc98Fetch(url, { headers });
     return await response.json();

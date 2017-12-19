@@ -191,8 +191,11 @@ ${newProps.content.content}[/quote]`;
         if (mes.status === 403) {
             alert("你太快啦 请慢一点~")
         }
-        this.props.onChange();
         this.setState({ content: "" });
+        console.log("clear content");
+        console.log(this.state.content);
+        this.props.onChange();
+        
     }
     async sendMdTopic() {
         try {

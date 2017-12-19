@@ -46,7 +46,7 @@ export class PostTopic extends React.Component<{ boardInfo,topicInfo,userId, img
                         <ReplyContent key={this.state.topicMessage.content} postid={this.state.topicMessage.postId} content={this.state.topicMessage.content} contentType={this.state.topicMessage.contentType} />
                         <Award postId={this.state.topicMessage.postId} updateTime={Date.now()} awardInfo={this.state.topicMessage.awardInfo} />
                         <ReplierSignature signature={this.state.topicMessage.userInfo.signatureCode} topicid={this.state.topicMessage.topicId} userId={this.state.topicMessage.userId} masters={this.state.masters} postid={this.state.topicMessage.postId} likeInfo={this.state.topicMessage.likeInfo}
-                            userInfo={this.state.topicMessage}
+                            userInfo={this.state.topicMessage.userInfo}
                             content={this.state.topicMessage.content}
                             floor={this.state.topicMessage.floor}
                             quote={this.quote}

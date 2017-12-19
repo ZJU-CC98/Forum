@@ -351,8 +351,10 @@ body {
 }
 .signature {
     color: rgb(80,80,80);
-    margin: 1.25rem;
-    padding-top:1rem;
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
+    margin-bottom: 1.25rem;
+    padding-top: 1rem;
 }
 .signature img{
     max-height:12.5rem;
@@ -386,6 +388,7 @@ body {
     padding-right: 2rem;
     color:#79b8ca;
     align-items:center;
+    justify-content:space-between;
 }
 
 #commentlike {
@@ -524,7 +527,7 @@ body {
     font-size:0.75rem;
 }
 .userMessageOpt{
-    
+    white-space:nowrap;
 }
 .rpyClr {
     font-size:1.25rem;
@@ -2934,6 +2937,7 @@ a {
         color: #fff;
         text-align: center;
         line-height: 1.25rem;
+        cursor:pointer;
     }
 
     .boardDescription {
