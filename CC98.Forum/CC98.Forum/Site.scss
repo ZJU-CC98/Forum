@@ -642,7 +642,6 @@ body {
     align-items: flex-end;
     font-family:"微软雅黑";
     margin-left:1rem;
-    margin-right:1rem;
 }
 
 .chooseTag {
@@ -1141,6 +1140,8 @@ a {
     font-family: 微软雅黑;
     color: rgb(80,80,80);
     margin-top: 8px;
+    display:flex;
+    flex-direction:column;
 }
 
 /*****************************************以下为我的消息的样式*********************************/
@@ -2687,7 +2688,7 @@ a {
         border-radius: .5rem;
         -moz-border-radius: .5rem;
         -webkit-border-radius: .5rem;
-        background-color: #FFFACD;
+        background-color: #8bc9db;
     }
 
     .judgeManagement {
@@ -2704,7 +2705,7 @@ a {
         border-radius: .5rem;
         -moz-border-radius: .5rem;
         -webkit-border-radius: .5rem;
-        background-color: #FFFACD;
+        background-color: #8bc9db;
     }
 
     .manageUI {
@@ -2726,12 +2727,21 @@ a {
     }
 
     .judgeName {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
+        color:#fff;
+        border:#fff 2px solid;
+        border-radius:0.5rem;
+        line-height:2rem;
+        width:4rem;
+        height:2rem;
+        text-align:center;
+        justify-content:center;
     }
 
     .judgeOption {
         display: flex;
         align-content: center;
+        color:#fff;
     }
 
     .judgeOptions {
@@ -2763,7 +2773,7 @@ a {
         margin-top: 1rem;
         width: 5rem;
         height: 2rem;
-        background-color: #EECBAD;
+        background-color: #fff;
         border: gray solid thin;
         border-radius: 0.3rem;
         cursor: pointer;
@@ -2791,21 +2801,24 @@ a {
     }
 
     .manageOperation {
-        justify-content: space-around;
-        width: 18rem;
-        margin-left: 5rem;
-        margin-right: 2rem;
-        margin-top: 1.5rem;
+        justify-content: flex-start;
+        margin-left:3rem;
+        width: 100%;
+        
     }
-
+    .manageOperation input{
+        border-radius:1rem;
+    }
     .manageInfo {
         height: 15rem;
         justify-content: space-around;
     }
 
     .manageObject {
-        width: 7rem;
-        margin-right: 1rem;
+        width: 100%;
+        display:flex;
+        justify-content:center;
+        color:#fff;
     }
 
     .followBoard {

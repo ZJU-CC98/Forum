@@ -93,7 +93,7 @@ export async function getTopicContent(topicid: number, curPage: number, replyCou
         const startPage = (curPage - 1) * 10;
         const endPage = curPage * 10 - 1;
         const headers = await formAuthorizeHeader();
-        const topic = curPage !== 1
+        const topic = curPage != 1
             ? await cc98Fetch(`/Topic/${topicid}/post?from=${startPage}&size=10`, { headers })
             : await cc98Fetch(`/Topic/${topicid}/post?from=1&size=9`, { headers });
         const content = await topic.json();
@@ -2733,9 +2733,16 @@ export async function getTagNamebyId(id) {
     }
     return false;
 }
-export async function getTopicByOneTag(tagId, boardId, page) {
+export async function getTopicByOneTag(tagId, boardId,layer, page) {
     const start = (page - 1) * 10 ;
-    const url = `/topic/search/board/${boardId}/tag?tag1=${tagId}&from=${start}&size=20`;
+    const url = `/topic/search/board/${boardId}/tag?tag${layer}=${tagId}&from=${start}&size=20`;
+    const headers = await formAuthorizeHeader();
+    const response = await cc98Fetch(url, { headers });
+    return await response.json();
+}
+export async function getTopicByTwoTags(tag1Id, tag2Id, boardId, page) {
+    const start = (page - 1) * 10;
+    const url = `/topic/search/board/${boardId}/tag?tag1=${tag1Id}&tag2=${tag2Id}&from=${start}&size=20`;
     const headers = await formAuthorizeHeader();
     const response = await cc98Fetch(url, { headers });
     return await response.json();
@@ -2748,4 +2755,12 @@ export async function updateUserInfo(id) {
     removeLocalStorage(key);
     removeLocalStorage(key1);
     await getUserInfo(id);
+}
+export function getTagLayer(tagId:number, tags) {
+    for (let item of tags) {
+        for (let tag of item.tags) {
+            if (tag.id == tagId) return item.layer;
+        }
+    }
+    return false;
 }
