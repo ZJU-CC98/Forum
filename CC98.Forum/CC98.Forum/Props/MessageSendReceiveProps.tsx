@@ -11,13 +11,21 @@ export class MessageSendReceiveProps {
     */
     id: number;
     /**
-    * 消息的发送者的id
+    * 消息的发送者的名字
     */
     senderName: string;
     /**
-    * 消息的接收者的id
+    * 消息的发送者的id
+    */
+    senderId: number;
+    /**
+    * 消息的接收者的名字
     */
     receiverName: string;
+    /**
+    * 消息的接收者的id
+    */
+    receiverId: number;
     /**
    * 消息的发送者的头像地址
    */

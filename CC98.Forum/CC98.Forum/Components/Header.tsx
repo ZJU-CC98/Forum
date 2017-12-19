@@ -255,7 +255,7 @@ export class SearchBeforeConnent extends React.Component<{history}, AppState> { 
         
         //获取搜索关键词
         let self = this;
-        searchIco.click(async  () => {
+        searchIco.click(async () => {
             let val: any = $('#searchText').val();
             if (val && val != '') {
                 if (searchBoxSelect.text() == '主题' || searchBoxSelect.text() == '全站') {
@@ -322,6 +322,14 @@ export class SearchBeforeConnent extends React.Component<{history}, AppState> { 
         });
     }
 
+    keypress_submit(e) {
+      var evt = window.event || e;
+        if (evt.keyCode === 13) {
+           console.log("按下了回车");
+           $('.searchIco').click();
+       }
+    }
+
     render() {
         //查看当前是全站还是某版
         let url1 = location.href.match(/\/topic\/(\S+)\/+?/);
@@ -350,7 +358,7 @@ export class SearchBeforeConnent extends React.Component<{history}, AppState> { 
                 <div className="box">
                     <div className="searchBoxSelect">主题</div>
                     <div className="downArrow"><img src="/images/downArrow.png" width="12" height="12" /></div>
-                    <input id="searchText" type="text" placeholder="猜猜能搜到什么..." />
+                    <input id="searchText" type="text" placeholder="猜猜能搜到什么..." onKeyPress={this.keypress_submit} />
                     <div className="searchIco"><img src="/images/searchIco.ico" width="15" height="15" /></div>
                 </div>
                 <ul className="searchBoxSub">

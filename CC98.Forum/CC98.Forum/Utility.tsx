@@ -908,22 +908,8 @@ export async function sortContactList(recentContact, router) {
     let urlId = location.href.match(/id=(\S+)/);
     if (urlId) {
         let chatManId = parseInt(urlId[1]);
-        //先看一下该聊天对象在不在联系人列表里
-        for (var i = 0; i < recentContact.length; i++) {
-            if (recentContact[i].id == chatManId) {
-                break;
-            }
-        }
-        //如果恰好是联系人列表第一那就什么都不做
-        if (i == 0) { }
-        //如果在列表里但不是第一个，就把他提到第一个
-        else if (i < recentContact.length) {
-            let indexData = recentContact[i];
-            recentContact.splice(i, 1);
-            recentContact.unshift(indexData);
-        }
-        //如果不在联系人列表里，那就查找该人信息并作为列表第一个
-        else {
+        //如果联系人为空，则查找该联系人信息并作为联系人数组的元素
+        if (!recentContact || recentContact.length === 0) {
             let response;
             let chatMan;
             let flag = 1;
@@ -941,13 +927,59 @@ export async function sortContactList(recentContact, router) {
                 ////window.location.href="/status/Disconnected");
                 flag = 0;
             }
-            if (flag == 1) {
+            if (flag === 1) {
                 chatMan.message = await getRecentMessage(chatMan.id, 0, 10, router);
                 if (chatMan.message) {
                     chatMan.lastContent = chatMan.message[0];
                 }
-                let chatContact = [chatMan];
-                recentContact = chatContact.concat(recentContact);
+                chatMan.isRead = true;
+                recentContact = [chatMan];
+            }
+        }
+        else {
+            //先看一下该聊天对象在不在联系人列表里
+            for (var i = 0; i < recentContact.length; i++) {
+                if (recentContact[i].id == chatManId) {
+                    break;
+                }
+            }
+            //如果恰好是联系人列表第一那就什么都不做
+            if (i == 0) { recentContact[0].isRead = true; }
+            //如果在列表里但不是第一个，就把他提到第一个
+            else if (i < recentContact.length) {
+                let indexData = recentContact[i];
+                indexData.isRead = true;
+                recentContact.splice(i, 1);
+                recentContact.unshift(indexData);
+            }
+            //如果不在联系人列表里，那就查找该人信息并作为列表第一个
+            else {
+                let response;
+                let chatMan;
+                let flag = 1;
+                try {
+                    response = await cc98Fetch(`/user/basic/${chatManId}`);
+                    if (response.status === 404) {
+                        ////window.location.href="/status/NotFoundUser");
+                    }
+                    if (response.status === 500) {
+                        ////window.location.href="/status/ServerError");
+                    }
+                    chatMan = await response.json();
+                }
+                catch (e) {
+                    ////window.location.href="/status/Disconnected");
+                    flag = 0;
+                }
+                if (flag === 1) {
+                    chatMan.message = await getRecentMessage(chatMan.id, 0, 10, router);
+                    if (chatMan.message) {
+                        chatMan.lastContent = chatMan.message[0];
+                    }
+                    chatMan.isRead = true;
+                    let chatContact = [chatMan];
+                    recentContact = chatContact.concat(recentContact);
+                }
             }
         }
     }
@@ -955,22 +987,8 @@ export async function sortContactList(recentContact, router) {
         let urlName = location.href.match(/name=(\S+)/);
         if (urlName) {
             let chatManName = urlName[1];
-            //先看一下该聊天对象在不在联系人列表里
-            for (var i = 0; i < recentContact.length; i++) {
-                if (recentContact[i].name == chatManName) {
-                    break;
-                }
-            }
-            //如果恰好是联系人列表第一那就什么都不做
-            if (i == 0) { }
-            //如果在列表里但不是第一个，就把他提到第一个
-            else if (i < recentContact.length) {
-                let indexData = recentContact[i];
-                recentContact.splice(i, 1);
-                recentContact.unshift(indexData);
-            }
-            //如果不在联系人列表里，那就查找该人信息并作为列表第一个
-            else {
+            //如果联系人为空，则查找该联系人信息并作为联系人数组的元素
+            if (!recentContact || recentContact.length === 0) {
                 let response0;
                 let response1;
                 let flag = 1;
@@ -988,16 +1006,56 @@ export async function sortContactList(recentContact, router) {
                     flag = 0;
                 }
                 if (flag == 1) {
-                    let chatMan = { id: null, name: '', portraitUrl: '', message: [], lastContent: '' };
-                    chatMan.id = response1.id;
-                    chatMan.name = response1.name;
-                    chatMan.portraitUrl = response1.portraitUrl;
+                    let chatMan = { id: response1.id, name: response1.name, portraitUrl: response1.portraitUrl, message: [], lastContent: '', isRead: true };
                     chatMan.message = await getRecentMessage(chatMan.id, 0, 10, router);
                     if (chatMan.message) {
                         chatMan.lastContent = chatMan.message[0];
                     }
-                    let chatContact = [chatMan];
-                    recentContact = chatContact.concat(recentContact);
+                    recentContact = [chatMan];
+                }
+            }
+            else {
+                //先看一下该聊天对象在不在联系人列表里
+                for (var i = 0; i < recentContact.length; i++) {
+                    if (recentContact[i].name == chatManName) {
+                        break;
+                    }
+                }
+                //如果恰好是联系人列表第一那就什么都不做
+                if (i == 0) { }
+                //如果在列表里但不是第一个，就把他提到第一个
+                else if (i < recentContact.length) {
+                    let indexData = recentContact[i];
+                    recentContact.splice(i, 1);
+                    recentContact.unshift(indexData);
+                }
+                //如果不在联系人列表里，那就查找该人信息并作为列表第一个
+                else {
+                    let response0;
+                    let response1;
+                    let flag = 1;
+                    try {
+                        response0 = await cc98Fetch(`/user/name/${chatManName}`);
+                        if (response0.status === 404) {
+                            ////window.location.href="/status/NotFoundUser");
+                        }
+                        if (response0.status === 500) {
+                            ////window.location.href="/status/ServerError");
+                        }
+                        response1 = await response0.json();
+                    } catch (e) {
+                        ////window.location.href="/status/Disconnected");
+                        flag = 0;
+                    }
+                    if (flag == 1) {
+                        let chatMan = { id: response1.id, name: response1.name, portraitUrl: response1.portraitUrl, message: [], lastContent: '', isRead: true };
+                        chatMan.message = await getRecentMessage(chatMan.id, 0, 10, router);
+                        if (chatMan.message) {
+                            chatMan.lastContent = chatMan.message[0];
+                        }
+                        let chatContact = [chatMan];
+                        recentContact = chatContact.concat(recentContact);
+                    }
                 }
             }
         }
