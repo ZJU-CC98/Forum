@@ -1,0 +1,130 @@
+﻿/**
+  *头像框的配置文件
+  *TODO:吉祥物的配置
+  */
+
+{
+  "吉祥物": {
+
+  },
+  "普通": {
+    "width": "9rem;",
+    "height": "9rem;",
+    "position": "absolute;",
+    "left": "-4.5rem;",
+    "top": "-4.5rem;"
+  },
+  "版主": {
+    "width": "9rem;",
+    "height": "9rem;",
+    "position": "absolute;",
+    "left": "-4.5rem;",
+    "top": "-4.5rem;"
+  },
+  "编辑部部长": {
+    "width": "9rem;",
+    "height": "9rem;",
+    "position": "absolute;",
+    "left": "-4.5rem;",
+    "top": "-4.5rem;"
+  },
+  "编辑部成员": {
+    "width": "9rem;",
+    "height": "9rem;",
+    "position": "absolute;",
+    "left": "-4.5rem;",
+    "top": "-4.5rem;"
+  },
+  "技术组组长": {
+    "width": "9rem;",
+    "height": "9rem;",
+    "position": "absolute;",
+    "left": "-4.5rem;",
+    "top": "-4.5rem;"
+  },
+  "技术组成员": {
+    "width": "9rem;",
+    "height": "9rem;",
+    "position": "absolute;",
+    "left": "-4.5rem;",
+    "top": "-4.5rem;"
+  },
+  "论坛贵宾": {
+    "width": "9rem;",
+    "height": "9rem;",
+    "position": "absolute;",
+    "left": "-4.5rem;",
+    "top": "-4.5rem;"
+  },
+  "运营策划部部长": {
+    "width": "9rem;",
+    "height": "9rem;",
+    "position": "absolute;",
+    "left": "-4.5rem;",
+    "top": "-4.5rem;"
+  },
+  "运营策划部成员": {
+    "width": "9rem;",
+    "height": "9rem;",
+    "position": "absolute;",
+    "left": "-4.5rem;",
+    "top": "-4.5rem;"
+  },
+  "影音部部长": {
+
+  },
+  "width": "9rem;",
+  "height": "9rem;",
+  "position": "absolute;",
+  "left": "-4.5rem;",
+  "top": "-4.5rem;",
+  "影音部成员": {
+    "width": "9rem;",
+    "height": "9rem;",
+    "position": "absolute;",
+    "left": "-4.5rem;",
+    "top": "-4.5rem;"
+  },
+  "站务组组长": {
+    "width": "9rem;",
+    "height": "9rem;",
+    "position": "absolute;",
+    "left": "-4.5rem;",
+    "top": "-4.5rem;"
+  },
+  "站务组成员": {
+    "width": "9rem;",
+    "height": "9rem;",
+    "position": "absolute;",
+    "left": "-4.5rem;",
+    "top": "-4.5rem;"
+  },
+  "体育事业部部长": {
+    "width": "9rem;",
+    "height": "9rem;",
+    "position": "absolute;",
+    "left": "-4.5rem;",
+    "top": "-4.5rem;"
+  },
+  "体育事业部成员": {
+    "width": "9rem;",
+    "height": "9rem;",
+    "position": "absolute;",
+    "left": "-4.5rem;",
+    "top": "-4.5rem;"
+  },
+  "办公室主任": {
+    "width": "9rem;",
+    "height": "9rem;",
+    "position": "absolute;",
+    "left": "-4.5rem;",
+    "top": "-4.5rem;"
+  },
+  "办公室成员": {
+    "width": "9rem;",
+    "height": "9rem;",
+    "position": "absolute;",
+    "left": "-4.5rem;",
+    "top": "-4.5rem;"
+  }
+}
