@@ -31,7 +31,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
          * 其他组件只负责添加handler即可
          */
         SignalR.addListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
-        SignalR.addListener('NotifyNotificationChange', this.handleNotifyMessageReceive);
+        SignalR.addListener('NotifyNotificationReceive', this.handleNotifyMessageReceive);
         if (this.props.isLogOn) {
             SignalR.start();
         }
@@ -43,10 +43,11 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
 
     componentWillUnmount() {
         SignalR.removeListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
-        SignalR.removeListener('NotifyNotificationChange', this.handleNotifyMessageReceive);
+        SignalR.removeListener('NotifyNotificationReceive', this.handleNotifyMessageReceive);
     }
 
     async handleNotifyMessageReceive() {
+        console.log("接收到了signalr消息");
         //更新消息数量
         await Utility.refreshUnReadCount();
         this.setState({
@@ -62,11 +63,6 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
             //如果用户注销则关闭signalR链接
             SignalR.stop();
         }
-        //更新消息数量
-        await Utility.refreshUnReadCount();
-        this.setState({
-            unreadCount: Utility.getStorage("unreadCount")
-        });
     }
 
     logOff() {
