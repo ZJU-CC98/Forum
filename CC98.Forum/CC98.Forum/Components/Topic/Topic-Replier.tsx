@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { RouteComponent } from '../RouteComponent';
 import * as Utility from '../../Utility';
 declare let moment: any;
-export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, floor, isDeleted, traceMode, isHot }, { traceMode, buttonIsDisabled, buttonInfo, isFollowing,fanCount}, { topicid}>{
+export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, floor, isDeleted, traceMode, isHot }, { traceMode, buttonIsDisabled, buttonInfo, isFollowing, fanCount }, { topicid }>{
     constructor(props, content) {
         super(props, content);
 
@@ -41,7 +41,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                     buttonIsDisabled: false,
                     buttonInfo: '关注',
                     isFollowing: false,
-                    fanCount: this.props.userInfo.fanCount-1
+                    fanCount: this.props.userInfo.fanCount - 1
                 });
             } else {
                 throw {};
@@ -73,7 +73,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                     buttonIsDisabled: false,
                     buttonInfo: '取关',
                     isFollowing: true,
-                    fanCount: this.props.userInfo.fanCount +1
+                    fanCount: this.props.userInfo.fanCount + 1
                 });
             } else {
                 throw {};
@@ -86,7 +86,8 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         const url = `/user/id/${this.props.userInfo.id}`;
         const realUrl = encodeURI(url);
         const email = `/message/message?id=${this.props.userInfo.id}`;
-        let urlHtml = <a href={realUrl}><img className="userPortrait" src={this.props.userInfo.portraitUrl}></img></a>;
+        //用户头像
+        let urlHtml = <a href={realUrl} style={{ display: "block", maxHeight: "7.5rem" }}><img className="userPortrait" src={this.props.userInfo.portraitUrl}></img></a>;
         if (this.props.isAnonymous == true) {
             urlHtml = <img src={this.props.userInfo.portraitUrl}></img>;
         }
@@ -135,7 +136,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                 {this.props.userInfo.gender === 0 ? <i className="fa fa-venus" style={{ color: "#fff" }}></i> : <i className="fa fa-mars" style={{ color: "#fff" }}></i>}
             </div>
 
-            <div style={{ width: "100%", justifyContent: "center", display: "flex" }}>
+            <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
                 <div style={{ zIndex: 100 }}>{urlHtml}</div>
                 <div className="photoFrame"><img src="/images/sample.png" /></div>
             </div>
@@ -144,24 +145,24 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                 {userName}
             </div>
             <div className="row" style={{ width: "100%" }}>
-                <div className="column" style={{ width: "60%", alignItems: "flex-start", paddingLeft:"1.5rem" }}>
-            <div className="userMessageOpt">
-                帖数 {this.props.userInfo.postCount}
-            </div>
-            <div className="userMessageOpt">
-                粉丝 {this.state.fanCount}
-            </div>
+                <div className="column" style={{ width: "60%", alignItems: "flex-start", paddingLeft: "1.5rem" }}>
+                    <div className="userMessageOpt">
+                        帖数 {this.props.userInfo.postCount}
+                    </div>
+                    <div className="userMessageOpt">
+                        粉丝 {this.state.fanCount}
+                    </div>
 
                     <div className="userMessageOpt">
                         威望 {this.props.userInfo.prestige}
                     </div>
 
-            <div className="userMessageOpt">
-                风评 {this.props.userInfo.popularity}
-            </div>
-            <div className="userMessageOpt">
-                最后登录 {lastLogOn}
-            </div>
+                    <div className="userMessageOpt">
+                        风评 {this.props.userInfo.popularity}
+                    </div>
+                    <div className="userMessageOpt">
+                        最后登录 {lastLogOn}
+                    </div>
                 </div>
                 {btn}
             </div>
