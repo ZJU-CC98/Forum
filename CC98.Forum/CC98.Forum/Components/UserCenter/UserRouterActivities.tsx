@@ -25,11 +25,11 @@ export class UserRouterActivities extends React.Component<{id: string}, UserCent
         if (pageYLeft < 1500 && this.state.isLoading === false) {
             try {
                 this.setState({ isLoading: true });
-                const url = `http://apitest.niconi.cc/user/${this.props.id}/recent-topic?userid=${this.props.id}&from=${this.state.userRecentPosts.length}&size=11`;
+                const url = `/user/${this.props.id}/recent-topic?userid=${this.props.id}&from=${this.state.userRecentPosts.length}&size=11`;
                 const token = await Utility.getToken();
                 const headers = new Headers();
                 headers.append('Authorization', token);
-                let res = await fetch(url, {
+                let res = await Utility.cc98Fetch(url, {
                     headers
                 });
 
@@ -62,11 +62,11 @@ export class UserRouterActivities extends React.Component<{id: string}, UserCent
 
     async componentDidMount() {
         try {
-            const url = `http://apitest.niconi.cc/user/${this.props.id}/recent-topic?userid=${this.props.id}&from=${this.state.userRecentPosts.length}&size=11`;
+            const url = `/user/${this.props.id}/recent-topic?userid=${this.props.id}&from=${this.state.userRecentPosts.length}&size=11`;
             const token = await Utility.getToken();
             const headers = new Headers();
             headers.append('Authorization', token);
-            let res = await fetch(url, {
+            let res = await Utility.cc98Fetch(url, {
                 headers
             });
 
@@ -87,7 +87,7 @@ export class UserRouterActivities extends React.Component<{id: string}, UserCent
                     window.addEventListener('scroll', this.scrollHandler);
                 }
             } else {
-                throw {};
+                throw new Error();
             }
         } catch (e) {
             console.log('用户中心帖子加载失败');

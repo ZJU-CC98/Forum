@@ -32,16 +32,24 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
          */
         SignalR.addListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
         SignalR.addListener('NotifyNotificationChange', this.handleNotifyMessageReceive);
-        SignalR.addListener('NotifyTopicChange', this.handleNotifyMessageReceive);
+        SignalR.removeListener('NotifyNotificationChange', this.handleNotifyMessageReceive);
         if (this.props.isLogOn) {
-            await SignalR.start();
+            SignalR.start();
         }
+        /**
+         * 第一次加载的时候获取初始状态
+         */
+        this.handleNotifyMessageReceive();
+        //更新消息数量
+        await Utility.refreshUnReadCount();
+        this.setState({
+            unreadCount: Utility.getStorage("unreadCount")
+        });
     }
 
     componentWillUnmount() {
         SignalR.removeListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
         SignalR.removeListener('NotifyNotificationChange', this.handleNotifyMessageReceive);
-        SignalR.removeListener('NotifyTopicChange', this.handleNotifyMessageReceive);
     }
 
     async handleNotifyMessageReceive() {
@@ -51,11 +59,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
         });
     }
 
-    componentWillMount() {
-        this.handleNotifyMessageReceive();
-    }
-
-    componentWillReceiveProps(nextProps) {
+    async componentWillReceiveProps(nextProps) {
         if (!this.props.isLogOn && nextProps.isLogOn) {
             //如果用户重新登录则开始signalR链接
             SignalR.start();
@@ -63,6 +67,11 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
             //如果用户注销则关闭signalR链接
             SignalR.stop();
         }
+        //更新消息数量
+        await Utility.refreshUnReadCount();
+        this.setState({
+            unreadCount: Utility.getStorage("unreadCount")
+        });
     }
 
     logOff() {
@@ -101,7 +110,6 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
                 height: '0px'
             };
             
-            Utility.refreshUnReadCount();   
             let unreadCount = { totalCount: 0, replyCount: 0, atCount: 0, systemCount: 0, messageCount: 0};
             if (Utility.getStorage("unreadCount")) {
                 unreadCount = Utility.getStorage("unreadCount")
@@ -123,7 +131,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
                         id="userMessage"
                         onMouseOut={(e) => { this.handleMouseEvent(e.type, 'topBarText'); }}
                         onMouseOver={(e) => { this.handleMouseEvent(e.type, 'topBarText'); }}
-                    > <Link to="/message/response" className="messageTopBar">消息<div className="message-counter displaynone" id="unreadCount-totalCount">{unreadCount.totalCount}</div></Link></div>     
+                    > <Link to="/message" className="messageTopBar">消息<div className="message-counter displaynone" id="unreadCount-totalCount">{unreadCount.totalCount}</div></Link></div>     
                     <div className="topBarText"> <Link to="/focus" style={{ color: '#fff' }}>关注</Link></div>
                     <div className="topBarText"> <Link to="/newTopics" style={{ color: '#fff' }}>新帖</Link></div>
                     <Link to="/boardList"><div className="boardListLink" style={{ margin: '0 0 0 10px' }}><div style={{ marginTop: '16px', color: '#fff' }}>版面</div></div></Link>

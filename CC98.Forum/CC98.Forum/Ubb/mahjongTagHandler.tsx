@@ -46,7 +46,7 @@ export default class MahjongTagHandler extends Ubb.RecursiveTagHandler {
             case "f": url = this.getFaceUrl(mahjongId); break
         }
 
-        return <div>
+        return <div style={{ display: "inline" }}>
             <img src={url} alt="" />{innerContent}
         </div>;
     }

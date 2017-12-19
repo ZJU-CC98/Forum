@@ -67,7 +67,7 @@ class UbbEditorState {
     /**
      * 表情类型
      */
-    emojiType: 'em' | 'ac' | 'mj';
+    emojiType: 'em' | 'ac' | 'mj' | 'tb';
     /**
      * 是否在预览状态
      */
@@ -152,7 +152,19 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
 
     async handleUpload(file: File) {
         let res = await Utility.uploadFile(file);
-        this.handleButtonClick(this.state.extendTagName, `http://apitest.niconi.cc${res.content}`);
+        const response1 = await fetch("/config.production.json");
+        let data;
+        if (response1.status !== 404) {
+            const data1 = await response1.json();
+            const response2 = await fetch("/config.json");
+            const data2 = await response2.json();
+            data = { ...data2, ...data1 };
+        } else {
+            const response2 = await fetch("/config.json");
+            data = await response2.json();
+        }
+        const baseUrl = data.apiUrl;
+        this.handleButtonClick(this.state.extendTagName, `${baseUrl}${res.content}`);
     }
 
     handleUndo() {
@@ -326,8 +338,23 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                     src={`/images/ac/${item}.png`}
                     onClick={() => { this.handleEmojiButtonClick(`[ac${item}]`) }}
                 ></img>)),
-            'mj': [...mohjong.animal, ...mohjong.carton, ...mohjong.face]
+            'mj': [...mohjong.animal, ...mohjong.carton, ...mohjong.face],
+            'tb': new Array(33).fill(0)
+                .map((item, index) => {
+                    if (index < 9) { return `0${index + 1}`; }
+                    else { return `${index + 1}`; }
+                }).map((item) => (<img
+                    src={`/images/tb/tb${item}.png`}
+                    onClick={() => { this.handleEmojiButtonClick(`[tb${item}]`) }}
+                ></img>))
         };
+        const info = {
+            'ac': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="//www.acfun.cn">AcFun弹幕视频网</a> 提供</p>,
+            'mj': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="//bbs.saraba1st.com/2b/forum.php">stage1st论坛</a> 提供</p>,
+            'tb': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="//tieba.baidu.com ">百度贴吧</a> 提供</p>,
+            'em': null
+        };
+
 
         return (
             <div className="ubb-editor" style={{maxHeight: `${height + 6.125}rem`}}>
@@ -446,9 +473,11 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                     <div className="ubb-emoji-buttons">
                         <button type="button" className={this.state.emojiType === 'ac' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} onClick={(e) => { e.stopPropagation(); this.setState({ emojiType: 'ac' }); }}>AC娘</button>
                         <button type="button" className={this.state.emojiType === 'mj' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} onClick={(e) => { e.stopPropagation(); this.setState({ emojiType: 'mj' }); }}>麻将脸</button>
+                        <button type="button" className={this.state.emojiType === 'tb' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} onClick={(e) => { e.stopPropagation(); this.setState({ emojiType: 'tb' }); }}>贴吧</button>
                         <button type="button" className={this.state.emojiType === 'em' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} onClick={(e) => { e.stopPropagation(); this.setState({ emojiType: 'em' }); }}>经典</button>
                     </div>
                     <div className={`ubb-emoji-content ubb-emoji-content-${this.state.emojiType}`}>
+                        {info[this.state.emojiType]}
                         {emoji[this.state.emojiType]}
                     </div>
                 </div>

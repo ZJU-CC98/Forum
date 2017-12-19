@@ -177,4 +177,23 @@
         height: 2rem;
         width: 2rem;
     }
+
+    .ubb-emoji-content-tb {
+        height: 20rem;
+
+        img {
+            margin: 0.6rem;
+        }
+    }
+
+    .ubb-emoji-info {
+        color: grey; 
+        font-size: 0.75rem; 
+        text-align: center;
+
+        a {
+            color: blue;
+            text-decoration: underline;
+        }
+    }
 }

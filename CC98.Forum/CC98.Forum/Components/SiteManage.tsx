@@ -23,8 +23,8 @@ export class SiteManage extends React.Component<null, SiteManageState> {
         this.changeSiteAnnouncement = this.changeSiteAnnouncement.bind(this);
     }
     async componentDidMount() {
-        const url = 'http://apitest.niconi.cc/config/global';
-        let res = await fetch(url);
+        const url = '/config/global';
+        let res = await Utility.cc98Fetch(url);
         let data = await res.json();
         this.setState({
             announcement: data.announcement
@@ -32,13 +32,13 @@ export class SiteManage extends React.Component<null, SiteManageState> {
     }
 
     async changeSiteAnnouncement() {
-        const url = 'http://apitest.niconi.cc/config/global/announcement';
+        const url = '/config/global/announcement';
         const token = await Utility.getToken();
         const announcement = this.state.announcement;
         let headers = new Headers();
         headers.append('Authorization', token);
         headers.append('Content-Type', 'application/json');
-        let res = await fetch(url, {
+        let res = await Utility.cc98Fetch(url, {
             method: 'PUT',
             headers,
             body: JSON.stringify({ announcement })

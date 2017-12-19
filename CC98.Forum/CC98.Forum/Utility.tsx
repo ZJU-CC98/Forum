@@ -15,8 +15,8 @@ import { changeUserInfo } from './Actions';
 declare let editormd: any;
 declare let testEditor: any;
 declare let moment: any;
-
-export async function getBoardTopicAsync(curPage, boardId,totalTopicCount) {
+declare let urljoin: any;
+export async function getBoardTopicAsync(curPage, boardId, totalTopicCount) {
     try {
 
         const startPage = (curPage - 1) * 20;
@@ -32,9 +32,9 @@ export async function getBoardTopicAsync(curPage, boardId,totalTopicCount) {
         }
 
         const boardtopics: State.TopicTitleAndContentState[] = [];
-        const url = `http://apitest.niconi.cc/Board/${boardId}/topic?from=${startPage}&size=${topicNumberInPage}`;
+        const url = `/Board/${boardId}/topic?from=${startPage}&size=${topicNumberInPage}`;
 
-        const response = await fetch(url,
+        const response = await cc98Fetch(url,
             { headers });
         //无权限进版面
         switch (response.status) {
@@ -62,22 +62,22 @@ export async function getBoardTopicAsync(curPage, boardId,totalTopicCount) {
 export async function getTopic(topicid: number) {
     try {
         const headers = await formAuthorizeHeader();
-        const response = await fetch(`http://apitest.niconi.cc/Topic/${topicid}/post?from=0&size=1`, {
+        const response = await cc98Fetch(`/Topic/${topicid}/post?from=0&size=1`, {
             headers
         });
         const data = await response.json();
         let topicMessage = null;
         const likeInfo = await refreshLikeState(topicid, data[0].id);
         const awardInfo = await getAwardInfo(data[0].id);
-        if (data[0].isAnonymous != true) {   
-            
+        if (data[0].isAnonymous != true) {
+
             const userMesJson = await getUserInfo(data[0].userId);
             topicMessage = { ...data[0], userInfo: userMesJson, postId: data[0].id, likeInfo: likeInfo, awardInfo: awardInfo }
         } else {
             const anonymousUserName = `匿名${data[0].userName.toUpperCase()}`;
             let purl = 'https://www.cc98.org/pic/anonymous.gif';
-            const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount:0 };
-            topicMessage = { ...data[0], userInfo: userMesJson, postId: data[0].id, isAnonymous: true, likeInfo: likeInfo, awardInfo: awardInfo}
+            const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
+            topicMessage = { ...data[0], userInfo: userMesJson, postId: data[0].id, isAnonymous: true, likeInfo: likeInfo, awardInfo: awardInfo }
 
         }
 
@@ -88,14 +88,14 @@ export async function getTopic(topicid: number) {
         ////window.location.href = "/status/Disconnected";
     }
 }
-export async function getTopicContent(topicid: number, curPage: number,replyCount:number) {
+export async function getTopicContent(topicid: number, curPage: number, replyCount: number) {
     try {
         const startPage = (curPage - 1) * 10;
         const endPage = curPage * 10 - 1;
         const headers = await formAuthorizeHeader();
         const topic = curPage !== 1
-            ? await fetch(`http://apitest.niconi.cc/Topic/${topicid}/post?from=${startPage}&size=10`, { headers })
-            : await fetch(`http://apitest.niconi.cc/Topic/${topicid}/post?from=1&size=9`, { headers });
+            ? await cc98Fetch(`/Topic/${topicid}/post?from=${startPage}&size=10`, { headers })
+            : await cc98Fetch(`/Topic/${topicid}/post?from=1&size=9`, { headers });
         const content = await topic.json();
         const post = [];
         let topicNumberInPage: number;
@@ -108,7 +108,7 @@ export async function getTopicContent(topicid: number, curPage: number,replyCoun
         } else {
             topicNumberInPage = (replyCount - (curPage - 1) * 10 + 1);
         }
-        
+
         for (let i = 0; i < topicNumberInPage; i++) {
             const likeInfo = await refreshLikeState(topicid, content[i].id);
             const awardInfo = await getAwardInfo(content[i].id);
@@ -116,22 +116,22 @@ export async function getTopicContent(topicid: number, curPage: number,replyCoun
 
                 const userMesJson = await getUserInfo(content[i].userId);
                 post[i] = {
-                    ...content[i], userInfo:userMesJson, postId: content[i].id, likeInfo: likeInfo, awardInfo: awardInfo
+                    ...content[i], userInfo: userMesJson, postId: content[i].id, likeInfo: likeInfo, awardInfo: awardInfo
                 }
 
             } else if (content[i].isAnonymous == true) {
                 let purl = 'https://www.cc98.org/pic/anonymous.gif';
                 const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
 
-                const userMesJson = {name: anonymousUserName, portraitUrl: purl, id: null,privilege: '匿名用户', popularity: 0,signatureCode: null, postCount: 0};
+                const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
                 post[i] = {
-                    
-                    ...content[i], userInfo: userMesJson ,postId: content[i].id,  isAnonymous: true, likeInfo: likeInfo, awardInfo: awardInfo
+
+                    ...content[i], userInfo: userMesJson, postId: content[i].id, isAnonymous: true, likeInfo: likeInfo, awardInfo: awardInfo
                 }
             } else {
-                const userMesJson = {name: '98Deleter', portraitUrl: 'http://www.cc98.org/images/policeM.png', id: null, privilege: '匿名用户', popularity: 0 , signatureCode: null,postCount: 0};
+                const userMesJson = { name: '98Deleter', portraitUrl: 'http://www.cc98.org/images/policeM.png', id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
                 post[i] = {
-                    ...content[i], postId: content[i].id,  isAnonymous: false, isDeleted: true, content: "该贴已被my cc98, my home", likeInfo: likeInfo, awardInfo: awardInfo
+                    ...content[i], postId: content[i].id, isAnonymous: false, isDeleted: true, content: "该贴已被my cc98, my home", likeInfo: likeInfo, awardInfo: awardInfo
                 }
             }
         }
@@ -147,7 +147,7 @@ export async function like(topicid, postid, router) {
         const headers = await formAuthorizeHeader();
         headers.append("Content-Type", "application/json");
         const content = "1";
-        const response = await fetch(`http://apitest.niconi.cc/post/${postid}/like`, { method: "PUT", headers, body:content });
+        const response = await cc98Fetch(`/post/${postid}/like`, { method: "PUT", headers, body: content });
         if (response.status === 401) {
             //window.location.href = "/status/UnauthorizedTopic";
         }
@@ -172,7 +172,7 @@ export async function dislike(topicid, postid, router) {
         const headers = await formAuthorizeHeader();
         headers.append("Content-Type", "application/json");
         const content: string = "2";
-        const response = await fetch(`http://apitest.niconi.cc/post/${postid}/like`, { method: "PUT", headers, body: content });
+        const response = await cc98Fetch(`/post/${postid}/like`, { method: "PUT", headers, body: content });
         if (response.status === 401) {
             //window.location.href = "/status/UnauthorizedTopic";
         }
@@ -197,7 +197,7 @@ export async function getLikeStateAndCount(topicid, postid, router) {
     try {
         const headers = await formAuthorizeHeader();
 
-        const response = await fetch(`http://apitest.niconi.cc/post/${postid}/like`, { headers });
+        const response = await cc98Fetch(`/post/${postid}/like`, { headers });
         if (response.status === 401) {
             //window.location.href = "/status/UnauthorizedTopic";
         }
@@ -221,7 +221,7 @@ export async function getLikeStateAndCount(topicid, postid, router) {
 export async function getHotReplyContent(topicid: number) {
     try {
         const headers = await formAuthorizeHeader();
-        const response = await fetch(`http://apitest.niconi.cc/Topic/${topicid}/hot-post`, { headers });
+        const response = await cc98Fetch(`/Topic/${topicid}/hot-post`, { headers });
         const content = await response.json();
         const post = [];
         let topicNumberInPage: number = content.length;
@@ -230,17 +230,17 @@ export async function getHotReplyContent(topicid: number) {
             const awardInfo = await getAwardInfo(content[i].id);
             if (content[i].isAnonymous != true) {
 
-                const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${content[i].userName}`);
+                const userMesResponse = await cc98Fetch(`/user/name/${content[i].userName}`);
                 const userMesJson = await userMesResponse.json();
                 post[i] = {
-                    ...content[i], userInfo: userMesJson, postId: content[i].id,  likeInfo: likeInfo, awardInfo: awardInfo
+                    ...content[i], userInfo: userMesJson, postId: content[i].id, likeInfo: likeInfo, awardInfo: awardInfo
                 }
 
             } else {
                 let purl = 'https://www.cc98.org/pic/anonymous.gif';
                 const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
                 const anonymousLastReplierName = `匿名${content[i].lastUpdateAuthor.toUpperCase()}`;
-                const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null,postCount: 0 };
+                const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
                 post[i] = {
                     ...content[i], userInfo: userMesJson, postId: content[i].id, likeInfo: likeInfo, awardInfo: awardInfo
                 }
@@ -334,7 +334,7 @@ export function getPager(curPage, totalPage) {
 export async function getCurUserTopic(topicid: number, userId: number, router) {
     try {
         const headers = await formAuthorizeHeader();
-        const response = await fetch(`http://apitest.niconi.cc/post/topic/user?topicid=${topicid}&userid=${userId}&from=0&size=1`, { headers });
+        const response = await cc98Fetch(`/post/topic/user?topicid=${topicid}&userid=${userId}&from=0&size=1`, { headers });
         if (response.status === 401) {
             //window.location.href = "/status/UnauthorizedTopic";
         }
@@ -345,7 +345,7 @@ export async function getCurUserTopic(topicid: number, userId: number, router) {
             //window.location.href = "/status/ServerError";
         }
         const data = await response.json();
-        const userMesResponse = await fetch(`http://apitest.niconi.cc/user/name/${data[0].userName}`);
+        const userMesResponse = await cc98Fetch(`/user/name/${data[0].userName}`);
         if (userMesResponse.status === 404) {
             //window.location.href = "/status/NotFoundUser";
         }
@@ -378,7 +378,7 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
         const token = await getToken();
         const headers = new Headers();
         headers.append('Authorization', token);
-        const topic = await fetch(`http://apitest.niconi.cc/Post/topic/user?topicid=${topicid}&userId=${userId}&from=${start}&size=10`, { headers });
+        const topic = await cc98Fetch(`/Post/topic/user?topicid=${topicid}&userId=${userId}&from=${start}&size=10`, { headers });
         const content = await topic.json();
 
         let post = [];
@@ -403,15 +403,15 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
             if (content[i].isAnonymous != true) {
                 const userMesJson = await getUserInfo(content[i].userId);
                 post[i] = {
-                    ...content[i], userInfo: userMesJson, postId: content[i].id,  likeInfo: likeInfo, awardInfo: awardInfo
+                    ...content[i], userInfo: userMesJson, postId: content[i].id, likeInfo: likeInfo, awardInfo: awardInfo
                 }
 
             } else {
                 let purl = 'https://www.cc98.org/pic/anonymous.gif';
                 const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
-                const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null,postCount:0 };
+                const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
                 post[i] = {
-                    ...content[i], userInfo: userMesJson,  likeInfo: likeInfo, awardInfo: awardInfo
+                    ...content[i], userInfo: userMesJson, likeInfo: likeInfo, awardInfo: awardInfo
                 }
             }
         }
@@ -439,7 +439,7 @@ export async function getAllNewTopic(from: number, router) {
         /**
          * 通过api获取到主题之后转成json格式
          */
-        const response = await fetch(`http://apitest.niconi.cc/topic/new?from=${from}&size=${size}`, { headers });
+        const response = await cc98Fetch(`/topic/new?from=${from}&size=${size}`, { headers });
         if (response.status === 401) {
             //window.location.href = "/status/UnauthorizedTopic";
         }
@@ -451,7 +451,7 @@ export async function getAllNewTopic(from: number, router) {
         for (let i in newTopic) {
             if (newTopic[i].userId) {
                 //获取作者粉丝数目
-                let userFan0 = await fetch(`http://apitest.niconi.cc/user/follower/count?userid=${newTopic[i].userId}`);
+                let userFan0 = await cc98Fetch(`/user/follower/count?userid=${newTopic[i].userId}`);
                 if (userFan0.status === 404) {
                     //window.location.href = "/status/NotFoundUser";
                 }
@@ -461,7 +461,7 @@ export async function getAllNewTopic(from: number, router) {
                 let userFan1 = await userFan0.json();
                 newTopic[i].fanCount = userFan1;
                 //获取作者头像地址
-                let userInfo0 = await fetch(`http://apitest.niconi.cc/user/basic/${newTopic[i].userId}`);
+                let userInfo0 = await cc98Fetch(`/user/basic/${newTopic[i].userId}`);
                 if (userInfo0.status === 404) {
                     //window.location.href = "/status/NotFoundUser";
                 }
@@ -510,10 +510,10 @@ export async function getAllNewTopic(from: number, router) {
 }
 
 /**
- * 获取某个关注版面帖子
+ * 获取关注帖子,boardId == -1为关注用户帖子, boardId === 0 为全部关注版面帖子, boardId > 0则为对应版面帖子
  * @param curPage
  */
-export async function getFocusBoardTopic(boardId: number, boardName: string, from: number, router) {
+export async function getFocusTopic(boardId: number, boardName: string, from: number, router) {
     try {
         /**
          * 一次性可以获取20个主题
@@ -527,11 +527,14 @@ export async function getFocusBoardTopic(boardId: number, boardName: string, fro
          * 通过api获取到主题之后转成json格式
          */
         let response;
-        if (boardId == 0) {
-            response = await fetch(`http://apitest.niconi.cc/me/followee/topic?from=${from}&size=${size}`, { headers });
+        if (boardId === -1) {
+            response = await cc98Fetch(`/me/followee/topic?from=${from}&size=${size}`, { headers });
+        }
+        else if(boardId === 0) {
+            response = await cc98Fetch(`/me/custom-board/topic?from=${from}&size=${size}`, { headers });
         }
         else {
-            response = await fetch(`http://apitest.niconi.cc/board/${boardId}/topic?from=${from}&size=${size}`, { headers });
+            response = await cc98Fetch(`/board/${boardId}/topic?from=${from}&size=${size}`, { headers });
         }
         if (response.status === 401) {
             //window.location.href = "/status/UnauthorizedTopic";
@@ -540,11 +543,11 @@ export async function getFocusBoardTopic(boardId: number, boardName: string, fro
             //window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
-
+        console.log("最后回复", newTopic);
         for (let i in newTopic) {
             if (newTopic[i].userId) {
                 //获取作者粉丝数目
-                let userFan0 = await fetch(`http://apitest.niconi.cc/user/follower/count?userid=${newTopic[i].userId}`);
+                let userFan0 = await cc98Fetch(`/user/follower/count?userid=${newTopic[i].userId}`);
                 if (userFan0.status === 404) {
                     //window.location.href = "/status/NotFoundUser";
                 }
@@ -554,99 +557,7 @@ export async function getFocusBoardTopic(boardId: number, boardName: string, fro
                 let userFan1 = await userFan0.json();
                 newTopic[i].fanCount = userFan1;
                 //获取作者头像地址
-                let userInfo0 = await fetch(`http://apitest.niconi.cc/user/basic/${newTopic[i].userId}`);
-                if (userInfo0.status === 404) {
-                    //window.location.href = "/status/NotFoundUser";
-                }
-                if (userInfo0.status === 500) {
-                    //window.location.href = "/status/ServerError";
-                }
-                let userInfo1 = await userInfo0.json();
-                newTopic[i].portraitUrl = userInfo1.portraitUrl;
-                //获取所在版面名称
-                if (boardId == 0) {
-                    newTopic[i].boardName = await getBoardName(newTopic[i].boardId);
-                }
-                else {
-                    newTopic[i].boardName = boardName;
-                }
-                //阅读数转换
-                if (newTopic[i].hitCount > 10000) {
-                    if (newTopic[i].hitCount > 100000) {
-                        let index = parseInt(`${newTopic[i].hitCount / 10000}`);
-                        newTopic[i].hitCount = `${index}万`;
-                    }
-                    else {
-                        let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
-                        newTopic[i].hitCount = `${index}万`;
-                    }
-                }
-                //回复数转换
-                if (newTopic[i].replyCount > 10000) {
-                    if (newTopic[i].replyCount > 100000) {
-                        let index = parseInt(`${newTopic[i].replyCount / 10000}`);
-                        newTopic[i].replyCount = `${index}万`;
-                    }
-                    else {
-                        let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
-                        newTopic[i].replyCount = `${index}万`;
-                    }
-                }
-            }
-            //匿名时粉丝数显示0
-            else {
-                newTopic[i].fanCount = 0;
-                newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-                newTopic[i].userName = "匿名用户";
-                newTopic[i].boardName = "心灵之约";
-            }
-        }
-        return newTopic;
-
-    } catch (e) {
-        ////window.location.href = "/status/Disconnected";
-    }
-}
-
-/**
- * 获取全部关注版面帖子
- */
-export async function getFocusTopic(from: number, router) {
-    try {
-        /**
-         * 一次性可以获取20个主题
-         */
-        var size = 20;
-        if (from > 80) {
-            size = 100 - from;
-        }
-        const headers = await formAuthorizeHeader();
-        /**
-         * 通过api获取到主题之后转成json格式
-         */
-        const response = await fetch(`http://apitest.niconi.cc/me/custom-board/topic?from=${from}&size=${size}`, { headers });
-        if (response.status === 401) {
-            //window.location.href = "/status/UnauthorizedTopic";
-        }
-        if (response.status === 500) {
-            //window.location.href = "/status/ServerError";
-        }
-        let newTopic = await response.json();
-
-        for (let i in newTopic) {
-            if (newTopic[i].userId) {
-                //获取作者粉丝数目
-                let userFan0 = await fetch(`http://apitest.niconi.cc/user/follower/count?userid=${newTopic[i].userId}`);
-                if (userFan0.status === 404) {
-                    //window.location.href = "/status/NotFoundUser";
-                }
-                if (userFan0.status === 500) {
-                    //window.location.href = "/status/ServerError";
-                }
-                let userFan1 = await userFan0.json();
-                newTopic[i].fanCount = userFan1;
-                //获取作者头像地址
-                let userInfo0 = await fetch(`http://apitest.niconi.cc/user/basic/${newTopic[i].userId}`);
+                let userInfo0 = await cc98Fetch(`/user/basic/${newTopic[i].userId}`);
                 if (userInfo0.status === 404) {
                     //window.location.href = "/status/NotFoundUser";
                 }
@@ -657,6 +568,7 @@ export async function getFocusTopic(from: number, router) {
                 newTopic[i].portraitUrl = userInfo1.portraitUrl;
                 //获取所在版面名称
                 newTopic[i].boardName = await getBoardName(newTopic[i].boardId);
+                
                 //阅读数转换
                 if (newTopic[i].hitCount > 10000) {
                     if (newTopic[i].hitCount > 100000) {
@@ -694,7 +606,6 @@ export async function getFocusTopic(from: number, router) {
         ////window.location.href = "/status/Disconnected";
     }
 }
-
 
 //与缓存相关的函数
 export function setStorage(key, value) {
@@ -793,8 +704,8 @@ export async function getBoardName(boardId: number) {
             const token = await getToken();
             const headers = new Headers();
             headers.append('Authorization', token);
-            const url = `http://apitest.niconi.cc/board/${boardId}`;
-            let res = await fetch(url, { headers });
+            const url = `/board/${boardId}`;
+            let res = await cc98Fetch(url, { headers });
             if (res.status === 404) {
                 //window.location.href = "/status/NotFoundBoard";
             }
@@ -831,7 +742,7 @@ export async function getRecentContact(from: number, size: number, router) {
     try {
         const headers = await formAuthorizeHeader();
         console.log("开始获取联系人数据");
-        let response = await fetch(`http://apitest.niconi.cc/message/recent-contact-users?from=${from}&size=${size}`, { headers });
+        let response = await cc98Fetch(`/message/recent-contact-users?from=${from}&size=${size}`, { headers });
         if (response.status === 401) {
             ////window.location.href="/status/Loggout");
         }
@@ -840,7 +751,7 @@ export async function getRecentContact(from: number, size: number, router) {
         }
         let recentContactId = await response.json();
         console.log("开始获取联系人id数组", recentContactId);
-        let url = "http://apitest.niconi.cc/user/basic"
+        let url = "/user/basic"
         for (let i in recentContactId) {
             if (i === "0") {
                 url = `${url}?id=${recentContactId[i].userId}`;
@@ -849,7 +760,7 @@ export async function getRecentContact(from: number, size: number, router) {
                 url = `${url}&id=${recentContactId[i].userId}`;
             }
         }
-        let response1 = await fetch(url);
+        let response1 = await cc98Fetch(url);
         if (response1.status === 404) {
             ////window.location.href="/status/NotFoundUser");
         }
@@ -875,7 +786,7 @@ export async function getRecentContact(from: number, size: number, router) {
 export async function getRecentMessage(userId: number, from: number, size: number, router) {
     try {
         const headers = await formAuthorizeHeader();
-        let response0 = await fetch(`http://apitest.niconi.cc/message/user/${userId}?from=${from}&size=${size}`, { headers });
+        let response0 = await cc98Fetch(`/message/user/${userId}?from=${from}&size=${size}`, { headers });
         if (response0.status === 401) {
             ////window.location.href="/status/Logout");
         }
@@ -959,7 +870,7 @@ export async function sortContactList(recentContact, router) {
             let chatMan;
             let flag = 1;
             try {
-                response = await fetch(`http://apitest.niconi.cc/user/basic/${chatManId}`);
+                response = await cc98Fetch(`/user/basic/${chatManId}`);
                 if (response.status === 404) {
                     ////window.location.href="/status/NotFoundUser");
                 }
@@ -1006,7 +917,7 @@ export async function sortContactList(recentContact, router) {
                 let response1;
                 let flag = 1;
                 try {
-                    response0 = await fetch(`http://apitest.niconi.cc/user/name/${chatManName}`);
+                    response0 = await cc98Fetch(`/user/name/${chatManName}`);
                     if (response0.status === 404) {
                         ////window.location.href="/status/NotFoundUser");
                     }
@@ -1042,7 +953,7 @@ export async function sortContactList(recentContact, router) {
         let token = await await getToken();
         const headers = new Headers();
         headers.append('Authorization', token);
-        const replyCountResponse = await fetch(`http://apitest.niconi.cc/Topic/${topicid}`, { headers });
+        const replyCountResponse = await cc98Fetch(`/Topic/${topicid}`, { headers });
         if (replyCountResponse.status === 401) {
             //window.location.href = "/status/UnauthorizedTopic";
         }
@@ -1079,7 +990,7 @@ export async function getLikeState(topicid, router) {
         const headers = await formAuthorizeHeader();
         const topic = await getTopic(topicid);
         const postId = topic.postId;
-        const response = await fetch(`http://apitest.niconi.cc/post/${postId}/like`, { headers });
+        const response = await cc98Fetch(`/post/${postId}/like`, { headers });
         if (response.status === 401) {
             //window.location.href = "/status/UnauthorizedTopic";
         }
@@ -1102,7 +1013,7 @@ export async function getLikeState(topicid, router) {
 export async function refreshLikeState(topicId, postId) {
     try {
         const headers = await formAuthorizeHeader();
-        const response = await fetch(`http://apitest.niconi.cc/post/${postId}/like`, { headers });
+        const response = await cc98Fetch(`/post/${postId}/like`, { headers });
         if (response.status === 401) {
             //window.location.href = "/status/UnauthorizedTopic";
         }
@@ -1123,7 +1034,7 @@ export async function refreshLikeState(topicId, postId) {
 }
 export async function sendTopic(topicId, router) {
     try {
-        const url = `http://apitest.niconi.cc/post/topic/${topicId}`;
+        const url = `/post/topic/${topicId}`;
         const c = testEditor.getMarkdown();
         const content = {
             content: c,
@@ -1131,11 +1042,11 @@ export async function sendTopic(topicId, router) {
             title: ""
         }
         const contentJson = JSON.stringify(content);
-        const token = await  getToken();
+        const token = await getToken();
         const myHeaders = new Headers();
         myHeaders.append("Authorization", token);
         myHeaders.append("Content-Type", 'application/json');
-        const mes = await fetch(url, {
+        const mes = await cc98Fetch(url, {
             method: 'POST',
             headers: myHeaders,
             body: contentJson
@@ -1163,12 +1074,12 @@ export async function sendTopic(topicId, router) {
 
 
 export function getListTotalPage(totalTopicCount) {
-        return (totalTopicCount - totalTopicCount % 20) / 20 + 1;
+    return (totalTopicCount - totalTopicCount % 20) / 20 + 1;
 }
 export async function getCurUserTotalReplyPage(topicId, userId, router) {
     try {
         const headers = await formAuthorizeHeader();
-        const replyCountResponse = await fetch(`http://apitest.niconi.cc/post/topic/user?topicid=${topicId}&userid=${userId}&from=0&size=1`, { headers });
+        const replyCountResponse = await cc98Fetch(`/post/topic/user?topicid=${topicId}&userid=${userId}&from=0&size=1`, { headers });
         if (replyCountResponse.status === 401) {
             //window.location.href = "/status/UnauthorizedTopic";
         }
@@ -1197,7 +1108,7 @@ export async function getCurUserTotalReplyPage(topicId, userId, router) {
 export async function sendMessage(bodyContent: string, router) {
     const myHeaders = await formAuthorizeHeader();
     myHeaders.append('content-type', 'application/json');
-    let response = await fetch('http://apitest.niconi.cc/message', {
+    let response = await cc98Fetch('/message', {
         method: 'POST',
         headers: myHeaders,
         body: bodyContent
@@ -1280,12 +1191,12 @@ export function isBottom() {
  */
 export async function uploadFile(file: File) {
     try {
-        const url = `http://apitest.niconi.cc/file`;
+        const url = `/file`;
         const myHeaders = await formAuthorizeHeader();
         let formdata = new FormData();
         formdata.append('files', file, file.name);
         formdata.append('contentType', "multipart/form-data");
-        let res = await fetch(url, {
+        let res = await cc98Fetch(url, {
             method: 'POST',
             headers: myHeaders,
             body: formdata
@@ -1310,11 +1221,11 @@ export function clickUploadIcon() {
     console.log("click");
     $("#upload-files").click();
 }
-export async function uploadEvent(e){
+export async function uploadEvent(e) {
     const files = e.target.files;
     const res = await uploadFile(files[0]);
     const url = res.content;
-    const str = `![](http://apitest.niconi.cc${url})`;
+    const str = `![](${url})`;
     testEditor.appendMarkdown(str);
     console.log("upload and append");
 }
@@ -1325,9 +1236,9 @@ export async function uploadEvent(e){
 export async function followUser(userId: number) {
     try {
         const headers = await formAuthorizeHeader();
-        const url = `http://apitest.niconi.cc/me/followee/${userId}`;
+        const url = `/me/followee/${userId}`;
 
-        let res = await fetch(url, {
+        let res = await cc98Fetch(url, {
             method: 'PUT',
             headers
         });
@@ -1348,9 +1259,9 @@ export async function followUser(userId: number) {
 export async function unfollowUser(userId: number) {
     try {
         const headers = await formAuthorizeHeader();
-        const url = `http://apitest.niconi.cc/me/followee/${userId}`;
- 
-        let res = await fetch(url, {
+        const url = `/me/followee/${userId}`;
+
+        let res = await cc98Fetch(url, {
             method: 'DELETE',
             headers
         });
@@ -1366,8 +1277,8 @@ export async function unfollowUser(userId: number) {
 
 export async function GetTopTopics(boardId) {
     const headers = await formAuthorizeHeader();
-    const url = `http://apitest.niconi.cc/topic/toptopics?boardid=${boardId}`;
-    const response = await fetch(url, { headers });
+    const url = `/topic/toptopics?boardid=${boardId}`;
+    const response = await cc98Fetch(url, { headers });
     const data: State.TopicTitleAndContentState[] = await response.json();
     let topics: State.TopicTitleAndContentState[] = [];
     for (let i = 0; i < data.length; i++) {
@@ -1386,9 +1297,9 @@ export async function GetTopTopics(boardId) {
 }
 export async function getBestTopics(curPage, boardId) {
     const start = (curPage - 1) * 20;
-    const url = `http://apitest.niconi.cc/topic/best/board/${boardId}?from=${start}&size=20`;
+    const url = `/topic/best/board/${boardId}?from=${start}&size=20`;
     const headers = await formAuthorizeHeader();
-    const response = await fetch(url, { headers });
+    const response = await cc98Fetch(url, { headers });
     const data = await response.json();
     let boardtopics: State.TopicTitleAndContentState[] = [];
     for (let i = 0; i < data.topics.length; i++) {
@@ -1400,11 +1311,11 @@ export async function getBestTopics(curPage, boardId) {
 }
 export async function getSaveTopics(curPage, boardId) {
     const start = (curPage - 1) * 20;
-    const url = `http://apitest.niconi.cc/topic/save/board/${boardId}?from=${start}&size=20`;
-    const token = await  getToken();
+    const url = `/topic/save/board/${boardId}?from=${start}&size=20`;
+    const token = await getToken();
     const headers = new Headers();
     headers.append("Authorization", token);
-    const response = await fetch(url, { headers });
+    const response = await cc98Fetch(url, { headers });
     const data = await response.json();
     let boardtopics: State.TopicTitleAndContentState[] = [];
     for (let i = 0; i < data.topics.length; i++) {
@@ -1431,7 +1342,7 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
         let size = 20;
         let newTopic;
         if (boardId == 0) {
-            const response = await fetch(`http://apitest.niconi.cc/topic/search?from=${from}&size=${size}`, {
+            const response = await cc98Fetch(`/topic/search?from=${from}&size=${size}`, {
                 method: 'POST',
                 headers: myHeaders,
                 body: bodyCotent
@@ -1445,7 +1356,7 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
             newTopic = await response.json();
         }
         else {
-            const response = await fetch(`http://apitest.niconi.cc/topic/search/board/${boardId}?from=${from}&size=${size}`, {
+            const response = await cc98Fetch(`/topic/search/board/${boardId}?from=${from}&size=${size}`, {
                 method: 'POST',
                 headers: myHeaders,
                 body: bodyCotent
@@ -1463,7 +1374,7 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
             for (let i in newTopic) {
                 if (newTopic[i].userId) {
                     //获取作者粉丝数目
-                    let userFan0 = await fetch(`http://apitest.niconi.cc/user/follower/count?userid=${newTopic[i].userId}`);
+                    let userFan0 = await cc98Fetch(`/user/follower/count?userid=${newTopic[i].userId}`);
                     if (userFan0.status === 404) {
                         //window.location.href = "/status/NotFoundUser";
                     }
@@ -1473,7 +1384,7 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                     let userFan1 = await userFan0.json();
                     newTopic[i].fanCount = userFan1;
                     //获取作者头像地址
-                    let userInfo0 = await fetch(`http://apitest.niconi.cc/user/basic/${newTopic[i].userId}`);
+                    let userInfo0 = await cc98Fetch(`/user/basic/${newTopic[i].userId}`);
                     if (userInfo0.status === 404) {
                         //window.location.href = "/status/NotFoundUser";
                     }
@@ -1529,13 +1440,13 @@ export async function awardWealth(reason, value, postId) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
     const body = {
-        operationType:0,
+        operationType: 0,
         reason: reason,
         wealth: value
     }
     const str = JSON.stringify(body);
-    const url = `http://apitest.niconi.cc/post/${postId}/operation`;
-    const response = await fetch(url, { method: "POST", headers, body: str });
+    const url = `/post/${postId}/operation`;
+    const response = await cc98Fetch(url, { method: "POST", headers, body: str });
     switch (response.status) {
         case 400:
             return 'wrong input';
@@ -1552,13 +1463,13 @@ export async function deductWealth(reason, value, postId) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
     const body = {
-        operationType:1,
+        operationType: 1,
         reason: reason,
         wealth: value
     }
     const str = JSON.stringify(body);
-    const url = `http://apitest.niconi.cc/post/${postId}/operation`;
-    const response = await fetch(url, { method: "POST", headers, body: str });
+    const url = `/post/${postId}/operation`;
+    const response = await cc98Fetch(url, { method: "POST", headers, body: str });
     switch (response.status) {
         case 400:
             return 'wrong input';
@@ -1573,14 +1484,14 @@ export async function deductWealth(reason, value, postId) {
 }
 export async function getAwardInfo(postId) {
     const headers = await formAuthorizeHeader();
-    const url = `http://apitest.niconi.cc/post/${postId}/awards`;
-    const response = await fetch(url, { headers });
+    const url = `/post/${postId}/awards`;
+    const response = await cc98Fetch(url, { headers });
     const data = await response.json();
     return data;
 }
 export async function getPortraitUrl(userName) {
-    const url = `http://apitest.niconi.cc/user/name/${userName}`;
-    const response = await fetch(url);
+    const url = `/user/name/${userName}`;
+    const response = await cc98Fetch(url);
     const data = await response.json();
     return data.portraitUrl;
 }
@@ -2018,14 +1929,8 @@ export function isFollowThisBoard(boardId) {
 
 export async function followBoard(boardId) {
     const headers = await formAuthorizeHeader();
-    const url = `http://apitest.niconi.cc/me/addcustomboard/${boardId}`;
-    const response = await fetch(url, { method: "POST", headers });
-    if (response.status === 404) {
-        //window.location.href = "/status/notfoundboard";
-    }
-    if (response.status === 500) {
-        //window.location.href = "/status/servererror";
-    }
+    const url = `/me/custom-board/${boardId}`;
+    const response = await cc98Fetch(url, { method: "PUT", headers });
     refreshUserInfo();
     removeStorage("focusBoardList");
 }
@@ -2043,7 +1948,7 @@ export async function refreshUserInfo() {
 
     const headers = await formAuthorizeHeader();
 
-    let response = await fetch(`http://apitest.niconi.cc/user/name/${userName}`, {
+    let response = await cc98Fetch(`/user/name/${userName}`, {
 
         headers: headers
 
@@ -2056,14 +1961,8 @@ export async function refreshUserInfo() {
 }
 export async function unfollowBoard(boardId) {
     const headers = await formAuthorizeHeader();
-    const url = `http://apitest.niconi.cc/me/removecustomboard/${boardId}`;
-    const response = await fetch(url, { method: "DELETE", headers });
-    if (response.status === 404) {
-        //window.location.href = "/status/notfoundboard";
-    }
-    if (response.status === 500) {
-        //window.location.href = "/status/servererror";
-    }
+    const url = `/me/custom-board/${boardId}`;
+    const response = await cc98Fetch(url, { method: "DELETE", headers });
     refreshUserInfo();
     removeStorage("focusBoardList");
 }
@@ -2071,7 +1970,7 @@ export async function unfollowBoard(boardId) {
 export async function getMessageSystem(from: number, size: number, router) {
     try {
         const myHeaders = await formAuthorizeHeader();
-        let response = await fetch(`http://apitest.niconi.cc/notification/system?from=${from}&size=${size}`, { headers: myHeaders });
+        let response = await cc98Fetch(`/notification/system?from=${from}&size=${size}`, { headers: myHeaders });
         if (response.status === 401) {
             //window.location.href = "/status/UnauthorizedTopic";
         }
@@ -2079,10 +1978,10 @@ export async function getMessageSystem(from: number, size: number, router) {
             //window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
-   
+
         for (let i in newTopic) {
             if (newTopic[i].postId) {
-                let response0 = await fetch(`http://apitest.niconi.cc/post/${newTopic[i].postId}/basic`, { headers: myHeaders });
+                let response0 = await cc98Fetch(`/post/${newTopic[i].postId}/basic`, { headers: myHeaders });
                 let response1 = await response0.json();
                 newTopic[i].floor = response1.floor;
             }
@@ -2102,7 +2001,7 @@ export async function getMessageResponse(from: number, size: number, router) {
         let result = [];
         const myHeaders = await formAuthorizeHeader();
         console.log("from: number, size: number, router", from);
-        let response = await fetch(`http://apitest.niconi.cc/notification/reply?from=${from}&size=${size}`, { headers: myHeaders });
+        let response = await cc98Fetch(`/notification/reply?from=${from}&size=${size}`, { headers: myHeaders });
         if (response.status === 401) {
             //window.location.href = "/status/UnauthorizedTopic";
         }
@@ -2113,7 +2012,7 @@ export async function getMessageResponse(from: number, size: number, router) {
         //补充帖子标题，版面id和版面名称信息
         if (newTopic) {
             for (let i in newTopic) {
-                let response0 = await fetch(`http://apitest.niconi.cc/topic/${newTopic[i].topicId}`, { headers: myHeaders });
+                let response0 = await cc98Fetch(`/topic/${newTopic[i].topicId}`, { headers: myHeaders });
                 if (response0.status === 401) {
                     ////window.location.href = "/status/UnauthorizedTopic";
                 }
@@ -2129,7 +2028,7 @@ export async function getMessageResponse(from: number, size: number, router) {
                     newTopic[i].boardId = response1.boardId;
                     newTopic[i].boardName = await getBoardName(response1.boardId);
                     if (newTopic[i].postId) {
-                        let response2 = await fetch(`http://apitest.niconi.cc/post/${newTopic[i].postId}/basic`, { headers: myHeaders });
+                        let response2 = await cc98Fetch(`/post/${newTopic[i].postId}/basic`, { headers: myHeaders });
                         let response3 = await response2.json();
                         newTopic[i].floor = response3.floor;
                         newTopic[i].userId = response3.userId;
@@ -2152,7 +2051,7 @@ export async function getMessageAttme(from: number, size: number, router) {
         let token = await getToken();
         let myHeaders = new Headers();
         myHeaders.append('Authorization', token);
-        let response = await fetch(`http://apitest.niconi.cc/notification/at?from=${from}&size=${size}`, { headers: myHeaders });
+        let response = await cc98Fetch(`/notification/at?from=${from}&size=${size}`, { headers: myHeaders });
         if (response.status === 401) {
             //window.location.href = "/status/UnauthorizedTopic";
         }
@@ -2163,7 +2062,7 @@ export async function getMessageAttme(from: number, size: number, router) {
         //补充帖子标题，版面id和版面名称信息
         if (newTopic) {
             for (let i in newTopic) {
-                let response0 = await fetch(`http://apitest.niconi.cc/topic/${newTopic[i].topicId}`, { headers: myHeaders });
+                let response0 = await cc98Fetch(`/topic/${newTopic[i].topicId}`, { headers: myHeaders });
                 if (response0.status === 401) {
                     ////window.location.href = "/status/UnauthorizedTopic";
                 }
@@ -2184,7 +2083,7 @@ export async function getMessageAttme(from: number, size: number, router) {
                         newTopic[i].userName = response1.userName;
                     }
                     else {
-                        let response2 = await fetch(`http://apitest.niconi.cc/post/${newTopic[i].postId}/basic`, { headers: myHeaders });
+                        let response2 = await cc98Fetch(`/post/${newTopic[i].postId}/basic`, { headers: myHeaders });
                         let response3 = await response2.json();
                         newTopic[i].floor = response3.floor;
                         newTopic[i].userId = response3.userId;
@@ -2200,12 +2099,12 @@ export async function getMessageAttme(from: number, size: number, router) {
     }
 }
 export async function plus1(topicId, postId, reason) {
-    const url = `http://apitest.niconi.cc/post/${postId}/rating`;
+    const url = `/post/${postId}/rating`;
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
     const bodyinfo = { value: 1, reason: reason };
     const body = JSON.stringify(bodyinfo);
-    const response = await fetch(url, { method: "PUT", headers, body });
+    const response = await cc98Fetch(url, { method: "PUT", headers, body });
     switch (response.status) {
         case 401:
             return 'unauthorized';
@@ -2217,12 +2116,12 @@ export async function plus1(topicId, postId, reason) {
     return 'ok'
 }
 export async function minus1(topicId, postId, reason) {
-    const url = `http://apitest.niconi.cc/post/${postId}/rating`;
+    const url = `/post/${postId}/rating`;
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
     const bodyinfo = { value: -1, reason: reason };
     const body = JSON.stringify(bodyinfo);
-    const response = await fetch(url, { method: "PUT", headers, body });
+    const response = await cc98Fetch(url, { method: "PUT", headers, body });
     switch (response.status) {
         case 401:
             return 'unauthorized';
@@ -2236,10 +2135,10 @@ export async function minus1(topicId, postId, reason) {
 export async function addPrestige(postId, value, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const bodyinfo = { operationType:0,prestige: value, reason: reason };
-    const url = `http://apitest.niconi.cc/post/${postId}/operation`;
+    const bodyinfo = { operationType: 0, prestige: value, reason: reason };
+    const url = `/post/${postId}/operation`;
     const body = JSON.stringify(bodyinfo);
-    const response = await fetch(url, { method: "POST", headers, body });
+    const response = await cc98Fetch(url, { method: "POST", headers, body });
     switch (response.status) {
         case 400:
             return 'wrong input';
@@ -2255,10 +2154,10 @@ export async function addPrestige(postId, value, reason) {
 export async function deductPrestige(postId, value, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const bodyinfo = { operationType:1,prestige: value, reason: reason };
-    const url = `http://apitest.niconi.cc/post/${postId}/operation`;
+    const bodyinfo = { operationType: 1, prestige: value, reason: reason };
+    const url = `/post/${postId}/operation`;
     const body = JSON.stringify(bodyinfo);
-    const response = await fetch(url, { method: "PUT", headers, body });
+    const response = await cc98Fetch(url, { method: "PUT", headers, body });
     switch (response.status) {
         case 400:
             return 'wrong input';
@@ -2275,8 +2174,8 @@ export async function deletePost(topicId, postId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", 'application/json');
     const bodyinfo = { reason: reason };
-    const url = `http://apitest.niconi.cc/manage/post?topicid=${topicId}&postid=${postId}`;
-    const response = await fetch(url, { method: "DELETE", headers, body: JSON.stringify(bodyinfo) });
+    const url = `/manage/post?topicid=${topicId}&postid=${postId}`;
+    const response = await cc98Fetch(url, { method: "DELETE", headers, body: JSON.stringify(bodyinfo) });
     switch (response.status) {
         case 401:
             return 'unauthorized';
@@ -2290,9 +2189,9 @@ export async function deletePost(topicId, postId, reason) {
 export async function stopBoardPost(postId, reason, days) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", 'application/json');
-    const bodyinfo = {operationType:1, reason: reason, stopPostDays: days };
-    const url = `http://apitest.niconi.cc/post/${postId}/operation`;
-    const response = await fetch(url, { method: "POST", headers, body: JSON.stringify(bodyinfo) });
+    const bodyinfo = { operationType: 1, reason: reason, stopPostDays: days };
+    const url = `/post/${postId}/operation`;
+    const response = await cc98Fetch(url, { method: "POST", headers, body: JSON.stringify(bodyinfo) });
     switch (response.status) {
         case 401:
             return 'unauthorized';
@@ -2306,8 +2205,8 @@ export async function stopBoardPost(postId, reason, days) {
 export async function cancelStopBoardPost(userId, boardId) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", 'application/json');
-    const url = `http://apitest.niconi.cc/manage/punishment/cancelstopboardpost?userid=${userId}$boardid=${boardId}`;
-    const response = await fetch(url, { method: "PUT", headers });
+    const url = `/manage/punishment/cancelstopboardpost?userid=${userId}$boardid=${boardId}`;
+    const response = await cc98Fetch(url, { method: "PUT", headers });
     switch (response.status) {
         case 401:
             return 'unauthorized';
@@ -2322,9 +2221,9 @@ export async function addBoardTopTopic(topicId, boardId, topState, days, reason)
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
     const content = { 'topState': topState, 'duration': days, 'reason': reason };
-    const response = await fetch(
+    const response = await cc98Fetch(
 
-        `http://apitest.niconi.cc/topic/${topicId}/top`,
+        `/topic/${topicId}/top`,
         {
             method: "PUT",
             headers,
@@ -2345,9 +2244,9 @@ export async function removeBoardTopTopic(topicId, boardId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
     const content = reason;
-    const response = await fetch(
+    const response = await cc98Fetch(
 
-        `http://apitest.niconi.cc/topic/${topicId}/top`,
+        `/topic/${topicId}/top`,
         {
             method: "DELETE",
             headers,
@@ -2369,7 +2268,7 @@ export async function removeBoardTopTopic(topicId, boardId, reason) {
 export async function getTotalPage(type: number) {
     const headers = await formAuthorizeHeader();
 
-    let response = await fetch("http://apitest.niconi.cc/me/all-message-count", { headers });
+    let response = await cc98Fetch("/me/all-message-count", { headers });
 
     let totalPage = await response.json();
 
@@ -2397,10 +2296,10 @@ export async function getTotalPage(type: number) {
 export async function deleteTopic(topicId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const url = `http://apitest.niconi.cc/manage/topic/${topicId}`;
+    const url = `/topic/${topicId}`;
     const bodyInfo = { 'reason': reason };
     const body = JSON.stringify(bodyInfo);
-    const response = await fetch(url, { method: "DELETE", headers, body }); switch (response.status) {
+    const response = await cc98Fetch(url, { method: "DELETE", headers, body }); switch (response.status) {
         case 401:
             return 'unauthorized';
         case 404:
@@ -2413,10 +2312,10 @@ export async function deleteTopic(topicId, reason) {
 export async function lockTopic(topicId, boardId, reason, days) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const url = `http://apitest.niconi.cc/topic/${topicId}/lock`;
+    const url = `/topic/${topicId}/lock`;
     const bodyInfo = { 'reason': reason, 'value': days };
     const body = JSON.stringify(bodyInfo);
-    const response = await fetch(url, { method: "PUT", headers, body });
+    const response = await cc98Fetch(url, { method: "PUT", headers, body });
     switch (response.status) {
         case 401:
             return 'unauthorized';
@@ -2430,10 +2329,10 @@ export async function lockTopic(topicId, boardId, reason, days) {
 export async function unLockTopic(topicId, boardId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const url = `http://apitest.niconi.cc/topic/${topicId}/lock`;
+    const url = `/topic/${topicId}/lock`;
     const bodyInfo = { 'reason': reason };
     const body = JSON.stringify(bodyInfo);
-    const response = await fetch(url, { method: "DELETE", headers, body });
+    const response = await cc98Fetch(url, { method: "DELETE", headers, body });
     switch (response.status) {
         case 401:
             return 'unauthorized';
@@ -2444,13 +2343,13 @@ export async function unLockTopic(topicId, boardId, reason) {
     }
     return await response.json();
 }
-export async function setBestTopic(topicId,reason) {
+export async function setBestTopic(topicId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const url = `http://apitest.niconi.cc/manage/topic/${topicId}/best`;
+    const url = `/topic/${topicId}/best`;
     const bodyInfo = { 'reason': reason };
     const body = JSON.stringify(bodyInfo);
-    const response = await fetch(url, { method: "PUT", headers, body });
+    const response = await cc98Fetch(url, { method: "PUT", headers, body });
     switch (response.status) {
         case 401:
             return 'unauthorized';
@@ -2464,10 +2363,10 @@ export async function setBestTopic(topicId,reason) {
 export async function cancelBestTopic(topicId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const url = `http://apitest.niconi.cc/manage/topic/${topicId}/best`;
+    const url = `/topic/${topicId}/best`;
     const bodyInfo = { 'reason': reason };
     const body = JSON.stringify(bodyInfo);
-    const response = await fetch(url, { method: "DELETE", headers, body });
+    const response = await cc98Fetch(url, { method: "DELETE", headers, body });
     switch (response.status) {
         case 401:
             return 'unauthorized';
@@ -2481,10 +2380,10 @@ export async function cancelBestTopic(topicId, reason) {
 export async function setDisableHot(topicId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const url = `http://apitest.niconi.cc/manage/topic/${topicId}/not-hot`;
+    const url = `/manage/topic/${topicId}/not-hot`;
     const bodyInfo = { 'reason': reason };
     const body = JSON.stringify(bodyInfo);
-    const response = await fetch(url, { method: "PUT", headers, body });
+    const response = await cc98Fetch(url, { method: "PUT", headers, body });
     switch (response.status) {
         case 401:
             return 'unauthorized';
@@ -2498,10 +2397,10 @@ export async function setDisableHot(topicId, reason) {
 export async function cancelDisableHot(topicId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const url = `http://apitest.niconi.cc/manage/topic/${topicId}/not-hot`;
+    const url = `/manage/topic/${topicId}/not-hot`;
     const bodyInfo = { 'reason': reason };
     const body = JSON.stringify(bodyInfo);
-    const response = await fetch(url, { method: "DELETE", headers, body });
+    const response = await cc98Fetch(url, { method: "DELETE", headers, body });
     switch (response.status) {
         case 401:
             return 'unauthorized';
@@ -2518,14 +2417,12 @@ export function autoAddUrl(v: string) {
     let flag = /(http|ftp|https)/g;
     let arr = v.match(flag);
     if (arr) {
-        console.log("确实匹配到了");
         let reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/g;
         let abb = v.match(reg);
         let result = v.replace(reg, `[url=${abb}][color=blue]${abb}[/color][/url]`).replace(/\n/g, "<br />");
         return result;
     }
     else {
-        console.log("没有匹配到了");
         let reg = /[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/g;
         let abb = v.match(reg);
         console.log(abb);
@@ -2562,7 +2459,7 @@ export async function getToken() {
         return null;
     }
 }
-export async function  formAuthorizeHeader() {
+export async function formAuthorizeHeader() {
     const token = await getToken();
     const headers = new Headers();
     headers.append("Authorization", token);
@@ -2571,27 +2468,27 @@ export async function  formAuthorizeHeader() {
 export async function signin(content) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const url = `http://apitest.niconi.cc/me/signin`;
-    const response = await fetch(url, { method: "POST", headers, body: content });
+    const url = `/me/signin`;
+    const response = await cc98Fetch(url, { method: "POST", headers, body: content });
 }
 export async function getSigninInfo() {
     const headers = await formAuthorizeHeader();
-    const url = `http://apitest.niconi.cc/me/signin`;
-    const response = await fetch(url, { headers });
+    const url = `/me/signin`;
+    const response = await cc98Fetch(url, { headers });
     const data = await response.json();
     return data;
 }
 export async function getGlobalConfig() {
     const headers = await formAuthorizeHeader();
-    const url = `http://apitest.niconi.cc/config/global`;
-    const response = await fetch(url, { headers });
+    const url = `/config/global`;
+    const response = await cc98Fetch(url, { headers });
     const data = await response.json();
     return data;
 }
 export async function getTopicInfo(topicId) {
     const headers = await formAuthorizeHeader();
-    const url = `http://apitest.niconi.cc/topic/${topicId}`;
-    const response = await fetch(url, { headers });
+    const url = `/topic/${topicId}`;
+    const response = await cc98Fetch(url, { headers });
     switch (response.status) {
         case 401:
             return 'unauthorized';
@@ -2606,19 +2503,19 @@ export async function getTopicInfo(topicId) {
 }
 export async function getBoardInfo(boardId) {
     const headers = await formAuthorizeHeader();
-    const url = `http://apitest.niconi.cc/board/${boardId}`;
-    const response = await fetch(url, { headers });
+    const url = `/board/${boardId}`;
+    const response = await cc98Fetch(url, { headers });
     switch (response.status) {
         case 404:
             return 'not found';
         case 500:
             return 'server error';
     }
-    const data = await response.json(); 
+    const data = await response.json();
     console.log(data);
     if (data.canEntry === false) {
 
-            return 'unauthorized';
+        return 'unauthorized';
     }
     return data;
 }
@@ -2633,8 +2530,8 @@ export async function getUserInfo(userId) {
     const key = `userId_${userId}`;
     if (getLocalStorage(key)) return getLocalStorage(key);
     const headers = await formAuthorizeHeader();
-    const url = `http://apitest.niconi.cc/user/${userId}`;
-    const response = await fetch(url, { headers });
+    const url = `/user/${userId}`;
+    const response = await cc98Fetch(url, { headers });
     const data = await response.json();
     const key1 = `userName_${data.name}`;
     setLocalStorage(key, data, 3600);
@@ -2645,8 +2542,8 @@ export async function getUserInfoByName(userName) {
     const key = `userName_${userName}`;
     if (getLocalStorage(key)) return getLocalStorage(key);
     const headers = await formAuthorizeHeader();
-    const url = `http://apitest.niconi.cc/user/name/${userName}`;
-    const response = await fetch(url, { headers });
+    const url = `/user/name/${userName}`;
+    const response = await cc98Fetch(url, { headers });
     const data = await response.json();
     const key1 = `userId_${data.id}`;
     setLocalStorage(key, data, 3600);
@@ -2658,10 +2555,10 @@ export function isMaster(masters) {
         const privilege = getLocalStorage("userInfo").privilege;
         const myName = getLocalStorage("userInfo").name;
         const myId = getLocalStorage("userInfo").id;
-       
+
         if (privilege === '管理员' || privilege === '超级版主') {
             return true;
- 
+
         }
 
         if (masters) {
@@ -2675,19 +2572,20 @@ export function isMaster(masters) {
 }
 export async function getBoardTag(boardId) {
     const headers = await formAuthorizeHeader();
-    const url = `http://apitest.niconi.cc/board/${boardId}/tag`;
-    const response = await fetch(url, { headers });
+    const url = `/board/${boardId}/tag`;
+    const response = await cc98Fetch(url, { headers });
     const data = await response.json();
     return data;
 }
-export async function setHighlight(topicId,isBold, isItalic, color,duration, reason) {
+export async function setHighlight(topicId, isBold, isItalic, color, duration, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const url = `http://apitest.niconi.cc/manage/topic/${topicId}/highlight`;
-    const bodyInfo = {highlightInfo:{ isBold: isBold, isItalic: isItalic, color: color,duration:duration,reason:reason }
+    const url = `/topic/${topicId}/highlight`;
+    const bodyInfo = {
+         isBold: isBold, isItalic: isItalic, color: color, duration: duration, reason: reason 
     };
     const body = JSON.stringify(bodyInfo);
-    const response = await fetch(url, { method: "PUT", headers, body });
+    const response = await cc98Fetch(url, { method: "PUT", headers, body });
     switch (response.status) {
         case 401:
             return 'unauthorized';
@@ -2700,29 +2598,29 @@ export async function setHighlight(topicId,isBold, isItalic, color,duration, rea
 }
 export async function setFavoriteTopic(topicId) {
     const headers = await formAuthorizeHeader();
-    const url = `http://apitest.niconi.cc/me/favorite/${topicId}`;
-    const reponse = await fetch(url, {method:"PUT", headers });
+    const url = `/me/favorite/${topicId}`;
+    const reponse = await cc98Fetch(url, { method: "PUT", headers });
 }
 export async function deleteFavoriteTopic(topicId) {
     const headers = await formAuthorizeHeader();
-    const url = `http://apitest.niconi.cc/me/favorite/${topicId}`;
-    const reponse = await fetch(url, { method:"DELETE", headers });
+    const url = `/me/favorite/${topicId}`;
+    const reponse = await cc98Fetch(url, { method: "DELETE", headers });
 }
 export async function getFavState(topicId) {
     const headers = await formAuthorizeHeader();
-    const url = `http://apitest.niconi.cc/topic/${topicId}/isfavorite`;
-    const response = await fetch(url, { headers });
+    const url = `/topic/${topicId}/isfavorite`;
+    const response = await cc98Fetch(url, { headers });
     const data = await response.json();
     return data;
 }
 
+//更新未读消息数量
 export async function refreshUnReadCount() {
     const headers = await formAuthorizeHeader();
-    const url = `http://apitest.niconi.cc/me/unread-count`;
-    const response = await fetch(url, { headers });
+    const url = `/me/unread-count`;
+    const response = await cc98Fetch(url, { headers });
     let unreadCount = await response.json();
-    unreadCount.totalCount = unreadCount.systemCount + unreadCount.atCount + unreadCount.replyCount + unreadCount.messageCount;
-    setStorage("unreadCount", unreadCount);
+    unreadCount.totalCount = unreadCount.systemCount + unreadCount.atCount + unreadCount.replyCount + unreadCount.messageCount;   
     if (unreadCount.totalCount > 0) {
         $('#unreadCount-totalCount').removeClass('displaynone');
         $('#unreadCount-totalCount1').removeClass('displaynone');
@@ -2763,11 +2661,41 @@ export async function refreshUnReadCount() {
         $('#unreadCount-messageCount').addClass('displaynone');
         $('#unreadCount-messageCount1').addClass('displaynone');
     }
+    setStorage("unreadCount", unreadCount);
+    return unreadCount;
 }
-export async function editPost(postId, contentType,title, content) {
+export async function editPost(postId, contentType, title, content) {
     const headers = await formAuthorizeHeader();
-    const url = `http://apitest.niconi.cc/post/${postId}`;
+    const url = `/post/${postId}`;
     const bodyInfo = { content: content, title: title, contentType: contentType };
     const body = JSON.stringify(bodyInfo);
-    const response = await fetch(url, { method:"PUT",headers,body });
+    const response = await cc98Fetch(url, { method: "PUT", headers, body });
+}
+export async function cc98Fetch(url, init?: RequestInit) {
+    /*const response1 = await fetch("/config.production.json");
+    let data;
+    if (response1.status !== 404) {
+        const data1 = await response1.json();
+        const response2 = await fetch("/config.json");
+        const data2 = await response2.json();
+        data = { ...data2, ...data1 };
+    } else {
+        const response2 = await fetch("/config.json");
+        data = await response2.json();
+    }
+    const baseUrl = data.apiUrl;
+    console.log("base");
+    console.log(baseUrl);*/
+    const baseUrl = 'http://apitest.niconi.cc';
+    const _url = `${baseUrl}${url}`;
+    let response;
+    if (init) {
+        response = await fetch(_url, init);
+    } else {
+        response = await fetch(_url);
+    }
+    return response;
+}
+export function getApiUrl() {
+    return 'http://apitest.niconi.cc';
 }

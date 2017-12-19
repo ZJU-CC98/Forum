@@ -44,6 +44,19 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
         }
 
         if (this.state.mode === 1) {
+            /*const response1 = await fetch("/config.production.json");
+            let data;
+            if (response1.status !== 404) {
+                const data1 = await response1.json();
+                const response2 = await fetch("/config.json");
+                const data2 = await response2.json();
+                data = { ...data2, ...data1 };
+            } else {
+                const response2 = await fetch("/config.json");
+                data = await response2.json();
+            }
+            const fileUrl = data.imageUploadUrl;*/
+            const fileUrl = `${Utility.getApiUrl}/file`
             editormd.emoji.path = '/images/emoji/';
             Constants.testEditor = editormd("test-editormd", {
                 width: "100%",
@@ -52,7 +65,7 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
                 saveHTMLToTextarea: false,
                 imageUpload: false,
                 imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-                imageUploadURL: "http://apitest.niconi.cc/file/",
+                imageUploadURL: fileUrl,
                 emoji: true,
                 toolbarIcons: function () {
                     return [
@@ -112,11 +125,25 @@ ${newProps.content.content}[/quote]`;
             }
         }
     }
-    componentDidUpdate() {       
 
+    async componentDidUpdate() {       
+        /*const response1 = await fetch("/config.production.json");
+        let data;
+        if (response1.status !== 404) {
+            const data1 = await response1.json();
+            const response2 = await fetch("/config.json");
+            const data2 = await response2.json();
+            data = { ...data2, ...data1 };
+        } else {
+            const response2 = await fetch("/config.json");
+            data = await response2.json();
+        }
+        const fileUrl = data.imageUploadUrl;*/
 
-        editormd.emoji.path = '/images/emoji/';
+      //  editormd.emoji.path = '/images/emoji/';
         if (this.state.mode === 1) {
+            const fileUrl = `${Utility.getApiUrl}/file`
+            editormd.emoji.path = '/images/emoji/';
             Constants.testEditor = editormd("test-editormd", {
                 width: "100%",
                 height: 640,
@@ -124,29 +151,27 @@ ${newProps.content.content}[/quote]`;
                 saveHTMLToTextarea: false,
                 imageUpload: false,
                 imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-                imageUploadURL: "http://apitest.niconi.cc/file/",
+                imageUploadURL: fileUrl,
                 emoji: true,
                 toolbarIcons: function () {
                     return [
-                        "undo", "redo", "|", "emoji", 
+                        "undo", "redo", "|", "emoji",
                         "bold", "del", "italic", "quote", "|",
                         "h1", "h2", "h3", "h4", "|",
                         "list-ul", "list-ol", "hr", "|",
-                        "link", "image", "code", "table", "html-entities", 
+                        "link", "image", "code", "table", "html-entities",
                     ]
-                },   
+                },
                 toolbarCustomIcons: {
                     file: "<input type='file' id='upload-files' style=' display: none ' onchange='uploadEvent()' />",
-                    faicon: "<i class='fa-upload' onclick='clickUploadIcon()' style='cursor: pointer '></i>"
-        },
+                    faicon: "<i class='fa fa-upload' onclick='clickUploadIcon()' style='cursor: pointer '></i>"
+                },
             });
-            console.log("append");
-            let uploadInfo = "<li><form method='post' enctype='multipart/form-data'><input type='file' id='upload-files' style=' display: none ' onchange='uploadEvent()' /><div class='row'><label class='fa-upload' htmlfor='upload-files' style='font-family: fontAwesome;cursor: pointer '></label></div></form></li>";
-            $(".fa-copyright").parent("a").parent("li").parent("ul").append(uploadInfo);
+            $(".fa-copyright").parent("a").parent("li").parent("ul").append("<li><label class='fa-upload' for='upload-files' style='font-family: fontAwesome;cursor: pointer '></label></li>");
         }
     }
     async sendUbbTopic() {
-        let url = `http://apitest.niconi.cc/topic/${this.props.topicid}/post`;
+        let url = `/topic/${this.props.topicid}/post`;
         let bodyInfo = {
             content: this.state.content,
             contentType: 0,
@@ -157,7 +182,7 @@ ${newProps.content.content}[/quote]`;
         let headers = new Headers();
         headers.append("Authorization", token);
         headers.append("Content-Type", 'application/json');
-        let mes = await fetch(url, {
+        let mes = await Utility.cc98Fetch(url, {
             method: 'POST',
             headers,
             body
@@ -171,8 +196,9 @@ ${newProps.content.content}[/quote]`;
     }
     async sendMdTopic() {
         try {
-            let url = `http://apitest.niconi.cc/topic/${this.props.topicid}/post`;
+            let url = `/topic/${this.props.topicid}/post`;
             let c = Constants.testEditor.getMarkdown();
+            Constants.testEditor.setMarkdown("");
             console.log("content=" + c);
             let content = {
                 content: c,
@@ -184,7 +210,7 @@ ${newProps.content.content}[/quote]`;
             let myHeaders = new Headers();
             myHeaders.append("Authorization", token);
             myHeaders.append("Content-Type", 'application/json');
-            let mes = await fetch(url, {
+            let mes = await Utility.cc98Fetch(url, {
                 method: 'POST',
                 headers: myHeaders,
                 body: contentJson
@@ -197,29 +223,45 @@ ${newProps.content.content}[/quote]`;
                 alert("请输入内容");
             }   
             this.props.onChange();
-            Constants.testEditor.setMarkdown("");
-            editormd.emoji.path = '/images/emoji/';
-            if (this.state.mode === 1) {
-                Constants.testEditor = editormd("test-editormd", {
-                    width: "100%",
-                    height: 640,
-                    path: "/scripts/lib/editor.md/lib/",
-                    saveHTMLToTextarea: false,
-                    imageUpload: false,
-                    imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-                    imageUploadURL: "http://apitest.niconi.cc/file/",
-                    emoji: true,
-                    toolbarIcons: function () {
-                        return [
-                            "undo", "redo", "|", "emoji",
-                            "bold", "del", "italic", "quote", "|",
-                            "h1", "h2", "h3", "h4", "|",
-                            "list-ul", "list-ol", "hr", "|",
-                            "link", "image", "code", "table", "html-entities",
-                        ]
-                    },
-                });
+
+           /* editormd.emoji.path = '/images/emoji/';
+            const response1 = await fetch("/config.production.json");
+            let data;
+            if (response1.status !== 404) {
+                const data1 = await response1.json();
+                const response2 = await fetch("/config.json");
+                const data2 = await response2.json();
+                data = { ...data2, ...data1 };
+            } else {
+                const response2 = await fetch("/config.json");
+                data = await response2.json();
             }
+            const fileUrl = data.imageUploadUrl;*/
+            const fileUrl = `${Utility.getApiUrl}/file`
+            editormd.emoji.path = '/images/emoji/';
+            Constants.testEditor = editormd("test-editormd", {
+                width: "100%",
+                height: 640,
+                path: "/scripts/lib/editor.md/lib/",
+                saveHTMLToTextarea: false,
+                imageUpload: false,
+                imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                imageUploadURL: fileUrl,
+                emoji: true,
+                toolbarIcons: function () {
+                    return [
+                        "undo", "redo", "|", "emoji",
+                        "bold", "del", "italic", "quote", "|",
+                        "h1", "h2", "h3", "h4", "|",
+                        "list-ul", "list-ol", "hr", "|",
+                        "link", "image", "code", "table", "html-entities",
+                    ]
+                },
+                toolbarCustomIcons: {
+                    file: "<input type='file' id='upload-files' style=' display: none ' onchange='uploadEvent()' />",
+                    faicon: "<i class='fa fa-upload' onclick='clickUploadIcon()' style='cursor: pointer '></i>"
+                },
+            });
             this.setState({ content: "" });
         } catch (e) {
             console.log("Error");
@@ -241,6 +283,7 @@ ${newProps.content.content}[/quote]`;
         this.setState({ content: event.target.value });
     }
     render() {
+        $(".fa-copyright").parent("a").parent("li").parent("ul").append("<li><label class='fa-upload' for='upload-files' style='font-family: fontAwesome;cursor: pointer '></label></li>");
         let mode, editor;
         if (this.state.mode === 0) {
             mode = '使用UBB模式编辑';
@@ -255,6 +298,7 @@ ${newProps.content.content}[/quote]`;
             mode = '使用Markdown编辑';
             editor = <div id="sendTopic">
                 <form>
+                    <input type='file' id='upload-files' style={{display: 'none '}} onChange={Utility.uploadEvent} />
                     <div id="test-editormd" className="editormd">
                         <textarea className="editormd-markdown-textarea" name="test-editormd-markdown-doc"   ></textarea>
                     </div>

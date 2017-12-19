@@ -22,7 +22,7 @@ class UserCenterExact extends React.Component<{userInfo, changeUserInfo}> {
 
             let headers1 = new Headers();
             headers1.append("Authorization", token);
-            let response1 = await fetch(`http://apitest.niconi.cc/user/${this.props.userInfo.id}`, {
+            let response1 = await Utility.cc98Fetch(`/user/${this.props.userInfo.id}`, {
                 headers: headers1
             });
             let userInfo = await response1.json();

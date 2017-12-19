@@ -94,14 +94,18 @@ export class UserCenterConfig extends React.Component<null, UserCenterConfigStat
             if (newInfo.QQ && (Number.parseInt(newInfo.QQ) <= 0 || Number.parseInt(newInfo.QQ).toString() !== newInfo.QQ)) {
                 throw new Error('请检查QQ是否正确');
             }
+            let birthDay = new Date(this.state.userInfo.birthdayYear + 10, this.state.userInfo.birthdayMouth - 1, this.state.userInfo.birthdayDay);
+            if (this.state.userInfo.birthdayYear !== 0 && this.state.userInfo.birthdayYear!==9999 && birthDay.getTime() > Date.now()) {
+                throw new Error('请检查生日是否正确');
+            }
 
             const token = await Utility.getToken();
-            const url = `http://apitest.niconi.cc/me`;
+            const url = `/me`;
 
             let myHeaders = new Headers();
             myHeaders.append('Authorization', token);
             myHeaders.append('Content-Type', 'application/json');
-            let res = await fetch(url, {
+            let res = await Utility.cc98Fetch(url, {
                 method: 'PUT',
                 headers: myHeaders,
                 body: JSON.stringify(newInfo)
@@ -110,11 +114,13 @@ export class UserCenterConfig extends React.Component<null, UserCenterConfigStat
             if (res.status === 200) {
                 let headers1 = new Headers();
                 headers1.append("Authorization", token);
-                let response1 = await fetch(`http://apitest.niconi.cc/user/${Utility.getLocalStorage('userInfo').id}`, {
+                let response1 = await Utility.cc98Fetch(`/user/${Utility.getLocalStorage('userInfo').id}`, {
                     headers: headers1
                 });
                 let userInfo = await response1.json();
                 Utility.setLocalStorage("userInfo", userInfo);
+                Utility.setLocalStorage(`userId_${userInfo.id}`, userInfo, 3600);
+                Utility.setLocalStorage(`userName_${userInfo.name}`, userInfo, 3600);
                 this.setState({
                     info: '修改成功',
                     isLoading: false

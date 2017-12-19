@@ -38,7 +38,8 @@ var config = {
         'jquery': '$',
         'moment': 'moment',
         'editor.md': 'editormd',
-        'codemirror': 'CodeMirror'
+        'codemirror': 'CodeMirror',
+        'url-join': 'urljoin'
     },
     plugins: [
         new webpack.optimize.UglifyJsPlugin(),
@@ -62,6 +63,7 @@ var config = {
             { from: 'node_modules/blueimp-canvas-to-blob/js', to: 'scripts/lib/blueimp-canvas-to-blob' },
             { from: 'node_modules/@aspnet/signalr-client/dist/browser', to: 'scripts/lib/signalr-client' },
             { from: 'spectrum/', to: 'scripts/lib/spectrum' },
+            { from: 'node_modules/url-join/', to: 'scripts/lib/url-join' },
         ]),
         new ExtractTextPlugin('content/site.min.css')
     ]

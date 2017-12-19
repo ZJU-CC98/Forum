@@ -3,8 +3,6 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
 import { FocusBoard } from '../../Props/FocusBoard';
-import { FocusBoardProps } from '../../Props/FocusBoardProps';
-import { FocusBoardAreaState } from '../../States/FocusBoardAreaState';
 import * as Utility from '../../Utility';
 /**
  * 表示我搜索到的版面列表区域

@@ -270,6 +270,19 @@
     border-radius: 50%;
     box-sizing: border-box;
 }
+
+.recommendedReadingButtonSelected {
+    width: 0.625rem;
+    height: 0.625rem;
+    margin: 0 0.25rem;
+    border-style: solid;
+    border-color: rgb(251,97,101);
+    border-width: 1px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    background-color: rgb(251,97,101);
+}
+
 //列表区~
 .mainPageList {
     display: flex;
@@ -381,6 +394,12 @@
     font-size: 1rem;
     font-family: 微软雅黑;
     color: rgb(255,255,255);
+
+    a {
+        font-size: 1rem;
+        font-family: 微软雅黑;
+        color: rgb(255,255,255);
+    }
 }
 
 //校园新闻

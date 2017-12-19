@@ -117,21 +117,23 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, {}, { board
                 <div className="row" style={{ height: "4rem", marginTop: "1.25rem" }}>
                     <img style={{ marginLeft:"1.25rem"}}src={url}></img>
                     <div className="boardMessageDetails">
-                        <div>
+                        <div className="row" style={{width:"100%"}}>
                             {this.props.boardInfo.name}
                         </div>
-                        <div style={{ fontSize:"0.75rem"}}>
+                        <div className="row" style={{ width: "100%", alignItems:"center" }}>
+                        <div style={{ fontSize:"0.75rem",width:"4.5rem"}}>
                             {this.props.boardInfo.todayCount}/{this.props.boardInfo.topicCount}
+                            </div>
+                            <div className="boardFollow"onClick={this.props.boardInfo.isFollow ? this.unfollow : this.follow} >{this.props.boardInfo.isFollow ? "已关注" : "关注"} </div>
                         </div>
                     </div>
-                    <div className="boardFollow"><button onClick={this.props.boardInfo.isFollow ? this.unfollow : this.follow} className="boardFollow">{this.props.boardInfo.isFollow ? "已关注" : "关注"}</button>  </div>
                 </div>
                 <div className="boardDescription">
-                    <div>版面简介:</div>
+                    <div>版面简介</div>
                     <div>{this.props.boardInfo.description}</div>
                 </div>
                 <div className="boardMasters">
-                    <div>版主:</div>
+                    <div>版主</div>
                     <div>{this.props.boardInfo.boardMasters.map(this.generateMasters)}</div>
                 </div>
             </div>
@@ -191,7 +193,7 @@ export class ListButtonAndAds extends React.Component<{boardInfo,adsUrl}> {
  
     render() {
         const adsUrl = `/images/ads.jpg`;
-        const createTopicUrl = `/createTopic/${this.props.boardInfo.id}`;
+        const createTopicUrl = `/editor/post/${this.props.boardInfo.id}`;
         return <div className="row" style={{ width: "100%", height: "6.25rem", alignItems: "flex-end", justifyContent: "space-between", marginTop:"1rem" }}>
             <Link className="button bgcolor" to={createTopicUrl}>发主题</Link>
             <div><img style={{ width: "18.75rem", height: "6.25rem" }} src={adsUrl}></img></div>
@@ -326,8 +328,8 @@ export class ListContent extends RouteComponent<{}, { items,totalPage:number,boa
         return <div className="listContent ">
             <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} tag={this.state.tags} />
             <div className="column" style={{width:"100%"}}>
-            <div className="row" style={{ justifyContent: 'space-between', }}>
-                <div className="row" style={{ alignItems: 'center' }} >
+                <div className="row" style={{ justifyContent: 'space-between', backgroundColor:"#79b8ca",color:"#fff"  }}>
+                    <div className="row" style={{ alignItems: 'center'}} >
 
                     <div className="listContentTag">全部</div>
                     <div className="listContentTag"><Link to={bestTopicsUrl}>精华</Link></div>
@@ -585,12 +587,14 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         return <div id={colorId}>
             <Link to={url}>
             <div className="row topicInList" id={topicId}> 
-                <div style={{ display: "flex", marginLeft: "0.5rem", alignItems: "flex-end" }}>
+                    <div style={{
+                        display: "flex", marginLeft: "0.5rem", alignItems: "flex-end", overflow: "hidden",
+                        textOverflow: "ellipsis",whiteSpace: "nowrap",maxWidth:"48%" }}>
                     <div className="row" style={{ alignItems: "center" }}>
                     {icon}
-                       <div className="listTitle" id={titleId} style={{ marginLeft: '1rem', }}> {this.props.title}</div>
+                       <div className="listTitle" id={titleId} style={{ marginLeft: '1rem', }}> <span>{this.props.title}</span></div>
                         </div>
-                    <div style={{ display: "flex", fontSize: "0.75rem",marginLeft:"1rem" }}>
+                    <div style={{ display: "flex", fontSize: "0.75rem",marginLeft:"1rem" ,width:"auto"}}>
                         {this.state.pager.map(this.generateListPager.bind(this))}</div>
                 </div>
                 <div className="row" style={{ width: "50%", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between", fontSize: "0.75rem", marginBottom: "-4px" }}>
