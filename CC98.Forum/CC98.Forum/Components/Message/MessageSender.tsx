@@ -9,7 +9,7 @@ import * as Utility from '../../Utility';
 
 export class MessageSender extends React.Component<MessageSendReceiveProps> {
     render() {
-        let userUrl = `/user/name/${this.props.senderName}`;
+        let userUrl = `/user/id/${this.props.senderId}`;
         let timeClassName: string;
         if (this.props.showTime) { timeClassName = "message-message-wcTime" }
         else { timeClassName = "displaynone" }
