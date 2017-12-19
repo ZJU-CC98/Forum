@@ -58,7 +58,7 @@ export class Announcement extends React.Component<null, AnnouncementState> {
                 <div>
                     <p>全站公告<button type="button" onClick={this.changeSiteAnnouncement}>提交修改</button></p>
                     <textarea
-                        style={{ width: '100%', height: '20rem', resize: 'none' ,boxSizing: 'border-box'}}
+                        style={{ width: '1140px', height: '20rem', resize: 'none' ,boxSizing: 'border-box'}}
                         onChange={(e) => { this.setState({ announcement: e.target.value }); }}
                         value={this.state.announcement}
                     ></textarea>
