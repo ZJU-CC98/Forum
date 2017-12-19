@@ -1265,7 +1265,6 @@ export async function uploadEvent(e) {
     const url = res.content;
     const str = `![](${url})`;
     testEditor.appendMarkdown(str);
-    console.log("upload and append");
 }
 /**
  * 关注指定id的用户
@@ -2220,7 +2219,7 @@ export async function deletePost(topicId, postId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", 'application/json');
     const bodyinfo = { reason: reason };
-    const url = `/post?topicid=${topicId}&postid=${postId}`;
+    const url = `/post/${postId}`;
     const response = await cc98Fetch(url, { method: "DELETE", headers, body: JSON.stringify(bodyinfo) });
     switch (response.status) {
         case 401:
@@ -2801,4 +2800,10 @@ export function getTagLayer(tagId:number, tags) {
         }
     }
     return false;
+}
+export async function findIP(topicId) {
+    const url = `/topic/${topicId}/look-ip`;
+    const headers = await formAuthorizeHeader();
+    const response = await cc98Fetch(url, { headers });
+    return await response.json();
 }

@@ -17,6 +17,7 @@
     <None Remove="Actions.tsx" />
     <None Remove="ActionTypes.tsx" />
     <None Remove="CC98.Forum.rar" />
+    <None Remove="Components\FindIP.tsx" />
     <None Remove="Components\FocusBoardTopicArea.tsx" />
     <None Remove="Components\Footer.tsx" />
     <None Remove="Components\PageModel.tsx" />
@@ -111,6 +112,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Actions.tsx" />
     <TypeScriptCompile Include="ActionTypes.tsx" />
+    <TypeScriptCompile Include="Components\FindIP.tsx" />
     <TypeScriptCompile Include="Components\Focus\FocusTopicArea.tsx" />
     <TypeScriptCompile Include="Components\PageModel.tsx" />
     <TypeScriptCompile Include="Components\Pager.tsx" />
