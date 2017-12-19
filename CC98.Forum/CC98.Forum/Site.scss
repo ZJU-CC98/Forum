@@ -1321,6 +1321,7 @@ a {
             min-height: 80px;
             border-bottom: 1px dashed lightgray;
             cursor: pointer;
+            position: relative;
 
             &:hover {
                 @extend .message-message-pFocus;
@@ -1359,6 +1360,16 @@ a {
                     color: $color-gray;
                     padding-bottom: 6px;
                 }
+            }
+
+            .message-counterPerson {
+                position: absolute;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background-color: red;
+                top: 36px;
+                right: 15px;
             }
         }
     }
@@ -1955,6 +1966,7 @@ a {
 
                 a {
                     color: #6b7178;
+
                     &:hover {
                         text-decoration: underline;
                     }
@@ -1978,14 +1990,20 @@ a {
 
     .focus-topic-right {
         text-align: center;
-        min-width: 80px;
+        flex-basis: 70px;
         height: 80px;
-        line-height: 80px;
         background-color: #ffffff;
-        padding-left: 10px;
-        padding-right: 10px;
+        padding-left: 15px;
+        padding-right: 15px;
         color: #6b7178;
         flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .focus-topic-board {
+            line-height: 20px;
+        }
     }
 }
 /*.focus-topic {

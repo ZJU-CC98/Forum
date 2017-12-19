@@ -12,16 +12,25 @@ export class MessagePerson extends React.Component<MessagePersonProps> {
         if (!data.lastContent) {
             data.lastContent = '';
         }
-        else if (!data.isRead) {
-            data.lastContent = `[b]${data.lastContent}[/b]`;
-        }
 
         return (<div className="message-message-person">
-                <img className="message-message-pPortraitUrl" src={data.portraitUrl} />
+                        <img className="message-message-pPortraitUrl" src={data.portraitUrl} />
                         <div className="message-message-pInfo">
-                <div className="message-message-pName">{data.name}</div>
-                <div className="message-message-pMessage"><UbbContainer code={data.lastContent} /></div>
+                            <div className="message-message-pName">{data.name}</div>
+                            <div className="message-message-pMessage"><UbbContainer code={data.lastContent} /></div>
                         </div>
+                        <UnreadDot isRead={data.isRead}></UnreadDot>
                 </div>);
+    }
+}
+
+class UnreadDot extends React.Component<{ isRead: boolean }> {
+    render() {
+        if (this.props.isRead) {
+            return <div className="message-counterPerson displaynone"></div>;
+        }
+        else {
+            return <div className="message-counterPerson"></div>
+        }
     }
 }

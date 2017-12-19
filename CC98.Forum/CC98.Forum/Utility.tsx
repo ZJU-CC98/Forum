@@ -777,6 +777,7 @@ export async function getRecentContact(from: number, size: number, router) {
         for (let i in recentContact) {
             recentContact[i].message = [];
             recentContact[i].lastContent = recentContactId[i].lastContent;
+            recentContact[i].isRead = recentContactId[i].isRead;
         }
         console.log("接收到没有Message的列表");
         console.log(recentContact);

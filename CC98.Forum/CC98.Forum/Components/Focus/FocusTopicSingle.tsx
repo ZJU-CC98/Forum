@@ -55,7 +55,7 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
                                 </div>
                             </div>
                     <div className="focus-topic-rightBar"></div>
-                    <a className="focus-topic-right" href={boardUrl} target="_blank">{this.props.boardName}</a>
+                    <a className="focus-topic-right" href={boardUrl} target="_blank"><div className="focus-topic-board">{this.props.boardName}</div></a>
                 </div>);
     }
 }
