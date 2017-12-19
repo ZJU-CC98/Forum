@@ -90,10 +90,10 @@ export class UserCenterMyFavoritesBoard extends React.Component<UserCenterMyFavo
     render() {
         return (
             <div className='user-center-myfavorite-board'>
-                <Link to={`/list/${this.props.UserFavoritesBoard.id}`} title={this.props.UserFavoritesBoard.name}><img></img></Link>
+                <Link to={`/list/${this.props.UserFavoritesBoard.id}`} title={this.props.UserFavoritesBoard.name}><img src={`/images/_${this.props.UserFavoritesBoard.name}.png`}></img></Link>
                 <div className='user-center-myfavorite-board-info'>
-                    <p>版主：{this.props.UserFavoritesBoard.boardMasters.join(' ')}</p>
-                    <p>今日主题 {this.props.UserFavoritesBoard.todayCount} / 总主题 {this.props.UserFavoritesBoard.topicCount}</p>
+                    <Link to={`/list/${this.props.UserFavoritesBoard.id}`} title={this.props.UserFavoritesBoard.name}><h2>{this.props.UserFavoritesBoard.name}</h2></Link>
+                    <p>版主：{this.props.UserFavoritesBoard.boardMasters.join(' ')} 今日主题 {this.props.UserFavoritesBoard.todayCount} / 总主题 {this.props.UserFavoritesBoard.topicCount}</p>
                 </div>
                 <button type="button" className={this.state.isFollowing ? '' : 'user-follow-board'}  onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled}>{this.state.buttonInfo}</button>
             </div>
