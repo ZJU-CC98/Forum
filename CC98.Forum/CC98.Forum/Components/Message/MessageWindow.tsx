@@ -25,6 +25,7 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
 
     async getData(props) {
         let data = await Utility.getRecentMessage(props.data.id, 0, 10, this.context.router);
+        await Utility.refreshUnReadCount();
         if (data && data.length > 0) {
             let oldData = props.data.message;
             if (oldData && oldData.length > 0) {
@@ -74,6 +75,7 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
             let oldData = this.state.data;
             //到顶了就继续获取10条私信
             let newData = await Utility.getRecentMessage(this.props.data.id, oldData.length, 10, this.context.router);
+            await Utility.refreshUnReadCount();
             //跟之前的拼接一下
             if (newData && newData.length > 0) {
                 let data = oldData.concat(newData);

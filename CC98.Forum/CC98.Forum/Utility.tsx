@@ -1302,10 +1302,10 @@ export async function followUser(userId: number) {
         if (res.status === 200) {
             return true;
         } else {
-            throw {};
+            throw new Error(res.status.toString());
         }
     } catch (e) {
-        return false;
+        return e.message;
     }
 }
 
@@ -1325,7 +1325,7 @@ export async function unfollowUser(userId: number) {
         if (res.status === 200) {
             return true;
         } else {
-            throw {};
+            throw new Error(res.statusText);
         }
     } catch (e) {
         return false;

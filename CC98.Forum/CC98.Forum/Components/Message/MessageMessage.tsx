@@ -71,7 +71,6 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
 		    //给选中的聊天对象添加选中效果
 		    $('.message-message-pList > div').removeClass('message-message-pFocus');
             $(`#${item.name}`).addClass('message-message-pFocus');
-            await Utility.refreshUnReadCount();
         };
         return <div onClick={changeChatName} id={`${item.name}`}><MessagePerson data={item} /></div>;
     };

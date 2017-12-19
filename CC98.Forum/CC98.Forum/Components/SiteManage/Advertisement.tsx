@@ -91,7 +91,8 @@ export default class extends React.Component<null, State > {
     
     async getInfo(url) {
         this.setState({
-            type: urls.indexOf(url) + 1
+            type: urls.indexOf(url) + 1,
+            data: []
         });
         try {
             const token: string = await getToken();
@@ -166,10 +167,10 @@ export default class extends React.Component<null, State > {
         return (
             <div>
                 <p>自定义栏目</p>
-                <button type="button" onClick={() => this.getInfo(urls[0])} >推荐阅读</button>
-                <button type="button" onClick={() => this.getInfo(urls[1])} >推荐功能</button>
-                <button type="button" onClick={() => this.getInfo(urls[2])} >校园新闻</button>
-                <button type="button" onClick={() => this.getInfo(urls[3])} >广告</button>
+                <button type="button" disabled={this.state.type === 1} onClick={() => this.getInfo(urls[0])} >推荐阅读</button>
+                <button type="button" disabled={this.state.type === 2} onClick={() => this.getInfo(urls[1])} >推荐功能</button>
+                <button type="button" disabled={this.state.type === 3} onClick={() => this.getInfo(urls[2])} >校园新闻</button>
+                <button type="button" disabled={this.state.type === 4} onClick={() => this.getInfo(urls[3])} >广告</button>
                 {this.state.type > 0 ? <button type="button" onClick={() => this.add()} >添加</button> : null}
                 {this.state.data.length > 0 ?
                     <table>
@@ -196,7 +197,7 @@ export default class extends React.Component<null, State > {
                                 {this.state.type === 1 || this.state.type === 2 ? <td><input type="number" onChange={e => this.handleTdChange('orderWeight', Number.parseInt(e.target.value), index)} value={item.orderWeight} /></td> : null}
                                 <td><input onClick={e => this.handleTdChange('enable', (e.target as HTMLInputElement).checked, index)} type="checkbox" checked={item.enable} /></td>
                                 {this.state.type === 4 ? <td><input type="number" onChange={e => this.handleTdChange('days', Number.parseInt(e.target.value), index)} value={item.days} /></td> : null}
-                                {this.state.type === 4 ? <td>{item.expiredTime.slice(0,19).replace('T', ' ')}</td> : null}
+                                {this.state.type === 4 && item.expiredTime ? <td>{item.expiredTime.slice(0,19).replace('T', ' ')}</td> : null}
                                 <td><button type="button" onClick={e => this.putCurData(index)}>保存</button></td>
                             </tr>
                         ))}
