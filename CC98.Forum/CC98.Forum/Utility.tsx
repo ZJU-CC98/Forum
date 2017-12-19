@@ -2734,7 +2734,7 @@ export async function cc98Fetch(url, init?: RequestInit) {
     console.log(baseUrl);*/
     const baseUrl = 'http://apitest.niconi.cc';
     const _url = `${baseUrl}${url}`;
-    let response;
+    let response: Response;
     if (init) {
         response = await fetch(_url, init);
     } else {

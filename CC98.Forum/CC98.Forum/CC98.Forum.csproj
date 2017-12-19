@@ -26,6 +26,7 @@
     <None Remove="Components\SignalR.tsx" />
     <None Remove="Components\Signin.tsx" />
     <None Remove="Components\SiteManage.tsx" />
+    <None Remove="Components\SiteManage\Advertisement.tsx" />
     <None Remove="Components\SiteManage\Announcement.tsx" />
     <None Remove="Components\Status.tsx" />
     <None Remove="Components\Topic\Post.tsx" />
@@ -117,6 +118,7 @@
     <TypeScriptCompile Include="Components\RouteComponent.tsx" />
     <TypeScriptCompile Include="Components\SignalR.tsx" />
     <TypeScriptCompile Include="Components\Signin.tsx" />
+    <TypeScriptCompile Include="Components\SiteManage\Advertisement.tsx" />
     <TypeScriptCompile Include="Components\SiteManage\Announcement.tsx" />
     <TypeScriptCompile Include="Components\SiteManage\Index.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Award.tsx" />
@@ -125,7 +127,6 @@
     <TypeScriptCompile Include="Components\Focus\FocusUserArea.tsx" />
     <TypeScriptCompile Include="Components\Footer.tsx" />
     <TypeScriptCompile Include="Components\LogOn.tsx" />
-    <TypeScriptCompile Include="Components\LogOnExact.tsx" />
     <TypeScriptCompile Include="Components\LogOff.tsx" />
     <TypeScriptCompile Include="Components\Search\Search.tsx" />
     <TypeScriptCompile Include="Components\Status.tsx" />
