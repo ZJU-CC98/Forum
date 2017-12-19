@@ -74,10 +74,10 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
         const plus1UI = <div className="column" id="award">
 
             <div className="column manageOperation">
-             
-                <div className="manageObject">原因</div>
 
-                <div className="row"  style={{  justifyContent: "space-around", marginTop: "2rem"  }}> 
+                <div className="manageObject"><div className="judgeName">原因</div></div>
+
+                <div className="row" style={{ justifyContent: "space-between", marginTop: "2rem", marginLeft: "3rem", marginRight: "3rem",color:"#fff"  }}> 
 
                     <div className="row">
 
@@ -96,11 +96,11 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
                         <input type="radio" name="reason" value="好人一生平安" /><div>好人一生平安</div></div>
 
                 </div>
-                <div className="row" style={{ marginTop: "1rem", justifyContent: "space-around" }}>
+                <div className="row" style={{ marginTop: "1rem", justifyContent: "space-between", marginLeft: "3rem", marginRight: "3rem", color: "#fff" }}>
                     <div className="judgeOption">
                         <input type="radio" name="reason" value="自定义" /><div>自定义</div>
                         </div>
-                    <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+                    <input type="text" style={{ borderRadius: "1rem" }} value={this.state.reason} onChange={this.reasonInput} />
                 </div>
                 <div>{this.state.tips}</div>
 
@@ -111,9 +111,9 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
 
             <div className="column manageOperation">
 
-                <div className="manageObject">原因</div>
+                <div className="manageObject"><div className="judgeName">原因</div></div>
 
-                <div className="row" style={{ marginTop: "1rem", justifyContent: "space-around" }}>
+                <div className="row" style={{ marginTop: "1rem", marginLeft: "2rem", marginRight:"2rem", justifyContent: "space-between",color:"#fff" }}>
 
                     <div className="row">
 
@@ -132,11 +132,11 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
                         <input type="radio" name="reason" value="被你暴击" /><div>被你暴击</div></div>
 
                 </div>
-                <div className="row" style={{ marginTop: "1rem", justifyContent: "space-around" }}>
+                <div className="row" style={{ marginTop: "1rem", justifyContent: "flex-start", marginLeft:"2rem" }}>
                     <div className="judgeOption">
                         <input type="radio" name="reason" value="自定义" /><div>自定义</div>
                         </div>
-                    <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+                    <input type="text" style={{ borderRadius: "1rem" }} value={this.state.reason} onChange={this.reasonInput} />
                 </div>
                 <div>{this.state.tips}</div>
 
@@ -150,7 +150,7 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
         return <div style={{ display: "none" }} id={UIId} className="judgeManagement">
             <div className="judgeUI column">
                 <div className="row judgeName">
-                      风评值
+                      风评
                 </div>
                 <div className="row judgeOptions">
                     <div className="judgeOption">

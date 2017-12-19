@@ -225,7 +225,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
             this.props.update(before + selected + after);
             this.valueStack.push(before + selected + after);
             return {
-                selectionStart: before.length,
+                selectionStart: before.length + selected.length,
                 selectionEnd: before.length + selected.length,
                 clicked: true,
                 value: before + selected + after
