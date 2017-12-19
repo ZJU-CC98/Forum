@@ -856,20 +856,39 @@ export function transerRecentTime(time) {
     let thisTime = new Date().getTime();
     let delta = (new Date(new Date().toLocaleDateString()).getTime() + 86400000 - thatTime)/1000;
     if (delta > 259200) {
-        let month = thatDate.getMonth() + 1;
-        let strTime = `${thatDate.getFullYear()}:${month}:${thatDate.getDate()} ${thatDate.getHours()}:${thatDate.getMinutes()}:${thatDate.getSeconds()}`;
+        let month: any = thatDate.getMonth() + 1;
+        if (month < 10) { month = `0${month}`; }
+        let date: any = thatDate.getDate();
+        if (date < 10) { date = `0${date}`; }
+        let min: any = thatDate.getMinutes();
+        if (min < 10) { min = `0${min}`; }
+        let sec: any = thatDate.getSeconds();
+        if (sec < 10) { sec = `0${sec}`; }
+        let strTime = `${thatDate.getFullYear()}-${month}-${date} ${thatDate.getHours()}:${min}:${sec}`;
         return strTime;
     }
     else if (delta > 172800) {
-        let strTime = `${thatDate.getHours()}:${thatDate.getMinutes()}:${thatDate.getSeconds()}`;
+        let min: any = thatDate.getMinutes();
+        if (min < 10) { min = `0${min}`; }
+        let sec: any = thatDate.getSeconds();
+        if (sec < 10) { sec = `0${sec}`; }
+        let strTime = `${thatDate.getHours()}:${min}:${sec}`;
         return `前天 ${strTime}`;
     }
     else if (delta > 86400) {
-        let strTime = `${thatDate.getHours()}:${thatDate.getMinutes()}:${thatDate.getSeconds()}`;
+        let min: any = thatDate.getMinutes();
+        if (min < 10) { min = `0${min}`; }
+        let sec: any = thatDate.getSeconds();
+        if (sec < 10) { sec = `0${sec}`; }
+        let strTime = `${thatDate.getHours()}:${min}:${sec}`;
         return `昨天 ${strTime}`;
     }
     else if (thisTime - thatTime > 3600) {
-        let strTime = `${thatDate.getHours()}:${thatDate.getMinutes()}:${thatDate.getSeconds()}`;
+        let min: any = thatDate.getMinutes();
+        if (min < 10) { min = `0${min}`; }
+        let sec: any = thatDate.getSeconds();
+        if (sec < 10) { sec = `0${sec}`; }
+        let strTime = `${thatDate.getHours()}:${min}:${sec}`;
         return `今天 ${strTime}`;
     }
     else {
@@ -2669,15 +2688,17 @@ export async function refreshUnReadCount() {
     unreadCount.totalCount = unreadCount.systemCount + unreadCount.atCount + unreadCount.replyCount + unreadCount.messageCount;   
     if (unreadCount.totalCount > 0) {
         $('#unreadCount-totalCount').removeClass('displaynone');
-        $('#unreadCount-totalCount1').removeClass('displaynone');
+        $('#unreadCount-totalCount').text(unreadCount.totalCount);
+
     }
     else {
         $('#unreadCount-totalCount').addClass('displaynone');
-        $('#unreadCount-totalCount1').addClass('displaynone');
     }
     if (unreadCount.replyCount > 0) {
         $('#unreadCount-replyCount').removeClass('displaynone');
+        $('#unreadCount-replyCount').text(unreadCount.replyCount);
         $('#unreadCount-replyCount1').removeClass('displaynone');
+        $('#unreadCount-replyCount1').text(unreadCount.replyCount);
     }
     else {
         $('#unreadCount-replyCount').addClass('displaynone');
@@ -2685,7 +2706,9 @@ export async function refreshUnReadCount() {
     }
     if (unreadCount.atCount > 0) {
         $('#unreadCount-atCount').removeClass('displaynone');
+        $('#unreadCount-atCount').text(unreadCount.atCount);
         $('#unreadCount-atCount1').removeClass('displaynone');
+        $('#unreadCount-atCount1').text(unreadCount.atCount);
     }
     else {
         $('#unreadCount-atCount').addClass('displaynone');
@@ -2693,7 +2716,9 @@ export async function refreshUnReadCount() {
     }
     if (unreadCount.systemCount > 0) {
         $('#unreadCount-systemCount').removeClass('displaynone');
+        $('#unreadCount-systemCount').text(unreadCount.systemCount);
         $('#unreadCount-systemCount1').removeClass('displaynone');
+        $('#unreadCount-systemCount1').text(unreadCount.systemCount);
     }
     else {
         $('#unreadCount-systemCount').addClass('displaynone');
@@ -2701,7 +2726,10 @@ export async function refreshUnReadCount() {
     }
     if (unreadCount.messageCount > 0) {
         $('#unreadCount-messageCount').removeClass('displaynone');
+        $('#unreadCount-messageCount').text(unreadCount.messageCount);
         $('#unreadCount-messageCount1').removeClass('displaynone');
+        $('#unreadCount-messageCount1').text(unreadCount.messageCount);
+
     }
     else {
         $('#unreadCount-messageCount').addClass('displaynone');

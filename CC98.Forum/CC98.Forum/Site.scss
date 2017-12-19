@@ -1639,6 +1639,10 @@ a {
             font-size: 14px;
             line-height: 24px;
             margin: 0px 30px 20px 30px;
+
+            a:hover {
+                text-decoration: underline;
+            }
         }
     }
 }
@@ -1707,6 +1711,9 @@ a {
                 font-size: 14px;
                 line-height: 24px;
                 flex-shrink: 0;
+                a:hover {
+                    text-decoration: underline;
+                }
             }
         }
         /*.message-response-box-right { 
@@ -1739,19 +1746,21 @@ a {
 }
 
 .focus-title {
-    width: 110px;
-    height: 30px;
-    line-height: 30px;
+    height: 40px;
+    line-height: 40px;
     font-size: 20px;
     color: #6b7178;
+    flex-shrink: 0;
+    margin-right: 20px;
+
+    &:hover {
+        @extend .focus-title-hover;
+    }
 }
-.focus-title-bar {
-    width: 0;
-    height: 20px;
-    position: relative;
-    right: 14px;
-    top: 5px;
-    border: 1px solid #6b7178
+
+.focus-title-hover {
+    color: #fb6165;
+    border-bottom: 2px solid #fb6165;
 }
 
 .focus-board-area {
@@ -1881,21 +1890,21 @@ a {
         .focus-topic-title {
             font-size: 20px;
             color: #6b7178;
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-            white-space: nowrap; 
-            height: 30px;
-            line-height: 30px;
-            margin: 10px 20px auto 20px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            height: 28px;
+            line-height: 28px;
+            margin: 11px 20px auto 20px;
             max-width: 800px;
         }
 
         .focus-topic-info {
             display: flex;
             flex-direction: row;
-            margin: auto 20px 14px 20px;
-            height: 14px;
-            line-height: 14px;
+            margin: auto 20px 13px 20px;
+            height: 16px;
+            line-height: 16px;
             font-size: 12px;
 
             div {
@@ -1903,6 +1912,14 @@ a {
                 margin-right: 20px;
                 overflow: hidden;
                 position: relative;
+                color: #6b7178;
+
+                a {
+                    color: #6b7178;
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
 
                 i {
                     position: relative;

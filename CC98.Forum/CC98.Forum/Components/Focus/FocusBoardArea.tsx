@@ -40,6 +40,10 @@ export class FocusBoardArea extends React.Component<{}, FocusBoardAreaState> {
      * 将我关注的版面排列好
      */
     async componentDidMount() {
+        //给关注版面添加选中效果
+        $('#myFocusUser').removeClass('focus-title-hover');
+        $('#myFocusBoard').addClass('focus-title-hover');
+
         //先看缓存里有没有关注版面列表的数据
         let data: FocusBoard[] = Utility.getStorage("focusBoardList");
         if (data) {
