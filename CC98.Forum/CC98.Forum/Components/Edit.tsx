@@ -11,10 +11,7 @@ import {
 import { match } from "react-router";
 import { RouteComponent } from './RouteComponent';
 import { UbbEditor } from './UbbEditor';
-
-export module Constants {
-    export var testEditor;
-}
+import { Constants } from './Constant';
 declare let editormd: any;
 declare let testEditor: any;
 

@@ -97,7 +97,7 @@ export class Reply extends React.Component<{DateTime,topicId, page, topicInfo, b
             <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} />
             <ReplyContent key={item.content} postid={item.postId} content={item.content} contentType={item.contentType} />
                 <Award postId={item.postId} updateTime={Date.now()} awardInfo={item.awardInfo} />
-                <ReplierSignature floor={item.floor} userInfo={item.userInfo} replyTime={item.time} content={item.content} quote={this.quote} signature={item.userInfo.signatureCode} topicid={item.topicId} userId={item.userId} masters={this.state.masters} postid={item.postId} likeInfo={item.likeInfo} lastUpdateAuthor={item.lastUpdateAuthor} lastUpdateTime={item.lastUpdateTime} />
+                <ReplierSignature floor={item.floor} userInfo={item.userInfo} replyTime={item.time} content={item.content} quote={this.quote} signature={item.userInfo.signatureCode} topicid={item.topicId} userId={item.userId} masters={this.state.masters} postid={item.postId} likeInfo={item.likeInfo} lastUpdateAuthor={item.lastUpdateAuthor} lastUpdateTime={item.lastUpdateTime} boardId={this.props.boardInfo.id} isLZ={item.isLZ} />
                 </div>
         </div>;
     }

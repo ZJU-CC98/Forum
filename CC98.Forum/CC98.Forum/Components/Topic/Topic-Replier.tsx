@@ -41,7 +41,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                     buttonIsDisabled: false,
                     buttonInfo: '关注',
                     isFollowing: false,
-                    fanCount: this.props.userInfo.fanCount - 1
+                    fanCount: this.props.userInfo.fanCount 
                 });
             } else {
                 throw {};
@@ -89,7 +89,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         //用户头像
         let urlHtml = <a href={realUrl} style={{ display: "block", maxHeight: "7.5rem" }}><img className="userPortrait" src={this.props.userInfo.portraitUrl}></img></a>;
         if (this.props.isAnonymous == true) {
-            urlHtml = <img src={this.props.userInfo.portraitUrl}></img>;
+            urlHtml = <div  style={{ display: "block", maxHeight: "7.5rem" }}><img className="userPortrait" src={this.props.userInfo.portraitUrl}></img></div>;
         }
         const curUserPostUrl = `/topic/${this.props.topicid}/user/id/${this.props.userInfo.id}`;
         const normalUrl = `/topic/${this.props.topicid}`;

@@ -29,11 +29,17 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
             buttonInfo: '关注中'
         });
         let res = await Utility.followUser(Number.parseInt(this.props.userInfo.id));
-        if (res) {
+        if (res === true) {
             this.setState({
                 buttonIsDisabled: false,
                 buttonInfo: '已关注',
                 isFollowing: true
+            });
+        } else if (res === '400') {
+            this.setState({
+                buttonIsDisabled: false,
+                buttonInfo: '已达上限',
+                isFollowing: false
             });
         } else {
             this.setState({
