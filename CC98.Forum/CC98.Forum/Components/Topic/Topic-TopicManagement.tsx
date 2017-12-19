@@ -21,6 +21,9 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
             state: "normal", reason: "", tips: "", days: 0, board: null, topicInfo: { state: 0, topState: 0, bestState: 0 }, fetchState: 'ok',color:"#fff"
         };
     }
+    showIP() {
+        
+    }
     showNormal() {
         this.setState({ state: 'normal' });
     }
@@ -238,7 +241,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
 
                 <div className="row">
                     <div className="row">
-                        <input type="radio" name="option" value="查看IP" onClick={this.showNoReason} />
+                        <input type="radio" name="option" value="查看IP" onClick={this.showIP} />
                         <div>查看IP</div>
                     </div>
 

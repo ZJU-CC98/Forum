@@ -18,7 +18,7 @@ export module Constants {
 declare let editormd: any;
 declare let testEditor: any;
 
-export class Edit extends RouteComponent<{history}, {boardName,tags,ready,mode,content,title,postInfo}, { mode: string, id: number }> {
+export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, mode, content, title, postInfo, tag1, tag2 }, { mode: string, id: number }> {
     constructor(props) {
         super(props);
         this.update = this.update.bind(this);
@@ -27,7 +27,7 @@ export class Edit extends RouteComponent<{history}, {boardName,tags,ready,mode,c
         this.sendUbbTopic = this.sendUbbTopic.bind(this);
         this.editUBB = this.editUBB.bind(this);
         this.state = ({
-            tags: [], boardName: "", ready: false, mode: 0, content: "", title: "", postInfo: {floor:0,title:"",content:"",contentType:0}
+            tags: [], boardName: "", ready: false, mode: 0, content: "", title: "", postInfo: { floor: 0, title: "", content: "", contentType: 0 }, tag1: "", tag2: ""
         });
     }
     async send() {
@@ -43,12 +43,12 @@ export class Edit extends RouteComponent<{history}, {boardName,tags,ready,mode,c
         const token = await Utility.getToken();
         const headers = new Headers();
         headers.append("Authorization", token);
-        let url,response,data;
+        let url, response, data;
         switch (mode) {
-            case 'postTopic':            
-                 url = `/Board/${id}`;
-                 response = await Utility.cc98Fetch(url, { headers });
-                 data = await response.json();
+            case 'postTopic':
+                url = `/Board/${id}`;
+                response = await Utility.cc98Fetch(url, { headers });
+                data = await response.json();
                 const boardName = data.name;
                 //获取标签
                 const tags = await Utility.getBoardTag(id);
@@ -59,12 +59,12 @@ export class Edit extends RouteComponent<{history}, {boardName,tags,ready,mode,c
                 response = await Utility.cc98Fetch(url, { headers });
                 data = await response.json();
                 if (data.contentType === 0) {
-                    this.setState({ postInfo: data,content:data.content });
-                }else
-                this.setState({ postInfo: data });
+                    this.setState({ postInfo: data, content: data.content });
+                } else
+                    this.setState({ postInfo: data });
                 break;
         }
-       
+
     }
     ready() {
         this.setState({ ready: true });
@@ -81,13 +81,38 @@ export class Edit extends RouteComponent<{history}, {boardName,tags,ready,mode,c
     }
     async sendMdTopic() {
         try {
+            let tag1Id, tag2Id;
             let url = `/board/${this.match.params.id}/topic`;
             let c = Constants.testEditor.getMarkdown();
-            let content = {
-                content: c,
-                contentType: 1,
-                title: this.state.title
+            let content;
+            if (this.state.tag1 && !this.state.tag2) {
+                tag1Id = await Utility.getTagIdbyName(this.state.tag1);
+                content = {
+                    content: c,
+                    contentType: 1,
+                    title: this.state.title,
+                    tag1: tag1Id
+                };
             }
+            else if (this.state.tag2 ) {
+                tag1Id = await Utility.getTagIdbyName(this.state.tag1);
+                tag2Id = await Utility.getTagIdbyName(this.state.tag2);
+                content = {
+                    content: c,
+                    contentType: 1,
+                    title: this.state.title,
+                    tag1: tag1Id,
+                    tag2: tag2Id
+                };
+            }
+            else {
+                content = {
+                    content: c,
+                    contentType: 1,
+                    title: this.state.title
+                };
+            }
+
             let contentJson = JSON.stringify(content);
             let token = await Utility.getToken();
             let myHeaders = new Headers();
@@ -116,10 +141,37 @@ export class Edit extends RouteComponent<{history}, {boardName,tags,ready,mode,c
     }
     async sendUbbTopic() {
         const url = `/board/${this.match.params.id}/topic`;
-        const content = {
-            content: this.state.content,
-            contentType: 0,
-            title: this.state.title
+        let content;
+        console.log("state");
+        console.log(this.state.tag1);
+        console.log(this.state.tag2);
+        let tag1Id, tag2Id;
+        if (this.state.tag1 && !this.state.tag2) {
+            tag1Id = await Utility.getTagIdbyName(this.state.tag1);
+            content = {
+                content: this.state.content,
+                contentType: 0,
+                title: this.state.title,
+                tag1: tag1Id
+            };
+        }
+        else if (this.state.tag2) {
+            tag1Id = await Utility.getTagIdbyName(this.state.tag1);
+            tag2Id = await Utility.getTagIdbyName(this.state.tag2);
+            content = {
+                content: this.state.content,
+                contentType: 0,
+                title: this.state.title,
+                tag1: tag1Id,
+                tag2: tag2Id
+            };
+        }
+        else {
+            content = {
+                content: this.state.content,
+                contentType: 0,
+                title: this.state.title
+            };
         }
         const contentJson = JSON.stringify(content);
         const token = await Utility.getToken();
@@ -193,7 +245,7 @@ export class Edit extends RouteComponent<{history}, {boardName,tags,ready,mode,c
             contentType: 0,
             title: this.state.title
         }
-        const body= JSON.stringify(content);
+        const body = JSON.stringify(content);
         const token = await Utility.getToken();
         const headers = await Utility.formAuthorizeHeader();
         headers.append("Content-Type", 'application/json');
@@ -224,19 +276,19 @@ export class Edit extends RouteComponent<{history}, {boardName,tags,ready,mode,c
         const redirectUrl = `/topic/${this.state.postInfo.topicId}/${page}#${pageFloor}`;
         this.props.history.push(redirectUrl);
     }
-    onTitleChange(title) {
-        this.setState({ title: title });
+    onTitleChange(title, tag1, tag2) {
+        this.setState({ title: title, tag1: tag1, tag2: tag2 });
     }
     onUbbChange(content) {
         this.setState({ content: content });
     }
     render() {
-            const mode = this.match.params.mode;
-            const id = this.match.params.id;
-            const url = "";
+        const mode = this.match.params.mode;
+        const id = this.match.params.id;
+        const url = "";
         let editor;
         let titleInput = null;
-        if (mode === "postTopic" ) {
+        if (mode === "postTopic") {
             titleInput = <InputTitle boardId={id} tags={this.state.tags} onChange={this.onTitleChange.bind(this)} title={this.state.postInfo.title} />;
             if (this.state.mode === 0) {
                 editor = <div><div className="createTopicContent">
@@ -276,17 +328,17 @@ export class Edit extends RouteComponent<{history}, {boardName,tags,ready,mode,c
             if (this.state.postInfo.floor === 1) {
                 titleInput = <InputTitle boardId={id} tags={this.state.tags} onChange={this.onTitleChange.bind(this)} title={this.state.postInfo.title} />;
             }
-        } 
+        }
         return <div className="createTopic">
             <Category url={url} boardName={this.state.boardName} />
             {titleInput}
-                    <Type />
-                    <Options />
-                {editor}
-                </div>;
-        }
-
+            <Type />
+            <Options />
+            {editor}
+        </div>;
     }
+
+}
 
 
 /**
@@ -340,15 +392,30 @@ export class Tags extends React.Component<{}, {}>{
  * 用于发主题/编辑主题
  * TODO:尚未完成
  */
-export class InputTitle extends React.Component<{ boardId, onChange, tags,title }, { title: string ,tags}>{
+export class InputTitle extends React.Component<{ boardId, onChange, tags, title }, { title: string, tags }>{
     constructor(props) {
         super(props);
         this.state = ({ title: this.props.title, tags: this.props.tags });
     }
 
     handleTitleChange(event) {
-        this.props.onChange(event.target.value);
-        this.setState({ title: event.target.value });
+        let tag1, tag2;
+        if (this.state.tags.length === 0) {
+            this.props.onChange(event.target.value, "", "");
+            this.setState({ title: event.target.value });
+        } else if (this.state.tags.length === 1) {
+            tag1 = $(".tagBoxSelect").text();
+            this.props.onChange(event.target.value, tag1, "");
+            this.setState({ title: event.target.value });
+        } else {
+            tag1 = $(".tagBoxSelect").text();
+            tag2 = $(".tagBoxSelect1").text();
+            console.log("tag1=" + tag1);
+            console.log("tag2=" + tag2);
+            this.props.onChange(event.target.value, tag1, tag2);
+            this.setState({ title: event.target.value });
+        }
+
     }
 
     componentWillReceiveProps(newProps) {
@@ -397,7 +464,7 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags,title 
         tagBoxLi.mouseout(function () {
             this.className = '';
         });
-       
+
         const tagBoxSelect1 = $('.tagBoxSelect1');
         const downArrow1 = $('.downArrow1');
         const tagBoxSub1 = $('.tagBoxSub1');
@@ -442,7 +509,7 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags,title 
         console.log($(".tagBoxSelect1").text());
         let drop1 = null;
         let drop2 = null;
-        if (this.state.tags.length>0)drop1=<ul className="tagBoxSub">
+        if (this.state.tags.length > 0) drop1 = <ul className="tagBoxSub">
             {this.state.tags[0].tags.map(this.generateTagOption)}
         </ul>;
         if (this.state.tags.length === 2) drop2 = <ul className="tagBoxSub1">
@@ -472,7 +539,7 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags,title 
                 </div>
                 {drop1}
             </div>
-          ;
+                ;
         }
         return <div className="createTopicTitle">
             <div className="createTopicListName">主题标题</div>
@@ -529,12 +596,12 @@ export class Options extends React.Component<{}, {}>{
 }
 
 
-export class InputMdContent extends React.Component<{mode, postInfo,ready, onChange }, { content }>{
+export class InputMdContent extends React.Component<{ mode, postInfo, ready, onChange }, { content }>{
     constructor(props) {
         super(props);
         this.state = ({ content: "" });
     }
- 
+
     componentDidMount() {
         let content = '234';
         if (this.props.postInfo.content) {
@@ -549,7 +616,7 @@ export class InputMdContent extends React.Component<{mode, postInfo,ready, onCha
             path: "/scripts/lib/editor.md/lib/",
             saveHTMLToTextarea: false,
             emoji: true,
-            appendMarkdown:content,
+            appendMarkdown: content,
             toolbarIcons: function () {
                 return [
                     "undo", "redo", "|", "emoji",

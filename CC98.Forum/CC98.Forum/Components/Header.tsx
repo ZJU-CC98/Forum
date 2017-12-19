@@ -47,6 +47,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
     }
 
     async handleNotifyMessageReceive() {
+        console.log("接收到了signalr消息");
         //更新消息数量
         await Utility.refreshUnReadCount();
         this.setState({
@@ -62,11 +63,6 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
             //如果用户注销则关闭signalR链接
             SignalR.stop();
         }
-        //更新消息数量
-        await Utility.refreshUnReadCount();
-        this.setState({
-            unreadCount: Utility.getStorage("unreadCount")
-        });
     }
 
     logOff() {
