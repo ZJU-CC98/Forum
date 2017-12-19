@@ -285,8 +285,9 @@ export class SearchBeforeConnent extends React.Component<{history}, AppState> { 
                     }
                 }
                 else if (searchBoxSelect.text() == '用户') {
-                    if (await Utility.getUserInfoByName(val)) {
-                        this.props.history.push(`/user/name/${val}`);
+                    let data = await Utility.getUserInfoByName(val);
+                    if (data) {
+                        this.props.history.push(`/user/id/${data.id}`);
                     }
                     else {
                         Utility.removeStorage('searchInfo');
@@ -302,7 +303,7 @@ export class SearchBeforeConnent extends React.Component<{history}, AppState> { 
                             this.props.history.push('/search');
                         }
                         else if (boardResult.length == 1) {
-                            this.props.history.push(`/list/${boardResult[0].id}/normal/`);
+                            this.props.history.push(`/list/${boardResult[0].id}`);
                         }
                         else if (boardResult.length > 1) {
                             Utility.setStorage("searchBoardInfo", boardResult);

@@ -98,7 +98,8 @@ export class Search extends React.Component<{}, SearchState> {
 
     showNoResult() {
         $('#focus-topic-area').addClass('displaynone');
-        $('#noResult').removeClass('displaynone');
+        //$('#noResult').removeClass('displaynone');
+        window.location.href = '/status/notfoundtopic';
     }
     
     render() {
@@ -107,7 +108,7 @@ export class Search extends React.Component<{}, SearchState> {
                             <div className="focus-allNewTopic"><i className="fa fa-home" aria-hidden="true"></i>搜索/{this.state.boardName}</div>
                             <div className="focus-topic-area" id="focus-topic-area">
                                     <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
-                                    <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif"></img></div>
+                                    <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://file.cc98.org/uploadfile/2017/12/20/6514723843.gif"></img></div>
                                     <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone"> 没有更多帖子啦~</div>
                             </div>
                             <div id="noResult" className="noResult displaynone">没有符合条件的搜索结果</div>
