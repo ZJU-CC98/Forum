@@ -1,9 +1,9 @@
 ﻿import * as React from 'react';
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { RouteComponent } from '../RouteComponent';
 import * as Utility from '../../Utility';
 declare let moment: any;
-export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, floor, isDeleted, traceMode, isHot }, { traceMode, buttonIsDisabled, buttonInfo, isFollowing}, { topicid}>{
+export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, floor, isDeleted, traceMode, isHot }, { traceMode, buttonIsDisabled, buttonInfo, isFollowing }, { topicid }>{
     constructor(props, content) {
         super(props, content);
 
@@ -13,7 +13,8 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         this.state = {
             traceMode: this.props.traceMode, buttonInfo: '关注',
             buttonIsDisabled: false,
-            isFollowing: false };
+            isFollowing: false
+        };
     }
 
     changeTraceMode() {
@@ -91,14 +92,14 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         if (!this.props.userInfo.id) {
             topicNumber = '';
         }
-       
-        let userName  = <Link style={{ color: "#fff" }} to={url}>{this.props.userInfo.name}</Link>;
 
-         if (this.props.userInfo.privilege == "匿名" || this.props.userInfo.privilege === "匿名用户") {
+        let userName = <Link style={{ color: "#fff" }} to={url}>{this.props.userInfo.name}</Link>;
+
+        if (this.props.userInfo.privilege == "匿名" || this.props.userInfo.privilege === "匿名用户") {
             userName = <div style={{ color: "white" }} >{this.props.userInfo.name}</div>;
-        } 
+        }
         let emailButton;
-        if (this.props.isAnonymous) emailButton = null; 
+        if (this.props.isAnonymous) emailButton = null;
         else emailButton = <button className="operation" ><Link to={email}>私信</Link></button>;
         let traceButton;
         if (this.props.isAnonymous) traceButton = null;
@@ -114,44 +115,45 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                 </div>;
             }
         }
-       
+
         return <div className="userMessage">
             <div className="userGender">
                 {this.props.userInfo.gender === 0 ? <i className="fa fa-venus" style={{ color: "#fff" }}></i> : <i className="fa fa-mars" style={{ color: "#fff" }}></i>}
             </div>
 
-            <div style={{ width: "100%", justifyContent: "center", display:"flex" }}>
-                {urlHtml}
+            <div style={{ width: "100%", justifyContent: "center", display: "flex" }}>
+                <div style={{ zIndex: 100 }}>{urlHtml}</div>
+                <div className="photoFrame"><img src="/images/sample.png" /></div>
             </div>
 
-            <div className="rpyClr" style={{ width: "100%", marginTop: "1rem", paddingLeft:"3rem" }}>
+            <div className="rpyClr" style={{ width: "100%", marginTop: "1rem", paddingLeft: "3rem" }}>
                 {userName}
             </div>
 
-            <div className="row" style={{ width: "100%", paddingLeft: "3rem", marginTop: "0.4rem", alignItems: "center", fontFamily:"微软雅黑" }}>
+            <div className="row" style={{ width: "100%", paddingLeft: "3rem", marginTop: "0.4rem", alignItems: "center", fontFamily: "微软雅黑" }}>
                 <div style={this.props.userInfo.birthday ? { marginRight: "0.6rem" } : null}>{this.props.userInfo.birthday ? moment(this.props.userInfo.birthday).format('YYYY-MM-DD') : null}</div>
                 <div >
                     粉丝 {this.props.userInfo.fanCount}</div>
             </div>
 
             <div className="row" style={{ width: "100%" }}>
-                <div className="column" style={{ width: "60%", alignItems: "flex-start", paddingLeft:"1.5rem" }}>
-            <div className="userMessageOpt">
-                帖数 {this.props.userInfo.postCount}
-            </div>
+                <div className="column" style={{ width: "60%", alignItems: "flex-start", paddingLeft: "1.5rem" }}>
+                    <div className="userMessageOpt">
+                        帖数 {this.props.userInfo.postCount}
+                    </div>
 
-            <div className="userMessageOpt">
-                威望 {this.props.userInfo.prestige}
-            </div>
+                    <div className="userMessageOpt">
+                        威望 {this.props.userInfo.prestige}
+                    </div>
 
-            <div className="userMessageOpt">
-                风评 {this.props.userInfo.popularity}
-            </div>
+                    <div className="userMessageOpt">
+                        风评 {this.props.userInfo.popularity}
+                    </div>
                 </div>
                 {btn}
             </div>
         </div>;
-        
+
     }
 }
 /*return <div className="replyRoot">

@@ -25,7 +25,7 @@ body {
     width: 100%;
 }
 
-.postRoot { 
+.postRoot {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -33,8 +33,8 @@ body {
     background-color: #FFFFFF;
     font-family: 微软雅黑;
     width: 100%;
-    border:#eaeaea solid thin;
-    box-shadow:0 0 10px 1px rgba(0,0,0,0.2);
+    border: #eaeaea solid thin;
+    box-shadow: 0 0 10px 1px rgba(0,0,0,0.2);
 }
 
 .replyRoot {
@@ -42,16 +42,18 @@ body {
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    min-height:16rem;
+    min-height: 16rem;
     font-family: 微软雅黑;
-    background-color:#7ab7c9;
+    background-color: #7ab7c9;
 }
+
 .replyContentRoot {
     background-color: #fff;
 }
+
 #listRoot {
     display: flex;
-    width:1140px;
+    width: 1140px;
     flex-direction: column;
     font-family: 微软雅黑;
     align-items: center;
@@ -61,12 +63,14 @@ body {
     margin-top: 2.5rem;
     min-width: 71.2px;
 }
-#boardTopics{
-    border:#eaeaea thin solid;
+
+#boardTopics {
+    border: #eaeaea thin solid;
 }
+
 .listContent {
     display: flex;
-    margin-bottom:1rem;
+    margin-bottom: 1rem;
     border-radius: 0.3125rem;
     display: flex;
     flex-direction: column;
@@ -153,7 +157,7 @@ body {
 }
 
 .email {
-    color:#fff;
+    color: #fff;
     width: 5rem;
     height: 1.5rem;
     font-size: 0.75rem;
@@ -179,38 +183,38 @@ body {
 }
 
 #topicTitleProp {
-    width:100%;
+    width: 100%;
     height: 6rem;
     display: flex;
     flex-direction: column;
-    align-items:flex-start;
+    align-items: flex-start;
 }
 
 
-#essay1{
-    margin-left:1.5rem;
-    margin-top:0.5rem;
-    align-items:center;
-    height:4rem;
-    font-size:1.25rem;
+#essay1 {
+    margin-left: 1.5rem;
+    margin-top: 0.5rem;
+    align-items: center;
+    height: 4rem;
+    font-size: 1.25rem;
 }
+
 .titleProp {
     color: #FF8838;
     font-size: 1rem;
 }
 
 #essayTitle {
-    max-width:30rem;
-
+    max-width: 30rem;
     color: #000000;
     font-size: 16px;
 }
 
 #essayProp {
-    margin-left:0.7rem;
+    margin-left: 0.7rem;
     display: flex;
     font-size: 0.75rem;
-    color:rgb(121,184,201);
+    color: rgb(121,184,201);
 }
 
 #like {
@@ -227,7 +231,7 @@ body {
     display: flex;
     flex-wrap: nowrap;
     word-break: keep-all;
-    margin-right:0.6rem;
+    margin-right: 0.6rem;
 }
 
 .tagSize {
@@ -316,48 +320,58 @@ body {
 .substance {
     display: flex;
     line-height: 200%;
-    margin-top:2rem;
+    margin-top: 2rem;
     margin-left: 1.5rem;
-    width:56.25rem;
+    width: 56.25rem;
     word-wrap: break-word;
     color: rgb(80,80,80);
 }
+
 .replySubstance {
     border-top: #eaeaea thin solid;
 }
-.replierBtn{
-    background-color:#fb6165;
-    color:#fff;
-    border:none;
-    border-radius:0.63rem;
-    width:2.5rem;
-    height:1.5rem;
-    cursor:pointer;
+
+.replierBtn {
+    background-color: #fb6165;
+    color: #fff;
+    border: none;
+    border-radius: 0.63rem;
+    width: 2.5rem;
+    height: 1.5rem;
+    cursor: pointer;
 }
-.userMessageOpt{
-    margin-top:0.4rem;
-    font-family:微软雅黑;
+
+.userMessageOpt {
+    margin-top: 0.4rem;
+    font-family: 微软雅黑;
 }
-.userGender{
-    display:flex;
-    justify-content:flex-end;
-    width:80%;
-    font-size:1rem;
+
+.userGender {
+    display: flex;
+    justify-content: flex-end;
+    width: 80%;
+    font-size: 1rem;
 }
-.userPortrait{
-    width:7.5rem;
-    height:7.5rem;  
-    border-radius:50%;
+
+.userPortrait {
+    width: 7.5rem;
+    height: 7.5rem;
+    border-radius: 50%;
+    margin-top: 1rem;
+    box-shadow: 2px 2px;
 }
+
 .signature {
     color: rgb(80,80,80);
     margin: 1.25rem;
-    padding-top:1rem;
+    padding-top: 1rem;
 }
-.signature img{
-    max-height:12.5rem;
-    max-width:32.5rem;
+
+.signature img {
+    max-height: 12.5rem;
+    max-width: 32.5rem;
 }
+
 .upup {
     cursor: pointer;
 }
@@ -385,8 +399,8 @@ body {
     align-items: flex-end;
     padding-bottom: 1rem;
     padding-right: 2rem;
-    color:#79b8ca;
-    align-items:center;
+    color: #79b8ca;
+    align-items: center;
 }
 
 #commentlike {
@@ -426,7 +440,7 @@ body {
     flex-direction: row;
     justify-content: flex-start;
     align-content: center;
-    padding-top:0.2rem;
+    padding-top: 0.2rem;
     font-size: 0.75rem;
     border-top: #EAEAEA dashed 2px;
     box-sizing: border-box;
@@ -440,13 +454,13 @@ body {
 }
 
 .userName {
-    width:5rem;
+    width: 5rem;
     margin-left: 0.625rem;
 }
 
 .grades {
     margin-left: 1.25rem;
-    width:8rem;
+    width: 8rem;
 }
 
 .reward {
@@ -506,13 +520,14 @@ body {
 
 .reply {
     width: 100%;
-    margin-top:1rem;
-    border:#8dc9db solid 1.5px;
-    background-color:#fff;
-    flex-direction:row;
-    display:flex;
-    box-shadow:0 0 5px grey;
+    margin-top: 1rem;
+    border: #8dc9db solid 1.5px;
+    background-color: #fff;
+    flex-direction: row;
+    display: flex;
+    box-shadow: 0 0 5px grey;
 }
+
 .userMessage {
     align-items: center;
     background-color: #8dc9db;
@@ -520,18 +535,19 @@ body {
     width: 10.6rem;
     display: flex;
     flex-direction: column;
-    padding-top:1rem;
-    padding-bottom:2rem;
-    font-size:0.75rem;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+    font-size: 0.75rem;
 }
-.userMessageOpt{
-    
+
+.userMessageOpt {
 }
+
 .rpyClr {
-    font-size:1.25rem;
+    font-size: 1.25rem;
     width: 8rem;
     word-break: keep-all;
-    font-family:微软雅黑;
+    font-family: 微软雅黑;
 }
 
 #replierMes {
@@ -550,7 +566,6 @@ body {
     height: 3rem;
     display: flex;
     justify-content: flex-end;
-
 }
 
 .operation1 {
@@ -562,12 +577,12 @@ body {
     cursor: pointer;
     color: #79b8ca;
     border: #79b8ca solid thin;
-    border-radius:1rem;
-    width:2.25rem;
-    height:1.25rem;
-    text-align:center;
-    margin-left:0.5rem;
-    line-height:1.25rem;
+    border-radius: 1rem;
+    width: 2.25rem;
+    height: 1.25rem;
+    text-align: center;
+    margin-left: 0.5rem;
+    line-height: 1.25rem;
 }
 
 .operation {
@@ -638,9 +653,9 @@ body {
     display: flex;
     flex-direction: row;
     align-items: flex-end;
-    font-family:"微软雅黑";
-    margin-left:1rem;
-    margin-right:1rem;
+    font-family: "微软雅黑";
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 
 .chooseTag {
@@ -650,7 +665,7 @@ body {
     margin-left: 0.625rem;
     background-color: $bgcolor2;
     border-radius: 0.3125rem;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .tagNumber {
@@ -666,9 +681,11 @@ body {
     border: none;
     cursor: pointer;
 }
-.listContentTag a{
-    color:#fff;
+
+.listContentTag a {
+    color: #fff;
 }
+
 .topicInList {
     height: 4rem;
     width: 100%;
@@ -677,9 +694,11 @@ body {
     align-items: center;
     margin-right: 0.625rem;
 }
-.topicInList:hover{
-    background-color:#eaeaea;
+
+.topicInList:hover {
+    background-color: #eaeaea;
 }
+
 #commentsAmount img {
     width: 10px;
     height: 10px;
@@ -688,20 +707,24 @@ body {
 #changeColor:nth-child(odd) {
     background-color: #FCFCFC;
 }
-#changeColor:nth-child(odd) span{
-    color:#000;
+
+#changeColor:nth-child(odd) span {
+    color: #000;
 }
+
 #changeColor {
     background-color: #ebf5f8;
-   
 }
+
 #changeColor span {
     color: #6b7178;
 }
-.reputation{
-    font-size:0.75rem;
-    margin-left:1rem;
+
+.reputation {
+    font-size: 0.75rem;
+    margin-left: 1rem;
 }
+
 #lastReply {
     margin-right: -1.8rem;
     margin-left: 1rem;
@@ -764,21 +787,23 @@ a {
     display: inline-block;
     outline: none;
     cursor: pointer;
-    width:7rem;
-    height:4rem;
+    width: 7rem;
+    height: 4rem;
     text-align: center;
     text-decoration: none;
-    font-size:1.25rem;
-    font-family:微软雅黑;
+    font-size: 1.25rem;
+    font-family: 微软雅黑;
     text-shadow: 0 1px 1px rgba(0,0,0,.3);
     border-radius: 1rem;
     box-shadow: 0 1px 2px rgba(0,0,0,.2);
-    line-height:4rem;
+    line-height: 4rem;
 }
-.bgcolor{
-    color:#fff;
-    background-color:#79b8ca;
+
+.bgcolor {
+    color: #fff;
+    background-color: #79b8ca;
 }
+
 .orange {
     color: #fef4e9;
     border: solid 1px #da7c0c;
@@ -1011,31 +1036,34 @@ a {
     width: 1140px;
     align-items: center;
 }
-.boardGuide{
-    position:fixed;
-    margin-left:1140px;
-    width:5rem;
-    height:33rem;
-    background-color:#fff;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    border:#eaeaea solid thin;
-    color:#505050;
-    font-size:0.75rem;
+
+.boardGuide {
+    position: fixed;
+    margin-left: 1140px;
+    width: 5rem;
+    height: 33rem;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: #eaeaea solid thin;
+    color: #505050;
+    font-size: 0.75rem;
 }
-.boardOption{
-    border-bottom:#eaeaea dashed 3px;
-    margin-top:0.4rem;
-    white-space:nowrap;
-    cursor:pointer;
+
+.boardOption {
+    border-bottom: #eaeaea dashed 3px;
+    margin-top: 0.4rem;
+    white-space: nowrap;
+    cursor: pointer;
 }
+
 .anArea {
     display: flex;
     flex-direction: column;
     width: 1140px;
     box-sizing: border-box;
-    background-color:#fff;
+    background-color: #fff;
     margin-bottom: 2rem;
 }
 
@@ -1079,17 +1107,19 @@ a {
     margin: 0px 1rem 1.1rem 1.1rem;
     width: 15.6rem;
 }
-.boardBlock{
-    margin-left:0.5rem
+
+.boardBlock {
+    margin-left: 0.5rem
 }
+
 .greenBackdrop {
     height: 6rem;
     width: 6rem;
-    background-image: url(/images/sample4.png) ;
-    background-size:100%;
+    background-image: url(/images/sample4.png);
+    background-size: 100%;
 }
-.listTitle {
 
+.listTitle {
 }
 
 .boardName2 {
@@ -1097,7 +1127,7 @@ a {
     font-family: 微软雅黑;
     color: rgb(80,80,80);
     margin-top: 0.75rem;
-    letter-spacing:2px;
+    letter-spacing: 2px;
 }
 
 .boardInfo {
@@ -1909,6 +1939,7 @@ a {
     top: -2px;
     left: 20px;
 }
+
 .message-counterLi {
     top: 19px;
     left: 69px;
@@ -2205,7 +2236,7 @@ a {
     display: flex;
     flex-direction: column;
     text-align: center;
-    margin-top:5rem;
+    margin-top: 5rem;
     padding-top: 15px;
     width: 100%;
     min-width: 1140px;
@@ -2501,6 +2532,7 @@ a {
     margin-top: 100px;
     text-align: center;
 }
+
 .topicManagement {
     display: flex;
     flex-direction: column;
@@ -2521,10 +2553,11 @@ a {
     -webkit-border-radius: .5rem;
     background-color: #FFFACD;
 }
+
 .postManagement {
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     margin-left: 30rem;
     position: absolute;
     z-index: 1000;
@@ -2540,8 +2573,9 @@ a {
     -webkit-border-radius: .5rem;
     background-color: #FFFACD;
 }
+
 .judgeManagement {
-    margin-left:15rem;
+    margin-left: 15rem;
     position: absolute;
     z-index: 1000;
     width: 30rem;
@@ -2556,32 +2590,39 @@ a {
     -webkit-border-radius: .5rem;
     background-color: #FFFACD;
 }
+
 .manageUI {
     display: flex;
     flex-direction: row;
-    margin-top:-2rem;
+    margin-top: -2rem;
 }
-.judgeUI{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    margin-top:2rem;
+
+.judgeUI {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
 }
+
 .manageOptions {
     width: 30rem;
     height: 3rem;
 }
-.judgeName{
-    font-size:1.5rem;
+
+.judgeName {
+    font-size: 1.5rem;
 }
-.judgeOption{
-    display:flex;
-    align-content:center;
+
+.judgeOption {
+    display: flex;
+    align-content: center;
 }
-.judgeOptions{
-    width:100%;
-    justify-content:space-around;
+
+.judgeOptions {
+    width: 100%;
+    justify-content: space-around;
 }
+
 .manageOptions-icon {
     text-align: center;
     width: 7.5rem;
@@ -2589,7 +2630,7 @@ a {
     line-height: 3rem;
     border-right: #EAEAEA solid thin;
     border-bottom: #EAEAEA solid thin;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .judgeOptions-icon {
@@ -2601,49 +2642,56 @@ a {
     border-bottom: #EAEAEA solid thin;
     cursor: pointer;
 }
-.confirmManagement {
 
+.confirmManagement {
     margin-top: 1rem;
     width: 5rem;
     height: 2rem;
     background-color: #EECBAD;
     border: gray solid thin;
     border-radius: 0.3rem;
-    cursor:pointer;
+    cursor: pointer;
 }
-.awardPage{
-    width:5rem;
-    height:1.2rem;
-    background-color:$bgcolor2;
-    border:#eaeaea solid thin;
-    border-radius:0.2rem;
-    cursor:pointer;
-    margin-left:2rem;
+
+.awardPage {
+    width: 5rem;
+    height: 1.2rem;
+    background-color: $bgcolor2;
+    border: #eaeaea solid thin;
+    border-radius: 0.2rem;
+    cursor: pointer;
+    margin-left: 2rem;
 }
-.awardInfo{
-    margin-left:2rem;
-    margin-right:2rem;
-    width:25rem;
+
+.awardInfo {
+    margin-left: 2rem;
+    margin-right: 2rem;
+    width: 25rem;
 }
-.awardPager{
-    margin-bottom:0.5rem;
-    margin-top:0.5rem;
+
+.awardPager {
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
 }
-.manageOperation{
-    justify-content:space-around;
-    width:18rem;
-    margin-left:5rem;
-    margin-right:2rem;
-    margin-top:1.5rem;
+
+.manageOperation {
+    justify-content: space-around;
+    width: 18rem;
+    margin-left: 5rem;
+    margin-right: 2rem;
+    margin-top: 1.5rem;
 }
-.manageInfo{
-    height:15rem;
-    justify-content:space-around;
+
+.manageInfo {
+    height: 15rem;
+    justify-content: space-around;
 }
-.manageObject{
-    width:7rem;
-    margin-right:1rem;
+
+.manageObject {
+    width: 7rem;
+    margin-right: 1rem;
 }
+
 .followBoard {
     width: 5rem;
     height: 1.5rem;
@@ -2652,145 +2700,162 @@ a {
     border-radius: 0.3rem;
     cursor: pointer;
 }
+
 .followBoard :hover {
     background-color: #eea9b8;
 }
-.errorState{
-    display:flex;
-    flex-direction:column;
-    font-size:1.5rem;
-    letter-spacing:2px;
-    align-items:center;
-    font-family:黑体;
+
+.errorState {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    align-items: center;
+    font-family: 黑体;
 }
-.errorIcon{
-    width:48rem;
-    height:27rem;
-    margin-top:-5rem;
+
+.errorIcon {
+    width: 48rem;
+    height: 27rem;
+    margin-top: -5rem;
 }
-.errorText{
-    text-align:center;
-    font-size:0.88rem;
-    margin-top:0.6rem;
+
+.errorText {
+    text-align: center;
+    font-size: 0.88rem;
+    margin-top: 0.6rem;
 }
-.errorTitle{
-    width:18rem;
-    justify-content:center;
-    margin-top:-7.5rem;
-    text-align:center;
-    font-size:1.5rem;
-    border-bottom:black solid thin;
-    padding-bottom:0.6rem;
+
+.errorTitle {
+    width: 18rem;
+    justify-content: center;
+    margin-top: -7.5rem;
+    text-align: center;
+    font-size: 1.5rem;
+    border-bottom: black solid thin;
+    padding-bottom: 0.6rem;
 }
+
 .returnIndexBtn {
     justify-content: center;
     font-size: 0.75rem;
-    margin-top:2.5rem;
-    text-decoration:underline;
+    margin-top: 2.5rem;
+    text-decoration: underline;
+}
 
+.topicInfo-info {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 6.25rem;
+    border: rgb(106,113,119) solid 1.5px;
+    font-family: 微软雅黑;
 }
-.topicInfo-info{
-    display:flex;
-    flex-direction:row;
-    width:100%;
-    height:6.25rem;
-    border:rgb(106,113,119) solid 1.5px;
-    font-family:微软雅黑;
-}
+
 .topicInfo-boardInfo {
     width: 10.6rem;
     height: 6.25rem;
-    display:flex;
-    background-color:rgb(106,113,119);
-    align-items:center;
+    display: flex;
+    background-color: rgb(106,113,119);
+    align-items: center;
 }
-.topicInfo-boardImage{
-    width:4rem;
-    height:4rem;
-    margin-left:0.5rem;
 
+.topicInfo-boardImage {
+    width: 4rem;
+    height: 4rem;
+    margin-left: 0.5rem;
 }
-.topicInfo-boardMessage{
-    display:flex;
-    flex-direction:column;
-    margin-left:1rem;
-    color:#fff;
+
+.topicInfo-boardMessage {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+    color: #fff;
 }
+
 .topicInfo-title {
     width: 42rem;
     height: 6.25rem;
-    display:flex;
-    flex-direction:column;
-    background-color:#fff;
-    color:#6b7178;
-    font-size:1rem;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    color: #6b7178;
+    font-size: 1rem;
 }
+
 .topicInfo-ads {
     width: 18.65rem;
     height: 6.25rem;
 }
-.boardMessage{
-    width:15rem;
-    display:flex;
-    flex-direction:column;
-    color:#fff;
-    background-color:#6b7178;
-    font-family:微软雅黑;
+
+.boardMessage {
+    width: 15rem;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    background-color: #6b7178;
+    font-family: 微软雅黑;
 }
-.boardMessage img{
-    width:4rem;
-    height:4rem;
+
+.boardMessage img {
+    width: 4rem;
+    height: 4rem;
 }
-.boardMessageDetails{
-    height:3rem;
-    width:8rem;
-    display:flex;
-    flex-direction:column;
-    margin-left:1rem;
-    line-height:2rem;
-    margin-top:0.1rem;
-    
+
+.boardMessageDetails {
+    height: 3rem;
+    width: 8rem;
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+    line-height: 2rem;
+    margin-top: 0.1rem;
 }
+
 .boardFollow {
     width: 2.5rem;
     height: 1.5rem;
     border-radius: 1rem;
     background-color: #fb6165;
-    font-size:0.75rem;
-    color:#fff;
-    text-align:center;
-    line-height:1.25rem;
+    font-size: 0.75rem;
+    color: #fff;
+    text-align: center;
+    line-height: 1.25rem;
 }
+
 .boardDescription {
     display: flex;
     flex-direction: column;
-    margin-top:2rem;
-    margin-left:1rem;
-    font-size:0.75rem;
-    margin-right:1rem;
-    line-height:1.4rem;
+    margin-top: 2rem;
+    margin-left: 1rem;
+    font-size: 0.75rem;
+    margin-right: 1rem;
+    line-height: 1.4rem;
 }
+
 .boardMasters {
     display: flex;
     flex-direction: column;
     margin-top: 2rem;
     font-size: 0.75rem;
-    margin-left:1rem;
-    margin-right:1rem;
-    line-height:1.4rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    line-height: 1.4rem;
 }
+
 .bigPaper {
     width: 56.25rem;
     display: flex;
     flex-direction: column;
     background-color: #ffffff;
     border: solid 1px #6b7178;
-    padding:1.5rem;
-    font-size:1rem;
-    font-family:微软雅黑;
+    padding: 1.5rem;
+    font-size: 1rem;
+    font-family: 微软雅黑;
 }
-.bigPaperTitle{
-    font-size:1.25rem;
-    color:#fb6165;
-    margin-bottom:2rem;
+
+.bigPaperTitle {
+    font-size: 1.25rem;
+    color: #fb6165;
+    margin-bottom: 2rem;
 }
