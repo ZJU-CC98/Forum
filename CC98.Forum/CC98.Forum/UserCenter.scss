@@ -250,6 +250,12 @@
                     font-size: 0.75rem;
                 }
 
+                .user-profile-info {
+                    display: inline-flex;
+                    width: 5rem;
+                    color: gray;
+                }
+
                 #userGenderAndBirthday {
                     display: flex;
                     flex-wrap: wrap;

@@ -348,6 +348,13 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                     onClick={() => { this.handleEmojiButtonClick(`[tb${item}]`) }}
                 ></img>))
         };
+        const info = {
+            'ac': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="//www.acfun.cn">AcFun弹幕视频网</a> 提供</p>,
+            'mj': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="//bbs.saraba1st.com/2b/forum.php">stage1st论坛</a> 提供</p>,
+            'tb': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="//tieba.baidu.com ">百度贴吧</a> 提供</p>,
+            'em': null
+        };
+
 
         return (
             <div className="ubb-editor" style={{maxHeight: `${height + 6.125}rem`}}>
@@ -470,7 +477,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                         <button type="button" className={this.state.emojiType === 'em' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} onClick={(e) => { e.stopPropagation(); this.setState({ emojiType: 'em' }); }}>经典</button>
                     </div>
                     <div className={`ubb-emoji-content ubb-emoji-content-${this.state.emojiType}`}>
-                        {this.state.emojiType === 'tb' ? <p style={{ color: 'red', fontSize: '0.75rem', textAlign: 'center' }}>该组表情由百度贴吧提供</p> : null}
+                        {info[this.state.emojiType]}
                         {emoji[this.state.emojiType]}
                     </div>
                 </div>
