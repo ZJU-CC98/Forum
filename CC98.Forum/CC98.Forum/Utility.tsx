@@ -13,7 +13,7 @@ import * as $ from 'jquery';
 import { changeUserInfo } from './Actions';
 
 declare let editormd: any;
-declare let testEditor: any;
+import { Constants } from './Components/Constant';
 declare let moment: any;
 declare let urljoin: any;
 export async function getBoardTopicAsync(curPage, boardId, totalTopicCount) {
@@ -1092,7 +1092,7 @@ export async function refreshLikeState(topicId, postId) {
 export async function sendTopic(topicId, router) {
     try {
         const url = `/post/topic/${topicId}`;
-        const c = testEditor.getMarkdown();
+        const c = Constants.testEditor.getMarkdown();
         const content = {
             content: c,
             contentType: 1,
@@ -1282,8 +1282,9 @@ export async function uploadEvent(e) {
     const files = e.target.files;
     const res = await uploadFile(files[0]);
     const url = res.content;
-    const str = `![](${url})`;
-    window["testEditor"].appendMarkdown(str);
+    const baseUrl = getApiUrl();
+    const str = `![](${baseUrl}${url})`;
+    Constants.testEditor.appendMarkdown(str);
 }
 /**
  * 关注指定id的用户
@@ -2834,4 +2835,12 @@ export async function findIP(topicId) {
     const headers = await formAuthorizeHeader();
     const response = await cc98Fetch(url, { headers });
     return await response.json();
+}
+export async function moveTopic(topicId, boardId,reason) {
+    const url = `topic/${topicId}/moveto/${boardId}`;
+    const headers = await formAuthorizeHeader();
+    const response = await cc98Fetch(url, { method: "PUT", headers, body: JSON.stringify(reason) });
+    if (response.status === 200)
+        return 'ok';
+    else return 'error';
 }

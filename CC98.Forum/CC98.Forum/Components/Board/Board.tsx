@@ -399,9 +399,9 @@ export class ListTagContent extends RouteComponent<{}, { items, totalPage: numbe
         const tags = await Utility.getBoardTag(this.match.params.boardId);      
         const layer = Utility.getTagLayer(this.match.params.tagId, tags);
         const data = await Utility.getTopicByOneTag(this.match.params.tagId, this.match.params.boardId, layer,1);
-        const totalPage = this.getTotalListPage(boardInfo.topicCount);
+        const totalPage = this.getTotalListPage(data.count);
 
-        this.setState({ items: data, totalPage: totalPage, boardInfo: boardInfo, fetchState: data, tags: tags,layer:layer });
+        this.setState({ items: data.topics, totalPage: totalPage, boardInfo: boardInfo, fetchState: data, tags: tags,layer:layer });
     }
     private convertTopicToElement(item) {
 
@@ -434,10 +434,10 @@ export class ListTagContent extends RouteComponent<{}, { items, totalPage: numbe
         const boardInfo = await Utility.getBoardInfo(newProps.match.params.boardId);
         const tags = await Utility.getBoardTag(newProps.match.params.boardId);
         const layer = Utility.getTagLayer(newProps.match.params.tagId, tags);
-        const data = await Utility.getTopicByOneTag(newProps.match.params.tagId, newProps.match.params.boardId, layer, 1);
-        const totalPage = this.getTotalListPage(boardInfo.topicCount);
+        const data = await Utility.getTopicByOneTag(newProps.match.params.tagId, newProps.match.params.boardId, layer, page);
+        const totalPage = this.getTotalListPage(data.count);
 
-        this.setState({ items: data, totalPage: totalPage, boardInfo: boardInfo, fetchState: data, tags: tags ,layer:layer});
+        this.setState({ items: data.topics, totalPage: totalPage, boardInfo: boardInfo, fetchState: data, tags: tags ,layer:layer});
     }
 
     getTotalListPage(count) {
@@ -490,9 +490,9 @@ export class ListTagsContent extends RouteComponent<{}, { items, totalPage: numb
         const boardInfo = await Utility.getBoardInfo(this.match.params.boardId);
         const data = await Utility.getTopicByTwoTags(this.match.params.tag1Id, this.match.params.tag2Id, this.match.params.boardId, 1);
         const tags = await Utility.getBoardTag(this.match.params.boardId);
-        const totalPage = this.getTotalListPage(boardInfo.topicCount);
+        const totalPage = this.getTotalListPage(data.count);
 
-        this.setState({ items: data, totalPage: totalPage, boardInfo: boardInfo, fetchState: data, tags: tags });
+        this.setState({ items: data.topics, totalPage: totalPage, boardInfo: boardInfo, fetchState: data, tags: tags });
     }
     private convertTopicToElement(item) {
 
@@ -524,10 +524,10 @@ export class ListTagsContent extends RouteComponent<{}, { items, totalPage: numb
         else { page = parseInt(p); }
         const boardInfo = await Utility.getBoardInfo(newProps.match.params.boardId);
         const tags = await Utility.getBoardTag(newProps.match.params.boardId);
-        const data = await Utility.getTopicByTwoTags(newProps.match.params.tag1Id, newProps.match.params.tag2Id, newProps.match.params.boardId,1);
-        const totalPage = this.getTotalListPage(boardInfo.topicCount);
+        const data = await Utility.getTopicByTwoTags(newProps.match.params.tag1Id, newProps.match.params.tag2Id, newProps.match.params.boardId,page);
+        const totalPage = this.getTotalListPage(data.count);
 
-        this.setState({ items: data, totalPage: totalPage, boardInfo: boardInfo, fetchState: data, tags: tags });
+        this.setState({ items: data.topics, totalPage: totalPage, boardInfo: boardInfo, fetchState: data, tags: tags });
     }
 
     getTotalListPage(count) {
@@ -731,7 +731,7 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
     }
     componentWillMount() {
         const count = this.props.replyCount + 1;
-        let totalPage = count / 10 === 0 ? count / 10 : (count - count % 10) / 10 + 1;
+        let totalPage = count % 10 === 0 ? count / 10 : (count - count % 10) / 10 + 1;
         const pager = Utility.getListPager(totalPage);
         const titleId = `#title${this.props.id}`;
         this.setState({ pager: pager });
@@ -814,14 +814,21 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
             }}><i style={{ color: "red" }} className="fa fa-arrow-circle-up fa-lg"></i></div>
         }
        
-      
+        let c: any = '#000';
+        let b: any= 'normal';
+        let i :any= 'normal';
+        if (this.props.highlightInfo) {
+            if (this.props.highlightInfo.isBold) b = 'bold';
+            if (this.props.highlightInfo.isItalic) i = 'italic';
+            if (this.props.highlightInfo.color) c = this.props.highlightInfo.color;
+        }
         return <div id={colorId}>
             <Link to={url}>
                 <div className="rofw topicInList" id={topicId}>
                     <div className="listTitleAndPager">
                         <div className="row listTitleAndIcon" >
                             {icon}
-                            <div className="listTitle" id={titleId} style={{ marginLeft: '1rem', }}> <span>{this.props.title}</span></div>
+                            <div className="listTitle" id={titleId} style={{ marginLeft: '1rem', color: c, fontWeight: b, fontStyle:i }}> <span>{this.props.title}</span></div>
                         </div>
                         <div style={{ display: "flex", fontSize: "0.75rem", marginLeft: "1rem", width: "auto" }}>
                             {this.state.pager.map(this.generateListPager.bind(this))}</div>

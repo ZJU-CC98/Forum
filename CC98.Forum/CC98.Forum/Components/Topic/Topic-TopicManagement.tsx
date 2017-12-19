@@ -116,11 +116,23 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
                            status =  await Utility.lockTopic(this.props.topicId, this.props.boardId, this.state.reason, this.state.days);
                             this.setState({ fetchState: status });
                             break;
-                    }
+                    }           
                 } else {
                     this.setState({ tips: "请输入原因！" });
                 }
                 break;
+            case 'board':
+                if (this.state.reason) {
+                    status = await Utility.moveTopic(this.props.topicId, this.state.board, this.state.reason);
+                    if (status === 'ok') {
+                        this.setState({ fetchState: status });
+                        break;
+                    } else {
+                        this.setState({ tips: "输入有误！" });
+                    }
+                } else{
+                    this.setState({ tips: "请输入原因！" });
+                }
         }
         const UIId = `#manage${this.props.topicId}`;
         $(UIId).css("display", "none");

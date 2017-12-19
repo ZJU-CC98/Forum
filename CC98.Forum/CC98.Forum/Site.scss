@@ -709,32 +709,19 @@ body {
     background-color: #FCFCFC;
 }
 
-#changeColor:nth-child(odd) span {
-    color: #000;
-}
 
-#changeColor:nth-child(odd) i {
-    color: #000;
-}
-
-#changeColor:nth-child(odd) a {
-    color: #000;
-}
 
 #changeColor {
     background-color: #ebf5f8;
 }
 
-#changeColor span {
-    color: #000;
-}
-
-#changeColor i {
-    color: #000;
-}
-
-#changeColor a {
-    color: #000;
+.followTopic{
+    width: 3rem;
+    margin-left: 1rem;
+    border: #8dc9db solid thin;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
 }
 
 .reputation {
@@ -2859,7 +2846,6 @@ a {
 
     .manageOperation {
         justify-content: flex-start;
-        margin-left:3rem;
         width: 100%;
         
     }

@@ -24,14 +24,12 @@ import { Reply } from './Topic-Reply';
 import { NotFoundTopic, UnauthorizedTopic, ServerError } from '../Status';
 import { TopicInfo } from './Topic-TopicInfo';
 import { FindIP } from '../FindIP';
-
+import { Constants } from '../Constant';
 declare let moment: any;
 declare let editormd: any;
 
 
-export module Constants {
-    export var testEditor;
-}
+
 
 export class Test1 extends React.Component {
     render() {

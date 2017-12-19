@@ -16,6 +16,6 @@ export class FindIP extends React.Component<{ data }>{
     }
     render() {
 
-        return <div className="findID">{this.props.data.map(this.generateIPInfo.bind(this))}</div>;
+        return <div className="findIP">{this.props.data.map(this.generateIPInfo.bind(this))}</div>;
     }
 }

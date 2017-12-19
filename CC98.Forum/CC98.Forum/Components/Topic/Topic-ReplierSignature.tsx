@@ -3,7 +3,7 @@ import * as Utility from '../../Utility';
 import { UbbContainer } from '../UbbContainer';
 import { Link } from 'react-router-dom';
 declare let moment: any;
-export class ReplierSignature extends React.Component<{ signature,postid ,topicid,masters,userId,likeInfo,quote,content,userInfo,replyTime,floor,lastUpdateTime,lastUpdateAuthor}, {likeNumber,dislikeNumber,likeState}>{
+export class ReplierSignature extends React.Component<{ signature,postid ,topicid,masters,userId,likeInfo,quote,content,userInfo,replyTime,floor,lastUpdateTime,lastUpdateAuthor,boardId,isLZ}, {likeNumber,dislikeNumber,likeState}>{
     constructor(props, content) {
         super(props, content);
         this.showManageUI = this.showManageUI.bind(this);
@@ -102,7 +102,7 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
         }
         const manageIcon = `icon${this.props.postid}`;
         const manageId = `#icon${this.props.postid}`;
-        if (Utility.isMaster(this.props.masters))
+        if (Utility.isMaster(this.props.masters) || (this.props.boardId == 144 && this.props.isLZ))
         $(manageId).css("display", "");
       //  this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
@@ -117,7 +117,7 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
         }
         let editIcon = null;
         const editUrl = `/editor/edit/${this.props.postid}`;
-        if (this.isAllowedtoEdit(this.props.userInfo.privilege)) {
+        if (this.isAllowedtoEdit(this.props.userInfo.privilege) || this.props.userInfo.name === Utility.getLocalStorage("userInfo").name) {
             editIcon = <Link to={editUrl}><div className="operation1" onClick={this.edit}>   编辑</div></Link>;
         }
         let lastUpdate = null;
