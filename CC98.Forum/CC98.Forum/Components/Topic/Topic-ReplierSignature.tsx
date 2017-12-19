@@ -2,7 +2,8 @@
 import * as Utility from '../../Utility';
 import { UbbContainer } from '../UbbContainer';
 import { Link } from 'react-router-dom';
-export class ReplierSignature extends React.Component<{ signature,postid ,topicid,masters,userId,likeInfo,quote,content,userInfo,replyTime,floor}, {likeNumber,dislikeNumber,likeState}>{
+declare let moment: any;
+export class ReplierSignature extends React.Component<{ signature,postid ,topicid,masters,userId,likeInfo,quote,content,userInfo,replyTime,floor,lastUpdateTime,lastUpdateAuthor}, {likeNumber,dislikeNumber,likeState}>{
     constructor(props, content) {
         super(props, content);
         this.showManageUI = this.showManageUI.bind(this);
@@ -119,8 +120,19 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
         if (this.isAllowedtoEdit(this.props.userInfo.privilege)) {
             editIcon = <Link to={editUrl}><div className="operation1" onClick={this.edit}>   编辑</div></Link>;
         }
+        let lastUpdate = null;
+        if (this.props.lastUpdateAuthor && this.props.lastUpdateTime) {
+            const time = moment(this.props.lastUpdateTime).format('YYYY-MM-DD HH:mm:ss');
+            console.log("props" + this.props.userInfo.name);
+            console.log("update" + this.props.lastUpdateAuthor);
+            const name = this.props.userInfo.name === this.props.lastUpdateAuthor ? '作者' : this.props.lastUpdateAuthor;
+            const str = `该帖最后由 ${name} 在 ${time} 编辑`;
+            lastUpdate = str;
+        }
         return <div className="column">
             <div className="comment1">
+                <div style={{ width: "40rem", marginLeft: "2rem" }}>
+                    <span>{moment(this.props.replyTime).format('YYYY-MM-DD HH:mm:ss')}</span><span style={{ marginLeft:"1rem" }}>{lastUpdate}</span></div>
                 <div id={idLike} className="upup" style={{ marginRight: "0.7rem" }} onClick={ this.like.bind(this) }><i title="赞"  className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>
                 <div id={idDislike} className="downdown" onClick={this.dislike.bind(this)}><i title="踩"  className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
                 <div id="commentlike">

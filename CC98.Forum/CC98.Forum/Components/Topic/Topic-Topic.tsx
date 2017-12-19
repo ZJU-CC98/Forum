@@ -50,7 +50,9 @@ export class PostTopic extends React.Component<{ boardInfo,topicInfo,userId, img
                             content={this.state.topicMessage.content}
                             floor={this.state.topicMessage.floor}
                             quote={this.quote}
-                            replyTime={this.state.topicMessage.time} />
+                            replyTime={this.state.topicMessage.time}
+                            lastUpdateAuthor={this.state.topicMessage.lastUpdateAuthor}
+                            lastUpdateTime={this.state.topicMessage.lastUpdateTime} />
                     </div>
                 </div>;
            

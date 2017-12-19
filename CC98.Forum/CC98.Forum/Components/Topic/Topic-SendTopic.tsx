@@ -319,7 +319,7 @@ ${newProps.content.content}[/quote]`;
         }
         return <div id="sendTopicInfo" style={{ width: "100%", display: "flex", flexDirection: "column" }}>
             <div className="row" style={{ justifyContent: this.state.mode === 1 ? "space-between" : "flex-end" }}>
-                {uploadInfo}
+             
                 <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ width: "20rem", height: "2rem", lineHeight:"2rem",letterSpacing: "0.3125rem" }}>{this.state.mode === 1 ? "切换到Ubb编辑器" : "切换到Markdown编辑器"}
                 </div></div>
             {editor}

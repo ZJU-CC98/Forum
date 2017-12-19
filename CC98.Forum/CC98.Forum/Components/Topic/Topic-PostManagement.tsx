@@ -109,6 +109,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
             case 'Punish':
                 if ($("input[name='reason']:checked").val()) {
                     if ($("input[name='reason']:checked").val() !== '自定义') {
+                        if (this.state.wealth!==0)
                         status = await Utility.deductWealth($("input[name='reason']:checked").val(), this.state.wealth, this.props.postId);
 
                         if (this.state.prestige !== 0)
@@ -122,40 +123,39 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
 
                     else {
                         if (this.state.reason) {
+                            if (this.state.wealth!==0)
                             status = await Utility.deductWealth(this.state.reason, this.state.wealth, this.props.postId);
                             if (this.state.prestige !== 0)
                                 status1 = await Utility.deductPrestige(this.props.postId, this.state.prestige, this.state.reason);
                             if (this.state.tpdays !== 0)
 
                                 status2 = await Utility.stopBoardPost(this.props.postId, this.state.reason, this.state.tpdays);
-
-
                         } else {
                             this.setState({ tips: "请输入原因！" });
                         }
+                       
+                    }
+                    console.log("status");
+                    console.log(status); console.log(status1); console.log(status2);
+                    if (status === 'ok' && status1 === 'ok' && status2 === 'ok') {
+                        const UIId = `#manage${this.props.postId}`;
+                        $(UIId).css("display", "none");
+                        this.props.update();
+                    }
 
-                        if (status === 'ok' && status1 === 'ok'&&status2==='ok') {
-                            const UIId = `#manage${this.props.postId}`;
-                            $(UIId).css("display", "none");
-                            this.props.update();
+                    else {
+                        switch (status) {
+                            case 'wrong input':
+                                this.setState({ tips: "输入错误" });
+                            case 'unauthorized':
+                                this.setState({ tips: "你没有权限进行此操作" });
                         }
-                     
-                        else {
-                            switch (status) {
-                                case 'wrong input':
-                                    this.setState({ tips: "输入错误" });
-                                case 'unauthorized':
-                                    this.setState({ tips: "你没有权限进行此操作" });
-                            }
-                            switch (status1) {
-                                case 'wrong input':
-                                    this.setState({ tips: "输入错误" });
-                                case 'unauthorized':
-                                    this.setState({ tips: "你没有权限进行此操作" });
-                            }
-
+                        switch (status1) {
+                            case 'wrong input':
+                                this.setState({ tips: "输入错误" });
+                            case 'unauthorized':
+                                this.setState({ tips: "你没有权限进行此操作" });
                         }
-
 
                     }
                 } else {

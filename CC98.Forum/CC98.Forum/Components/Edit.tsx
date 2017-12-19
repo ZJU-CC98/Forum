@@ -5,7 +5,8 @@ import * as $ from 'jquery';
 import {
     BrowserRouter as Router,
     Route,
-    Link
+    Link,
+    withRouter
 } from 'react-router-dom';
 import { match } from "react-router";
 import { RouteComponent } from './RouteComponent';
@@ -17,7 +18,7 @@ export module Constants {
 declare let editormd: any;
 declare let testEditor: any;
 
-export class Edit extends RouteComponent<{}, {boardName,tags,ready,mode,content,title,postInfo}, { mode: string, id: number }> {
+export class Edit extends RouteComponent<{history}, {boardName,tags,ready,mode,content,title,postInfo}, { mode: string, id: number }> {
     constructor(props) {
         super(props);
         this.update = this.update.bind(this);
@@ -78,16 +79,17 @@ export class Edit extends RouteComponent<{}, {boardName,tags,ready,mode,content,
     update(value) {
         this.setState({ content: value });
     }
-    async sendMdTopic(content1) {
+    async sendMdTopic() {
         try {
             let url = `/board/${this.match.params.id}/topic`;
+            let c = Constants.testEditor.getMarkdown();
             let content = {
-                content: content1,
+                content: c,
                 contentType: 1,
                 title: this.state.title
             }
             let contentJson = JSON.stringify(content);
-            let token = Utility.getLocalStorage("accessToken");
+            let token = await Utility.getToken();
             let myHeaders = new Headers();
             myHeaders.append("Authorization", token);
             myHeaders.append("Content-Type", 'application/json');
@@ -106,7 +108,7 @@ export class Edit extends RouteComponent<{}, {boardName,tags,ready,mode,content,
             }
             //   testEditor.setMarkdown("");
             const topicId = await mes.text();
-            window.location.href = `/topic/${topicId}`;
+            this.props.history.push(`/topic/${topicId}`);
         } catch (e) {
             console.log("Error");
             console.log(e);
@@ -120,7 +122,7 @@ export class Edit extends RouteComponent<{}, {boardName,tags,ready,mode,content,
             title: this.state.title
         }
         const contentJson = JSON.stringify(content);
-        const token = Utility.getLocalStorage("accessToken");
+        const token = await Utility.getToken();
         let myHeaders = new Headers();
         myHeaders.append("Authorization", token);
         myHeaders.append("Content-Type", 'application/json');
@@ -147,7 +149,7 @@ export class Edit extends RouteComponent<{}, {boardName,tags,ready,mode,content,
                 body: atUsersJSON
             });
         }
-        window.location.href = `/topic/${topicId}`;
+        this.props.history.push(`/topic/${topicId}`);
 
     }
     /*
@@ -196,6 +198,31 @@ export class Edit extends RouteComponent<{}, {boardName,tags,ready,mode,content,
         const headers = await Utility.formAuthorizeHeader();
         headers.append("Content-Type", 'application/json');
         const response = await Utility.cc98Fetch(url, { method: "PUT", headers, body });
+        const floor = this.state.postInfo.floor;
+        const pageFloor = floor % 10 === 0 ? 10 : floor % 10;
+        const page = floor % 10 === 0 ? floor / 10 : (floor - floor % 10) / 10 + 1;
+        const redirectUrl = `/topic/${this.state.postInfo.topicId}/${page}#${pageFloor}`;
+        this.props.history.push(redirectUrl);
+    }
+    async editMd() {
+        const url = `/post/${this.match.params.id}`;
+        let c = Constants.testEditor.getMarkdown();
+        Constants.testEditor.setMarkdown("");
+        const content = {
+            content: c,
+            contentType: 1,
+            title: this.state.title
+        }
+        const body = JSON.stringify(content);
+        const token = await Utility.getToken();
+        const headers = await Utility.formAuthorizeHeader();
+        headers.append("Content-Type", 'application/json');
+        const response = await Utility.cc98Fetch(url, { method: "PUT", headers, body });
+        const floor = this.state.postInfo.floor;
+        const pageFloor = floor % 10 === 0 ? 10 : floor % 10;
+        const page = floor % 10 === 0 ? floor / 10 : (floor - floor % 10) / 10 + 1;
+        const redirectUrl = `/topic/${this.state.postInfo.topicId}/${page}#${pageFloor}`;
+        this.props.history.push(redirectUrl);
     }
     onTitleChange(title) {
         this.setState({ title: title });
@@ -208,12 +235,13 @@ export class Edit extends RouteComponent<{}, {boardName,tags,ready,mode,content,
             const id = this.match.params.id;
             const url = "";
         let editor;
-        if (mode === "postTopic") {
-
+        let titleInput = null;
+        if (mode === "postTopic" ) {
+            titleInput = <InputTitle boardId={id} tags={this.state.tags} onChange={this.onTitleChange.bind(this)} title={this.state.postInfo.title} />;
             if (this.state.mode === 0) {
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ width: "13.5rem", letterSpacing: "0.3125rem", fontSize: "1rem", height: "2rem", lineHeight: "2rem" }}>切换到Markdown编辑器</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ width: "16rem", letterSpacing: "0.3125rem", fontSize: "1rem", height: "2rem", lineHeight: "2rem" }}>切换到Markdown编辑器</div>
                 </div>
                     <UbbEditor update={this.update} value={this.state.content} />
                     <div className="row" style={{ justifyContent: "center" }}>
@@ -223,15 +251,15 @@ export class Edit extends RouteComponent<{}, {boardName,tags,ready,mode,content,
             } else {
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ width: "13.5rem", letterSpacing: "0.3125rem", fontSize: "1rem", height: "2rem", lineHeight: "2rem" }}>切换到UBB编辑器</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ width: "16rem", letterSpacing: "0.3125rem", fontSize: "1rem", height: "2rem", lineHeight: "2rem" }}>切换到UBB编辑器</div>
                 </div>
-                    <InputMdContent postInfo={this.state.postInfo} onChange={this.sendMdTopic.bind(this)} ready={this.state.ready} /></div>;
+                    <InputMdContent postInfo={this.state.postInfo} onChange={this.sendMdTopic.bind(this)} ready={this.state.ready} mode={this.match.params.mode} /></div>;
             }
         } else if (mode === "edit") {
             if (this.state.postInfo.contentType === 0) {
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ width: "13.5rem", letterSpacing: "0.3125rem", fontSize: "1rem", height: "2rem", lineHeight: "2rem" }}>切换到Markdown编辑器</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ width: "16rem", letterSpacing: "0.3125rem", fontSize: "1rem", height: "2rem", lineHeight: "2rem" }}>切换到Markdown编辑器</div>
                 </div>
                     <UbbEditor update={this.update} value={this.state.content} />
                     <div className="row" style={{ justifyContent: "center" }}>
@@ -241,14 +269,17 @@ export class Edit extends RouteComponent<{}, {boardName,tags,ready,mode,content,
             } else {
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ width: "13.5rem", letterSpacing: "0.3125rem", fontSize: "1rem", height: "2rem", lineHeight: "2rem" }}>切换到UBB编辑器</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ width: "16rem", letterSpacing: "0.3125rem", fontSize: "1rem", height: "2rem", lineHeight: "2rem" }}>切换到UBB编辑器</div>
                 </div>
-                    <InputMdContent postInfo={this.state.postInfo} onChange={this.sendMdTopic.bind(this)} ready={this.state.ready} /></div>;
+                    <InputMdContent postInfo={this.state.postInfo} onChange={this.editMd.bind(this)} ready={this.state.ready} mode={this.match.params.mode} /></div>;
             }
-        }
+            if (this.state.postInfo.floor === 1) {
+                titleInput = <InputTitle boardId={id} tags={this.state.tags} onChange={this.onTitleChange.bind(this)} title={this.state.postInfo.title} />;
+            }
+        } 
         return <div className="createTopic">
             <Category url={url} boardName={this.state.boardName} />
-                <InputTitle boardId={id} tags={this.state.tags} onChange={this.onTitleChange.bind(this)} title={this.state.postInfo.title} />
+            {titleInput}
                     <Type />
                     <Options />
                 {editor}
@@ -309,10 +340,10 @@ export class Tags extends React.Component<{}, {}>{
  * 用于发主题/编辑主题
  * TODO:尚未完成
  */
-export class InputTitle extends React.Component<{ boardId, onChange, tags,title }, { title: string }>{
+export class InputTitle extends React.Component<{ boardId, onChange, tags,title }, { title: string ,tags}>{
     constructor(props) {
         super(props);
-        this.state = ({ title: "" });
+        this.state = ({ title: this.props.title, tags: this.props.tags });
     }
 
     handleTitleChange(event) {
@@ -321,19 +352,131 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags,title 
     }
 
     componentWillReceiveProps(newProps) {
-      console.log("will");
-        console.log(newProps.title);
         const tags = newProps.tags;
         const tagsNum = tags.length;
+        console.log("new");
+        console.log(newProps.tags);
         if (newProps.title && !this.state.title)
-            this.setState({ title: newProps.title });
+            this.setState({ title: newProps.title, tags: newProps.tags });
+        else
+            this.setState({ tags: newProps.tags });
     }
+    componentDidUpdate() {
+        const tagBoxSelect = $('.tagBoxSelect');
+        const downArrow = $('.downArrow');
+        const tagBoxSub = $('.tagBoxSub');
+        const tagBoxLi = tagBoxSub.find('li');
+        $(document).click(function () {
+            tagBoxSub.css('display', 'none');
+        });
 
+        tagBoxSelect.click(function () {
+            if (tagBoxSub.css('display') === 'block') tagBoxSub.css('display', 'none');
+            else tagBoxSub.css('display', 'block');
+            return false;   //阻止事件冒泡
+        });
+
+        downArrow.click(function () {
+            if (tagBoxSub.css('display') === 'block') tagBoxSub.css('display', 'none');
+            else tagBoxSub.css('display', 'block');
+            return false;   //阻止事件冒泡
+        });
+
+        /*在一个对象上触发某类事件（比如单击onclick事件），如果此对象定义了此事件的处理程序，那么此事件就会调用这个处理程序，
+        如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
+        或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
+
+        tagBoxLi.click(function () {
+            tagBoxSelect.text($(this).text());
+        });
+
+        tagBoxLi.mouseover(function () {
+            this.className = 'hover';
+        });
+
+        tagBoxLi.mouseout(function () {
+            this.className = '';
+        });
+       
+        const tagBoxSelect1 = $('.tagBoxSelect1');
+        const downArrow1 = $('.downArrow1');
+        const tagBoxSub1 = $('.tagBoxSub1');
+        const tagBoxLi1 = tagBoxSub1.find('li');
+        $(document).click(function () {
+            tagBoxSub1.css('display', 'none');
+        });
+
+        tagBoxSelect1.click(function () {
+            if (tagBoxSub1.css('display') === 'block') tagBoxSub1.css('display', 'none');
+            else tagBoxSub1.css('display', 'block');
+            return false;   //阻止事件冒泡
+        });
+
+        downArrow1.click(function () {
+            if (tagBoxSub1.css('display') === 'block') tagBoxSub1.css('display', 'none');
+            else tagBoxSub1.css('display', 'block');
+            return false;   //阻止事件冒泡
+        });
+
+        /*在一个对象上触发某类事件（比如单击onclick事件），如果此对象定义了此事件的处理程序，那么此事件就会调用这个处理程序，
+        如果没有定义此事件处理程序或者事件返回true，那么这个事件会向这个对象的父级对象传播，从里到外，直至它被处理（父级对象所有同类事件都将被激活），
+        或者它到达了对象层次的最顶层，即document对象（有些浏览器是window）。*/
+
+        tagBoxLi1.click(function () {
+            tagBoxSelect1.text($(this).text());
+        });
+
+        tagBoxLi1.mouseover(function () {
+            this.className = 'hover';
+        });
+
+        tagBoxLi1.mouseout(function () {
+            this.className = '';
+        });
+    }
+    generateTagOption(item) {
+        return <li>{item.name}</li>;
+    }
     render() {
+        console.log($(".tagBoxSelect").text());
+        console.log($(".tagBoxSelect1").text());
+        let drop1 = null;
+        let drop2 = null;
+        if (this.state.tags.length>0)drop1=<ul className="tagBoxSub">
+            {this.state.tags[0].tags.map(this.generateTagOption)}
+        </ul>;
+        if (this.state.tags.length === 2) drop2 = <ul className="tagBoxSub1">
+            {this.state.tags[1].tags.map(this.generateTagOption)}
+        </ul>;
+        let tagInfo = null;
+        if (this.state.tags.length == 2) {
+            tagInfo = <div className="row"><div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
+                <div style={{ display: "flex" }}>
+                    <div className="tagBoxSelect">标签1</div>
+                    <div className="downArrow"><img src="/images/downArrow.png" width="12" height="12" /></div>
+                </div>
+                {drop1}
+            </div>
+                <div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
+                    <div style={{ display: "flex" }}>
+                        <div className="tagBoxSelect1">标签2</div>
+                        <div className="downArrow1"><img src="/images/downArrow.png" width="12" height="12" /></div>
+                    </div>
+                    {drop2}
+                </div></div >;
+        } else if (this.state.tags.length == 1) {
+            tagInfo = <div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
+                <div style={{ display: "flex" }}>
+                    <div className="tagBoxSelect">标签1</div>
+                    <div className="downArrow"><img src="/images/downArrow.png" width="12" height="12" /></div>
+                </div>
+                {drop1}
+            </div>
+          ;
+        }
         return <div className="createTopicTitle">
             <div className="createTopicListName">主题标题</div>
-            <div className="createTopicListName">标签1</div>
-            <div className="createTopicListName">标签2</div>
+            {tagInfo}
             <input value={this.state.title} placeholder="请输入新主题的标题" onChange={this.handleTitleChange.bind(this)} />
         </div>
     }
@@ -386,19 +529,27 @@ export class Options extends React.Component<{}, {}>{
 }
 
 
-export class InputMdContent extends React.Component<{ postInfo,ready, onChange }, { content }>{
+export class InputMdContent extends React.Component<{mode, postInfo,ready, onChange }, { content }>{
     constructor(props) {
         super(props);
         this.state = ({ content: "" });
     }
+ 
     componentDidMount() {
+        let content = '234';
+        if (this.props.postInfo.content) {
+            console.log("edit markdown");
+            content = this.props.postInfo.content;
+            console.log(content);
+        }
         editormd.emoji.path = '/images/emoji/';
-        Constants.testEditor = editormd("test-editormd", {
+        Constants.testEditor = editormd("testEditor", {
             width: "100%",
             height: 680,
             path: "/scripts/lib/editor.md/lib/",
             saveHTMLToTextarea: false,
             emoji: true,
+            appendMarkdown:content,
             toolbarIcons: function () {
                 return [
                     "undo", "redo", "|", "emoji",
@@ -409,26 +560,25 @@ export class InputMdContent extends React.Component<{ postInfo,ready, onChange }
                 ]
             },
         });
-        if (this.props.postInfo.content) {
-            Constants.testEditor.setMarkdown(this.props.postInfo.content);
-        }
+
+        this.setState({});
     }
     send() {
         const content = Constants.testEditor.getMarkdown();
         this.props.onChange(content);
     }
     render() {
-
         return <div style={{ width: "100%", display: "flex", flexDirection: "column" }}><div id="sendTopic">
             <form>
-                <div id="test-editormd" className="editormd">
-                    <textarea className="editormd-markdown-textarea" name="test-editormd-markdown-doc"  ></textarea>
+                <div id="testEditor" className="editormd">
+                    <textarea className="editormd-markdown-textarea" name="testEditor-markdown-doc"  ></textarea>
                 </div>
             </form>
             <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
-                <div id="post-topic-button" className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }} onClick={this.send.bind(this)}>发帖</div>
+                <div id="post-topic-button" className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }} onClick={this.send.bind(this)}>{this.props.mode === 'postTopic' ? "发帖" : "编辑"}</div>
             </div>
         </div>
         </div>;
     }
 }
+export const ShowEdit = withRouter(Edit);

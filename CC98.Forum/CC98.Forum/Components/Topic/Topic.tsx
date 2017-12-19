@@ -67,7 +67,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         else { page = parseInt(this.match.params.page); }
         const totalPage = await this.getTotalPage(topicInfo.replyCount);
         const userName = this.match.params.userName;
-        const floor = topicInfo.replyCount % 10+1;
+        const floor = (topicInfo.replyCount +1)% 10+1;
         if (page !== newPage) {
             page = newPage;
             const url = `/topic/${topicInfo.id}/${page}#${floor}`;
