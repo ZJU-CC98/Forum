@@ -53,13 +53,13 @@ class PostForumIndexColumnInfo {
      * 
      */
     isNew: boolean;
+    /**
+     * 
+     */
+    expiredTime: string;
 }
 
 class State {
-    /**
-     * 当前正在编辑的
-     */
-    body: PostForumIndexColumnInfo;
     /**
      * 反馈信息
      */
@@ -69,7 +69,7 @@ class State {
      */
     data: PostForumIndexColumnInfo[]
     /**
-     * 
+     * 1=推荐阅读，2=推荐功能，3=校园新闻，4=广告
      */
     type: number;
 }
@@ -79,7 +79,6 @@ export default class extends React.Component<null, State > {
     constructor(props) {
         super(props);
         this.state = {
-            body: new PostForumIndexColumnInfo(),
             info: '',
             data: [],
             type: 0
@@ -155,6 +154,7 @@ export default class extends React.Component<null, State > {
         this.setState((prevState) => {
             let newData = new PostForumIndexColumnInfo();
             newData.enable = true;
+            newData.isNew = true;
             newData.type = prevState.type;
             return {
                 data: [...prevState.data, newData]
@@ -178,23 +178,25 @@ export default class extends React.Component<null, State > {
                             <th>type</th>
                             <th>title</th>
                             {this.state.type === 1 ? <th>content</th> : null}
-                            {this.state.type !== 3 ? <th>url</th> : null}
+                            <th>url</th>
                             {this.state.type !== 3 ? <th>imageUrl</th> : null}
                             {this.state.type === 1 || this.state.type === 2 ? <th>orderWeight</th> : null}
                             <th>enable</th>
                             {this.state.type === 4 ? <th>days</th> : null}
+                            {this.state.type === 4 ? <th>expiredTime</th> : null}
                             <th>save</th></tr>
                         {this.state.data.map((item, index) => (
-                            <tr onClick={() => this.setState({ body: item })}>
+                            <tr>
                                 <td>{item.id}</td>
                                 <td>{PostForumIndexColumnInfoType[item.type - 1]}</td>
                                 <td><input type="text" onChange={e => this.handleTdChange('title', e.target.value, index)} value={item.title} /></td>
                                 {this.state.type === 1 ? <td><input type="text" onChange={e => this.handleTdChange('content', e.target.value, index)} value={item.content} /></td> : null}
-                                {this.state.type !== 3 ? <td><input type="text" onChange={e => this.handleTdChange('url', e.target.value, index)} value={item.url} /></td> : null}
-                                {this.state.type !== 3 ? <td><input type="text" onChange={e => this.handleTdChange('imageUrl', (e as any).target.innerText, index)} value={item.imageUrl} /></td> : null}
+                                <td><input type="text" onChange={e => this.handleTdChange('url', e.target.value, index)} value={item.url} /></td>
+                                {this.state.type !== 3 ? <td><input type="text" onChange={e => this.handleTdChange('imageUrl', e.target.value, index)} value={item.imageUrl} /></td> : null}
                                 {this.state.type === 1 || this.state.type === 2 ? <td><input type="number" onChange={e => this.handleTdChange('orderWeight', Number.parseInt(e.target.value), index)} value={item.orderWeight} /></td> : null}
                                 <td><input onClick={e => this.handleTdChange('enable', (e.target as HTMLInputElement).checked, index)} type="checkbox" checked={item.enable} /></td>
                                 {this.state.type === 4 ? <td><input type="number" onChange={e => this.handleTdChange('days', Number.parseInt(e.target.value), index)} value={item.days} /></td> : null}
+                                {this.state.type === 4 ? <td>{item.expiredTime.slice(0,19).replace('T', ' ')}</td> : null}
                                 <td><button type="button" onClick={e => this.putCurData(index)}>保存</button></td>
                             </tr>
                         ))}
