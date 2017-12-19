@@ -1,5 +1,4 @@
-﻿import { MainPageTopic } from '../Components/MainPage';
-/**
+﻿/**
  * 表示应用程序的状态。
  */
 export class AppState {
@@ -347,6 +346,10 @@ export class UserInfo {
      * 用户锁定状态，0正常  1锁定  2屏蔽  3全站TP
      */
     lockState: 0 | 1 | 2 | 3;
+    /**
+     * 风评
+     */
+    popularity: number;
 }
 
 /**

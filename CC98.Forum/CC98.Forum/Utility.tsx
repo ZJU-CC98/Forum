@@ -510,10 +510,10 @@ export async function getAllNewTopic(from: number, router) {
 }
 
 /**
- * 获取某个关注版面帖子
+ * 获取关注帖子,boardId == -1为关注用户帖子, boardId === 0 为全部关注版面帖子, boardId > 0则为对应版面帖子
  * @param curPage
  */
-export async function getFocusBoardTopic(boardId: number, boardName: string, from: number, router) {
+export async function getFocusTopic(boardId: number, boardName: string, from: number, router) {
     try {
         /**
          * 一次性可以获取20个主题
@@ -527,8 +527,11 @@ export async function getFocusBoardTopic(boardId: number, boardName: string, fro
          * 通过api获取到主题之后转成json格式
          */
         let response;
-        if (boardId == 0) {
+        if (boardId === -1) {
             response = await cc98Fetch(`/me/followee/topic?from=${from}&size=${size}`, { headers });
+        }
+        else if(boardId === 0) {
+            response = await cc98Fetch(`/me/custom-board/topic?from=${from}&size=${size}`, { headers });
         }
         else {
             response = await cc98Fetch(`/board/${boardId}/topic?from=${from}&size=${size}`, { headers });
@@ -540,99 +543,7 @@ export async function getFocusBoardTopic(boardId: number, boardName: string, fro
             //window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
-
-        for (let i in newTopic) {
-            if (newTopic[i].userId) {
-                //获取作者粉丝数目
-                let userFan0 = await cc98Fetch(`/user/follower/count?userid=${newTopic[i].userId}`);
-                if (userFan0.status === 404) {
-                    //window.location.href = "/status/NotFoundUser";
-                }
-                if (userFan0.status === 500) {
-                    //window.location.href = "/status/ServerError";
-                }
-                let userFan1 = await userFan0.json();
-                newTopic[i].fanCount = userFan1;
-                //获取作者头像地址
-                let userInfo0 = await cc98Fetch(`/user/basic/${newTopic[i].userId}`);
-                if (userInfo0.status === 404) {
-                    //window.location.href = "/status/NotFoundUser";
-                }
-                if (userInfo0.status === 500) {
-                    //window.location.href = "/status/ServerError";
-                }
-                let userInfo1 = await userInfo0.json();
-                newTopic[i].portraitUrl = userInfo1.portraitUrl;
-                //获取所在版面名称
-                if (boardId == 0) {
-                    newTopic[i].boardName = await getBoardName(newTopic[i].boardId);
-                }
-                else {
-                    newTopic[i].boardName = boardName;
-                }
-                //阅读数转换
-                if (newTopic[i].hitCount > 10000) {
-                    if (newTopic[i].hitCount > 100000) {
-                        let index = parseInt(`${newTopic[i].hitCount / 10000}`);
-                        newTopic[i].hitCount = `${index}万`;
-                    }
-                    else {
-                        let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
-                        newTopic[i].hitCount = `${index}万`;
-                    }
-                }
-                //回复数转换
-                if (newTopic[i].replyCount > 10000) {
-                    if (newTopic[i].replyCount > 100000) {
-                        let index = parseInt(`${newTopic[i].replyCount / 10000}`);
-                        newTopic[i].replyCount = `${index}万`;
-                    }
-                    else {
-                        let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
-                        newTopic[i].replyCount = `${index}万`;
-                    }
-                }
-            }
-            //匿名时粉丝数显示0
-            else {
-                newTopic[i].fanCount = 0;
-                newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-                newTopic[i].userName = "匿名用户";
-                newTopic[i].boardName = "心灵之约";
-            }
-        }
-        return newTopic;
-
-    } catch (e) {
-        ////window.location.href = "/status/Disconnected";
-    }
-}
-
-/**
- * 获取全部关注版面帖子
- */
-export async function getFocusTopic(from: number, router) {
-    try {
-        /**
-         * 一次性可以获取20个主题
-         */
-        var size = 20;
-        if (from > 80) {
-            size = 100 - from;
-        }
-        const headers = await formAuthorizeHeader();
-        /**
-         * 通过api获取到主题之后转成json格式
-         */
-        const response = await cc98Fetch(`/me/custom-board/topic?from=${from}&size=${size}`, { headers });
-        if (response.status === 401) {
-            //window.location.href = "/status/UnauthorizedTopic";
-        }
-        if (response.status === 500) {
-            //window.location.href = "/status/ServerError";
-        }
-        let newTopic = await response.json();
-
+        console.log("最后回复", newTopic);
         for (let i in newTopic) {
             if (newTopic[i].userId) {
                 //获取作者粉丝数目
@@ -657,6 +568,7 @@ export async function getFocusTopic(from: number, router) {
                 newTopic[i].portraitUrl = userInfo1.portraitUrl;
                 //获取所在版面名称
                 newTopic[i].boardName = await getBoardName(newTopic[i].boardId);
+                
                 //阅读数转换
                 if (newTopic[i].hitCount > 10000) {
                     if (newTopic[i].hitCount > 100000) {
@@ -694,7 +606,6 @@ export async function getFocusTopic(from: number, router) {
         ////window.location.href = "/status/Disconnected";
     }
 }
-
 
 //与缓存相关的函数
 export function setStorage(key, value) {
@@ -2514,14 +2425,12 @@ export function autoAddUrl(v: string) {
     let flag = /(http|ftp|https)/g;
     let arr = v.match(flag);
     if (arr) {
-        console.log("确实匹配到了");
         let reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/g;
         let abb = v.match(reg);
         let result = v.replace(reg, `[url=${abb}][color=blue]${abb}[/color][/url]`).replace(/\n/g, "<br />");
         return result;
     }
     else {
-        console.log("没有匹配到了");
         let reg = /[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/g;
         let abb = v.match(reg);
         console.log(abb);
@@ -2713,13 +2622,13 @@ export async function getFavState(topicId) {
     return data;
 }
 
+//更新未读消息数量
 export async function refreshUnReadCount() {
     const headers = await formAuthorizeHeader();
     const url = `/me/unread-count`;
     const response = await cc98Fetch(url, { headers });
     let unreadCount = await response.json();
-    unreadCount.totalCount = unreadCount.systemCount + unreadCount.atCount + unreadCount.replyCount + unreadCount.messageCount;
-    setStorage("unreadCount", unreadCount);
+    unreadCount.totalCount = unreadCount.systemCount + unreadCount.atCount + unreadCount.replyCount + unreadCount.messageCount;   
     if (unreadCount.totalCount > 0) {
         $('#unreadCount-totalCount').removeClass('displaynone');
         $('#unreadCount-totalCount1').removeClass('displaynone');
@@ -2760,6 +2669,8 @@ export async function refreshUnReadCount() {
         $('#unreadCount-messageCount').addClass('displaynone');
         $('#unreadCount-messageCount1').addClass('displaynone');
     }
+    setStorage("unreadCount", unreadCount);
+    return unreadCount;
 }
 export async function editPost(postId, contentType, title, content) {
     const headers = await formAuthorizeHeader();
@@ -2784,7 +2695,7 @@ export async function cc98Fetch(url, init?: RequestInit) {
     console.log("base");
     console.log(baseUrl);*/
     const baseUrl = 'http://apitest.niconi.cc';
-    const _url = urljoin(baseUrl, url);
+    const _url = `${baseUrl}${url}`;
     let response;
     if (init) {
         response = await fetch(_url, init);

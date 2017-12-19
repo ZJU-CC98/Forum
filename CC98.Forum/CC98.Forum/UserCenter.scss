@@ -250,6 +250,12 @@
                     font-size: 0.75rem;
                 }
 
+                .user-profile-info {
+                    display: inline-flex;
+                    width: 5rem;
+                    color: gray;
+                }
+
                 #userGenderAndBirthday {
                     display: flex;
                     flex-wrap: wrap;
@@ -855,13 +861,13 @@
     align-items: center;
 
     img {
-        width: 16.25rem;
-        height: 5rem;
-        margin: 1rem 1rem 0 0;
+        width: 7rem;
+        height: 7rem;
     }
 
     .user-center-myfavorite-board-info {
         flex-grow: 1;
+        margin-left: 3rem;
     }
 
     button {

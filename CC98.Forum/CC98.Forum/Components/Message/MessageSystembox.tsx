@@ -17,18 +17,18 @@ export class MessageSystembox extends React.Component<MessageSystemProps> {
                 let b = parseInt(a);
                 let c = this.props.floor + 10 - b * 10;
                 if (this.props.isRead) {
-                    content = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=gray]${this.props.content}[/color][color=blue]http://${host}/topic/${this.props.topicId}[/color][/url]`;
+                    content = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=gray]${this.props.content}[/color][/url]`;
                 }
                 else {
-                    content = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][b][color=black]${this.props.content}[/color][color=blue]http://${host}/topic/${this.props.topicId}[/color][/b][/url]`;
+                    content = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][b][color=black]${this.props.content}[/color][/b][/url]`;
                 }
             }
             else {
                 if (this.props.isRead) {
-                    content = `[url=http://${host}/topic/${this.props.topicId}][color=gray]${this.props.content}[/color][color=blue]http://${host}/topic/${this.props.topicId}[/color][/url]`;
+                    content = `[url=http://${host}/topic/${this.props.topicId}][color=gray]${this.props.content}[/color][/url]`;
                 }
                 else {
-                    content = `[url=http://${host}/topic/${this.props.topicId}][b][color=black]${this.props.content}[/color][color=blue]http://${host}/topic/${this.props.topicId}[/color][/b][/url]`;
+                    content = `[url=http://${host}/topic/${this.props.topicId}][b][color=black]${this.props.content}[/color][/b][/url]`;
                 }
             }
         }

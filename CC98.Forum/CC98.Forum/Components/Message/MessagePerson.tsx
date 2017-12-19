@@ -12,8 +12,10 @@ export class MessagePerson extends React.Component<MessagePersonProps> {
         if (!data.lastContent) {
             data.lastContent = '';
         }
-        console.log("单个联系人开始渲染");
-        console.log(data);
+        else if (!data.isRead) {
+            data.lastContent = `[b]${data.lastContent}[/b]`;
+        }
+
         return (<div className="message-message-person">
                 <img className="message-message-pPortraitUrl" src={data.portraitUrl} />
                         <div className="message-message-pInfo">

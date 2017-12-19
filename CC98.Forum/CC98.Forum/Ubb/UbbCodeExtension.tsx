@@ -29,6 +29,7 @@ import { ThTagHandler } from './ThTagHandler';
 import { TrTagHandler } from './TrTagHandler';
 import { TopicTagHandler } from './TopicTagHandler';
 import { MdTagHandler } from './MdTagHandler';
+import SandBoxTagHandler from './SandBoxTagHandler';
 import EmTagHandler from './EmTagHandler';
 import AcTagHandler from './AcTagHandler';
 import MahjongTagHandler from './MahjongTagHandler';
@@ -41,7 +42,7 @@ import UrlTextHandler from './UrlTextHandler';
  */
 export function createEngine(): Ubb.UbbCodeEngine {
 
-    const engine = new Ubb.UbbCodeEngine();
+	const engine = new Ubb.UbbCodeEngine();
 
     // 在此处添加引擎所支持的所有标签处理器
     engine.tagHandlers.register(BTagHandler);
@@ -71,18 +72,18 @@ export function createEngine(): Ubb.UbbCodeEngine {
     engine.tagHandlers.register(TopicTagHandler);
     engine.tagHandlers.register(MdTagHandler);
     engine.tagHandlers.register(TbTagHandler);
+	engine.tagHandlers.register(SandBoxTagHandler);
+
+	// 以下是未命名标签处理程序，注意未命名标签处理程序的命中和注册顺序有关
+	engine.tagHandlers.register(EmTagHandler);
+	engine.tagHandlers.register(AcTagHandler);
+	engine.tagHandlers.register(MahjongTagHandler);
 
 
-    // 以下是未命名标签处理程序，注意未命名标签处理程序的命中和注册顺序有关
-    engine.tagHandlers.register(EmTagHandler);
-    engine.tagHandlers.register(AcTagHandler);
-    engine.tagHandlers.register(MahjongTagHandler);
+	// 以下是文字处理程序，注意文字的处理顺序完全取决于处理程序，请注意控制处理程序的顺序
+	engine.tagHandlers.registerText(UrlTextHandler);
 
-
-    // 以下是文字处理程序，注意文字的处理顺序完全取决于处理程序，请注意控制处理程序的顺序
-    engine.tagHandlers.registerText(UrlTextHandler);
-
-    return engine;
+	return engine;
 }
 
 // 重新导出核心功能

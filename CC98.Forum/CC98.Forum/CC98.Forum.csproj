@@ -17,7 +17,6 @@
     <None Remove="Actions.tsx" />
     <None Remove="ActionTypes.tsx" />
     <None Remove="CC98.Forum.rar" />
-    <None Remove="Components\Edit.tsx" />
     <None Remove="Components\FocusBoardTopicArea.tsx" />
     <None Remove="Components\Footer.tsx" />
     <None Remove="Components\PageModel.tsx" />
@@ -86,7 +85,6 @@
     <None Remove="Ubb\RightTagHandler.tsx" />
     <None Remove="Ubb\SandboxTagHandler.tsx" />
     <None Remove="Ubb\TableTagHandler.tsx" />
-    <None Remove="Ubb\TbTagHandler.tsx" />
     <None Remove="Ubb\TdTagHandler.tsx" />
     <None Remove="Ubb\ThTagHandler.tsx" />
     <None Remove="Ubb\TrTagHandler.tsx" />
@@ -112,7 +110,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Actions.tsx" />
     <TypeScriptCompile Include="ActionTypes.tsx" />
-    <TypeScriptCompile Include="Components\Edit.tsx" />
+    <TypeScriptCompile Include="Components\Focus\FocusTopicArea.tsx" />
     <TypeScriptCompile Include="Components\PageModel.tsx" />
     <TypeScriptCompile Include="Components\Pager.tsx" />
     <TypeScriptCompile Include="Components\RouteComponent.tsx" />
@@ -122,7 +120,7 @@
     <TypeScriptCompile Include="Components\Topic\Topic-Award.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Judge.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-New.tsx" />
-    <TypeScriptCompile Include="Components\Focus\FocusBoardTopicArea.tsx" />
+    <TypeScriptCompile Include="Components\Focus\FocusUserArea.tsx" />
     <TypeScriptCompile Include="Components\Footer.tsx" />
     <TypeScriptCompile Include="Components\LogOn.tsx" />
     <TypeScriptCompile Include="Components\LogOnExact.tsx" />
@@ -157,7 +155,6 @@
     <TypeScriptCompile Include="Components\UserCenter\UserExactProfile.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\UserManage.tsx" />
     <TypeScriptCompile Include="Components\UserCenter\UserRouterActivities.tsx" />
-    <TypeScriptCompile Include="Props\FocusBoardProps.tsx" />
     <TypeScriptCompile Include="Props\MessagePersonProps.tsx" />
     <TypeScriptCompile Include="Props\MessageSendReceiveProps.tsx" />
     <TypeScriptCompile Include="Props\MessageWindowProps.tsx" />
@@ -188,7 +185,6 @@
     <TypeScriptCompile Include="Ubb\RightTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\SandboxTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\TableTagHandler.tsx" />
-    <TypeScriptCompile Include="Ubb\TbTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\TdTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\ThTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\TopicTagHandler.tsx" />

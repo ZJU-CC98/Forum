@@ -113,17 +113,16 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
                 </div>
                 <div id="userIntroducion">{this.props.userInfo.introduction}</div>
                 <div id="userGenderAndBirthday">
-                    <p>性别：  {(this.props.userInfo.gender === 1) ? '男' : '女'} </p>
-                    {this.props.userInfo.birthday === null ? null : <p>生日：  {this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T')).replace('9999-', '')}{isBirthDay ? <span style={{ fontFamily: 'FontAwesome', marginLeft: '1rem' }} className="fa-birthday-cake" title="生日快乐~"></span> : null}</p>}
-                    {this.props.userInfo.emailAddress ? <p>邮箱：  {this.props.userInfo.emailAddress}</p> : null}
-                    {this.props.userInfo.qq ? <p>QQ：  {this.props.userInfo.qq}</p> : null}
-                    {this.props.userInfo.postCount ? <p>发帖数：  {this.props.userInfo.postCount}</p> : null}
-                    {this.props.userInfo.prestige ? <p>威望：  {this.props.userInfo.prestige}</p> : null}
-                    {this.props.userInfo.displayTitle ? <p>用户组：  {this.props.userInfo.displayTitle}</p> : null}
-                    <div>
-                        {this.props.userInfo.registerTime ? <p>注册时间：  {this.props.userInfo.registerTime.replace('T', ' ')}</p> : null}
-                        {this.props.userInfo.lastLogOnTime ? <p>最后登录时间：  {this.props.userInfo.lastLogOnTime.replace('T', ' ')}</p> : null}
-                    </div>
+                    <p><span className="user-profile-info">性别</span>{(this.props.userInfo.gender === 1) ? '男' : '女'} </p>
+                    <p><span className="user-profile-info">发帖数</span>{this.props.userInfo.postCount}</p>
+                    <p><span className="user-profile-info">威望</span>{this.props.userInfo.prestige}</p>
+                    <p><span className="user-profile-info">风评</span>{this.props.userInfo.popularity}</p>
+                    <p><span className="user-profile-info">注册时间</span>{this.props.userInfo.registerTime.replace('T', ' ')}</p>
+                    <p><span className="user-profile-info">最后登录</span>{this.props.userInfo.lastLogOnTime.replace('T', ' ')}</p>
+                    {this.props.userInfo.birthday === null ? null : <p><span className="user-profile-info">生日</span>{this.props.userInfo.birthday.slice(0, this.props.userInfo.birthday.indexOf('T')).replace('9999-', '')}{isBirthDay ? <span style={{ fontFamily: 'FontAwesome', marginLeft: '1rem' }} className="fa-birthday-cake" title="生日快乐~"></span> : null}</p>}
+                    {this.props.userInfo.displayTitle ? <p><span className="user-profile-info">用户组</span>{this.props.userInfo.displayTitle}</p> : null}
+                    {this.props.userInfo.emailAddress ? <p><span className="user-profile-info">邮箱</span>{this.props.userInfo.emailAddress}</p> : null}
+                    {this.props.userInfo.qq ? <p><span className="user-profile-info">QQ</span>{this.props.userInfo.qq}</p> : null}
                 </div>
                 {this.props.userInfo.signatureCode ?
                     <div className="user-description">

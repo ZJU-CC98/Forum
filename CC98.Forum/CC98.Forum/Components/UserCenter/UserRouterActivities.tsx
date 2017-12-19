@@ -87,7 +87,7 @@ export class UserRouterActivities extends React.Component<{id: string}, UserCent
                     window.addEventListener('scroll', this.scrollHandler);
                 }
             } else {
-                throw {};
+                throw new Error();
             }
         } catch (e) {
             console.log('用户中心帖子加载失败');

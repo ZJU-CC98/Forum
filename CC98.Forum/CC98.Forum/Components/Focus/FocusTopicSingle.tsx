@@ -8,10 +8,37 @@ declare let moment: any;
  * 我关注的某个版面的单个主题
  */
 export class FocusTopicSingle extends React.Component<FocusTopic> {
+    render() {
+        return (<div className="focus-topic">
+                    <div className="focus-topic-left">
+                        <img className="focus-topic-portraitUrl" src={this.props.portraitUrl}></img>
+                        <div className="focus-topic-text">
+                            <div className="focus-topic-userName">{this.props.userName}</div>
+                            <div className="focus-topic-fans">粉丝  {this.props.fanCount}</div>
+                                </div>
+                            </div>
+                    <div className="focus-topic-middle">
+                        <div className="focus-topic-title">{this.props.title}</div>
+                                <div className="focus-topic-info">
+                            <div className="focus-topic-infoTag">标签： 你好/再见</div>
+                            <div className="focus-topic-infoTiem">{moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')}</div>
+                            <div className="focus-topic-infoHit">{this.props.hitCount}</div>
+                            <div className="focus-topic-infoLastPostUser">{this.props.lastPostUser}</div>
+                            <div className="focus-topic-infoLastPostTime">{moment(this.props.lastPostTime).format('YYYY-MM-DD HH:mm:ss')}</div>
+                                </div>
+                    </div>
+                    <div className="focus-topic-right">{this.props.boardName}</div>
+                </div>);
+    }
+}
+
+
+/*
+export class FocusTopicSingle extends React.Component<FocusTopic> {
    
     render() {
         let topicUrl = `/topic/${this.props.id}`;
-        let boardUrl = `/list/${this.props.boardId}/normal`;
+        let boardUrl = `/list/${this.props.boardId}`;
         return (<div className="focus-topic">
                     <PortaritrUrl userId={this.props.userId} portraitUrl={this.props.portraitUrl} />
                     <div className="focus-topic-info1">
@@ -35,6 +62,9 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
 
     }
 }
+
+
+
 
 //返回可点击或者不可点击的头像
 export class PortaritrUrl extends React.Component<PortaritrUrlProps> {
@@ -79,4 +109,4 @@ export class UserNameProps {
     userId: number;
     //用户名称
     userName: string;
-}
+}*/
