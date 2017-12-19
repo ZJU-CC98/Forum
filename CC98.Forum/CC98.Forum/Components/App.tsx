@@ -18,7 +18,8 @@ import { Header } from './Header';
 import { Footer } from './Footer';
 import { MainPage } from './MainPage';
 import { User } from './UserCenter/User';
-import { LogOn } from './LogOn';
+import LogOn from './LogOn';
+import { LogOff } from './Logoff'
 import { CreateTopic } from './Topic/Topic-CreateTopic';
 import * as Status from './Status';
 import { UbbContainer } from './UbbContainer';
@@ -56,7 +57,8 @@ export class App extends React.Component<null, AppState> {
                         <Route path="/focus" component={Focus} />
                         <Route path="/newtopics" component={AllNewTopic} />
                         <Route path="/user/:method/:id" component={User} />
-                        <Route path="/logon" component={LogOn} />
+                        <Route path="/logon" exact component={LogOn} />
+                        <Route path="/logon/logoff" component={LogOff} />
                         <Route path="/search" component={Search} />
                         <Route path="/searchBoard" component={SearchBoard} />
                         <Route path="/createtopic/:boardId" component={CreateTopic} />
@@ -75,7 +77,7 @@ export class App extends React.Component<null, AppState> {
                         <Route path="/status/servererror" component={Status.ServerError} />
                         <Route path="/status/contentneeded" component={Status.ContentNeeded} />
                         <Route path="/status/operationforbidden" component={Status.OperationForbidden} />
-                        <Route component={() => (<div>页面不存在</div>)} />
+                        <Route component={Status.PageNotFound} />
                     </Switch>
                     <Footer />
                 </div>
