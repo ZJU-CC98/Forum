@@ -504,6 +504,13 @@ export async function getAllNewTopic(from: number, router) {
                     newTopic[i].replyCount = `${index}万`;
                 }
             }
+            //标签转换
+            if (newTopic[i].tag1) {
+                newTopic[i].tag1 = await getTagNamebyId(newTopic[i].tag1);
+                if (newTopic[i].tag2) {
+                    newTopic[i].tag2 = await getTagNamebyId(newTopic[i].tag2);
+                }
+            }
         }
         return newTopic;
     } catch (e) {
@@ -597,6 +604,13 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
                 else {
                     let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
                     newTopic[i].replyCount = `${index}万`;
+                }
+            }
+            //标签转换
+            if (newTopic[i].tag1) {
+                newTopic[i].tag1 = await getTagNamebyId(newTopic[i].tag1);
+                if (newTopic[i].tag2) {
+                    newTopic[i].tag2 = await getTagNamebyId(newTopic[i].tag2);
                 }
             }
         }
@@ -1564,7 +1578,13 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                         newTopic[i].replyCount = `${index}万`;
                     }
                 }
-
+                //标签转换
+                if (newTopic[i].tag1) {
+                    newTopic[i].tag1 = await getTagNamebyId(newTopic[i].tag1);
+                    if (newTopic[i].tag2) {
+                        newTopic[i].tag2 = await getTagNamebyId(newTopic[i].tag2);
+                    }
+                }
             }
             return newTopic;
         }
