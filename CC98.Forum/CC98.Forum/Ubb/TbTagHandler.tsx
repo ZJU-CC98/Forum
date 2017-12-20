@@ -18,7 +18,7 @@ export default class TbTagHandler extends Ubb.RecursiveTagHandler {
 
         const tagName = tagData.tagName;
         const emoticonId = tagName.match(/\d{2}/).toString();
-        const url = `/images/tb/tb${emoticonId}.png`;
+        const url = `/static/images/tb/tb${emoticonId}.png`;
 
         return <div style={{ display: "inline" }}>
             <img src={url} alt="" />{innerContent}
