@@ -358,9 +358,9 @@ export class SearchBeforeConnent extends React.Component<{history}, AppState> { 
             return <div id="search">
                 <div className="box">
                     <div className="searchBoxSelect">主题</div>
-                    <div className="downArrow"><img src="/images/downArrow.png" width="12" height="12" /></div>
+                    <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
                     <input id="searchText" type="text" placeholder="猜猜能搜到什么..." onKeyPress={this.keypress_submit} />
-                    <div className="searchIco"><img src="/images/searchIco.ico" width="15" height="15" /></div>
+                    <div className="searchIco"><img src="/static/images/searchIco.ico" width="15" height="15" /></div>
                 </div>
                 <ul className="searchBoxSub">
                     <li>主题</li>
@@ -373,9 +373,9 @@ export class SearchBeforeConnent extends React.Component<{history}, AppState> { 
             return <div id="search">
                 <div className="box">
                     <div className="searchBoxSelect">版内</div>
-                    <div className="downArrow"><img src="/images/downArrow.png" width="12" height="12" /></div>
+                    <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
                     <input id="searchText" type="text" placeholder="猜猜能搜到什么..." />
-                    <div className="searchIco"><img src="/images/searchIco.ico" width="15" height="15" /></div>
+                    <div className="searchIco"><img src="/static/images/searchIco.ico" width="15" height="15" /></div>
                 </div>
                 <ul className="searchBoxSub">
                     <li>版内</li>
@@ -403,27 +403,27 @@ export class Header extends React.Component<{}, AppState> {
                 <div className="headerRow">
                     <div className="linkBar">
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="/images/网盘.ico" width="15" height="15" /></div>
+                            <div style={{ margin: '3px 10px 0 0' }}><img src="/static/images/网盘.ico" width="15" height="15" /></div>
                             <div><a href="http://share.cc98.org/" className="linkText">网盘</a></div>
                         </div>
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="/images/游戏.ico" width="15" height="15" /></div>
+                            <div style={{ margin: '3px 10px 0 0' }}><img src="/static/images/游戏.ico" width="15" height="15" /></div>
                             <div><a href="http://www.cc98.org/game.asp" className="linkText">游戏</a></div>
                         </div>
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="/images/勋章.ico" width="15" height="15" /></div>
+                            <div style={{ margin: '3px 10px 0 0' }}><img src="/static/images/勋章.ico" width="15" height="15" /></div>
                             <div><a href="http://v2.cc98.org/app/medalmanager.aspx" className="linkText">勋章</a></div>
                         </div>
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="/images/抽卡.ico" width="15" height="15" /></div>
+                            <div style={{ margin: '3px 10px 0 0' }}><img src="/static/images/抽卡.ico" width="15" height="15" /></div>
                             <div><a href="http://card.cc98.org/" className="linkText">抽卡</a></div>
                         </div>
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="/images/gamble.ico" width="15" height="15" /></div>
+                            <div style={{ margin: '3px 10px 0 0' }}><img src="/static/images/gamble.ico" width="15" height="15" /></div>
                             <div><a href="http://gaming.cc98.org" className="linkText">竞猜</a></div>
                         </div>
                         <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="/images/NexusHD.jpg" width="15" height="15" /></div>
+                            <div style={{ margin: '3px 10px 0 0' }}><img src="/static/images/NexusHD.jpg" width="15" height="15" /></div>
                             <div><a href="http://www.nexushd.org" className="linkText">NexusHD</a></div>
                         </div>
                     </div>

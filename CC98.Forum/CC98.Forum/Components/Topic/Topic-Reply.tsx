@@ -115,7 +115,7 @@ export class Reply extends React.Component<{DateTime,topicId, page, topicInfo, b
             </div>
                 ;
         else
-            return <img src="/images/waiting.gif" />;
+            return <img src="/static/images/waiting.gif" />;
     }
 }
  
