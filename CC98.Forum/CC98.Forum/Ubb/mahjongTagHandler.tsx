@@ -15,20 +15,20 @@ export default class MahjongTagHandler extends Ubb.RecursiveTagHandler {
     }
 
     getAnimalUrl(mahjongId: string) {
-        return `/images/mahjong/animal2017/${mahjongId}.png`
+        return `/static/images/mahjong/animal2017/${mahjongId}.png`
     }
 
     getCartoonUrl(mahjongId: string) {
         switch (mahjongId) {
-            case "018": case "049": case "096": return `/images/mahjong/carton2017/${mahjongId}.gif`;
-            default: return `/images/mahjong/carton2017/${mahjongId}.png`
+            case "018": case "049": case "096": return `/static/images/mahjong/carton2017/${mahjongId}.gif`;
+            default: return `/static/images/mahjong/carton2017/${mahjongId}.png`
         }
     }
 
     getFaceUrl(mahjongId: string) {
         switch (mahjongId) {
-            case "004": case "009": case "056": case "061": case "062": case "087": case "115": case "120": case "137": case "168": case "169": case "175": case "206": return `/images/mahjong/face2017/${mahjongId}.gif`
-            default: return `/images/mahjong/face2017/${mahjongId}.png`
+            case "004": case "009": case "056": case "061": case "062": case "087": case "115": case "120": case "137": case "168": case "169": case "175": case "206": return `/static/images/mahjong/face2017/${mahjongId}.gif`
+            default: return `/static/images/mahjong/face2017/${mahjongId}.png`
         }
     }
 
