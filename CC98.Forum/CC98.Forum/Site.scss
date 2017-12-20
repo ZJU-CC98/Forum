@@ -447,6 +447,7 @@ body {
     font-size: 0.75rem;
     border-top: #EAEAEA dashed 2px;
     box-sizing: border-box;
+    align-items:center;
 }
 
 .userImage img {
@@ -543,7 +544,6 @@ body {
         top: 70px;
         right: -40px;
         color: #ffffff;
-        font-size: 12px;
     }
 }
 
@@ -3038,6 +3038,7 @@ a {
 
 .boardMessage {
     width: 15rem;
+    min-height:6rem;
     display: flex;
     flex-direction: column;
     color: #fff;

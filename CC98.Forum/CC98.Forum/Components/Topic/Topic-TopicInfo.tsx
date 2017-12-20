@@ -25,6 +25,9 @@ export class TopicInfo extends React.Component<{ topicInfo, boardInfo, tag1, tag
             t2 = await Utility.getTagNamebyId(this.props.tag2);
         this.setState({ tag1Name: t1, tag2Name: t2 });
     }
+    onError(e) {
+        e.target.src = `/images/_CC98协会.png`;
+    }
     render() {
         const url = `/images/_${this.props.boardInfo.name}.png`;
         const boardUrl = `/list/${this.props.boardInfo.id}`;
@@ -35,7 +38,7 @@ export class TopicInfo extends React.Component<{ topicInfo, boardInfo, tag1, tag
         }
         return <div className="topicInfo-info">
             <div className="topicInfo-boardInfo">
-                <Link to={boardUrl}><div className="topicInfo-boardImage"><img className="topicInfo-boardImage" src={url} /></div></Link>
+                <Link to={boardUrl}><div className="topicInfo-boardImage"><img className="topicInfo-boardImage" onError={this.onError} src={url} /></div></Link>
                 <div className="topicInfo-boardMessage">
                     <Link to={boardUrl}><div style={{color:"#fff"}}>{this.props.boardInfo.name}</div></Link>
                     <div style={{ marginTop: "0.5rem", fontSize:"0.75rem" }}>{this.props.boardInfo.todayCount} / {this.props.boardInfo.topicCount}</div>

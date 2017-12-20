@@ -252,10 +252,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
             <div className="column" style={{ alignItems: 'center' }}>
 
                 <div className="row">
-                    <div className="row">
-                        <input type="radio" name="option" value="查看IP" onClick={this.showIP} />
-                        <div>查看IP</div>
-                    </div>
+
 
                     <div className="row">
                         <input type="radio" name="option" value={this.state.topicInfo.state === 1 ? '解锁' : "锁定"} onClick={this.showDays} />
@@ -274,10 +271,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
                         <div>删除</div>
                     </div>
 
-                    <div className="row">
-                        <input type="radio" name="option" value="修复" onClick={this.showNoReason} />
-                        <div>修复</div>
-                    </div>
+
 
                     <div className="row">
                         <input type="radio" name="option" value="移动" onClick={this.showBoard} />

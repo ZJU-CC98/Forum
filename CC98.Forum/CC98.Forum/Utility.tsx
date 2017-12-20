@@ -2284,9 +2284,9 @@ export async function plus1(topicId, postId, reason) {
 	const response = await cc98Fetch(url, { method: "PUT", headers, body });
 	switch (response.status) {
 		case 401:
-			return 'unauthorized';
-		case 404:
-			return 'not found';
+			return 'not allowed';
+		case 403:
+			return 'already';
 		case 500:
 			return 'server error';
 	}
@@ -2301,9 +2301,9 @@ export async function minus1(topicId, postId, reason) {
 	const response = await cc98Fetch(url, { method: "PUT", headers, body });
 	switch (response.status) {
 		case 401:
-			return 'unauthorized';
-		case 404:
-			return 'not found';
+			return 'not allowed';
+		case 403:
+			return 'already';
 		case 500:
 			return 'server error';
 	}
@@ -2396,7 +2396,7 @@ export async function cancelStopBoardPost(userId, boardId) {
 		case 500:
 			return 'server error';
 	}
-	return await response.json();
+	return 'ok';
 }
 export async function addBoardTopTopic(topicId, boardId, topState, days, reason) {
 	const headers = await formAuthorizeHeader();
@@ -2419,7 +2419,7 @@ export async function addBoardTopTopic(topicId, boardId, topState, days, reason)
 		case 500:
 			return 'server error';
 	}
-	return await response.json();
+	return 'ok';
 }
 export async function removeBoardTopTopic(topicId, boardId, reason) {
 	const headers = await formAuthorizeHeader();
@@ -2442,7 +2442,7 @@ export async function removeBoardTopTopic(topicId, boardId, reason) {
 		case 500:
 			return 'server error';
 	}
-	return await response.json();
+	return 'ok';
 }
 //获取特定类型的消息的总数，1为回复消息，2为@消息，3为系统消息
 
@@ -2488,7 +2488,7 @@ export async function deleteTopic(topicId, reason) {
 		case 500:
 			return 'server error';
 	}
-	return await response.json();
+	return 'ok';
 }
 export async function lockTopic(topicId, boardId, reason, days) {
 	const headers = await formAuthorizeHeader();
@@ -2505,7 +2505,7 @@ export async function lockTopic(topicId, boardId, reason, days) {
 		case 500:
 			return 'server error';
 	}
-	return await response.json();
+	return 'ok';
 }
 export async function unLockTopic(topicId, boardId, reason) {
 	const headers = await formAuthorizeHeader();
@@ -2522,7 +2522,7 @@ export async function unLockTopic(topicId, boardId, reason) {
 		case 500:
 			return 'server error';
 	}
-	return await response.json();
+	return 'ok';
 }
 export async function setBestTopic(topicId, reason) {
 	const headers = await formAuthorizeHeader();
@@ -2539,7 +2539,7 @@ export async function setBestTopic(topicId, reason) {
 		case 500:
 			return 'server error';
 	}
-	return await response.json();
+	return 'ok';
 }
 export async function cancelBestTopic(topicId, reason) {
 	const headers = await formAuthorizeHeader();
@@ -2556,7 +2556,7 @@ export async function cancelBestTopic(topicId, reason) {
 		case 500:
 			return 'server error';
 	}
-	return await response.json();
+	return 'ok';
 }
 export async function setDisableHot(topicId, reason) {
 	const headers = await formAuthorizeHeader();
@@ -2573,7 +2573,7 @@ export async function setDisableHot(topicId, reason) {
 		case 500:
 			return 'server error';
 	}
-	return await response.json();
+	return 'ok';
 }
 export async function cancelDisableHot(topicId, reason) {
 	const headers = await formAuthorizeHeader();
@@ -2590,7 +2590,7 @@ export async function cancelDisableHot(topicId, reason) {
 		case 500:
 			return 'server error';
 	}
-	return await response.json();
+	return 'ok';
 }
 
 //自动识别内容中的链接并添加ubb代码
@@ -2798,17 +2798,19 @@ export async function setHighlight(topicId, isBold, isItalic, color, duration, r
 		case 500:
 			return 'server error';
 	}
-	return await response.json();
+	return 'ok';
 }
 export async function setFavoriteTopic(topicId) {
 	const headers = await formAuthorizeHeader();
 	const url = `/me/favorite/${topicId}`;
-	const reponse = await cc98Fetch(url, { method: "PUT", headers });
+    const reponse = await cc98Fetch(url, { method: "PUT", headers });
+    return 'ok';
 }
 export async function deleteFavoriteTopic(topicId) {
 	const headers = await formAuthorizeHeader();
 	const url = `/me/favorite/${topicId}`;
-	const reponse = await cc98Fetch(url, { method: "DELETE", headers });
+    const reponse = await cc98Fetch(url, { method: "DELETE", headers });
+    return 'ok';
 }
 export async function getFavState(topicId) {
 	const headers = await formAuthorizeHeader();
@@ -2882,7 +2884,8 @@ export async function editPost(postId, contentType, title, content) {
 	const url = `/post/${postId}`;
 	const bodyInfo = { content: content, title: title, contentType: contentType };
 	const body = JSON.stringify(bodyInfo);
-	const response = await cc98Fetch(url, { method: "PUT", headers, body });
+    const response = await cc98Fetch(url, { method: "PUT", headers, body });
+    return 'ok';
 }
 
 export async function cc98Fetch(url, init?: RequestInit) {
@@ -2983,7 +2986,7 @@ export async function findIP(topicId) {
 	return await response.json();
 }
 export async function moveTopic(topicId, boardId, reason) {
-	const url = `topic/${topicId}/moveto/${boardId}`;
+	const url = `/topic/${topicId}/moveto/${boardId}`;
 	const headers = await formAuthorizeHeader();
 	const response = await cc98Fetch(url, { method: "PUT", headers, body: JSON.stringify(reason) });
 	if (response.status === 200)

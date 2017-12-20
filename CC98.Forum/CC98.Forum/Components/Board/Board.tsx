@@ -116,15 +116,19 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
     componentWillReceiveProps(newProps) {
         this.setState({ isFollow: newProps.boardInfo.isFollow });
     }
+    onError(e) {
+        e.target.src = `/images/_CC98协会.png`;
+    }
     render() {
         const boardUrl = `/list/${this.props.boardId}`;
+        const id = `boardImg_${this.props.boardId}`;
         const url = `/images/_${this.props.boardInfo.name}.png`;
         if (!this.props.boardInfo.bigPaper || !this.state.isExtend) {
             return (
                 <div className="row" style={{ width: "100%", overflow: 'hidden', maxHeight: '6rem', transition: 'max-height 1s'}}>
                     <Link to={boardUrl}><div className="boardMessage">
                         <div className="row" style={{ height: "4rem", marginTop: "1.25rem" }}>
-                            <img style={{ marginLeft: "1.25rem" }} src={url}></img>
+                            <img style={{ marginLeft: "1.25rem" }} onError={this.onError} src={url}></img>
                             <div className="boardMessageDetails">
                                 <div className="row" style={{ width: "100%" }}>
                                     {this.props.boardInfo.name}
@@ -199,15 +203,15 @@ export class ListTagAndPager extends React.Component<{ url: string, boardid: num
 
     generateTagLayer(item) {
         const url = `/list/${this.props.boardid}`;
-        return <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginBottom: "0.5rem" }}>
-            <div className="row">  <button id="tagButton"><Link to={url}>全部</Link></button>
+        return <div style={{ maxWidth:"40rem",lineHeight:"3rem",display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginBottom: "0.5rem" }}>
+            <div className="row">  <div><button id="chooseTag"><Link to={url}>全部</Link></button></div>
                 {item.tags.map(this.generateTagButton.bind(this))}
             </div>
         </div >;
     }
     generateTagButton(item) {
         const url = `/list/${this.props.boardid}/tag/tag1/${item.id}`;
-        return <Link to={url}><button className="chooseTag">{item.name}<span className="tagNumber"></span></button></Link>;
+        return <div><Link to={url}><button className="chooseTag">{item.name}<span className="tagNumber"></span></button></Link></div>;
     }
     async componentWillReceiveProps(newProps) {
         const pages = Utility.getPager(newProps.page, newProps.totalPage);
