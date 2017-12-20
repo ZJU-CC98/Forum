@@ -178,13 +178,13 @@ class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCente
         ctx.drawImage(this.state.img, x * this.state.scaling, y * this.state.scaling, width * this.state.scaling, width * this.state.scaling, 0, 0, width, width);
         canvas.toBlob(async (result) => {
             
-            let file: any = new Blob([result], { type: 'image/jpeg'});
+            let file: any = new Blob([result], { type: 'image/png'});
             file.lastModifiedDate = Date.now();
-            file.name = '头像.jpg';
+            file.name = '头像.png';
             const avatar = await Utility.uploadFile(file);
             const baseUrl = Utility.getApiUrl();
             this.changeAvatar(baseUrl + avatar.content);
-        },'image/jpeg',0.75);
+        },'image/png');
     }
 
     changeAvatar = async (avatarUrl: string) => {
@@ -312,10 +312,10 @@ class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCente
                 <div className="user-center-config-avatar">
                     <img src={this.state.avatarNow}></img>
                     <div>
-                        <button id="chooseDefaultAvatar" type="button" onClick={() => this.setState({ choosingDefault: true})}>选择论坛头像</button>
+                        <button id="chooseDefaultAvatar" type="button" onClick={() => this.setState({ choosingDefault: true, info: '暂时只有两枚' })}>选择论坛头像</button>
                         <div>
                             <input onChange={this.handleChange} id="uploadAvatar" type="file" accept="image/*" style={style} />
-                            <label htmlFor="uploadAvatar" onClick={() => this.setState({ choosingDefault: false, info: '暂时只有两枚' })}><p>选择本地图片</p></label>
+                            <label htmlFor="uploadAvatar" onClick={() => this.setState({ choosingDefault: false })}><p>选择本地图片</p></label>
                             <p style={{ color: 'red', margin: '0' }}>{this.state.info}</p>
                             <button type="button" className="config-submit-button" style={this.state.isShown ? {} : style} onClick={this.handleSubmit} disabled={this.state.isLoading}>提交</button>
                         </div>
