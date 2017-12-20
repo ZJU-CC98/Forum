@@ -54,6 +54,7 @@ export class Reply extends React.Component<{DateTime,topicId, page, topicInfo, b
             if (!realContents) this.setState({ inWaiting: false, contents: [] });
         } else if (this.props.isTrace) {
             const data = await Utility.getUserInfo(this.props.userId);
+            console.log("id" + this.props.userId);
             const userName = data.name;
             realContents = await Utility.getCurUserTopicContent(this.props.topicId, page, userName, this.props.userId);
         } else {
@@ -67,6 +68,8 @@ export class Reply extends React.Component<{DateTime,topicId, page, topicInfo, b
         this.setState({ inWaiting:false,contents: realContents,masters:masters });
     }
     async componentWillReceiveProps(newProps) {
+        console.log("reply in recieve new props");
+        console.log(newProps);
         this.setState({ inWaiting: true });
         const page = newProps.page || 1;
         let realContents;
@@ -79,7 +82,10 @@ export class Reply extends React.Component<{DateTime,topicId, page, topicInfo, b
             realContents = await Utility.getCurUserTopicContent(newProps.topicId, page, userName, newProps.userId);
         } else {
             realContents = await Utility.getTopicContent(newProps.topicId, page, newProps.topicInfo.replyCount);
-          
+            console.log("new message");
+            console.log(realContents);
+            console.log(page);
+            console.log(newProps);
         }
         this.setState({inWaiting:false,contents: realContents });
 

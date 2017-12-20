@@ -127,6 +127,7 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
             const str = `该帖最后由 ${name} 在 ${time} 编辑`;
             lastUpdate = str;
         }
+        const traceUrl = `topic/${this.props.topicid}/user/${this.props.userId}`;
         return <div className="column" style={{ marginTop:"1rem" }}>
             <div className="comment1">
                 <div style={{ width: "40rem", marginLeft: "2rem", fontSize:"0.8rem" }}>
@@ -136,7 +137,8 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
                 <div id={idDislike} className="downdown" onClick={this.dislike.bind(this)}><i title="踩"  className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
                 <div id="commentlike">
                     <div className="operation1" onClick={this.showJudgeUI}>   评分</div>
-                    <div className="operation1" onClick={this.quote}>   引用</div>
+                        <div className="operation1" onClick={this.quote}>   引用</div>
+                        <div className="operation1"><Link style={{color:"#fff"}} to={traceUrl}>   追踪</Link></div>
                     {editIcon}
                     <div className="operation1" id={manageIcon} style={{ display: "none", cursor: "pointer" }} onClick={this.showManageUI}>管理</div>
                     </div>

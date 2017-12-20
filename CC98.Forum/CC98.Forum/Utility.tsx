@@ -96,19 +96,23 @@ export async function getTopicContent(topicid: number, curPage: number, replyCou
         const topic = curPage != 1
             ? await cc98Fetch(`/Topic/${topicid}/post?from=${startPage}&size=10`, { headers })
             : await cc98Fetch(`/Topic/${topicid}/post?from=1&size=9`, { headers });
+        console.log(topicid);
+        console.log(startPage);
+        console.log("status" + topic.status);
         const content = await topic.json();
+        console.log("1");
+        console.log(content);
         const post = [];
         let topicNumberInPage: number;
-        if (curPage !== 1 && curPage * 10 <= replyCount) {
+        if (curPage != 1 && curPage * 10 <= replyCount) {
             topicNumberInPage = 10;
-        } else if (curPage === 1 && replyCount >= 9) {
+        } else if (curPage == 1 && replyCount >= 9) {
             topicNumberInPage = 9;
-        } else if (curPage === 1 && replyCount < 9) {
+        } else if (curPage == 1 && replyCount < 9) {
             topicNumberInPage = replyCount;
         } else {
             topicNumberInPage = (replyCount - (curPage - 1) * 10 + 1);
         }
-
         for (let i = 0; i < topicNumberInPage; i++) {
             const likeInfo = await refreshLikeState(topicid, content[i].id);
             const awardInfo = await getAwardInfo(content[i].id);
@@ -135,6 +139,7 @@ export async function getTopicContent(topicid: number, curPage: number, replyCou
                 }
             }
         }
+        console.log("2");
         return post;
 
     } catch (e) {
@@ -2577,7 +2582,6 @@ export async function getBoardInfo(boardId) {
             return 'server error';
     }
     const data = await response.json();
-    console.log(data);
     if (data.canEntry === false) {
 
         return 'unauthorized';

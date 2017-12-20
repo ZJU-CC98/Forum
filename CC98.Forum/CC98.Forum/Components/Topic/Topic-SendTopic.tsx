@@ -34,7 +34,7 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
         $(UIId).css("display", "none");
     }
     async componentDidMount() {
-     
+        console.log("in sendtopic did mount");
         if (Utility.isMaster(this.props.boardInfo.masters)) {
             $("#topicManagementBTN").css("display", "");
             $("#showIPBTN").css("display", "");
@@ -103,13 +103,15 @@ ${this.props.content.content}
 [color=blue][url=${url}]>>查看原帖<<[/url][/color][/b]${this.props.content.content}[/quote]
 `;
     
-                this.setState({ masters: masters, content: this.state.content + str });
+                this.setState({ masters: masters, content:  str });
             }
         }
        
     
     }
     componentWillReceiveProps(newProps) {
+        console.log("in sendtopic recieve newprops");
+        console.log(newProps);
         if (Utility.isMaster(newProps.boardInfo.masters))
             $("#topicManagementBTN").css("display", "");
         if (Utility.getLocalStorage("userInfo")) {
@@ -130,7 +132,7 @@ ${newProps.content.content}`;
                 const url = `/topic/${this.props.topicid}#${newProps.content.floor}`;
                 const str = `[quote][b]以下是引用${newProps.content.floor}楼：用户${newProps.content.userName}在${time}的发言：[color=blue][url=${url}]>>查看原帖<<[/url][/color][/b]
 ${newProps.content.content}[/quote]`;
-                this.setState({ content: this.state.content+str });
+                this.setState({ content: str });
             }
         }
     }
