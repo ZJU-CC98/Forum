@@ -15711,6 +15711,12 @@ var TopicTitleAndContent = /** @class */ (function (_super) {
         var url = "/topic/" + this.props.id;
         var titleId = "title" + this.props.id;
         var icon;
+        if (this.props.topState === 0) {
+            icon = React.createElement("div", { style: {
+                    width: "1rem", justifyContent: "flex-start"
+                } },
+                React.createElement("i", { style: { color: "#B0B0B0" }, className: "fa fa-envelope fa-lg" }));
+        }
         //热
         if (this.props.replyCount > 100 && this.props.topState === 0) {
             icon = React.createElement("div", { style: {
@@ -15746,13 +15752,7 @@ var TopicTitleAndContent = /** @class */ (function (_super) {
             hitCount = (this.props.hitCount / 10000).toFixed(1).toString() + '万';
         }
         //置顶
-        if (this.props.topState === 0) {
-            icon = React.createElement("div", { style: {
-                    width: "1rem", justifyContent: "flex-start"
-                } },
-                React.createElement("i", { style: { color: "#B0B0B0" }, className: "fa fa-envelope fa-lg" }));
-        }
-        else if (this.props.topState === 2) {
+        if (this.props.topState === 2) {
             icon = React.createElement("div", { style: {
                     width: "1rem", justifyContent: "flex-start"
                 } },
