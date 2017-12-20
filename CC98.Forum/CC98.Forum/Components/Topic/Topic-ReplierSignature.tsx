@@ -47,14 +47,14 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
         //取消赞
         if (this.state.likeState === 1) {
             await Utility.like(this.props.topicid, this.props.postid, this.context.router);
-            $(idLike).css("color", "black");
+            $(idLike).css("color", "#8dc9db");
         }
         //踩改赞
         else if (this.state.likeState === 2) {
             await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
             await Utility.like(this.props.topicid, this.props.postid, this.context.router);
             $(idLike).css("color", "red");
-            $(idDislike).css("color", "black");
+            $(idDislike).css("color", "#8dc9db");
         }
         //单纯赞
         else {
@@ -73,13 +73,13 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
         //取消踩
         if (this.state.likeState === 2) {
             await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
-            $(idDislike).css("color", "black");
+            $(idDislike).css("color", "#8dc9db");
         }
         //赞改踩
         else if (this.state.likeState === 1) {
             await Utility.like(this.props.topicid, this.props.postid, this.context.router);
             await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
-            $(idLike).css("color", "black");
+            $(idLike).css("color", "#8dc9db");
             $(idDislike).css("color", "red");
         }
         //单纯踩

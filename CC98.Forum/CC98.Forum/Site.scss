@@ -374,12 +374,16 @@ body {
 
 .upup {
     cursor: pointer;
+    display:flex;
 }
 
 .downdown {
     cursor: pointer;
+    display:flex;
 }
-
+.commentProp{
+    margin-left:0.2rem;
+}
 .comment {
     display: flex;
     flex-direction: row;
@@ -529,6 +533,7 @@ body {
     position: relative;
 
     .reply-floor {
+        flex-shrink:0;
         width: 40px;
         height: 40px;
         border-radius: 50%;
@@ -537,7 +542,7 @@ body {
         line-height: 40px;
         position: relative;
         top: 70px;
-        right: -20px;
+        right: -40px;
         color: #ffffff;
         font-size: 12px;
     }
@@ -2766,6 +2771,7 @@ a {
 
     .postManagement {
         display: flex;
+        bottom:1rem;
         flex-direction: column;
         justify-content: center;
         margin-left: 30rem;
@@ -2787,6 +2793,7 @@ a {
     .judgeManagement {
         margin-left: 15rem;
         position: absolute;
+        bottom:1rem;
         z-index: 1000;
         width: 30rem;
         height: 20rem;
@@ -2904,6 +2911,7 @@ a {
     .manageInfo {
         height: 15rem;
         justify-content: space-around;
+        margin-left:3rem;
     }
 
     .manageObject {
