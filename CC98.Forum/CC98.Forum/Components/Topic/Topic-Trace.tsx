@@ -54,7 +54,7 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
         const totalPage = await this.getTotalPage.bind(this)(this.match.params.topicid);
         const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
         const boardId = topicInfo.boardId;
-        const boardInfo = Utility.getBoardInfo(boardId);
+        const boardInfo = await Utility.getBoardInfo(boardId);
         this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userId: newProps.match.params.userId, topicInfo: topicInfo, boardInfo: boardInfo });
     }
     shouldRender(fetchState) {
@@ -76,7 +76,7 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
         console.log("userId=" + userId);
         const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
         const boardId = topicInfo.boardId;
-        const boardInfo = Utility.getBoardInfo(boardId);
+        const boardInfo = await Utility.getBoardInfo(boardId);
         this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userId: userId, topicInfo: topicInfo, boardInfo: boardInfo });
     }
     async getTotalPage(topicId) {
@@ -86,11 +86,11 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
     render() {
         console.log("inrender userId=" + this.state.userId);
         let topic = null;
-        if (this.state.page == 1) {
-            topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={this.state.userId} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} quote={this.quote} />;
+        if (this.state.page == 1 && this.state.topicInfo.userId == this.match.params.userId) {
+            topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={this.state.userId} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} quote={this.quote} isTrace={true} />;
         }
         const url = `/topic/${this.match.params.topicid}/user/${this.match.params.userId}/`;
-        if (this.state.shouldRender) {
+    
             return <div className="center" style={{ width: "1140px" }} >
                 <div style={{ width: "100%" }}>
                     <Pager page={this.state.page} totalPage={this.state.totalPage} url={url} /></div>
@@ -101,9 +101,6 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
                 <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardInfo.id} boardInfo={this.state.boardInfo} content={this.state.content} userId={this.state.userId} />
             </div>
                 ;
-        } else {
-            return <img src="/images/waiting.gif" />;
-        }
 
     }
 

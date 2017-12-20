@@ -197,6 +197,7 @@ body {
     align-items: center;
     height: 4rem;
     font-size: 1.25rem;
+    padding-right:1rem;
 }
 
 .titleProp {
@@ -362,7 +363,6 @@ body {
 .signature {
     color: rgb(80,80,80);
     margin-left: 1.25rem;
-    margin-right: 1.25rem;
     margin-bottom: 1.25rem;
     padding-top: 1rem;
 }
@@ -401,8 +401,7 @@ body {
     font-size: 0.75rem;
     align-items: flex-end;
     padding-bottom: 1rem;
-    padding-right: 2rem;
-    color: $color-bg;
+    color: #8bc9db;
     align-items: center;
     justify-content: space-between;
 }
@@ -2891,6 +2890,7 @@ a {
 .awardInfo {
     margin-left: 2rem;
     margin-right: 2rem;
+    margin-top:2rem;
     width: 25rem;
 }
 

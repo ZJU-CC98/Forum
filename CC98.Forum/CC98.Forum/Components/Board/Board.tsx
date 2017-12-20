@@ -117,11 +117,12 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
         this.setState({ isFollow: newProps.boardInfo.isFollow });
     }
     render() {
+        const boardUrl = `/list/${this.props.boardId}`;
         const url = `/images/_${this.props.boardInfo.name}.png`;
         if (!this.props.boardInfo.bigPaper || !this.state.isExtend) {
             return (
                 <div className="row" style={{ width: "100%", overflow: 'hidden', maxHeight: '6rem', transition: 'max-height 1s'}}>
-                    <div className="boardMessage">
+                    <Link to={boardUrl}><div className="boardMessage">
                         <div className="row" style={{ height: "4rem", marginTop: "1.25rem" }}>
                             <img style={{ marginLeft: "1.25rem" }} src={url}></img>
                             <div className="boardMessageDetails">
@@ -135,8 +136,9 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
                                     <div className="boardFollow" onClick={this.state.isFollow ? this.unfollow : this.follow} >{this.state.isFollow ? "取关" : "关注"} </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>                     
                     </div>
+                    </Link>
                     <div className="bigPaper" style={{display: 'block'}}>
                         {this.props.boardInfo.bigPaper ? <button className="fa fa-angle-double-down" style={{ float: 'right', backgroundColor: '#fff', cursor: 'pointer', border: 'none' }} type="button" onClick={() => this.setState({ isExtend: true })}>展开</button> : null}
                         <div>
@@ -300,7 +302,7 @@ export class BestTopics extends React.Component<{ boardId, curPage }, { data }>{
         return <div>{this.state.data.map(this.convertTopicToElement)}</div>;
     }
 }
-export class ListContent extends RouteComponent<{}, { items, totalPage: number, boardInfo, tags, fetchState }, { page: string, boardId: number }> {
+export class ListContent extends RouteComponent<{}, { items, totalPage: number, boardInfo, tags, fetchState }, { page, boardId: number }> {
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -308,8 +310,10 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         };
     }
     async componentDidMount() {
+        let page = this.match.params.page;
+        if (!page) page = 1;
         const boardInfo = await Utility.getBoardInfo(this.match.params.boardId);
-        const data = await Utility.getBoardTopicAsync(1, this.match.params.boardId, boardInfo.topicCount);
+        const data = await Utility.getBoardTopicAsync(page, this.match.params.boardId, boardInfo.topicCount);
         const totalPage = this.getTotalListPage(boardInfo.topicCount);
         const tags = await Utility.getBoardTag(this.match.params.boardId);
         this.setState({ items: data, totalPage: totalPage, boardInfo: boardInfo, fetchState: data, tags: tags });
@@ -387,7 +391,7 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
 
     }
 }
-export class ListTagContent extends RouteComponent<{}, { items, totalPage: number, boardInfo, tags, fetchState ,layer}, { tagId: number, page: string, boardId: number }> {
+export class ListTagContent extends RouteComponent<{}, { items, totalPage: number, boardInfo, tags, fetchState ,layer}, { tagId: number, page, boardId: number }> {
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -395,10 +399,12 @@ export class ListTagContent extends RouteComponent<{}, { items, totalPage: numbe
         };
     }
     async componentDidMount() {
+        let page = this.match.params.page;
+        if (!page) page = 1;
         const boardInfo = await Utility.getBoardInfo(this.match.params.boardId);
         const tags = await Utility.getBoardTag(this.match.params.boardId);      
         const layer = Utility.getTagLayer(this.match.params.tagId, tags);
-        const data = await Utility.getTopicByOneTag(this.match.params.tagId, this.match.params.boardId, layer,1);
+        const data = await Utility.getTopicByOneTag(this.match.params.tagId, this.match.params.boardId, layer,page);
         const totalPage = this.getTotalListPage(data.count);
 
         this.setState({ items: data.topics, totalPage: totalPage, boardInfo: boardInfo, fetchState: data, tags: tags,layer:layer });
@@ -479,7 +485,7 @@ export class ListTagContent extends RouteComponent<{}, { items, totalPage: numbe
 
     }
 }
-export class ListTagsContent extends RouteComponent<{}, { items, totalPage: number, boardInfo, tags, fetchState }, { tag1Id: number,tag2Id:number, page: string, boardId: number }> {
+export class ListTagsContent extends RouteComponent<{}, { items, totalPage: number, boardInfo, tags, fetchState }, { tag1Id: number,tag2Id:number, page, boardId: number }> {
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -487,8 +493,10 @@ export class ListTagsContent extends RouteComponent<{}, { items, totalPage: numb
         };
     }
     async componentDidMount() {
+        let page = this.match.params.page;
+        if (!page) page = 1;
         const boardInfo = await Utility.getBoardInfo(this.match.params.boardId);
-        const data = await Utility.getTopicByTwoTags(this.match.params.tag1Id, this.match.params.tag2Id, this.match.params.boardId, 1);
+        const data = await Utility.getTopicByTwoTags(this.match.params.tag1Id, this.match.params.tag2Id, this.match.params.boardId, page);
         const tags = await Utility.getBoardTag(this.match.params.boardId);
         const totalPage = this.getTotalListPage(data.count);
 
@@ -569,13 +577,15 @@ export class ListTagsContent extends RouteComponent<{}, { items, totalPage: numb
 
     }
 }
-export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndContentState[], totalPage: number, tags }, { page: string, boardId: number }> {
+export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndContentState[], totalPage: number, tags }, { page, boardId: number }> {
     constructor(props, context) {
         super(props, context);
         this.state = { items: [], totalPage: 0, tags: [] };
     }
     async componentDidMount() {
-        const data = await Utility.getBestTopics(1, this.match.params.boardId);
+        let page = this.match.params.page;
+        if (!page) page = 1;
+        const data = await Utility.getBestTopics(page, this.match.params.boardId);
         const tags = await Utility.getBoardTag(this.match.params.boardId);
         const totalPage = data.totalPage;
         this.setState({
@@ -647,13 +657,15 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
         </div>;
 
     }
-} export class ListSaveContent extends RouteComponent<{}, { items: TopicTitleAndContentState[], totalPage: number, tags }, { page: string, boardId: number }> {
+} export class ListSaveContent extends RouteComponent<{}, { items: TopicTitleAndContentState[], totalPage: number, tags }, { page, boardId: number }> {
     constructor(props, context) {
         super(props, context);
         this.state = { items: [], totalPage: 0, tags: [] };
     }
     async componentDidMount() {
-        const data = await Utility.getSaveTopics(1, this.match.params.boardId);
+        let page = this.match.params.page;
+        if (!page) page = 1;
+        const data = await Utility.getSaveTopics(page, this.match.params.boardId);
         const totalPage = data.totalPage;
         const tags = await Utility.getBoardTag(this.match.params.boardId);
         this.setState({ items: data.boardtopics, totalPage: totalPage, tags: tags });
