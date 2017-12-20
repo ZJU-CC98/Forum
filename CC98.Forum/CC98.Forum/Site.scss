@@ -526,6 +526,21 @@ body {
     flex-direction: row;
     display: flex;
     box-shadow: 0 0 5px grey;
+    position: relative;
+
+    .reply-floor {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #79b8ca;
+        text-align: center;
+        line-height: 40px;
+        position: relative;
+        top: 70px;
+        right: -20px;
+        color: #ffffff;
+        font-size: 12px;
+    }
 }
 
 .userMessage {

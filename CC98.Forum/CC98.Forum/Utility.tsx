@@ -55,7 +55,7 @@ export async function getBoardTopicAsync(curPage, boardId, totalTopicCount) {
 
     } catch (e) {
         console.error(e);
-        window.location.href = "/status/Disconnected";
+        //window.location.href = "/status/Disconnected";
     }
 
 }
@@ -85,7 +85,7 @@ export async function getTopic(topicid: number) {
 
 
     } catch (e) {
-        window.location.href = "/status/Disconnected";
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function getTopicContent(topicid: number, curPage: number, replyCount: number) {
@@ -139,7 +139,7 @@ export async function getTopicContent(topicid: number, curPage: number, replyCou
 
     } catch (e) {
         console.error(e);
-        window.location.href = "/status/Disconnected";
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function like(topicid, postid, router) {
@@ -164,7 +164,7 @@ export async function like(topicid, postid, router) {
         return data;
 
     } catch (e) {
-        window.location.href = "/status/Disconnected";
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function dislike(topicid, postid, router) {
@@ -190,7 +190,7 @@ export async function dislike(topicid, postid, router) {
         return data;
 
     } catch (e) {
-        window.location.href = "/status/Disconnected";
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function getLikeStateAndCount(topicid, postid, router) {
@@ -215,7 +215,7 @@ export async function getLikeStateAndCount(topicid, postid, router) {
         return data;
 
     } catch (e) {
-        window.location.href = "/status/Disconnected";
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function getHotReplyContent(topicid: number) {
@@ -248,7 +248,7 @@ export async function getHotReplyContent(topicid: number) {
         }
         return post;
     } catch (e) {
-        window.location.href = "/status/Disconnected";
+        //window.location.href = "/status/Disconnected";
     }
 }
 export function getListPager(totalPage) {
@@ -356,7 +356,7 @@ export async function getCurUserTopic(topicid: number, userId: number, router) {
         data[0].userImgUrl = userMesJson.portraitUrl;
         return data[0];
     } catch (e) {
-        window.location.href = "/status/Disconnected";
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function getCurUserTopicContent(topicid: number, curPage: number, userName: string, userId: number) {
@@ -418,7 +418,7 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
 
         return post;
     } catch (e) {
-        window.location.href = "/status/Disconnected";
+        //window.location.href = "/status/Disconnected";
     }
 }
 
@@ -515,7 +515,7 @@ export async function getAllNewTopic(from: number, router) {
         }
         return newTopic;
     } catch (e) {
-        window.location.href = "/status/Disconnected";
+        //window.location.href = "/status/Disconnected";
     }
 }
 
@@ -623,7 +623,7 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
         return newTopic;
 
     } catch (e) {
-        window.location.href = "/status/Disconnected";
+        //window.location.href = "/status/Disconnected";
     }
 }
 
@@ -741,7 +741,7 @@ export async function getBoardName(boardId: number) {
 
         return boardName;
     } catch (e) {
-        window.location.href = "/status/Disconnected";
+        //window.location.href = "/status/Disconnected";
     }
 }
 
@@ -1132,7 +1132,7 @@ export async function sortContactList(recentContact, router) {
             return 1;
         }
     } catch (e) {
-        window.location.href = "/status/Disconnected";
+        //window.location.href = "/status/Disconnected";
     }
 }
 */
@@ -1143,7 +1143,7 @@ export async function getUserDetails(userId) {
         const body = { portraitUrl: data.portraitUrl, userName: data.name, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle, isFollowing: data.isFollowing }
         return body;
     } catch (e) {
-        window.location.href = "/status/Disconnected";
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function getLikeState(topicid, router) {
@@ -1168,7 +1168,7 @@ export async function getLikeState(topicid, router) {
             return data;
         }
     } catch (e) {
-        window.location.href = "/status/Disconnected";
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function refreshLikeState(topicId, postId) {
@@ -1190,7 +1190,7 @@ export async function refreshLikeState(topicId, postId) {
         const data = await response.json();
         return data;
     } catch (e) {
-        window.location.href = "/status/Disconnected";
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function sendTopic(topicId, router) {
@@ -1229,7 +1229,7 @@ export async function sendTopic(topicId, router) {
             window.location.href = "/status/ServerError";
         }
     } catch (e) {
-        window.location.href = "/status/Disconnected";
+        //window.location.href = "/status/Disconnected";
     }
 }
 
@@ -1258,7 +1258,7 @@ export async function getCurUserTotalReplyPage(topicId, userId, router) {
             return 1;
         }
     } catch (e) {
-        window.location.href = "/status/Disconnected";
+        //window.location.href = "/status/Disconnected";
     }
 }
 
@@ -1601,7 +1601,7 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
             return 0;
         }
     } catch (e) {
-        window.location.href = "/status/Disconnected";
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function awardWealth(reason, value, postId) {
@@ -2163,7 +2163,7 @@ export async function getMessageSystem(from: number, size: number, router) {
         }
         return newTopic;
     } catch (e) {
-        window.location.href = "/status/Disconnected";
+        //window.location.href = "/status/Disconnected";
     }
 }
 
@@ -2212,7 +2212,7 @@ export async function getMessageResponse(from: number, size: number, router) {
         }
         return result;
     } catch (e) {
-        window.location.href = "/status/Disconnected";
+        //window.location.href = "/status/Disconnected";
     }
 }
 
@@ -2267,7 +2267,7 @@ export async function getMessageAttme(from: number, size: number, router) {
         }
         return result;
     } catch (e) {
-        window.location.href = "/status/Disconnected";
+        //window.location.href = "/status/Disconnected";
     }
 }
 export async function plus1(topicId, postId, reason) {
