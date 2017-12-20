@@ -3,7 +3,7 @@ import * as Utility from '../../Utility';
 import * as $ from 'jquery';
 import { match } from "react-router";
 
-export class PostManagement extends React.Component<{ userId, postId, update, topicId, privilege }, { wealth: number, prestige: number, reason: string, tpdays: number, UI, tips: string, fetchState }>{
+export class PostManagement extends React.Component<{ userId, postId, update, topicId, privilege,boardId }, { wealth: number, prestige: number, reason: string, tpdays: number, UI, tips: string, fetchState }>{
 
     constructor(props) {
 
@@ -165,7 +165,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
             case 'Delete':
                 if (this.state.reason) {
                     status = await Utility.deletePost(this.props.topicId, this.props.postId, this.state.reason);
-                    if (status ==='ok') {
+                    if (status === 'ok') {
                         const UIId = `#manage${this.props.postId}`;
                         $(UIId).css("display", "none");
                         this.props.update();
@@ -181,6 +181,12 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
                 } else {
                     this.setState({ tips: "请输入原因！" });
                 }
+                break;
+            case 'Other':
+                await Utility.cancelStopBoardPost(this.props.userId, this.props.boardId);
+                const UIId = `#manage${this.props.postId}`;
+                $(UIId).css("display", "none");
+                this.props.update();
         }
 
     }
@@ -387,7 +393,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
         </div>;
         const otherUI = <div className="column manageInfo" id="other" >
             
-
+            <div>解除此用户版面tp</div>
         </div>;
         const UIId = `manage${this.props.postId}`;
 

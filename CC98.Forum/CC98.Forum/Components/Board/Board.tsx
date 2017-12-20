@@ -204,8 +204,9 @@ export class ListTagAndPager extends React.Component<{ url: string, boardid: num
 
     generateTagLayer(item) {
         const url = `/list/${this.props.boardid}`;
-        return <div style={{ maxWidth:"40rem",lineHeight:"3rem",display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginBottom: "0.5rem" }}>
-            <div className="row">  <div><button id="chooseTag"><Link to={url}>全部</Link></button></div>
+        return <div style={{ maxWidth: "40rem", lineHeight: "3rem", display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginBottom: "0.5rem" }}>
+            <div className="row" style={{ display: "flex", flexWrap: "wrap", maxWidth:"40rem" }}>
+                <div><button className="chooseTag"><Link to={url}>全部</Link></button></div>
                 {item.tags.map(this.generateTagButton.bind(this))}
             </div>
         </div >;

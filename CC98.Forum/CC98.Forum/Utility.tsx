@@ -2407,8 +2407,8 @@ export async function stopBoardPost(postId, reason, days) {
 export async function cancelStopBoardPost(userId, boardId) {
 	const headers = await formAuthorizeHeader();
 	headers.append("Content-Type", 'application/json');
-	const url = `/manage/punishment/cancelstopboardpost?userid=${userId}$boardid=${boardId}`;
-	const response = await cc98Fetch(url, { method: "PUT", headers });
+	const url = `/board/${boardId}/stop-post-user/${userId}`;
+	const response = await cc98Fetch(url, { method: "DELETE", headers });
 	switch (response.status) {
 		case 401:
 			return 'unauthorized';

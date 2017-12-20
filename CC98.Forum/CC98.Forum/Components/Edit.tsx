@@ -518,14 +518,14 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
             tagInfo = <div className="row"><div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
                 <div style={{ display: "flex" }}>
                     <div className="tagBoxSelect">标签1</div>
-                    <div className="downArrow"><img src="/images/downArrow.png" width="12" height="12" /></div>
+                    <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
                 </div>
                 {drop1}
             </div>
                 <div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
                     <div style={{ display: "flex" }}>
                         <div className="tagBoxSelect1">标签2</div>
-                        <div className="downArrow1"><img src="/images/downArrow.png" width="12" height="12" /></div>
+                        <div className="downArrow1"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
                     </div>
                     {drop2}
                 </div></div >;
@@ -533,7 +533,7 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
             tagInfo = <div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
                 <div style={{ display: "flex" }}>
                     <div className="tagBoxSelect">标签1</div>
-                    <div className="downArrow"><img src="/images/downArrow.png" width="12" height="12" /></div>
+                    <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
                 </div>
                 {drop1}
             </div>
@@ -607,11 +607,11 @@ export class InputMdContent extends React.Component<{ mode, postInfo, ready, onC
             content = this.props.postInfo.content;
             console.log(content);
         }
-        editormd.emoji.path = '/images/emoji/';
+        editormd.emoji.path = '/static/images/emoji/';
         Constants.testEditor = editormd("testEditor", {
             width: "100%",
             height: 680,
-            path: "/scripts/lib/editor.md/lib/",
+            path: "/static/scripts/lib/editor.md/lib/",
             saveHTMLToTextarea: false,
             emoji: true,
             appendMarkdown: content,
