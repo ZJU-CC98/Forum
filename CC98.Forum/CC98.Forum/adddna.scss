@@ -1,4 +1,5 @@
-﻿//发帖
+﻿$color-bg: #79b8ca;
+//发帖
 .createTopic {
     display: flex;
     flex-direction: column;
@@ -67,12 +68,12 @@
 //类似bootstrap4的"btn btn-outline-primary"
 .hiddenImage {
     display: block;
-    color: #007bff;
+    color: $color-bg;
     width: 7rem;
     background-color: transparent;
     text-align: center;
     vertical-align: middle; //设置元素的垂直对齐方式
-    border: 1px solid #007bff;
+    border: 1px solid $color-bg;
     padding: .375rem .75rem;
     font-size: 1rem;
     border-radius: .25rem;
@@ -83,7 +84,7 @@
 }
 
 .hiddenImage:hover {
-    background-color: #007bff;
+    background-color: $color-bg;
     color: rgb(255,255,255);
     cursor: pointer;
 }

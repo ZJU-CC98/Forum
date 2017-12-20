@@ -14,7 +14,7 @@ $color-gray: rgb(153,153,153);
 $color-post: rgb(252,252,252);
 $color-red: rgb(255,60,60);
 $color-black: rgb(32,32,32);
-
+$color-bg: #79b8ca;
 body {
     margin: 0;
     padding: 0;
@@ -532,7 +532,7 @@ body {
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        background-color: #79b8ca;
+        background-color: $color-bg;
         text-align: center;
         line-height: 40px;
         position: relative;
@@ -1602,6 +1602,10 @@ a {
             border: 1px solid $color-border;
             margin: 19px 29px 10px 29px;
             background-color: $color-post;
+
+            &:focus {
+                border: 1px solid gray;
+            }
         }
 
         .message-message-wPostNotice {
@@ -1627,7 +1631,7 @@ a {
         .message-message-wPostBtn {
             width: 100px;
             height: 30px;
-            background-color: $color-board;
+            background-color: $color-bg;
             color: $color-post;
             border: 0px;
             border-radius: 3px;
@@ -1636,11 +1640,16 @@ a {
             margin: 0px 29px 19px 580px;
 
             &:hover {
-                background-color: $color-thinBlue;
+                filter: brightness(1.1); //亮度
+                -webkit-filter: brightness(1.1);
+            }
+
+            &:focus {
+                outline: none;
             }
 
             &:active {
-                background-color: $color-board;
+                background-color: $color-bg;
                 position: relative;
                 top: 1px;
                 left: 1px;
