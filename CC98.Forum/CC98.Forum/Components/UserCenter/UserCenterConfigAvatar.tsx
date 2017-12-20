@@ -46,6 +46,7 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, UserCen
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleCoverMouseMove = this.handleCoverMouseMove.bind(this);
 		this.handleMouseUp = this.handleMouseUp.bind(this);
+		this.setDefaultAvatar = this.setDefaultAvatar.bind(this);
 	}
 
 	handleChange(e) {
@@ -187,7 +188,12 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, UserCen
 		}, this.state.fileType, 0.75);
 	}
 
-	changeAvatar = async (avatarUrl: string) => {
+	async setDefaultAvatar(e: React.MouseEvent<HTMLImageElement>) {
+		var ele = e.target as HTMLImageElement;
+		await this.changeAvatar(ele.src);
+	}
+
+	async changeAvatar(avatarUrl: string) {
 		try {
 			this.setState({
 				isLoading: true
@@ -335,8 +341,8 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, UserCen
 					</div>
 					<div style={{ width: '100%', height: `${this.state.divheight}px`, transitionDuration: '.5s' }}></div>
 					<div style={this.state.choosingDefault ? { display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'center' } : { display: 'none' }}>
-						<img style={{ margin: '3rem', cursor: 'pointer' }} onClick={(e) => { this.changeAvatar('/static/images/default_avatar_boy.png'); }} src="/static/images/default_avatar_boy.png" />
-						<img style={{ margin: '3rem', cursor: 'pointer' }} onClick={(e) => { this.changeAvatar('/static/images/default_avatar_boy.png'); }} src="/static/images/default_avatar_girl.png" />
+						<img style={{ margin: '3rem', cursor: 'pointer' }} onClick={this.setDefaultAvatar} src="/static/images/default_avatar_boy.png" />
+						<img style={{ margin: '3rem', cursor: 'pointer' }} onClick={this.setDefaultAvatar} src="/static/images/default_avatar_girl.png" />
 					</div>
 				</div>
 			</div>

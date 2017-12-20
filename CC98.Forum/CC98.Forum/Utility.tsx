@@ -2492,20 +2492,8 @@ export async function editPost(postId, contentType, title, content) {
 }
 
 export async function cc98Fetch(url, init?: RequestInit) {
-    /*const response1 = await fetch("/config.production.json");
-    let data;
-    if (response1.status !== 404) {
-        const data1 = await response1.json();
-        const response2 = await fetch("/config.json");
-        const data2 = await response2.json();
-        data = { ...data2, ...data1 };
-    } else {
-        const response2 = await fetch("/config.json");
-        data = await response2.json();
-    }
-    const baseUrl = data.apiUrl;
-   */
-	const baseUrl = 'http://apitest.niconi.cc';
+
+	const baseUrl = getApiUrl();
 	const _url = `${baseUrl}${url}`;
 	let response: Response;
 	if (init) {
