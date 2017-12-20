@@ -431,6 +431,9 @@
 }
 
 .schoolNewsTitle {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     flex-grow: 1;
     font-size: 0.75rem;
     font-family: 微软雅黑;
@@ -451,4 +454,10 @@
     width: 100%;
 }
 
+//论坛统计
+.mainPageCountRed {
+    font-size: 0.75rem;
+    font-family: 微软雅黑;
+    color: rgb(255,255,255);
+}
 //------------首页就到此为止啦----------------------

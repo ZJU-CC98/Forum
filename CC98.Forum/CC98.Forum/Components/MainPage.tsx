@@ -583,19 +583,19 @@ export class Count extends React.Component<{}, { data }> {
             </div>
             <div className="schoolNewsContent" style={{ height: "10rem" }}>
                 <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle">今日帖数：{data.todayCount}</div>
+                    <div className="schoolNewsTitle"><div>今日帖数</div><div className="mainPageCountRed">{data.todayCount}</div></div>
                 </div>
                 <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle">论坛总主题数：{data.topicCount}</div>
+                    <div className="schoolNewsTitle"><div>论坛总主题数</div><div className="mainPageCountRed">{data.topicCount}</div></div>
                 </div>
                 <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle">论坛总回复数：{data.postCount}</div>
+                    <div className="schoolNewsTitle"><div>论坛总回复数</div><div className="mainPageCountRed">{data.postCount}</div></div>
                 </div>               
                 <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle">总用户数：{data.userCount}</div>
+                    <div className="schoolNewsTitle"><div>总用户数</div><div className="mainPageCountRed">{data.userCount}</div></div>
                 </div>
                 <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle">欢迎新用户：{data.lastUserName}</div>
+                    <div className="schoolNewsTitle"><div>欢迎新用户</div><div className="mainPageCountRed">{data.lastUserName}</div></div>
                 </div>           
             </div>
         </div>
