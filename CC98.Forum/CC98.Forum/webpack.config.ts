@@ -27,7 +27,7 @@ const config: webpack.Configuration = {
 	resolve: {
 		extensions: ['.js', '.jsx', '.ts', '.tsx']
 	},
-    entry: ['core-js/shim','./Main.tsx', './Site.scss'],
+	entry: ['core-js/shim', './Main.tsx', './Site.scss'],
 	devtool: 'source-map',
 	output: {
 		path: path.resolve(__dirname, 'wwwroot'),
@@ -41,34 +41,34 @@ const config: webpack.Configuration = {
 		'redux': 'Redux',
 		'react-redux': 'ReactRedux',
 		'jquery': '$',
-        'moment' : 'moment',
-        'editor.md': 'editormd',
-        'codemirror': 'CodeMirror',
-        'url-join':'urljoin'
+		'moment': 'moment',
+		'editor.md': 'editormd',
+		'codemirror': 'CodeMirror',
+		'url-join': 'urljoin'
 	},
 	plugins: [
 		new webpack.optimize.UglifyJsPlugin(), // 简化 JS
 		new UnminifiedWebpackPlugin(), // 提供调试用 JS 完整版
 		new CleanWebpackPlugin(['wwwroot/static/scripts', 'wwwroot/static/content']), // 发布之前清理 wwwroot
 		new CopyWebpackPlugin([// 将 node 库复制到发布目录
-			{ from: 'node_modules/jquery/dist', to: '/static/scripts/lib/jquery' },
-			{ from: 'node_modules/react/dist', to: '/static/scripts/lib/react' },
-			{ from: 'node_modules/react-dom/dist', to: '/static/scripts/lib/react-dom' },
-			{ from: 'node_modules/react-router/umd', to: '/static/scripts/lib/react-router' },
-			{ from: 'node_modules/react-router-dom/umd', to: '/static/scripts/lib/react-router-dom' },
-			{ from: 'node_modules/redux/dist', to: '/static/scripts/lib/redux' },
-			{ from: 'node_modules/react-redux/dist', to: '/static/scripts/lib/react-redux' },
-			{ from: 'node_modules/moment', to: '/static/scripts/lib/moment' },
-			{ from: 'node_modules/bootstrap/dist', to: '/static/scripts/lib/bootstrap' },
-			{ from: 'node_modules/es6-promise/dist', to: '/static/scripts/lib/es6-promise' },
-            { from: 'node_modules/font-awesome', to: 'content/font-awesome' },
-            { from: 'node_modules/moment', to: '/static/scripts/lib/moment' },
-            { from: 'node_modules/editor.md', to: '/static/scripts/lib/editor.md/' },
-            { from: 'node_modules/codemirror', to: '/static/scripts/lib/editor.md/lib/codemirror' },
-            { from: 'node_modules/blueimp-canvas-to-blob/js', to: '/static/scripts/lib/blueimp-canvas-to-blob' },
-            { from: 'node_modules/@aspnet/signalr-client/dist/browser', to: '/static/scripts/lib/signalr-client'},
-            { from: 'spectrum/', to: '/static/scripts/lib/spectrum' },   
-            { from: 'node_modules/url-join/', to: '/static/scripts/lib/url-join' },
+			{ from: 'node_modules/jquery/dist', to: 'static/scripts/lib/jquery/' },
+			{ from: 'node_modules/react/dist', to: 'static/scripts/lib/react/' },
+			{ from: 'node_modules/react-dom/dist', to: 'static/scripts/lib/react-dom/' },
+			{ from: 'node_modules/react-router/umd', to: 'static/scripts/lib/react-router/' },
+			{ from: 'node_modules/react-router-dom/umd', to: 'static/scripts/lib/react-router-dom/' },
+			{ from: 'node_modules/redux/dist', to: 'static/scripts/lib/redux/' },
+			{ from: 'node_modules/react-redux/dist', to: 'static/scripts/lib/react-redux/' },
+			{ from: 'node_modules/moment', to: 'static/scripts/lib/moment/' },
+			{ from: 'node_modules/bootstrap/dist', to: 'static/scripts/lib/bootstrap/' },
+			{ from: 'node_modules/es6-promise/dist', to: 'static/scripts/lib/es6-promise/' },
+			{ from: 'node_modules/font-awesome', to: 'static/content/font-awesome/' },
+			{ from: 'node_modules/moment', to: 'static/scripts/lib/moment/' },
+			{ from: 'node_modules/editor.md', to: 'static/scripts/lib/editor.md/' },
+			{ from: 'node_modules/codemirror', to: 'static/scripts/lib/editor.md/lib/codemirror/' },
+			{ from: 'node_modules/blueimp-canvas-to-blob/js', to: 'static/scripts/lib/blueimp-canvas-to-blob/' },
+			{ from: 'node_modules/@aspnet/signalr-client/dist/browser', to: 'static/scripts/lib/signalr-client/' },
+			{ from: 'spectrum/', to: 'static/scripts/lib/spectrum/' },
+			{ from: 'node_modules/url-join/', to: 'static/scripts/lib/url-join/' }
 
 		]),
 		new ExtractTextPlugin('static/content/site.min.css')
