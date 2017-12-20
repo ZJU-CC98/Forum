@@ -55,11 +55,11 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
             }
             const fileUrl = data.imageUploadUrl;*/
             const fileUrl = `${Utility.getApiUrl}/file`
-            editormd.emoji.path = '/images/emoji/';
+            editormd.emoji.path = '/static/images/emoji/';
             Constants.testEditor = editormd("test-editormd", {
                 width: "100%",
                 height: 640,
-                path: "/scripts/lib/editor.md/lib/",
+                path: "/static/scripts/lib/editor.md/lib/",
                 saveHTMLToTextarea: false,
                 imageUpload: false,
                 imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
@@ -151,14 +151,14 @@ ${newProps.content.content}[/quote]`;
         }
         const fileUrl = data.imageUploadUrl;*/
 
-      //  editormd.emoji.path = '/images/emoji/';
+      //  editormd.emoji.path = '/static/images/emoji/';
         if (this.state.mode === 1) {
             const fileUrl = `${Utility.getApiUrl}/file`
-            editormd.emoji.path = '/images/emoji/';
+            editormd.emoji.path = '/static/images/emoji/';
             Constants.testEditor = editormd("test-editormd", {
                 width: "100%",
                 height: 640,
-                path: "/scripts/lib/editor.md/lib/",
+                path: "/static/scripts/lib/editor.md/lib/",
                 saveHTMLToTextarea: false,
                 imageUpload: false,
                 imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
@@ -243,7 +243,7 @@ ${newProps.content.content}[/quote]`;
             }   
             this.props.onChange();
 
-           /* editormd.emoji.path = '/images/emoji/';
+           /* editormd.emoji.path = '/static/images/emoji/';
             const response1 = await fetch("/config.production.json");
             let data;
             if (response1.status !== 404) {
@@ -257,11 +257,11 @@ ${newProps.content.content}[/quote]`;
             }
             const fileUrl = data.imageUploadUrl;*/
             const fileUrl = `${Utility.getApiUrl}/file`
-            editormd.emoji.path = '/images/emoji/';
+            editormd.emoji.path = '/static/images/emoji/';
             Constants.testEditor = editormd("test-editormd", {
                 width: "100%",
                 height: 640,
-                path: "/scripts/lib/editor.md/lib/",
+                path: "/static/scripts/lib/editor.md/lib/",
                 saveHTMLToTextarea: false,
                 imageUpload: false,
                 imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
@@ -346,8 +346,8 @@ ${newProps.content.content}[/quote]`;
         }
         return <div id="sendTopicInfo" style={{ width: "100%", display: "flex", flexDirection: "column" }}>
             <div className="row" style={{ justifyContent: this.state.mode === 1 ? "space-between" : "flex-end" }}>
-             
-                <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ width: "20rem", height: "2rem", lineHeight:"2rem",letterSpacing: "0.3125rem" }}>{this.state.mode === 1 ? "切换到Ubb编辑器" : "切换到Markdown编辑器"}
+
+                <div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ width: "20rem", height: "2rem", lineHeight: "2rem", letterSpacing: "0.3125rem", fontSize:"1rem" }}>{this.state.mode === 1 ? "切换到Ubb编辑器" : "切换到Markdown编辑器"}
                 </div></div>
             {editor}
             <button id="topicManagementBTN" style={{ display: "none", width: "5rem" }} onClick={this.showManagement}>管理</button>

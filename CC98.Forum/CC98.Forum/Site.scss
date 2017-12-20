@@ -1090,7 +1090,6 @@ a {
     position: fixed;
     margin-left: 1140px;
     width: 5rem;
-    height: 33rem;
     background-color: #fff;
     display: flex;
     flex-direction: column;
@@ -3003,10 +3002,11 @@ a {
 
 .topicInfo-boardInfo {
     width: 10.6rem;
-    height: 6.25rem;
+    height: 6.4rem;
     display: flex;
     background-color: rgb(106,113,119);
     align-items: center;
+    margin-top:1px;
 }
 
 .topicInfo-boardImage {

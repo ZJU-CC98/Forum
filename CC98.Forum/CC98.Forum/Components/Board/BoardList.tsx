@@ -20,7 +20,7 @@ export class BoardList extends React.Component<{}, { thisBoardState: Board[] }> 
         if (!Utility.getStorage('board_2')) {   //缓存
             const response = await Utility.cc98Fetch('/Board/Root');
             const data = await response.json();
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < data.length; i++) {
                 board[i] = new Board(data[i].name, data[i].todayCount, data[i].postCount, data[i].id, data[i].boardMastersString);
                 Utility.setStorage(`board_${data[i].id.toString()}`, board[i]);
                 boardNameList[i] = `board_${data[i].id.toString()}`;
@@ -28,7 +28,7 @@ export class BoardList extends React.Component<{}, { thisBoardState: Board[] }> 
             Utility.setStorage('boardList', boardNameList);
         } else {
             boardNameList = Utility.getStorage('boardList');
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < boardNameList.length; i++) {
                 board[i] = Utility.getStorage(boardNameList[i]);
             }
         }
