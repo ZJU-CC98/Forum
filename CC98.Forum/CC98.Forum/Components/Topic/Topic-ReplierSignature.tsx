@@ -138,7 +138,7 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
                 <div id="commentlike">
                     <div className="operation1" onClick={this.showJudgeUI}>   评分</div>
                         <div className="operation1" onClick={this.quote}>   引用</div>
-                        <div className="operation1"><Link style={{color:"#fff"}} to={traceUrl}>   追踪</Link></div>
+                        <div className="operation1"><Link style={{color:"#8bc9db"}} to={traceUrl}>   追踪</Link></div>
                     {editIcon}
                     <div className="operation1" id={manageIcon} style={{ display: "none", cursor: "pointer" }} onClick={this.showManageUI}>管理</div>
                     </div>

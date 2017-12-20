@@ -50,7 +50,9 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
     quote(content, userName, replyTime, floor) {
         console.log("in topic quote");
         const y = $("#sendTopicInfo").offset().top;
-        const url = `/topic/${this.state.topicid}/${this.state.page}#sendTopicInfo`;
+        let page = this.state.page;
+        if (!this.state.page) page = 1;
+        const url = `/topic/${this.state.topicid}/${page}#sendTopicInfo`;
         this.props.history.push(url);
         this.setState({ quote: { content: content, userName: userName, replyTime: replyTime, floor: floor } });
     }
