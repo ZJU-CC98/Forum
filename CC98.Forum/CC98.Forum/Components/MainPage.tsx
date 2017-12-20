@@ -21,18 +21,6 @@ export class AnnouncementComponent extends React.Component<{}, { announcementCon
         const response = await Utility.cc98Fetch('/config/global');
         const data = await response.json();
         const announcement: string = data.announcement;
-        //return announcement;
-
-        //这里开始是临时功能 只保留了公告中[list][/list]之间的内容
-        //const reg = /\[list\][\s\S]*?\[align=left\]/gim;
-        //const reg2 = /\[\*\]/gim;
-        //const reg3 = /red/gim;
-        //const newAnnouncement = announcement.match(reg);
-        //let x = newAnnouncement[0];
-        //x = x.replace("[list]", "");
-        //x = x.replace("[align=left]", "");
-        //x = x.replace(reg2, "");   //去掉了因未关闭暂时无法解析的[*]
-        //x = x.replace(reg3, "orchid");  //把恶心的大红色换成梦幻的紫色
         return announcement;
     }
     async componentDidMount() {
