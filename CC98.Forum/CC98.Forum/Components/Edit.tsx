@@ -615,7 +615,7 @@ export class InputMdContent extends React.Component<{ mode, postInfo, ready, onC
                     "bold", "del", "italic", "quote", "|",
                     "h1", "h2", "h3", "h4", "|",
                     "list-ul", "list-ol", "hr", "|",
-                    "link", "image", "code", "table", "html-entities",
+                    "link", "testIcon","image", "code", "table", "html-entities",
                 ]
             },
             toolbarIconsClass: {
