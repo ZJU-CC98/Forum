@@ -8,6 +8,7 @@ import { MessageSender } from './MessageSender';
 import { MessageReceiver } from './MessageReceiver';
 import { MessageWindowProps } from '../../Props/MessageWindowProps';
 import * as Utility from '../../Utility';
+declare let InfiniteScroll: any;
 
 export class MessageWindow extends React.Component<MessageWindowProps, MessageWindowState>{
 
@@ -214,10 +215,6 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
         if (str === '') {
             return;
         }
-        console.log("str1", str);
-        var reg = new RegExp("\n", "g");
-        //str = str.replace(reg, "＜br＞");
-        console.log("str2", str);
         let bodyObj = { receiverId: this.props.data.id, content: str };
         let bodyContent = JSON.stringify(bodyObj);
         let response = await Utility.sendMessage(bodyContent, this.context.router);
