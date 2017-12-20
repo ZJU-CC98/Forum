@@ -68,7 +68,7 @@ export class UserCenterMyFollowings extends React.Component<{match}, UserCenterM
             //没有粉丝
             if (!data || !data.length) {
                 this.setState({
-                    info: '没有粉丝',
+                    info: '没有关注',
                     isLoading: false
                 });
                 return false;
