@@ -543,14 +543,13 @@ export class AdsComponent extends React.Component<{}, { ads: MainPageColumn[], i
         let imageUrl = ads.length ? ads[index].imageUrl : "";
 
         return <div style={{ marginTop: "2.5rem" }}>
-            <Link to={url}><img src={imageUrl} style={{ width: "18.75rem", height:"6.25rem" }} /></Link>
+            <Link to={url}><img src={imageUrl} style={{ width: "18.75rem", height: "6.25rem" }} /></Link>
         </div>
     }
 }
 
 /**
  * 论坛统计组件
- * TODO:样式调整
  **/
 export class Count extends React.Component<{}, { data }> {
 
@@ -582,23 +581,25 @@ export class Count extends React.Component<{}, { data }> {
                 </div>
             </div>
             <div className="schoolNewsContent" style={{ height: "10rem" }}>
-                <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle"><div>今日帖数</div><div className="mainPageCountRed">{data.todayCount}</div></div>
+                <div className="mainPageCountRow">
+                    <div className="mainPageCountTitle">今日帖数</div>
+                    <div className="mainPageCountTitle">{data.todayCount}</div>
                 </div>
-                <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle"><div>论坛总主题数</div><div className="mainPageCountRed">{data.topicCount}</div></div>
+                <div className="mainPageCountRow">
+                    <div className="mainPageCountTitle">论坛总主题数</div>
+                    <div className="mainPageCountTitle">{data.topicCount}</div>
                 </div>
-                <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle"><div>论坛总回复数</div><div className="mainPageCountRed">{data.postCount}</div></div>
+                <div className="mainPageCountRow">
+                    <div className="mainPageCountTitle">论坛总回复数</div>
+                    <div className="mainPageCountTitle">{data.postCount}</div>
                 </div>
-                <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle"><div>总用户数</div><div className="mainPageCountRed">{data.userCount}</div></div>
+                <div className="mainPageCountRow">
+                    <div className="mainPageCountTitle">总用户数</div>
+                    <div className="mainPageCountTitle">{data.userCount}</div>
                 </div>
-                <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle">
-                        <div>欢迎新用户</div>
-                        <div className="mainPageCountRed"><Link to={`/user/name/${data.lastUserName}`}>{data.lastUserName}</Link></div>
-                    </div>
+                <div className="mainPageCountRow">
+                    <div className="mainPageCountTitle">欢迎新用户</div>
+                    <div className="mainPageCountTitle"><Link to={`/user/name/${data.lastUserName}`}>{data.lastUserName}</Link></div>
                 </div>
             </div>
         </div>

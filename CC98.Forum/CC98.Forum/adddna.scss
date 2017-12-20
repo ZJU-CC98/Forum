@@ -68,12 +68,12 @@
 //类似bootstrap4的"btn btn-outline-primary"
 .hiddenImage {
     display: block;
-    color: $color-bg;
+    color: rgb(121,184,202);
     width: 7rem;
     background-color: transparent;
     text-align: center;
     vertical-align: middle; //设置元素的垂直对齐方式
-    border: 1px solid $color-bg;
+    border: 1px solid rgb(121,184,202);
     padding: .375rem .75rem;
     font-size: 1rem;
     border-radius: .25rem;
@@ -84,7 +84,7 @@
 }
 
 .hiddenImage:hover {
-    background-color: $color-bg;
+    background-color: rgb(121,184,202);
     color: rgb(255,255,255);
     cursor: pointer;
 }
@@ -126,8 +126,8 @@
 .leftPart {
     display: flex;
     flex-direction: column;
-    width: 51.5rem;
-    margin-right: 1.5rem;
+    width: 51.25rem;
+    margin-right: 1.75rem;
 }
 
 .rightPart {
@@ -431,9 +431,6 @@
 }
 
 .schoolNewsTitle {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
     flex-grow: 1;
     font-size: 0.75rem;
     font-family: 微软雅黑;
@@ -455,9 +452,24 @@
 }
 
 //论坛统计
-.mainPageCountRed {
+
+.mainPageCountRow {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+.mainPageCountTitle {
     font-size: 0.75rem;
     font-family: 微软雅黑;
     color: rgb(255,255,255);
+
+    a {
+        font-size: 0.75rem;
+        font-family: 微软雅黑;
+        color: rgb(251,97,101);
+    }
 }
+
 //------------首页就到此为止啦----------------------
