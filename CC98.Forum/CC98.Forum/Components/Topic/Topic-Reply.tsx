@@ -54,6 +54,7 @@ export class Reply extends React.Component<{DateTime,topicId, page, topicInfo, b
             if (!realContents) this.setState({ inWaiting: false, contents: [] });
         } else if (this.props.isTrace) {
             const data = await Utility.getUserInfo(this.props.userId);
+            console.log("id" + this.props.userId);
             const userName = data.name;
             realContents = await Utility.getCurUserTopicContent(this.props.topicId, page, userName, this.props.userId);
         } else {
@@ -67,6 +68,8 @@ export class Reply extends React.Component<{DateTime,topicId, page, topicInfo, b
         this.setState({ inWaiting:false,contents: realContents,masters:masters });
     }
     async componentWillReceiveProps(newProps) {
+        console.log("reply in recieve new props");
+        console.log(newProps);
         this.setState({ inWaiting: true });
         const page = newProps.page || 1;
         let realContents;
@@ -79,7 +82,10 @@ export class Reply extends React.Component<{DateTime,topicId, page, topicInfo, b
             realContents = await Utility.getCurUserTopicContent(newProps.topicId, page, userName, newProps.userId);
         } else {
             realContents = await Utility.getTopicContent(newProps.topicId, page, newProps.topicInfo.replyCount);
-          
+            console.log("new message");
+            console.log(realContents);
+            console.log(page);
+            console.log(newProps);
         }
         this.setState({inWaiting:false,contents: realContents });
 
@@ -91,8 +97,8 @@ export class Reply extends React.Component<{DateTime,topicId, page, topicInfo, b
             privilege = Utility.getLocalStorage("userInfo").privilege;
         const id = item.floor % 10;
         return <div className="reply" id={id.toString()} >
-                    <Replier key={item.postId} userInfo={item.userInfo} isAnonymous={item.isAnonymous} topicid={item.topicId}  floor={item.floor} isDeleted={item.isDeleted}  traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
-                    <div className="column" style={{ justifyContent:"space-between",width:"85%" }}>
+            <Replier key={item.postId} userInfo={item.userInfo} isAnonymous={item.isAnonymous} topicid={item.topicId} floor={item.floor} isDeleted={item.isDeleted} traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
+            <div className="column" style={{ justifyContent: "space-between", width: "80%", position:"relative" }}>
                         <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
                         <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} />
                         <ReplyContent key={item.content} postid={item.postId} content={item.content} contentType={item.contentType} />

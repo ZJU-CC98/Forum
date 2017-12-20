@@ -96,19 +96,23 @@ export async function getTopicContent(topicid: number, curPage: number, replyCou
         const topic = curPage != 1
             ? await cc98Fetch(`/Topic/${topicid}/post?from=${startPage}&size=10`, { headers })
             : await cc98Fetch(`/Topic/${topicid}/post?from=1&size=9`, { headers });
+        console.log(topicid);
+        console.log(startPage);
+        console.log("status" + topic.status);
         const content = await topic.json();
+        console.log("1");
+        console.log(content);
         const post = [];
         let topicNumberInPage: number;
-        if (curPage !== 1 && curPage * 10 <= replyCount) {
+        if (curPage != 1 && curPage * 10 <= replyCount) {
             topicNumberInPage = 10;
-        } else if (curPage === 1 && replyCount >= 9) {
+        } else if (curPage == 1 && replyCount >= 9) {
             topicNumberInPage = 9;
-        } else if (curPage === 1 && replyCount < 9) {
+        } else if (curPage == 1 && replyCount < 9) {
             topicNumberInPage = replyCount;
         } else {
             topicNumberInPage = (replyCount - (curPage - 1) * 10 + 1);
         }
-
         for (let i = 0; i < topicNumberInPage; i++) {
             const likeInfo = await refreshLikeState(topicid, content[i].id);
             const awardInfo = await getAwardInfo(content[i].id);
@@ -135,6 +139,7 @@ export async function getTopicContent(topicid: number, curPage: number, replyCou
                 }
             }
         }
+        console.log("2");
         return post;
 
     } catch (e) {
@@ -443,7 +448,6 @@ export async function getAllNewTopic(from: number, router) {
         if (response.status === 401) {
             window.location.href = "/status/UnauthorizedTopic";
         }
-
         if (response.status === 403) {
             window.location.href = "/status/OperationForbidden";
         }
@@ -459,22 +463,10 @@ export async function getAllNewTopic(from: number, router) {
             if (newTopic[i].userId) {
                 //获取作者粉丝数目
                 let userFan0 = await cc98Fetch(`/user/follower/count?userid=${newTopic[i].userId}`);
-                if (userFan0.status === 404) {
-                    window.location.href = "/status/NotFoundUser";
-                }
-                if (userFan0.status === 500) {
-                    window.location.href = "/status/ServerError";
-                }
                 let userFan1 = await userFan0.json();
                 newTopic[i].fanCount = userFan1;
                 //获取作者头像地址
                 let userInfo0 = await cc98Fetch(`/user/basic/${newTopic[i].userId}`);
-                if (userInfo0.status === 404) {
-                    window.location.href = "/status/NotFoundUser";
-                }
-                if (userInfo0.status === 500) {
-                    window.location.href = "/status/ServerError";
-                }
                 let userInfo1 = await userInfo0.json();
                 newTopic[i].portraitUrl = userInfo1.portraitUrl;
                 //获取所在版面名称
@@ -565,22 +557,10 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
             if (newTopic[i].userId) {
                 //获取作者粉丝数目
                 let userFan0 = await cc98Fetch(`/user/follower/count?userid=${newTopic[i].userId}`);
-                if (userFan0.status === 404) {
-                    window.location.href = "/status/NotFoundUser";
-                }
-                if (userFan0.status === 500) {
-                    window.location.href = "/status/ServerError";
-                }
                 let userFan1 = await userFan0.json();
                 newTopic[i].fanCount = userFan1;
                 //获取作者头像地址
                 let userInfo0 = await cc98Fetch(`/user/basic/${newTopic[i].userId}`);
-                if (userInfo0.status === 404) {
-                    window.location.href = "/status/NotFoundUser";
-                }
-                if (userInfo0.status === 500) {
-                    window.location.href = "/status/ServerError";
-                }
                 let userInfo1 = await userInfo0.json();
                 newTopic[i].portraitUrl = userInfo1.portraitUrl;
                 //获取所在版面名称
@@ -1502,7 +1482,7 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
         myHeaders.append('content-type', 'application/json');
         let size = 20;
         let newTopic;
-        if (boardId == 0) {
+        if (boardId === 0) {
             const response = await cc98Fetch(`/topic/search?from=${from}&size=${size}`, {
                 method: 'POST',
                 headers: myHeaders,
@@ -1542,22 +1522,10 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                 if (newTopic[i].userId) {
                     //获取作者粉丝数目
                     let userFan0 = await cc98Fetch(`/user/follower/count?userid=${newTopic[i].userId}`);
-                    if (userFan0.status === 404) {
-                        window.location.href = "/status/NotFoundUser";
-                    }
-                    if (userFan0.status === 500) {
-                        window.location.href = "/status/ServerError";
-                    }
                     let userFan1 = await userFan0.json();
                     newTopic[i].fanCount = userFan1;
                     //获取作者头像地址
                     let userInfo0 = await cc98Fetch(`/user/basic/${newTopic[i].userId}`);
-                    if (userInfo0.status === 404) {
-                        window.location.href = "/status/NotFoundUser";
-                    }
-                    if (userInfo0.status === 500) {
-                        window.location.href = "/status/ServerError";
-                    }
                     let userInfo1 = await userInfo0.json();
                     newTopic[i].portraitUrl = userInfo1.portraitUrl;
                     //获取所在版面名称
@@ -1570,6 +1538,9 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                     newTopic[i].userName = "匿名用户";
                     newTopic[i].boardName = "心灵之约";
                 }
+                //时间转换
+                newTopic[i].time = transerRecentTime(newTopic[i].time);
+                newTopic[i].lastPostTime = transerRecentTime(newTopic[i].lastPostTime);
 
                 //阅读数转换
                 if (newTopic[i].hitCount > 10000) {
@@ -1593,12 +1564,13 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                         newTopic[i].replyCount = `${index}万`;
                     }
                 }
+
             }
             return newTopic;
         }
         //如果没有搜索结果就返回null
         else {
-            return 0;
+            return null;
         }
     } catch (e) {
         //window.location.href = "/status/Disconnected";
@@ -2688,7 +2660,6 @@ export async function getBoardInfo(boardId) {
             return 'server error';
     }
     const data = await response.json();
-    console.log(data);
     if (data.canEntry === false) {
 
         return 'unauthorized';

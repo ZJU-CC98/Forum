@@ -48,8 +48,11 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         };
     }
     quote(content, userName, replyTime, floor) {
+        console.log("in topic quote");
         const y = $("#sendTopicInfo").offset().top;
-        const url = `/topic/${this.state.topicid}/${this.match.params.page}#sendTopicInfo`;
+        let page = this.state.page;
+        if (!this.state.page) page = 1;
+        const url = `/topic/${this.state.topicid}/${page}#sendTopicInfo`;
         this.props.history.push(url);
         this.setState({ quote: { content: content, userName: userName, replyTime: replyTime, floor: floor } });
     }
@@ -79,6 +82,8 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
       
     }
     async componentWillReceiveProps(newProps) {
+        console.log("in topic recieve props");
+        console.log(newProps);
         //page 是否变了
         let page: number;
         if (!newProps.match.params.page) {
@@ -86,11 +91,12 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         }
         else { page = parseInt(newProps.match.params.page); }
         const userName = newProps.match.params.userName;
-        const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
+        const topicInfo = await Utility.getTopicInfo(newProps.match.params.topicid);
         const boardId = topicInfo.boardId;
         const boardInfo = await Utility.getBoardInfo(boardId);
         const totalPage = this.getTotalPage(topicInfo.replyCount);
-        const isFav = await Utility.getFavState(this.match.params.topicid);
+        const isFav = await Utility.getFavState(newProps.match.params.topicid);
+        console.log("before setstate");
         this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo, isFav: isFav });
     }
     async componentDidMount() {

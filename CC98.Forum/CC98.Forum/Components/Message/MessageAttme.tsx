@@ -25,17 +25,19 @@ export class MessageAttme extends React.Component<{match}, MessageResponseState>
 
     async getData(props) {
         //给@我的添加选中样式
+        //给我的回复添加选中样式
         $('.message-nav > div').removeClass('message-nav-focus');
         $('#attme').addClass('message-nav-focus');
         let totalCount = await Utility.getTotalPage(2);
         let index: any = totalCount / 7;
-        let totalPage = parseInt(index);
+        let totalPage = parseInt(index) + 1;
+        console.log("总消息条数和页码", totalCount, totalPage);
         let curPage = props.match.params.page - 1;
         if (!curPage || curPage < 0) {
             curPage = 0;
         }
         let data = await Utility.getMessageAttme(curPage * 7, 7, this.context.router);
-        console.log("显示获取到的@消息", data);
+        console.log("获取到了回复消息", data);
         if (data) {
             this.setState({ data: data, from: curPage + 1, totalPage: totalPage });
         }

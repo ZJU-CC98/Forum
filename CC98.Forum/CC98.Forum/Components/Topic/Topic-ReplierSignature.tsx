@@ -47,14 +47,14 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
         //取消赞
         if (this.state.likeState === 1) {
             await Utility.like(this.props.topicid, this.props.postid, this.context.router);
-            $(idLike).css("color", "black");
+            $(idLike).css("color", "#8dc9db");
         }
         //踩改赞
         else if (this.state.likeState === 2) {
             await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
             await Utility.like(this.props.topicid, this.props.postid, this.context.router);
             $(idLike).css("color", "red");
-            $(idDislike).css("color", "black");
+            $(idDislike).css("color", "#8dc9db");
         }
         //单纯赞
         else {
@@ -73,13 +73,13 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
         //取消踩
         if (this.state.likeState === 2) {
             await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
-            $(idDislike).css("color", "black");
+            $(idDislike).css("color", "#8dc9db");
         }
         //赞改踩
         else if (this.state.likeState === 1) {
             await Utility.like(this.props.topicid, this.props.postid, this.context.router);
             await Utility.dislike(this.props.topicid, this.props.postid, this.context.router);
-            $(idLike).css("color", "black");
+            $(idLike).css("color", "#8dc9db");
             $(idDislike).css("color", "red");
         }
         //单纯踩
@@ -127,6 +127,7 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
             const str = `该帖最后由 ${name} 在 ${time} 编辑`;
             lastUpdate = str;
         }
+        const traceUrl = `topic/${this.props.topicid}/user/${this.props.userId}`;
         return <div className="column" style={{ marginTop:"1rem" }}>
             <div className="comment1">
                 <div style={{ width: "40rem", marginLeft: "2rem", fontSize:"0.8rem" }}>
@@ -136,7 +137,8 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
                 <div id={idDislike} className="downdown" onClick={this.dislike.bind(this)}><i title="踩"  className="fa fa-thumbs-o-down fa-lg"></i><span className="commentProp"> {this.state.dislikeNumber}</span></div>
                 <div id="commentlike">
                     <div className="operation1" onClick={this.showJudgeUI}>   评分</div>
-                    <div className="operation1" onClick={this.quote}>   引用</div>
+                        <div className="operation1" onClick={this.quote}>   引用</div>
+                        <div className="operation1"><Link style={{color:"#8bc9db"}} to={traceUrl}>   追踪</Link></div>
                     {editIcon}
                     <div className="operation1" id={manageIcon} style={{ display: "none", cursor: "pointer" }} onClick={this.showManageUI}>管理</div>
                     </div>

@@ -35,7 +35,7 @@ export class Search extends React.Component<{}, SearchState> {
         else {
             let newTopic = await Utility.getSearchTopic(searchInfo.boardId, searchInfo.words, this.state.from, this.context.router);
             //搜索结果为0
-            if (newTopic == 0) {
+            if (!newTopic || newTopic.length === 0) {
                 console.log("没有搜索结果");
                 this.showNoResult();
                 this.setState({ loading: false });

@@ -165,7 +165,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         let btn = null;
         if (Utility.getLocalStorage("userInfo")) {
             if (Utility.getLocalStorage("userInfo").name !== this.props.userInfo.name && !this.props.isAnonymous) {
-                btn = <div className="column" style={{ width: "40%", alignItems: "flex-start", justifyContent: "flex-end", marginBottom: "2.5rem", marginLeft: "-1.5rem" }}>
+                btn = <div className="column" style={{ width: "40%", alignItems: "flex-start", justifyContent: "flex-end", marginBottom: "2rem", marginLeft: "-1rem" }}>
                     <button className="replierBtn" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled} style={{ border: "none", marginBottom: "0.6rem" }}>{this.state.buttonInfo}</button>
                     <Link to={email}><button className="replierBtn">私信</button></Link>
                 </div>;

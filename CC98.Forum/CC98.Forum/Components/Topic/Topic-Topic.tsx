@@ -40,7 +40,7 @@ export class PostTopic extends React.Component<{ boardInfo,topicInfo,userId, img
     
                 return <div className="reply" id={'1'} >
                     <Replier key={this.state.topicMessage.postId} userInfo={this.state.topicMessage.userInfo} isAnonymous={this.state.topicMessage.isAnonymous} topicid={this.state.topicMessage.topicId} floor={this.state.topicMessage.floor} isDeleted={this.state.topicMessage.isDeleted}  traceMode={false} isHot={false} />
-                    <div className="column" style={{ justifyContent: "space-between", width: "85%" }}>
+                    <div className="column" style={{ justifyContent: "space-between", width: "80%" }}>
                         <Judge userId={this.state.topicMessage.userId} postId={this.state.topicMessage.postId} update={this.update} topicId={this.state.topicMessage.topicId} />
                         <PostManagement topicId={this.state.topicMessage.topicId} postId={this.state.topicMessage.postId} userId={this.state.topicMessage.userId} update={this.update} privilege={privilege} />
                         <ReplyContent key={this.state.topicMessage.content} postid={this.state.topicMessage.postId} content={this.state.topicMessage.content} contentType={this.state.topicMessage.contentType} />
