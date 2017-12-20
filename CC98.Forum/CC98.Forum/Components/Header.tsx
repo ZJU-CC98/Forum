@@ -47,7 +47,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
     }
 
     async handleNotifyMessageReceive() {
-        console.log("接收到了signalr消息");
+    
         //更新消息数量
         await Utility.refreshUnReadCount();
         this.setState({
@@ -338,11 +338,11 @@ export class SearchBeforeConnent extends React.Component<{history}, AppState> { 
         let url3 = location.href.match(/\/(search)/);
         let flag = 1;
         if (url1) {
-            console.log(url1[1]);
+          
             flag = 0;
         }
         else if (url2) {
-            console.log(url2[1]);
+         
             flag = 0;
         }
         else if (url3) {

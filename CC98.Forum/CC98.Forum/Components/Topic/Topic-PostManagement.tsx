@@ -135,8 +135,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
                         }
                        
                     }
-                    console.log("status");
-                    console.log(status); console.log(status1); console.log(status2);
+                  
                     if (status === 'ok' && status1 === 'ok' && status2 === 'ok') {
                         const UIId = `#manage${this.props.postId}`;
                         $(UIId).css("display", "none");

@@ -123,7 +123,7 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
     render() {
         const boardUrl = `/list/${this.props.boardId}`;
         const id = `boardImg_${this.props.boardId}`;
-        const url = `/images/_${this.props.boardInfo.name}.png`;
+        const url = `/static/images/_${this.props.boardInfo.name}.png`;
         if (!this.props.boardInfo.bigPaper || !this.state.isExtend) {
             return (
                 <div className="row" style={{ width: "100%", overflow: 'hidden', maxHeight: '6rem', transition: 'max-height 1s'}}>
@@ -712,7 +712,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
         if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
             topTopics = <div><ListTopContent boardId={this.match.params.boardId} /></div>;
         }
-        console.log(this.state.items);
+  
         const topics = this.state.items.map(this.convertTopicToElement);
         const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;

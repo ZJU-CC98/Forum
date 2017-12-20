@@ -98,10 +98,13 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
      */
     async getPhotoFrame(displayTitle) {
 
+        const url = `/user/id/${this.props.userInfo.id}`;
+        const realUrl = encodeURI(url);//头像所用的url
+
         if (displayTitle) {
             let response = await fetch('/static/portrait.json');//获取头像框样式的配置
             let data = await response.json();
-            console.log(data);
+        
             let imageUrl; //头像框的链接
             let style = data.普通.style;
 
@@ -127,7 +130,25 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                 default: imageUrl = data.普通.imageUrl;
             }
 
-            return <img src={imageUrl} style={style} />
+            let shadow = {};
+            if (displayTitle === "吉祥物") shadow = { boxShadow: "0 0 0" };
+
+            return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
+                <div style={{ zIndex: 100 }}>
+                    <a href={realUrl} style={{ display: "block", maxHeight: "7.5rem" }}>
+                        <img className="userPortrait" src={this.props.userInfo.portraitUrl} style={shadow}></img>
+                    </a>
+                </div>
+                <div className="photoFrame"><img src={imageUrl} style={style} /></div>
+            </div>
+        } else {
+            return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
+                <div style={{ zIndex: 100 }}>
+                    <a href={realUrl} style={{ display: "block", maxHeight: "7.5rem" }}>
+                        <img className="userPortrait" src={this.props.userInfo.portraitUrl}></img>
+                    </a>
+                </div>
+            </div>
         }
 
     }
@@ -187,10 +208,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                 {this.props.userInfo.gender === 0 ? <i className="fa fa-venus" style={{ color: "#fff" }}></i> : <i className="fa fa-mars" style={{ color: "#fff" }}></i>}
             </div>
 
-            <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
-                <div style={{ zIndex: 100 }}>{urlHtml}</div>
-                <div className="photoFrame">{this.state.photoframe}</div>
-            </div>
+            {this.state.photoframe}
 
             <div className="rpyClr" style={{ width: "100%", marginTop: "1rem", paddingLeft: "3rem" }}>
                 {userName}

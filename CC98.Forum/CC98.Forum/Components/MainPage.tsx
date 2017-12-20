@@ -312,7 +312,7 @@ export class Test extends React.Component<{}, { testContent: string }>{
         if (matchResult) {
             const domainName = matchResult[0];
             let isInternalLink = reg2.test(domainName) || reg3.test(domainName) || reg4.test(domainName);
-            console.log(isInternalLink);
+       
             //return isInternalLink;
         } else {
             console.log("这不是链接！");
