@@ -35,8 +35,6 @@ class UserExact extends React.Component<{ match, history, changePage, notFoundUs
             if (!id) {
                 throw new Error();
             } else if (method === 'name') {
-                console.log(id);
-                console.log(encodeURIComponent(id));
                 url = `/User/Name/${encodeURIComponent(id)}`;
             }
             else if (method === 'id') {

@@ -55,7 +55,6 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
             buttonInfo: '关注中'
         });
         let res = await Utility.followUser(this.props.userFanInfo.id);
-        console.log(res);
         if (res === true) {
             this.setState({
                 buttonIsDisabled: false,
