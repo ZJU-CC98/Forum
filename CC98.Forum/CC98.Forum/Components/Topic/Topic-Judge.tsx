@@ -96,11 +96,11 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
                         <input type="radio" name="reason" value="好人一生平安" /><div>好人一生平安</div></div>
 
                 </div>
-                <div className="row" style={{ marginTop: "1rem", justifyContent: "space-between", marginLeft: "3rem", marginRight: "3rem", color: "#fff" }}>
-                    <div className="judgeOption">
+                <div className="row" style={{ marginTop: "1rem", justifyContent: "flex-start", marginLeft: "3rem", marginRight: "3rem", color: "#fff" }}>
+                    <div className="judgeOption" style={{ marginRight: '2rem' }}>
                         <input type="radio" name="reason" value="自定义" /><div>自定义</div>
                         </div>
-                    <input type="text" style={{ borderRadius: "1rem" }} value={this.state.reason} onChange={this.reasonInput} />
+                    <input type="text" style={{ borderRadius: "1rem", backgroundColor: '#8bc9db', border: 'solid 1.6px #ffffff', color: 'white', paddingLeft: '0.5rem' }} value={this.state.reason} onChange={this.reasonInput} />
                 </div>
                 <div>{this.state.tips}</div>
 
@@ -113,7 +113,7 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
 
                 <div className="manageObject"><div className="judgeName">原因</div></div>
 
-                <div className="row" style={{ marginTop: "1rem", marginLeft: "2rem", marginRight:"2rem", justifyContent: "space-between",color:"#fff" }}>
+                <div className="row" style={{ marginTop: "2rem", marginLeft: "2rem", marginRight:"2rem", justifyContent: "space-between",color:"#fff" }}>
 
                     <div className="row">
 
@@ -133,10 +133,10 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
 
                 </div>
                 <div className="row" style={{ marginTop: "1rem", justifyContent: "flex-start", marginLeft:"2rem" }}>
-                    <div className="judgeOption">
+                    <div className="judgeOption" style={{marginRight: '2rem'}}>
                         <input type="radio" name="reason" value="自定义" /><div>自定义</div>
                         </div>
-                    <input type="text" style={{ borderRadius: "1rem" }} value={this.state.reason} onChange={this.reasonInput} />
+                    <input type="text" style={{ borderRadius: "1rem", backgroundColor: '#8bc9db', border: 'solid 1.6px #ffffff', color: 'white', paddingLeft: '0.5rem' }} value={this.state.reason} onChange={this.reasonInput} />
                 </div>
                 <div>{this.state.tips}</div>
 
@@ -150,9 +150,9 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
         return <div style={{ display: "none" }} id={UIId} className="judgeManagement">
             <div className="judgeUI column">
                 <div className="row judgeName">
-                      风评
+                      评分
                 </div>
-                <div className="row judgeOptions">
+                <div className="row judgeOptions" style={{ marginTop: "2rem", paddingLeft: "3rem", paddingRight: "3rem", justifyContent: "space-between", boxSizing: 'border-box', color: "#fff" }}>
                     <div className="judgeOption">
                         <input type="radio" name="option" value="plus1" onClick={this.showPlus1UI} /><div>风评+1</div>
                     </div>
@@ -162,9 +162,9 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
                 </div>
             </div>
             {UI}
-            <div className="row" style={{ justifyContent: "space-around" }}>
-                <button onClick={this.confirm} className="confirmManagement">确认</button>
-                <button onClick={this.close} style={{ marginRight: "2rem" }} className="confirmManagement">关闭</button>
+            <div className="row" style={{ justifyContent: "space-around", padding: '0 3rem'}}>
+                <button style={{ border: 'none', backgroundColor: '#8bc9db', color: 'white', textDecoration: 'underline', fontSize: '1.25rem'}} onClick={this.confirm} className="confirmManagement">确认</button>
+                <button onClick={this.close} style={{ border: 'none', backgroundColor: '#8bc9db', color: 'white', textDecoration: 'underline', fontSize: '1.25rem' }} className="confirmManagement">关闭</button>
             </div>
         </div>;
 

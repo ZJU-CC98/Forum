@@ -2908,11 +2908,32 @@ a {
     .manageOperation input{
         border-radius:1rem;
     }
-    .manageInfo {
-        height: 15rem;
-        justify-content: space-around;
-        margin-left:3rem;
+
+.manageOperation input[type="radio"], .judgeOption input[type="radio"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid #fff;
+    border-radius: .5rem;
+    box-sizing: border-box;
+    padding: 0.2rem;
+
+    &:focus {
+        outline: none;
     }
+
+    &:checked {
+        background-color: #fff;
+        background-clip: content-box;
+    }
+}
+
+.manageInfo {
+    height: 15rem;
+    justify-content: space-around;
+    margin-left: 3rem;
+}
 
     .manageObject {
 
