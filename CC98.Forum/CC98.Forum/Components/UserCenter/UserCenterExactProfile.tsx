@@ -38,6 +38,8 @@ export class UserCenterExactProfile extends React.Component<UserCenterExactProfi
                 <div id="userGenderAndBirthday">
                     <p><span className="user-profile-info">性别</span>{(this.props.userInfo.gender === 1) ? '男' : '女'} </p>
                     <p><span className="user-profile-info">发帖数</span>{this.props.userInfo.postCount}</p>
+                    <p><span className="user-profile-info">财富值</span>{this.props.userInfo.wealth}</p>
+                    <p><span className="user-profile-info">粉丝数</span>{this.props.userInfo.fanCount}</p>
                     <p><span className="user-profile-info">威望</span>{this.props.userInfo.prestige}</p>
                     <p><span className="user-profile-info">风评</span>{this.props.userInfo.popularity}</p>
                     <p><span className="user-profile-info">注册时间</span>{this.props.userInfo.registerTime.replace('T', ' ')}</p>

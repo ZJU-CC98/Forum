@@ -294,11 +294,11 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
         const size = ['', 1, 2, 3, 4, 5, 6, 7];
         const mohjong = {
             animal: ['001', '002', '003', '004', '005', '006', '007', '008', '009', '010', '011', '012', '013', '014', '015', '016'].map((item) => (<img
-                src={`/images/mahjong/animal2017/${item}.png`}
+                src={`/static/images/mahjong/animal2017/${item}.png`}
                 onClick={() => { this.handleEmojiButtonClick(`[a:${item}]`) }}
             ></img>)),
             carton: ['003.png', '018.gif', '019.png', '046.png', '049.gif', '059.png', '096.gif', '134.png', '189.png', '217.png'].map((item) => (<img
-                src={`/images/mahjong/carton2017/${item}`}
+                src={`/static/images/mahjong/carton2017/${item}`}
                 onClick={() => { this.handleEmojiButtonClick(`[c:${item.slice(0, 3)}]`) }}
             ></img>)),
             face: new Array(208).fill(0).map((item, index) => {
@@ -309,7 +309,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                 if ([4, 9, 56, 61, 62, 87, 115, 120, 137, 168, 169, 175, 206].indexOf(index + 1) !== -1) { return `${item}.gif`; }
                 else { return `${item}.png`; }
             }).map((item) => (<img
-                src={`/images/mahjong/face2017/${item}`}
+                src={`/static/images/mahjong/face2017/${item}`}
                 onClick={() => { this.handleEmojiButtonClick(`[f:${item.slice(0, 3)}]`) }}
             ></img>))
         };
@@ -335,7 +335,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                     else if (index < 94) { return `${index + 947}`; }
                     else { return `${index + 1907}`; }
                 }).map((item) => (<img
-                    src={`/images/ac/${item}.png`}
+                    src={`/static/images/ac/${item}.png`}
                     onClick={() => { this.handleEmojiButtonClick(`[ac${item}]`) }}
                 ></img>)),
             'mj': [...mohjong.animal, ...mohjong.carton, ...mohjong.face],
@@ -344,7 +344,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                     if (index < 9) { return `0${index + 1}`; }
                     else { return `${index + 1}`; }
                 }).map((item) => (<img
-                    src={`/images/tb/tb${item}.png`}
+                    src={`/static/images/tb/tb${item}.png`}
                     onClick={() => { this.handleEmojiButtonClick(`[tb${item}]`) }}
                 ></img>))
         };
