@@ -4,12 +4,20 @@ import { Link } from 'react-router-dom';
 import * as Utility from '../Utility';
 export class LogOut extends React.Component<{}, {}>{
     render() {
-        return <div style={{
-            display: "flex", flexDirection: "column"
-        }}>
-            <div>您当前未登录</div>
-            <Link to="/logon"><button>登录</button></Link>
-        </div>;
+        //return <div style={{
+        //    display: "flex", flexDirection: "column"
+        //}}>
+        //    <div>您当前未登录</div>
+        //    <Link to="/logon"><button>登录</button></Link>
+        //</div>;
+        return <div className="errorState" >
+            <div>
+                <img className="errorIcon" src="/images/401.png"></img>
+            </div>
+            <div className="errorTitle">糟糕！好像出错了</div>
+            <div className="errorText">您当前未登录</div>
+            <div className="row returnIndexBtn" ><Link to="/logon" >点我登录</Link></div>
+        </div>
     }
 }
 export class TopicDeleted extends React.Component<{}, {}>{
