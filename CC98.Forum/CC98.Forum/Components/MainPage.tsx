@@ -590,13 +590,16 @@ export class Count extends React.Component<{}, { data }> {
                 </div>
                 <div className="schoolNewsRow">
                     <div className="schoolNewsTitle"><div>论坛总回复数</div><div className="mainPageCountRed">{data.postCount}</div></div>
-                </div>               
+                </div>
                 <div className="schoolNewsRow">
                     <div className="schoolNewsTitle"><div>总用户数</div><div className="mainPageCountRed">{data.userCount}</div></div>
                 </div>
                 <div className="schoolNewsRow">
-                    <div className="schoolNewsTitle"><div>欢迎新用户</div><div className="mainPageCountRed">{data.lastUserName}</div></div>
-                </div>           
+                    <div className="schoolNewsTitle">
+                        <div>欢迎新用户</div>
+                        <div className="mainPageCountRed"><Link to={`/user/name/${data.lastUserName}`}>{data.lastUserName}</Link></div>
+                    </div>
+                </div>
             </div>
         </div>
 
