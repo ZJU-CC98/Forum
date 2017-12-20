@@ -541,10 +541,10 @@ export class AdsComponent extends React.Component<{}, { ads: MainPageColumn[], i
 
         let url = ads.length ? ads[index].url : "";
         let imageUrl = ads.length ? ads[index].imageUrl : "";
-        
+
         return <div style={{ marginTop: "2.5rem" }}>
             <Link to={url}><img src={imageUrl} style={{ width: "18.75rem", height: "6.25rem" }} /></Link>
-        </div>
+        </div>;
     }
 }
 
