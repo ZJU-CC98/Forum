@@ -2584,8 +2584,10 @@ export function getTagLayer(tagId: number, tags) {
 export async function findIP(topicId) {
 	const url = `/topic/${topicId}/look-ip`;
 	const headers = await formAuthorizeHeader();
-	const response = await cc98Fetch(url, { headers });
-	return await response.json();
+    const response = await cc98Fetch(url, { headers });
+    if (response.status === 200)
+        return await response.json();
+    else return [];
 }
 export async function moveTopic(topicId, boardId, reason) {
 	const url = `/topic/${topicId}/moveto/${boardId}`;
