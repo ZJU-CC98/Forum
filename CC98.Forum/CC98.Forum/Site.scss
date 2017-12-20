@@ -1449,8 +1449,8 @@ a {
         flex-basis: 479px;
         border-top: 1px solid $color-border;
         border-right: 1px solid $color-border;
-        //display: flex;
-        //flex-direction: column-reverse;
+        display: flex;
+        flex-direction: column-reverse;
         overflow-y: auto;
         overflow-x: hidden;
 
