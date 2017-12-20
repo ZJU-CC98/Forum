@@ -100,7 +100,7 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
                     <div className="judgeOption" style={{ marginRight: '2rem' }}>
                         <input type="radio" name="reason" value="自定义" /><div>自定义</div>
                         </div>
-                    <input type="text" style={{ borderRadius: "1rem", backgroundColor: '#8bc9db', border: 'solid 1.6px #ffffff', color: 'white', paddingLeft: '0.5rem' }} value={this.state.reason} onChange={this.reasonInput} />
+                    <input type="text" style={{ borderRadius: "1rem", backgroundColor: '#8bc9db', border: 'solid 1.6px #ffffff', color: 'white', paddingLeft: '0.5rem' }} value={this.state.reason} onChange={this.reasonInput} />{this.state.tips}
                 </div>
                 <div>{this.state.tips}</div>
 
@@ -135,8 +135,8 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
                 <div className="row" style={{ marginTop: "1rem", justifyContent: "flex-start", marginLeft:"2rem" }}>
                     <div className="judgeOption" style={{marginRight: '2rem'}}>
                         <input type="radio" name="reason" value="自定义" /><div>自定义</div>
-                        </div>
-                    <input type="text" style={{ borderRadius: "1rem", backgroundColor: '#8bc9db', border: 'solid 1.6px #ffffff', color: 'white', paddingLeft: '0.5rem' }} value={this.state.reason} onChange={this.reasonInput} />
+                    </div>
+                    <input type="text" style={{ borderRadius: "1rem", backgroundColor: '#8bc9db', border: 'solid 1.6px #ffffff', color: 'white', paddingLeft: '0.5rem' }} value={this.state.reason} onChange={this.reasonInput} />{this.state.tips}
                 </div>
                 <div>{this.state.tips}</div>
 
@@ -152,6 +152,7 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
                 <div className="row judgeName">
                       评分
                 </div>
+                <div className="row" style={{ fontSize:"0.75rem",color:"#fff" }}>500贴以上的用户可以进行评分（每日一次）</div>
                 <div className="row judgeOptions" style={{ marginTop: "2rem", paddingLeft: "3rem", paddingRight: "3rem", justifyContent: "space-between", boxSizing: 'border-box', color: "#fff" }}>
                     <div className="judgeOption">
                         <input type="radio" name="option" value="plus1" onClick={this.showPlus1UI} /><div>风评+1</div>
