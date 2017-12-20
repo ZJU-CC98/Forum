@@ -41,7 +41,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                     buttonIsDisabled: false,
                     buttonInfo: '关注',
                     isFollowing: false,
-                    fanCount: this.props.userInfo.fanCount 
+                    fanCount: this.props.userInfo.fanCount
                 });
             } else {
                 throw {};
@@ -82,14 +82,35 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
             alert("网络错误");
         }
     }
+
+    /**
+     * 根据displayTitle返回头像框的HTML
+     * @param displayTitle
+     */
+    async getPhotoFrame(displayTitle) {
+
+        if (displayTitle) {
+            let response = await fetch('/portrait.json');//获取头像框样式的配置
+            let data = await response.json();
+
+            let imageUrl; //头像框的链接
+            let style;//头像框的样式
+
+            //switch ... 待完成
+        }
+    }
+
     render() {
         const url = `/user/id/${this.props.userInfo.id}`;
         const realUrl = encodeURI(url);
         const email = `/message/message?id=${this.props.userInfo.id}`;
         //用户头像
         let urlHtml = <a href={realUrl} style={{ display: "block", maxHeight: "7.5rem" }}><img className="userPortrait" src={this.props.userInfo.portraitUrl}></img></a>;
+        //获取用户组
+        const displayTitle = this.props.userInfo.displayTitle;
+        this.getPhotoFrame(displayTitle);
         if (this.props.isAnonymous == true) {
-            urlHtml = <div  style={{ display: "block", maxHeight: "7.5rem" }}><img className="userPortrait" src={this.props.userInfo.portraitUrl}></img></div>;
+            urlHtml = <div style={{ display: "block", maxHeight: "7.5rem" }}><img className="userPortrait" src={this.props.userInfo.portraitUrl}></img></div>;
         }
         const curUserPostUrl = `/topic/${this.props.topicid}/user/id/${this.props.userInfo.id}`;
         const normalUrl = `/topic/${this.props.topicid}`;
@@ -114,7 +135,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         let btn = null;
         if (Utility.getLocalStorage("userInfo")) {
             if (Utility.getLocalStorage("userInfo").name !== this.props.userInfo.name && !this.props.isAnonymous) {
-                btn = <div className="column" style={{ width: "40%", alignItems: "flex-start", justifyContent: "flex-end", marginBottom: "2.5rem", marginLeft:"-1.5rem" }}>
+                btn = <div className="column" style={{ width: "40%", alignItems: "flex-start", justifyContent: "flex-end", marginBottom: "2.5rem", marginLeft: "-1.5rem" }}>
                     <button className="replierBtn" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled} style={{ border: "none", marginBottom: "0.6rem" }}>{this.state.buttonInfo}</button>
                     <Link to={email}><button className="replierBtn">私信</button></Link>
                 </div>;

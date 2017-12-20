@@ -45,23 +45,6 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
     async getData(props) {
         let data = await Utility.getFocusTopic(props.id, props.name, 0, this.context.router);
 
-        //先看一下有没有缓存的数据，如果有的话新数据跟缓存数据组合一下
-        let oldData = Utility.getStorage(`focusBoard_${props.id}`);
-        if (oldData) {
-            for (var i = 0; i < data.length; i++) {
-                // 最新的20 条数据跟之前的有重合就组合起来
-                if (data[i].id == oldData[0].id) {
-                    data = data.slice(0, i).concat(oldData);
-                    break;
-                }
-            }
-        }
-
-        //最多100条新帖
-        if (data.length > 100) {
-            data = data.slice(0, 100);
-        }
-
         this.setState({ data: data, from: data.length });
         //缓存获取到的数据
         Utility.setStorage(`focusBoard_${props.id}`, data);
@@ -106,9 +89,18 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
             /**
             *如果正确获取到数据，则添加新数据，翻页+1，同时this.state.loading设置为true，后续才可以再次发送fetch请求
             */
-            let data = this.state.data.concat(newData);
-            this.setState({ data: data, from: data.length, loading: true });
-            Utility.setStorage(`focusBoard_${this.props.id}`, data);
+            //拼接时防止出现重复帖子
+            if (newData && newData.length > 0) {
+                let data = this.state.data
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].id === newData[0].id) {
+                        break;
+                    }
+                }
+                data = data.slice(0, i).concat(newData);
+                this.setState({ data: data, from: data.length, loading: true });
+                Utility.setStorage(`focusBoard_${this.props.id}`, data);
+            }
         }
     }
     /**
@@ -117,7 +109,7 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
     render() {
         return <div className="focus-topic-area">
             <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
-            <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://ww3.sinaimg.cn/large/0060lm7Tgy1fitwrd6yv0g302s0093y9.gif"></img></div>
+            <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://file.cc98.org/uploadfile/2017/12/20/6514723843.gif"></img></div>
             <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">已加载100条新帖，无法加载更多了~</div>
         </div>;
     }

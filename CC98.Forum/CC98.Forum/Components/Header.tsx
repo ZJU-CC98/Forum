@@ -147,10 +147,10 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
                     style={{...style, overflow: 'hidden', zIndex: 100 , position: 'absolute', top: '55px', height: this.state.hoverElement === 'topBarText' ? '120px' : '0px'}}
                 >
                     <ul className="dropDownSubMessage" style={{ display: 'inherit' }}>
-                        <Link to="/message/response"><li>回复我的<div className="message-counterLi displaynone" id="unreadCount-replyCount">{unreadCount.replyCount}</div></li></Link>
-                        <Link to="/message/attme"><li>@ 我的<div className="message-counterLi displaynone" id="unreadCount-atCount">{unreadCount.atCount}</div></li></Link>
-                        <Link to="/message/system"><li>系统通知<div className="message-counterLi displaynone" id="unreadCount-systemCount">{unreadCount.systemCount}</div></li></Link>
-                        <Link to="/message/message"><li>我的私信<div className="message-counterLi displaynone" id="unreadCount-messageCount">{unreadCount.messageCount}</div></li></Link>
+                        <a href="/message/response"><li>回复我的<div className="message-counterLi displaynone" id="unreadCount-replyCount">{unreadCount.replyCount}</div></li></a>
+                        <a href="/message/attme"><li>@ 我的<div className="message-counterLi displaynone" id="unreadCount-atCount">{unreadCount.atCount}</div></li></a>
+                        <a href="/message/system"><li>系统通知<div className="message-counterLi displaynone" id="unreadCount-systemCount">{unreadCount.systemCount}</div></li></a>
+                        <a href="/message/message"><li>我的私信<div className="message-counterLi displaynone" id="unreadCount-messageCount">{unreadCount.messageCount}</div></li></a>
                     </ul>
                 </div>
             </div>);
@@ -255,7 +255,7 @@ export class SearchBeforeConnent extends React.Component<{history}, AppState> { 
         
         //获取搜索关键词
         let self = this;
-        searchIco.click(async  () => {
+        searchIco.click(async () => {
             let val: any = $('#searchText').val();
             if (val && val != '') {
                 if (searchBoxSelect.text() == '主题' || searchBoxSelect.text() == '全站') {
@@ -285,8 +285,9 @@ export class SearchBeforeConnent extends React.Component<{history}, AppState> { 
                     }
                 }
                 else if (searchBoxSelect.text() == '用户') {
-                    if (await Utility.getUserInfoByName(val)) {
-                        this.props.history.push(`/user/name/${val}`);
+                    let data = await Utility.getUserInfoByName(val);
+                    if (data) {
+                        this.props.history.push(`/user/id/${data.id}`);
                     }
                     else {
                         Utility.removeStorage('searchInfo');
@@ -302,7 +303,7 @@ export class SearchBeforeConnent extends React.Component<{history}, AppState> { 
                             this.props.history.push('/search');
                         }
                         else if (boardResult.length == 1) {
-                            this.props.history.push(`/list/${boardResult[0].id}/normal/`);
+                            this.props.history.push(`/list/${boardResult[0].id}`);
                         }
                         else if (boardResult.length > 1) {
                             Utility.setStorage("searchBoardInfo", boardResult);
@@ -320,6 +321,14 @@ export class SearchBeforeConnent extends React.Component<{history}, AppState> { 
                 }
             }
         });
+    }
+
+    keypress_submit(e) {
+      var evt = window.event || e;
+        if (evt.keyCode === 13) {
+           console.log("按下了回车");
+           $('.searchIco').click();
+       }
     }
 
     render() {
@@ -350,7 +359,7 @@ export class SearchBeforeConnent extends React.Component<{history}, AppState> { 
                 <div className="box">
                     <div className="searchBoxSelect">主题</div>
                     <div className="downArrow"><img src="/images/downArrow.png" width="12" height="12" /></div>
-                    <input id="searchText" type="text" placeholder="猜猜能搜到什么..." />
+                    <input id="searchText" type="text" placeholder="猜猜能搜到什么..." onKeyPress={this.keypress_submit} />
                     <div className="searchIco"><img src="/images/searchIco.ico" width="15" height="15" /></div>
                 </div>
                 <ul className="searchBoxSub">

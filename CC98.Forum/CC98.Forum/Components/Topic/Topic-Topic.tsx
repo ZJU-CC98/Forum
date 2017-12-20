@@ -54,6 +54,7 @@ export class PostTopic extends React.Component<{ boardInfo,topicInfo,userId, img
                             lastUpdateAuthor={this.state.topicMessage.lastUpdateAuthor}
                             lastUpdateTime={this.state.topicMessage.lastUpdateTime} boardId={this.props.boardInfo.id} isLZ={this.state.topicMessage.isLZ} />
                     </div>
+                    <div className="reply-floor">1</div>
                 </div>;
            
         } else {
