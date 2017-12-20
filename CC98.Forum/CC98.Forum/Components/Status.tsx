@@ -12,7 +12,7 @@ export class LogOut extends React.Component<{}, {}>{
         //</div>;
         return <div className="errorState" >
             <div>
-                <img className="errorIcon" src="/images/401.png"></img>
+                <img className="errorIcon" src="/static/images/401.png"></img>
             </div>
             <div className="errorTitle">糟糕！好像出错了</div>
             <div className="errorText">您当前未登录</div>
@@ -24,7 +24,7 @@ export class TopicDeleted extends React.Component<{}, {}>{
     render() {
         return <div className="errorState" >
             <div>
-                <img className="errorIcon" src="/images/404.png"></img>
+                <img className="errorIcon" src="/static/images/404.png"></img>
             </div>
             <div className="errorTitle">糟糕！好像出错了</div>
             <div className="errorText">帖子被删除</div>
@@ -42,7 +42,7 @@ export class UnauthorizedBoard extends React.Component<{}, {}>{
     render() {
         return <div className="errorState" >
             <div>
-                <img className="errorIcon" src="/images/401.png"></img>
+                <img className="errorIcon" src="/static/images/401.png"></img>
             </div>
             <div className="errorTitle">糟糕！好像出错了</div>
             <div className="errorText">您没有权限进入这个版面</div>
@@ -55,7 +55,7 @@ export class UnauthorizedTopic extends React.Component<{}, {}>{
     render() {
         return <div className="errorState" >
             <div>
-                <img className="errorIcon" src="/images/401.png"></img>
+                <img className="errorIcon" src="/static/images/401.png"></img>
             </div>
             <div className="errorTitle">糟糕！好像出错了</div>
             <div className="errorText">您没有权限进入这个主题</div>
@@ -69,7 +69,7 @@ export class UnauthorizedOperation extends React.Component<{}, {}>{
     render() {
         return <div className="errorState" >
             <div>
-                <img className="errorIcon" src="/images/401.png"></img>
+                <img className="errorIcon" src="/static/images/401.png"></img>
             </div>
             <div className="errorTitle">糟糕！好像出错了</div>
             <div className="errorText">您没有权限进行这个操作</div>
@@ -83,7 +83,7 @@ export class NotFoundBoard extends React.Component<{}, {}>{
     render() {
         return <div className="errorState" >
             <div>
-                <img className="errorIcon" src="/images/404.png"></img>
+                <img className="errorIcon" src="/static/images/404.png"></img>
             </div>
             <div className="errorTitle">糟糕！好像出错了</div>
             <div className="errorText">版面不存在</div>
@@ -97,7 +97,7 @@ export class NotFoundTopic extends React.Component<{}, {}>{
     render() {
         return <div className="errorState" >
             <div>
-                <img className="errorIcon" src="/images/404.png"></img>
+                <img className="errorIcon" src="/static/images/404.png"></img>
             </div>
             <div className="errorTitle">糟糕！好像出错了</div>
             <div className="errorText">帖子不存在</div>
@@ -110,7 +110,7 @@ export class NotFoundUser extends React.Component<{}, {}>{
     render() {
         return <div className="errorState" >
             <div>
-                <img className="errorIcon" src="/images/404.png"></img>
+                <img className="errorIcon" src="/static/images/404.png"></img>
             </div>
             <div className="errorTitle">糟糕！好像出错了</div>
             <div className="errorText">用户不存在</div>
@@ -123,7 +123,7 @@ export class ServerError extends React.Component<{}, {}>{
     render() {
         return <div className="errorState" >
             <div>
-                <img className="errorIcon" src="/images/500.png"></img>
+                <img className="errorIcon" src="/static/images/500.png"></img>
             </div>
             <div className="errorTitle">糟糕！好像出错了</div>
             <div className="errorText">服务器发送错误</div>
@@ -141,7 +141,7 @@ export class OperationForbidden extends React.Component<{}, {}>{
     render() {
         return <div className="errorState" >
             <div>
-                <img className="errorIcon" src="/images/403.png"></img>
+                <img className="errorIcon" src="/static/images/403.png"></img>
             </div>
             <div className="errorTitle">糟糕！好像出错了</div>
             <div className="errorText">操作失败或被拒绝</div>
@@ -153,7 +153,7 @@ export class OperationForbidden extends React.Component<{}, {}>{
 export const PageNotFound = () => (
     <div className="errorState" >
         <div>
-            <img className="errorIcon" src="/images/404.png"></img>
+            <img className="errorIcon" src="/static/images/404.png"></img>
         </div>
         <div className="errorTitle">糟糕！好像出错了</div>
         <div className="errorText">页面不存在</div>
