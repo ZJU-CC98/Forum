@@ -129,10 +129,15 @@ export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>
             thisBoardState: boards,
         });
     }
+    onError(e) {
+        e.target.src = `/static/images/_CC98协会.png`;
+    }
     convertChildBoard(item: Board) {   
         const url =`url(/static/images/_${item.name}.png)`
         return <div className="boardContent">
-            <Link to={`/list/${item.id}`}><div className="greenBackdrop" style={{ backgroundImage: url}}></div></Link>
+            <Link to={`/list/${item.id}`}><div className="greenBackdrop" >
+                <img src={url} onError={this.onError}></img>
+            </div></Link>
             <div className="column boardBlock" >
                 <Link to={`/list/${item.id}`}><div className="boardName2" style={{ fontSize:"1.2rem", fontWeight:"bold" }}>{item.name}</div></Link>
                 <div className="boardInfo">
@@ -155,7 +160,7 @@ export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>
             </div>;
         } else {
             return <div className="areaContent">
-                {this.state.thisBoardState.map(this.convertChildBoard)}
+                {this.state.thisBoardState.map(this.convertChildBoard.bind(this))}
             </div>;
         }
     }

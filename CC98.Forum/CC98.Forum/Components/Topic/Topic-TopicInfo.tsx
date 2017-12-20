@@ -30,7 +30,7 @@ export class TopicInfo extends React.Component<{ topicInfo, boardInfo, tag1, tag
         e.target.src = `/static/images/_CC98协会.png`;
     }
     render() {
-        const url = `/images/_${this.props.boardInfo.name}.png`;
+        const url = `/static/images/_${this.props.boardInfo.name}.png`;
         const boardUrl = `/list/${this.props.boardInfo.id}`;
         let tags = null;
 
