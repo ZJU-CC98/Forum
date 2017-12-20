@@ -24,7 +24,7 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
         let tagInfo = '';
         if (this.props.tag1) {
             if (this.props.tag2) {
-                tagInfo = `标签：${this.props.tag1}/${this.props.tag2}`;
+                tagInfo = `标签：${this.props.tag1} / ${this.props.tag2}`;
             }
             else {
                 tagInfo = `标签：${this.props.tag1}`;

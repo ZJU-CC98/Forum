@@ -210,10 +210,15 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
     *发送私信内容的函数
     */
     async postMessage() {
-        if ($('#postContent').val() == '') {
+        let str:any = $('#postContent').val()
+        if (str === '') {
             return;
         }
-        let bodyObj = { receiverId: this.props.data.id, content: $('#postContent').val() };
+        console.log("str1", str);
+        var reg = new RegExp("\n", "g");
+        //str = str.replace(reg, "＜br＞");
+        console.log("str2", str);
+        let bodyObj = { receiverId: this.props.data.id, content: str };
         let bodyContent = JSON.stringify(bodyObj);
         let response = await Utility.sendMessage(bodyContent, this.context.router);
         if (response.status == 403) {
