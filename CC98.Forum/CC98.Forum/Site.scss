@@ -595,8 +595,8 @@ body {
     color: #000000;
     outline: none;
     cursor: pointer;
-    color: #8bc9db;
-    border: #8bc9db solid thin;
+    color: $color-bg;
+    border: $color-bg solid thin;
     border-radius: 1rem;
     width: 2.25rem;
     height: 1.25rem;
@@ -850,7 +850,7 @@ a {
 
 .bgcolor {
     color: #fff;
-    background-color: #8bc9db;
+    background-color: $color-bg;
 }
 
 .orange {
@@ -1845,24 +1845,22 @@ a {
         flex-shrink: 0;
         cursor: pointer;
         border-radius: 10px;
-        border: solid 1px #8bc9db;
+        border: solid 1px $color-bg;
         font-size: 16px;
-        color: #8bc9db;
+        color: $color-bg;
         padding: 2px 8px 8px 8px;
         margin-right: 20px;
         margin-top: 20px;
 
         &:hover {
-            background-color: rgba(0,150,255,0.1);
-        }
-
-        &:active {
-            background-color: rgba(0,150,255,0.1);
+            background-color: $color-bg;
+            color: #ffffff;
         }
     }
 
     .focus-hover {
-        background-color: rgba(0,150,255,0.1);
+        background-color: $color-bg;
+        color: #ffffff;
     }
 }
 
@@ -1914,13 +1912,13 @@ a {
     margin-top: 12px;
     overflow: hidden;
     background-color: #ffffff;
-    border: solid 1px #8bc9db;
+    border: solid 1px $color-bg;
 
     .focus-topic-left {
         display: flex;
         flex-direction: row;
         flex-basis: 180px;
-        background-color: #8bc9db;
+        background-color: $color-bg;
         flex-shrink: 0;
 
         .focus-topic-portraitUrl {
@@ -2786,7 +2784,7 @@ a {
         border-radius: .5rem;
         -moz-border-radius: .5rem;
         -webkit-border-radius: .5rem;
-        background-color: #8bc9db;
+        background-color: $color-bg;
     }
 
     .judgeManagement {
@@ -2804,7 +2802,7 @@ a {
         border-radius: .5rem;
         -moz-border-radius: .5rem;
         -webkit-border-radius: .5rem;
-        background-color: #8bc9db;
+        background-color: $color-bg;
     }
 
 .manageUI {
@@ -2908,11 +2906,32 @@ a {
     .manageOperation input{
         border-radius:1rem;
     }
-    .manageInfo {
-        height: 15rem;
-        justify-content: space-around;
-        margin-left:3rem;
+
+.manageOperation input[type="radio"], .judgeOption input[type="radio"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid #fff;
+    border-radius: .5rem;
+    box-sizing: border-box;
+    padding: 0.2rem;
+
+    &:focus {
+        outline: none;
     }
+
+    &:checked {
+        background-color: #fff;
+        background-clip: content-box;
+    }
+}
+
+.manageInfo {
+    height: 15rem;
+    justify-content: space-around;
+    margin-left: 3rem;
+}
 
     .manageObject {
 

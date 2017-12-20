@@ -15,7 +15,8 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
         }
 
         if (!this.props.userId) {
-            $(`#user_${this.props.id}`).attr('href','');
+            $(`#user_${this.props.id}`).removeAttr('href');
+            $(`#user_${this.props.id}`).removeAttr('target');
         }
     }
 

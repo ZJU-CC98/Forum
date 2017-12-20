@@ -199,7 +199,7 @@ export class SearchBeforeConnent extends React.Component<{history}, AppState> { 
 
         //查看当前是全站还是某版，如果是某版就查询到某版id
         let url1 = location.href.match(/\/topic\/(\S+)\/+?/);
-        let url2 = location.href.match(/\/list\/(\S+)\/+?/);
+        let url2 = location.href.match(/\/list\/(\S+)\/?/);
         let url3 = location.href.match(/\/(search)/);
         let boardId = 0;
         let boardName = '全站';
@@ -334,7 +334,7 @@ export class SearchBeforeConnent extends React.Component<{history}, AppState> { 
     render() {
         //查看当前是全站还是某版
         let url1 = location.href.match(/\/topic\/(\S+)\/+?/);
-        let url2 = location.href.match(/\/list\/(\S+)\/+?/);
+        let url2 = location.href.match(/\/list\/(\S+)\/?/);
         let url3 = location.href.match(/\/(search)/);
         let flag = 1;
         if (url1) {

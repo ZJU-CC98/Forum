@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { RouteComponent } from '../RouteComponent';
 import * as Utility from '../../Utility';
 declare let moment: any;
-export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, floor, isDeleted, traceMode, isHot }, { traceMode, buttonIsDisabled, buttonInfo, isFollowing, fanCount }, { topicid }>{
+export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, floor, isDeleted, traceMode, isHot }, { traceMode, buttonIsDisabled, buttonInfo, isFollowing, fanCount, photoframe }, { topicid }>{
     constructor(props, content) {
         super(props, content);
         this.follow = this.follow.bind(this);
@@ -12,7 +12,8 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         this.state = {
             traceMode: this.props.traceMode, buttonInfo: '关注',
             buttonIsDisabled: false,
-            isFollowing: false, fanCount: this.props.userInfo.fanCount
+            isFollowing: false, fanCount: this.props.userInfo.fanCount,
+            photoframe: null
         };
     }
 
@@ -81,6 +82,15 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
             alert("网络错误");
         }
     }
+    async componentDidMount() {
+        //获取用户组
+        const displayTitle = this.props.userInfo.displayTitle;
+        //获取头像框html
+        let phototframe = await this.getPhotoFrame(displayTitle);
+        this.setState({
+            photoframe: phototframe
+        })
+    }
 
     /**
      * 根据displayTitle返回头像框的HTML
@@ -91,12 +101,34 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         if (displayTitle) {
             let response = await fetch('/portrait.json');//获取头像框样式的配置
             let data = await response.json();
-
+            console.log(data);
             let imageUrl; //头像框的链接
-            let style;//头像框的样式
+            //let style; //头像框的样式
 
-            //switch ... 待完成
+            switch (displayTitle) {
+                case "吉祥物": imageUrl = "/images/相框/_01版主.png"; break;
+                case "版主": imageUrl = "/images/相框/_01版主.png"; break;
+                case "编辑部部长": imageUrl = "/images/相框/_02编辑部.png"; break;
+                case "编辑部成员": imageUrl = "/images/相框/_02编辑部.png"; break;
+                case "技术组组长": imageUrl = "/images/相框/_03技术组.png"; break;
+                case "技术组成员": imageUrl = "/images/相框/_03技术组.png"; break;
+                case "论坛贵宾": imageUrl = "/images/相框/_04贵宾.png"; break;
+                case "运营策划部部长": imageUrl = "/images/相框/_05策划部.png"; break;
+                case "运营策划部成员": imageUrl = "/images/相框/_05策划部.png"; break;
+                case "影音部部长": imageUrl = "/images/相框/_06影音部.png"; break;
+                case "影音部成员": imageUrl = "/images/相框/_06影音部.png"; break;
+                case "站务组组长": imageUrl = "/images/相框/_07站务组.png"; break;
+                case "站务组成员": imageUrl = "/images/相框/_07站务组.png"; break;
+                case "体育事业部部长": imageUrl = "/images/相框/_08体育部.png"; break;
+                case "体育事业部成员": imageUrl = "/images/相框/_08体育部.png"; break;
+                case "办公室主任": imageUrl = "/images/相框/_09办公室.png"; break;
+                case "办公室成员": imageUrl = "/images/相框/_09办公室.png"; break;
+                default: imageUrl = "/images/相框/_00普通.png"
+            }
+
+            return <img src={imageUrl} />
         }
+
     }
 
     render() {
@@ -105,9 +137,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         const email = `/message/message?id=${this.props.userInfo.id}`;
         //用户头像
         let urlHtml = <a href={realUrl} style={{ display: "block", maxHeight: "7.5rem" }}><img className="userPortrait" src={this.props.userInfo.portraitUrl}></img></a>;
-        //获取用户组
-        const displayTitle = this.props.userInfo.displayTitle;
-        this.getPhotoFrame(displayTitle);
+
         if (this.props.isAnonymous == true) {
             urlHtml = <div style={{ display: "block", maxHeight: "7.5rem" }}><img className="userPortrait" src={this.props.userInfo.portraitUrl}></img></div>;
         }
@@ -158,7 +188,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
 
             <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
                 <div style={{ zIndex: 100 }}>{urlHtml}</div>
-                <div className="photoFrame"><img src="/images/sample.png" /></div>
+                <div className="photoFrame">{this.state.photoframe}</div>
             </div>
 
             <div className="rpyClr" style={{ width: "100%", marginTop: "1rem", paddingLeft: "3rem" }}>
