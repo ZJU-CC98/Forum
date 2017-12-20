@@ -164,7 +164,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
             data = await response2.json();
         }*/
         const baseUrl = Utility.getApiUrl();
-        this.handleButtonClick(this.state.extendTagName, `${baseUrl}${res.content}`);
+        this.handleButtonClick(this.state.extendTagName, `${res.content}`);
     }
 
     handleUndo() {

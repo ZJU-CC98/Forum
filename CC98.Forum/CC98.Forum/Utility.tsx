@@ -71,13 +71,13 @@ export async function getTopic(topicid: number) {
 		const awardInfo = await getAwardInfo(data[0].id);
 		if (data[0].isAnonymous != true) {
 
-            const userMesJson = await getUserInfo(data[0].userId);
-            topicMessage = { ...data[0], userInfo: userMesJson, postId: data[0].id, likeInfo: likeInfo, awardInfo: awardInfo }
-        } else {
-            const anonymousUserName = `匿名${data[0].userName.toUpperCase()}`;
-            let purl = 'https://www.cc98.org/pic/anonymous.gif';
-            const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: "", postCount: 0 };
-            topicMessage = { ...data[0], userInfo: userMesJson, postId: data[0].id, isAnonymous: true, likeInfo: likeInfo, awardInfo: awardInfo }
+			const userMesJson = await getUserInfo(data[0].userId);
+			topicMessage = { ...data[0], userInfo: userMesJson, postId: data[0].id, likeInfo: likeInfo, awardInfo: awardInfo }
+		} else {
+			const anonymousUserName = `匿名${data[0].userName.toUpperCase()}`;
+			let purl = 'https://www.cc98.org/pic/anonymous.gif';
+			const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: "", postCount: 0 };
+			topicMessage = { ...data[0], userInfo: userMesJson, postId: data[0].id, isAnonymous: true, likeInfo: likeInfo, awardInfo: awardInfo }
 
 		}
 
@@ -124,20 +124,20 @@ export async function getTopicContent(topicid: number, curPage: number, replyCou
 				let purl = 'https://www.cc98.org/pic/anonymous.gif';
 				const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
 
-                const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
-                post[i] = {
+				const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
+				post[i] = {
 
-                    ...content[i], userInfo: userMesJson, postId: content[i].id, isAnonymous: true, likeInfo: likeInfo, awardInfo: awardInfo
-                }
-            } else {
-                const userMesJson = { name: '98Deleter', portraitUrl: 'http://www.cc98.org/images/policeM.png', id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
-                post[i] = {
-                    ...content[i], postId: content[i].id, isAnonymous: false, isDeleted: true, content: "该贴已被my cc98, my home", likeInfo: likeInfo, awardInfo: awardInfo
-                }
-            }
-        }
- 
-        return post;
+					...content[i], userInfo: userMesJson, postId: content[i].id, isAnonymous: true, likeInfo: likeInfo, awardInfo: awardInfo
+				}
+			} else {
+				const userMesJson = { name: '98Deleter', portraitUrl: 'http://www.cc98.org/images/policeM.png', id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
+				post[i] = {
+					...content[i], postId: content[i].id, isAnonymous: false, isDeleted: true, content: "该贴已被my cc98, my home", likeInfo: likeInfo, awardInfo: awardInfo
+				}
+			}
+		}
+
+		return post;
 
 	} catch (e) {
 		console.error(e);
@@ -238,20 +238,20 @@ export async function getHotReplyContent(topicid: number) {
 					...content[i], userInfo: userMesJson, postId: content[i].id, likeInfo: likeInfo, awardInfo: awardInfo
 				}
 
-            } else {
-                let purl = 'https://www.cc98.org/pic/anonymous.gif';
-                const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
-                const anonymousLastReplierName = `匿名${content[i].lastUpdateAuthor.toUpperCase()}`;
-                const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
-                post[i] = {
-                    ...content[i], userInfo: userMesJson, postId: content[i].id, likeInfo: likeInfo, awardInfo: awardInfo
-                }
-            }
-        }
-        return post;
-    } catch (e) {
-        //window.location.href = "/status/Disconnected";
-    }
+			} else {
+				let purl = 'https://www.cc98.org/pic/anonymous.gif';
+				const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
+				const anonymousLastReplierName = `匿名${content[i].lastUpdateAuthor.toUpperCase()}`;
+				const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
+				post[i] = {
+					...content[i], userInfo: userMesJson, postId: content[i].id, likeInfo: likeInfo, awardInfo: awardInfo
+				}
+			}
+		}
+		return post;
+	} catch (e) {
+		//window.location.href = "/status/Disconnected";
+	}
 }
 export function getListPager(totalPage) {
 	if (totalPage === 1) {
@@ -334,32 +334,32 @@ export function getPager(curPage, totalPage) {
 	return pages;
 }
 export async function getCurUserTopic(topicid: number, userId: number, router) {
-    try {
-        const headers = await formAuthorizeHeader();
-        const response = await cc98Fetch(`/post/topic/user?topicid=${topicid}&userid=${userId}&from=0&size=1`, { headers });
-        if (response.status === 401) {
-            window.location.href = "/status/UnauthorizedTopic";
-        }
-        if (response.status === 404) {
-            window.location.href = "/status/NotFoundTopic";
-        }
-        if (response.status === 500) {
-            window.location.href = "/status/ServerError";
-        }
-        const data = await response.json();
-        const userMesResponse = await cc98Fetch(`/user/name/${data[0].userName}`);
-        if (userMesResponse.status === 404) {
-            window.location.href = "/status/NotFoundUser";
-        }
-        if (userMesResponse.status === 500) {
-            window.location.href = "/status/ServerError";
-        }
-        const userMesJson = await userMesResponse.json();
-        data[0].userImgUrl = userMesJson.portraitUrl;
-        return data[0];
-    } catch (e) {
-        //window.location.href = "/status/Disconnected";
-    }
+	try {
+		const headers = await formAuthorizeHeader();
+		const response = await cc98Fetch(`/post/topic/user?topicid=${topicid}&userid=${userId}&from=0&size=1`, { headers });
+		if (response.status === 401) {
+			window.location.href = "/status/UnauthorizedTopic";
+		}
+		if (response.status === 404) {
+			window.location.href = "/status/NotFoundTopic";
+		}
+		if (response.status === 500) {
+			window.location.href = "/status/ServerError";
+		}
+		const data = await response.json();
+		const userMesResponse = await cc98Fetch(`/user/name/${data[0].userName}`);
+		if (userMesResponse.status === 404) {
+			window.location.href = "/status/NotFoundUser";
+		}
+		if (userMesResponse.status === 500) {
+			window.location.href = "/status/ServerError";
+		}
+		const userMesJson = await userMesResponse.json();
+		data[0].userImgUrl = userMesJson.portraitUrl;
+		return data[0];
+	} catch (e) {
+		//window.location.href = "/status/Disconnected";
+	}
 }
 export async function getCurUserTopicContent(topicid: number, curPage: number, userName: string, userId: number) {
 	try {
@@ -408,15 +408,15 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
 					...content[i], userInfo: userMesJson, postId: content[i].id, likeInfo: likeInfo, awardInfo: awardInfo
 				}
 
-            } else {
-                let purl = 'https://www.cc98.org/pic/anonymous.gif';
-                const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
-                const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
-                post[i] = {
-                    ...content[i], userInfo: userMesJson, likeInfo: likeInfo, awardInfo: awardInfo
-                }
-            }
-        }
+			} else {
+				let purl = 'https://www.cc98.org/pic/anonymous.gif';
+				const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
+				const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
+				post[i] = {
+					...content[i], userInfo: userMesJson, likeInfo: likeInfo, awardInfo: awardInfo
+				}
+			}
+		}
 
 		return post;
 	} catch (e) {
@@ -441,91 +441,91 @@ export async function getAllNewTopic(from: number, router) {
         /**
          * 通过api获取到主题之后转成json格式
          */
-        const response = await cc98Fetch(`/topic/new?from=${from}&size=${size}`, { headers });
-        if (response.status === 401) {
-            window.location.href = "/status/UnauthorizedTopic";
-        }
+		const response = await cc98Fetch(`/topic/new?from=${from}&size=${size}`, { headers });
+		if (response.status === 401) {
+			window.location.href = "/status/UnauthorizedTopic";
+		}
 
-        if (response.status === 403) {
-            window.location.href = "/status/OperationForbidden";
-        }
-        if (response.status === 404) {
-            window.location.href = "/status/NotFoundTopic";
-        }
-        if (response.status === 500) {
-            window.location.href = "/status/ServerError";
-        }
-        let newTopic = await response.json();
+		if (response.status === 403) {
+			window.location.href = "/status/OperationForbidden";
+		}
+		if (response.status === 404) {
+			window.location.href = "/status/NotFoundTopic";
+		}
+		if (response.status === 500) {
+			window.location.href = "/status/ServerError";
+		}
+		let newTopic = await response.json();
 
-        for (let i in newTopic) {
-            if (newTopic[i].userId) {
-                //获取作者粉丝数目
-                let userFan0 = await cc98Fetch(`/user/follower/count?userid=${newTopic[i].userId}`);
-                if (userFan0.status === 404) {
-                    window.location.href = "/status/NotFoundUser";
-                }
-                if (userFan0.status === 500) {
-                    window.location.href = "/status/ServerError";
-                }
-                let userFan1 = await userFan0.json();
-                newTopic[i].fanCount = userFan1;
-                //获取作者头像地址
-                let userInfo0 = await cc98Fetch(`/user/basic/${newTopic[i].userId}`);
-                if (userInfo0.status === 404) {
-                    window.location.href = "/status/NotFoundUser";
-                }
-                if (userInfo0.status === 500) {
-                    window.location.href = "/status/ServerError";
-                }
-                let userInfo1 = await userInfo0.json();
-                newTopic[i].portraitUrl = userInfo1.portraitUrl;
-                //获取所在版面名称
-                newTopic[i].boardName = await getBoardName(newTopic[i].boardId);
-            }
-            //匿名时粉丝数显示0
-            else {
-                newTopic[i].fanCount = 0;
-                newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-                newTopic[i].userName = "匿名用户";
-                newTopic[i].boardName = "心灵之约";
-            }
-            //时间转换
-            newTopic[i].time = transerRecentTime(newTopic[i].time);
-            newTopic[i].lastPostTime = transerRecentTime(newTopic[i].lastPostTime);
-            //阅读数转换
-            if (newTopic[i].hitCount > 10000) {
-                if (newTopic[i].hitCount > 100000) {
-                    let index = parseInt(`${newTopic[i].hitCount / 10000}`);
-                    newTopic[i].hitCount = `${index}万`;
-                }
-                else {
-                    let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
-                    newTopic[i].hitCount = `${index}万`;
-                }
-            }
-            //回复数转换
-            if (newTopic[i].replyCount > 10000) {
-                if (newTopic[i].replyCount > 100000) {
-                    let index = parseInt(`${newTopic[i].replyCount / 10000}`);
-                    newTopic[i].replyCount = `${index}万`;
-                }
-                else {
-                    let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
-                    newTopic[i].replyCount = `${index}万`;
-                }
-            }
-            //标签转换
-            if (newTopic[i].tag1) {
-                newTopic[i].tag1 = await getTagNamebyId(newTopic[i].tag1);
-                if (newTopic[i].tag2) {
-                    newTopic[i].tag2 = await getTagNamebyId(newTopic[i].tag2);
-                }
-            }
-        }
-        return newTopic;
-    } catch (e) {
-        //window.location.href = "/status/Disconnected";
-    }
+		for (let i in newTopic) {
+			if (newTopic[i].userId) {
+				//获取作者粉丝数目
+				let userFan0 = await cc98Fetch(`/user/follower/count?userid=${newTopic[i].userId}`);
+				if (userFan0.status === 404) {
+					window.location.href = "/status/NotFoundUser";
+				}
+				if (userFan0.status === 500) {
+					window.location.href = "/status/ServerError";
+				}
+				let userFan1 = await userFan0.json();
+				newTopic[i].fanCount = userFan1;
+				//获取作者头像地址
+				let userInfo0 = await cc98Fetch(`/user/basic/${newTopic[i].userId}`);
+				if (userInfo0.status === 404) {
+					window.location.href = "/status/NotFoundUser";
+				}
+				if (userInfo0.status === 500) {
+					window.location.href = "/status/ServerError";
+				}
+				let userInfo1 = await userInfo0.json();
+				newTopic[i].portraitUrl = userInfo1.portraitUrl;
+				//获取所在版面名称
+				newTopic[i].boardName = await getBoardName(newTopic[i].boardId);
+			}
+			//匿名时粉丝数显示0
+			else {
+				newTopic[i].fanCount = 0;
+				newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+				newTopic[i].userName = "匿名用户";
+				newTopic[i].boardName = "心灵之约";
+			}
+			//时间转换
+			newTopic[i].time = transerRecentTime(newTopic[i].time);
+			newTopic[i].lastPostTime = transerRecentTime(newTopic[i].lastPostTime);
+			//阅读数转换
+			if (newTopic[i].hitCount > 10000) {
+				if (newTopic[i].hitCount > 100000) {
+					let index = parseInt(`${newTopic[i].hitCount / 10000}`);
+					newTopic[i].hitCount = `${index}万`;
+				}
+				else {
+					let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
+					newTopic[i].hitCount = `${index}万`;
+				}
+			}
+			//回复数转换
+			if (newTopic[i].replyCount > 10000) {
+				if (newTopic[i].replyCount > 100000) {
+					let index = parseInt(`${newTopic[i].replyCount / 10000}`);
+					newTopic[i].replyCount = `${index}万`;
+				}
+				else {
+					let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
+					newTopic[i].replyCount = `${index}万`;
+				}
+			}
+			//标签转换
+			if (newTopic[i].tag1) {
+				newTopic[i].tag1 = await getTagNamebyId(newTopic[i].tag1);
+				if (newTopic[i].tag2) {
+					newTopic[i].tag2 = await getTagNamebyId(newTopic[i].tag2);
+				}
+			}
+		}
+		return newTopic;
+	} catch (e) {
+		//window.location.href = "/status/Disconnected";
+	}
 }
 
 /**
@@ -559,83 +559,83 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
 			window.location.href = "/status/UnauthorizedTopic";
 		}
 
-        if (response.status === 403) {
-            window.location.href = "/status/OperationForbidden";
-        }
-        if (response.status === 404) {
-            window.location.href = "/status/NotFoundTopic";
-        }
-        if (response.status === 500) {
-            window.location.href = "/status/ServerError";
-        }
-        let newTopic = await response.json();
-        for (let i in newTopic) {
-            if (newTopic[i].userId) {
-                //获取作者粉丝数目
-                let userFan0 = await cc98Fetch(`/user/follower/count?userid=${newTopic[i].userId}`);
-                if (userFan0.status === 404) {
-                    window.location.href = "/status/NotFoundUser";
-                }
-                if (userFan0.status === 500) {
-                    window.location.href = "/status/ServerError";
-                }
-                let userFan1 = await userFan0.json();
-                newTopic[i].fanCount = userFan1;
-                //获取作者头像地址
-                let userInfo0 = await cc98Fetch(`/user/basic/${newTopic[i].userId}`);
-                if (userInfo0.status === 404) {
-                    window.location.href = "/status/NotFoundUser";
-                }
-                if (userInfo0.status === 500) {
-                    window.location.href = "/status/ServerError";
-                }
-                let userInfo1 = await userInfo0.json();
-                newTopic[i].portraitUrl = userInfo1.portraitUrl;
-                //获取所在版面名称
-                newTopic[i].boardName = await getBoardName(newTopic[i].boardId);
-            }
-            //匿名时粉丝数显示0
-            else {
-                newTopic[i].fanCount = 0;
-                newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-                newTopic[i].userName = "匿名用户";
-                newTopic[i].boardName = "心灵之约";
-            }
-            //时间转换
-            newTopic[i].time = transerRecentTime(newTopic[i].time);
-            newTopic[i].lastPostTime = transerRecentTime(newTopic[i].lastPostTime);
+		if (response.status === 403) {
+			window.location.href = "/status/OperationForbidden";
+		}
+		if (response.status === 404) {
+			window.location.href = "/status/NotFoundTopic";
+		}
+		if (response.status === 500) {
+			window.location.href = "/status/ServerError";
+		}
+		let newTopic = await response.json();
+		for (let i in newTopic) {
+			if (newTopic[i].userId) {
+				//获取作者粉丝数目
+				let userFan0 = await cc98Fetch(`/user/follower/count?userid=${newTopic[i].userId}`);
+				if (userFan0.status === 404) {
+					window.location.href = "/status/NotFoundUser";
+				}
+				if (userFan0.status === 500) {
+					window.location.href = "/status/ServerError";
+				}
+				let userFan1 = await userFan0.json();
+				newTopic[i].fanCount = userFan1;
+				//获取作者头像地址
+				let userInfo0 = await cc98Fetch(`/user/basic/${newTopic[i].userId}`);
+				if (userInfo0.status === 404) {
+					window.location.href = "/status/NotFoundUser";
+				}
+				if (userInfo0.status === 500) {
+					window.location.href = "/status/ServerError";
+				}
+				let userInfo1 = await userInfo0.json();
+				newTopic[i].portraitUrl = userInfo1.portraitUrl;
+				//获取所在版面名称
+				newTopic[i].boardName = await getBoardName(newTopic[i].boardId);
+			}
+			//匿名时粉丝数显示0
+			else {
+				newTopic[i].fanCount = 0;
+				newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+				newTopic[i].userName = "匿名用户";
+				newTopic[i].boardName = "心灵之约";
+			}
+			//时间转换
+			newTopic[i].time = transerRecentTime(newTopic[i].time);
+			newTopic[i].lastPostTime = transerRecentTime(newTopic[i].lastPostTime);
 
-            //阅读数转换
-            if (newTopic[i].hitCount > 10000) {
-                if (newTopic[i].hitCount > 100000) {
-                    let index = parseInt(`${newTopic[i].hitCount / 10000}`);
-                    newTopic[i].hitCount = `${index}万`;
-                }
-                else {
-                    let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
-                    newTopic[i].hitCount = `${index}万`;
-                }
-            }
-            //回复数转换
-            if (newTopic[i].replyCount > 10000) {
-                if (newTopic[i].replyCount > 100000) {
-                    let index = parseInt(`${newTopic[i].replyCount / 10000}`);
-                    newTopic[i].replyCount = `${index}万`;
-                }
-                else {
-                    let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
-                    newTopic[i].replyCount = `${index}万`;
-                }
-            }
-            //标签转换
-            if (newTopic[i].tag1) {
-                newTopic[i].tag1 = await getTagNamebyId(newTopic[i].tag1);
-                if (newTopic[i].tag2) {
-                    newTopic[i].tag2 = await getTagNamebyId(newTopic[i].tag2);
-                }
-            }
-        }
-        return newTopic;
+			//阅读数转换
+			if (newTopic[i].hitCount > 10000) {
+				if (newTopic[i].hitCount > 100000) {
+					let index = parseInt(`${newTopic[i].hitCount / 10000}`);
+					newTopic[i].hitCount = `${index}万`;
+				}
+				else {
+					let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
+					newTopic[i].hitCount = `${index}万`;
+				}
+			}
+			//回复数转换
+			if (newTopic[i].replyCount > 10000) {
+				if (newTopic[i].replyCount > 100000) {
+					let index = parseInt(`${newTopic[i].replyCount / 10000}`);
+					newTopic[i].replyCount = `${index}万`;
+				}
+				else {
+					let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
+					newTopic[i].replyCount = `${index}万`;
+				}
+			}
+			//标签转换
+			if (newTopic[i].tag1) {
+				newTopic[i].tag1 = await getTagNamebyId(newTopic[i].tag1);
+				if (newTopic[i].tag2) {
+					newTopic[i].tag2 = await getTagNamebyId(newTopic[i].tag2);
+				}
+			}
+		}
+		return newTopic;
 
 	} catch (e) {
 		//window.location.href = "/status/Disconnected";
@@ -1248,28 +1248,28 @@ export function getListTotalPage(totalTopicCount) {
 	return (totalTopicCount - totalTopicCount % 20) / 20 + 1;
 }
 export async function getCurUserTotalReplyPage(topicId, userId, router) {
-    try {
-        const headers = await formAuthorizeHeader();
-        const replyCountResponse = await cc98Fetch(`/post/topic/user?topicid=${topicId}&userid=${userId}&from=0&size=1`, { headers });
-        if (replyCountResponse.status === 401) {
-            window.location.href = "/status/UnauthorizedTopic";
-        }
-        if (replyCountResponse.status === 404) {
-            window.location.href = "/status/NotFoundBoard";
-        }
-        if (replyCountResponse.status === 500) {
-            window.location.href = "/status/ServerError";
-        }
-        const replyCountJson = await replyCountResponse.json();
-        const replyCount = replyCountJson[0].count;
-        if (replyCount > 10) {
-            return (replyCount - replyCount % 10) / 10 + 1;
-        } else {
-            return 1;
-        }
-    } catch (e) {
-        //window.location.href = "/status/Disconnected";
-    }
+	try {
+		const headers = await formAuthorizeHeader();
+		const replyCountResponse = await cc98Fetch(`/post/topic/user?topicid=${topicId}&userid=${userId}&from=0&size=1`, { headers });
+		if (replyCountResponse.status === 401) {
+			window.location.href = "/status/UnauthorizedTopic";
+		}
+		if (replyCountResponse.status === 404) {
+			window.location.href = "/status/NotFoundBoard";
+		}
+		if (replyCountResponse.status === 500) {
+			window.location.href = "/status/ServerError";
+		}
+		const replyCountJson = await replyCountResponse.json();
+		const replyCount = replyCountJson[0].count;
+		if (replyCount > 10) {
+			return (replyCount - replyCount % 10) / 10 + 1;
+		} else {
+			return 1;
+		}
+	} catch (e) {
+		//window.location.href = "/status/Disconnected";
+	}
 }
 
 /**
@@ -1389,7 +1389,7 @@ export async function uploadFile(file: File) {
 	}
 }
 export function clickUploadIcon() {
-	
+
 	$("#upload-files").click();
 }
 export async function uploadEvent(e) {
@@ -1397,7 +1397,7 @@ export async function uploadEvent(e) {
 	const res = await uploadFile(files[0]);
 	const url = res.content;
 	const baseUrl = getApiUrl();
-	const str = `![](${baseUrl}${url})`;
+	const str = `![](${url})`;
 	Constants.testEditor.appendMarkdown(str);
 }
 /**
@@ -1415,7 +1415,7 @@ export async function followUser(userId: number) {
 		});
 		if (res.status === 200) {
 			return true;
-        } else {
+		} else {
 			throw new Error(await res.text());
 		}
 	} catch (e) {
@@ -1509,117 +1509,117 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
 		const myHeaders = await formAuthorizeHeader();
 		let bodyCotent = JSON.stringify(words);
 
-        myHeaders.append('content-type', 'application/json');
-        let size = 20;
-        let newTopic;
-        if (boardId == 0) {
-            const response = await cc98Fetch(`/topic/search?from=${from}&size=${size}`, {
-                method: 'POST',
-                headers: myHeaders,
-                body: bodyCotent
-            });
-            if (response.status === 401) {
-                window.location.href = "/status/UnauthorizedTopic";
-            }
-            if (response.status === 403) {
-                window.location.href = "/status/OperationForbidden";
-            }
-            if (response.status === 404) {
-                window.location.href = "/status/NotFoundTopic";
-            }
-            if (response.status === 500) {
-                window.location.href = "/status/ServerError";
-            }
-            newTopic = await response.json();
-        }
-        else {
-            const response = await cc98Fetch(`/topic/search/board/${boardId}?from=${from}&size=${size}`, {
-                method: 'POST',
-                headers: myHeaders,
-                body: bodyCotent
-            });
-            if (response.status === 401) {
-                window.location.href = "/status/UnauthorizedTopic";
-            }
-            if (response.status === 500) {
-                window.location.href = "/status/ServerError";
-            }
-            newTopic = await response.json();
-        }
-        //如果有搜索结果就处理一下
-        if (newTopic && newTopic != []) {
-            for (let i in newTopic) {
-                if (newTopic[i].userId) {
-                    //获取作者粉丝数目
-                    let userFan0 = await cc98Fetch(`/user/follower/count?userid=${newTopic[i].userId}`);
-                    if (userFan0.status === 404) {
-                        window.location.href = "/status/NotFoundUser";
-                    }
-                    if (userFan0.status === 500) {
-                        window.location.href = "/status/ServerError";
-                    }
-                    let userFan1 = await userFan0.json();
-                    newTopic[i].fanCount = userFan1;
-                    //获取作者头像地址
-                    let userInfo0 = await cc98Fetch(`/user/basic/${newTopic[i].userId}`);
-                    if (userInfo0.status === 404) {
-                        window.location.href = "/status/NotFoundUser";
-                    }
-                    if (userInfo0.status === 500) {
-                        window.location.href = "/status/ServerError";
-                    }
-                    let userInfo1 = await userInfo0.json();
-                    newTopic[i].portraitUrl = userInfo1.portraitUrl;
-                    //获取所在版面名称
-                    newTopic[i].boardName = await getBoardName(newTopic[i].boardId);
-                }
-                //匿名时粉丝数显示0
-                else {
-                    newTopic[i].fanCount = 0;
-                    newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
-                    newTopic[i].userName = "匿名用户";
-                    newTopic[i].boardName = "心灵之约";
-                }
+		myHeaders.append('content-type', 'application/json');
+		let size = 20;
+		let newTopic;
+		if (boardId == 0) {
+			const response = await cc98Fetch(`/topic/search?from=${from}&size=${size}`, {
+				method: 'POST',
+				headers: myHeaders,
+				body: bodyCotent
+			});
+			if (response.status === 401) {
+				window.location.href = "/status/UnauthorizedTopic";
+			}
+			if (response.status === 403) {
+				window.location.href = "/status/OperationForbidden";
+			}
+			if (response.status === 404) {
+				window.location.href = "/status/NotFoundTopic";
+			}
+			if (response.status === 500) {
+				window.location.href = "/status/ServerError";
+			}
+			newTopic = await response.json();
+		}
+		else {
+			const response = await cc98Fetch(`/topic/search/board/${boardId}?from=${from}&size=${size}`, {
+				method: 'POST',
+				headers: myHeaders,
+				body: bodyCotent
+			});
+			if (response.status === 401) {
+				window.location.href = "/status/UnauthorizedTopic";
+			}
+			if (response.status === 500) {
+				window.location.href = "/status/ServerError";
+			}
+			newTopic = await response.json();
+		}
+		//如果有搜索结果就处理一下
+		if (newTopic && newTopic != []) {
+			for (let i in newTopic) {
+				if (newTopic[i].userId) {
+					//获取作者粉丝数目
+					let userFan0 = await cc98Fetch(`/user/follower/count?userid=${newTopic[i].userId}`);
+					if (userFan0.status === 404) {
+						window.location.href = "/status/NotFoundUser";
+					}
+					if (userFan0.status === 500) {
+						window.location.href = "/status/ServerError";
+					}
+					let userFan1 = await userFan0.json();
+					newTopic[i].fanCount = userFan1;
+					//获取作者头像地址
+					let userInfo0 = await cc98Fetch(`/user/basic/${newTopic[i].userId}`);
+					if (userInfo0.status === 404) {
+						window.location.href = "/status/NotFoundUser";
+					}
+					if (userInfo0.status === 500) {
+						window.location.href = "/status/ServerError";
+					}
+					let userInfo1 = await userInfo0.json();
+					newTopic[i].portraitUrl = userInfo1.portraitUrl;
+					//获取所在版面名称
+					newTopic[i].boardName = await getBoardName(newTopic[i].boardId);
+				}
+				//匿名时粉丝数显示0
+				else {
+					newTopic[i].fanCount = 0;
+					newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+					newTopic[i].userName = "匿名用户";
+					newTopic[i].boardName = "心灵之约";
+				}
 
-                //阅读数转换
-                if (newTopic[i].hitCount > 10000) {
-                    if (newTopic[i].hitCount > 100000) {
-                        let index = parseInt(`${newTopic[i].hitCount / 10000}`);
-                        newTopic[i].hitCount = `${index}万`;
-                    }
-                    else {
-                        let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
-                        newTopic[i].hitCount = `${index}万`;
-                    }
-                }
-                //回复数转换
-                if (newTopic[i].replyCount > 10000) {
-                    if (newTopic[i].replyCount > 100000) {
-                        let index = parseInt(`${newTopic[i].replyCount / 10000}`);
-                        newTopic[i].replyCount = `${index}万`;
-                    }
-                    else {
-                        let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
-                        newTopic[i].replyCount = `${index}万`;
-                    }
-                }
-                //标签转换
-                if (newTopic[i].tag1) {
-                    newTopic[i].tag1 = await getTagNamebyId(newTopic[i].tag1);
-                    if (newTopic[i].tag2) {
-                        newTopic[i].tag2 = await getTagNamebyId(newTopic[i].tag2);
-                    }
-                }
-            }
-            return newTopic;
-        }
-        //如果没有搜索结果就返回null
-        else {
-            return 0;
-        }
-    } catch (e) {
-        //window.location.href = "/status/Disconnected";
-    }
+				//阅读数转换
+				if (newTopic[i].hitCount > 10000) {
+					if (newTopic[i].hitCount > 100000) {
+						let index = parseInt(`${newTopic[i].hitCount / 10000}`);
+						newTopic[i].hitCount = `${index}万`;
+					}
+					else {
+						let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
+						newTopic[i].hitCount = `${index}万`;
+					}
+				}
+				//回复数转换
+				if (newTopic[i].replyCount > 10000) {
+					if (newTopic[i].replyCount > 100000) {
+						let index = parseInt(`${newTopic[i].replyCount / 10000}`);
+						newTopic[i].replyCount = `${index}万`;
+					}
+					else {
+						let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
+						newTopic[i].replyCount = `${index}万`;
+					}
+				}
+				//标签转换
+				if (newTopic[i].tag1) {
+					newTopic[i].tag1 = await getTagNamebyId(newTopic[i].tag1);
+					if (newTopic[i].tag2) {
+						newTopic[i].tag2 = await getTagNamebyId(newTopic[i].tag2);
+					}
+				}
+			}
+			return newTopic;
+		}
+		//如果没有搜索结果就返回null
+		else {
+			return 0;
+		}
+	} catch (e) {
+		//window.location.href = "/status/Disconnected";
+	}
 }
 export async function awardWealth(reason, value, postId) {
 	const headers = await formAuthorizeHeader();
@@ -1699,9 +1699,9 @@ export function isFollowThisBoard(boardId) {
 	if (!getLocalStorage("userInfo")) return false;
 	const customBoards = getLocalStorage("userInfo").customBoards;
 	for (let item of customBoards) {
-	
+
 		if (item == boardId) {
-		
+
 			return true;
 		}
 	}
@@ -1781,7 +1781,7 @@ export async function getMessageResponse(from: number, size: number, router) {
 	try {
 		let result = [];
 		const myHeaders = await formAuthorizeHeader();
-	
+
 		let response = await cc98Fetch(`/notification/reply?from=${from}&size=${size}`, { headers: myHeaders });
 		if (response.status === 401) {
 			window.location.href = "/status/UnauthorizedTopic";
@@ -2233,15 +2233,15 @@ export async function getToken() {
 				headers,
 				body: $.param(requestBody)
 
-            });
-            const data = await response.json();
-            const token = "Bearer " + encodeURIComponent(data.access_token);
-            setLocalStorage("accessToken", token, data.expires_in);
-        }
-        return getLocalStorage("accessToken");
-    } else {
-        return null;
-    }
+			});
+			const data = await response.json();
+			const token = "Bearer " + encodeURIComponent(data.access_token);
+			setLocalStorage("accessToken", token, data.expires_in);
+		}
+		return getLocalStorage("accessToken");
+	} else {
+		return null;
+	}
 }
 export async function formAuthorizeHeader() {
 	const token = await getToken();
@@ -2406,14 +2406,14 @@ export async function setHighlight(topicId, isBold, isItalic, color, duration, r
 export async function setFavoriteTopic(topicId) {
 	const headers = await formAuthorizeHeader();
 	const url = `/me/favorite/${topicId}`;
-    const reponse = await cc98Fetch(url, { method: "PUT", headers });
-    return 'ok';
+	const reponse = await cc98Fetch(url, { method: "PUT", headers });
+	return 'ok';
 }
 export async function deleteFavoriteTopic(topicId) {
 	const headers = await formAuthorizeHeader();
 	const url = `/me/favorite/${topicId}`;
-    const reponse = await cc98Fetch(url, { method: "DELETE", headers });
-    return 'ok';
+	const reponse = await cc98Fetch(url, { method: "DELETE", headers });
+	return 'ok';
 }
 export async function getFavState(topicId) {
 	const headers = await formAuthorizeHeader();
@@ -2487,8 +2487,8 @@ export async function editPost(postId, contentType, title, content) {
 	const url = `/post/${postId}`;
 	const bodyInfo = { content: content, title: title, contentType: contentType };
 	const body = JSON.stringify(bodyInfo);
-    const response = await cc98Fetch(url, { method: "PUT", headers, body });
-    return 'ok';
+	const response = await cc98Fetch(url, { method: "PUT", headers, body });
+	return 'ok';
 }
 
 export async function cc98Fetch(url, init?: RequestInit) {
