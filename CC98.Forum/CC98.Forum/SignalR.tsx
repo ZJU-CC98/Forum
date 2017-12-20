@@ -81,7 +81,7 @@ class SignalRConnection {
         * token更换过就创建一个新的
         * 然后把注册在旧的上的事件监听移到新的上
         */
-		if (!this._connection || this._currentToken !== token) {
+		if (this._currentToken !== token) {
 			this._connection = new SignalR.HubConnection(this.url, { jwtBearer: () => token, logging: new SignalR.NullLogger() });
 			let key: EventListenerType;
 			for (key in this._eventListeners) {
@@ -115,7 +115,11 @@ class SignalRConnection {
      */
 	public get status() {
 		return this._isConneting;
-	}
+    }
+
+    constructor() {
+        this._connection = new SignalR.HubConnection('');
+    }
 }
 
 export default new SignalRConnection();

@@ -336,8 +336,8 @@ class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCente
                     </div>
                     <div style={{ width: '100%', height: `${this.state.divheight}px`, transitionDuration: '.5s' }}></div>
                     <div style={this.state.choosingDefault ? { display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'center' } : { display: 'none' }}>
-                        <img style={{ margin: '3rem', cursor: 'pointer' }} onClick={(e) => { this.changeAvatar('/images/default_avatar_boy.png'); }} src="/images/default_avatar_boy.png" />
-                        <img style={{ margin: '3rem', cursor: 'pointer' }} onClick={(e) => { this.changeAvatar('/images/default_avatar_boy.png'); }} src="/images/default_avatar_girl.png" />
+                        <img style={{ margin: '3rem', cursor: 'pointer' }} onClick={(e) => { this.changeAvatar('/static/images/default_avatar_boy.png'); }} src="/static/images/default_avatar_boy.png" />
+                        <img style={{ margin: '3rem', cursor: 'pointer' }} onClick={(e) => { this.changeAvatar('/static/images/default_avatar_boy.png'); }} src="/static/images/default_avatar_girl.png" />
                     </div>
                 </div>
             </div>

@@ -483,7 +483,7 @@ export class SchoolNewsComponent extends React.Component<{}, { schoolNews: MainP
  * 首页广告组件
  * 每30s切换一条
  */
-export class MainPageAdComponent extends React.Component<{}, { ads: MainPageColumn[], index: number }>{
+export class AdsComponent extends React.Component<{}, { ads: MainPageColumn[], index: number }>{
 
     private timer: any;
 
@@ -543,7 +543,7 @@ export class MainPageAdComponent extends React.Component<{}, { ads: MainPageColu
         let imageUrl = ads.length ? ads[index].imageUrl : "";
 
         return <div style={{ marginTop: "2.5rem" }}>
-            <Link to={url}><img src={imageUrl} style={{ maxWidth: "16.25rem" }} /></Link>
+            <Link to={url}><img src={imageUrl} style={{ width: "18.75rem", height:"6.25rem" }} /></Link>
         </div>
     }
 }
@@ -637,7 +637,7 @@ export class MainPage extends React.Component<{}, AppState> {
             <div className="rightPart">
                 <RecommendedFunctionComponent />
                 <SchoolNewsComponent />
-                <MainPageAdComponent />
+                <AdsComponent />
                 <Count />
             </div>
         </div>;

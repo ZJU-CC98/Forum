@@ -55,14 +55,13 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
             buttonInfo: '关注中'
         });
         let res = await Utility.followUser(this.props.userFanInfo.id);
-        console.log(res);
         if (res === true) {
             this.setState({
                 buttonIsDisabled: false,
                 buttonInfo: '已关注',
                 isFollowing: true
             });
-        } else if (res === '400') {
+        } else if (res === 'follow_count_limited') {
             this.setState({
                 buttonIsDisabled: false,
                 buttonInfo: '已达上限',

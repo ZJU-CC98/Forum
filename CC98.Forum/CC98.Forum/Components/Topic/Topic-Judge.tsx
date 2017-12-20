@@ -16,6 +16,7 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
 
     }
     async confirm() {
+        let status = 'ok';
         if ($("input[name='option']:checked").val() === 'plus1' || $("input[name='option']:checked").val() === 'minus1') {
             switch (this.state.UI) {
 
@@ -25,12 +26,19 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
                         const UIId = `#judge${this.props.postId}`;
                         if ($("input[name='reason']:checked").val() !== '自定义') {
                             console.log($("input[name='reason']:checked").val());
-                            await Utility.plus1(this.props.topicId, this.props.postId, $("input[name='reason']:checked").val());
+                            status=await Utility.plus1(this.props.topicId, this.props.postId, $("input[name='reason']:checked").val());
                         } else {
-                            await Utility.plus1(this.props.topicId, this.props.postId, this.state.reason);
+                            status =await Utility.plus1(this.props.topicId, this.props.postId, this.state.reason);
                         }
-                        $(UIId).css("display", "none");
-                        this.props.update();
+                        if (status === 'ok') {
+                            $(UIId).css("display", "none");
+                            this.props.update();
+                        } else if (status === 'already') {
+                            this.setState({ tips: '您今天已经评分过啦~' });
+                        } else if(status ==='not allowed'){
+                            this.setState({ tips: '您还没有资格评分哦~' });
+                        }
+                       
                     } else {
                         this.setState({ tips: "请输入原因！" });
                     }
@@ -39,12 +47,18 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
                     if ($("input[name='reason']:checked").val()) {
                         const UIId = `#judge${this.props.postId}`;
                         if ($("input[name='reason']:checked").val() !== '自定义') {
-                            await Utility.minus1(this.props.topicId, this.props.postId, $("input[name='reason']:checked").val());
+                            status= await Utility.minus1(this.props.topicId, this.props.postId, $("input[name='reason']:checked").val());
                         } else {
-                            await Utility.minus1(this.props.topicId, this.props.postId, this.state.reason);
+                            status=await Utility.minus1(this.props.topicId, this.props.postId, this.state.reason);
                         }
-                        $(UIId).css("display", "none");
-                        this.props.update();
+                        if (status === 'ok') {
+                            $(UIId).css("display", "none");
+                            this.props.update();
+                        } else if (status === 'already') {
+                            this.setState({ tips: '您今天已经评分过啦~' });
+                        } else if (status === 'not allowed') {
+                            this.setState({ tips: '您还没有资格评分哦~' });
+                        }
                     } else {
                         this.setState({ tips: "请输入原因！" });
                     }
@@ -100,9 +114,9 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
                     <div className="judgeOption" style={{ marginRight: '2rem' }}>
                         <input type="radio" name="reason" value="自定义" /><div>自定义</div>
                         </div>
-                    <input type="text" style={{ borderRadius: "1rem", backgroundColor: '#8bc9db', border: 'solid 1.6px #ffffff', color: 'white', paddingLeft: '0.5rem' }} value={this.state.reason} onChange={this.reasonInput} />{this.state.tips}
+                    <input type="text" style={{ borderRadius: "1rem", backgroundColor: '#8bc9db', border: 'solid 1.6px #ffffff', color: 'white', paddingLeft: '0.5rem' }} value={this.state.reason} onChange={this.reasonInput} /><div style={{ color: "#fff", fontSize: "0.75rem" }}>{this.state.tips}</div>
                 </div>
-                <div>{this.state.tips}</div>
+              
 
             </div>
 
@@ -136,9 +150,9 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
                     <div className="judgeOption" style={{marginRight: '2rem'}}>
                         <input type="radio" name="reason" value="自定义" /><div>自定义</div>
                     </div>
-                    <input type="text" style={{ borderRadius: "1rem", backgroundColor: '#8bc9db', border: 'solid 1.6px #ffffff', color: 'white', paddingLeft: '0.5rem' }} value={this.state.reason} onChange={this.reasonInput} />{this.state.tips}
+                    <input type="text" style={{ borderRadius: "1rem", backgroundColor: '#8bc9db', border: 'solid 1.6px #ffffff', color: 'white', paddingLeft: '0.5rem' }} value={this.state.reason} onChange={this.reasonInput} /><div style={{ color: "#fff", fontSize:"0.75rem" }}>{this.state.tips}</div>
                 </div>
-                <div>{this.state.tips}</div>
+        
 
             </div>
 

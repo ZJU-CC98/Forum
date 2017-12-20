@@ -95,7 +95,7 @@ export class UserCenterMyPostsExact extends React.Component<{match}, UserCenterM
             return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
         }
         if (this.state.userRecentPosts.length === 0) {
-            return (<div className="user-posts">
+            return (<div className="user-posts" style={{ textAlign: 'center' }}>
                 没有主题
             </div>
                 );
