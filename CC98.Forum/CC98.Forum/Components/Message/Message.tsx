@@ -28,10 +28,13 @@ export class Message extends React.Component<{}, AppState> {
                             <Router>
                                 <div className="message-content">
                                     <div className="message-nav">
-                                        <NavLink to="/message/response"><div id="response" className="nav-div">回复我的<div className="message-counterNav displaynone" id="unreadCount-replyCount1">{unreadCount.replyCount}</div></div></NavLink>
-                                        <NavLink to="/message/attme"><div id="attme" className="nav-div">@ 我的<div className="message-counterNav displaynone" id="unreadCount-atCount1">{unreadCount.atCount}</div></div></NavLink>
-                                        <NavLink to="/message/system"><div id="system" className="nav-div">系统通知<div className="message-counterNav displaynone" id="unreadCount-systemCount1">{unreadCount.systemCount}</div></div></NavLink>
-                                        <NavLink to="/message/message"><div id="message" className="nav-div">我的私信<div className="message-counterNav displaynone" id="unreadCount-messageCount1">{unreadCount.messageCount}</div></div></NavLink>
+                            <NavLink to="/message/response"><div id="response" className="nav-div">回复我的<div className="message-counterNav displaynone" id="unreadCount-replyCount1">{unreadCount.replyCount}</div></div></NavLink>
+                            <hr/>
+                            <NavLink to="/message/attme"><div id="attme" className="nav-div">@ 我的<div className="message-counterNav displaynone" id="unreadCount-atCount1">{unreadCount.atCount}</div></div></NavLink>
+                            <hr/>
+                            <NavLink to="/message/system"><div id="system" className="nav-div">系统通知<div className="message-counterNav displaynone" id="unreadCount-systemCount1">{unreadCount.systemCount}</div></div></NavLink>
+                            <hr/>
+                            <NavLink to="/message/message"><div id="message" className="nav-div">我的私信<div className="message-counterNav displaynone" id="unreadCount-messageCount1">{unreadCount.messageCount}</div></div></NavLink>
                                 </div>
                                     <Route exact path="/message" component={MessageResponse}></Route>
                                     <Route path="/message/response/:page?" component={MessageResponse} />
