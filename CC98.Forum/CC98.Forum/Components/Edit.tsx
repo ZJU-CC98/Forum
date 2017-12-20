@@ -91,7 +91,7 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
                     tag1: tag1Id
                 };
             }
-            else if (this.state.tag2 ) {
+            else if (this.state.tag2) {
                 tag1Id = await Utility.getTagIdbyName(this.state.tag1);
                 tag2Id = await Utility.getTagIdbyName(this.state.tag2);
                 content = {
@@ -185,10 +185,11 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
         const topicId = await response.text();
         //根据返回的topicid，发送@信息       
         const atUsers = this.atHanderler(this.state.content);
+        console.log(atUsers);
         //如果存在合法的@，则发送@信息，否则不发送，直接跳转至所发帖子
         if (atUsers) {
             const atUsersJSON = JSON.stringify(atUsers);
-            const url2 = `/notification/atuser?topicid=${topicId}`;
+            const url2 = `/notification/at?topicid=${topicId}`;
             let myHeaders2 = new Headers();
             myHeaders2.append("Content-Type", 'application/json');
             myHeaders2.append("Authorization", token);

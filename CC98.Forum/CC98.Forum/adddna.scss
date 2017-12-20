@@ -104,7 +104,7 @@
     left: 50%;
     top: 50%;
 }
-
+/*
 .photoFrame img {
     width: 9rem;
     height: 9rem;
@@ -112,7 +112,7 @@
     left: -4.5rem;
     top: -4.5rem;
 }
-
+*/
 //--------------------------------以下是首页的样式~ --------------------------------------------
 .mainPage {
     display: flex;
@@ -431,6 +431,9 @@
 }
 
 .schoolNewsTitle {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     flex-grow: 1;
     font-size: 0.75rem;
     font-family: 微软雅黑;
@@ -451,4 +454,10 @@
     width: 100%;
 }
 
+//论坛统计
+.mainPageCountRed {
+    font-size: 0.75rem;
+    font-family: 微软雅黑;
+    color: rgb(255,255,255);
+}
 //------------首页就到此为止啦----------------------

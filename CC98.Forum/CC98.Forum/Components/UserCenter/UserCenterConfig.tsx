@@ -24,7 +24,9 @@ export class UserCenterConfig extends React.Component<null, UserCenterConfigStat
             Birthday: info.birthday,
             birthdayYear: info.birthday ? Number.parseInt(info.birthday.slice(0, 4)): 0,
             birthdayMouth: info.birthday ? Number.parseInt(info.birthday.slice(5, 7)): 0,
-            birthdayDay: info.birthday ? Number.parseInt(info.birthday.slice(8, 10)): 0
+            birthdayDay: info.birthday ? Number.parseInt(info.birthday.slice(8, 10)) : 0,
+            DisplayTitleId: info.displayTitleId,
+            userTitleIds: info.userTitleIds
         };
         this.state = {
             userInfo: myInfo,
@@ -48,7 +50,9 @@ export class UserCenterConfig extends React.Component<null, UserCenterConfigStat
             Birthday: info.birthday,
             birthdayYear: info.birthday ? Number.parseInt(info.birthday.slice(0, 4)) : 0,
             birthdayMouth: info.birthday ? Number.parseInt(info.birthday.slice(5, 7)) : 0,
-            birthdayDay: info.birthday ? Number.parseInt(info.birthday.slice(8, 10)) : 0
+            birthdayDay: info.birthday ? Number.parseInt(info.birthday.slice(8, 10)) : 0,
+            DisplayTitleId: info.displayTitleId,
+            userTitleIds: info.userTitleIds
         };
         this.setState({
             userInfo
@@ -85,7 +89,8 @@ export class UserCenterConfig extends React.Component<null, UserCenterConfigStat
                 Gender: this.state.userInfo.Gender,
                 Introduction: this.state.userInfo.Introduction,
                 QQ: this.state.userInfo.QQ,
-                SignatureCode: this.state.userInfo.SignatureCode
+                SignatureCode: this.state.userInfo.SignatureCode,
+                DisplayTitleId: this.state.userInfo.DisplayTitleId
             };
 
             if (newInfo.EmailAddress && !newInfo.EmailAddress.match(/[\S]+@[\S]+\.[\S]+/)) {
@@ -171,4 +176,5 @@ class UserInfo extends ChangeUserInfo {
     birthdayYear: number;
     birthdayMouth: number;
     birthdayDay: number;
+    userTitleIds: number[];
 }

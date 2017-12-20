@@ -98,7 +98,7 @@ export class UserCenterMyFavoritesPosts extends React.Component<{match}, UserCen
             return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
         }
         if (!this.state.userRecentPosts || this.state.userRecentPosts.length === 0) {
-            return (<div className="user-posts">
+            return (<div className="user-posts" style={{ textAlign: 'center' }}>
                 {this.state.info}
             </div>);
         }

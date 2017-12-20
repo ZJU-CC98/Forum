@@ -21,18 +21,6 @@ export class AnnouncementComponent extends React.Component<{}, { announcementCon
         const response = await Utility.cc98Fetch('/config/global');
         const data = await response.json();
         const announcement: string = data.announcement;
-        //return announcement;
-
-        //这里开始是临时功能 只保留了公告中[list][/list]之间的内容
-        //const reg = /\[list\][\s\S]*?\[align=left\]/gim;
-        //const reg2 = /\[\*\]/gim;
-        //const reg3 = /red/gim;
-        //const newAnnouncement = announcement.match(reg);
-        //let x = newAnnouncement[0];
-        //x = x.replace("[list]", "");
-        //x = x.replace("[align=left]", "");
-        //x = x.replace(reg2, "");   //去掉了因未关闭暂时无法解析的[*]
-        //x = x.replace(reg3, "orchid");  //把恶心的大红色换成梦幻的紫色
         return announcement;
     }
     async componentDidMount() {
@@ -586,34 +574,32 @@ export class Count extends React.Component<{}, { data }> {
     }
     render() {
         const data = this.state.data;
-        return <div className="recommendedFunction">
-            <div className="mainPageTitle1">
+        return <div className="schoolNews">
+            <div className="mainPageTitle2">
                 <div className="mainPageTitleRow">
                     <i className="fa fa-volume-up"></i>
                     <div className="mainPageTitleText">论坛统计</div>
                 </div>
             </div>
-            <div className="recommendedFunctionContent">
-                <div className="recommendedFunctionRow">
-                    今日帖数{data.todayCount}
+            <div className="schoolNewsContent" style={{ height: "10rem" }}>
+                <div className="schoolNewsRow">
+                    <div className="schoolNewsTitle"><div>今日帖数</div><div className="mainPageCountRed">{data.todayCount}</div></div>
                 </div>
-                <div className="recommendedFunctionRow">
-                    总主题数{data.topicCount}
+                <div className="schoolNewsRow">
+                    <div className="schoolNewsTitle"><div>论坛总主题数</div><div className="mainPageCountRed">{data.topicCount}</div></div>
                 </div>
-                <div className="recommendedFunctionRow">
-                    最高帖数{data.maxPostCount}
+                <div className="schoolNewsRow">
+                    <div className="schoolNewsTitle"><div>论坛总回复数</div><div className="mainPageCountRed">{data.postCount}</div></div>
+                </div>               
+                <div className="schoolNewsRow">
+                    <div className="schoolNewsTitle"><div>总用户数</div><div className="mainPageCountRed">{data.userCount}</div></div>
                 </div>
-                <div className="recommendedFunctionRow">
-                    发生于{data.maxPostDate}
-                </div>
-                <div className="recommendedFunctionRow">
-                    最新用户{data.lastUserName}
-                </div>
-                <div className="recommendedFunctionRow">
-                    总用户数{data.userCount}
-                </div>
+                <div className="schoolNewsRow">
+                    <div className="schoolNewsTitle"><div>欢迎新用户</div><div className="mainPageCountRed">{data.lastUserName}</div></div>
+                </div>           
             </div>
         </div>
+
     }
 }
 

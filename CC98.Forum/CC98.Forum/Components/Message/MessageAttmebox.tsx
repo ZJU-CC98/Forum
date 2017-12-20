@@ -19,12 +19,12 @@ export class MessageAttmebox extends React.Component<MessageResponseProps> {
         if (this.props.isRead) {
             let userName = `[url=http://${host}/user/name/${this.props.userName}][color=gray]${this.props.userName}[/color][/url]`;
             let title = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=blue]${this.props.topicTitle}[/color][/url]`;
-            content = ` ${userName} [color=gray]在《${title}》中回复了你。[/color]`;
+            content = ` ${userName} [color=gray]在《${title}》中@了你。[/color]`;
         }
         else {
             let userName = `[url=http://${host}/user/name/${this.props.userName}][color=gray][b]${this.props.userName}[/b][/color][/url]`;
             let title = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=blue]${this.props.topicTitle}[/color][/url]`;
-            content = ` ${userName} [color=gray][b]在《${title}》中回复了你。[/b][/color]`;
+            content = ` ${userName} [color=gray][b]在《${title}》中@了你。[/b][/color]`;
         }
         return (<div className="message-response-box">
             <div className="message-response-box-middle">

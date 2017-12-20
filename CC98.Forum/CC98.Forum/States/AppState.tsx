@@ -350,6 +350,7 @@ export class UserInfo {
      * 风评
      */
     popularity: number;
+    UserTitleIds: string[];
 }
 
 /**
@@ -482,4 +483,8 @@ export class ChangeUserInfo {
     * 生日
     */
     Birthday: string;
+    /**
+     * 
+     */
+    DisplayTitleId: number;
 }

@@ -2280,14 +2280,14 @@ a {
     height: 55px;
     width: 60px;
     border-radius: 0 0 10px 10px;
-    background-color: rgb(53,177,255);
+    background-color: #79b8ca;
     font-size: 16px; //这里字体要大一点
     letter-spacing: 2px;
     justify-content: center;
-    background: linear-gradient(rgb(53,177,255),rgb(13,137,255)); //渐变效果
-    background: -webkit-linear-gradient(rgb(53,177,255),rgb(13,137,255)); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(rgb(53,177,255),rgb(13,137,255)); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(rgb(53,177,255),rgb(13,137,255)); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#79b8ca, #67a8bb); //渐变效果
+    background: -webkit-linear-gradient(#79b8ca, #67a8bb); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#79b8ca, #67a8bb); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#79b8ca, #67a8bb); /* Firefox 3.6 - 15 */
 }
 
 #dropdown .boardListLink:hover { //:hover 选择器用于选择鼠标指针浮动在上面的元素
@@ -2345,7 +2345,7 @@ a {
 }
 
 #dropdown li:hover {
-    background: rgb(53,177,255);
+    background: $color-bg;
 }
 //以下是头部中搜索条的样式
 #search {
@@ -2413,6 +2413,7 @@ a {
 #search .searchIco {
     width: 20px;
     padding: 2px 0 0 3px;
+    cursor: pointer;
 }
 
 #search ul {

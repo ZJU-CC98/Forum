@@ -517,6 +517,13 @@ export async function getAllNewTopic(from: number, router) {
                     newTopic[i].replyCount = `${index}万`;
                 }
             }
+            //标签转换
+            if (newTopic[i].tag1) {
+                newTopic[i].tag1 = await getTagNamebyId(newTopic[i].tag1);
+                if (newTopic[i].tag2) {
+                    newTopic[i].tag2 = await getTagNamebyId(newTopic[i].tag2);
+                }
+            }
         }
         return newTopic;
     } catch (e) {
@@ -602,30 +609,37 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
             newTopic[i].time = transerRecentTime(newTopic[i].time);
             newTopic[i].lastPostTime = transerRecentTime(newTopic[i].lastPostTime);
 
-			//阅读数转换
-			if (newTopic[i].hitCount > 10000) {
-				if (newTopic[i].hitCount > 100000) {
-					let index = parseInt(`${newTopic[i].hitCount / 10000}`);
-					newTopic[i].hitCount = `${index}万`;
-				}
-				else {
-					let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
-					newTopic[i].hitCount = `${index}万`;
-				}
-			}
-			//回复数转换
-			if (newTopic[i].replyCount > 10000) {
-				if (newTopic[i].replyCount > 100000) {
-					let index = parseInt(`${newTopic[i].replyCount / 10000}`);
-					newTopic[i].replyCount = `${index}万`;
-				}
-				else {
-					let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
-					newTopic[i].replyCount = `${index}万`;
-				}
-			}
-		}
-		return newTopic;
+            //阅读数转换
+            if (newTopic[i].hitCount > 10000) {
+                if (newTopic[i].hitCount > 100000) {
+                    let index = parseInt(`${newTopic[i].hitCount / 10000}`);
+                    newTopic[i].hitCount = `${index}万`;
+                }
+                else {
+                    let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
+                    newTopic[i].hitCount = `${index}万`;
+                }
+            }
+            //回复数转换
+            if (newTopic[i].replyCount > 10000) {
+                if (newTopic[i].replyCount > 100000) {
+                    let index = parseInt(`${newTopic[i].replyCount / 10000}`);
+                    newTopic[i].replyCount = `${index}万`;
+                }
+                else {
+                    let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
+                    newTopic[i].replyCount = `${index}万`;
+                }
+            }
+            //标签转换
+            if (newTopic[i].tag1) {
+                newTopic[i].tag1 = await getTagNamebyId(newTopic[i].tag1);
+                if (newTopic[i].tag2) {
+                    newTopic[i].tag2 = await getTagNamebyId(newTopic[i].tag2);
+                }
+            }
+        }
+        return newTopic;
 
 	} catch (e) {
 		//window.location.href = "/status/Disconnected";
@@ -1410,8 +1424,8 @@ export async function followUser(userId: number) {
 		});
 		if (res.status === 200) {
 			return true;
-		} else {
-			throw new Error(res.status.toString());
+        } else {
+			throw new Error(await res.text());
 		}
 	} catch (e) {
 		return e.message;
@@ -1596,6 +1610,13 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                     else {
                         let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
                         newTopic[i].replyCount = `${index}万`;
+                    }
+                }
+                //标签转换
+                if (newTopic[i].tag1) {
+                    newTopic[i].tag1 = await getTagNamebyId(newTopic[i].tag1);
+                    if (newTopic[i].tag2) {
+                        newTopic[i].tag2 = await getTagNamebyId(newTopic[i].tag2);
                     }
                 }
             }

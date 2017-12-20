@@ -106,7 +106,7 @@ export class UserCenterMyFollowings extends React.Component<{match}, UserCenterM
         }
         if (this.state.userFollowings.length === 0) {
             return (
-                <div className="user-center-myfollowings">
+                <div className="user-center-myfollowings" style={{ textAlign: 'center' }}>
                     {this.state.info}
                 </div>
                 );
