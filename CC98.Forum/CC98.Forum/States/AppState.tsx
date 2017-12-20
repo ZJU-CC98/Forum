@@ -350,7 +350,18 @@ export class UserInfo {
      * 风评
      */
     popularity: number;
+    /**
+     * 用户头衔ID
+     */
     UserTitleIds: string[];
+    /**
+     * 粉丝数
+     */
+    fanCount: number;
+    /**
+     * 财富值
+     */
+    wealth: number;
 }
 
 /**

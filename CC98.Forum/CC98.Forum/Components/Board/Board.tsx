@@ -118,7 +118,7 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
         this.setState({ isFollow: newProps.boardInfo.isFollow });
     }
     onError(e) {
-        e.target.src = `/images/_CC98协会.png`;
+        e.target.src = `/static/images/_CC98协会.png`;
     }
     render() {
         const boardUrl = `/list/${this.props.boardId}`;
@@ -786,6 +786,11 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         let url = `/topic/${this.props.id}`;
         const titleId = `title${this.props.id}`;
         let icon;
+        if (this.props.topState === 0) {
+            icon = <div style={{
+                width: "1rem", justifyContent: "flex-start"
+            }}><i style={{ color: "#B0B0B0" }} className="fa fa-envelope fa-lg"></i></div>
+        }
         //热
         if (this.props.replyCount > 100 && this.props.topState === 0) {
             icon = <div style={{
@@ -817,11 +822,7 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
             hitCount = (this.props.hitCount / 10000).toFixed(1).toString() + '万';
         }
         //置顶
-        if (this.props.topState === 0) {
-            icon = <div style={{
-                width: "1rem", justifyContent: "flex-start"
-            }}><i style={{ color: "#B0B0B0" }} className="fa fa-envelope fa-lg"></i></div>
-        } else if (this.props.topState === 2) {
+         if (this.props.topState === 2) {
             icon = <div style={{
                 width: "1rem", justifyContent: "flex-start"
             }}><i style={{ color: "orange" }} className="fa fa-chevron-circle-up fa-lg"></i></div>

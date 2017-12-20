@@ -27,7 +27,7 @@ export class TopicInfo extends React.Component<{ topicInfo, boardInfo, tag1, tag
         this.setState({ tag1Name: t1, tag2Name: t2 });
     }
     onError(e) {
-        e.target.src = `/images/_CC98协会.png`;
+        e.target.src = `/static/images/_CC98协会.png`;
     }
     render() {
         const url = `/images/_${this.props.boardInfo.name}.png`;
