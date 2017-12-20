@@ -1,6 +1,7 @@
 ﻿import * as React from 'react';
 import * as Utility from '../../Utility';
 import { Link } from 'react-router-dom';
+import { AdsComponent } from '../mainpage';
 declare let moment: any;
 export class TopicInfo extends React.Component<{ topicInfo, boardInfo, tag1, tag2, adsUrl ,isFav}, { tag1Name, tag2Name,isFollow }>{
     constructor(props) {
@@ -61,7 +62,7 @@ export class TopicInfo extends React.Component<{ topicInfo, boardInfo, tag1, tag
                     </div>             
             </div>
             <div className="topicInfo-ads">
-                <img className="topicInfo-ads" src={this.props.adsUrl} />
+                <AdsComponent />
             </div>
                 </div>;
     }

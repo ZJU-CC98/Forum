@@ -13,6 +13,7 @@ import {
 import TopicTitleAndContentState = State.TopicTitleAndContentState;
 import { Pager } from '../Pager';
 import { NotFoundTopic, UnauthorizedTopic, UnauthorizedBoard, ServerError } from '../Status';
+import { AdsComponent } from '../mainpage';
 declare let moment: any;
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
@@ -241,7 +242,7 @@ export class ListButtonAndAds extends React.Component<{ boardInfo, adsUrl }> {
         const createTopicUrl = `/editor/postTopic/${this.props.boardInfo.id}`;
         return <div className="row" style={{ width: "100%", height: "6.25rem", alignItems: "flex-end", justifyContent: "space-between", marginTop: "1rem" }}>
             <Link className="button bgcolor" to={createTopicUrl}>发主题</Link>
-            <div style={{ height:"6.25rem" }}><img style={{ width: "18.75rem", height: "6.25rem" }} src={adsUrl}></img></div>
+            <div style={{ height: "6.25rem" }}> <AdsComponent /></div>
         </div>;
     }
 }
