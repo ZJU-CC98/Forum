@@ -35,7 +35,8 @@ class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCente
             img: null,
             NUM_MAX: 0,
             scaling: 1,
-            choosingDefault: false
+            choosingDefault: false,
+            fileType: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -48,7 +49,7 @@ class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCente
     }
     
     handleChange(e) {
-        let file = e.target.files[0];
+        let file: File = e.target.files[0];
         if (!file.type.match('image.*')) {
             this.setState({
                 info: '请选择图片文件',
@@ -57,7 +58,7 @@ class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCente
             });
             return false;
         }
-        
+        this.setState({fileType: file.type});
         let render = new FileReader();
 
         render.readAsDataURL(file);
@@ -178,13 +179,13 @@ class UserCenterConfigAvatar extends React.Component<{changeUserInfo}, UserCente
         ctx.drawImage(this.state.img, x * this.state.scaling, y * this.state.scaling, width * this.state.scaling, width * this.state.scaling, 0, 0, width, width);
         canvas.toBlob(async (result) => {
             
-            let file: any = new Blob([result], { type: 'image/png'});
+            let file: any = new Blob([result], { type: this.state.fileType});
             file.lastModifiedDate = Date.now();
             file.name = '头像.png';
             const avatar = await Utility.uploadFile(file);
             const baseUrl = Utility.getApiUrl();
             this.changeAvatar(baseUrl + avatar.content);
-        },'image/png');
+        }, this.state.fileType, 0.75);
     }
 
     changeAvatar = async (avatarUrl: string) => {
@@ -361,6 +362,7 @@ interface UserCenterConfigAvatarState {
     NUM_MAX: number;
     scaling: number;
     choosingDefault: boolean;
+    fileType: string;
 }
 
 function mapDispatch(dispatch) {

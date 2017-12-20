@@ -7,7 +7,7 @@ import { Judge } from './Topic-Judge';
 import { Replier } from './Topic-Replier';
 import { ReplyContent } from './Topic-ReplyContent';
 import { ReplierSignature } from './Topic-ReplierSignature';
-export class PostTopic extends React.Component<{ boardInfo,topicInfo,userId, imgUrl, page, topicid,quote }, { topicMessage,masters}> {
+export class PostTopic extends React.Component<{ boardInfo,topicInfo,userId, imgUrl, page, topicid,quote,isTrace }, { topicMessage,masters}> {
     constructor(props, content) {
         super(props, content);
         this.update = this.update.bind(this);
@@ -40,7 +40,7 @@ export class PostTopic extends React.Component<{ boardInfo,topicInfo,userId, img
     
                 return <div className="reply" id={'1'} >
                     <Replier key={this.state.topicMessage.postId} userInfo={this.state.topicMessage.userInfo} isAnonymous={this.state.topicMessage.isAnonymous} topicid={this.state.topicMessage.topicId} floor={this.state.topicMessage.floor} isDeleted={this.state.topicMessage.isDeleted}  traceMode={false} isHot={false} />
-                    <div className="column" style={{ justifyContent: "space-between", width: "85%" }}>
+                    <div className="column" style={{ justifyContent: "space-between", width: "80%" }}>
                         <Judge userId={this.state.topicMessage.userId} postId={this.state.topicMessage.postId} update={this.update} topicId={this.state.topicMessage.topicId} />
                         <PostManagement topicId={this.state.topicMessage.topicId} postId={this.state.topicMessage.postId} userId={this.state.topicMessage.userId} update={this.update} privilege={privilege} />
                         <ReplyContent key={this.state.topicMessage.content} postid={this.state.topicMessage.postId} content={this.state.topicMessage.content} contentType={this.state.topicMessage.contentType} />
@@ -49,7 +49,7 @@ export class PostTopic extends React.Component<{ boardInfo,topicInfo,userId, img
                             userInfo={this.state.topicMessage.userInfo}
                             content={this.state.topicMessage.content}
                             floor={this.state.topicMessage.floor}
-                            quote={this.quote}
+                            quote={this.quote} traceMode={this.props.isTrace}
                             replyTime={this.state.topicMessage.time}
                             lastUpdateAuthor={this.state.topicMessage.lastUpdateAuthor}
                             lastUpdateTime={this.state.topicMessage.lastUpdateTime} boardId={this.props.boardInfo.id} isLZ={this.state.topicMessage.isLZ} />
