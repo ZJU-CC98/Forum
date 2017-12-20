@@ -618,6 +618,16 @@ export class InputMdContent extends React.Component<{ mode, postInfo, ready, onC
                     "link", "image", "code", "table", "html-entities",
                 ]
             },
+            toolbarIconsClass: {
+                testIcon: "fa-upload"  // 指定一个FontAawsome的图标类
+            },
+            // 自定义工具栏按钮的事件处理
+            toolbarHandlers: {
+                testIcon: function (cm, icon, cursor, selection) {
+                    var str = $("#upload-files").click();
+
+                }
+            },
         });
 
         this.setState({});
@@ -629,6 +639,7 @@ export class InputMdContent extends React.Component<{ mode, postInfo, ready, onC
     render() {
         return <div style={{ width: "100%", display: "flex", flexDirection: "column" }}><div id="sendTopic">
             <form>
+                <input type='file' id='upload-files' style={{ display: 'none ' }} onChange={Utility.uploadEvent} />
                 <div id="testEditor" className="editormd">
                     <textarea className="editormd-markdown-textarea" name="testEditor-markdown-doc"  ></textarea>
                 </div>
