@@ -35,7 +35,7 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
                 buttonInfo: '已关注',
                 isFollowing: true
             });
-        } else if (res === '400') {
+        } else if (res === 'follow_count_limited') {
             this.setState({
                 buttonIsDisabled: false,
                 buttonInfo: '已达上限',
@@ -122,6 +122,7 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
                     <p><span className="user-profile-info">性别</span>{(this.props.userInfo.gender === 1) ? '男' : '女'} </p>
                     <p><span className="user-profile-info">发帖数</span>{this.props.userInfo.postCount}</p>
                     <p><span className="user-profile-info">威望</span>{this.props.userInfo.prestige}</p>
+                    <p><span className="user-profile-info">粉丝数</span>{this.props.userInfo.fanCount}</p>
                     <p><span className="user-profile-info">风评</span>{this.props.userInfo.popularity}</p>
                     <p><span className="user-profile-info">注册时间</span>{this.props.userInfo.registerTime.replace('T', ' ')}</p>
                     <p><span className="user-profile-info">最后登录</span>{this.props.userInfo.lastLogOnTime.replace('T', ' ')}</p>

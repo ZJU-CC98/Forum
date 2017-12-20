@@ -6,7 +6,25 @@ import * as React from 'react';
 import { ChangeUserInfo } from '../../states/AppState';
 import * as Utility from '../../Utility';
 
-export class UserCenterConfigOthers extends React.Component<{ userinfo: UserInfo, handleChange: Function}> {
+export class UserCenterConfigOthers extends React.Component<{ userinfo: UserInfo, handleChange: Function }, State> {
+    constructor(props) {
+        super(props);
+        this.state = {
+            displayTitles: []
+        };
+    }
+    async componentDidMount() {
+        try {
+            const url = '/config/global/all-user-title';
+            let res = await Utility.cc98Fetch(url);
+            let data = await res.json();
+            this.setState({
+                displayTitles: data
+            });
+        } catch (e) {
+
+        }
+    }
     render() {
         let array = [], i = 0;
 
@@ -52,6 +70,20 @@ export class UserCenterConfigOthers extends React.Component<{ userinfo: UserInfo
                 <select id="birthdayMouth" name="birthdayMouth" value={this.props.userinfo.birthdayMouth} disabled={this.props.userinfo.birthdayYear === 0} onChange={(e) => { this.props.handleChange(e.target.name, Number.parseInt(e.target.value)) }}>{mouthsOption}</select><p>月</p>
                 <select id="birthdayDay" name="birthdayDay" value={this.props.userinfo.birthdayDay} disabled={this.props.userinfo.birthdayYear === 0} onChange={(e) => { this.props.handleChange(e.target.name, Number.parseInt(e.target.value)) }}>{daysOption}</select><p>日</p>
             </div>
+            {this.state.displayTitles.length > 0 ?
+                <div className="config-gender">
+                    <p>头衔：</p>
+                    <select style={{width: 'auto'}} name="DisplayTitleId" value={this.props.userinfo.DisplayTitleId} onChange={(e) => { this.props.handleChange(e.target.name, Number.parseInt(e.target.value)) }}>
+                        <option value={0}>不显示</option>
+                        {this.props.userinfo.userTitleIds.map(item => {
+                            let title = this.state.displayTitles.filter(title => title.id === item);
+                            if (title.length > 0) {
+                                return <option value={item}>{title[0].name}</option>
+                            }
+                        })}
+                    </select>
+                </div> : null
+            }
             <div className="config-text">
                 <p>QQ：</p>
                 <input type="text" name="QQ" value={this.props.userinfo.QQ} maxLength={20} onChange={(e) => { this.props.handleChange(e.target.name, e.target.value) }}></input>
@@ -75,4 +107,14 @@ class UserInfo extends ChangeUserInfo {
     birthdayYear: number;
     birthdayMouth: number;
     birthdayDay: number;
+    userTitleIds: number[];
+}
+
+class State {
+    displayTitles: DispalyTitle[]
+}
+
+class DispalyTitle {
+    id: number;
+    name: string;
 }

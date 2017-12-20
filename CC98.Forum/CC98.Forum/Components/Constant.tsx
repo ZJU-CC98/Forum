@@ -30,7 +30,7 @@ export module Constants {
 	export async function loadConfig() {
 
 		// 加载基本配置
-		const configResponse = await fetch('/config.json');
+		const configResponse = await fetch('/static/config.json');
 
 		if (!configResponse.ok) {
 			throw new Error('系统无法读取配置文件，网站无法正常运行');
@@ -40,7 +40,7 @@ export module Constants {
 
 		// 加载运行时配置（如果存在）
 		try {
-			const productionConfigResponse = await fetch('/config.production.json');
+			const productionConfigResponse = await fetch('/static/config.production.json');
 			const productionConfig = await productionConfigResponse.json() as IConfig;
 			config = { ...config, ...productionConfig };
 

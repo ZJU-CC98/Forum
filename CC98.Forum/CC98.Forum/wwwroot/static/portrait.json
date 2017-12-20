@@ -1,0 +1,135 @@
+﻿{
+  "吉祥物": {
+    "style": {
+      "width": "10rem",
+      "height": "10rem",
+      "position": "absolute",
+      "left": "-5rem",
+      "top": "-5rem",
+      "z-index": "150"
+    },
+    "imageUrl": "/static/images/相框/吉祥物.png",
+    "portraitShadow": true
+  },
+  "普通": {
+    "style": {
+      "width": "9rem",
+      "height": "9rem",
+      "position": "absolute",
+      "left": "-4.5rem",
+      "top": "-4.5rem"
+    },
+    "imageUrl": "/static/images/相框/_00普通.png",
+    "portraitShadow": true
+  },
+  "版主": {
+    "style": {
+      "width": "9rem",
+      "height": "9rem",
+      "position": "absolute",
+      "left": "-4.5rem",
+      "top": "-4.5rem"
+    },
+    "imageUrl": "/static/images/相框/_01版主.png",
+    "portraitShadow": true
+  },
+  "编辑部": {
+    "style": {
+      "width": "9rem",
+      "height": "9rem",
+      "position": "absolute",
+      "left": "-4.5rem",
+      "top": "-4.5rem"
+    },
+    "imageUrl": "/static/images/相框/_02编辑部.png",
+    "portraitShadow": true
+  },
+  "技术组": {
+    "style": {
+      "width": "9rem",
+      "height": "9rem",
+      "position": "absolute",
+      "left": "-4.5rem",
+      "top": "-4.5rem"
+    },
+    "imageUrl": "/static/images/相框/_03技术组.png",
+    "portraitShadow": true
+  },
+  "贵宾": {
+    "style": {
+      "width": "9rem",
+      "height": "9rem",
+      "position": "absolute",
+      "left": "-4.5rem",
+      "top": "-4.5rem"
+    },
+    "imageUrl": "/static/images/相框/_04贵宾.png",
+    "portraitShadow": true
+  },
+  "策划部": {
+    "style": {
+      "width": "9rem",
+      "height": "9rem",
+      "position": "absolute",
+      "left": "-4.5rem",
+      "top": "-4.5rem"
+    },
+    "imageUrl": "/static/images/相框/_05策划部.png",
+    "portraitShadow": true
+  },
+  "影音部部长": {
+    "style": {
+      "width": "9rem",
+      "height": "9rem",
+      "position": "absolute",
+      "left": "-4.5rem",
+      "top": "-4.5rem"
+    },
+    "imageUrl": "/static/images/相框/_06影音部.png",
+    "portraitShadow": true
+  },
+  "站务组": {
+    "style": {
+      "width": "9rem",
+      "height": "9rem",
+      "position": "absolute",
+      "left": "-4.5rem",
+      "top": "-4.5rem"
+    },
+    "imageUrl": "/static/images/相框/_07站务组.png",
+    "portraitShadow": true
+  },
+  "体育部": {
+    "style": {
+      "width": "9rem",
+      "height": "9rem",
+      "position": "absolute",
+      "left": "-4.5rem",
+      "top": "-4.5rem"
+    },
+    "imageUrl": "/static/images/相框/_08体育部.png",
+    "portraitShadow": true
+  },
+  "办公室": {
+    "style": {
+      "width": "9rem",
+      "height": "9rem",
+      "position": "absolute",
+      "left": "-4.5rem",
+      "top": "-4.5rem"
+    },
+    "imageUrl": "/static/images/相框/_09办公室.png",
+    "portraitShadow": true
+  },
+  "认证用户": {
+    "style": {
+      "width": "9rem",
+      "height": "9rem",
+      "position": "absolute",
+      "left": "-4.5rem",
+      "top": "-4.5rem"
+    },
+    "imageUrl": "/static/static/images/相框/_10认证用户.png",
+    "portraitShadow": true
+  }
+}

@@ -287,5 +287,5 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
-/CC98.Forum/CC98.Forum/wwwroot/scripts
-/CC98.Forum/CC98.Forum/wwwroot/content
+/CC98.Forum/CC98.Forum/wwwroot/static/scripts
+/CC98.Forum/CC98.Forum/wwwroot/static/content

@@ -138,7 +138,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         let topicInfo = null;
         if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
             topicInfo = <TopicInfo topicInfo={this.state.topicInfo} tag1={this.state.topicInfo.tag1} tag2={this.state.topicInfo.tag2} boardInfo={this.state.boardInfo} adsUrl={'/images/ads.jpg'} isFav={this.state.isFav} />
-            topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} quote={this.quote} isTrace={false} />;
+            topic = <PostTopic imgUrl="/static/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} quote={this.quote} isTrace={false} />;
             hotReply = <Reply topicInfo={this.state.topicInfo} DateTime={Date.now()}page={this.match.params.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} quote={this.quote} isTrace={false} isHot={true} userId={null} />
         }
         const pagerUrl = `/topic/${this.state.topicid}/`;
@@ -162,7 +162,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         /*  if (this.state.shouldRender) {
           
           } else {
-              return <img src="/images/waiting.gif"/>;
+              return <img src="/static/images/waiting.gif"/>;
           }*/
 
 

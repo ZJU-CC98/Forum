@@ -132,7 +132,7 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
         const returnUrl = `/topic/${this.props.topicid}`;
         let traceIcon = null;
         if (this.props.boardId != 182) {
-            traceIcon = <div className="operation1"><Link style={{ color: "#8bc9db" }} to={this.props.traceMode ?returnUrl:traceUrl}>{this.props.traceMode ? "返回" : "追踪"}</Link></div>;
+            traceIcon = <div className="operation1"><Link style={{ color: "#79b8ca" }} to={this.props.traceMode ?returnUrl:traceUrl}>{this.props.traceMode ? "返回" : "追踪"}</Link></div>;
         }
         return <div className="column" style={{ marginTop:"1rem" }}>
             <div className="comment1">

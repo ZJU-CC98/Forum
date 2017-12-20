@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="img\**" />
+    <Compile Remove="wwwroot\images\**" />
     <Content Remove="img\**" />
+    <Content Remove="wwwroot\images\**" />
     <EmbeddedResource Remove="img\**" />
+    <EmbeddedResource Remove="wwwroot\images\**" />
     <None Remove="img\**" />
+    <None Remove="wwwroot\images\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -97,10 +101,6 @@
     <None Remove="Ubb\UrlTextHandler.tsx" />
     <None Remove="Ubb\UserTagHandler.tsx" />
     <None Remove="Ubb\UTagHandler.tsx" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\images\authorImg.jpg" />
   </ItemGroup>
 
   <ItemGroup>

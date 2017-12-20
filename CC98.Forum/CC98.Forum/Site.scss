@@ -447,6 +447,7 @@ body {
     font-size: 0.75rem;
     border-top: #EAEAEA dashed 2px;
     box-sizing: border-box;
+    align-items:center;
 }
 
 .userImage img {
@@ -543,7 +544,6 @@ body {
         top: 70px;
         right: -40px;
         color: #ffffff;
-        font-size: 12px;
     }
 }
 
@@ -1090,7 +1090,6 @@ a {
     position: fixed;
     margin-left: 1140px;
     width: 5rem;
-    height: 33rem;
     background-color: #fff;
     display: flex;
     flex-direction: column;
@@ -1164,7 +1163,7 @@ a {
 .greenBackdrop {
     height: 6rem;
     width: 6rem;
-    background-image: url(/images/sample4.png);
+    background-image: url(/static/images/sample4.png);
     background-size: 100%;
 }
 
@@ -2129,7 +2128,7 @@ a {
     margin: 0 0 20px 0;
     padding: 0px;
     justify-content: center;
-    background: url(/images/winter1.png) no-repeat center;
+    background: url(/static/images/winter1.png) no-repeat center;
     z-index: 2;
 }
 
@@ -3003,10 +3002,11 @@ a {
 
 .topicInfo-boardInfo {
     width: 10.6rem;
-    height: 6.25rem;
+    height: 6.4rem;
     display: flex;
     background-color: rgb(106,113,119);
     align-items: center;
+    margin-top:1px;
 }
 
 .topicInfo-boardImage {
@@ -3039,6 +3039,7 @@ a {
 
 .boardMessage {
     width: 15rem;
+    min-height:6rem;
     display: flex;
     flex-direction: column;
     color: #fff;

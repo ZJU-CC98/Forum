@@ -34,7 +34,7 @@ class LogOffBefore extends React.Component<{logOff,  history}, LogOffState> {
         return (
             <div className="login">
                 <div>
-                    <img src="/images/login.png" />
+                    <img src="/static/images/login.png" />
                     <div>
                         <p className="LogOffInfo">{this.state.logOffInfo}</p>
                     </div>

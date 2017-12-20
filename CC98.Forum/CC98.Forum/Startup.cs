@@ -33,12 +33,15 @@ namespace CC98.Forum
 		[UsedImplicitly]
 		public void Configure(IApplicationBuilder app)
 		{
-			// 允许静态文件请求。
-			app.UseStaticFiles();
 
 			// 对其它所有路径执行 URL 重写并返回 index 文件。
-			var rewriteOptions = new RewriteOptions().AddRewrite(@".*", "index.html", true);
+			var rewriteOptions =
+				new RewriteOptions()
+					.AddRewrite(@"^static/.*", "$0", true)
+					.AddRewrite(@".*", "static/index.html", true);
+
 			app.UseRewriter(rewriteOptions);
+
 			app.UseStaticFiles();
 		}
 	}

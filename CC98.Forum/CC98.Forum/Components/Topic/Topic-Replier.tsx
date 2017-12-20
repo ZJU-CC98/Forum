@@ -99,32 +99,32 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
     async getPhotoFrame(displayTitle) {
 
         if (displayTitle) {
-            let response = await fetch('/portrait.json');//获取头像框样式的配置
+            let response = await fetch('/static/portrait.json');//获取头像框样式的配置
             let data = await response.json();
             console.log(data);
             let imageUrl; //头像框的链接
-            let style = data.普通;
+            let style = data.普通.style;
 
             switch (displayTitle) {
-                case "吉祥物": style = data.吉祥物; imageUrl = "/images/相框/吉祥物.png"; break;
-                case "版主": imageUrl = "/images/相框/_01版主.png"; break;
-                case "编辑部部长": imageUrl = "/images/相框/_02编辑部.png"; break;
-                case "编辑部成员": imageUrl = "/images/相框/_02编辑部.png"; break;
-                case "技术组组长": imageUrl = "/images/相框/_03技术组.png"; break;
-                case "技术组成员": imageUrl = "/images/相框/_03技术组.png"; break;
-                case "论坛贵宾": imageUrl = "/images/相框/_04贵宾.png"; break;
-                case "运营策划部部长": imageUrl = "/images/相框/_05策划部.png"; break;
-                case "运营策划部成员": imageUrl = "/images/相框/_05策划部.png"; break;
-                case "影音部部长": imageUrl = "/images/相框/_06影音部.png"; break;
-                case "影音部成员": imageUrl = "/images/相框/_06影音部.png"; break;
-                case "站务组组长": imageUrl = "/images/相框/_07站务组.png"; break;
-                case "站务组成员": imageUrl = "/images/相框/_07站务组.png"; break;
-                case "体育事业部部长": imageUrl = "/images/相框/_08体育部.png"; break;
-                case "体育事业部成员": imageUrl = "/images/相框/_08体育部.png"; break;
-                case "办公室主任": imageUrl = "/images/相框/_09办公室.png"; break;
-                case "办公室成员": imageUrl = "/images/相框/_09办公室.png"; break;
-                case "认证用户": imageUrl = "/images/相框/_10认证用户.png"; break;
-                default: imageUrl = "/images/相框/_00普通.png"
+                case "吉祥物": style = data.吉祥物.style; imageUrl = data.吉祥物.imageUrl; break;
+                case "版主": imageUrl = data.版主.imageUrl; break;
+                case "编辑部部长": imageUrl = data.编辑部.imageUrl; break;
+                case "编辑部成员": imageUrl = data.编辑部.imageUrl; break;
+                case "技术组组长": imageUrl = data.技术组.imageUrl; break;
+                case "技术组成员": imageUrl = data.技术组.imageUrl; break;
+                case "论坛贵宾": imageUrl = data.贵宾.imageUrl; break;
+                case "运营策划部部长": imageUrl = data.策划部.imageUrl; break;
+                case "运营策划部成员": imageUrl = data.策划部.imageUrl; break;
+                case "影音部部长": imageUrl = data.影音部.imageUrl; break;
+                case "影音部成员": imageUrl = data.影音部.imageUrl; break;
+                case "站务组组长": imageUrl = data.站务组.imageUrl; break;
+                case "站务组成员": imageUrl = data.站务组.imageUrl; break;
+                case "体育事业部部长": imageUrl = data.体育部.imageUrl; break;
+                case "体育事业部成员": imageUrl = data.体育部.imageUrl; break;
+                case "办公室主任": imageUrl = data.办公室.imageUrl; break;
+                case "办公室成员": imageUrl = data.办公室.imageUrl; break;
+                case "认证用户": imageUrl = data.认证用户.imageUrl; break;
+                default: imageUrl = data.普通.imageUrl;
             }
 
             return <img src={imageUrl} style={style} />

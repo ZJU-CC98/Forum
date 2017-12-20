@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+
+	<script>
+		function loadFallbackScript(condition, url) {
+			condition || document.write('<' + 'script src="' + url + '"></' + 'script>');
+		}
+
+		function loadFallbackCss(id, property, value, url) {
+			var testElement = document.getElementById(id);
+			var style = document.defaultView && document.defaultView.getComputedStyle
+				? document.defaultView.getComputedStyle(testElement)
+				: testElement.currentStyle;
+
+			if (style[property] !== value) {
+				document.write('<link rel="stylesheet" href="' + url + '" />');
+			}
+		}
+
+	</script>
+
+	<link rel="stylesheet"
+		  href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"
+		  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+		  crossorigin="anonymous">
+
+	<meta id="fa-test" name="x-stylesheet-fallback-test" content="" class="fa" />
+	<script>
+		loadFallbackCss('fa-test', 'display', 'inline-block', '/content/font-awesome/css/font-awesome.min.css');
+	</script>
+
+
+	<link rel="stylesheet" href="/static/content/site.min.css" />
+	<link rel="stylesheet" href="/static/scripts/lib/editor.md/css/editormd.css" />
+
+</head>
+<body style="display:flex;justify-content:center;">
+	<div id="root"></div>
+
+	<script src="https://cdn.bootcss.com/es6-promise/4.1.1/es6-promise.auto.min.js"
+			integrity="sha256-OI3N9zCKabDov2rZFzl8lJUXCcP7EmsGcGoP6DMXQCo="
+			crossorigin="anonymous"></script>
+	<script>loadFallbackScript(window.ES6Promise, '/static/scripts/lib/es6-promise/es6-promise.auto.min.js');</script>
+
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"
+			integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f"
+			crossorigin="anonymous"></script>
+	<script>loadFallbackScript(window.jQuery, '/static/scripts/lib/jquery/jquery.min.js')</script>
+
+	<script src="https://cdn.bootcss.com/react/15.6.1/react.min.js"
+			integrity="sha384-u/3By6KAUETM5AnedAbB9xV0qLxlsRyVBi8mEekTeqD468SBVx2FXEm+1lf85M7c"
+			crossorigin="anonymous"></script>
+	<script>loadFallbackScript(window.React, '/static/scripts/lib/react/react.min.js');</script>
+
+	<script src="https://cdn.bootcss.com/react/15.6.1/react-dom.min.js"
+			integrity="sha384-GfT+iyYg21YqdPMH/FWlWLugDiK/neASGRCN8yWPB2Hlam+uP7J0lIgPcbCeHoVG"
+			crossorigin="anonymous"></script>
+	<script>loadFallbackScript(window.ReactDOM, '/static/scripts/lib/react-dom/react-dom.min.js');</script>
+
+	<script src="https://cdn.bootcss.com/react-router/4.1.2/react-router.min.js"
+			integrity="sha384-E8Ht+XYK8X998NatfYd+Q9CfvNMv2FWo/caZrRXx/ZKSycXNJh2nY7FmrS77TFk4"
+			crossorigin="anonymous"></script>
+	<script>loadFallbackScript(window.ReactRouter, '/static/scripts/lib/react-router/react-router.min.js');</script>
+
+	<script src="https://cdn.bootcss.com/react-router-dom/4.1.2/react-router-dom.min.js"
+			integrity="sha384-7ksIDLjJKbAMsW1o08kt14DVotOLkdUcy4Ul327Ni31yp1SXN5IiV6uV7NV35Hqi"
+			crossorigin="anonymous"></script>
+	<script>loadFallbackScript(window.ReactRouterDOM, '/static/scripts/lib/react-router-dom/react-router-dom.min.js');</script>
+	<script>loadFallbackScript(window.Moment, '/static/scripts/lib/moment/moment.js');</script>
+	<script src="https://cdn.bootcss.com/redux/3.7.2/redux.min.js"
+			integrity="sha384-1qvo8UIQh8p/bN1YGe52MRwQG6KUSl9zZkYlzl1/0lIEsEtjlJwQwpCaxoO9D+9T"
+			crossorigin="anonymous"></script>
+	<script>loadFallbackScript(window.Redux, '/static/scripts/lib/redux/redux.min.js')</script>
+
+	<script src="https://cdn.bootcss.com/react-redux/5.0.5/react-redux.min.js"
+			integrity="sha384-bKquTDDYjpatshkKDNhd9s020AbcR/35kluCYP/suaU0hZ0q3dHc4TyOJ7xUFsQG"
+			crossorigin="anonymous"></script>
+	<script>loadFallbackScript(window.ReactRedux, '/static/scripts/lib/react-redux/react-redux.min.js');</script>
+
+	<script src="https://cdn.bootcss.com/javascript-canvas-to-blob/3.14.0/js/canvas-to-blob.min.js"
+			integrity="sha256-CeBz6ph2imsCxljJfaQYaMRiRYRtW/TP5kH7REY3qvQ="
+			crossorigin="anonymous"></script>
+	<script>loadFallbackScript(HTMLCanvasElement.prototype.toBlob, '/static/scripts/lib/blueimp-canvas-to-blob/canvas-to-blob.min.js');</script>
+
+	<script src="/static/scripts/lib/editor.md/lib/marked.min.js"></script>
+	<script src="/static/scripts/lib/editor.md/lib/prettify.min.js"></script>
+	<script src="/static/scripts/lib/editor.md/lib/raphael.min.js"></script>
+	<script src="/static/scripts/lib/editor.md/lib/underscore.min.js"></script>
+	<script src="/static/scripts/lib/editor.md/lib/sequence-diagram.min.js"></script>
+	<script src="/static/scripts/lib/editor.md/lib/flowchart.min.js"></script>
+	<script src="/static/scripts/lib/editor.md/lib/jquery.flowchart.min.js"></script>
+	<script src="/static/scripts/lib/editor.md/editormd.min.js"></script>
+	<script src="/static/scripts/lib/spectrum/spectrum.js"></script>
+	<script src="/static/scripts/lib/url-join/lib/url-join.js"></script>
+	<script src="/static/scripts/main.js"></script>
+</body>
+</html>
