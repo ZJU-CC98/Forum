@@ -150,9 +150,9 @@ class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff, histo
         return (
             <div className="login">
                 <div>
-                    <img src="/images/login.png" />
+                    <img src="/static/images/login.png" />
                     <div>
-                        <img src="/images/login_welcome.png" />
+                        <img src="/static/images/login_welcome.png" />
                         <form onSubmit={this.handleLogin} autoComplete="on">
                             <div className="login-form">
                                 <p>用户名</p><input name="username" type="text" id="loginName" onChange={this.handleNameChange} value={this.state.loginName} autoComplete="username"/>
