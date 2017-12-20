@@ -9,7 +9,7 @@
       "z-index": "150"
     },
     "imageUrl": "/static/images/相框/吉祥物.png",
-    "portraitShadow": true
+    "portraitShadow": false
   },
   "普通": {
     "style": {
@@ -129,7 +129,7 @@
       "left": "-4.5rem",
       "top": "-4.5rem"
     },
-    "imageUrl": "/static/static/images/相框/_10认证用户.png",
+    "imageUrl": "/static/images/相框/_10认证用户.png",
     "portraitShadow": true
   }
 }
