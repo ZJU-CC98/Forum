@@ -99,7 +99,7 @@ export class UserCenterMyFans extends React.Component<{match}, UserCenterMyFansS
             return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
         }
         if (this.state.userFans.length === 0) {
-            return (<div className="user-center-myfans">
+            return (<div className="user-center-myfans" style={{textAlign: 'center'}}>
                 {this.state.info}
             </div>);
         }        

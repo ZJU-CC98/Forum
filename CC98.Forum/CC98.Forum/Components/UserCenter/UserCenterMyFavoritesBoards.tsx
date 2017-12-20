@@ -64,7 +64,8 @@ export class UserCenterMyFavoritesBoards extends React.Component<null, UserCente
 
     render() {
         const style = {
-            marginTop: '2rem'
+            marginTop: '2rem',
+            textAlign: 'center'
         };
         if (this.state.isLoading) {
             return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>

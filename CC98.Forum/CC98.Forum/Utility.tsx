@@ -1424,8 +1424,8 @@ export async function followUser(userId: number) {
 		});
 		if (res.status === 200) {
 			return true;
-		} else {
-			throw new Error(res.status.toString());
+        } else {
+			throw new Error(await res.text());
 		}
 	} catch (e) {
 		return e.message;

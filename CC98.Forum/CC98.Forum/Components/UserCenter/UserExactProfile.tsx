@@ -35,7 +35,7 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
                 buttonInfo: '已关注',
                 isFollowing: true
             });
-        } else if (res === '400') {
+        } else if (res === 'follow_count_limited') {
             this.setState({
                 buttonIsDisabled: false,
                 buttonInfo: '已达上限',
