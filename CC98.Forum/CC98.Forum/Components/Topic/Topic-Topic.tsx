@@ -7,7 +7,7 @@ import { Judge } from './Topic-Judge';
 import { Replier } from './Topic-Replier';
 import { ReplyContent } from './Topic-ReplyContent';
 import { ReplierSignature } from './Topic-ReplierSignature';
-export class PostTopic extends React.Component<{ boardInfo,topicInfo,userId, imgUrl, page, topicid,quote }, { topicMessage,masters}> {
+export class PostTopic extends React.Component<{ boardInfo,topicInfo,userId, imgUrl, page, topicid,quote,isTrace }, { topicMessage,masters}> {
     constructor(props, content) {
         super(props, content);
         this.update = this.update.bind(this);
@@ -49,7 +49,7 @@ export class PostTopic extends React.Component<{ boardInfo,topicInfo,userId, img
                             userInfo={this.state.topicMessage.userInfo}
                             content={this.state.topicMessage.content}
                             floor={this.state.topicMessage.floor}
-                            quote={this.quote}
+                            quote={this.quote} traceMode={this.props.isTrace}
                             replyTime={this.state.topicMessage.time}
                             lastUpdateAuthor={this.state.topicMessage.lastUpdateAuthor}
                             lastUpdateTime={this.state.topicMessage.lastUpdateTime} boardId={this.props.boardInfo.id} isLZ={this.state.topicMessage.isLZ} />

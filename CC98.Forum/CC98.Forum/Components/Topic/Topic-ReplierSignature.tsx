@@ -3,7 +3,7 @@ import * as Utility from '../../Utility';
 import { UbbContainer } from '../UbbContainer';
 import { Link } from 'react-router-dom';
 declare let moment: any;
-export class ReplierSignature extends React.Component<{ signature,postid ,topicid,masters,userId,likeInfo,quote,content,userInfo,replyTime,floor,lastUpdateTime,lastUpdateAuthor,boardId,isLZ}, {likeNumber,dislikeNumber,likeState}>{
+export class ReplierSignature extends React.Component<{ signature,postid ,topicid,masters,userId,likeInfo,quote,content,userInfo,replyTime,floor,lastUpdateTime,lastUpdateAuthor,boardId,isLZ,traceMode}, {likeNumber,dislikeNumber,likeState}>{
     constructor(props, content) {
         super(props, content);
         this.showManageUI = this.showManageUI.bind(this);
@@ -117,6 +117,7 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
         }
         let editIcon = null;
         const editUrl = `/editor/edit/${this.props.postid}`;
+        if (Utility.getLocalStorage("userInfo"))
         if (this.isAllowedtoEdit(this.props.userInfo.privilege) || this.props.userInfo.name === Utility.getLocalStorage("userInfo").name) {
             editIcon = <Link to={editUrl}><div className="operation1" onClick={this.edit}>   编辑</div></Link>;
         }
@@ -127,7 +128,12 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
             const str = `该帖最后由 ${name} 在 ${time} 编辑`;
             lastUpdate = str;
         }
-        const traceUrl = `topic/${this.props.topicid}/user/${this.props.userId}`;
+        const traceUrl = `/topic/${this.props.topicid}/user/${this.props.userId}`;
+        const returnUrl = `/topic/${this.props.topicid}`;
+        let traceIcon = null;
+        if (this.props.boardId != 182) {
+            traceIcon = <div className="operation1"><Link style={{ color: "#8bc9db" }} to={this.props.traceMode ?returnUrl:traceUrl}>{this.props.traceMode ? "返回" : "追踪"}</Link></div>;
+        }
         return <div className="column" style={{ marginTop:"1rem" }}>
             <div className="comment1">
                 <div style={{ width: "40rem", marginLeft: "2rem", fontSize:"0.8rem" }}>
@@ -138,8 +144,8 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
                 <div id="commentlike">
                     <div className="operation1" onClick={this.showJudgeUI}>   评分</div>
                         <div className="operation1" onClick={this.quote}>   引用</div>
-                        <div className="operation1"><Link style={{color:"#8bc9db"}} to={traceUrl}>   追踪</Link></div>
-                    {editIcon}
+                        {traceIcon}
+                        {editIcon}
                     <div className="operation1" id={manageIcon} style={{ display: "none", cursor: "pointer" }} onClick={this.showManageUI}>管理</div>
                     </div>
                     </div>

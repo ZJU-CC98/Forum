@@ -76,7 +76,7 @@ export async function getTopic(topicid: number) {
         } else {
             const anonymousUserName = `匿名${data[0].userName.toUpperCase()}`;
             let purl = 'https://www.cc98.org/pic/anonymous.gif';
-            const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
+            const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: "", postCount: 0 };
             topicMessage = { ...data[0], userInfo: userMesJson, postId: data[0].id, isAnonymous: true, likeInfo: likeInfo, awardInfo: awardInfo }
 
         }
@@ -127,13 +127,13 @@ export async function getTopicContent(topicid: number, curPage: number, replyCou
                 let purl = 'https://www.cc98.org/pic/anonymous.gif';
                 const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
 
-                const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
+                const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: "", postCount: 0 };
                 post[i] = {
 
                     ...content[i], userInfo: userMesJson, postId: content[i].id, isAnonymous: true, likeInfo: likeInfo, awardInfo: awardInfo
                 }
             } else {
-                const userMesJson = { name: '98Deleter', portraitUrl: 'http://www.cc98.org/images/policeM.png', id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
+                const userMesJson = { name: '98Deleter', portraitUrl: 'http://www.cc98.org/images/policeM.png', id: null, privilege: '匿名用户', popularity: 0, signatureCode: "", postCount: 0 };
                 post[i] = {
                     ...content[i], postId: content[i].id, isAnonymous: false, isDeleted: true, content: "该贴已被my cc98, my home", likeInfo: likeInfo, awardInfo: awardInfo
                 }
@@ -245,7 +245,7 @@ export async function getHotReplyContent(topicid: number) {
                 let purl = 'https://www.cc98.org/pic/anonymous.gif';
                 const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
                 const anonymousLastReplierName = `匿名${content[i].lastUpdateAuthor.toUpperCase()}`;
-                const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
+                const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: "", postCount: 0 };
                 post[i] = {
                     ...content[i], userInfo: userMesJson, postId: content[i].id, likeInfo: likeInfo, awardInfo: awardInfo
                 }
@@ -340,15 +340,6 @@ export async function getCurUserTopic(topicid: number, userId: number, router) {
     try {
         const headers = await formAuthorizeHeader();
         const response = await cc98Fetch(`/post/topic/user?topicid=${topicid}&userid=${userId}&from=0&size=1`, { headers });
-        if (response.status === 401) {
-            window.location.href = "/status/UnauthorizedTopic";
-        }
-        if (response.status === 404) {
-            window.location.href = "/status/NotFoundTopic";
-        }
-        if (response.status === 500) {
-            window.location.href = "/status/ServerError";
-        }
         const data = await response.json();
         const userMesResponse = await cc98Fetch(`/user/name/${data[0].userName}`);
         if (userMesResponse.status === 404) {
@@ -414,7 +405,7 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
             } else {
                 let purl = 'https://www.cc98.org/pic/anonymous.gif';
                 const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
-                const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
+                const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: "", postCount: 0 };
                 post[i] = {
                     ...content[i], userInfo: userMesJson, likeInfo: likeInfo, awardInfo: awardInfo
                 }
@@ -1246,15 +1237,6 @@ export async function getCurUserTotalReplyPage(topicId, userId, router) {
     try {
         const headers = await formAuthorizeHeader();
         const replyCountResponse = await cc98Fetch(`/post/topic/user?topicid=${topicId}&userid=${userId}&from=0&size=1`, { headers });
-        if (replyCountResponse.status === 401) {
-            window.location.href = "/status/UnauthorizedTopic";
-        }
-        if (replyCountResponse.status === 404) {
-            window.location.href = "/status/NotFoundBoard";
-        }
-        if (replyCountResponse.status === 500) {
-            window.location.href = "/status/ServerError";
-        }
         const replyCountJson = await replyCountResponse.json();
         const replyCount = replyCountJson[0].count;
         if (replyCount > 10) {
@@ -2637,7 +2619,7 @@ export async function getToken() {
         }
         return getLocalStorage("accessToken");
     } else {
-        return null;
+        return "";
     }
 }
 export async function formAuthorizeHeader() {

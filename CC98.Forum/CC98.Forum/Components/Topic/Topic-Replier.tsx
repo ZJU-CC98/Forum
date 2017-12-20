@@ -6,7 +6,6 @@ declare let moment: any;
 export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, floor, isDeleted, traceMode, isHot }, { traceMode, buttonIsDisabled, buttonInfo, isFollowing, fanCount }, { topicid }>{
     constructor(props, content) {
         super(props, content);
-
         this.follow = this.follow.bind(this);
         this.unfollow = this.unfollow.bind(this);
         this.changeTraceMode = this.changeTraceMode.bind(this);
