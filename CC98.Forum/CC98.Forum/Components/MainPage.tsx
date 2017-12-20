@@ -574,34 +574,32 @@ export class Count extends React.Component<{}, { data }> {
     }
     render() {
         const data = this.state.data;
-        return <div className="recommendedFunction">
-            <div className="mainPageTitle1">
+        return <div className="schoolNews">
+            <div className="mainPageTitle2">
                 <div className="mainPageTitleRow">
                     <i className="fa fa-volume-up"></i>
                     <div className="mainPageTitleText">论坛统计</div>
                 </div>
             </div>
-            <div className="recommendedFunctionContent">
-                <div className="recommendedFunctionRow">
-                    今日帖数{data.todayCount}
+            <div className="schoolNewsContent" style={{ height: "10rem" }}>
+                <div className="schoolNewsRow">
+                    <div className="schoolNewsTitle">今日帖数：{data.todayCount}</div>
                 </div>
-                <div className="recommendedFunctionRow">
-                    总主题数{data.topicCount}
+                <div className="schoolNewsRow">
+                    <div className="schoolNewsTitle">论坛总主题数：{data.topicCount}</div>
                 </div>
-                <div className="recommendedFunctionRow">
-                    最高帖数{data.maxPostCount}
+                <div className="schoolNewsRow">
+                    <div className="schoolNewsTitle">论坛总回复数：{data.postCount}</div>
+                </div>               
+                <div className="schoolNewsRow">
+                    <div className="schoolNewsTitle">总用户数：{data.userCount}</div>
                 </div>
-                <div className="recommendedFunctionRow">
-                    发生于{data.maxPostDate}
-                </div>
-                <div className="recommendedFunctionRow">
-                    最新用户{data.lastUserName}
-                </div>
-                <div className="recommendedFunctionRow">
-                    总用户数{data.userCount}
-                </div>
+                <div className="schoolNewsRow">
+                    <div className="schoolNewsTitle">欢迎新用户：{data.lastUserName}</div>
+                </div>           
             </div>
         </div>
+
     }
 }
 
