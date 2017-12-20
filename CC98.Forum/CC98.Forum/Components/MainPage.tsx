@@ -574,34 +574,32 @@ export class Count extends React.Component<{}, { data }> {
     }
     render() {
         const data = this.state.data;
-        return <div className="recommendedFunction">
-            <div className="mainPageTitle1">
+        return <div className="schoolNews">
+            <div className="mainPageTitle2">
                 <div className="mainPageTitleRow">
                     <i className="fa fa-volume-up"></i>
                     <div className="mainPageTitleText">论坛统计</div>
                 </div>
             </div>
-            <div className="recommendedFunctionContent">
-                <div className="recommendedFunctionRow">
-                    今日帖数{data.todayCount}
+            <div className="schoolNewsContent" style={{ height: "10rem" }}>
+                <div className="schoolNewsRow">
+                    <div className="schoolNewsTitle"><div>今日帖数</div><div className="mainPageCountRed">{data.todayCount}</div></div>
                 </div>
-                <div className="recommendedFunctionRow">
-                    总主题数{data.topicCount}
+                <div className="schoolNewsRow">
+                    <div className="schoolNewsTitle"><div>论坛总主题数</div><div className="mainPageCountRed">{data.topicCount}</div></div>
                 </div>
-                <div className="recommendedFunctionRow">
-                    最高帖数{data.maxPostCount}
+                <div className="schoolNewsRow">
+                    <div className="schoolNewsTitle"><div>论坛总回复数</div><div className="mainPageCountRed">{data.postCount}</div></div>
+                </div>               
+                <div className="schoolNewsRow">
+                    <div className="schoolNewsTitle"><div>总用户数</div><div className="mainPageCountRed">{data.userCount}</div></div>
                 </div>
-                <div className="recommendedFunctionRow">
-                    发生于{data.maxPostDate}
-                </div>
-                <div className="recommendedFunctionRow">
-                    最新用户{data.lastUserName}
-                </div>
-                <div className="recommendedFunctionRow">
-                    总用户数{data.userCount}
-                </div>
+                <div className="schoolNewsRow">
+                    <div className="schoolNewsTitle"><div>欢迎新用户</div><div className="mainPageCountRed">{data.lastUserName}</div></div>
+                </div>           
             </div>
         </div>
+
     }
 }
 

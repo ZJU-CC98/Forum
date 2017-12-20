@@ -103,10 +103,10 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
             let data = await response.json();
             console.log(data);
             let imageUrl; //头像框的链接
-            //let style; //头像框的样式
+            let style = data.普通;
 
             switch (displayTitle) {
-                case "吉祥物": imageUrl = "/images/相框/_01版主.png"; break;
+                case "吉祥物": style = data.吉祥物; imageUrl = "/images/相框/吉祥物.png"; break;
                 case "版主": imageUrl = "/images/相框/_01版主.png"; break;
                 case "编辑部部长": imageUrl = "/images/相框/_02编辑部.png"; break;
                 case "编辑部成员": imageUrl = "/images/相框/_02编辑部.png"; break;
@@ -123,10 +123,11 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                 case "体育事业部成员": imageUrl = "/images/相框/_08体育部.png"; break;
                 case "办公室主任": imageUrl = "/images/相框/_09办公室.png"; break;
                 case "办公室成员": imageUrl = "/images/相框/_09办公室.png"; break;
+                case "认证用户": imageUrl = "/images/相框/_10认证用户.png"; break;
                 default: imageUrl = "/images/相框/_00普通.png"
             }
 
-            return <img src={imageUrl} />
+            return <img src={imageUrl} style={style} />
         }
 
     }
