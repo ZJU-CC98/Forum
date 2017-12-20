@@ -712,7 +712,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
         if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
             topTopics = <div><ListTopContent boardId={this.match.params.boardId} /></div>;
         }
-        console.log(this.state.items);
+  
         const topics = this.state.items.map(this.convertTopicToElement);
         const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;

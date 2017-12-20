@@ -25,7 +25,7 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
 
                         const UIId = `#judge${this.props.postId}`;
                         if ($("input[name='reason']:checked").val() !== '自定义') {
-                            console.log($("input[name='reason']:checked").val());
+                           
                             status=await Utility.plus1(this.props.topicId, this.props.postId, $("input[name='reason']:checked").val());
                         } else {
                             status =await Utility.plus1(this.props.topicId, this.props.postId, this.state.reason);

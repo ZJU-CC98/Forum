@@ -139,9 +139,6 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
     async sendUbbTopic() {
         const url = `/board/${this.match.params.id}/topic`;
         let content;
-        console.log("state");
-        console.log(this.state.tag1);
-        console.log(this.state.tag2);
         let tag1Id, tag2Id;
         if (this.state.tag1 && !this.state.tag2) {
             tag1Id = await Utility.getTagIdbyName(this.state.tag1);
@@ -185,7 +182,6 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
         const topicId = await response.text();
         //根据返回的topicid，发送@信息       
         const atUsers = this.atHanderler(this.state.content);
-        console.log(atUsers);
         //如果存在合法的@，则发送@信息，否则不发送，直接跳转至所发帖子
         if (atUsers) {
             const atUsersJSON = JSON.stringify(atUsers);
@@ -217,19 +213,19 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
             /*
             for (let i = 0; i < 10; i++) {
                 let anAt = reg.exec(content)[0];
-                console.log(anAt);
+          
                 let aUserName = reg2.exec(anAt)[0];
-                console.log(aUserName);
+               
             }
             */
             for (let i = 0; i < atNum; i++) {
                 let anAt = content.match(reg)[i];
-                console.log(anAt);
+              
                 let aUserName = reg2.exec(anAt)[0];
-                console.log(aUserName);
+            
                 ats[i] = aUserName;
             }
-            console.log(ats);
+       
             return ats;
         } else {
             console.log("不存在合法的@");
@@ -263,6 +259,7 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
             contentType: 1,
             title: this.state.title
         }
+        console.log("title=" + this.state.title);
         const body = JSON.stringify(content);
         const token = await Utility.getToken();
         const headers = await Utility.formAuthorizeHeader();
@@ -408,8 +405,7 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
         } else {
             tag1 = $(".tagBoxSelect").text();
             tag2 = $(".tagBoxSelect1").text();
-            console.log("tag1=" + tag1);
-            console.log("tag2=" + tag2);
+
             this.props.onChange(event.target.value, tag1, tag2);
             this.setState({ title: event.target.value });
         }
@@ -419,8 +415,7 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
     componentWillReceiveProps(newProps) {
         const tags = newProps.tags;
         const tagsNum = tags.length;
-        console.log("new");
-        console.log(newProps.tags);
+
         if (newProps.title && !this.state.title)
             this.setState({ title: newProps.title, tags: newProps.tags });
         else
@@ -503,8 +498,7 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
         return <li>{item.name}</li>;
     }
     render() {
-        console.log($(".tagBoxSelect").text());
-        console.log($(".tagBoxSelect1").text());
+
         let drop1 = null;
         let drop2 = null;
         if (this.state.tags.length > 0) drop1 = <ul className="tagBoxSub">
@@ -603,9 +597,7 @@ export class InputMdContent extends React.Component<{ mode, postInfo, ready, onC
     componentDidMount() {
         let content = '234';
         if (this.props.postInfo.content) {
-            console.log("edit markdown");
             content = this.props.postInfo.content;
-            console.log(content);
         }
         editormd.emoji.path = '/static/images/emoji/';
         Constants.testEditor = editormd("testEditor", {
@@ -615,6 +607,8 @@ export class InputMdContent extends React.Component<{ mode, postInfo, ready, onC
             saveHTMLToTextarea: false,
             emoji: true,
             appendMarkdown: content,
+            toc: true,
+            tocm:true,
             toolbarIcons: function () {
                 return [
                     "undo", "redo", "|", "emoji",

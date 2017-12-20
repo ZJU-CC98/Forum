@@ -33,7 +33,7 @@ declare let editormd: any;
 
 export class Test1 extends React.Component {
     render() {
-        console.log(this.context.router);
+    
         return <div></div>;
     }
 }
@@ -48,7 +48,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         };
     }
     quote(content, userName, replyTime, floor) {
-        console.log("in topic quote");
+    
         const y = $("#sendTopicInfo").offset().top;
         let page = this.state.page;
         if (!this.state.page) page = 1;
@@ -82,8 +82,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
       
     }
     async componentWillReceiveProps(newProps) {
-        console.log("in topic recieve props");
-        console.log(newProps);
+     
         //page 是否变了
         let page: number;
         if (!newProps.match.params.page) {
@@ -96,7 +95,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         const boardInfo = await Utility.getBoardInfo(boardId);
         const totalPage = this.getTotalPage(topicInfo.replyCount);
         const isFav = await Utility.getFavState(newProps.match.params.topicid);
-        console.log("before setstate");
+   
         this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo, isFav: isFav });
     }
     async componentDidMount() {

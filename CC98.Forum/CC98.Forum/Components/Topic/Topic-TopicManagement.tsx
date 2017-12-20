@@ -41,8 +41,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
     }
     async confirm() {
         let status = 'ok';
-        console.log("state");
-        console.log(this.state.state);
+  
         switch (this.state.state) {
      
             case 'normal':
@@ -88,8 +87,8 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
             case 'highlight':
                 const color = $("#custom").spectrum("get").toHexString($("#custom").spectrum("get"));
                 if (this.state.reason !== "") {
-                    console.log("color");
-                    console.log("color is" + this.state.color);
+                
+                   
                     const bold = $("input[name='bold']:checked") ? true : false;
                     const italic = $("input[name='italic']:checked") ? true : false;
                     await Utility.setHighlight(this.props.topicId, bold, italic, color, this.state.days, this.state.reason);
@@ -106,9 +105,9 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
                             this.setState({ fetchState: status });
                             break;
                         case '全站固顶':
-                            console.log("quanzhanguding");
+                          
                             status = await Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 4, this.state.days, this.state.reason);
-                            console.log(status);
+                        
                             this.setState({ fetchState: status });
                             break;
                         case '锁定':
@@ -161,7 +160,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
     }
     async componentDidMount() {
         const data = await Utility.getTopicInfo(this.props.topicId);
-        console.log(data);
+       
         this.setState({ topicInfo: data });
     }
    async componentDidUpdate() {

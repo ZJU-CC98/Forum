@@ -153,16 +153,16 @@ export class CreateTopic extends RouteComponent<{}, { title, content, topicId, r
             /*
             for (let i = 0; i < 10; i++) {
                 let anAt = reg.exec(content)[0];
-                console.log(anAt);
+         
                 let aUserName = reg2.exec(anAt)[0];
-                console.log(aUserName);
+     
             }
             */
             for (let i = 0; i < atNum; i++) {
                 let anAt = content.match(reg)[i];
-                console.log(anAt);
+        
                 let aUserName = reg2.exec(anAt)[0];
-                console.log(aUserName);
+          
                 ats[i] = aUserName;
             }
             console.log(ats);

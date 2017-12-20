@@ -34,7 +34,6 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
         $(UIId).css("display", "none");
     }
     async componentDidMount() {
-        console.log("in sendtopic did mount");
         if (Utility.isMaster(this.props.boardInfo.masters)) {
             $("#topicManagementBTN").css("display", "");
             $("#showIPBTN").css("display", "");
@@ -65,6 +64,8 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo,onC
                 imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
                 imageUploadURL: fileUrl,
                 emoji: true,
+                toc: true,
+                tocm: true,
                 toolbarIcons: function () {
                     return [
                         "undo", "redo", "|", "emoji",
@@ -110,8 +111,6 @@ ${this.props.content.content}
     
     }
     componentWillReceiveProps(newProps) {
-        console.log("in sendtopic recieve newprops");
-        console.log(newProps);
         if (Utility.isMaster(newProps.boardInfo.masters))
             $("#topicManagementBTN").css("display", "");
         if (Utility.getLocalStorage("userInfo")) {
@@ -164,6 +163,8 @@ ${newProps.content.content}[/quote]`;
                 imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
                 imageUploadURL: fileUrl,
                 emoji: true,
+                toc: true,
+                tocm: true,
                 toolbarIcons: function () {
                     return [
                         "undo", "redo", "|", "emoji",
@@ -208,8 +209,6 @@ ${newProps.content.content}[/quote]`;
             alert("你太快啦 请慢一点~")
         }
         this.setState({ content: "" });
-        console.log("clear content");
-        console.log(this.state.content);
         this.props.onChange();
         
     }
@@ -218,7 +217,6 @@ ${newProps.content.content}[/quote]`;
             let url = `/topic/${this.props.topicid}/post`;
             let c = Constants.testEditor.getMarkdown();
             Constants.testEditor.setMarkdown("");
-            console.log("content=" + c);
             let content = {
                 content: c,
                 contentType: 1,
@@ -267,6 +265,8 @@ ${newProps.content.content}[/quote]`;
                 imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
                 imageUploadURL: fileUrl,
                 emoji: true,
+                toc: true,
+                tocm: true,
                 toolbarIcons: function () {
                     return [
                         "undo", "redo", "|", "emoji",

@@ -96,12 +96,9 @@ export async function getTopicContent(topicid: number, curPage: number, replyCou
 		const topic = curPage != 1
 			? await cc98Fetch(`/Topic/${topicid}/post?from=${startPage}&size=10`, { headers })
 			: await cc98Fetch(`/Topic/${topicid}/post?from=1&size=9`, { headers });
-		console.log(topicid);
-		console.log(startPage);
-		console.log("status" + topic.status);
+
 		const content = await topic.json();
-		console.log("1");
-		console.log(content);
+
 		const post = [];
 		let topicNumberInPage: number;
 		if (curPage != 1 && curPage * 10 <= replyCount) {
@@ -139,7 +136,7 @@ export async function getTopicContent(topicid: number, curPage: number, replyCou
                 }
             }
         }
-        console.log("2");
+ 
         return post;
 
 	} catch (e) {
@@ -572,7 +569,6 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
             window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
-        console.log("最后回复", newTopic);
         for (let i in newTopic) {
             if (newTopic[i].userId) {
                 //获取作者粉丝数目
@@ -780,7 +776,6 @@ export function isLogOn(): boolean {
 export async function getRecentContact(from: number, size: number, router) {
 	try {
 		const headers = await formAuthorizeHeader();
-		console.log("开始获取联系人数据");
 		let response = await cc98Fetch(`/message/recent-contact-users?from=${from}&size=${size}`, { headers });
 		if (response.status === 401) {
 			window.location.href = "/status/UnauthorizedTopic";
@@ -796,7 +791,6 @@ export async function getRecentContact(from: number, size: number, router) {
 			window.location.href = "/status/ServerError";
 		}
 		let recentContactId = await response.json();
-		console.log("开始获取联系人id数组", recentContactId);
 		let url = "/user/basic"
 		for (let i in recentContactId) {
 			if (i === "0") {
@@ -826,8 +820,7 @@ export async function getRecentContact(from: number, size: number, router) {
 			recentContact[i].lastContent = recentContactId[i].lastContent;
 			recentContact[i].isRead = recentContactId[i].isRead;
 		}
-		console.log("接收到没有Message的列表");
-		console.log(recentContact);
+
 		return recentContact;
 	} catch (e) {
 		window.location.href = ("/status/Disconnected");
@@ -855,8 +848,7 @@ export async function getRecentMessage(userId: number, from: number, size: numbe
 			window.location.href = "/status/ServerError";
 		}
 		let response1 = await response.json();
-		console.log("直接获取到的Message");
-		console.log(response1);
+
 		let recentMessage = sortRecentMessage(response1);
 		return recentMessage;
 	} catch (e) {
@@ -869,7 +861,7 @@ export async function getRecentMessage(userId: number, from: number, size: numbe
  * @param recentMessage
  */
 export function sortRecentMessage(recentMessage) {
-	console.log(recentMessage);
+
 	if (recentMessage == [] || !recentMessage) {
 		return recentMessage;
 	}
@@ -885,8 +877,7 @@ export function sortRecentMessage(recentMessage) {
 				recentMessage[i].showTime = true;
 			}
 		}
-		console.log("返回的recentMessage");
-		console.log(recentMessage);
+
 		return recentMessage;
 	}
 }
@@ -1398,7 +1389,7 @@ export async function uploadFile(file: File) {
 	}
 }
 export function clickUploadIcon() {
-	console.log("click");
+	
 	$("#upload-files").click();
 }
 export async function uploadEvent(e) {
@@ -1513,7 +1504,7 @@ export async function getSaveTopics(curPage, boardId) {
  * @param rouer
  */
 export async function getSearchTopic(boardId: number, words: string[], from: number, router) {
-	console.log("开始获取搜索结果了");
+
 	try {
 		const myHeaders = await formAuthorizeHeader();
 		let bodyCotent = JSON.stringify(words);
@@ -1708,9 +1699,9 @@ export function isFollowThisBoard(boardId) {
 	if (!getLocalStorage("userInfo")) return false;
 	const customBoards = getLocalStorage("userInfo").customBoards;
 	for (let item of customBoards) {
-		console.log(item);
+	
 		if (item == boardId) {
-			console.log("版面匹配成功");
+		
 			return true;
 		}
 	}
@@ -1790,7 +1781,7 @@ export async function getMessageResponse(from: number, size: number, router) {
 	try {
 		let result = [];
 		const myHeaders = await formAuthorizeHeader();
-		console.log("from: number, size: number, router", from);
+	
 		let response = await cc98Fetch(`/notification/reply?from=${from}&size=${size}`, { headers: myHeaders });
 		if (response.status === 401) {
 			window.location.href = "/status/UnauthorizedTopic";
@@ -2513,8 +2504,7 @@ export async function cc98Fetch(url, init?: RequestInit) {
         data = await response2.json();
     }
     const baseUrl = data.apiUrl;
-    console.log("base");
-    console.log(baseUrl);*/
+   */
 	const baseUrl = 'http://apitest.niconi.cc';
 	const _url = `${baseUrl}${url}`;
 	let response: Response;

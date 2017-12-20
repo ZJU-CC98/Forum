@@ -73,7 +73,7 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
         else { page = parseInt(this.match.params.page); }
         const totalPage = await this.getTotalPage.bind(this)(this.match.params.topicid);
         const userId = this.match.params.userId;
-        console.log("userId=" + userId);
+    
         const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
         const boardId = topicInfo.boardId;
         const boardInfo = await Utility.getBoardInfo(boardId);
@@ -84,7 +84,7 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
     }
 
     render() {
-        console.log("inrender userId=" + this.state.userId);
+       
         let topic = null;
         if (this.state.page == 1 && this.state.topicInfo.userId == this.match.params.userId) {
             topic = <PostTopic imgUrl="/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={this.state.userId} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} quote={this.quote} isTrace={true} />;

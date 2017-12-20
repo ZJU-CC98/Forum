@@ -101,7 +101,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         if (displayTitle) {
             let response = await fetch('/static/portrait.json');//获取头像框样式的配置
             let data = await response.json();
-            console.log(data);
+        
             let imageUrl; //头像框的链接
             let style = data.普通.style;
 

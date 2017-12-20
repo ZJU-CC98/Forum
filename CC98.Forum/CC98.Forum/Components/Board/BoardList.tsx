@@ -130,6 +130,7 @@ export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>
         });
     }
     onError(e) {
+   
         e.target.src = `/static/images/_CC98协会.png`;
     }
     convertChildBoard(item: Board) {   

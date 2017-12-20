@@ -60,7 +60,7 @@ export class Test extends React.Component<{}, {}>{
             ats.push(reg.exec(content).toString());
         }
         for (let i = 0; i <= 10; i++) {
-            console.log(ats[i]);
+  
         }
     }
 }
