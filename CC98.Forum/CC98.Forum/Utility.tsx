@@ -1579,7 +1579,11 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
 					newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
 					newTopic[i].userName = "匿名用户";
 					newTopic[i].boardName = "心灵之约";
-				}
+                }
+
+                //时间转换
+                newTopic[i].time = transerRecentTime(newTopic[i].time);
+                newTopic[i].lastPostTime = transerRecentTime(newTopic[i].lastPostTime);
 
 				//阅读数转换
 				if (newTopic[i].hitCount > 10000) {
@@ -2572,8 +2576,10 @@ export function getTagLayer(tagId: number, tags) {
 export async function findIP(topicId) {
 	const url = `/topic/${topicId}/look-ip`;
 	const headers = await formAuthorizeHeader();
-	const response = await cc98Fetch(url, { headers });
-	return await response.json();
+    const response = await cc98Fetch(url, { headers });
+    if (response.status === 200)
+        return await response.json();
+    else return [];
 }
 export async function moveTopic(topicId, boardId, reason) {
 	const url = `/topic/${topicId}/moveto/${boardId}`;
