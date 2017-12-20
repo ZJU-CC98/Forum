@@ -133,7 +133,7 @@ export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>
         e.target.src = `/static/images/_CC98协会.png`;
     }
     convertChildBoard(item: Board) {   
-        const url =`url(/static/images/_${item.name}.png)`
+        const url =`/static/images/_${item.name}.png`
         return <div className="boardContent">
             <Link to={`/list/${item.id}`}><div className="greenBackdrop" >
                 <img style={{width:"6rem",height:"6rem"}}src={url} onError={this.onError}></img>
