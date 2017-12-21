@@ -532,7 +532,7 @@ export class AdsComponent extends React.Component<{}, { ads: MainPageColumn[], i
     }
 
     async getAds() {
-        let ads: MainPageColumn[] = Utility.getStorage('mainSchoolNews');
+        let ads: MainPageColumn[] = Utility.getStorage('mainAds');
         if (ads) { return ads }
         else {
             ads = new Array<MainPageColumn>();
@@ -541,6 +541,7 @@ export class AdsComponent extends React.Component<{}, { ads: MainPageColumn[], i
             for (let i = 0; i < data.length; i++) {
                 ads[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
             }
+            Utility.setStorage('mainAds',ads);
             return ads;
         }
     }
