@@ -45,9 +45,11 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
     async getData(props) {
         let data = await Utility.getFocusTopic(props.id, props.name, 0, this.context.router);
 
-        this.setState({ data: data, from: data.length });
-        //缓存获取到的数据
-        Utility.setStorage(`focusBoard_${props.id}`, data);
+        if (data) {
+            this.setState({ data: data, from: data.length });
+            //缓存获取到的数据
+            Utility.setStorage(`focusBoard_${props.id}`, data);
+        }
 
         //滚动条监听
         document.addEventListener('scroll', this.handleScroll);
