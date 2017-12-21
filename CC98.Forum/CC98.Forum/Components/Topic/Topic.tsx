@@ -147,9 +147,9 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
             {topic}
             {hotReply}
             <Reply topicInfo={this.state.topicInfo} DateTime={Date.now()} page={this.match.params.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} quote={this.quote} isHot={false} isTrace={false} userId={null} />
-            {sendTopic}
+       
             <div style={{ display: "flex", width: "100%", justifyContent: "flex-end", marginTop: "3rem" }}><Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
-           
+            {sendTopic}
 
         </div>
             ;

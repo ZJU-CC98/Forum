@@ -103,7 +103,7 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
                         <div className="focus-allNewTopic"><i className="fa fa-home" aria-hidden="true"></i>首页/全站新帖</div>
                         <div className="focus-topic-area">
                             <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
-                            <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://file.cc98.org/uploadfile/2017/12/20/6514723843.gif"></img></div>
+                    <div className="focus-topic-loading" id="focus-topic-loading"><i style={{ marginTop: "1rem" }} className="fa fa-spinner fa-pulse fa-5x fa-fw"></i></div>
                             <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">没有更多帖子啦~</div>
                         </div>
                     </div>
