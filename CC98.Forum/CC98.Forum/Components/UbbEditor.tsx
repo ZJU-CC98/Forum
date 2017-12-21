@@ -129,7 +129,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
     }
 
     handleExtendButtonClick(tagName: string) {
-        this.setState((prevState)=>({
+        this.setState((prevState) => ({
             extendTagName: prevState.extendTagName !== tagName ? tagName : '',
             emojiIsShown: false
         }));
@@ -144,7 +144,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
     handleTextareaChange(value: string) {
         this.valueStack.push(value);
         this.props.update(value);
-        this.setState({value});
+        this.setState({ value });
     }
 
     handleTextareaBlur(start: number, end: number) {
@@ -156,25 +156,30 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
 
     async handleUpload(file: File) {
         let res = await Utility.uploadFile(file);
-       /* const response1 = await fetch("/config.production.json");
-        let data;
-        if (response1.status !== 404) {
-            const data1 = await response1.json();
-            const response2 = await fetch("/config.json");
-            const data2 = await response2.json();
-            data = { ...data2, ...data1 };
-        } else {
-            const response2 = await fetch("/config.json");
-            data = await response2.json();
-        }*/
-        const baseUrl = Utility.getApiUrl();
-        this.handleButtonClick(this.state.extendTagName, `${res.content}`);
+        /* const response1 = await fetch("/config.production.json");
+         let data;
+         if (response1.status !== 404) {
+             const data1 = await response1.json();
+             const response2 = await fetch("/config.json");
+             const data2 = await response2.json();
+             data = { ...data2, ...data1 };
+         } else {
+             const response2 = await fetch("/config.json");
+             data = await response2.json();
+         }*/
+        if (res.isSuccess) {
+            const baseUrl = Utility.getApiUrl();
+            this.handleButtonClick(this.state.extendTagName, `${res.content}`);
+        } else if (res.content === '文件过大') {
+
+        }
+
     }
 
     handleUndo() {
         this.setState((prevState) => {
             if (this.valueStack.length === 1) {
-                return {value: ''}
+                return { value: '' }
             }
             let prevValue = this.valueStack.pop();
             this.redoStack.push(prevValue);
@@ -218,7 +223,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                 value: before + selected + after
             };
         });
-        
+
     }
 
     handleEmojiButtonClick(emojiUbb: string) {
@@ -312,10 +317,10 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
             }).map((item, index) => {
                 if ([4, 9, 56, 61, 62, 87, 115, 120, 137, 168, 169, 175, 206].indexOf(index + 1) !== -1) { return `${item}.gif`; }
                 else { return `${item}.png`; }
-                }).map((item) => (<LazyImage
+            }).map((item) => (<LazyImage
                 src={`/static/images/mahjong/face2017/${item}`}
                 onClick={() => { this.handleEmojiButtonClick(`[f:${item.slice(0, 3)}]`) }}
-                ></LazyImage>))
+            ></LazyImage>))
         };
         const emoji = {
             'em': new Array(92).fill(0)
@@ -362,7 +367,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
 
 
         return (
-            <div className="ubb-editor" style={{maxHeight: `${height + 6.125}rem`}}>
+            <div className="ubb-editor" style={{ maxHeight: `${height + 6.125}rem` }}>
                 <div className="editor-buttons">
                     <div style={{ height: '2rem', display: 'flex', transitionDuration: '.5s', overflow: 'hidden', width: this.state.isPreviewing ? '0rem' : '50rem' }}>
                         <div className="editor-buttons-styles">
@@ -401,9 +406,9 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                                     }));
                                 }}
                             ></button>
-                            <button className="fa-link" type="button" title="插入url" onClick={(e) => { e.stopPropagation();this.handleExtendButtonClick('url'); }}></button>
-                            <button className="fa-picture-o" type="button" title="插入图片" onClick={(e) => { e.stopPropagation();this.handleExtendButtonClick('img'); }}></button>
-                            <button className="fa-film" type="button" title="插入视频" onClick={(e) => { e.stopPropagation();this.handleExtendButtonClick('video'); }}></button>
+                            <button className="fa-link" type="button" title="插入url" onClick={(e) => { e.stopPropagation(); this.handleExtendButtonClick('url'); }}></button>
+                            <button className="fa-picture-o" type="button" title="插入图片" onClick={(e) => { e.stopPropagation(); this.handleExtendButtonClick('img'); }}></button>
+                            <button className="fa-film" type="button" title="插入视频" onClick={(e) => { e.stopPropagation(); this.handleExtendButtonClick('video'); }}></button>
                             <button className="fa-music" type="button" title="插入音频" onClick={(e) => { e.stopPropagation(); this.handleExtendButtonClick('audio'); }}></button>
                             <label className="fa-file" htmlFor="upload" title="上传文件" onClick={(e) => { e.stopPropagation(); this.setState({ extendTagName: 'upload' }); }} ></label>
                         </div>
@@ -411,20 +416,20 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                     <div style={{ flexGrow: 1 }}></div>
                     <button className="fa-undo" type="button" title="撤销" onClick={() => { this.handleUndo(); }}></button>
                     <button className="fa-repeat" type="button" title="重做" onClick={() => { this.handleRedo(); }}></button>
-                    <button type="button" title="切换预览" onClick={() => { this.setState((prev) => ({ isPreviewing: !prev.isPreviewing, clicked: true})); }} className="fa-window-maximize"></button>
+                    <button type="button" title="切换预览" onClick={() => { this.setState((prev) => ({ isPreviewing: !prev.isPreviewing, clicked: true })); }} className="fa-window-maximize"></button>
                 </div>
-                <div className="ubb-extend" style={{ height: this.state.extendTagName && this.state.extendTagName!== 'upload' ? '2rem' : '0rem' }}>
+                <div className="ubb-extend" style={{ height: this.state.extendTagName && this.state.extendTagName !== 'upload' ? '2rem' : '0rem' }}>
                     <input
                         type="text"
                         placeholder="在此输入地址"
                         value={this.state.extendValue}
                         onChange={(e) => { this.handleExtendValueChange(e.target.value); }}
-                        onClick={(e) => { e.stopPropagation();}}
+                        onClick={(e) => { e.stopPropagation(); }}
                         ref={(it) => { this.input = it; }}
                     />
                     {this.state.extendTagName === 'img' ? <label onClick={(e) => { e.stopPropagation(); }} className="fa-upload" htmlFor="upload" title="上传本地图片"></label> : null}
                     <button className="fa-check" type="button" onClick={(e) => { e.stopPropagation(); this.handleButtonClick(this.state.extendTagName, this.state.extendValue) }}></button>
-                    <button className="fa-remove" type="button" onClick={() => { this.setState({ clicked: true}); }}></button>
+                    <button className="fa-remove" type="button" onClick={() => { this.setState({ clicked: true }); }}></button>
                     <input
                         type="file"
                         id="upload"
@@ -438,7 +443,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                             }
                         }}
                     />
-                    
+
                 </div>
                 <div className="ubb-content">
                     {!this.state.isPreviewing ? (
@@ -474,7 +479,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                             }}
                             style={{ height: this.state.extendTagName && this.state.extendTagName !== 'upload' ? `${height}rem` : `${height + 2}rem` }}
                             spellCheck={false}
-                        ></textarea>) : (<div className="ubb-editor-preview"><UbbContainer code={this.props.value} /></div>)}
+                        ></textarea>) : (<div className="ubb-editor-preview" style={{ height: `${height + 2}rem` }}><UbbContainer code={this.props.value} /></div>)}
                 </div>
                 <div
                     className="ubb-emoji"
