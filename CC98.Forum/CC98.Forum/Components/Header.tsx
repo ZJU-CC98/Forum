@@ -394,7 +394,7 @@ export class Header extends React.Component<{}, AppState> {
 		return <div className="header">
 			<div className="topBar">
 				<div className="topBarRow">
-					<div className="row"><div> <Link to="/"><img src="/static/images/cc98logo.ico" /></Link></div><div style={{ margin: '15px 0 0 5px' }}><Link to="/"><img src="/static/images/CC98.ico" /></Link></div></div>
+					<div className="row"><div> <Link to="/"><img src="/static/images/98LOGO.ico" /></Link></div><div style={{ margin: '15px 0 0 5px' }}><Link to="/"><img src="/static/images/CC98.ico" /></Link></div></div>
 					<DropDown />
 				</div>
 			</div>
