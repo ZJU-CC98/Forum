@@ -575,7 +575,7 @@ export class AdsComponent extends React.Component<{}, { ads: MainPageColumn[], i
     changeIndex(index) {
         let total = this.state.ads.length;
         let nextIndex = index + 1;
-        if (index >= total) nextIndex = 0;
+        if (nextIndex >= total) nextIndex = 0;
         this.setState({
             index: nextIndex,
         })
