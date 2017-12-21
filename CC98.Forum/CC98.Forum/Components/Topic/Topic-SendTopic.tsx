@@ -112,12 +112,14 @@ ${this.props.content.content}
 		if (newProps.content.userName) {
 			if (this.state.mode === 1) {
 				const str = `>**以下是引用${newProps.content.floor}楼：用户${newProps.content.userName}在${time}的发言：**
-${newProps.content.content}`;
+${newProps.content.content}
+`;
 				Constants.testEditor.appendMarkdown(str);
 			} else {
 				const url = `/topic/${this.props.topicid}#${newProps.content.floor}`;
 				const str = `[quote][b]以下是引用${newProps.content.floor}楼：用户${newProps.content.userName}在${time}的发言：[color=blue][url=${url}]>>查看原帖<<[/url][/color][/b]
-${newProps.content.content}[/quote]`;
+${newProps.content.content}[/quote]
+`;
 				this.setState({ content: str });
 			}
 		}
