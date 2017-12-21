@@ -58,7 +58,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
 	async componentWillReceiveProps(nextProps) {
 		if (!this.props.isLogOn && nextProps.isLogOn) {
 			//如果用户重新登录则开始signalR链接
-			SignalR.start();
+			//	SignalR.start();
 		} else if (!nextProps.isLogOn) {
 			//如果用户注销则关闭signalR链接
 			SignalR.stop();
@@ -197,33 +197,33 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
 		const searchIco = $('.searchIco');
 		const searchBoxLi = searchBoxSub.find('li');
 
-        //查看当前是全站还是某版，如果是某版就查询到某版id
-        let url1 = location.href.match(/\/topic\/(\S+)\/?/);
-        let url2 = location.href.match(/\/list\/(\S+)\/?/);
-        let url3 = location.href.match(/\/(search)/);
-        let boardId = 0;
-        let boardName = '全站';
-        if (url1) {
-            let topicId = url1[1];
-            let response = await Utility.getTopicInfo(topicId);
-            boardId = response.boardId;
-            boardName = await Utility.getBoardName(boardId);
-        }
-        else if (url2) {
-            boardId = parseInt(url2[1]);
-            boardName = await Utility.getBoardName(boardId);
-        }
-        else if (url3) {
-            let searchInfo = Utility.getStorage("searchInfo");
-            if (searchInfo) {
-                boardId = searchInfo.boardId;
-                boardName = searchInfo.boardName;
-            }
-        }
-        
-        $(document).click(function () {
-            searchBoxSub.css('display', 'none');
-        });
+		//查看当前是全站还是某版，如果是某版就查询到某版id
+		let url1 = location.href.match(/\/topic\/(\S+)\/?/);
+		let url2 = location.href.match(/\/list\/(\S+)\/?/);
+		let url3 = location.href.match(/\/(search)/);
+		let boardId = 0;
+		let boardName = '全站';
+		if (url1) {
+			let topicId = url1[1];
+			let response = await Utility.getTopicInfo(topicId);
+			boardId = response.boardId;
+			boardName = await Utility.getBoardName(boardId);
+		}
+		else if (url2) {
+			boardId = parseInt(url2[1]);
+			boardName = await Utility.getBoardName(boardId);
+		}
+		else if (url3) {
+			let searchInfo = Utility.getStorage("searchInfo");
+			if (searchInfo) {
+				boardId = searchInfo.boardId;
+				boardName = searchInfo.boardName;
+			}
+		}
+
+		$(document).click(function () {
+			searchBoxSub.css('display', 'none');
+		});
 
 		searchBoxSelect.click(function () {
 			if (searchBoxSub.css('display') === 'block') searchBoxSub.css('display', 'none');
@@ -249,79 +249,79 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
 			this.className = 'hover';
 		});
 
-        searchBoxLi.mouseout(function () {
-            this.className = '';
-        });
-        
-        //获取搜索关键词
-        let self = this;
-        searchIco.click(async () => {
-            let val: any = $('#searchText').val();
-            if (val && val != '') {
-                if (searchBoxSelect.text() === '主题' || searchBoxSelect.text() === '全站') {
-                    let words = val.split(' ');
-                    if (words) {
-                        if (words.length > 5) {
-                            alert("关键词过多，请不要超过5个！");
-                        }
-                        else {
-                            let searchInfo = { boardId: 0, boardName: '全站', words: words };
-                            Utility.setStorage('searchInfo', searchInfo);
-                            this.props.history.push('/search');
-                        }
-                    }
-                }
-                else if (searchBoxSelect.text() === '版内') {
-                    let words = val.split(' ');
-                    if (words) {
-                        if (words.length > 5) {
-                            alert("关键词过多，请不要超过5个！");
-                        }
-                        else {
-                            let searchInfo = { boardId: boardId, boardName: boardName, words: words };
-                            Utility.setStorage('searchInfo', searchInfo);
-                            this.props.history.push('/search');
-                        }
-                    }
-                }
-                else if (searchBoxSelect.text() === '用户') {
-                    let data = await Utility.getUserInfoByName(val);
-                    if (data) {
-                        this.props.history.push(`/user/id/${data.id}`);
-                    }
-                    else {
-                        Utility.removeStorage('searchInfo');
-                        this.props.history.push('/search');
-                    }
-                }
-                else if (searchBoxSelect.text() === '版面') {
-                    let host = window.location.host;
-                    let boardResult = Utility.getBoardId(val);
-                    if (boardResult) {
-                        if (boardResult === []) {
-                            Utility.removeStorage('searchInfo');
-                            this.props.history.push('/search');
-                        }
-                        else if (boardResult.length === 1) {
-                            this.props.history.push(`/list/${boardResult[0].id}`);
-                        }
-                        else if (boardResult.length > 1) {
-                            Utility.setStorage("searchBoardInfo", boardResult);
-                            this.props.history.push('/searchBoard');
-                        }
-                        else {
-                            Utility.removeStorage('searchInfo');
-                            this.props.history.push('/search');
-                        }
-                    }
-                    else {
-                        Utility.removeStorage('searchInfo');
-                        this.props.history.push('/search');
-                    }
-                }
-            }
-        });
-    }
+		searchBoxLi.mouseout(function () {
+			this.className = '';
+		});
+
+		//获取搜索关键词
+		let self = this;
+		searchIco.click(async () => {
+			let val: any = $('#searchText').val();
+			if (val && val != '') {
+				if (searchBoxSelect.text() === '主题' || searchBoxSelect.text() === '全站') {
+					let words = val.split(' ');
+					if (words) {
+						if (words.length > 5) {
+							alert("关键词过多，请不要超过5个！");
+						}
+						else {
+							let searchInfo = { boardId: 0, boardName: '全站', words: words };
+							Utility.setStorage('searchInfo', searchInfo);
+							this.props.history.push('/search');
+						}
+					}
+				}
+				else if (searchBoxSelect.text() === '版内') {
+					let words = val.split(' ');
+					if (words) {
+						if (words.length > 5) {
+							alert("关键词过多，请不要超过5个！");
+						}
+						else {
+							let searchInfo = { boardId: boardId, boardName: boardName, words: words };
+							Utility.setStorage('searchInfo', searchInfo);
+							this.props.history.push('/search');
+						}
+					}
+				}
+				else if (searchBoxSelect.text() === '用户') {
+					let data = await Utility.getUserInfoByName(val);
+					if (data) {
+						this.props.history.push(`/user/id/${data.id}`);
+					}
+					else {
+						Utility.removeStorage('searchInfo');
+						this.props.history.push('/search');
+					}
+				}
+				else if (searchBoxSelect.text() === '版面') {
+					let host = window.location.host;
+					let boardResult = Utility.getBoardId(val);
+					if (boardResult) {
+						if (boardResult === []) {
+							Utility.removeStorage('searchInfo');
+							this.props.history.push('/search');
+						}
+						else if (boardResult.length === 1) {
+							this.props.history.push(`/list/${boardResult[0].id}`);
+						}
+						else if (boardResult.length > 1) {
+							Utility.setStorage("searchBoardInfo", boardResult);
+							this.props.history.push('/searchBoard');
+						}
+						else {
+							Utility.removeStorage('searchInfo');
+							this.props.history.push('/search');
+						}
+					}
+					else {
+						Utility.removeStorage('searchInfo');
+						this.props.history.push('/search');
+					}
+				}
+			}
+		});
+	}
 
 	keypress_submit(e) {
 		var evt = window.event || e;
@@ -331,60 +331,60 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
 		}
 	}
 
-    render() {
-        //查看当前是全站还是某版
-        let url1 = location.href.match(/\/topic\/(\S+)\/?/);
-        let url2 = location.href.match(/\/list\/(\S+)\/?/);
-        let url3 = location.href.match(/\/(search)/);
-        let flag = 1;
-        if (url1) {
-            flag = 0;
-        }
-        else if (url2) {
-            flag = 0;
-        }
-        else if (url3) {
-            let searchInfo = Utility.getStorage("searchInfo");
-            if (searchInfo) {
-                if (searchInfo.boardId != 0) {
-                    flag = 0;
-                }
-            }
-        }
+	render() {
+		//查看当前是全站还是某版
+		let url1 = location.href.match(/\/topic\/(\S+)\/?/);
+		let url2 = location.href.match(/\/list\/(\S+)\/?/);
+		let url3 = location.href.match(/\/(search)/);
+		let flag = 1;
+		if (url1) {
+			flag = 0;
+		}
+		else if (url2) {
+			flag = 0;
+		}
+		else if (url3) {
+			let searchInfo = Utility.getStorage("searchInfo");
+			if (searchInfo) {
+				if (searchInfo.boardId != 0) {
+					flag = 0;
+				}
+			}
+		}
 
-        if (flag) {
-            return <div id="search">
-                <div className="box">
-                    <div className="searchBoxSelect">主题</div>
-                    <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
-                    <input id="searchText" type="text" placeholder="猜猜能搜到什么..." onKeyPress={this.keypress_submit} />
-                    <div className="searchIco"><img src="/static/images/searchIco.ico" width="15" height="15" /></div>
-                </div>
-                <ul className="searchBoxSub">
-                    <li>主题</li>
-                    <li>用户</li>
-                    <li>版面</li>
-                    <li style={{ display: 'none' }}></li>
-                </ul>
-            </div>;
-        }
-        else {
-            return <div id="search">
-                <div className="box">
-                    <div className="searchBoxSelect">版内</div>
-                    <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
-                    <input id="searchText" type="text" placeholder="猜猜能搜到什么..." onKeyPress={this.keypress_submit}/>
-                    <div className="searchIco"><img src="/static/images/searchIco.ico" width="15" height="15" /></div>
-                </div>
-                <ul className="searchBoxSub">
-                    <li>版内</li>
-                    <li>全站</li>
-                    <li>用户</li>
-                    <li>版面</li>
-                </ul>
-            </div>;
-        }
-    }
+		if (flag) {
+			return <div id="search">
+				<div className="box">
+					<div className="searchBoxSelect">主题</div>
+					<div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
+					<input id="searchText" type="text" placeholder="猜猜能搜到什么..." onKeyPress={this.keypress_submit} />
+					<div className="searchIco"><img src="/static/images/searchIco.ico" width="15" height="15" /></div>
+				</div>
+				<ul className="searchBoxSub">
+					<li>主题</li>
+					<li>用户</li>
+					<li>版面</li>
+					<li style={{ display: 'none' }}></li>
+				</ul>
+			</div>;
+		}
+		else {
+			return <div id="search">
+				<div className="box">
+					<div className="searchBoxSelect">版内</div>
+					<div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
+					<input id="searchText" type="text" placeholder="猜猜能搜到什么..." onKeyPress={this.keypress_submit} />
+					<div className="searchIco"><img src="/static/images/searchIco.ico" width="15" height="15" /></div>
+				</div>
+				<ul className="searchBoxSub">
+					<li>版内</li>
+					<li>全站</li>
+					<li>用户</li>
+					<li>版面</li>
+				</ul>
+			</div>;
+		}
+	}
 }
 
 export const Search = withRouter(SearchBeforeConnent);
