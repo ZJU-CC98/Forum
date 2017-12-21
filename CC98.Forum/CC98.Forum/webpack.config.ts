@@ -69,7 +69,6 @@ const config: webpack.Configuration = {
 			{ from: 'node_modules/@aspnet/signalr-client/dist/browser', to: 'static/scripts/lib/signalr-client/' },
 			{ from: 'spectrum/', to: 'static/scripts/lib/spectrum/' },
             { from: 'node_modules/url-join/', to: 'static/scripts/lib/url-join/' },
-            { from: 'node_modules/react-infinite-scroller/', to: 'static/scripts/lib/react-infinite-scroller/' }
 		]),
 		new ExtractTextPlugin('static/content/site.min.css')
 	]
