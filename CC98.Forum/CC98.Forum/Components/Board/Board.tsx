@@ -94,7 +94,15 @@ export class Category extends React.Component<{ boardId, boardInfo }, {}>{
 export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow , isExtend: boolean, isEditing: boolean, curDesc: string, info: string}, { boardId }> {
     constructor(props, content) {
         super(props, content);
-        this.state = { isFollow: this.props.boardInfo.isFollow, isExtend: false, isEditing: false, curDesc: props.boardInfo.bigPaper, info: '' };
+        let userInfo = Utility.getLocalStorage("userInfo");
+        let boardid = userInfo.customBoards;
+        let isFollow = false;
+        for (let item of boardid) {
+            if (item === this.props.boardInfo.id) {
+                isFollow = true;
+            }
+        }
+        this.state = { isFollow: isFollow, isExtend: false, isEditing: false, curDesc: props.boardInfo.bigPaper, info: '' };
         const initFollow = Utility.isFollowThisBoard(this.props.boardId);
         this.follow = this.follow.bind(this);
         this.unfollow = this.unfollow.bind(this);

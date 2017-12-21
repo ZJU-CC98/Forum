@@ -153,11 +153,13 @@
     .ubb-emoji-buttons {
         display: flex;
         flex-direction: row;
+        height: 2rem;
     }
 
     .ubb-emoji-button {
         flex-grow: 1;
         margin: 0;
+        height: 2rem;
     }
 
     .ubb-emoji-button-active {
