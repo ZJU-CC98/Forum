@@ -115,7 +115,7 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
         return <div className="focus-topic-area">
             <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
             <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://file.cc98.org/uploadfile/2017/12/20/6514723843.gif"></img></div>
-            <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">已加载100条新帖，无法加载更多了~</div>
+            <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">无法加载更多了，小水怡情，可不要沉迷哦~</div>
         </div>;
     }
 
