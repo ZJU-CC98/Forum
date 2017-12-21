@@ -57,7 +57,7 @@ export class RecommendedReadingComponent extends React.Component<{}, { recommend
     constructor(props) {
         super(props);
         let data = Utility.getStorage('mainRecommendReading');
-        if (!data) { data = new Array<MainPageColumn>() }
+        if (!data) { data = new Array<MainPageColumn>(); }
         this.state = {
             recommendedReading: data,
             index: Math.floor(Math.random() * 5)    //0-4的随机数
@@ -70,6 +70,7 @@ export class RecommendedReadingComponent extends React.Component<{}, { recommend
         let recommendedReading: MainPageColumn[] = Utility.getStorage('mainRecommendReading');
         if (recommendedReading) { return recommendedReading; }
         else {
+            recommendedReading = new Array<MainPageColumn>();
             const response = await Utility.cc98Fetch('/index/column/recommandationreading');
             const data = await response.json();
             for (let i = 0; i < 5; i++) {
@@ -461,19 +462,26 @@ export class RecommendedFunctionComponent extends React.Component<{}, { recommen
 export class SchoolNewsComponent extends React.Component<{}, { schoolNews: MainPageColumn[] }>{
     constructor(props) {
         super(props);
+        let data = Utility.getStorage('mainSchoolNews');
+        if (!data) { data = new Array<MainPageColumn>(); }
         this.state = {
-            schoolNews: new Array<MainPageColumn>(),
+            schoolNews: data
         };
     }
 
     async getSchoolNews() {
-        const schoolnews: MainPageColumn[] = new Array<MainPageColumn>();
-        const response = await Utility.cc98Fetch('/index/column/schoolnews');
-        const data = await response.json();
-        for (let i = 0; i < 10; i++) {
-            schoolnews[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
+        let schoolnews: MainPageColumn[] = Utility.getStorage('mainSchoolNews');
+        if (schoolnews) { return schoolnews }
+        else {
+            schoolnews = new Array<MainPageColumn>();
+            const response = await Utility.cc98Fetch('/index/column/schoolnews');
+            const data = await response.json();
+            for (let i = 0; i < 10; i++) {
+                schoolnews[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
+            }
+            Utility.setStorage('mainSchoolNews', schoolnews)
+            return schoolnews;
         }
-        return schoolnews;
     }
 
     async componentWillMount() {
@@ -514,21 +522,27 @@ export class AdsComponent extends React.Component<{}, { ads: MainPageColumn[], i
 
     constructor(props) {
         super(props);
+        let data = Utility.getStorage('mainAds');
+        if (!data) { data = new Array<MainPageColumn>(); }
         this.state = {
-            ads: new Array<MainPageColumn>(),
+            ads: data,
             index: 0,
         };
         this.changeIndex = this.changeIndex.bind(this);
     }
 
     async getAds() {
-        const ads: MainPageColumn[] = new Array<MainPageColumn>();
-        const response = await Utility.cc98Fetch('/config/global/advertisement');
-        const data = await response.json();
-        for (let i = 0; i < data.length; i++) {
-            ads[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
+        let ads: MainPageColumn[] = Utility.getStorage('mainSchoolNews');
+        if (ads) { return ads }
+        else {
+            ads = new Array<MainPageColumn>();
+            const response = await Utility.cc98Fetch('/config/global/advertisement');
+            const data = await response.json();
+            for (let i = 0; i < data.length; i++) {
+                ads[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
+            }
+            return ads;
         }
-        return ads;
     }
 
     async componentWillMount() {
