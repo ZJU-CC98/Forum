@@ -8,7 +8,6 @@ import { MessageSender } from './MessageSender';
 import { MessageReceiver } from './MessageReceiver';
 import { MessageWindowProps } from '../../Props/MessageWindowProps';
 import * as Utility from '../../Utility';
-declare let InfiniteScroll: any;
 
 export class MessageWindow extends React.Component<MessageWindowProps, MessageWindowState>{
 
