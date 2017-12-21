@@ -4,6 +4,13 @@ import { FocusTopic } from '../../Props/FocusTopic';
 import { FocusTopicSingle } from '../Focus/FocusTopicSingle';
 import { FocusTopicAreaState } from '../../States/FocusTopicAreaState';
 import * as Utility from '../../Utility';
+import {
+    BrowserRouter as Router,
+    Route,
+    Link,
+    withRouter
+} from 'react-router-dom';
+
 /**
  * 表示全站最新主题列表
  */
@@ -25,7 +32,7 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
             from: 0,
             loading: true
         };
-	    this.handleScroll = this.handleScroll.bind(this);
+        this.handleScroll = this.handleScroll.bind(this);
     }
 
     /**
@@ -50,7 +57,7 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
     async componentWillUnmount() {
         document.removeEventListener('scroll', this.handleScroll);
     }
-    
+
     /**
      * 处理滚动的函数
      */
@@ -98,16 +105,30 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
      * 将主题排列好
      */
     render() {
-        return (<div className="focus-root">
-                    <div className="focus" >
-                        <div className="focus-allNewTopic"><i className="fa fa-home" aria-hidden="true"></i>首页/全站新帖</div>
-                        <div className="focus-topic-area">
-                            <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
-                    <div className="focus-topic-loading" id="focus-topic-loading"><i style={{ marginTop: "1rem" }} className="fa fa-spinner fa-pulse fa-5x fa-fw"></i></div>
-                            <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">没有更多帖子啦~</div>
-                        </div>
+        if (this.state.data) {
+            return (<div className="focus-root">
+                <div className="focus" >
+                    <Category />
+                    <div className="focus-topic-area">
+                        <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
+                        <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://file.cc98.org/uploadfile/2017/12/20/6514723843.gif"></img></div>
+                        <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">没有更多帖子啦~</div>
                     </div>
-                </div>);
+                </div>
+            </div>);
+        }
+        else {
+            return (<div className="focus-root">
+                <div className="focus" >
+                    <div className="focus-allNewTopic"><i className="fa fa-home" aria-hidden="true"></i>首页/全站新帖</div>
+                    <div className="focus-topic-area">
+                        <div className="focus-topic-topicArea">获取帖子失败，请再次尝试~</div>
+                        <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://file.cc98.org/uploadfile/2017/12/20/6514723843.gif"></img></div>
+                        <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">没有更多帖子啦~</div>
+                    </div>
+                </div>
+            </div>);
+        }
     }
 }
 
@@ -116,4 +137,25 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
 */
 function coverFocusPost(item: FocusTopic) {
     return <FocusTopicSingle title={item.title} hitCount={item.hitCount} id={item.id} boardId={item.boardId} boardName={item.boardName} replyCount={item.replyCount} userId={item.userId} userName={item.userName} portraitUrl={item.portraitUrl} time={item.time} likeCount={item.likeCount} dislikeCount={item.dislikeCount} fanCount={item.fanCount} lastPostUser={item.lastPostUser} lastPostTime={item.lastPostTime} tag1={item.tag1} tag2={item.tag2} />;
+}
+
+/**
+ * 导航器组件
+ */
+export class Category extends React.Component<{}, {}>{
+    constructor(props) {
+    super(props);
+    this.state = ({
+        url: "",
+        boardName: ""
+    });
+}
+
+    render() {
+        return <div className="row" style={{ alignItems: "baseline", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>
+            <Link style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} to={"/"}>首页</Link>
+            <i className="fa fa-chevron-right"></i>
+            <div style={{ color: "grey", fontSize: "1rem", marginLeft: "0.5rem", marginRight: "0.5rem" }}>查看新帖</div>
+        </div>;
+    }
 }
