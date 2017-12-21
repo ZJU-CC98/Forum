@@ -1360,10 +1360,15 @@ export function isBottom() {
 
 /**
  * 上传文件
+ * 成功时isSuccess为true，content为返回的地址
+ * 失败时isSuccess为false，content为错误原因
  * @param file
  */
 export async function uploadFile(file: File) {
-	try {
+    try {
+        if (file.size > 5242880) {
+            throw new Error('文件过大');
+        }
 		const url = `/file`;
 		const myHeaders = await formAuthorizeHeader();
 		let formdata = new FormData();
@@ -1386,7 +1391,7 @@ export async function uploadFile(file: File) {
 	} catch (e) {
 		return {
 			isSuccess: false,
-			content: ''
+			content: e.message as string
 		};
 	}
 }

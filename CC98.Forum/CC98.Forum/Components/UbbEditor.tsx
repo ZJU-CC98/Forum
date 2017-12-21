@@ -167,8 +167,13 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
             const response2 = await fetch("/config.json");
             data = await response2.json();
         }*/
-        const baseUrl = Utility.getApiUrl();
-        this.handleButtonClick(this.state.extendTagName, `${res.content}`);
+        if (res.isSuccess) {
+            const baseUrl = Utility.getApiUrl();
+            this.handleButtonClick(this.state.extendTagName, `${res.content}`);
+        }else if (res.content === '文件过大') {
+
+        }
+        
     }
 
     handleUndo() {
@@ -474,7 +479,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                             }}
                             style={{ height: this.state.extendTagName && this.state.extendTagName !== 'upload' ? `${height}rem` : `${height + 2}rem` }}
                             spellCheck={false}
-                        ></textarea>) : (<div className="ubb-editor-preview"><UbbContainer code={this.props.value} /></div>)}
+                        ></textarea>) : (<div className="ubb-editor-preview" style={{ height: `${height + 2}rem`}}><UbbContainer code={this.props.value} /></div>)}
                 </div>
                 <div
                     className="ubb-emoji"
