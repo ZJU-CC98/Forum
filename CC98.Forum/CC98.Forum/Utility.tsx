@@ -793,7 +793,7 @@ export async function getRecentContact(from: number, size: number, router) {
 
 		return recentContact;
 	} catch (e) {
-		window.location.href = ("/status/Disconnected");
+		//window.location.href = ("/status/Disconnected");
 	}
 }
 
@@ -822,7 +822,7 @@ export async function getRecentMessage(userId: number, from: number, size: numbe
 		let recentMessage = sortRecentMessage(response1);
 		return recentMessage;
 	} catch (e) {
-		window.location.href = ("/status/Disconnected");
+		//window.location.href = ("/status/Disconnected");
 	}
 }
 
