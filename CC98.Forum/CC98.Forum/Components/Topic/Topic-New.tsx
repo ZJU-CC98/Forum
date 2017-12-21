@@ -98,30 +98,16 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
      * 将主题排列好
      */
     render() {
-        if (this.state.data) {
-            return (<div className="focus-root">
-                <div className="focus" >
-                    <div className="focus-allNewTopic"><i className="fa fa-home" aria-hidden="true"></i>首页/全站新帖</div>
-                    <div className="focus-topic-area">
-                        <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
-                        <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://file.cc98.org/uploadfile/2017/12/20/6514723843.gif"></img></div>
-                        <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">没有更多帖子啦~</div>
+        return (<div className="focus-root">
+                    <div className="focus" >
+                        <div className="focus-allNewTopic"><i className="fa fa-home" aria-hidden="true"></i>首页/全站新帖</div>
+                        <div className="focus-topic-area">
+                            <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
+                            <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://file.cc98.org/uploadfile/2017/12/20/6514723843.gif"></img></div>
+                            <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">没有更多帖子啦~</div>
+                        </div>
                     </div>
-                </div>
-            </div>);
-        }
-        else {
-            return (<div className="focus-root">
-                <div className="focus" >
-                    <div className="focus-allNewTopic"><i className="fa fa-home" aria-hidden="true"></i>首页/全站新帖</div>
-                    <div className="focus-topic-area">
-                        <div className="focus-topic-topicArea">获取帖子失败，请再次尝试~</div>
-                        <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://file.cc98.org/uploadfile/2017/12/20/6514723843.gif"></img></div>
-                        <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">没有更多帖子啦~</div>
-                    </div>
-                </div>
-            </div>);
-        }
+                </div>);
     }
 }
 
