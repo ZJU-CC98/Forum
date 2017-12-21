@@ -287,7 +287,7 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
 				else if (searchBoxSelect.text() === '用户') {
 					let data = await Utility.getUserInfoByName(val);
 					if (data) {
-						this.props.history.push(`/user/id/${data.id}`);
+                        this.props.history.push(encodeURI(`/user/id/${data.id}`));
 					}
 					else {
 						Utility.removeStorage('searchInfo');
