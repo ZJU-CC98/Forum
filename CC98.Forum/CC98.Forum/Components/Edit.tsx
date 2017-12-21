@@ -5,7 +5,8 @@ import * as $ from 'jquery';
 import {
     BrowserRouter as Router,
     Route,
-    Link,
+    Link,
+
     withRouter
 } from 'react-router-dom';
 import { match } from "react-router";
@@ -517,7 +518,7 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
             </div>
                 <div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
                     <div style={{ display: "flex" }}>
-                        <div className="tagBoxSelect1">{this.state.tags[0].tags[0]}</div>
+                        <div className="tagBoxSelect1">{this.state.tags[1].tags[0].name}</div>
                         <div className="downArrow1"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
                     </div>
                     {drop2}
@@ -525,7 +526,7 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
         } else if (this.state.tags.length == 1) {
             tagInfo = <div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
                 <div style={{ display: "flex" }}>
-                    <div className="tagBoxSelect">{this.state.tags[0].tags[0]}</div>
+                    <div className="tagBoxSelect">{this.state.tags[0].tags[0].name}</div>
                     <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
                 </div>
                 {drop1}
