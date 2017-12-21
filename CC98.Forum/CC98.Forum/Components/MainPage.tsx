@@ -228,20 +228,27 @@ export class MainPageTopicComponent extends React.Component<{ name: string, fetc
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
+        let data = Utility.getStorage("mainRecommendTopics");
+        if (!data) { data = []; }
         this.state = {
-            mainPageTopic: new Array<MainPageTopicState>(),
+            mainPageTopic: data
         };
     }
 
     async getTopicInfo() {
-        const mainPageTopics: MainPageTopicState[] = [];
-        const url = this.props.fetchUrl;
-        const response = await Utility.cc98Fetch(url);   //该api要求提供返回主题的数量，这里需要返回10条
-        const data = await response.json();
-        for (let i = 0; i < 10; i++) {
-            mainPageTopics[i] = new MainPageTopicState(data[i].title, data[i].id);
+        let data = Utility.getStorage("mainRecommendTopics");
+        if (data) { return data; }
+        else {
+            const mainPageTopics: MainPageTopicState[] = [];
+            const url = this.props.fetchUrl;
+            const response = await Utility.cc98Fetch(url);   //该api要求提供返回主题的数量，这里需要返回10条
+            data = await response.json();
+            for (let i = 0; i < 10; i++) {
+                mainPageTopics[i] = new MainPageTopicState(data[i].title, data[i].id);
+            }
+            Utility.setStorage("mainRecommendTopics", mainPageTopics);
+            return mainPageTopics;
         }
-        return mainPageTopics;
     }
 
     async componentDidMount() {
