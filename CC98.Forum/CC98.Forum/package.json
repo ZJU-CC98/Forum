@@ -21,8 +21,7 @@
     "signalr": "2.2.2",
     "ssri": "^4.1.6",
     "msgpack5": "3.6.0",
-    "url-join": "2.0.2",
-    "react-infinite-scroller": "1.1.2"
+    "url-join": "2.0.2"
   },
   "devDependencies": {
     "@types/jquery": "3.2.16",

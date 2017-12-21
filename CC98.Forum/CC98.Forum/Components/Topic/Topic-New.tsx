@@ -33,10 +33,12 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
      */
     async componentDidMount() {
         let data = await Utility.getAllNewTopic(0, this.context.router);
-                  
-        //缓存获取到的数据                      
-        Utility.setStorage("AllNewTopic", data);
-        this.setState({ data: data, from: data.length });
+
+        if (data) {
+            //缓存获取到的数据                      
+            Utility.setStorage("AllNewTopic", data);
+            this.setState({ data: data, from: data.length });
+        }
 
         //滚动条监听
         document.addEventListener('scroll', this.handleScroll);
@@ -96,16 +98,30 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
      * 将主题排列好
      */
     render() {
-        return (<div className="focus-root">
-                    <div className="focus" >
-                        <div className="focus-allNewTopic"><i className="fa fa-home" aria-hidden="true"></i>首页/全站新帖</div>
-                        <div className="focus-topic-area">
-                            <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
-                    <div className="focus-topic-loading" id="focus-topic-loading"><i style={{ marginTop: "1rem" }} className="fa fa-spinner fa-pulse fa-5x fa-fw"></i></div>
-                            <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">没有更多帖子啦~</div>
-                        </div>
+        if (this.state.data) {
+            return (<div className="focus-root">
+                <div className="focus" >
+                    <div className="focus-allNewTopic"><i className="fa fa-home" aria-hidden="true"></i>首页/全站新帖</div>
+                    <div className="focus-topic-area">
+                        <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
+                        <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://file.cc98.org/uploadfile/2017/12/20/6514723843.gif"></img></div>
+                        <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">没有更多帖子啦~</div>
                     </div>
-                </div>);
+                </div>
+            </div>);
+        }
+        else {
+            return (<div className="focus-root">
+                <div className="focus" >
+                    <div className="focus-allNewTopic"><i className="fa fa-home" aria-hidden="true"></i>首页/全站新帖</div>
+                    <div className="focus-topic-area">
+                        <div className="focus-topic-topicArea">获取帖子失败，请再次尝试~</div>
+                        <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://file.cc98.org/uploadfile/2017/12/20/6514723843.gif"></img></div>
+                        <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">没有更多帖子啦~</div>
+                    </div>
+                </div>
+            </div>);
+        }
     }
 }
 
