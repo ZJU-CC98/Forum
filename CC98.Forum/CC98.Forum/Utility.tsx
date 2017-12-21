@@ -1741,7 +1741,7 @@ export async function refreshUserInfo() {
 
 	const headers = await formAuthorizeHeader();
 
-	let response = await cc98Fetch(`/user/name/${userName}`, {
+	let response = await cc98Fetch(`/user/name/${encodeURIComponent(userName)}`, {
 
 		headers: headers
 
