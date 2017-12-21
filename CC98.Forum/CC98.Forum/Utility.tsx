@@ -67,17 +67,15 @@ export async function getTopic(topicid: number) {
 		});
 		const data = await response.json();
 		let topicMessage = null;
-		const likeInfo = await refreshLikeState(topicid, data[0].id);
-		const awardInfo = await getAwardInfo(data[0].id);
 		if (data[0].isAnonymous != true) {
 
 			const userMesJson = await getUserInfo(data[0].userId);
-			topicMessage = { ...data[0], userInfo: userMesJson, postId: data[0].id, likeInfo: likeInfo, awardInfo: awardInfo }
+			topicMessage = { ...data[0], userInfo: userMesJson, postId: data[0].id }
 		} else {
 			const anonymousUserName = `匿名${data[0].userName.toUpperCase()}`;
 			let purl = 'https://www.cc98.org/pic/anonymous.gif';
 			const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: "", postCount: 0 };
-			topicMessage = { ...data[0], userInfo: userMesJson, postId: data[0].id, isAnonymous: true, likeInfo: likeInfo, awardInfo: awardInfo }
+			topicMessage = { ...data[0], userInfo: userMesJson, postId: data[0].id}
 
 		}
 
@@ -111,13 +109,12 @@ export async function getTopicContent(topicid: number, curPage: number, replyCou
 			topicNumberInPage = (replyCount - (curPage - 1) * 10 + 1);
 		}
 		for (let i = 0; i < topicNumberInPage; i++) {
-			const likeInfo = await refreshLikeState(topicid, content[i].id);
-			const awardInfo = await getAwardInfo(content[i].id);
+	
 			if (content[i].isAnonymous != true && content[i].isDeleted != true) {
 
 				const userMesJson = await getUserInfo(content[i].userId);
 				post[i] = {
-					...content[i], userInfo: userMesJson, postId: content[i].id, likeInfo: likeInfo, awardInfo: awardInfo
+					...content[i], userInfo: userMesJson, postId: content[i].id
 				}
 
 			} else if (content[i].isAnonymous == true) {
@@ -127,12 +124,12 @@ export async function getTopicContent(topicid: number, curPage: number, replyCou
 				const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
 				post[i] = {
 
-					...content[i], userInfo: userMesJson, postId: content[i].id, isAnonymous: true, likeInfo: likeInfo, awardInfo: awardInfo
+					...content[i], userInfo: userMesJson, postId: content[i].id, isAnonymous: true
 				}
 			} else {
 				const userMesJson = { name: '98Deleter', portraitUrl: 'http://www.cc98.org/images/policeM.png', id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
 				post[i] = {
-					...content[i], postId: content[i].id, isAnonymous: false, isDeleted: true, content: "该贴已被my cc98, my home", likeInfo: likeInfo, awardInfo: awardInfo
+					...content[i], postId: content[i].id, isAnonymous: false, isDeleted: true, content: "该贴已被my cc98, my home"
 				}
 			}
 		}
@@ -228,14 +225,13 @@ export async function getHotReplyContent(topicid: number) {
 		const post = [];
 		let topicNumberInPage: number = content.length;
 		for (let i = 0; i < topicNumberInPage; i++) {
-			const likeInfo = await refreshLikeState(topicid, content[i].id);
-			const awardInfo = await getAwardInfo(content[i].id);
+	
 			if (content[i].isAnonymous != true) {
 
 				const userMesResponse = await cc98Fetch(`/user/name/${content[i].userName}`);
 				const userMesJson = await userMesResponse.json();
 				post[i] = {
-					...content[i], userInfo: userMesJson, postId: content[i].id, likeInfo: likeInfo, awardInfo: awardInfo
+					...content[i], userInfo: userMesJson, postId: content[i].id
 				}
 
 			} else {
@@ -244,7 +240,7 @@ export async function getHotReplyContent(topicid: number) {
 				const anonymousLastReplierName = `匿名${content[i].lastUpdateAuthor.toUpperCase()}`;
 				const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
 				post[i] = {
-					...content[i], userInfo: userMesJson, postId: content[i].id, likeInfo: likeInfo, awardInfo: awardInfo
+					...content[i], userInfo: userMesJson, postId: content[i].id
 				}
 			}
 		}
@@ -337,15 +333,6 @@ export async function getCurUserTopic(topicid: number, userId: number, router) {
 	try {
 		const headers = await formAuthorizeHeader();
 		const response = await cc98Fetch(`/post/topic/user?topicid=${topicid}&userid=${userId}&from=0&size=1`, { headers });
-		if (response.status === 401) {
-			window.location.href = "/status/UnauthorizedTopic";
-		}
-		if (response.status === 404) {
-			window.location.href = "/status/NotFoundTopic";
-		}
-		if (response.status === 500) {
-			window.location.href = "/status/ServerError";
-		}
 		const data = await response.json();
 		const userMesResponse = await cc98Fetch(`/user/name/${data[0].userName}`);
 		if (userMesResponse.status === 404) {
@@ -400,12 +387,10 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
 		}
 
 		for (let i = 0; i < topicNumberInPage; i++) {
-			const likeInfo = await refreshLikeState(topicid, content[i].id);
-			const awardInfo = await getAwardInfo(content[i].id);
 			if (content[i].isAnonymous != true) {
 				const userMesJson = await getUserInfo(content[i].userId);
 				post[i] = {
-					...content[i], userInfo: userMesJson, postId: content[i].id, likeInfo: likeInfo, awardInfo: awardInfo
+					...content[i], userInfo: userMesJson, postId: content[i].id
 				}
 
 			} else {
@@ -413,7 +398,7 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
 				const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
 				const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
 				post[i] = {
-					...content[i], userInfo: userMesJson, likeInfo: likeInfo, awardInfo: awardInfo
+					...content[i], userInfo: userMesJson
 				}
 			}
 		}
@@ -2371,15 +2356,19 @@ export function isMaster(masters) {
 			return true;
 
 		}
-
-		if (masters) {
-			for (let i = 0; i < masters.length; i++) {
-				if (myName === masters[i]) {
-					return true;
-				}
-			}
-		}
-	}
+        console.log(masters);
+        if (masters) {
+            for (let i = 0; i < masters.length; i++) {
+                if (myName === masters[i]) {
+                    console.log("is master");
+                    return true;
+                }
+            }
+        } else {
+            return false;
+        }
+    }
+    return false;
 }
 export async function getBoardTag(boardId) {
 	const headers = await formAuthorizeHeader();
@@ -2496,8 +2485,20 @@ export async function editPost(postId, contentType, title, content) {
 }
 
 export async function cc98Fetch(url, init?: RequestInit) {
-
-	const baseUrl = getApiUrl();
+    /*const response1 = await fetch("/config.production.json");
+    let data;
+    if (response1.status !== 404) {
+        const data1 = await response1.json();
+        const response2 = await fetch("/config.json");
+        const data2 = await response2.json();
+        data = { ...data2, ...data1 };
+    } else {
+        const response2 = await fetch("/config.json");
+        data = await response2.json();
+    }
+    const baseUrl = data.apiUrl;
+   */
+    const baseUrl = Constants.config.apiUrl;
 	const _url = `${baseUrl}${url}`;
 	let response: Response;
 	if (init) {

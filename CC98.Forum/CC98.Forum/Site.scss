@@ -3073,7 +3073,12 @@ a {
     line-height: 1.25rem;
     cursor: pointer;
 }
-
+.topicManageBTN{
+    border:none;
+    width:5rem;
+    height:2rem;
+    cursor:pointer;
+}
 .boardDescription {
     display: flex;
     flex-direction: column;

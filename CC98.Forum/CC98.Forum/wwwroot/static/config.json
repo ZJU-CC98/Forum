@@ -1,4 +1,4 @@
 {
   "apiUrl": "http://api-v2.cc98.org",
-  "imageUploadUrl": ""
+  "imageUploadUrl": "http://api-v2.cc98.org/file"
 }
