@@ -284,7 +284,7 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
             if (this.state.mode === 0) {
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ width: "16rem", letterSpacing: "0.3125rem", fontSize: "1rem", height: "2rem", lineHeight: "2rem" }}>切换到Markdown编辑器</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom:"0.5rem" }}>切换到Markdown编辑器</div>
                 </div>
                     <UbbEditor update={this.update} value={this.state.content} option={{ height: 20 }}/>
                     <div className="row" style={{ justifyContent: "center" }}>
@@ -294,7 +294,7 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
             } else {
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ width: "16rem", letterSpacing: "0.3125rem", fontSize: "1rem", height: "2rem", lineHeight: "2rem" }}>切换到UBB编辑器</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom:"0.5rem" }}>切换到UBB编辑器</div>
                 </div>
                     <InputMdContent postInfo={this.state.postInfo} onChange={this.sendMdTopic.bind(this)} ready={this.state.ready} mode={this.match.params.mode} /></div>;
             }
@@ -302,7 +302,7 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
             if (this.state.postInfo.contentType === 0) {
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ width: "16rem", letterSpacing: "0.3125rem", fontSize: "1rem", height: "2rem", lineHeight: "2rem" }}>切换到Markdown编辑器</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom:"0.5rem" }}>切换到Markdown编辑器</div>
                 </div>
                     <UbbEditor update={this.update} value={this.state.content} />
                     <div className="row" style={{ justifyContent: "center" }}>
@@ -312,7 +312,7 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
             } else {
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ width: "16rem", letterSpacing: "0.3125rem", fontSize: "1rem", height: "2rem", lineHeight: "2rem" }}>切换到UBB编辑器</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom:"0.5rem" }}>切换到UBB编辑器</div>
                 </div>
                     <InputMdContent postInfo={this.state.postInfo} onChange={this.editMd.bind(this)} ready={this.state.ready} mode={this.match.params.mode} /></div>;
             }
