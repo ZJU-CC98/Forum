@@ -203,17 +203,9 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         else if (days > 1) lastLogOn = `${days}天前`;
         else if (hours > 1) lastLogOn = `${hours}小时前`;
         else lastLogOn = '一小时内';
-        return <div className="userMessage">
-            <div className="userGender">
-                {this.props.userInfo.gender === 0 ? <i className="fa fa-venus" style={{ color: "#fff" }}></i> : <i className="fa fa-mars" style={{ color: "#fff" }}></i>}
-            </div>
-
-            {this.state.photoframe}
-
-            <div className="rpyClr" style={{ width: "100%", marginTop: "1rem", paddingLeft: "3rem" }}>
-                {userName}
-            </div>
-            <div className="row" style={{ width: "100%" }}>
+        let userDetailMessage = null;
+        if (!this.props.isAnonymous) {
+            userDetailMessage = <div className="row" style={{ width: "100%" }}>
                 <div className="column" style={{ width: "60%", alignItems: "flex-start", paddingLeft: "1.5rem" }}>
                     <div className="userMessageOpt">
                         帖数 {this.props.userInfo.postCount}
@@ -234,7 +226,19 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                     </div>
                 </div>
                 {btn}
+            </div>;
+        }
+        return <div className="userMessage">
+            <div className="userGender">
+                {this.props.userInfo.gender === 0 ? <i className="fa fa-venus" style={{ color: "#fff" }}></i> : <i className="fa fa-mars" style={{ color: "#fff" }}></i>}
             </div>
+
+            {this.state.photoframe}
+
+            <div className="rpyClr" style={{ width: "100%", marginTop: "1rem", paddingLeft: "3rem" }}>
+                {userName}
+            </div>
+            {userDetailMessage}
         </div>;
 
     }

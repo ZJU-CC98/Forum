@@ -316,15 +316,13 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
         const emoji = {
             'em': new Array(92).fill(0)
                 .map((item, index) => {
-                    if (index < 10) {
-                        return `0${index}`;
-                    } else if ((index < 43) || (70 < index && index< 92)) {
-                        return `${index}`;
+                    if ((index < 44) || (70 < index && index < 92)) {
+                        return `${index + 1}`;
                     }
                 })
                 .map((item) => (
                     item ? (<LazyImage
-                        src={`http://www.cc98.org/emot/emot${item}.gif`}
+                        src={`/static/images/em/em${item}.gif`}
                         onClick={() => { this.handleEmojiButtonClick(`[em${item}]`) }}
                     ></LazyImage>) : null
                 )),
