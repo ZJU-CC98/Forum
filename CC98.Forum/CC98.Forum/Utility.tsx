@@ -559,20 +559,20 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
 				//获取作者粉丝数目
 				let userFan0 = await cc98Fetch(`/user/follower/count?userid=${newTopic[i].userId}`);
 				if (userFan0.status === 404) {
-					window.location.href = "/status/NotFoundUser";
+					//window.location.href = "/status/NotFoundUser";
 				}
 				if (userFan0.status === 500) {
-					window.location.href = "/status/ServerError";
+					//window.location.href = "/status/ServerError";
 				}
 				let userFan1 = await userFan0.json();
 				newTopic[i].fanCount = userFan1;
 				//获取作者头像地址
 				let userInfo0 = await cc98Fetch(`/user/basic/${newTopic[i].userId}`);
 				if (userInfo0.status === 404) {
-					window.location.href = "/status/NotFoundUser";
+					//window.location.href = "/status/NotFoundUser";
 				}
 				if (userInfo0.status === 500) {
-					window.location.href = "/status/ServerError";
+					//window.location.href = "/status/ServerError";
 				}
 				let userInfo1 = await userInfo0.json();
 				newTopic[i].portraitUrl = userInfo1.portraitUrl;
