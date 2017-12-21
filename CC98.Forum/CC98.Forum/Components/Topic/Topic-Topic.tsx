@@ -36,6 +36,7 @@ export class PostTopic extends React.Component<{ boardInfo,topicInfo,userId, img
         let privilege = null;
         if (Utility.getLocalStorage("userInfo"))
             privilege = Utility.getLocalStorage("userInfo").privilege;
+        let likeInfo = { likeCount: this.state.topicMessage.likeCount, dislikeCount: this.state.topicMessage.dislikeCount, likeState: this.state.topicMessage.likeState };
         if (this.state.topicMessage.userInfo!= null) {
     
                 return <div className="reply" id={'1'} >
@@ -44,7 +45,7 @@ export class PostTopic extends React.Component<{ boardInfo,topicInfo,userId, img
                         <Judge userId={this.state.topicMessage.userId} postId={this.state.topicMessage.postId} update={this.update} topicId={this.state.topicMessage.topicId} />
                         <PostManagement topicId={this.state.topicMessage.topicId} postId={this.state.topicMessage.postId} userId={this.state.topicMessage.userId} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} />
                         <ReplyContent key={this.state.topicMessage.content} postid={this.state.topicMessage.postId} content={this.state.topicMessage.content} contentType={this.state.topicMessage.contentType} />
-                        <Award postId={this.state.topicMessage.postId} updateTime={Date.now()} awardInfo={this.state.topicMessage.awardInfo} />
+                        <Award postId={this.state.topicMessage.postId} updateTime={Date.now()} awardInfo={this.state.topicMessage.awards} />
                         <ReplierSignature signature={this.state.topicMessage.userInfo.signatureCode} topicid={this.state.topicMessage.topicId} userId={this.state.topicMessage.userId} masters={this.state.masters} postid={this.state.topicMessage.postId} likeInfo={this.state.topicMessage.likeInfo}
                             userInfo={this.state.topicMessage.userInfo}
                             content={this.state.topicMessage.content}
