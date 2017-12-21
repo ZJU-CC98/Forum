@@ -27,13 +27,7 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
             tags: [], boardName: "", ready: false, mode: 0, content: "", title: "", postInfo: { floor: 0, title: "", content: "", contentType: 0 }, tag1: "", tag2: ""
         });
     }
-    async send() {
-        if (this.match.params.mode === 'post') {
 
-        } else {
-
-        }
-    }
     async componentDidMount() {
         const mode = this.match.params.mode;
         const id = this.match.params.id;
@@ -56,9 +50,9 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
                 response = await Utility.cc98Fetch(url, { headers });
                 data = await response.json();
                 if (data.contentType === 0) {
-                    this.setState({ postInfo: data, content: data.content });
+                    this.setState({ postInfo: data, content: data.content, title: data.title});
                 } else
-                    this.setState({ postInfo: data });
+                    this.setState({ postInfo: data,content:data.content,title:data.title });
                 break;
         }
 
@@ -396,6 +390,8 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
     handleTitleChange(event) {
         let tag1, tag2;
         if (this.state.tags.length === 0) {
+            console.log("无标签编辑标题");
+            console.log(event.target.value);
             this.props.onChange(event.target.value, "", "");
             this.setState({ title: event.target.value });
         } else if (this.state.tags.length === 1) {
@@ -595,14 +591,14 @@ export class InputMdContent extends React.Component<{ mode, postInfo, ready, onC
     }
 
     componentDidMount() {
-        let content = '234';
+        let content = '';
         if (this.props.postInfo.content) {
             content = this.props.postInfo.content;
         }
         editormd.emoji.path = '/static/images/emoji/';
         Constants.testEditor = editormd("testEditor", {
             width: "100%",
-            height: 320,
+            height: 450,
             path: "/static/scripts/lib/editor.md/lib/",
             saveHTMLToTextarea: false,
             emoji: true,

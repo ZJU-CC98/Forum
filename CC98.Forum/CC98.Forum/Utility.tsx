@@ -2281,6 +2281,7 @@ export async function getTopicInfo(topicId) {
 	return data;
 }
 export async function getBoardInfo(boardId) {
+
 	const headers = await formAuthorizeHeader();
 	const url = `/board/${boardId}`;
 	const response = await cc98Fetch(url, { headers });

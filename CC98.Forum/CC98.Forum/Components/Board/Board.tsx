@@ -91,10 +91,10 @@ export class Category extends React.Component<{ boardId, boardInfo }, {}>{
         </div>;
     }
 }
-export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow , isExtend: boolean}, { boardId }> {
+export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow , isExtend: boolean, isEditing: boolean, curDesc: string, info: string}, { boardId }> {
     constructor(props, content) {
         super(props, content);
-        this.state = { isFollow: this.props.boardInfo.isFollow, isExtend: false };
+        this.state = { isFollow: this.props.boardInfo.isFollow, isExtend: false, isEditing: false, curDesc: props.boardInfo.bigPaper, info: '' };
         const initFollow = Utility.isFollowThisBoard(this.props.boardId);
         this.follow = this.follow.bind(this);
         this.unfollow = this.unfollow.bind(this);
@@ -120,10 +120,38 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
     onError(e) {
         e.target.src = `/static/images/_CC98协会.png`;
     }
+
+    changeBigPaper = async () => {
+        try {
+            const url = `/board/${this.props.boardId}/big-paper`;
+            const token = await Utility.getToken();
+            let headers = new Headers();
+            headers.append('Authorization', token);
+            headers.append('Content-Type', 'application/json');
+            let res = await Utility.cc98Fetch(url, {
+                method: 'PUT',
+                headers,
+                body: JSON.stringify({ content: this.state.curDesc })
+            });
+            if (res.status === 200) {
+                this.setState({
+                    info: '修改成功'
+                });
+            } else {
+                throw new Error();
+            }
+        } catch (e) {
+            this.setState({
+                info: `修改失败 ${e.message}`
+            });
+        }
+    }
+
     render() {
         const boardUrl = `/list/${this.props.boardId}`;
         const id = `boardImg_${this.props.boardId}`;
         const url = `/static/images/_${this.props.boardInfo.name}.png`;
+        Utility.isMaster(this.props.boardInfo.boardMasters);
         if (!this.props.boardInfo.bigPaper || !this.state.isExtend) {
             return (
                 <div className="row" style={{ width: "100%", overflow: 'hidden', maxHeight: '6rem', transition: 'max-height 1s'}}>
@@ -156,6 +184,7 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
                 </div>
                 );
         }
+        
         return <div className="row" style={{ width: "100%", overflow: 'hidden', maxHeight: '50rem', transition: 'max-height 1.5s' }}>
             <div className="boardMessage">
                 <div className="row" style={{ height: "4rem", marginTop: "1.25rem" }}>
@@ -181,9 +210,15 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
                     <div>{this.props.boardInfo.boardMasters.map(this.generateMasters)}</div>
                 </div>
             </div>
-            <div className="bigPaper" >
-                <div className="bigPaperTitle">版面公告</div>
-                <div><UbbContainer code={this.props.boardInfo.bigPaper} /></div>
+            <div className="bigPaper" style={{display: 'block'}}>
+                <button className="fa fa-angle-double-up" style={{ float: 'right', backgroundColor: '#fff', cursor: 'pointer', border: 'none' }} type="button" onClick={() => this.setState({ isExtend: false })}>收起</button>
+                <div className="bigPaperTitle">版面公告
+                    {Utility.isMaster(this.props.boardInfo.boardMasters) ? <button type="button" onClick={() => this.setState({isEditing: true})}>编辑</button> : null}
+                    {this.state.isEditing ? <button type="button" onClick={() => { this.changeBigPaper(); }}>提交</button> : null}
+                    <p>{this.state.info}</p>
+                </div>
+                {this.state.isEditing ? <div><textarea style={{width: '50rem', height: '15rem', resize: 'none'}} onChange={e => this.setState({ curDesc: e.target.value })}>{this.state.curDesc}</textarea></div>
+                    : <div style={{maxWidth: '53.25rem'}}><UbbContainer code={this.props.boardInfo.bigPaper} /></div>}
             </div>
         </div>;
 
