@@ -81,11 +81,15 @@ export class Reply extends React.Component<{DateTime,topicId, page, topicInfo, b
     }
 
     private generateContents(item) {
+        console.log("item");
+        console.log(item);
         let privilege = null;
         if (Utility.getLocalStorage("userInfo"))
             privilege = Utility.getLocalStorage("userInfo").privilege;
         const id = item.floor % 10;
         let likeInfo = { likeCount: item.likeCount, dislikeCount: item.dislikeCount, likeState: item.likeState };
+        console.log("likeinfo");
+        console.log(likeInfo);
         return <div className="reply" id={id.toString()} >
             <Replier key={item.postId} userInfo={item.userInfo} isAnonymous={item.isAnonymous} topicid={item.topicId} floor={item.floor} isDeleted={item.isDeleted} traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
             <div className="column" style={{ justifyContent: "space-between", width: "80%", position:"relative" }}>

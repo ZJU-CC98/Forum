@@ -53,7 +53,7 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo, on
 			editormd.emoji.path = '/static/images/emoji/';
 			Constants.testEditor = editormd('test-editormd', {
 				width: '100%',
-				height: 640,
+				height: 320,
 				path: '/static/scripts/lib/editor.md/lib/',
 				saveHTMLToTextarea: false,
 				imageUpload: false,
@@ -143,7 +143,7 @@ ${newProps.content.content}[/quote]`;
 			editormd.emoji.path = '/static/images/emoji/';
 			Constants.testEditor = editormd('test-editormd', {
 				width: '100%',
-				height: 640,
+				height: 320,
 				path: '/static/scripts/lib/editor.md/lib/',
 				saveHTMLToTextarea: false,
 				imageUpload: false,
@@ -244,7 +244,7 @@ ${newProps.content.content}[/quote]`;
 			editormd.emoji.path = '/static/images/emoji/';
 			Constants.testEditor = editormd('test-editormd', {
 				width: '100%',
-				height: 640,
+				height: 320,
 				path: '/static/scripts/lib/editor.md/lib/',
 				saveHTMLToTextarea: false,
 				imageUpload: false,
@@ -300,8 +300,8 @@ ${newProps.content.content}[/quote]`;
 		let mode, editor;
 		if (this.state.mode === 0) {
 			mode = '使用UBB模式编辑';
-			editor = <div>
-				<UbbEditor update={this.update} value={this.state.content} />
+            editor = <div>
+                <UbbEditor update={this.update} value={this.state.content} option={{ height: 20 }} />
 				<div className="row" style={{ justifyContent: 'center', marginBottom: '1.25rem ' }}>
 					<div id="post-topic-button" onClick={this.sendUbbTopic} className="button blue" style={{ marginTop: '1.25rem', width: '6rem', height: '2rem', lineHeight: '2rem', letterSpacing: '0.3125rem' }}>回复
                     </div>
@@ -338,7 +338,7 @@ ${newProps.content.content}[/quote]`;
 		return <div id="sendTopicInfo" style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
 			<div className="row" style={{ justifyContent: this.state.mode === 1 ? 'space-between' : 'flex-end' }}>
 
-				<div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button blue" style={{ width: '20rem', height: '2rem', lineHeight: '2rem', letterSpacing: '0.3125rem', fontSize: '1rem' }}>{this.state.mode === 1 ? '切换到Ubb编辑器' : '切换到Markdown编辑器'}
+				<div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button" style={{ width: '20rem', height: '2rem', lineHeight: '2rem',border:"none",color:"#aaaaaa", fontSize: '1rem' }}>{this.state.mode === 1 ? '切换到Ubb编辑器' : '切换到Markdown编辑器'}
 				</div></div>
             {editor}
             {manageBTN}

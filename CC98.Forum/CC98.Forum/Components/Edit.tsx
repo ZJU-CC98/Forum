@@ -290,7 +290,7 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
                     <div className="createTopicListName">主题内容</div>
                     <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ width: "16rem", letterSpacing: "0.3125rem", fontSize: "1rem", height: "2rem", lineHeight: "2rem" }}>切换到Markdown编辑器</div>
                 </div>
-                    <UbbEditor update={this.update} value={this.state.content} />
+                    <UbbEditor update={this.update} value={this.state.content} option={{ height: 20 }}/>
                     <div className="row" style={{ justifyContent: "center" }}>
                         <div id="post-topic-button" onClick={this.sendUbbTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", marginBottom: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>发帖</div>
                     </div></div>
@@ -602,7 +602,7 @@ export class InputMdContent extends React.Component<{ mode, postInfo, ready, onC
         editormd.emoji.path = '/static/images/emoji/';
         Constants.testEditor = editormd("testEditor", {
             width: "100%",
-            height: 680,
+            height: 320,
             path: "/static/scripts/lib/editor.md/lib/",
             saveHTMLToTextarea: false,
             emoji: true,
