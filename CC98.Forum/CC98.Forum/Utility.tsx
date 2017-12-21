@@ -887,7 +887,8 @@ export function sortRecentMessage(recentMessage) {
  * @param time
  */
 export function transerTime(time) {
-	let timestamp = new Date(time).getTime();
+    let time1 = moment(time).format('YYYY-MM-DD HH:mm:ss');
+    let timestamp = new Date(time1.replace(/-/g, '/')).getTime();
 	return timestamp;
 }
 
@@ -896,7 +897,8 @@ export function transerTime(time) {
  * @param time
  */
 export function transerRecentTime(time) {
-	let thatDate = new Date(time);
+    let time1 = moment(time).format('YYYY/MM/DD HH:mm:ss');
+    let thatDate = new Date(time1);
 	let thatTime = thatDate.getTime();
 	let thisDate = new Date();
 	let thisTime = new Date().getTime();
