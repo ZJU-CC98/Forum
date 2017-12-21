@@ -115,7 +115,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
 
 
     render() {
-        switch (this.state.fetchState) {
+       /* switch (this.state.fetchState) {
             case 'ok':
                 return <div></div>;
             case 'not found':
@@ -124,7 +124,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
                 return <UnauthorizedTopic />;
             case 'server error':
                 return <ServerError />
-        }
+        }*/
         let topic = null;
         let hotReply = null;
         let topicInfo = null;

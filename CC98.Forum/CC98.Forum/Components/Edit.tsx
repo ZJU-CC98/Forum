@@ -134,6 +134,8 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
         const url = `/board/${this.match.params.id}/topic`;
         let content;
         let tag1Id, tag2Id;
+        console.log(this.state.tag1);
+        console.log(this.state.tag2);
         if (this.state.tag1 && !this.state.tag2) {
             tag1Id = await Utility.getTagIdbyName(this.state.tag1);
             content = {
