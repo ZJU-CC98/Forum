@@ -416,7 +416,7 @@ export class RecommendedFunctionComponent extends React.Component<{}, { recommen
         let data = Utility.getStorage("mainRecommendedFuction");
         if (!data) { data = new Array<MainPageColumn>(); }
         this.state = {
-            recommendedFuctions: new Array<MainPageColumn>()
+            recommendedFuctions: data
         };
     }
 

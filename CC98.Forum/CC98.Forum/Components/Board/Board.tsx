@@ -118,6 +118,7 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
         this.setState({ isFollow: newProps.boardInfo.isFollow });
     }
     onError(e) {
+        e.preventDefault();
         e.target.src = `/static/images/_CC98协会.png`;
     }
 

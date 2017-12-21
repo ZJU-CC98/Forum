@@ -37,6 +37,7 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
         let b = parseInt(a) + 1;
         let c = parseInt(this.props.replyCount) - (b - 1) * 10;
         let lastPostUrl = `${topicUrl}/${b}#${c}`;
+        let lastPostUserUrl = encodeURI(`/user/name/${this.props.lastPostUser}`);
         return (<div className="focus-topic">
                             <a className="focus-topic-left" href={userUrl} target="_blank" id={`user_${this.props.id}`}>
                                         <img className="focus-topic-portraitUrl" src={this.props.portraitUrl}></img>
@@ -51,7 +52,7 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
                                     <div id={`tag_${this.props.id}`}>{tagInfo}</div>
                                     <div><i className="fa fa-clock-o fa-lg"></i>{this.props.time}</div>
                                     <div><i className="fa fa-eye fa-lg"></i> {this.props.hitCount}</div>
-                                    <div><a href={lastPostUrl} target="_blank">最后回复：{this.props.lastPostUser}</a></div>
+                                    <div>最后回复：<a href={lastPostUserUrl} target="_blank">{this.props.lastPostUser}</a></div>
                                     <div><a href={lastPostUrl} target="_blank">{this.props.lastPostTime}</a></div>
                                 </div>
                             </div>

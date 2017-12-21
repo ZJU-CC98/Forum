@@ -331,14 +331,14 @@ ${newProps.content.content}[/quote]`;
 
         }
         let manageBTN = null;
-
+        if (Utility.isMaster(this.props.boardInfo.boardMasters))
             manageBTN = <div><button className="topicManageBTN" id="topicManagementBTN" style={{ width: '5rem' }} onClick={this.showManagement}>管理</button>
                 <button id="showIPBTN" className="topicManageBTN" style={{ width: '5rem' }} onClick={this.showIP}>查看IP</button></div>;
         
 		return <div id="sendTopicInfo" style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-			<div className="row" style={{ justifyContent: this.state.mode === 1 ? 'space-between' : 'flex-end' }}>
+			<div className="row" style={{ justifyContent:'flex-end' }}>
 
-				<div id="post-topic-changeMode" onClick={this.changeEditor.bind(this)} className="button" style={{ width: '20rem', height: '2rem', lineHeight: '2rem',border:"none",color:"#aaaaaa", fontSize: '1rem' }}>{this.state.mode === 1 ? '切换到Ubb编辑器' : '切换到Markdown编辑器'}
+                <div id="post-topic-changeMode" className="hiddenImage" onClick={this.changeEditor.bind(this)} style={{ width: '12rem', marginBottom:"0.5rem" }}>{this.state.mode === 1 ? '切换到Ubb编辑器' : '切换到Markdown编辑器'}
 				</div></div>
             {editor}
             {manageBTN}
