@@ -102,10 +102,12 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
     }
     async follow() {
         await Utility.followBoard(this.props.boardId);
+        await Utility.refreshUserInfo();
         this.setState({ isFollow: true });
     }
     async unfollow() {
         await Utility.unfollowBoard(this.props.boardId);
+        await Utility.refreshUserInfo();
         this.setState({ isFollow: false });
     }
     generateMasters(item) {
@@ -118,6 +120,7 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
         this.setState({ isFollow: newProps.boardInfo.isFollow });
     }
     onError(e) {
+        e.preventDefault();
         e.target.src = `/static/images/_CC98协会.png`;
     }
 

@@ -284,9 +284,9 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
             if (this.state.mode === 0) {
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ width: "16rem", letterSpacing: "0.3125rem", fontSize: "1rem", height: "2rem", lineHeight: "2rem" }}>切换到Markdown编辑器</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom:"0.5rem" }}>切换到Markdown编辑器</div>
                 </div>
-                    <UbbEditor update={this.update} value={this.state.content} option={{ height: 20 }}/>
+                    <UbbEditor update={this.update} value={this.state.content} option={{ height: 20, submit: this.sendUbbTopic }}/>
                     <div className="row" style={{ justifyContent: "center" }}>
                         <div id="post-topic-button" onClick={this.sendUbbTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", marginBottom: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>发帖</div>
                     </div></div>
@@ -294,7 +294,7 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
             } else {
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ width: "16rem", letterSpacing: "0.3125rem", fontSize: "1rem", height: "2rem", lineHeight: "2rem" }}>切换到UBB编辑器</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom:"0.5rem" }}>切换到UBB编辑器</div>
                 </div>
                     <InputMdContent postInfo={this.state.postInfo} onChange={this.sendMdTopic.bind(this)} ready={this.state.ready} mode={this.match.params.mode} /></div>;
             }
@@ -302,9 +302,9 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
             if (this.state.postInfo.contentType === 0) {
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ width: "16rem", letterSpacing: "0.3125rem", fontSize: "1rem", height: "2rem", lineHeight: "2rem" }}>切换到Markdown编辑器</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom:"0.5rem" }}>切换到Markdown编辑器</div>
                 </div>
-                    <UbbEditor update={this.update} value={this.state.content} />
+                    <UbbEditor update={this.update} value={this.state.content} option={{  submit: this.sendUbbTopic }}/>
                     <div className="row" style={{ justifyContent: "center" }}>
                         <div id="post-topic-button" onClick={this.editUBB} className="button blue" style={{ marginTop: "1.25rem", marginBottom: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>编辑</div>
                     </div></div>
@@ -312,7 +312,7 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
             } else {
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="button blue" style={{ width: "16rem", letterSpacing: "0.3125rem", fontSize: "1rem", height: "2rem", lineHeight: "2rem" }}>切换到UBB编辑器</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom:"0.5rem" }}>切换到UBB编辑器</div>
                 </div>
                     <InputMdContent postInfo={this.state.postInfo} onChange={this.editMd.bind(this)} ready={this.state.ready} mode={this.match.params.mode} /></div>;
             }
@@ -502,21 +502,22 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
         if (this.state.tags.length > 0) drop1 = <ul className="tagBoxSub">
             {this.state.tags[0].tags.map(this.generateTagOption)}
         </ul>;
-        if (this.state.tags.length === 2) drop2 = <ul className="tagBoxSub1">
+        if (this.state.tags.length === 2)
+            drop2 = <ul className="tagBoxSub1">
             {this.state.tags[1].tags.map(this.generateTagOption)}
         </ul>;
         let tagInfo = null;
         if (this.state.tags.length == 2) {
             tagInfo = <div className="row"><div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
                 <div style={{ display: "flex" }}>
-                    <div className="tagBoxSelect">标签1</div>
+                    <div className="tagBoxSelect">{this.state.tags[0].tags[0].name}</div>
                     <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
                 </div>
                 {drop1}
             </div>
                 <div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
                     <div style={{ display: "flex" }}>
-                        <div className="tagBoxSelect1">标签2</div>
+                        <div className="tagBoxSelect1">{this.state.tags[0].tags[0]}</div>
                         <div className="downArrow1"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
                     </div>
                     {drop2}
@@ -524,7 +525,7 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
         } else if (this.state.tags.length == 1) {
             tagInfo = <div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
                 <div style={{ display: "flex" }}>
-                    <div className="tagBoxSelect">标签1</div>
+                    <div className="tagBoxSelect">{this.state.tags[0].tags[0]}</div>
                     <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
                 </div>
                 {drop1}

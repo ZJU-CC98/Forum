@@ -1724,7 +1724,7 @@ export async function followBoard(boardId) {
 	const headers = await formAuthorizeHeader();
 	const url = `/me/custom-board/${boardId}`;
 	const response = await cc98Fetch(url, { method: "PUT", headers });
-	refreshUserInfo();
+	await refreshUserInfo();
 	removeStorage("focusBoardList");
 }
 export async function refreshUserInfo() {
@@ -1741,7 +1741,7 @@ export async function refreshUserInfo() {
 
 	const headers = await formAuthorizeHeader();
 
-	let response = await cc98Fetch(`/user/name/${userName}`, {
+	let response = await cc98Fetch(`/user/name/${encodeURIComponent(userName)}`, {
 
 		headers: headers
 
@@ -1756,7 +1756,7 @@ export async function unfollowBoard(boardId) {
 	const headers = await formAuthorizeHeader();
 	const url = `/me/custom-board/${boardId}`;
 	const response = await cc98Fetch(url, { method: "DELETE", headers });
-	refreshUserInfo();
+	await refreshUserInfo();
 	removeStorage("focusBoardList");
 }
 //获取系统通知
