@@ -106,6 +106,7 @@ export class Reply extends React.Component<{DateTime,topicId, page, topicInfo, b
             const hash = window.location.hash;
             const eleId = hash.split("#");
             const Id = eleId[1];
+            if (document.getElementById(Id))
             document.getElementById(Id).scrollIntoView();
         }
     }

@@ -118,7 +118,8 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
         let editIcon = null;
         const editUrl = `/editor/edit/${this.props.postid}`;
         if (Utility.getLocalStorage("userInfo"))
-        if (this.isAllowedtoEdit(this.props.userInfo.privilege) || this.props.userInfo.name === Utility.getLocalStorage("userInfo").name) {
+            if (this.isAllowedtoEdit(this.props.userInfo.privilege) || this.props.userInfo.name === Utility.getLocalStorage("userInfo").name) {
+       
             editIcon = <Link to={editUrl}><div className="operation1" onClick={this.edit}>   编辑</div></Link>;
         }
         let lastUpdate = null;

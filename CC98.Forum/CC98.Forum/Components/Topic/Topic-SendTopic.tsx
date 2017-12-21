@@ -331,7 +331,7 @@ ${newProps.content.content}[/quote]`;
 
         }
         let manageBTN = null;
-
+        if (Utility.isMaster(this.props.boardInfo.boardMasters))
             manageBTN = <div><button className="topicManageBTN" id="topicManagementBTN" style={{ width: '5rem' }} onClick={this.showManagement}>管理</button>
                 <button id="showIPBTN" className="topicManageBTN" style={{ width: '5rem' }} onClick={this.showIP}>查看IP</button></div>;
         

@@ -134,6 +134,9 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
             hotReply = <Reply topicInfo={this.state.topicInfo} DateTime={Date.now()}page={this.match.params.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} quote={this.quote} isTrace={false} isHot={true} userId={null} />
         }
         const pagerUrl = `/topic/${this.state.topicid}/`;
+        let sendTopic = null;
+        if (Utility.getLocalStorage("userInfo"))
+        sendTopic = <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardId} boardInfo={this.state.boardInfo} content={this.state.quote} userId={this.state.topicInfo.userId} />;
         let topicHtml = <div className="center" >
             <FindIP data={this.state.IPData}/>
             <div className="row" style={{ width: "100%", justifyContent: 'space-between', alignItems: "center" }}>
@@ -144,9 +147,9 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
             {topic}
             {hotReply}
             <Reply topicInfo={this.state.topicInfo} DateTime={Date.now()} page={this.match.params.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} quote={this.quote} isHot={false} isTrace={false} userId={null} />
-
+            {sendTopic}
             <div style={{ display: "flex", width: "100%", justifyContent: "flex-end", marginTop: "3rem" }}><Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
-            <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardId} boardInfo={this.state.boardInfo} content={this.state.quote} userId={this.state.topicInfo.userId} />
+           
 
         </div>
             ;
