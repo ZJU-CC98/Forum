@@ -13,15 +13,22 @@ export class AnnouncementComponent extends React.Component<{}, { announcementCon
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
+        let data = Utility.getStorage("mainAnnouncement");
+        if (!data) { data = '加载中……';}
         this.state = {
-            announcementContent: '加载中……'
+            announcementContent: data
         };
     }
     async getAnnouncement() {
-        const response = await Utility.cc98Fetch('/config/global');
-        const data = await response.json();
-        const announcement: string = data.announcement;
-        return announcement;
+        let announcement: string = Utility.getStorage("mainAnnouncement");
+        if (announcement) { return announcement; }
+        else {
+            const response = await Utility.cc98Fetch('/config/global');
+            const data = await response.json();
+            announcement = data.announcement;
+            Utility.setStorage("mainAnnouncement", announcement);
+            return announcement;
+        }
     }
     async componentDidMount() {
         const x = await this.getAnnouncement();
@@ -49,8 +56,10 @@ export class RecommendedReadingComponent extends React.Component<{}, { recommend
 
     constructor(props) {
         super(props);
+        let data = Utility.getStorage('mainRecommendReading');
+        if (!data) { data = new Array<MainPageColumn>(); }
         this.state = {
-            recommendedReading: new Array<MainPageColumn>(),
+            recommendedReading: data,
             index: Math.floor(Math.random() * 5)    //0-4的随机数
         };
         this.handleMouseEnter = this.handleMouseEnter.bind(this);
@@ -58,13 +67,18 @@ export class RecommendedReadingComponent extends React.Component<{}, { recommend
     }
 
     async getRecommendedReading() {
-        const recommendedReading: MainPageColumn[] = new Array<MainPageColumn>();
-        const response = await Utility.cc98Fetch('/index/column/recommandationreading');
-        const data = await response.json();
-        for (let i = 0; i < 5; i++) {
-            recommendedReading[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
+        let recommendedReading: MainPageColumn[] = Utility.getStorage('mainRecommendReading');
+        if (recommendedReading) { return recommendedReading; }
+        else {
+            recommendedReading = new Array<MainPageColumn>();
+            const response = await Utility.cc98Fetch('/index/column/recommandationreading');
+            const data = await response.json();
+            for (let i = 0; i < 5; i++) {
+                recommendedReading[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
+            }
+            Utility.setStorage('mainRecommendReading', recommendedReading);
+            return recommendedReading;
         }
-        return recommendedReading;
     }
 
     async componentWillMount() {
@@ -151,8 +165,12 @@ export class HotTopicComponent extends React.Component<{}, { mainPageTopicState:
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
+        let data = Utility.getLocalStorage("mainHotTopics");
+        if (!data) {
+            data = new Array<HotTopicState>();
+        }
         this.state = {
-            mainPageTopicState: new Array<HotTopicState>(),
+            mainPageTopicState: data
         };
     }
 
@@ -163,6 +181,7 @@ export class HotTopicComponent extends React.Component<{}, { mainPageTopicState:
         for (let i = 0; i < 10; i++) {
             mainPageTopics[i] = new HotTopicState(data[i].title, data[i].id, data[i].boardName, data[i].boardId);
         }
+        Utility.setLocalStorage("mainHotTopics", mainPageTopics);
         return mainPageTopics;
     }
 
@@ -223,20 +242,27 @@ export class MainPageTopicComponent extends React.Component<{ name: string, fetc
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
+        let data = Utility.getStorage(`main${this.props.name}`);
+        if (!data) { data = new Array<MainPageTopicState>(); }
         this.state = {
-            mainPageTopic: new Array<MainPageTopicState>(),
+            mainPageTopic: data
         };
     }
 
     async getTopicInfo() {
-        const mainPageTopics: MainPageTopicState[] = [];
-        const url = this.props.fetchUrl;
-        const response = await Utility.cc98Fetch(url);   //该api要求提供返回主题的数量，这里需要返回10条
-        const data = await response.json();
-        for (let i = 0; i < 10; i++) {
-            mainPageTopics[i] = new MainPageTopicState(data[i].title, data[i].id);
+        let data = Utility.getStorage(`main${this.props.name}`);
+        if (data) { return data; }
+        else {
+            const mainPageTopics: MainPageTopicState[] = [];
+            const url = this.props.fetchUrl;
+            const response = await Utility.cc98Fetch(url);   //该api要求提供返回主题的数量，这里需要返回10条
+            data = await response.json();
+            for (let i = 0; i < 10; i++) {
+                mainPageTopics[i] = new MainPageTopicState(data[i].title, data[i].id);
+            }
+            Utility.setStorage(`main${this.props.name}`, mainPageTopics);
+            return mainPageTopics;
         }
-        return mainPageTopics;
     }
 
     async componentDidMount() {
@@ -436,19 +462,26 @@ export class RecommendedFunctionComponent extends React.Component<{}, { recommen
 export class SchoolNewsComponent extends React.Component<{}, { schoolNews: MainPageColumn[] }>{
     constructor(props) {
         super(props);
+        let data = Utility.getStorage('mainSchoolNews');
+        if (!data) { data = new Array<MainPageColumn>(); }
         this.state = {
-            schoolNews: new Array<MainPageColumn>(),
+            schoolNews: data
         };
     }
 
     async getSchoolNews() {
-        const schoolnews: MainPageColumn[] = new Array<MainPageColumn>();
-        const response = await Utility.cc98Fetch('/index/column/schoolnews');
-        const data = await response.json();
-        for (let i = 0; i < 10; i++) {
-            schoolnews[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
+        let schoolnews: MainPageColumn[] = Utility.getStorage('mainSchoolNews');
+        if (schoolnews) { return schoolnews }
+        else {
+            schoolnews = new Array<MainPageColumn>();
+            const response = await Utility.cc98Fetch('/index/column/schoolnews');
+            const data = await response.json();
+            for (let i = 0; i < 10; i++) {
+                schoolnews[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
+            }
+            Utility.setStorage('mainSchoolNews', schoolnews)
+            return schoolnews;
         }
-        return schoolnews;
     }
 
     async componentWillMount() {
@@ -489,21 +522,28 @@ export class AdsComponent extends React.Component<{}, { ads: MainPageColumn[], i
 
     constructor(props) {
         super(props);
+        let data = Utility.getStorage('mainAds');
+        if (!data) { data = new Array<MainPageColumn>(); }
         this.state = {
-            ads: new Array<MainPageColumn>(),
+            ads: data,
             index: 0,
         };
         this.changeIndex = this.changeIndex.bind(this);
     }
 
     async getAds() {
-        const ads: MainPageColumn[] = new Array<MainPageColumn>();
-        const response = await Utility.cc98Fetch('/config/global/advertisement');
-        const data = await response.json();
-        for (let i = 0; i < data.length; i++) {
-            ads[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
+        let ads: MainPageColumn[] = Utility.getStorage('mainAds');
+        if (ads) { return ads }
+        else {
+            ads = new Array<MainPageColumn>();
+            const response = await Utility.cc98Fetch('/config/global/advertisement');
+            const data = await response.json();
+            for (let i = 0; i < data.length; i++) {
+                ads[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
+            }
+            Utility.setStorage('mainAds',ads);
+            return ads;
         }
-        return ads;
     }
 
     async componentWillMount() {
@@ -555,13 +595,16 @@ export class Count extends React.Component<{}, { data }> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
+        let data = Utility.getLocalStorage("mainDataCount");
+        if (!data) { data = []; }
         this.state = {
-            data: []
+            data: data
         };
     }
     async getData() {
         const response = await Utility.cc98Fetch('/config/global');
-        const data = await response.json();
+        let data = await response.json();
+        Utility.setLocalStorage("mainDataCount", data);
         return data;
 
     }
