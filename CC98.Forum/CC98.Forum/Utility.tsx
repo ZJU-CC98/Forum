@@ -441,73 +441,82 @@ export async function getAllNewTopic(from: number, router) {
 			window.location.href = "/status/ServerError";
 		}
 		let newTopic = await response.json();
+        let aTopic = [];
+        let bTopic = [];
+        for (let item of newTopic) {
+            //时间转换
+            item.time = transerRecentTime(item.time);
+            item.lastPostTime = transerRecentTime(item.lastPostTime);
 
-		for (let i in newTopic) {
-			if (newTopic[i].userId) {
-				//获取作者粉丝数目
-				let userFan0 = await cc98Fetch(`/user/follower/count?userid=${newTopic[i].userId}`);
-				if (userFan0.status === 404) {
-					window.location.href = "/status/NotFoundUser";
-				}
-				if (userFan0.status === 500) {
-					window.location.href = "/status/ServerError";
-				}
-				let userFan1 = await userFan0.json();
-				newTopic[i].fanCount = userFan1;
-				//获取作者头像地址
-				let userInfo0 = await cc98Fetch(`/user/basic/${newTopic[i].userId}`);
-				if (userInfo0.status === 404) {
-					window.location.href = "/status/NotFoundUser";
-				}
-				if (userInfo0.status === 500) {
-					window.location.href = "/status/ServerError";
-				}
-				let userInfo1 = await userInfo0.json();
-				newTopic[i].portraitUrl = userInfo1.portraitUrl;
-				//获取所在版面名称
-				newTopic[i].boardName = await getBoardName(newTopic[i].boardId);
-			}
-			//匿名时粉丝数显示0
-			else {
-				newTopic[i].fanCount = 0;
-                newTopic[i].portraitUrl = '/static/images/_心灵之约.png';
-				newTopic[i].userName = "匿名用户";
-				newTopic[i].boardName = "心灵之约";
-			}
-			//时间转换
-			newTopic[i].time = transerRecentTime(newTopic[i].time);
-			newTopic[i].lastPostTime = transerRecentTime(newTopic[i].lastPostTime);
-			//阅读数转换
-			if (newTopic[i].hitCount > 10000) {
-				if (newTopic[i].hitCount > 100000) {
-					let index = parseInt(`${newTopic[i].hitCount / 10000}`);
-					newTopic[i].hitCount = `${index}万`;
-				}
-				else {
-					let index = parseInt(`${newTopic[i].hitCount / 1000}`) / 10;
-					newTopic[i].hitCount = `${index}万`;
-				}
-			}
-			//回复数转换
-			if (newTopic[i].replyCount > 10000) {
-				if (newTopic[i].replyCount > 100000) {
-					let index = parseInt(`${newTopic[i].replyCount / 10000}`);
-					newTopic[i].replyCount = `${index}万`;
-				}
-				else {
-					let index = parseInt(`${newTopic[i].replyCount / 1000}`) / 10;
-					newTopic[i].replyCount = `${index}万`;
-				}
-			}
-			//标签转换
-			if (newTopic[i].tag1) {
-				newTopic[i].tag1 = await getTagNamebyId(newTopic[i].tag1);
-				if (newTopic[i].tag2) {
-					newTopic[i].tag2 = await getTagNamebyId(newTopic[i].tag2);
-				}
-			}
-		}
-		return newTopic;
+            //阅读数转换
+            if (item.hitCount > 10000) {
+                if (item.hitCount > 100000) {
+                    let index = parseInt(`${item.hitCount / 10000}`);
+                    item.hitCount = `${index}万`;
+                }
+                else {
+                    let index = parseInt(`${item.hitCount / 1000}`) / 10;
+                    item.hitCount = `${index}万`;
+                }
+            }
+            //回复数转换
+            if (item.replyCount > 10000) {
+                if (item.replyCount > 100000) {
+                    let index = parseInt(`${item.replyCount / 10000}`);
+                    item.replyCount = `${index}万`;
+                }
+                else {
+                    let index = parseInt(`${item.replyCount / 1000}`) / 10;
+                    item.replyCount = `${index}万`;
+                }
+            }
+            //标签转换
+            if (item.tag1) {
+                item.tag1 = await getTagNamebyId(item.tag1);
+                if (item.tag2) {
+                    item.tag2 = await getTagNamebyId(item.tag2);
+                }
+            }
+            //处理匿名与非匿名主题，非匿名主题用户并行获取信息
+            if (item.userId) {
+                //获取所在版面名称
+                item.boardName = await getBoardName(item.boardId);
+                aTopic.push(item);
+            }
+            else {
+                item.fanCount = 0;
+                item.portraitUrl = '/static/images/_心灵之约.png';
+                item.userName = "匿名用户";
+                item.boardName = "心灵之约";
+                bTopic.push(item);
+            }
+        }
+        //对于非匿名数据并行获取粉丝数目、头像地址和版面名称
+        let requests1 = await Promise.all(aTopic.map((item) => {
+            let url = `/user/follower/count?userid=${item.userId}`;
+            return cc98Fetch(url, { headers });
+        }));
+        let fanData = await Promise.all(requests1.map(item => item.json()));
+        for (let i in aTopic) { aTopic[i].fanCount = fanData[i]; };
+        let requests2 = await Promise.all(aTopic.map((item) => {
+            let url = `/user/basic/${item.userId}`;
+            return cc98Fetch(url, { headers });
+        }));
+        let portraitData = await Promise.all(requests2.map(item => item.json()));
+        for (let i in aTopic) { aTopic[i].portraitUrl = portraitData[i].portraitUrl; };
+
+        for (var i = 0, j = 0, k = 0; i < newTopic.length; i++) {
+            if (newTopic[i].id === aTopic[j].id) {
+                newTopic[i] = aTopic[j];
+                j++;
+            }
+            else {
+                newTopic[i] = bTopic[k];
+                k++;
+            }
+        }
+
+        return newTopic;
 	} catch (e) {
 		//window.location.href = "/status/Disconnected";
 	}
