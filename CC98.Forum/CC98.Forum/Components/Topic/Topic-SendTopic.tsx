@@ -301,7 +301,7 @@ ${newProps.content.content}[/quote]`;
 		if (this.state.mode === 0) {
 			mode = '使用UBB模式编辑';
             editor = <div>
-                <UbbEditor update={this.update} value={this.state.content} option={{ height: 20 },{ submit: this.sendUbbTopic } />
+                <UbbEditor update={this.update} value={this.state.content} option={{ height: 20, submit: this.sendUbbTopic }} />
 				<div className="row" style={{ justifyContent: 'center', marginBottom: '1.25rem ' }}>
 					<div id="post-topic-button" onClick={this.sendUbbTopic} className="button blue" style={{ marginTop: '1.25rem', width: '6rem', height: '2rem', lineHeight: '2rem', letterSpacing: '0.3125rem' }}>回复
                     </div>
