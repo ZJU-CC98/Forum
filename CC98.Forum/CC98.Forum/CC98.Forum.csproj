@@ -90,6 +90,7 @@
     <None Remove="Ubb\mdTagHandler.tsx" />
     <None Remove="Ubb\MP3TagHandler.tsx" />
     <None Remove="Ubb\NoUbbTagHandler.tsx" />
+    <None Remove="Ubb\PmTagHandler.tsx" />
     <None Remove="Ubb\RightTagHandler.tsx" />
     <None Remove="Ubb\SandboxTagHandler.tsx" />
     <None Remove="Ubb\TableTagHandler.tsx" />
@@ -189,6 +190,7 @@
     <TypeScriptCompile Include="Ubb\MdTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\MP3TagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\NoUbbTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\PmTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\RightTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\SandboxTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\TableTagHandler.tsx" />
