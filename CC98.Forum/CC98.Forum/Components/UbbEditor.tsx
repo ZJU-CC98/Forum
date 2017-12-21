@@ -35,6 +35,10 @@ class UbbEditorOption {
      * 打开的UBB标签
      */
     allowUbbTag?: 'all' | string[] = 'all'
+    /**
+     * 按下Ctrl+Enter调用的函数
+     */
+    submit?: Function;
 }
 /**
  * 组件状态
@@ -455,6 +459,11 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                                 } else if (e.ctrlKey && e.key === 'y') {
                                     e.preventDefault();
                                     this.handleRedo();
+                                } else if (e.ctrlKey && e.key === 'Enter') {
+                                    e.preventDefault();
+                                    if (this.props.option.submit) {
+                                        this.props.option.submit();
+                                    }
                                 }
                             }}
                             ref={(textarea) => {
