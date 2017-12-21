@@ -13,15 +13,22 @@ export class AnnouncementComponent extends React.Component<{}, { announcementCon
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
+        let data = Utility.getStorage("mainAnnouncement");
+        if (!data) { data = '加载中……';}
         this.state = {
-            announcementContent: '加载中……'
+            announcementContent: data
         };
     }
     async getAnnouncement() {
-        const response = await Utility.cc98Fetch('/config/global');
-        const data = await response.json();
-        const announcement: string = data.announcement;
-        return announcement;
+        let announcement: string = Utility.getStorage("mainAnnouncement");
+        if (announcement) { return announcement; }
+        else {
+            const response = await Utility.cc98Fetch('/config/global');
+            const data = await response.json();
+            announcement = data.announcement;
+            Utility.setStorage("mainAnnouncement", announcement);
+            return announcement;
+        }
     }
     async componentDidMount() {
         const x = await this.getAnnouncement();
