@@ -53,7 +53,7 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo, on
 			editormd.emoji.path = '/static/images/emoji/';
 			Constants.testEditor = editormd('test-editormd', {
 				width: '100%',
-				height: 320,
+				height: 400,
 				path: '/static/scripts/lib/editor.md/lib/',
 				saveHTMLToTextarea: false,
 				imageUpload: false,
@@ -143,7 +143,7 @@ ${newProps.content.content}[/quote]`;
 			editormd.emoji.path = '/static/images/emoji/';
 			Constants.testEditor = editormd('test-editormd', {
 				width: '100%',
-				height: 320,
+				height: 400,
 				path: '/static/scripts/lib/editor.md/lib/',
 				saveHTMLToTextarea: false,
 				imageUpload: false,
@@ -244,7 +244,7 @@ ${newProps.content.content}[/quote]`;
 			editormd.emoji.path = '/static/images/emoji/';
 			Constants.testEditor = editormd('test-editormd', {
 				width: '100%',
-				height: 320,
+				height: 400,
 				path: '/static/scripts/lib/editor.md/lib/',
 				saveHTMLToTextarea: false,
 				imageUpload: false,

@@ -28,7 +28,6 @@ import { SearchBoard } from './Search/SearchBoard';
 import { Signin } from './Signin';
 import { SiteManage } from './SiteManage/Index';
 import { SignalRComponent } from './SignalR';
-import { Test1 } from './Topic/Topic';
 import { ShowEdit } from './Edit';
 
 import { Constants } from './Constant';
