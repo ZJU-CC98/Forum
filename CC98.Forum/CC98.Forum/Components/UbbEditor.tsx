@@ -320,6 +320,9 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
         const emoji = {
             'em': new Array(92).fill(0)
                 .map((item, index) => {
+                    if (index < 9) {
+                        return `0${index + 1}`;
+                    }
                     if ((index < 44) || (70 < index && index < 92)) {
                         return `${index + 1}`;
                     }
