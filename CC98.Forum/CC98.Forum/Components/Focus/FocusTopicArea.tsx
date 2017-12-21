@@ -70,7 +70,7 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
             /**
             *查看新帖数目大于100条时不再继续加载
             */
-            if (this.state.from >= 99) {
+            if (this.state.from > 99) {
                 $('#focus-topic-loading').addClass('displaynone');
                 $('#focus-topic-loaddone').removeClass('displaynone');
                 return;
@@ -93,7 +93,7 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
             */
             //拼接时防止出现重复帖子
             if (newData && newData.length > 0) {
-                let data = this.state.data
+                let data = this.state.data;
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].id === newData[0].id) {
                         break;
@@ -103,12 +103,15 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
                 this.setState({ data: data, from: data.length, loading: true });
                 Utility.setStorage(`focusBoard_${this.props.id}`, data);
             }
+            console.log("chubug");
+            this.setState({ loading: true });
+            return;
         }
     }
     /**
      * 将主题排列好
      */
-    render() {
+    render() { 
         return <div className="focus-topic-area">
             <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
             <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://file.cc98.org/uploadfile/2017/12/20/6514723843.gif"></img></div>
@@ -122,5 +125,5 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
 * 单个主题数据转换成单个主题组件
 */
 function coverFocusPost(item: FocusTopic) {
-    return <FocusTopicSingle title={item.title} hitCount={item.hitCount} id={item.id} boardId={item.boardId} boardName={item.boardName} replyCount={item.replyCount} userId={item.userId} userName={item.userName} portraitUrl={item.portraitUrl} time={item.time} likeCount={item.likeCount} dislikeCount={item.dislikeCount} fanCount={item.fanCount} lastPostUser={item.lastPostUser} lastPostTime={item.lastPostTime} tag1={item.tag1} tag2={item.tag2} />;
+    return <FocusTopicSingle title={item.title} hitCount={item.hitCount} id={item.id} boardId={item.boardId} boardName={item.boardName} replyCount={item.replyCount} userId={item.userId} userName={item.userName} portraitUrl={item.portraitUrl} time={item.time} likeCount={item.likeCount} dislikeCount={item.dislikeCount} lastPostUser={item.lastPostUser} lastPostTime={item.lastPostTime} tag1={item.tag1} tag2={item.tag2} />;
 }

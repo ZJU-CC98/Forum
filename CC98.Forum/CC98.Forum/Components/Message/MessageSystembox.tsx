@@ -16,11 +16,15 @@ export class MessageSystembox extends React.Component<MessageSystemProps> {
                 let a: any = (this.props.floor / 10) + 1;
                 let b = parseInt(a);
                 let c = this.props.floor + 10 - b * 10;
+                let pageNum: any = `${b}#${c}`;
+                if (c === 0) {
+                    pageNum = b;
+                }
                 if (this.props.isRead) {
-                    content = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][color=gray]${this.props.content}[/color][/url]`;
+                    content = `[url=http://${host}/topic/${this.props.topicId}/${pageNum}][color=gray]${this.props.content}[/color][/url]`;
                 }
                 else {
-                    content = `[url=http://${host}/topic/${this.props.topicId}/${b}#${c}][b][color=black]${this.props.content}[/color][/b][/url]`;
+                    content = `[url=http://${host}/topic/${this.props.topicId}/${pageNum}][b][color=black]${this.props.content}[/color][/b][/url]`;
                 }
             }
             else {

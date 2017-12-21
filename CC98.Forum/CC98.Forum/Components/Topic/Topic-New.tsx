@@ -62,50 +62,53 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
      * 处理滚动的函数
      */
     async handleScroll() {
-        if (Utility.isBottom() && this.state.loading) {
-            /**
-            *查看新帖数目大于100条时不再继续加载
-            */
-            if (this.state.from >= 99) {
-                $('#focus-topic-loading').addClass('displaynone');
-                $('#focus-topic-loaddone').removeClass('displaynone');
-                return;
-            }
-            /**
-            *发出第一条fetch请求前将this.state.loading设置为false，防止后面重复发送fetch请求
-            */
-            this.setState({ loading: false });
-            try {
-                var newData = await Utility.getAllNewTopic(this.state.from, this.context.router);
-            } catch (err) {
+            if (Utility.isBottom() && this.state.loading) {
                 /**
-                *如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
+                *查看新帖数目大于100条时不再继续加载
                 */
-                this.setState({ loading: true });
-                return;
-            }
-            /**
-            *如果正确获取到数据，则添加新数据，翻页+1，同时this.state.loading设置为true，后续才可以再次发送fetch请求
-            */
-            //拼接时防止出现重复帖子
-            if (newData && newData.length > 0) {
-                let data = this.state.data
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].id === newData[0].id) {
-                        break;
-                    }
+                if (this.state.from > 99) {
+                    $('#focus-topic-loading').addClass('displaynone');
+                    $('#focus-topic-loaddone').removeClass('displaynone');
+                    return;
                 }
-                data = data.slice(0, i).concat(newData);
-                this.setState({ data: data, from: data.length, loading: true });
-                Utility.setStorage("AllNewTopic", data);
+                /**
+                *发出第一条fetch请求前将this.state.loading设置为false，防止后面重复发送fetch请求
+                */
+                this.setState({ loading: false });
+                try {
+                    var newData = await Utility.getAllNewTopic(this.state.from, this.context.router);
+                } catch (err) {
+                    /**
+                    *如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
+                    */
+                    this.setState({ loading: true });
+                    return;
+                }
+                /**
+                *如果正确获取到数据，则添加新数据，翻页+1，同时this.state.loading设置为true，后续才可以再次发送fetch请求
+                */
+                //拼接时防止出现重复帖子
+                if (newData && newData.length > 0) {
+                    let data = this.state.data;
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].id === newData[0].id) {
+                            break;
+                        }
+                    }
+                    data = data.slice(0, i).concat(newData);
+                    this.setState({ data: data, from: data.length, loading: true });
+                    Utility.setStorage(`AllNewTopic`, data);
+                }
+                else {
+                    this.setState({ loading: true });
+                    return;
+                }
             }
-        }
     }
     /**
      * 将主题排列好
      */
     render() {
-        if (this.state.data) {
             return (<div className="focus-root">
                 <div className="focus" >
                     <Category />
@@ -116,19 +119,6 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
                     </div>
                 </div>
             </div>);
-        }
-        else {
-            return (<div className="focus-root">
-                <div className="focus" >
-                    <div className="focus-allNewTopic"><i className="fa fa-home" aria-hidden="true"></i>首页/全站新帖</div>
-                    <div className="focus-topic-area">
-                        <div className="focus-topic-topicArea">获取帖子失败，请再次尝试~</div>
-                        <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://file.cc98.org/uploadfile/2017/12/20/6514723843.gif"></img></div>
-                        <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">没有更多帖子啦~</div>
-                    </div>
-                </div>
-            </div>);
-        }
     }
 }
 
@@ -136,26 +126,19 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
 * 单个主题数据转换成单个主题组件
 */
 function coverFocusPost(item: FocusTopic) {
-    return <FocusTopicSingle title={item.title} hitCount={item.hitCount} id={item.id} boardId={item.boardId} boardName={item.boardName} replyCount={item.replyCount} userId={item.userId} userName={item.userName} portraitUrl={item.portraitUrl} time={item.time} likeCount={item.likeCount} dislikeCount={item.dislikeCount} fanCount={item.fanCount} lastPostUser={item.lastPostUser} lastPostTime={item.lastPostTime} tag1={item.tag1} tag2={item.tag2} />;
+    return <FocusTopicSingle title={item.title} hitCount={item.hitCount} id={item.id} boardId={item.boardId} boardName={item.boardName} replyCount={item.replyCount} userId={item.userId} userName={item.userName} portraitUrl={item.portraitUrl} time={item.time} likeCount={item.likeCount} dislikeCount={item.dislikeCount} lastPostUser={item.lastPostUser} lastPostTime={item.lastPostTime} tag1={item.tag1} tag2={item.tag2} />;
 }
 
 /**
  * 导航器组件
  */
-export class Category extends React.Component<{}, {}>{
-    constructor(props) {
-    super(props);
-    this.state = ({
-        url: "",
-        boardName: ""
-    });
-}
+export class Category extends React.Component {
 
     render() {
         return <div className="row" style={{ alignItems: "baseline", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>
-            <Link style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} to={"/"}>首页</Link>
-            <i className="fa fa-chevron-right"></i>
-            <div style={{ color: "grey", fontSize: "1rem", marginLeft: "0.5rem", marginRight: "0.5rem" }}>查看新帖</div>
-        </div>;
+                    <Link style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} to={"/"}>首页</Link>
+                    <i className="fa fa-chevron-right"></i>
+                    <div style={{ color: "grey", fontSize: "1rem", marginLeft: "0.5rem", marginRight: "0.5rem" }}>查看新帖</div>
+               </div>;
     }
 }
