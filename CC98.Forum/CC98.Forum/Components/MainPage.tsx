@@ -413,19 +413,25 @@ export class MainPageColumn {
 export class RecommendedFunctionComponent extends React.Component<{}, { recommendedFuctions: MainPageColumn[] }>{
     constructor(props) {
         super(props);
+        let data = Utility.getStorage("mainRecommendedFuction");
+        if (!data) { data = new Array<MainPageColumn>(); }
         this.state = {
-            recommendedFuctions: new Array<MainPageColumn>(),
+            recommendedFuctions: new Array<MainPageColumn>()
         };
     }
 
     async getRecommendedFunction() {
-        const recommendedFuction: MainPageColumn[] = new Array<MainPageColumn>();
-        const response = await Utility.cc98Fetch('/index/column/recommandationfunction');
-        const data = await response.json();
-        for (let i = 0; i < 5; i++) {
-            recommendedFuction[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
+        let recommendedFuction: MainPageColumn[] = Utility.getStorage("mainRecommendedFuction");
+        if (recommendedFuction) { return recommendedFuction }
+        else {
+            recommendedFuction = new Array<MainPageColumn>();
+            const response = await Utility.cc98Fetch('/index/column/recommandationfunction');
+            const data = await response.json();
+            for (let i = 0; i < 5; i++) {
+                recommendedFuction[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
+            }
+            return recommendedFuction;
         }
-        return recommendedFuction;
     }
 
     async componentWillMount() {
