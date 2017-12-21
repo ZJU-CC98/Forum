@@ -31,12 +31,7 @@ declare let editormd: any;
 
 
 
-export class Test1 extends React.Component {
-    render() {
-    
-        return <div></div>;
-    }
-}
+
 export class Post extends RouteComponent<{history}, { topicid, page, totalPage, userName, boardId, topicInfo, boardInfo, fetchState, quote, shouldRender,isFav ,IPData}, { topicid, page, userName }> {
     constructor(props, context) {
         super(props, context);
@@ -61,13 +56,12 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         this.setState({});
     }
     async handleChange() {
-        const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
-        const newPage = topicInfo.replyCount % 10 === 0 ? topicInfo.replyCount / 10 : (topicInfo.replyCount - topicInfo.replyCount % 10) / 10 + 1;
         let page: number;
         if (!this.match.params.page) {
             page = 1;
-        }
-        else { page = parseInt(this.match.params.page); }
+        } else { page = parseInt(this.match.params.page); }
+        const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
+        const newPage = topicInfo.replyCount % 10 === 0 ? topicInfo.replyCount / 10 : (topicInfo.replyCount - topicInfo.replyCount % 10) / 10 + 1;  
         const totalPage = await this.getTotalPage(topicInfo.replyCount);
         const userName = this.match.params.userName;
         const floor = (topicInfo.replyCount +1)% 10+1;
@@ -94,8 +88,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         const boardId = topicInfo.boardId;
         const boardInfo = await Utility.getBoardInfo(boardId);
         const totalPage = this.getTotalPage(topicInfo.replyCount);
-        const isFav = await Utility.getFavState(newProps.match.params.topicid);
-   
+        const isFav = await Utility.getFavState(newProps.match.params.topicid);  
         this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo, isFav: isFav });
     }
     async componentDidMount() {
