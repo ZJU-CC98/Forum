@@ -555,13 +555,15 @@ export class Count extends React.Component<{}, { data }> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
+        let data = Utility.getLocalStorage("98dataCount");
         this.state = {
-            data: []
+            data: data
         };
     }
     async getData() {
         const response = await Utility.cc98Fetch('/config/global');
-        const data = await response.json();
+        let data = await response.json();
+        Utility.setLocalStorage("98dataCount", data);
         return data;
 
     }
