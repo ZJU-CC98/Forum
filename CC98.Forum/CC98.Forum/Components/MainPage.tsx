@@ -13,15 +13,22 @@ export class AnnouncementComponent extends React.Component<{}, { announcementCon
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
+        let data = Utility.getStorage("mainAnnouncement");
+        if (!data) { data = '加载中……';}
         this.state = {
-            announcementContent: '加载中……'
+            announcementContent: data
         };
     }
     async getAnnouncement() {
-        const response = await Utility.cc98Fetch('/config/global');
-        const data = await response.json();
-        const announcement: string = data.announcement;
-        return announcement;
+        let announcement: string = Utility.getStorage("mainAnnouncement");
+        if (announcement) { return announcement; }
+        else {
+            const response = await Utility.cc98Fetch('/config/global');
+            const data = await response.json();
+            announcement = data.announcement;
+            Utility.setStorage("mainAnnouncement", announcement);
+            return announcement;
+        }
     }
     async componentDidMount() {
         const x = await this.getAnnouncement();
@@ -49,8 +56,10 @@ export class RecommendedReadingComponent extends React.Component<{}, { recommend
 
     constructor(props) {
         super(props);
+        let data = Utility.getStorage('mainRecommendReading');
+        if (!data) { data = new Array<MainPageColumn>() }
         this.state = {
-            recommendedReading: new Array<MainPageColumn>(),
+            recommendedReading: data,
             index: Math.floor(Math.random() * 5)    //0-4的随机数
         };
         this.handleMouseEnter = this.handleMouseEnter.bind(this);
@@ -58,13 +67,17 @@ export class RecommendedReadingComponent extends React.Component<{}, { recommend
     }
 
     async getRecommendedReading() {
-        const recommendedReading: MainPageColumn[] = new Array<MainPageColumn>();
-        const response = await Utility.cc98Fetch('/index/column/recommandationreading');
-        const data = await response.json();
-        for (let i = 0; i < 5; i++) {
-            recommendedReading[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
+        let recommendedReading: MainPageColumn[] = Utility.getStorage('mainRecommendReading');
+        if (recommendedReading) { return recommendedReading; }
+        else {
+            const response = await Utility.cc98Fetch('/index/column/recommandationreading');
+            const data = await response.json();
+            for (let i = 0; i < 5; i++) {
+                recommendedReading[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
+            }
+            Utility.setStorage('mainRecommendReading', recommendedReading);
+            return recommendedReading;
         }
-        return recommendedReading;
     }
 
     async componentWillMount() {
@@ -153,7 +166,7 @@ export class HotTopicComponent extends React.Component<{}, { mainPageTopicState:
         super(props);       //super 表示调用基类（Component系统类型）构造方法
         let data = Utility.getLocalStorage("mainHotTopics");
         if (!data) {
-            data = [];
+            data = new Array<HotTopicState>();
         }
         this.state = {
             mainPageTopicState: data
@@ -228,15 +241,15 @@ export class MainPageTopicComponent extends React.Component<{ name: string, fetc
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
-        let data = Utility.getStorage("mainRecommendTopics");
-        if (!data) { data = []; }
+        let data = Utility.getStorage(`main${this.props.name}`);
+        if (!data) { data = new Array<MainPageTopicState>(); }
         this.state = {
             mainPageTopic: data
         };
     }
 
     async getTopicInfo() {
-        let data = Utility.getStorage("mainRecommendTopics");
+        let data = Utility.getStorage(`main${this.props.name}`);
         if (data) { return data; }
         else {
             const mainPageTopics: MainPageTopicState[] = [];
@@ -246,7 +259,7 @@ export class MainPageTopicComponent extends React.Component<{ name: string, fetc
             for (let i = 0; i < 10; i++) {
                 mainPageTopics[i] = new MainPageTopicState(data[i].title, data[i].id);
             }
-            Utility.setStorage("mainRecommendTopics", mainPageTopics);
+            Utility.setStorage(`main${this.props.name}`, mainPageTopics);
             return mainPageTopics;
         }
     }
