@@ -15,9 +15,9 @@ export class MessageResponsebox extends React.Component<MessageResponseProps> {
         let a: any = (this.props.floor / 10) + 1;
         let b = parseInt(a);
         let c = this.props.floor + 10 - b * 10;
-        let pageNum: any = `${b}#${c}`;
+        let pageNum = `${b}#${c}`;
         if (c === 0) {
-            pageNum = b;
+            pageNum = `${b - 1}#10`;
         }
         let content;
         if (this.props.isRead) {

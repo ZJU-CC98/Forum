@@ -16,9 +16,9 @@ export class MessageSystembox extends React.Component<MessageSystemProps> {
                 let a: any = (this.props.floor / 10) + 1;
                 let b = parseInt(a);
                 let c = this.props.floor + 10 - b * 10;
-                let pageNum: any = `${b}#${c}`;
+                let pageNum = `${b}#${c}`;
                 if (c === 0) {
-                    pageNum = b;
+                    pageNum = `${b-1}#10`;
                 }
                 if (this.props.isRead) {
                     content = `[url=http://${host}/topic/${this.props.topicId}/${pageNum}][color=gray]${this.props.content}[/color][/url]`;

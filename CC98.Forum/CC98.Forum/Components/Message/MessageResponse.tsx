@@ -29,7 +29,7 @@ export class MessageResponse extends React.Component<{match}, MessageResponseSta
         $('.message-nav > div').removeClass('message-nav-focus');
         $('#response').addClass('message-nav-focus');
         let totalCount = await Utility.getTotalPage(1);
-        let index: any = totalCount / 7;
+        let index: any = (totalCount-0.5) / 7;
         let totalPage = parseInt(index) + 1;
         let curPage = props.match.params.page - 1;
         if (!curPage || curPage < 0) {
