@@ -110,8 +110,8 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         const boardInfo = await Utility.getBoardInfo(boardId);
         const totalPage = this.getTotalPage(topicInfo.replyCount);
         let IPData = [];
-        if (Utility.isMaster(boardInfo.boardMasters))
-         IPData = await Utility.findIP(this.match.params.topicid);
+       // if (Utility.isMaster(boardInfo.boardMasters))
+      //   IPData = await Utility.findIP(this.match.params.topicid);
         this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo, fetchState: topicInfo,IPData:IPData });
 
 

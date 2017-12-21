@@ -73,7 +73,7 @@ export async function getTopic(topicid: number) {
 			topicMessage = { ...data[0], userInfo: userMesJson, postId: data[0].id }
 		} else {
 			const anonymousUserName = `匿名${data[0].userName.toUpperCase()}`;
-			let purl = 'https://www.cc98.org/pic/anonymous.gif';
+			let purl = '/static/images/_心灵之约.png';
 			const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: "", postCount: 0 };
 			topicMessage = { ...data[0], userInfo: userMesJson, postId: data[0].id}
 
@@ -118,7 +118,7 @@ export async function getTopicContent(topicid: number, curPage: number, replyCou
 				}
 
 			} else if (content[i].isAnonymous == true) {
-				let purl = 'https://www.cc98.org/pic/anonymous.gif';
+             let purl = '/static/images/_心灵之约.png';;
 				const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
 
 				const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
@@ -235,7 +235,7 @@ export async function getHotReplyContent(topicid: number) {
 				}
 
 			} else {
-				let purl = 'https://www.cc98.org/pic/anonymous.gif';
+                let purl = '/static/images/_心灵之约.png';
 				const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
 				const anonymousLastReplierName = `匿名${content[i].lastUpdateAuthor.toUpperCase()}`;
 				const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
@@ -394,7 +394,7 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
 				}
 
 			} else {
-				let purl = 'https://www.cc98.org/pic/anonymous.gif';
+                let purl = '/static/images/_心灵之约.png';
 				const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
 				const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
 				post[i] = {
@@ -470,7 +470,7 @@ export async function getAllNewTopic(from: number, router) {
 			//匿名时粉丝数显示0
 			else {
 				newTopic[i].fanCount = 0;
-				newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+                newTopic[i].portraitUrl = '/static/images/_心灵之约.png';
 				newTopic[i].userName = "匿名用户";
 				newTopic[i].boardName = "心灵之约";
 			}
@@ -582,7 +582,7 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
 			//匿名时粉丝数显示0
 			else {
 				newTopic[i].fanCount = 0;
-				newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+                newTopic[i].portraitUrl = '/static/images/_心灵之约.png';
 				newTopic[i].userName = "匿名用户";
 				newTopic[i].boardName = "心灵之约";
 			}
@@ -1561,7 +1561,7 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
 				//匿名时粉丝数显示0
 				else {
 					newTopic[i].fanCount = 0;
-					newTopic[i].portraitUrl = "http://www.cc98.org/pic/anonymous.gif";
+                    newTopic[i].portraitUrl = '/static/images/_心灵之约.png';
 					newTopic[i].userName = "匿名用户";
 					newTopic[i].boardName = "心灵之约";
                 }
