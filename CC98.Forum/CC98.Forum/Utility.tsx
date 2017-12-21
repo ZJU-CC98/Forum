@@ -1757,7 +1757,8 @@ export async function refreshUserInfo() {
 	let userInfo = await response.json();
 	store.dispatch(changeUserInfo(userInfo));
 	setLocalStorage("userInfo", userInfo);
-	setLocalStorage("userName", userInfo.name);
+    setLocalStorage("userName", userInfo.name);
+    removeStorage("focusBoardList");
 }
 export async function unfollowBoard(boardId) {
 	const headers = await formAuthorizeHeader();
