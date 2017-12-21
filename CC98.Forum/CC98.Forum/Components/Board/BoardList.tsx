@@ -78,7 +78,9 @@ export class RootBoard extends React.Component<{ board }, { isExpanded: boolean 
 
     render() {
         let display = this.state.isExpanded ? "flex" : "none";    //根据 isExpanded 状态定义样式
-        let buttonContent = this.state.isExpanded ? <div >收起</div> : <div>展开</div>;      //根据 isExpanded 状态定义按钮内容
+        let buttonContent = this.state.isExpanded ? <div style={{ width: "2rem", marginTop: "0rem" }} className="hiddenImage">收起</div> : <div className="hiddenImage" style={{
+            width: "2rem", marginTop: "0rem"
+        }}>展开</div>;      //根据 isExpanded 状态定义按钮内容
         let boards = this.props.board;
 
         if (boards.id === 758) {    //似水流年版 没有子版
@@ -96,7 +98,7 @@ export class RootBoard extends React.Component<{ board }, { isExpanded: boolean 
                 <div className="column" style={{ border: '2px solid #e9e9e9' }}>
                     <div className="row" style={{ marginTop: '15px', marginBottom: '15px', justifyContent:"space-between" }}>
                         <div className="areaName">{boards.name}</div>
-                        <div className="row" style={{ marginRight:"1rem" }}>
+                        <div className="row" style={{ marginRight: "1rem", alignItems:"center" }}>
                         <div className="areaName">主管：{boards.masters}</div>
                             <div onClick={this.toggleIsExpanded} style={{ marginLeft: "1rem", cursor: "pointer" }}> {buttonContent}</div>
                             </div>
@@ -156,7 +158,7 @@ export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>
         </div>;
     }
     render() {
-        if (this.props.boardid === 2 || this.props.boardid === 29 || this.props.boardid === 35 || this.props.boardid === 37) {
+        if (this.props.boardid === 2 || this.props.boardid === 29 || this.props.boardid === 35 || this.props.boardid === 37 || this.props.boardid === 33 || this.props.boardid===604) {
             return <div className="areaContent" >
                 {this.state.thisBoardState.map(this.convertNoImgChildBoard)}
             </div>;

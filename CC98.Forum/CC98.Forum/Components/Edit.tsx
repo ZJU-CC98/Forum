@@ -502,21 +502,22 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
         if (this.state.tags.length > 0) drop1 = <ul className="tagBoxSub">
             {this.state.tags[0].tags.map(this.generateTagOption)}
         </ul>;
-        if (this.state.tags.length === 2) drop2 = <ul className="tagBoxSub1">
+        if (this.state.tags.length === 2)
+            drop2 = <ul className="tagBoxSub1">
             {this.state.tags[1].tags.map(this.generateTagOption)}
         </ul>;
         let tagInfo = null;
         if (this.state.tags.length == 2) {
             tagInfo = <div className="row"><div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
                 <div style={{ display: "flex" }}>
-                    <div className="tagBoxSelect">标签1</div>
+                    <div className="tagBoxSelect">{this.state.tags[0].tags[0].name}</div>
                     <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
                 </div>
                 {drop1}
             </div>
                 <div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
                     <div style={{ display: "flex" }}>
-                        <div className="tagBoxSelect1">标签2</div>
+                        <div className="tagBoxSelect1">{this.state.tags[0].tags[0]}</div>
                         <div className="downArrow1"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
                     </div>
                     {drop2}
@@ -524,7 +525,7 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
         } else if (this.state.tags.length == 1) {
             tagInfo = <div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
                 <div style={{ display: "flex" }}>
-                    <div className="tagBoxSelect">标签1</div>
+                    <div className="tagBoxSelect">{this.state.tags[0].tags[0]}</div>
                     <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
                 </div>
                 {drop1}
