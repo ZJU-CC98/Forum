@@ -54,10 +54,6 @@ export class FocusTopic {
     */
     dislikeCount: number;
     /**
-    *主题的作者的粉丝数目
-    */
-    fanCount: number;
-    /**
     *最后回复用户
     */
     lastPostUser: string;

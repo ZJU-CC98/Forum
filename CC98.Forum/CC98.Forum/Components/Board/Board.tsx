@@ -94,15 +94,7 @@ export class Category extends React.Component<{ boardId, boardInfo }, {}>{
 export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow , isExtend: boolean, isEditing: boolean, curDesc: string, info: string}, { boardId }> {
     constructor(props, content) {
         super(props, content);
-        let userInfo = Utility.getLocalStorage("userInfo");
-        let boardid = userInfo.customBoards;
-        let isFollow = false;
-        for (let item of boardid) {
-            if (item === this.props.boardInfo.id) {
-                isFollow = true;
-            }
-        }
-        this.state = { isFollow: isFollow, isExtend: false, isEditing: false, curDesc: props.boardInfo.bigPaper, info: '' };
+        this.state = { isFollow: Utility.isFollowThisBoard(this.props.boardId), isExtend: false, isEditing: false, curDesc: props.boardInfo.bigPaper, info: '' };
         const initFollow = Utility.isFollowThisBoard(this.props.boardId);
         this.follow = this.follow.bind(this);
         this.unfollow = this.unfollow.bind(this);
@@ -110,12 +102,10 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
     }
     async follow() {
         await Utility.followBoard(this.props.boardId);
-        await Utility.refreshUserInfo();
         this.setState({ isFollow: true });
     }
     async unfollow() {
         await Utility.unfollowBoard(this.props.boardId);
-        await Utility.refreshUserInfo();
         this.setState({ isFollow: false });
     }
     generateMasters(item) {
@@ -125,7 +115,7 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
         return <div style={{ marginRight: '10px', fontSize: "0.75rem" }}><a style={{ color: this.state.isExtend ? "#fff" : '#000' }} href={webUrl}>{name}</a></div>
     }
     componentWillReceiveProps(newProps) {
-        this.setState({ isFollow: newProps.boardInfo.isFollow });
+        this.setState({ isFollow: Utility.isFollowThisBoard(newProps.boardInfo.isFollow) });
     }
     onError(e) {
         e.preventDefault();
