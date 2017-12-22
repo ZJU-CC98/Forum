@@ -14,7 +14,7 @@ export class AnnouncementComponent extends React.Component<{}, { announcementCon
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
         let data = Utility.getStorage("mainAnnouncement");
-        if (!data) { data = '加载中……';}
+        if (!data) { data = '加载中……'; }
         this.state = {
             announcementContent: data
         };
@@ -197,8 +197,8 @@ export class HotTopicComponent extends React.Component<{}, { mainPageTopicState:
         const boardUrl = `/list/${item.boardid}`;
         const topicUrl = `/topic/${item.id}`;
         return <div className="mainPageListRow">
-            <div className="mainPageListBoardName"> <Link to={boardUrl}>[{item.boardName}]</Link></div>
-            <div className="mainPageListTitle"><Link to={topicUrl}>{item.title}</Link></div>
+            <div className="mainPageListBoardName"> <a href={boardUrl} target="_blank">[{item.boardName}]</a></div>
+            <div className="mainPageListTitle"><a href={topicUrl} target="_blank">{item.title}</a></div>
         </div >;
     }
 
@@ -235,10 +235,26 @@ export class MainPageTopicState {
 }
 
 /**
+ * 首页话题更多参数
+ * 拥有名称和链接两个属性
+ */
+export class MainPageTopicMoreProps {
+    name: string;
+    url: string;
+
+    constructor(name, url) {
+        this.name = name;
+        this.url = url;
+    }
+
+}
+
+/**
  * 首页话题组件
  * 需要列表名，fetchUrl和样式三个参数
  **/
-export class MainPageTopicComponent extends React.Component<{ name: string, fetchUrl: string, style: string }, { mainPageTopic: MainPageTopicState[] }> {
+export class MainPageTopicComponent extends React.Component<{ name: string, fetchUrl: string, style: string, mores: MainPageTopicMoreProps[] },
+    { mainPageTopic: MainPageTopicState[] }> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
@@ -275,11 +291,16 @@ export class MainPageTopicComponent extends React.Component<{ name: string, fetc
     convertMainPageTopic(item: MainPageTopicState) {
         const topicUrl = `/topic/${item.id}`;
         return <div className="mainPageListRow">
-            <div className="mainPageListTitle"><Link to={topicUrl}>{item.title}</Link></div>
+            <div className="mainPageListTitle"><a href={topicUrl} target="_blank">{item.title}</a></div>
         </div>
     }
 
     render() {
+
+        let moresHTML = this.props.mores.map((item) => {
+            return <div className="mainPageTitleText"><a href={item.url} target="_blank">{item.name}</a></div>
+        })
+
         const style: string = this.props.style;
         if (style === "black") {
             return <div className="mainPageList">
@@ -288,6 +309,7 @@ export class MainPageTopicComponent extends React.Component<{ name: string, fetc
                         <i className="fa fa-volume-up"></i>
                         <div className="mainPageTitleText">{this.props.name}</div>
                     </div>
+                    <div className="mainPageTitleRow">{moresHTML}</div>
                 </div>
                 <div className="mainPageListContent2">
                     {this.state.mainPageTopic.map(this.convertMainPageTopic)}
@@ -300,6 +322,7 @@ export class MainPageTopicComponent extends React.Component<{ name: string, fetc
                         <i className="fa fa-volume-up"></i>
                         <div className="mainPageTitleText">{this.props.name}</div>
                     </div>
+                    <div className="mainPageTitleRow">{moresHTML}</div>
                 </div>
                 <div className="mainPageListContent1">
                     {this.state.mainPageTopic.map(this.convertMainPageTopic)}
@@ -338,7 +361,7 @@ export class Test extends React.Component<{}, { testContent: string }>{
         if (matchResult) {
             const domainName = matchResult[0];
             let isInternalLink = reg2.test(domainName) || reg3.test(domainName) || reg4.test(domainName);
-       
+
             //return isInternalLink;
         } else {
             console.log("这不是链接！");
@@ -504,6 +527,7 @@ export class SchoolNewsComponent extends React.Component<{}, { schoolNews: MainP
     }
 
     render() {
+
         return <div className="schoolNews">
             <div className="mainPageTitle2">
                 <div className="mainPageTitleRow">
@@ -547,7 +571,7 @@ export class AdsComponent extends React.Component<{}, { ads: MainPageColumn[], i
             for (let i = 0; i < data.length; i++) {
                 ads[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
             }
-            Utility.setStorage('mainAds',ads);
+            Utility.setStorage('mainAds', ads);
             return ads;
         }
     }
@@ -661,27 +685,36 @@ export class Count extends React.Component<{}, { data }> {
  */
 export class MainPage extends React.Component<{}, AppState> {
     render() {
+
+        let study: MainPageTopicMoreProps[] = new Array({ name: "学习", url: "/list/68" }, { name: "外语", url: "/list/304" }, { name: "考研", url: "/list/263" }, { name: "出国", url: "/list/102" });
+        let emotion: MainPageTopicMoreProps[] = new Array({ name: "缘分", url: "/list/152" }, { name: "小屋", url: "/list/114" }, { name: "感性", url: "/list/81" });
+        let fleaMarket: MainPageTopicMoreProps[] = new Array({ name: "数码", url: "/list/562" }, { name: "生活", url: "/list/80" }, { name: "服饰", url: "/list/563" });
+        let fullTimeJob: MainPageTopicMoreProps[] = new Array({ name: "更多", url: "/list/235" });
+        let partTimeJob: MainPageTopicMoreProps[] = new Array({ name: "更多", url: "/list/459" });
+
+        console.log(study);
+
         return <div className="mainPage">
             <div className="leftPart">
                 <AnnouncementComponent />
                 <RecommendedReadingComponent />
                 <div className="row" style={{ justifyContent: "space-between" }}>
                     <HotTopicComponent />
-                    <MainPageTopicComponent name="校园活动" fetchUrl="/topic/school-event" style="blue" />
+                    <MainPageTopicComponent name="校园活动" fetchUrl="/topic/school-event" style="blue" mores={[]} />
                 </div>
                 <div className="row" style={{ justifyContent: "space-between" }}>
 
-                    <MainPageTopicComponent name="学术信息" fetchUrl="/topic/academics" style="black" />
-                    <MainPageTopicComponent name="学习园地" fetchUrl="/topic/study" style="black" />
+                    <MainPageTopicComponent name="学术信息" fetchUrl="/topic/academics" style="black" mores={[]} />
+                    <MainPageTopicComponent name="学习园地" fetchUrl="/topic/study" style="black" mores={study} />
                 </div>
                 <div className="row" style={{ justifyContent: "space-between" }}>
-                    <MainPageTopicComponent name="感性·情感" fetchUrl="/topic/emotion" style="blue" />
-                    <MainPageTopicComponent name="跳蚤市场" fetchUrl="/topic/flea-market" style="blue" />
+                    <MainPageTopicComponent name="感性·情感" fetchUrl="/topic/emotion" style="blue" mores={emotion} />
+                    <MainPageTopicComponent name="跳蚤市场" fetchUrl="/topic/flea-market" style="blue" mores={fleaMarket} />
 
                 </div>
                 <div className="row" style={{ justifyContent: "space-between" }}>
-                    <MainPageTopicComponent name="求职广场" fetchUrl="/topic/full-time-job" style="black" />
-                    <MainPageTopicComponent name="实习兼职" fetchUrl="/topic/part-time-job" style="black" />
+                    <MainPageTopicComponent name="求职广场" fetchUrl="/topic/full-time-job" style="black" mores={fullTimeJob} />
+                    <MainPageTopicComponent name="实习兼职" fetchUrl="/topic/part-time-job" style="black" mores={partTimeJob} />
                 </div>
             </div>
             <div className="rightPart">
