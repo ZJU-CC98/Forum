@@ -289,3 +289,4 @@ __pycache__/
 *.xsd.cs
 /CC98.Forum/CC98.Forum/wwwroot/static/scripts
 /CC98.Forum/CC98.Forum/wwwroot/static/content
+/CC98.Forum/CC98.Forum/.vscode/settings.json

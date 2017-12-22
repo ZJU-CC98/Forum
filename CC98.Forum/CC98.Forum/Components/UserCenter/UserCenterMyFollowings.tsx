@@ -117,7 +117,7 @@ export class UserCenterMyFollowings extends React.Component<{match}, UserCenterM
         for (let i = 1; i < userFollowings.length; i += 2) {
             userFollowings.splice(i, 0, <hr />);
         }
-        const page = this.props.match.params.page || 1;
+        const page =parseInt( this.props.match.params.page) || 1;
 
         return (<div className="user-center-myfollowings">
             <div className="user-center-myfollowings-exact">
