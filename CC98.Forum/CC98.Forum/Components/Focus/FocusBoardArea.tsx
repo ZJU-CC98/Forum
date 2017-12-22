@@ -44,29 +44,21 @@ export class FocusBoardArea extends React.Component<{}, FocusBoardAreaState> {
         $('#myFocusUser').removeClass('focus-title-hover');
         $('#myFocusBoard').addClass('focus-title-hover');
 
-        //先看缓存里有没有关注版面列表的数据
-        let data: FocusBoard[] = Utility.getStorage("focusBoardList");
-        if (data) {
-            this.setState({ data: data });
+        let data = [];
+        let token = Utility.getLocalStorage("accessToken");
+        //获取关注版面的id列表
+        let userInfo = Utility.getLocalStorage("userInfo");
+        let boardid = userInfo.customBoards;
+
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        for (let item of boardid) {
+            let boardName = await Utility.getBoardName(item);
+            data.push({ id: item, name: boardName });
         }
-        //没有就自己去服务器获取
-        else {
-            data = [];
-            let token = Utility.getLocalStorage("accessToken");
-            //获取关注版面的id列表
-            let userInfo = Utility.getLocalStorage("userInfo");
-            let boardid = userInfo.customBoards;
-  
-            const headers = new Headers();
-            headers.append('Authorization', token);
-            for (let item of boardid) {
-                let boardName = await Utility.getBoardName(item);
-                data.push({ id: item, name: boardName });
-            }
-            this.setState({ data: data });
-            //存到缓存里
-            Utility.setStorage("focusBoardList", data);
-        }
+        this.setState({ data: data });
+        //存到缓存里
+        Utility.setStorage("focusBoardList", data);
 
         //给初始选中版面添加选中效果
         $(`#focusBoard_${this.state.currentBoardId}`).addClass('focus-hover');

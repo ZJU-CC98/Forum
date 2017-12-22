@@ -41,10 +41,7 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
         return (<div className="focus-topic">
                             <a className="focus-topic-left" href={userUrl} target="_blank" id={`user_${this.props.id}`}>
                                         <img className="focus-topic-portraitUrl" src={this.props.portraitUrl}></img>
-                                        <div className="focus-topic-text">
-                                            <div className="focus-topic-userName">{this.props.userName}</div>
-                                            <div className="focus-topic-fans">{`粉丝   ${this.props.fanCount}`}</div>
-                                        </div>
+                                        <div className="focus-topic-userName">{this.props.userName}</div>
                             </a>
                             <div className="focus-topic-middle">
                                 <a className="focus-topic-title" href={topicUrl} target="_blank">{this.props.title}</a>

@@ -22,7 +22,6 @@
 
     label, button {
         transition-duration: .5s;
-        height: 2rem;
         font-size: 0.88rem;
         background-color: white;
         padding: 0;
@@ -70,7 +69,6 @@
 
         select {
             width: 2rem;
-            height: 2rem;
             margin: 0 1.2rem;
             text-align-last: center;
             -webkit-appearance: none;
@@ -155,11 +153,13 @@
     .ubb-emoji-buttons {
         display: flex;
         flex-direction: row;
+        height: 2rem;
     }
 
     .ubb-emoji-button {
         flex-grow: 1;
         margin: 0;
+        height: 2rem;
     }
 
     .ubb-emoji-button-active {

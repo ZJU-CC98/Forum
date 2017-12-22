@@ -1838,11 +1838,10 @@ a {
     display: flex;
     flex-wrap: wrap;
     min-height: 30px;
-    margin-top:1rem;
+
     .focus-board {
         display: block;
         color: rgb(121,184,202);
-        width: 5rem;
         background-color: transparent;
         text-align: center;
         vertical-align: middle; //设置元素的垂直对齐方式
@@ -1853,7 +1852,9 @@ a {
         line-height: normal;
         white-space: nowrap;
         font-family: 微软雅黑;
-        margin-left:1rem;
+        margin-right: 1rem;
+        margin-top: 1rem;
+        flex-shrink: 0;
         &:hover {
             background-color: rgb(121,184,202);
             color: rgb(255,255,255);
@@ -1931,24 +1932,10 @@ a {
             border-radius: 50%;
         }
 
-        .focus-topic-text {
-            display: flex;
-            flex-direction: column;
-            color: #ffffff;
-
-            .focus-topic-userName {
-                font-size: 16px;
-                height: 28px;
-                line-height: 28px;
-                margin-top: 14px;
-            }
-
-            .focus-topic-fans {
-                font-size: 12px;
-                margin-bottom: 14px;
-                height: 24px;
-                line-height: 24px;
-            }
+        .focus-topic-userName {
+            font-size: 16px;
+            height: 80px;
+            line-height: 80px;
         }
     }
 

@@ -427,8 +427,23 @@ export async function getAllNewTopic(from: number, router) {
          * 通过api获取到主题之后转成json格式
          */
 		const response = await cc98Fetch(`/topic/new?from=${from}&size=${size}`, { headers });
-		let newTopic = await response.json();
+		if (response.status === 401) {
+			window.location.href = "/status/UnauthorizedTopic";
+		}
+
+		if (response.status === 403) {
+			window.location.href = "/status/OperationForbidden";
+		}
+		if (response.status === 404) {
+			window.location.href = "/status/NotFoundTopic";
+		}
+		if (response.status === 500) {
+			window.location.href = "/status/ServerError";
+		}
+        let newTopic = await response.json();
+        //console.log("获取到的数据", newTopic);
         let aTopic = [];
+        let aTopicId = [];
         let bTopic = [];
         for (let item of newTopic) {
             //时间转换
@@ -469,40 +484,38 @@ export async function getAllNewTopic(from: number, router) {
                 //获取所在版面名称
                 item.boardName = await getBoardName(item.boardId);
                 aTopic.push(item);
+                aTopicId.push(item.userId);
             }
             else {
-                item.fanCount = 0;
                 item.portraitUrl = '/static/images/_心灵之约.png';
                 item.userName = "匿名用户";
                 item.boardName = "心灵之约";
                 bTopic.push(item);
             }
         }
-        //对于非匿名数据并行获取粉丝数目、头像地址和版面名称
-        let requests1 = await Promise.all(aTopic.map((item) => {
-            let url = `/user/follower/count?userid=${item.userId}`;
-            return cc98Fetch(url, { headers });
-        }));
-        let fanData = await Promise.all(requests1.map(item => item.json()));
-        for (let i in aTopic) { aTopic[i].fanCount = fanData[i]; };
-        let requests2 = await Promise.all(aTopic.map((item) => {
-            let url = `/user/basic/${item.userId}`;
-            return cc98Fetch(url, { headers });
-        }));
-        let portraitData = await Promise.all(requests2.map(item => item.json()));
+        //console.log("这里都会有吗？", aTopic, bTopic);
+        //对于非匿名数据并行获取头像地址
+        let portraitData = await getBasicUserInfo(aTopicId);
+        //console.log("返回用户基本信息",portraitData);
         for (let i in aTopic) { aTopic[i].portraitUrl = portraitData[i].portraitUrl; };
-
-        for (var i = 0, j = 0, k = 0; i < newTopic.length; i++) {
-            if (newTopic[i].id === aTopic[j].id) {
+        for (let i = 0, j = 0, k = 0; i < newTopic.length; i++) {
+            //console.log(`进入循环`);
+            if (j === aTopic.length) {
+                newTopic[i] = bTopic[k];
+                k++;
+            }
+            else if (newTopic[i].id === aTopic[j].id) {
+                //console.log(`条件1 i=${i} j = ${j}`);
                 newTopic[i] = aTopic[j];
                 j++;
             }
             else {
+                //console.log(`条件2 i=${i} k = ${k}`);
                 newTopic[i] = bTopic[k];
                 k++;
             }
         }
-
+        //console.log("这里会执行吗");
         return newTopic;
 	} catch (e) {
 		//window.location.href = "/status/Disconnected";
@@ -536,9 +549,21 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
 		else {
 			response = await cc98Fetch(`/board/${boardId}/topic?from=${from}&size=${size}`, { headers });
 		}
-
+		if (response.status === 401) {
+			window.location.href = "/status/UnauthorizedTopic";
+		}
+		if (response.status === 403) {
+			window.location.href = "/status/OperationForbidden";
+		}
+		if (response.status === 404) {
+			//window.location.href = "/status/NotFoundTopic";
+		}
+		if (response.status === 500) {
+			window.location.href = "/status/ServerError";
+		}
         let newTopic = await response.json();
         let aTopic = [];
+        let aTopicId = [];
         let bTopic = [];
 		for (let item of newTopic) {
 			//时间转换
@@ -579,31 +604,24 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
                 //获取所在版面名称
                 item.boardName = await getBoardName(item.boardId);
                 aTopic.push(item);
+                aTopicId.push(item.userId);
             }
             else {
-                item.fanCount = 0;
                 item.portraitUrl = '/static/images/_心灵之约.png';
                 item.userName = "匿名用户";
                 item.boardName = "心灵之约";
                 bTopic.push(item);
             }
         }
-        //对于非匿名数据并行获取粉丝数目、头像地址和版面名称
-        let requests1 = await Promise.all(aTopic.map((item) => {
-            let url = `/user/follower/count?userid=${item.userId}`;
-            return cc98Fetch(url, { headers });
-        }));
-        let fanData = await Promise.all(requests1.map(item => item.json()));
-        for (let i in aTopic) { aTopic[i].fanCount = fanData[i]; };
-        let requests2 = await Promise.all(aTopic.map((item) => {
-            let url = `/user/basic/${item.userId}`;
-            return cc98Fetch(url, { headers });
-        }));
-        let portraitData = await Promise.all(requests2.map(item => item.json()));
+        //对于非匿名数据并行获取头像地址
+        let portraitData = await getBasicUserInfo(aTopicId);
         for (let i in aTopic) { aTopic[i].portraitUrl = portraitData[i].portraitUrl; };
-
         for (var i = 0, j = 0, k = 0; i < newTopic.length; i++) {
-            if (newTopic[i].id === aTopic[j].id) {
+            if (j === aTopic.length) {
+                newTopic[i] = bTopic[k];
+                k++;
+            }
+            else if (newTopic[i].id === aTopic[j].id) {
                 newTopic[i] = aTopic[j];
                 j++;
             }
@@ -612,7 +630,6 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
                 k++;
             }
         }
-
 		return newTopic;
 	} catch (e) {
 		//window.location.href = "/status/Disconnected";
@@ -766,32 +783,9 @@ export async function getRecentContact(from: number, size: number, router) {
 		if (response.status === 500) {
 			window.location.href = "/status/ServerError";
 		}
-		let recentContactId = await response.json();
-		let url = "/user/basic"
+        let recentContactId = await response.json();
+        let recentContact = await getBasicUserInfo(recentContactId);
 		for (let i in recentContactId) {
-			if (i === "0") {
-				url = `${url}?id=${recentContactId[i].userId}`;
-			}
-			else {
-				url = `${url}&id=${recentContactId[i].userId}`;
-			}
-		}
-		let response1 = await cc98Fetch(url);
-		if (response1.status === 401) {
-			window.location.href = "/status/UnauthorizedTopic";
-		}
-
-		if (response1.status === 403) {
-			window.location.href = "/status/OperationForbidden";
-		}
-		if (response1.status === 404) {
-			window.location.href = "/status/NotFoundTopic";
-		}
-		if (response1.status === 500) {
-			window.location.href = "/status/ServerError";
-		}
-		let recentContact = await response1.json();
-		for (let i in recentContact) {
 			recentContact[i].message = [];
 			recentContact[i].lastContent = recentContactId[i].lastContent;
 			recentContact[i].isRead = recentContactId[i].isRead;
@@ -799,7 +793,7 @@ export async function getRecentContact(from: number, size: number, router) {
 
 		return recentContact;
 	} catch (e) {
-		window.location.href = ("/status/Disconnected");
+		//window.location.href = ("/status/Disconnected");
 	}
 }
 
@@ -821,14 +815,14 @@ export async function getRecentMessage(userId: number, from: number, size: numbe
 			window.location.href = "/status/NotFoundTopic";
 		}
 		if (response.status === 500) {
-			window.location.href = "/status/ServerError";
+			//window.location.href = "/status/ServerError";
 		}
 		let response1 = await response.json();
 
 		let recentMessage = sortRecentMessage(response1);
 		return recentMessage;
 	} catch (e) {
-		window.location.href = ("/status/Disconnected");
+		//window.location.href = ("/status/Disconnected");
 	}
 }
 
@@ -863,7 +857,8 @@ export function sortRecentMessage(recentMessage) {
  * @param time
  */
 export function transerTime(time) {
-	let timestamp = new Date(time).getTime();
+    let time1 = moment(time).format('YYYY-MM-DD HH:mm:ss');
+    let timestamp = new Date(time1.replace(/-/g, '/')).getTime();
 	return timestamp;
 }
 
@@ -872,7 +867,8 @@ export function transerTime(time) {
  * @param time
  */
 export function transerRecentTime(time) {
-	let thatDate = new Date(time);
+    let time1 = moment(time).format('YYYY/MM/DD HH:mm:ss');
+    let thatDate = new Date(time1);
 	let thatTime = thatDate.getTime();
 	let thisDate = new Date();
 	let thisTime = new Date().getTime();
@@ -1334,10 +1330,15 @@ export function isBottom() {
 
 /**
  * 上传文件
+ * 成功时isSuccess为true，content为返回的地址
+ * 失败时isSuccess为false，content为错误原因
  * @param file
  */
 export async function uploadFile(file: File) {
-	try {
+    try {
+        if (file.size > 5242880) {
+            throw new Error('文件过大');
+        }
 		const url = `/file`;
 		const myHeaders = await formAuthorizeHeader();
 		let formdata = new FormData();
@@ -1360,7 +1361,7 @@ export async function uploadFile(file: File) {
 	} catch (e) {
 		return {
 			isSuccess: false,
-			content: ''
+			content: e.message as string
 		};
 	}
 }
@@ -1514,6 +1515,7 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
 		//如果有搜索结果就处理一下
 		if (newTopic && newTopic != []) {
             let aTopic = [];
+            let aTopicId = [];
             let bTopic = [];
             for (let item of newTopic) {
                 //时间转换
@@ -1554,31 +1556,23 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                     //获取所在版面名称
                     item.boardName = await getBoardName(item.boardId);
                     aTopic.push(item);
+                    aTopicId.push(item.userId);
                 }
                 else {
-                    item.fanCount = 0;
                     item.portraitUrl = '/static/images/_心灵之约.png';
                     item.userName = "匿名用户";
                     item.boardName = "心灵之约";
                     bTopic.push(item);
                 }
             }
-            //对于非匿名数据并行获取粉丝数目、头像地址和版面名称
-            let requests1 = await Promise.all(aTopic.map((item) => {
-                let url = `/user/follower/count?userid=${item.userId}`;
-                return cc98Fetch(url, { headers });
-            }));
-            let fanData = await Promise.all(requests1.map(item => item.json()));
-            for (let i in aTopic) { aTopic[i].fanCount = fanData[i]; };
-            let requests2 = await Promise.all(aTopic.map((item) => {
-                let url = `/user/basic/${item.userId}`;
-                return cc98Fetch(url, { headers });
-            }));
-            let portraitData = await Promise.all(requests2.map(item => item.json()));
+            let portraitData = await getBasicUserInfo(aTopicId);
             for (let i in aTopic) { aTopic[i].portraitUrl = portraitData[i].portraitUrl; };
-
             for (var i = 0, j = 0, k = 0; i < newTopic.length; i++) {
-                if (newTopic[i].id === aTopic[j].id) {
+                if (j === aTopic.length) {
+                    newTopic[i] = bTopic[k];
+                    k++;
+                }
+                else if (newTopic[i].id === aTopic[j].id) {
                     newTopic[i] = aTopic[j];
                     j++;
                 }
@@ -1676,9 +1670,7 @@ export function isFollowThisBoard(boardId) {
 	if (!getLocalStorage("userInfo")) return false;
 	const customBoards = getLocalStorage("userInfo").customBoards;
 	for (let item of customBoards) {
-
 		if (item == boardId) {
-
 			return true;
 		}
 	}
@@ -1715,7 +1707,7 @@ export async function refreshUserInfo() {
 	let userInfo = await response.json();
 	store.dispatch(changeUserInfo(userInfo));
 	setLocalStorage("userInfo", userInfo);
-	setLocalStorage("userName", userInfo.name);
+    setLocalStorage("userName", userInfo.name);
 }
 export async function unfollowBoard(boardId) {
 	const headers = await formAuthorizeHeader();
@@ -2345,11 +2337,11 @@ export function isMaster(masters) {
 			return true;
 
 		}
-        console.log(masters);
+        //console.log(masters);
         if (masters) {
             for (let i = 0; i < masters.length; i++) {
                 if (myName === masters[i]) {
-                    console.log("is master");
+                    //console.log("is master");
                     return true;
                 }
             }
@@ -2578,4 +2570,19 @@ export async function moveTopic(topicId, boardId, reason) {
 	if (response.status === 200)
 		return 'ok';
 	else return 'error';
+}
+
+export async function getBasicUserInfo(userId: number[]) {
+    let basicUrl = "/user/basic"
+    for (let i in userId) {
+        if (i === "0") {
+            basicUrl = `${basicUrl}?id=${userId[i]}`;
+        }
+        else {
+            basicUrl = `${basicUrl}&id=${userId[i]}`;
+        }
+    }
+    let response = await cc98Fetch(basicUrl);
+    let data = await response.json();
+    return data;
 }
