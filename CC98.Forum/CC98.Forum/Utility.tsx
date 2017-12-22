@@ -1529,7 +1529,7 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                 newTopic = await response.json();
             }
             //如果有搜索结果就处理一下
-            if (newTopic && newTopic != []) {
+            if (newTopic && newTopic.length != 0) {
                 let aTopic = [];
                 let aTopicId = [];
                 let bTopic = [];
@@ -1600,13 +1600,13 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
 
                 return newTopic;
             }
-            //如果没有搜索结果就返回null
+            //如果没有搜索结果就返回0
             else {
                 return 0;
             }
         }
 	} catch (e) {
-		//window.location.href = "/status/Disconnected";
+		return -1;
 	}
 }
 export async function awardWealth(reason, value, postId) {
