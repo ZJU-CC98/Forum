@@ -1351,9 +1351,9 @@ export function isBottom() {
  */
 export async function uploadFile(file: File) {
     try {
-        if (file.size > 5242880) {
-            throw new Error('文件过大');
-        }
+        // if (file.size > 5242880) {
+        //     throw new Error('文件过大');
+        // }
 		const url = `/file`;
 		const myHeaders = await formAuthorizeHeader();
 		let formdata = new FormData();
