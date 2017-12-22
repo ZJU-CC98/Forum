@@ -78,6 +78,7 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
             realContents = await Utility.getCurUserTopicContent(newProps.topicId, page, userName, newProps.userId);
         } else {
             realContents = await Utility.getTopicContent(newProps.topicId, page, newProps.topicInfo.replyCount);
+            if (!realContents) this.setState({ inWaiting: false, contents: [] });
         }
         const masters = newProps.boardInfo.boardMasters;
         this.setState({inWaiting:false,contents: realContents,masters:masters });
