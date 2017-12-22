@@ -116,11 +116,15 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
     render() {
         if (this.props.isHot && this.state.inWaiting)
             return null;
-        if (!this.state.inWaiting)
+        if (!this.state.inWaiting) {
+            if (this.state.contents.length == 0) {
+                return <div></div>;
+            }
             return <div className="center" style={{ width: "100%" }}>
                 {this.state.contents.map(this.generateContents.bind(this))}
             </div>
                 ;
+        }
         else
             return <i style={{marginTop:"1rem"}} className="fa fa-spinner fa-pulse fa-5x fa-fw"></i>;
 

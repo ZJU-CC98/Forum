@@ -318,8 +318,8 @@ ${newProps.content.content}[/quote]
 						<textarea className="editormd-markdown-textarea" name="test-editormd-markdown-doc"   ></textarea>
 					</div>
 				</form>
-				<div className="row" style={{ justifyContent: 'center', marginBottom: '1.25rem ' }}>
-					<div id="post-topic-button" onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: '1.25rem', width: '4.5rem', letterSpacing: '0.3125rem' }}>回复</div>
+                <div className="row" style={{ justifyContent: 'center', marginBottom: '1.25rem ' }}>
+                    <div id="post-topic-button" onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: '1.25rem', width: '4.5rem', height: "2rem", lineHeight: "2rem" }}>回复</div>
 
 
 				</div>
