@@ -97,6 +97,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
         if (this.props.isLogOn) {
 
             //隐藏头图用的jQuery
+            /*
             $("#hideHeader").click(function () {
                 let button = $("#hideHeader");
                 let header = $(".header");
@@ -112,7 +113,8 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
                 }
             })
             let hiddenHeaderText = ($(".headerContent").css("display") === "flex") ? "隐藏头图" : "显示头图";
-
+            <div id="hideHeader" className="topBarText">{hiddenHeaderText}</div>
+            */
             const style = {
                 display: 'block',
                 transitionDuration: '.2s',
@@ -145,7 +147,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
                     > <Link to="/message" className="messageTopBar">消息<div className="message-counter displaynone" id="unreadCount-totalCount">{unreadCount.totalCount}</div></Link></div>
                     <div className="topBarText"> <Link to="/focus" style={{ color: '#fff' }}>关注</Link></div>
                     <div className="topBarText"> <Link to="/newTopics" style={{ color: '#fff' }}>新帖</Link></div>
-                    <div id="hideHeader" className="topBarText">{hiddenHeaderText}</div>
+                    
                     <Link to="/boardList"><div className="boardListLink" style={{ margin: '0 0 0 10px' }}><div style={{ marginTop: '16px', color: '#fff' }}>版面</div></div></Link>
                 </div>
                 <div
