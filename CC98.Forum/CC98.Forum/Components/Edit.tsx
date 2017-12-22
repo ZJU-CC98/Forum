@@ -16,7 +16,7 @@ import { Constants } from './Constant';
 declare let editormd: any;
 declare let testEditor: any;
 
-export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, mode, content, title, postInfo, tag1, tag2,fetchState }, { mode: string, id: number }> {
+export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, mode, content, title, postInfo, tag1, tag2,fetchState,boardId }, { mode: string, id: number }> {
     constructor(props) {
         super(props);
         this.update = this.update.bind(this);
@@ -25,7 +25,7 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
         this.sendUbbTopic = this.sendUbbTopic.bind(this);
         this.editUBB = this.editUBB.bind(this);
         this.state = ({
-            tags: [], boardName: "", ready: false, mode: 0, content: "", title: "", postInfo: { floor: 0, title: "", content: "", contentType: 0 }, tag1: "", tag2: "", fetchState:'ok'
+            tags: [], boardName: "", ready: false, mode: 0, content: "", title: "", postInfo: { floor: 0, title: "", content: "", contentType: 0 }, tag1: "", tag2: "", fetchState:'ok',boardId:1
         });
     }
 
@@ -44,19 +44,21 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
                 const boardName = data.name;
                 //获取标签
                 const tags = await Utility.getBoardTag(id);
-                this.setState({ boardName: boardName, tags: tags });
+                this.setState({ boardName: boardName, tags: tags ,boardId:id});
                 break;
             case 'edit':
                 url = `/post/${id}/original`;
+              
                 response = await Utility.cc98Fetch(url, { headers });
                 if (response.status === 403) {
                     this.setState({ fetchState: "not allowed" });
                 }
                 data = await response.json();
+                const boardName1 = await Utility.getBoardName(data.boardId);
                 if (data.contentType === 0) {
-                    this.setState({ postInfo: data, content: data.content, title: data.title});
+                    this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId});
                 } else
-                    this.setState({ postInfo: data,content:data.content,title:data.title });
+                    this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1 ,boardId:data.boardId});
                 break;
         }
 
@@ -317,7 +319,7 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
     render() {
         const mode = this.match.params.mode;
         const id = this.match.params.id;
-        const url = "";
+        const url = `/list/${this.state.boardId}`;
         let editor;
         let titleInput = null;
         if (mode === "postTopic") {

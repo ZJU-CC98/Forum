@@ -271,8 +271,8 @@ export function getListPager(totalPage) {
 		return [1, 2, 3, 4, 5, 6];
 	} else if (totalPage === 7) {
 		return [1, 2, 3, 4, 5, 6, 7];
-	} else {
-		return [1, 2, 3, 4, -1, totalPage - 3, totalPage - 2, totalPage - 1];
+    } else {
+        return [1, 2, 3, 4, -1, totalPage, totalPage - 2, totalPage - 1,totalPage];
 	}
 }
 export function convertHotTopic(item: State.TopicTitleAndContentState) {
