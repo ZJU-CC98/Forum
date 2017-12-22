@@ -80,6 +80,10 @@ class UbbEditorState {
      * Ubb编辑器的内容
      */
     value: string;    
+    /**
+     * UBB编辑器的提示信息
+     */
+    info: string;
 }
 
 /**
@@ -117,7 +121,8 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
             emojiType: 'ac',
             emojiIsShown: false,
             isPreviewing: false,
-            value: ''
+            value: '',
+            info: ''
         };
         this.option = props.option || new UbbEditorOption();
         this.clearAllShown = this.clearAllShown.bind(this);
@@ -155,25 +160,17 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
     }
 
     async handleUpload(file: File) {
-        let res = await Utility.uploadFile(file);
-        /* const response1 = await fetch("/config.production.json");
-         let data;
-         if (response1.status !== 404) {
-             const data1 = await response1.json();
-             const response2 = await fetch("/config.json");
-             const data2 = await response2.json();
-             data = { ...data2, ...data1 };
-         } else {
-             const response2 = await fetch("/config.json");
-             data = await response2.json();
-         }*/
-        if (res.isSuccess) {
-            const baseUrl = Utility.getApiUrl();
-            this.handleButtonClick(this.state.extendTagName, `${res.content}`);
-        } else if (res.content === '文件过大') {
-
+        if(file.size > 5242880){
+            this.setState({
+                info: '文件过大'
+            });
+            setTimeout(()=>this.setState({
+                info: ''
+            }), 1500);
+            return ;
         }
-
+        let res = await Utility.uploadFile(file);
+        this.handleButtonClick(this.state.extendTagName, `${res.content}`);
     }
 
     handleUndo() {
@@ -367,6 +364,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
 
         return (
             <div className="ubb-editor" style={{ maxHeight: `${height + 6.125}rem` }}>
+                <Message message={this.state.info} />
                 <div className="editor-buttons">
                     <div style={{ height: '2rem', display: 'flex', transitionDuration: '.5s', overflow: 'hidden', width: this.state.isPreviewing ? '0rem' : '50rem' }}>
                         <div className="editor-buttons-styles">
@@ -528,5 +526,55 @@ class LazyImage extends React.Component<{ onClick, src, className? }, {loaded}> 
             className={this.props.className}
             src={this.props.src}
             onClick={this.props.onClick} />
+    }
+}
+
+interface MessageProps {
+    /**
+     * 要显示的信息
+     */
+    message: string;
+}
+
+interface MessageState {
+    /**
+     * 是否在显示
+     */
+    isShown: boolean;
+    /**
+     * 显示的信息
+     */
+    message: string;
+}
+
+class Message extends React.Component<MessageProps, MessageState> {
+    constructor(props){
+        super(props);
+        this.state = {
+            isShown: false,
+            message: props.message
+        };
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(nextProps.message !== ""){
+            this.setState({
+                isShown: true,
+                message: nextProps.message
+            });
+            setTimeout(()=>{
+                this.setState({
+                    isShown: false
+                })
+            }, 1000);
+        }
+    }
+
+    render() {
+        return (
+        <div className="ubb-editor-info" style={this.state.isShown  ?  {opacity: 1} : {opacity: 0}}>
+            <p>{this.state.message}</p>
+        </div>
+        );
     }
 }

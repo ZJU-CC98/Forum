@@ -271,8 +271,8 @@ export function getListPager(totalPage) {
 		return [1, 2, 3, 4, 5, 6];
 	} else if (totalPage === 7) {
 		return [1, 2, 3, 4, 5, 6, 7];
-	} else {
-		return [1, 2, 3, 4, -1, totalPage - 3, totalPage - 2, totalPage - 1];
+    } else {
+        return [1, 2, 3, 4, -1, totalPage, totalPage - 2, totalPage - 1,totalPage];
 	}
 }
 export function convertHotTopic(item: State.TopicTitleAndContentState) {
@@ -1351,9 +1351,9 @@ export function isBottom() {
  */
 export async function uploadFile(file: File) {
     try {
-        if (file.size > 5242880) {
-            throw new Error('文件过大');
-        }
+        // if (file.size > 5242880) {
+        //     throw new Error('文件过大');
+        // }
 		const url = `/file`;
 		const myHeaders = await formAuthorizeHeader();
 		let formdata = new FormData();
@@ -1506,7 +1506,6 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                     keyword = `${keyword} ${words[i]}`;
                 }
             }
-            console.log("关键词",keyword);
             let size = 20;
             let newTopic;
             if (boardId === 0) {
@@ -1517,7 +1516,7 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                 newTopic = await response.json();
             }
             else {
-                const response = await cc98Fetch(`/topic/search/board/${boardId}?keyword=${keyword}&size=${size}&from=${from}`, {
+                const response = await cc98Fetch(`/topic/search/board/${boardId}?keyword=${encodeURIComponent(keyword)}&size=${size}&from=${from}`, {
                     headers: headers
                 });
                 if (response.status === 401) {
@@ -1529,7 +1528,7 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                 newTopic = await response.json();
             }
             //如果有搜索结果就处理一下
-            if (newTopic && newTopic != []) {
+            if (newTopic && newTopic.length != 0) {
                 let aTopic = [];
                 let aTopicId = [];
                 let bTopic = [];
@@ -1600,13 +1599,13 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
 
                 return newTopic;
             }
-            //如果没有搜索结果就返回null
+            //如果没有搜索结果就返回0
             else {
                 return 0;
             }
         }
 	} catch (e) {
-		//window.location.href = "/status/Disconnected";
+		return -1;
 	}
 }
 export async function awardWealth(reason, value, postId) {
@@ -1701,30 +1700,21 @@ export async function followBoard(boardId) {
 	await refreshUserInfo();
 	removeStorage("focusBoardList");
 }
+/**
+ * 刷新当前用户信息
+ */
 export async function refreshUserInfo() {
-
-	let userName = getLocalStorage("userName");
-
-	if (!userName) {
-
-		let userInfo = getLocalStorage("userInfo");
-
-		userName = userInfo.name;
-
+	if(getLocalStorage('userName')){
+		let headers = await formAuthorizeHeader();
+		let response = await cc98Fetch(`/me`, {
+			headers
+		});
+	
+		let userInfo = await response.json();
+		store.dispatch(changeUserInfo(userInfo));
+		setLocalStorage("userInfo", userInfo);
+		setLocalStorage("userName", userInfo.name);
 	}
-
-	const headers = await formAuthorizeHeader();
-
-	let response = await cc98Fetch(`/user/name/${encodeURIComponent(userName)}`, {
-
-		headers: headers
-
-	});
-
-	let userInfo = await response.json();
-	store.dispatch(changeUserInfo(userInfo));
-	setLocalStorage("userInfo", userInfo);
-    setLocalStorage("userName", userInfo.name);
 }
 export async function unfollowBoard(boardId) {
 	const headers = await formAuthorizeHeader();
@@ -2331,8 +2321,8 @@ export async function getUserInfo(userId) {
 export async function getUserInfoByName(userName) {
 	const key = `userName_${userName}`;
 	if (getLocalStorage(key)) return getLocalStorage(key);
-	const headers = await formAuthorizeHeader();
-	const url = `/user/name/${userName}`;
+    const headers = await formAuthorizeHeader();
+    const url = `/user/name/${encodeURIComponent(userName)}`;
 	const response = await cc98Fetch(url, { headers });
 	if (response.status === 401) {
 		window.location.href = "/status/UnauthorizedTopic";

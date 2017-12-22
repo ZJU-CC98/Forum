@@ -109,7 +109,7 @@ export class UserCenterMyPostsExact extends React.Component<{match}, UserCenterM
         return (
             <div className="user-posts">
                 {userRecentPosts}
-                <UserCenterPageCount currentPage={this.props.match.params.page || 1} totalPage={this.state.totalPage} href="/usercenter/myposts/" hasTotal={this.state.hasTotal}/>
+                <UserCenterPageCount currentPage={parseInt(this.props.match.params.page) || 1} totalPage={this.state.totalPage} href="/usercenter/myposts/" hasTotal={this.state.hasTotal}/>
             </div>
         );
     }

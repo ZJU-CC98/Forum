@@ -75,13 +75,13 @@ export class UserCenterMyFollowings extends React.Component<{match}, UserCenterM
             }
 
             
-            let requests = await Promise.all(data.map((item) => {
-                url = `/user/${item}`;
-                return Utility.cc98Fetch(url, { headers });
-            }));
-                           
-            let fanData = await Promise.all(requests.map((item)=>(item.json())));
-            let fans = fanData.map((item) => {
+            const query = data.join('&id=');
+            url = `/user?id=${query}`;
+            res = await Utility.cc98Fetch(url, {
+                headers
+            });
+            let fanData: any[] = await res.json();
+            let fans = fanData.reverse().map((item) => {
                 let userFanInfo = new UserFanInfo();
                 userFanInfo.name = item.name;
                 userFanInfo.avatarImgURL = item.portraitUrl;
@@ -117,7 +117,7 @@ export class UserCenterMyFollowings extends React.Component<{match}, UserCenterM
         for (let i = 1; i < userFollowings.length; i += 2) {
             userFollowings.splice(i, 0, <hr />);
         }
-        const page = this.props.match.params.page || 1;
+        const page =parseInt( this.props.match.params.page) || 1;
 
         return (<div className="user-center-myfollowings">
             <div className="user-center-myfollowings-exact">

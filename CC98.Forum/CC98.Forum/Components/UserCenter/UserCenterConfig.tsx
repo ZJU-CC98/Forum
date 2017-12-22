@@ -26,7 +26,7 @@ export class UserCenterConfig extends React.Component<null, UserCenterConfigStat
             birthdayMouth: info.birthday ? Number.parseInt(info.birthday.slice(5, 7)): 0,
             birthdayDay: info.birthday ? Number.parseInt(info.birthday.slice(8, 10)) : 0,
             DisplayTitleId: info.displayTitleId,
-            userTitleIds: info.userTitleIds
+            userTitleIds: info.userTitleIds || []
         };
         this.state = {
             userInfo: myInfo,
@@ -117,13 +117,8 @@ export class UserCenterConfig extends React.Component<null, UserCenterConfigStat
             });
 
             if (res.status === 200) {
-                let headers1 = new Headers();
-                headers1.append("Authorization", token);
-                let response1 = await Utility.cc98Fetch(`/user/${Utility.getLocalStorage('userInfo').id}`, {
-                    headers: headers1
-                });
-                let userInfo = await response1.json();
-                Utility.setLocalStorage("userInfo", userInfo);
+                await Utility.refreshUserInfo();
+                let userInfo = Utility.getLocalStorage('userInfo');
                 Utility.setLocalStorage(`userId_${userInfo.id}`, userInfo, 3600);
                 Utility.setLocalStorage(`userName_${userInfo.name}`, userInfo, 3600);
                 this.setState({

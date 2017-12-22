@@ -421,7 +421,7 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
                         <div className="listContentTag"><Link to={saveTopicsUrl}>保存</Link></div>
                     </div>
                     <div className="row" style={{ alignItems: 'center' }}>
-                        <div style={{ marginRight: '16rem' }}><span>作者</span></div>
+                        <div style={{ marginRight: '14rem' }}><span>作者</span></div>
                         <div style={{ marginRight: '8rem' }}><span>最后回复</span></div>
                     </div>
                 </div>
@@ -888,14 +888,11 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
                         <div style={{ display: "flex", fontSize: "0.75rem", marginLeft: "1rem", width: "auto" }}>
                             {this.state.pager.map(this.generateListPager.bind(this))}</div>
                     </div>
-                    <div className="row" style={{ width: "30rem", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between", fontSize: "0.75rem", marginBottom: "-4px" }}>
+                    <div className="row" style={{ width: "28rem", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between", fontSize: "0.75rem", marginBottom: "-4px" }}>
 
                         <div style={{ width: "7.5rem", textAlign: "left" }}> <span >{this.props.userName || '匿名'}</span></div>
 
-                        <div className="row" style={{ width: "10rem" }}>
-
-                            <div id="liked" style={{ display: "flex", width: "2rem" }}><i className="fa fa-thumbs-o-up fa-lg"></i><span className="timeProp tagSize">{this.props.likeCount}</span></div>
-
+                        <div className="row topicIcon" >
                             <div id="disliked" style={{ display: "flex", width: "4.5rem" }}><i className="fa fa-eye fa-lg"></i><span className="timeProp tagSize">{hitCount}</span></div>
 
                             <div id="commentsAmount" style={{ display: "flex", width: "3.5rem" }}><i className="fa fa-commenting-o fa-lg"></i><span className="timeProp tagSize">{this.props.replyCount}</span></div>

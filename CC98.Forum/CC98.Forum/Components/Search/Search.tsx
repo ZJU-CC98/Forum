@@ -28,7 +28,7 @@ export class Search extends React.Component<{}, SearchState> {
     async componentDidMount() {
         let searchInfo = Utility.getStorage("searchInfo");
         //没有搜索条件
-        if (!searchInfo) {
+        if (!searchInfo && searchInfo === -1) {
             this.showNoResult();
             this.setState({ loading: false });
         }
