@@ -4,7 +4,7 @@ declare global {
     interface JQuery { spectrum: any}
 }
 
-export class TopicManagement extends React.Component<{ topicId, update, boardId, updateTime }, { state, reason, tips, days, board, topicInfo,fetchState ,color}>{
+export class TopicManagement extends React.Component<{ topicId, update, boardId, updateTime ,topicInfo}, { state, reason, tips, days, board, topicInfo,fetchState ,color}>{
     constructor(props) {
         super(props);
         this.confirm = this.confirm.bind(this);
@@ -18,7 +18,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
         this.daysInput = this.daysInput.bind(this);
         this.boardInput = this.boardInput.bind(this);
         this.state = {
-            state: "normal", reason: "", tips: "", days: 0, board: null, topicInfo: { state: 0, topState: 0, bestState: 0 }, fetchState: 'ok',color:"#fff"
+            state: "normal", reason: "", tips: "", days: 0, board: null, topicInfo: this.props.topicInfo, fetchState: 'ok', color: "#fff"
         };
     }
     showIP() {
@@ -158,11 +158,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
         this.setState({ board: e.target.value });
 
     }
-    async componentDidMount() {
-        const data = await Utility.getTopicInfo(this.props.topicId);
-       
-        this.setState({ topicInfo: data });
-    }
+
    async componentDidUpdate() {
         
         $("#custom").spectrum({

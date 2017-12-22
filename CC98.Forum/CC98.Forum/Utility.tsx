@@ -1495,18 +1495,7 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
 				headers: headers,
 				body: bodyCotent
 			});
-			if (response.status === 401) {
-				window.location.href = "/status/UnauthorizedTopic";
-			}
-			if (response.status === 403) {
-				window.location.href = "/status/OperationForbidden";
-			}
-			if (response.status === 404) {
-				window.location.href = "/status/NotFoundTopic";
-			}
-			if (response.status === 500) {
-				window.location.href = "/status/ServerError";
-			}
+
 			newTopic = await response.json();
 		}
 		else {

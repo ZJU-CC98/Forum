@@ -15,7 +15,7 @@ import { Judge } from './Topic-Judge';
 import { ReplierSignature } from './Topic-ReplierSignature';
 declare let moment: any;
 
-export class Reply extends React.Component<{DateTime,topicId, page, topicInfo, boardInfo,  quote, isTrace, isHot, userId }, { inWaiting, contents, masters }>{
+export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,  quote, isTrace, isHot, userId }, { inWaiting, contents, masters }>{
     constructor(props, content) {
         super(props, content);
         this.update = this.update.bind(this);
@@ -47,7 +47,8 @@ export class Reply extends React.Component<{DateTime,topicId, page, topicInfo, b
 
         this.setState({ contents: realContents });
     }
-    async componentDidMount() {
+    /*async componentDidMount() {
+        console.log("did mount reply");
         this.setState({inWaiting:true});
         const page = this.props.page || 1;
         let realContents;
@@ -63,7 +64,7 @@ export class Reply extends React.Component<{DateTime,topicId, page, topicInfo, b
         }
         const masters = this.props.boardInfo.boardMasters;
         this.setState({ inWaiting:false,contents: realContents,masters:masters });
-    }
+    }*/
     async componentWillReceiveProps(newProps) {
         this.setState({ inWaiting: true });
         const page = newProps.page || 1;
@@ -78,7 +79,8 @@ export class Reply extends React.Component<{DateTime,topicId, page, topicInfo, b
         } else {
             realContents = await Utility.getTopicContent(newProps.topicId, page, newProps.topicInfo.replyCount);
         }
-        this.setState({inWaiting:false,contents: realContents });
+        const masters = newProps.boardInfo.boardMasters;
+        this.setState({inWaiting:false,contents: realContents,masters:masters });
 
     }
 
