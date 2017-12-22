@@ -588,8 +588,8 @@ export class AdsComponent extends React.Component<{}, { ads: MainPageColumn[], i
         let url = ads.length ? ads[index].url : "";
         let imageUrl = ads.length ? ads[index].imageUrl : "";
 
-        return <div >
-            <Link to={url}><img src={imageUrl} style={{ width: "18.75rem", height: "6.25rem" }} /></Link>
+        return <div>
+            <a href={url} target="_blank"><img src={imageUrl} style={{ width: "18.75rem", height: "6.25rem" }} /></a>
         </div>;
     }
 }

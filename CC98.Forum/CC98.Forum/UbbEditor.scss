@@ -196,4 +196,23 @@
             text-decoration: underline;
         }
     }
+
+    .ubb-editor-info {
+        display: flex;
+        position: absolute;
+        background: #8dc9db;
+        z-index: 2;
+        transition-duration: .5s;
+        pointer-events: none;
+        left: 25%;
+        margin-top: 2rem;
+        border-radius: .5rem;
+        align-items: center;
+        height: 2.5rem;
+        color: white;
+
+        p {
+            margin: 0 2rem;
+        }
+    }
 }
