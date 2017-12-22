@@ -1351,9 +1351,9 @@ export function isBottom() {
  */
 export async function uploadFile(file: File) {
     try {
-        if (file.size > 5242880) {
-            throw new Error('文件过大');
-        }
+        // if (file.size > 5242880) {
+        //     throw new Error('文件过大');
+        // }
 		const url = `/file`;
 		const myHeaders = await formAuthorizeHeader();
 		let formdata = new FormData();
@@ -1497,112 +1497,114 @@ export async function getSaveTopics(curPage, boardId) {
  */
 export async function getSearchTopic(boardId: number, words: string[], from: number, router) {
 
-	try {
-		const headers = await formAuthorizeHeader();
-		let bodyCotent = JSON.stringify(words);
-
-		headers.append('content-type', 'application/json');
-		let size = 20;
-		let newTopic;
-		if (boardId == 0) {
-			const response = await cc98Fetch(`/topic/search?from=${from}&size=${size}`, {
-				method: 'POST',
-				headers: headers,
-				body: bodyCotent
-			});
-
-			newTopic = await response.json();
-		}
-		else {
-			const response = await cc98Fetch(`/topic/search/board/${boardId}?from=${from}&size=${size}`, {
-				method: 'POST',
-				headers: headers,
-				body: bodyCotent
-			});
-			if (response.status === 401) {
-				window.location.href = "/status/UnauthorizedTopic";
-			}
-			if (response.status === 500) {
-				window.location.href = "/status/ServerError";
-			}
-			newTopic = await response.json();
-		}
-		//如果有搜索结果就处理一下
-		if (newTopic && newTopic != []) {
-            let aTopic = [];
-            let aTopicId = [];
-            let bTopic = [];
-            for (let item of newTopic) {
-                //时间转换
-                item.time = transerRecentTime(item.time);
-                item.lastPostTime = transerRecentTime(item.lastPostTime);
-
-                //阅读数转换
-                if (item.hitCount > 10000) {
-                    if (item.hitCount > 100000) {
-                        let index = parseInt(`${item.hitCount / 10000}`);
-                        item.hitCount = `${index}万`;
-                    }
-                    else {
-                        let index = parseInt(`${item.hitCount / 1000}`) / 10;
-                        item.hitCount = `${index}万`;
-                    }
-                }
-                //回复数转换
-                if (item.replyCount > 10000) {
-                    if (item.replyCount > 100000) {
-                        let index = parseInt(`${item.replyCount / 10000}`);
-                        item.replyCount = `${index}万`;
-                    }
-                    else {
-                        let index = parseInt(`${item.replyCount / 1000}`) / 10;
-                        item.replyCount = `${index}万`;
-                    }
-                }
-                //标签转换
-                if (item.tag1) {
-                    item.tag1 = await getTagNamebyId(item.tag1);
-                    if (item.tag2) {
-                        item.tag2 = await getTagNamebyId(item.tag2);
-                    }
-                }
-                //处理匿名与非匿名主题，非匿名主题用户并行获取信息
-                if (item.userId) {
-                    //获取所在版面名称
-                    item.boardName = await getBoardName(item.boardId);
-                    aTopic.push(item);
-                    aTopicId.push(item.userId);
-                }
-                else {
-                    item.portraitUrl = '/static/images/_心灵之约.png';
-                    item.userName = "匿名用户";
-                    item.boardName = "心灵之约";
-                    bTopic.push(item);
+    try {
+        if (words) {
+            const headers = await formAuthorizeHeader();
+            let keyword = words[0];
+            for (let i in words) {
+                if (i != '0') {
+                    keyword = `${keyword} ${words[i]}`;
                 }
             }
-            let portraitData = await getBasicUserInfo(aTopicId);
-            for (let i in aTopic) { aTopic[i].portraitUrl = portraitData[i].portraitUrl; };
-            for (var i = 0, j = 0, k = 0; i < newTopic.length; i++) {
-                if (j === aTopic.length) {
-                    newTopic[i] = bTopic[k];
-                    k++;
-                }
-                else if (newTopic[i].id === aTopic[j].id) {
-                    newTopic[i] = aTopic[j];
-                    j++;
-                }
-                else {
-                    newTopic[i] = bTopic[k];
-                    k++;
-                }
-            }
+            console.log("关键词",keyword);
+            let size = 20;
+            let newTopic;
+            if (boardId === 0) {
+                const response = await cc98Fetch(`/topic/search?keyword=${encodeURIComponent(keyword)}&size=${size}&from=${from}`, {
+                    headers: headers
+                });
 
-            return newTopic;
-		}
-		//如果没有搜索结果就返回null
-		else {
-			return 0;
-		}
+                newTopic = await response.json();
+            }
+            else {
+                const response = await cc98Fetch(`/topic/search/board/${boardId}?keyword=${keyword}&size=${size}&from=${from}`, {
+                    headers: headers
+                });
+                if (response.status === 401) {
+                    //window.location.href = "/status/UnauthorizedTopic";
+                }
+                if (response.status === 500) {
+                    //window.location.href = "/status/ServerError";
+                }
+                newTopic = await response.json();
+            }
+            //如果有搜索结果就处理一下
+            if (newTopic && newTopic != []) {
+                let aTopic = [];
+                let aTopicId = [];
+                let bTopic = [];
+                for (let item of newTopic) {
+                    //时间转换
+                    item.time = transerRecentTime(item.time);
+                    item.lastPostTime = transerRecentTime(item.lastPostTime);
+
+                    //阅读数转换
+                    if (item.hitCount > 10000) {
+                        if (item.hitCount > 100000) {
+                            let index = parseInt(`${item.hitCount / 10000}`);
+                            item.hitCount = `${index}万`;
+                        }
+                        else {
+                            let index = parseInt(`${item.hitCount / 1000}`) / 10;
+                            item.hitCount = `${index}万`;
+                        }
+                    }
+                    //回复数转换
+                    if (item.replyCount > 10000) {
+                        if (item.replyCount > 100000) {
+                            let index = parseInt(`${item.replyCount / 10000}`);
+                            item.replyCount = `${index}万`;
+                        }
+                        else {
+                            let index = parseInt(`${item.replyCount / 1000}`) / 10;
+                            item.replyCount = `${index}万`;
+                        }
+                    }
+                    //标签转换
+                    if (item.tag1) {
+                        item.tag1 = await getTagNamebyId(item.tag1);
+                        if (item.tag2) {
+                            item.tag2 = await getTagNamebyId(item.tag2);
+                        }
+                    }
+                    //处理匿名与非匿名主题，非匿名主题用户并行获取信息
+                    if (item.userId) {
+                        //获取所在版面名称
+                        item.boardName = await getBoardName(item.boardId);
+                        aTopic.push(item);
+                        aTopicId.push(item.userId);
+                    }
+                    else {
+                        item.portraitUrl = '/static/images/_心灵之约.png';
+                        item.userName = "匿名用户";
+                        item.boardName = "心灵之约";
+                        bTopic.push(item);
+                    }
+                }
+                let portraitData = await getBasicUserInfo(aTopicId);
+                for (let i in aTopic) { aTopic[i].portraitUrl = portraitData[i].portraitUrl; };
+                for (var i = 0, j = 0, k = 0; i < newTopic.length; i++) {
+                    if (j === aTopic.length) {
+                        newTopic[i] = bTopic[k];
+                        k++;
+                    }
+                    else if (newTopic[i].id === aTopic[j].id) {
+                        newTopic[i] = aTopic[j];
+                        j++;
+                    }
+                    else {
+                        newTopic[i] = bTopic[k];
+                        k++;
+                    }
+                }
+
+                return newTopic;
+            }
+            //如果没有搜索结果就返回null
+            else {
+                return 0;
+            }
+        }
 	} catch (e) {
 		//window.location.href = "/status/Disconnected";
 	}
@@ -1699,30 +1701,21 @@ export async function followBoard(boardId) {
 	await refreshUserInfo();
 	removeStorage("focusBoardList");
 }
+/**
+ * 刷新当前用户信息
+ */
 export async function refreshUserInfo() {
-
-	let userName = getLocalStorage("userName");
-
-	if (!userName) {
-
-		let userInfo = getLocalStorage("userInfo");
-
-		userName = userInfo.name;
-
+	if(getLocalStorage('userName')){
+		let headers = await formAuthorizeHeader();
+		let response = await cc98Fetch(`/me`, {
+			headers
+		});
+	
+		let userInfo = await response.json();
+		store.dispatch(changeUserInfo(userInfo));
+		setLocalStorage("userInfo", userInfo);
+		setLocalStorage("userName", userInfo.name);
 	}
-
-	const headers = await formAuthorizeHeader();
-
-	let response = await cc98Fetch(`/user/name/${encodeURIComponent(userName)}`, {
-
-		headers: headers
-
-	});
-
-	let userInfo = await response.json();
-	store.dispatch(changeUserInfo(userInfo));
-	setLocalStorage("userInfo", userInfo);
-    setLocalStorage("userName", userInfo.name);
 }
 export async function unfollowBoard(boardId) {
 	const headers = await formAuthorizeHeader();
@@ -1869,7 +1862,11 @@ export async function plus1(topicId, postId, reason) {
 	headers.append("Content-Type", "application/json");
 	const bodyinfo = { value: 1, reason: reason };
 	const body = JSON.stringify(bodyinfo);
-	const response = await cc98Fetch(url, { method: "PUT", headers, body });
+    const response = await cc98Fetch(url, { method: "PUT", headers, body });
+    console.log(response);
+    console.log(response.text);
+    let aaa = await response.json();
+    console.log("评分回复",aaa);
     switch (response.status) {
         case 400:
             return 'rateself';

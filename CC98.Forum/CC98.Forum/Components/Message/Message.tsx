@@ -4,6 +4,7 @@ import { MessageMessage } from './MessageMessage';
 import { MessageResponse } from './MessageResponse';
 import { MessageAttme } from './MessageAttme';
 import { MessageSystem } from './MessageSystem';
+import { MessageSetting } from './MessageSetting';
 import * as Utility from '../../Utility';
 import {
     BrowserRouter as Router,
@@ -35,12 +36,13 @@ export class Message extends React.Component<{}, AppState> {
                             <NavLink to="/message/system"><div id="system" className="nav-div">系统通知<div className="message-counterNav displaynone" id="unreadCount-systemCount1">{unreadCount.systemCount}</div></div></NavLink>
                             <hr/>
                             <NavLink to="/message/message"><div id="message" className="nav-div">我的私信<div className="message-counterNav displaynone" id="unreadCount-messageCount1">{unreadCount.messageCount}</div></div></NavLink>
-                                </div>
+                            </div>
                                     <Route exact path="/message" component={MessageResponse}></Route>
                                     <Route path="/message/response/:page?" component={MessageResponse} />
                                     <Route path="/message/attme/:page?" component={MessageAttme} />
                                     <Route path="/message/system/:page?" component={MessageSystem} />
                                     <Route path="/message/message/:page?" component={MessageMessage} />
+                                   
                                 </div>
                             </Router>
                     </div>
