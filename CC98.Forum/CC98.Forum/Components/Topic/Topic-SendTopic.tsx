@@ -8,7 +8,7 @@ import { TopicManagement } from './Topic-TopicManagement';
 declare let moment: any;
 declare let editormd: any;
 
-export class SendTopic extends React.Component<{ topicid, boardId, boardInfo, onChange, content, userId }, { content: string, mode: number, masters: string[] }>{
+export class SendTopic extends React.Component<{ topicid, boardId, boardInfo, onChange, content, userId,topicInfo }, { content: string, mode: number, masters: string[] }>{
 	constructor(props) {
 		super(props);
 		this.sendUbbTopic = this.sendUbbTopic.bind(this);
@@ -344,7 +344,7 @@ ${newProps.content.content}[/quote]
 				</div></div>
             {editor}
             {manageBTN}
-			<TopicManagement topicId={this.props.topicid} update={this.onChange} boardId={this.props.boardId} updateTime={Date.now()} />
+            <TopicManagement topicId={this.props.topicid} update={this.onChange} boardId={this.props.boardId} updateTime={Date.now()} topicInfo={this.props.topicInfo} />
 		</div>;
 	}
 }

@@ -163,7 +163,8 @@ class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff, histo
                             <p id="loginMessage">{this.state.loginMessage}</p>
                             <button type="submit" disabled={this.state.isLoging}>登录账号</button>
                         </form>
-                        <p><span>还没账号？我要 <a href="">注册</a></span></p>
+                        <p><span>还没账号？我要 <a href="//account.cc98.org/" target="_blank">注册</a></span></p>
+                        <p><span>密码错误？我要 <a href="//account.cc98.org/" target="_blank">找回</a></span></p>
                     </div>
                 </div>
             </div>

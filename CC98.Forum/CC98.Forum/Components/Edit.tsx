@@ -16,7 +16,7 @@ import { Constants } from './Constant';
 declare let editormd: any;
 declare let testEditor: any;
 
-export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, mode, content, title, postInfo, tag1, tag2 }, { mode: string, id: number }> {
+export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, mode, content, title, postInfo, tag1, tag2,fetchState }, { mode: string, id: number }> {
     constructor(props) {
         super(props);
         this.update = this.update.bind(this);
@@ -25,7 +25,7 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
         this.sendUbbTopic = this.sendUbbTopic.bind(this);
         this.editUBB = this.editUBB.bind(this);
         this.state = ({
-            tags: [], boardName: "", ready: false, mode: 0, content: "", title: "", postInfo: { floor: 0, title: "", content: "", contentType: 0 }, tag1: "", tag2: ""
+            tags: [], boardName: "", ready: false, mode: 0, content: "", title: "", postInfo: { floor: 0, title: "", content: "", contentType: 0 }, tag1: "", tag2: "", fetchState:'ok'
         });
     }
 
@@ -49,6 +49,9 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
             case 'edit':
                 url = `/post/${id}/original`;
                 response = await Utility.cc98Fetch(url, { headers });
+                if (response.status === 403) {
+                    this.setState({ fetchState: "not allowed" });
+                }
                 data = await response.json();
                 if (data.contentType === 0) {
                     this.setState({ postInfo: data, content: data.content, title: data.title});
