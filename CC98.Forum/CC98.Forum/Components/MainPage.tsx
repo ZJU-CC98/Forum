@@ -621,7 +621,7 @@ export class AdsComponent extends React.Component<{}, { ads: MainPageColumn[], i
 /**
  * 论坛统计组件
  **/
-export class Count extends React.Component<{}, { data }> {
+export class MainPageCountComponent extends React.Component<{}, { data }> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
@@ -646,14 +646,14 @@ export class Count extends React.Component<{}, { data }> {
     }
     render() {
         const data = this.state.data;
-        return <div className="schoolNews">
+        return <div className="mainPageCount">
             <div className="mainPageTitle2">
                 <div className="mainPageTitleRow">
                     <i className="fa fa-volume-up"></i>
                     <div className="mainPageTitleText">论坛统计</div>
                 </div>
             </div>
-            <div className="schoolNewsContent" style={{ height: "10rem" }}>
+            <div className="mainPageCountContent" style={{ height: "10rem" }}>
                 <div className="mainPageCountRow">
                     <div className="mainPageCountTitle">今日帖数</div>
                     <div className="mainPageCountTitle">{data.todayCount}</div>
@@ -677,6 +677,15 @@ export class Count extends React.Component<{}, { data }> {
             </div>
         </div>
 
+    }
+}
+
+/**
+ * 推荐版面组件
+ */
+export class RecommendedBoardComponent extends React.Component<{}, {}>{
+    render() {
+        return <div></div>
     }
 }
 
@@ -721,7 +730,7 @@ export class MainPage extends React.Component<{}, AppState> {
                 <RecommendedFunctionComponent />
                 <SchoolNewsComponent />
                 <AdsComponent />
-                <Count />
+                <MainPageCountComponent />
             </div>
         </div>;
     }
