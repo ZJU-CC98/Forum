@@ -104,7 +104,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         if (displayTitleId) {
             let response = await fetch('/static/portrait.json');//获取头像框样式的配置
             let data = await response.json();
-        
+
             let imageUrl; //头像框的链接
             let style = data.普通.style;
 
@@ -141,6 +141,14 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                 </div>
                 <div className="photoFrame"><img src={imageUrl} style={style} /></div>
             </div>
+        } else if (this.props.isAnonymous == true) {
+            return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
+                <div style={{ zIndex: 100 }}>
+                   
+                        <img className="userPortrait" src={this.props.userInfo.portraitUrl}></img>
+                 
+                </div>
+            </div>;
         } else {
             return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
                 <div style={{ zIndex: 100 }}>
@@ -228,11 +236,14 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                 {btn}
             </div>;
         }
+        let gender = <div className="userGender">
+            {this.props.userInfo.gender === 0 ? <i className="fa fa-venus" style={{ color: "#fff" }}></i> : <i className="fa fa-mars" style={{ color: "#fff" }}></i>}
+        </div>;
+        if (this.props.isAnonymous == true)
+            gender = null;
         return <div className="userMessage">
-            <div className="userGender">
-                {this.props.userInfo.gender === 0 ? <i className="fa fa-venus" style={{ color: "#fff" }}></i> : <i className="fa fa-mars" style={{ color: "#fff" }}></i>}
-            </div>
-
+        
+            {gender}
             {this.state.photoframe}
 
             <div className="rpyClr" style={{ width: "100%", marginTop: "1rem", paddingLeft: "3rem" }}>

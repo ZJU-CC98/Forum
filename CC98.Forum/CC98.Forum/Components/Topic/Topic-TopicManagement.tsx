@@ -67,7 +67,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
                             status =  await Utility.cancelBestTopic(this.props.topicId,  this.state.reason);
                             this.setState({ fetchState: status });
                             break;
-                        case '解除锁定':
+                        case '解锁':
                             status =  await Utility.unLockTopic(this.props.topicId, this.props.boardId, this.state.reason);
                             this.setState({ fetchState: status });
                             break;
@@ -170,7 +170,8 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
         this.setState({ topicInfo: data });
     }
     render() {
-
+        console.log("topicinfo");
+        console.log(this.props.topicInfo);
         let info;
 
         const normalInfo = <div className="column">
@@ -250,14 +251,14 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
 
 
                     <div className="row">
-                        <input type="radio" name="option" value={this.state.topicInfo.state === 1 ? '解锁' : "锁定"} onClick={this.showDays} />
-                        <div>{this.state.topicInfo.state === 1 ? '解锁' : "锁定"}</div>
+                        <input type="radio" name="option" value={this.props.topicInfo.state === 1 ? '解锁' : "锁定"} onClick={this.props.topicInfo.state === 1 ? this.showNormal:this.showDays} />
+                        <div>{this.props.topicInfo.state === 1 ? '解锁' : "锁定"}</div>
                     </div>
 
 
                     <div className="row">
-                        <input type="radio" name="option" value={this.state.topicInfo.disableHot ? "允许热门" : "禁止热门"} onClick={this.showNormal} />
-                        <div>{this.state.topicInfo.disableHot ? "允许热门" : "禁止热门"}</div>
+                        <input type="radio" name="option" value={this.props.topicInfo.disableHot ? "允许热门" : "禁止热门"} onClick={this.showNormal} />
+                        <div>{this.props.topicInfo.disableHot ? "允许热门" : "禁止热门"}</div>
                     </div>
                 </div>
                 <div className="row" style={{ marginTop: "1rem" }}>
@@ -276,18 +277,18 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
 
                 <div className="row" style={{ marginTop: "1rem" }}>
                     <div className="row">
-                        <input type="radio" name="option" value={this.state.topicInfo.topState === 2 ? '取消固顶' : '固顶'} onClick={this.state.topicInfo.topState === 2 ? this.showNormal : this.showDays} />
-                        <div>{this.state.topicInfo.topState === 2 ? '取消固顶' : '固顶'}</div>
+                        <input type="radio" name="option" value={this.props.topicInfo.topState === 2 ? '取消固顶' : '固顶'} onClick={this.props.topicInfo.topState === 2 ? this.showNormal : this.showDays} />
+                        <div>{this.props.topicInfo.topState === 2 ? '取消固顶' : '固顶'}</div>
                     </div>
 
                     <div className="row">
-                        <input type="radio" name="option" value={this.state.topicInfo.topState === 4 ? '取消全站固顶' : '全站固顶'} onClick={this.state.topicInfo.topState === 4 ? this.showNormal : this.showDays} />
-                        <div>{this.state.topicInfo.topState === 4 ? '取消全站固顶' : '全站固顶'}</div>
+                        <input type="radio" name="option" value={this.props.topicInfo.topState === 4 ? '取消全站固顶' : '全站固顶'} onClick={this.props.topicInfo.topState === 4 ? this.showNormal : this.showDays} />
+                        <div>{this.props.topicInfo.topState === 4 ? '取消全站固顶' : '全站固顶'}</div>
                     </div>
 
                     <div className="row">
-                        <input type="radio" name="option" value={this.state.topicInfo.bestState === 1 ? "解除精华" : "加精"} onClick={this.showNormal} />
-                        <div>{this.state.topicInfo.bestState === 1 ? "解除精华" : "加精"}</div>
+                        <input type="radio" name="option" value={this.props.topicInfo.bestState === 1 ? "解除精华" : "加精"} onClick={this.showNormal} />
+                        <div>{this.props.topicInfo.bestState === 1 ? "解除精华" : "加精"}</div>
                     </div>
 
                     <div className="row">

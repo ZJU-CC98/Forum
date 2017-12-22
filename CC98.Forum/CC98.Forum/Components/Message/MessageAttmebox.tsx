@@ -21,12 +21,24 @@ export class MessageAttmebox extends React.Component<MessageResponseProps> {
         }
         let content;
         if (this.props.isRead) {
-            let userName = `[url=http://${host}/user/name/${this.props.userName}][color=gray]${this.props.userName}[/color][/url]`;
+            let userName;
+            if (this.props.userId > 0) {
+                userName = `[url=http://${host}/user/name/${this.props.userName}][color=gray]${this.props.userName}[/color][/url]`;
+            }
+            else {
+                userName = `[color=gray]${this.props.userName}[/color]`;
+            }
             let title = `[url=http://${host}/topic/${this.props.topicId}/${pageNum}][color=blue]${this.props.topicTitle}[/color][/url]`;
             content = ` ${userName} [color=gray]在《${title}》中@了你。[/color]`;
         }
         else {
-            let userName = `[url=http://${host}/user/name/${this.props.userName}][color=gray][b]${this.props.userName}[/b][/color][/url]`;
+            let userName;
+            if (this.props.userId > 0) {
+                userName = `[url=http://${host}/user/name/${this.props.userName}][color=gray][b]${this.props.userName}[/b][/color][/url]`;
+            }
+            else {
+                userName = `[color=gray][b]${this.props.userName}[/b][/color]`;
+            }
             let title = `[url=http://${host}/topic/${this.props.topicId}/${pageNum}][color=blue]${this.props.topicTitle}[/color][/url]`;
             content = ` ${userName} [color=gray][b]在《${title}》中@了你。[/b][/color]`;
         }
