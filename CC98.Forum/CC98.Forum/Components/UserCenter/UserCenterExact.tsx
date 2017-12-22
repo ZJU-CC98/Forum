@@ -20,10 +20,10 @@ class UserCenterExact extends React.Component<{userInfo, changeUserInfo}> {
         try {
             const token = await Utility.getToken();
 
-            let headers1 = new Headers();
-            headers1.append("Authorization", token);
-            let response1 = await Utility.cc98Fetch(`/user/${this.props.userInfo.id}`, {
-                headers: headers1
+            let headers = new Headers();
+            headers.append("Authorization", token);
+            let response1 = await Utility.cc98Fetch(`/me`, {
+                headers
             });
             let userInfo = await response1.json();
             Utility.setLocalStorage("userInfo", userInfo);
