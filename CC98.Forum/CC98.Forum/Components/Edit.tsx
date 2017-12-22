@@ -80,13 +80,22 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
             let url = `/board/${this.match.params.id}/topic`;
             let c = Constants.testEditor.getMarkdown();
             let content;
+            const type = $("input[name='type']:checked").val();
+            let typeId;
+            switch (type) {
+                case '普通': typeId = 0; break;
+                case '校园活动': typeId = 1; break;
+                case '学术信息': typeId = 2; break;
+                default: typeId = 0;
+            }
             if (this.state.tag1 && !this.state.tag2) {
                 tag1Id = await Utility.getTagIdbyName(this.state.tag1);
                 content = {
                     content: c,
                     contentType: 1,
                     title: this.state.title,
-                    tag1: tag1Id
+                    tag1: tag1Id,
+                    type: typeId
                 };
             }
             else if (this.state.tag2) {
@@ -97,14 +106,16 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
                     contentType: 1,
                     title: this.state.title,
                     tag1: tag1Id,
-                    tag2: tag2Id
+                    tag2: tag2Id,
+                    type: typeId
                 };
             }
             else {
                 content = {
                     content: c,
                     contentType: 1,
-                    title: this.state.title
+                    title: this.state.title,
+                    type: typeId
                 };
             }
 
@@ -138,15 +149,22 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
         const url = `/board/${this.match.params.id}/topic`;
         let content;
         let tag1Id, tag2Id;
-        console.log(this.state.tag1);
-        console.log(this.state.tag2);
+        const type = $("input[name='type']:checked").val();
+        let typeId;
+        switch (type) {
+            case '普通': typeId = 0; break;
+            case '校园活动': typeId = 1; break;
+            case '学术信息': typeId = 2; break;
+            default: typeId = 0;
+        }
         if (this.state.tag1 && !this.state.tag2) {
             tag1Id = await Utility.getTagIdbyName(this.state.tag1);
             content = {
                 content: this.state.content,
                 contentType: 0,
                 title: this.state.title,
-                tag1: tag1Id
+                tag1: tag1Id,
+                type: typeId
             };
         }
         else if (this.state.tag2) {
@@ -157,14 +175,16 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
                 contentType: 0,
                 title: this.state.title,
                 tag1: tag1Id,
-                tag2: tag2Id
+                tag2: tag2Id,
+                type: typeId
             };
         }
         else {
             content = {
                 content: this.state.content,
                 contentType: 0,
-                title: this.state.title
+                title: this.state.title,
+                type: typeId
             };
         }
         const contentJson = JSON.stringify(content);
@@ -234,10 +254,19 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
     }
     async editUBB() {
         const url = `/post/${this.match.params.id}`;
+        const type = $("input[name='type']:checked").val();
+        let typeId;
+        switch (type) {
+            case '普通': typeId = 0; break;
+            case '校园活动': typeId = 1; break;
+            case '学术信息': typeId = 2; break;
+            default: typeId = 0;
+        }
         const content = {
             content: this.state.content,
             contentType: 0,
-            title: this.state.title
+            title: this.state.title,
+            type: typeId
         }
         const body = JSON.stringify(content);
         const token = await Utility.getToken();
@@ -254,12 +283,20 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
         const url = `/post/${this.match.params.id}`;
         let c = Constants.testEditor.getMarkdown();
         Constants.testEditor.setMarkdown("");
+        const type = $("input[name='type']:checked").val();
+        let typeId;
+        switch (type) {
+            case '普通': typeId = 0; break;
+            case '校园活动': typeId = 1; break;
+            case '学术信息': typeId = 2; break;
+            default: typeId = 0;
+        }
         const content = {
             content: c,
             contentType: 1,
-            title: this.state.title
+            title: this.state.title,
+            type: typeId
         }
-        console.log("title=" + this.state.title);
         const body = JSON.stringify(content);
         const token = await Utility.getToken();
         const headers = await Utility.formAuthorizeHeader();
@@ -324,10 +361,17 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
                 titleInput = <InputTitle boardId={id} tags={this.state.tags} onChange={this.onTitleChange.bind(this)} title={this.state.postInfo.title} />;
             }
         }
+        const topicType = <div className="createTopicType">
+            <div className="createTopicListName">发帖类型</div>
+            <input type="radio" name="type" value="普通" /> 普通
+            <input type="radio" name="type" value="学术信息" /> 学术信息
+            <input type="radio" name="type" value="校园活动" /> 校园活动
+            <div style={{ color: 'rgb(255,0,0)' }}>（活动帖和学术贴请选择正确的发帖类型)</div>
+        </div>;
         return <div className="createTopic">
             <Category url={url} boardName={this.state.boardName} />
             {titleInput}
-            <Type />
+            {topicType}
             <Options />
             {editor}
         </div>;
@@ -396,8 +440,6 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
     handleTitleChange(event) {
         let tag1, tag2;
         if (this.state.tags.length === 0) {
-            console.log("无标签编辑标题");
-            console.log(event.target.value);
             this.props.onChange(event.target.value, "", "");
             this.setState({ title: event.target.value });
         } else if (this.state.tags.length === 1) {
@@ -544,27 +586,7 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
     }
 }
 
-/**
- * 编辑界面的发帖类型
- * 用于发主题/编辑主题
- * TODO:尚未完成
- */
-export class Type extends React.Component<{}, {}>{
-    constructor(props) {
-        super(props);
-        this.state = ({
-        });
-    }
 
-    render() {
-        return <div className="createTopicType">
-            <div className="createTopicListName">发帖类型</div>
-            <input type="radio" checked={true} name="type" value="normal" /> 普通
-            <input type="radio" name="type" value="academic" /> 学术信息
-            <div style={{ color: 'rgb(255,0,0)' }}>（活动帖和学术贴请选择正确的发帖类型)</div>
-        </div>
-    }
-}
 
 
 /**

@@ -73,7 +73,7 @@ export async function getTopic(topicid: number) {
 			topicMessage = { ...data[0], userInfo: userMesJson, postId: data[0].id }
 		} else {
 			const anonymousUserName = `匿名${data[0].userName.toUpperCase()}`;
-			let purl = '/static/images/_心灵之约.png';
+			let purl = '/static/images/心灵头像.gif';
 			const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: "", postCount: 0 };
 			topicMessage = { ...data[0], userInfo: userMesJson, postId: data[0].id}
 
@@ -134,7 +134,7 @@ export async function getTopicContent(topicid: number, curPage: number, replyCou
 			} else {
 				const userMesJson = { name: '98Deleter', portraitUrl: 'http://www.cc98.org/images/policeM.png', id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
 				post[i] = {
-					...content[i], postId: content[i].id, isAnonymous: false, isDeleted: true, content: "该贴已被my cc98, my home"
+					...content[i], userInfo:userMesJson,postId: content[i].id, isAnonymous: false, isDeleted: true, content: "该贴已被my cc98, my home"
                 }
                 //console.log("delete post");
                 //console.log(post[i]);
