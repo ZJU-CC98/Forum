@@ -412,7 +412,7 @@
     flex-direction: column;
     width: 100%;
     margin-top: 2rem;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2.5rem;  //封装的广告组件没有任何margin
 }
 
 .schoolNewsContent {
@@ -453,6 +453,22 @@
 }
 
 //论坛统计
+.mainPageCount {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.mainPageCountContent {
+    display: flex;
+    flex-direction: column;
+    height: 10rem;
+    margin-top: 1rem;
+    padding: 1.5rem 1.25rem 1rem 1.25rem;
+    box-sizing: border-box;
+    background-color: rgb(107,113,120);
+}
 
 .mainPageCountRow {
     display: flex;
