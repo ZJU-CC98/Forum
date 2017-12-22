@@ -427,19 +427,6 @@ export async function getAllNewTopic(from: number, router) {
          * 通过api获取到主题之后转成json格式
          */
 		const response = await cc98Fetch(`/topic/new?from=${from}&size=${size}`, { headers });
-		if (response.status === 401) {
-			window.location.href = "/status/UnauthorizedTopic";
-		}
-
-		if (response.status === 403) {
-			window.location.href = "/status/OperationForbidden";
-		}
-		if (response.status === 404) {
-			window.location.href = "/status/NotFoundTopic";
-		}
-		if (response.status === 500) {
-			window.location.href = "/status/ServerError";
-		}
 		let newTopic = await response.json();
         let aTopic = [];
         let bTopic = [];
@@ -1518,18 +1505,7 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
 				headers: headers,
 				body: bodyCotent
 			});
-			if (response.status === 401) {
-				window.location.href = "/status/UnauthorizedTopic";
-			}
-			if (response.status === 403) {
-				window.location.href = "/status/OperationForbidden";
-			}
-			if (response.status === 404) {
-				window.location.href = "/status/NotFoundTopic";
-			}
-			if (response.status === 500) {
-				window.location.href = "/status/ServerError";
-			}
+
 			newTopic = await response.json();
 		}
 		else {
