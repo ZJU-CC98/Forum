@@ -136,8 +136,8 @@ export async function getTopicContent(topicid: number, curPage: number, replyCou
 				post[i] = {
 					...content[i], userInfo:userMesJson,postId: content[i].id, isAnonymous: false, isDeleted: true, content: "该贴已被my cc98, my home"
                 }
-                console.log("delete post");
-                console.log(post[i]);
+                //console.log("delete post");
+                //console.log(post[i]);
 			}
 		}
 
@@ -791,12 +791,20 @@ export async function getRecentContact(from: number, size: number, router) {
 			window.location.href = "/status/ServerError";
 		}
         let recentContactId = await response.json();
-        let recentContact = await getBasicUserInfo(recentContactId);
+        //console.log("最近联系人列表id", recentContactId);
+        let userId = [];
+        for (let i in recentContactId) {
+            userId[i] = recentContactId[i].userId;
+        }
+        //console.log("userid", userId);
+        let recentContact = await getBasicUserInfo(userId);
+        //console.log("获取到基本信息", recentContact);
 		for (let i in recentContactId) {
 			recentContact[i].message = [];
 			recentContact[i].lastContent = recentContactId[i].lastContent;
 			recentContact[i].isRead = recentContactId[i].isRead;
-		}
+        }
+        //console.log("最近联系人列表", recentContact);
 
 		return recentContact;
 	} catch (e) {
@@ -2597,7 +2605,7 @@ export async function getBasicUserInfo(userId: number[]) {
     let data = await response.json();
     return data;
 }
-export async function getUsersInfo(userId: number[]) {
+export async function getUsersInfo(userId: any[]) {
     let url = "/user";
     for (let i = 0; i < userId.length;i++) {
         if (i == 0) {

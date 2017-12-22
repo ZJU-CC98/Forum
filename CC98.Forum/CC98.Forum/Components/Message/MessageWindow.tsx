@@ -24,7 +24,9 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
     }
 
     async getData(props) {
+        //console.log("windows里的propsdata",props.data);
         if (props.data) {
+            //console.log("存在props。data");
             let data = await Utility.getRecentMessage(props.data.id, 0, 10, this.context.router);
             await Utility.refreshUnReadCount();
             if (data && data.length > 0) {
@@ -72,7 +74,7 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
     async handleScroll() {
         let scrollTop = $('#messageContent')[0].scrollTop; //滚动到的当前位置
         if (scrollTop == 0) {
-            console.log("到顶啦");
+            //console.log("到顶啦");
             $('#wcLoadingImg').removeClass("displaynone");
             let oldData = this.state.data;
             //到顶了就继续获取10条私信

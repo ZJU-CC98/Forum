@@ -40,17 +40,17 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
         let recentContact = Utility.getStorage('recentContact');
 
         if (!recentContact || recentContact.length === 0) {
-            console.log("没有获取到缓存，自己取");
+            //console.log("没有获取到缓存，自己取");
             recentContact = await Utility.getRecentContact(0, 7, this.context.router);
-            console.log("取到了数据，然后呢");
-            console.log(recentContact);
+            //console.log("取到了数据，然后呢");
+            //console.log(recentContact);
             Utility.setStorage("recentContact", recentContact);
         }
 
         //对联系人列表重新排序，看是否有从其他页面发起的聊天
         recentContact = await Utility.sortContactList(recentContact, this.context.router);
-        console.log("联系人列表重新排序后");
-        console.log(recentContact);
+        //console.log("联系人列表重新排序后");
+        //console.log(recentContact);
 
         if (recentContact) {
             //默认第一个人为聊天对象
@@ -126,7 +126,9 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
         //先看state里有没有数组，防止报错
         let data = this.state.data;
         let chatObj = this.state.chatObj;
+        //console.log("渲染联系人列表前的数据", data, chatObj);
         if (!data) {
+            //console.log("条件1");
             return (<div className="message-message">
                 <div className="message-message-people">
                     <div className="message-message-pTitle">近期私信</div>
@@ -137,6 +139,7 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
             </div>);
         }
         else if (data.length > 6) {
+            //console.log("条件2");
             //创建联系人列表和聊天窗口
             return (<div className="message-message">
                 <div className="message-message-people">
@@ -155,6 +158,7 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
             </div>);
         }
         else {
+            //console.log("条件3");
             return (<div className="message-message">
                 <div className="message-message-people">
                     <div className="message-message-pTitle">近期私信</div>
