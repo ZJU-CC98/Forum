@@ -769,10 +769,12 @@ body {
     display: flex;
     margin-left: 0.5rem;
     align-items: flex-end;
-    width: 40rem;
+    width: 42rem;
     padding-left: 1rem;
 }
-
+.topicIcon{
+    width:8.5rem;
+}
 .listTitleAndIcon {
     overflow: hidden;
     text-overflow: ellipsis;
