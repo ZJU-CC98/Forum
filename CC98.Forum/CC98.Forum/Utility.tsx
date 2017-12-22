@@ -1506,7 +1506,6 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                     keyword = `${keyword} ${words[i]}`;
                 }
             }
-            console.log("关键词",keyword);
             let size = 20;
             let newTopic;
             if (boardId === 0) {
@@ -1517,7 +1516,7 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                 newTopic = await response.json();
             }
             else {
-                const response = await cc98Fetch(`/topic/search/board/${boardId}?keyword=${keyword}&size=${size}&from=${from}`, {
+                const response = await cc98Fetch(`/topic/search/board/${boardId}?keyword=${encodeURIComponent(keyword)}&size=${size}&from=${from}`, {
                     headers: headers
                 });
                 if (response.status === 401) {
@@ -2322,8 +2321,8 @@ export async function getUserInfo(userId) {
 export async function getUserInfoByName(userName) {
 	const key = `userName_${userName}`;
 	if (getLocalStorage(key)) return getLocalStorage(key);
-	const headers = await formAuthorizeHeader();
-	const url = `/user/name/${userName}`;
+    const headers = await formAuthorizeHeader();
+    const url = `/user/name/${encodeURIComponent(userName)}`;
 	const response = await cc98Fetch(url, { headers });
 	if (response.status === 401) {
 		window.location.href = "/status/UnauthorizedTopic";
