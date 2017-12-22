@@ -35,8 +35,10 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
                             this.props.update();
                         } else if (status === 'already') {
                             this.setState({ tips: '您今天已经评分过啦~' });
-                        } else if(status ==='not allowed'){
+                        } else if (status === 'not allowed') {
                             this.setState({ tips: '您还没有资格评分哦~' });
+                        } else if (status === 'rateself') {
+                            this.setState({ tips: '您不能给自己评分哦~' });
                         }
                        
                     } else {
@@ -58,6 +60,8 @@ export class Judge extends React.Component<{ topicId,userId, postId, update }, {
                             this.setState({ tips: '您今天已经评分过啦~' });
                         } else if (status === 'not allowed') {
                             this.setState({ tips: '您还没有资格评分哦~' });
+                        } else if (status === 'rateself') {
+                            this.setState({ tips: '您不能给自己评分哦~' });
                         }
                     } else {
                         this.setState({ tips: "请输入原因！" });

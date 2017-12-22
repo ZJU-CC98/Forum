@@ -84,9 +84,9 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
     }
     async componentDidMount() {
         //获取用户组
-        const displayTitle = this.props.userInfo.displayTitle;
+        const displayTitleId = this.props.userInfo.displayTitleId;
         //获取头像框html
-        let phototframe = await this.getPhotoFrame(displayTitle);
+        let phototframe = await this.getPhotoFrame(displayTitleId);
         this.setState({
             photoframe: phototframe
         })
@@ -94,44 +94,44 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
 
     /**
      * 根据displayTitle返回头像框的HTML
-     * @param displayTitle
+     * @param displayTitleId
      */
-    async getPhotoFrame(displayTitle) {
+    async getPhotoFrame(displayTitleId:number) {
 
         const url = `/user/id/${this.props.userInfo.id}`;
-        const realUrl = encodeURI(url);//头像所用的url
+        const realUrl = encodeURIComponent(url);//头像所用的url
 
-        if (displayTitle) {
+        if (displayTitleId) {
             let response = await fetch('/static/portrait.json');//获取头像框样式的配置
             let data = await response.json();
-        
+
             let imageUrl; //头像框的链接
             let style = data.普通.style;
 
-            switch (displayTitle) {
-                case "吉祥物": style = data.吉祥物.style; imageUrl = data.吉祥物.imageUrl; break;
-                case "版主": imageUrl = data.版主.imageUrl; break;
-                case "编辑部部长": imageUrl = data.编辑部.imageUrl; break;
-                case "编辑部成员": imageUrl = data.编辑部.imageUrl; break;
-                case "技术组组长": imageUrl = data.技术组.imageUrl; break;
-                case "技术组成员": imageUrl = data.技术组.imageUrl; break;
-                case "论坛贵宾": imageUrl = data.贵宾.imageUrl; break;
-                case "运营策划部部长": imageUrl = data.策划部.imageUrl; break;
-                case "运营策划部成员": imageUrl = data.策划部.imageUrl; break;
-                case "影音部部长": imageUrl = data.影音部.imageUrl; break;
-                case "影音部成员": imageUrl = data.影音部.imageUrl; break;
-                case "站务组组长": imageUrl = data.站务组.imageUrl; break;
-                case "站务组成员": imageUrl = data.站务组.imageUrl; break;
-                case "体育事业部部长": imageUrl = data.体育部.imageUrl; break;
-                case "体育事业部成员": imageUrl = data.体育部.imageUrl; break;
-                case "办公室主任": imageUrl = data.办公室.imageUrl; break;
-                case "办公室成员": imageUrl = data.办公室.imageUrl; break;
-                case "认证用户": imageUrl = data.认证用户.imageUrl; break;
+            switch (displayTitleId) {
+                case 82: style = data.吉祥物.style; imageUrl = data.吉祥物.imageUrl; break;
+                case 18: imageUrl = data.版主.imageUrl; break;
+                case 85: imageUrl = data.编辑部.imageUrl; break;
+                case 29: imageUrl = data.编辑部.imageUrl; break;
+                case 37: imageUrl = data.技术组.imageUrl; break;
+                case 23: imageUrl = data.技术组.imageUrl; break;
+                case 28: imageUrl = data.贵宾.imageUrl; break;
+                case 84: imageUrl = data.策划部.imageUrl; break;
+                case 34: imageUrl = data.策划部.imageUrl; break;
+                case 96: imageUrl = data.影音部.imageUrl; break;
+                case 99: imageUrl = data.影音部.imageUrl; break;
+                case 32: imageUrl = data.站务组.imageUrl; break;
+                case 21: imageUrl = data.站务组.imageUrl; break;
+                case 86: imageUrl = data.体育部.imageUrl; break;
+                case 35: imageUrl = data.体育部.imageUrl; break;
+                case 94: imageUrl = data.办公室.imageUrl; break;
+                case 93: imageUrl = data.办公室.imageUrl; break;
+                case 91: imageUrl = data.认证用户.imageUrl; break;
                 default: imageUrl = data.普通.imageUrl;
             }
 
             let shadow = {};
-            if (displayTitle === "吉祥物") shadow = { boxShadow: "0 0 0" };
+            if (displayTitleId === 82) shadow = { boxShadow: "0 0 0" };
 
             return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
                 <div style={{ zIndex: 100 }}>
@@ -141,6 +141,14 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                 </div>
                 <div className="photoFrame"><img src={imageUrl} style={style} /></div>
             </div>
+        } else if (this.props.isAnonymous == true) {
+            return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
+                <div style={{ zIndex: 100 }}>
+                   
+                        <img className="userPortrait" src={this.props.userInfo.portraitUrl}></img>
+                 
+                </div>
+            </div>;
         } else {
             return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
                 <div style={{ zIndex: 100 }}>
@@ -155,7 +163,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
 
     render() {
         const url = `/user/id/${this.props.userInfo.id}`;
-        const realUrl = encodeURI(url);
+        const realUrl = encodeURIComponent(url);
         const email = `/message/message?id=${this.props.userInfo.id}`;
         //用户头像
         let urlHtml = <a href={realUrl} style={{ display: "block", maxHeight: "7.5rem" }}><img className="userPortrait" src={this.props.userInfo.portraitUrl}></img></a>;
@@ -202,7 +210,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         else if (days > 7) lastLogOn = '一周前';
         else if (days > 1) lastLogOn = `${days}天前`;
         else if (hours > 1) lastLogOn = `${hours}小时前`;
-        else lastLogOn = '一小时内';
+        else lastLogOn = '1小时内';
         let userDetailMessage = null;
         if (!this.props.isAnonymous) {
             userDetailMessage = <div className="row" style={{ width: "100%" }}>
@@ -228,11 +236,14 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                 {btn}
             </div>;
         }
+        let gender = <div className="userGender">
+            {this.props.userInfo.gender === 0 ? <i className="fa fa-venus" style={{ color: "#fff" }}></i> : <i className="fa fa-mars" style={{ color: "#fff" }}></i>}
+        </div>;
+        if (this.props.isAnonymous == true)
+            gender = null;
         return <div className="userMessage">
-            <div className="userGender">
-                {this.props.userInfo.gender === 0 ? <i className="fa fa-venus" style={{ color: "#fff" }}></i> : <i className="fa fa-mars" style={{ color: "#fff" }}></i>}
-            </div>
-
+        
+            {gender}
             {this.state.photoframe}
 
             <div className="rpyClr" style={{ width: "100%", marginTop: "1rem", paddingLeft: "3rem" }}>

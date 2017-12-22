@@ -98,8 +98,7 @@ export class Search extends React.Component<{}, SearchState> {
 
     showNoResult() {
         $('#focus-topic-area').addClass('displaynone');
-        //$('#noResult').removeClass('displaynone');
-        window.location.href = '/status/notfoundtopic';
+        $('#noResult').removeClass('displaynone');
     }
     
     render() {
