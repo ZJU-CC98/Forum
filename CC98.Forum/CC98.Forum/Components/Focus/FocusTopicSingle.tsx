@@ -37,7 +37,7 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
         let b = parseInt(a) + 1;
         let c = parseInt(this.props.replyCount) - (b - 1) * 10;
         let lastPostUrl = `${topicUrl}/${b}#${c}`;
-        let lastPostUserUrl = encodeURI(`/user/name/${this.props.lastPostUser}`);
+        let lastPostUserUrl = encodeURIComponent(`/user/name/${this.props.lastPostUser}`);
         return (<div className="focus-topic">
                             <a className="focus-topic-left" href={userUrl} target="_blank" id={`user_${this.props.id}`}>
                                         <img className="focus-topic-portraitUrl" src={this.props.portraitUrl}></img>

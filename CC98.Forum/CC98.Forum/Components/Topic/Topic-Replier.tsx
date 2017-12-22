@@ -99,7 +99,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
     async getPhotoFrame(displayTitle) {
 
         const url = `/user/id/${this.props.userInfo.id}`;
-        const realUrl = encodeURI(url);//头像所用的url
+        const realUrl = encodeURIComponent(url);//头像所用的url
 
         if (displayTitle) {
             let response = await fetch('/static/portrait.json');//获取头像框样式的配置
@@ -163,7 +163,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
 
     render() {
         const url = `/user/id/${this.props.userInfo.id}`;
-        const realUrl = encodeURI(url);
+        const realUrl = encodeURIComponent(url);
         const email = `/message/message?id=${this.props.userInfo.id}`;
         //用户头像
         let urlHtml = <a href={realUrl} style={{ display: "block", maxHeight: "7.5rem" }}><img className="userPortrait" src={this.props.userInfo.portraitUrl}></img></a>;
@@ -210,7 +210,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         else if (days > 7) lastLogOn = '一周前';
         else if (days > 1) lastLogOn = `${days}天前`;
         else if (hours > 1) lastLogOn = `${hours}小时前`;
-        else lastLogOn = '一小时内';
+        else lastLogOn = '1小时内';
         let userDetailMessage = null;
         if (!this.props.isAnonymous) {
             userDetailMessage = <div className="row" style={{ width: "100%" }}>
