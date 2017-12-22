@@ -1701,30 +1701,21 @@ export async function followBoard(boardId) {
 	await refreshUserInfo();
 	removeStorage("focusBoardList");
 }
+/**
+ * 刷新当前用户信息
+ */
 export async function refreshUserInfo() {
-
-	let userName = getLocalStorage("userName");
-
-	if (!userName) {
-
-		let userInfo = getLocalStorage("userInfo");
-
-		userName = userInfo.name;
-
+	if(getLocalStorage('userName')){
+		let headers = await formAuthorizeHeader();
+		let response = await cc98Fetch(`/me`, {
+			headers
+		});
+	
+		let userInfo = await response.json();
+		store.dispatch(changeUserInfo(userInfo));
+		setLocalStorage("userInfo", userInfo);
+		setLocalStorage("userName", userInfo.name);
 	}
-
-	const headers = await formAuthorizeHeader();
-
-	let response = await cc98Fetch(`/user/name/${encodeURIComponent(userName)}`, {
-
-		headers: headers
-
-	});
-
-	let userInfo = await response.json();
-	store.dispatch(changeUserInfo(userInfo));
-	setLocalStorage("userInfo", userInfo);
-    setLocalStorage("userName", userInfo.name);
 }
 export async function unfollowBoard(boardId) {
 	const headers = await formAuthorizeHeader();
