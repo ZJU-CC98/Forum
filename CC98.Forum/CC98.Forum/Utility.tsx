@@ -536,18 +536,7 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
 		else {
 			response = await cc98Fetch(`/board/${boardId}/topic?from=${from}&size=${size}`, { headers });
 		}
-		if (response.status === 401) {
-			window.location.href = "/status/UnauthorizedTopic";
-		}
-		if (response.status === 403) {
-			window.location.href = "/status/OperationForbidden";
-		}
-		if (response.status === 404) {
-			window.location.href = "/status/NotFoundTopic";
-		}
-		if (response.status === 500) {
-			window.location.href = "/status/ServerError";
-		}
+
         let newTopic = await response.json();
         let aTopic = [];
         let bTopic = [];
