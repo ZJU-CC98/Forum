@@ -533,7 +533,7 @@ body {
     position: relative;
 
     .reply-floor {
-        flex-shrink:0;
+        flex-shrink: 0;
         width: 40px;
         height: 40px;
         border-radius: 50%;
@@ -544,6 +544,13 @@ body {
         top: 70px;
         right: -40px;
         color: #ffffff;
+        font-family: '微软雅黑';
+        font-size: 16px;
+    }
+
+    .reply-floor-small {
+        @extend .reply-floor;
+        font-size: 10px;
     }
 }
 
@@ -1936,6 +1943,7 @@ a {
             font-size: 16px;
             height: 80px;
             line-height: 80px;
+            color: #6b7178 
         }
     }
 

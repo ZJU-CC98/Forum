@@ -99,9 +99,10 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
                         <Award postId={item.postId} updateTime={Date.now()} awardInfo={item.awards} />
                 <ReplierSignature floor={item.floor} userInfo={item.userInfo} replyTime={item.time} content={item.content} quote={this.quote} signature={item.userInfo.signatureCode} topicid={item.topicId} userId={item.userId} masters={this.state.masters} postid={item.postId} likeInfo={likeInfo} lastUpdateAuthor={item.lastUpdateAuthor} lastUpdateTime={item.lastUpdateTime} boardId={this.props.boardInfo.id} isLZ={item.isLZ} traceMode={this.props.isTrace ? true : false}/>
             </div>
-            <div className="reply-floor">{item.floor}</div>
+            <FloorSize floor={item.floor} />
                 </div>;
     }
+
     componentDidUpdate() {
 
         if (window.location.hash && window.location.hash !== '#') {
@@ -125,6 +126,17 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
 
     }
 }
+
+export class FloorSize extends React.Component<{ floor: number }> {
+    render() {
+        if (this.props.floor > 9999)
+            return <div className="reply-floor-small">{this.props.floor}</div>;
+        else {
+            return <div className="reply-floor">{this.props.floor}</div>;
+        }
+    }
+}
+
  
 /**
  * 文章内容
