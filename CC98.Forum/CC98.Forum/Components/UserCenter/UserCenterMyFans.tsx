@@ -66,16 +66,14 @@ export class UserCenterMyFans extends React.Component<{match}, UserCenterMyFansS
                 });
                 return false;
             }
+            const query = data.join('&id=');
+            url = `/user?id=${query}`;
+            res = await Utility.cc98Fetch(url, {
+                headers
+            });
+            let fanData: any[] = await res.json();
 
-            
-            let requests = await Promise.all(data.map((item) => {
-                url = `/user/${item}`;
-                return Utility.cc98Fetch(url, { headers });
-            }));
-                           
-            let fanData = await Promise.all(requests.map(item => item.json()));
-
-            let fans = fanData.map((item) => {
+            let fans = fanData.reverse().map((item) => {
                 let userFanInfo = new UserFanInfo();
                 userFanInfo.name = item.name;
                 userFanInfo.avatarImgURL = item.portraitUrl;
