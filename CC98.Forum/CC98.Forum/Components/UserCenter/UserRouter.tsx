@@ -28,9 +28,19 @@ export class UserRouter extends React.Component {
 class UserExact extends React.Component<{ match, history, changePage, notFoundUser}, UserCenterExactState> {
 
     async componentDidMount() {
-        try {
+        this.getInfo(this.props);
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(this.props.match.params.id !== nextProps.match.params.id){
+            this.getInfo(nextProps);
+        }
+    }
+
+    async getInfo(props){
+        // try {
             let url: string,
-                { id, method } = this.props.match.params,
+                { id, method } = props.match.params,
                 myHeaders = new Headers();
             if (!id) {
                 throw new Error();
@@ -52,9 +62,9 @@ class UserExact extends React.Component<{ match, history, changePage, notFoundUs
                 userAvatarImgURL: data.portraitUrl,
                 responseState: response.status
             });
-        } catch (e) {
-            this.props.notFoundUser();
-        }
+        // } catch (e) {
+        //     this.props.notFoundUser();
+        // }
     }
 
     render() {
