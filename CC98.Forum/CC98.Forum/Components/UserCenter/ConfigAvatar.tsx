@@ -7,14 +7,113 @@ import * as Utility from '../../Utility';
 import { changeUserInfo } from '../../Actions';
 import { connect } from 'react-redux';
 
-class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, UserCenterConfigAvatarState> {
+interface States {
+	/**
+	 * 提示信息
+	 */
+	info: string;
+	/**
+	 * 用户当前的头像地址
+	 */
+	avatarURL: string;
+	/**
+	 * 本地图片选框是否显示
+	 */
+	isShown: boolean;
+	/**
+	 * 本地图片选框总高度
+	 */
+	divheight: number;
+	/**
+	 * 本地图片选框总宽度
+	 */
+	divWidth: number;
+	/**
+	 * 本地图片选框选择器宽度（与高度相同）
+	 */
+	selectorWidth: number;
+	/**
+	 * 本地图片选框选择器上距上边框距离
+	 */
+	selectorTop: number;
+	/**
+	 * 本地图片选框选择器上距左边框距离
+	 */
+	selectorLeft: number;
+	/**
+	 * 渲染到的头像地址
+	 */
+	avatarNow: string;
+	/**
+	 * 是否在加载过程
+	 */
+	isLoading: boolean;
+	/**
+	 * 用户选择的本地图片宽度
+	 */
+	naturalWidth: number;
+	/**
+	 * 用户选择的本地图片高度
+	 */
+	naturalHeight: number;
+	/**
+	 * IMG对象
+	 */
+	img: HTMLImageElement;
+	/**
+	 * 选择器最大宽度（与高度相同）
+	 */
+	NUM_MAX: number;
+	/**
+	 * 缩放倍数
+	 */
+	scaling: number;
+	/**
+	 * 是否在选用默认头像
+	 */
+	choosingDefault: boolean;
+	/**
+	 * 用户选择的本体图片类型（扩展名）
+	 */
+	fileType: string;
+}
+
+/**
+ * 用户中心页
+ * 修改头像组件
+ */
+class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, States> {
+	/**
+	 * 对Canvas的引用
+	 */
 	myCanvas: HTMLCanvasElement;
+	/**
+	 * 对选择器的引用
+	 */
 	selector: HTMLDivElement;
+	/**
+	 * 对调整器的引用
+	 */
 	resize: HTMLSpanElement;
+	/**
+	 * 新头像用的Canvas画布
+	 */
 	newAvatar: HTMLCanvasElement;
+	/**
+	 * 覆盖在用户选择头像的灰色蒙版
+	 */
 	cover: HTMLDivElement;
+	/**
+	 * 当前正在拖拽的元素
+	 */
 	dragging: HTMLElement;
+	/**
+	 * 拖曳X偏移
+	 */
 	diffX: number;
+	/**
+	 * 拖曳Y偏移
+	 */
 	diffY: number;
 	constructor(props) {
 		super(props);
@@ -49,8 +148,10 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, UserCen
 		this.setDefaultAvatar = this.setDefaultAvatar.bind(this);
 	}
 
+	//用户选择本地图像后触发
 	handleChange(e) {
 		let file: File = e.target.files[0];
+		//判断文件类型
 		if (!file.type.match('image.*')) {
 			this.setState({
 				info: '请选择图片文件',
@@ -59,7 +160,9 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, UserCen
 			});
 			return false;
 		}
+		//记录文件类型
 		this.setState({ fileType: file.type });
+		//读取文件并准备显示在网页中
 		let render = new FileReader();
 
 		render.readAsDataURL(file);
@@ -71,7 +174,9 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, UserCen
 		});
 	}
 
+	//图片读取完毕触发的函数
 	handleIMGLoad(width, height, img) {
+		//处理过小的图片
 		if (width < 160 || height < 160) {
 			this.setState({
 				info: '图片至少为 160*160',
@@ -80,14 +185,17 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, UserCen
 			});
 			return;
 		}
+		//获取Canvas2D对象
 		let ctx = this.myCanvas.getContext('2d');
 		let scaling = this.state.scaling;
+		//处理宽度大于1000的图片，记录缩放倍数
 		while (width / scaling > 800) {
 			scaling = scaling * 1.1;
 		}
+		//处理Canvas宽高，注意不同与css，这里宽高是HTML属性
 		this.myCanvas.width = width / scaling;
 		this.myCanvas.height = height / scaling;
-
+		//绘制图片
 		ctx.drawImage(img, 0, 0, width, height, 0, 0, width / scaling, height / scaling);
 		this.setState({
 			divheight: height / scaling + 50,
@@ -105,10 +213,12 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, UserCen
 		});
 	}
 
+	//鼠标松开时清除拖曳对象
 	handleMouseUp() {
 		this.dragging = null;
 	}
 
+	//用原生的事件绑定，react的事件绑定会丢失一些信息
 	componentDidMount() {
 		this.selector.addEventListener('mousedown', this.handleSelectorMove);
 		this.selector.addEventListener('mousemove', this.handleSelectorMove);
@@ -121,6 +231,7 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, UserCen
 		window.addEventListener('mouseup', this.handleMouseUp);
 	}
 
+	//组件卸载时接触事件绑定
 	componentWillUnmount() {
 		this.selector.removeEventListener('mousedown', this.handleSelectorMove);
 		this.selector.removeEventListener('mousemove', this.handleSelectorMove);
@@ -133,16 +244,20 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, UserCen
 		window.removeEventListener('mouseup', this.handleMouseUp);
 	}
 
+	//处理选择器的拖曳
 	handleSelectorMove(event) {
+		//如果当前正在拖曳调整器，则将事件传递给相应的函数处理
 		if (this.dragging !== undefined && this.dragging !== null && this.dragging.id === 'resize') {
 			this.handleCoverMouseMove(event);
 		} else {
 			switch (event.type) {
+				//按下鼠标时记录当前位置
 				case 'mousedown':
 					this.diffX = event.clientX - event.target.offsetLeft;
 					this.diffY = event.clientY - event.target.offsetTop;
 					this.dragging = event.target;
 					break;
+				//鼠标移动时不断调整选择器位置
 				case 'mousemove':
 					if (this.dragging !== null) {
 						let y = event.clientY - this.diffY,
@@ -159,85 +274,15 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, UserCen
 						});
 					}
 					break;
+				//鼠标松开时清空记录
 				case 'mouseup':
 					this.dragging = null;
 					break;
-				case 'mouseleave':
-					this.dragging = null;
-					break;
 			}
 		}
 	}
 
-	handleSubmit() {
-		let canvas = this.newAvatar;
-		let ctx = canvas.getContext('2d');
-		const x = this.state.selectorLeft,
-			y = this.state.selectorTop,
-			width = this.state.selectorWidth;
-		canvas.width = width;
-		canvas.height = width;
-		ctx.drawImage(this.state.img, x * this.state.scaling, y * this.state.scaling, width * this.state.scaling, width * this.state.scaling, 0, 0, width, width);
-		canvas.toBlob(async (result) => {
-
-			let file: any = new Blob([result], { type: this.state.fileType });
-			file.lastModifiedDate = Date.now();
-			file.name = '头像.png';
-			const avatar = await Utility.uploadFile(file);
-			this.changeAvatar(avatar.content);
-		}, this.state.fileType, 0.75);
-	}
-
-	async setDefaultAvatar(e: React.MouseEvent<HTMLImageElement>) {
-		var ele = e.target as HTMLImageElement;
-		await this.changeAvatar(ele.src);
-	}
-
-	async changeAvatar(avatarUrl: string) {
-		try {
-			this.setState({
-				isLoading: true
-			});
-			const token = await Utility.getToken();
-			const url = '/me/portrait';
-			let myHeaders = new Headers();
-			myHeaders.append('Content-Type', 'application/json');
-			myHeaders.append('Authorization', token);
-			let res = await Utility.cc98Fetch(url, {
-				method: 'PUT',
-				headers: myHeaders,
-				body: JSON.stringify(avatarUrl)
-			});
-			if (res.status === 200) {
-				this.setState({
-					info: '修改成功',
-					avatarNow: avatarUrl,
-					isLoading: false,
-					isShown: false,
-					divheight: 0,
-					choosingDefault: false
-				});
-				let userInfo = Utility.getLocalStorage('userInfo');
-				userInfo.portraitUrl = avatarUrl;
-				this.props.changeUserInfo(userInfo);
-				Utility.setLocalStorage("userInfo", userInfo);
-				Utility.setLocalStorage(`userId_${userInfo.id}`, userInfo, 3600);
-				Utility.setLocalStorage(`userName_${userInfo.name}`, userInfo, 3600);
-			} else {
-				throw {};
-			}
-
-		} catch (e) {
-			this.setState({
-				info: '修改失败',
-				isLoading: false,
-				isShown: false,
-				divheight: 0,
-				choosingDefault: false
-			});
-		}
-	}
-
+	//处理选择器的拖曳，大部分同上
 	handleResizeMove(event) {
 		switch (event.type) {
 			case 'mousedown':
@@ -263,12 +308,10 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, UserCen
 			case 'mouseup':
 				this.dragging = null;
 				break;
-			case 'mouseleave':
-				this.dragging = null;
-				break;
 		}
 	}
 
+	//处理鼠标移动过快时脱离拖曳元素，大部分同上
 	handleCoverMouseMove(e) {
 		switch (e.type) {
 			case 'mouseup':
@@ -304,6 +347,93 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, UserCen
 				}
 				break;
 
+		}
+	}
+
+	//处理本地图片的剪切
+	handleSubmit() {
+		//用新画布绘制头像
+		let canvas = this.newAvatar;
+		let ctx = canvas.getContext('2d');
+		const x = this.state.selectorLeft,
+			y = this.state.selectorTop,
+			width = this.state.selectorWidth;
+		canvas.width = width;
+		canvas.height = width;
+		ctx.drawImage(this.state.img, x * this.state.scaling, y * this.state.scaling, width * this.state.scaling, width * this.state.scaling, 0, 0, width, width);
+		//Canvas内容转为文件，toBlob第二个参数为文件类型，第三个参数为压缩率（仅对jpeg有效）
+		canvas.toBlob(async (result) => {
+			let file: any = new Blob([result], { type: this.state.fileType });
+			file.lastModifiedDate = Date.now();
+			file.name = '头像';
+			try{
+				//上传头像文件到API
+				const avatar = await Utility.uploadFile(file);
+				//根据返回的图片地址修改个人信息
+				this.changeAvatar(avatar.content);
+			}catch(e){
+				this.setState({
+					info: '修改失败',
+					isLoading: false,
+					isShown: false,
+					divheight: 0,
+					choosingDefault: false
+				});
+			}
+		}, this.state.fileType, 0.75);
+	}
+
+	//选择默认头像
+	async setDefaultAvatar(e: React.MouseEvent<HTMLImageElement>) {
+		var ele = e.target as HTMLImageElement;
+		await this.changeAvatar(ele.src);
+	}
+
+	//根据传入的头像地址修改头像地址
+	async changeAvatar(avatarUrl: string) {
+		try {
+			this.setState({
+				isLoading: true
+			});
+			const token = await Utility.getToken();
+			const url = '/me/portrait';
+			let myHeaders = new Headers();
+			myHeaders.append('Content-Type', 'application/json');
+			myHeaders.append('Authorization', token);
+			let res = await Utility.cc98Fetch(url, {
+				method: 'PUT',
+				headers: myHeaders,
+				body: JSON.stringify(avatarUrl)
+			});
+			if (res.status === 200) {
+				this.setState({
+					info: '修改成功',
+					avatarNow: avatarUrl,
+					isLoading: false,
+					isShown: false,
+					divheight: 0,
+					choosingDefault: false
+				});
+				let userInfo = Utility.getLocalStorage('userInfo');
+				userInfo.portraitUrl = avatarUrl;
+				//修改store中的info
+				this.props.changeUserInfo(userInfo);
+				//修改缓存中的info
+				Utility.setLocalStorage("userInfo", userInfo);
+				Utility.setLocalStorage(`userId_${userInfo.id}`, userInfo, 3600);
+				Utility.setLocalStorage(`userName_${userInfo.name}`, userInfo, 3600);
+			} else {
+				throw new Error();
+			}
+
+		} catch (e) {
+			this.setState({
+				info: '修改失败',
+				isLoading: false,
+				isShown: false,
+				divheight: 0,
+				choosingDefault: false
+			});
 		}
 	}
 
@@ -348,26 +478,6 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, UserCen
 			</div>
 		);
 	}
-}
-
-interface UserCenterConfigAvatarState {
-	info: string;
-	avatarURL: string;
-	isShown: boolean;
-	divheight: number;
-	divWidth: number;
-	selectorWidth: number;
-	selectorTop: number;
-	selectorLeft: number;
-	avatarNow: string;
-	isLoading: boolean;
-	naturalWidth: number;
-	naturalHeight: number;
-	img: HTMLImageElement;
-	NUM_MAX: number;
-	scaling: number;
-	choosingDefault: boolean;
-	fileType: string;
 }
 
 function mapDispatch(dispatch) {

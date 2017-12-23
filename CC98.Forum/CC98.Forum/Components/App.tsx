@@ -10,16 +10,15 @@ import { Post, ShowTopic } from './Topic/Topic';
 import { List } from './Board/Board';
 import { CurUserPost } from './Topic/Topic-Trace';
 import { BoardList } from './Board/BoardList';
-import { UserCenter } from './UserCenter/UserCenter';
+import UserCenter from './UserCenter/UserCenter';
 import { Message } from './Message/Message';
 import { AllNewTopic } from './Topic/Topic-New';
 import { Focus } from './Focus/Focus';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { MainPage } from './MainPage';
-import { User } from './UserCenter/User';
+import User from './UserCenter/User/User';
 import LogOn from './LogOn';
-import { LogOff } from './Logoff'
 import { CreateTopic } from './Topic/Topic-CreateTopic';
 import * as Status from './Status';
 import { UbbContainer } from './UbbContainer';
@@ -31,16 +30,6 @@ import { SignalRComponent } from './SignalR';
 import { ShowEdit } from './Edit';
 
 import { Constants } from './Constant';
-
-export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
-	match: match<TMatch>;
-	constructor(props, context) {
-		super(props, context);
-		this.match = props.match;
-	}
-}
-
-
 
 export class App extends React.Component<null, AppState> {
 
@@ -61,7 +50,6 @@ export class App extends React.Component<null, AppState> {
 						<Route path="/newtopics" component={AllNewTopic} />
 						<Route path="/user/:method/:id" component={User} />
 						<Route path="/logon" exact component={LogOn} />
-						<Route path="/logon/logoff" component={LogOff} />
 						<Route path="/search" component={Search} />
 						<Route path="/searchBoard" component={SearchBoard} />
 						<Route path="/createtopic/:boardId" component={CreateTopic} />

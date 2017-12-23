@@ -3,14 +3,14 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
-import { UserFanInfo } from '../../States/AppState';
-import { RouteComponent } from '../app';
-import { UserCenterMyFollowingsUser } from './UserCenterMyFollowingsUser';
-import { UserCenterPageCount } from './UserCenterPageCount';
+import { UserInfo } from '../../States/AppState';
+import { RouteComponent } from '../RouteComponent';
+import MyFollowingsUser from './MyFollowingsUser';
+import Pager from './Pager';
 import * as Utility from '../../Utility';
 
 //用户中心我的关注组件
-export class UserCenterMyFollowings extends React.Component<{match}, UserCenterMyFollowingsState> {
+export default class extends React.Component<{match}, UserCenterMyFollowingsState> {
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -80,19 +80,9 @@ export class UserCenterMyFollowings extends React.Component<{match}, UserCenterM
             res = await Utility.cc98Fetch(url, {
                 headers
             });
-            let fanData: any[] = await res.json();
-            let fans = fanData.reverse().map((item) => {
-                let userFanInfo = new UserFanInfo();
-                userFanInfo.name = item.name;
-                userFanInfo.avatarImgURL = item.portraitUrl;
-                userFanInfo.posts = item.postCount;
-                userFanInfo.id = item.id;
-                userFanInfo.fans = item.fanCount;
-                userFanInfo.isFollowing = item.isFollowing;
-                return userFanInfo;
-            });
+            let userFollowings: UserInfo[] = await res.json();
             this.setState({
-                userFollowings: fans,
+                userFollowings,
                 isLoading: false
             });
         } catch (e) {
@@ -112,7 +102,7 @@ export class UserCenterMyFollowings extends React.Component<{match}, UserCenterM
                 );
         }
         //state转换为JSX
-        const userFollowings = this.state.userFollowings.map((item) => (<UserCenterMyFollowingsUser userFanInfo={item} />));
+        const userFollowings = this.state.userFollowings.map((item) => (<MyFollowingsUser userFanInfo={item} />));
         //添加分隔线
         for (let i = 1; i < userFollowings.length; i += 2) {
             userFollowings.splice(i, 0, <hr />);
@@ -123,13 +113,13 @@ export class UserCenterMyFollowings extends React.Component<{match}, UserCenterM
             <div className="user-center-myfollowings-exact">
                 {userFollowings}
             </div>
-            <UserCenterPageCount currentPage={page} totalPage={this.state.totalPage} href="/usercenter/myfollowings/" hasTotal={true}/>
+            <Pager currentPage={page} totalPage={this.state.totalPage} href="/usercenter/myfollowings/" hasTotal={true}/>
         </div>);
     }
 }
 
 interface UserCenterMyFollowingsState {
-    userFollowings: UserFanInfo[];
+    userFollowings: UserInfo[];
     totalPage: number;
     info: string;
     currentPage: number;

@@ -50,13 +50,6 @@ export class TopicInfo extends React.Component<{ topicInfo, boardInfo, tag1, tag
             tags = <div id="tags"><div className="tagProp tagSize">标签： {this.state.tag1Name} {this.state.tag2Name}</div><div className="tagProp"></div></div>;
         }
         return <div className="topicInfo-info">
-            <div className="topicInfo-boardInfo">
-                <Link to={boardUrl}><div className="topicInfo-boardImage"><img className="topicInfo-boardImage" onError={this.onError} src={url} /></div></Link>
-                <div className="topicInfo-boardMessage">
-                    <Link to={boardUrl}><div style={{ color: "#fff" }}>{this.props.boardInfo.name}</div></Link>
-                    <div style={{ marginTop: "0.5rem", fontSize: "0.75rem" }}>{this.props.boardInfo.todayCount} / {this.props.boardInfo.topicCount}</div>
-                </div>
-            </div>
             <div className="topicInfo-title">
                 <div className="column" id="topicTitleProp" >
                     <div id="essay1" className="row">
@@ -72,6 +65,12 @@ export class TopicInfo extends React.Component<{ topicInfo, boardInfo, tag1, tag
                         </div>
                     </div>
                 </div>
+
+                <div className="topicInfo-boardMessage">
+                    <Link to={boardUrl}><div style={{color:"#6b7178"}}>{this.props.boardInfo.name}</div></Link>
+                    <div style={{ marginTop: "0.5rem", fontSize: "0.75rem" }}>{this.props.boardInfo.todayCount} / {this.props.boardInfo.topicCount}</div>
+                </div>
+
             </div>
             <div className="topicInfo-ads">
                 <AdsComponent />

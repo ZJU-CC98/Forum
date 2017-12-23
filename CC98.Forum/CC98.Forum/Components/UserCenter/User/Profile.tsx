@@ -4,23 +4,63 @@
 
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { UserInfo } from '../../States/AppState';
-import { UbbContainer } from '../UbbContainer';
-import * as Utility from '../../Utility';
+import { UserInfo } from '../../../States/AppState';
+import { UbbContainer } from '../../UbbContainer';
+import * as Utility from '../../../Utility';
+
+interface Props {
+    /**
+     * 用户信息
+     */
+    userInfo: UserInfo
+}
 
 /**
- * 用户中心主页个人资料组件
+ * 判断关注状态用
+ * 需要一些state
  */
-export class UserExactProfile extends React.Component<UserExactProfileProps, UserExactProfileState> {
+interface States {
+    /**
+     * 当前用户是否关注该用户
+     */
+    isFollowing: boolean;
+    /**
+     * 在发起请求时用来禁用按钮
+     * 防止多次提交
+     */
+    buttonIsDisabled: boolean;
+    /**
+     * 在按钮上显示的信息
+     */
+    buttonInfo: string;
+}
+
+/**
+ * 用户详情页
+ * 个人资料组件
+ */
+export default class extends React.Component<Props, States> {
     constructor(props) {
         super(props);
         this.state = {
-            isFollowing: this.props.userInfo.isFollowing,
+            isFollowing: props.userInfo.isFollowing,
             buttonIsDisabled: false,
-            buttonInfo: this.props.userInfo.isFollowing ? '已关注' :'关注'
+            buttonInfo: props.userInfo.isFollowing ? '已关注' :'关注'
         }
         this.unfollow = this.unfollow.bind(this);
         this.follow = this.follow.bind(this);
+    }
+
+    /**
+     * 不同的头衔显示不同的颜色
+     */
+    getPrivilegeColor() {
+        switch (this.props.userInfo.privilege) {
+            case '注册用户': return 'grey';
+            case '超级版主': return 'pink';
+            case '全站贵宾': return 'blue';
+            case '管理员': return 'red';
+        }
     }
 
     async follow() {
@@ -28,7 +68,7 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
             buttonIsDisabled: true,
             buttonInfo: '关注中'
         });
-        let res = await Utility.followUser(Number.parseInt(this.props.userInfo.id));
+        let res = await Utility.followUser(this.props.userInfo.id);
         if (res === true) {
             this.setState({
                 buttonIsDisabled: false,
@@ -49,22 +89,12 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
             });
         }
     }
-
-    getPrivilegeColor() {
-        switch (this.props.userInfo.privilege) {
-            case '注册用户': return 'grey';
-            case '超级版主': return 'pink';
-            case '全站贵宾': return 'blue';
-            case '管理员': return 'red';
-        }
-    }
-
     async unfollow() {
         this.setState({
             buttonIsDisabled: true,
             buttonInfo: '取关中'
         });
-        let state = await Utility.unfollowUser(Number.parseInt(this.props.userInfo.id));
+        let state = await Utility.unfollowUser(this.props.userInfo.id);
 
         if (state === true) {
             this.setState({
@@ -82,6 +112,7 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
     }
 
     render() {
+        //一个彩蛋，若当天为用户生日则显示一个生日蛋糕
         let isBirthDay = false;
         if (!!this.props.userInfo.birthday) {
             const match = this.props.userInfo.birthday.match(/\d+-(\d+)-(\d+)/);
@@ -140,14 +171,4 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
             </div>
         );
     }
-}
-
-interface UserExactProfileProps {
-    userInfo: UserInfo
-}
-
-interface UserExactProfileState {
-    isFollowing: boolean;
-    buttonIsDisabled: boolean;
-    buttonInfo: string;
 }

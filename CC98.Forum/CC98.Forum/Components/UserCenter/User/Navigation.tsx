@@ -3,7 +3,10 @@ import {
     Link,
     withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-
+/**
+ * 用户详情页
+ * 导航栏组件
+ */
 class UserNavigationBeforeConnect extends React.Component<{ isManager, currentVisitingUserPage , id }> {
     render() {
         return (<div className="user-center-navigation" id="userCenterNavigation">
@@ -24,4 +27,4 @@ function mapState(state) {
     };
 }
 
-export const UserNavigation = connect(mapState, null)(UserNavigationBeforeConnect);
+export default connect(mapState, null)(UserNavigationBeforeConnect);

@@ -5,7 +5,7 @@
 import * as React from 'react';
 
 //用户中心主页用户头像与徽章组件
-export class UserCenterExactAvatar extends React.Component<UserCenterExactAvatarProps> {
+export default class extends React.Component<UserCenterExactAvatarProps> {
     render() {
         return (
             <div className="user-avatar">

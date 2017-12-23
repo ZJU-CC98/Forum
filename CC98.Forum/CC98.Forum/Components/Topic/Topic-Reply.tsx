@@ -93,7 +93,7 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
         let likeInfo = { likeCount: item.likeCount, dislikeCount: item.dislikeCount, likeState: item.likeState };
         return <div className="reply" id={id.toString()} >
             <Replier key={item.postId} userInfo={item.userInfo} isAnonymous={item.isAnonymous} topicid={item.topicId} floor={item.floor} isDeleted={item.isDeleted} traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
-            <div className="column" style={{ justifyContent: "space-between", width: "80%", position:"relative" }}>
+            <div className="column" style={{ justifyContent: "space-between", width: "55.5rem", position:"relative" }}>
                 <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
                 <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} />
                         <ReplyContent key={item.content} postid={item.postId} content={item.content} contentType={item.contentType} />

@@ -279,63 +279,6 @@ export function convertHotTopic(item: State.TopicTitleAndContentState) {
     return <TopicTitleAndContent key={item.id} title={item.title} userName={item.userName} id={item.id} userId={item.userId} lastPostTime={item.lastPostTime} lastPostUser={item.lastPostUser} likeCount={item.likeCount} dislikeCount={item.dislikeCount} replyCount={item.replyCount} highlightInfo={item.highlightInfo} topState={item.topState} state={item.state} hitCount={item.hitCount} />
         ;
 }
-export function getPager(curPage, totalPage) {
-    if (!curPage) {
-        curPage = 1;
-    }
-    let pages: number[] = [];
-    if (totalPage == 1) {
-        pages = [1];
-    } else if (totalPage < 10 && totalPage > 1) {
-        if (curPage == 1) {
-            let i;
-            for (i = 0; i < totalPage; i++) {
-                pages[i] = i + 1;
-            }
-            pages[i] = -2;
-            pages[i + 1] = -4;
-        } else if (curPage == 2) {
-            let i;
-            for (i = 1; i <= totalPage; i++) {
-                pages[i] = i;
-            }
-            pages[0] = -1;
-            pages[i] = -2;
-            pages[i + 1] = -4;
-        } else if (curPage != totalPage) {
-            let i;
-            for (i = 2; i <= totalPage + 1; i++) {
-                pages[i] = i - 1;
-            }
-            pages[0] = -3;
-            pages[1] = -1;
-            pages[i] = -2;
-            pages[i + 1] = -4;
-        } else {
-            let i;
-            for (i = 2; i <= totalPage + 1; i++) {
-                pages[i] = i - 1;
-            }
-            pages[0] = -3;
-            pages[1] = -1;
-        }
-    } else {
-        if (curPage + 5 <= totalPage) {
-            if (curPage == 1) {
-                pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, - 2, -4];
-            } else if (curPage > 1 && curPage < 6) {
-                pages = [-3, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, - 2, -4];
-            } else {
-                pages = [-3, -1, curPage - 4, curPage - 3, curPage - 2, curPage - 1, curPage, curPage + 1, curPage + 2, curPage + 3, curPage + 4, curPage + 5, - 2, -4];
-            }
-        } else if (curPage + 5 > totalPage && curPage != totalPage) {
-            return [-3, -1, totalPage - 9, totalPage - 8, totalPage - 7, totalPage - 6, totalPage - 5, totalPage - 4, totalPage - 3, totalPage - 2, totalPage - 1, totalPage, -2, -4];
-        } else if (curPage == totalPage) {
-            return [-3, -1, totalPage - 9, totalPage - 8, totalPage - 7, totalPage - 6, totalPage - 5, totalPage - 4, totalPage - 3, totalPage - 2, totalPage - 1, totalPage];
-        }
-    }
-    return pages;
-}
 export async function getCurUserTopic(topicid: number, userId: number) {
     try {
         const headers = await formAuthorizeHeader();

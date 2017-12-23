@@ -230,12 +230,9 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
 /**
  * 提供显示连续页码的交互效果。
  */
-export class ListTagAndPager extends React.Component<{ url: string, boardid: number, page: number, totalPage: number, tag }, { pager }> {
+export class ListTagAndPager extends React.Component<{ url: string, boardid: number, page: number, totalPage: number, tag }, {  }> {
     constructor(props, content) {
         super(props, content);
-        this.state = {
-            pager: [1, 2, 3, 4, 5]
-        };
     }
 
     generateTagLayer(item) {
@@ -250,14 +247,6 @@ export class ListTagAndPager extends React.Component<{ url: string, boardid: num
     generateTagButton(item) {
         const url = `/list/${this.props.boardid}/tag/tag1/${item.id}`;
         return <div><Link to={url}><button className="chooseTag">{item.name}<span className="tagNumber"></span></button></Link></div>;
-    }
-    async componentWillReceiveProps(newProps) {
-        const pages = Utility.getPager(newProps.page, newProps.totalPage);
-        this.setState({ pager: pages });
-    }
-    async componentDidMount() {
-        const pages = Utility.getPager(this.props.page, this.props.totalPage);
-        this.setState({ pager: pages });
     }
     render() {
 
