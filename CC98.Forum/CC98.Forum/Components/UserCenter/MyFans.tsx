@@ -5,7 +5,7 @@
 import * as React from 'react';
 import { UserInfo } from '../../States/AppState';
 import MyFollowingsUser from './MyFollowingsUser';
-import { RouteComponent } from '../app';
+import { RouteComponent } from '../RouteComponent';
 import Pager from './Pager';
 
 import * as Utility from '../../Utility';

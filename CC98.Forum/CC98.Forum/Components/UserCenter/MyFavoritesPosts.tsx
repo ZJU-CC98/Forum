@@ -7,7 +7,7 @@ import Post from './ExactActivitiesPost';
 import { UserRecentPost } from '../../States/AppState';
 import * as Utility from '../../Utility';
 import Pager from './Pager';
-import { RouteComponent } from '../app';
+import { RouteComponent } from '../RouteComponent';
 
 /**
  * 用户中心我收藏的帖子组件
