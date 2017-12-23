@@ -1887,6 +1887,20 @@ a {
         flex-direction: column;
     }
 
+    .focus-topic-getMore {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        cursor: pointer;
+        color: #6b7178;
+        justify-content: center;
+
+        div {
+            margin-top: 10px;
+            text-align: center;
+        }
+    }
+
     .focus-topic-loading {
         margin-top: 20px;
         text-align: center;
