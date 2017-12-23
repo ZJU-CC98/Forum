@@ -1,14 +1,14 @@
 ﻿import * as React from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { UserCenterNavigation } from './UserCenterNavigation';
-import { UserCenterRouter } from './UserCenterRouter';
+import Navigation from './Navigation';
+import UserCenterRouter from './Router';
 import { LogOut } from '../Status';
 
 /**
  * 用户中心页面
  */
-export class UserCenterBeforeConnect extends React.Component<{ isLogOn }> {
+class UserCenterBeforeConnect extends React.Component<{ isLogOn }> {
     render() {
         if (!this.props.isLogOn) {
             return <LogOut />;
@@ -20,7 +20,7 @@ export class UserCenterBeforeConnect extends React.Component<{ isLogOn }> {
                         <p>个人中心</p>
                     </div>
                     <div className="user-center-body">
-                        <UserCenterNavigation />
+                        <Navigation />
                         <UserCenterRouter />
                     </div>
                 </div>
@@ -40,4 +40,4 @@ function mapState(state) {
 /**
  * 连接UserCenterBeforeConnect与store，默认导出UserCenter替换掉原来的导出
  */
-export const UserCenter = connect(mapState, null)(UserCenterBeforeConnect);
+export default connect(mapState, null)(UserCenterBeforeConnect);

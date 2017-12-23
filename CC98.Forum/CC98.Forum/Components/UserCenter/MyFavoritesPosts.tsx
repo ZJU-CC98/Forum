@@ -3,16 +3,16 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
-import { UserCenterExactActivitiesPost } from './UserCenterExactActivitiesPost';
+import Post from './ExactActivitiesPost';
 import { UserRecentPost } from '../../States/AppState';
 import * as Utility from '../../Utility';
-import { UserCenterPageCount } from './UserCenterPageCount';
+import Pager from './Pager';
 import { RouteComponent } from '../app';
 
 /**
  * 用户中心我收藏的帖子组件
  */
-export class UserCenterMyFavoritesPosts extends React.Component<{match}, UserCenterMyFavoritesPostsState> {
+export default class extends React.Component<{match}, UserCenterMyFavoritesPostsState> {
     constructor(props) {
         super(props);
         this.state = {
@@ -103,7 +103,7 @@ export class UserCenterMyFavoritesPosts extends React.Component<{match}, UserCen
             </div>);
         }
         //state转换为JSX
-        const userRecentPosts = this.state.userRecentPosts.map((item) => (<UserCenterExactActivitiesPost userRecentPost={item} />));
+        const userRecentPosts = this.state.userRecentPosts.map((item) => (<Post userRecentPost={item} />));
         //添加分隔线
         for (let i = 1; i < userRecentPosts.length; i += 2) {
             userRecentPosts.splice(i, 0, <hr />);
@@ -111,7 +111,7 @@ export class UserCenterMyFavoritesPosts extends React.Component<{match}, UserCen
         return (
             <div className="user-posts">
                 {userRecentPosts}
-                <UserCenterPageCount currentPage={this.props.match.params.page || 1} totalPage={this.state.totalPage} href="/usercenter/myfavorites/" hasTotal={this.state.hasTotal}/>
+                <Pager currentPage={parseInt(this.props.match.params.page) || 1} totalPage={this.state.totalPage} href="/usercenter/myfavorites/" hasTotal={this.state.hasTotal}/>
             </div>
 
         );

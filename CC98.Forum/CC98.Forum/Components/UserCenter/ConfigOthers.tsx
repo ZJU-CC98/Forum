@@ -6,7 +6,7 @@ import * as React from 'react';
 import { ChangeUserInfo } from '../../states/AppState';
 import * as Utility from '../../Utility';
 
-export class UserCenterConfigOthers extends React.Component<{ userinfo: UserInfo, handleChange: Function }, State> {
+export default class extends React.Component<{ userinfo: UserInfo, handleChange: Function }, State> {
     constructor(props) {
         super(props);
         this.state = {

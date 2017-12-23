@@ -4,15 +4,15 @@
 
 import * as React from 'react';
 import * as Utility from '../../Utility';
-import { UserCenterExactActivitiesPost } from './UserCenterExactActivitiesPost';
+import Post from './ExactActivitiesPost';
 import { UserRecentPost } from '../../States/AppState';
 import { RouteComponent } from '../app';
-import { UserCenterPageCount } from './UserCenterPageCount';
+import Pager from './Pager';
 
 /**
  * 用户中心我的主题组件
  */
-export class UserCenterMyPostsExact extends React.Component<{match}, UserCenterMyPostsExactState> {
+export default class extends React.Component<{match}, UserCenterMyPostsExactState> {
     constructor(props, contest) {
         super(props, contest);
         const postCount = Utility.getLocalStorage('userInfo').postCount;
@@ -101,7 +101,7 @@ export class UserCenterMyPostsExact extends React.Component<{match}, UserCenterM
                 );
         }        
         //state转换为JSX
-        const userRecentPosts = this.state.userRecentPosts.map((item) => (<UserCenterExactActivitiesPost userRecentPost={item} />));
+        const userRecentPosts = this.state.userRecentPosts.map((item) => (<Post userRecentPost={item} />));
         //添加分隔线
         for (let i = 1; i < userRecentPosts.length; i += 2) {
             userRecentPosts.splice(i, 0, <hr />);
@@ -109,7 +109,7 @@ export class UserCenterMyPostsExact extends React.Component<{match}, UserCenterM
         return (
             <div className="user-posts">
                 {userRecentPosts}
-                <UserCenterPageCount currentPage={parseInt(this.props.match.params.page) || 1} totalPage={this.state.totalPage} href="/usercenter/myposts/" hasTotal={this.state.hasTotal}/>
+                <Pager currentPage={parseInt(this.props.match.params.page) || 1} totalPage={this.state.totalPage} href="/usercenter/myposts/" hasTotal={this.state.hasTotal}/>
             </div>
         );
     }

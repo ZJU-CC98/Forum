@@ -8,15 +8,18 @@ import {
     withRouter
 } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { UserInfo } from '../../States/AppState';
-import UserManage from './UserManage';
-import { UserExactProfile } from './UserExactProfile';
-import { UserRouterActivities } from './UserRouterActivities';
-import { UserCenterExactAvatar } from './UserCenterExactAvatar';
-import { changeCurrentVisitingUserPage, userNotFound } from '../../Actions';
-import * as Utility from '../../Utility';
+import { UserInfo } from '../../../States/AppState';
+import UserManage from './Manage';
+import Profile from './Profile';
+import Activities from './Activities';
+import Avatar from '../ExactAvatar';
+import { changeCurrentVisitingUserPage, userNotFound } from '../../../Actions';
+import * as Utility from '../../../Utility';
 
-export class UserRouter extends React.Component {
+/**
+ * 用户详情页用的Route
+ */
+export default class extends React.Component {
     render() {
         return (<div className="user-center-router">
             <Route path="/user/:method/:id?" exact component={UserExactWithRouter} />
@@ -25,13 +28,41 @@ export class UserRouter extends React.Component {
     }
 }
 
-class UserExact extends React.Component<{ match, history, changePage, notFoundUser}, UserCenterExactState> {
 
+interface States {
+    /**
+    * 用户信息
+    */
+    userInfo: UserInfo;
+    /**
+    * 用户头像链接地址
+    */
+    userAvatarImgURL: string;
+}
+
+/**
+ * 用户详情主页
+ */
+class UserExact extends React.Component<{ match, history, changePage, notFoundUser}, States> {
+    //组件加载时获取当前访问的用户信息
     async componentDidMount() {
+        this.getInfo(this.props);
+    }
+
+    componentWillReceiveProps(nextProps){
+        //如果url变过则重新获取用户信息
+        if(this.props.match.params.id !== nextProps.match.params.id){
+            this.getInfo(nextProps);
+        }
+    }
+
+    async getInfo(props){
         try {
             let url: string,
-                { id, method } = this.props.match.params,
+                { id, method } = props.match.params,
                 myHeaders = new Headers();
+            //判断是通过name还是id来到用户详情页
+            //不同的方法对应不同url
             if (!id) {
                 throw new Error();
             } else if (method === 'name') {
@@ -45,46 +76,30 @@ class UserExact extends React.Component<{ match, history, changePage, notFoundUs
                 headers: myHeaders
             });
             const data = await response.json();
+            //默认导航到以id表示的用户详情页
             this.props.history.replace(`/user/id/${data.id}`);
+            //改变store中当前访问位置与当前访问用户id
             this.props.changePage('exact', data.id);
             this.setState({
                 userInfo: data,
-                userAvatarImgURL: data.portraitUrl,
-                responseState: response.status
+                userAvatarImgURL: data.portraitUrl
             });
         } catch (e) {
+            //未找到用户的处理
             this.props.notFoundUser();
         }
     }
 
     render() {
-        let element;
-        if (this.state !== null && this.state.responseState === 200) {
-            element = (<div className="user-center-exact">
-                <UserCenterExactAvatar userAvatarImgURL={this.state.userAvatarImgURL} />
-                <UserExactProfile userInfo={this.state.userInfo} />
-                <UserRouterActivities id={this.state.userInfo.id} />
-            </div>);
-        } else {
-            element = <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>;
-        }
-        return element;
+        return this.state ? 
+        <div className="user-center-exact">
+            <Avatar userAvatarImgURL={this.state.userAvatarImgURL} />
+            <Profile userInfo={this.state.userInfo} />
+            <Activities id={this.state.userInfo.id} />
+        </div> : 
+        <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
+        ;
     }
-}
-
-interface UserCenterExactState {
-    /**
-    * 用户信息
-    */
-    userInfo: UserInfo;
-    /**
-    * 用户头像链接地址
-    */
-    userAvatarImgURL: string;
-    /**
-    * 加载状态
-    */
-    responseState: number;
 }
 
 function mapDispatch(dispatch) {

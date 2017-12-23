@@ -160,13 +160,13 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
     }
 
     async handleUpload(file: File) {
-        if(file.size > 5242880){
+        if(this.state.extendTagName === 'upload' && file.size > 5242880){
             this.setState({
                 info: '文件过大'
             });
             setTimeout(()=>this.setState({
                 info: ''
-            }), 1500);
+            }), 2500);
             return ;
         }
         let res = await Utility.uploadFile(file);
@@ -566,7 +566,7 @@ class Message extends React.Component<MessageProps, MessageState> {
                 this.setState({
                     isShown: false
                 })
-            }, 1000);
+            }, 2000);
         }
     }
 

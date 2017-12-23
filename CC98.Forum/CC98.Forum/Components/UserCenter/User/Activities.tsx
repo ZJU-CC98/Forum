@@ -3,22 +3,29 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
-import { UserCenterExactActivitiesPost } from './UserCenterExactActivitiesPost';
-import { UserRecentPost } from '../../States/AppState';
-import * as Utility from '../../Utility';
+import Post from '../ExactActivitiesPost';
+import { UserRecentPost } from '../../../States/AppState';
+import * as Utility from '../../../Utility';
 
-//用户中心主页帖子动态组件
-export class UserRouterActivities extends React.Component<{id: string}, UserCenterExactActivitiesPostsState> {
+/**
+ * 用户详情页
+ * 用户最近所发主题组件
+ */
+export default class extends React.Component<{id: number}, UserCenterExactActivitiesPostsState> {
     constructor(props) {
         super(props);
-        //临时填充数据
         this.state = {
             userRecentPosts: [],
             isLoading: false
         };
         this.scrollHandler = this.scrollHandler.bind(this);
     }
-
+    /**
+     * 当用户滚动时
+     * 判断滚动条位置
+     * 按需加载新帖
+     * @param e 滚动事件
+     */
     async scrollHandler(e) {
         let pageYLeft = document.body.scrollHeight - window.pageYOffset;
 
@@ -130,7 +137,7 @@ export class UserRouterActivities extends React.Component<{id: string}, UserCent
         }
 
         //state转换为JSX
-        const userRecentPosts = this.state.userRecentPosts.map((item) => (<UserCenterExactActivitiesPost userRecentPost={item} />));
+        const userRecentPosts = this.state.userRecentPosts.map((item) => (<Post userRecentPost={item} />));
         //添加分隔线
         for (let i = 1; i < userRecentPosts.length; i += 2) {
             userRecentPosts.splice(i, 0, <hr />);

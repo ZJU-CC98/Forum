@@ -7,12 +7,15 @@ import {
     BrowserRouter as Router,
 } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { UserNavigation } from './UserNavigation';
-import { UserRouter } from './UserRouter';
-import { NotFoundUser } from '../Status';
-
+import Navigation from './Navigation';
+import UserRouter from './Router';
+import { NotFoundUser } from '../../Status';
+/**
+ * 用户详情页核心
+ */
 class UserBeforeConnent extends React.Component<{isError}> {
     render() {
+        //不存在用户显示错误页
         if (this.props.isError) {
             return <NotFoundUser />;
         }
@@ -22,7 +25,7 @@ class UserBeforeConnent extends React.Component<{isError}> {
                     <p>用户详情</p>
                 </div>
                 <div className="user-center-body">
-                    <UserNavigation />
+                    <Navigation />
                     <UserRouter />
                 </div>
             </div>
@@ -36,4 +39,4 @@ function mapState(state) {
     };
 }
 
-export const User = connect(mapState, null)(UserBeforeConnent);
+export default connect(mapState, null)(UserBeforeConnent);

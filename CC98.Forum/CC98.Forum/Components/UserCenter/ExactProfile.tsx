@@ -10,7 +10,7 @@ import { UbbContainer } from '../UbbContainer'
 /**
  * 用户中心主页个人资料组件
  */
-export class UserCenterExactProfile extends React.Component<UserCenterExactProfileProps> {
+export default class extends React.Component<UserCenterExactProfileProps> {
     getPrivilegeColor() {
         switch (this.props.userInfo.privilege) {
             case '注册用户': return 'grey';

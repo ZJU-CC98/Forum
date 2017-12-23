@@ -44,6 +44,9 @@ class OperationProps {
      */
     id: number;
 }
+/**
+ * 对用户进行TP、禁言等操作的组件
+ */
 export default class Operation extends React.Component<OperationProps, OperationState> {
     constructor(props) {
         super(props);
@@ -61,7 +64,11 @@ export default class Operation extends React.Component<OperationProps, Operation
             }
         }));
     }
-
+    /**
+     * 提交时调用的函数
+     * @param {boolean} isCancle 表示是否为取消操作
+     * @memberof Operation
+     */
     async handleSubmit(isCancle: boolean) {
         let { Days, PunishmentType } = this.state.ForumUserOperation;
         try {

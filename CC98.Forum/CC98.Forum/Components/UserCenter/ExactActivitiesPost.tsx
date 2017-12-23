@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 /**
  * 用户最近单个帖子组件
  */
-export class UserCenterExactActivitiesPost extends React.Component<UserCenterExactActivitiesPostProps> {
+export default class extends React.Component<UserCenterExactActivitiesPostProps> {
     render() {
         return (
             <div className="user-post">

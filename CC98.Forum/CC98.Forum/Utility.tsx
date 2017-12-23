@@ -336,20 +336,14 @@ export function getPager(curPage, totalPage) {
     }
     return pages;
 }
-export async function getCurUserTopic(topicid: number, userId: number, router) {
+export async function getCurUserTopic(topicid: number, userId: number) {
     try {
         const headers = await formAuthorizeHeader();
         const response = await cc98Fetch(`/post/topic/user?topicid=${topicid}&userid=${userId}&from=0&size=1`, { headers });
         const data = await response.json();
         const userMesResponse = await cc98Fetch(`/user/name/${data[0].userName}`);
-        if (userMesResponse.status === 404) {
-            window.location.href = "/status/NotFoundUser";
-        }
-        if (userMesResponse.status === 500) {
-            window.location.href = "/status/ServerError";
-        }
         const userMesJson = await userMesResponse.json();
-        data[0].userImgUrl = userMesJson.portraitUrl;
+        data[0].userInfo = userMesJson;
         return data[0];
     } catch (e) {
         //window.location.href = "/status/Disconnected";
@@ -378,28 +372,14 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
         const content = await topic.json();
 
         let post = [];
-        let topicNumberInPage: number;
+        let topicNumberInPage: number=content.length;
         const replyCount = content[0].count;
-
-        if (curPage !== 1 && curPage * 10 <= replyCount) {
-            topicNumberInPage = 10;
-        } else if (curPage === 1 && replyCount >= 9 && isUserPoster == true) {
-            topicNumberInPage = 9;
-        } else if (curPage === 1 && replyCount >= 9 && isUserPoster == false) {
-            topicNumberInPage = 10;
-        } else if (curPage === 1 && replyCount < 9) {
-            topicNumberInPage = replyCount;
-        } else {
-            topicNumberInPage = (replyCount - (curPage - 1) * 10);
-        }
-
+        const userMesJson = await getUserInfo(content[0].userId);
         for (let i = 0; i < topicNumberInPage; i++) {
-            if (content[i].isAnonymous != true) {
-                const userMesJson = await getUserInfo(content[i].userId);
+            if (content[i].isAnonymous != true) {            
                 post[i] = {
                     ...content[i], userInfo: userMesJson, postId: content[i].id
                 }
-
             } else {
                 let purl = '/static/images/_心灵之约.png';
                 const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
@@ -409,7 +389,6 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
                 }
             }
         }
-
         return post;
     } catch (e) {
         //window.location.href = "/status/Disconnected";
@@ -742,13 +721,6 @@ export async function getBoardName(boardId: number) {
             headers.append('Authorization', token);
             const url = `/board/${boardId}`;
             let res = await cc98Fetch(url, { headers });
-            if (res.status === 404) {
-                //window.location.href = "/status/NotFoundBoard";
-            }
-            if (res.status === 500) {
-                //window.location.href = "/status/ServerError";
-            }
-
             let data = await res.json();
             boardName = data.name;
             setLocalStorage(`boardId_${boardId}`, boardName);
@@ -1238,15 +1210,6 @@ export async function getCurUserTotalReplyPage(topicId, userId, router) {
     try {
         const headers = await formAuthorizeHeader();
         const replyCountResponse = await cc98Fetch(`/post/topic/user?topicid=${topicId}&userid=${userId}&from=0&size=1`, { headers });
-        if (replyCountResponse.status === 401) {
-            window.location.href = "/status/UnauthorizedTopic";
-        }
-        if (replyCountResponse.status === 404) {
-            window.location.href = "/status/NotFoundBoard";
-        }
-        if (replyCountResponse.status === 500) {
-            window.location.href = "/status/ServerError";
-        }
         const replyCountJson = await replyCountResponse.json();
         const replyCount = replyCountJson[0].count;
         if (replyCount > 10) {

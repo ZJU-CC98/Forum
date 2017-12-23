@@ -4,11 +4,11 @@
 
 import * as React from 'react';
 import * as Utility from '../../Utility';
-import { UserCenterMyFavoritesBoard } from './UserCenterMyFavoritesBoard';
+import MyFavoritesBoard from './MyFavoritesBoard';
 import { UserFavoritesBoardInfo } from '../../states/AppState';
 
 
-export class UserCenterMyFavoritesBoards extends React.Component<null, UserCenterMyFavoritesBoardsState> {
+export default class extends React.Component<null, UserCenterMyFavoritesBoardsState> {
     constructor(props) {
         super(props);
         this.state = {
@@ -73,7 +73,7 @@ export class UserCenterMyFavoritesBoards extends React.Component<null, UserCente
         if (this.state.boards.length === 0) {
             return (<div style={style}>{this.state.info}</div>);
         }
-        let elements = this.state.boards.map((item) => (<UserCenterMyFavoritesBoard UserFavoritesBoard={item} />));
+        let elements = this.state.boards.map((item) => (<MyFavoritesBoard UserFavoritesBoard={item} />));
         for (let i = 1; i < elements.length; i += 2) {
             elements.splice(i, 0, <hr />);
         }

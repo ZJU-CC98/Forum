@@ -12,7 +12,7 @@ import * as $ from 'jquery';
 /**
  * 用户中心侧边栏导航组件
  */
-export class UserCenterNavigation extends React.Component<null, UserCenterNavigationState> {
+export default class extends React.Component<null, UserCenterNavigationState> {
     constructor(props) {
         super(props);
         this.state = {

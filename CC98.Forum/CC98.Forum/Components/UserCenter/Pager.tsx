@@ -5,7 +5,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-export class UserCenterPageCount extends React.Component<UserCenterPageCountProps> {
+export default class extends React.Component<UserCenterPageCountProps> {
     render() {
         let elements = [], i;
         const currentStyle = {

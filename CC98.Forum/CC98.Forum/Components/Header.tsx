@@ -221,30 +221,6 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
         const searchIco = $('.searchIco');
         const searchBoxLi = searchBoxSub.find('li');
 
-        //查看当前是全站还是某版，如果是某版就查询到某版id
-        let url1 = location.href.match(/\/topic\/(\d+)/);
-        let url2 = location.href.match(/\/list\/(\d+)/);
-        let url3 = location.href.match(/\/(search)/);
-        let boardId = 0;
-        let boardName = '全站';
-        if (url1) {
-            let topicId = url1[1];
-            let response = await Utility.getTopicInfo(topicId);
-            boardId = response.boardId;
-            boardName = await Utility.getBoardName(boardId);
-        }
-        else if (url2) {
-            boardId = parseInt(url2[1]);
-            boardName = await Utility.getBoardName(boardId);
-        }
-        else if (url3) {
-            let searchInfo = Utility.getStorage("searchInfo");
-            if (searchInfo) {
-                boardId = searchInfo.boardId;
-                boardName = searchInfo.boardName;
-            }
-        }
-
         $(document).click(function () {
             searchBoxSub.css('display', 'none');
         });
@@ -296,6 +272,33 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
                     }
                 }
                 else if (searchBoxSelect.text() === '版内') {
+                    //查看当前是全站还是某版，如果是某版就查询到某版id
+                    let url1 = location.href.match(/\/topic\/(\d+)/);
+                    let url2 = location.href.match(/\/list\/(\d+)/);
+                    let url3 = location.href.match(/\/(searchBoard)/);
+                    let url4 = location.href.match(/\/(search)/);
+                    let boardId = 0;
+                    let boardName = '全站';
+                    if (url1) {
+                        let topicId = url1[1];
+                        let response = await Utility.getTopicInfo(topicId);
+                        boardId = response.boardId;
+                        boardName = await Utility.getBoardName(boardId);
+                    }
+                    else if (url2) {
+                        boardId = parseInt(url2[1]);
+                        boardName = await Utility.getBoardName(boardId);
+                    }
+                    else if (url3) {
+                    }
+                    else if (url4) {
+                        let searchInfo = Utility.getStorage("searchInfo");
+                        if (searchInfo) {
+                            boardId = searchInfo.boardId;
+                            boardName = searchInfo.boardName;
+                        }
+                    }
+
                     let words = val.split(' ');
                     if (words) {
                         if (words.length > 5) {
@@ -350,7 +353,6 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
     keypress_submit(e) {
         var evt = window.event || e;
         if (evt.keyCode === 13) {
-            console.log("按下了回车");
             $('.searchIco').click();
         }
     }
@@ -359,7 +361,8 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
         //查看当前是全站还是某版
         let url1 = location.href.match(/\/topic\/(\d+)/);
         let url2 = location.href.match(/\/list\/(\d+)/);
-        let url3 = location.href.match(/\/(search)/);
+        let url3 = location.href.match(/\/(searchBoard)/);
+        let url4 = location.href.match(/\/(search)/);
         let flag = 1;
         if (url1) {
             flag = 0;
@@ -368,6 +371,8 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
             flag = 0;
         }
         else if (url3) {
+        }
+        else if(url4) {
             let searchInfo = Utility.getStorage("searchInfo");
             if (searchInfo) {
                 if (searchInfo.boardId != 0) {

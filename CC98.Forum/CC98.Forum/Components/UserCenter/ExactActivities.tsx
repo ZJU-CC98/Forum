@@ -7,16 +7,16 @@ import {
     BrowserRouter as Router,
     Route, Link
 } from 'react-router-dom';
-import { UserCenterExactActivitiesPosts } from './UserCenterExactActivitiesPosts';
+import ExactActivitiesPosts from './ExactActivitiesPosts';
 /**
  * 用户中心主页近期动态组件
  */
-export class UserCenterExactActivities extends React.Component {
+export default class extends React.Component {
     render() {
         return (
             <div className="user-activities">
                 <p>发表的主题</p>
-                <UserCenterExactActivitiesPosts />
+                <ExactActivitiesPosts />
             </div>
         );
     }
