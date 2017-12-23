@@ -321,7 +321,7 @@ body {
     line-height: 150%;
     margin-top: 2rem;
     margin-left: 1.5rem;
-    width: 53rem;
+    width: 52rem;
     word-wrap: break-word;
     color: rgb(80,80,80);
 }
@@ -537,6 +537,7 @@ body {
         width: 40px;
         height: 40px;
         border-radius: 50%;
+        right:-1rem;
         background-color: $color-bg;
         text-align: center;
         line-height: 40px;
@@ -949,14 +950,15 @@ a {
 
 .page-link {
     display: inline-block;
-    min-width: 40px;
-    height: 34px;
-    line-height: 34px;
+    min-width: 34px;
+    height: 26px;
+    line-height: 26px;
     text-align: center;
     color: #79b8ca;
     background-color: #fff;
     border: 1px solid #ddd;
-    border-radius: 15px;
+    font-family:微软雅黑;
+    margin-left:0.3rem;
 
     &:hover {
         color: #fff;
@@ -974,23 +976,21 @@ a {
 .page-goto {
     display: inline-block;
 
-    > input {
+     input {
         width: 55px;
-        height: 34px;
+        height: 24px;
         margin-left: 5px;
         margin-right: 3px;
         text-align: center;
         border: 1px solid #ddd;
-        border-radius: 5px;
     }
 
-    > a {
+     a {
         display: inline-block;
         width: 48px;
-        height: 34px;
-        line-height: 34px;
+        height: 26px;
+        line-height: 26px;
         text-align: center;
-        border-radius: 5px;
         color: #fff;
         background-color: #79b8ca; 
         border: 1px solid transparent;

@@ -27,8 +27,8 @@ export class Pager extends React.Component<{ page: number, url: string, totalPag
     }
 
     render() {
-        const pageSize: number = 10
-        const pageLen: number = 4
+        const pageSize: number = 8
+        const pageLen: number = 3
 
         const { page: curPage, url, totalPage } = this.props
         const pageList: number[] = []
@@ -96,8 +96,8 @@ export class Pager extends React.Component<{ page: number, url: string, totalPag
 
                 {goto &&
                     <div className="page-goto">
-                        <input onChange={this.handleInput}  placeholder={`Protal~`}/>
-                        <Link to={`${url}${this.state.nextPage}#1`}> Go </Link>
+                        <div><input onChange={this.handleInput}  placeholder={`传送门`}/></div>
+                        <div><Link to={`${url}${this.state.nextPage}#1`}> Go </Link></div>
                     </div>
                 }
             </div>
