@@ -321,7 +321,7 @@ body {
     line-height: 150%;
     margin-top: 2rem;
     margin-left: 1.5rem;
-    width: 56.25rem;
+    width: 53rem;
     word-wrap: break-word;
     color: rgb(80,80,80);
 }
@@ -348,14 +348,14 @@ body {
 .userGender {
     display: flex;
     justify-content: flex-end;
-    width: 80%;
+    width: 90%;
     font-size: 1rem;
     z-index: 200;
 }
 
 .userPortrait {
-    width: 7.5rem;
-    height: 7.5rem;
+    width: 5rem;
+    height: 5rem;
     border-radius: 50%;
     box-shadow: 0 0 5px;
 }
@@ -400,7 +400,7 @@ body {
     flex-direction: row;
     font-size: 0.75rem;
     align-items: flex-end;
-    padding-bottom: 1rem;
+    padding-bottom: 0.3rem;
     color: #8bc9db;
     align-items: center;
     justify-content: space-between;
@@ -542,7 +542,7 @@ body {
         line-height: 40px;
         position: relative;
         top: 70px;
-        right: -40px;
+       
         color: #ffffff;
         font-family: '微软雅黑';
         font-size: 16px;
@@ -555,21 +555,35 @@ body {
 }
 
 .userMessage {
-    align-items: center;
+    align-items: flex-start;
     background-color: #8dc9db;
     color: #fff;
-    width: 10.6rem;
+    width: 15.5rem;
     display: flex;
-    flex-direction: column;
     padding-top: 1rem;
     padding-bottom: 1rem;
     font-size: 0.75rem;
 }
+.userMessage-left{
+    width:7.7rem;
+}
+.userMessage-right{
+    width:7.8rem;
 
+}
+.userMessage-userName{
+    font-size:1.25rem;
+    font-weight:bold;
+    font-family:微软雅黑;
+    margin-left:1.5rem;
+}
 .userMessageOpt {
     white-space: nowrap;
 }
+.userMessageBtn{
+    margin-top:1rem;
 
+}
 .rpyClr {
     font-size: 1.25rem;
     width: 8rem;
