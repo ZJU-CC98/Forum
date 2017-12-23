@@ -183,7 +183,7 @@ body {
 }
 
 #topicTitleProp {
-    width: 100%;
+    width: 44.5rem;
     height: 6rem;
     display: flex;
     flex-direction: column;
@@ -2937,14 +2937,18 @@ a {
     display: flex;
     flex-direction: column;
     margin-left: 1rem;
-    color: #fff;
+    color:#6b7178;
+    height:3rem;
+    align-self:center;
+    border-left:#6b7178 solid 2px;
+    width:7rem;
+    align-items:center;
 }
 
 .topicInfo-title {
-    width: 42rem;
+    width: 52.5rem;
     height: 6.25rem;
     display: flex;
-    flex-direction: column;
     background-color: #fff;
     color: #6b7178;
     font-size: 1rem;

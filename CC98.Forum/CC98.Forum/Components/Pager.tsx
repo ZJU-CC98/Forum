@@ -96,7 +96,7 @@ export class Pager extends React.Component<{ page: number, url: string, totalPag
 
                 {goto &&
                     <div className="page-goto">
-                        <div><input onChange={this.handleInput}  placeholder={`传送门`}/></div>
+                        <div><input onChange={this.handleInput}  placeholder={`跳转到`}/></div>
                         <div><Link to={`${url}${this.state.nextPage}#1`}> Go </Link></div>
                     </div>
                 }
