@@ -27,9 +27,16 @@ export class PostTopic extends React.Component<{ boardInfo,topicInfo,userId, img
         this.setState({ topicMessage: topicMessage });
     }
     async componentDidMount() {
-        const topicMessage = await Utility.getTopic(this.props.topicid);
-        const masters = this.props.boardInfo.boardMasters;
-        this.setState({ topicMessage: topicMessage,masters:masters });
+        if (this.props.isTrace) {
+            const topicMessage = await Utility.getCurUserTopic(this.props.topicid, this.props.topicInfo.userId);
+            const masters = this.props.boardInfo.boardMasters;
+            this.setState({ topicMessage: topicMessage, masters: masters });
+        } else {
+            const topicMessage = await Utility.getTopic(this.props.topicid);
+            const masters = this.props.boardInfo.boardMasters;
+            this.setState({ topicMessage: topicMessage, masters: masters });
+        }
+      
     }
 
     render() {
