@@ -282,7 +282,6 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
                     if (url1) {
                         let topicId = url1[1];
                         let response = await Utility.getTopicInfo(topicId);
-                        console.log("获取帖子信息", response);
                         boardId = response.boardId;
                         boardName = await Utility.getBoardName(boardId);
                     }
@@ -314,11 +313,8 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
                 }
                 else if (searchBoxSelect.text() === '用户') {
                     let data = await Utility.getUserInfoByName(val);
-                    console.log(`搜索用户${val}`);
                     if (data) {
-                        console.log("搜索用户信息改变");
                         this.props.history.push(`/user/id/${data.id}`);
-                        console.log("搜索用户信息完后");
                     }
                     else {
                         Utility.removeStorage('searchInfo');
