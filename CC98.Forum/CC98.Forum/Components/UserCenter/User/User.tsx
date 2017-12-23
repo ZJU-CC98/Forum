@@ -10,9 +10,12 @@ import { connect } from 'react-redux';
 import Navigation from './Navigation';
 import UserRouter from './Router';
 import { NotFoundUser } from '../../Status';
-
+/**
+ * 用户详情页核心
+ */
 class UserBeforeConnent extends React.Component<{isError}> {
     render() {
+        //不存在用户显示错误页
         if (this.props.isError) {
             return <NotFoundUser />;
         }

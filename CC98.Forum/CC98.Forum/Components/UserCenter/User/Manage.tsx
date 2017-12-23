@@ -12,20 +12,9 @@ class UserManageState {
      * 当前访问用户的用户信息
      */
     userInfo: UserInfo;
-    /**
-     * 页面加载状态
-     */
-    isLoading: boolean;
 }
 
 class UserManage extends React.Component<{ id, changePage, match, notFoundUser }, UserManageState> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            userInfo: null,
-            isLoading: true
-        };
-    }
     async componentDidMount() {
         const id = this.props.id === 0 ? this.props.match.params.id : this.props.id;
         this.props.changePage('manage', id);
@@ -38,18 +27,14 @@ class UserManage extends React.Component<{ id, changePage, match, notFoundUser }
             });
             const data: UserInfo = await response.json();
             this.setState({
-                userInfo: data,
-                isLoading: false
+                userInfo: data
             });
         } catch (e) {
             this.props.notFoundUser();
         }
     }
     render() {
-        if (this.state.isLoading) {
-            return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
-        }
-        return (<div className="user-manage">
+        return this.state ? (<div className="user-manage">
             <div className="user-manage-infos">
                 <h2>用户信息</h2>
                 <div className="user-manage-info">
@@ -60,7 +45,9 @@ class UserManage extends React.Component<{ id, changePage, match, notFoundUser }
             <Operation id={this.props.id} />
             <Delete id={this.props.id} />
             <Post id={this.props.id} />
-        </div>);
+        </div>) : 
+        <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
+        ;
     }
 }
 

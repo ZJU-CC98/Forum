@@ -7,7 +7,10 @@ import Post from '../ExactActivitiesPost';
 import { UserRecentPost } from '../../../States/AppState';
 import * as Utility from '../../../Utility';
 
-//用户中心主页帖子动态组件
+/**
+ * 用户详情页
+ * 用户最近所发主题组件
+ */
 export default class extends React.Component<{id: number}, UserCenterExactActivitiesPostsState> {
     constructor(props) {
         super(props);
@@ -17,7 +20,12 @@ export default class extends React.Component<{id: number}, UserCenterExactActivi
         };
         this.scrollHandler = this.scrollHandler.bind(this);
     }
-
+    /**
+     * 当用户滚动时
+     * 判断滚动条位置
+     * 按需加载新帖
+     * @param e 滚动事件
+     */
     async scrollHandler(e) {
         let pageYLeft = document.body.scrollHeight - window.pageYOffset;
 
