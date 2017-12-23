@@ -1,11 +1,11 @@
 ﻿import * as React from 'react';
-import * as Utility from '../../Utility';
-import { changeCurrentVisitingUserPage, userNotFound } from '../../Actions';
-import { UserInfo } from '../../States/AppState';
+import * as Utility from '../../../Utility';
+import { changeCurrentVisitingUserPage, userNotFound } from '../../../Actions';
+import { UserInfo } from '../../../States/AppState';
 import { connect } from 'react-redux';
-import Operation from './Manage/Operation';
-import Delete from './Manage/DeleteTopicsAndPosts';
-import Post from './Manage/ShowPost';
+import Operation from '../Manage/Operation';
+import Delete from '../Manage/DeleteTopicsAndPosts';
+import Post from '../Manage/ShowPost';
 
 class UserManageState {
     /**

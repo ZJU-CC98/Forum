@@ -6,12 +6,11 @@ import * as React from 'react';
 import * as Utility from '../../Utility';
 import { ChangeUserInfo } from '../../States/AppState';
 
-import UserCenterConfigAvatar from './UserCenterConfigAvatar';
-import { UserCenterConfigSignature } from './UserCenterConfigSignature';
-import { UserCenterConfigPassword } from './UserCenterConfigPassword';
-import { UserCenterConfigOthers } from './UserCenterConfigOthers';
+import ConfigAvatar from './ConfigAvatar';
+import ConfigSignature from './ConfigSignature';
+import ConfigOthers from './ConfigOthers';
 
-export class UserCenterConfig extends React.Component<null, UserCenterConfigState> {
+export default class extends React.Component<null, UserCenterConfigState> {
     constructor(props) {
         super(props);
         let info = Utility.getLocalStorage('userInfo');
@@ -143,11 +142,11 @@ export class UserCenterConfig extends React.Component<null, UserCenterConfigStat
 
     render() {
         return (<div className="user-center-config">
-            <UserCenterConfigAvatar />
+            <ConfigAvatar />
             <hr />
-            <UserCenterConfigSignature signature={this.state.userInfo.SignatureCode} onchange={this.handleSignatureChange}/>
+            <ConfigSignature signature={this.state.userInfo.SignatureCode} onchange={this.handleSignatureChange}/>
             <hr />
-            <UserCenterConfigOthers userinfo={this.state.userInfo} handleChange={this.handleChange} />
+            <ConfigOthers userinfo={this.state.userInfo} handleChange={this.handleChange} />
             <hr />
             <div className="config-submit">
                 <h2>提交修改</h2>

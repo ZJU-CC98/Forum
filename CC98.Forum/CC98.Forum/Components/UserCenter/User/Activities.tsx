@@ -3,15 +3,14 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
-import { UserCenterExactActivitiesPost } from './UserCenterExactActivitiesPost';
-import { UserRecentPost } from '../../States/AppState';
-import * as Utility from '../../Utility';
+import Post from '../ExactActivitiesPost';
+import { UserRecentPost } from '../../../States/AppState';
+import * as Utility from '../../../Utility';
 
 //用户中心主页帖子动态组件
-export class UserCenterExactActivitiesPosts extends React.Component<null, UserCenterExactActivitiesPostsState> {
+export default class extends React.Component<{id: number}, UserCenterExactActivitiesPostsState> {
     constructor(props) {
         super(props);
-        //临时填充数据
         this.state = {
             userRecentPosts: [],
             isLoading: false
@@ -21,12 +20,11 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
 
     async scrollHandler(e) {
         let pageYLeft = document.body.scrollHeight - window.pageYOffset;
-        
+
         if (pageYLeft < 1500 && this.state.isLoading === false) {
             try {
                 this.setState({ isLoading: true });
-
-                const url = `/me/recent-topic?from=${this.state.userRecentPosts.length}&size=11`
+                const url = `/user/${this.props.id}/recent-topic?userid=${this.props.id}&from=${this.state.userRecentPosts.length}&size=11`;
                 const token = await Utility.getToken();
                 const headers = new Headers();
                 headers.append('Authorization', token);
@@ -37,21 +35,18 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
                 if (res.status === 200) {
                     let data: itemType[] = await res.json();
 
-                    if (data.length < 11) {
+                    if (data.length < 10) {
                         window.removeEventListener('scroll', this.scrollHandler);
+                    } else {
+                        data.pop();
                     }
 
-                    let posts = this.state.userRecentPosts;
-                    let i = data.length === 11 ? 10 : data.length;
+                    let posts = await Promise.all(data.map((item) => (this.item2post(item))));
 
-                    while (i--) {
-                        let post = await this.item2post(data[i]);
-                        posts.push(post);
-                    }
-                    this.setState({
-                        userRecentPosts: posts,
+                    this.setState((prevState)=>({
+                        userRecentPosts: prevState.userRecentPosts.concat(posts),
                         isLoading: false
-                    });
+                    }));
                 } else {
                     throw {};
                 }
@@ -66,14 +61,14 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
 
     async componentDidMount() {
         try {
-            const url = `/me/recent-topic?from=0&size=10`
-            const token = Utility.getLocalStorage("accessToken");
+            const url = `/user/${this.props.id}/recent-topic?userid=${this.props.id}&from=${this.state.userRecentPosts.length}&size=11`;
+            const token = await Utility.getToken();
             const headers = new Headers();
             headers.append('Authorization', token);
             let res = await Utility.cc98Fetch(url, {
                 headers
             });
-            
+
             if (res.status === 200) {
                 let data = await res.json();
                 let posts: UserRecentPost[] = [],
@@ -91,7 +86,7 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
                     window.addEventListener('scroll', this.scrollHandler);
                 }
             } else {
-                throw {};
+                throw new Error();
             }
         } catch (e) {
             console.log('用户中心帖子加载失败');
@@ -106,7 +101,7 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
         let userRecentPost = new UserRecentPost();
         userRecentPost.approval = item.likeCount;
         userRecentPost.board = await Utility.getBoardName(item.boardId);
-        userRecentPost.date = item.time.replace('T', ' ').slice(0,19);
+        userRecentPost.date = item.time.replace('T', ' ').slice(0, 19);
         userRecentPost.disapproval = item.dislikeCount;
         userRecentPost.content = item.title;
         userRecentPost.id = item.id;
@@ -124,22 +119,28 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
             }
 
             return (
-                <div className="user-posts" style={style}>
-                    没有主题
-                </div>
+                <div className="user-activities">
+                    <p>发表的主题</p>
+                    <div className="user-posts" style={style}>
+                        没有主题
+                    </div>
+                </div>          
             );
         }
 
         //state转换为JSX
-        const userRecentPosts = this.state.userRecentPosts.map((item) => (<UserCenterExactActivitiesPost userRecentPost={item} />));
+        const userRecentPosts = this.state.userRecentPosts.map((item) => (<Post userRecentPost={item} />));
         //添加分隔线
         for (let i = 1; i < userRecentPosts.length; i += 2) {
             userRecentPosts.splice(i, 0, <hr />);
         }
         return (
-            <div className="user-posts">
-                {userRecentPosts}
-            </div>
+            <div className="user-activities">
+                <p>发表的主题</p>
+                <div className="user-posts">
+                    {userRecentPosts}
+                </div>
+            </div>          
         );
     }
 }

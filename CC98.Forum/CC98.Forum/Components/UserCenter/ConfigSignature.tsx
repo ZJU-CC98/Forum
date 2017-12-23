@@ -6,7 +6,7 @@ import * as React from 'react';
 import * as Utility from '../../Utility';
 import { ChangeUserInfo, UserInfo } from '../../States/AppState';
 
-export class UserCenterConfigSignature extends React.Component<{ signature: string, onchange: Function }> {
+export default class extends React.Component<{ signature: string, onchange: Function }> {
     render() {
         return (
             <div>

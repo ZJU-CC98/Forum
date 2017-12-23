@@ -10,14 +10,14 @@ import { Post, ShowTopic } from './Topic/Topic';
 import { List } from './Board/Board';
 import { CurUserPost } from './Topic/Topic-Trace';
 import { BoardList } from './Board/BoardList';
-import { UserCenter } from './UserCenter/UserCenter';
+import UserCenter from './UserCenter/UserCenter';
 import { Message } from './Message/Message';
 import { AllNewTopic } from './Topic/Topic-New';
 import { Focus } from './Focus/Focus';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { MainPage } from './MainPage';
-import { User } from './UserCenter/User';
+import User from './UserCenter/User/User';
 import LogOn from './LogOn';
 import { LogOff } from './Logoff'
 import { CreateTopic } from './Topic/Topic-CreateTopic';

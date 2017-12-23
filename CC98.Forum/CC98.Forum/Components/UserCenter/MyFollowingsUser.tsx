@@ -8,7 +8,7 @@ import * as Utility from '../../Utility';
 import { Link } from 'react-router-dom';
 
 //用户中心我的关注&我的粉丝用户通用组件
-export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFollowingsUserProps, UserCenterMyFollowingsUserState> {
+export default class extends React.Component<UserCenterMyFollowingsUserProps, UserCenterMyFollowingsUserState> {
     constructor(props) {
         super(props);
         this.state = {

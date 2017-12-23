@@ -4,14 +4,14 @@
 
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { UserInfo } from '../../States/AppState';
-import { UbbContainer } from '../UbbContainer';
-import * as Utility from '../../Utility';
+import { UserInfo } from '../../../States/AppState';
+import { UbbContainer } from '../../UbbContainer';
+import * as Utility from '../../../Utility';
 
 /**
  * 用户中心主页个人资料组件
  */
-export class UserExactProfile extends React.Component<UserExactProfileProps, UserExactProfileState> {
+export default class extends React.Component<UserExactProfileProps, UserExactProfileState> {
     constructor(props) {
         super(props);
         this.state = {

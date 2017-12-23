@@ -4,14 +4,14 @@
 
 import * as React from 'react';
 import { UserInfo } from '../../States/AppState';
-import { UserCenterMyFollowingsUser } from './UserCenterMyFollowingsUser';
+import MyFollowingsUser from './MyFollowingsUser';
 import { RouteComponent } from '../app';
-import { UserCenterPageCount } from './UserCenterPageCount';
+import Pager from './Pager';
 
 import * as Utility from '../../Utility';
 
 //用户中心我的粉丝组件
-export class UserCenterMyFans extends React.Component<{match}, UserCenterMyFansState> {
+export default class extends React.Component<{match}, UserCenterMyFansState> {
     constructor(props, contest) {
         super(props, contest);
         this.state = {
@@ -92,7 +92,7 @@ export class UserCenterMyFans extends React.Component<{match}, UserCenterMyFansS
             </div>);
         }        
         //state转换为JSX
-        const userFans = this.state.userFans.map((item) => (<UserCenterMyFollowingsUser userFanInfo={item} />));
+        const userFans = this.state.userFans.map((item) => (<MyFollowingsUser userFanInfo={item} />));
         //添加分隔线
         for (let i = 1; i < userFans.length; i += 2) {
             userFans.splice(i, 0, <hr />);
@@ -102,7 +102,7 @@ export class UserCenterMyFans extends React.Component<{match}, UserCenterMyFansS
             <div className="user-center-myfans-exact">
                 {userFans}
             </div>
-            <UserCenterPageCount currentPage={parseInt(this.props.match.params.page || 1)} totalPage={this.state.totalPage} href="/usercenter/myfans/" hasTotal={true}/>
+            <Pager currentPage={parseInt(this.props.match.params.page || 1)} totalPage={this.state.totalPage} href="/usercenter/myfans/" hasTotal={true}/>
         </div>);
     }
 }

@@ -7,9 +7,9 @@ import {
     BrowserRouter as Router,
 } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { UserNavigation } from './UserNavigation';
-import { UserRouter } from './UserRouter';
-import { NotFoundUser } from '../Status';
+import Navigation from './Navigation';
+import UserRouter from './Router';
+import { NotFoundUser } from '../../Status';
 
 class UserBeforeConnent extends React.Component<{isError}> {
     render() {
@@ -22,7 +22,7 @@ class UserBeforeConnent extends React.Component<{isError}> {
                     <p>用户详情</p>
                 </div>
                 <div className="user-center-body">
-                    <UserNavigation />
+                    <Navigation />
                     <UserRouter />
                 </div>
             </div>
@@ -36,4 +36,4 @@ function mapState(state) {
     };
 }
 
-export const User = connect(mapState, null)(UserBeforeConnent);
+export default connect(mapState, null)(UserBeforeConnent);

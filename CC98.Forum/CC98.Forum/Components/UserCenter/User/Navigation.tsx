@@ -24,4 +24,4 @@ function mapState(state) {
     };
 }
 
-export const UserNavigation = connect(mapState, null)(UserNavigationBeforeConnect);
+export default connect(mapState, null)(UserNavigationBeforeConnect);

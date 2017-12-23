@@ -8,15 +8,15 @@ import {
     withRouter
 } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { UserInfo } from '../../States/AppState';
-import UserManage from './UserManage';
-import { UserExactProfile } from './UserExactProfile';
-import { UserRouterActivities } from './UserRouterActivities';
-import { UserCenterExactAvatar } from './UserCenterExactAvatar';
-import { changeCurrentVisitingUserPage, userNotFound } from '../../Actions';
-import * as Utility from '../../Utility';
+import { UserInfo } from '../../../States/AppState';
+import UserManage from './Manage';
+import Profile from './Profile';
+import Activities from './Activities';
+import Avatar from '../ExactAvatar';
+import { changeCurrentVisitingUserPage, userNotFound } from '../../../Actions';
+import * as Utility from '../../../Utility';
 
-export class UserRouter extends React.Component {
+export default class extends React.Component {
     render() {
         return (<div className="user-center-router">
             <Route path="/user/:method/:id?" exact component={UserExactWithRouter} />
@@ -71,9 +71,9 @@ class UserExact extends React.Component<{ match, history, changePage, notFoundUs
         let element;
         if (this.state !== null && this.state.responseState === 200) {
             element = (<div className="user-center-exact">
-                <UserCenterExactAvatar userAvatarImgURL={this.state.userAvatarImgURL} />
-                <UserExactProfile userInfo={this.state.userInfo} />
-                <UserRouterActivities id={this.state.userInfo.id} />
+                <Avatar userAvatarImgURL={this.state.userAvatarImgURL} />
+                <Profile userInfo={this.state.userInfo} />
+                <Activities id={this.state.userInfo.id} />
             </div>);
         } else {
             element = <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>;
