@@ -364,7 +364,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
 
         return (
             <div className="ubb-editor" style={{ maxHeight: `${height + 6.125}rem` }}>
-                <Message message={this.state.info} />
+                <UbbMessage message={this.state.info} />
                 <div className="editor-buttons">
                     <div style={{ height: '2rem', display: 'flex', transitionDuration: '.5s', overflow: 'hidden', width: this.state.isPreviewing ? '0rem' : '50rem' }}>
                         <div className="editor-buttons-styles">
@@ -498,7 +498,9 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
     }
 }
 
-
+/**
+ * 异步加载图片的组件
+ */
 class LazyImage extends React.Component<{ onClick, src, className? }, {loaded}> {
     constructor(props) {
         super(props);
@@ -517,6 +519,21 @@ class LazyImage extends React.Component<{ onClick, src, className? }, {loaded}> 
         img.src = this.props.src;
     }
 
+    componentWillReceiveProps(nextProps){
+        if(nextProps.src !== this.props.src){
+            this.setState({
+                loaded: false
+            });
+            const img = new Image();
+            img.onload = () => {
+                this.setState({
+                    loaded: true
+                });
+            };
+            img.src = nextProps.src;
+        }
+    }
+
     render() {
         if (!this.state.loaded) {
             return <img
@@ -529,14 +546,14 @@ class LazyImage extends React.Component<{ onClick, src, className? }, {loaded}> 
     }
 }
 
-interface MessageProps {
+interface UbbMessageProps {
     /**
      * 要显示的信息
      */
     message: string;
 }
 
-interface MessageState {
+interface UbbMessageState {
     /**
      * 是否在显示
      */
@@ -547,7 +564,7 @@ interface MessageState {
     message: string;
 }
 
-class Message extends React.Component<MessageProps, MessageState> {
+class UbbMessage extends React.Component<UbbMessageProps, UbbMessageState> {
     constructor(props){
         super(props);
         this.state = {
