@@ -77,6 +77,7 @@ export class Search extends React.Component<{}, SearchState> {
 
     async handleScroll() {
         if (Utility.isBottom() && this.state.loading) {
+            console.log("调用滚动~");
             /**
             *发出第一条fetch请求前将this.state.loading设置为false，防止后面重复发送fetch请求
             */
@@ -93,7 +94,8 @@ export class Search extends React.Component<{}, SearchState> {
             this.setState({ loading: false });
         }
         else if (JSON.stringify(searchInfo.words) != JSON.stringify(this.state.words)) {
-            /*let newTopic = await Utility.getSearchTopic(searchInfo.boardId, searchInfo.words, 0, this.context.router);
+            let newTopic = await Utility.getSearchTopic(searchInfo.boardId, searchInfo.words, 0, this.context.router);
+            console.log("缓存更改，新数据", newTopic);
             //搜索结果为0
             if (!newTopic || newTopic.length === 0) {
                 console.log("没有搜索结果");
@@ -114,10 +116,11 @@ export class Search extends React.Component<{}, SearchState> {
                 }
                 //搜索结果多于20条，还可以通过滚动条继续获取,this.state.loading设置为true，后续可以再次发送fetch请求
                 else {
-                    let data = this.state.data.concat(newTopic);
-                    this.setState({ data: data, from: data.length, loading: true })
+                    console.log("获取到了20条还行");
+                    /*let data = this.state.data.concat(newTopic);
+                    this.setState({ data: data, from: data.length, loading: true })*/
                 }
-            }*/
+            }
         }
     }
 
