@@ -19,7 +19,10 @@ interface Props {
      */
     id: number;
 }
-
+/**
+ * 只有管理员能看到
+ * 用来删除用户的最近X日内的主题和帖子
+ */
 export default class Delete extends React.Component<Props, State> {
     constructor(props) {
         super(props);
@@ -28,7 +31,10 @@ export default class Delete extends React.Component<Props, State> {
             info: ''
         };
     }
-
+    /**
+     * isPost为true 时删除主题
+     * isPost为false时删除帖子
+     */
     async handleSubmit(isPost: boolean) {
         try {
             const item = isPost ? 'post' : 'topic';

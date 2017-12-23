@@ -67,7 +67,9 @@ interface Post {
      */
     boardName: string;
 }
-
+/**
+ * 显示用户X日内所有帖子的组件
+ */
 export default class ShowTopic extends React.Component<Props, State> {
     constructor(props) {
         super(props);

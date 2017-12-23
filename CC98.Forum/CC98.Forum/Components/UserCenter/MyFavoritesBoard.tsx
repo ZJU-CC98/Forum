@@ -7,7 +7,7 @@ import { UserFavoritesBoardInfo } from '../../states/AppState';
 import * as Utility from '../../Utility';
 import { Link } from 'react-router-dom';
 
-export class UserCenterMyFavoritesBoard extends React.Component<UserCenterMyFavoritesBoardProps, UserCenterMyFavoritesBoardState> {
+export default class extends React.Component<UserCenterMyFavoritesBoardProps, UserCenterMyFavoritesBoardState> {
     constructor(props) {
         super(props);
         this.state = {

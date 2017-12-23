@@ -4,9 +4,9 @@
 
 import * as React from 'react';
 import { UserInfo } from '../../States/AppState';
-import { UserCenterExactProfile } from './UserCenterExactProfile';
-import { UserCenterExactActivities } from './UserCenterExactActivities';
-import { UserCenterExactAvatar } from './UserCenterExactAvatar'
+import ExactProfile from './ExactProfile';
+import ExactActivities from './ExactActivities';
+import ExactAvatar from './ExactAvatar'
 import * as Utility from '../../Utility';
 import { changeUserInfo } from '../../Actions';
 import { connect } from 'react-redux';
@@ -35,9 +35,9 @@ class UserCenterExact extends React.Component<{userInfo, changeUserInfo}> {
 
     render() {        
         return (<div className="user-center-exact">
-            <UserCenterExactAvatar userAvatarImgURL={this.props.userInfo.portraitUrl} />
-            <UserCenterExactProfile userInfo={this.props.userInfo} />
-            <UserCenterExactActivities />
+            <ExactAvatar userAvatarImgURL={this.props.userInfo.portraitUrl} />
+            <ExactProfile userInfo={this.props.userInfo} />
+            <ExactActivities />
         </div>);
     }
 }

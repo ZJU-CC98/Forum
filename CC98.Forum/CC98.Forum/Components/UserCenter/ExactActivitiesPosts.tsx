@@ -3,12 +3,12 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
-import { UserCenterExactActivitiesPost } from './UserCenterExactActivitiesPost';
+import Post from './ExactActivitiesPost';
 import { UserRecentPost } from '../../States/AppState';
 import * as Utility from '../../Utility';
 
 //用户中心主页帖子动态组件
-export class UserCenterExactActivitiesPosts extends React.Component<null, UserCenterExactActivitiesPostsState> {
+export default class extends React.Component<null, UserCenterExactActivitiesPostsState> {
     constructor(props) {
         super(props);
         //临时填充数据
@@ -131,7 +131,7 @@ export class UserCenterExactActivitiesPosts extends React.Component<null, UserCe
         }
 
         //state转换为JSX
-        const userRecentPosts = this.state.userRecentPosts.map((item) => (<UserCenterExactActivitiesPost userRecentPost={item} />));
+        const userRecentPosts = this.state.userRecentPosts.map((item) => (<Post userRecentPost={item} />));
         //添加分隔线
         for (let i = 1; i < userRecentPosts.length; i += 2) {
             userRecentPosts.splice(i, 0, <hr />);

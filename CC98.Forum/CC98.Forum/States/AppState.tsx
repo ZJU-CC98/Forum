@@ -281,7 +281,7 @@ export class UserInfo {
     /**
     * 用户性别
     */
-    gender: number;
+    gender: 0 | 1;
     /**
     * 用户生日
     */
@@ -301,7 +301,7 @@ export class UserInfo {
     /**
     * id
     */
-    id: string;
+    id: number;
     /**
     * 当前用户是否关注了该用户
     */
@@ -351,9 +351,13 @@ export class UserInfo {
      */
     popularity: number;
     /**
-     * 用户头衔ID
+     * 用户拥有的头衔ID们
      */
-    UserTitleIds: string[];
+    userTitleIds: number[];
+    /**
+     * 当前显示的头衔ID
+     */
+    displayTitleId: number;
     /**
      * 粉丝数
      */
@@ -362,6 +366,10 @@ export class UserInfo {
      * 财富值
      */
     wealth: number;
+    /**
+     * 用户头像地址
+     */
+    portraitUrl: string;
 }
 
 /**
@@ -409,36 +417,6 @@ export class UserRecentPost {
     */
     disapproval: number;
 
-}
-
-/**
- * 表示用户粉丝信息
- */
-export class UserFanInfo {
-    /**
-    * 用户名
-    */
-    name: string;
-    /**
-    * 用户头像链接
-    */
-    avatarImgURL: string;
-    /**
-    * 用户发帖总数
-    */
-    posts: number;
-    /**
-    * 用户粉丝总数
-    */
-    fans: number;
-    /**
-    * 用户id
-    */
-    id: number;
-    /**
-    * 是否关注了该用户
-    */
-    isFollowing: boolean;
 }
 /**
 * 用户收藏的版面信息

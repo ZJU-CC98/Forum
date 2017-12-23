@@ -282,7 +282,6 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
                     if (url1) {
                         let topicId = url1[1];
                         let response = await Utility.getTopicInfo(topicId);
-                        console.log("获取帖子信息", response);
                         boardId = response.boardId;
                         boardName = await Utility.getBoardName(boardId);
                     }
@@ -354,7 +353,6 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
     keypress_submit(e) {
         var evt = window.event || e;
         if (evt.keyCode === 13) {
-            console.log("按下了回车");
             $('.searchIco').click();
         }
     }

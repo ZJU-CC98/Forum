@@ -3,12 +3,12 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
-import { UserFanInfo } from '../../States/AppState';
+import { UserInfo } from '../../States/AppState';
 import * as Utility from '../../Utility';
 import { Link } from 'react-router-dom';
 
 //用户中心我的关注&我的粉丝用户通用组件
-export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFollowingsUserProps, UserCenterMyFollowingsUserState> {
+export default class extends React.Component<UserCenterMyFollowingsUserProps, UserCenterMyFollowingsUserState> {
     constructor(props) {
         super(props);
         this.state = {
@@ -79,13 +79,13 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
     render() {
         return (
             <div className="user-center-myfollowings-user">
-                <img src={this.props.userFanInfo.avatarImgURL} />
+                <img src={this.props.userFanInfo.portraitUrl} />
                 <p>
                     <span className="user-center-myfollowings-user-id"><Link to={`/user/id/${this.props.userFanInfo.id}`}>{this.props.userFanInfo.name}</Link></span>
                     主题
-                    <span className="user-center-myfollowings-user-posts">{this.props.userFanInfo.posts}</span>
+                    <span className="user-center-myfollowings-user-posts">{this.props.userFanInfo.postCount}</span>
                     粉丝
-                    <span className="user-center-myfollowings-user-fans">{this.props.userFanInfo.fans}</span>
+                    <span className="user-center-myfollowings-user-fans">{this.props.userFanInfo.fanCount}</span>
                 </p>
                 <button
                     key={this.props.userFanInfo.id}
@@ -118,7 +118,7 @@ export class UserCenterMyFollowingsUser extends React.Component<UserCenterMyFoll
 }
 
 interface UserCenterMyFollowingsUserProps {
-    userFanInfo: UserFanInfo;
+    userFanInfo: UserInfo;
 }
 
 interface UserCenterMyFollowingsUserState {
