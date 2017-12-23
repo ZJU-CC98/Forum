@@ -28,7 +28,7 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
             buttonIsDisabled: true,
             buttonInfo: '关注中'
         });
-        let res = await Utility.followUser(Number.parseInt(this.props.userInfo.id));
+        let res = await Utility.followUser(this.props.userInfo.id);
         if (res === true) {
             this.setState({
                 buttonIsDisabled: false,
@@ -64,7 +64,7 @@ export class UserExactProfile extends React.Component<UserExactProfileProps, Use
             buttonIsDisabled: true,
             buttonInfo: '取关中'
         });
-        let state = await Utility.unfollowUser(Number.parseInt(this.props.userInfo.id));
+        let state = await Utility.unfollowUser(this.props.userInfo.id);
 
         if (state === true) {
             this.setState({

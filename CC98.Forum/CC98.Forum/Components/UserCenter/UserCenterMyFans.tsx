@@ -3,7 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
-import { UserFanInfo } from '../../States/AppState';
+import { UserInfo } from '../../States/AppState';
 import { UserCenterMyFollowingsUser } from './UserCenterMyFollowingsUser';
 import { RouteComponent } from '../app';
 import { UserCenterPageCount } from './UserCenterPageCount';
@@ -71,20 +71,10 @@ export class UserCenterMyFans extends React.Component<{match}, UserCenterMyFansS
             res = await Utility.cc98Fetch(url, {
                 headers
             });
-            let fanData: any[] = await res.json();
+            let fanData: UserInfo[] = await res.json();
 
-            let fans = fanData.reverse().map((item) => {
-                let userFanInfo = new UserFanInfo();
-                userFanInfo.name = item.name;
-                userFanInfo.avatarImgURL = item.portraitUrl;
-                userFanInfo.posts = item.postCount;
-                userFanInfo.id = item.id;
-                userFanInfo.fans = item.fanCount;
-                userFanInfo.isFollowing = item.isFollowing;
-                return userFanInfo;
-            });
             this.setState({
-                userFans: fans,
+                userFans: fanData,
                 isLoading: false
             });
         } catch (e) {
@@ -118,7 +108,7 @@ export class UserCenterMyFans extends React.Component<{match}, UserCenterMyFansS
 }
 
 interface UserCenterMyFansState {
-    userFans: UserFanInfo[];
+    userFans: UserInfo[];
     totalPage: number;
     info: string;
     currentPage: number;

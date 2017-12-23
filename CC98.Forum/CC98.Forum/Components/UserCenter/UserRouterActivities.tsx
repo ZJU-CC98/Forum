@@ -8,7 +8,7 @@ import { UserRecentPost } from '../../States/AppState';
 import * as Utility from '../../Utility';
 
 //用户中心主页帖子动态组件
-export class UserRouterActivities extends React.Component<{id: string}, UserCenterExactActivitiesPostsState> {
+export class UserRouterActivities extends React.Component<{id: number}, UserCenterExactActivitiesPostsState> {
     constructor(props) {
         super(props);
         //临时填充数据
