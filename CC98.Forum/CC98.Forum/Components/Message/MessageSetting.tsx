@@ -2,22 +2,18 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
+import * as Utility from '../../Utility';
 
 export class MessageSetting extends React.Component {
 
-    /*setMessageSetting() {
-        let response = document.getElementsByName("responseSetting");
-        var rdVal;
-        for (let i = 0; i < response.length; i++) {
-            if (response[i].checked) {
-                rdVal = rds.item(i).getAttribute("value");
-                alert(rdVal);
-                break;
-            }
-            else {
-                continue;
-            }
-    }*/
+    setMessageSetting() {
+        let responseSetting = $('input:radio[name="responseSetting"]:checked').val();
+        let attmeSetting = $('input:radio[name="attmeSetting"]:checked').val();
+        let systemSetting = $('input:radio[name="systemSetting"]:checked').val();
+        let messageSetting = $('input:radio[name="messageSetting"]:checked').val();
+        let noticeSetting = { response: responseSetting, attme: attmeSetting, system: systemSetting, message: messageSetting };
+        Utility.setLocalStorage("noticeSetting", noticeSetting);
+    }
 
     render() {
         return <div className="message-right">

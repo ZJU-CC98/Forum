@@ -1945,7 +1945,7 @@ a {
             font-size: 16px;
             height: 80px;
             line-height: 80px;
-            color: #6b7178 
+            color: #ffffff
         }
     }
 
@@ -3130,12 +3130,6 @@ a {
     opacity: 0.8;
 }
 
-
-
-
-
-
-
 .tagBoxSelect {
     display: flex;
     width: 3rem;
@@ -3149,8 +3143,6 @@ a {
     cursor: pointer;
 }
 
-
-
 .downArrow {
     display: flex;
     flex-direction: row;
@@ -3161,26 +3153,16 @@ a {
     cursor: pointer;
 }
 
-
-
-
-
-
-
 .tagIco {
     width: 20px;
     padding: 2px 0 0 3px;
 }
-
-
 
 .column ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
-
-
 
 .tagBoxSub {
     width: 50px;
@@ -3196,16 +3178,12 @@ a {
     z-index: 1000;
 }
 
-
-
 .tagBoxSub li {
     height: 25px;
     cursor: pointer;
     padding-left: 5px;
     padding-top: 3px;
 }
-
-
 
 .tagBoxSub {
     background: rgb(233,233,233);
@@ -3226,11 +3204,6 @@ a {
 }
 
 
-
-
-
-
-
 .tagBoxSelect1 {
     display: flex;
     width: 3rem;
@@ -3245,7 +3218,6 @@ a {
 }
 
 
-
 .downArrow1 {
     display: flex;
     flex-direction: row;
@@ -3255,11 +3227,6 @@ a {
     padding-right: 2px;
     cursor: pointer;
 }
-
-
-
-
-
 
 
 .tagIco1 {
@@ -3319,4 +3286,27 @@ a {
     max-height:10rem;
     width:65rem;
     overflow-y:auto;
+}
+
+/***********************消息设置的样式*****************************/
+.message-setting {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem auto auto 0.5rem;
+
+    .message-settingbox {
+        display: flex;
+        flex-direction: row;
+        height: 30px;
+        line-height: 30px;
+        font-size: 20px;
+        font-family: "微软雅黑";
+        color: #6b7178;
+        flex-shrink: 0;
+
+        input {
+            margin-left: 0.5rem;
+
+        }
+    }
 }
