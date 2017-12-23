@@ -314,8 +314,11 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
                 }
                 else if (searchBoxSelect.text() === '用户') {
                     let data = await Utility.getUserInfoByName(val);
+                    console.log(`搜索用户${val}`);
                     if (data) {
+                        console.log("搜索用户信息改变");
                         this.props.history.push(`/user/id/${data.id}`);
+                        console.log("搜索用户信息完后");
                     }
                     else {
                         Utility.removeStorage('searchInfo');
@@ -354,7 +357,6 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
     keypress_submit(e) {
         var evt = window.event || e;
         if (evt.keyCode === 13) {
-            console.log("按下了回车");
             $('.searchIco').click();
         }
     }

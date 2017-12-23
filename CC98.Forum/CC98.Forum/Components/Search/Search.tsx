@@ -31,7 +31,7 @@ export class Search extends React.Component<{}, SearchState> {
         if (!newTopic || newTopic.length === 0) {
             console.log("没有搜索结果");
             this.showNoResult();
-            this.setState({boardName: searchInfo.boardName, loading: false });
+            this.setState({ loading: false });
         }
         else if (newTopic == -1) {
             if (from === 0) {
@@ -49,12 +49,12 @@ export class Search extends React.Component<{}, SearchState> {
                 $('#focus-topic-loading').addClass('displaynone');
                 $('#focus-topic-loaddone').removeClass('displaynone');
                 let data = this.state.data.concat(newTopic);
-                this.setState({ data: data, from: data.length, loading: false });
+                this.setState({ boardName: searchInfo.boardName, data: data, from: data.length, loading: false });
             }
             //搜索结果多于20条，还可以通过滚动条继续获取,this.state.loading设置为true，后续可以再次发送fetch请求
             else {
                 let data = this.state.data.concat(newTopic);
-                this.setState({ data: data, from: data.length, loading: true })
+                this.setState({ boardName: searchInfo.boardName, data: data, from: data.length, loading: true })
             }
         }
     }
@@ -105,6 +105,7 @@ export class Search extends React.Component<{}, SearchState> {
     }
     
     render() {
+        console.log(this.state.boardName);
         return (<div className="focus-root">
                     <div className="focus" >
                             <div className="focus-allNewTopic"><i className="fa fa-home" aria-hidden="true"></i>搜索/{this.state.boardName}</div>
