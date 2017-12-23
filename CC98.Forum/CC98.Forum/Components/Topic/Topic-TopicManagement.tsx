@@ -133,11 +133,14 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
                     this.setState({ tips: "请输入原因！" });
                 }
         }
-        const UIId = `#manage${this.props.topicId}`;
-        $(UIId).css("display", "none");
-        const data = await Utility.getTopicInfo(this.props.topicId);
-        this.setState({ topicInfo: data });
-        this.props.update();
+        if (status === 'ok') {
+            this.setState({ tips: "操作成功" });
+            const UIId = `#manage${this.props.topicId}`;
+            $(UIId).css("display", "none");
+            const data = await Utility.getTopicInfo(this.props.topicId);
+            this.setState({ topicInfo: data });
+            this.props.update();
+        }
     }
     close() {
         const UIId = `#manage${this.props.topicId}`;

@@ -81,7 +81,8 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
                         }
 
                     }
-                    if ( status === 'ok' && status1 ==='ok') {
+                    if (status === 'ok' && status1 === 'ok') {
+                        this.setState({ tips: "操作成功" });
                         const UIId = `#manage${this.props.postId}`;
                         $(UIId).css("display", "none");
                         this.props.update();
@@ -137,6 +138,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
                     }
                   
                     if (status === 'ok' && status1 === 'ok' && status2 === 'ok') {
+                        this.setState({ tips: "操作成功" });
                         const UIId = `#manage${this.props.postId}`;
                         $(UIId).css("display", "none");
                         this.props.update();
@@ -165,6 +167,7 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
                 if (this.state.reason) {
                     status = await Utility.deletePost(this.props.topicId, this.props.postId, this.state.reason);
                     if (status === 'ok') {
+                        this.setState({ tips: "操作成功" });
                         const UIId = `#manage${this.props.postId}`;
                         $(UIId).css("display", "none");
                         this.props.update();

@@ -365,7 +365,7 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
         }
         const topicType = <div className="createTopicType">
             <div className="createTopicListName">发帖类型</div>
-            <input type="radio" name="type" value="普通" /> 普通
+            <input type="radio" name="type" value="普通" checked /> 普通
             <input type="radio" name="type" value="学术信息" /> 学术信息
             <input type="radio" name="type" value="校园活动" /> 校园活动
             <div style={{ color: 'rgb(255,0,0)' }}>（活动帖和学术贴请选择正确的发帖类型)</div>
