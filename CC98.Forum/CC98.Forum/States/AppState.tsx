@@ -281,7 +281,7 @@ export class UserInfo {
     /**
     * 用户性别
     */
-    gender: number;
+    gender: 0 | 1;
     /**
     * 用户生日
     */
@@ -351,9 +351,13 @@ export class UserInfo {
      */
     popularity: number;
     /**
-     * 用户头衔ID
+     * 用户拥有的头衔ID们
      */
-    UserTitleIds: string[];
+    userTitleIds: number[];
+    /**
+     * 当前显示的头衔ID
+     */
+    displayTitleId: number;
     /**
      * 粉丝数
      */

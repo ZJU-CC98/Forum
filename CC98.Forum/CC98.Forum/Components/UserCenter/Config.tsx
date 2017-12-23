@@ -4,17 +4,67 @@
 
 import * as React from 'react';
 import * as Utility from '../../Utility';
-import { ChangeUserInfo } from '../../States/AppState';
+import { ChangeUserInfo, UserInfo } from '../../States/AppState';
 
 import ConfigAvatar from './ConfigAvatar';
 import ConfigSignature from './ConfigSignature';
 import ConfigOthers from './ConfigOthers';
 
-export default class extends React.Component<null, UserCenterConfigState> {
+interface States {
+    /**
+     * 当前可修改的用户信息
+     * 以修改API所需的参数表示
+     */
+    userInfo: Info;
+    /**
+     * 修改后的提示信息
+     */
+    info: string;
+    /**
+     * 是否在加载过程中
+     * 防止多次提交
+     */
+    isLoading: boolean;
+}
+
+/**
+ * 扩展一下修改用户所需信息API类
+ * ChangeUserInfo是API需要的参数
+ * 新增的属性用来方便的传递参数
+ * API并不需要
+ */
+class Info extends ChangeUserInfo {
+    /**
+     * 用户出生年份
+     * 0表示未填
+     * 9999表示保密
+     */
+    birthdayYear: number;
+    /**
+     * 用户出生月份
+     */
+    birthdayMouth: number;
+    /**
+     * 用户出生日期
+     */
+    birthdayDay: number;
+    /**
+     * 用户当前可选的头衔id们
+     */
+    userTitleIds: number[];
+}
+
+/**
+ * 用户中心页
+ * 修改个人信息组件
+ */
+export default class extends React.Component<null, States> {
     constructor(props) {
         super(props);
-        let info = Utility.getLocalStorage('userInfo');
-        let myInfo: UserInfo = {
+        //由于修改API和获取API中的参数名不一致
+        //统一转换为修改API所需的类型
+        let info: UserInfo = Utility.getLocalStorage('userInfo');
+        let myInfo: Info = {
             EmailAddress: info.emailAddress,
             Gender: info.gender,
             Introduction: info.introduction,
@@ -32,15 +82,18 @@ export default class extends React.Component<null, UserCenterConfigState> {
             info: '',
             isLoading: false
         };
-        this.handleSignatureChange = this.handleSignatureChange.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleReset = this.handleReset.bind(this);
     }
 
+    /**
+     * 重置个人信息
+     * 点击重置按钮后触发
+     */
     handleReset() {
-        let info = Utility.getLocalStorage('userInfo');
-        let userInfo: UserInfo = {
+        let info: UserInfo = Utility.getLocalStorage('userInfo');
+        let userInfo: Info = {
             EmailAddress: info.emailAddress,
             Gender: info.gender,
             Introduction: info.introduction,
@@ -58,15 +111,11 @@ export default class extends React.Component<null, UserCenterConfigState> {
         });
     }
 
-    handleSignatureChange(str: string) {
-        this.setState((prevState) => ({
-            userInfo: {
-                ...prevState.userInfo,
-                SignatureCode: str
-            }
-        }));
-    }
-
+    /**
+     * 处理子组件提交的信息
+     * @param key 要修改的属性名
+     * @param value 修改后的新值
+     */
     handleChange(key, value) {
         this.setState((prevState) =>({
             userInfo: {
@@ -76,22 +125,21 @@ export default class extends React.Component<null, UserCenterConfigState> {
         }));
     }
 
+    /**
+     * 提交修改
+     */
     async handleSubmit() {
+        //禁用掉按钮，开始修改
         this.setState({
             isLoading: true,
             info: '修改中'
         });
         try {
-            let newInfo: ChangeUserInfo = {
-                Birthday: this.state.userInfo.birthdayYear !== 0 ? `${this.state.userInfo.birthdayYear}-${this.state.userInfo.birthdayMouth}-${this.state.userInfo.birthdayDay}` : '',
-                EmailAddress: this.state.userInfo.EmailAddress,
-                Gender: this.state.userInfo.Gender,
-                Introduction: this.state.userInfo.Introduction,
-                QQ: this.state.userInfo.QQ,
-                SignatureCode: this.state.userInfo.SignatureCode,
-                DisplayTitleId: this.state.userInfo.DisplayTitleId
-            };
-
+            let newInfo: ChangeUserInfo = this.state.userInfo;
+            //生日年月日分开处理，提交时合并
+            newInfo.Birthday = this.state.userInfo.birthdayYear !== 0 ? `${this.state.userInfo.birthdayYear}-${this.state.userInfo.birthdayMouth}-${this.state.userInfo.birthdayDay}` : '';
+            
+            //检测信息是否正确
             if (newInfo.EmailAddress && !newInfo.EmailAddress.match(/[\S]+@[\S]+\.[\S]+/)) {
                 throw new Error('请检查邮箱地址');
             }
@@ -116,8 +164,10 @@ export default class extends React.Component<null, UserCenterConfigState> {
             });
 
             if (res.status === 200) {
+                //修改成功后刷新用户信息
                 await Utility.refreshUserInfo();
                 let userInfo = Utility.getLocalStorage('userInfo');
+                //替换掉缓存中对应ID与NAME的缓存
                 Utility.setLocalStorage(`userId_${userInfo.id}`, userInfo, 3600);
                 Utility.setLocalStorage(`userName_${userInfo.name}`, userInfo, 3600);
                 this.setState({
@@ -144,7 +194,7 @@ export default class extends React.Component<null, UserCenterConfigState> {
         return (<div className="user-center-config">
             <ConfigAvatar />
             <hr />
-            <ConfigSignature signature={this.state.userInfo.SignatureCode} onchange={this.handleSignatureChange}/>
+            <ConfigSignature signature={this.state.userInfo.SignatureCode} onchange={this.handleChange}/>
             <hr />
             <ConfigOthers userinfo={this.state.userInfo} handleChange={this.handleChange} />
             <hr />
@@ -158,17 +208,4 @@ export default class extends React.Component<null, UserCenterConfigState> {
             </div>
         </div>);
     }
-}
-
-interface UserCenterConfigState {
-    userInfo: UserInfo;
-    info: string;
-    isLoading: boolean;
-}
-
-class UserInfo extends ChangeUserInfo {
-    birthdayYear: number;
-    birthdayMouth: number;
-    birthdayDay: number;
-    userTitleIds: number[];
 }
