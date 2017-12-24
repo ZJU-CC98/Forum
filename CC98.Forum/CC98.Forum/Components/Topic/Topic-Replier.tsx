@@ -99,7 +99,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
     async getPhotoFrame(displayTitleId:number) {
 
         const url = `/user/id/${this.props.userInfo.id}`;
-        const realUrl = encodeURI(url);//头像所用的url
+        const realUrl = encodeURI(url);//头像所用的url，链接到用户中心
 
         if (displayTitleId) {
             let response = await fetch('/static/portrait.json');//获取头像框样式的配置
@@ -139,7 +139,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                             <img className="userPortrait" src={this.props.userInfo.portraitUrl} style={shadow}></img>
                         </a>
                     </div>
-                  <div className="photoFrame"><img src={""} style={style} /></div>
+                  <div className="photoFrame"><img src={""} style={style} /></div>  
                 </div>
            
         } else if (this.props.isAnonymous == true) {
