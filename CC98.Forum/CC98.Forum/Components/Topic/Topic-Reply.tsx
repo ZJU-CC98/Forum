@@ -45,24 +45,7 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
 
         this.setState({ contents: realContents });
     }
-    /*async componentDidMount() {
-        console.log("did mount reply");
-        this.setState({inWaiting:true});
-        const page = this.props.page || 1;
-        let realContents;
-        if (this.props.isHot) {
-            realContents = await Utility.getHotReplyContent(this.props.topicId);
-            if (!realContents) this.setState({ inWaiting: false, contents: [] });
-        } else if (this.props.isTrace) {
-            const data = await Utility.getUserInfo(this.props.userId);
-            const userName = data.name;
-            realContents = await Utility.getCurUserTopicContent(this.props.topicId, page, userName, this.props.userId);
-        } else {
-            realContents = await Utility.getTopicContent(this.props.topicId, page, this.props.topicInfo.replyCount);
-        }
-        const masters = this.props.boardInfo.boardMasters;
-        this.setState({ inWaiting:false,contents: realContents,masters:masters });
-    }*/
+
     async componentWillReceiveProps(newProps) {
         this.setState({ inWaiting: true });
         const page = newProps.page || 1;
