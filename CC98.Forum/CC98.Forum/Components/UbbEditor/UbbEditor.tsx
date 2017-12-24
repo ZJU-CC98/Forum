@@ -207,6 +207,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
     handleButtonClick(name: string, value = '') {
         const shouldReplaceSelection = ['video', 'audio', 'img', 'upload'].indexOf(name) !== -1;
         const hasDefaultSelection = ['url'].indexOf(name) !== -1;
+        const shouldNotSelected = ['img'].indexOf(name) !== -1;
         this.setState((prevState: UbbEditorState) => {
             let before = this.state.value.slice(0, prevState.selectionStart),
                 selected = this.state.value.slice(prevState.selectionStart, prevState.selectionEnd),
@@ -221,7 +222,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
             this.props.update(before + selected + after);
             this.valueStack.push(before + selected + after);
             return {
-                selectionStart: before.length,
+                selectionStart: shouldNotSelected ? before.length + selected.length : before.length,
                 selectionEnd: before.length + selected.length,
                 clicked: true,
                 value: before + selected + after
@@ -390,7 +391,6 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                             }
                         }}
                     />
-
                 </div>
                 <div className="ubb-content">
                     {!this.state.isPreviewing ? (

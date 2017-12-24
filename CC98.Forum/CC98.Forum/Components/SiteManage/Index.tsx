@@ -1,7 +1,7 @@
 ﻿import * as React from 'react';
 import * as Utility from '../../Utility';
 import { UbbContainer } from '../UbbContainer';
-import { Announcement } from './Announcement';
+import Announcement from './Announcement';
 import Ad from './Advertisement';
 
 

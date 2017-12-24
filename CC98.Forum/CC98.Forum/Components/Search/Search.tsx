@@ -39,7 +39,7 @@ export class Search extends React.Component<{}, SearchState> {
             }
             else {
                 this.setState({ loading: true });
-                $('#focus-topic-getMore').removeClass('displaynone');
+                $('#focus-topic-getMore').css('display','flex');
                 $('#focus-topic-loading').addClass('displaynone');
                 return;
             }
@@ -47,7 +47,7 @@ export class Search extends React.Component<{}, SearchState> {
         else {
             //搜索结果小于20条，无法再获取新的了,添加新数据，this.state.loading设置为false，后续不可以再次发送fetch请求
             if (newTopic.length < 20) {
-                $('#focus-topic-getMore').addClass('displaynone');
+                $('#focus-topic-getMore').css('display', 'none');
                 $('#focus-topic-loading').addClass('displaynone');
                 $('#focus-topic-loaddone').removeClass('displaynone');
                 let data = this.state.data.concat(newTopic);
@@ -57,7 +57,7 @@ export class Search extends React.Component<{}, SearchState> {
             else {
                 let data = this.state.data.concat(newTopic);
                 this.setState({ boardName: searchInfo.boardName, data: data, from: data.length, loading: true });
-                $('#focus-topic-getMore').removeClass('displaynone');
+                $('#focus-topic-getMore').css('display', 'flex');
                 $('#focus-topic-loading').addClass('displaynone');
             }
         }
@@ -81,10 +81,10 @@ export class Search extends React.Component<{}, SearchState> {
             /**
             *发出第一条fetch请求前将this.state.loading设置为false，防止后面重复发送fetch请求
             */
+            $('#focus-topic-getMore').css('display','none');
+            $('#focus-topic-loading').removeClass('displaynone');
             this.setState({ loading: false });
             let searchInfo = Utility.getStorage("searchInfo");
-            $('#focus-topic-getMore').addClass('displaynone');
-            $('#focus-topic-loading').removeClass('displaynone');
             this.getData(searchInfo, this.state.from);
         }
     }
@@ -115,7 +115,7 @@ export class Search extends React.Component<{}, SearchState> {
                     <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
                     <div className="focus-topic-getMore" onClick={this.getMore} id="focus-topic-getMore">
                                         <div>点击获取更多搜索结果~</div>
-                                        <div>···</div>
+                                        <div>······</div>
                                     </div>
 
                                     <div className="focus-topic-loading displaynone" id="focus-topic-loading"><img src="http://file.cc98.org/uploadfile/2017/12/20/6514723843.gif"></img></div>
