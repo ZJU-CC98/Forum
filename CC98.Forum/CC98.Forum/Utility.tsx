@@ -95,26 +95,22 @@ function getThisUserInfo(userId, usersId) {
 export async function getTopicContent(topicid: number, curPage: number, replyCount: number) {
     try {
         const startPage = (curPage - 1) * 10;
-        const endPage = curPage * 10 - 1;
         const headers = await formAuthorizeHeader();
-        const topic = curPage != 1
-            ? await cc98Fetch(`/Topic/${topicid}/post?from=${startPage}&size=10`, { headers })
-            : await cc98Fetch(`/Topic/${topicid}/post?from=1&size=9`, { headers });
-
+        const topic = await cc98Fetch(`/Topic/${topicid}/post?from=${startPage}&size=10`, { headers });
         const content = await topic.json();
         const post = [];
         let topicNumberInPage = content.length;
         //收集id
         const usersId = [];
+        let usersInfo = [];
         if (content.length === 0) return [];
         if (content[0].isAnonymous == false) {
             for (let i in content) {
                 usersId[i] = content[i].userId;
             }
-        }
-        let usersInfo = [];
-        if (content[0].isAnonymous == false)
             usersInfo = await getUsersInfo(usersId);
+        }
+          
         for (let i = 0; i < topicNumberInPage; i++) {
 
             if (content[i].isAnonymous != true && content[i].isDeleted != true) {
@@ -137,8 +133,6 @@ export async function getTopicContent(topicid: number, curPage: number, replyCou
                 post[i] = {
                     ...content[i], userInfo: userMesJson, postId: content[i].id, isAnonymous: false, isDeleted: true, content: "该贴已被my cc98, my home"
                 }
-                //console.log("delete post");
-                //console.log(post[i]);
             }
         }
 
@@ -1794,7 +1788,7 @@ export async function plus1(topicId, postId, reason) {
     const bodyinfo = { value: 1, reason: reason };
     const body = JSON.stringify(bodyinfo);
     const response = await cc98Fetch(url, { method: "PUT", headers, body });
-    let aaa = await response.json();
+
     switch (response.status) {
         case 400:
             return 'rateself';

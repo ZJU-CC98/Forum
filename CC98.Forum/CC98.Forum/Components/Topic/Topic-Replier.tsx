@@ -182,7 +182,10 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         let userName = <Link style={{ color: "#fff" }} className="userMessage-userName" to={url}>{this.props.userInfo.name}</Link>;
 
         if (this.props.userInfo.privilege == "匿名" || this.props.userInfo.privilege === "匿名用户") {
-            userName = <div style={{ color: "white", fontSize: "1.25rem", fontWeight: "bold", marginTop: "1.5rem", marginLeft:"0.5rem" }} >{this.props.userInfo.name}</div>;
+            userName = <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+                <div style={{ color: "white", fontSize: "1rem", fontWeight: "bold",  marginLeft: "1rem" ,marginTop:"-0.8rem"}} >{this.props.userInfo.name}</div>
+                <div className="userMessageAnonymous">别问我是谁</div>
+            </div>;
         }
         let emailButton;
         if (this.props.isAnonymous) emailButton = null;
@@ -196,7 +199,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         if (Utility.getLocalStorage("userInfo")) {
             if (Utility.getLocalStorage("userInfo").name !== this.props.userInfo.name && !this.props.isAnonymous) {
                 btn = <div className="row userMessageBtn" >
-                    <div style={{ marginLeft:"1rem" }}><button className="replierBtn" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled} style={{ border: "none", marginBottom: "0.6rem" }}>{this.state.buttonInfo}</button></div>
+                    <div style={{ marginLeft: "1rem" }}><button className="replierBtn" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled} style={{marginBottom: "0.6rem" }}>{this.state.buttonInfo}</button></div>
                     <div style={{ marginLeft: "0.5rem" }}> <Link to={email}><button className="replierBtn">私信</button></Link></div>
                 </div>;
             }
@@ -257,12 +260,8 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                 {gender}
                 {this.state.photoframe}
                 {btn}
-            </div>
+            </div>   
 
-        
-      
-
-        
         </div>;
 
     }
