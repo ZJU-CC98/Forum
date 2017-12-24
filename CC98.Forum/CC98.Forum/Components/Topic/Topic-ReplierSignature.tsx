@@ -137,9 +137,9 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
         }
         let judgeIcon = <div className="operation1" onClick={this.showJudgeUI}>   评分</div>;
        // if (this.props.boardId === 182) judgeIcon = null;
-        return <div className="column" style={{ marginTop:"1rem" }}>
+        return <div className="column" style={{ marginTop:"1rem" ,width:"52rem"}}>
             <div className="comment1">
-                <div style={{ width: "40rem", marginLeft: "2rem", fontSize:"0.8rem" }}>
+                <div style={{ width: "40rem", marginLeft: "1.2rem", fontSize:"0.8rem" }}>
                     <span>发表于 {moment(this.props.replyTime).format('YYYY-MM-DD HH:mm:ss')}</span><span style={{ marginLeft: "1rem" }}>{lastUpdate}</span></div>
                 <div className="row" style={{ alignItems:"center" }}>
                 <div id={idLike} className="upup" style={{ marginRight: "0.7rem" }} onClick={ this.like.bind(this) }><i title="赞"  className="fa fa-thumbs-o-up fa-lg"></i><span className="commentProp"> {this.state.likeNumber}</span></div>

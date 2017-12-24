@@ -135,7 +135,6 @@
     <TypeScriptCompile Include="Components\Focus\FocusUserArea.tsx" />
     <TypeScriptCompile Include="Components\Footer.tsx" />
     <TypeScriptCompile Include="Components\LogOn.tsx" />
-    <TypeScriptCompile Include="Components\LogOff.tsx" />
     <TypeScriptCompile Include="Components\Search\Search.tsx" />
     <TypeScriptCompile Include="Components\Status.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-PostManagement.tsx" />

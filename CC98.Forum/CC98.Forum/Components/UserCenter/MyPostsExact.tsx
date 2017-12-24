@@ -6,7 +6,7 @@ import * as React from 'react';
 import * as Utility from '../../Utility';
 import Post from './ExactActivitiesPost';
 import { UserRecentPost } from '../../States/AppState';
-import { RouteComponent } from '../app';
+import { RouteComponent } from '../RouteComponent';
 import Pager from './Pager';
 
 /**
