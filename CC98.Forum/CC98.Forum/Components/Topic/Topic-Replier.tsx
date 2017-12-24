@@ -140,7 +140,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                             <img className="userPortrait" src={this.props.userInfo.portraitUrl} style={shadow}></img>
                         </a>
                     </div>
-                  <div className="photoFrame"><img src={""} style={style} /></div>
+                  <div className="photoFrame"><img src={""} style={style} /></div>  
                 </div>
            
         } else if (this.props.isAnonymous == true) {
