@@ -47,23 +47,24 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
     }
 
     async componentWillReceiveProps(newProps) {
-        this.setState({ inWaiting: true });
-        const page = newProps.page || 1;
-        let realContents;
-        if (newProps.isHot) {
-            realContents = await Utility.getHotReplyContent(newProps.topicId);
-            if (!realContents) this.setState({ inWaiting: false, contents: [] });
-        } else if (newProps.isTrace) {
-            const data = await Utility.getUserInfo(newProps.userId);
-            const userName = data.name;
-            realContents = await Utility.getCurUserTopicContent(newProps.topicId, page, userName, newProps.userId);
-        } else {
-            realContents = await Utility.getTopicContent(newProps.topicId, page, newProps.topicInfo.replyCount);
-            if (!realContents) this.setState({ inWaiting: false, contents: [] });
+        if(newProps.page !== this.props.page){
+            this.setState({ inWaiting: true });
+            const page = newProps.page || 1;
+            let realContents;
+            if (newProps.isHot) {
+                realContents = await Utility.getHotReplyContent(newProps.topicId);
+                if (!realContents) this.setState({ inWaiting: false, contents: [] });
+            } else if (newProps.isTrace) {
+                const data = await Utility.getUserInfo(newProps.userId);
+                const userName = data.name;
+                realContents = await Utility.getCurUserTopicContent(newProps.topicId, page, userName, newProps.userId);
+            } else {
+                realContents = await Utility.getTopicContent(newProps.topicId, page, newProps.topicInfo.replyCount);
+                if (!realContents) this.setState({ inWaiting: false, contents: [] });
+            }
+            const masters = newProps.boardInfo.boardMasters;
+            this.setState({inWaiting:false,contents: realContents,masters:masters });
         }
-        const masters = newProps.boardInfo.boardMasters;
-        this.setState({inWaiting:false,contents: realContents,masters:masters });
-
     }
 
     private generateContents(item) {

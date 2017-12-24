@@ -116,7 +116,14 @@ ${newProps.content.content}
 `;
 				Constants.testEditor.appendMarkdown(str);
 			} else {
-				const url = `/topic/${this.props.topicid}#${newProps.content.floor}`;
+				let floor = newProps.content.floor, page, url;
+				if(floor > 10){
+					page = parseInt(((floor - 1) / 10).toString()) + 1;
+					floor = floor % 10;
+					url = `/topic/${this.props.topicid}/${page}#${floor === 0 ? 10 : floor}`;
+				} else {
+					url = `/topic/${this.props.topicid}#${newProps.content.floor}`;
+				}
 				const str = `[quote][b]以下是引用${newProps.content.floor}楼：用户${newProps.content.userName}在${time}的发言：[color=blue][url=${url}]>>查看原帖<<[/url][/color][/b]
 ${newProps.content.content}[/quote]
 `;
@@ -175,7 +182,33 @@ ${newProps.content.content}[/quote]
 			});
 		}
 	}
+
+	/*
+    *处理ubb模式下的发帖内容
+    *如果存在合法的@，则会返回一个字符串数组，包含至多10个合法的被@用户的昵称，否则返回false
+    */
+    atHanderler(content: string) {
+        const reg = new RegExp("@[^ \n]{1,10}?[ \n]", "gm");
+        const reg2 = new RegExp("[^@ ]+");
+        if (content.match(reg)) {   //如果match方法返回了非null的值（即数组），则说明内容中存在合法的@
+            let atNum = content.match(reg).length;  //合法的@数
+            if (atNum > 10) atNum = 10;            //至多10个
+            let ats: string[] = new Array();
+            for (let i = 0; i < atNum; i++) {
+                let anAt = content.match(reg)[i];
+        
+                let aUserName = reg2.exec(anAt)[0];
+          
+                ats[i] = aUserName;
+            }
+            return ats;
+        } else {
+            return false;
+        }
+    }
+
 	async sendUbbTopic() {
+		console.log(this.state.content);
 		const url = `/topic/${this.props.topicid}/post`;
 		const bodyInfo = {
 			content: this.state.content,
@@ -183,7 +216,7 @@ ${newProps.content.content}[/quote]
 			title: ''
 		};
 		const body = JSON.stringify(bodyInfo);
-		const token = Utility.getLocalStorage('accessToken');
+		const token = await Utility.getToken();
 		const headers = new Headers();
 		headers.append('Authorization', token);
 		headers.append('Content-Type', 'application/json');
@@ -193,11 +226,32 @@ ${newProps.content.content}[/quote]
 				body
 			}
 		);
+		console.log('something happened');
+        console.log(this.state.content);
 		if (mes.status === 403) {
 			alert('你太快啦 请慢一点~');
+		} else if(mes.status === 200){
+			const atUsers = this.atHanderler(this.state.content);
+			console.log(atUsers);
+			//如果存在合法的@，则发送@信息，否则不发送，直接跳转至所发帖子
+			if (atUsers) {
+				const postId = await mes.text();
+				const topicId = this.props.topicid;
+				const atUsersJSON = JSON.stringify(atUsers);
+				const url2 = `/notification/at?topicid=${topicId}&postid=${postId}`;
+				let myHeaders2 = new Headers();
+				myHeaders2.append("Content-Type", 'application/json');
+				myHeaders2.append("Authorization", token);
+				let response2 = await Utility.cc98Fetch(url2, {
+					method: 'POST',
+					headers: myHeaders2,
+					body: atUsersJSON
+				});
+				console.log(response2);
+			}
+			this.setState({ content: '' });
+			this.props.onChange();
 		}
-		this.setState({ content: '' });
-		this.props.onChange();
 
 	}
 	async sendMdTopic() {

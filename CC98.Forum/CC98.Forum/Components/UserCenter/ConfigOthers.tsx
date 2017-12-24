@@ -73,7 +73,7 @@ export default class extends React.Component<{ userinfo: UserInfo, handleChange:
             {this.state.displayTitles.length > 0 ?
                 <div className="config-gender">
                     <p>头衔：</p>
-                    <select style={{width: 'auto'}} name="DisplayTitleId" value={this.props.userinfo.DisplayTitleId} onChange={(e) => { this.props.handleChange(e.target.name, Number.parseInt(e.target.value)) }}>
+                    <select style={{width: 'auto', padding: '0 1rem'}} name="DisplayTitleId" value={this.props.userinfo.DisplayTitleId} onChange={(e) => { this.props.handleChange(e.target.name, Number.parseInt(e.target.value)) }}>
                         <option value={0}>不显示</option>
                         {this.props.userinfo.userTitleIds.map(item => {
                             let title = this.state.displayTitles.filter(title => title.id === item);

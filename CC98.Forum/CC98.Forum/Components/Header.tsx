@@ -347,6 +347,7 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
                     }
                 }
             }
+            $('#searchText').val('');
         });
     }
 

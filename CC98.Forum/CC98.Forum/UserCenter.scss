@@ -868,6 +868,11 @@
     .user-center-myfavorite-board-info {
         flex-grow: 1;
         margin-left: 3rem;
+        max-width: 36.75rem;
+
+        p {
+            word-break: keep-all;
+        }
     }
 
     button {
