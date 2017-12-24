@@ -82,7 +82,7 @@ export class Pager extends React.Component<{ page: number, url: string, totalPag
                     {next &&
                         <PageModel
                             text="&rsaquo;"
-                            url={`${url}${curPage - 1}#1`}
+                            url={`${url}${curPage + 1}#1`}
                         />
                     }
 

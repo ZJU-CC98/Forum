@@ -132,9 +132,8 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
 
             let shadow = {};
             if (displayTitleId === 82) 
-                shadow = { boxShadow: "0 0 0" };
-
-                return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
+                shadow = { boxShadow: "0 0 0" }; 
+            return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
                     <div style={{ zIndex: 100 }}>
                         <a href={realUrl} style={{ display: "block", maxHeight: "7.5rem" }}>
                             <img className="userPortrait" src={this.props.userInfo.portraitUrl} style={shadow}></img>
