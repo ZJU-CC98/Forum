@@ -5,6 +5,9 @@
 import * as React from 'react';
 import * as Utility from '../../Utility';
 import { UbbContainer } from '../UbbContainer';
+import LazyImage from './LazyImage';
+import Message from './Message';
+
 /**
  * 组件属性
  */
@@ -22,6 +25,7 @@ class UbbEditorProps {
      */
     option?: UbbEditorOption;
 }
+
 /**
  * UBB编辑器可选选项
  */
@@ -40,6 +44,7 @@ class UbbEditorOption {
      */
     submit?: Function;
 }
+
 /**
  * 组件状态
  */
@@ -364,7 +369,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
 
         return (
             <div className="ubb-editor" style={{ maxHeight: `${height + 6.125}rem` }}>
-                <UbbMessage message={this.state.info} />
+                <Message message={this.state.info} />
                 <div className="editor-buttons">
                     <div style={{ height: '2rem', display: 'flex', transitionDuration: '.5s', overflow: 'hidden', width: this.state.isPreviewing ? '0rem' : '50rem' }}>
                         <div className="editor-buttons-styles">
@@ -494,104 +499,6 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                     </div>
                 </div>
             </div>
-        );
-    }
-}
-
-/**
- * 异步加载图片的组件
- */
-class LazyImage extends React.Component<{ onClick, src, className? }, {loaded}> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            loaded: false
-        };
-    }
-
-    componentDidMount() {
-        const img = new Image();
-        img.onload = () => {
-            this.setState({
-                loaded: true
-            });
-        };
-        img.src = this.props.src;
-    }
-
-    componentWillReceiveProps(nextProps){
-        if(nextProps.src !== this.props.src){
-            this.setState({
-                loaded: false
-            });
-            const img = new Image();
-            img.onload = () => {
-                this.setState({
-                    loaded: true
-                });
-            };
-            img.src = nextProps.src;
-        }
-    }
-
-    render() {
-        if (!this.state.loaded) {
-            return <img
-                className={this.props.className}/>
-        }
-        return <img
-            className={this.props.className}
-            src={this.props.src}
-            onClick={this.props.onClick} />
-    }
-}
-
-interface UbbMessageProps {
-    /**
-     * 要显示的信息
-     */
-    message: string;
-}
-
-interface UbbMessageState {
-    /**
-     * 是否在显示
-     */
-    isShown: boolean;
-    /**
-     * 显示的信息
-     */
-    message: string;
-}
-
-class UbbMessage extends React.Component<UbbMessageProps, UbbMessageState> {
-    constructor(props){
-        super(props);
-        this.state = {
-            isShown: false,
-            message: props.message
-        };
-    }
-
-    componentWillReceiveProps(nextProps){
-        if(nextProps.message !== ""){
-            this.setState({
-                isShown: true,
-                message: nextProps.message
-            });
-            setTimeout(()=>{
-                this.setState({
-                    isShown: false
-                })
-            }, 2000);
-        }
-    }
-
-    render() {
-        return (
-        <div className="ubb-editor-info" style={this.state.isShown  ?  {opacity: 1} : {opacity: 0}}>
-            <p>{this.state.message}</p>
-        </div>
         );
     }
 }
