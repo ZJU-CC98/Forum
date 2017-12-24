@@ -13,7 +13,7 @@ class AnnouncementState {
     info: string;
 }
 
-export class Announcement extends React.Component<null, AnnouncementState> {
+export default class Announcement extends React.Component<null, AnnouncementState> {
     constructor(props) {
         super(props);
         this.state = {
@@ -65,6 +65,6 @@ export class Announcement extends React.Component<null, AnnouncementState> {
                     <UbbContainer code={this.state.announcement} />
                 </div>
             </div>
-            );
+        );
     }
 }

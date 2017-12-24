@@ -204,6 +204,6 @@ export default class extends React.Component<null, State > {
                     </table> : null}
                 <p>{this.state.info}</p>
             </div>
-            );
+        );
     }
 }
