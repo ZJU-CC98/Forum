@@ -231,7 +231,7 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, States>
 		window.addEventListener('mouseup', this.handleMouseUp);
 	}
 
-	//组件卸载时接触事件绑定
+	//组件卸载时解除事件绑定
 	componentWillUnmount() {
 		this.selector.removeEventListener('mousedown', this.handleSelectorMove);
 		this.selector.removeEventListener('mousemove', this.handleSelectorMove);
@@ -368,9 +368,23 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, States>
 			file.name = '头像';
 			try{
 				//上传头像文件到API
-				const avatar = await Utility.uploadFile(file);
-				//根据返回的图片地址修改个人信息
-				this.changeAvatar(avatar.content);
+				const url = `/file/portrait`;
+				let myHeaders = new Headers();
+				myHeaders.append('Content-Type', 'application/json');
+				myHeaders.append('Authorization', await Utility.getToken());
+				let formdata = new FormData();
+				formdata.append('files', file, file.name);
+				formdata.append('contentType', "multipart/form-data");
+				let res = await Utility.cc98Fetch(url, {
+					method: 'POST',
+					headers: myHeaders,
+					body: formdata
+				});
+				let data: string[] = await res.json();
+				if (res.status === 200 && data.length !== 0) {
+					//根据返回的图片地址修改个人信息
+					this.changeAvatar(data[0]);
+				}				
 			}catch(e){
 				this.setState({
 					info: '修改失败',

@@ -99,7 +99,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
     async getPhotoFrame(displayTitleId:number) {
 
         const url = `/user/id/${this.props.userInfo.id}`;
-        const realUrl = encodeURI(url);//头像所用的url
+        const realUrl = encodeURI(url);//头像所用的url，链接到用户中心
 
         if (displayTitleId) {
             let response = await fetch('/static/portrait.json');//获取头像框样式的配置
@@ -132,15 +132,14 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
 
             let shadow = {};
             if (displayTitleId === 82) 
-                shadow = { boxShadow: "0 0 0" };
-
-                return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
+                shadow = { boxShadow: "0 0 0" }; 
+            return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
                     <div style={{ zIndex: 100 }}>
                         <a href={realUrl} style={{ display: "block", maxHeight: "7.5rem" }}>
                             <img className="userPortrait" src={this.props.userInfo.portraitUrl} style={shadow}></img>
                         </a>
                     </div>
-                  <div className="photoFrame"><img src={""} style={style} /></div>
+                  <div className="photoFrame"><img src={""} style={style} /></div>  
                 </div>
            
         } else if (this.props.isAnonymous == true) {
@@ -183,7 +182,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         let userName = <Link style={{ color: "#fff" }} className="userMessage-userName" to={url}>{this.props.userInfo.name}</Link>;
 
         if (this.props.userInfo.privilege == "匿名" || this.props.userInfo.privilege === "匿名用户") {
-            userName = <div style={{ color: "white" }} >{this.props.userInfo.name}</div>;
+            userName = <div style={{ color: "white", fontSize: "1.25rem", fontWeight: "bold", marginTop: "1.5rem", marginLeft:"0.5rem" }} >{this.props.userInfo.name}</div>;
         }
         let emailButton;
         if (this.props.isAnonymous) emailButton = null;
@@ -238,11 +237,15 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
               
          
         }
+
         let gender = <div className="userGender">
             {this.props.userInfo.gender === 0 ? <i className="fa fa-venus" style={{ color: "#fff" }}></i> : <i className="fa fa-mars" style={{ color: "#fff" }}></i>}
         </div>;
-        if (this.props.isAnonymous == true)
+        if (this.props.isAnonymous == true) {
             gender = null;
+          
+        }
+         
         return <div className="userMessage">
 
             <div className="column userMessage-left">

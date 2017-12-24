@@ -135,6 +135,10 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
         if (this.props.boardId != 182) {
             traceIcon = <div className="operation1"><Link style={{ color: "#79b8ca" }} to={this.props.traceMode ?returnUrl:traceUrl}>{this.props.traceMode ? "返回" : "追踪"}</Link></div>;
         }
+        let manageBtn = null;
+        if (Utility.isMaster(this.props.masters) == true) {
+            manageBtn = <div className="operation1" id={manageIcon} style={{ cursor: "pointer" }} onClick={this.showManageUI}>管理</div>;
+        }
         let judgeIcon = <div className="operation1" onClick={this.showJudgeUI}>   评分</div>;
        // if (this.props.boardId === 182) judgeIcon = null;
         return <div className="column" style={{ marginTop:"1rem" ,width:"52rem"}}>
@@ -149,7 +153,7 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
                         <div className="operation1" onClick={this.quote}>   引用</div>
                         {traceIcon}
                         {editIcon}
-                    <div className="operation1" id={manageIcon} style={{ display: "none", cursor: "pointer" }} onClick={this.showManageUI}>管理</div>
+                        {manageBtn}
                     </div>
                     </div>
             </div>

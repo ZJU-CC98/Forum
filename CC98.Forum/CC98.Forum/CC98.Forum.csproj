@@ -25,6 +25,7 @@
     <None Remove="Components\FindIP.tsx" />
     <None Remove="Components\FocusBoardTopicArea.tsx" />
     <None Remove="Components\Footer.tsx" />
+    <None Remove="Components\newHeader.tsx" />
     <None Remove="Components\PageModel.tsx" />
     <None Remove="Components\Pager.tsx" />
     <None Remove="Components\RouteComponent.tsx" />
@@ -119,6 +120,7 @@
     <TypeScriptCompile Include="Components\Constant.tsx" />
     <TypeScriptCompile Include="Components\FindIP.tsx" />
     <TypeScriptCompile Include="Components\Focus\FocusTopicArea.tsx" />
+    <TypeScriptCompile Include="Components\newHeader.tsx" />
     <TypeScriptCompile Include="Components\PageModel.tsx" />
     <TypeScriptCompile Include="Components\Pager.tsx" />
     <TypeScriptCompile Include="Components\RouteComponent.tsx" />
@@ -133,7 +135,6 @@
     <TypeScriptCompile Include="Components\Focus\FocusUserArea.tsx" />
     <TypeScriptCompile Include="Components\Footer.tsx" />
     <TypeScriptCompile Include="Components\LogOn.tsx" />
-    <TypeScriptCompile Include="Components\LogOff.tsx" />
     <TypeScriptCompile Include="Components\Search\Search.tsx" />
     <TypeScriptCompile Include="Components\Status.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-PostManagement.tsx" />
