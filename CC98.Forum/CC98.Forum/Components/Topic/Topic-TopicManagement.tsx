@@ -173,7 +173,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
         this.setState({ topicInfo: data });
     }
     render() {
-        console.log("topicinfo");
+      
         console.log(this.props.topicInfo);
         let info;
 

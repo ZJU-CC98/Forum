@@ -41,8 +41,6 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
             realContents = await Utility.getCurUserTopicContent(this.props.topicId, page, userName, this.props.userId);
         } else {
             realContents = await Utility.getTopicContent(this.props.topicId, page, this.props.topicInfo.replyCount);
-            console.log("after operation");
-            console.log(realContents);
         }
 
         this.setState({ contents: realContents });
@@ -118,7 +116,7 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
         if (this.props.isHot && this.state.inWaiting)
             return null;
         if (!this.state.inWaiting) {
-            if (this.state.contents.length == 0) {
+            if (!this.state.contents.length ) {
                 return <div></div>;
             }
             return <div className="center" style={{ width: "100%" }}>

@@ -22,7 +22,6 @@ export class TopicInfo extends React.Component<{ topicInfo, boardInfo, tag1, tag
         let t1 = "", t2 = "";
         if (this.props.tag1)
             t1 = await Utility.getTagNamebyId(this.props.tag1);
-        console.log("tag1:" + this.props.tag1);
         if (this.props.tag2)
             t2 = await Utility.getTagNamebyId(this.props.tag2);
         this.setState({ tag1Name: t1, tag2Name: t2 });
@@ -32,7 +31,6 @@ export class TopicInfo extends React.Component<{ topicInfo, boardInfo, tag1, tag
         let t1 = "", t2 = "";
         if (newProps.tag1)
             t1 = await Utility.getTagNamebyId(newProps.tag1);
-        console.log("tag1:" + this.props.tag1);
         if (newProps.tag2)
             t2 = await Utility.getTagNamebyId(newProps.tag2);
         this.setState({ tag1Name: t1, tag2Name: t2 });

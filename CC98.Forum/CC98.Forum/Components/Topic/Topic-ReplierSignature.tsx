@@ -137,6 +137,7 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
         }
         let manageBtn = null;
         if (Utility.isMaster(this.props.masters) == true) {
+            console.log("is master");
             manageBtn = <div className="operation1" id={manageIcon} style={{ cursor: "pointer" }} onClick={this.showManageUI}>管理</div>;
         }
         let judgeIcon = <div className="operation1" onClick={this.showJudgeUI}>   评分</div>;

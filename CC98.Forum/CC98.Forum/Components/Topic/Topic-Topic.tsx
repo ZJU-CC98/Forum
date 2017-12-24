@@ -26,14 +26,15 @@ export class PostTopic extends React.Component<{ boardInfo,topicInfo,userId, img
 
         this.setState({ topicMessage: topicMessage });
     }
-    async componentDidMount() {
-        if (this.props.isTrace) {
-            const topicMessage = await Utility.getCurUserTopic(this.props.topicid, this.props.topicInfo.userId);
-            const masters = this.props.boardInfo.boardMasters;
+    async componentWillRecieveProps(newProps) {
+        if (newProps.isTrace) {
+            const topicMessage = await Utility.getCurUserTopic(newProps.topicid, newProps.topicInfo.userId);
+            const masters = newProps.boardInfo.boardMasters;
             this.setState({ topicMessage: topicMessage, masters: masters });
         } else {
-            const topicMessage = await Utility.getTopic(this.props.topicid);
-            const masters = this.props.boardInfo.boardMasters;
+            const topicMessage = await Utility.getTopic(newProps.topicid);
+            console.log(topicMessage);
+            const masters = newProps.boardInfo.boardMasters;
             this.setState({ topicMessage: topicMessage, masters: masters });
         }
       
@@ -53,7 +54,7 @@ export class PostTopic extends React.Component<{ boardInfo,topicInfo,userId, img
                         <PostManagement topicId={this.state.topicMessage.topicId} postId={this.state.topicMessage.postId} userId={this.state.topicMessage.userId} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} />
                         <ReplyContent key={this.state.topicMessage.content} postid={this.state.topicMessage.postId} content={this.state.topicMessage.content} contentType={this.state.topicMessage.contentType} />
                         <Award postId={this.state.topicMessage.postId} updateTime={Date.now()} awardInfo={this.state.topicMessage.awards} />
-                        <ReplierSignature signature={this.state.topicMessage.userInfo.signatureCode} topicid={this.state.topicMessage.topicId} userId={this.state.topicMessage.userId} masters={this.state.masters} postid={this.state.topicMessage.postId} likeInfo={likeInfo}
+                        <ReplierSignature signature={this.state.topicMessage.userInfo.signatureCode} topicid={this.state.topicMessage.topicId} userId={this.state.topicMessage.userId} masters={this.props.boardInfo.masters} postid={this.state.topicMessage.postId} likeInfo={likeInfo}
                             userInfo={this.state.topicMessage.userInfo}
                             content={this.state.topicMessage.content}
                             floor={this.state.topicMessage.floor}

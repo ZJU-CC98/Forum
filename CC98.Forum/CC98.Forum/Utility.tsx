@@ -106,6 +106,7 @@ export async function getTopicContent(topicid: number, curPage: number, replyCou
         let topicNumberInPage = content.length;
         //收集id
         const usersId = [];
+        if (content.length === 0) return [];
         if (content[0].isAnonymous == false) {
             for (let i in content) {
                 usersId[i] = content[i].userId;
@@ -1768,10 +1769,7 @@ export async function plus1(topicId, postId, reason) {
     const bodyinfo = { value: 1, reason: reason };
     const body = JSON.stringify(bodyinfo);
     const response = await cc98Fetch(url, { method: "PUT", headers, body });
-    console.log(response);
-    console.log(response.text);
     let aaa = await response.json();
-    console.log("评分回复", aaa);
     switch (response.status) {
         case 400:
             return 'rateself';
@@ -2253,16 +2251,15 @@ export function isMaster(masters) {
         const privilege = getLocalStorage("userInfo").privilege;
         const myName = getLocalStorage("userInfo").name;
         const myId = getLocalStorage("userInfo").id;
-
         if (privilege === '管理员' || privilege === '超级版主') {
             return true;
 
+            
         }
-        //console.log(masters);
+        console.log(masters);
         if (masters) {
             for (let i = 0; i < masters.length; i++) {
-                if (myName === masters[i]) {
-                    //console.log("is master");
+                if (myName === masters[i]) {    
                     return true;
                 }
             }
