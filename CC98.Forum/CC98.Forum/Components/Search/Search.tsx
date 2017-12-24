@@ -22,14 +22,13 @@ export class Search extends React.Component<{}, SearchState> {
             from: 0,
             loading: true
         }
-        this.handleScroll = this.handleScroll.bind(this);
+        this.getMore = this.getMore.bind(this);
     }
 
     async getData(searchInfo: any, from: number) {
         let newTopic = await Utility.getSearchTopic(searchInfo.boardId, searchInfo.words, from, this.context.router);
         //搜索结果为0
         if (!newTopic || newTopic.length === 0) {
-            console.log("没有搜索结果");
             this.showNoResult();
             this.setState({ loading: false });
         }
@@ -40,12 +39,15 @@ export class Search extends React.Component<{}, SearchState> {
             }
             else {
                 this.setState({ loading: true });
+                $('#focus-topic-getMore').removeClass('displaynone');
+                $('#focus-topic-loading').addClass('displaynone');
                 return;
             }
         }
         else {
             //搜索结果小于20条，无法再获取新的了,添加新数据，this.state.loading设置为false，后续不可以再次发送fetch请求
             if (newTopic.length < 20) {
+                $('#focus-topic-getMore').addClass('displaynone');
                 $('#focus-topic-loading').addClass('displaynone');
                 $('#focus-topic-loaddone').removeClass('displaynone');
                 let data = this.state.data.concat(newTopic);
@@ -54,7 +56,9 @@ export class Search extends React.Component<{}, SearchState> {
             //搜索结果多于20条，还可以通过滚动条继续获取,this.state.loading设置为true，后续可以再次发送fetch请求
             else {
                 let data = this.state.data.concat(newTopic);
-                this.setState({ boardName: searchInfo.boardName, data: data, from: data.length, loading: true })
+                this.setState({ boardName: searchInfo.boardName, data: data, from: data.length, loading: true });
+                $('#focus-topic-getMore').removeClass('displaynone');
+                $('#focus-topic-loading').addClass('displaynone');
             }
         }
     }
@@ -70,19 +74,17 @@ export class Search extends React.Component<{}, SearchState> {
             this.setState({ boardId: searchInfo.boardId, boardName: searchInfo.boardname, words: searchInfo.words });
             this.getData(searchInfo, 0);
         }
-
-        //滚动条监听
-        document.addEventListener('scroll', this.handleScroll);
     }
 
-    async handleScroll() {
-        if (Utility.isBottom() && this.state.loading) {
-            console.log("调用滚动~");
+    async getMore() {
+        if (this.state.loading) {
             /**
             *发出第一条fetch请求前将this.state.loading设置为false，防止后面重复发送fetch请求
             */
             this.setState({ loading: false });
             let searchInfo = Utility.getStorage("searchInfo");
+            $('#focus-topic-getMore').addClass('displaynone');
+            $('#focus-topic-loading').removeClass('displaynone');
             this.getData(searchInfo, this.state.from);
         }
     }
@@ -110,8 +112,13 @@ export class Search extends React.Component<{}, SearchState> {
                     <div className="focus" >
                             <div className="focus-allNewTopic"><i className="fa fa-home" aria-hidden="true"></i>搜索/{this.state.boardName}</div>
                             <div className="focus-topic-area" id="focus-topic-area">
-                                    <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
-                                    <div className="focus-topic-loading" id="focus-topic-loading"><img src="http://file.cc98.org/uploadfile/2017/12/20/6514723843.gif"></img></div>
+                    <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
+                    <div className="focus-topic-getMore" onClick={this.getMore} id="focus-topic-getMore">
+                                        <div>点击获取更多搜索结果~</div>
+                                        <div>···</div>
+                                    </div>
+
+                                    <div className="focus-topic-loading displaynone" id="focus-topic-loading"><img src="http://file.cc98.org/uploadfile/2017/12/20/6514723843.gif"></img></div>
                                     <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone"> 没有更多帖子啦~</div>
                             </div>
                             <div id="noResult" className="noResult displaynone">没有符合条件的搜索结果</div>
