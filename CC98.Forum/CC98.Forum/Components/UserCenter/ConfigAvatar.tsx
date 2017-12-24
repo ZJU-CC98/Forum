@@ -231,7 +231,7 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, States>
 		window.addEventListener('mouseup', this.handleMouseUp);
 	}
 
-	//组件卸载时接触事件绑定
+	//组件卸载时解除事件绑定
 	componentWillUnmount() {
 		this.selector.removeEventListener('mousedown', this.handleSelectorMove);
 		this.selector.removeEventListener('mousemove', this.handleSelectorMove);

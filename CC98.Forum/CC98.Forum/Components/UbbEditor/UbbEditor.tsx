@@ -390,7 +390,6 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                             }
                         }}
                     />
-
                 </div>
                 <div className="ubb-content">
                     {!this.state.isPreviewing ? (
