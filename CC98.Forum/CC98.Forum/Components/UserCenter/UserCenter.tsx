@@ -30,7 +30,7 @@ class UserCenterBeforeConnect extends React.Component<{ isLogOn }> {
 }
 /**
  * 将store中的isLogOn属性映射到UserCenterBeforeConnect的props的isLogOn
- * @param state
+ * @param state store
  */
 function mapState(state) {
     return {

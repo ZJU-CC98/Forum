@@ -16,6 +16,8 @@ import { connect } from 'react-redux';
  */
 class UserCenterExact extends React.Component<{userInfo, changeUserInfo}> {
 
+
+    //组件加载时更新store与缓存中的状态
     async componentDidMount() {
         try {
             const token = await Utility.getToken();
