@@ -96,7 +96,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
      * 根据displayTitle返回头像框的HTML
      * @param displayTitleId
      */
-    async getPhotoFrame(displayTitleId:number) {
+    async getPhotoFrame(displayTitleId: number) {
 
         const url = `/user/id/${this.props.userInfo.id}`;
         const realUrl = encodeURI(url);//头像所用的url，链接到用户中心
@@ -131,23 +131,24 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
             }
 
             let shadow = {};
-            if (displayTitleId === 82) 
-                shadow = { boxShadow: "0 0 0" }; 
+            if (displayTitleId === 82)
+                shadow = { boxShadow: "0 0 0" };
+
             return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
-                    <div style={{ zIndex: 100 }}>
-                        <a href={realUrl} style={{ display: "block", maxHeight: "7.5rem" }}>
-                            <img className="userPortrait" src={this.props.userInfo.portraitUrl} style={shadow}></img>
-                        </a>
-                    </div>
-                  <div className="photoFrame"><img src={""} style={style} /></div>  
+                <div style={{ zIndex: 100 }}>
+                    <a href={realUrl} style={{ display: "block", maxHeight: "7.5rem" }}>
+                        <img className="userPortrait" src={this.props.userInfo.portraitUrl} style={shadow}></img>
+                    </a>
                 </div>
-           
+                <div className="photoFrame"><img src={imageUrl} style={style} /></div>
+            </div>
+
         } else if (this.props.isAnonymous == true) {
             return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
                 <div style={{ zIndex: 100 }}>
-                   
-                        <img className="userPortrait" src={this.props.userInfo.portraitUrl}></img>
-                 
+
+                    <img className="userPortrait" src={this.props.userInfo.portraitUrl}></img>
+
                 </div>
             </div>;
         } else {
@@ -237,8 +238,8 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                         最后登录 {lastLogOn}
                     </div>
                 </div>;
-              
-         
+
+
         }
 
         let gender = <div className="userGender">
@@ -246,9 +247,9 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         </div>;
         if (this.props.isAnonymous == true) {
             gender = null;
-          
+
         }
-         
+
         return <div className="userMessage">
 
             <div className="column userMessage-left">
@@ -261,6 +262,10 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                 {this.state.photoframe}
                 {btn}
             </div>   
+
+
+
+
 
         </div>;
 
