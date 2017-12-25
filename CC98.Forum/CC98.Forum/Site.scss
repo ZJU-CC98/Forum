@@ -3240,21 +3240,34 @@ a {
 .message-setting {
     display: flex;
     flex-direction: column;
-    margin: 0.5rem auto auto 0.5rem;
+    background-color: $color-post;
+    border: 1px solid $color-border;
+    height: 400px;
 
     .message-settingbox {
         display: flex;
         flex-direction: row;
         height: 30px;
         line-height: 30px;
-        font-size: 20px;
+        font-size: 16px;
         font-family: "微软雅黑";
         color: #6b7178;
         flex-shrink: 0;
+        margin: 1.5rem 0 0 5rem;
+
+        .redioTitle {
+            width: 130px;
+        }
 
         input {
-            margin-left: 0.5rem;
-
+            margin: 0.6rem 0.2rem 0 1.5rem;
         }
+    }
+
+    .message-setting-btn {
+        width: 100px;
+        height: 20px;
+        line-height: 20px;
+        margin: 10rem;
     }
 }

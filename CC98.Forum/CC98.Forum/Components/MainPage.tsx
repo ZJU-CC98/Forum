@@ -266,19 +266,15 @@ export class MainPageTopicComponent extends React.Component<{ name: string, fetc
     }
 
     async getTopicInfo() {
-        let data = Utility.getStorage(`main${this.props.name}`);
-        if (data) { return data; }
-        else {
-            const mainPageTopics: MainPageTopicState[] = [];
-            const url = this.props.fetchUrl;
-            const response = await Utility.cc98Fetch(url);   //该api要求提供返回主题的数量，这里需要返回10条
-            data = await response.json();
-            for (let i = 0; i < 10; i++) {
-                mainPageTopics[i] = new MainPageTopicState(data[i].title, data[i].id);
-            }
-            Utility.setStorage(`main${this.props.name}`, mainPageTopics);
-            return mainPageTopics;
+        const mainPageTopics: MainPageTopicState[] = [];
+        const url = this.props.fetchUrl;
+        const response = await Utility.cc98Fetch(url);   //该api要求提供返回主题的数量，这里需要返回10条
+        let data = await response.json();
+        for (let i = 0; i < 10; i++) {
+            mainPageTopics[i] = new MainPageTopicState(data[i].title, data[i].id);
         }
+        Utility.setStorage(`main${this.props.name}`, mainPageTopics);
+        return mainPageTopics;
     }
 
     async componentDidMount() {

@@ -19,27 +19,35 @@ export class MessageSetting extends React.Component {
         return <div className="message-right">
             <div className="message-setting">
                 <div className="message-settingbox">
-                    <div>是否显示回复通知</div>
+                    <div className="redioTitle">是否显示回复通知</div>
                     <input type="radio" name="responseSetting" id="responseSetting1" value="是" />
+                    <div>是</div>
                     <input type="radio" name="responseSetting" id="responseSetting2" value="否" />
+                    <div>否</div>
                 </div>
                 <div className="message-settingbox">
-                    <div>是否显示@通知</div>
+                    <div className="redioTitle">是否显示@通知</div>
                     <input type="radio" name="attmeSetting" id="attmeSetting1" value="是" />
+                    <div>是</div>
                     <input type="radio" name="attmeSetting" id="attmeSetting2" value="否" />
+                    <div>否</div>
                 </div>
                 <div className="message-settingbox">
-                    <div>是否显示系统通知</div>
+                    <div className="redioTitle">是否显示系统通知</div>
                     <input type="radio" name="systemSetting" id="systemSetting1" value="是" />
+                    <div>是</div>
                     <input type="radio" name="systemSetting" id="systemSetting2" value="否" />
+                    <div>否</div>
                 </div>
                 <div className="message-settingbox">
-                    <div>是否显示私信通知</div>
+                    <div className="redioTitle">是否显示私信通知</div>
                     <input type="radio" name="messageSetting" id="messageSetting1" value="是" />
+                    <div>是</div>
                     <input type="radio" name="messageSetting" id="messageSetting2" value="否" />
+                    <div>否</div>
                 </div>
+                <button className="message-setting-btn">保存消息设置</button>
             </div>
-            <button >保存消息设置</button>
         </div>;
     }
 }
