@@ -1714,7 +1714,7 @@ export async function getMessageResponse(from: number, size: number, router) {
                     }
                     else {
                         newTopic[i].floor = 0;
-                        newTopic[i].userId = -1;
+                        newTopic[i].userId = 0;
                         newTopic[i].userName = "有人";
                     }
                 }
@@ -1781,7 +1781,7 @@ export async function getMessageAttme(from: number, size: number, router) {
                     }
                     else {
                         newTopic[i].floor = 0;
-                        newTopic[i].userId = -1;
+                        newTopic[i].userId = 0;
                         newTopic[i].userName = "有人";
                     }
                 }
