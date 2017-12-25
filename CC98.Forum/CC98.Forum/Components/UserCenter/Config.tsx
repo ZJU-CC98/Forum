@@ -43,7 +43,7 @@ class Info extends ChangeUserInfo {
     /**
      * 用户出生月份
      */
-    birthdayMouth: number;
+    birthdayMonth: number;
     /**
      * 用户出生日期
      */
@@ -72,9 +72,9 @@ export default class extends React.Component<null, States> {
             SignatureCode: info.signatureCode,
             Birthday: info.birthday,
             birthdayYear: info.birthday ? Number.parseInt(info.birthday.slice(0, 4)): 0,
-            birthdayMouth: info.birthday ? Number.parseInt(info.birthday.slice(5, 7)): 0,
+            birthdayMonth: info.birthday ? Number.parseInt(info.birthday.slice(5, 7)): 0,
             birthdayDay: info.birthday ? Number.parseInt(info.birthday.slice(8, 10)) : 0,
-            DisplayTitleId: info.displayTitleId,
+            DisplayTitleId: info.displayTitleId || 0,
             userTitleIds: info.userTitleIds || []
         };
         this.state = {
@@ -101,7 +101,7 @@ export default class extends React.Component<null, States> {
             SignatureCode: info.signatureCode,
             Birthday: info.birthday,
             birthdayYear: info.birthday ? Number.parseInt(info.birthday.slice(0, 4)) : 0,
-            birthdayMouth: info.birthday ? Number.parseInt(info.birthday.slice(5, 7)) : 0,
+            birthdayMonth: info.birthday ? Number.parseInt(info.birthday.slice(5, 7)) : 0,
             birthdayDay: info.birthday ? Number.parseInt(info.birthday.slice(8, 10)) : 0,
             DisplayTitleId: info.displayTitleId,
             userTitleIds: info.userTitleIds
@@ -137,7 +137,7 @@ export default class extends React.Component<null, States> {
         try {
             let newInfo: ChangeUserInfo = this.state.userInfo;
             //生日年月日分开处理，提交时合并
-            newInfo.Birthday = this.state.userInfo.birthdayYear !== 0 ? `${this.state.userInfo.birthdayYear}-${this.state.userInfo.birthdayMouth}-${this.state.userInfo.birthdayDay}` : '';
+            newInfo.Birthday = this.state.userInfo.birthdayYear !== 0 ? `${this.state.userInfo.birthdayYear}-${this.state.userInfo.birthdayMonth}-${this.state.userInfo.birthdayDay}` : '';
             
             //检测信息是否正确
             if (newInfo.EmailAddress && !newInfo.EmailAddress.match(/[\S]+@[\S]+\.[\S]+/)) {
@@ -146,7 +146,7 @@ export default class extends React.Component<null, States> {
             if (newInfo.QQ && (Number.parseInt(newInfo.QQ) <= 0 || Number.parseInt(newInfo.QQ).toString() !== newInfo.QQ)) {
                 throw new Error('请检查QQ是否正确');
             }
-            let birthDay = new Date(this.state.userInfo.birthdayYear + 10, this.state.userInfo.birthdayMouth - 1, this.state.userInfo.birthdayDay);
+            let birthDay = new Date(this.state.userInfo.birthdayYear + 10, this.state.userInfo.birthdayMonth - 1, this.state.userInfo.birthdayDay);
             if (this.state.userInfo.birthdayYear !== 0 && this.state.userInfo.birthdayYear!==9999 && birthDay.getTime() > Date.now()) {
                 throw new Error('请检查生日是否正确');
             }
