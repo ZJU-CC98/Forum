@@ -1,6 +1,10 @@
 import * as React from 'react';
 import LazyImage from './LazyImage';
 
+/**
+ * 均从父组件中传递
+ * 功能参考父组件的state与方法
+ */
 interface EmojiProps {
     handleEmojiButtonClick: (emoji: string) => void;
     height: number;
@@ -11,20 +15,29 @@ interface EmojiProps {
 
 export default class Emoji extends React.Component<EmojiProps> {
     render() {
+        //新建数组通过map生成<img>
+        //麻将脸系列
         const mohjong = {
+            //动物系列只用16个，o(1)......
             animal: ['001', '002', '003', '004', '005', '006', '007', '008', '009', '010', '011', '012', '013', '014', '015', '016'].map((item) => (<LazyImage
                 src={`/static/images/mahjong/animal2017/${item}.png`}
                 onClick={() => { this.props.handleEmojiButtonClick(`[a:${item}]`) }}
             ></LazyImage>)),
+            //卡通系列10个，同样o(1)......
             carton: ['003.png', '018.gif', '019.png', '046.png', '049.gif', '059.png', '096.gif', '134.png', '189.png', '217.png'].map((item) => (<LazyImage
                 src={`/static/images/mahjong/carton2017/${item}`}
                 onClick={() => { this.props.handleEmojiButtonClick(`[c:${item.slice(0, 3)}]`) }}
             ></LazyImage>)),
+            //其他表情三位数，从1算起，index+1
             face: new Array(208).fill(0).map((item, index) => {
+                //小于10的加两个0
                 if (index < 9) { return `00${index + 1}`; }
+                //小于100的加一个0
                 else if (index < 99) { return `0${index + 1}`; }
+                //其余默认
                 else { return `${index + 1}` }
             }).map((item, index) => {
+                //处理后缀为gif的表情，o(1)......
                 if ([4, 9, 56, 61, 62, 87, 115, 120, 137, 168, 169, 175, 206].indexOf(index + 1) !== -1) { return `${item}.gif`; }
                 else { return `${item}.png`; }
             }).map((item) => (<LazyImage
@@ -33,6 +46,7 @@ export default class Emoji extends React.Component<EmojiProps> {
             ></LazyImage>))
         };
 
+        //基本同上
         const emoji = {
             'em': new Array(92).fill(0)
                 .map((item, index) => {
@@ -69,6 +83,7 @@ export default class Emoji extends React.Component<EmojiProps> {
                 ></LazyImage>))
         };
 
+        //表情栏上的info
         const info = {
             'ac': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="//www.acfun.cn">AcFun弹幕视频网</a> 提供</p>,
             'mj': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="//bbs.saraba1st.com/2b/forum.php">stage1st论坛</a> 提供</p>,
@@ -76,38 +91,38 @@ export default class Emoji extends React.Component<EmojiProps> {
             'em': null
         };
 
-        const height = this.props.height;
+        const { height, emojiType, emojiIsShown } = this.props;
 
         return (
             <div
                 className="ubb-emoji"
-                style={this.props.emojiIsShown ? { height: '22rem', borderWidth: '1px', top: `-${height + 4}rem` } : { height: '0rem', top: `-${height + 4}rem` }}
+                style={emojiIsShown ? { height: '22rem', borderWidth: '1px', top: `-${height + 4}rem` } : { height: '0rem', top: `-${height + 4}rem` }}
             >
                 <div className="ubb-emoji-buttons">
                     <button 
                         type="button" 
-                        className={this.props.emojiType === 'ac' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} 
+                        className={emojiType === 'ac' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} 
                         onClick={(e) => { e.stopPropagation(); this.props.changeEmojiType('ac'); }}
                     >AC娘</button>
                     <button 
                         type="button" 
-                        className={this.props.emojiType === 'mj' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} 
+                        className={emojiType === 'mj' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} 
                         onClick={(e) => { e.stopPropagation(); this.props.changeEmojiType('mj'); }}
                     >麻将脸</button>
                     <button 
                         type="button" 
-                        className={this.props.emojiType === 'tb' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} 
+                        className={emojiType === 'tb' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} 
                         onClick={(e) => { e.stopPropagation(); this.props.changeEmojiType('tb'); }}
                     >贴吧</button>
                     <button 
                         type="button" 
-                        className={this.props.emojiType === 'em' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} 
+                        className={emojiType === 'em' ? 'ubb-emoji-button-active' : 'ubb-emoji-button'} 
                         onClick={(e) => { e.stopPropagation(); this.props.changeEmojiType('em'); }}
                     >经典</button>
                 </div>
-                <div className={`ubb-emoji-content ubb-emoji-content-${this.props.emojiType}`}>
-                    {info[this.props.emojiType]}
-                    {emoji[this.props.emojiType]}
+                <div className={`ubb-emoji-content ubb-emoji-content-${emojiType}`}>
+                    {info[emojiType]}
+                    {emoji[emojiType]}
                 </div>
             </div>
         );
