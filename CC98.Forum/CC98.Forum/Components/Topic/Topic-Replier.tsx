@@ -136,7 +136,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
 
             return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
                 <div style={{ zIndex: 100 }}>
-                    <a href={realUrl} style={{ display: "block", maxHeight: "7.5rem" }}>
+                    <a href={realUrl} style={{ display: "block", maxHeight: "5rem" }}>
                         <img className="userPortrait" src={this.props.userInfo.portraitUrl} style={shadow}></img>
                     </a>
                 </div>
