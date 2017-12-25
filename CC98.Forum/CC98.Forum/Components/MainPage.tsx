@@ -384,7 +384,7 @@ export class Test extends React.Component<{}, { testContent: string }>{
             headers: myHeaders,
             body: postForumIndexColumnInfo,
         });
-        console.log("发送成功！")
+        //console.log("发送成功！")
     }
     render() {
         return <div className="mainPageList">
@@ -697,7 +697,7 @@ export class MainPage extends React.Component<{}, AppState> {
         let fullTimeJob: MainPageTopicMoreProps[] = new Array({ name: "更多", url: "/list/235" });
         let partTimeJob: MainPageTopicMoreProps[] = new Array({ name: "更多", url: "/list/459" });
 
-        console.log(study);
+        //console.log(study);
 
         return <div className="mainPage">
             <div className="leftPart">

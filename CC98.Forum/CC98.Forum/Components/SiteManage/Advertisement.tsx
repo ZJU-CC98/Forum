@@ -112,7 +112,7 @@ export default class extends React.Component<null, State > {
         this.setState(prevState => {
             let { data } = prevState as State; 
             data[index] = { ...data[index], [key]: value };
-            console.log(data);
+            //console.log(data);
             this.setState({ data });
         });
     }

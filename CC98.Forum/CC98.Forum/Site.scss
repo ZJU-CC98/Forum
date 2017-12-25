@@ -1137,7 +1137,6 @@ a {
     flex-direction: column;
     width: 1140px;
     height: 820px;
-    margin-bottom: 60px;
 }
 
 .message-title {
@@ -1819,7 +1818,7 @@ a {
     }
 
     .focus-topic-getMore {
-        display: none;
+        display: flex;
         flex-direction: column;
         text-align: center;
         cursor: pointer;

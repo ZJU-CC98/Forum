@@ -174,7 +174,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
     }
     render() {
       
-        console.log(this.props.topicInfo);
+        //console.log(this.props.topicInfo);
         let info;
 
         const normalInfo = <div className="column">

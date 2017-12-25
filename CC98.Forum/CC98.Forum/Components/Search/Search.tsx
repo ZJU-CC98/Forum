@@ -72,6 +72,8 @@ export class Search extends React.Component<{}, SearchState> {
         }
         else {
             this.setState({ boardId: searchInfo.boardId, boardName: searchInfo.boardname, words: searchInfo.words });
+            $('#focus-topic-getMore').css('display', 'none');
+            $('#focus-topic-loading').removeClass('displaynone');
             this.getData(searchInfo, 0);
         }
     }

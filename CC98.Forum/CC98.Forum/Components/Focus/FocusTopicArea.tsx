@@ -103,7 +103,6 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
                 this.setState({ data: data, from: data.length, loading: true });
                 Utility.setStorage(`focusBoard_${this.props.id}`, data);
             }
-            console.log("chubug");
             this.setState({ loading: true });
             return;
         }

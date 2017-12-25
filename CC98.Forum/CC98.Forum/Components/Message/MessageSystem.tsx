@@ -34,7 +34,7 @@ export class MessageSystem extends React.Component<{}, MessageSystemState> {
             curPage = 0;
         }
         let data = await Utility.getMessageSystem(curPage * 7, 7, this.context.router);
-        console.log(data);
+        //console.log(data);
         if (data) {
             this.setState({ data: data, from: curPage + 1, totalPage: totalPage });
         }

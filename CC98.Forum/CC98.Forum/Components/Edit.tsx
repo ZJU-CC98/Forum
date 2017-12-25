@@ -59,7 +59,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                 const topicInfo = await Utility.getTopicInfo(data.topicId);
                 const type = topicInfo.type;
                 tags = await Utility.getBoardTag(data.boardId);
-                console.log(tags);
+                //console.log(tags);
                 const boardName1 = await Utility.getBoardName(data.boardId);
                 if (data.contentType === 0) {
                     this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags,topicInfo:topicInfo });
@@ -155,7 +155,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
             const topicId = await mes.text();
             this.props.history.push(`/topic/${topicId}`);
         } catch (e) {
-            console.log("Error");
+            //console.log("Error");
             console.log(e);
         }
     }
@@ -164,7 +164,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
         let content;
         let tag1Id, tag2Id;
         const type = this.state.type;
-        console.log(this.state);
+        //console.log(this.state);
         if (this.state.tag1 && !this.state.tag2) {
             tag1Id = await Utility.getTagIdbyName(this.state.tag1);
             content = {
@@ -256,14 +256,14 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
        
             return ats;
         } else {
-            console.log("不存在合法的@");
+            //console.log("不存在合法的@");
             return false;
         }
     }
     async editUBB() {
         const url = `/post/${this.match.params.id}`;
         let tag1Id, tag2Id, content;
-        console.log(this.state);
+        //console.log(this.state);
         if (this.state.tag1 && !this.state.tag2) {
             tag1Id = await Utility.getTagIdbyName(this.state.tag1);
             content = {
@@ -520,7 +520,7 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
             this.setState({ tags: newProps.tags });
     }
     componentDidUpdate() {
-        console.log("update");
+        //console.log("update");
         const tagBoxSelect = $('.tagBoxSelect');
         const downArrow = $('.downArrow');
         const tagBoxSub = $('.tagBoxSub');
@@ -531,7 +531,7 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
         });
 
         tagBoxSelect.click(function () {
-            console.log("click1");
+            //console.log("click1");
             if (tagBoxSub.css('display') === 'block') tagBoxSub.css('display', 'none');
             else tagBoxSub.css('display', 'block');
             return false;   //阻止事件冒泡

@@ -63,8 +63,8 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
         this.setState({ inWaiting: false, contents: realContents, masters: masters });
     }
     async componentWillReceiveProps(newProps) {
-        console.log("newpage=" + newProps.page);
-        console.log("Curpage=" + this.props.page);
+        //console.log("newpage=" + newProps.page);
+        //console.log("Curpage=" + this.props.page);
         if (newProps.page !== this.props.page || newProps.topicInfo.replyCount !== this.props.topicInfo.replyCount) {
             this.setState({ inWaiting: true });
             const page = newProps.page || 1;
