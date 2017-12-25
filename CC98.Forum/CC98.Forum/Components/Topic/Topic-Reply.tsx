@@ -40,16 +40,12 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
             const userName = data.name;
             realContents = await Utility.getCurUserTopicContent(this.props.topicId, page, userName, this.props.userId);
         } else {
-            realContents = await Utility.getTopicContent(this.props.topicId, page, this.props.topicInfo.replyCount);
-            console.log("after operation");
-            console.log(realContents);
+            realContents = await Utility.getTopicContent(this.props.topicId, page);
         }
 
         this.setState({ contents: realContents });
     }
-    /*async componentDidMount() {
-        console.log("did mount reply");
-        this.setState({inWaiting:true});
+    async componentWillMount() {
         const page = this.props.page || 1;
         let realContents;
         if (this.props.isHot) {
@@ -60,13 +56,16 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
             const userName = data.name;
             realContents = await Utility.getCurUserTopicContent(this.props.topicId, page, userName, this.props.userId);
         } else {
-            realContents = await Utility.getTopicContent(this.props.topicId, page, this.props.topicInfo.replyCount);
+            realContents = await Utility.getTopicContent(this.props.topicId, page);
+            if (!realContents) this.setState({ inWaiting: false, contents: [] });
         }
         const masters = this.props.boardInfo.boardMasters;
-        this.setState({ inWaiting:false,contents: realContents,masters:masters });
-    }*/
+        this.setState({ inWaiting: false, contents: realContents, masters: masters });
+    }
     async componentWillReceiveProps(newProps) {
-        if(newProps.page !== this.props.page){
+        console.log("newpage=" + newProps.page);
+        console.log("Curpage=" + this.props.page);
+        if (newProps.page !== this.props.page || newProps.topicInfo.replyCount !== this.props.topicInfo.replyCount) {
             this.setState({ inWaiting: true });
             const page = newProps.page || 1;
             let realContents;
@@ -78,7 +77,7 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
                 const userName = data.name;
                 realContents = await Utility.getCurUserTopicContent(newProps.topicId, page, userName, newProps.userId);
             } else {
-                realContents = await Utility.getTopicContent(newProps.topicId, page, newProps.topicInfo.replyCount);
+                realContents = await Utility.getTopicContent(newProps.topicId, page);
                 if (!realContents) this.setState({ inWaiting: false, contents: [] });
             }
             const masters = newProps.boardInfo.boardMasters;
@@ -87,22 +86,44 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
     }
 
     private generateContents(item) {
+      
         let privilege = null;
         if (Utility.getLocalStorage("userInfo"))
             privilege = Utility.getLocalStorage("userInfo").privilege;
         const id = item.floor % 10;
         let likeInfo = { likeCount: item.likeCount, dislikeCount: item.dislikeCount, likeState: item.likeState };
-        return <div className="reply" id={id.toString()} >
-            <Replier key={item.postId} userInfo={item.userInfo} isAnonymous={item.isAnonymous} topicid={item.topicId} floor={item.floor} isDeleted={item.isDeleted} traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
-            <div className="column" style={{ justifyContent: "space-between", width: "55.5rem", position:"relative" }}>
-                <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
-                <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} />
+        //判断加不加热评
+        let hotReply = null;
+        if (item.floor === 1) {
+            hotReply = <Reply topicInfo={this.props.topicInfo} page={this.props.page} topicId={this.props.topicId} boardInfo={this.props.boardInfo} quote={this.quote} isTrace={false} isHot={true} userId={null} />;
+            return <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+                <div className="reply" id={id.toString()} >
+                    <Replier key={item.postId} userInfo={item.userInfo} isAnonymous={item.isAnonymous} topicid={item.topicId} floor={item.floor} isDeleted={item.isDeleted} traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
+                    <div className="column" style={{ justifyContent: "space-between", width: "55.5rem", position: "relative" }}>
+                        <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
+                        <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} />
                         <ReplyContent key={item.content} postid={item.postId} content={item.content} contentType={item.contentType} />
                         <Award postId={item.postId} updateTime={Date.now()} awardInfo={item.awards} />
-                <ReplierSignature floor={item.floor} userInfo={item.userInfo} replyTime={item.time} content={item.content} quote={this.quote} signature={item.userInfo.signatureCode} topicid={item.topicId} userId={item.userId} masters={this.state.masters} postid={item.postId} likeInfo={likeInfo} lastUpdateAuthor={item.lastUpdateAuthor} lastUpdateTime={item.lastUpdateTime} boardId={this.props.boardInfo.id} isLZ={item.isLZ} traceMode={this.props.isTrace ? true : false}/>
-            </div>
-            <FloorSize floor={item.floor} />
-                </div>;
+                        <ReplierSignature floor={item.floor} userInfo={item.userInfo} replyTime={item.time} content={item.content} quote={this.quote} signature={item.userInfo.signatureCode} topicid={item.topicId} userId={item.userId} masters={this.state.masters} postid={item.postId} likeInfo={likeInfo} lastUpdateAuthor={item.lastUpdateAuthor} lastUpdateTime={item.lastUpdateTime} boardId={this.props.boardInfo.id} isLZ={item.isLZ} traceMode={this.props.isTrace ? true : false} />
+                    </div>
+                    <FloorSize floor={item.floor} />
+                </div>
+                {hotReply}
+            </div>;
+        } else {
+            return <div className="reply" id={id.toString()} >
+                <Replier key={item.postId} userInfo={item.userInfo} isAnonymous={item.isAnonymous} topicid={item.topicId} floor={item.floor} isDeleted={item.isDeleted} traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
+                <div className="column" style={{ justifyContent: "space-between", width: "55.5rem", position: "relative" }}>
+                    <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
+                    <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} />
+                    <ReplyContent key={item.content} postid={item.postId} content={item.content} contentType={item.contentType} />
+                    <Award postId={item.postId} updateTime={Date.now()} awardInfo={item.awards} />
+                    <ReplierSignature floor={item.floor} userInfo={item.userInfo} replyTime={item.time} content={item.content} quote={this.quote} signature={item.userInfo.signatureCode} topicid={item.topicId} userId={item.userId} masters={this.state.masters} postid={item.postId} likeInfo={likeInfo} lastUpdateAuthor={item.lastUpdateAuthor} lastUpdateTime={item.lastUpdateTime} boardId={this.props.boardInfo.id} isLZ={item.isLZ} traceMode={this.props.isTrace ? true : false} />
+                </div>
+                <FloorSize floor={item.floor} />
+            </div>;
+        }
+        
     }
 
     componentDidUpdate() {
@@ -119,7 +140,7 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
         if (this.props.isHot && this.state.inWaiting)
             return null;
         if (!this.state.inWaiting) {
-            if (this.state.contents.length == 0) {
+            if (!this.state.contents.length ) {
                 return <div></div>;
             }
             return <div className="center" style={{ width: "100%" }}>

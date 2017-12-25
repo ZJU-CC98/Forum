@@ -16,7 +16,7 @@ import { Constants } from './Constant';
 declare let editormd: any;
 declare let testEditor: any;
 
-export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, mode, content, title, postInfo, tag1, tag2,fetchState,boardId,type }, { mode: string, id: number }> {
+export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tags, ready, mode, content, title, postInfo, tag1, tag2,fetchState,boardId,type }, { mode: string, id: number }> {
     constructor(props) {
         super(props);
         this.update = this.update.bind(this);
@@ -28,17 +28,17 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
         this.changeActivityType = this.changeActivityType.bind(this);
         this.changeNormalType = this.changeNormalType.bind(this);
         this.state = ({
-            tags: [], boardName: "", ready: false, mode: 0, content: "", title: "", postInfo: { floor: 0, title: "", content: "", contentType: 0 }, tag1: "", tag2: "", fetchState:'ok',boardId:1,type:0
+            tags: [], boardName: "", ready: false, mode: 0, content: "", title: "", postInfo: { floor: 0, title: "", content: "", contentType: 0 }, tag1:"" , tag2: "", fetchState: 'ok', boardId: 1, type: 0, topicInfo: {}
         });
     }
 
-    async componentDidMount() {
+    async componentWillMount() {
         const mode = this.match.params.mode;
         const id = this.match.params.id;
         const token = await Utility.getToken();
         const headers = new Headers();
         headers.append("Authorization", token);
-        let url, response, data;
+        let url, response, data,tags;
         switch (mode) {
             case 'postTopic':
                 url = `/Board/${id}`;
@@ -46,7 +46,7 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
                 data = await response.json();
                 const boardName = data.name;
                 //获取标签
-                const tags = await Utility.getBoardTag(id);
+                 tags = await Utility.getBoardTag(id);
                 this.setState({ boardName: boardName, tags: tags ,boardId:id});
                 break;
             case 'edit':
@@ -58,11 +58,13 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
                 data = await response.json();
                 const topicInfo = await Utility.getTopicInfo(data.topicId);
                 const type = topicInfo.type;
+                tags = await Utility.getBoardTag(data.boardId);
+                console.log(tags);
                 const boardName1 = await Utility.getBoardName(data.boardId);
                 if (data.contentType === 0) {
-                    this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type:type});
+                    this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags,topicInfo:topicInfo });
                 } else
-                    this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1 ,boardId:data.boardId,type:type});
+                    this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo });
                 break;
         }
 
@@ -162,7 +164,7 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
         let content;
         let tag1Id, tag2Id;
         const type = this.state.type;
-
+        console.log(this.state);
         if (this.state.tag1 && !this.state.tag2) {
             tag1Id = await Utility.getTagIdbyName(this.state.tag1);
             content = {
@@ -260,13 +262,37 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
     }
     async editUBB() {
         const url = `/post/${this.match.params.id}`;
-        const type = this.state.type;
-
-        const content = {
-            content: this.state.content,
-            contentType: 0,
-            title: this.state.title,
-            type: this.state.type
+        let tag1Id, tag2Id, content;
+        console.log(this.state);
+        if (this.state.tag1 && !this.state.tag2) {
+            tag1Id = await Utility.getTagIdbyName(this.state.tag1);
+            content = {
+                content: this.state.content,
+                contentType: 0,
+                title: this.state.title,
+                tag1: tag1Id,
+                type: this.state.type
+            };
+        }
+        else if (this.state.tag2) {
+            tag1Id = await Utility.getTagIdbyName(this.state.tag1);
+            tag2Id = await Utility.getTagIdbyName(this.state.tag2);
+            content = {
+                content: this.state.content,
+                contentType: 0,
+                title: this.state.title,
+                tag1: tag1Id,
+                tag2: tag2Id,
+                type: this.state.type
+            };
+        }
+        else {
+            content = {
+                content: this.state.content,
+                contentType: 0,
+                title: this.state.title,
+                type: this.state.type
+            };
         }
         const body = JSON.stringify(content);
         const token = await Utility.getToken();
@@ -283,13 +309,36 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
         const url = `/post/${this.match.params.id}`;
         let c = Constants.testEditor.getMarkdown();
         Constants.testEditor.setMarkdown("");
-        const type = this.state.type;
-
-        const content = {
-            content: c,
-            contentType: 1,
-            title: this.state.title,
-            type: this.state.type
+        let content, tag1Id, tag2Id;
+        if (this.state.tag1 && !this.state.tag2) {
+            tag1Id = await Utility.getTagIdbyName(this.state.tag1);
+            content = {
+                content: c,
+                contentType: 1,
+                title: this.state.title,
+                tag1: tag1Id,
+                type: this.state.type
+            };
+        }
+        else if (this.state.tag2) {
+            tag1Id = await Utility.getTagIdbyName(this.state.tag1);
+            tag2Id = await Utility.getTagIdbyName(this.state.tag2);
+            content = {
+                content: c,
+                contentType: 1,
+                title: this.state.title,
+                tag1: tag1Id,
+                tag2: tag2Id,
+                type: this.state.type
+            };
+        }
+        else {
+            content = {
+                content: c,
+                contentType: 1,
+                title: this.state.title,
+                type: this.state.type
+            };
         }
         const body = JSON.stringify(content);
         const token = await Utility.getToken();
@@ -315,7 +364,7 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
         let editor;
         let titleInput = null;
         if (mode === "postTopic") {
-            titleInput = <InputTitle boardId={id} tags={this.state.tags} onChange={this.onTitleChange.bind(this)} title={this.state.postInfo.title} />;
+            titleInput = <InputTitle boardId={id} tags={this.state.tags} onChange={this.onTitleChange.bind(this)} title={this.state.postInfo.title} tag1={0} tag2={0} />;
             if (this.state.mode === 0) {
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
@@ -352,7 +401,7 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
                     <InputMdContent postInfo={this.state.postInfo} onChange={this.editMd.bind(this)} ready={this.state.ready} mode={this.match.params.mode} /></div>;
             }
             if (this.state.postInfo.floor === 1) {
-                titleInput = <InputTitle boardId={id} tags={this.state.tags} onChange={this.onTitleChange.bind(this)} title={this.state.postInfo.title} />;
+                titleInput = <InputTitle boardId={id} tags={this.state.tags} onChange={this.onTitleChange.bind(this)} title={this.state.postInfo.title} tag1={this.state.topicInfo.tag1} tag2={this.state.topicInfo.tag2} />;
             }
         }
         const topicType = <div className="createTopicType">
@@ -426,10 +475,10 @@ export class Tags extends React.Component<{}, {}>{
  * 用于发主题/编辑主题
  * TODO:尚未完成
  */
-export class InputTitle extends React.Component<{ boardId, onChange, tags, title }, { title: string, tags }>{
+export class InputTitle extends React.Component<{ boardId, onChange, tags, title,tag1,tag2  }, { title: string, tags,tag1,tag2}>{
     constructor(props) {
         super(props);
-        this.state = ({ title: this.props.title, tags: this.props.tags });
+        this.state = ({ title: this.props.title, tags: this.props.tags,tag1:"",tag2:"" });
     }
 
     handleTitleChange(event) {
@@ -450,10 +499,20 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
         }
 
     }
-
+   async componentDidMount() {
+        let tag1 = "", tag2 = "";
+       if (this.props.tag1 !== 0) {
+           tag1 = await Utility.getTagNamebyId(this.props.tag1);
+        }
+        if (this.props.tag2 !== 0) {
+            tag2 = await Utility.getTagNamebyId(this.props.tag2);
+        }
+        if (this.props.title && !this.state.title)
+            this.setState({ title: this.props.title, tags: this.props.tags, tag1: tag1, tag2: tag2  });
+        else
+            this.setState({ tags: this.props.tags,tag1:tag1,tag2:tag2 });
+    }
     componentWillReceiveProps(newProps) {
-        const tags = newProps.tags;
-        const tagsNum = tags.length;
 
         if (newProps.title && !this.state.title)
             this.setState({ title: newProps.title, tags: newProps.tags });
@@ -461,15 +520,18 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
             this.setState({ tags: newProps.tags });
     }
     componentDidUpdate() {
+        console.log("update");
         const tagBoxSelect = $('.tagBoxSelect');
         const downArrow = $('.downArrow');
         const tagBoxSub = $('.tagBoxSub');
         const tagBoxLi = tagBoxSub.find('li');
         $(document).click(function () {
+
             tagBoxSub.css('display', 'none');
         });
 
         tagBoxSelect.click(function () {
+            console.log("click1");
             if (tagBoxSub.css('display') === 'block') tagBoxSub.css('display', 'none');
             else tagBoxSub.css('display', 'block');
             return false;   //阻止事件冒泡
@@ -537,7 +599,7 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
         return <li>{item.name}</li>;
     }
     render() {
-
+    
         let drop1 = null;
         let drop2 = null;
         if (this.state.tags.length > 0) drop1 = <ul className="tagBoxSub">
@@ -548,25 +610,31 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
             {this.state.tags[1].tags.map(this.generateTagOption)}
         </ul>;
         let tagInfo = null;
-        if (this.state.tags.length == 2) {
+        if (this.state.tags.length === 2) {
+            let defaultTag1 = this.state.tags[0].tags[0].name;
+            let defaultTag2 = this.state.tags[1].tags[0].name;
+            if (this.state.tag1) defaultTag1 = this.state.tag1;
+            if (this.state.tag2) defaultTag2 = this.state.tag2;
             tagInfo = <div className="row"><div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
                 <div style={{ display: "flex" }}>
-                    <div className="tagBoxSelect">{this.state.tags[0].tags[0].name}</div>
+                    <div className="tagBoxSelect">{defaultTag1}</div>
                     <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
                 </div>
                 {drop1}
             </div>
                 <div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
                     <div style={{ display: "flex" }}>
-                        <div className="tagBoxSelect1">{this.state.tags[1].tags[0].name}</div>
+                        <div className="tagBoxSelect1">{defaultTag2}</div>
                         <div className="downArrow1"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
                     </div>
                     {drop2}
                 </div></div >;
         } else if (this.state.tags.length == 1) {
+            let defaultTag1 = this.state.tags[0].tags[0].name;
+            if (this.state.tag1) defaultTag1 = this.state.tag1;
             tagInfo = <div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
                 <div style={{ display: "flex" }}>
-                    <div className="tagBoxSelect">{this.state.tags[0].tags[0].name}</div>
+                    <div className="tagBoxSelect">{defaultTag1}</div>
                     <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
                 </div>
                 {drop1}

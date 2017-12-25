@@ -23,6 +23,7 @@ body {
 #root {
     font-size: 16px;
     width: 100%;
+    font-family:微软雅黑;
 }
 
 .postRoot {
@@ -324,6 +325,7 @@ body {
     width: 52rem;
     word-wrap: break-word;
     color: rgb(80,80,80);
+    font-family:微软雅黑;
 }
 
 .replySubstance {
@@ -331,20 +333,17 @@ body {
 }
 
 .replierBtn {
-    background-color: #fb6165;
+    background-color: #8bc9db;
     color: #fff;
-    border: none;
+    border: #fff solid thin;
     border-radius: 0.63rem;
-    width: 2.7rem;
-    height: 1.5rem;
-    line-height: 1.5rem;
+    width: 2.5rem;
+    height: 1rem;
     cursor: pointer;
+    font-size:0.6rem;
 }
 
-.userMessageOpt {
-    margin-top: 0.4rem;
-    font-family: 微软雅黑;
-}
+
 
 .userGender {
     display: flex;
@@ -439,7 +438,7 @@ body {
 
 .good {
     height: 1.7rem;
-    width: 100%;
+    width: 35rem;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -566,24 +565,37 @@ body {
     padding-bottom: 1rem;
     font-size: 0.75rem;
 }
+.userMessageAnonymous {
+    color: #fff;
+    border: thin solid #fff;
+    margin-top: 1.25rem;
+    border-radius: 1rem;
+    width: 6rem;
+    margin-left: 1rem;
+    text-align: center;
+}
 .userMessage-left{
+    padding-top:1.5rem;
     width:8.3rem;
 }
 .userMessage-right{
     width:7.2rem;
+    padding-right:0.5rem;
 
 }
 .userMessage-userName{
-    font-size:1.25rem;
+    font-size:1rem;
     font-weight:bold;
     font-family:微软雅黑;
     margin-left:1.5rem;
 }
 .userMessageOpt {
     white-space: nowrap;
+    line-height: 1.25rem;
+    font-family: 微软雅黑;
 }
 .userMessageBtn{
-    margin-top:1rem;
+    margin-top:1.5rem;
 
 }
 .rpyClr {
@@ -2823,7 +2835,7 @@ a {
     margin-left: 2rem;
     margin-right: 2rem;
     margin-top:2rem;
-    width: 25rem;
+    width: 35rem;
 }
 
 .awardPager {

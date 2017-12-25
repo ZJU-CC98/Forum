@@ -43,7 +43,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         };
     }
     quote(content, userName, replyTime, floor) {
-        console.log("quote");
+    
         const y = $("#sendTopicInfo").offset().top;
         let page = this.state.page;
         if (!this.state.page) page = 1;
@@ -52,24 +52,24 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         this.setState({ quote: { content: content, userName: userName, replyTime: replyTime, floor: floor } });
     }
     update() {
-        console.log("update");
+       
         this.setState({});
     }
     async handleChange() {
-        console.log("handle change");
+       
         let page: number;
         if (!this.match.params.page) {
             page = 1;
         } else { page = parseInt(this.match.params.page); }
         const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
-        const newPage = topicInfo.replyCount % 10 === 0 ? topicInfo.replyCount / 10 : (topicInfo.replyCount - topicInfo.replyCount % 10) / 10 + 1;  
+        const newPage = (topicInfo.replyCount+1) % 10 === 0 ? (topicInfo.replyCount+1) / 10 : ((topicInfo.replyCount+1) - (topicInfo.replyCount+1) % 10) / 10 + 1;  
         const totalPage = await this.getTotalPage(topicInfo.replyCount);
         const userName = this.match.params.userName;
-        const floor = (topicInfo.replyCount +1)% 10+1;
+        const floor = (topicInfo.replyCount +1)% 10;
         if (page !== newPage) {
             page = newPage;
             const url = `/topic/${topicInfo.id}/${page}#${floor}`;
-            this.setState({ topicInfo: topicInfo, quote: { userName: "", content: "", replyTime: "" } });
+            this.setState({  quote: { userName: "", content: "", replyTime: "" } });
             this.props.history.push(url);
         }
         const isFav = await Utility.getFavState(this.match.params.topicid);
@@ -77,7 +77,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
       
     }
     async componentWillReceiveProps(newProps) {
-        console.log("will recieve props");
+      
         //page 是否变了
         let page: number;
         if (!newProps.match.params.page) {
@@ -93,7 +93,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo, isFav: isFav });
     }
     async componentDidMount() {
-        console.log("did mount");
+   
         let page: number;
         if (!this.match.params.page) {
             page = 1;
@@ -117,8 +117,8 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
 
 
     render() {
-        console.log("in render");
-       /* switch (this.state.fetchState) {
+        
+        switch (this.state.fetchState) {
             case 'ok':
                 return <div></div>;
             case 'not found':
@@ -127,14 +127,13 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
                 return <UnauthorizedTopic />;
             case 'server error':
                 return <ServerError />
-        }*/
+        }
         let topic = null;
         let hotReply = null;
         let topicInfo = null;
+        topicInfo = <TopicInfo topicInfo={this.state.topicInfo} tag1={this.state.topicInfo.tag1} tag2={this.state.topicInfo.tag2} boardInfo={this.state.boardInfo} adsUrl={'/images/ads.jpg'} isFav={this.state.isFav} />;
         if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
-            topicInfo = <TopicInfo topicInfo={this.state.topicInfo} tag1={this.state.topicInfo.tag1} tag2={this.state.topicInfo.tag2} boardInfo={this.state.boardInfo} adsUrl={'/images/ads.jpg'} isFav={this.state.isFav} />
-            topic = <PostTopic imgUrl="/static/images/ads.jpg" page={this.state.page} topicid={this.state.topicid} userId={null} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} quote={this.quote} isTrace={false} />;
-            hotReply = <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} quote={this.quote} isTrace={false} isHot={true} userId={null} />
+     
         }
         const pagerUrl = `/topic/${this.state.topicid}/`;
         let sendTopic = null;
@@ -147,11 +146,13 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
                 <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} />
             </div>
             {topicInfo}
-            {topic}
             {hotReply}
             <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} quote={this.quote} isHot={false} isTrace={false} userId={null} />
-       
-            <div style={{ display: "flex", width: "100%", justifyContent: "flex-end", marginTop: "3rem" }}><Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
+
+            <div className="row" style={{ width: "100%", justifyContent: 'space-between', alignItems: "center", marginTop:"1rem" }}>
+                <Category topicId={this.state.topicid} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} />
+                <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} />
+            </div>
             {sendTopic}
 
         </div>
