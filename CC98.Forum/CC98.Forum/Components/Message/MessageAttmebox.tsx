@@ -27,37 +27,36 @@ export class MessageAttmebox extends React.Component<MessageResponseProps> {
         if (this.props.isRead) {
             let userName;
             let title;
-            if (this.props.userId === -1) {
-                userName = `[color=gray]有人[/color]`;
-                title = `[url=http://${host}/topic/${this.props.topicId}/${pageNum}][color=blue]${this.props.topicTitle}[/color][/url]`;
-            }
-            else if (this.props.userId) {
+            if (this.props.userId > 0) {
                 userName = `[url=http://${host}/user/name/${this.props.userName}][color=gray]${this.props.userName}[/color][/url]`;
-                title = `[url=http://${host}/topic/${this.props.topicId}/${pageNum}][color=blue]${this.props.topicTitle}[/color][/url]`;
             }
             else {
                 userName = `[color=gray]有人[/color]`;
+            }
+            if (this.props.boardId) {
+                title = `[url=http://${host}/topic/${this.props.topicId}/${pageNum}][color=blue]${this.props.topicTitle}[/color][/url]`;
+            }
+            else {
                 title = `[color=blue]${this.props.topicTitle}[/color]`;
             }
-
-            content = ` ${userName} [color=gray]在《${title}》中回复了你。[/color]`;
+            content = ` ${userName} [color=gray]在《${title}》中@了你。[/color]`;
         }
         else {
             let userName;
             let title;
-            if (this.props.userId === -1) {
-                userName = `[color=gray][b]有人[/b][/color]`;
-                title = `[url=http://${host}/topic/${this.props.topicId}/${pageNum}][color=blue]${this.props.topicTitle}[/color][/url]`;
-            }
-            else if (this.props.userId) {
+            if (this.props.userId > 0) {
                 userName = `[url=http://${host}/user/name/${this.props.userName}][color=gray][b]${this.props.userName}[/b][/color][/url]`;
-                title = `[url=http://${host}/topic/${this.props.topicId}/${pageNum}][color=blue]${this.props.topicTitle}[/color][/url]`;
             }
             else {
                 userName = `[color=gray][b]有人[/b][/color]`;
+            }
+            if (this.props.boardId) {
+                title = `[url=http://${host}/topic/${this.props.topicId}/${pageNum}][color=blue]${this.props.topicTitle}[/color][/url]`;
+            }
+            else {
                 title = `[color=blue]${this.props.topicTitle}[/color]`;
             }
-            content = ` ${userName} [color=gray][b]在《${title}》中回复了你。[/b][/color]`;
+            content = ` ${userName} [color=gray][b]在《${title}》中@了你。[/b][/color]`;
         }
         return (<div className="message-response-box">
             <div className="message-response-box-middle">

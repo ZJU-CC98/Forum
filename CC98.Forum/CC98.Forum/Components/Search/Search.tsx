@@ -2,7 +2,7 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
-import { FocusTopicSingle } from '../Focus/FocusTopicSingle';
+import { SearchTopicSingle } from './SearchTopicSingle';
 import { SearchState } from '../../States/SearchState';
 import * as Utility from '../../Utility';
 import { FocusTopic } from '../../Props/FocusTopic';
@@ -107,7 +107,6 @@ export class Search extends React.Component<{}, SearchState> {
     }
     
     render() {
-        console.log(this.state.boardName);
         return (<div className="focus-root">
                     <div className="focus" >
                             <div className="focus-allNewTopic"><i className="fa fa-home" aria-hidden="true"></i>搜索/{this.state.boardName}</div>
@@ -130,5 +129,5 @@ export class Search extends React.Component<{}, SearchState> {
 }
 
 function coverFocusPost(item: FocusTopic) {
-    return <FocusTopicSingle title={item.title} hitCount={item.hitCount} id={item.id} boardId={item.boardId} boardName={item.boardName} replyCount={item.replyCount} userId={item.userId} userName={item.userName} portraitUrl={item.portraitUrl} time={item.time} likeCount={item.likeCount} dislikeCount={item.dislikeCount} lastPostUser={item.lastPostUser} lastPostTime={item.lastPostTime} tag1={item.tag1} tag2={item.tag2} />;
+    return <SearchTopicSingle title={item.title} hitCount={item.hitCount} id={item.id} boardId={item.boardId} boardName={item.boardName} replyCount={item.replyCount} userId={item.userId} userName={item.userName} portraitUrl={item.portraitUrl} time={item.time} likeCount={item.likeCount} dislikeCount={item.dislikeCount} lastPostUser={item.lastPostUser} lastPostTime={item.lastPostTime} tag1={item.tag1} tag2={item.tag2} />;
 }
