@@ -1688,10 +1688,16 @@ export async function getMessageResponse(from: number, size: number, router) {
             for (let i in newTopic) {
                 let response0 = await cc98Fetch(`/topic/${newTopic[i].topicId}`, { headers: myHeaders });
                 if (response0.status === 401) {
-                    window.location.href = "/status/UnauthorizedTopic";
+                    //window.location.href = "/status/UnauthorizedTopic";
+                    newTopic[i].topicTitle = "未知主题（服务器获取失败）";
+                    newTopic[i].boardId = 0;
+                    newTopic[i].boardName = "未知版面";
                 }
                 else if (response0.status === 404) {
-                    window.location.href = "/status/NotFoundTopic";
+                    //window.location.href = "/status/NotFoundTopic";
+                    newTopic[i].topicTitle = "未知主题（服务器获取失败）";
+                    newTopic[i].boardId = 0;
+                    newTopic[i].boardName = "未知版面";
                 }
                 else if (response0.status === 500) {
                     window.location.href = "/status/ServerError";
@@ -1701,22 +1707,23 @@ export async function getMessageResponse(from: number, size: number, router) {
                     newTopic[i].topicTitle = response1.title;
                     newTopic[i].boardId = response1.boardId;
                     newTopic[i].boardName = await getBoardName(response1.boardId);
-                    if (newTopic[i].postId) {
-                        let response2 = await cc98Fetch(`/post/${newTopic[i].postId}/basic`, { headers: myHeaders });
-                        if (response2.status == 200) {
-                            let response3 = await response2.json();
-                            newTopic[i].floor = response3.floor;
-                            newTopic[i].userId = response3.userId;
-                            newTopic[i].userName = response3.userName;
-                        }
-                        else {
-                            newTopic[i].floor = 0;
-                            newTopic[i].userId = -1;
-                            newTopic[i].userName = "有人";
-                        }
-                        result.push(newTopic[i]);
+                }
+                //获取楼层信息和回复者信息
+                if (newTopic[i].postId) {
+                    let response2 = await cc98Fetch(`/post/${newTopic[i].postId}/basic`, { headers: myHeaders });
+                    if (response2.status == 200) {
+                        let response3 = await response2.json();
+                        newTopic[i].floor = response3.floor;
+                        newTopic[i].userId = response3.userId;
+                        newTopic[i].userName = response3.userName;
+                    }
+                    else {
+                        newTopic[i].floor = 0;
+                        newTopic[i].userId = -1;
+                        newTopic[i].userName = "有人";
                     }
                 }
+                result.push(newTopic[i]);
             }
         }
         return result;
@@ -1736,7 +1743,10 @@ export async function getMessageAttme(from: number, size: number, router) {
         if (response.status === 401) {
             window.location.href = "/status/UnauthorizedTopic";
         }
-        if (response.status === 500) {
+        else if (response.status === 404) {
+            window.location.href = "/status/NotFoundTopic";
+        }
+        else if (response.status === 500) {
             window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
@@ -1745,40 +1755,42 @@ export async function getMessageAttme(from: number, size: number, router) {
             for (let i in newTopic) {
                 let response0 = await cc98Fetch(`/topic/${newTopic[i].topicId}`, { headers: myHeaders });
                 if (response0.status === 401) {
-                    window.location.href = "/status/UnauthorizedTopic";
+                    //window.location.href = "/status/UnauthorizedTopic";
+                    newTopic[i].topicTitle = "未知主题（服务器获取失败）";
+                    newTopic[i].boardId = 0;
+                    newTopic[i].boardName = "未知版面";
                 }
-                if (response0.status === 500) {
+                else if (response0.status === 500) {
                     window.location.href = "/status/ServerError";
                 }
-                if (response0.status === 404) {
-                    window.location.href = "/status/ServerError";
+                else if (response0.status === 404) {
+                    //window.location.href = "/status/ServerError";
+                    newTopic[i].topicTitle = "未知主题（服务器获取失败）";
+                    newTopic[i].boardId = 0;
+                    newTopic[i].boardName = "未知版面";
                 }
                 else {
                     let response1 = await response0.json();
                     newTopic[i].topicTitle = response1.title;
                     newTopic[i].boardId = response1.boardId;
                     newTopic[i].boardName = await getBoardName(response1.boardId);
-                    if (!newTopic[i].postId) {
-                        newTopic[i].floor = 1;
-                        newTopic[i].userId = response1.userId;
-                        newTopic[i].userName = response1.userName;
+                }
+                //获取楼层信息和回复者信息
+                if (newTopic[i].postId) {
+                    let response2 = await cc98Fetch(`/post/${newTopic[i].postId}/basic`, { headers: myHeaders });
+                    if (response2.status == 200) {
+                        let response3 = await response2.json();
+                        newTopic[i].floor = response3.floor;
+                        newTopic[i].userId = response3.userId;
+                        newTopic[i].userName = response3.userName;
                     }
                     else {
-                        let response2 = await cc98Fetch(`/post/${newTopic[i].postId}/basic`, { headers: myHeaders });
-                        if (response2.status == 200) {
-                            let response3 = await response2.json();
-                            newTopic[i].floor = response3.floor;
-                            newTopic[i].userId = response3.userId;
-                            newTopic[i].userName = response3.userName;
-                        }
-                        else {
-                            newTopic[i].floor = 0;
-                            newTopic[i].userId = -1;
-                            newTopic[i].userName = "有人";
-                        }
+                        newTopic[i].floor = 0;
+                        newTopic[i].userId = -1;
+                        newTopic[i].userName = "有人";
                     }
-                    result.push(newTopic[i]);
                 }
+                result.push(newTopic[i]);
             }
         }
         return result;
