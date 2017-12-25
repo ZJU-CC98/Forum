@@ -40,7 +40,7 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
             const userName = data.name;
             realContents = await Utility.getCurUserTopicContent(this.props.topicId, page, userName, this.props.userId);
         } else {
-            realContents = await Utility.getTopicContent(this.props.topicId, page, this.props.topicInfo.replyCount);
+            realContents = await Utility.getTopicContent(this.props.topicId, page);
         }
 
         this.setState({ contents: realContents });
@@ -56,14 +56,16 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
             const userName = data.name;
             realContents = await Utility.getCurUserTopicContent(this.props.topicId, page, userName, this.props.userId);
         } else {
-            realContents = await Utility.getTopicContent(this.props.topicId, page, this.props.topicInfo.replyCount);
+            realContents = await Utility.getTopicContent(this.props.topicId, page);
             if (!realContents) this.setState({ inWaiting: false, contents: [] });
         }
         const masters = this.props.boardInfo.boardMasters;
         this.setState({ inWaiting: false, contents: realContents, masters: masters });
     }
     async componentWillReceiveProps(newProps) {
-        if(newProps.page !== this.props.page){
+        console.log("newpage=" + newProps.page);
+        console.log("Curpage=" + this.props.page);
+        if (newProps.page !== this.props.page || newProps.topicInfo.replyCount !== this.props.topicInfo.replyCount) {
             this.setState({ inWaiting: true });
             const page = newProps.page || 1;
             let realContents;
@@ -75,7 +77,7 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
                 const userName = data.name;
                 realContents = await Utility.getCurUserTopicContent(newProps.topicId, page, userName, newProps.userId);
             } else {
-                realContents = await Utility.getTopicContent(newProps.topicId, page, newProps.topicInfo.replyCount);
+                realContents = await Utility.getTopicContent(newProps.topicId, page);
                 if (!realContents) this.setState({ inWaiting: false, contents: [] });
             }
             const masters = newProps.boardInfo.boardMasters;

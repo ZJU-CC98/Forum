@@ -200,7 +200,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         if (Utility.getLocalStorage("userInfo")) {
             if (Utility.getLocalStorage("userInfo").name !== this.props.userInfo.name && !this.props.isAnonymous) {
                 btn = <div className="row userMessageBtn" >
-                    <div style={{ marginLeft: "1rem" }}><button className="replierBtn" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled} style={{marginBottom: "0.6rem" }}>{this.state.buttonInfo}</button></div>
+                    <div style={{ marginLeft: "0.6rem" }}><button className="replierBtn" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled} style={{marginBottom: "0.6rem" }}>{this.state.buttonInfo}</button></div>
                     <div style={{ marginLeft: "0.5rem" }}> <Link to={email}><button className="replierBtn">私信</button></Link></div>
                 </div>;
             }
@@ -219,7 +219,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         let userDetailMessage = null;
         if (!this.props.isAnonymous) {
             userDetailMessage =
-                <div className="column" style={{ width: "60%", alignItems: "flex-start", paddingLeft: "1.5rem" }}>
+                <div className="column" style={{ width: "60%", alignItems: "flex-start", paddingLeft: "1.5rem", marginTop:"1rem" }}>
                     <div className="userMessageOpt">
                         帖数 {this.props.userInfo.postCount}
                     </div>

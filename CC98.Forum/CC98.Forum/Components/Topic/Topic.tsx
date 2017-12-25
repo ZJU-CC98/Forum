@@ -62,14 +62,14 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
             page = 1;
         } else { page = parseInt(this.match.params.page); }
         const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
-        const newPage = topicInfo.replyCount % 10 === 0 ? topicInfo.replyCount / 10 : (topicInfo.replyCount - topicInfo.replyCount % 10) / 10 + 1;  
+        const newPage = (topicInfo.replyCount+1) % 10 === 0 ? (topicInfo.replyCount+1) / 10 : ((topicInfo.replyCount+1) - (topicInfo.replyCount+1) % 10) / 10 + 1;  
         const totalPage = await this.getTotalPage(topicInfo.replyCount);
         const userName = this.match.params.userName;
-        const floor = (topicInfo.replyCount +1)% 10+1;
+        const floor = (topicInfo.replyCount +1)% 10;
         if (page !== newPage) {
             page = newPage;
             const url = `/topic/${topicInfo.id}/${page}#${floor}`;
-            this.setState({ topicInfo: topicInfo, quote: { userName: "", content: "", replyTime: "" } });
+            this.setState({  quote: { userName: "", content: "", replyTime: "" } });
             this.props.history.push(url);
         }
         const isFav = await Utility.getFavState(this.match.params.topicid);

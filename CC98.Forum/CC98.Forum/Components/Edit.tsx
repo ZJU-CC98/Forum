@@ -32,13 +32,13 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
         });
     }
 
-    async componentDidMount() {
+    async componentWillMount() {
         const mode = this.match.params.mode;
         const id = this.match.params.id;
         const token = await Utility.getToken();
         const headers = new Headers();
         headers.append("Authorization", token);
-        let url, response, data;
+        let url, response, data,tags;
         switch (mode) {
             case 'postTopic':
                 url = `/Board/${id}`;
@@ -46,7 +46,7 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
                 data = await response.json();
                 const boardName = data.name;
                 //获取标签
-                const tags = await Utility.getBoardTag(id);
+                 tags = await Utility.getBoardTag(id);
                 this.setState({ boardName: boardName, tags: tags ,boardId:id});
                 break;
             case 'edit':
@@ -58,11 +58,13 @@ export class Edit extends RouteComponent<{ history }, { boardName, tags, ready, 
                 data = await response.json();
                 const topicInfo = await Utility.getTopicInfo(data.topicId);
                 const type = topicInfo.type;
+                tags = await Utility.getBoardTag(data.boardId);
+                console.log("tags=" + tags);
                 const boardName1 = await Utility.getBoardName(data.boardId);
                 if (data.contentType === 0) {
-                    this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type:type});
+                    this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags });
                 } else
-                    this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1 ,boardId:data.boardId,type:type});
+                    this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags });
                 break;
         }
 
@@ -450,7 +452,15 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
         }
 
     }
+    componentWillMount() {
+        const tags = this.props.tags;
+        const tagsNum = tags.length;
 
+        if (this.props.title && !this.state.title)
+            this.setState({ title: this.props.title, tags: this.props.tags });
+        else
+            this.setState({ tags: this.props.tags });
+    }
     componentWillReceiveProps(newProps) {
         const tags = newProps.tags;
         const tagsNum = tags.length;

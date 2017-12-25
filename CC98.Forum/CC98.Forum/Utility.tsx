@@ -92,7 +92,7 @@ function getThisUserInfo(userId, usersId) {
             return usersId[i];
     }
 }
-export async function getTopicContent(topicid: number, curPage: number, replyCount: number) {
+export async function getTopicContent(topicid: number, curPage: number) {
     try {
         const startPage = (curPage - 1) * 10;
         const headers = await formAuthorizeHeader();
