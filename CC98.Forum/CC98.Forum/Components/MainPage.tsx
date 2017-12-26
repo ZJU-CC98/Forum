@@ -9,16 +9,17 @@ import { Link } from 'react-router-dom';
  * 全站公告组件
  * 为同时兼容新旧版98 临时调整了显示的内容
  **/
-export class AnnouncementComponent extends React.Component<{}, { announcementContent: string }> {
+export class AnnouncementComponent extends React.Component<{ data }, { announcementContent: string }> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
-        let data = Utility.getStorage("mainAnnouncement");
-        if (!data) { data = '加载中……'; }
+        //let data = Utility.getStorage("mainAnnouncement");
+        // if (!data) { data = '加载中……'; }
         this.state = {
-            announcementContent: data
+            announcementContent: this.props.data,
         };
     }
+    /*
     async getAnnouncement() {
         let announcement: string = Utility.getStorage("mainAnnouncement");
         if (announcement) { return announcement; }
@@ -30,12 +31,20 @@ export class AnnouncementComponent extends React.Component<{}, { announcementCon
             return announcement;
         }
     }
+    
     async componentDidMount() {
-        const x = await this.getAnnouncement();
+        const x = this.props.data;
         this.setState({
             announcementContent: x,
         });
     }
+    
+    componentWillReceiveProps(newProps) {
+        this.setState({
+            announcementContent: newProps,
+        });
+    }
+    */
     render() {
         return <div className="announcement">
             <div className="mainPageTitle1">
@@ -52,20 +61,20 @@ export class AnnouncementComponent extends React.Component<{}, { announcementCon
 /**
  * 推荐阅读组件
  **/
-export class RecommendedReadingComponent extends React.Component<{}, { recommendedReading: MainPageColumn[], index: number }> {
+export class RecommendedReadingComponent extends React.Component<{ data }, { recommendedReading: MainPageColumn[], index: number }> {
 
     constructor(props) {
         super(props);
-        let data = Utility.getStorage('mainRecommendReading');
-        if (!data) { data = new Array<MainPageColumn>(); }
+        //let data = Utility.getStorage('mainRecommendReading');
+        //if (!data) { data = new Array<MainPageColumn>(); }
         this.state = {
-            recommendedReading: data,
+            recommendedReading: this.props.data,
             index: Math.floor(Math.random() * 5)    //0-4的随机数
         };
         this.handleMouseEnter = this.handleMouseEnter.bind(this);
         this.convertButton = this.convertButton.bind(this);
     }
-
+    /*
     async getRecommendedReading() {
         let recommendedReading: MainPageColumn[] = Utility.getStorage('mainRecommendReading');
         if (recommendedReading) { return recommendedReading; }
@@ -87,7 +96,7 @@ export class RecommendedReadingComponent extends React.Component<{}, { recommend
             recommendedReading: x
         });
     }
-
+    */
     handleMouseEnter(index) {
         this.setState({
             index: index,
@@ -161,19 +170,17 @@ export class HotTopicState {
 /**
  * 热门话题组件
  **/
-export class HotTopicComponent extends React.Component<{}, { mainPageTopicState: HotTopicState[] }> {
+export class HotTopicComponent extends React.Component<{ data }, { mainPageTopicState: HotTopicState[] }> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
-        let data = Utility.getLocalStorage("mainHotTopics");
-        if (!data) {
-            data = new Array<HotTopicState>();
-        }
+        //let data = Utility.getLocalStorage("mainHotTopics");
+        // if (!data) { data = new Array<HotTopicState>();}
         this.state = {
-            mainPageTopicState: data
+            mainPageTopicState: this.props.data
         };
     }
-
+    /*
     async getTopicInfo() {
         const mainPageTopics: HotTopicState[] = [];
         const response = await Utility.cc98Fetch('/Topic/Hot');
@@ -191,7 +198,7 @@ export class HotTopicComponent extends React.Component<{}, { mainPageTopicState:
             mainPageTopicState: x,
         });
     }
-
+    */
 
     convertMainPageTopic(item: HotTopicState) {
         const boardUrl = `/list/${item.boardid}`;
@@ -253,18 +260,18 @@ export class MainPageTopicMoreProps {
  * 首页话题组件
  * 需要列表名，fetchUrl和样式三个参数
  **/
-export class MainPageTopicComponent extends React.Component<{ name: string, fetchUrl: string, style: string, mores: MainPageTopicMoreProps[] },
+export class MainPageTopicComponent extends React.Component<{ data, name: string, fetchUrl: string, style: string, mores: MainPageTopicMoreProps[] },
     { mainPageTopic: MainPageTopicState[] }> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
-        let data = Utility.getStorage(`main${this.props.name}`);
-        if (!data) { data = new Array<MainPageTopicState>(); }
+        // let data = Utility.getStorage(`main${this.props.name}`);
+        // if (!data) { data = new Array<MainPageTopicState>(); }
         this.state = {
-            mainPageTopic: data
+            mainPageTopic: this.props.data
         };
     }
-
+    /*
     async getTopicInfo() {
         const mainPageTopics: MainPageTopicState[] = [];
         const url = this.props.fetchUrl;
@@ -283,7 +290,7 @@ export class MainPageTopicComponent extends React.Component<{ name: string, fetc
             mainPageTopic: x,
         });
     }
-
+    */
     convertMainPageTopic(item: MainPageTopicState) {
         const topicUrl = `/topic/${item.id}`;
         return <div className="mainPageListRow">
@@ -442,16 +449,16 @@ export class MainPageColumn {
 /**
  * 推荐功能组件
  */
-export class RecommendedFunctionComponent extends React.Component<{}, { recommendedFuctions: MainPageColumn[] }>{
+export class RecommendedFunctionComponent extends React.Component<{ data }, { recommendedFuctions: MainPageColumn[] }>{
     constructor(props) {
         super(props);
-        let data = Utility.getStorage("mainRecommendedFuction");
-        if (!data) { data = new Array<MainPageColumn>(); }
+        //let data = Utility.getStorage("mainRecommendedFuction");
+        //if (!data) { data = new Array<MainPageColumn>(); }
         this.state = {
-            recommendedFuctions: data
+            recommendedFuctions: this.props.data
         };
     }
-
+    /*
     async getRecommendedFunction() {
         let recommendedFuction: MainPageColumn[] = Utility.getStorage("mainRecommendedFuction");
         if (recommendedFuction) { return recommendedFuction }
@@ -472,7 +479,7 @@ export class RecommendedFunctionComponent extends React.Component<{}, { recommen
             recommendedFuctions: x
         });
     }
-
+    */
     convertRecommendedFunction(item: MainPageColumn) {
         return <div className="recommendedFunctionRow">
             <div className="recommendedFunctionImage"><img src={item.imageUrl}></img></div>
@@ -497,16 +504,16 @@ export class RecommendedFunctionComponent extends React.Component<{}, { recommen
 /**
  * 校园新闻组件
  */
-export class SchoolNewsComponent extends React.Component<{}, { schoolNews: MainPageColumn[] }>{
+export class SchoolNewsComponent extends React.Component<{ data }, { schoolNews: MainPageColumn[] }>{
     constructor(props) {
         super(props);
-        let data = Utility.getStorage('mainSchoolNews');
-        if (!data) { data = new Array<MainPageColumn>(); }
+        //let data = Utility.getStorage('mainSchoolNews');
+        //if (!data) { data = new Array<MainPageColumn>(); }
         this.state = {
-            schoolNews: data
+            schoolNews: this.props.data
         };
     }
-
+    /*
     async getSchoolNews() {
         let schoolnews: MainPageColumn[] = Utility.getStorage('mainSchoolNews');
         if (schoolnews) { return schoolnews }
@@ -528,7 +535,7 @@ export class SchoolNewsComponent extends React.Component<{}, { schoolNews: MainP
             schoolNews: x
         });
     }
-
+    */
     convertSchoolNews(item: MainPageColumn) {
         return <div className="schoolNewsRow">
             <div className="schoolNewsTitle"><a href={item.url} target="_blank">{item.title}</a></div>
@@ -630,16 +637,17 @@ export class AdsComponent extends React.Component<{}, { ads: MainPageColumn[], i
 /**
  * 论坛统计组件
  **/
-export class MainPageCountComponent extends React.Component<{}, { data }> {
+export class MainPageCountComponent extends React.Component<{ data }, { data }> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
-        let data = Utility.getLocalStorage("mainDataCount");
-        if (!data) { data = []; }
+        //let data = Utility.getLocalStorage("mainDataCount");
+        //if (!data) { data = []; }
         this.state = {
-            data: data
+            data: this.props.data
         };
     }
+    /*
     async getData() {
         const response = await Utility.cc98Fetch('/config/global');
         let data = await response.json();
@@ -653,6 +661,7 @@ export class MainPageCountComponent extends React.Component<{}, { data }> {
             data: x,
         });
     }
+    */
     render() {
         const data = this.state.data;
         return <div className="mainPageCount">
@@ -699,10 +708,65 @@ export class RecommendedBoardComponent extends React.Component<{}, {}>{
 }
 
 /**
+ *首页统计类
+ *包括今日帖数，总主题数，总回复数，总用户数，最新用户
+ */
+export class MainPageCountProps {
+
+    //属性
+    todayCount: number;
+    topicCount: number;
+    postCount: number;
+    userCount: number;
+    lastUserName: string;
+
+    //构造方法
+    constructor(todayCount, topicCount, postCount, userCount, lastUserName) {
+        this.todayCount = todayCount;
+        this.topicCount = topicCount;
+        this.postCount = postCount;
+        this.userCount = userCount;
+        this.lastUserName = lastUserName;
+    }
+
+}
+
+/**
  * 主页
  */
-export class MainPage extends React.Component<{}, AppState> {
+export class MainPage extends React.Component<{}, { data }> {
+
+    constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
+        super(props);       //super 表示调用基类（Component系统类型）构造方法
+        let data = Utility.getLocalStorage("mainPageData");
+        if (!data) { data = []; }
+        this.state = {
+            data: data
+        };
+    }
+
+    async getData() {
+        let data = Utility.getLocalStorage("mainPageData");
+        if (!data) {
+            const response = await Utility.cc98Fetch('/config/index');
+            data = await response.json();
+            Utility.setLocalStorage("mainPageData", data, 300);
+            return data;
+        } else {
+            return data
+        }
+    }
+
+    async componentWillMount() {
+        const x = await this.getData();
+        this.setState({
+            data: x,
+        });
+    }
+
     render() {
+
+        let data = this.state.data;
 
         let study: MainPageTopicMoreProps[] = new Array({ name: "学习", url: "/list/68" }, { name: "外语", url: "/list/304" }, { name: "考研", url: "/list/263" }, { name: "出国", url: "/list/102" });
         let emotion: MainPageTopicMoreProps[] = new Array({ name: "缘分", url: "/list/152" }, { name: "小屋", url: "/list/114" }, { name: "感性", url: "/list/81" });
@@ -710,36 +774,38 @@ export class MainPage extends React.Component<{}, AppState> {
         let fullTimeJob: MainPageTopicMoreProps[] = new Array({ name: "更多", url: "/list/235" });
         let partTimeJob: MainPageTopicMoreProps[] = new Array({ name: "更多", url: "/list/459" });
 
+        let count: MainPageCountProps = new MainPageCountProps(data.todayCount, data.topicCount, data.postCount, data.userCount, data.lastUserName);
+
         //console.log(study);
 
         return <div className="mainPage">
             <div className="leftPart">
-                <AnnouncementComponent />
-                <RecommendedReadingComponent />
+                <AnnouncementComponent data={data.announcement} />
+                <RecommendedReadingComponent data={data.recommandationReading} />
                 <div className="row" style={{ justifyContent: "space-between" }}>
-                    <HotTopicComponent />
-                    <MainPageTopicComponent name="校园活动" fetchUrl="/topic/school-event" style="blue" mores={[]} />
+                    <HotTopicComponent data={data.hotTopic} />
+                    <MainPageTopicComponent data={data.schoolEvent} name="校园活动" fetchUrl="/topic/school-event" style="blue" mores={[]} />
                 </div>
                 <div className="row" style={{ justifyContent: "space-between" }}>
 
-                    <MainPageTopicComponent name="学术信息" fetchUrl="/topic/academics" style="black" mores={[]} />
-                    <MainPageTopicComponent name="学习园地" fetchUrl="/topic/study" style="black" mores={study} />
+                    <MainPageTopicComponent data={data.academics} name="学术信息" fetchUrl="/topic/academics" style="black" mores={[]} />
+                    <MainPageTopicComponent data={data.study} name="学习园地" fetchUrl="/topic/study" style="black" mores={study} />
                 </div>
                 <div className="row" style={{ justifyContent: "space-between" }}>
-                    <MainPageTopicComponent name="感性·情感" fetchUrl="/topic/emotion" style="blue" mores={emotion} />
-                    <MainPageTopicComponent name="跳蚤市场" fetchUrl="/topic/flea-market" style="blue" mores={fleaMarket} />
+                    <MainPageTopicComponent data={data.emotion} name="感性·情感" fetchUrl="/topic/emotion" style="blue" mores={emotion} />
+                    <MainPageTopicComponent data={data.fleaMarket} name="跳蚤市场" fetchUrl="/topic/flea-market" style="blue" mores={fleaMarket} />
 
                 </div>
                 <div className="row" style={{ justifyContent: "space-between" }}>
-                    <MainPageTopicComponent name="求职广场" fetchUrl="/topic/full-time-job" style="black" mores={fullTimeJob} />
-                    <MainPageTopicComponent name="实习兼职" fetchUrl="/topic/part-time-job" style="black" mores={partTimeJob} />
+                    <MainPageTopicComponent data={data.fullTimeJob} name="求职广场" fetchUrl="/topic/full-time-job" style="black" mores={fullTimeJob} />
+                    <MainPageTopicComponent data={data.partTimeJob} name="实习兼职" fetchUrl="/topic/part-time-job" style="black" mores={partTimeJob} />
                 </div>
             </div>
             <div className="rightPart">
-                <RecommendedFunctionComponent />
-                <SchoolNewsComponent />
+                <RecommendedFunctionComponent data={data.recommandationFunction} />
+                <SchoolNewsComponent data={data.schoolNews} />
                 <AdsComponent />
-                <MainPageCountComponent />
+                <MainPageCountComponent data={count} />
             </div>
         </div>;
     }
