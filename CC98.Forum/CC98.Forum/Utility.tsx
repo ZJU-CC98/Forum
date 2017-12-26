@@ -2196,11 +2196,8 @@ export async function getBoardInfo(boardId) {
     return data;
 }
 export function getTotalPageof10(replyCount) {
-    if (replyCount >= 10) {
-        return (replyCount - replyCount % 10) / 10 + 1;
-    } else {
-        return 1;
-    }
+    const totalFloor = replyCount + 1;
+    return totalFloor % 10 === 0 ? totalFloor / 10 : (totalFloor - totalFloor % 10) / 10+1;
 }
 export async function getUserInfo(userId) {
     const key = `userId_${userId}`;

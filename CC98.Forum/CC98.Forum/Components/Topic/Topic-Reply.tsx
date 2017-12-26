@@ -101,10 +101,10 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
                     <Replier key={item.postId} userInfo={item.userInfo} isAnonymous={item.isAnonymous} topicid={item.topicId} floor={item.floor} isDeleted={item.isDeleted} traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
                     <div className="column" style={{ justifyContent: "space-between", width: "55.5rem", position: "relative" }}>
                         <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
-                        <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} />
+                        <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} floor={item.floor} />
                         <ReplyContent key={item.content} postid={item.postId} content={item.content} contentType={item.contentType} />
                         <Award postId={item.postId} updateTime={Date.now()} awardInfo={item.awards} />
-                        <ReplierSignature floor={item.floor} userInfo={item.userInfo} replyTime={item.time} content={item.content} quote={this.quote} signature={item.userInfo.signatureCode} topicid={item.topicId} userId={item.userId} masters={this.state.masters} postid={item.postId} likeInfo={likeInfo} lastUpdateAuthor={item.lastUpdateAuthor} lastUpdateTime={item.lastUpdateTime} boardId={this.props.boardInfo.id} isLZ={item.isLZ} traceMode={this.props.isTrace ? true : false} />
+                        <ReplierSignature floor={item.floor} userInfo={item.userInfo} replyTime={item.time} content={item.content} quote={this.quote} signature={item.userInfo.signatureCode} topicid={item.topicId} userId={item.userId} masters={this.state.masters} postid={item.postId} likeInfo={likeInfo} lastUpdateAuthor={item.lastUpdateAuthor} lastUpdateTime={item.lastUpdateTime} boardId={this.props.boardInfo.id} isLZ={item.isLZ} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo} />
                     </div>
                     <FloorSize floor={item.floor} />
                 </div>
@@ -115,10 +115,10 @@ export class Reply extends React.Component<{topicId, page, topicInfo, boardInfo,
                 <Replier key={item.postId} userInfo={item.userInfo} isAnonymous={item.isAnonymous} topicid={item.topicId} floor={item.floor} isDeleted={item.isDeleted} traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
                 <div className="column" style={{ justifyContent: "space-between", width: "55.5rem", position: "relative" }}>
                     <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
-                    <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} />
+                    <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} floor={item.floor} />
                     <ReplyContent key={item.content} postid={item.postId} content={item.content} contentType={item.contentType} />
                     <Award postId={item.postId} updateTime={Date.now()} awardInfo={item.awards} />
-                    <ReplierSignature floor={item.floor} userInfo={item.userInfo} replyTime={item.time} content={item.content} quote={this.quote} signature={item.userInfo.signatureCode} topicid={item.topicId} userId={item.userId} masters={this.state.masters} postid={item.postId} likeInfo={likeInfo} lastUpdateAuthor={item.lastUpdateAuthor} lastUpdateTime={item.lastUpdateTime} boardId={this.props.boardInfo.id} isLZ={item.isLZ} traceMode={this.props.isTrace ? true : false} />
+                    <ReplierSignature floor={item.floor} userInfo={item.userInfo} replyTime={item.time} content={item.content} quote={this.quote} signature={item.userInfo.signatureCode} topicid={item.topicId} userId={item.userId} masters={this.state.masters} postid={item.postId} likeInfo={likeInfo} lastUpdateAuthor={item.lastUpdateAuthor} lastUpdateTime={item.lastUpdateTime} boardId={this.props.boardInfo.id} isLZ={item.isLZ} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo} />
                 </div>
                 <FloorSize floor={item.floor} />
             </div>;

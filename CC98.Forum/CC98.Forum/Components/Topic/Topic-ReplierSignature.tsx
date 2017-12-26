@@ -3,7 +3,7 @@ import * as Utility from '../../Utility';
 import { UbbContainer } from '../UbbContainer';
 import { Link } from 'react-router-dom';
 declare let moment: any;
-export class ReplierSignature extends React.Component<{ signature,postid ,topicid,masters,userId,likeInfo,quote,content,userInfo,replyTime,floor,lastUpdateTime,lastUpdateAuthor,boardId,isLZ,traceMode}, {likeNumber,dislikeNumber,likeState}>{
+export class ReplierSignature extends React.Component<{ signature,postid ,topicid,masters,userId,likeInfo,quote,content,userInfo,replyTime,floor,lastUpdateTime,lastUpdateAuthor,boardId,isLZ,traceMode,topicInfo}, {likeNumber,dislikeNumber,likeState}>{
     constructor(props, content) {
         super(props, content);
         this.showManageUI = this.showManageUI.bind(this);
@@ -136,7 +136,8 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
             traceIcon = <div className="operation1"><Link style={{ color: "#79b8ca" }} to={this.props.traceMode ?returnUrl:traceUrl}>{this.props.traceMode ? "返回" : "追踪"}</Link></div>;
         }
         let manageBtn = null;
-        if (Utility.isMaster(this.props.masters) == true) {
+
+        if (Utility.isMaster(this.props.masters) == true || (this.props.boardId === 144 && Utility.getLocalStorage("userInfo").name === this.props.topicInfo.userName)) {
              manageBtn = <div className="operation1" id={manageIcon} style={{ cursor: "pointer" }} onClick={this.showManageUI}>管理</div>;
         }
         let judgeIcon = <div className="operation1" onClick={this.showJudgeUI}>   评分</div>;
