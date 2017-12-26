@@ -10,8 +10,7 @@ declare let moment: any;
 export class MessageAttmebox extends React.Component<MessageResponseProps> {
 
     render() {
-        let host = window.location.host;
-        let boardName = `[url=http://${host}/list/${this.props.boardId}][color=dodgerblue]${this.props.boardName}[/color][/url]`;
+        let boardName = `[url=/list/${this.props.boardId}][color=dodgerblue]${this.props.boardName}[/color][/url]`;
         //有可能出错后返回boardId为0，未知版面
         if (this.props.boardId === 0) {
             boardName = `[color=dodgerblue]${this.props.boardName}[/color]`;
@@ -28,13 +27,13 @@ export class MessageAttmebox extends React.Component<MessageResponseProps> {
             let userName;
             let title;
             if (this.props.userId > 0) {
-                userName = `[url=http://${host}/user/name/${this.props.userName}][color=gray]${this.props.userName}[/color][/url]`;
+                userName = `[url=/user/name/${this.props.userName}][color=gray]${this.props.userName}[/color][/url]`;
             }
             else {
                 userName = `[color=gray]有人[/color]`;
             }
             if (this.props.boardId) {
-                title = `[url=http://${host}/topic/${this.props.topicId}/${pageNum}][color=blue]${this.props.topicTitle}[/color][/url]`;
+                title = `[url=/topic/${this.props.topicId}/${pageNum}][color=blue]${this.props.topicTitle}[/color][/url]`;
             }
             else {
                 title = `[color=blue]${this.props.topicTitle}[/color]`;
@@ -45,13 +44,13 @@ export class MessageAttmebox extends React.Component<MessageResponseProps> {
             let userName;
             let title;
             if (this.props.userId > 0) {
-                userName = `[url=http://${host}/user/name/${this.props.userName}][color=gray][b]${this.props.userName}[/b][/color][/url]`;
+                userName = `[url=/user/name/${this.props.userName}][color=gray][b]${this.props.userName}[/b][/color][/url]`;
             }
             else {
                 userName = `[color=gray][b]有人[/b][/color]`;
             }
             if (this.props.boardId) {
-                title = `[url=http://${host}/topic/${this.props.topicId}/${pageNum}][color=blue]${this.props.topicTitle}[/color][/url]`;
+                title = `[url=/topic/${this.props.topicId}/${pageNum}][color=blue]${this.props.topicTitle}[/color][/url]`;
             }
             else {
                 title = `[color=blue]${this.props.topicTitle}[/color]`;

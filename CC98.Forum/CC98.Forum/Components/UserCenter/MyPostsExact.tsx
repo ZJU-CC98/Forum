@@ -8,6 +8,7 @@ import Post from './ExactActivitiesPost';
 import { UserRecentPost } from '../../States/AppState';
 import { RouteComponent } from '../RouteComponent';
 import Pager from './Pager';
+import DocumentTitle from '../DocumentTitle';
 
 /**
  * 用户中心我的主题组件
@@ -92,7 +93,7 @@ export default class extends React.Component<{match}, UserCenterMyPostsExactStat
 
     render() {
         if (this.state.isLoading) {
-            return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
+            return <div className="user-center-loading"><DocumentTitle title="我的主题 - 个人中心 - CC98论坛" /><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
         }
         if (this.state.userRecentPosts.length === 0) {
             return (<div className="user-posts" style={{ textAlign: 'center' }}>

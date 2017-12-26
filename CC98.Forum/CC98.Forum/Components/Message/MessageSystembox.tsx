@@ -21,18 +21,18 @@ export class MessageSystembox extends React.Component<MessageSystemProps> {
                     pageNum = `${b-1}#10`;
                 }
                 if (this.props.isRead) {
-                    content = `[url=http://${host}/topic/${this.props.topicId}/${pageNum}][color=gray]${this.props.content}[/color][/url]`;
+                    content = `[url=/topic/${this.props.topicId}/${pageNum}][color=gray]${this.props.content}[/color][/url]`;
                 }
                 else {
-                    content = `[url=http://${host}/topic/${this.props.topicId}/${pageNum}][b][color=black]${this.props.content}[/color][/b][/url]`;
+                    content = `[url=/topic/${this.props.topicId}/${pageNum}][b][color=black]${this.props.content}[/color][/b][/url]`;
                 }
             }
             else {
                 if (this.props.isRead) {
-                    content = `[url=http://${host}/topic/${this.props.topicId}][color=gray]${this.props.content}[/color][/url]`;
+                    content = `[url=/topic/${this.props.topicId}][color=gray]${this.props.content}[/color][/url]`;
                 }
                 else {
-                    content = `[url=http://${host}/topic/${this.props.topicId}][b][color=black]${this.props.content}[/color][/b][/url]`;
+                    content = `[url=/topic/${this.props.topicId}][b][color=black]${this.props.content}[/color][/b][/url]`;
                 }
             }
         }
