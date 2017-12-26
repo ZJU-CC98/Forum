@@ -1,8 +1,9 @@
 ﻿import * as React from 'react';
 import * as Utility from '../Utility';
 import { UbbEditor } from './UbbEditor';
+import { withRouter } from 'react-router-dom';
 declare let moment: any;
-export class Signin extends React.Component<{}, { signinInfo ,content}>{
+export class Signin extends React.Component<{history}, { signinInfo ,content}>{
     constructor(props) {
         super(props);
         this.update = this.update.bind(this);
@@ -24,7 +25,9 @@ export class Signin extends React.Component<{}, { signinInfo ,content}>{
         const topicInfo = await Utility.getTopicInfo(signInTopicId);
         const count = topicInfo.replyCount;
         const page = Utility.getTotalPageof10(count);
-        window.location.href = `/topic/${signInTopicId}#${page}`;
+        let floor = (count + 1) % 10;
+        if (floor === 0) floor = 10;
+        this.props.history.push(`/topic/${signInTopicId}/${page}#${floor}`);
         this.setState({ content: "" });
     }
     render() {
@@ -78,3 +81,4 @@ export class Signin extends React.Component<{}, { signinInfo ,content}>{
         </div>;
     }
 }
+export const ShowSignin = withRouter(Signin);

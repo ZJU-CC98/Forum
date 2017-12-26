@@ -46,7 +46,6 @@
     <None Remove="Components\Topic\Topic-ReplierSignature.tsx" />
     <None Remove="Components\Topic\Topic-ReplyContent.tsx" />
     <None Remove="Components\Topic\Topic-SendTopic.tsx" />
-    <None Remove="Components\Topic\Topic-Topic.tsx" />
     <None Remove="Components\Topic\Topic-TopicInfo.tsx" />
     <None Remove="Components\Topic\Topic.tsx" />
     <None Remove="Components\UbbContainer.tsx" />
@@ -145,7 +144,6 @@
     <TypeScriptCompile Include="Components\Topic\Topic-Replier.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-ReplyContent.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-SendTopic.tsx" />
-    <TypeScriptCompile Include="Components\Topic\Topic-Topic.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-TopicInfo.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-TopicManagement.tsx" />

@@ -10,7 +10,6 @@ import {
 import { match } from 'react-router';
 import { ReplyContent } from './Topic-ReplyContent';
 import { Replier } from './Topic-Replier';
-import { PostTopic } from './Topic-Topic';
 import { Award } from './Topic-Award';
 import { ReplierSignature } from './Topic-ReplierSignature';
 import { PostManagement } from './Topic-PostManagement';

@@ -19,7 +19,6 @@ import { AwardInfo } from './Topic-AwardInfo';
 import { SendTopic } from './Topic-SendTopic';
 import { Category } from './Topic-Category';
 import { Pager } from '../Pager';
-import { PostTopic } from './Topic-Topic';
 import { Reply } from './Topic-Reply';
 import { NotFoundTopic, UnauthorizedTopic, ServerError } from '../Status';
 import { TopicInfo } from './Topic-TopicInfo';

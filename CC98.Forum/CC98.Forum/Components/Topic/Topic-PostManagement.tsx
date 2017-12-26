@@ -3,7 +3,7 @@ import * as Utility from '../../Utility';
 import * as $ from 'jquery';
 import { match } from "react-router";
 
-export class PostManagement extends React.Component<{ userId, postId, update, topicId, privilege,boardId }, { wealth: number, prestige: number, reason: string, tpdays: number, UI, tips: string, fetchState }>{
+export class PostManagement extends React.Component<{ userId, postId, update, topicId, privilege,boardId,floor }, { wealth: number, prestige: number, reason: string, tpdays: number, UI, tips: string, fetchState }>{
 
     constructor(props) {
 
@@ -381,16 +381,17 @@ export class PostManagement extends React.Component<{ userId, postId, update, to
             </div>
 
         </div>;
+        let deleteAllow = <div className="row manageOperation">
 
+            <div className="manageObject">删除原因</div>
+
+            <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+
+        </div>;
+        if (this.props.floor === 1) deleteAllow = <div>删除主题帖请在底部进行操作</div>;
         const deleteUI = <div className="column manageInfo" id="punish" >
 
-            <div className="row manageOperation">
-
-                <div className="manageObject">删除原因</div>
-
-                <input type="text" value={this.state.reason} onChange={this.reasonInput} />
-
-            </div>
+            {deleteAllow}
 
         </div>;
         const otherUI = <div className="column manageInfo" id="other" >
