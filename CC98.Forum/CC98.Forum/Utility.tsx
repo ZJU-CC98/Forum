@@ -86,10 +86,16 @@ export async function getTopic(topicid: number) {
         //window.location.href = "/status/Disconnected";
     }
 }
-function getThisUserInfo(userId, usersId) {
+export function getThisUserInfo(userId, usersId) {
     for (let i in usersId) {
         if (usersId[i].id === userId)
             return usersId[i];
+    }
+}
+export function getThisUserInfobyName(userName, usersName) {
+    for (let i in usersName) {
+        if (usersName[i].name === userName)
+            return usersName[i];
     }
 }
 export async function getTopicContent(topicid: number, curPage: number) {
@@ -129,7 +135,7 @@ export async function getTopicContent(topicid: number, curPage: number) {
                     ...content[i], userInfo: userMesJson, postId: content[i].id, isAnonymous: true
                 }
             } else {
-                const userMesJson = { name: '98Deleter', portraitUrl: 'http://www.cc98.org/images/policeM.png', id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
+                const userMesJson = { name: '98Deleter', portraitUrl: '/static/images/deleter2.png', id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
                 post[i] = {
                     ...content[i], userInfo: userMesJson, postId: content[i].id, isAnonymous: false, isDeleted: true, content: "该贴已被my cc98, my home"
                 }
@@ -292,16 +298,8 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
         const topicMessage = await getTopic(topicid);
         let start: number;
         let isUserPoster: boolean;
-        if (topicMessage.userName === userName) {
-            isUserPoster = true;
-            if (curPage === 1)
-                start = (curPage - 1) * 10 + 1;
-            else
-                start = (curPage - 1) * 10;
-        } else {
-            isUserPoster = false;
-            start = (curPage - 1) * 10;
-        }
+        start = (curPage - 1) * 10;
+    
 
         const token = await getToken();
         const headers = new Headers();
@@ -2530,6 +2528,24 @@ export async function getBasicUsersInfo(userId: number[]) {
             }
         }
         return data;
+    }
+}
+export async function getUsersInfobyNames(userNames: any[]) {
+    let url = "/user/basic/name";
+    for (let i = 0; i < userNames.length; i++) {
+        if (i == 0) {
+            url = `${url}?name=${userNames[i]}`;
+        }
+        else {
+            url = `${url}&name=${userNames[i]}`;
+        }
+    }
+    try {
+        let response = await cc98Fetch(url);
+        var data0 = await response.json();
+        return data0;
+    } catch (e) {
+        return [];
     }
 }
 export async function getUsersInfo(userId: any[]) {

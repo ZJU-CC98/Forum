@@ -12,6 +12,7 @@ export class Award extends React.Component<Props, {info,shortInfo,count,showAll 
         super(props, content);
         this.showAll = this.showAll.bind(this);
         this.hideAll = this.hideAll.bind(this);
+        this.generateAwardInfo = this.generateAwardInfo.bind(this);
         this.state = { info: [],shortInfo:[],count:0 ,showAll:false}
     }
     hideAll() {
@@ -23,36 +24,50 @@ export class Award extends React.Component<Props, {info,shortInfo,count,showAll 
     async componentDidMount() {
         let shortInfo = [];
         const award = this.props.awardInfo;
-        const usersId = [];
+        const usersName = [];
+        let usersInfo = [];
         for (let i in award) {
-            usersId[i] = award[i].userId;
+            usersName[i] = award[i].operatorName;
         }
-
+        usersInfo = await Utility.getUsersInfobyNames(usersName);
+        console.log("2");
+        console.log(usersInfo);
+        for (let i in award) {
+            console.log("username" + award[i].operatorName);
+            let thisUserInfo = Utility.getThisUserInfobyName(award[i].operatorName, usersInfo);
+            console.log(thisUserInfo);
+            award[i].portraitUrl = thisUserInfo.portraitUrl;
+        }
         if (award.length > 10) {
             for (let i = 0; i < 10; i++) {
-                shortInfo[i] = await this.generateAwardInfo(award[i]);
+                shortInfo[i] =this.generateAwardInfo(award[i]);
              }
         }
-      
         const info = award.map(this.generateAwardInfo.bind(this));
-        const awardInfo = await Promise.all(info);
-        this.setState({ info: awardInfo,shortInfo:shortInfo,count:award.length})
+        this.setState({ info: info,shortInfo:shortInfo,count:award.length})
     }
     async componentWillReceiveProps(newProps) {
         let shortInfo = [];
         const award = newProps.awardInfo;
+        const usersName = [];
+        let usersInfo = [];
+        for (let i in award) {
+            usersName[i] = award[i].operatorName;
+        }
+        usersInfo = await Utility.getUsersInfobyNames(usersName);
         if (award.length > 10) {
             for (let i = 0; i < 10; i++) {
-                shortInfo[i] = await this.generateAwardInfo(award[i]);
+                let thisUserInfo = Utility.getThisUserInfobyName(award[i].operatorName, usersInfo);
+                award[i].portraitUrl = thisUserInfo.portraitUrl;
+                shortInfo[i] =this.generateAwardInfo(award[i]);
             }
         }
         const info = award.map(this.generateAwardInfo.bind(this));
-        const awardInfo = await Promise.all(info);
-        this.setState({ info: awardInfo, shortInfo: shortInfo, count: award.length });
+        this.setState({ info: info, shortInfo: shortInfo, count: award.length });
     }
-    async generateAwardInfo(item) {
-        //const url = await Utility.getPortraitUrl(item.operatorName);
-        return <AwardInfo postId={this.props.postId} portraitUrl={item.url} content={item.content} reason={item.reason} userName={item.operatorName} />;
+     generateAwardInfo(item) {
+         console.log(item);
+        return <AwardInfo postId={this.props.postId} portraitUrl={item.portraitUrl} content={item.content} reason={item.reason} userName={item.operatorName} />;
 
     }
     render() {
