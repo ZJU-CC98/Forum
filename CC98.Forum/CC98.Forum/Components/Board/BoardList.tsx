@@ -3,70 +3,102 @@ import { Board } from '../../States/AppState';
 import * as Utility from '../../Utility';
 import * as $ from 'jquery';
 import { Link } from 'react-router-dom';
-//链接到的地址是  /list/boardid
 
-export class BoardList extends React.Component<{}, { thisBoardState: Board[] }> {
+/**
+ *根版面（区）的状态
+ *需要版面名称，id，主管，以及子版面
+ */
+export class RootBoardState {
+    name: string;
+    id: number;
+    masters: string[];
+    boards: ChildBoardState[];
+
+    constructor(name: string, id: number, masters: string[], boards: ChildBoardState[]) {
+        this.name = name;
+        this.id = id;
+        this.masters = masters;
+        this.boards = boards;
+    }
+}
+
+/**
+ *子版面的状态
+ *需要版面名称，id，主管，今日回帖数，总主题数，总回帖数
+ */
+export class ChildBoardState {
+    name: string;
+    id: number;
+    masters: string[];
+    todayCount: number;
+    topicCount: number;
+    postCount: number;
+
+    constructor(name: string, id: number, masters: string[], todayCount: number, topicCount: number, postCount: number) {
+        this.name = name;
+        this.id = id;
+        this.masters = masters;
+        this.todayCount = todayCount;
+        this.topicCount = topicCount;
+        this.postCount = postCount;
+    }
+}
+
+export class BoardList extends React.Component<{}, { data: RootBoardState[] }> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法
         this.state = {
-            thisBoardState: [],
+            data: new Array<RootBoardState>()
         }
     }
 
-    async componentDidMount() {
-        let boardNameList = [];
-        const board: Board[] = [];
-        if (!Utility.getStorage('board_2')) {   //缓存
-            const response = await Utility.cc98Fetch('/Board/Root');
-            const data = await response.json();
-            for (let i = 0; i < data.length; i++) {
-                board[i] = new Board(data[i].name, data[i].todayCount, data[i].postCount, data[i].id, data[i].boardMastersString);
-                Utility.setStorage(`board_${data[i].id.toString()}`, board[i]);
-                boardNameList[i] = `board_${data[i].id.toString()}`;
-            }
-            Utility.setStorage('boardList', boardNameList);
-        } else {
-            boardNameList = Utility.getStorage('boardList');
-            for (let i = 0; i < boardNameList.length; i++) {
-                board[i] = Utility.getStorage(boardNameList[i]);
-            }
-        }
+    async getData() {
+        let data;
+        const response = await Utility.cc98Fetch('/Board/all');
+        data = await response.json();
+        return data;
+    }
 
+    async componentDidMount() {
+        let x = await this.getData();
         this.setState({
-            thisBoardState: board,
+            data: x,
         })
     }
     scroll(id) {
         document.getElementById(id).scrollIntoView();
     }
-    generateRootBoard(item: Board) {    //返回一条父版信息
-        return <RootBoard board={item} />;
+    generateRootBoard(data: RootBoardState) {    //返回一条父版信息
+        return <RootBoard data={data} />;
     }
     generateBoardGuide(item) {
         const name = `${item.name}`;
         return <div onClick={() => this.scroll(name)} className="row boardOption">{item.name}</div>;
     }
-   
+
     render() {
 
-        return <div className="row" style={{ width:"1140px" }}>
+        return <div className="row" style={{ width: "1140px" }}>
             <div className="boardList">
-                {this.state.thisBoardState.map(this.generateRootBoard)}
+                {this.state.data.map(this.generateRootBoard)}
             </div>
             <div className="boardGuide">
-                {this.state.thisBoardState.map(this.generateBoardGuide.bind(this))}
+                {this.state.data.map(this.generateBoardGuide.bind(this))}
             </div>
         </div>;
     }
 }
-export class RootBoard extends React.Component<{ board }, { isExpanded: boolean }>{
+export class RootBoard extends React.Component<{ data: RootBoardState }, { isExpanded: boolean }>{
 
     constructor(props) {
         super(props);
-        let boards = this.props.board;
-        if (boards.id === 2 || boards.id === 29 || boards.id === 35 || boards.id === 37) { this.state = { isExpanded: false, }; }//四个民工版默认状态为折叠
-        else { this.state = { isExpanded: true, }; }//其他版默认状态为展开
+        let boards = this.props.data;
+
+        //四个民工区默认状态为折叠，其他区默认状态为展开
+        if (boards.id === 2 || boards.id === 29 || boards.id === 35 || boards.id === 37) { this.state = { isExpanded: false, }; }
+        else { this.state = { isExpanded: true, }; }
+
         this.toggleIsExpanded = this.toggleIsExpanded.bind(this);//JS的this是可变的，取决于调用方法的地方，bind方法用于此刻的this值
     }
 
@@ -78,37 +110,27 @@ export class RootBoard extends React.Component<{ board }, { isExpanded: boolean 
 
     render() {
         let display = this.state.isExpanded ? "flex" : "none";    //根据 isExpanded 状态定义样式
-        let buttonContent = this.state.isExpanded ?"收起" : "展开";      //根据 isExpanded 状态定义按钮内容
-        let boards = this.props.board;
+        let buttonContent = this.state.isExpanded ? "收起" : "展开";      //根据 isExpanded 状态定义按钮内容
+        let data = this.props.data;
 
-        if (boards.id === 758) {    //似水流年版 没有子版
-            return <div className="anArea" id="似水流年">
-                <div className="column" style={{ border: '2px solid #e9e9e9' }}>
-                    <div className="row" style={{ marginTop: '15px', marginBottom: '15px', justifyContent:"space-around" }}>
-                        <div className="areaName"><Link to="/list/758">{boards.name}</Link></div>
-                        <div className="areaName">主管：{boards.masters}</div>
-                    </div>
-                </div>
-            </div>;
-        }
-        else {  //其他版
-            return <div className="anArea" id={boards.name}>
-                <div className="column" style={{ border: '2px solid #e9e9e9' }}>
-                    <div className="row boardListHead"　>
+        return <div className="anArea" id={data.name}>
+            <div className="column" style={{ border: '2px solid #e9e9e9' }}>
+                <div className="row boardListHead"　>
 
-                        <div className="row" style={{ marginRight: "1rem", alignItems: "center" }}>
-                            <div className="areaName">{boards.name}</div>
-                        <div className="areaName">主管：{boards.masters}</div>                         
-                        </div>
-                        <div onClick={this.toggleIsExpanded} className="expendBoardList"> {buttonContent}</div>
+                    <div className="row" style={{ marginRight: "1rem", alignItems: "center" }}>
+                        <div className="areaName">{data.name}</div>
+                        <div className="areaName">主管：{data.masters}</div>
                     </div>
-                    <div className="hiddenContent" style={{ display: display }}> <ChildBoard boardid={boards.id} /></div>
+                    <div onClick={this.toggleIsExpanded} className="expendBoardList"> {buttonContent}</div>
                 </div>
-            </div>;
-        }
+                <div className="hiddenContent" style={{ display: display }}>
+                    <ChildBoard id={data.id} boards={data.boards} />
+                </div>
+            </div>
+        </div>;
     }
 }
-export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>{
+export class ChildBoard extends React.Component<{ id: number, boards: ChildBoardState[] }, {}>{
     constructor(props) {
         super(props);
         this.state = {
@@ -116,54 +138,50 @@ export class ChildBoard extends React.Component<{ boardid }, { thisBoardState }>
         };
     }
 
-    async componentDidMount() {
-        const token = Utility.getLocalStorage("accessToken");
-        const headers = new Headers();
-        headers.append("Authorization", token);
-        const boards: Board[] = [];
-        const response = await Utility.cc98Fetch(`/Board/${this.props.boardid}/Sub`, {headers});
-        const data = await response.json();
-        for (let i = 0; i < data.length; i++) {
-            boards[i] = new Board(data[i].name, data[i].todayCount, data[i].postCount, data[i].id, data[i].masters);
-        }
-        this.setState({
-            thisBoardState: boards,
-        });
-    }
     onError(e) {
         e.preventDefault();
         e.target.src = `/static/images/_CC98协会.png`;
-     
+
     }
-    convertChildBoard(item: Board) {   
-        const url =`/static/images/_${item.name}.png`
+
+    convertChildBoard(item: ChildBoardState) {
+        const url = `/static/images/_${item.name}.png`
         return <div className="boardContent">
             <Link to={`/list/${item.id}`}><div className="greenBackdrop" >
-                <img style={{width:"6rem",height:"6rem"}}src={url} onError={this.onError}></img>
+                <img style={{ width: "6rem", height: "6rem" }} src={url} onError={this.onError}></img>
             </div></Link>
             <div className="column boardBlock" >
-                <Link to={`/list/${item.id}`}><div className="boardName2" style={{ fontSize:"1.2rem", fontWeight:"bold" }}>{item.name}</div></Link>
+                <Link to={`/list/${item.id}`}><div className="boardName2" style={{ fontSize: "1.2rem", fontWeight: "bold" }}>{item.name}</div></Link>
                 <div className="boardInfo">
-                    <div className="row">今日  {item.todayPostCount} </div>
-                    <div className="row">总数  {item.totalPostCount}</div>
-                </div> 
-                
+                    <div className="row">今日  {item.todayCount} </div>
+                    <div className="row">总数  {item.postCount}</div>
                 </div>
+
+            </div>
         </div>;
     }
-    convertNoImgChildBoard(item: Board) {
+
+    convertNoImgChildBoard(item: ChildBoardState) {
         return <div className="noImgBoardContent">
             <Link to={`/list/${item.id}`}><div className="boardName2">{item.name}</div></Link>
         </div>;
     }
+
     render() {
-        if (this.props.boardid === 2 || this.props.boardid === 29 || this.props.boardid === 35 || this.props.boardid === 37 || this.props.boardid === 33 || this.props.boardid===604) {
+        let boards = [];
+        let id = 0;
+        if (this.props.boards && this.props.id) {
+            boards = this.props.boards;
+            id = this.props.id
+        }
+
+        if (id === 2 || id === 29 || id === 35 || id === 37 || id === 33 || id === 604) {
             return <div className="areaContent" >
-                {this.state.thisBoardState.map(this.convertNoImgChildBoard)}
+                {boards.map(this.convertNoImgChildBoard)}
             </div>;
         } else {
             return <div className="areaContent">
-                {this.state.thisBoardState.map(this.convertChildBoard.bind(this))}
+                {boards.map(this.convertChildBoard.bind(this))}
             </div>;
         }
     }
