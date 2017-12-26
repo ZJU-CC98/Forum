@@ -2,8 +2,13 @@
 import * as Utility from '../../Utility';
 import * as $ from 'jquery';
 import { match } from "react-router";
-
-export class Judge extends React.Component<{ topicId,userId, postId, update }, { reason,tips,UI }>{
+interface Props {
+    topicId;
+    userId;
+    postId;
+    update; 
+}
+export class Judge extends React.Component<Props, { reason,tips,UI }>{
 
     constructor(props) {
         super(props);

@@ -2,8 +2,11 @@
 import * as Utility from '../../Utility';
 import { Link } from 'react-router-dom';
 
-
-export class Category extends React.Component<{ topicInfo,topicId,boardInfo }, { boardId, topicId, boardName, title }>{
+interface Props {
+    topicInfo;
+    boardInfo;
+}
+export class Category extends React.Component<Props, { boardId, topicId, boardName, title }>{
     constructor(props) {
         super(props);
         this.state = ({
@@ -12,7 +15,7 @@ export class Category extends React.Component<{ topicInfo,topicId,boardInfo }, {
         });
     }
     componentDidMount() {
-        this.setState({ boardId: this.props.topicInfo.boardId, topicId: this.props.topicId, boardName: this.props.boardInfo.name, title: this.props.topicInfo.title });
+        this.setState({ boardId: this.props.topicInfo.boardId, topicId: this.props.topicInfo.id, boardName: this.props.boardInfo.name, title: this.props.topicInfo.title });
     }
     componentWillReceiveProps(newProps) {
         this.setState({ boardId: newProps.topicInfo.boardId, topicId: newProps.topicId, boardName: newProps.boardInfo.name, title: newProps.topicInfo.title });

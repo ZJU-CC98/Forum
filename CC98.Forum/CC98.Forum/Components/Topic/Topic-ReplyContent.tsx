@@ -5,18 +5,23 @@ import { RouteComponent } from '../RouteComponent';
 import { PostManagement } from './Topic-PostManagement';
 import { UbbContainer } from '../UbbContainer';
 declare let editormd: any;
-export class ReplyContent extends React.Component<{postid,content,  contentType}, { postId }> {
+interface Props {
+    postId;
+    content;
+    contentType;
+}
+export class ReplyContent extends React.Component<Props, { postId }> {
     constructor(props, content) {
         super(props, content);
 
         this.state = {
-            postId: this.props.postid
+            postId: this.props.postId
         }
     }
   
 
     componentDidUpdate() {
-        const divid = `doc-content${this.props.postid}`;
+        const divid = `doc-content${this.props.postId}`;
         editormd.markdownToHTML(divid, {
             htmlDecode: "style,script,iframe",
             emoji: true,
@@ -28,7 +33,7 @@ export class ReplyContent extends React.Component<{postid,content,  contentType}
         });
     }
     async componentDidMount() {
-        const divid = `doc-content${this.props.postid}`;
+        const divid = `doc-content${this.props.postId}`;
         editormd.markdownToHTML(divid, {
             htmlDecode: "style,script,iframe",
             emoji: true,
@@ -41,7 +46,7 @@ export class ReplyContent extends React.Component<{postid,content,  contentType}
         this.setState({});
     }
     render() {
-        const divid = `doc-content${this.props.postid}`;
+        const divid = `doc-content${this.props.postId}`;
         const ubbMode = <UbbContainer code={this.props.content} />;
         const mdMode = <div id={divid}>
             <textarea name="editormd-markdown-doc" style={{ display: 'none' }}>{this.props.content}</textarea>

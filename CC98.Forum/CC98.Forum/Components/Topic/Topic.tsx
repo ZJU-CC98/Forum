@@ -131,23 +131,23 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         let topic = null;
         let hotReply = null;
         let topicInfo = null;
-        topicInfo = <TopicInfo topicInfo={this.state.topicInfo} tag1={this.state.topicInfo.tag1} tag2={this.state.topicInfo.tag2} boardInfo={this.state.boardInfo} adsUrl={'/images/ads.jpg'} isFav={this.state.isFav} />;
+        topicInfo = <TopicInfo topicInfo={this.state.topicInfo} tag1={this.state.topicInfo.tag1} tag2={this.state.topicInfo.tag2} boardInfo={this.state.boardInfo}  isFav={this.state.isFav} />;
         if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
-            hotReply = <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} quote={this.quote} isTrace={false} isHot={true} userId={null} />
+            hotReply = <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} boardInfo={this.state.boardInfo} quote={this.quote} isTrace={false} isHot={true} userId={null} />
         }
         const pagerUrl = `/topic/${this.state.topicid}/`;
         let sendTopic = null;
         if (Utility.getLocalStorage("userInfo"))
-            sendTopic = <SendTopic onChange={this.handleChange} topicid={this.state.topicid} boardId={this.state.boardId} boardInfo={this.state.boardInfo} content={this.state.quote} userId={this.state.topicInfo.userId} topicInfo={this.state.topicInfo} />;
+            sendTopic = <SendTopic onChange={this.handleChange}   boardInfo={this.state.boardInfo} content={this.state.quote} userId={this.state.topicInfo.userId} topicInfo={this.state.topicInfo} />;
         let topicHtml = <div className="center" >
             <FindIP data={this.state.IPData}/>
             <div className="row" style={{ width: "100%", justifyContent: 'space-between', alignItems: "center" }}>
-                <Category topicId={this.state.topicid} topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} />
+                <Category  topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} />
                 <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} />
             </div>
             {topicInfo}
             {hotReply}
-            <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} topicId={this.match.params.topicid} boardInfo={this.state.boardInfo} quote={this.quote} isHot={false} isTrace={false} userId={null} />
+            <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} boardInfo={this.state.boardInfo} quote={this.quote} isHot={false} isTrace={false} userId={null} />
        
             <div style={{ display: "flex", width: "100%", justifyContent: "flex-end", marginTop: "3rem" }}><Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
             {sendTopic}

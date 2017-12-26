@@ -7,8 +7,14 @@ import { UbbEditor } from '../UbbEditor';
 import { TopicManagement } from './Topic-TopicManagement';
 declare let moment: any;
 declare let editormd: any;
-
-export class SendTopic extends React.Component<{ topicid, boardId, boardInfo, onChange, content, userId,topicInfo }, { content: string, mode: number, masters: string[],buttonInfo,buttonDisabled }>{
+interface Props {
+    boardInfo;
+    onChange;
+    content;
+    userId;
+    topicInfo;
+}
+export class SendTopic extends React.Component<Props, { content: string, mode: number, masters: string[],buttonInfo,buttonDisabled }>{
 	constructor(props) {
 		super(props);
 		this.sendUbbTopic = this.sendUbbTopic.bind(this);
@@ -26,11 +32,11 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo, on
 		this.props.onChange();
 	}
 	showManagement() {
-		const UIId = `#manage${this.props.topicid}`;
+		const UIId = `#manage${this.props.topicInfo.id}`;
 		$(UIId).css('display', '');
 	}
 	close() {
-		const UIId = `#manage${this.props.topicid}`;
+		const UIId = `#manage${this.props.topicInfo.id}`;
 		$(UIId).css('display', 'none');
 	}
     componentDidMount() {
@@ -84,7 +90,7 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo, on
 			});
 		}
 		const time = moment(this.props.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
-		const url = `/topic/${this.props.topicid}#${this.props.content.floor}`;
+		const url = `/topic/${this.props.topicInfo.id}#${this.props.content.floor}`;
 		const masters = this.props.boardInfo.masters;
 		if (this.props.content) {
 			if (this.state.mode === 1) {
@@ -120,9 +126,9 @@ ${newProps.content.content}
 				if(floor > 10){
 					page = parseInt(((floor - 1) / 10).toString()) + 1;
 					floor = floor % 10;
-					url = `/topic/${this.props.topicid}/${page}#${floor === 0 ? 10 : floor}`;
+					url = `/topic/${this.props.topicInfo.id}/${page}#${floor === 0 ? 10 : floor}`;
 				} else {
-					url = `/topic/${this.props.topicid}#${newProps.content.floor}`;
+					url = `/topic/${this.props.topicInfo.id}#${newProps.content.floor}`;
 				}
 				const str = `[quote][b]以下是引用${newProps.content.floor}楼：用户${newProps.content.userName}在${time}的发言：[color=blue][url=${url}]>>查看原帖<<[/url][/color][/b]
 ${newProps.content.content}[/quote]
@@ -209,7 +215,7 @@ ${newProps.content.content}[/quote]
 
     async sendUbbTopic() {
         this.setState({ buttonDisabled: true, buttonInfo: "..." });
-		const url = `/topic/${this.props.topicid}/post`;
+		const url = `/topic/${this.props.topicInfo.id}/post`;
 		const bodyInfo = {
 			content: this.state.content,
 			contentType: 0,
@@ -238,9 +244,9 @@ ${newProps.content.content}[/quote]
 			//如果存在合法的@，则发送@信息，否则不发送，直接跳转至所发帖子
 			if (atUsers) {
 				const postId = await mes.text();
-				const topicId = this.props.topicid;
+				const topicId = this.props.topicInfo.id;
 				const atUsersJSON = JSON.stringify(atUsers);
-				const url2 = `/notification/at?topicid=${topicId}&postid=${postId}`;
+				const url2 = `/notification/at?topicInfo.id=${topicId}&postid=${postId}`;
 				let myHeaders2 = new Headers();
 				myHeaders2.append("Content-Type", 'application/json');
 				myHeaders2.append("Authorization", token);
@@ -258,7 +264,7 @@ ${newProps.content.content}[/quote]
 	async sendMdTopic() {
         try {
             this.setState({ buttonDisabled: true, buttonInfo: "..." });
-			const url = `/topic/${this.props.topicid}/post`;
+			const url = `/topic/${this.props.topicInfo.id}/post`;
 			const c = Constants.testEditor.getMarkdown();
 			Constants.testEditor.setMarkdown('');
 			const content = {
@@ -402,7 +408,7 @@ ${newProps.content.content}[/quote]
 				</div></div>
             {editor}
             {manageBTN}
-            <TopicManagement topicId={this.props.topicid} update={this.onChange} boardId={this.props.boardId} updateTime={Date.now()} topicInfo={this.props.topicInfo} />
+            <TopicManagement update={this.onChange} boardId={this.props.boardInfo.id} updateTime={Date.now()} topicInfo={this.props.topicInfo} />
 		</div>;
 	}
 }

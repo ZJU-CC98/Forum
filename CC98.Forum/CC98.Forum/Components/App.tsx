@@ -19,7 +19,6 @@ import { Footer } from './Footer';
 import { MainPage } from './MainPage';
 import User from './UserCenter/User/User';
 import LogOn from './LogOn';
-import { CreateTopic } from './Topic/Topic-CreateTopic';
 import * as Status from './Status';
 import { UbbContainer } from './UbbContainer';
 import { Search } from './Search/Search';
@@ -52,7 +51,6 @@ export class App extends React.Component<null, AppState> {
                         <Route path="/logon" exact component={LogOn} />
                         <Route path="/search" component={Search} />
                         <Route path="/searchBoard" component={SearchBoard} />
-                        <Route path="/createtopic/:boardId" component={CreateTopic} />
                         <Route path="/signin" component={Signin} />
                         <Route path="/sitemanage" component={SiteManage} />
                         <Route path="/editor/:mode/:id?" component={ShowEdit} />
