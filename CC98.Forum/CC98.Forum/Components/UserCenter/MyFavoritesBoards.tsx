@@ -5,6 +5,7 @@
 import * as React from 'react';
 import * as Utility from '../../Utility';
 import MyFavoritesBoard from './MyFavoritesBoard';
+import DocumentTitle from '../DocumentTitle';
 import { UserFavoritesBoardInfo } from '../../states/AppState';
 
 
@@ -68,7 +69,7 @@ export default class extends React.Component<null, UserCenterMyFavoritesBoardsSt
             textAlign: 'center'
         };
         if (this.state.isLoading) {
-            return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
+            return <div className="user-center-loading"><DocumentTitle title="关注版面 - 个人中心 - CC98论坛" /><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
         }
         if (this.state.boards.length === 0) {
             return (<div style={style}>{this.state.info}</div>);

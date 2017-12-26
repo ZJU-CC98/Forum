@@ -8,6 +8,7 @@ import { RouteComponent } from '../RouteComponent';
 import MyFollowingsUser from './MyFollowingsUser';
 import Pager from './Pager';
 import * as Utility from '../../Utility';
+import DocumentTitle from '../DocumentTitle';
 
 //用户中心我的关注组件
 export default class extends React.Component<{match}, UserCenterMyFollowingsState> {
@@ -92,7 +93,7 @@ export default class extends React.Component<{match}, UserCenterMyFollowingsStat
 
     render() {
         if (this.state.isLoading) {
-            return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
+            return <div className="user-center-loading"><DocumentTitle title="关注用户 - 个人中心 - CC98论坛" /><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
         }
         if (this.state.userFollowings.length === 0) {
             return (

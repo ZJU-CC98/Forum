@@ -15,6 +15,7 @@ import Activities from './Activities';
 import Avatar from '../ExactAvatar';
 import { changeCurrentVisitingUserPage, userNotFound } from '../../../Actions';
 import * as Utility from '../../../Utility';
+import DocumentTitle from '../../DocumentTitle';
 
 /**
  * 用户详情页用的Route
@@ -93,6 +94,7 @@ class UserExact extends React.Component<{ match, history, changePage, notFoundUs
     render() {
         return this.state ? 
         <div className="user-center-exact">
+            <DocumentTitle title={`${this.state.userInfo.name} - 用户详情 - CC98论坛`} />
             <Avatar userAvatarImgURL={this.state.userAvatarImgURL} />
             <Profile userInfo={this.state.userInfo} />
             <Activities id={this.state.userInfo.id} />

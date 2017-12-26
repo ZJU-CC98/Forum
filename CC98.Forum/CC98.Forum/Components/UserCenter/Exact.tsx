@@ -6,7 +6,8 @@ import * as React from 'react';
 import { UserInfo } from '../../States/AppState';
 import ExactProfile from './ExactProfile';
 import ExactActivities from './ExactActivities';
-import ExactAvatar from './ExactAvatar'
+import ExactAvatar from './ExactAvatar';
+import DocumentTitle from '../DocumentTitle';
 import * as Utility from '../../Utility';
 import { changeUserInfo } from '../../Actions';
 import { connect } from 'react-redux';
@@ -37,6 +38,7 @@ class UserCenterExact extends React.Component<{userInfo, changeUserInfo}> {
 
     render() {        
         return (<div className="user-center-exact">
+            <DocumentTitle title="我的资料 - 个人中心 - CC98论坛" />
             <ExactAvatar userAvatarImgURL={this.props.userInfo.portraitUrl} />
             <ExactProfile userInfo={this.props.userInfo} />
             <ExactActivities />
