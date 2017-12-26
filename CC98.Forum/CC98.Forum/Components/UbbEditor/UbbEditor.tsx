@@ -103,7 +103,7 @@ export class UbbEditor extends React.Component<Props, State> {
                 throw new Error('文件过大');
             }
             let res = await Utility.uploadFile(file);
-            if(res.isSuccess){
+            if (res.isSuccess) {
                 this.handleButtonClick(this.state.extendTagName, `${res.content}`);
             }else {
                 throw new Error('上传失败');
@@ -347,7 +347,7 @@ export class UbbEditor extends React.Component<Props, State> {
                             <button className="fa-picture-o" type="button" title="插入图片" onClick={(e) => { e.stopPropagation(); this.handleExtendButtonClick('img'); }}></button>
                             <button className="fa-film" type="button" title="插入视频" onClick={(e) => { e.stopPropagation(); this.handleExtendButtonClick('video'); }}></button>
                             <button className="fa-music" type="button" title="插入音频" onClick={(e) => { e.stopPropagation(); this.handleExtendButtonClick('audio'); }}></button>
-                            <label className="fa-file" htmlFor="upload" title="上传文件" onClick={(e) => { e.stopPropagation(); this.handleExtendButtonClick('upload'); }} ></label>
+                            <label className="fa-file" htmlFor="upload" title="上传文件" onClick={(e) => { e.stopPropagation(); this.handleExtendButtonClick('upload'); return false }} ></label>
                         </div>
                     </div>
                     <div style={{ flexGrow: 1 }}></div>
@@ -375,6 +375,7 @@ export class UbbEditor extends React.Component<Props, State> {
                         id="upload"
                         accept={this.state.extendTagName === 'img' ? "image/*" : ""}
                         style={{ display: 'none' }}
+                        onClick={(e) => { e.stopPropagation(); }}
                         onChange={(e) => {
                             if (e.target.files[0]) {
                                 this.handleUpload(e.target.files[0]);
