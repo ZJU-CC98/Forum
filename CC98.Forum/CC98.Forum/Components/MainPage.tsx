@@ -30,44 +30,20 @@ export class RecommendedReadingComponent extends React.Component<{ data }, { ind
 
     constructor(props) {
         super(props);
-        //let data = Utility.getStorage('mainRecommendReading');
-        //if (!data) { data = new Array<MainPageColumn>(); }
         this.state = {
             index: Math.floor(Math.random() * 5)    //0-4的随机数
         };
         this.handleMouseEnter = this.handleMouseEnter.bind(this);
         this.convertButton = this.convertButton.bind(this);
     }
-    /*
-    async getRecommendedReading() {
-        let recommendedReading: MainPageColumn[] = Utility.getStorage('mainRecommendReading');
-        if (recommendedReading) { return recommendedReading; }
-        else {
-            recommendedReading = new Array<MainPageColumn>();
-            const response = await Utility.cc98Fetch('/index/column/recommandationreading');
-            const data = await response.json();
-            for (let i = 0; i < 5; i++) {
-                recommendedReading[i] = new MainPageColumn(data[i].imageUrl, data[i].title, data[i].url, data[i].content);
-            }
-            Utility.setStorage('mainRecommendReading', recommendedReading);
-            return recommendedReading;
-        }
-    }
 
-    async componentWillMount() {
-        const x = await this.getRecommendedReading();
-        this.setState({
-            recommendedReading: x
-        });
-    }
-    */
     handleMouseEnter(index) {
         this.setState({
             index: index,
         })
     }
 
-    //使用箭头函数传参 记得用到this的函数都要先bind
+    //使用箭头函数传参 记得用到this的函数要先bind
     convertButton(value: number, index: number, array: number[]) {
         let className: string = value ? "recommendedReadingButtonSelected" : "recommendedReadingButton";
         return <div className={className} onMouseEnter={() => { this.handleMouseEnter(index) }}></div>
@@ -142,17 +118,14 @@ export class HotTopicState {
  **/
 export class HotTopicComponent extends React.Component<{ data }, { mainPageTopicState: HotTopicState[] }> {
 
-
-
-
     convertMainPageTopic(item: HotTopicState) {
-    const boardUrl = `/list/${item.boardId}`;
-    const topicUrl = `/topic/${item.id}`;
-    return <div className="mainPageListRow">
-        <div className="mainPageListBoardName"> <a href={boardUrl} target="_blank">[{item.boardName}]</a></div>
-        <div className="mainPageListTitle"><a href={topicUrl} target="_blank">{item.title}</a></div>
-    </div >;
-}
+        const boardUrl = `/list/${item.boardId}`;
+        const topicUrl = `/topic/${item.id}`;
+        return <div className="mainPageListRow">
+            <div className="mainPageListBoardName"> <a href={boardUrl} target="_blank">[{item.boardName}]</a></div>
+            <div className="mainPageListTitle"><a href={topicUrl} target="_blank">{item.title}</a></div>
+        </div >;
+    }
 
     render() {
         return <div className="mainPageList">
@@ -205,15 +178,14 @@ export class MainPageTopicMoreProps {
  * 首页话题组件
  * 需要列表名，fetchUrl和样式三个参数
  **/
-export class MainPageTopicComponent extends React.Component<{ data, name: string, fetchUrl: string, style: string, mores: MainPageTopicMoreProps[] },
-    { mainPageTopic: MainPageTopicState[] }> {
+export class MainPageTopicComponent extends React.Component<{ data, name: string, fetchUrl: string, style: string, mores: MainPageTopicMoreProps[] }, {}>{
 
     convertMainPageTopic(item: MainPageTopicState) {
-    const topicUrl = `/topic/${item.id}`;
-    return <div className="mainPageListRow">
-        <div className="mainPageListTitle"><a href={topicUrl} target="_blank">{item.title}</a></div>
-    </div>
-}
+        const topicUrl = `/topic/${item.id}`;
+        return <div className="mainPageListRow">
+            <div className="mainPageListTitle"><a href={topicUrl} target="_blank">{item.title}</a></div>
+        </div>
+    }
 
     render() {
 
@@ -222,6 +194,7 @@ export class MainPageTopicComponent extends React.Component<{ data, name: string
         })
 
         const style: string = this.props.style;
+
         if (style === "black") {
             return <div className="mainPageList">
                 <div className="mainPageTitle2">
@@ -257,13 +230,13 @@ export class MainPageTopicComponent extends React.Component<{ data, name: string
  **/
 export class Test extends React.Component<{}, { testContent: string }>{
     constructor(props) {
-    super(props);
-    this.state = {
-        testContent: '',
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.urlTextHanderler = this.urlTextHanderler.bind(this);
-}
+        super(props);
+        this.state = {
+            testContent: '',
+        };
+        this.handleChange = this.handleChange.bind(this);
+        this.urlTextHanderler = this.urlTextHanderler.bind(this);
+    }
 
     handleChange(e) {
         this.setState({
@@ -369,11 +342,11 @@ export class MainPageColumn {
 export class RecommendedFunctionComponent extends React.Component<{ data }, {}>{
 
     convertRecommendedFunction(item: MainPageColumn) {
-    return <div className="recommendedFunctionRow">
-        <div className="recommendedFunctionImage"><img src={item.imageUrl}></img></div>
-        <div className="recommendedFunctionTitle"><a href={item.url} target="_blank">{item.title}</a></div>
-    </div>
-}
+        return <div className="recommendedFunctionRow">
+            <div className="recommendedFunctionImage"><img src={item.imageUrl}></img></div>
+            <div className="recommendedFunctionTitle"><a href={item.url} target="_blank">{item.title}</a></div>
+        </div>
+    }
     render() {
         return <div className="recommendedFunction">
             <div className="mainPageTitle1">
@@ -395,10 +368,10 @@ export class RecommendedFunctionComponent extends React.Component<{ data }, {}>{
 export class SchoolNewsComponent extends React.Component<{ data }, {}>{
 
     convertSchoolNews(item: MainPageColumn) {
-    return <div className="schoolNewsRow">
-        <div className="schoolNewsTitle"><a href={item.url} target="_blank">{item.title}</a></div>
-    </div>
-}
+        return <div className="schoolNewsRow">
+            <div className="schoolNewsTitle"><a href={item.url} target="_blank">{item.title}</a></div>
+        </div>
+    }
 
     render() {
 
@@ -495,33 +468,10 @@ export class AdsComponent extends React.Component<{}, { ads: MainPageColumn[], i
 /**
  * 论坛统计组件
  **/
-export class MainPageCountComponent extends React.Component<{ data }, { data }> {
+export class MainPageCountComponent extends React.Component<{ data }, {}> {
 
-    constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
-    super(props);       //super 表示调用基类（Component系统类型）构造方法
-    //let data = Utility.getLocalStorage("mainDataCount");
-    //if (!data) { data = []; }
-    this.state = {
-        data: this.props.data
-    };
-}
-    /*
-    async getData() {
-        const response = await Utility.cc98Fetch('/config/global');
-        let data = await response.json();
-        Utility.setLocalStorage("mainDataCount", data);
-        return data;
-
-    }
-    async componentDidMount() {
-        const x = await this.getData();
-        this.setState({
-            data: x,
-        });
-    }
-    */
     render() {
-        const data = this.state.data;
+        const data = this.props.data;
         return <div className="mainPageCount">
             <div className="mainPageTitle2">
                 <div className="mainPageTitleRow">
@@ -596,25 +546,25 @@ export class MainPage extends React.Component<{}, { data }> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
         super(props);       //super 表示调用基类（Component系统类型）构造方法  
-            let data = {
-                academics: [],
-                announcement: "",
-                emotion: [],
-                fleaMarket: [],
-                fullTimeJob: [],
-                hotTopic: [],
-                lastUserName: "",
-                partTimeJob: [],
-                postCount: 0,
-                recommandationFunction: [],
-                recommandationReading: [],
-                schoolEvent: [],
-                schoolNews: [],
-                study: [],
-                todayCount: 0,
-                topicCount: 0,
-                userCount: 0
-            };
+        let data = {
+            academics: [],
+            announcement: "",
+            emotion: [],
+            fleaMarket: [],
+            fullTimeJob: [],
+            hotTopic: [],
+            lastUserName: "",
+            partTimeJob: [],
+            postCount: 0,
+            recommandationFunction: [],
+            recommandationReading: [],
+            schoolEvent: [],
+            schoolNews: [],
+            study: [],
+            todayCount: 0,
+            topicCount: 0,
+            userCount: 0
+        };
         this.state = {
             data: data
         };
@@ -623,21 +573,17 @@ export class MainPage extends React.Component<{}, { data }> {
     async getData() {
         let data = Utility.getLocalStorage("mainPageData");
         if (!data) {
-            console.log("from server");
-            
             const response = await Utility.cc98Fetch('/config/index');
             data = await response.json();
             Utility.setLocalStorage("mainPageData", data, 300);
             console.log(data);
             return data;
         } else {
-            console.log("from cache");
-            console.log(data);
             return data
         }
     }
 
-    async componentWillMount() {
+    async componentDidMount() {
         const x = await this.getData();
         this.setState({
             data: x,
@@ -655,8 +601,6 @@ export class MainPage extends React.Component<{}, { data }> {
         let partTimeJob: MainPageTopicMoreProps[] = new Array({ name: "更多", url: "/list/459" });
 
         let count: MainPageCountProps = new MainPageCountProps(data.todayCount, data.topicCount, data.postCount, data.userCount, data.lastUserName);
-
-        //console.log(study);
 
         return <div className="mainPage">
             <div className="leftPart">
