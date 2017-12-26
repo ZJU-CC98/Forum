@@ -26,7 +26,6 @@ import { Search } from './Search/Search';
 import { SearchBoard } from './Search/SearchBoard';
 import { Signin } from './Signin';
 import { SiteManage } from './SiteManage/Index';
-import { SignalRComponent } from './SignalR';
 import { ShowEdit } from './Edit';
 import { NewHeader } from './newHeader';
 
@@ -56,7 +55,6 @@ export class App extends React.Component<null, AppState> {
                         <Route path="/createtopic/:boardId" component={CreateTopic} />
                         <Route path="/signin" component={Signin} />
                         <Route path="/sitemanage" component={SiteManage} />
-                        <Route path="/signalr" component={SignalRComponent} />
                         <Route path="/editor/:mode/:id?" component={ShowEdit} />
                         <Route path="/status/notfoundtopic" component={Status.NotFoundTopic} />
                         <Route path="/status/notfoundboard" component={Status.NotFoundBoard} />
