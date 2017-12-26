@@ -33,7 +33,7 @@ export class PostTopic extends React.Component<{ boardInfo,topicInfo,userId, img
             this.setState({ topicMessage: topicMessage, masters: masters });
         } else {
             const topicMessage = await Utility.getTopic(newProps.topicid);
-            console.log(topicMessage);
+            //console.log(topicMessage);
             const masters = newProps.boardInfo.boardMasters;
             this.setState({ topicMessage: topicMessage, masters: masters });
         }

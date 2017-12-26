@@ -40,17 +40,12 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
         let recentContact = Utility.getStorage('recentContact');
 
         if (!recentContact || recentContact.length === 0) {
-            //console.log("没有获取到缓存，自己取");
             recentContact = await Utility.getRecentContact(0, 7, this.context.router);
-            //console.log("取到了数据，然后呢");
-            //console.log(recentContact);
             Utility.setStorage("recentContact", recentContact);
         }
 
         //对联系人列表重新排序，看是否有从其他页面发起的聊天
         recentContact = await Utility.sortContactList(recentContact, this.context.router);
-        //console.log("联系人列表重新排序后");
-        //console.log(recentContact);
 
         if (recentContact) {
             //默认第一个人为聊天对象

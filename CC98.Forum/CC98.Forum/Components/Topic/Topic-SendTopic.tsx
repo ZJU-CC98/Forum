@@ -226,13 +226,10 @@ ${newProps.content.content}[/quote]
 				body
 			}
 		);
-		console.log('something happened');
-        console.log(this.state.content);
 		if (mes.status === 403) {
 			alert('你太快啦 请慢一点~');
 		} else if(mes.status === 200){
 			const atUsers = this.atHanderler(this.state.content);
-			console.log(atUsers);
 			//如果存在合法的@，则发送@信息，否则不发送，直接跳转至所发帖子
 			if (atUsers) {
 				const postId = await mes.text();
@@ -247,7 +244,6 @@ ${newProps.content.content}[/quote]
 					headers: myHeaders2,
 					body: atUsersJSON
 				});
-				console.log(response2);
 			}
 			this.setState({ content: '' });
 			this.props.onChange();

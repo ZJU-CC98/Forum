@@ -21,11 +21,6 @@ export class MessageSender extends React.Component<MessageSendReceiveProps> {
                         <div className="message-message-wcContent">
                     <div id={String(this.props.id)} className="message-message-wcText"><UbbContainer code={content} /></div>
                         </div>
-                        <div className="message-message-wcRead1">
-                            <div className="message-message-wcRead2">
-                                {this.props.isRead ? '已读' : '未读'}
-                            </div>
-                        </div>
                     </div>
                 </div>);
     }

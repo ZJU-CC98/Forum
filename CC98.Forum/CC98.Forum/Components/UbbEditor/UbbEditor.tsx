@@ -4,98 +4,18 @@
 
 import * as React from 'react';
 import * as Utility from '../../Utility';
+import Props from '../../Props/UbbEditorProps';
+import State from '../../States/UbbEditorState';
+import Option from './Option';
 import { UbbContainer } from '../UbbContainer';
 import LazyImage from './LazyImage';
 import Message from './Message';
 import Emoji from './Emoji';
 
 /**
- * 组件属性
- */
-class UbbEditorProps {
-    /**
-     * value变动后调用函数，接受一个参数为变动后的value
-     */
-    update: (value: string) => void;
-    /**
-     * Ubb编辑器的内容
-     */
-    value: string;
-    /**
-     * 可选选项
-     */
-    option?: UbbEditorOption;
-}
-
-/**
- * UBB编辑器可选选项
- */
-class UbbEditorOption {
-    /**
-     * textarea的高度(以rem为单位)
-     * 整个组件实际高度大概高2-4rem
-     */
-    height? = 32.5;
-    /**
-     * 打开的UBB标签
-     */
-    allowUbbTag?: 'all' | string[] = 'all'
-    /**
-     * 按下Ctrl+Enter调用的函数
-     */
-    submit?: Function;
-}
-
-/**
- * 组件状态
- */
-class UbbEditorState {
-    /**
-    * 用户所选文字的起始位置
-    */
-    selectionStart: number;
-    /**
-    * 用户所选文字的终止位置
-    */
-    selectionEnd: number;
-    /**
-    * 用户是否是通过点击按钮离开textarea
-    */
-    clicked: boolean;
-    /**
-    * 需要额外信息的tag
-    */
-    extendTagName: string;
-    /**
-    * 额外信息的内容
-    */
-    extendValue: string;
-    /**
-     * 是否显示表情栏
-     */
-    emojiIsShown: boolean;
-    /**
-     * 表情类型
-     */
-    emojiType: 'em' | 'ac' | 'mj' | 'tb';
-    /**
-     * 是否在预览状态
-     */
-    isPreviewing: boolean;
-    /**
-     * Ubb编辑器的内容
-     */
-    value: string;    
-    /**
-     * UBB编辑器的提示信息
-     */
-    info: string;
-}
-
-/**
  * UBB编辑器组件
  */
-export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
+export class UbbEditor extends React.Component<Props, State> {
     /**
     * 对textarea的引用
     */
@@ -115,7 +35,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
     /**
      * UBB编辑器的选项
      */
-    option: UbbEditorOption;
+    option: Option;
     constructor(props) {
         super(props);
         this.state = {
@@ -130,7 +50,8 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
             value: '',
             info: ''
         };
-        this.option = props.option || new UbbEditorOption();
+        //创建一个默认选项，用props中的选项覆盖之
+        this.option = { ...new Option(), ...props.option };
         this.clearAllShown = this.clearAllShown.bind(this);
         this.handleExtendValueChange = this.handleExtendValueChange.bind(this);
         this.handleTextareaChange = this.handleTextareaChange.bind(this);
@@ -140,6 +61,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
         this.changeEmojiType = this.changeEmojiType.bind(this);
     }
 
+    //处理需要额外信息的按钮点击后的函数
     handleExtendButtonClick(tagName: string) {
         this.setState((prevState) => ({
             extendTagName: prevState.extendTagName !== tagName ? tagName : '',
@@ -147,71 +69,109 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
         }));
     }
 
+    //处理需要额外信息的按钮确认后的函数
     handleExtendValueChange(value: string) {
         this.setState({
             extendValue: value
         });
     }
 
+    //处理textarea内容改变后的函数
     handleTextareaChange(value: string) {
+        //将输入内容压入历史堆栈
         this.valueStack.push(value);
+        //更新父组件中的状态
         this.props.update(value);
+        //更新state中的状态
         this.setState({ value });
     }
 
-    handleTextareaBlur(start: number, end: number) {
+    //处理textarea失去焦点后的函数
+    handleTextareaBlur(selectionStart: number, selectionEnd: number) {
+        //记住用户离开后选择的范围
         this.setState({
-            selectionEnd: end,
-            selectionStart: start
+            selectionStart,
+            selectionEnd
         });
     }
 
+    //处理上传文件的函数
     async handleUpload(file: File) {
-        if(this.state.extendTagName === 'upload' && file.size > 5242880){
+        try{
+            //除图片外判断文件大小，大于默认不上传
+            if(this.state.extendTagName === 'upload' && file.size > this.option.uploadFileMaxSize){
+                throw new Error('文件过大');
+            }
+            let res = await Utility.uploadFile(file);
+            if(res.isSuccess){
+                this.handleButtonClick(this.state.extendTagName, `${res.content}`);
+            }else {
+                throw new Error('上传失败');
+            }
+        }catch(e){
             this.setState({
-                info: '文件过大'
+                info: e.message
             });
+            //显示信息2.5s后清除
             setTimeout(()=>this.setState({
                 info: ''
             }), 2500);
-            return ;
         }
-        let res = await Utility.uploadFile(file);
-        this.handleButtonClick(this.state.extendTagName, `${res.content}`);
     }
 
+    //处理撤销操作的函数
     handleUndo() {
         this.setState((prevState) => {
+            //如果用户未输入内容则不能撤销
             if (this.valueStack.length === 1) {
                 return { value: '' }
             }
+            //从历史堆栈弹出当前内容
             let prevValue = this.valueStack.pop();
+            //把当前内容压入重做堆栈
             this.redoStack.push(prevValue);
+            //直接获取历史堆栈最后一条内容，不弹出
             prevValue = this.valueStack[this.valueStack.length - 1];
+            //更新父组件与state中的value
             this.props.update(prevValue);
             return { value: prevValue };
         });
     }
 
+    //处理重做操作的函数
     handleRedo() {
         this.setState((prevState) => {
-            let prevValue: string;
-            if (prevValue = this.redoStack.pop()) {
+            //从重做堆栈中弹出最后一项
+            let prevValue = this.redoStack.pop();
+            //如果有内容
+            if (prevValue) {
+                //压入历史堆栈
                 this.valueStack.push(prevValue);
+                //更新父组件与state中的value
                 this.props.update(prevValue);
                 return { value: prevValue };
             }
         });
     }
 
+    /**
+     * 处理插入内容的核心函数，除表情外都在此实现
+     * @param name UBB标签名
+     * @param value UBB标签的可选属性
+     */
     handleButtonClick(name: string, value = '') {
-        const shouldReplaceSelection = ['video', 'audio', 'img', 'upload'].indexOf(name) !== -1;
-        const hasDefaultSelection = ['url'].indexOf(name) !== -1;
-        const shouldNotSelected = ['img'].indexOf(name) !== -1;
-        this.setState((prevState: UbbEditorState) => {
+        //判断当前tag是否需要替换掉用户选中的内容
+        const shouldReplaceSelection = this.option.shouldReplaceSelection.indexOf(name) !== -1;
+        //判断当前tag是否包含默认的内容，一般只对url标签有效
+        const hasDefaultSelection = this.option.hasDefaultSelection.indexOf(name) !== -1;
+        //判断插入后不需要选中的tag
+        const shouldNotSelected = this.option.shouldNotSelected.indexOf(name) !== -1;
+        this.setState((prevState: State) => {
+            //分别获取用户选中的内容，选中部分之前的内容，选中部分之后的内容
             let before = this.state.value.slice(0, prevState.selectionStart),
                 selected = this.state.value.slice(prevState.selectionStart, prevState.selectionEnd),
                 after = this.state.value.slice(prevState.selectionEnd, this.state.value.length);
+            //根据不同选项替换用户选中的部分
             if (shouldReplaceSelection) {
                 selected = `[${name}]${value}[/${name}]`;
             } else if (hasDefaultSelection) {
@@ -219,10 +179,14 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
             } else {
                 selected = `[${name}${value ? `=${value}` : ''}]${selected}[/${name}]`;
             }
+            //更新父组件中的状态
             this.props.update(before + selected + after);
+            //将内容压入历史堆栈
             this.valueStack.push(before + selected + after);
+            //更新state中的状态
+            //不需要默认选中的tag返回selectionStart和selectionEnd相同
             return {
-                selectionStart: shouldNotSelected ? before.length + selected.length : before.length,
+                selectionStart: shouldNotSelected ? before.length + selected.length : before.length, 
                 selectionEnd: before.length + selected.length,
                 clicked: true,
                 value: before + selected + after
@@ -231,6 +195,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
 
     }
 
+    //处理插入表情的函数，大部分同上
     handleEmojiButtonClick(emojiUbb: string) {
         this.setState((prevState) => {
             let before = this.state.value.slice(0, prevState.selectionStart),
@@ -247,6 +212,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
         });
     }
 
+    //取消表情和扩展内容的显示
     clearAllShown() {
         this.setState({
             emojiIsShown: false,
@@ -255,26 +221,37 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
         });
     }
 
+    //改变当前显示的表情类型
     changeEmojiType(emojiType: 'em' | 'ac' | 'mj' | 'tb'){
         this.setState({
             emojiType
         });
     }
 
+    //处理引用的内容更新
     componentWillReceiveProps(nextProps) {
+        //如果传入的内容和历史堆栈中的最后一项（当前内容）不相符
         if (this.valueStack[this.valueStack.length - 1] !== nextProps.value) {
+            //将内容压入堆栈
             this.valueStack.push(nextProps.value);
+            //输入过内容后清空重做堆栈
             this.redoStack = [];
+            //更新state中的value
             this.setState({
                 value: nextProps.value
             });
         }
     }
 
+    //处理用户点击后自动选中内容
     componentDidUpdate() {
+        //如果用户点击了按钮，且不在预览状态
         if (this.state.clicked && !this.state.isPreviewing) {
+            //将焦点聚焦到textarea
             this.content.focus();
+            //选中替换掉的部分
             this.content.setSelectionRange(this.state.selectionStart, this.state.selectionEnd);
+            //重置state中的状态
             this.setState({
                 clicked: false
             });
@@ -282,14 +259,21 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
     }
 
     componentDidMount() {
+        //在用户点击空白部分时隐藏扩展与表情
         window.addEventListener('click', this.clearAllShown);
+        //处理spectrum（取色板）
         ($("#color") as any).spectrum({
+            //默认颜色
             color: "#000",
             change: (color) => {
+                //点击后调用处理函数
                 this.handleButtonClick('color', color.toHexString());
+                //重置颜色
                 ($("#color") as any).spectrum('set', '#000000');
             },
+            //显示选项
             showPalette: true,
+            //选项中的颜色
             palette: [
                 ["#f00", "#f90", "#ff0", "#0f0", "#0ff", "#00f", "#90f", "#f0f"],
                 ["#f4cccc", "#fce5cd", "#fff2cc", "#d9ead3", "#d0e0e3", "#cfe2f3", "#d9d2e9", "#ead1dc"],
@@ -300,24 +284,28 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                 ["#600", "#783f04", "#7f6000", "#274e13", "#0c343d", "#073763", "#20124d", "#4c1130"],
                 ["#000", "#444", "#666", "#999", "#ccc", "#eee", "#f3f3f3", "#fff"]
             ],
+            //替换掉默认的类名，便于写css
             replacerClassName: 'ubb-color-picker',
+            //点击后隐藏
             hideAfterPaletteSelect: true
         });
     }
 
     componentWillUnmount() {
+        //组件卸载时移除掉事件监听
         window.removeEventListener('click', this.clearAllShown);
     }
 
     render() {
-        const height = this.option.height;
-        const size = ['', 1, 2, 3, 4, 5, 6, 7];
+        const { height, textSize, submit } = this.option;
         
         return (
             <div className="ubb-editor" style={{ maxHeight: `${height + 6.125}rem` }}>
+                {/*消息组件*/}
                 <Message message={this.state.info} />
+                {/*按钮组件 设置maxWidth在预览状态下收起按钮*/}
                 <div className="editor-buttons">
-                    <div style={{ height: '2rem', display: 'flex', transitionDuration: '.5s', overflow: 'hidden', width: this.state.isPreviewing ? '0rem' : '50rem' }}>
+                    <div style={{ height: '2rem', display: 'flex', transitionDuration: '.5s', overflow: 'hidden', maxWidth: this.state.isPreviewing ? '0rem' : '50rem' }}>
                         <div className="editor-buttons-styles">
                             <button className="fa-bold" type="button" title="加粗" onClick={() => { this.handleButtonClick('b'); }}></button>
                             <button className="fa-italic" type="button" title="斜体" onClick={() => { this.handleButtonClick('i'); }}></button>
@@ -331,13 +319,14 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                         <div className="editor-buttons-selects">
                             <p className="fa-text-height"></p>
                             <select
-                                onChange={(e) => { this.handleButtonClick('size', e.target.value); (e.target.value as any) = 0; }}
+                                onChange={(e) => { this.handleButtonClick('size', e.target.value); (e.target.value as any) = 0; /*处理完select后重置为默认值*/ }}
                                 onClick={() => { this.clearAllShown(); }}
                                 value={0}
                             >
-                                {size.map((value, index) => (<option value={index} disabled={index === 0} style={{ display: index === 0 ? 'none' : '' }}>{value}</option>))}
+                                {textSize.map((value, index) => (<option value={index} disabled={index === 0}>{value}</option>))}
                             </select>
                             <p className="fa-eyedropper"></p>
+                            {/*取色器，由spectrum实现*/}
                             <input id="color" />
                         </div>
                         <div className="editor-buttons-extends">
@@ -346,7 +335,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                                 type="button"
                                 title="插入表情"
                                 onClick={(e) => {
-                                    e.stopPropagation();
+                                    e.stopPropagation(); //阻止事件冒泡，防止被window上的清空显示函数捕获到，以下同理
                                     this.setState((prev) => ({
                                         emojiIsShown: !prev.emojiIsShown,
                                         extendTagName: '',
@@ -358,7 +347,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                             <button className="fa-picture-o" type="button" title="插入图片" onClick={(e) => { e.stopPropagation(); this.handleExtendButtonClick('img'); }}></button>
                             <button className="fa-film" type="button" title="插入视频" onClick={(e) => { e.stopPropagation(); this.handleExtendButtonClick('video'); }}></button>
                             <button className="fa-music" type="button" title="插入音频" onClick={(e) => { e.stopPropagation(); this.handleExtendButtonClick('audio'); }}></button>
-                            <label className="fa-file" htmlFor="upload" title="上传文件" onClick={(e) => { e.stopPropagation(); this.setState({ extendTagName: 'upload' }); }} ></label>
+                            <label className="fa-file" htmlFor="upload" title="上传文件" onClick={(e) => { e.stopPropagation(); this.handleExtendButtonClick('upload'); }} ></label>
                         </div>
                     </div>
                     <div style={{ flexGrow: 1 }}></div>
@@ -366,6 +355,7 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                     <button className="fa-repeat" type="button" title="重做" onClick={() => { this.handleRedo(); }}></button>
                     <button type="button" title="切换预览" onClick={() => { this.setState((prev) => ({ isPreviewing: !prev.isPreviewing, clicked: true })); }} className="fa-window-maximize"></button>
                 </div>
+                {/*扩展内容，点击扩展按钮后显示*/}
                 <div className="ubb-extend" style={{ height: this.state.extendTagName && this.state.extendTagName !== 'upload' ? '2rem' : '0rem' }}>
                     <input
                         type="text"
@@ -373,17 +363,18 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                         value={this.state.extendValue}
                         onChange={(e) => { this.handleExtendValueChange(e.target.value); }}
                         onClick={(e) => { e.stopPropagation(); }}
-                        ref={(it) => { this.input = it; }}
+                        ref={(it) => { this.input = it; /*取得对input的引用，方便focus*/ }}
                     />
+                    {/*仅针对img标签显示上传本地图片*/}
                     {this.state.extendTagName === 'img' ? <label onClick={(e) => { e.stopPropagation(); }} className="fa-upload" htmlFor="upload" title="上传本地图片"></label> : null}
                     <button className="fa-check" type="button" onClick={(e) => { e.stopPropagation(); this.handleButtonClick(this.state.extendTagName, this.state.extendValue) }}></button>
                     <button className="fa-remove" type="button" onClick={() => { this.setState({ clicked: true }); }}></button>
+                    {/*上传文件用，默认隐藏，img标签仅接受图片文件，上传完后value设为""可清空filelist*/}
                     <input
                         type="file"
                         id="upload"
                         accept={this.state.extendTagName === 'img' ? "image/*" : ""}
                         style={{ display: 'none' }}
-                        onClick={(e) => { e.stopPropagation(); }}
                         onChange={(e) => {
                             if (e.target.files[0]) {
                                 this.handleUpload(e.target.files[0]);
@@ -392,42 +383,52 @@ export class UbbEditor extends React.Component<UbbEditorProps, UbbEditorState> {
                         }}
                     />
                 </div>
+                {/*编辑器，核心部分*/}
                 <div className="ubb-content">
-                    {!this.state.isPreviewing ? (
+                    {!this.state.isPreviewing ? ( //非展示状态显示textarea
                         <textarea
                             value={this.state.value}
-                            onChange={(e) => { this.handleTextareaChange(e.target.value); }}
+                            onChange={(e) => { 
+                                this.handleTextareaChange(e.target.value);
+                            }}
                             onInput={(e) => {
-                                this.redoStack = [];
+                                this.redoStack = []; //用户输入内容后清空重做堆栈
                             }}
                             onFocus={() => {
-                                this.clearAllShown();
+                                this.clearAllShown(); //点击后隐藏扩展与标签
                             }}
                             onBlur={(e) => {
                                 let target: any = e.target;
+                                //textarea失去焦点时记录用户选中内容
                                 this.handleTextareaBlur(target.selectionStart, target.selectionEnd);
                             }}
                             onKeyDown={(e) => {
                                 if (e.ctrlKey && e.key === 'z') {
+                                    //Ctrl+Z撤销
                                     e.preventDefault();
                                     this.handleUndo();
                                 } else if (e.ctrlKey && e.key === 'y') {
+                                    //Ctrl+Y重做
                                     e.preventDefault();
                                     this.handleRedo();
                                 } else if (e.ctrlKey && e.key === 'Enter') {
+                                    //Crtl+Enter提交内容（如果option里有submit的话
                                     e.preventDefault();
-                                    if (this.props.option.submit) {
-                                        this.props.option.submit();
+                                    if (submit) {
+                                        submit();
                                     }
                                 }
                             }}
                             ref={(textarea) => {
+                                //取得对textarea的引用，方便调用选中与聚焦的方法
                                 this.content = textarea;
                             }}
                             style={{ height: this.state.extendTagName && this.state.extendTagName !== 'upload' ? `${height}rem` : `${height + 2}rem` }}
                             spellCheck={false}
-                        ></textarea>) : (<div className="ubb-editor-preview" style={{ height: `${height + 2}rem` }}><UbbContainer code={this.props.value} /></div>)}
+                        ></textarea>) : //展示状态中显示UbbContainer
+                        (<div className="ubb-editor-preview" style={{ height: `${height + 2}rem` }}><UbbContainer code={this.props.value} /></div>)}
                 </div>
+                {/*表情组件*/}
                 <Emoji 
                     handleEmojiButtonClick={this.handleEmojiButtonClick} 
                     height={this.props.option.height} 
