@@ -2,8 +2,16 @@
 import * as Utility from '../../Utility';
 import * as $ from 'jquery';
 import { match } from "react-router";
-
-export class PostManagement extends React.Component<{ userId, postId, update, topicId, privilege,boardId,floor }, { wealth: number, prestige: number, reason: string, tpdays: number, UI, tips: string, fetchState }>{
+interface Props {
+    userId;
+    postId;
+    update;
+    topicId;
+    privilege;
+    boardId;
+    floor;
+}
+export class PostManagement extends React.Component<Props, { wealth: number, prestige: number, reason: string, tpdays: number, UI, tips: string, fetchState }>{
 
     constructor(props) {
 

@@ -2,7 +2,12 @@
 import * as Utility from '../../Utility';
 import { AwardInfo } from './Topic-AwardInfo';
 import { connect } from 'react-redux';
-export class Award extends React.Component<{ postId ,updateTime,awardInfo}, {info,shortInfo,count,showAll }>{
+interface Props {
+    postId;
+    updateTime;
+    awardInfo;
+}
+export class Award extends React.Component<Props, {info,shortInfo,count,showAll }>{
     constructor(props, content) {
         super(props, content);
         this.showAll = this.showAll.bind(this);
@@ -18,6 +23,11 @@ export class Award extends React.Component<{ postId ,updateTime,awardInfo}, {inf
     async componentDidMount() {
         let shortInfo = [];
         const award = this.props.awardInfo;
+        const usersId = [];
+        for (let i in award) {
+            usersId[i] = award[i].userId;
+        }
+
         if (award.length > 10) {
             for (let i = 0; i < 10; i++) {
                 shortInfo[i] = await this.generateAwardInfo(award[i]);
@@ -41,8 +51,8 @@ export class Award extends React.Component<{ postId ,updateTime,awardInfo}, {inf
         this.setState({ info: awardInfo, shortInfo: shortInfo, count: award.length });
     }
     async generateAwardInfo(item) {
-        const url = await Utility.getPortraitUrl(item.operatorName);
-        return <AwardInfo postId={this.props.postId} userImgUrl={url} content={item.content} reason={item.reason} userName={item.operatorName} />;
+        //const url = await Utility.getPortraitUrl(item.operatorName);
+        return <AwardInfo postId={this.props.postId} portraitUrl={item.url} content={item.content} reason={item.reason} userName={item.operatorName} />;
 
     }
     render() {

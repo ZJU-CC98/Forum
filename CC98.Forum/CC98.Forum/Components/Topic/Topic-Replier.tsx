@@ -3,7 +3,13 @@ import { Link } from 'react-router-dom';
 import { RouteComponent } from '../RouteComponent';
 import * as Utility from '../../Utility';
 declare let moment: any;
-export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, floor, isDeleted, traceMode, isHot }, { traceMode, buttonIsDisabled, buttonInfo, isFollowing, fanCount, photoframe }, { topicid }>{
+interface Props {
+    userInfo;
+    topicInfo;
+    traceMode;
+    isHot;
+}
+export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled, buttonInfo, isFollowing, fanCount, photoframe }, { topicid }>{
     constructor(props, content) {
         super(props, content);
         this.follow = this.follow.bind(this);
@@ -143,7 +149,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
                 <div className="photoFrame"><img src={imageUrl} style={style} /></div>
             </div>
 
-        } else if (this.props.isAnonymous == true) {
+        } else if (this.props.topicInfo.isAnonymous == true) {
             return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
                 <div style={{ zIndex: 100 }}>
 
@@ -170,11 +176,11 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         //用户头像
         let urlHtml = <a href={realUrl} style={{ display: "block", maxHeight: "7.5rem" }}><img className="userPortrait" src={this.props.userInfo.portraitUrl}></img></a>;
 
-        if (this.props.isAnonymous == true) {
+        if (this.props.topicInfo.isAnonymous == true) {
             urlHtml = <div style={{ display: "block", maxHeight: "7.5rem" }}><img className="userPortrait" src={this.props.userInfo.portraitUrl}></img></div>;
         }
-        const curUserPostUrl = `/topic/${this.props.topicid}/user/id/${this.props.userInfo.id}`;
-        const normalUrl = `/topic/${this.props.topicid}`;
+        const curUserPostUrl = `/topic/${this.props.topicInfo.id}/user/id/${this.props.userInfo.id}`;
+        const normalUrl = `/topic/${this.props.topicInfo.id}`;
         let topicNumber = '帖数';
         if (!this.props.userInfo.id) {
             topicNumber = '';
@@ -189,16 +195,16 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
             </div>;
         }
         let emailButton;
-        if (this.props.isAnonymous) emailButton = null;
+        if (this.props.topicInfo.isAnonymous) emailButton = null;
         else emailButton = <button className="operation" ><Link to={email}>私信</Link></button>;
         let traceButton;
-        if (this.props.isAnonymous) traceButton = null;
+        if (this.props.topicInfo.isAnonymous) traceButton = null;
         else traceButton = <Link className="operation" to={this.state.traceMode === true ? normalUrl : curUserPostUrl} onClick={this.changeTraceMode}>{this.state.traceMode === true ? "返回" : "只看此用户"}</Link>;
-        const hotInfo = <div style={{ color: "red", marginLeft: "1rem" }}><span>最热回复</span><span>(第</span><span>{this.props.floor}</span><span>楼)</span></div>;
-        const normalInfo = <div style={{ marginLeft: "0.625rem" }}><span>第</span><span style={{ color: "red" }}>{this.props.floor}</span><span>楼</span></div>;
+        const hotInfo = <div style={{ color: "red", marginLeft: "1rem" }}><span>最热回复</span><span>(第</span><span>{this.props.topicInfo.floor}</span><span>楼)</span></div>;
+        const normalInfo = <div style={{ marginLeft: "0.625rem" }}><span>第</span><span style={{ color: "red" }}>{this.props.topicInfo.floor}</span><span>楼</span></div>;
         let btn = null;
         if (Utility.getLocalStorage("userInfo")) {
-            if (Utility.getLocalStorage("userInfo").name !== this.props.userInfo.name && !this.props.isAnonymous) {
+            if (Utility.getLocalStorage("userInfo").name !== this.props.userInfo.name && !this.props.topicInfo.isAnonymous) {
                 btn = <div className="row userMessageBtn" >
                     <div style={{ marginLeft: "0.85rem" }}><button className="replierBtn" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled} style={{marginBottom: "0.6rem" }}>{this.state.buttonInfo}</button></div>
                     <div style={{ marginLeft: "0.5rem" }}> <Link to={email}><button className="replierBtn">私信</button></Link></div>
@@ -217,7 +223,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         else if (hours > 1) lastLogOn = `${hours}小时前`;
         else lastLogOn = '1小时内';
         let userDetailMessage = null;
-        if (!this.props.isAnonymous) {
+        if (!this.props.topicInfo.isAnonymous) {
             userDetailMessage =
                 <div className="column" style={{ width: "60%", alignItems: "flex-start", paddingLeft: "1.5rem", marginTop:"1rem" }}>
                     <div className="userMessageOpt">
@@ -245,7 +251,7 @@ export class Replier extends RouteComponent<{ userInfo, isAnonymous, topicid, fl
         let gender = <div className="userGender">
             {this.props.userInfo.gender === 0 ? <i className="fa fa-venus" style={{ color: "#fff" }}></i> : <i className="fa fa-mars" style={{ color: "#fff" }}></i>}
         </div>;
-        if (this.props.isAnonymous == true) {
+        if (this.props.topicInfo.isAnonymous == true) {
             gender = null;
 
         }

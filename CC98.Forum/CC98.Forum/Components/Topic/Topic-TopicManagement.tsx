@@ -3,8 +3,13 @@ import * as Utility from '../../Utility';
 declare global {
     interface JQuery { spectrum: any}
 }
-
-export class TopicManagement extends React.Component<{ topicId, update, boardId, updateTime ,topicInfo}, { state, reason, tips, days, board, topicInfo,fetchState ,color}>{
+interface Props {
+    update;
+    boardId;
+    updateTime;
+    topicInfo;
+}
+export class TopicManagement extends React.Component<Props, { state, reason, tips, days, board, topicInfo,fetchState ,color}>{
     constructor(props) {
         super(props);
         this.confirm = this.confirm.bind(this);
@@ -49,34 +54,34 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
                     switch ($("input[name='option']:checked").val()) {
 
                         case '取消固顶':
-                            status = await Utility.removeBoardTopTopic(this.props.topicId, this.props.boardId, this.state.reason);
+                            status = await Utility.removeBoardTopTopic(this.props.topicInfo.id, this.props.boardId, this.state.reason);
                             this.setState({ fetchState: status });
                         case '取消全站固顶':
-                            status = await Utility.removeBoardTopTopic(this.props.topicId, this.props.boardId, this.state.reason);
+                            status = await Utility.removeBoardTopTopic(this.props.topicInfo.id, this.props.boardId, this.state.reason);
                             this.setState({ fetchState: status });
                             break;
                         case '删除':
-                            status =  await Utility.deleteTopic(this.props.topicId, this.state.reason);
+                            status =  await Utility.deleteTopic(this.props.topicInfo.id, this.state.reason);
                             this.setState({ fetchState: status });
                             break;
                         case '加精':
-                            status = await Utility.setBestTopic(this.props.topicId, this.state.reason);
+                            status = await Utility.setBestTopic(this.props.topicInfo.id, this.state.reason);
                             this.setState({ fetchState: status });
                             break;
                         case '解除精华':
-                            status =  await Utility.cancelBestTopic(this.props.topicId,  this.state.reason);
+                            status =  await Utility.cancelBestTopic(this.props.topicInfo.id,  this.state.reason);
                             this.setState({ fetchState: status });
                             break;
                         case '解锁':
-                            status =  await Utility.unLockTopic(this.props.topicId, this.props.boardId, this.state.reason);
+                            status =  await Utility.unLockTopic(this.props.topicInfo.id, this.props.boardId, this.state.reason);
                             this.setState({ fetchState: status });
                             break;
                         case '禁止热门':
-                            status =  await Utility.setDisableHot(this.props.topicId, this.state.reason);
+                            status =  await Utility.setDisableHot(this.props.topicInfo.id, this.state.reason);
                             this.setState({ fetchState: status });
                             break;
                         case '允许热门':
-                            status =   await Utility.cancelDisableHot(this.props.topicId, this.state.reason);
+                            status =   await Utility.cancelDisableHot(this.props.topicInfo.id, this.state.reason);
                             this.setState({ fetchState: status });
                             break;
                     }
@@ -91,7 +96,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
                    
                     const bold = $("input[name='bold']:checked") ? true : false;
                     const italic = $("input[name='italic']:checked") ? true : false;
-                    await Utility.setHighlight(this.props.topicId, bold, italic, color, this.state.days, this.state.reason);
+                    await Utility.setHighlight(this.props.topicInfo.id, bold, italic, color, this.state.days, this.state.reason);
                 } else {
                     this.setState({ tips: "请输入原因！" });
                 }
@@ -101,18 +106,18 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
                 if (this.state.reason ) {
                     switch ($("input[name='option']:checked").val()) {
                         case '固顶':
-                           status =  await Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 2, this.state.days, this.state.reason);
+                           status =  await Utility.addBoardTopTopic(this.props.topicInfo.id, this.props.boardId, 2, this.state.days, this.state.reason);
                             this.setState({ fetchState: status });
                             break;
                         case '全站固顶':
                           
-                            status = await Utility.addBoardTopTopic(this.props.topicId, this.props.boardId, 4, this.state.days, this.state.reason);
+                            status = await Utility.addBoardTopTopic(this.props.topicInfo.id, this.props.boardId, 4, this.state.days, this.state.reason);
                         
                             this.setState({ fetchState: status });
                             break;
                         case '锁定':
                         
-                           status =  await Utility.lockTopic(this.props.topicId, this.props.boardId, this.state.reason, this.state.days);
+                           status =  await Utility.lockTopic(this.props.topicInfo.id, this.props.boardId, this.state.reason, this.state.days);
                             this.setState({ fetchState: status });
                             break;
                     }           
@@ -122,7 +127,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
                 break;
             case 'board':
                 if (this.state.reason) {
-                    status = await Utility.moveTopic(this.props.topicId, this.state.board, this.state.reason);
+                    status = await Utility.moveTopic(this.props.topicInfo.id, this.state.board, this.state.reason);
                     if (status === 'ok') {
                         this.setState({ fetchState: status });
                         break;
@@ -135,15 +140,15 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
         }
         if (status === 'ok') {
             this.setState({ tips: "操作成功" });
-            const UIId = `#manage${this.props.topicId}`;
+            const UIId = `#manage${this.props.topicInfo.id}`;
             $(UIId).css("display", "none");
-            const data = await Utility.getTopicInfo(this.props.topicId);
+            const data = await Utility.getTopicInfo(this.props.topicInfo.id);
             this.setState({ topicInfo: data });
             this.props.update();
         }
     }
     close() {
-        const UIId = `#manage${this.props.topicId}`;
+        const UIId = `#manage${this.props.topicInfo.id}`;
         $(UIId).css("display", "none");
     }
     reasonInput(e) {
@@ -169,7 +174,7 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
         });
     }
     async componentWillRecieveProps(newProps) {
-        const data = await Utility.getTopicInfo(newProps.topicId);
+        const data = await Utility.getTopicInfo(newProps.topicInfo.id);
         this.setState({ topicInfo: data });
     }
     render() {
@@ -303,8 +308,8 @@ export class TopicManagement extends React.Component<{ topicId, update, boardId,
             {info}
 
         </div>;
-        const UIId = `manage${this.props.topicId}`;
-        const highlightOptionId = `manage${this.props.topicId}`;
+        const UIId = `manage${this.props.topicInfo.id}`;
+        const highlightOptionId = `manage${this.props.topicInfo.id}`;
         return <div style={{ display: "none" }} id={UIId} className="topicManagement" >
             {UI}
             < div className="row" style={{ justifyContent: "space-around", marginTop:"1rem" }}>

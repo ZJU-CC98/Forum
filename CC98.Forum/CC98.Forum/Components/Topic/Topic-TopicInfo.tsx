@@ -3,7 +3,14 @@ import * as Utility from '../../Utility';
 import { Link } from 'react-router-dom';
 import { AdsComponent } from '../mainpage';
 declare let moment: any;
-export class TopicInfo extends React.Component<{ topicInfo, boardInfo, tag1, tag2, adsUrl, isFav }, { tag1Name, tag2Name, isFollow }>{
+interface Props {
+    topicInfo;
+    boardInfo;
+    tag1;
+    tag2;
+    isFav;
+}
+export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFollow }>{
     constructor(props) {
         super(props);
         this.follow = this.follow.bind(this);
