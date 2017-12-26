@@ -126,14 +126,14 @@ export class HotTopicState {
     title: string;
     id: number;
     boardName: string;
-    boardid: number;
+    boardId: number;
 
     //构造方法
-    constructor(title, id, boardName, boardid) {
+    constructor(title, id, boardName, boardId) {
         this.title = title;
         this.id = id;
         this.boardName = boardName;
-        this.boardid = boardid;
+        this.boardId = boardId;
     }
 }
 
@@ -146,7 +146,7 @@ export class HotTopicComponent extends React.Component<{ data }, { mainPageTopic
 
 
     convertMainPageTopic(item: HotTopicState) {
-    const boardUrl = `/list/${item.boardid}`;
+    const boardUrl = `/list/${item.boardId}`;
     const topicUrl = `/topic/${item.id}`;
     return <div className="mainPageListRow">
         <div className="mainPageListBoardName"> <a href={boardUrl} target="_blank">[{item.boardName}]</a></div>
@@ -595,10 +595,8 @@ export class MainPageCountProps {
 export class MainPage extends React.Component<{}, { data }> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
-        super(props);       //super 表示调用基类（Component系统类型）构造方法
-        let data = Utility.getLocalStorage("mainPageData");
-        if (!data) {
-            data = {
+        super(props);       //super 表示调用基类（Component系统类型）构造方法  
+            let data = {
                 academics: [],
                 announcement: "",
                 emotion: [],
@@ -617,7 +615,6 @@ export class MainPage extends React.Component<{}, { data }> {
                 topicCount: 0,
                 userCount: 0
             };
-        }
         this.state = {
             data: data
         };
@@ -626,16 +623,21 @@ export class MainPage extends React.Component<{}, { data }> {
     async getData() {
         let data = Utility.getLocalStorage("mainPageData");
         if (!data) {
+            console.log("from server");
+            
             const response = await Utility.cc98Fetch('/config/index');
             data = await response.json();
             Utility.setLocalStorage("mainPageData", data, 300);
+            console.log(data);
             return data;
         } else {
+            console.log("from cache");
+            console.log(data);
             return data
         }
     }
 
-    async componentDidMount() {
+    async componentWillMount() {
         const x = await this.getData();
         this.setState({
             data: x,
@@ -659,7 +661,7 @@ export class MainPage extends React.Component<{}, { data }> {
         return <div className="mainPage">
             <div className="leftPart">
                 <AnnouncementComponent data={data.announcement} />
-                <RecommendedReadingComponent data={data.recommendationReading} />
+                <RecommendedReadingComponent data={data.recommandationReading} />
                 <div className="row" style={{ justifyContent: "space-between" }}>
                     <HotTopicComponent data={data.hotTopic} />
                     <MainPageTopicComponent data={data.schoolEvent} name="校园活动" fetchUrl="/topic/school-event" style="blue" mores={[]} />
