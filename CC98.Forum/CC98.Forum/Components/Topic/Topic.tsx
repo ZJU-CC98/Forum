@@ -5,7 +5,8 @@ import * as $ from 'jquery';
 import {
     BrowserRouter as Router,
     Route,
-    Link,
+    Link,
+
     withRouter
 } from 'react-router-dom';
 import * as Redux from 'redux';
