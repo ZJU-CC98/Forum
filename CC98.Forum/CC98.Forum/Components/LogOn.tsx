@@ -9,6 +9,7 @@ import * as Actions from '../Actions';
 import { connect } from 'react-redux';
 import { changeUserInfo } from '../Actions';
 import { withRouter } from 'react-router-dom';
+import DocumentTitle from './DocumentTitle';
 
 class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff, history, changeUserInfo}, LogOnState> {
     constructor(props) {
@@ -148,6 +149,7 @@ class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff, histo
     render() {
         return (
             <div className="login">
+                <DocumentTitle title="登录 - CC98论坛" />
                 <div>
                     <img src="/static/images/login.png" />
                     <div>
