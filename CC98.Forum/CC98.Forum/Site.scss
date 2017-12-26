@@ -1070,12 +1070,25 @@ a {
 }
 
 .areaName {
-    font-size: 0.87rem;
+    font-size: 1rem;
     font-family: 微软雅黑;
-    color: rgb(80,80,80);
+    color: #fff;
     margin-left: 1.1rem;
 }
+.expendBoardList{
 
+    width: 2.5rem;
+    margin-top: 0rem;
+    font-size: 0.75rem;
+    color: #fff;
+    border: #fff solid thin;
+    border-radius: 1rem;
+    text-align: center;
+    height: 1.25rem;
+    line-height: 1.25rem;
+    cursor:pointer;
+    margin-top:2rem;
+}
 .areaContent {
     display: flex;
     flex-direction: row;
@@ -3270,4 +3283,10 @@ a {
         line-height: 20px;
         margin: 10rem;
     }
+}
+
+.boardListHead{
+    height:3rem;
+    align-items:center;
+    background-color:#8dc9db;
 }

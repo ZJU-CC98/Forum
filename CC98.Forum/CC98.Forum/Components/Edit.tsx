@@ -57,14 +57,18 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                 }
                 data = await response.json();
                 const topicInfo = await Utility.getTopicInfo(data.topicId);
+                let tag1Name = await Utility.getTagNamebyId(topicInfo.tag1);
+                if (!tag1Name) tag1Name = "";
+                let tag2Name = await Utility.getTagNamebyId(topicInfo.tag2);
+                if (!tag2Name) tag2Name = "";
                 const type = topicInfo.type;
                 tags = await Utility.getBoardTag(data.boardId);
                 //console.log(tags);
                 const boardName1 = await Utility.getBoardName(data.boardId);
                 if (data.contentType === 0) {
-                    this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags,topicInfo:topicInfo });
+                    this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name });
                 } else
-                    this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo });
+                    this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name });
                 break;
         }
 
@@ -101,9 +105,10 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
             let c = Constants.testEditor.getMarkdown();
             let content;
             const type = this.state.type;
-
-            if (this.state.tag1 && !this.state.tag2) {
-                tag1Id = await Utility.getTagIdbyName(this.state.tag1);
+            tag1Id = await Utility.getTagIdbyName(this.state.tag1);
+            tag2Id = await Utility.getTagIdbyName(this.state.tag2);
+            if (tag1Id && !tag2Id) {
+                
                 content = {
                     content: c,
                     contentType: 1,
@@ -112,9 +117,8 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                     type: this.state.type
                 };
             }
-            else if (this.state.tag2) {
-                tag1Id = await Utility.getTagIdbyName(this.state.tag1);
-                tag2Id = await Utility.getTagIdbyName(this.state.tag2);
+            else if (tag2Id) {
+         
                 content = {
                     content: c,
                     contentType: 1,
@@ -165,8 +169,9 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
         let tag1Id, tag2Id;
         const type = this.state.type;
         //console.log(this.state);
-        if (this.state.tag1 && !this.state.tag2) {
-            tag1Id = await Utility.getTagIdbyName(this.state.tag1);
+        tag1Id = await Utility.getTagIdbyName(this.state.tag1);
+        tag2Id = await Utility.getTagIdbyName(this.state.tag2);
+        if (tag1Id && !tag2Id) {
             content = {
                 content: this.state.content,
                 contentType: 0,
@@ -175,9 +180,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                 type: this.state.type
             };
         }
-        else if (this.state.tag2) {
-            tag1Id = await Utility.getTagIdbyName(this.state.tag1);
-            tag2Id = await Utility.getTagIdbyName(this.state.tag2);
+        else if (tag2Id) {     
             content = {
                 content: this.state.content,
                 contentType: 0,
@@ -263,9 +266,10 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
     async editUBB() {
         const url = `/post/${this.match.params.id}`;
         let tag1Id, tag2Id, content;
-        //console.log(this.state);
-        if (this.state.tag1 && !this.state.tag2) {
-            tag1Id = await Utility.getTagIdbyName(this.state.tag1);
+        console.log(this.state);
+        tag1Id = await Utility.getTagIdbyName(this.state.tag1);
+        tag2Id = await Utility.getTagIdbyName(this.state.tag2);
+        if (tag1Id && !tag2Id) {
             content = {
                 content: this.state.content,
                 contentType: 0,
@@ -274,9 +278,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                 type: this.state.type
             };
         }
-        else if (this.state.tag2) {
-            tag1Id = await Utility.getTagIdbyName(this.state.tag1);
-            tag2Id = await Utility.getTagIdbyName(this.state.tag2);
+        else if (tag2Id) {
             content = {
                 content: this.state.content,
                 contentType: 0,
@@ -310,7 +312,9 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
         let c = Constants.testEditor.getMarkdown();
         Constants.testEditor.setMarkdown("");
         let content, tag1Id, tag2Id;
-        if (this.state.tag1 && !this.state.tag2) {
+        tag1Id = await Utility.getTagIdbyName(this.state.tag1);
+        tag2Id = await Utility.getTagIdbyName(this.state.tag2);
+        if (tag1Id && !tag2Id) {
             tag1Id = await Utility.getTagIdbyName(this.state.tag1);
             content = {
                 content: c,
@@ -320,9 +324,8 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                 type: this.state.type
             };
         }
-        else if (this.state.tag2) {
-            tag1Id = await Utility.getTagIdbyName(this.state.tag1);
-            tag2Id = await Utility.getTagIdbyName(this.state.tag2);
+        else if (tag2Id) {
+    
             content = {
                 content: c,
                 contentType: 1,
@@ -352,7 +355,12 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
         this.props.history.push(redirectUrl);
     }
     onTitleChange(title, tag1, tag2) {
-        this.setState({ title: title, tag1: tag1, tag2: tag2 });
+        console.log("handle change");
+        console.log("tag1=" + tag1);
+        if(title!="")
+            this.setState({ title: title, tag1: tag1, tag2: tag2 });
+        else 
+            this.setState({ tag1: tag1, tag2: tag2 });
     }
     onUbbChange(content) {
         this.setState({ content: content });
@@ -368,7 +376,8 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
             if (this.state.mode === 0) {
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom:"0.5rem" }}>切换到Markdown编辑器</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom: "0.5rem" }}>
+                        切换到Markdown编辑器</div>
                 </div>
                     <UbbEditor update={this.update} value={this.state.content} option={{ height: 20, submit: this.sendUbbTopic }}/>
                     <div className="row" style={{ justifyContent: "center" }}>
@@ -478,6 +487,9 @@ export class Tags extends React.Component<{}, {}>{
 export class InputTitle extends React.Component<{ boardId, onChange, tags, title,tag1,tag2  }, { title: string, tags,tag1,tag2}>{
     constructor(props) {
         super(props);
+        this.handleTagChange = this.handleTagChange.bind(this);
+        this.handleTitleChange = this.handleTitleChange.bind(this);
+        this.generateTagOption = this.generateTagOption.bind(this);
         this.state = ({ title: this.props.title, tags: this.props.tags,tag1:"",tag2:"" });
     }
 
@@ -499,32 +511,19 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
         }
 
     }
-   async componentDidMount() {
-        let tag1 = "", tag2 = "";
-       if (this.props.tag1 !== 0) {
-           tag1 = await Utility.getTagNamebyId(this.props.tag1);
-        }
-        if (this.props.tag2 !== 0) {
-            tag2 = await Utility.getTagNamebyId(this.props.tag2);
-        }
-        if (this.props.title && !this.state.title)
-            this.setState({ title: this.props.title, tags: this.props.tags, tag1: tag1, tag2: tag2  });
-        else
-            this.setState({ tags: this.props.tags,tag1:tag1,tag2:tag2 });
+    handleTagChange() {
+        const tag1 = $(".tagBoxSelect").text();
+        const tag2 = $(".tagBoxSelect1").text();
+        console.log("tagtext");
+        console.log($(".tagBoxSelect").text());
+        this.props.onChange("", tag1, tag2);
     }
-    componentWillReceiveProps(newProps) {
-
-        if (newProps.title && !this.state.title)
-            this.setState({ title: newProps.title, tags: newProps.tags });
-        else
-            this.setState({ tags: newProps.tags });
-    }
-    componentDidUpdate() {
-        //console.log("update");
+    async componentDidMount() {
         const tagBoxSelect = $('.tagBoxSelect');
         const downArrow = $('.downArrow');
         const tagBoxSub = $('.tagBoxSub');
         const tagBoxLi = tagBoxSub.find('li');
+
         $(document).click(function () {
 
             tagBoxSub.css('display', 'none');
@@ -549,6 +548,7 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
 
         tagBoxLi.click(function () {
             tagBoxSelect.text($(this).text());
+
         });
 
         tagBoxLi.mouseover(function () {
@@ -594,9 +594,33 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
         tagBoxLi1.mouseout(function () {
             this.className = '';
         });
+        let tag1 = "", tag2 = "";
+       if (this.props.tag1 !== 0) {
+           tag1 = await Utility.getTagNamebyId(this.props.tag1);
+        }
+        if (this.props.tag2 !== 0) {
+            tag2 = await Utility.getTagNamebyId(this.props.tag2);
+        }
+        if (this.props.title && !this.state.title)
+            this.setState({ title: this.props.title, tags: this.props.tags, tag1: tag1, tag2: tag2  });
+        else
+            this.setState({ tags: this.props.tags,tag1:tag1,tag2:tag2 });
+    }
+    componentWillReceiveProps(newProps) {
+
+        if (newProps.title && !this.state.title)
+            this.setState({ title: newProps.title, tags: newProps.tags });
+        else
+            this.setState({ tags: newProps.tags });
+    }
+    componentDidUpdate() {
+        //console.log("update");
+       
+       
+        
     }
     generateTagOption(item) {
-        return <li>{item.name}</li>;
+        return <li onClick={this.handleTagChange}>{item.name}</li>;
     }
     render() {
     
