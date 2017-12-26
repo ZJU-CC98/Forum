@@ -3,6 +3,9 @@ import * as Utility from '../../Utility';
 import { UbbContainer } from '../UbbContainer';
 import { Link } from 'react-router-dom';
 declare let moment: any;
+interface Props{
+
+}
 export class ReplierSignature extends React.Component<{ signature,postid ,topicid,masters,userId,likeInfo,quote,content,userInfo,replyTime,floor,lastUpdateTime,lastUpdateAuthor,boardId,isLZ,traceMode,topicInfo}, {likeNumber,dislikeNumber,likeState}>{
     constructor(props, content) {
         super(props, content);
@@ -141,7 +144,6 @@ export class ReplierSignature extends React.Component<{ signature,postid ,topici
              manageBtn = <div className="operation1" id={manageIcon} style={{ cursor: "pointer" }} onClick={this.showManageUI}>管理</div>;
         }
         let judgeIcon = <div className="operation1" onClick={this.showJudgeUI}>   评分</div>;
-        // if (this.props.boardId === 182) judgeIcon = null;
         return <div className="column" style={{ marginTop: "1rem", width: "52rem", marginBottom:"0.5rem" }}>
             <div className="comment1">
                 <div style={{ width: "40rem", marginLeft: "1.2rem", fontSize:"0.8rem" }}>

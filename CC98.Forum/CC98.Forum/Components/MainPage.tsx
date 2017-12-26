@@ -126,14 +126,14 @@ export class HotTopicState {
     title: string;
     id: number;
     boardName: string;
-    boardid: number;
+    boardId: number;
 
     //构造方法
-    constructor(title, id, boardName, boardid) {
+    constructor(title, id, boardName, boardId) {
         this.title = title;
         this.id = id;
         this.boardName = boardName;
-        this.boardid = boardid;
+        this.boardId = boardId;
     }
 }
 
@@ -146,7 +146,7 @@ export class HotTopicComponent extends React.Component<{ data }, { mainPageTopic
 
 
     convertMainPageTopic(item: HotTopicState) {
-    const boardUrl = `/list/${item.boardid}`;
+    const boardUrl = `/list/${item.boardId}`;
     const topicUrl = `/topic/${item.id}`;
     return <div className="mainPageListRow">
         <div className="mainPageListBoardName"> <a href={boardUrl} target="_blank">[{item.boardName}]</a></div>
@@ -623,16 +623,21 @@ export class MainPage extends React.Component<{}, { data }> {
     async getData() {
         let data = Utility.getLocalStorage("mainPageData");
         if (!data) {
+            console.log("from server");
+            
             const response = await Utility.cc98Fetch('/config/index');
             data = await response.json();
             Utility.setLocalStorage("mainPageData", data, 300);
+            console.log(data);
             return data;
         } else {
+            console.log("from cache");
+            console.log(data);
             return data
         }
     }
 
-    async componentDidMount() {
+    async componentWillMount() {
         const x = await this.getData();
         this.setState({
             data: x,
