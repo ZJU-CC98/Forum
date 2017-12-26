@@ -484,13 +484,13 @@ export class Tags extends React.Component<{}, {}>{
  * 用于发主题/编辑主题
  * TODO:尚未完成
  */
-export class InputTitle extends React.Component<{ boardId, onChange, tags, title,tag1,tag2  }, { title: string, tags,tag1,tag2}>{
+export class InputTitle extends React.Component<{ boardId, onChange, tags, title,tag1,tag2  }, { title: string, tags,tag1,tag2, hasEvent: boolean}>{
     constructor(props) {
         super(props);
         this.handleTagChange = this.handleTagChange.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.generateTagOption = this.generateTagOption.bind(this);
-        this.state = ({ title: this.props.title, tags: this.props.tags,tag1:"",tag2:"" });
+        this.state = ({ title: this.props.title, tags: this.props.tags,tag1:"",tag2:"", hasEvent: false });
     }
 
     handleTitleChange(event) {
@@ -518,8 +518,41 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
         console.log($(".tagBoxSelect").text());
         this.props.onChange("", tag1, tag2);
     }
-    async componentDidMount() {
+    
+
+    componentWillReceiveProps(newProps) {
+
+        if (newProps.title && !this.state.title)
+            this.setState({ title: newProps.title, tags: newProps.tags });
+        else
+            this.setState({ tags: newProps.tags });
+    }
+
+    componentDidMount() {
+        //如果有默认tags就绑定事件
+        if (this.state.tags.length > 0) {
+            this.bindEvent();
+        }
+    }
+
+    componentDidUpdate() {
+        //如果没绑定过事件则绑定事件
+        if (!this.state.hasEvent) {
+            this.bindEvent();
+        }
+    }
+
+    bindEvent = async () => {
         const tagBoxSelect = $('.tagBoxSelect');
+        //获取不到元素的时候不绑定事件
+        if (tagBoxSelect.length === 0) {
+            return;
+        } else {
+            //获取到则标记已绑定过事件
+            this.setState({
+                hasEvent: true
+            });
+        }
         const downArrow = $('.downArrow');
         const tagBoxSub = $('.tagBoxSub');
         const tagBoxLi = tagBoxSub.find('li');
@@ -595,30 +628,18 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
             this.className = '';
         });
         let tag1 = "", tag2 = "";
-       if (this.props.tag1 !== 0) {
-           tag1 = await Utility.getTagNamebyId(this.props.tag1);
+        if (this.props.tag1 !== 0) {
+            tag1 = await Utility.getTagNamebyId(this.props.tag1);
         }
         if (this.props.tag2 !== 0) {
             tag2 = await Utility.getTagNamebyId(this.props.tag2);
         }
         if (this.props.title && !this.state.title)
-            this.setState({ title: this.props.title, tags: this.props.tags, tag1: tag1, tag2: tag2  });
+            this.setState({ title: this.props.title, tags: this.props.tags, tag1: tag1, tag2: tag2});
         else
-            this.setState({ tags: this.props.tags,tag1:tag1,tag2:tag2 });
+            this.setState({ tags: this.props.tags, tag1: tag1, tag2: tag2});
     }
-    componentWillReceiveProps(newProps) {
 
-        if (newProps.title && !this.state.title)
-            this.setState({ title: newProps.title, tags: newProps.tags });
-        else
-            this.setState({ tags: newProps.tags });
-    }
-    componentDidUpdate() {
-        //console.log("update");
-       
-       
-        
-    }
     generateTagOption(item) {
         return <li onClick={this.handleTagChange}>{item.name}</li>;
     }
