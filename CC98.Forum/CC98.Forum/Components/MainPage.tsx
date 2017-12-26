@@ -595,10 +595,8 @@ export class MainPageCountProps {
 export class MainPage extends React.Component<{}, { data }> {
 
     constructor(props) {    //为组件定义构造方法，其中设置 this.state = 初始状态
-        super(props);       //super 表示调用基类（Component系统类型）构造方法
-        let data = Utility.getLocalStorage("mainPageData");
-        if (!data) {
-            data = {
+        super(props);       //super 表示调用基类（Component系统类型）构造方法  
+            let data = {
                 academics: [],
                 announcement: "",
                 emotion: [],
@@ -617,7 +615,6 @@ export class MainPage extends React.Component<{}, { data }> {
                 topicCount: 0,
                 userCount: 0
             };
-        }
         this.state = {
             data: data
         };
@@ -659,7 +656,7 @@ export class MainPage extends React.Component<{}, { data }> {
         return <div className="mainPage">
             <div className="leftPart">
                 <AnnouncementComponent data={data.announcement} />
-                <RecommendedReadingComponent data={data.recommendationReading} />
+                <RecommendedReadingComponent data={data.recommandationReading} />
                 <div className="row" style={{ justifyContent: "space-between" }}>
                     <HotTopicComponent data={data.hotTopic} />
                     <MainPageTopicComponent data={data.schoolEvent} name="校园活动" fetchUrl="/topic/school-event" style="blue" mores={[]} />
