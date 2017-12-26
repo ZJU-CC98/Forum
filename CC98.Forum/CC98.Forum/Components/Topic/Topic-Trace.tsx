@@ -93,8 +93,8 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
                     <Category topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} />
                     <Pager page={this.state.page} url={url} totalPage={this.state.totalPage} />
                 </div>
-                <TopicInfo topicInfo={this.state.topicInfo} tag1={this.state.topicInfo.tag1} tag2={this.state.topicInfo.tag2} boardInfo={this.state.boardInfo}  isFav={this.state.isFav} />
-                <Reply topicInfo={this.state.topicInfo}  boardInfo={this.state.boardInfo} page={this.state.page}  userId={this.state.userId} quote={this.quote} isTrace={true} isHot={false}  />
+                <TopicInfo topicInfo={this.state.topicInfo} tag1={this.state.topicInfo.tag1} tag2={this.state.topicInfo.tag2} boardInfo={this.state.boardInfo} isFav={this.state.isFav} />
+                <Reply topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} page={this.state.page} userId={this.state.userId} quote={this.quote} isTrace={true} isHot={false} topicId={this.match.params.topicid} />
                 <div className="row" style={{ width: "100%", justifyContent: 'space-between', alignItems: "center", marginTop: "1rem" }}>
                     <Category topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} />
                     <Pager page={this.state.page} url={url} totalPage={this.state.totalPage} />

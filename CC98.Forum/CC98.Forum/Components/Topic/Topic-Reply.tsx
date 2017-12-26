@@ -15,6 +15,7 @@ import { Judge } from './Topic-Judge';
 import { ReplierSignature } from './Topic-ReplierSignature';
 declare let moment: any;
 interface Props{
+    topicId;
     page;
     topicInfo;
     boardInfo;
@@ -41,14 +42,14 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
         const page = this.props.page || 1;
         let realContents;
         if (this.props.isHot) {
-            realContents = await Utility.getHotReplyContent(this.props.topicInfo.id);
+            realContents = await Utility.getHotReplyContent(this.props.topicId);
 
         } else if (this.props.isTrace) {
             const data = await Utility.getUserInfo(this.props.userId);
             const userName = data.name;
-            realContents = await Utility.getCurUserTopicContent(this.props.topicInfo.id, page, userName, this.props.userId);
+            realContents = await Utility.getCurUserTopicContent(this.props.topicId, page, userName, this.props.userId);
         } else {
-            realContents = await Utility.getTopicContent(this.props.topicInfo.id, page);
+            realContents = await Utility.getTopicContent(this.props.topicId, page);
         }
 
         this.setState({ contents: realContents });
@@ -57,14 +58,14 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
         const page = this.props.page || 1;
         let realContents;
         if (this.props.isHot) {
-            realContents = await Utility.getHotReplyContent(this.props.topicInfo.id);
+            realContents = await Utility.getHotReplyContent(this.props.topicId);
             if (!realContents) this.setState({ inWaiting: false, contents: [] });
         } else if (this.props.isTrace) {
             const data = await Utility.getUserInfo(this.props.userId);
             const userName = data.name;
-            realContents = await Utility.getCurUserTopicContent(this.props.topicInfo.id, page, userName, this.props.userId);
+            realContents = await Utility.getCurUserTopicContent(this.props.topicId, page, userName, this.props.userId);
         } else {
-            realContents = await Utility.getTopicContent(this.props.topicInfo.id, page);
+            realContents = await Utility.getTopicContent(this.props.topicId, page);
             if (!realContents) this.setState({ inWaiting: false, contents: [] });
         }
         const masters = this.props.boardInfo.boardMasters;
@@ -103,7 +104,7 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
         //判断加不加热评
         let hotReply = null;
         if (item.floor === 1) {
-            hotReply = <Reply topicInfo={this.props.topicInfo} page={this.props.page}  boardInfo={this.props.boardInfo} quote={this.quote} isTrace={false} isHot={true} userId={null} />;
+            hotReply = <Reply topicInfo={this.props.topicInfo} page={this.props.page} boardInfo={this.props.boardInfo} quote={this.quote} isTrace={false} isHot={true} userId={null} topicId={this.props.topicId} />;
             return <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
                 <div className="reply" id={id.toString()} >
                     <Replier key={item.postId} topicInfo={this.props.topicInfo} userInfo={item.userInfo} traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
