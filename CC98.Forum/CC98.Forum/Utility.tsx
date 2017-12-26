@@ -2564,7 +2564,7 @@ export async function getUsersInfo(userId: any[]) {
         for (let i in data) {
             if (data[i].id != userId[i]) {
                 let indexData = {
-                    id: userId[i], name: "ID不存在", portraitUrl: "/static/images/default_avatar_boy.png", birthday: "1993-03-25T00:00:00", fanCount: 0, followCount: 0, gender: 0, lastLogOnTime: "2017-12-26T02:26:00", popularity: 0, prestige: 0, signatureCode: '此ID已不存在，qmd无法显示'
+                    id: userId[i], name: "ID不存在", portraitUrl: "/static/images/default_avatar_boy.png", birthday: "1993-03-25T00:00:00", fanCount: 0, followCount: 0, gender: 0, lastLogOnTime: "2007-12-26T02:26:00", popularity: 0, prestige: 0, signatureCode: '此ID已不存在，qmd无法显示'
                 };
                 data.splice(parseInt(i), 0, indexData);
                 if (data.length === userId.length) {
@@ -2575,7 +2575,7 @@ export async function getUsersInfo(userId: any[]) {
         if (data.length < userId.length) {
             for (let i = data.length; i < userId.length; i++) {
                 let indexData = {
-                    id: userId[i], name: "ID不存在", portraitUrl: "/static/images/default_avatar_boy.png", birthday: "1993-03-25T00:00:00", fanCount: 0, followCount: 0, gender: 0, lastLogOnTime: "2017-12-26T02:26:00", popularity: 0, prestige: 0, signatureCode: '此ID已不存在，qmd无法显示'
+                    id: userId[i], name: "ID不存在", portraitUrl: "/static/images/default_avatar_boy.png", birthday: "1993-03-25T00:00:00", fanCount: 0, followCount: 0, gender: 0, lastLogOnTime: "2007-12-26T02:26:00", popularity: 0, prestige: 0, signatureCode: '此ID已不存在，qmd无法显示'
                 }
                 data.push(indexData);
                 if (data.length === userId.length) {
