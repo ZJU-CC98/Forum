@@ -390,6 +390,19 @@ export class Test extends React.Component<{}, { testContent: string }>{
         });
         console.log("发送成功！")
     }
+    async signIn() {
+        const url = `/me/signin`;
+
+        const token = Utility.getLocalStorage("accessToken");
+        let myHeaders = new Headers();
+        myHeaders.append("Authorization", token);
+        myHeaders.append("Content-Type", 'application/json');
+        myHeaders.append("Content-Type", "application/json");
+
+        let content = "日常";
+        const response = await Utility.cc98Fetch(url, { method: "POST", headers: myHeaders, body: content });
+    }
+
     render() {
         return <div className="mainPageList">
             <div className="mainPageTitle2">
@@ -401,7 +414,7 @@ export class Test extends React.Component<{}, { testContent: string }>{
             <div className="mainPageListContent2">
                 <div>这里是可爱的adddna测试的地方~</div>
                 <input name="testContent" type="text" id="loginName" onChange={this.handleChange} value={this.state.testContent} />
-                <div>封印</div>
+                <div>封印封印</div>
             </div>
         </div>
     }

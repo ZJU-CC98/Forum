@@ -165,13 +165,9 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
             </div>);
         }
         else {
-            return <div id="dropdown">
-                <div className="box">
-                    <div className="topBarText" style={{ margin: '0 10px 0 10px' }}> <Link to="/" style={{ color: '#fff' }}>首页</Link></div>
-                    <div className="topBarText" style={{ margin: '0 10px 0 10px' }}> <Link to="/logOn" style={{ color: '#fff' }}>登录</Link></div>
-                    <div className="topBarText" style={{ margin: '0 10px 0 10px' }}> <Link to="/newTopics" style={{ color: '#fff' }}>新帖</Link></div>
-                    <Link to="/boardList"><div className="boardListLink" style={{ margin: '0 0 0 10px' }}><div style={{ marginTop: '16px', color: '#fff' }}>版面</div></div></Link>
-                </div>
+            return <div className="row">
+                <div className="newTopBarText"> <Link to="/logOn">登录</Link></div>
+                <div className="newTopBarText"><a href="https://account.cc98.org/">注册</a></div>
             </div>
         }
     }
@@ -403,44 +399,20 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
 
 export const Search = withRouter(SearchBeforeConnent);
 
-export class Header extends React.Component<{}, AppState> {
+export class NewHeader extends React.Component<{}, AppState> {
     render() {
-        return <div className="header">
-            <div className="topBar">
-                <div className="topBarRow">
-                    <div className="row"><div> <Link to="/"><img style={{ marginTop: "0.5rem" }} src="/static/images/98LOGO.ico" /></Link></div><div style={{ margin: '15px 0 0 5px' }}><Link to="/"><img src="/static/images/CC98.ico" /></Link></div></div>
-                    <DropDown />
-                </div>
-            </div>
-            <div className="headerContent">
-                <div className="headerRow">
-                    <div className="linkBar">
-                        <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="/static/images/网盘.ico" width="15" height="15" /></div>
-                            <div><a href="http://share.cc98.org/" className="linkText">网盘</a></div>
-                        </div>
-                        <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="/static/images/游戏.ico" width="15" height="15" /></div>
-                            <div><a href="http://www.cc98.org/game.asp" className="linkText">游戏</a></div>
-                        </div>
-                        <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="/static/images/勋章.ico" width="15" height="15" /></div>
-                            <div><a href="http://v2.cc98.org/app/medalmanager.aspx" className="linkText">勋章</a></div>
-                        </div>
-                        <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="/static/images/抽卡.ico" width="15" height="15" /></div>
-                            <div><a href="http://card.cc98.org/" className="linkText">抽卡</a></div>
-                        </div>
-                        <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="/static/images/gamble.ico" width="15" height="15" /></div>
-                            <div><a href="http://gaming.cc98.org" className="linkText">竞猜</a></div>
-                        </div>
-                        <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="/static/images/NexusHD.jpg" width="15" height="15" /></div>
-                            <div><a href="http://www.nexushd.org" className="linkText">NexusHD</a></div>
-                        </div>
+        return <div className="newHeader">
+            <div className="newTopBar">
+                <div className="newTopBarRow">
+                    <div className="row" style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                        <div className="topBarLogo"><Link to="/"><img src="/static/images/98LOGO.ico" /></Link></div>
+                        <div className="topBarCC98"><Link to="/">CC98论坛</Link></div>
+                        <div className="newTopBarText">|</div>
+                        <div className="newTopBarText"><Link to="/boardList">版面列表</Link></div>
+                        <div className="newTopBarText"><Link to="newTopics">新帖</Link></div>
+                        <div className="newTopBarText"><Link to="focus">关注</Link></div>
                     </div>
-                    <Route component={Search} />
+                    <DropDown />
                 </div>
             </div>
         </div>;
