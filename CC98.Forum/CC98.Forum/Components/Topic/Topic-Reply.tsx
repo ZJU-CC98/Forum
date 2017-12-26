@@ -72,8 +72,8 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
         this.setState({ inWaiting: false, contents: realContents, masters: masters });
     }
     async componentWillReceiveProps(newProps) {
-        //console.log("newpage=" + newProps.page);
-        //console.log("Curpage=" + this.props.page);
+        console.log("newpage=" + newProps.page);
+        console.log("Curpage=" + this.props.page);
         if (newProps.page !== this.props.page || newProps.topicInfo.replyCount !== this.props.topicInfo.replyCount) {
             this.setState({ inWaiting: true });
             const page = newProps.page || 1;
@@ -103,6 +103,8 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
         let likeInfo = { likeCount: item.likeCount, dislikeCount: item.dislikeCount, likeState: item.likeState };
         //判断加不加热评
         let hotReply = null;
+        let awards = <Award postId={item.postId} updateTime={Date.now()} awardInfo={item.awards} />;
+        if (item.awards == []) awards = null;
         if (item.floor === 1) {
             hotReply = <Reply topicInfo={this.props.topicInfo} page={this.props.page} boardInfo={this.props.boardInfo} quote={this.quote} isTrace={false} isHot={true} userId={null} topicId={this.props.topicId} />;
             return <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
@@ -112,7 +114,7 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
                         <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
                         <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} floor={item.floor} />
                         <ReplyContent key={item.content} postId={item.postId} content={item.content} contentType={item.contentType} />
-                        <Award postId={item.postId} updateTime={Date.now()} awardInfo={item.awards} />
+                        {awards}
                         <ReplierSignature userInfo={item.userInfo} quote={this.quote} boardInfo={this.props.boardInfo} postInfo={item} likeInfo={likeInfo} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo} />
                     </div>
                     <FloorSize floor={item.floor} />
@@ -126,7 +128,7 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
                     <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
                     <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} floor={item.floor} />
                     <ReplyContent key={item.content} postId={item.postId} content={item.content} contentType={item.contentType} />
-                    <Award postId={item.postId} updateTime={Date.now()} awardInfo={item.awards} />
+                    {awards}
                     <ReplierSignature userInfo={item.userInfo} quote={this.quote} boardInfo={this.props.boardInfo} postInfo={item} likeInfo={likeInfo} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo} />
                 </div>
                 <FloorSize floor={item.floor} />
