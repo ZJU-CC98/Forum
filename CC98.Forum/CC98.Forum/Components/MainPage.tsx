@@ -556,8 +556,8 @@ export class MainPage extends React.Component<{}, { data }> {
             lastUserName: "",
             partTimeJob: [],
             postCount: 0,
-            recommandationFunction: [],
-            recommandationReading: [],
+            recommendationFunction: [],
+            recommendationReading: [],
             schoolEvent: [],
             schoolNews: [],
             study: [],
@@ -605,7 +605,7 @@ export class MainPage extends React.Component<{}, { data }> {
         return <div className="mainPage">
             <div className="leftPart">
                 <AnnouncementComponent data={data.announcement} />
-                <RecommendedReadingComponent data={data.recommandationReading} />
+                <RecommendedReadingComponent data={data.recommendationReading} />
                 <div className="row" style={{ justifyContent: "space-between" }}>
                     <HotTopicComponent data={data.hotTopic} />
                     <MainPageTopicComponent data={data.schoolEvent} name="校园活动" fetchUrl="/topic/school-event" style="blue" mores={[]} />
@@ -626,7 +626,7 @@ export class MainPage extends React.Component<{}, { data }> {
                 </div>
             </div>
             <div className="rightPart">
-                <RecommendedFunctionComponent data={data.recommandationFunction} />
+                <RecommendedFunctionComponent data={data.recommendationFunction} />
                 <SchoolNewsComponent data={data.schoolNews} />
                 <AdsComponent />
                 <MainPageCountComponent data={count} />
