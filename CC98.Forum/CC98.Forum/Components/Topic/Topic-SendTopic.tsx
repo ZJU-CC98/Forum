@@ -8,7 +8,7 @@ import { TopicManagement } from './Topic-TopicManagement';
 declare let moment: any;
 declare let editormd: any;
 
-export class SendTopic extends React.Component<{ topicid, boardId, boardInfo, onChange, content, userId,topicInfo }, { content: string, mode: number, masters: string[] }>{
+export class SendTopic extends React.Component<{ topicid, boardId, boardInfo, onChange, content, userId,topicInfo }, { content: string, mode: number, masters: string[],buttonInfo,buttonDisabled }>{
 	constructor(props) {
 		super(props);
 		this.sendUbbTopic = this.sendUbbTopic.bind(this);
@@ -16,8 +16,8 @@ export class SendTopic extends React.Component<{ topicid, boardId, boardInfo, on
 		this.showManagement = this.showManagement.bind(this);
 		this.onChange = this.onChange.bind(this);
 		this.close = this.close.bind(this);
-		this.update = this.update.bind(this);
-		this.state = ({ content: '', mode: 0, masters: [] });
+        this.update = this.update.bind(this);
+        this.state = ({ content: '', mode: 0, masters: [], buttonDisabled: false, buttonInfo:"回复" });
 	}
 	update(value) {
 		this.setState({ content: value });
@@ -207,8 +207,8 @@ ${newProps.content.content}[/quote]
         }
     }
 
-	async sendUbbTopic() {
-		console.log(this.state.content);
+    async sendUbbTopic() {
+        this.setState({ buttonDisabled: true, buttonInfo: "..." });
 		const url = `/topic/${this.props.topicid}/post`;
 		const bodyInfo = {
 			content: this.state.content,
@@ -225,9 +225,14 @@ ${newProps.content.content}[/quote]
 				headers,
 				body
 			}
-		);
+        );
+        if (mes.status === 402) {
+            alert('请输入内容');
+            this.setState({ buttonDisabled: false, buttonInfo: "发帖" });
+        }
 		if (mes.status === 403) {
-			alert('你太快啦 请慢一点~');
+            alert('你太快啦 请慢一点~');
+            this.setState({buttonDisabled: false, buttonInfo: "发帖" });
 		} else if(mes.status === 200){
 			const atUsers = this.atHanderler(this.state.content);
 			//如果存在合法的@，则发送@信息，否则不发送，直接跳转至所发帖子
@@ -245,13 +250,14 @@ ${newProps.content.content}[/quote]
 					body: atUsersJSON
 				});
 			}
-			this.setState({ content: '' });
+			this.setState({ content: '',buttonDisabled:false,buttonInfo:"发帖" });
 			this.props.onChange();
 		}
 
 	}
 	async sendMdTopic() {
-		try {
+        try {
+            this.setState({ buttonDisabled: true, buttonInfo: "..." });
 			const url = `/topic/${this.props.topicid}/post`;
 			const c = Constants.testEditor.getMarkdown();
 			Constants.testEditor.setMarkdown('');
@@ -272,10 +278,12 @@ ${newProps.content.content}[/quote]
 				}
 			);
 			if (mes.status === 403) {
-				alert('你太快啦 请慢一点~');
+                alert('你太快啦 请慢一点~');
+                this.setState({  buttonDisabled: false, buttonInfo: "发帖" });
 			}
 			if (mes.status === 402) {
-				alert('请输入内容');
+                alert('请输入内容');
+                this.setState({  buttonDisabled: false, buttonInfo: "发帖" });
 			}
 			this.props.onChange();
 
@@ -325,7 +333,7 @@ ${newProps.content.content}[/quote]
 					}
 				},
 			});
-			this.setState({ content: '' });
+            this.setState({ content: '', buttonDisabled: false, buttonInfo: "发帖" });
 		} catch (e) {
 			console.log('Error');
 			console.log(e);
@@ -354,9 +362,9 @@ ${newProps.content.content}[/quote]
 			mode = '使用UBB模式编辑';
             editor = <div>
                 <UbbEditor update={this.update} value={this.state.content} option={{ height: 20, submit: this.sendUbbTopic }} />
-				<div className="row" style={{ justifyContent: 'center', marginBottom: '1.25rem ' }}>
-					<div id="post-topic-button" onClick={this.sendUbbTopic} className="button blue" style={{ marginTop: '1.25rem', width: '6rem', height: '2rem', lineHeight: '2rem', letterSpacing: '0.3125rem' }}>回复
-                    </div>
+                <div className="row" style={{ justifyContent: 'center', marginBottom: '1.25rem ' }}>
+                    <button id="post-topic-button" onClick={this.sendUbbTopic} disabled={this.state.buttonDisabled} className="button blue" style={{ marginTop: '1.25rem', width: '6rem', height: '2rem', lineHeight: '2rem', letterSpacing: '0.3125rem' }}>{this.state.buttonInfo}
+                    </button>
 				</div></div>;
 		}
 		else {
@@ -369,7 +377,7 @@ ${newProps.content.content}[/quote]
 					</div>
 				</form>
                 <div className="row" style={{ justifyContent: 'center', marginBottom: '1.25rem ' }}>
-                    <div id="post-topic-button" onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: '1.25rem', width: '4.5rem', height: "2rem", lineHeight: "2rem" }}>回复</div>
+                    <button id="post-topic-button" disabled={this.state.buttonDisabled} onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: '1.25rem', width: '4.5rem', height: "2rem", lineHeight: "2rem" }}>{this.state.buttonInfo}</button>
 
 
 				</div>
