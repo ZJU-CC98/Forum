@@ -96,7 +96,7 @@ export class RootBoard extends React.Component<{ board }, { isExpanded: boolean 
                 <div className="column" style={{ border: '2px solid #e9e9e9' }}>
                     <div className="row boardListHead"　>
 
-                        <div className="row" style={{ marginRight: "1rem", alignItems: "center", justifyContent:"space-between" }}>
+                        <div className="row" style={{ marginRight: "1rem", alignItems: "center" }}>
                             <div className="areaName">{boards.name}</div>
                         <div className="areaName">主管：{boards.masters}</div>                         
                         </div>
