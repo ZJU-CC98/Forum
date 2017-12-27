@@ -91,12 +91,26 @@ export function getThisUserInfo(userId, usersId) {
         if (usersId[i].id === userId)
             return usersId[i];
     }
+    //查询失败
+    let indexData = {
+
+        id: userId[i], name: "ID不存在", portraitUrl: "/static/images/default_avatar_boy.png", birthday: "1993-03-25T00:00:00", fanCount: 0, followCount: 0, gender: 0, lastLogOnTime: "2007-12-26T02:26:00", popularity: 0, prestige: 0, signatureCode: '此ID已不存在，qmd无法显示'
+
+    };
+    return indexData;
 }
 export function getThisUserInfobyName(userName, usersName) {
     for (let i in usersName) {
         if (usersName[i].name === userName)
             return usersName[i];
     }
+    //查询失败
+    let indexData = {
+
+        id: userId[i], name: "ID不存在", portraitUrl: "/static/images/default_avatar_boy.png", birthday: "1993-03-25T00:00:00", fanCount: 0, followCount: 0, gender: 0, lastLogOnTime: "2007-12-26T02:26:00", popularity: 0, prestige: 0, signatureCode: '此ID已不存在，qmd无法显示'
+
+    };
+    return indexData;
 }
 export async function getTopicContent(topicid: number, curPage: number) {
     try {
