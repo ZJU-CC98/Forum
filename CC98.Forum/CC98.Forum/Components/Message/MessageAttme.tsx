@@ -9,7 +9,7 @@ import * as Utility from '../../Utility';
 import { Pager } from '../Pager';
 
 /**
- * 我的私信，包括最近联系人列表和聊天窗口两个组件
+ * @我的消息
  */
 export class MessageAttme extends React.Component<{match}, MessageResponseState> {
 
@@ -35,7 +35,9 @@ export class MessageAttme extends React.Component<{match}, MessageResponseState>
         if (!curPage || curPage < 0) {
             curPage = 0;
         }
+        console.log("现在的页数", curPage);
         let data = await Utility.getMessageAttme(curPage * 7, 7, this.context.router);
+        console.log("我的@消息", data);
         if (data) {
             this.setState({ data: data, from: curPage + 1, totalPage: totalPage });
         }
@@ -52,10 +54,12 @@ export class MessageAttme extends React.Component<{match}, MessageResponseState>
     }
 
     coverMessageAttme = (item: MessageResponseProps) => {
+        console.log("运行到这2");
         return <MessageAttmebox id={item.id} type={item.type} time={item.time} topicId={item.topicId} topicTitle={item.topicTitle} floor={item.floor} userId={item.userId} userName={item.userName} boardId={item.boardId} boardName={item.boardName} isRead={item.isRead} />;
     };
 
-	render() {
+    render() {
+        console.log("运行到这1看render数据", this.state.data);
         return (<div className="message-right">
                     <div className="message-response">{this.state.data.map(this.coverMessageAttme)}</div>
                     <div className="message-pager"><Pager url="/message/attme/" page={this.state.from} totalPage={this.state.totalPage} /></div>
