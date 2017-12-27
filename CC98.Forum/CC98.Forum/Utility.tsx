@@ -723,7 +723,11 @@ export async function getRecentContact(from: number, size: number, router) {
             userId[i] = recentContactId[i].userId;
         }
         //console.log("userid", userId);
-        let recentContact = await getBasicUsersInfo(userId);
+        let usersInfo = await getBasicUsersInfo(userId);
+        let recentContact = [];
+        for (let i in recentContactId) {
+            recentContact.push(getThisUserInfo(recentContactId[i].userId, usersInfo));
+        };
         //console.log("获取到基本信息", recentContact);
         for (let i in recentContactId) {
             recentContact[i].message = [];
@@ -2515,7 +2519,7 @@ export async function getBasicUsersInfo(userId: number[]) {
     let finalUsersInfo = [];
     //检查本地是否有缓存
     for (let i = 0; i < userId.length; i++) {
-        let thisUserInfo = getLocalStorage(`basicUserId_${userId[i]}`);
+        let thisUserInfo = getLocalStorage(`userId_${userId[i]}`);
         if (thisUserInfo) {
             finalUsersInfo.push(thisUserInfo);
         } else {
@@ -2537,10 +2541,6 @@ export async function getBasicUsersInfo(userId: number[]) {
         let response = await cc98Fetch(url);
         var data = await response.json();
         for (let i of data) {
-            let key = `basicUserId_${i.id}`;
-            let key1 = `basicUserName_${i.name}`;
-            setLocalStorage(key, i, 3600);
-            setLocalStorage(key1, i, 3600);
             finalUsersInfo.push(i);
         }
         return finalUsersInfo;
@@ -2574,10 +2574,6 @@ export async function getUsersInfobyNames(userNames: any[]) {
         let response = await cc98Fetch(url);
         var data = await response.json();
         for (let i of data) {
-            let key = `userId_${i.id}`;
-            let key1 = `userName_${i.name}`;
-            setLocalStorage(key, i, 3600);
-            setLocalStorage(key1, i, 3600);
             finalUsersInfo.push(i);
         }
         return finalUsersInfo;
