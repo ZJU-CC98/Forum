@@ -91,12 +91,26 @@ export function getThisUserInfo(userId, usersId) {
         if (usersId[i].id === userId)
             return usersId[i];
     }
+    //查询失败
+    let indexData = {
+
+        id: userId, name: "ID不存在", portraitUrl: "/static/images/default_avatar_boy.png", birthday: "1993-03-25T00:00:00", fanCount: 0, followCount: 0, gender: 0, lastLogOnTime: "2007-12-26T02:26:00", popularity: 0, prestige: 0, signatureCode: '此ID已不存在，qmd无法显示'
+
+    };
+    return indexData;
 }
 export function getThisUserInfobyName(userName, usersName) {
     for (let i in usersName) {
         if (usersName[i].name === userName)
             return usersName[i];
     }
+    //查询失败
+    let indexData = {
+
+        id: null, name: "ID不存在", portraitUrl: "/static/images/default_avatar_boy.png", birthday: "1993-03-25T00:00:00", fanCount: 0, followCount: 0, gender: 0, lastLogOnTime: "2007-12-26T02:26:00", popularity: 0, prestige: 0, signatureCode: '此ID已不存在，qmd无法显示'
+
+    };
+    return indexData;
 }
 export async function getTopicContent(topicid: number, curPage: number) {
     try {
@@ -2540,77 +2554,76 @@ export async function getBasicUsersInfo(userId: number[]) {
 }
 export async function getUsersInfobyNames(userNames: any[]) {
     let url = "/user/basic/name";
-    for (let i = 0; i < userNames.length; i++) {
-        if (i == 0) {
-            url = `${url}?name=${userNames[i]}`;
+    let usersInfoNeeded = [];
+    let finalUsersInfo = [];
+    //检查本地是否有缓存
+    for (let i in userNames) {
+        let thisUserInfo = getLocalStorage(`userName_${userNames[i]}`);
+        if (thisUserInfo) {
+            finalUsersInfo.push(thisUserInfo);
+        } else {
+            usersInfoNeeded.push(userNames[i]);
+        }
+    }
+    for (let i = 0; i < usersInfoNeeded.length; i++) {
+        if (i === 0) {
+            url = `${url}?name=${usersInfoNeeded[i]}`;
         }
         else {
-            url = `${url}&name=${userNames[i]}`;
+            url = `${url}&name=${usersInfoNeeded[i]}`;
         }
     }
     try {
-        if (userNames.length > 0) {
-            let response = await cc98Fetch(url);
-            var data0 = await response.json();
-            return data0;
-        } else
-            return [];
-    
+        //合并查询和缓存的
+        let response = await cc98Fetch(url);
+        var data = await response.json();
+        for (let i of data) {
+            let key = `userId_${i.id}`;
+            let key1 = `userName_${i.name}`;
+            setLocalStorage(key, i, 3600);
+            setLocalStorage(key1, i, 3600);
+            finalUsersInfo.push(i);
+        }
+        return finalUsersInfo;
     } catch (e) {
         return [];
     }
 }
 export async function getUsersInfo(userId: any[]) {
-    let url = "/user";
+    let usersInfoNeeded = [];
+    let finalUsersInfo = [];
+    //检查本地是否有缓存
     for (let i = 0; i < userId.length; i++) {
-        if (i == 0) {
-            url = `${url}?id=${userId[i]}`;
+        let thisUserInfo = getLocalStorage(`userId_${userId[i]}`);
+        if (thisUserInfo) {
+            finalUsersInfo.push(thisUserInfo);
+        } else {
+            usersInfoNeeded.push(userId[i]);
+        }
+    }
+
+    let url = "/user";
+    for (let i = 0; i < usersInfoNeeded.length; i++) {
+        if (i === 0) {
+            url = `${url}?id=${usersInfoNeeded[i]}`;
         }
         else {
-            url = `${url}&id=${userId[i]}`;
+            url = `${url}&id=${usersInfoNeeded[i]}`;
         }
     }
     try {
+        //合并查询和缓存的
         let response = await cc98Fetch(url);
-        var data0 = await response.json();
+        var data = await response.json();
+        for (let i of data) {
+            let key = `userId_${i.id}`;
+            let key1 = `userName_${i.name}`;
+            setLocalStorage(key, i, 3600);
+            setLocalStorage(key1, i, 3600);
+            finalUsersInfo.push(i);
+        }
+        return finalUsersInfo;
     } catch (e) {
         return [];
-    }
-    //返回的数据乱序了，先排个序
-    let data: any[] = [];
-    for (let item1 of userId) {
-        for (let item2 of data0) {
-            if (item2.id === item1) {
-                data.push(item2);
-            }
-        }
-    }
-    if (data.length === userId.length) {
-        return data;
-    }
-    else {
-        for (let i in data) {
-            if (data[i].id != userId[i]) {
-                let indexData = {
-                    id: userId[i], name: "ID不存在", portraitUrl: "/static/images/default_avatar_boy.png", birthday: "1993-03-25T00:00:00", fanCount: 0, followCount: 0, gender: 0, lastLogOnTime: "2007-12-26T02:26:00", popularity: 0, prestige: 0, signatureCode: '此ID已不存在，qmd无法显示'
-                };
-                data.splice(parseInt(i), 0, indexData);
-                if (data.length === userId.length) {
-                    return data;
-                }
-            }
-        }
-        if (data.length < userId.length) {
-            for (let i = data.length; i < userId.length; i++) {
-                let indexData = {
-                    id: userId[i], name: "ID不存在", portraitUrl: "/static/images/default_avatar_boy.png", birthday: "1993-03-25T00:00:00", fanCount: 0, followCount: 0, gender: 0, lastLogOnTime: "2007-12-26T02:26:00", popularity: 0, prestige: 0, signatureCode: '此ID已不存在，qmd无法显示'
-                }
-                data.push(indexData);
-                if (data.length === userId.length) {
-                    return data;
-                }
-            }
-        }
-        return data;
     }
 }
