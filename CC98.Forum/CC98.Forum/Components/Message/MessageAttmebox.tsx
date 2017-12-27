@@ -10,13 +10,11 @@ declare let moment: any;
 export class MessageAttmebox extends React.Component<MessageResponseProps> {
 
     render() {
-        console.log("收到的props消息", this.props);
         let boardName = `[url=/list/${this.props.boardId}][color=dodgerblue]${this.props.boardName}[/color][/url]`;
         //有可能出错后返回boardId为0，未知版面
         if (this.props.boardId === 0) {
             boardName = `[color=dodgerblue]${this.props.boardName}[/color]`;
         }
-        console.log("运行到这2.5");
         let a: any = (this.props.floor / 10) + 1;
         let b = parseInt(a);
         let c = this.props.floor + 10 - b * 10;
@@ -25,16 +23,13 @@ export class MessageAttmebox extends React.Component<MessageResponseProps> {
             pageNum = `${b-1}#10`;
         }
         let content;
-        console.log("运行到这3");
         if (this.props.isRead) {
             let userName;
             let title;
             if (this.props.userId > 0) {
-                console.log("条件1");
                 userName = `[url=/user/id/${this.props.userId}][color=gray]${this.props.userName}[/color][/url]`;
             }
             else {
-                console.log("条件2");
                 userName = `[color=gray]有人[/color]`;
             }
             if (this.props.boardId) {
@@ -49,11 +44,9 @@ export class MessageAttmebox extends React.Component<MessageResponseProps> {
             let userName;
             let title;
             if (this.props.userId > 0) {
-                console.log("条件3");
                 userName = `[url=/user/id/${this.props.userId}][color=gray][b]${this.props.userName}[/b][/color][/url]`;
             }
             else {
-                console.log("条件4");
                 userName = `[color=gray][b]有人[/b][/color]`;
             }
             if (this.props.boardId) {

@@ -1759,7 +1759,7 @@ export async function getMessageAttme(from: number, size: number, router) {
             window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
-        console.log("获取到的新@数据", newTopic);
+        //console.log("获取到的新@数据", newTopic);
         //把postId统计存到一个数组里，然后批量查询一下，从而得到每个楼层信息和回复者信息
         let postsId = [];
         for (let item of newTopic) {
@@ -2352,7 +2352,7 @@ export async function refreshUnReadCount() {
     const response = await cc98Fetch(url, { headers });
     let unreadCount = await response.json();
     unreadCount.totalCount = unreadCount.systemCount + unreadCount.atCount + unreadCount.replyCount + unreadCount.messageCount;
-    console.log("未读消息数量", unreadCount);
+    //console.log("未读消息数量", unreadCount);
     if (unreadCount.totalCount > 0) {
         $('#unreadCount-totalCount').removeClass('displaynone');
         $('#unreadCount-totalCount').text(unreadCount.totalCount);
@@ -2550,7 +2550,6 @@ export async function getBasicUsersInfo(userId: number[]) {
         for (let i of data) {
             finalUsersInfo.push(i);
         }
-        console.log("看看查询到的基本信息", finalUsersInfo);
         return finalUsersInfo;
     } catch (e) {
         return [];
@@ -2631,38 +2630,20 @@ export async function getUsersInfo(userId: any[]) {
 
 //批量查询post的基础信息
 export async function getBasicPostsInfo(postId: any[]) {
-    let postsInfoNeeded = [];
-    let finalPostsInfo = [];
     const headers = await formAuthorizeHeader();
-    //检查本地是否有缓存
-    for (let i = 0; i < postId.length; i++) {
-        let thisUserInfo = getLocalStorage(`postId_${postId[i]}`);
-        if (thisUserInfo) {
-            finalPostsInfo.push(thisUserInfo);
-        } else {
-            postsInfoNeeded.push(postId[i]);
-        }
-    }
-
     let url = "http://apitest.niconi.cc/post/basic";
-    for (let i = 0; i < postsInfoNeeded.length; i++) {
+    for (let i = 0; i < postId.length; i++) {
         if (i === 0) {
-            url = `${url}?id=${postsInfoNeeded[i]}`;
+            url = `${url}?id=${postId[i]}`;
         }
         else {
-            url = `${url}&id=${postsInfoNeeded[i]}`;
+            url = `${url}&id=${postId[i]}`;
         }
     }
     try {
-        //合并查询和缓存的
         let response = await fetch(url, { headers });
         var data = await response.json();
-        for (let i of data) {
-            let key = `postId_${i.id}`;
-            setLocalStorage(key, i, 3600);
-            finalPostsInfo.push(i);
-        }
-        return finalPostsInfo;
+        return data;
     } catch (e) {
         return [];
     }
