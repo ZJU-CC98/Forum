@@ -144,7 +144,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
             <DocumentTitle title={`${this.state.topicInfo.title}`} />
             <FindIP data={this.state.IPData}/>
             <div className="row" style={{ width: "100%", justifyContent: 'space-between', alignItems: "center" }}>
-                <Category  topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} />
+                <Category topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} topicId={this.match.params.topicid} />
                 <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} />
             </div>
             {topicInfo}

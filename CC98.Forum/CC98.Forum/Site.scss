@@ -804,9 +804,7 @@ body {
     width:8.5rem;
 }
 .listTitleAndIcon {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+
     align-items: center;
 }
 
@@ -814,6 +812,7 @@ body {
     text-overflow: ellipsis;
     white-space: nowrap;
     align-items: center;
+    overflow:hidden;
 }
 
 a {

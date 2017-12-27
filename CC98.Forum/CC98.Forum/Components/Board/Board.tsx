@@ -4,6 +4,7 @@ import * as State from '../../States/AppState'
 import * as Utility from '../../Utility'
 import { UbbContainer } from '.././UbbContainer';
 import { match } from 'react-router';
+import DocumentTitle from '../DocumentTitle';
 import {
     BrowserRouter as Router,
     Route,
@@ -63,13 +64,14 @@ export class List extends RouteComponent<{}, { page: number, boardId: number, bo
         }
 
         return <div id="listRoot">
-
+            <DocumentTitle title={`${this.state.boardInfo.name} - CC98论坛`} />
             <Category boardId={this.match.params.boardId} boardInfo={this.state.boardInfo} />
             <ListHead key={this.state.page} boardId={this.match.params.boardId} boardInfo={this.state.boardInfo} />
             <ListButtonAndAds boardInfo={this.state.boardInfo} adsUrl={null} />
             <Switch>
                 <Route exact path="/list/:boardid/tags/:tag1Id/:tag2Id/:page?" component={ListTagsContent} />
                 <Route exact path="/list/:boardId/tag/tag1/:tagId/:page?" component={ListTagContent} />
+                <Route exact path="/list/:boardId/tag/tag2/:tagId/:page?" component={ListTagContent} />
                 <Route exact path="/list/:boardId/best/:page?" component={ListBestContent} />
                 <Route exact path="/list/:boardId/save/:page?" component={ListSaveContent} />
                 <Route exact path="/list/:boardId/:page?" component={ListContent} />
@@ -85,9 +87,11 @@ export class Category extends React.Component<{ boardId, boardInfo }, {}>{
     render() {
         const listUrl = `/list/${this.props.boardId}`;
         return <div className="row" style={{ alignItems: "baseline", width: "100% ", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>
-            <a style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} href=" / ">首页</a>
+            <Link style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} to={" / "}>首页</Link>
             <i className="fa fa-chevron-right"></i>
-            <a style={{ color: "grey", fontSize: "1rem", marginLeft: "0.5rem" }} href={listUrl} >{this.props.boardInfo.name}</a>
+            <Link style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} to={" /boardlist "}>版面列表</Link>
+            <i className="fa fa-chevron-right"></i>
+            <Link style={{ color: "grey", fontSize: "1rem", marginLeft: "0.5rem" }} to={listUrl} >{this.props.boardInfo.name}</Link>
         </div>;
     }
 }
@@ -235,24 +239,42 @@ export class ListTagAndPager extends React.Component<{ url: string, boardid: num
         super(props, content);
     }
 
-    generateTagLayer(item) {
-        const url = `/list/${this.props.boardid}`;
-        return <div style={{ maxWidth: "35rem", lineHeight: "3rem", display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginBottom: "0.5rem" }}>
-            <div className="row" style={{ display: "flex", flexWrap: "wrap", maxWidth:"35rem" }}>
-                <div><button className="chooseTag"><Link to={url}>全部</Link></button></div>
-                {item.tags.map(this.generateTagButton.bind(this))}
-            </div>
-        </div >;
-    }
+  
     generateTagButton(item) {
         const url = `/list/${this.props.boardid}/tag/tag1/${item.id}`;
         return <div><Link to={url}><button className="chooseTag">{item.name}<span className="tagNumber"></span></button></Link></div>;
     }
+    generateTag2Button(item) {
+        const url = `/list/${this.props.boardid}/tag/tag2/${item.id}`;
+        return <div><Link to={url}><button className="chooseTag">{item.name}<span className="tagNumber"></span></button></Link></div>;
+    }
     render() {
-
+        let tag1Btn = null;
+        let tag2Btn = null;
+        const url = `/list/${this.props.boardid}`;
+        if (this.props.tag.length >= 1) {
+            tag1Btn = <div style={{ maxWidth: "35rem", lineHeight: "3rem", display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginBottom: "0.5rem" }}>
+                <div className="row" style={{ display: "flex", flexWrap: "wrap", maxWidth: "35rem" }}>
+                    <div><button className="chooseTag"><Link to={url}>全部</Link></button></div>
+                    {this.props.tag[0].tags.map(this.generateTagButton.bind(this))}
+                </div>
+            </div >;
+        }
+        if (this.props.tag.length === 2) {
+            tag2Btn = <div style={{ maxWidth: "35rem", lineHeight: "3rem", display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginBottom: "0.5rem" }}>
+                <div className="row" style={{ display: "flex", flexWrap: "wrap", maxWidth: "35rem" }}>
+                    <div><button className="chooseTag"><Link to={url}>全部</Link></button></div>
+                    {this.props.tag[1].tags.map(this.generateTag2Button.bind(this))}
+                </div>
+            </div >;
+        }
+   
         return <div className="row" style={{ width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", marginTop: '0.9375rem', justifyContent: 'space-between', alignItems: 'flex-end' }}>
             <div >
-                {this.props.tag.map(this.generateTagLayer.bind(this))}
+
+                {tag1Btn}
+
+                {tag2Btn}
             </div>
             <Pager page={this.props.page} url={this.props.url} totalPage={this.props.totalPage} />
         </div>;
@@ -872,7 +894,7 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
                     <div className="listTitleAndPager">
                         <div className="row listTitleAndIcon" >
                             {icon}
-                            <div className="listTitle" id={titleId} style={{ marginLeft: '1rem', color: c, fontWeight: b, fontStyle:i }}> <span>{this.props.title}</span></div>
+                            <div className="listTitle" id={titleId} style={{ marginLeft: '1rem', color: c, fontWeight: b, fontStyle:i }}> {this.props.title}</div>
                         </div>
                         <div style={{ display: "flex", fontSize: "0.75rem", marginLeft: "1rem", width: "auto" }}>
                             {this.state.pager.map(this.generateListPager.bind(this))}</div>
