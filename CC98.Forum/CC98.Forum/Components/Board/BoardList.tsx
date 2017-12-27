@@ -3,7 +3,7 @@ import { Board } from '../../States/AppState';
 import * as Utility from '../../Utility';
 import * as $ from 'jquery';
 import { Link } from 'react-router-dom';
-
+import DocumentTitle from '../DocumentTitle';
 /**
  *根版面（区）的状态
  *需要版面名称，id，主管，以及子版面
@@ -126,6 +126,7 @@ export class RootBoard extends React.Component<{ data: RootBoardState }, { isExp
         let data = this.props.data;
 
         return <div className="anArea" id={data.name}>
+            <DocumentTitle title={`版面列表 - CC98论坛`} />
             <div className="column" style={{ border: '2px solid #e9e9e9' }}>
                 <div className="row boardListHead"　>
 

@@ -27,7 +27,7 @@ export class MessageAttmebox extends React.Component<MessageResponseProps> {
             let userName;
             let title;
             if (this.props.userId > 0) {
-                userName = `[url=/user/name/${this.props.userName}][color=gray]${this.props.userName}[/color][/url]`;
+                userName = `[url=/user/id/${this.props.userId}][color=gray]${this.props.userName}[/color][/url]`;
             }
             else {
                 userName = `[color=gray]有人[/color]`;
@@ -44,7 +44,7 @@ export class MessageAttmebox extends React.Component<MessageResponseProps> {
             let userName;
             let title;
             if (this.props.userId > 0) {
-                userName = `[url=/user/name/${this.props.userName}][color=gray][b]${this.props.userName}[/b][/color][/url]`;
+                userName = `[url=/user/id/${this.props.userId}][color=gray][b]${this.props.userName}[/b][/color][/url]`;
             }
             else {
                 userName = `[color=gray][b]有人[/b][/color]`;

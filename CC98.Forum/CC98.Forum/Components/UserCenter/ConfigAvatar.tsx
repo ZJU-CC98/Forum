@@ -365,12 +365,11 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, States>
 		canvas.toBlob(async (result) => {
 			let file: any = new Blob([result], { type: this.state.fileType });
 			file.lastModifiedDate = Date.now();
-			file.name = '头像';
+            file.name = '头像.' + this.state.fileType.slice(this.state.fileType.indexOf('/') + 1, this.state.fileType.length);
 			try{
 				//上传头像文件到API
 				const url = `/file/portrait`;
 				let myHeaders = new Headers();
-				myHeaders.append('Content-Type', 'application/json');
 				myHeaders.append('Authorization', await Utility.getToken());
 				let formdata = new FormData();
 				formdata.append('files', file, file.name);
@@ -391,7 +390,8 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, States>
 					isLoading: false,
 					isShown: false,
 					divheight: 0,
-					choosingDefault: false
+                    choosingDefault: false,
+                    avatarURL: ''
 				});
 			}
 		}, this.state.fileType, 0.75);
@@ -426,7 +426,8 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, States>
 					isLoading: false,
 					isShown: false,
 					divheight: 0,
-					choosingDefault: false
+                    choosingDefault: false,
+                    avatarURL: ''
 				});
 				let userInfo = Utility.getLocalStorage('userInfo');
 				userInfo.portraitUrl = avatarUrl;
@@ -446,7 +447,8 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, States>
 				isLoading: false,
 				isShown: false,
 				divheight: 0,
-				choosingDefault: false
+                choosingDefault: false,
+                avatarURL: ''
 			});
 		}
 	}
@@ -464,7 +466,7 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, States>
 					<div>
 						<button id="chooseDefaultAvatar" type="button" onClick={() => this.setState({ choosingDefault: true, info: '暂时只有两枚' })}>选择论坛头像</button>
 						<div>
-							<input onChange={this.handleChange} id="uploadAvatar" type="file" accept="image/*" style={style} />
+                            <input onChange={e => { this.handleChange(e); e.target.value = ""; }} id="uploadAvatar" type="file" accept="image/*" style={style} />
 							<label htmlFor="uploadAvatar" onClick={() => this.setState({ choosingDefault: false })}><p>选择本地图片</p></label>
 							<p style={{ color: 'red', margin: '0' }}>{this.state.info}</p>
 							<button type="button" className="config-submit-button" style={this.state.isShown ? {} : style} onClick={this.handleSubmit} disabled={this.state.isLoading}>提交</button>

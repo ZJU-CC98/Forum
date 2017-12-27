@@ -88,15 +88,30 @@ export async function getTopic(topicid: number) {
 }
 export function getThisUserInfo(userId, usersId) {
     for (let i in usersId) {
-        if (usersId[i].id === userId)
+        if (usersId[i].id === userId) {
             return usersId[i];
+        }
     }
+    //查询失败
+    let indexData = {
+
+        id: userId, name: "ID不存在", portraitUrl: "/static/images/default_avatar_boy.png", birthday: "1993-03-25T00:00:00", fanCount: 0, followCount: 0, gender: 0, lastLogOnTime: "2007-12-26T02:26:00", popularity: 0, prestige: 0, signatureCode: '此ID已不存在，qmd无法显示'
+
+    };
+    return indexData;
 }
 export function getThisUserInfobyName(userName, usersName) {
     for (let i in usersName) {
         if (usersName[i].name === userName)
             return usersName[i];
     }
+    //查询失败
+    let indexData = {
+
+        id: null, name: "ID不存在", portraitUrl: "/static/images/default_avatar_boy.png", birthday: "1993-03-25T00:00:00", fanCount: 0, followCount: 0, gender: 0, lastLogOnTime: "2007-12-26T02:26:00", popularity: 0, prestige: 0, signatureCode: '此ID已不存在，qmd无法显示'
+
+    };
+    return indexData;
 }
 export async function getTopicContent(topicid: number, curPage: number) {
     try {
@@ -401,7 +416,7 @@ export async function getAllNewTopic(from: number, router) {
                     item.tag2 = await getTagNamebyId(item.tag2);
                 }
             }
-            //处理匿名与非匿名主题，非匿名主题用户并行获取信息
+            //处理匿名与非匿名主题，非匿名主题用户批量获取信息
             if (item.userId) {
                 //获取所在版面名称
                 item.boardName = await getBoardName(item.boardId);
@@ -415,11 +430,12 @@ export async function getAllNewTopic(from: number, router) {
                 bTopic.push(item);
             }
         }
-        //console.log("这里都会有吗？", aTopic, bTopic);
-        //对于非匿名数据并行获取头像地址
-        let portraitData = await getBasicUsersInfo(aTopicId);
-        //console.log("返回用户基本信息",portraitData);
-        for (let i in aTopic) { aTopic[i].portraitUrl = portraitData[i].portraitUrl; };
+        //对于非匿名数据批量获取头像地址
+        let usersInfo = await getBasicUsersInfo(aTopicId);
+        for (let i in aTopic) {
+            let thisUserInfo = getThisUserInfo(aTopic[i].userId, usersInfo);
+            aTopic[i].portraitUrl = thisUserInfo.portraitUrl;
+        };
         for (let i = 0, j = 0, k = 0; i < newTopic.length; i++) {
             //console.log(`进入循环`);
             if (j === aTopic.length) {
@@ -521,7 +537,7 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
                     item.tag2 = await getTagNamebyId(item.tag2);
                 }
             }
-            //处理匿名与非匿名主题，非匿名主题用户并行获取信息
+            //处理匿名与非匿名主题，非匿名主题批量获取信息
             if (item.userId) {
                 //获取所在版面名称
                 item.boardName = await getBoardName(item.boardId);
@@ -535,9 +551,12 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
                 bTopic.push(item);
             }
         }
-        //对于非匿名数据并行获取头像地址
-        let portraitData = await getBasicUsersInfo(aTopicId);
-        for (let i in aTopic) { aTopic[i].portraitUrl = portraitData[i].portraitUrl; };
+        //对于非匿名数据批量获取头像地址
+        let usersInfo = await getBasicUsersInfo(aTopicId);
+        for (let i in aTopic) {
+            let thisUserInfo = getThisUserInfo(aTopic[i].userId, usersInfo);
+            aTopic[i].portraitUrl = thisUserInfo.portraitUrl;
+        };
         for (var i = 0, j = 0, k = 0; i < newTopic.length; i++) {
             if (j === aTopic.length) {
                 newTopic[i] = bTopic[k];
@@ -705,7 +724,11 @@ export async function getRecentContact(from: number, size: number, router) {
             userId[i] = recentContactId[i].userId;
         }
         //console.log("userid", userId);
-        let recentContact = await getBasicUsersInfo(userId);
+        let usersInfo = await getBasicUsersInfo(userId);
+        let recentContact = [];
+        for (let i in recentContactId) {
+            recentContact.push(getThisUserInfo(recentContactId[i].userId, usersInfo));
+        };
         //console.log("获取到基本信息", recentContact);
         for (let i in recentContactId) {
             recentContact[i].message = [];
@@ -1466,7 +1489,7 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                             item.tag2 = await getTagNamebyId(item.tag2);
                         }
                     }
-                    //处理匿名与非匿名主题，非匿名主题用户并行获取信息
+                    //处理匿名与非匿名主题，非匿名主题用户批量获取信息
                     if (item.userId) {
                         //获取所在版面名称
                         item.boardName = await getBoardName(item.boardId);
@@ -1480,8 +1503,12 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                         bTopic.push(item);
                     }
                 }
-                let portraitData = await getBasicUsersInfo(aTopicId);
-                for (let i in aTopic) { aTopic[i].portraitUrl = portraitData[i].portraitUrl; };
+                //对于非匿名数据批量获取头像地址
+                let usersInfo = await getBasicUsersInfo(aTopicId);
+                for (let i in aTopic) {
+                    let thisUserInfo = getThisUserInfo(aTopic[i].userId, usersInfo);
+                    aTopic[i].portraitUrl = thisUserInfo.portraitUrl;
+                };
                 for (var i = 0, j = 0, k = 0; i < newTopic.length; i++) {
                     if (j === aTopic.length) {
                         newTopic[i] = bTopic[k];
@@ -1635,16 +1662,19 @@ export async function getMessageSystem(from: number, size: number, router) {
             window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
-
+        //把postId统计存到一个数组里，然后批量查询一下，从而得到每个楼层信息和回复者信息
+        let postsId = [];
+        for (let item of newTopic) {
+            if (item.postId) {
+                postsId.push(item.postId);
+            }
+        }
+        let postsInfo = await getBasicPostsInfo(postsId);
+        //补充楼层信息
         for (let i in newTopic) {
             if (newTopic[i].postId) {
-                try {
-                    let response0 = await cc98Fetch(`/post/${newTopic[i].postId}/basic`, { headers: myHeaders });
-                    let response1 = await response0.json();
-                    newTopic[i].floor = response1.floor;
-                } catch(e) {
-                    newTopic[i].floor = 0;
-                }
+                let postInfo = getThisPostInfo(newTopic[i].postId, postsInfo);
+                newTopic[i].floor = postInfo.floor;
             }
             else {
                 newTopic[i].floor = 0;
@@ -1673,6 +1703,14 @@ export async function getMessageResponse(from: number, size: number, router) {
             window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
+        //把postId统计存到一个数组里，然后批量查询一下，从而得到每个楼层信息和回复者信息
+        let postsId = [];
+        for (let item of newTopic) {
+            if (item.postId) {
+                postsId.push(item.postId);
+            }
+        }
+        let postsInfo = await getBasicPostsInfo(postsId);
         //补充帖子标题，版面id和版面名称信息
         if (newTopic) {
             for (let i in newTopic) {
@@ -1689,17 +1727,10 @@ export async function getMessageResponse(from: number, size: number, router) {
                 }
                 //获取楼层信息和回复者信息
                 if (newTopic[i].postId) {
-                    try {
-                        let response2 = await cc98Fetch(`/post/${newTopic[i].postId}/basic`, { headers: myHeaders });
-                        let response3 = await response2.json();
-                        newTopic[i].floor = response3.floor;
-                        newTopic[i].userId = response3.userId;
-                        newTopic[i].userName = response3.userName;
-                    } catch(e) {
-                        newTopic[i].floor = 0;
-                        newTopic[i].userId = -1;
-                        newTopic[i].userName = "有人";
-                    }
+                    let postInfo = getThisPostInfo(newTopic[i].postId, postsInfo);
+                    newTopic[i].floor = postInfo.floor;
+                    newTopic[i].userId = postInfo.userId;
+                    newTopic[i].userName = postInfo.userName;
                 }
                 result.push(newTopic[i]);
             }
@@ -1728,6 +1759,15 @@ export async function getMessageAttme(from: number, size: number, router) {
             window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
+        //console.log("获取到的新@数据", newTopic);
+        //把postId统计存到一个数组里，然后批量查询一下，从而得到每个楼层信息和回复者信息
+        let postsId = [];
+        for (let item of newTopic) {
+            if (item.postId) {
+                postsId.push(item.postId);
+            }
+        }
+        let postsInfo = await getBasicPostsInfo(postsId);
         //补充帖子标题，版面id和版面名称信息
         if (newTopic) {
             for (let i in newTopic) {
@@ -1744,17 +1784,10 @@ export async function getMessageAttme(from: number, size: number, router) {
                 }
                 //获取楼层信息和回复者信息
                 if (newTopic[i].postId) {
-                    try {
-                        let response2 = await cc98Fetch(`/post/${newTopic[i].postId}/basic`, { headers: myHeaders });
-                        let response3 = await response2.json();
-                        newTopic[i].floor = response3.floor;
-                        newTopic[i].userId = response3.userId;
-                        newTopic[i].userName = response3.userName;
-                    } catch (e) {
-                        newTopic[i].floor = 0;
-                        newTopic[i].userId = -1;
-                        newTopic[i].userName = "有人";
-                    }
+                    let postInfo = getThisPostInfo(newTopic[i].postId, postsInfo);
+                    newTopic[i].floor = postInfo.floor;
+                    newTopic[i].userId = postInfo.userId;
+                    newTopic[i].userName = postInfo.userName;
                 }
                 result.push(newTopic[i]);
             }
@@ -1946,7 +1979,6 @@ export async function getTotalPage(type: number) {
     let response = await cc98Fetch("/me/all-message-count", { headers });
 
     let totalPage = await response.json();
-
     switch (type) {
 
         case 1:
@@ -2320,6 +2352,7 @@ export async function refreshUnReadCount() {
     const response = await cc98Fetch(url, { headers });
     let unreadCount = await response.json();
     unreadCount.totalCount = unreadCount.systemCount + unreadCount.atCount + unreadCount.replyCount + unreadCount.messageCount;
+    //console.log("未读消息数量", unreadCount);
     if (unreadCount.totalCount > 0) {
         $('#unreadCount-totalCount').removeClass('displaynone');
         $('#unreadCount-totalCount').text(unreadCount.totalCount);
@@ -2489,116 +2522,143 @@ export async function moveTopic(topicId, boardId, reason) {
 }
 
 export async function getBasicUsersInfo(userId: number[]) {
-    let basicUrl = "/user/basic"
-    for (let i in userId) {
-        if (i === "0") {
-            basicUrl = `${basicUrl}?id=${userId[i]}`;
+    let usersInfoNeeded = [];
+    let finalUsersInfo = [];
+    //检查本地是否有缓存
+    for (let i = 0; i < userId.length; i++) {
+        let thisUserInfo = getLocalStorage(`userId_${userId[i]}`);
+        if (thisUserInfo) {
+            finalUsersInfo.push(thisUserInfo);
+        } else {
+            usersInfoNeeded.push(userId[i]);
+        }
+    }
+
+    let url = "/user/basic";
+    for (let i = 0; i < usersInfoNeeded.length; i++) {
+        if (i === 0) {
+            url = `${url}?id=${usersInfoNeeded[i]}`;
         }
         else {
-            basicUrl = `${basicUrl}&id=${userId[i]}`;
+            url = `${url}&id=${usersInfoNeeded[i]}`;
         }
     }
     try {
-        let response = await cc98Fetch(basicUrl);
+        //合并查询和缓存的
+        let response = await cc98Fetch(url);
         var data = await response.json();
-    }
-    catch (e) {
+        for (let i of data) {
+            finalUsersInfo.push(i);
+        }
+        return finalUsersInfo;
+    } catch (e) {
         return [];
-    }
-    if (data.length === userId.length) {
-        return data;
-    }
-    else {
-        for (let i in data) {
-            if (data[i].id != userId[i]) {
-                let indexData = { id: userId[i], name: "不存在", portraitUrl: "/static/images/default_avatar_boy.png" };
-                data.splice(i, 0, indexData);
-                if (data.length === userId.length) {
-                    return data;
-                }
-            }
-        }
-        if (data.length < userId.length) {
-            for (let i = data.length; i < userId.length; i++) {
-                let indexData = { id: userId[i], name: "不存在", portraitUrl: "/static/images/default_avatar_boy.png" };
-                data.push(indexData);
-                if (data.length === userId.length) {
-                    return data;
-                }
-            }
-        }
-        return data;
     }
 }
 export async function getUsersInfobyNames(userNames: any[]) {
     let url = "/user/basic/name";
-    for (let i = 0; i < userNames.length; i++) {
-        if (i == 0) {
-            url = `${url}?name=${userNames[i]}`;
+    let usersInfoNeeded = [];
+    let finalUsersInfo = [];
+    //检查本地是否有缓存
+    for (let i in userNames) {
+        let thisUserInfo = getLocalStorage(`userName_${userNames[i]}`);
+        if (thisUserInfo) {
+            finalUsersInfo.push(thisUserInfo);
+        } else {
+            usersInfoNeeded.push(userNames[i]);
+        }
+    }
+    for (let i = 0; i < usersInfoNeeded.length; i++) {
+        if (i === 0) {
+            url = `${url}?name=${usersInfoNeeded[i]}`;
         }
         else {
-            url = `${url}&name=${userNames[i]}`;
+            url = `${url}&name=${usersInfoNeeded[i]}`;
         }
     }
     try {
+        //合并查询和缓存的
         let response = await cc98Fetch(url);
-        var data0 = await response.json();
-        return data0;
+        var data = await response.json();
+        for (let i of data) {
+            finalUsersInfo.push(i);
+        }
+        return finalUsersInfo;
     } catch (e) {
         return [];
     }
 }
+
 export async function getUsersInfo(userId: any[]) {
-    let url = "/user";
+    let usersInfoNeeded = [];
+    let finalUsersInfo = [];
+    //检查本地是否有缓存
     for (let i = 0; i < userId.length; i++) {
-        if (i == 0) {
-            url = `${url}?id=${userId[i]}`;
+        let thisUserInfo = getLocalStorage(`userId_${userId[i]}`);
+        if (thisUserInfo) {
+            finalUsersInfo.push(thisUserInfo);
+        } else {
+            usersInfoNeeded.push(userId[i]);
+        }
+    }
+
+    let url = "/user";
+    for (let i = 0; i < usersInfoNeeded.length; i++) {
+        if (i === 0) {
+            url = `${url}?id=${usersInfoNeeded[i]}`;
         }
         else {
-            url = `${url}&id=${userId[i]}`;
+            url = `${url}&id=${usersInfoNeeded[i]}`;
         }
     }
     try {
+        //合并查询和缓存的
         let response = await cc98Fetch(url);
-        var data0 = await response.json();
+        var data = await response.json();
+        for (let i of data) {
+            let key = `userId_${i.id}`;
+            let key1 = `userName_${i.name}`;
+            setLocalStorage(key, i, 3600);
+            setLocalStorage(key1, i, 3600);
+            finalUsersInfo.push(i);
+        }
+        return finalUsersInfo;
     } catch (e) {
         return [];
     }
-    //返回的数据乱序了，先排个序
-    let data: any[] = [];
-    for (let item1 of userId) {
-        for (let item2 of data0) {
-            if (item2.id === item1) {
-                data.push(item2);
-            }
+}
+
+//批量查询post的基础信息
+export async function getBasicPostsInfo(postId: any[]) {
+    const headers = await formAuthorizeHeader();
+    let url = "http://apitest.niconi.cc/post/basic";
+    for (let i = 0; i < postId.length; i++) {
+        if (i === 0) {
+            url = `${url}?id=${postId[i]}`;
+        }
+        else {
+            url = `${url}&id=${postId[i]}`;
         }
     }
-    if (data.length === userId.length) {
+    try {
+        let response = await fetch(url, { headers });
+        var data = await response.json();
         return data;
+    } catch (e) {
+        return [];
     }
-    else {
-        for (let i in data) {
-            if (data[i].id != userId[i]) {
-                let indexData = {
-                    id: userId[i], name: "ID不存在", portraitUrl: "/static/images/default_avatar_boy.png", birthday: "1993-03-25T00:00:00", fanCount: 0, followCount: 0, gender: 0, lastLogOnTime: "2007-12-26T02:26:00", popularity: 0, prestige: 0, signatureCode: '此ID已不存在，qmd无法显示'
-                };
-                data.splice(parseInt(i), 0, indexData);
-                if (data.length === userId.length) {
-                    return data;
-                }
-            }
+}
+
+//在postsId中查询postId，查到了就返回对应的信息，没有就设置一个默认的,post信息包括楼层信息和回复者信息
+export function getThisPostInfo(postId, postsId) {
+    for (let i in postsId) {
+        if (postsId[i].id === postId) {
+            return postsId[i];
         }
-        if (data.length < userId.length) {
-            for (let i = data.length; i < userId.length; i++) {
-                let indexData = {
-                    id: userId[i], name: "ID不存在", portraitUrl: "/static/images/default_avatar_boy.png", birthday: "1993-03-25T00:00:00", fanCount: 0, followCount: 0, gender: 0, lastLogOnTime: "2007-12-26T02:26:00", popularity: 0, prestige: 0, signatureCode: '此ID已不存在，qmd无法显示'
-                }
-                data.push(indexData);
-                if (data.length === userId.length) {
-                    return data;
-                }
-            }
-        }
-        return data;
     }
+    //查询失败
+    let indexData = {
+        id: postId, floor: 1, userId: -1, userName: "有人" 
+    };
+    return indexData;
 }

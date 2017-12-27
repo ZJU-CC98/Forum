@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 interface Props {
     topicInfo;
     boardInfo;
+    topicId;
 }
 export class Category extends React.Component<Props, { boardId, topicId, boardName, title }>{
     constructor(props) {
@@ -15,7 +16,7 @@ export class Category extends React.Component<Props, { boardId, topicId, boardNa
         });
     }
     componentDidMount() {
-        this.setState({ boardId: this.props.topicInfo.boardId, topicId: this.props.topicInfo.id, boardName: this.props.boardInfo.name, title: this.props.topicInfo.title });
+        this.setState({ boardId: this.props.topicInfo.boardId, topicId: this.props.topicId, boardName: this.props.boardInfo.name, title: this.props.topicInfo.title });
     }
     componentWillReceiveProps(newProps) {
         this.setState({ boardId: newProps.topicInfo.boardId, topicId: newProps.topicId, boardName: newProps.boardInfo.name, title: newProps.topicInfo.title });

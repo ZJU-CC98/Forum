@@ -43,7 +43,7 @@ export default class extends React.Component<{id: number}, UserCenterExactActivi
                 if (res.status === 200) {
                     let data: itemType[] = await res.json();
 
-                    if (data.length < 10) {
+                    if (data.length < 11) {
                         window.removeEventListener('scroll', this.scrollHandler);
                     } else {
                         data.pop();
@@ -80,7 +80,7 @@ export default class extends React.Component<{id: number}, UserCenterExactActivi
             if (res.status === 200) {
                 let data = await res.json();
                 let posts: UserRecentPost[] = [],
-                    i = data.length;
+                    i = data.length === 11 ? 10 : data.length;
 
                 while (i--) {
                     let post = await this.item2post(data[i]);
@@ -90,7 +90,7 @@ export default class extends React.Component<{id: number}, UserCenterExactActivi
                 this.setState({
                     userRecentPosts: posts
                 });
-                if (data.length === 10) {
+                if (data.length === 11) {
                     window.addEventListener('scroll', this.scrollHandler);
                 }
             } else {

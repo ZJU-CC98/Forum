@@ -62,7 +62,7 @@ body {
     justify-content: center;
     margin-left: 6.25rem;
     margin-right: 6.25rem;
-    margin-top: 2.5rem;
+    margin-top: 0.5rem;
     min-width: 71.2px;
 }
 
@@ -804,7 +804,7 @@ body {
     display: flex;
     margin-left: 0.5rem;
     align-items: flex-end;
-    width: 42rem;
+    width: 40rem;
     padding-left: 1rem;
 }
 
@@ -813,9 +813,7 @@ body {
 }
 
 .listTitleAndIcon {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow:hidden;
     align-items: center;
 }
 
@@ -823,6 +821,7 @@ body {
     text-overflow: ellipsis;
     white-space: nowrap;
     align-items: center;
+    overflow:hidden;
 }
 
 a {
