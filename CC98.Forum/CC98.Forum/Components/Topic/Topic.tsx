@@ -141,7 +141,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         if (Utility.getLocalStorage("userInfo"))
             sendTopic = <SendTopic onChange={this.handleChange}   boardInfo={this.state.boardInfo} content={this.state.quote} userId={this.state.topicInfo.userId} topicInfo={this.state.topicInfo} />;
         let topicHtml = <div className="center" >
-            <DocumentTitle title={`${this.state.topicInfo.title}`} />
+            <DocumentTitle title={`${this.state.topicInfo.title||"帖子"} - CC98论坛`} />
             <FindIP data={this.state.IPData}/>
             <div className="row" style={{ width: "100%", justifyContent: 'space-between', alignItems: "center" }}>
                 <Category topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} topicId={this.match.params.topicid} />
