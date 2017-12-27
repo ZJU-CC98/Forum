@@ -505,40 +505,7 @@
     z-index: 2;
 }
 
-.message-counter, .message-counterLi, .message-counterNav {
-    position: absolute;
-    min-width: 10px;
-    height: 12px;
-    line-height: 12px;
-    margin-top: -11px;
-    padding: 1px 5px;
-    font-size: 10px;
-    font-weight: normal;
-    color: white;
-    text-align: center;
-    background: red;
-    border-radius: 8px;
-}
 
-.message-counter {
-    top: -2px;
-    left: 20px;
-}
-
-.message-counterLi {
-    top: 19px;
-    left: 69px;
-}
-
-.message-counterNav {
-    top: 32px;
-    left: 110px;
-}
-
-.messageTopBar {
-    position: relative;
-    color: #fff;
-}
 
 .newTopBar {
     display: flex;
@@ -589,7 +556,12 @@
     }
 }
 
-.topBar {
+.topBarUserImg {
+    img {
+        height: 2rem;
+        width: 2rem;
+        border-radius: 50%;
+    }
 }
 
 //以下是头部中顶部条下拉菜单的样式~
@@ -817,4 +789,40 @@
 
 #search .searchBoxSub li.hover {
     background: rgb(233,233,233);
+}
+
+//似乎是明一gg写的消息的样式
+.message-counter, .message-counterLi, .message-counterNav {
+    position: absolute;
+    min-width: 10px;
+    height: 12px;
+    line-height: 12px;
+    margin-top: -11px;
+    padding: 1px 5px;
+    font-size: 10px;
+    font-weight: normal;
+    color: white;
+    text-align: center;
+    background: red;
+    border-radius: 8px;
+}
+
+.message-counter {
+    top: -2px;
+    left: 20px;
+}
+
+.message-counterLi {
+    top: 19px;
+    left: 69px;
+}
+
+.message-counterNav {
+    top: 32px;
+    left: 110px;
+}
+
+.messageTopBar {
+    position: relative;
+    color: #fff;
 }

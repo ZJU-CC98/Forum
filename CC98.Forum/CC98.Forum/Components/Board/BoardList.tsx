@@ -108,7 +108,19 @@ export class RootBoard extends React.Component<{ data: RootBoardState }, { isExp
         }));
     }
 
+    convertMasters(name: string, index: number, masters: string[]) {
+        let length = masters.length;
+        let masterUrl = `/user/name/${name}`;
+        if (index === length - 1) {
+            return <Link to={masterUrl}>{name}</Link>
+        }
+        else {
+            return <div style={{ marginRight: "1rem" }}><Link to={masterUrl}>{name}</Link></div>
+        }
+    }
+
     render() {
+
         let display = this.state.isExpanded ? "flex" : "none";    //根据 isExpanded 状态定义样式
         let buttonContent = this.state.isExpanded ? "收起" : "展开";      //根据 isExpanded 状态定义按钮内容
         let data = this.props.data;
@@ -120,7 +132,7 @@ export class RootBoard extends React.Component<{ data: RootBoardState }, { isExp
 
                     <div className="row" style={{ marginRight: "1rem", alignItems: "center" }}>
                         <div className="areaName">{data.name}</div>
-                        <div className="areaName">主管：{data.masters}</div>
+                        <div className="areaName">主管：{data.masters.map(this.convertMasters)}</div>
                     </div>
                     <div onClick={this.toggleIsExpanded} className="expendBoardList"> {buttonContent}</div>
                 </div>

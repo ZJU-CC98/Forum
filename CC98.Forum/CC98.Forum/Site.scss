@@ -15,6 +15,7 @@ $color-post: rgb(252,252,252);
 $color-red: rgb(255,60,60);
 $color-black: rgb(32,32,32);
 $color-bg: #79b8ca;
+
 body {
     margin: 0;
     padding: 0;
@@ -23,7 +24,7 @@ body {
 #root {
     font-size: 16px;
     width: 100%;
-    font-family:微软雅黑;
+    font-family: 微软雅黑;
 }
 
 .postRoot {
@@ -198,7 +199,7 @@ body {
     align-items: center;
     height: 4rem;
     font-size: 1.25rem;
-    padding-right:1rem;
+    padding-right: 1rem;
 }
 
 .titleProp {
@@ -273,7 +274,7 @@ body {
 #viewtimes {
     display: flex;
     flex-direction: row;
-    margin-left:1rem;
+    margin-left: 1rem;
 }
 
 
@@ -325,7 +326,7 @@ body {
     width: 52rem;
     word-wrap: break-word;
     color: rgb(80,80,80);
-    font-family:微软雅黑;
+    font-family: 微软雅黑;
 }
 
 .replySubstance {
@@ -340,7 +341,7 @@ body {
     width: 2.5rem;
     height: 1rem;
     cursor: pointer;
-    font-size:0.6rem;
+    font-size: 0.6rem;
 }
 
 
@@ -374,16 +375,18 @@ body {
 
 .upup {
     cursor: pointer;
-    display:flex;
+    display: flex;
 }
 
 .downdown {
     cursor: pointer;
-    display:flex;
+    display: flex;
 }
-.commentProp{
-    margin-left:0.2rem;
+
+.commentProp {
+    margin-left: 0.2rem;
 }
+
 .comment {
     display: flex;
     flex-direction: row;
@@ -447,7 +450,7 @@ body {
     font-size: 0.75rem;
     border-top: #EAEAEA dashed 2px;
     box-sizing: border-box;
-    align-items:center;
+    align-items: center;
 }
 
 .userImage img {
@@ -537,13 +540,12 @@ body {
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        right:-1rem;
+        right: -1rem;
         background-color: $color-bg;
         text-align: center;
         line-height: 40px;
         position: relative;
         top: 70px;
-       
         color: #ffffff;
         font-family: '微软雅黑';
         font-size: 16px;
@@ -565,6 +567,7 @@ body {
     padding-bottom: 1rem;
     font-size: 0.75rem;
 }
+
 .userMessageAnonymous {
     color: #fff;
     border: thin solid #fff;
@@ -574,30 +577,34 @@ body {
     margin-left: 1rem;
     text-align: center;
 }
-.userMessage-left{
-    padding-top:1.5rem;
-    width:8.3rem;
-}
-.userMessage-right{
-    width:7.2rem;
-    padding-right:0.5rem;
 
+.userMessage-left {
+    padding-top: 1.5rem;
+    width: 8.3rem;
 }
-.userMessage-userName{
-    font-size:1rem;
-    font-weight:bold;
-    font-family:微软雅黑;
-    margin-left:1.5rem;
+
+.userMessage-right {
+    width: 7.2rem;
+    padding-right: 0.5rem;
 }
+
+.userMessage-userName {
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: 微软雅黑;
+    margin-left: 1.5rem;
+}
+
 .userMessageOpt {
     white-space: nowrap;
     line-height: 1.25rem;
     font-family: 微软雅黑;
 }
-.userMessageBtn{
-    margin-top:1.5rem;
 
+.userMessageBtn {
+    margin-top: 1.5rem;
 }
+
 .rpyClr {
     font-size: 1.25rem;
     width: 8rem;
@@ -708,8 +715,8 @@ body {
     display: flex;
     flex-direction: row;
     align-items: flex-end;
-    font-family:"微软雅黑";
-    margin-left:1rem;
+    font-family: "微软雅黑";
+    margin-left: 1rem;
 }
 
 .chooseTag {
@@ -769,7 +776,7 @@ body {
     background-color: #ebf5f8;
 }
 
-.followTopic{
+.followTopic {
     width: 3rem;
     margin-left: 1rem;
     border: #8dc9db solid thin;
@@ -800,9 +807,11 @@ body {
     width: 42rem;
     padding-left: 1rem;
 }
-.topicIcon{
-    width:8.5rem;
+
+.topicIcon {
+    width: 8.5rem;
 }
+
 .listTitleAndIcon {
 
     align-items: center;
@@ -969,8 +978,8 @@ a {
     color: #79b8ca;
     background-color: #fff;
     border: 1px solid #ddd;
-    font-family:微软雅黑;
-    margin-left:0.3rem;
+    font-family: 微软雅黑;
+    margin-left: 0.3rem;
 
     &:hover {
         color: #fff;
@@ -988,7 +997,7 @@ a {
 .page-goto {
     display: flex;
 
-     input {
+    input {
         width: 55px;
         height: 24px;
         margin-left: 5px;
@@ -997,14 +1006,14 @@ a {
         border: 1px solid #ddd;
     }
 
-     a {
+    a {
         display: inline-block;
         width: 48px;
         height: 26px;
         line-height: 26px;
         text-align: center;
         color: #fff;
-        background-color: #79b8ca; 
+        background-color: #79b8ca;
         border: 1px solid transparent;
 
         &:hover {
@@ -1069,13 +1078,21 @@ a {
 }
 
 .areaName {
+    display: flex;
+    flex-direction: row;
     font-size: 1rem;
     font-family: 微软雅黑;
     color: #fff;
     margin-left: 1.1rem;
-}
-.expendBoardList{
 
+    a {
+        font-size: 1rem;
+        font-family: 微软雅黑;
+        color: #fff;
+    }
+}
+
+.expendBoardList {
     width: 2.5rem;
     margin-top: 0rem;
     font-size: 0.75rem;
@@ -1085,9 +1102,10 @@ a {
     text-align: center;
     height: 1.25rem;
     line-height: 1.25rem;
-    cursor:pointer;
-    margin-right:2rem;
+    cursor: pointer;
+    margin-right: 2rem;
 }
+
 .areaContent {
     display: flex;
     flex-direction: row;
@@ -1134,8 +1152,8 @@ a {
     font-family: 微软雅黑;
     color: rgb(80,80,80);
     margin-top: 8px;
-    display:flex;
-    flex-direction:column;
+    display: flex;
+    flex-direction: column;
 }
 
 /*****************************************以下为我的消息的样式*********************************/
@@ -1733,6 +1751,7 @@ a {
                 font-size: 14px;
                 line-height: 24px;
                 flex-shrink: 0;
+
                 a:hover {
                     text-decoration: underline;
                 }
@@ -1806,6 +1825,7 @@ a {
         margin-right: 1rem;
         margin-top: 1rem;
         flex-shrink: 0;
+
         &:hover {
             background-color: rgb(121,184,202);
             color: rgb(255,255,255);
@@ -2723,44 +2743,44 @@ a {
     background-color: #FFFACD;
 }
 
-    .postManagement {
-        display: flex;
-        bottom:1rem;
-        flex-direction: column;
-        justify-content: center;
-        margin-left: 30rem;
-        position: absolute;
-        z-index: 1000;
-        width: 30rem;
-        height: 23rem;
-        border: 1px solid #d5d5d5;
-        background: #fff;
-        box-shadow: 0px 0px 3px rgba(0,0,0,0.25);
-        -moz-box-shadow: 0 0 3px rgba(0,0,0,.25);
-        -webkit-box-shadow: 0 0 3px rgba(0,0,0,.25);
-        border-radius: .5rem;
-        -moz-border-radius: .5rem;
-        -webkit-border-radius: .5rem;
-        background-color: $color-bg;
-    }
+.postManagement {
+    display: flex;
+    bottom: 1rem;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 30rem;
+    position: absolute;
+    z-index: 1000;
+    width: 30rem;
+    height: 23rem;
+    border: 1px solid #d5d5d5;
+    background: #fff;
+    box-shadow: 0px 0px 3px rgba(0,0,0,0.25);
+    -moz-box-shadow: 0 0 3px rgba(0,0,0,.25);
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,.25);
+    border-radius: .5rem;
+    -moz-border-radius: .5rem;
+    -webkit-border-radius: .5rem;
+    background-color: $color-bg;
+}
 
-    .judgeManagement {
-        margin-left: 15rem;
-        position: absolute;
-        bottom:1rem;
-        z-index: 1000;
-        width: 30rem;
-        height: 20rem;
-        border: 1px solid #d5d5d5;
-        background: #fff;
-        box-shadow: 0px 0px 3px rgba(0,0,0,0.25);
-        -moz-box-shadow: 0 0 3px rgba(0,0,0,.25);
-        -webkit-box-shadow: 0 0 3px rgba(0,0,0,.25);
-        border-radius: .5rem;
-        -moz-border-radius: .5rem;
-        -webkit-border-radius: .5rem;
-        background-color: $color-bg;
-    }
+.judgeManagement {
+    margin-left: 15rem;
+    position: absolute;
+    bottom: 1rem;
+    z-index: 1000;
+    width: 30rem;
+    height: 20rem;
+    border: 1px solid #d5d5d5;
+    background: #fff;
+    box-shadow: 0px 0px 3px rgba(0,0,0,0.25);
+    -moz-box-shadow: 0 0 3px rgba(0,0,0,.25);
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,.25);
+    border-radius: .5rem;
+    -moz-border-radius: .5rem;
+    -webkit-border-radius: .5rem;
+    background-color: $color-bg;
+}
 
 .manageUI {
     display: flex;
@@ -2780,23 +2800,23 @@ a {
     height: 3rem;
 }
 
-    .judgeName {
-        font-size: 1.25rem;
-        color:#fff;
-        border:#fff 2px solid;
-        border-radius:0.5rem;
-        line-height:2rem;
-        width:4rem;
-        height:2rem;
-        text-align:center;
-        justify-content:center;
-    }
+.judgeName {
+    font-size: 1.25rem;
+    color: #fff;
+    border: #fff 2px solid;
+    border-radius: 0.5rem;
+    line-height: 2rem;
+    width: 4rem;
+    height: 2rem;
+    text-align: center;
+    justify-content: center;
+}
 
-    .judgeOption {
-        display: flex;
-        align-content: center;
-        color:#fff;
-    }
+.judgeOption {
+    display: flex;
+    align-content: center;
+    color: #fff;
+}
 
 .judgeOptions {
     width: 100%;
@@ -2823,15 +2843,15 @@ a {
     cursor: pointer;
 }
 
-    .confirmManagement {
-        margin-top: 1rem;
-        width: 5rem;
-        height: 2rem;
-        background-color: #fff;
-        border: gray solid thin;
-        border-radius: 0.3rem;
-        cursor: pointer;
-    }
+.confirmManagement {
+    margin-top: 1rem;
+    width: 5rem;
+    height: 2rem;
+    background-color: #fff;
+    border: gray solid thin;
+    border-radius: 0.3rem;
+    cursor: pointer;
+}
 
 .awardPage {
     width: 5rem;
@@ -2846,7 +2866,7 @@ a {
 .awardInfo {
     margin-left: 2rem;
     margin-right: 2rem;
-    margin-top:2rem;
+    margin-top: 2rem;
     width: 35rem;
 }
 
@@ -2855,14 +2875,14 @@ a {
     margin-top: 0.5rem;
 }
 
-    .manageOperation {
-        justify-content: flex-start;
-        width: 100%;
-        
-    }
-    .manageOperation input{
-        border-radius:1rem;
-    }
+.manageOperation {
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.manageOperation input {
+    border-radius: 1rem;
+}
 
 .manageOperation input[type="radio"], .judgeOption input[type="radio"] {
     -webkit-appearance: none;
@@ -2890,12 +2910,11 @@ a {
     margin-left: 3rem;
 }
 
-    .manageObject {
-
-        display:flex;
-        justify-content:center;
-        color:#fff;
-    }
+.manageObject {
+    display: flex;
+    justify-content: center;
+    color: #fff;
+}
 
 .followBoard {
     width: 5rem;
@@ -2963,7 +2982,6 @@ a {
     display: flex;
     background-color: rgb(106,113,119);
     align-items: center;
-
 }
 
 .topicInfo-boardImage {
@@ -2976,12 +2994,12 @@ a {
     display: flex;
     flex-direction: column;
     margin-left: 1rem;
-    color:#6b7178;
-    height:3rem;
-    align-self:center;
-    border-left:#6b7178 solid 2px;
-    width:7rem;
-    align-items:center;
+    color: #6b7178;
+    height: 3rem;
+    align-self: center;
+    border-left: #6b7178 solid 2px;
+    width: 7rem;
+    align-items: center;
 }
 
 .topicInfo-title {
@@ -3000,7 +3018,7 @@ a {
 
 .boardMessage {
     width: 15rem;
-    min-height:6rem;
+    min-height: 6rem;
     display: flex;
     flex-direction: column;
     color: #fff;
@@ -3034,12 +3052,14 @@ a {
     line-height: 1.25rem;
     cursor: pointer;
 }
-.topicManageBTN{
-    border:none;
-    width:5rem;
-    height:2rem;
-    cursor:pointer;
+
+.topicManageBTN {
+    border: none;
+    width: 5rem;
+    height: 2rem;
+    cursor: pointer;
 }
+
 .boardDescription {
     display: flex;
     flex-direction: column;
@@ -3071,11 +3091,12 @@ a {
     font-family: 微软雅黑;
 }
 
-    .bigPaperTitle {
-        font-size: 1.25rem;
-        color: #fb6165;
-        margin-bottom: 2rem;
-    }
+.bigPaperTitle {
+    font-size: 1.25rem;
+    color: #fb6165;
+    margin-bottom: 2rem;
+}
+
 .createTopicTitle .box {
     display: flex;
     flex-direction: row;
@@ -3232,20 +3253,21 @@ a {
 .tagBoxSub1 {
     background: rgb(233,233,233);
 }
-.findIP{
-    width:70rem;
-    max-height:80rem;
-    display:none;
-    flex-direction:column;
-    z-index:2000;
-    position:absolute;
-    overflow-y:auto;
-    
+
+.findIP {
+    width: 70rem;
+    max-height: 80rem;
+    display: none;
+    flex-direction: column;
+    z-index: 2000;
+    position: absolute;
+    overflow-y: auto;
 }
-.IPContent{
-    max-height:10rem;
-    width:65rem;
-    overflow-y:auto;
+
+.IPContent {
+    max-height: 10rem;
+    width: 65rem;
+    overflow-y: auto;
 }
 
 /***********************消息设置的样式*****************************/
@@ -3284,9 +3306,9 @@ a {
     }
 }
 
-.boardListHead{
-    height:3rem;
-    align-items:center;
-    background-color:#8dc9db;
-    justify-content:space-between;
+.boardListHead {
+    height: 3rem;
+    align-items: center;
+    background-color: #8dc9db;
+    justify-content: space-between;
 }
