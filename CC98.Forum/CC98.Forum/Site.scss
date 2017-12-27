@@ -804,7 +804,7 @@ body {
     display: flex;
     margin-left: 0.5rem;
     align-items: flex-end;
-    width: 42rem;
+    width: 40rem;
     padding-left: 1rem;
 }
 
@@ -813,7 +813,7 @@ body {
 }
 
 .listTitleAndIcon {
-
+    overflow:hidden;
     align-items: center;
 }
 
