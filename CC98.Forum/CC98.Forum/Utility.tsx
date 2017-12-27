@@ -2541,9 +2541,13 @@ export async function getUsersInfobyNames(userNames: any[]) {
         }
     }
     try {
-        let response = await cc98Fetch(url);
-        var data0 = await response.json();
-        return data0;
+        if (userNames.length > 0) {
+            let response = await cc98Fetch(url);
+            var data0 = await response.json();
+            return data0;
+        } else
+            return [];
+    
     } catch (e) {
         return [];
     }

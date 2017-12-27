@@ -29,7 +29,7 @@ export class Award extends React.Component<Props, {info,shortInfo,count,showAll 
         for (let i in award) {
             usersName[i] = award[i].operatorName;
         }
-        if (award.length>0)
+       if (award.length>0)
         usersInfo = await Utility.getUsersInfobyNames(usersName);
 
         for (let i in award) {
