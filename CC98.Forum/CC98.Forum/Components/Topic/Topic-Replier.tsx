@@ -117,11 +117,13 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
             switch (displayTitleId) {
                 case 82: style = data.吉祥物.style; imageUrl = data.吉祥物.imageUrl; break;
                 case 18: imageUrl = data.版主.imageUrl; break;
+                case 22: imageUrl = data.版主.imageUrl; break;
                 case 85: imageUrl = data.编辑部.imageUrl; break;
                 case 29: imageUrl = data.编辑部.imageUrl; break;
                 case 37: imageUrl = data.技术组.imageUrl; break;
                 case 23: imageUrl = data.技术组.imageUrl; break;
                 case 28: imageUrl = data.贵宾.imageUrl; break;
+                case 16: imageUrl = data.贵宾.imageUrl; break;
                 case 84: imageUrl = data.策划部.imageUrl; break;
                 case 34: imageUrl = data.策划部.imageUrl; break;
                 case 96: imageUrl = data.影音部.imageUrl; break;
@@ -190,7 +192,7 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
 
         if (this.props.userInfo.privilege == "匿名" || this.props.userInfo.privilege === "匿名用户") {
             userName = <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
-                <div style={{ color: "white", fontSize: "1rem", fontWeight: "bold",  marginLeft: "1rem" ,marginTop:"-0.8rem"}} >{this.props.userInfo.name}</div>
+                <div style={{ color: "white", fontSize: "1rem", fontWeight: "bold", marginLeft: "1rem", marginTop: "-0.8rem" }} >{this.props.userInfo.name}</div>
                 <div className="userMessageAnonymous">别问我是谁</div>
             </div>;
         }
@@ -206,7 +208,7 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
         if (Utility.getLocalStorage("userInfo")) {
             if (Utility.getLocalStorage("userInfo").name !== this.props.userInfo.name && !this.props.topicInfo.isAnonymous) {
                 btn = <div className="row userMessageBtn" >
-                    <div style={{ marginLeft: "0.85rem" }}><button className="replierBtn" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled} style={{marginBottom: "0.6rem" }}>{this.state.buttonInfo}</button></div>
+                    <div style={{ marginLeft: "0.85rem" }}><button className="replierBtn" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled} style={{ marginBottom: "0.6rem" }}>{this.state.buttonInfo}</button></div>
                     <div style={{ marginLeft: "0.5rem" }}> <Link to={email}><button className="replierBtn">私信</button></Link></div>
                 </div>;
             }
@@ -225,7 +227,7 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
         let userDetailMessage = null;
         if (!this.props.topicInfo.isAnonymous) {
             userDetailMessage =
-                <div className="column" style={{ width: "60%", alignItems: "flex-start", paddingLeft: "1.5rem", marginTop:"1rem" }}>
+                <div className="column" style={{ width: "60%", alignItems: "flex-start", paddingLeft: "1.5rem", marginTop: "1rem" }}>
                     <div className="userMessageOpt">
                         帖数 {this.props.userInfo.postCount}
                     </div>
@@ -267,7 +269,7 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
                 {gender}
                 {this.state.photoframe}
                 {btn}
-            </div>   
+            </div>
 
 
 
