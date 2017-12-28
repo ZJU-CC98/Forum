@@ -80,6 +80,7 @@ export class BoardList extends React.Component<{}, { data: RootBoardState[] }> {
     render() {
 
         return <div className="row" style={{ width: "1140px" }}>
+            <DocumentTitle title={`版面列表 - CC98论坛`} />
             <div className="boardList">
                 {this.state.data.map(this.generateRootBoard)}
             </div>
@@ -125,19 +126,21 @@ export class RootBoard extends React.Component<{ data: RootBoardState }, { isExp
         let buttonContent = this.state.isExpanded ? "收起" : "展开";      //根据 isExpanded 状态定义按钮内容
         let data = this.props.data;
         const boardUrl = `/list/${data.id}`;
+        const masters = data.masters;
+        let mastersText = (data.masters.length) ? "主管：" : "";
+
         return <div className="anArea" id={data.name}>
-            <DocumentTitle title={`版面列表 - CC98论坛`} />
             <div className="column" style={{ border: '2px solid #e9e9e9' }}>
                 <Link to={boardUrl}>
-                <div className="row boardListHead"　>
+                    <div className="row boardListHead"　>
 
-                    <div className="row" style={{ marginRight: "1rem", alignItems: "center" }}>
-                        <div className="areaName">{data.name}</div>
-                        <div className="areaName">主管：{data.masters.map(this.convertMasters)}</div>
+                        <div className="row" style={{ marginRight: "1rem", alignItems: "center" }}>
+                            <div className="areaName">{data.name}</div>
+                            <div className="areaName">{mastersText}{data.masters.map(this.convertMasters)}</div>
+                        </div>
+                        <div onClick={this.toggleIsExpanded} className="expendBoardList"> {buttonContent}</div>
                     </div>
-                    <div onClick={this.toggleIsExpanded} className="expendBoardList"> {buttonContent}</div>
-                    </div>
-                    </Link>
+                </Link>
                 <div className="hiddenContent" style={{ display: display }}>
                     <ChildBoard id={data.id} boards={data.boards} />
                 </div>

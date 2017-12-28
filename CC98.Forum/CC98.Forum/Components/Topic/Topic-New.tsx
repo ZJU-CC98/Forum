@@ -11,6 +11,7 @@ import {
 
     withRouter
 } from 'react-router-dom';
+import DocumentTitle from '../DocumentTitle';
 
 /**
  * 表示全站最新主题列表
@@ -110,7 +111,9 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
      * 将主题排列好
      */
     render() {
-            return (<div className="focus-root">
+       
+        return (<div className="focus-root">
+            <DocumentTitle title={`查看新帖 - CC98论坛`} />
                 <div className="focus" >
                     <Category />
                     <div className="focus-topic-area">

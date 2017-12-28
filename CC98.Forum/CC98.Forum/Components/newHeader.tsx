@@ -128,12 +128,19 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
                             <div className="message-counter displaynone" id="unreadCount-totalCount">{totalCount}</div>
                         </Link>
                     </div>
-                    <div className="topBarUserImg"><img src={this.props.userInfo.portraitUrl}></img></div>
+                    <div className="topBarUserImg"
+                        onMouseOut={(e) => { this.handleMouseEvent(e.type, "userName"); }}
+                        onMouseOver={(e) => { this.handleMouseEvent(e.type, "userName"); }}
+                    >
+                        <img src={this.props.userInfo.portraitUrl}></img>
+                    </div>
                     <div
                         className="topBarUserName"
                         onMouseOut={(e) => { this.handleMouseEvent(e.type, "userName"); }}
                         onMouseOver={(e) => { this.handleMouseEvent(e.type, "userName"); }}
-                    >{this.props.userInfo.name}</div>
+                    >
+                        {this.props.userInfo.name}
+                    </div>
                 </div>
                 <div
                     className="topBarUserCenter"

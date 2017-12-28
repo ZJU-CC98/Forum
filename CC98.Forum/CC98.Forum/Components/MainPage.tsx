@@ -4,6 +4,7 @@ import * as $ from 'jquery';
 import * as Utility from '../Utility';
 import { UbbContainer } from './UbbContainer';
 import { Link } from 'react-router-dom';
+import DocumentTitle from './DocumentTitle';
 
 /**
  * 全站公告组件
@@ -603,6 +604,7 @@ export class MainPage extends React.Component<{}, { data }> {
         let count: MainPageCountProps = new MainPageCountProps(data.todayCount, data.topicCount, data.postCount, data.userCount, data.lastUserName);
 
         return <div className="mainPage">
+            <DocumentTitle title={`CC98论坛`} />
             <div className="leftPart">
                 <AnnouncementComponent data={data.announcement} />
                 <RecommendedReadingComponent data={data.recommendationReading} />

@@ -6,6 +6,7 @@ import { FocusBoardArea } from './FocusBoardArea';
 import { FocusUserArea } from './FocusUserArea';
 import * as Utility from '../../Utility';
 import { Link, BrowserRouter as Router, Route } from 'react-router-dom';
+import DocumentTitle from '../DocumentTitle';
 
 export class Focus extends React.Component {
     
@@ -14,6 +15,7 @@ export class Focus extends React.Component {
      */
     render() {
         return (<div className="focus-root">
+            <DocumentTitle title={`我的关注 - CC98论坛`} />
                     <Router>
                         <div className="focus">
                                 <div className="focus-nav">
