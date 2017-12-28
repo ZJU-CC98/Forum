@@ -29,12 +29,12 @@ export default class extends React.Component<{match}, UserCenterMyPostsExactStat
     componentDidUpdate() {
         if (this.state.currentPage !== this.props.match.params.page) {
             this.setState({ currentPage: this.props.match.params.page });
-            this.getInfo(this.props.match.params.page);
+            this.getInfo(parseInt(this.props.match.params.page));
         }
     }
 
     componentDidMount() {
-        this.getInfo(this.props.match.params.page);
+        this.getInfo(parseInt(this.props.match.params.page));
     }
 
     getInfo = async (page = 1) => {
@@ -56,7 +56,7 @@ export default class extends React.Component<{match}, UserCenterMyPostsExactStat
                 totalPage: number;
 
             if (i <= 10) {
-                totalPage = Number.parseInt(this.props.match.params.page);
+                totalPage = Number.parseInt(this.props.match.params.page || 1);
                 this.setState({ hasTotal: true });
             } else {
                 totalPage = Math.max(Number.parseInt(this.props.match.params.page || 1) + 1, this.state.totalPage);
@@ -107,6 +107,7 @@ export default class extends React.Component<{match}, UserCenterMyPostsExactStat
         for (let i = 1; i < userRecentPosts.length; i += 2) {
             userRecentPosts.splice(i, 0, <hr />);
         }
+        console.log(this.state.totalPage);
         return (
             <div className="user-posts">
                 {userRecentPosts}

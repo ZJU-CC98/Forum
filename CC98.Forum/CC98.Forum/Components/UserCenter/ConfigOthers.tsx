@@ -67,7 +67,7 @@ export default class extends React.Component<{ userinfo: UserInfo, handleChange:
             <div className="config-birthday">
                 <p>生日：</p>
                 <select id="birthdayYear" name="birthdayYear" value={this.props.userinfo.birthdayYear} onChange={(e) => { this.props.handleChange(e.target.name, Number.parseInt(e.target.value)) }}>{yearsOption}</select><p>年</p>
-                <select id="birthdayMouth" name="birthdayMouth" value={this.props.userinfo.birthdayMonth} disabled={this.props.userinfo.birthdayYear === 0} onChange={(e) => { this.props.handleChange(e.target.name, Number.parseInt(e.target.value)) }}>{mouthsOption}</select><p>月</p>
+                <select id="birthdayMonth" name="birthdayMonth" value={this.props.userinfo.birthdayMonth} disabled={this.props.userinfo.birthdayYear === 0} onChange={(e) => { this.props.handleChange(e.target.name, Number.parseInt(e.target.value)) }}>{mouthsOption}</select><p>月</p>
                 <select id="birthdayDay" name="birthdayDay" value={this.props.userinfo.birthdayDay} disabled={this.props.userinfo.birthdayYear === 0} onChange={(e) => { this.props.handleChange(e.target.name, Number.parseInt(e.target.value)) }}>{daysOption}</select><p>日</p>
             </div>
             {this.state.displayTitles.length > 0 ?
