@@ -64,6 +64,7 @@
     <None Remove="Components\UserCenter\UserManage.tsx" />
     <None Remove="Components\UserCenter\UserRouterActivities.tsx" />
     <None Remove="Components\UserExactProfile.tsx" />
+    <None Remove="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Remove="Props\FocusBoardProps.tsx" />
     <None Remove="Props\MessageSendReceiveProps.tsx" />
     <None Remove="Props\MessageWindowProps.tsx" />
@@ -193,6 +194,10 @@
     <TypeScriptCompile Include="Ubb\UrlTextHandler.tsx" />
     <TypeScriptCompile Include="Ubb\UserTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\UTagHandler.tsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

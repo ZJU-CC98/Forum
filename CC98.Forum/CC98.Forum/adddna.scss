@@ -185,7 +185,7 @@
     display: flex;
     flex-direction: column;
     width: 51.25rem;
-    margin-top: 2rem;
+    margin-top: 0.75rem;
 }
 
 .announcementContent {
@@ -363,7 +363,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin-top: 2rem;
+    margin-top: 0.75rem;
 }
 
 .recommendedFunctionContent {
@@ -498,7 +498,7 @@
     justify-content: center;
     width: 100%;
     min-width: 71.25rem;
-    height: 15rem;
+    height: 12rem;
     margin-bottom: 1.25rem;
     padding: 0px;
     background: url(/static/images/冬1.jpg) no-repeat center;
@@ -527,6 +527,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    padding-top: 0.4rem;
 
     img {
         width: 2.125rem;
@@ -700,7 +701,7 @@
     display: flex;
     flex-direction: row;
     height: 1.5rem;
-    width: 30rem;
+    width: 33rem;
     border-radius: 0.625rem;
     align-items: center;
     background-color: #d7eaf0;
@@ -760,13 +761,14 @@
 
 #newsearch .searchBoxSub {
     display: none;
-    width: 4rem;
-    margin-left: 1rem;
+    width: 2rem;
+    margin-left: 2rem;
     font-size: 0.75rem;
     font-family: 微软雅黑;
     color: #79b8ca;
     background-color: #d7eaf0;
     position: absolute;
+    z-index: 1000;
 }
 
 #newsearch .searchBoxSub li {
@@ -784,7 +786,7 @@
 
 //似乎是明一gg写的消息的样式
 //稍作了修改
-.message-counter, .message-counterLi, .message-counterNav {
+.message-counterLi, .message-counterNav {
     position: absolute;
     min-width: 10px;
     height: 12px;
@@ -795,13 +797,24 @@
     font-weight: normal;
     color: white;
     text-align: center;
-    background: red;
+    background-color: #fb6165;
     border-radius: 8px;
 }
 
 .message-counter {
+    position: absolute;
     top: 0;
-    left: 1.25rem;
+    left: 0;
+    display: flex;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    background-color: #fb6165;
+    font-size: 0.75rem;
+    font-family: 微软雅黑;
+    color: #ffffff;
 }
 
 .message-counterLi {

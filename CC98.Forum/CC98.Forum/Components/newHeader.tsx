@@ -110,6 +110,8 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
             if (Utility.getStorage("unreadCount")) {
                 unreadCount = Utility.getStorage("unreadCount")
             }
+            let totalCount: string = unreadCount.totalCount.toString();
+            if (unreadCount.totalCount > 99) totalCount = "99+";
 
             let admin = this.props.userInfo.privilege === '管理员' ? <Link to="/sitemanage" style={{ color: '#fff' }}><li>全站管理</li></Link> : null;
 
@@ -123,7 +125,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
                     >
                         <Link to="/message" className="messageTopBar">
                             <div className="topBarBell"> <i className="fa fa-bell-o"></i></div>
-                            <div className="message-counter displaynone" id="unreadCount-totalCount">{unreadCount.totalCount}</div>
+                            <div className="message-counter displaynone" id="unreadCount-totalCount">{totalCount}</div>
                         </Link>
                     </div>
                     <div className="topBarUserImg"><img src={this.props.userInfo.portraitUrl}></img></div>
@@ -153,10 +155,10 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
                     style={{ ...style, overflow: 'hidden', height: this.state.hoverElement === 'message' ? '8rem' : '0' }}
                 >
                     <ul className="topBarMessageDetailsUl" style={{ display: 'inherit' }}>
-                        <a href="/message/response"><li>回复我的<div className="message-counterLi displaynone" id="unreadCount-replyCount">{unreadCount.replyCount}</div></li></a>
-                        <a href="/message/attme"><li>@ 我的<div className="message-counterLi displaynone" id="unreadCount-atCount">{unreadCount.atCount}</div></li></a>
-                        <a href="/message/system"><li>系统通知<div className="message-counterLi displaynone" id="unreadCount-systemCount">{unreadCount.systemCount}</div></li></a>
-                        <a href="/message/message"><li>我的私信<div className="message-counterLi displaynone" id="unreadCount-messageCount">{unreadCount.messageCount}</div></li></a>
+                        <a href="/message/response"><li>回复我的<div className="message-counterLi displaynone" id="unreadCount-replyCount">({unreadCount.replyCount})</div></li></a>
+                        <a href="/message/attme"><li>@ 我的<div className="message-counterLi displaynone" id="unreadCount-atCount">({unreadCount.atCount})</div></li></a>
+                        <a href="/message/system"><li>系统通知<div className="message-counterLi displaynone" id="unreadCount-systemCount">({unreadCount.systemCount})</div></li></a>
+                        <a href="/message/message"><li>我的私信<div className="message-counterLi displaynone" id="unreadCount-messageCount">({unreadCount.messageCount})</div></li></a>
                     </ul>
                 </div>
             </div>);
