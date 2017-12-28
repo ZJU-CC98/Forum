@@ -131,16 +131,13 @@ export class RootBoard extends React.Component<{ data: RootBoardState }, { isExp
 
         return <div className="anArea" id={data.name}>
             <div className="column" style={{ border: '2px solid #e9e9e9' }}>
-                <Link to={boardUrl}>
-                    <div className="row boardListHead"　>
-
+                <div className="row boardListHead" onClick={this.toggleIsExpanded}>
                         <div className="row" style={{ marginRight: "1rem", alignItems: "center" }}>
                             <div className="areaName">{data.name}</div>
                             <div className="areaName">{mastersText}{data.masters.map(this.convertMasters)}</div>
                         </div>
-                        <div onClick={this.toggleIsExpanded} className="expendBoardList"> {buttonContent}</div>
+                        <div className="expendBoardList"> {buttonContent}</div>
                     </div>
-                </Link>
                 <div className="hiddenContent" style={{ display: display }}>
                     <ChildBoard id={data.id} boards={data.boards} />
                 </div>
