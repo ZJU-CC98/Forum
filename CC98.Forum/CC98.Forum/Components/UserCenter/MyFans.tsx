@@ -7,7 +7,6 @@ import { UserInfo } from '../../States/AppState';
 import MyFollowingsUser from './MyFollowingsUser';
 import { RouteComponent } from '../RouteComponent';
 import Pager from './Pager';
-import DocumentTitle from '../DocumentTitle';
 import * as Utility from '../../Utility';
 
 //用户中心我的粉丝组件
@@ -84,7 +83,7 @@ export default class extends React.Component<{match}, UserCenterMyFansState> {
 
     render() {
         if (this.state.isLoading) {
-            return <div className="user-center-loading"><DocumentTitle title="我的粉丝 - 个人中心 - CC98论坛" /><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
+            return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
         }
         if (this.state.userFans.length === 0) {
             return (<div className="user-center-myfans" style={{textAlign: 'center'}}>
