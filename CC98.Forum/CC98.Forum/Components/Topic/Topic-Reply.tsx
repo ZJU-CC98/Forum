@@ -154,7 +154,7 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
             if (!this.state.contents.length ) {
                 return <div></div>;
             }
-            return <div className="center" style={{ width: "100%" }}>
+            return <div className="center" style={{ width: "71rem", marginRight:"1px" }}>
                 {this.state.contents.map(this.generateContents.bind(this))}
             </div>
                 ;
