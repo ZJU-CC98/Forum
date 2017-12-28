@@ -162,10 +162,10 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
                     style={{ ...style, overflow: 'hidden', height: this.state.hoverElement === 'message' ? '8rem' : '0' }}
                 >
                     <ul className="topBarMessageDetailsUl" style={{ display: 'inherit' }}>
-                        <a href="/message/response"><li>回复我的<div className="message-counterLi displaynone" id="unreadCount-replyCount">({unreadCount.replyCount})</div></li></a>
-                        <a href="/message/attme"><li>@ 我的<div className="message-counterLi displaynone" id="unreadCount-atCount">({unreadCount.atCount})</div></li></a>
-                        <a href="/message/system"><li>系统通知<div className="message-counterLi displaynone" id="unreadCount-systemCount">({unreadCount.systemCount})</div></li></a>
-                        <a href="/message/message"><li>我的私信<div className="message-counterLi displaynone" id="unreadCount-messageCount">({unreadCount.messageCount})</div></li></a>
+                        <Link to="/message/response"><li>回复我的<div className="message-counterLi displaynone" id="unreadCount-replyCount">({unreadCount.replyCount})</div></li></Link>
+                        <Link to="/message/attme"><li>@ 我的<div className="message-counterLi displaynone" id="unreadCount-atCount">({unreadCount.atCount})</div></li></Link>
+                        <Link to="/message/system"><li>系统通知<div className="message-counterLi displaynone" id="unreadCount-systemCount">({unreadCount.systemCount})</div></li></Link>
+                        <Link to="/message/message"><li>我的私信<div className="message-counterLi displaynone" id="unreadCount-messageCount">({unreadCount.messageCount})</div></li></Link>
                     </ul>
                 </div>
             </div>);
