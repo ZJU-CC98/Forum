@@ -811,7 +811,7 @@ body {
 }
 
 .listTitleAndIcon {
-    overflow:hidden;
+    overflow: hidden;
     align-items: center;
 }
 
@@ -819,7 +819,7 @@ body {
     text-overflow: ellipsis;
     white-space: nowrap;
     align-items: center;
-    overflow:hidden;
+    overflow: hidden;
 }
 
 a {
@@ -2131,12 +2131,12 @@ a {
     top: 19px;
     left: 69px;
 }
-    */ 
+    */
 .message-counterNav {
     top: 32px;
     left: 110px;
 }
-   
+
 .topBar {
     display: flex;
     flex-direction: row;
@@ -3309,4 +3309,9 @@ a {
     align-items: center;
     background-color: #8dc9db;
     justify-content: space-between;
+    cursor: pointer;
+}
+
+.boardListHead:hover {
+
 }

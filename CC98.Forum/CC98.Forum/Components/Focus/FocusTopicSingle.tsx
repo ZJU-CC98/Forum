@@ -11,7 +11,8 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
 
     componentDidMount() {
         if (!this.props.tag1) {
-            $(`#tag_${this.props.id}`).addClass('displaynone');
+            $(`#tag_${this.props.id}`).css('display', 'none');
+            $(`#tag_${this.props.id}`).css('margin-right', '0');
         }
 
         if (!this.props.userId) {
