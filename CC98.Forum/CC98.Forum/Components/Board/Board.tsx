@@ -8,7 +8,8 @@ import DocumentTitle from '../DocumentTitle';
 import {
     BrowserRouter as Router,
     Route,
-    Link,
+    Link,
+
     Switch
 } from 'react-router-dom';
 import TopicTitleAndContentState = State.TopicTitleAndContentState;
