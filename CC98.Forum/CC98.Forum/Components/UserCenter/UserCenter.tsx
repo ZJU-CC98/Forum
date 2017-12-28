@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import Navigation from './Navigation';
 import UserCenterRouter from './Router';
 import { LogOut } from '../Status';
+import DocumentTitle from '../DocumentTitle';
 
 /**
  * 用户中心页面
@@ -15,6 +16,7 @@ class UserCenterBeforeConnect extends React.Component<{ isLogOn }> {
         }
         return (
             <div className="user-center">
+                <DocumentTitle title="个人中心 - CC98论坛" />
                 <div className="user-center-content">
                     <div className="user-center-head">
                         <p>个人中心</p>

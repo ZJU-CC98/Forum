@@ -5,7 +5,6 @@
 import * as React from 'react';
 import * as Utility from '../../Utility';
 import { ChangeUserInfo, UserInfo } from '../../States/AppState';
-import DocumentTitle from '../DocumentTitle';
 import ConfigAvatar from './ConfigAvatar';
 import ConfigSignature from './ConfigSignature';
 import ConfigOthers from './ConfigOthers';
@@ -192,23 +191,21 @@ export default class extends React.Component<null, States> {
 
     render() {
         return (
-            <DocumentTitle title="修改个人资料 - 个人中心 - CC98论坛">
-                <div className="user-center-config">
-                    <ConfigAvatar />
-                    <hr />
-                    <ConfigSignature signature={this.state.userInfo.SignatureCode} onchange={this.handleChange}/>
-                    <hr />
-                    <ConfigOthers userinfo={this.state.userInfo} handleChange={this.handleChange} />
-                    <hr />
-                    <div className="config-submit">
-                        <h2>提交修改</h2>
-                        <div className="config-buttons">
-                            <button className="config-submit-button" type="button" disabled={this.state.isLoading} onClick={this.handleSubmit}>提交</button>
-                            <button type="button" onClick={this.handleReset}>重置</button>
-                        </div>
-                        <p style={{height: this.state.info === '' ? '0' : '1rem', color: 'red' }}>{this.state.info}</p>
+            <div className="user-center-config">
+                <ConfigAvatar />
+                <hr />
+                <ConfigSignature signature={this.state.userInfo.SignatureCode} onchange={this.handleChange}/>
+                <hr />
+                <ConfigOthers userinfo={this.state.userInfo} handleChange={this.handleChange} />
+                <hr />
+                <div className="config-submit">
+                    <h2>提交修改</h2>
+                    <div className="config-buttons">
+                        <button className="config-submit-button" type="button" disabled={this.state.isLoading} onClick={this.handleSubmit}>提交</button>
+                        <button type="button" onClick={this.handleReset}>重置</button>
                     </div>
+                    <p style={{height: this.state.info === '' ? '0' : '1rem', color: 'red' }}>{this.state.info}</p>
                 </div>
-            </DocumentTitle>);
+            </div>);
     }
 }
