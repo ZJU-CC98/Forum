@@ -27,6 +27,8 @@ export class Category extends React.Component<Props, { boardId, topicId, boardNa
         return <div className="row" style={{ alignItems: "baseline", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>
             <Link style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} to="/">首页</Link>
             <i className="fa fa-chevron-right"></i>
+            <Link style={{ color: "grey", fontSize: "1rem", marginLeft:"0.5rem", marginRight: "0.5rem" }} to="/boardlist">版面列表</Link>
+            <i className="fa fa-chevron-right"></i>
             <Link style={{ color: "grey", fontSize: "1rem", marginLeft: "0.5rem", marginRight: "0.5rem" }} to={listUrl} >{this.state.boardName}</Link>
             <i className="fa fa-chevron-right"></i>
             <Link style={{ color: "grey", fontSize: "1rem", marginLeft: "0.5rem", marginRight: "0.5rem" }} to={topicUrl}><div style={{ overflow: "hidden", textOverflow: "ellipsis", maxWidth: "15rem", whiteSpace: "nowrap" }}>{this.state.title}</div> </Link>
