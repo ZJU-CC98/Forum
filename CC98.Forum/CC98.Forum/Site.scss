@@ -531,7 +531,6 @@ body {
     background-color: #fff;
     flex-direction: row;
     display: flex;
-    box-shadow: 0 0 5px grey;
     position: relative;
 
     .reply-floor {
@@ -539,7 +538,7 @@ body {
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        right: -1rem;
+        right: -0.8rem;
         background-color: $color-bg;
         text-align: center;
         line-height: 40px;
@@ -2969,7 +2968,7 @@ a {
 .topicInfo-info {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: 71rem;
     height: 6.25rem;
     border: rgb(106,113,119) solid 1.5px;
     font-family: 微软雅黑;
@@ -2996,13 +2995,13 @@ a {
     color: #6b7178;
     height: 3rem;
     align-self: center;
-    border-left: #6b7178 solid 2px;
+    border-left: #6b7178 solid 1.5px;
     width: 7rem;
     align-items: center;
 }
 
 .topicInfo-title {
-    width: 52.5rem;
+    width: 52.3rem;
     height: 6.25rem;
     display: flex;
     background-color: #fff;
