@@ -505,8 +505,6 @@
     z-index: 2;
 }
 
-
-
 .newTopBar {
     display: flex;
     flex-direction: row;
@@ -524,10 +522,17 @@
     width: 71.25rem;
 }
 
-.topBarLogo img {
-    width: 2.125rem;
-    height: 1.5rem;
-    margin-right: 1rem;
+//左上角的部分
+.topBarLogo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    img {
+        width: 2.125rem;
+        height: 1.5rem;
+        margin-right: 1rem;
+    }
 }
 
 .topBarCC98 {
@@ -556,7 +561,21 @@
     }
 }
 
+//右上角的部分
+.topBarUserInfo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
 .topBarUserImg {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 3rem;
+    height: 3rem;
+
     img {
         height: 2rem;
         width: 2rem;
@@ -564,231 +583,188 @@
     }
 }
 
-//以下是头部中顶部条下拉菜单的样式~
-#dropdown {
-    font-size: 12px;
+.topBarUserName {
+    display: flex;
+    justify-content: center;
+    width: 6rem;
+    height: 3rem;
+    line-height: 3rem;
+    font-size: 1rem;
+    font-family: 微软雅黑;
+    color: #ffffff;
+}
+
+.topBarMessage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.25rem;
+    font-family: 微软雅黑;
+    color: #ffffff;
+}
+
+//鼠标移至用户名时弹出的下拉菜单
+.topBarUserCenter {
+    position: absolute;
+    top: 3rem;
+    margin-left: 6rem;
+    width: 6rem;
+    z-index: 100;
+    font-size: 0.875rem;
     font-family: 微软雅黑;
     color: rgb(255,255,255);
-}
 
-#dropdown ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
+    a {
+        font-size: 0.875rem;
+        font-family: 微软雅黑;
+        color: rgb(255,255,255);
+    }
 
-#dropdown a {
-    color: rgb(255,255,255);
-}
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        background-color: rgba(121,184,202,0.8);
+    }
 
-#dropdown .box {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
+    li {
+        display: flex;
+        height: 2rem;
+        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+    }
 
-#dropdown .userInfo {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+    li:hover {
+        background-color: rgb(251,97,101);
+    }
 }
-
-#dropdown .userImg img {
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    margin: 0 0 0 0;
-}
-
-#dropdown .userName {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 94px;
-    height: 50px;
-    cursor: pointer;
-}
-
-#dropdown .topBarText {
-    display: flex;
-    margin-top: 12px;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-    cursor: pointer;
-    margin: 0 10px;
-}
-
-#dropdown .boardListLink {
-    display: flex;
-    height: 55px;
-    width: 60px;
-    border-radius: 0 0 10px 10px;
-    background-color: #79b8ca;
-    font-size: 16px; //这里字体要大一点
-    letter-spacing: 2px;
-    justify-content: center;
-    background: linear-gradient(#79b8ca, #67a8bb); //渐变效果
-    background: -webkit-linear-gradient(#79b8ca, #67a8bb); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(#79b8ca, #67a8bb); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(#79b8ca, #67a8bb); /* Firefox 3.6 - 15 */
-}
-
-#dropdown .boardListLink:hover { //:hover 选择器用于选择鼠标指针浮动在上面的元素
-    filter: brightness(1.1); //亮度
-    -webkit-filter: brightness(1.1);
-}
-
-#dropdown .dropDownSubBox {
-    margin-top: -5px;
-    width: 110px;
-    margin-left: 40px;
-}
-
-#dropdown .dropDownSubBoxMessage {
-    margin-top: -5px;
-    width: 110px;
-    margin-left: 150px;
-}
-
-#dropdown .dropDownSub {
-    width: 100px;
-    display: none;
-    background-color: rgba(80,80,80,0.5);
-    opacity: 0.9999; //暂时不知道原因，但是如果不加上一个小于1的opacity值，下拉会出问题,猜测是opacity把元素及所有子元素合在一起？
-    z-index: 1;
-}
-
-#dropdown .dropDownSubMessage {
-    width: 100px;
-    display: none;
-    background-color: rgba(80,80,80,0.5);
-    opacity: 0.9999; //暂时不知道原因，但是如果不加上一个小于1的opacity值，下拉会出问题,猜测是opacity把元素及所有子元素合在一起？
-    z-index: 1;
-}
-
-#dropdown .dropDownSub li {
-    display: flex;
-    height: 30px;
-    cursor: pointer;
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
-    position: relative;
-}
-
-#dropdown .dropDownSubMessage li {
-    display: flex;
-    height: 30px;
-    cursor: pointer;
-    justify-content: flex-start;
-    padding-left: 11px;
-    align-items: center;
-    z-index: 1;
-    position: relative;
-}
-
-#dropdown li:hover {
-    //background: $color-bg;
-}
-//以下是头部中搜索条的样式
-#search {
-}
-
-#search .box, #search .select, #search input, #search a, #search .searchBoxSub {
-    background: rgb(255,255,255);
-}
-
-#search .box {
-    display: flex;
-    flex-direction: row;
-    height: 36px;
-    width: 340px;
-    border-radius: 5px;
-    border-style: solid;
-    border-color: rgb(233,233,233);
-    border-width: 2px;
-    box-sizing: border-box;
-    align-items: center;
-    opacity: 0.8;
-}
-
-#search form {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-#search .searchBoxSelect {
-    display: flex;
-    width: 30px;
-    height: 30px;
-    font-size: 12px;
+//鼠标移至消息时弹出的下拉菜单
+.topBarMessageDetails {
+    position: absolute;
+    top: 3rem;
+    width: 6.25rem;
+    margin-left: -3.25rem;
+    z-index: 100;
+    font-size: 0.875rem;
     font-family: 微软雅黑;
-    color: rgb(80,80,80);
-    justify-content: center;
-    align-items: center;
-    margin-left: 2px;
-    cursor: pointer;
+    color: rgb(255,255,255);
+
+    a {
+        font-size: 0.875rem;
+        font-family: 微软雅黑;
+        color: rgb(255,255,255);
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        background-color: rgba(121,184,202,0.8);
+    }
+
+    li {
+        display: flex;
+        height: 2rem;
+        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+    }
+
+    li:hover {
+        background-color: rgb(251,97,101);
+    }
 }
 
-#search .downArrow {
+//新搜索框
+#newsearch .box {
     display: flex;
     flex-direction: row;
+    height: 1.5rem;
+    width: 15rem;
+    border-radius: 0.625rem;
     align-items: center;
-    height: 32px;
-    border-right: 2px solid rgb(233,233,233);
-    padding-right: 2px;
+    background-color: #d7eaf0;
+    padding: 0 0.75rem;
+    margin-left: 1rem;
+}
+
+#newsearch .searchBoxSelect {
+    display: flex;
+    width: 2rem;
+    font-size: 0.75rem;
+    font-family: 微软雅黑;
+    color: #79b8ca;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
 }
 
-#search input {
+#newsearch .caret-down {
+    display: flex;
+    width: 1rem;
+    font-size: 0.75rem;
+    font-family: 微软雅黑;
+    color: #79b8ca;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+#newsearch input {
     display: flex;
     border: 0;
-    width: 260px;
-    height: 30px;
-    font-size: 14px;
+    flex-grow: 1;
+    font-size: 0.75rem;
     font-family: 微软雅黑;
-    color: rgb(80,80,80);
+    color: #79b8ca;
+    background-color: #d7eaf0;
     outline: none;
-    padding-left: 2px;
 }
 
-#search .searchIco {
-    width: 20px;
-    padding: 2px 0 0 3px;
+#newsearch .searchIco {
+    display: flex;
+    flex-direction: row;
+    font-size: 0.75rem;
+    font-family: 微软雅黑;
+    color: #79b8ca;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
 }
 
-#search ul {
+#newsearch ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
 
-#search .searchBoxSub {
-    width: 50px;
-    border-radius: 5px;
-    border-style: solid;
-    border-color: rgb(233,233,233);
-    border-width: 2px;
-    box-sizing: border-box;
+#newsearch .searchBoxSub {
     display: none;
-    font-size: 12px;
+    width: 3rem;
+    margin-left: 1.75rem;
+    font-size: 0.75rem;
     font-family: 微软雅黑;
-    color: rgb(80,80,80);
+    color: #79b8ca;
+    background-color: #d7eaf0;
+    position: absolute;
 }
 
-#search .searchBoxSub li {
-    height: 25px;
+#newsearch .searchBoxSub li {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 1.5rem;
     cursor: pointer;
-    padding-left: 5px;
-    padding-top: 3px;
 }
 
-#search .searchBoxSub li.hover {
-    background: rgb(233,233,233);
+#newsearch .searchBoxSub li:hover {
+    background-color: rgb(107,113,120);
 }
 
 //似乎是明一gg写的消息的样式

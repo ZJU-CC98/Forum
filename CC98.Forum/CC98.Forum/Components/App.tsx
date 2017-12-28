@@ -35,8 +35,8 @@ export class App extends React.Component<null, AppState> {
     render() {
         return (<div style={{ width: "100%" }}>
             <Router>
-                <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px", backgroundColor:"#e6e7ec" }}>
-                    <Header />
+                <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px", background: "linear-gradient(to top,rgba(121,184,202,0.3),rgba(121,184,202,0.02))" }}>
+                    <NewHeader />
                     <Switch>
                         <Route exact path="/" component={MainPage}></Route>
                         <Route exact path="/topic/:topicid/:page?" component={ShowTopic} />

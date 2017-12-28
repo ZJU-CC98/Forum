@@ -9,7 +9,7 @@ import * as Utility from '../../Utility';
 import { Pager } from '../Pager';
 
 /**
- * 我的私信，包括最近联系人列表和聊天窗口两个组件
+ * 回复我的消息
  */
 export class MessageResponse extends React.Component<{match}, MessageResponseState> {
 

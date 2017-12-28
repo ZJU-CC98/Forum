@@ -111,51 +111,48 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
                 unreadCount = Utility.getStorage("unreadCount")
             }
 
-            let admin = this.props.userInfo.privilege === '管理员' ? <li><Link to="/sitemanage" style={{ color: '#fff' }}>全站管理</Link></li> : null;
+            let admin = this.props.userInfo.privilege === '管理员' ? <Link to="/sitemanage" style={{ color: '#fff' }}><li>全站管理</li></Link> : null;
 
-            return (<div id="dropdown">
-                <div className="box">
-                    <div className="userInfo">
-                        <div className="userImg"><img src={this.props.userInfo.portraitUrl}></img></div>
-                        <div
-                            className="userName"
-                            onMouseOut={(e) => { this.handleMouseEvent(e.type, "userName"); }}
-                            onMouseOver={(e) => { this.handleMouseEvent(e.type, "userName"); }}
-                        >{this.props.userInfo.name}</div>
-                    </div>
-                    <div className="topBarText"> <Link to="/" style={{ color: '#fff' }}>首页</Link></div>
+            return (<div className="topBarRight">
+                <div className="topBarUserInfo">
                     <div
-                        className="topBarText"
+                        className="topBarMessage"
                         id="userMessage"
-                        onMouseOut={(e) => { this.handleMouseEvent(e.type, 'topBarText'); }}
-                        onMouseOver={(e) => { this.handleMouseEvent(e.type, 'topBarText'); }}
-                    > <Link to="/message" className="messageTopBar">消息<div className="message-counter displaynone" id="unreadCount-totalCount">{unreadCount.totalCount}</div></Link></div>
-                    <div className="topBarText"> <Link to="/focus" style={{ color: '#fff' }}>关注</Link></div>
-                    <div className="topBarText"> <Link to="/newTopics" style={{ color: '#fff' }}>新帖</Link></div>
-
-                    <Link to="/boardList"><div className="boardListLink" style={{ margin: '0 0 0 10px' }}><div style={{ marginTop: '16px', color: '#fff' }}>版面</div></div></Link>
+                        onMouseOut={(e) => { this.handleMouseEvent(e.type, 'message'); }}
+                        onMouseOver={(e) => { this.handleMouseEvent(e.type, 'message'); }}
+                    >
+                        <Link to="/message" className="messageTopBar">
+                            <i className="fa fa-bell-o"></i>
+                            <div className="message-counter displaynone" id="unreadCount-totalCount">{unreadCount.totalCount}</div>
+                        </Link>
+                    </div>
+                    <div className="topBarUserImg"><img src={this.props.userInfo.portraitUrl}></img></div>
+                    <div
+                        className="topBarUserName"
+                        onMouseOut={(e) => { this.handleMouseEvent(e.type, "userName"); }}
+                        onMouseOver={(e) => { this.handleMouseEvent(e.type, "userName"); }}
+                    >{this.props.userInfo.name}</div>
                 </div>
                 <div
-                    className="dropDownSubBox"
+                    className="topBarUserCenter"
                     onMouseOut={(e) => { this.handleMouseEvent(e.type, "userName"); }}
                     onMouseOver={(e) => { this.handleMouseEvent(e.type, "userName"); }}
-                    style={{ ...style, overflow: 'hidden', height: this.state.hoverElement === 'userName' ? '120px' : '0px' }}
+                    style={{ ...style, overflow: 'hidden', height: this.state.hoverElement === 'userName' ? '8rem' : '0' }}
                 >
-                    <ul className="dropDownSub" style={{ display: 'inherit' }}>
+                    <ul style={{ display: 'inherit' }}>
                         <Link to="/usercenter"> <li>个人中心</li></Link>
                         {admin}
                         <Link to="/signin"><li>签到</li></Link>
                         <li onClick={this.logOff.bind(this)}>注销</li>
-
                     </ul>
                 </div>
                 <div
-                    className="dropDownSubBoxMessage"
-                    onMouseOut={(e) => { this.handleMouseEvent(e.type, "topBarText"); }}
-                    onMouseOver={(e) => { this.handleMouseEvent(e.type, "topBarText"); }}
-                    style={{ ...style, overflow: 'hidden', zIndex: 100, position: 'absolute', top: '55px', height: this.state.hoverElement === 'topBarText' ? '120px' : '0px' }}
+                    className="topBarMessageDetails"
+                    onMouseOut={(e) => { this.handleMouseEvent(e.type, "message"); }}
+                    onMouseOver={(e) => { this.handleMouseEvent(e.type, "message"); }}
+                    style={{ ...style, overflow: 'hidden', height: this.state.hoverElement === 'message' ? '8rem' : '0' }}
                 >
-                    <ul className="dropDownSubMessage" style={{ display: 'inherit' }}>
+                    <ul className="topBarMessageDetailsUl" style={{ display: 'inherit' }}>
                         <a href="/message/response"><li>回复我的<div className="message-counterLi displaynone" id="unreadCount-replyCount">{unreadCount.replyCount}</div></li></a>
                         <a href="/message/attme"><li>@ 我的<div className="message-counterLi displaynone" id="unreadCount-atCount">{unreadCount.atCount}</div></li></a>
                         <a href="/message/system"><li>系统通知<div className="message-counterLi displaynone" id="unreadCount-systemCount">{unreadCount.systemCount}</div></li></a>
@@ -165,7 +162,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
             </div>);
         }
         else {
-            return <div className="row">
+            return <div className="topBarUserInfo">
                 <div className="newTopBarText"> <Link to="/logOn">登录</Link></div>
                 <div className="newTopBarText"><a href="https://account.cc98.org/">注册</a></div>
             </div>
@@ -197,7 +194,7 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
 
     async componentDidMount() {
         const searchBoxSelect = $('.searchBoxSelect');
-        const downArrow = $('.downArrow');
+        const downArrow = $('.caret-down');
         const searchBoxSub = $('.searchBoxSub');
         const searchIco = $('.searchIco');
         const searchBoxLi = searchBoxSub.find('li');
@@ -363,12 +360,12 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
         }
 
         if (flag) {
-            return <div id="search">
+            return <div id="newsearch">
                 <div className="box">
                     <div className="searchBoxSelect">主题</div>
-                    <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
-                    <input id="searchText" type="text" placeholder="猜猜能搜到什么..." onKeyPress={this.keypress_submit} />
-                    <div className="searchIco"><img src="/static/images/searchIco.ico" width="15" height="15" /></div>
+                    <div className="caret-down"><i className="fa fa-caret-down"></i></div>
+                    <input id="searchText" type="text" placeholder="请输入搜索内容" onKeyPress={this.keypress_submit} />
+                    <div className="searchIco"><i className="fa fa-search"></i></div>
                 </div>
                 <ul className="searchBoxSub">
                     <li>主题</li>
@@ -379,12 +376,12 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
             </div>;
         }
         else {
-            return <div id="search">
+            return <div id="newsearch">
                 <div className="box">
                     <div className="searchBoxSelect">版内</div>
-                    <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
-                    <input id="searchText" type="text" placeholder="猜猜能搜到什么..." onKeyPress={this.keypress_submit} />
-                    <div className="searchIco"><img src="/static/images/searchIco.ico" width="15" height="15" /></div>
+                    <div className="caret-down"><i className="fa fa-caret-down"></i></div>
+                    <input id="searchText" type="text" placeholder="请输入搜索内容" onKeyPress={this.keypress_submit} />
+                    <div className="searchIco"><i className="fa fa-search"></i></div>
                 </div>
                 <ul className="searchBoxSub">
                     <li>版内</li>
@@ -409,8 +406,9 @@ export class NewHeader extends React.Component<{}, AppState> {
                         <div className="topBarCC98"><Link to="/">CC98论坛</Link></div>
                         <div className="newTopBarText">|</div>
                         <div className="newTopBarText"><Link to="/boardList">版面列表</Link></div>
-                        <div className="newTopBarText"><Link to="newTopics">新帖</Link></div>
-                        <div className="newTopBarText"><Link to="focus">关注</Link></div>
+                        <div className="newTopBarText"><Link to="/newTopics">新帖</Link></div>
+                        <div className="newTopBarText"><Link to="/focus">关注</Link></div>
+                        <Route component={Search} />
                     </div>
                     <DropDown />
                 </div>
