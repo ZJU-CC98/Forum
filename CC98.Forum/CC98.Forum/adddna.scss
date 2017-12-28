@@ -603,6 +603,20 @@
     font-size: 1.25rem;
     font-family: 微软雅黑;
     color: #ffffff;
+    position: relative;
+}
+
+.topBarBell {
+    display: flex;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(107,113,120);
+    font-size: 1rem;
+    font-family: 微软雅黑;
+    color: #ffffff;
 }
 
 //鼠标移至用户名时弹出的下拉菜单
@@ -646,8 +660,8 @@
 .topBarMessageDetails {
     position: absolute;
     top: 3rem;
-    width: 6.25rem;
-    margin-left: -3.25rem;
+    width: 8rem;
+    margin-left: -5rem;
     z-index: 100;
     font-size: 0.875rem;
     font-family: 微软雅黑;
@@ -673,6 +687,7 @@
         justify-content: center;
         align-items: center;
         z-index: 1;
+        position: relative;
     }
 
     li:hover {
@@ -685,11 +700,11 @@
     display: flex;
     flex-direction: row;
     height: 1.5rem;
-    width: 15rem;
+    width: 30rem;
     border-radius: 0.625rem;
     align-items: center;
     background-color: #d7eaf0;
-    padding: 0 0.75rem;
+    padding: 0 1rem;
     margin-left: 1rem;
 }
 
@@ -745,8 +760,8 @@
 
 #newsearch .searchBoxSub {
     display: none;
-    width: 3rem;
-    margin-left: 1.75rem;
+    width: 4rem;
+    margin-left: 1rem;
     font-size: 0.75rem;
     font-family: 微软雅黑;
     color: #79b8ca;
@@ -768,6 +783,7 @@
 }
 
 //似乎是明一gg写的消息的样式
+//稍作了修改
 .message-counter, .message-counterLi, .message-counterNav {
     position: absolute;
     min-width: 10px;
@@ -784,21 +800,11 @@
 }
 
 .message-counter {
-    top: -2px;
-    left: 20px;
+    top: 0;
+    left: 1.25rem;
 }
 
 .message-counterLi {
-    top: 19px;
-    left: 69px;
-}
-
-.message-counterNav {
-    top: 32px;
-    left: 110px;
-}
-
-.messageTopBar {
-    position: relative;
-    color: #fff;
+    top: 1.25rem;
+    left: 6rem;
 }

@@ -2108,7 +2108,7 @@ a {
     background: url(/static/images/winter.jpg) no-repeat center;
     z-index: 2;
 }
-
+/* 这里修改过了，详见adddna.scss
 .message-counter, .message-counterLi, .message-counterNav {
     position: absolute;
     min-width: 10px;
@@ -2133,12 +2133,12 @@ a {
     top: 19px;
     left: 69px;
 }
-
+    */ 
 .message-counterNav {
     top: 32px;
     left: 110px;
 }
-
+   
 .topBar {
     display: flex;
     flex-direction: row;
