@@ -124,10 +124,11 @@ export class RootBoard extends React.Component<{ data: RootBoardState }, { isExp
         let display = this.state.isExpanded ? "flex" : "none";    //根据 isExpanded 状态定义样式
         let buttonContent = this.state.isExpanded ? "收起" : "展开";      //根据 isExpanded 状态定义按钮内容
         let data = this.props.data;
-
+        const boardUrl = `/list/${data.id}`;
         return <div className="anArea" id={data.name}>
             <DocumentTitle title={`版面列表 - CC98论坛`} />
             <div className="column" style={{ border: '2px solid #e9e9e9' }}>
+                <Link to={boardUrl}>
                 <div className="row boardListHead"　>
 
                     <div className="row" style={{ marginRight: "1rem", alignItems: "center" }}>
@@ -135,7 +136,8 @@ export class RootBoard extends React.Component<{ data: RootBoardState }, { isExp
                         <div className="areaName">主管：{data.masters.map(this.convertMasters)}</div>
                     </div>
                     <div onClick={this.toggleIsExpanded} className="expendBoardList"> {buttonContent}</div>
-                </div>
+                    </div>
+                    </Link>
                 <div className="hiddenContent" style={{ display: display }}>
                     <ChildBoard id={data.id} boards={data.boards} />
                 </div>
