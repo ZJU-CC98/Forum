@@ -2613,8 +2613,10 @@ export async function getUsersInfo(userId: any[]) {
     }
     try {
         //合并查询和缓存的
-        let response = await cc98Fetch(url);
-        var data = await response.json();
+        if (usersInfoNeeded.length !== 0) {
+            let response = await cc98Fetch(url);
+            var data = await response.json();
+        }    
         for (let i of data) {
             let key = `userId_${i.id}`;
             let key1 = `userName_${i.name}`;
