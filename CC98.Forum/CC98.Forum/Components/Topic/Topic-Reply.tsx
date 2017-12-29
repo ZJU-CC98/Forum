@@ -72,8 +72,6 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
         this.setState({ inWaiting: false, contents: realContents, masters: masters });
     }
     async componentWillReceiveProps(newProps) {
-        console.log("newpage=" + newProps.page);
-        console.log("Curpage=" + this.props.page);
         if (newProps.page !== this.props.page || newProps.topicInfo.replyCount !== this.props.topicInfo.replyCount) {
             this.setState({ inWaiting: true });
             const page = newProps.page || 1;
@@ -105,7 +103,7 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
         let hotReply = null;
         let awards = <Award postId={item.postId} updateTime={Date.now()} awardInfo={item.awards} />;
         if (item.awards === []) awards = null;
-        if (item.floor === 1) {
+        if (item.floor === 1 && !this.props.isTrace) {
             hotReply = <Reply topicInfo={this.props.topicInfo} page={this.props.page} boardInfo={this.props.boardInfo} quote={this.quote} isTrace={false} isHot={true} userId={null} topicId={this.props.topicId} />;
             return <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
                 <div className="reply" id={id.toString()} >
@@ -117,7 +115,7 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
                         {awards}
                         <ReplierSignature userInfo={item.userInfo} quote={this.quote} boardInfo={this.props.boardInfo} postInfo={item} likeInfo={likeInfo} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo} />
                     </div>
-                    <FloorSize floor={item.floor} />
+                    <FloorSize isHot={this.props.isHot} floor={item.floor} />
                 </div>
                 {hotReply}
             </div>;
@@ -131,7 +129,7 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
                     {awards}
                     <ReplierSignature userInfo={item.userInfo} quote={this.quote} boardInfo={this.props.boardInfo} postInfo={item} likeInfo={likeInfo} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo} />
                 </div>
-                <FloorSize floor={item.floor} />
+                <FloorSize isHot={this.props.isHot} floor={item.floor} />
             </div>;
         }
         
@@ -165,13 +163,18 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
     }
 }
 
-export class FloorSize extends React.Component<{ floor: number }> {
+export class FloorSize extends React.Component<{isHot:boolean, floor: number }> {
     render() {
-        if (this.props.floor > 9999)
-            return <div className="reply-floor-small">{this.props.floor}</div>;
-        else {
-            return <div className="reply-floor">{this.props.floor}</div>;
+        if (this.props.isHot) {
+            if (this.props.floor > 9999)
+                return <div className="reply-floor-small">{this.props.floor}</div>;
+            else {
+                return <div className="reply-floor">{this.props.floor}</div>;
+            }
+        } else {
+                return <div className="reply-floor">热门</div>;
         }
+      
     }
 }
 

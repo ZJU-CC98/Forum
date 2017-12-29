@@ -66,7 +66,7 @@ export class Award extends React.Component<Props, {info,shortInfo,count,showAll 
         this.setState({ info: info, shortInfo: shortInfo, count: award.length });
     }
      generateAwardInfo(item) {
-         console.log(item);
+ 
         return <AwardInfo postId={this.props.postId} portraitUrl={item.portraitUrl} content={item.content} reason={item.reason} userName={item.operatorName} />;
 
     }
