@@ -2521,38 +2521,42 @@ export async function moveTopic(topicId, boardId, reason) {
     else return 'error';
 }
 
-export async function getBasicUsersInfo(userId: number[]) {
+export async function getBasicUsersInfo(userIds: number[]) {
     let usersInfoNeeded = [];
     let finalUsersInfo = [];
     //检查本地是否有缓存
-    for (let i = 0; i < userId.length; i++) {
-        let thisUserInfo = getLocalStorage(`userId_${userId[i]}`);
+    for (let i = 0; i < userIds.length; i++) {
+        let thisUserInfo = getLocalStorage(`userId_${userIds[i]}`);
         if (thisUserInfo) {
             finalUsersInfo.push(thisUserInfo);
         } else {
-            usersInfoNeeded.push(userId[i]);
+            usersInfoNeeded.push(userIds[i]);
         }
     }
-
-    let url = "/user/basic";
-    for (let i = 0; i < usersInfoNeeded.length; i++) {
-        if (i === 0) {
-            url = `${url}?id=${usersInfoNeeded[i]}`;
-        }
-        else {
-            url = `${url}&id=${usersInfoNeeded[i]}`;
-        }
-    }
-    try {
-        //合并查询和缓存的
-        let response = await cc98Fetch(url);
-        var data = await response.json();
-        for (let i of data) {
-            finalUsersInfo.push(i);
-        }
+    if (usersInfoNeeded.length === 0) {
         return finalUsersInfo;
-    } catch (e) {
-        return [];
+    }
+    else {
+        let url = "/user/basic";
+        for (let i = 0; i < usersInfoNeeded.length; i++) {
+            if (i === 0) {
+                url = `${url}?id=${usersInfoNeeded[i]}`;
+            }
+            else {
+                url = `${url}&id=${usersInfoNeeded[i]}`;
+            }
+        }
+        try {
+            //合并查询和缓存的
+            let response = await cc98Fetch(url);
+            var data = await response.json();
+            for (let i of data) {
+                finalUsersInfo.push(i);
+            }
+            return finalUsersInfo;
+        } catch (e) {
+            return [];
+        }
     }
 }
 export async function getUsersInfobyNames(userNames: any[]) {
@@ -2568,78 +2572,90 @@ export async function getUsersInfobyNames(userNames: any[]) {
             usersInfoNeeded.push(userNames[i]);
         }
     }
-    for (let i = 0; i < usersInfoNeeded.length; i++) {
-        if (i === 0) {
-            url = `${url}?name=${usersInfoNeeded[i]}`;
-        }
-        else {
-            url = `${url}&name=${usersInfoNeeded[i]}`;
-        }
-    }
-    try {
-        //合并查询和缓存的
-        let response = await cc98Fetch(url);
-        var data = await response.json();
-        for (let i of data) {
-            finalUsersInfo.push(i);
-        }
+    if (usersInfoNeeded.length === 0) {
         return finalUsersInfo;
-    } catch (e) {
-        return [];
+    }
+    else {
+        for (let i = 0; i < usersInfoNeeded.length; i++) {
+            if (i === 0) {
+                url = `${url}?name=${usersInfoNeeded[i]}`;
+            }
+            else {
+                url = `${url}&name=${usersInfoNeeded[i]}`;
+            }
+        }
+        try {
+            //合并查询和缓存的
+            let response = await cc98Fetch(url);
+            var data = await response.json();
+            for (let i of data) {
+                finalUsersInfo.push(i);
+            }
+            return finalUsersInfo;
+        } catch (e) {
+            return [];
+        }
     }
 }
 
-export async function getUsersInfo(userId: any[]) {
+export async function getUsersInfo(userIds: any[]) {
     let usersInfoNeeded = [];
     let finalUsersInfo = [];
     //检查本地是否有缓存
-    for (let i = 0; i < userId.length; i++) {
-        let thisUserInfo = getLocalStorage(`userId_${userId[i]}`);
+    for (let i = 0; i < userIds.length; i++) {
+        let thisUserInfo = getLocalStorage(`userId_${userIds[i]}`);
         if (thisUserInfo) {
             finalUsersInfo.push(thisUserInfo);
         } else {
-            usersInfoNeeded.push(userId[i]);
+            usersInfoNeeded.push(userIds[i]);
         }
     }
+    if (usersInfoNeeded.length === 0) {
+        return finalUsersInfo;
+    }
+    else {
+        let url = "/user";
+        for (let i = 0; i < usersInfoNeeded.length; i++) {
+            if (i === 0) {
+                url = `${url}?id=${usersInfoNeeded[i]}`;
+            }
+            else {
+                url = `${url}&id=${usersInfoNeeded[i]}`;
+            }
+        }
+        try {
+            //合并查询和缓存的
 
-    let url = "/user";
-    for (let i = 0; i < usersInfoNeeded.length; i++) {
-        if (i === 0) {
-            url = `${url}?id=${usersInfoNeeded[i]}`;
-        }
-        else {
-            url = `${url}&id=${usersInfoNeeded[i]}`;
-        }
-    }
-    try {
-        //合并查询和缓存的
-     
             let response = await cc98Fetch(url);
             var data = await response.json();
-           
-        for (let i of data) {
-            let key = `userId_${i.id}`;
-            let key1 = `userName_${i.name}`;
-            setLocalStorage(key, i, 3600);
-            setLocalStorage(key1, i, 3600);
-            finalUsersInfo.push(i);
+
+            for (let i of data) {
+                let key = `userId_${i.id}`;
+                let key1 = `userName_${i.name}`;
+                setLocalStorage(key, i, 3600);
+                setLocalStorage(key1, i, 3600);
+                finalUsersInfo.push(i);
+            }
+            return finalUsersInfo;
+        } catch (e) {
+            return [];
         }
-        return finalUsersInfo;
-    } catch (e) {
-        return [];
     }
 }
 
 //批量查询post的基础信息
-export async function getBasicPostsInfo(postId: any[]) {
+export async function getBasicPostsInfo(postIds: any[]) {
+    if (!postIds || postIds.length === 0) {
+        return [];
+    }
     const headers = await formAuthorizeHeader();
     let url = "/post/basic";
-    for (let i = 0; i < postId.length; i++) {
+    for (let i = 0; i < postIds.length; i++) {
         if (i === 0) {
-            url = `${url}?id=${postId[i]}`;
+            url = `${url}?id=${postIds[i]}`;
         }
         else {
-            url = `${url}&id=${postId[i]}`;
+            url = `${url}&id=${postIds[i]}`;
         }
     }
     try {
@@ -2652,10 +2668,10 @@ export async function getBasicPostsInfo(postId: any[]) {
 }
 
 //在postsId中查询postId，查到了就返回对应的信息，没有就设置一个默认的,post信息包括楼层信息和回复者信息
-export function getThisPostInfo(postId, postsId) {
-    for (let i in postsId) {
-        if (postsId[i].id === postId) {
-            return postsId[i];
+export function getThisPostInfo(postId, postIds) {
+    for (let i in postIds) {
+        if (postIds[i].id === postId) {
+            return postIds[i];
         }
     }
     //查询失败
@@ -2666,15 +2682,18 @@ export function getThisPostInfo(postId, postsId) {
 }
 
 //批量查询topic的基础信息
-export async function getBasicTopicsInfo(topicId: any[]) {
+export async function getBasicTopicsInfo(topicIds: any[]) {
+    if (!topicIds || topicIds.length === 0) {
+        return [];
+    }
     const headers = await formAuthorizeHeader();
     let url = "/topic/basic";
-    for (let i = 0; i < topicId.length; i++) {
+    for (let i = 0; i < topicIds.length; i++) {
         if (i === 0) {
-            url = `${url}?id=${topicId[i]}`;
+            url = `${url}?id=${topicIds[i]}`;
         }
         else {
-            url = `${url}&id=${topicId[i]}`;
+            url = `${url}&id=${topicIds[i]}`;
         }
     }
     try {
@@ -2687,10 +2706,10 @@ export async function getBasicTopicsInfo(topicId: any[]) {
 }
 
 //在topicsId中查询topicId，查到了就返回对应的信息，没有就设置一个默认的
-export function getThisTopicInfo(topicId, topicsId) {
-    for (let i in topicsId) {
-        if (topicsId[i].id === topicId) {
-            return topicsId[i];
+export function getThisTopicInfo(topicId, topicIds) {
+    for (let i in topicIds) {
+        if (topicIds[i].id === topicId) {
+            return topicIds[i];
         }
     }
     //查询失败
