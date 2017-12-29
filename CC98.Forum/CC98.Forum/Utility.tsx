@@ -398,6 +398,8 @@ export async function getAllNewTopic(from: number, router) {
                     item.hitCount = `${index}万`;
                 }
             }
+            //计算总楼层
+            item.floorCount = item.replyCount + 1;
             //回复数转换
             if (item.replyCount > 10000) {
                 if (item.replyCount > 100000) {
@@ -519,6 +521,8 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
                     item.hitCount = `${index}万`;
                 }
             }
+            //计算总楼层
+            item.floorCount = item.replyCount + 1;
             //回复数转换
             if (item.replyCount > 10000) {
                 if (item.replyCount > 100000) {
@@ -1470,6 +1474,8 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                         item.hitCount = `${index}万`;
                     }
                 }
+                //计算总楼层
+                item.floorCount = item.replyCount + 1;
                 //回复数转换
                 if (item.replyCount > 10000) {
                     if (item.replyCount > 100000) {
@@ -2717,4 +2723,28 @@ export function getThisTopicInfo(topicId, topicIds) {
         id: topicId, title: "未知主题（该主题已被删除或者无权限获取）", boardId: 0
     };
     return indexData;
+}
+
+/*
+*处理发帖回帖内容
+*如果存在合法的@，则会返回一个字符串数组，包含至多10个合法的被@用户的昵称，否则返回false
+*/
+export function atHanderler(content: string) {
+    const reg = new RegExp("@[^ \n]{1,10}?[ \n]", "gm");
+    const reg2 = new RegExp("[^@ ]+");
+    if (content.match(reg)) {   //如果match方法返回了非null的值（即数组），则说明内容中存在合法的@
+        let atNum = content.match(reg).length;  //合法的@数
+        if (atNum > 10) atNum = 10;            //至多10个
+        let ats: string[] = new Array();
+        for (let i = 0; i < atNum; i++) {
+            let anAt = content.match(reg)[i];
+
+            let aUserName = reg2.exec(anAt)[0];
+
+            ats[i] = aUserName;
+        }
+        return ats;
+    } else {
+        return false;
+    }
 }

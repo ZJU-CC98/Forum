@@ -35,10 +35,14 @@ export class SearchTopicSingle extends React.Component<FocusTopic> {
         let topicUrl = `/topic/${this.props.id}`;
         let userUrl = `/user/id/${this.props.userId}`;
         let boardUrl = `/list/${this.props.boardId}`;
-        let a: any = parseInt(this.props.replyCount+1) / 10;
-        let b = parseInt(a) + 1;
-        let c = parseInt(this.props.replyCount) - (b - 1) * 10;
-        let lastPostUrl = `${topicUrl}/${b}#${c}`;
+        let a: any = (this.props.floorCount / 10) + 1;
+        let b = parseInt(a);
+        let c = this.props.floorCount + 10 - b * 10;
+        let pageNum = `${b}#${c}`;
+        if (c === 0) {
+            pageNum = `${b - 1}#10`;
+        }
+        let lastPostUrl = `${topicUrl}/${pageNum}`;
         let lastPostUserUrl = `/user/name/${encodeURI(this.props.lastPostUser)}`;
         return (<div className="focus-topic">
                             <a className="focus-topic-left" href={userUrl} target="_blank" id={`user_${this.props.id}`}>

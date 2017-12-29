@@ -29,6 +29,10 @@ export class FocusTopic {
     *主题的回复数（不包括第一次发言），由于太多，所以显示字符串k
     */
     replyCount: string;
+     /**
+    *主题的楼层数
+    */
+    floorCount: number;
     /**
     *主题作者的id。如果主题为匿名主题，则该参数为 null
     */
