@@ -2578,10 +2578,10 @@ export async function getUsersInfobyNames(userNames: any[]) {
     else {
         for (let i = 0; i < usersInfoNeeded.length; i++) {
             if (i === 0) {
-                url = `${url}?name=${usersInfoNeeded[i]}`;
+                url = encodeURIComponent(`${url}?name=${usersInfoNeeded[i]}`);
             }
             else {
-                url = `${url}&name=${usersInfoNeeded[i]}`;
+                url = encodeURIComponent(`${url}&name=${usersInfoNeeded[i]}`);
             }
         }
         try {

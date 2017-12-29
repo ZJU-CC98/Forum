@@ -165,7 +165,7 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
 
 export class FloorSize extends React.Component<{isHot:boolean, floor: number }> {
     render() {
-        if (this.props.isHot) {
+        if (!this.props.isHot) {
             if (this.props.floor > 9999)
                 return <div className="reply-floor-small">{this.props.floor}</div>;
             else {
