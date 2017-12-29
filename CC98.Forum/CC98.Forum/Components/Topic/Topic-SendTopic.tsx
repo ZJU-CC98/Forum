@@ -246,7 +246,7 @@ ${newProps.content.content}[/quote]
 				const postId = await mes.text();
 				const topicId = this.props.topicInfo.id;
 				const atUsersJSON = JSON.stringify(atUsers);
-				const url2 = `/notification/at?topicInfo.id=${topicId}&postid=${postId}`;
+				const url2 = `/notification/at?topicid=${topicId}&postid=${postId}`;
 				let myHeaders2 = new Headers();
 				myHeaders2.append("Content-Type", 'application/json');
 				myHeaders2.append("Authorization", token);

@@ -237,6 +237,7 @@
 .recommendedReadingTitle {
     display: block;
     max-width: 43.625rem;
+    height: 1.25rem;
     font-size: 1rem;
     font-family: 微软雅黑;
     color: rgb(107,113,120);
@@ -260,6 +261,7 @@
 
 .recommendedReadingButtons {
     display: flex;
+    height: 0.625rem;
     flex-direction: row;
     justify-content: flex-end;
 }
@@ -325,6 +327,7 @@
     display: flex;
     flex-direction: row;
     flex-grow: 1;
+    height: 2rem; //部分浏览器用了flex-grow后还要限制高度……
     align-content: center;
     white-space: nowrap; //表示文本不会换行，在同一行继续，直到遇到<br>标签为止
     overflow: hidden; //不显示超过对象尺寸的内容
@@ -380,6 +383,7 @@
     display: flex;
     flex-direction: row;
     flex-grow: 1;
+    height: 4rem; //部分浏览器用了flex-grow后还要限制高度……
     align-items: center;
 }
 
@@ -429,6 +433,7 @@
     display: flex;
     flex-direction: row;
     flex-grow: 1;
+    height: 2rem; //部分浏览器用了flex-grow后还要限制高度……
 }
 
 .schoolNewsTitle {
@@ -474,6 +479,7 @@
     display: flex;
     flex-direction: row;
     flex-grow: 1;
+    height: 2rem; //部分浏览器用了flex-grow后还要限制高度……
     justify-content: space-between;
 }
 
