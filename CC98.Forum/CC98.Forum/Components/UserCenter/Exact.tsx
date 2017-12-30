@@ -8,31 +8,28 @@ import ExactProfile from './ExactProfile';
 import ExactActivities from './ExactActivities';
 import ExactAvatar from './ExactAvatar';
 import * as Utility from '../../Utility';
-import { changeUserInfo } from '../../Actions';
+import { refreshCurrentUserInfo } from '../../AsyncActions/UserCenter';
 import { connect } from 'react-redux';
 
+interface Props {
+    /**
+     * 当前用户信息
+     */
+    userInfo: UserInfo;
+    /**
+     * 刷新用户信息
+     */
+    changeUserInfo: () => void;
+}
 /**
  * 用户中心主页
  */
-class UserCenterExact extends React.Component<{userInfo, changeUserInfo}> {
+class UserCenterExact extends React.Component<Props> {
 
 
     //组件加载时更新store与缓存中的状态
     async componentDidMount() {
-        try {
-            const token = await Utility.getToken();
-
-            let headers = new Headers();
-            headers.append("Authorization", token);
-            let response1 = await Utility.cc98Fetch(`/me`, {
-                headers
-            });
-            let userInfo = await response1.json();
-            Utility.setLocalStorage("userInfo", userInfo);
-            this.props.changeUserInfo(userInfo);
-        } catch (e) {
-            console.log('用户中心错误');
-        }
+        this.props.changeUserInfo();
     }
 
     render() {        
@@ -53,7 +50,7 @@ function mapState(state) {
 function mapDispatch(dispatch) {
     return {
         changeUserInfo: (newInfo) => {
-            dispatch(changeUserInfo(newInfo));
+            dispatch(refreshCurrentUserInfo());
         }
     };
 }

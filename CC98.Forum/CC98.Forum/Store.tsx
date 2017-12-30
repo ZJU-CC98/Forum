@@ -3,7 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-
+import thunk from './node_modules/redux-thunk/es/index'
 import error from './Reducers/Error';
 import post from './Reducers/Post';
 import userInfo from './Reducers/UserInfo';
@@ -28,4 +28,4 @@ const logger = store => next => action => {
     return result;
 }
 
-export default createStore(reducer, applyMiddleware(logger));
+export default createStore(reducer, applyMiddleware(thunk, logger));

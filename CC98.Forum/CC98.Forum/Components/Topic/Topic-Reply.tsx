@@ -35,8 +35,8 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
             masters: [],
         };
     }
-    quote(content, userName, replyTime, floor) {
-        this.props.quote(content, userName, replyTime, floor);
+    quote(content, userName, replyTime, floor, postId) {
+        this.props.quote(content, userName, replyTime, floor, postId);
     }
     async update() {
         const page = this.props.page || 1;

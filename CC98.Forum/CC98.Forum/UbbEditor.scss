@@ -1,6 +1,7 @@
 ﻿.ubb-editor {
     background-color: white;
     border: 1px solid rgb(204,204,204);
+    position: relative;
 
     .editor-buttons {
         display: flex;
@@ -131,7 +132,8 @@
     }
 
     .ubb-emoji {
-        position: relative;
+        position: absolute;
+        top: 2rem;
         width: 50%;
         transition-duration: .4s;
         left: 22rem;

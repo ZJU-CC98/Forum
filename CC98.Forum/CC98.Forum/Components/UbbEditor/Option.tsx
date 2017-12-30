@@ -35,4 +35,8 @@ export default class {
      * 支持的字号，确保第一项为0
      */
     textSize?: number[] =  [0, 1, 2, 3, 4, 5, 6, 7];
+    /**
+     * 插入文本后是否换行
+     */
+    shouldEnter?: string[] = ['img'];
 }

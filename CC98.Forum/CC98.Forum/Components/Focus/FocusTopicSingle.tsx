@@ -10,11 +10,6 @@ import * as Utility from '../../Utility';
 export class FocusTopicSingle extends React.Component<FocusTopic> {
 
     componentDidMount() {
-        if (!this.props.tag1) {
-            $(`#tag_${this.props.id}`).css('display', 'none');
-            $(`#tag_${this.props.id}`).css('margin-right', '0');
-        }
-
         if (!this.props.userId) {
             $(`#user_${this.props.id}`).removeAttr('href');
             $(`#user_${this.props.id}`).removeAttr('target');
@@ -24,6 +19,19 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
     }
 
     render() {
+        let topicUrl = `/topic/${this.props.id}`;
+        let userUrl = `/user/id/${this.props.userId}`;
+        let boardUrl = `/list/${this.props.boardId}`;
+        let a: any = (this.props.floorCount / 10) + 1;
+        let b = parseInt(a);
+        let c = this.props.floorCount + 10 - b * 10;
+        let pageNum = `${b}#${c}`;
+        if (c === 0) {
+            pageNum = `${b - 1}#10`;
+        }
+
+        let lastPostUrl = `${topicUrl}/${pageNum}`;
+        let lastPostUserUrl = `/user/name/${encodeURI(this.props.lastPostUser)}`;
         let tagInfo = '';
         if (this.props.tag1) {
             if (this.props.tag2) {
@@ -32,33 +40,44 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
             else {
                 tagInfo = `标签：${this.props.tag1}`;
             }
+            return (<div className="focus-topic">
+                <a className="focus-topic-left" href={userUrl} target="_blank" id={`user_${this.props.id}`}>
+                    <img className="focus-topic-portraitUrl" src={this.props.portraitUrl}></img>
+                    <div className="focus-topic-userName">{this.props.userName}</div>
+                </a>
+                <div className="focus-topic-middle">
+                    <a className="focus-topic-title" href={topicUrl} target="_blank">{this.props.title}</a>
+                    <div className="focus-topic-info">
+                        <div>{tagInfo}</div>
+                        <div><i className="fa fa-clock-o fa-lg"></i>{this.props.time}</div>
+                        <div><i className="fa fa-eye fa-lg"></i> {this.props.hitCount}</div>
+                        <div>最后回复：<a href={lastPostUserUrl} target="_blank" id={`lastpost_${this.props.id}`}>{this.props.lastPostUser}</a></div>
+                        <div><a href={lastPostUrl} target="_blank">{this.props.lastPostTime}</a></div>
+                    </div>
+                </div>
+                <div className="focus-topic-rightBar"></div>
+                <a className="focus-topic-right" href={boardUrl} target="_blank"><div className="focus-topic-board">{this.props.boardName}</div></a>
+            </div>);
         }
-        let topicUrl = `/topic/${this.props.id}`;
-        let userUrl = `/user/id/${this.props.userId}`;
-        let boardUrl = `/list/${this.props.boardId}`;
-        let a: any = parseInt(this.props.replyCount+1) / 10;
-        let b = parseInt(a) + 1;
-        let c = parseInt(this.props.replyCount) - (b - 1) * 10;
-        let lastPostUrl = `${topicUrl}/${b}#${c}`;
-        let lastPostUserUrl = `/user/name/${encodeURI(this.props.lastPostUser)}`;
-        return (<div className="focus-topic">
-                            <a className="focus-topic-left" href={userUrl} target="_blank" id={`user_${this.props.id}`}>
-                                        <img className="focus-topic-portraitUrl" src={this.props.portraitUrl}></img>
-                                        <div className="focus-topic-userName">{this.props.userName}</div>
-                            </a>
-                            <div className="focus-topic-middle">
-                                <a className="focus-topic-title" href={topicUrl} target="_blank">{this.props.title}</a>
-                                <div className="focus-topic-info">
-                                    <div id={`tag_${this.props.id}`}>{tagInfo}</div>
-                                    <div><i className="fa fa-clock-o fa-lg"></i>{this.props.time}</div>
-                                    <div><i className="fa fa-eye fa-lg"></i> {this.props.hitCount}</div>
-                    <div>最后回复：<a href={lastPostUserUrl} target="_blank" id={`lastpost_${this.props.id}`}>{this.props.lastPostUser}</a></div>
-                                    <div><a href={lastPostUrl} target="_blank">{this.props.lastPostTime}</a></div>
-                                </div>
-                            </div>
-                    <div className="focus-topic-rightBar"></div>
-                    <a className="focus-topic-right" href={boardUrl} target="_blank"><div className="focus-topic-board">{this.props.boardName}</div></a>
-                </div>);
+        else {
+            return (<div className="focus-topic">
+                <a className="focus-topic-left" href={userUrl} target="_blank" id={`user_${this.props.id}`}>
+                    <img className="focus-topic-portraitUrl" src={this.props.portraitUrl}></img>
+                    <div className="focus-topic-userName">{this.props.userName}</div>
+                </a>
+                <div className="focus-topic-middle">
+                    <a className="focus-topic-title" href={topicUrl} target="_blank">{this.props.title}</a>
+                    <div className="focus-topic-info">
+                        <div><i className="fa fa-clock-o fa-lg"></i>{this.props.time}</div>
+                        <div><i className="fa fa-eye fa-lg"></i> {this.props.hitCount}</div>
+                        <div>最后回复：<a href={lastPostUserUrl} target="_blank" id={`lastpost_${this.props.id}`}>{this.props.lastPostUser}</a></div>
+                        <div><a href={lastPostUrl} target="_blank">{this.props.lastPostTime}</a></div>
+                    </div>
+                </div>
+                <div className="focus-topic-rightBar"></div>
+                <a className="focus-topic-right" href={boardUrl} target="_blank"><div className="focus-topic-board">{this.props.boardName}</div></a>
+            </div>);
+        }
     }
 }
 

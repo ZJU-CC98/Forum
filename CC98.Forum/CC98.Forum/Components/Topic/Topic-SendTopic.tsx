@@ -15,7 +15,7 @@ interface Props {
     topicInfo;
 }
 export class SendTopic extends React.Component<Props, { content: string, mode: number, masters: string[],buttonInfo,buttonDisabled }>{
-	constructor(props) {
+    constructor(props) {
 		super(props);
 		this.sendUbbTopic = this.sendUbbTopic.bind(this);
 		this.changeEditor = this.changeEditor.bind(this);
@@ -40,7 +40,8 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 		$(UIId).css('display', 'none');
 	}
     componentDidMount() {
-    
+        console.log(this.props);
+
 
 		if (this.state.mode === 1) {
             /*const response1 = await fetch("/config.production.json");
@@ -113,7 +114,7 @@ ${this.props.content.content}
 
 	}
     componentWillReceiveProps(newProps) {
-   
+        console.log(newProps);
 		const time = moment(newProps.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
 		if (newProps.content.userName) {
 			if (this.state.mode === 1) {
@@ -189,39 +190,31 @@ ${newProps.content.content}[/quote]
 		}
 	}
 
-	/*
-    *处理ubb模式下的发帖内容
-    *如果存在合法的@，则会返回一个字符串数组，包含至多10个合法的被@用户的昵称，否则返回false
-    */
-    atHanderler(content: string) {
-        const reg = new RegExp("@[^ \n]{1,10}?[ \n]", "gm");
-        const reg2 = new RegExp("[^@ ]+");
-        if (content.match(reg)) {   //如果match方法返回了非null的值（即数组），则说明内容中存在合法的@
-            let atNum = content.match(reg).length;  //合法的@数
-            if (atNum > 10) atNum = 10;            //至多10个
-            let ats: string[] = new Array();
-            for (let i = 0; i < atNum; i++) {
-                let anAt = content.match(reg)[i];
-        
-                let aUserName = reg2.exec(anAt)[0];
-          
-                ats[i] = aUserName;
-            }
-            return ats;
-        } else {
-            return false;
-        }
-    }
-
     async sendUbbTopic() {
         this.setState({ buttonDisabled: true, buttonInfo: "..." });
-		const url = `/topic/${this.props.topicInfo.id}/post`;
-		const bodyInfo = {
-			content: this.state.content,
-			contentType: 0,
-			title: ''
-		};
-		const body = JSON.stringify(bodyInfo);
+        const url = `/topic/${this.props.topicInfo.id}/post`;
+        let bodyInfo;
+        if (Utility.quoteJudger(this.state.content)) {
+            console.log("有引用内容，postId是", this.props.content.postId);
+            let data = await Utility.getBasicPostsInfo([this.props.content.postId]);
+            console.log("该postId对应的楼层信息",data);
+            bodyInfo = {
+                content: this.state.content,
+                contentType: 0,
+                title: '',
+                parentId: this.props.content.postId
+            };
+        }
+        else {
+            console.log("没有引用内容");
+            bodyInfo = {
+                content: this.state.content,
+                contentType: 0,
+                title: ''
+            };
+        }
+        const body = JSON.stringify(bodyInfo);
+        console.log("body内容",body);
 		const token = await Utility.getToken();
 		const headers = new Headers();
 		headers.append('Authorization', token);
@@ -239,8 +232,8 @@ ${newProps.content.content}[/quote]
 		if (mes.status === 403) {
             alert('你太快啦 请慢一点~');
             this.setState({buttonDisabled: false, buttonInfo: "发帖" });
-		} else if(mes.status === 200){
-			const atUsers = this.atHanderler(this.state.content);
+        } else if (mes.status === 200) {
+            const atUsers = Utility.atHanderler(this.state.content);
 			//如果存在合法的@，则发送@信息，否则不发送，直接跳转至所发帖子
 			if (atUsers) {
 				const postId = await mes.text();
@@ -287,59 +280,77 @@ ${newProps.content.content}[/quote]
                 alert('你太快啦 请慢一点~');
                 this.setState({  buttonDisabled: false, buttonInfo: "发帖" });
 			}
-			if (mes.status === 402) {
+            if (mes.status === 402) {
                 alert('请输入内容');
-                this.setState({  buttonDisabled: false, buttonInfo: "发帖" });
-			}
-			this.props.onChange();
+                this.setState({ buttonDisabled: false, buttonInfo: "发帖" });
+            }
+            else if (mes.status === 200) {
+                const atUsers = Utility.atHanderler(c);
+                //如果存在合法的@，则发送@信息，否则不发送，直接跳转至所发帖子
+                if (atUsers) {
+                    const postId = await mes.text();
+                    const topicId = this.props.topicInfo.id;
+                    const atUsersJSON = JSON.stringify(atUsers);
+                    const url2 = `/notification/at?topicid=${topicId}&postid=${postId}`;
+                    let myHeaders2 = new Headers();
+                    myHeaders2.append("Content-Type", 'application/json');
+                    myHeaders2.append("Authorization", token);
+                    let response2 = await Utility.cc98Fetch(url2, {
+                        method: 'POST',
+                        headers: myHeaders2,
+                        body: atUsersJSON
+                    });
+                }
 
-			/* editormd.emoji.path = '/static/images/emoji/';
-			 const response1 = await fetch("/config.production.json");
-			 let data;
-			 if (response1.status !== 404) {
-				 const data1 = await response1.json();
-				 const response2 = await fetch("/config.json");
-				 const data2 = await response2.json();
-				 data = { ...data2, ...data1 };
-			 } else {
-				 const response2 = await fetch("/config.json");
-				 data = await response2.json();
-			 }
-			 const fileUrl = data.imageUploadUrl;*/
-			const fileUrl = `${Utility.getApiUrl}/file`;
-			editormd.emoji.path = '/static/images/emoji/';
-			Constants.testEditor = editormd('test-editormd', {
-				width: '100%',
-				height: 400,
-				path: '/static/scripts/lib/editor.md/lib/',
-				saveHTMLToTextarea: false,
-				imageUpload: false,
-				imageFormats: ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp'],
-				imageUploadURL: fileUrl,
-				emoji: true,
-				toc: true,
-				tocm: true,
-				toolbarIcons() {
-					return [
-						'undo', 'redo', '|', 'emoji',
-						'bold', 'del', 'italic', 'quote', '|',
-						'h1', 'h2', 'h3', 'h4', '|',
-						'list-ul', 'list-ol', 'hr', '|',
-						'link', 'image', 'testIcon', 'code', 'table', 'html-entities',
-					];
-				},
-				toolbarIconsClass: {
-					testIcon: 'fa-upload'  // 指定一个FontAawsome的图标类
-				},
-				// 自定义工具栏按钮的事件处理
-				toolbarHandlers: {
-					testIcon() {
-						$('#upload-files').click();
+                this.props.onChange();
+                /* editormd.emoji.path = '/static/images/emoji/';
+                 const response1 = await fetch("/config.production.json");
+                 let data;
+                 if (response1.status !== 404) {
+                     const data1 = await response1.json();
+                     const response2 = await fetch("/config.json");
+                     const data2 = await response2.json();
+                     data = { ...data2, ...data1 };
+                 } else {
+                     const response2 = await fetch("/config.json");
+                     data = await response2.json();
+                 }
+                 const fileUrl = data.imageUploadUrl;*/
+                const fileUrl = `${Utility.getApiUrl}/file`;
+                editormd.emoji.path = '/static/images/emoji/';
+                Constants.testEditor = editormd('test-editormd', {
+                    width: '100%',
+                    height: 400,
+                    path: '/static/scripts/lib/editor.md/lib/',
+                    saveHTMLToTextarea: false,
+                    imageUpload: false,
+                    imageFormats: ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp'],
+                    imageUploadURL: fileUrl,
+                    emoji: true,
+                    toc: true,
+                    tocm: true,
+                    toolbarIcons() {
+                        return [
+                            'undo', 'redo', '|', 'emoji',
+                            'bold', 'del', 'italic', 'quote', '|',
+                            'h1', 'h2', 'h3', 'h4', '|',
+                            'list-ul', 'list-ol', 'hr', '|',
+                            'link', 'image', 'testIcon', 'code', 'table', 'html-entities',
+                        ];
+                    },
+                    toolbarIconsClass: {
+                        testIcon: 'fa-upload'  // 指定一个FontAawsome的图标类
+                    },
+                    // 自定义工具栏按钮的事件处理
+                    toolbarHandlers: {
+                        testIcon() {
+                            $('#upload-files').click();
 
-					}
-				},
-			});
-            this.setState({ content: '', buttonDisabled: false, buttonInfo: "发帖" });
+                        }
+                    },
+                });
+                this.setState({ content: '', buttonDisabled: false, buttonInfo: "发帖" });
+            }
 		} catch (e) {
 			console.log('Error');
 			console.log(e);
