@@ -36,6 +36,10 @@ export class UbbEditor extends React.Component<Props, State> {
      * UBB编辑器的选项
      */
     option: Option;
+    /**
+     * 对上传文件input的引用
+     */
+    uploadInput: HTMLInputElement;
     constructor(props) {
         super(props);
         this.state = {
@@ -96,17 +100,36 @@ export class UbbEditor extends React.Component<Props, State> {
     }
 
     //处理上传文件的函数
-    async handleUpload(file: File) {
+    async handleUpload(files: FileList, index = 0) {
         try{
-            //除图片外判断文件大小，大于默认不上传
-            if(this.state.extendTagName === 'upload' && file.size > this.option.uploadFileMaxSize){
-                throw new Error('文件过大');
+            let { extendTagName } = this.state;
+            if(extendTagName === '') {
+                extendTagName = 'img';
             }
-            let res = await Utility.uploadFile(file);
-            if (res.isSuccess) {
-                this.handleButtonClick(this.state.extendTagName, `${res.content}`);
+            const url = `/file`;
+            const myHeaders = await Utility.formAuthorizeHeader();
+            let formdata = new FormData();
+            for(let i = 0; i < files.length; i++){
+                //除图片外判断文件大小，大于默认不上传
+                if(extendTagName === 'upload' && files[i].size > this.option.uploadFileMaxSize){
+                    throw new Error('文件过大');
+                } else if(extendTagName === 'img' && !files[i].type.match('image')){
+                    throw new Error('请选择图片文件');
+                }
+                formdata.append('files', files[i]);
+            }
+            formdata.append('contentType', "multipart/form-data");
+            let res = await Utility.cc98Fetch(url, {
+                method: 'POST',
+                headers: myHeaders,
+                body: formdata
+            });
+            let data: string[] = await res.json();
+            if (res.status === 200) {
+                data.map(item=>this.handleButtonClick(extendTagName, item));
+                this.uploadInput.value = '';
             }else {
-                throw new Error('上传失败');
+                throw new Error(`上传文件失败`);
             }
         }catch(e){
             this.setState({
@@ -166,6 +189,8 @@ export class UbbEditor extends React.Component<Props, State> {
         const hasDefaultSelection = this.option.hasDefaultSelection.indexOf(name) !== -1;
         //判断插入后不需要选中的tag
         const shouldNotSelected = this.option.shouldNotSelected.indexOf(name) !== -1;
+        //插入文本后是否换行
+        const shouldEnter = this.option.shouldEnter.indexOf(name) !== -1;
         this.setState((prevState: State) => {
             //分别获取用户选中的内容，选中部分之前的内容，选中部分之后的内容
             let before = this.state.value.slice(0, prevState.selectionStart),
@@ -178,6 +203,9 @@ export class UbbEditor extends React.Component<Props, State> {
                 selected = `[${name}${value ? `=${value}` : ''}]${selected || value}[/${name}]`;
             } else {
                 selected = `[${name}${value ? `=${value}` : ''}]${selected}[/${name}]`;
+            }
+            if(shouldEnter){
+                selected += '\n';
             }
             //更新父组件中的状态
             this.props.update(before + selected + after);
@@ -376,12 +404,11 @@ export class UbbEditor extends React.Component<Props, State> {
                         accept={this.state.extendTagName === 'img' ? "image/*" : ""}
                         style={{ display: 'none' }}
                         onClick={(e) => { e.stopPropagation(); }}
-                        onChange={(e) => {
-                            if (e.target.files[0]) {
-                                this.handleUpload(e.target.files[0]);
-                                e.target.value = "";
-                            }
+                        onChange={async (e) => {
+                            await this.handleUpload(e.target.files);
                         }}
+                        ref={it=>this.uploadInput = it}
+                        multiple
                     />
                 </div>
                 {/*编辑器，核心部分*/}
@@ -402,6 +429,10 @@ export class UbbEditor extends React.Component<Props, State> {
                                 let target: any = e.target;
                                 //textarea失去焦点时记录用户选中内容
                                 this.handleTextareaBlur(target.selectionStart, target.selectionEnd);
+                            }}
+                            onDrop={e=>{
+                                e.preventDefault();
+                                this.handleUpload(e.dataTransfer.files);
                             }}
                             onKeyDown={(e) => {
                                 if (e.ctrlKey && e.key === 'z') {
