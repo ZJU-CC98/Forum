@@ -26,7 +26,7 @@ export class ReplierSignature extends React.Component<Props, {likeNumber,dislike
         }
     }
     quote() {
-        this.props.quote(this.props.postInfo.content, this.props.userInfo.name, this.props.postInfo.time, this.props.postInfo.floor);
+        this.props.quote(this.props.postInfo.content, this.props.userInfo.name, this.props.postInfo.time, this.props.postInfo.floor, this.props.postInfo.id);
     }
     showManageUI() {
         const UIId = `#manage${this.props.postInfo.id}`;

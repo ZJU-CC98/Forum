@@ -15,7 +15,7 @@ interface Props {
     topicInfo;
 }
 export class SendTopic extends React.Component<Props, { content: string, mode: number, masters: string[],buttonInfo,buttonDisabled }>{
-	constructor(props) {
+    constructor(props) {
 		super(props);
 		this.sendUbbTopic = this.sendUbbTopic.bind(this);
 		this.changeEditor = this.changeEditor.bind(this);
@@ -40,7 +40,8 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 		$(UIId).css('display', 'none');
 	}
     componentDidMount() {
-    
+        console.log(this.props);
+
 
 		if (this.state.mode === 1) {
             /*const response1 = await fetch("/config.production.json");
@@ -113,7 +114,7 @@ ${this.props.content.content}
 
 	}
     componentWillReceiveProps(newProps) {
-   
+        console.log(newProps);
 		const time = moment(newProps.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
 		if (newProps.content.userName) {
 			if (this.state.mode === 1) {
@@ -191,13 +192,29 @@ ${newProps.content.content}[/quote]
 
     async sendUbbTopic() {
         this.setState({ buttonDisabled: true, buttonInfo: "..." });
-		const url = `/topic/${this.props.topicInfo.id}/post`;
-		const bodyInfo = {
-			content: this.state.content,
-			contentType: 0,
-			title: ''
-		};
-		const body = JSON.stringify(bodyInfo);
+        const url = `/topic/${this.props.topicInfo.id}/post`;
+        let bodyInfo;
+        if (Utility.quoteJudger(this.state.content)) {
+            console.log("有引用内容，postId是", this.props.content.postId);
+            let data = await Utility.getBasicPostsInfo([this.props.content.postId]);
+            console.log("该postId对应的楼层信息",data);
+            bodyInfo = {
+                content: this.state.content,
+                contentType: 0,
+                title: '',
+                parentId: this.props.content.postId
+            };
+        }
+        else {
+            console.log("没有引用内容");
+            bodyInfo = {
+                content: this.state.content,
+                contentType: 0,
+                title: ''
+            };
+        }
+        const body = JSON.stringify(bodyInfo);
+        console.log("body内容",body);
 		const token = await Utility.getToken();
 		const headers = new Headers();
 		headers.append('Authorization', token);

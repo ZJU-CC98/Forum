@@ -31,7 +31,7 @@ export class MessageResponsebox extends React.Component<MessageResponseProps> {
                 userName = `[url=/user/id/${this.props.userId}][color=gray]${this.props.userName}[/color][/url]`;
             }
             else {
-                userName = `[color=gray]有人[/color]`;
+                userName = `[color=gray]${this.props.userName}[/color]`;
             }
             if (this.props.boardId) {
                 title = `[url=/topic/${this.props.topicId}/${pageNum}][color=blue]${this.props.topicTitle}[/color][/url]`;
@@ -48,7 +48,7 @@ export class MessageResponsebox extends React.Component<MessageResponseProps> {
                 userName = `[url=/user/id/${this.props.userId}][color=gray][b]${this.props.userName}[/b][/color][/url]`;
             }
             else {
-                userName = `[color=gray][b]有人[/b][/color]`;
+                userName = `[color=gray][b]${this.props.userName}[/b][/color]`;
             }
             if (this.props.boardId) {
                 title = `[url=/topic/${this.props.topicId}/${pageNum}][color=blue]${this.props.topicTitle}[/color][/url]`;

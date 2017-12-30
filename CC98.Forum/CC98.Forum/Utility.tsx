@@ -1733,10 +1733,10 @@ export async function getMessageResponse(from: number, size: number, router) {
                 }
                 //获取楼层信息和回复者信息
                 if (newTopic[i].postId) {
-                    let postInfo = getThisPostInfo(newTopic[i].postId, postsInfo);
-                    newTopic[i].floor = postInfo.floor;
-                    newTopic[i].userId = postInfo.userId;
-                    newTopic[i].userName = postInfo.userName;
+                   let postInfo = getThisPostInfo(newTopic[i].postId, postsInfo);
+                   newTopic[i].floor = postInfo.floor;
+                   newTopic[i].userId = postInfo.userId;
+                   newTopic[i].userName = postInfo.userName;
                 }
                 result.push(newTopic[i]);
             }
@@ -1794,6 +1794,12 @@ export async function getMessageAttme(from: number, size: number, router) {
                     newTopic[i].floor = postInfo.floor;
                     newTopic[i].userId = postInfo.userId;
                     newTopic[i].userName = postInfo.userName;
+                }
+                else {
+                   newTopic[i].floor = 1;
+                   let topicInfo = await getTopicInfo(newTopic[i].topicId);
+                   newTopic[i].userId = topicInfo.userId;
+                   newTopic[i].userName = topicInfo.userName;
                 }
                 result.push(newTopic[i]);
             }
@@ -2730,21 +2736,48 @@ export function getThisTopicInfo(topicId, topicIds) {
 *如果存在合法的@，则会返回一个字符串数组，包含至多10个合法的被@用户的昵称，否则返回false
 */
 export function atHanderler(content: string) {
-    const reg = new RegExp("@[^ \n]{1,10}?[ \n]", "gm");
-    const reg2 = new RegExp("[^@ ]+");
-    if (content.match(reg)) {   //如果match方法返回了非null的值（即数组），则说明内容中存在合法的@
-        let atNum = content.match(reg).length;  //合法的@数
+    const reg1 = new RegExp("(.*?)\[quotex?\].*\[\/quotex?\](.*)");
+    const reg2 = new RegExp("@[^ \n]{1,10}?[ \n]", "gm");
+    const reg3 = new RegExp("[^@ ]+");
+    //不检测引用内容中的@
+    if (content.match(reg1)) {
+        content = `${content.match(reg1)[1]}${content.match(reg1)[2]}`;
+    }
+    if (content === '') {
+        return false
+    }
+    else if (content.match(reg2)) {   //如果match方法返回了非null的值（即数组），则说明内容中存在合法的@
+        let atNum = content.match(reg2).length;  //合法的@数
         if (atNum > 10) atNum = 10;            //至多10个
         let ats: string[] = new Array();
         for (let i = 0; i < atNum; i++) {
-            let anAt = content.match(reg)[i];
+            let anAt = content.match(reg2)[i];
 
-            let aUserName = reg2.exec(anAt)[0];
+            let aUserName = reg3.exec(anAt)[0];
 
             ats[i] = aUserName;
         }
         return ats;
     } else {
+        return false;
+    }
+}
+
+/**
+ * 判断是否存在引用内容
+ * @param content
+ */
+export function quoteJudger(content: string) {
+    const reg = new RegExp("\[(quotex?)\].*\[\/(quotex?)\]");
+    if (content.match(reg)) {
+        console.log("引用内容检测结果", content.match(reg)[0]);
+    }
+    if (content.match(reg) && (content.match(reg)[1] === content.match(reg)[2])) {
+        console.log("引用内容检测结果: ok");
+        return true;
+    }
+    else {
+        console.log("引用内容检测结果: no");
         return false;
     }
 }

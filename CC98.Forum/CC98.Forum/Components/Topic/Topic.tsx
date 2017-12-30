@@ -30,9 +30,6 @@ declare let moment: any;
 declare let editormd: any;
 
 
-
-
-
 export class Post extends RouteComponent<{history}, { topicid, page, totalPage, userName, boardId, topicInfo, boardInfo, fetchState, quote, shouldRender,isFav ,IPData}, { topicid, page, userName }> {
     constructor(props, context) {
         super(props, context);
@@ -43,14 +40,14 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
             page: 1, shouldRender: true, topicid: this.match.params.topicid, totalPage: 1, userName: null, boardId: 7, topicInfo: { replyCount: 0 }, boardInfo: { masters: [], id: 7 }, fetchState: 'ok', quote: "", isFav: false, IPData:[]
         };
     }
-    quote(content, userName, replyTime, floor) {
+    quote(content, userName, replyTime, floor, postId) {
     
         const y = $("#sendTopicInfo").offset().top;
         let page = this.state.page;
         if (!this.state.page) page = 1;
         const url = `/topic/${this.state.topicid}/${page}#sendTopicInfo`;
         this.props.history.push(url);
-        this.setState({ quote: { content: content, userName: userName, replyTime: replyTime, floor: floor } });
+        this.setState({ quote: { content: content, userName: userName, replyTime: replyTime, floor: floor, postId: postId } });
     }
     update() {
        

@@ -3279,11 +3279,11 @@ a {
     .message-settingbox {
         display: flex;
         flex-direction: row;
-        height: 30px;
-        line-height: 30px;
+        height: 40px;
+        line-height: 40px;
         font-size: 16px;
         font-family: "微软雅黑";
-        color: #6b7178;
+        color: black;
         flex-shrink: 0;
         margin: 1.5rem 0 0 5rem;
 
@@ -3292,15 +3292,15 @@ a {
         }
 
         input {
-            margin: 0.6rem 0.2rem 0 1.5rem;
+            margin: 0.8rem 0.2rem 0 1.5rem;
         }
     }
 
     .message-setting-btn {
         width: 100px;
-        height: 20px;
-        line-height: 20px;
-        margin: 10rem;
+        height: 30px;
+        line-height: 30px;
+        margin: 3rem 0rem 0rem 9rem;
     }
 }
 
