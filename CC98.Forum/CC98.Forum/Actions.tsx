@@ -3,6 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as Redux from 'redux';
+import * as Appstate from './States/AppState';
 import * as ActionTypes from './ActionTypes';
 
 export const userLogIn = () => ({
@@ -13,24 +14,42 @@ export const userLogOff = () => ({
     type: ActionTypes.USER_LOG_OFF
 });
 
-export const changeUserInfo = (newInfo) => ({
+export const changeUserInfo = (newInfo: Appstate.UserInfo) => ({
     type: ActionTypes.CHANGE_USERINFO,
-    newInfo: newInfo
+    newInfo
 });
 
 export const throwError = (errorMessage: string) => ({
     type: ActionTypes.ERROR,
-    errorMessage: errorMessage
+    errorMessage
 });
 
 export const changeCurrentVisitingUserPage = (page, id) => ({
     type: ActionTypes.CHANGE_VISITING_USER,
-    page: page,
-    id: id
+    page,
+    id
 });
 
 export const userNotFound = () => ({
     type: ActionTypes.USER_NOT_FOUND
+});
+
+export const userCenterLoading = () => ({
+    type: ActionTypes.USER_CENTER_LOADING
+});
+
+export const userCenterLoaded = () => ({
+    type: ActionTypes.USER_CENTER_LOADED
+});
+
+export const userCenterError = (message: string) => ({
+    type: ActionTypes.USER_CENTER_FETCH_ERROR,
+    message
+});
+
+export const changeUserFavoriteBoards = (boardsInfo: Appstate.UserFavoritesBoardInfo[]) => ({
+    type: ActionTypes.CHANGE_USER_FAVORITE_BOARDS,
+    boardsInfo
 });
 
 export class AddAwardAction implements Redux.Action {

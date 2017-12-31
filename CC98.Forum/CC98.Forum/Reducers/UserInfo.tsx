@@ -9,7 +9,7 @@ import * as Appstate from '../States/AppState';
 /**
  * 用户中心用Store
  */
-class UserInfo {
+export class UserInfoStore {
     /**
     * 表示用户是否登录
     */
@@ -38,18 +38,31 @@ class UserInfo {
      * 用户最近发过的主题
      */
     recentPosts: Appstate.UserRecentPost[] = [];
-    
+    /**
+     * 用户中心是否加载出错
+     */
+    isError: boolean = false;
+    /**
+     * 错误信息
+     */
+    errorMessage: string = '';
+    /**
+     * 当前用户收藏的版面
+     */
+    currentUserFavoriteBoards: Appstate.UserFavoritesBoardInfo[] = Utility.getLocalStorage('currentUserFavoriteBoards') || [];
 }
 
 /**
  * reducer接收到undefined的state时一定要初始化state
  * 这里用ES6方法，在函数定义中初始化state
  */
-export default (state = new UserInfo, action): UserInfo => {
+export default (state = new UserInfoStore, action): UserInfoStore => {
     switch (action.type) {
         case ActionTypes.USER_LOG_ON:
             return { ...state, isLogOn: true };
         case ActionTypes.USER_LOG_OFF:
+            Utility.removeLocalStorage('userInfo');
+            Utility.removeLocalStorage('currentUserFavoriteBoards');
             return { ...state, isLogOn: false };
         case ActionTypes.CHANGE_USERINFO:
             Utility.setLocalStorage("userInfo", action.newInfo);
@@ -57,7 +70,16 @@ export default (state = new UserInfo, action): UserInfo => {
         case ActionTypes.CHANGE_VISITING_USER:
             return { ...state, currentVisitingUserPage: action.page, currentVisitingUserId: action.id };
         case ActionTypes.USER_NOT_FOUND:
-            return { ...state, currentVisitingUserIsExisted: false};
+            return { ...state, currentVisitingUserIsExisted: false };
+        case ActionTypes.USER_CENTER_LOADING: 
+            return { ...state, isLoading: true, isError: false };
+        case ActionTypes.USER_CENTER_LOADED: 
+            return { ...state, isLoading: false };
+        case ActionTypes.USER_CENTER_FETCH_ERROR: 
+            return { ...state, isError: true, errorMessage: action.message };
+        case ActionTypes.CHANGE_USER_FAVORITE_BOARDS: 
+            Utility.setLocalStorage("currentUserFavoriteBoards", action.boardsInfo);
+            return { ...state, currentUserFavoriteBoards: action.boardsInfo };
         default:
             return state;
     }

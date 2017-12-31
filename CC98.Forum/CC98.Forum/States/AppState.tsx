@@ -370,6 +370,10 @@ export class UserInfo {
      * 用户头像地址
      */
     portraitUrl: string;
+    /**
+     * 用户关注的版面id数组
+     */
+    customBoards: number[];
 }
 
 /**
