@@ -6,131 +6,85 @@ import * as React from 'react';
 import * as Utility from '../../Utility';
 import Post from './ExactActivitiesPost';
 import { UserRecentPost } from '../../States/AppState';
-import { RouteComponent } from '../RouteComponent';
 import Pager from './Pager';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { getRecentPosts } from '../../AsyncActions/UserCenter';
+
+interface Props {
+    userRecentPosts: UserRecentPost[];
+    totalPage: number;
+    hasTotal: boolean;
+    isLoading: boolean;
+    match: any;
+    getInfo: (page: number) => void;
+}
 
 /**
  * 用户中心我的主题组件
  */
-export default class extends React.Component<{match}, UserCenterMyPostsExactState> {
-    constructor(props, contest) {
-        super(props, contest);
-        const postCount = Utility.getLocalStorage('userInfo').postCount;
-        this.state = {
-            userRecentPosts: [],
-            totalPage: (this.props.match.params.page || 1) + 1,
-            currentPage: this.props.match.params.page,
-            hasTotal: false,
-            isLoading: true
-        };
-    }
-
-    componentDidUpdate() {
-        if (this.state.currentPage !== this.props.match.params.page) {
-            this.setState({ currentPage: this.props.match.params.page });
-            this.getInfo(parseInt(this.props.match.params.page));
-        }
-    }
-
-    componentDidMount() {
-        this.getInfo(parseInt(this.props.match.params.page));
-    }
-
-    getInfo = async (page = 1) => {
-        try {
+class MyPosts extends React.Component<Props> {
+    componentWillReceiveProps(newProps: Props){
+        if(this.props.match.params.page !== newProps.match.params.page) {
             window.scroll(0, 0);
-            this.setState({ isLoading: true });
-            const url = `/me/recent-topic?from=${(page - 1) * 10}&size=11`;
-            const token = await Utility.getToken();
-            const headers = new Headers();
-            headers.append('Authorization', token);
-            let res = await Utility.cc98Fetch(url, {
-                headers
-            });
-            if (res.status !== 200) {
-                throw {};
-            }
-            let data: any[] = await res.json(),
-                i = data.length,
-                totalPage: number;
-
-            if (i <= 10) {
-                totalPage = Number.parseInt(this.props.match.params.page || 1);
-                this.setState({ hasTotal: true });
-            } else {
-                totalPage = Math.max(Number.parseInt(this.props.match.params.page || 1) + 1, this.state.totalPage);
-                data.pop();
-                i = 10;
-            }
-
-            let userRecentPosts = await Promise.all(data.map((item) => (this.item2post(item))));
-
-            this.setState({
-                userRecentPosts,
-                totalPage,
-                isLoading: false
-            });
-        } catch (e) {
-            console.log('我的主题加载失败');
         }
-    }
-
-    async item2post(item: itemType) {
-        let userRecentPost = new UserRecentPost();
-        userRecentPost.approval = item.likeCount;
-        userRecentPost.board = await Utility.getBoardName(item.boardId);
-        userRecentPost.date = item.time.replace('T', ' ').slice(0, 19);
-        userRecentPost.disapproval = item.dislikeCount;
-        userRecentPost.content = item.title;
-        userRecentPost.id = item.id;
-        userRecentPost.boardId = item.boardId;
-        userRecentPost.name = item.userName;
-        userRecentPost.isAnonymous = item.isAnonymous;
-
-        return userRecentPost;
     }
 
     render() {
-        if (this.state.isLoading) {
-            return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
+        if(this.props.isLoading) {
+            return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>;
         }
-        if (this.state.userRecentPosts.length === 0) {
-            return (<div className="user-posts" style={{ textAlign: 'center' }}>
-                没有主题
-            </div>
-                );
-        }        
+        const curPage = parseInt(this.props.match.params.page) || 1;
+        const totalPage = this.props.hasTotal ? this.props.totalPage : curPage + 1;
+        //如果未请求完所有帖子并且帖子总数小于请求的页数
+        //换言之，当用户向后翻页，或直接通过url定位页数时
+        let shouldLoad = this.props.userRecentPosts.length < (curPage - 1) * 10 + 1 && !this.props.hasTotal;
+        //当用户向前翻页，且翻页后的部分中存在undefined时
+        //仅当用户通过url定位页数后向前翻页才会出现的情况
+        for(let i = (curPage - 1) * 10; i < Math.min(this.props.userRecentPosts.length, curPage * 10); i++){
+            if(!this.props.userRecentPosts[i]){
+                shouldLoad = true;
+                break;
+            }
+        }
+        
+        if(shouldLoad) {
+            this.props.getInfo(curPage);
+            return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>;
+        } else if(this.props.userRecentPosts.length === 0) {
+            return <div className="user-posts" style={{ textAlign: 'center' }}>没有主题</div>;
+        }
         //state转换为JSX
-        const userRecentPosts = this.state.userRecentPosts.map((item) => (<Post userRecentPost={item} />));
+        let userRecentPosts = this.props.userRecentPosts.slice((curPage - 1) * 10, curPage * 10 - 1).map((item) => (<Post userRecentPost={item} />));
         //添加分隔线
         for (let i = 1; i < userRecentPosts.length; i += 2) {
             userRecentPosts.splice(i, 0, <hr />);
         }
-        console.log(this.state.totalPage);
         return (
             <div className="user-posts">
                 {userRecentPosts}
-                <Pager currentPage={parseInt(this.props.match.params.page) || 1} totalPage={this.state.totalPage} href="/usercenter/myposts/" hasTotal={this.state.hasTotal}/>
+                <Pager currentPage={curPage} totalPage={totalPage} href="/usercenter/myposts/" hasTotal={this.props.hasTotal}/>
             </div>
         );
     }
 }
 
-interface UserCenterMyPostsExactState {
-    userRecentPosts: UserRecentPost[];
-    totalPage: number;
-    currentPage: number;
-    hasTotal: boolean;
-    isLoading: boolean;
+
+function mapState(store) {
+    return {
+        userRecentPosts: store.userInfo.recentPosts,
+        totalPage: store.userInfo.totalPage,
+        hasTotal: store.userInfo.hasTotal,
+        isLoading: store.userInfo.isLoading
+    };
 }
 
-interface itemType {
-    boardId: number;
-    dislikeCount: number;
-    likeCount: number;
-    title: string;
-    id: number;
-    time: string;
-    userName: string;
-    isAnonymous: boolean;
+function mapDispatch(dispatch) {
+    return {
+        getInfo: (page:number) => {
+            dispatch(getRecentPosts(page));
+        }
+    };
 }
+
+export default withRouter(connect(mapState, mapDispatch)(MyPosts));

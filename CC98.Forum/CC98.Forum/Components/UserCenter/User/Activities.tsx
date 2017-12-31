@@ -41,20 +41,7 @@ export default class extends React.Component<{id: number}, UserCenterExactActivi
                 });
 
                 if (res.status === 200) {
-                    let data: itemType[] = await res.json();
 
-                    if (data.length < 11) {
-                        window.removeEventListener('scroll', this.scrollHandler);
-                    } else {
-                        data.pop();
-                    }
-
-                    let posts = await Promise.all(data.map((item) => (this.item2post(item))));
-
-                    this.setState((prevState)=>({
-                        userRecentPosts: prevState.userRecentPosts.concat(posts),
-                        isLoading: false
-                    }));
                 } else {
                     throw {};
                 }
@@ -67,58 +54,10 @@ export default class extends React.Component<{id: number}, UserCenterExactActivi
         }
     }
 
-    async componentDidMount() {
-        try {
-            const url = `/user/${this.props.id}/recent-topic?userid=${this.props.id}&from=${this.state.userRecentPosts.length}&size=11`;
-            const token = await Utility.getToken();
-            const headers = new Headers();
-            headers.append('Authorization', token);
-            let res = await Utility.cc98Fetch(url, {
-                headers
-            });
-
-            if (res.status === 200) {
-                let data = await res.json();
-                let posts: UserRecentPost[] = [],
-                    i = data.length === 11 ? 10 : data.length;
-
-                while (i--) {
-                    let post = await this.item2post(data[i]);
-                    posts.unshift(post);
-                }
-
-                this.setState({
-                    userRecentPosts: posts
-                });
-                if (data.length === 11) {
-                    window.addEventListener('scroll', this.scrollHandler);
-                }
-            } else {
-                throw new Error();
-            }
-        } catch (e) {
-            console.log('用户中心帖子加载失败');
-        }
-    }
-
     componentWillUnmount() {
         window.removeEventListener('scroll', this.scrollHandler);
     }
 
-    async item2post(item: itemType) {
-        let userRecentPost = new UserRecentPost();
-        userRecentPost.approval = item.likeCount;
-        userRecentPost.board = await Utility.getBoardName(item.boardId);
-        userRecentPost.date = item.time.replace('T', ' ').slice(0, 19);
-        userRecentPost.disapproval = item.dislikeCount;
-        userRecentPost.content = item.title;
-        userRecentPost.id = item.id;
-        userRecentPost.boardId = item.boardId;
-        userRecentPost.name = item.userName;
-        userRecentPost.isAnonymous = item.isAnonymous;
-
-        return userRecentPost;
-    }
 
     render() {
         if (this.state.userRecentPosts.length === 0) {
@@ -156,15 +95,4 @@ export default class extends React.Component<{id: number}, UserCenterExactActivi
 interface UserCenterExactActivitiesPostsState {
     userRecentPosts: UserRecentPost[];
     isLoading: boolean;
-}
-
-interface itemType {
-    boardId: number;
-    dislikeCount: number;
-    likeCount: number;
-    title: string;
-    id: number;
-    time: string;
-    userName: string;
-    isAnonymous: boolean;
 }

@@ -52,6 +52,20 @@ export const changeUserFavoriteBoards = (boardsInfo: Appstate.UserFavoritesBoard
     boardsInfo
 });
 
+export const changeUserRecentPosts = (posts: Appstate.UserRecentPost[]) => ({
+    type: ActionTypes.CHANGE_USER_RECENT_POSTS,
+    posts
+});
+
+export const usercenterPageLoadUnfinish = () => ({
+    type: ActionTypes.USER_CENTER_PAGE_LOAD_UNFINISH
+});
+
+export const usercenterPageLoadFinish = (totalPage: number) => ({
+    type: ActionTypes.USER_CENTER_PAGE_LOAD_FINISH,
+    totalPage
+});
+
 export class AddAwardAction implements Redux.Action {
     type: string = ActionTypes.ADD_AWARD;
 }

@@ -50,16 +50,24 @@ export class UserInfoStore {
      * 当前用户收藏的版面
      */
     currentUserFavoriteBoards: Appstate.UserFavoritesBoardInfo[] = Utility.getLocalStorage('currentUserFavoriteBoards') || [];
+    /** 
+     * 分页信息是否全部加载完
+     */
+    hasTotal: boolean = false;
+    /**
+     * 分页信息总数
+     */
+    totalPage: number = 1;
 }
 
 /**
  * reducer接收到undefined的state时一定要初始化state
  * 这里用ES6方法，在函数定义中初始化state
  */
-export default (state = new UserInfoStore, action): UserInfoStore => {
+export default (state = new UserInfoStore(), action): UserInfoStore => {
     switch (action.type) {
         case ActionTypes.USER_LOG_ON:
-            return { ...state, isLogOn: true };
+            return { ...state, isLogOn: true, ...new UserInfoStore()};
         case ActionTypes.USER_LOG_OFF:
             Utility.removeLocalStorage('userInfo');
             Utility.removeLocalStorage('currentUserFavoriteBoards');
@@ -80,6 +88,12 @@ export default (state = new UserInfoStore, action): UserInfoStore => {
         case ActionTypes.CHANGE_USER_FAVORITE_BOARDS: 
             Utility.setLocalStorage("currentUserFavoriteBoards", action.boardsInfo);
             return { ...state, currentUserFavoriteBoards: action.boardsInfo };
+        case ActionTypes.CHANGE_USER_RECENT_POSTS: 
+            return { ...state, recentPosts: action.posts };
+        case ActionTypes.USER_CENTER_PAGE_LOAD_UNFINISH: 
+            return { ...state, hasTotal: false };
+        case ActionTypes.USER_CENTER_PAGE_LOAD_FINISH: 
+            return { ...state, hasTotal: true, totalPage: action.totalPage };
         default:
             return state;
     }

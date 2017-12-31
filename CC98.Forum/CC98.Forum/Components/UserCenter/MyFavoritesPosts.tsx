@@ -61,7 +61,7 @@ export default class extends React.Component<{match}, UserCenterMyFavoritesPosts
                 return;
             }
 
-            let userRecentPosts: UserRecentPost[] = [],
+            let userRecentPosts: UserRecentPost[] = data,
                 i = data.length,
                 totalPage: number;
 
@@ -73,14 +73,8 @@ export default class extends React.Component<{match}, UserCenterMyFavoritesPosts
                 totalPage = Math.max((Number.parseInt(this.props.match.params.page) || 1) + 1, this.state.totalPage);
             }
 
-            while (i--) {
-                let post = new UserRecentPost();
-                post.board = data[i].boardName;
-                post.boardId = data[i].boardId;
-                post.content = data[i].title;
-                post.date = data[i].time.replace('T', ' ').slice(0, 19);
-                post.id = data[i].id;
-                userRecentPosts.unshift(post);
+            while(i--) {
+                userRecentPosts[i].board = await Utility.getBoardName(userRecentPosts[i].boardId);
             }
 
             this.setState({

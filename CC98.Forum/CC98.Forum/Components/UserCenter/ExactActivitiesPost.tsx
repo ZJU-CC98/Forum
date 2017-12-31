@@ -14,13 +14,12 @@ export default class extends React.Component<UserCenterExactActivitiesPostProps>
             <div className="user-post">
                 <div className="user-post-info">
                     <Link className="user-post-board" to={`/list/${this.props.userRecentPost.boardId}`}>{this.props.userRecentPost.board}</Link>
-                    <a className="user-post-date">{this.props.userRecentPost.date}</a>
-                    <a className="user-post-title">{this.props.userRecentPost.title}</a>
+                    <a className="user-post-date">{this.props.userRecentPost.time.slice(0, 19).replace('T', ' ')}</a>
                 </div>
                 <div className="user-post-content">
-                    <p><Link to={`/topic/${this.props.userRecentPost.id}`}>{this.props.userRecentPost.content}</Link></p>
-                    {this.props.userRecentPost.approval !== undefined ? <a className="fa-thumbs-o-up">{` ${this.props.userRecentPost.approval}`}</a> : null}
-                    {this.props.userRecentPost.disapproval !== undefined ? <a className="fa-thumbs-o-down">{` ${this.props.userRecentPost.disapproval}`}</a> : null}
+                    <p><Link to={`/topic/${this.props.userRecentPost.id}`}>{this.props.userRecentPost.title}</Link></p>
+                    {/*this.props.userRecentPost.likeCount !== undefined ? <a className="fa-thumbs-o-up">{` ${this.props.userRecentPost.likeCount}`}</a> : null}
+                    {this.props.userRecentPost.dislikeCount !== undefined ? <a className="fa-thumbs-o-down">{` ${this.props.userRecentPost.dislikeCount}`}</a> : null*/}
                 </div>
             </div>    
         );

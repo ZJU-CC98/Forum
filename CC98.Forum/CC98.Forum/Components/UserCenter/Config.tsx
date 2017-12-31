@@ -5,6 +5,7 @@
 import * as React from 'react';
 import * as Utility from '../../Utility';
 import { ChangeUserInfo, UserInfo } from '../../States/AppState';
+import { changeUserInfo } from '../../Actions';
 import ConfigAvatar from './ConfigAvatar';
 import ConfigSignature from './ConfigSignature';
 import ConfigOthers from './ConfigOthers';
@@ -15,6 +16,10 @@ interface Props {
      * store中的信息
      */
     userInfo: UserInfo;
+    /** 
+     * 刷新store中的状态
+     */
+	changeUserInfo: (info: UserInfo) => void;
 }
 interface States {
     /**
@@ -172,6 +177,7 @@ class Config extends React.Component<Props, States> {
                 //修改成功后刷新用户信息
                 await Utility.refreshUserInfo();
                 let userInfo = Utility.getLocalStorage('userInfo');
+                this.props.changeUserInfo(userInfo);
                 //替换掉缓存中对应ID与NAME的缓存
                 Utility.setLocalStorage(`userId_${userInfo.id}`, userInfo, 3600);
                 Utility.setLocalStorage(`userName_${userInfo.name}`, userInfo, 3600);
@@ -220,6 +226,14 @@ function mapState(state){
     return {
         userInfo: state.userInfo.currentUserInfo
     };
+}
+
+function mapDispatch(dispatch) {
+	return {
+		changeUserInfo: (newInfo: UserInfo) => {
+			dispatch(changeUserInfo(newInfo));
+		}
+	};
 }
 
 export default connect(mapState, null)(Config);
