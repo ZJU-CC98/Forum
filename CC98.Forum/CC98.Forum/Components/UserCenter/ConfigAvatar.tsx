@@ -6,7 +6,18 @@ import * as React from 'react';
 import * as Utility from '../../Utility';
 import { changeUserInfo } from '../../Actions';
 import { connect } from 'react-redux';
+import { UserInfo } from '../../States/AppState';
 
+interface Props {
+	/**
+	 * 更新store中的信息
+	 */
+	changeUserInfo: (userInfo: UserInfo)=>void;
+	/** 
+	 * store中的用户信息
+	 */
+	userInfo: UserInfo;
+}
 interface States {
 	/**
 	 * 提示信息
@@ -82,7 +93,7 @@ interface States {
  * 用户中心页
  * 修改头像组件
  */
-class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, States> {
+class UserCenterConfigAvatar extends React.Component<Props, States> {
 	/**
 	 * 对Canvas的引用
 	 */
@@ -115,7 +126,7 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, States>
 	 * 拖曳Y偏移
 	 */
 	diffY: number;
-	constructor(props) {
+	constructor(props: Props) {
 		super(props);
 		const userInfo = Utility.getLocalStorage('userInfo');
 		this.state = {
@@ -127,7 +138,7 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, States>
 			selectorWidth: 160,
 			selectorLeft: 0,
 			selectorTop: 0,
-			avatarNow: userInfo.portraitUrl,
+			avatarNow: props.userInfo.portraitUrl,
 			isLoading: false,
 			naturalWidth: 0,
 			naturalHeight: 0,
@@ -496,6 +507,12 @@ class UserCenterConfigAvatar extends React.Component<{ changeUserInfo }, States>
 	}
 }
 
+function mapState(state) {
+	return {
+		userInfo: state.userInfo.currentUserInfo
+	};
+}
+
 function mapDispatch(dispatch) {
 	return {
 		changeUserInfo: (newInfo) => {
@@ -504,4 +521,4 @@ function mapDispatch(dispatch) {
 	};
 }
 
-export default connect(() => (null), mapDispatch)(UserCenterConfigAvatar);
+export default connect(mapState, mapDispatch)(UserCenterConfigAvatar);

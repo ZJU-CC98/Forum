@@ -15,6 +15,10 @@ class UserInfo {
     */
     isLogOn: boolean = Utility.isLogOn();
     /**
+     * 当前组件是否正在加载
+     */
+    isLoading: boolean = false;
+    /**
     * 表示当前登录用户的用户信息
     */
     currentUserInfo: Appstate.UserInfo = Utility.getLocalStorage('userInfo') || new Appstate.UserInfo();
@@ -30,6 +34,11 @@ class UserInfo {
      * 表示当前访问的用户是否存在
      */
     currentVisitingUserIsExisted: boolean = true;
+    /**
+     * 用户最近发过的主题
+     */
+    recentPosts: Appstate.UserRecentPost[] = [];
+    
 }
 
 /**
@@ -44,11 +53,11 @@ export default (state = new UserInfo, action): UserInfo => {
             return { ...state, isLogOn: false };
         case ActionTypes.CHANGE_USERINFO:
             Utility.setLocalStorage("userInfo", action.newInfo);
-            return { ...state, currentUserInfo: action.newInfo }
+            return { ...state, currentUserInfo: action.newInfo };
         case ActionTypes.CHANGE_VISITING_USER:
-            return { ...state, currentVisitingUserPage: action.page, currentVisitingUserId: action.id }
+            return { ...state, currentVisitingUserPage: action.page, currentVisitingUserId: action.id };
         case ActionTypes.USER_NOT_FOUND:
-            return { ...state, currentVisitingUserIsExisted: false}
+            return { ...state, currentVisitingUserIsExisted: false};
         default:
             return state;
     }
