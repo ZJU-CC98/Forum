@@ -8,7 +8,7 @@ import { UserRecentPost } from '../../States/AppState';
 import * as Utility from '../../Utility';
 import { connect } from 'react-redux';
 import { getRecentPosts } from '../../AsyncActions/UserCenter';
-import { changeUserRecentPosts, usercenterPageLoadUnfinish } from '../../Actions';
+import { Actions } from '../../Actions/UserCenter';
 
 interface Props {
     userRecentPosts: UserRecentPost[];
@@ -90,8 +90,8 @@ function mapDispatch(dispatch) {
             dispatch(getRecentPosts(page));
         },
         clearPosts: () => {
-            dispatch(changeUserRecentPosts([]));
-            dispatch(usercenterPageLoadUnfinish());
+            dispatch(Actions.changeUserRecentPosts([]));
+            dispatch(Actions.usercenterPageLoadUnfinish());
         }
     };
 }

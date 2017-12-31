@@ -4,7 +4,7 @@
 
 import * as React from 'react';
 import * as Utility from '../../Utility';
-import { changeUserInfo } from '../../Actions';
+import { Actions } from '../../Actions/UserCenter';
 import { connect } from 'react-redux';
 import { UserInfo } from '../../States/AppState';
 
@@ -516,7 +516,7 @@ function mapState(state) {
 function mapDispatch(dispatch) {
 	return {
 		changeUserInfo: (newInfo) => {
-			dispatch(changeUserInfo(newInfo));
+			dispatch(Actions.changeUserInfo(newInfo));
 		}
 	};
 }

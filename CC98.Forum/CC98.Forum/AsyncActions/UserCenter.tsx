@@ -1,5 +1,5 @@
 ﻿import * as Utility from '../Utility';
-import * as Actions from '../Actions';
+import  { Actions } from '../Actions/UserCenter';
 import * as Appstate from '../States/AppState';
 import { UserInfoStore } from '../Reducers/UserInfo';
 import { Action, ActionCreator, Dispatch } from 'redux';

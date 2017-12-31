@@ -1,8 +1,4 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-
-import * as React from 'react';
+﻿import * as React from 'react';
 import Post from '../ExactActivitiesPost';
 import { UserRecentPost } from '../../../States/AppState';
 import * as Utility from '../../../Utility';
@@ -41,7 +37,17 @@ export default class extends React.Component<{id: number}, UserCenterExactActivi
                 });
 
                 if (res.status === 200) {
+                    let posts: UserRecentPost[] = await res.json(),
+                    i = posts.length === 11 ? 10 : posts.length;
 
+                    while (i--) {
+                        posts[i].board = await Utility.getBoardName(posts[i].boardId);
+                    }
+
+                    this.setState((prevState)=>({
+                        userRecentPosts: prevState.userRecentPosts.concat(posts),
+                        isLoading: false
+                    }));
                 } else {
                     throw {};
                 }
@@ -54,10 +60,41 @@ export default class extends React.Component<{id: number}, UserCenterExactActivi
         }
     }
 
+    async componentDidMount() {
+        try {
+            const url = `/user/${this.props.id}/recent-topic?userid=${this.props.id}&from=${this.state.userRecentPosts.length}&size=11`;
+            const token = await Utility.getToken();
+            const headers = new Headers();
+            headers.append('Authorization', token);
+            let res = await Utility.cc98Fetch(url, {
+                headers
+            });
+
+            if (res.status === 200) {
+                let posts: UserRecentPost[] = await res.json(),
+                    i = posts.length === 11 ? 10 : posts.length;
+
+                while (i--) {
+                    posts[i].board = await Utility.getBoardName(posts[i].boardId);
+                }
+
+                this.setState({
+                    userRecentPosts: posts
+                });
+                if (posts.length === 11) {
+                    window.addEventListener('scroll', this.scrollHandler);
+                }
+            } else {
+                throw new Error();
+            }
+        } catch (e) {
+            console.log('用户中心帖子加载失败');
+        }
+    }
+
     componentWillUnmount() {
         window.removeEventListener('scroll', this.scrollHandler);
     }
-
 
     render() {
         if (this.state.userRecentPosts.length === 0) {

@@ -5,7 +5,7 @@
 import * as React from 'react';
 import * as Utility from '../../Utility';
 import { ChangeUserInfo, UserInfo } from '../../States/AppState';
-import { changeUserInfo } from '../../Actions';
+import { Actions } from '../../Actions/UserCenter';
 import ConfigAvatar from './ConfigAvatar';
 import ConfigSignature from './ConfigSignature';
 import ConfigOthers from './ConfigOthers';
@@ -231,7 +231,7 @@ function mapState(state){
 function mapDispatch(dispatch) {
 	return {
 		changeUserInfo: (newInfo: UserInfo) => {
-			dispatch(changeUserInfo(newInfo));
+			dispatch(Actions.changeUserInfo(newInfo));
 		}
 	};
 }

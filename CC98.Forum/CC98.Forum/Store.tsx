@@ -7,14 +7,23 @@ import thunk from 'redux-thunk'
 import error, { ErrorStore } from './Reducers/Error';
 import post, { TopicState } from './Reducers/Post';
 import userInfo, { UserInfoStore } from './Reducers/UserInfo';
-import * as Actions from './Actions';
+import { Actions as UserCenterActions } from './Actions/UserCenter';
+import { getReturnOfExpression } from 'react-redux-typescript';
 
 interface StoreEnhancerState { }
 export interface RootState extends StoreEnhancerState {
     error: ErrorStore;
     post: TopicState;
     userInfo: UserInfoStore;
-  }
+}
+
+function values<T>(o: { [s: string]: T }): T[] {
+    return Object.keys(o).map(key => o[key]);
+};
+
+const Actions = { ...UserCenterActions };
+const returnOfActions = values(Actions).map(getReturnOfExpression);
+export type RootAction = typeof returnOfActions[number];
 /**
  * 合并reducer
  * 在组件中使用相应的Store时带上这里的前缀
