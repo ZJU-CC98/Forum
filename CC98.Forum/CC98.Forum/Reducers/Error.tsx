@@ -7,7 +7,7 @@ import * as ActionTypes from '../ActionTypes';
 /**
  * 错误用的Store
  */
-class ErrorStore {
+export class ErrorStore {
     /**
     * 表示是否有错误
     */

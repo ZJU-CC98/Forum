@@ -3,16 +3,23 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import thunk from './node_modules/redux-thunk/es/index'
-import error from './Reducers/Error';
-import post from './Reducers/Post';
-import userInfo from './Reducers/UserInfo';
+import thunk from 'redux-thunk'
+import error, { ErrorStore } from './Reducers/Error';
+import post, { TopicState } from './Reducers/Post';
+import userInfo, { UserInfoStore } from './Reducers/UserInfo';
+import * as Actions from './Actions';
 
+interface StoreEnhancerState { }
+export interface RootState extends StoreEnhancerState {
+    error: ErrorStore;
+    post: TopicState;
+    userInfo: UserInfoStore;
+  }
 /**
  * 合并reducer
  * 在组件中使用相应的Store时带上这里的前缀
  */
-const reducer = combineReducers({
+const reducer = combineReducers<RootState>({
     error,
     post,
     userInfo
