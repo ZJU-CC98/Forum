@@ -2,7 +2,7 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from './node_modules/redux-thunk/es/index'
 import error from './Reducers/Error';
 import post from './Reducers/Post';
@@ -28,4 +28,6 @@ const logger = store => next => action => {
     return result;
 }
 
-export default createStore(reducer, applyMiddleware(thunk, logger));
+const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+export default createStore(reducer, composeEnhancers(applyMiddleware(thunk, logger)));
