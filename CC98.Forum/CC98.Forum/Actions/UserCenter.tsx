@@ -64,5 +64,15 @@ export const Actions = {
     changeUserCenterPage: createAction(ActionTypes.CHNAGE_USER_CENTER_PAGE, (page: 'profile' | 'config' | 'myposts' | 'myfavoriteposts' | 'myfavoriteboards' | 'myfollowings' | 'myfans') => ({
         type: ActionTypes.CHNAGE_USER_CENTER_PAGE,
         page
+    })),
+
+    followUser: createAction(ActionTypes.USER_CENTER_FOLLOW_USER, (userId: number) => ({
+        type: ActionTypes.USER_CENTER_FOLLOW_USER,
+        id: userId
+    })),
+
+    unfollowUser: createAction(ActionTypes.USER_CENTER_UNFOLLOW_USER, (userId: number) => ({
+        type: ActionTypes.USER_CENTER_UNFOLLOW_USER,
+        id: userId
     }))
 };

@@ -59,18 +59,28 @@ export class UserInfoStore {
      * 分页信息总数
      */
     totalPage = new TotalPage;
+    /**
+     * 当前用户粉丝的用户信息数组
+     */
     currentUserFansInfo: Appstate.UserInfo[] = [];
+    /**
+     * 当前用户关注的用户信息数组
+     */
     currentUserFollowingInfo: Appstate.UserInfo[] = [];
+    /**
+     * 当前用户收藏的主题信息数组
+     */
     currentUserFavoritePosts: Appstate.UserRecentPost[] = [];
+    /**
+     * 当前用户所在的页面
+     */
     currentUserCenterPage: 'profile' | 'config' | 'myposts' | 'myfavoriteposts' | 'myfavoriteboards' | 'myfollowings' | 'myfans' = 'profile';
 }
 
 class hasTotal {
     profile: boolean = false;
-    config: boolean = false;
     myposts: boolean = false;
     myfavoriteposts: boolean = false;
-    myfavoriteboards: boolean = false;
     myfollowings: boolean = false;
     myfans: boolean = false;
 }
@@ -126,7 +136,21 @@ export default (state = new UserInfoStore(), action: RootAction): UserInfoStore 
         case ActionTypes.CHANGE_USER_FAVORITE_POSTS: 
             return { ...state, currentUserFavoritePosts: action.posts };
         case ActionTypes.CHNAGE_USER_CENTER_PAGE: 
-            return { ...state, currentUserCenterPage: action.page }
+            return { ...state, currentUserCenterPage: action.page };
+        case ActionTypes.USER_CENTER_FOLLOW_USER: {
+            let userFollowingInfo = state.currentUserFollowingInfo;
+            let currentUserFollowingInfo: Appstate.UserInfo[] = userFollowingInfo.map(item => item.id === action.id ? { ...item, isFollowing: true} : item);
+            let userFansInfo = state.currentUserFansInfo;
+            let currentUserFansInfo: Appstate.UserInfo[] = userFansInfo.map(item => item.id === action.id ? { ...item, isFollowing: true} : item);
+            return { ...state, currentUserFollowingInfo, currentUserFansInfo };
+        }
+        case ActionTypes.USER_CENTER_UNFOLLOW_USER: {
+            let userFollowingInfo = state.currentUserFollowingInfo;
+            let currentUserFollowingInfo: Appstate.UserInfo[] = userFollowingInfo.map(item => item.id === action.id ? { ...item, isFollowing: false} : item);
+            let userFansInfo = state.currentUserFansInfo;
+            let currentUserFansInfo: Appstate.UserInfo[] = userFansInfo.map(item => item.id === action.id ? { ...item, isFollowing: false} : item);
+            return { ...state, currentUserFollowingInfo, currentUserFansInfo };
+        }
         default:
             return state;
     }

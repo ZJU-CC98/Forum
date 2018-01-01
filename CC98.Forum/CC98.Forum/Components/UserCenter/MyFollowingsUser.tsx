@@ -6,9 +6,25 @@ import * as React from 'react';
 import { UserInfo } from '../../States/AppState';
 import * as Utility from '../../Utility';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Actions } from '../../Actions/UserCenter';
+
+interface OwnProps {
+    userFanInfo: UserInfo;
+}
+interface Props extends OwnProps {
+    follow: (id: number) => void;
+    unfollow: (id: number) => void;
+}
+
+interface State {
+    buttonIsDisabled: boolean;
+    buttonInfo: string;
+    isFollowing: boolean;
+}
 
 //用户中心我的关注&我的粉丝用户通用组件
-export default class extends React.Component<UserCenterMyFollowingsUserProps, UserCenterMyFollowingsUserState> {
+class Fan extends React.Component<Props, State> {
     constructor(props) {
         super(props);
         this.state = {
@@ -20,12 +36,14 @@ export default class extends React.Component<UserCenterMyFollowingsUserProps, Us
         this.follow = this.follow.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            buttonInfo: nextProps.userFanInfo.isFollowing ? '已关注' : '关注',
-            buttonIsDisabled: false,
-            isFollowing: nextProps.userFanInfo.isFollowing
-        });
+    componentWillReceiveProps(nextProps: Props) {
+        if(nextProps.userFanInfo.id !== this.props.userFanInfo.id) {
+            this.setState({
+                buttonInfo: nextProps.userFanInfo.isFollowing ? '已关注' : '关注',
+                buttonIsDisabled: false,
+                isFollowing: nextProps.userFanInfo.isFollowing
+            });
+        }
     }
 
     async unfollow() {
@@ -40,6 +58,7 @@ export default class extends React.Component<UserCenterMyFollowingsUserProps, Us
                 buttonInfo: '重新关注',
                 isFollowing: false
             });
+            this.props.unfollow(this.props.userFanInfo.id);
         } else {
             this.setState({
                 buttonIsDisabled: false,
@@ -61,6 +80,7 @@ export default class extends React.Component<UserCenterMyFollowingsUserProps, Us
                 buttonInfo: '已关注',
                 isFollowing: true
             });
+            this.props.follow(this.props.userFanInfo.id);
         } else if (res === 'follow_count_limited') {
             this.setState({
                 buttonIsDisabled: false,
@@ -117,12 +137,21 @@ export default class extends React.Component<UserCenterMyFollowingsUserProps, Us
     }
 }
 
-interface UserCenterMyFollowingsUserProps {
-    userFanInfo: UserInfo;
+function mapState(state, ownProps:OwnProps) {
+    return {
+        userFanInfo: ownProps.userFanInfo
+    };
 }
 
-interface UserCenterMyFollowingsUserState {
-    buttonIsDisabled: boolean;
-    buttonInfo: string;
-    isFollowing: boolean;
+function mapDispatch(dispatch) {
+    return {
+        follow: (id: number) => {
+            dispatch(Actions.followUser(id));
+        },
+        unfollow: (id: number) => {
+            dispatch(Actions.unfollowUser(id));
+        }
+    };
 }
+
+export default connect(mapState, mapDispatch)(Fan);

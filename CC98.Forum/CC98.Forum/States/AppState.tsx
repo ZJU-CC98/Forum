@@ -374,6 +374,10 @@ export class UserInfo {
      * 用户关注的版面id数组
      */
     customBoards: number[];
+    /**
+     * 用户关注数
+     */
+    followCount: number;
 }
 
 /**

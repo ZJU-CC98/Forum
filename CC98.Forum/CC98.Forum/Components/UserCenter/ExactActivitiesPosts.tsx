@@ -21,14 +21,20 @@ interface Props {
 
 //用户中心主页帖子动态组件
 class Activities extends React.Component<Props> {
-    _i = 1;
-    get i() { return this._i++; }
+    /**
+     * 滚动没有分页信息，用自定义页数替代
+     */
+    _page = 1;
+    /**
+     * 每次读取页数时给page加一
+     */
+    get page() { return this._page++; }
 
     scrollHandler = async (e) => {
         let pageYLeft = document.body.scrollHeight - window.pageYOffset;
         
         if (pageYLeft < 1500 && this.props.isLoading === false) {
-            this.props.getInfo(this.i);
+            this.props.getInfo(this.page);
         }
     }
 
@@ -42,7 +48,7 @@ class Activities extends React.Component<Props> {
             }
         }
         if(shouldLoad) {
-            this.props.getInfo(this.i);
+            this.props.getInfo(this.page);
             window.addEventListener('scroll', this.scrollHandler);
         }
     }

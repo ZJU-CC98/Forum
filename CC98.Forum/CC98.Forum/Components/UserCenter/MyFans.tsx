@@ -11,25 +11,37 @@ import { Actions } from '../../Actions/UserCenter';
 import { connect } from 'react-redux';
 import { RootState } from '../../Store';
 import { Dispatch } from 'redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, match } from 'react-router-dom';
 import { getUserFansInfo } from '../../AsyncActions/UserCenter';
 
 
 interface Props {
     changePage: () => void;
     getInfo: (page: number) => void;
-    match: any;
+    match: match<Match>;
     userFans: UserInfo[];
     totalPage: number;
     isLoading: boolean;
     hasTotal: boolean;
 }
 
+interface Match {
+    page: string;
+}
+
 //用户中心我的粉丝组件
 class Fans extends React.Component<Props> {
+
     componentWillMount() {
         this.props.changePage();
     }
+
+    componentWillReceiveProps(newProps: Props){
+        if(this.props.match.params.page !== newProps.match.params.page) {
+            window.scroll(0, 0);
+        }
+    }
+
     render() {
         if (this.props.isLoading) {
             return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
@@ -62,7 +74,7 @@ class Fans extends React.Component<Props> {
             <div className="user-center-myfans-exact">
                 {userFans}
             </div>
-            <Pager currentPage={parseInt(this.props.match.params.page || 1)} totalPage={this.props.totalPage} href="/usercenter/myfans/" hasTotal={true}/>
+            <Pager currentPage={curPage} totalPage={this.props.totalPage} href="/usercenter/myfans/" hasTotal={true}/>
         </div>);
     }
 }

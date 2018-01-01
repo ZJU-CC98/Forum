@@ -8,7 +8,7 @@ import Post from './ExactActivitiesPost';
 import { UserRecentPost } from '../../States/AppState';
 import Pager from './Pager';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, match } from 'react-router-dom';
 import { getRecentPosts } from '../../AsyncActions/UserCenter';
 import { Actions } from '../../Actions/UserCenter';
 import { RootState } from '../../Store';
@@ -18,15 +18,20 @@ interface Props {
     totalPage: number;
     hasTotal: boolean;
     isLoading: boolean;
-    match: any;
+    match: match<Match>;
     getInfo: (page: number) => void;
     changePage: () => void;
+}
+
+interface Match {
+    page: string;
 }
 
 /**
  * 用户中心我的主题组件
  */
 class MyPosts extends React.Component<Props> {
+    
     componentWillReceiveProps(newProps: Props){
         if(this.props.match.params.page !== newProps.match.params.page) {
             window.scroll(0, 0);

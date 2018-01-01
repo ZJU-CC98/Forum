@@ -4,7 +4,6 @@
 
 import * as React from 'react';
 import { UserInfo } from '../../States/AppState';
-import { RouteComponent } from '../RouteComponent';
 import MyFollowingsUser from './MyFollowingsUser';
 import Pager from './Pager';
 import * as Utility from '../../Utility';
@@ -12,140 +11,90 @@ import { Actions } from '../../Actions/UserCenter';
 import { connect } from 'react-redux';
 import { RootState } from '../../Store';
 import { Dispatch } from 'redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, match } from 'react-router-dom';
+import { getUserFollowingsInfo } from '../../AsyncActions/UserCenter';
+
 
 interface Props {
-    match: any;
     changePage: () => void;
-}
-
-interface UserCenterMyFollowingsState {
+    getInfo: (page: number) => void;
+    match: match<Match>;
     userFollowings: UserInfo[];
     totalPage: number;
-    info: string;
-    currentPage: number;
     isLoading: boolean;
+    hasTotal: boolean;
 }
 
+interface Match {
+    page: string;
+}
 
 //用户中心我的关注组件
-class Following extends React.Component<Props, UserCenterMyFollowingsState> {
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
-            userFollowings: [],
-            totalPage: 2,
-            info: '加载中',
-            currentPage: this.props.match.params.page,
-            isLoading: true
-        };
-    }
+class Following extends React.Component<Props> {
 
-    componentDidUpdate() {
-        if (this.state.currentPage !== this.props.match.params.page) {
-            this.setState({ currentPage: this.props.match.params.page });
-            this.getInfo(this.props.match.params.page);
-        }
-    }
-
-    async componentDidMount() {
+    componentWillMount() {
         this.props.changePage();
-        this.getInfo(this.props.match.params.page);
-        try {            
-            const userid = Utility.getLocalStorage('userInfo').id;
-            const url = `/user/followee/count?userid=${userid}`
-            let res = await Utility.cc98Fetch(url);
-
-            if (res.status !== 200) {
-                throw new Error();
-            }
-            let data = await res.json();
-
-            this.setState({
-                totalPage: data % 10 === 0 ? data / 10 : Math.floor((data / 10)) + 1
-            });
-        } catch (e) {
-            console.log('我的关注加载失败');
-        }
     }
 
-    getInfo = async (page = 1) => {
-        try {
+    componentWillReceiveProps(newProps: Props){
+        if(this.props.match.params.page !== newProps.match.params.page) {
             window.scroll(0, 0);
-            this.setState({ isLoading: true });
-            const token = await Utility.getToken();
-            let url = `/me/followee?from=${(page - 1) * 10}&size=10`;
-            const headers = new Headers();
-            headers.append('Authorization', token);
-            let res = await Utility.cc98Fetch(url, {
-                headers
-            });
-            if (res.status !== 200) {
-                throw {};
-            }
-            let data: number[] = await res.json();
-
-            //没有粉丝
-            if (!data || !data.length) {
-                this.setState({
-                    info: '没有关注',
-                    isLoading: false
-                });
-                return false;
-            }
-
-            
-            const query = data.join('&id=');
-            url = `/user?id=${query}`;
-            res = await Utility.cc98Fetch(url, {
-                headers
-            });
-            let userFollowings: UserInfo[] = await res.json();
-            this.setState({
-                userFollowings,
-                isLoading: false
-            });
-        } catch (e) {
-
         }
     }
 
     render() {
-        if (this.state.isLoading) {
+        if (this.props.isLoading) {
             return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
+        } else if (this.props.hasTotal && this.props.totalPage === 0 ) {
+            return (<div className="user-center-myfans" style={{textAlign: 'center'}}>没有关注</div>);
         }
-        if (this.state.userFollowings.length === 0) {
-            return (
-                <div className="user-center-myfollowings" style={{ textAlign: 'center' }}>
-                    {this.state.info}
-                </div>
-                );
+        const curPage = parseInt(this.props.match.params.page) || 1;
+        //如果未请求完所有帖子并且帖子总数小于请求的页数
+        //换言之，当用户向后翻页，或直接通过url定位页数时
+        let shouldLoad = this.props.userFollowings.length < (curPage - 1) * 10 + 1;
+        for(let i = (curPage - 1) * 10; i <  Math.min(curPage * 10, this.props.userFollowings.length); i++ ){
+            if(!this.props.userFollowings[i]){
+                shouldLoad = true;
+                break;
+            }
+        }
+        
+        if(shouldLoad) {
+            this.props.getInfo(curPage);
+            return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>;
         }
         //state转换为JSX
-        const userFollowings = this.state.userFollowings.map((item) => (<MyFollowingsUser userFanInfo={item} />));
+        const userFollowings = this.props.userFollowings.slice((curPage - 1) * 10, curPage * 10 - 1).map((item) => (<MyFollowingsUser userFanInfo={item} />));
         //添加分隔线
         for (let i = 1; i < userFollowings.length; i += 2) {
             userFollowings.splice(i, 0, <hr />);
         }
-        const page =parseInt( this.props.match.params.page) || 1;
 
-        return (<div className="user-center-myfollowings">
-            <div className="user-center-myfollowings-exact">
+        return (<div className="user-center-myfans">
+            <div className="user-center-myfans-exact">
                 {userFollowings}
             </div>
-            <Pager currentPage={page} totalPage={this.state.totalPage} href="/usercenter/myfollowings/" hasTotal={true}/>
+            <Pager currentPage={curPage} totalPage={this.props.totalPage} href="/usercenter/myfollowings/" hasTotal={true}/>
         </div>);
     }
 }
 
 function mapState(state: RootState) {
-    return {};
+    return {
+        userFollowings: state.userInfo.currentUserFollowingInfo,
+        totalPage: state.userInfo.totalPage.myfollowings,
+        isLoading: state.userInfo.isLoading,
+        hasTotal: state.userInfo.hasTotal.myfollowings
+    };
 }
 
 function mapDispatch(dispatch: Dispatch<RootState>) {
     return {
         changePage: () => {
             dispatch(Actions.changeUserCenterPage('myfollowings'));
+        },
+        getInfo: (page: number) => {
+            dispatch(getUserFollowingsInfo(page));
         }
     };
 }
