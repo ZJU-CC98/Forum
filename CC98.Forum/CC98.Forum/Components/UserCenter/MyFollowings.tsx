@@ -8,9 +8,28 @@ import { RouteComponent } from '../RouteComponent';
 import MyFollowingsUser from './MyFollowingsUser';
 import Pager from './Pager';
 import * as Utility from '../../Utility';
+import { Actions } from '../../Actions/UserCenter';
+import { connect } from 'react-redux';
+import { RootState } from '../../Store';
+import { Dispatch } from 'redux';
+import { withRouter } from 'react-router-dom';
+
+interface Props {
+    match: any;
+    changePage: () => void;
+}
+
+interface UserCenterMyFollowingsState {
+    userFollowings: UserInfo[];
+    totalPage: number;
+    info: string;
+    currentPage: number;
+    isLoading: boolean;
+}
+
 
 //用户中心我的关注组件
-export default class extends React.Component<{match}, UserCenterMyFollowingsState> {
+class Following extends React.Component<Props, UserCenterMyFollowingsState> {
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -30,6 +49,7 @@ export default class extends React.Component<{match}, UserCenterMyFollowingsStat
     }
 
     async componentDidMount() {
+        this.props.changePage();
         this.getInfo(this.props.match.params.page);
         try {            
             const userid = Utility.getLocalStorage('userInfo').id;
@@ -118,10 +138,16 @@ export default class extends React.Component<{match}, UserCenterMyFollowingsStat
     }
 }
 
-interface UserCenterMyFollowingsState {
-    userFollowings: UserInfo[];
-    totalPage: number;
-    info: string;
-    currentPage: number;
-    isLoading: boolean;
+function mapState(state: RootState) {
+    return {};
 }
+
+function mapDispatch(dispatch: Dispatch<RootState>) {
+    return {
+        changePage: () => {
+            dispatch(Actions.changeUserCenterPage('myfollowings'));
+        }
+    };
+}
+
+export default withRouter(connect(mapState, mapDispatch)(Following));

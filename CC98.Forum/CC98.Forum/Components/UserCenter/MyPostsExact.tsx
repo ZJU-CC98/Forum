@@ -10,6 +10,8 @@ import Pager from './Pager';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getRecentPosts } from '../../AsyncActions/UserCenter';
+import { Actions } from '../../Actions/UserCenter';
+import { RootState } from '../../Store';
 
 interface Props {
     userRecentPosts: UserRecentPost[];
@@ -18,6 +20,7 @@ interface Props {
     isLoading: boolean;
     match: any;
     getInfo: (page: number) => void;
+    changePage: () => void;
 }
 
 /**
@@ -28,6 +31,10 @@ class MyPosts extends React.Component<Props> {
         if(this.props.match.params.page !== newProps.match.params.page) {
             window.scroll(0, 0);
         }
+    }
+
+    componentDidMount() {
+        this.props.changePage();
     }
 
     render() {
@@ -70,11 +77,11 @@ class MyPosts extends React.Component<Props> {
 }
 
 
-function mapState(store) {
+function mapState(store: RootState) {
     return {
         userRecentPosts: store.userInfo.recentPosts,
-        totalPage: store.userInfo.totalPage,
-        hasTotal: store.userInfo.hasTotal,
+        totalPage: store.userInfo.totalPage.myposts,
+        hasTotal: store.userInfo.hasTotal.myposts,
         isLoading: store.userInfo.isLoading
     };
 }
@@ -83,6 +90,9 @@ function mapDispatch(dispatch) {
     return {
         getInfo: (page:number) => {
             dispatch(getRecentPosts(page));
+        },
+        changePage: () => {
+            dispatch(Actions.changeUserCenterPage('myposts'));
         }
     };
 }

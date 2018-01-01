@@ -9,6 +9,7 @@ import * as Utility from '../../Utility';
 import { connect } from 'react-redux';
 import { getRecentPosts } from '../../AsyncActions/UserCenter';
 import { Actions } from '../../Actions/UserCenter';
+import { RootState } from '../../Store';
 
 interface Props {
     userRecentPosts: UserRecentPost[];
@@ -76,10 +77,10 @@ class Activities extends React.Component<Props> {
 }
 
 
-function mapState(store) {
+function mapState(store: RootState) {
     return {
         userRecentPosts: store.userInfo.recentPosts,
-        hasTotal: store.userInfo.hasTotal,
+        hasTotal: store.userInfo.hasTotal.myposts,
         isLoading: store.userInfo.isLoading
     };
 }

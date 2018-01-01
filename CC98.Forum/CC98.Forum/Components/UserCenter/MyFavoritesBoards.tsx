@@ -8,6 +8,7 @@ import MyFavoritesBoard from './MyFavoritesBoard';
 import { UserFavoritesBoardInfo } from '../../states/AppState';
 import { getCurrentUserFavoriteBoards } from '../../AsyncActions/UserCenter';
 import { connect } from 'react-redux';
+import { Actions } from '../../Actions/UserCenter';
 
 interface Props {
     /**
@@ -22,12 +23,14 @@ interface Props {
      * dispatch获取版面信息的action
      */
     getInfo: () => void;
+    changePage: () => void;
 }
 
 class Boards extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         props.getInfo();
+        props.changePage();
     }
 
     render() {
@@ -60,6 +63,9 @@ function mapDispatch(dispatch) {
     return {
         getInfo: () => {
             dispatch(getCurrentUserFavoriteBoards());
+        },
+        changePage: () => {
+            dispatch(Actions.changeUserCenterPage('myfavoriteboards'));
         }
     };
 }

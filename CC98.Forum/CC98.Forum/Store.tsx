@@ -8,10 +8,12 @@ import error, { ErrorStore } from './Reducers/Error';
 import post, { TopicState } from './Reducers/Post';
 import userInfo, { UserInfoStore } from './Reducers/UserInfo';
 import { Actions as UserCenterActions } from './Actions/UserCenter';
-import { getReturnOfExpression } from 'react-redux-typescript';
+import { getReturnOfExpression, getType } from 'react-redux-typescript';
 
-interface StoreEnhancerState { }
-export interface RootState extends StoreEnhancerState {
+/**
+ * 全局store的类型定义
+ */
+export interface RootState {
     error: ErrorStore;
     post: TopicState;
     userInfo: UserInfoStore;
@@ -23,16 +25,27 @@ function values<T>(o: { [s: string]: T }): T[] {
 
 const Actions = { ...UserCenterActions };
 const returnOfActions = values(Actions).map(getReturnOfExpression);
+const returnOgActionsType = values(Actions).map(getType);
+
+/**
+ * 全部actiontype的类型定义
+ */
+export type RootActionType = typeof returnOgActionsType[number];
+
+/**
+ * 全部action的类型定义
+ */
 export type RootAction = typeof returnOfActions[number];
+
 /**
  * 合并reducer
- * 在组件中使用相应的Store时带上这里的前缀
  */
 const reducer = combineReducers<RootState>({
     error,
     post,
     userInfo
 });
+
 /**
  * 记录Action与Store
  * @param store
@@ -44,6 +57,9 @@ const logger = store => next => action => {
     return result;
 }
 
+/**
+ * 连接到redux开发者工具
+ */
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export default createStore(reducer, composeEnhancers(applyMiddleware(thunk, logger)));

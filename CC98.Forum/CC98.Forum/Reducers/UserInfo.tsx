@@ -54,11 +54,33 @@ export class UserInfoStore {
     /** 
      * 分页信息是否全部加载完
      */
-    hasTotal: boolean = false;
+    hasTotal: hasTotal = new hasTotal();
     /**
      * 分页信息总数
      */
-    totalPage: number = 1;
+    totalPage = new TotalPage;
+    currentUserFansInfo: Appstate.UserInfo[] = [];
+    currentUserFollowingInfo: Appstate.UserInfo[] = [];
+    currentUserFavoritePosts: Appstate.UserRecentPost[] = [];
+    currentUserCenterPage: 'profile' | 'config' | 'myposts' | 'myfavoriteposts' | 'myfavoriteboards' | 'myfollowings' | 'myfans' = 'profile';
+}
+
+class hasTotal {
+    profile: boolean = false;
+    config: boolean = false;
+    myposts: boolean = false;
+    myfavoriteposts: boolean = false;
+    myfavoriteboards: boolean = false;
+    myfollowings: boolean = false;
+    myfans: boolean = false;
+}
+
+class TotalPage {
+    profile: number = 1;
+    myposts: number = 1;
+    myfavoriteposts: number = 1;
+    myfollowings: number = 1;
+    myfans: number = 0;
 }
 
 /**
@@ -91,10 +113,20 @@ export default (state = new UserInfoStore(), action: RootAction): UserInfoStore 
             return { ...state, currentUserFavoriteBoards: action.boardsInfo };
         case ActionTypes.CHANGE_USER_RECENT_POSTS: 
             return { ...state, recentPosts: action.posts };
-        case ActionTypes.USER_CENTER_PAGE_LOAD_UNFINISH: 
-            return { ...state, hasTotal: false };
         case ActionTypes.USER_CENTER_PAGE_LOAD_FINISH: 
-            return { ...state, hasTotal: true, totalPage: action.totalPage };
+            switch (state.currentUserCenterPage) {
+                case 'profile': return { ...state, hasTotal: { ... state.hasTotal, profile: true, myposts: true}, totalPage: { ...state.totalPage, profile: action.totalPage, myposts: action.totalPage} };
+                case 'myposts': return { ...state, hasTotal: { ... state.hasTotal, profile: true, myposts: true}, totalPage: { ...state.totalPage, profile: action.totalPage, myposts: action.totalPage} };
+                default: return { ...state, hasTotal: { ... state.hasTotal, [state.currentUserCenterPage]: true}, totalPage: { ...state.totalPage, [state.currentUserCenterPage]: action.totalPage} };
+            }
+        case ActionTypes.CHANGE_USER_FANS_INFO: 
+            return { ...state, currentUserFansInfo: action.fansInfo };
+        case ActionTypes.CHANGE_USER_FOLLOWINGS_INFO: 
+            return { ...state, currentUserFollowingInfo: action.followingsInfo };
+        case ActionTypes.CHANGE_USER_FAVORITE_POSTS: 
+            return { ...state, currentUserFavoritePosts: action.posts };
+        case ActionTypes.CHNAGE_USER_CENTER_PAGE: 
+            return { ...state, currentUserCenterPage: action.page }
         default:
             return state;
     }

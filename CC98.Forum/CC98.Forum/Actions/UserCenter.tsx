@@ -44,7 +44,25 @@ export const Actions = {
     changeUserRecentPosts: createAction(ActionTypes.CHANGE_USER_RECENT_POSTS, (posts: Appstate.UserRecentPost[]) => ({
         type: ActionTypes.CHANGE_USER_RECENT_POSTS,
         posts
+    })),
+
+    changeUserFavoritePosts: createAction(ActionTypes.CHANGE_USER_FAVORITE_POSTS, (posts: Appstate.UserRecentPost[]) => ({
+        type: ActionTypes.CHANGE_USER_FAVORITE_POSTS,
+        posts
+    })),
+
+    changeUserFansInfo: createAction(ActionTypes.CHANGE_USER_FANS_INFO, (fansInfo: Appstate.UserInfo[]) => ({
+        type: ActionTypes.CHANGE_USER_FANS_INFO,
+        fansInfo
+    })),
+
+    changeUserFollowingsInfo: createAction(ActionTypes.CHANGE_USER_FOLLOWINGS_INFO, (followingsInfo: Appstate.UserInfo[]) => ({
+        type: ActionTypes.CHANGE_USER_FOLLOWINGS_INFO,
+        followingsInfo
+    })),
+
+    changeUserCenterPage: createAction(ActionTypes.CHNAGE_USER_CENTER_PAGE, (page: 'profile' | 'config' | 'myposts' | 'myfavoriteposts' | 'myfavoriteboards' | 'myfollowings' | 'myfans') => ({
+        type: ActionTypes.CHNAGE_USER_CENTER_PAGE,
+        page
     }))
 };
-
-let type = Object.keys(Actions).map(key => Actions[key]);

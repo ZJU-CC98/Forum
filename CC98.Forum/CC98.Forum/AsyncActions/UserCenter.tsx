@@ -99,3 +99,43 @@ export const getRecentPosts:ActionCreator<ThunkAction<Promise<Action>, RootState
         }
     };
 }
+
+export const getUserFansInfo:ActionCreator<ThunkAction<Promise<Action>, RootState, void>> = (page: number) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch(Actions.userCenterLoading());
+            const store = getState().userInfo;
+            if(!store.hasTotal.myfans) {
+                const url = `/user/follower/count?userid=${store.currentUserInfo.id}`
+                let res = await Utility.cc98Fetch(url);
+                let fanCounts: number = await res.json();
+                dispatch(Actions.usercenterPageLoadFinish(fanCounts % 10 === 0 ? fanCounts / 10 : Math.floor((fanCounts / 10)) + 1));
+                //没有粉丝
+                if(fanCounts === 0) {
+                    dispatch(Actions.changeUserFansInfo([]));
+                    return dispatch(Actions.userCenterLoaded());
+                }
+            }
+            let url = `/me/follower?from=${(page - 1) * 10}&size=10`;
+            const headers = await Utility.formAuthorizeHeader();
+            let res = await Utility.cc98Fetch(url, { headers });
+            let data: number[] = await res.json();
+            //当请求到空数组时，必然是因为用户通过url访问到了越界的长度
+            if (data.length === 0) {
+                dispatch(Actions.changeUserFansInfo([]));
+                dispatch(Actions.usercenterPageLoadFinish(0));
+                return dispatch(Actions.userCenterLoaded());
+            }
+            const query = data.join('&id=');
+            url = `/user?id=${query}`;
+            res = await Utility.cc98Fetch(url, { headers });
+            let fanData: Appstate.UserInfo[] = await res.json();
+            let prevFans = store.currentUserFansInfo;
+            fanData.forEach((item, index) => prevFans[index + (page - 1) * 10] = item);
+            dispatch(Actions.changeUserFansInfo(prevFans));
+            return dispatch(Actions.userCenterLoaded());
+        } catch(e) {
+            return dispatch(Actions.userCenterError(e.message))
+        }
+    }
+}

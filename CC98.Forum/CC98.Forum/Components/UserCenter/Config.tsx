@@ -19,7 +19,8 @@ interface Props {
     /** 
      * 刷新store中的状态
      */
-	changeUserInfo: (info: UserInfo) => void;
+    changeUserInfo: (info: UserInfo) => void;
+    changePage: () => void;
 }
 interface States {
     /**
@@ -72,6 +73,7 @@ class Info extends ChangeUserInfo {
 class Config extends React.Component<Props, States> {
     constructor(props: Props) {
         super(props);
+        props.changePage();
         //由于修改API和获取API中的参数名不一致
         //统一转换为修改API所需的类型
         let myInfo: Info = {
@@ -232,8 +234,11 @@ function mapDispatch(dispatch) {
 	return {
 		changeUserInfo: (newInfo: UserInfo) => {
 			dispatch(Actions.changeUserInfo(newInfo));
-		}
+        },
+        changePage: () => {
+            dispatch(Actions.changeUserCenterPage('config'));
+        }
 	};
 }
 
-export default connect(mapState, null)(Config);
+export default connect(mapState, mapDispatch)(Config);

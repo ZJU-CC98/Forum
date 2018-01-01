@@ -8,11 +8,30 @@ import { UserRecentPost } from '../../States/AppState';
 import * as Utility from '../../Utility';
 import Pager from './Pager';
 import { RouteComponent } from '../RouteComponent';
+import { Actions } from '../../Actions/UserCenter';
+import { connect } from 'react-redux';
+import { RootState } from '../../Store';
+import { Dispatch } from 'redux';
+import { withRouter } from 'react-router-dom';
+
+interface Props {
+    match: any;
+    changePage: () => void;
+}
+
+interface UserCenterMyFavoritesPostsState {
+    userRecentPosts: UserRecentPost[];
+    info: string;
+    totalPage: number;
+    currentPage: number;
+    hasTotal: boolean;
+    isLoading: boolean;
+}
 
 /**
  * 用户中心我收藏的帖子组件
  */
-export default class extends React.Component<{match}, UserCenterMyFavoritesPostsState> {
+class Posts extends React.Component<Props, UserCenterMyFavoritesPostsState> {
     constructor(props) {
         super(props);
         this.state = {
@@ -33,6 +52,7 @@ export default class extends React.Component<{match}, UserCenterMyFavoritesPosts
     }
 
     componentDidMount() {
+        this.props.changePage();
         this.getInfo(this.props.match.params.page);
     }
 
@@ -112,11 +132,16 @@ export default class extends React.Component<{match}, UserCenterMyFavoritesPosts
     }
 }
 
-interface UserCenterMyFavoritesPostsState {
-    userRecentPosts: UserRecentPost[];
-    info: string;
-    totalPage: number;
-    currentPage: number;
-    hasTotal: boolean;
-    isLoading: boolean;
+function mapState(state: RootState) {
+    return {};
 }
+
+function mapDispatch(dispatch: Dispatch<RootState>) {
+    return {
+        changePage: () => {
+            dispatch(Actions.changeUserCenterPage('myfavoriteposts'));
+        }
+    };
+}
+
+export default withRouter(connect(mapState, mapDispatch)(Posts));
