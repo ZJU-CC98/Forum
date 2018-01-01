@@ -5,10 +5,23 @@
 import * as React from 'react';
 import * as Utility from '../../Utility';
 import { ChangeUserInfo, UserInfo } from '../../States/AppState';
+import { Actions } from '../../Actions/UserCenter';
 import ConfigAvatar from './ConfigAvatar';
 import ConfigSignature from './ConfigSignature';
 import ConfigOthers from './ConfigOthers';
+import { connect } from 'react-redux';
 
+interface Props {
+    /**
+     * store中的信息
+     */
+    userInfo: UserInfo;
+    /** 
+     * 刷新store中的状态
+     */
+    changeUserInfo: (info: UserInfo) => void;
+    changePage: () => void;
+}
 interface States {
     /**
      * 当前可修改的用户信息
@@ -57,24 +70,24 @@ class Info extends ChangeUserInfo {
  * 用户中心页
  * 修改个人信息组件
  */
-export default class extends React.Component<null, States> {
-    constructor(props) {
+class Config extends React.Component<Props, States> {
+    constructor(props: Props) {
         super(props);
+        props.changePage();
         //由于修改API和获取API中的参数名不一致
         //统一转换为修改API所需的类型
-        let info: UserInfo = Utility.getLocalStorage('userInfo');
         let myInfo: Info = {
-            EmailAddress: info.emailAddress,
-            Gender: info.gender,
-            Introduction: info.introduction,
-            QQ: info.qq,
-            SignatureCode: info.signatureCode,
-            Birthday: info.birthday,
-            birthdayYear: info.birthday ? Number.parseInt(info.birthday.slice(0, 4)): 0,
-            birthdayMonth: info.birthday ? Number.parseInt(info.birthday.slice(5, 7)): 0,
-            birthdayDay: info.birthday ? Number.parseInt(info.birthday.slice(8, 10)) : 0,
-            DisplayTitleId: info.displayTitleId || 0,
-            userTitleIds: info.userTitleIds || []
+            EmailAddress: props.userInfo.emailAddress,
+            Gender: props.userInfo.gender,
+            Introduction: props.userInfo.introduction,
+            QQ: props.userInfo.qq,
+            SignatureCode: props.userInfo.signatureCode,
+            Birthday: props.userInfo.birthday,
+            birthdayYear: props.userInfo.birthday ? Number.parseInt(props.userInfo.birthday.slice(0, 4)): 0,
+            birthdayMonth: props.userInfo.birthday ? Number.parseInt(props.userInfo.birthday.slice(5, 7)): 0,
+            birthdayDay: props.userInfo.birthday ? Number.parseInt(props.userInfo.birthday.slice(8, 10)) : 0,
+            DisplayTitleId: props.userInfo.displayTitleId || 0,
+            userTitleIds: props.userInfo.userTitleIds || []
         };
         this.state = {
             userInfo: myInfo,
@@ -91,7 +104,7 @@ export default class extends React.Component<null, States> {
      * 点击重置按钮后触发
      */
     handleReset() {
-        let info: UserInfo = Utility.getLocalStorage('userInfo');
+        let info: UserInfo = this.props.userInfo;
         let userInfo: Info = {
             EmailAddress: info.emailAddress,
             Gender: info.gender,
@@ -166,6 +179,7 @@ export default class extends React.Component<null, States> {
                 //修改成功后刷新用户信息
                 await Utility.refreshUserInfo();
                 let userInfo = Utility.getLocalStorage('userInfo');
+                this.props.changeUserInfo(userInfo);
                 //替换掉缓存中对应ID与NAME的缓存
                 Utility.setLocalStorage(`userId_${userInfo.id}`, userInfo, 3600);
                 Utility.setLocalStorage(`userName_${userInfo.name}`, userInfo, 3600);
@@ -209,3 +223,22 @@ export default class extends React.Component<null, States> {
             </div>);
     }
 }
+
+function mapState(state){
+    return {
+        userInfo: state.userInfo.currentUserInfo
+    };
+}
+
+function mapDispatch(dispatch) {
+	return {
+		changeUserInfo: (newInfo: UserInfo) => {
+			dispatch(Actions.changeUserInfo(newInfo));
+        },
+        changePage: () => {
+            dispatch(Actions.changeUserCenterPage('config'));
+        }
+	};
+}
+
+export default connect(mapState, mapDispatch)(Config);

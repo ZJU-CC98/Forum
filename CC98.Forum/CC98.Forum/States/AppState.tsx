@@ -370,6 +370,14 @@ export class UserInfo {
      * 用户头像地址
      */
     portraitUrl: string;
+    /**
+     * 用户关注的版面id数组
+     */
+    customBoards: number[];
+    /**
+     * 用户关注数
+     */
+    followCount: number;
 }
 
 /**
@@ -383,7 +391,7 @@ export class UserRecentPost {
     /**
     * 发帖时间
     */
-    date: string;
+    time: string;
     /**
     * 帖子标题
     */
@@ -391,7 +399,7 @@ export class UserRecentPost {
     /**
     * 用户名
     */
-    name: string;
+    userName: string;
     /**
     * 用户名
     */
@@ -411,12 +419,11 @@ export class UserRecentPost {
     /**
     * 获得赞数
     */
-    approval: number;
+    likeCount: number;
     /**
     * 获得踩数
     */
-    disapproval: number;
-
+    dislikeCount: number;
 }
 /**
 * 用户收藏的版面信息

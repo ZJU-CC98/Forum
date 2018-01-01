@@ -397,6 +397,7 @@ export class UbbEditor extends React.Component<Props, State> {
                     {this.state.extendTagName === 'img' ? <label onClick={(e) => { e.stopPropagation(); }} className="fa-upload" htmlFor="upload" title="上传本地图片"></label> : null}
                     <button className="fa-check" type="button" onClick={(e) => { e.stopPropagation(); this.handleButtonClick(this.state.extendTagName, this.state.extendValue) }}></button>
                     <button className="fa-remove" type="button" onClick={() => { this.setState({ clicked: true }); }}></button>
+                    {this.state.extendTagName === 'img' ? <p style={{ color: 'gray', fontSize: '0.75rem', flexGrow: 1, textAlign: 'center' }}>也可以直接将图片文件拖曳到下面的文本区进行上传</p> : null}
                     {/*上传文件用，默认隐藏，img标签仅接受图片文件，上传完后value设为""可清空filelist*/}
                     <input
                         type="file"

@@ -1,8 +1,4 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-
-import * as React from 'react';
+﻿import * as React from 'react';
 import Post from '../ExactActivitiesPost';
 import { UserRecentPost } from '../../../States/AppState';
 import * as Utility from '../../../Utility';
@@ -41,15 +37,12 @@ export default class extends React.Component<{id: number}, UserCenterExactActivi
                 });
 
                 if (res.status === 200) {
-                    let data: itemType[] = await res.json();
+                    let posts: UserRecentPost[] = await res.json(),
+                    i = posts.length === 11 ? 10 : posts.length;
 
-                    if (data.length < 11) {
-                        window.removeEventListener('scroll', this.scrollHandler);
-                    } else {
-                        data.pop();
+                    while (i--) {
+                        posts[i].board = await Utility.getBoardName(posts[i].boardId);
                     }
-
-                    let posts = await Promise.all(data.map((item) => (this.item2post(item))));
 
                     this.setState((prevState)=>({
                         userRecentPosts: prevState.userRecentPosts.concat(posts),
@@ -78,19 +71,17 @@ export default class extends React.Component<{id: number}, UserCenterExactActivi
             });
 
             if (res.status === 200) {
-                let data = await res.json();
-                let posts: UserRecentPost[] = [],
-                    i = data.length === 11 ? 10 : data.length;
+                let posts: UserRecentPost[] = await res.json(),
+                    i = posts.length === 11 ? 10 : posts.length;
 
                 while (i--) {
-                    let post = await this.item2post(data[i]);
-                    posts.unshift(post);
+                    posts[i].board = await Utility.getBoardName(posts[i].boardId);
                 }
 
                 this.setState({
                     userRecentPosts: posts
                 });
-                if (data.length === 11) {
+                if (posts.length === 11) {
                     window.addEventListener('scroll', this.scrollHandler);
                 }
             } else {
@@ -103,21 +94,6 @@ export default class extends React.Component<{id: number}, UserCenterExactActivi
 
     componentWillUnmount() {
         window.removeEventListener('scroll', this.scrollHandler);
-    }
-
-    async item2post(item: itemType) {
-        let userRecentPost = new UserRecentPost();
-        userRecentPost.approval = item.likeCount;
-        userRecentPost.board = await Utility.getBoardName(item.boardId);
-        userRecentPost.date = item.time.replace('T', ' ').slice(0, 19);
-        userRecentPost.disapproval = item.dislikeCount;
-        userRecentPost.content = item.title;
-        userRecentPost.id = item.id;
-        userRecentPost.boardId = item.boardId;
-        userRecentPost.name = item.userName;
-        userRecentPost.isAnonymous = item.isAnonymous;
-
-        return userRecentPost;
     }
 
     render() {
@@ -156,15 +132,4 @@ export default class extends React.Component<{id: number}, UserCenterExactActivi
 interface UserCenterExactActivitiesPostsState {
     userRecentPosts: UserRecentPost[];
     isLoading: boolean;
-}
-
-interface itemType {
-    boardId: number;
-    dislikeCount: number;
-    likeCount: number;
-    title: string;
-    id: number;
-    time: string;
-    userName: string;
-    isAnonymous: boolean;
 }

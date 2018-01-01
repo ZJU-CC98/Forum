@@ -6,60 +6,31 @@ import * as React from 'react';
 import * as Utility from '../../Utility';
 import MyFavoritesBoard from './MyFavoritesBoard';
 import { UserFavoritesBoardInfo } from '../../states/AppState';
+import { getCurrentUserFavoriteBoards } from '../../AsyncActions/UserCenter';
+import { connect } from 'react-redux';
+import { Actions } from '../../Actions/UserCenter';
 
+interface Props {
+    /**
+     * 用户关注的版面信息
+     */
+    boards: UserFavoritesBoardInfo[];
+    /**
+     * 是否在加载中
+     */
+    isLoading: boolean;
+    /**
+     * dispatch获取版面信息的action
+     */
+    getInfo: () => void;
+    changePage: () => void;
+}
 
-export default class extends React.Component<null, UserCenterMyFavoritesBoardsState> {
-    constructor(props) {
+class Boards extends React.Component<Props> {
+    constructor(props: Props) {
         super(props);
-        this.state = {
-            boards: [],
-            info: '加载中',
-            isLoading: false
-        };
-    }
-
-    async componentDidMount() {
-        try {
-            this.setState({ isLoading: true });
-            const token = await Utility.getToken();
-            const loginName = Utility.getLocalStorage('userName');
-            let myHeaders = new Headers();
-            myHeaders.append("Authorization", token);
-            let response1 = await Utility.cc98Fetch(`/user/name/${loginName}`, {
-                headers: myHeaders
-            });
-            if (response1.status !== 200) {
-                throw {};
-            }
-            let userInfo = await response1.json();
-            const customBoardsId: number[] = userInfo.customBoards;
-            if (!customBoardsId || customBoardsId.length === 0) {
-                this.setState({
-                    info: '没有关注'
-                });
-                return;
-            }
-
-            const query = customBoardsId.join('&id=');
-            const url = `/board/?id=${query}`;
-
-            myHeaders = new Headers();
-            myHeaders.append('Authorization', token);
-
-            let res = await Utility.cc98Fetch(url, {
-                headers: myHeaders
-            });
-            if (res.status !== 200) {
-                throw {};
-            }
-            let data = await res.json();
-            this.setState({
-                boards: data,
-                isLoading: false
-            });
-        } catch (e) {
-            console.log('版面加载失败');
-        }
+        props.getInfo();
+        props.changePage();
     }
 
     render() {
@@ -67,13 +38,13 @@ export default class extends React.Component<null, UserCenterMyFavoritesBoardsSt
             marginTop: '2rem',
             textAlign: 'center'
         };
-        if (this.state.isLoading) {
+        if (this.props.isLoading) {
             return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
         }
-        if (this.state.boards.length === 0) {
-            return (<div style={style}>{this.state.info}</div>);
+        if (this.props.boards.length === 0) {
+            return (<div style={style}>没有关注</div>);
         }
-        let elements = this.state.boards.map((item) => (<MyFavoritesBoard UserFavoritesBoard={item} />));
+        let elements = this.props.boards.map((item) => (<MyFavoritesBoard UserFavoritesBoard={item} />));
         for (let i = 1; i < elements.length; i += 2) {
             elements.splice(i, 0, <hr />);
         }
@@ -81,8 +52,22 @@ export default class extends React.Component<null, UserCenterMyFavoritesBoardsSt
     }
 }
 
-interface UserCenterMyFavoritesBoardsState {
-    boards: UserFavoritesBoardInfo[];
-    info: string;
-    isLoading: boolean;
+function mapState(store) {
+    return {
+        boards: store.userInfo.currentUserFavoriteBoards,
+        isLoading: store.userInfo.isLoading
+    };
 }
+
+function mapDispatch(dispatch) {
+    return {
+        getInfo: () => {
+            dispatch(getCurrentUserFavoriteBoards());
+        },
+        changePage: () => {
+            dispatch(Actions.changeUserCenterPage('myfavoriteboards'));
+        }
+    };
+}
+
+export default connect(mapState, mapDispatch)(Boards);

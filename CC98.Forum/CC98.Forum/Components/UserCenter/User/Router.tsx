@@ -13,7 +13,7 @@ import UserManage from './Manage';
 import Profile from './Profile';
 import Activities from './Activities';
 import Avatar from '../ExactAvatar';
-import { changeCurrentVisitingUserPage, userNotFound } from '../../../Actions';
+import { Actions } from '../../../Actions/UserCenter';
 import * as Utility from '../../../Utility';
 import DocumentTitle from '../../DocumentTitle';
 
@@ -107,10 +107,10 @@ class UserExact extends React.Component<{ match, history, changePage, notFoundUs
 function mapDispatch(dispatch) {
     return {
         changePage: (page, id) => {
-            dispatch(changeCurrentVisitingUserPage(page, id));
+            dispatch(Actions.changeCurrentVisitingUserPage(page, id));
         },
         notFoundUser: () => {
-            dispatch(userNotFound());
+            dispatch(Actions.userNotFound());
         }
     };
 }

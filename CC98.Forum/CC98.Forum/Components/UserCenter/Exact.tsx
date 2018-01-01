@@ -9,6 +9,7 @@ import ExactActivities from './ExactActivities';
 import ExactAvatar from './ExactAvatar';
 import * as Utility from '../../Utility';
 import { refreshCurrentUserInfo } from '../../AsyncActions/UserCenter';
+import { Actions } from '../../Actions/UserCenter';
 import { connect } from 'react-redux';
 
 interface Props {
@@ -20,15 +21,16 @@ interface Props {
      * 刷新用户信息
      */
     changeUserInfo: () => void;
+    changePage: () => void;
 }
 /**
  * 用户中心主页
  */
 class UserCenterExact extends React.Component<Props> {
 
-
     //组件加载时更新store与缓存中的状态
-    async componentDidMount() {
+    componentDidMount() {
+        this.props.changePage();
         this.props.changeUserInfo();
     }
 
@@ -51,6 +53,9 @@ function mapDispatch(dispatch) {
     return {
         changeUserInfo: (newInfo) => {
             dispatch(refreshCurrentUserInfo());
+        },
+        changePage: () => {
+            dispatch(Actions.changeUserCenterPage('profile'));
         }
     };
 }

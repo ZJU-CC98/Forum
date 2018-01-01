@@ -10,7 +10,7 @@ import {
     Link
 } from 'react-router-dom';
 import * as $ from 'jquery';
-import { changeUserInfo } from './Actions';
+import { Actions } from './Actions/UserCenter';
 
 declare let editormd: any;
 import { Constants } from './Components/Constant';
@@ -1641,7 +1641,7 @@ export async function refreshUserInfo() {
         });
 
         let userInfo = await response.json();
-        store.dispatch(changeUserInfo(userInfo));
+        store.dispatch(Actions.changeUserInfo(userInfo));
         setLocalStorage("userInfo", userInfo);
         setLocalStorage("userName", userInfo.name);
     }

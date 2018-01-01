@@ -36,6 +36,8 @@ export class Message extends React.Component<{}, AppState> {
                             <NavLink to="/message/system"><div id="system" className="nav-div">系统通知<div className="message-counterNav displaynone" id="unreadCount-systemCount1">{unreadCount.systemCount}</div></div></NavLink>
                             <hr/>
                             <NavLink to="/message/message"><div id="message" className="nav-div">我的私信<div className="message-counterNav displaynone" id="unreadCount-messageCount1">{unreadCount.messageCount}</div></div></NavLink>
+                            <hr/>
+                            <NavLink to="/message/setting"><div id="message" className="nav-div">消息设置<div className="message-counterNav displaynone" id="unreadCount-messageCount1">{unreadCount.messageCount}</div></div></NavLink>
                         </div>
                                     <Route exact path="/message" component={MessageResponse}></Route>
                                     <Route path="/message/response/:page?" component={MessageResponse} />
