@@ -726,13 +726,13 @@ export async function getRecentContact(from: number, size: number, router) {
         for (let i in recentContactId) {
             userId[i] = recentContactId[i].userId;
         }
-        //console.log("userid", userId);
+      
         let usersInfo = await getBasicUsersInfo(userId);
         let recentContact = [];
         for (let i in recentContactId) {
             recentContact.push(getThisUserInfo(recentContactId[i].userId, usersInfo));
         };
-        //console.log("获取到基本信息", recentContact);
+        
         for (let i in recentContactId) {
             recentContact[i].message = [];
             recentContact[i].lastContent = recentContactId[i].lastContent;
@@ -2584,29 +2584,34 @@ export async function getUsersInfobyNames(userNames: any[]) {
             usersInfoNeeded.push(userNames[i]);
         }
     }
-    if (usersInfoNeeded.length === 0) {
+
+    if (usersInfoNeeded.length == 0) {
+     
         return finalUsersInfo;
     }
     else {
+   
         for (let i = 0; i < usersInfoNeeded.length; i++) {
             if (i === 0) {
-                url = encodeURIComponent(`${url}?name=${usersInfoNeeded[i]}`);
+                url = `${url}?name=`+encodeURIComponent(usersInfoNeeded[i]);
             }
             else {
-                url = encodeURIComponent(`${url}&name=${usersInfoNeeded[i]}`);
+                url = `${url}&name=`+encodeURIComponent(usersInfoNeeded[i]);
             }
         }
-        try {
+     
+
+            console.log(url);
             //合并查询和缓存的
             let response = await cc98Fetch(url);
             var data = await response.json();
             for (let i of data) {
                 finalUsersInfo.push(i);
             }
+            console.log("查询后");
+            console.log(finalUsersInfo);
             return finalUsersInfo;
-        } catch (e) {
-            return [];
-        }
+     
     }
 }
 
