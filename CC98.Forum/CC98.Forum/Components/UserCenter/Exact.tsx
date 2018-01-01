@@ -9,7 +9,7 @@ import ExactActivities from './ExactActivities';
 import ExactAvatar from './ExactAvatar';
 import * as Utility from '../../Utility';
 import { refreshCurrentUserInfo } from '../../AsyncActions/UserCenter';
-import { Actions } from '../../Actions/UserCenter';
+import * as Actions from '../../Actions/UserCenter';
 import { connect } from 'react-redux';
 
 interface Props {

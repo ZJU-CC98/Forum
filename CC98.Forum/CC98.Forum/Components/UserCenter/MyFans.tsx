@@ -7,7 +7,7 @@ import { UserInfo } from '../../States/AppState';
 import MyFollowingsUser from './MyFollowingsUser';
 import Pager from './Pager';
 import * as Utility from '../../Utility';
-import { Actions } from '../../Actions/UserCenter';
+import * as Actions from '../../Actions/UserCenter';
 import { connect } from 'react-redux';
 import { RootState } from '../../Store';
 import { Dispatch } from 'redux';

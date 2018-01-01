@@ -8,7 +8,7 @@ import { UserRecentPost } from '../../States/AppState';
 import * as Utility from '../../Utility';
 import Pager from './Pager';
 import { RouteComponent } from '../RouteComponent';
-import { Actions } from '../../Actions/UserCenter';
+import * as Actions from '../../Actions/UserCenter';
 import { connect } from 'react-redux';
 import { RootState } from '../../Store';
 import { Dispatch } from 'redux';

@@ -8,7 +8,7 @@ import { UserRecentPost } from '../../States/AppState';
 import * as Utility from '../../Utility';
 import { connect } from 'react-redux';
 import { getRecentPosts } from '../../AsyncActions/UserCenter';
-import { Actions } from '../../Actions/UserCenter';
+import * as Actions from '../../Actions/UserCenter';
 import { RootState } from '../../Store';
 
 interface Props {

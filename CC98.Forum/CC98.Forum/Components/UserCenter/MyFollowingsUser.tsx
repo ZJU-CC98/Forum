@@ -7,7 +7,7 @@ import { UserInfo } from '../../States/AppState';
 import * as Utility from '../../Utility';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Actions } from '../../Actions/UserCenter';
+import * as Actions from '../../Actions/UserCenter';
 
 interface OwnProps {
     userFanInfo: UserInfo;

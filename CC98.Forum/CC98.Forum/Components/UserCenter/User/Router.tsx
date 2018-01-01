@@ -13,7 +13,7 @@ import UserManage from './Manage';
 import Profile from './Profile';
 import Activities from './Activities';
 import Avatar from '../ExactAvatar';
-import { Actions } from '../../../Actions/UserCenter';
+import * as Actions from '../../../Actions/UserCenter';
 import * as Utility from '../../../Utility';
 import DocumentTitle from '../../DocumentTitle';
 

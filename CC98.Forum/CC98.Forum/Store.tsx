@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 import error, { ErrorStore } from './Reducers/Error';
 import post, { TopicState } from './Reducers/Post';
 import userInfo, { UserInfoStore } from './Reducers/UserInfo';
-import { Actions as UserCenterActions } from './Actions/UserCenter';
+import * as UserCenterActions from './Actions/UserCenter';
 import { getReturnOfExpression, getType } from 'react-redux-typescript';
 
 /**

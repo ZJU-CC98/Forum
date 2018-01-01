@@ -10,7 +10,7 @@ import {
     Link
 } from 'react-router-dom';
 import * as $ from 'jquery';
-import { Actions } from './Actions/UserCenter';
+import * as Actions from './Actions/UserCenter';
 
 declare let editormd: any;
 import { Constants } from './Components/Constant';

@@ -6,7 +6,7 @@ import * as React from 'react';
 import * as $ from 'jquery';
 import * as Utility from '../Utility';
 import { connect } from 'react-redux';
-import { Actions } from '../Actions/UserCenter';
+import * as Actions from '../Actions/UserCenter';
 import { withRouter } from 'react-router-dom';
 import DocumentTitle from './DocumentTitle';
 

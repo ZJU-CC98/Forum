@@ -10,7 +10,7 @@ import Pager from './Pager';
 import { connect } from 'react-redux';
 import { withRouter, match } from 'react-router-dom';
 import { getRecentPosts } from '../../AsyncActions/UserCenter';
-import { Actions } from '../../Actions/UserCenter';
+import * as Actions from '../../Actions/UserCenter';
 import { RootState } from '../../Store';
 
 interface Props {
