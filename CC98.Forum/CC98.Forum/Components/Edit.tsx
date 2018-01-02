@@ -361,9 +361,9 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                     <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom: "0.5rem" }}>
                         切换到Markdown编辑器</div>
                 </div>
-                    <UbbEditor update={this.update} value={this.state.content} option={{ height: 20, submit: this.sendUbbTopic }}/>
+                    <UbbEditor update={this.update} value={this.state.content} option={{ height: 20, submit: this.sendUbbTopic.bind(this)  }}/>
                     <div className="row" style={{ justifyContent: "center" }}>
-                        <div id="post-topic-button" onClick={this.sendUbbTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", marginBottom: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>发帖</div>
+                        <div id="post-topic-button" onClick={ this.sendUbbTopic.bind(this) } className="button blue" style={{ marginTop: "1.25rem", marginBottom: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>发帖</div>
                     </div></div>
                     ;
             } else {
@@ -379,7 +379,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                     <div className="createTopicListName">主题内容</div>
                     <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom:"0.5rem" }}>切换到Markdown编辑器</div>
                 </div>
-                    <UbbEditor update={this.update} value={this.state.content} option={{  submit: this.sendUbbTopic }}/>
+                    <UbbEditor update={this.update} value={this.state.content} option={{ submit: this.editUBB.bind(this) }} />
                     <div className="row" style={{ justifyContent: "center" }}>
                         <div id="post-topic-button" onClick={this.editUBB} className="button blue" style={{ marginTop: "1.25rem", marginBottom: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>编辑</div>
                     </div></div>
