@@ -115,7 +115,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="Actions.tsx" />
     <TypeScriptCompile Include="ActionTypes.tsx" />
     <TypeScriptCompile Include="AsyncActions\UserCenter.tsx" />
     <TypeScriptCompile Include="Components\Constant.tsx" />

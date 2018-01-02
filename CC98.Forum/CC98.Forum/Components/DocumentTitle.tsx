@@ -1,5 +1,8 @@
 ﻿import { ReactElement } from 'react';
 import * as React from 'react';
+import store from '../Store';
+import { push } from 'react-router-redux';
+import {} from 'historyjs'
 
 interface Props {
     /**
@@ -16,7 +19,8 @@ export default class extends React.Component<Props> {
      * 初始化时根据props中的title修改标题
      */
     componentDidMount() {
-        document.title = this.props.title || 'CC98论坛';
+        const title = this.props.title || 'CC98论坛';
+        document.title = title;
     }
 
     /**
@@ -25,7 +29,8 @@ export default class extends React.Component<Props> {
      */
     componentWillReceiveProps(nextProps: Props) {
         if (nextProps.title !== this.props.title) {
-            document.title = nextProps.title || 'CC98论坛';
+            const title = nextProps.title || 'CC98论坛';
+            document.title = title;
         }
     }
     

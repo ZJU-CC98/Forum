@@ -6,6 +6,8 @@ import {
     Route,
     Switch
 } from 'react-router-dom';
+import { ConnectedRouter } from 'react-router-redux';
+import { history } from '../Store';
 import { Post, ShowTopic } from './Topic/Topic';
 import { List } from './Board/Board';
 import { CurUserPost } from './Topic/Topic-Trace';
@@ -28,12 +30,11 @@ import { SiteManage } from './SiteManage/Index';
 import { ShowEdit } from './Edit';
 
 import { Constants } from './Constant';
-
-export class App extends React.Component<null, AppState> {
+export class App extends React.Component {
 
     render() {
         return (<div style={{ width: "100%" }}>
-            <Router>
+            <ConnectedRouter history={history}>
                 <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px", backgroundColor:"#e6e7ec" }}>
                     <Header />
                     <Switch>
@@ -68,7 +69,7 @@ export class App extends React.Component<null, AppState> {
                     </Switch>
                     <Footer />
                 </div>
-            </Router>
+            </ConnectedRouter>
         </div>);
     }
 }
