@@ -2,7 +2,6 @@
 import * as React from 'react';
 import store from '../Store';
 import { push } from 'react-router-redux';
-import {} from 'historyjs'
 
 interface Props {
     /**

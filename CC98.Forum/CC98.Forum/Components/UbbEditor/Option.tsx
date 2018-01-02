@@ -14,7 +14,7 @@ export default class {
     /**
      * 按下Ctrl+Enter调用的函数
      */
-    submit?: Function;
+    submit?: () => void;
     /**
      * 替换掉选中部分的ubb标签名数组
      */

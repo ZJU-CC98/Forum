@@ -260,6 +260,7 @@ export class UbbEditor extends React.Component<Props, State> {
     //处理引用的内容更新
     componentWillReceiveProps(nextProps: Props) {
         //如果传入的内容和历史堆栈中的最后一项（当前内容）不相符
+        //从props修改内容会触发（引用）
         if (this.valueStack[this.valueStack.length - 1] !== nextProps.value) {
             //将内容压入堆栈
             this.valueStack.push(nextProps.value);
@@ -268,6 +269,7 @@ export class UbbEditor extends React.Component<Props, State> {
             //更新state中的value
             this.setState({
                 value: nextProps.value,
+                //根据需求光标移至文本末尾
                 selectionStart: nextProps.value.length,
                 selectionEnd: nextProps.value.length,
                 clicked: true
