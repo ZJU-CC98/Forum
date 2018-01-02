@@ -21,6 +21,7 @@ export default class Announcement extends React.Component<null, AnnouncementStat
             info: ''
         };
         this.changeSiteAnnouncement = this.changeSiteAnnouncement.bind(this);
+        this.clearMainPageCache = this.clearMainPageCache.bind(this);
     }
     async componentDidMount() {
         const url = '/config/global';
@@ -32,23 +33,50 @@ export default class Announcement extends React.Component<null, AnnouncementStat
     }
 
     async changeSiteAnnouncement() {
-        const url = '/config/global/announcement';
-        const token = await Utility.getToken();
-        const announcement = this.state.announcement;
-        let headers = new Headers();
-        headers.append('Authorization', token);
-        headers.append('Content-Type', 'application/json');
-        let res = await Utility.cc98Fetch(url, {
-            method: 'PUT',
-            headers,
-            body: JSON.stringify({ announcement })
-        });
-        if (res.status === 200) {
-            this.setState({ info: '修改全站公告成功' });
-            setTimeout(() => {
-                this.setState({ info: '' });
-            }, 1000);
+        try {
+            const url = '/config/global/announcement';
+            const token = await Utility.getToken();
+            const announcement = this.state.announcement;
+            let headers = new Headers();
+            headers.append('Authorization', token);
+            headers.append('Content-Type', 'application/json');
+            let res = await Utility.cc98Fetch(url, {
+                method: 'PUT',
+                headers,
+                body: JSON.stringify({ announcement })
+            });
+            if (res.status === 200) {
+                this.setState({ info: '修改全站公告成功' });
+                setTimeout(() => {
+                    this.setState({ info: '' });
+                }, 1000);
+            } else {
+                throw new Error(res.status.toString());
+            }
+        } catch(e) {
+            this.setState({ info: `修改失败${e.message}`});
         }
+    }
+
+    async clearMainPageCache() {
+        try {
+            let headers = await Utility.formAuthorizeHeader();
+            let res = await Utility.cc98Fetch('/config/index/update', { 
+                method: 'PUT',
+                headers 
+            });
+            if(res.status === 200) {
+                this.setState({ info: '清除首页缓存成功' });
+                setTimeout(() => {
+                    this.setState({ info: '' });
+                }, 1000);
+            } else {
+                throw new Error(res.status.toString());
+            }
+        } catch(e) {
+            this.setState({ info: `清除首页缓存失败 ${e.message}` });
+        }
+
     }
 
     render() {
@@ -56,7 +84,10 @@ export default class Announcement extends React.Component<null, AnnouncementStat
             <div>
                 <p style={{ height: '2rem' }}>{this.state.info}</p>
                 <div>
-                    <p>全站公告<button type="button" onClick={this.changeSiteAnnouncement}>提交修改</button></p>
+                    <p>全站公告
+                        <button type="button" onClick={this.changeSiteAnnouncement}>提交修改</button>
+                        <button type="button" onClick={this.clearMainPageCache}>清除首页缓存</button>
+                    </p>
                     <textarea
                         style={{ width: '1140px', height: '20rem', resize: 'none' ,boxSizing: 'border-box'}}
                         onChange={(e) => { this.setState({ announcement: e.target.value }); }}

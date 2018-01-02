@@ -1,9 +1,13 @@
-﻿import * as React from 'react';
+﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+
+import * as React from 'react';
 import * as Utility from '../Utility';
 import { AppState } from '../States/AppState';
 import * as $ from 'jquery';
 import { connect } from 'react-redux';
-import { Actions } from '../Actions/UserCenter';
+import * as Actions from '../Actions/UserCenter';
 import { Link, withRouter, Route } from 'react-router-dom';
 import SignalR from '../SignalR';
 
@@ -96,97 +100,90 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
     render() {
         if (this.props.isLogOn) {
 
-            //隐藏头图用的jQuery
-            /*
-            $("#hideHeader").click(function () {
-                let button = $("#hideHeader");
-                let header = $(".header");
-                let headerContent = $(".headerContent");
-                if (headerContent.css("display") === "flex") {
-                    header.css("background-image", "none")
-                    headerContent.css("display", "none");
-                    button.text("显示头图");
-                } else if (headerContent.css("display") === "none") {
-                    header.css("background-image", "url(/static/images/winter.jpg)")
-                    headerContent.css("display", "flex");
-                    button.text("隐藏头图");
-                }
-            })
-            let hiddenHeaderText = ($(".headerContent").css("display") === "flex") ? "隐藏头图" : "显示头图";
-            <div id="hideHeader" className="topBarText">{hiddenHeaderText}</div>
-            */
             const style = {
                 display: 'block',
                 transitionDuration: '.2s',
                 height: '0px'
             };
-
+            //未读消息数
             let unreadCount = { totalCount: 0, replyCount: 0, atCount: 0, systemCount: 0, messageCount: 0 };
             if (Utility.getStorage("unreadCount")) {
                 unreadCount = Utility.getStorage("unreadCount")
             }
+            let totalCount: string = unreadCount.totalCount.toString();
+            if (unreadCount.totalCount > 99) totalCount = "99+";
+            //全站管理选项
+            let admin = this.props.userInfo.privilege === '管理员' ? <Link to="/sitemanage" style={{ color: '#fff' }}><li>全站管理</li></Link> : null;
+            //用户中心下拉列表
+            let userCenterClassName = "topBarUserCenter";
+            if (location.pathname === "/") {
+                userCenterClassName = "topBarUserCenter-mainPage";
+            }
+            //消息中心下拉列表
+            let MessageClassName = "topBarMessageDetails";
+            if (location.pathname === "/") {
+                MessageClassName = "topBarMessageDetails-mainPage";
+            }
 
-            let admin = this.props.userInfo.privilege === '管理员' ? <li><Link to="/sitemanage" style={{ color: '#fff' }}>全站管理</Link></li> : null;
-
-            return (<div id="dropdown">
-                <div className="box">
-                    <div className="userInfo">
-                        <div className="userImg"><img src={this.props.userInfo.portraitUrl}></img></div>
-                        <div
-                            className="userName"
-                            onMouseOut={(e) => { this.handleMouseEvent(e.type, "userName"); }}
-                            onMouseOver={(e) => { this.handleMouseEvent(e.type, "userName"); }}
-                        >{this.props.userInfo.name}</div>
-                    </div>
-                    <div className="topBarText"> <Link to="/" style={{ color: '#fff' }}>首页</Link></div>
+            return (<div className="topBarRight">
+                <div className="topBarUserInfo">
                     <div
-                        className="topBarText"
+                        className="topBarMessage"
                         id="userMessage"
-                        onMouseOut={(e) => { this.handleMouseEvent(e.type, 'topBarText'); }}
-                        onMouseOver={(e) => { this.handleMouseEvent(e.type, 'topBarText'); }}
-                    > <Link to="/message" className="messageTopBar">消息<div className="message-counter displaynone" id="unreadCount-totalCount">{unreadCount.totalCount}</div></Link></div>
-                    <div className="topBarText"> <Link to="/focus" style={{ color: '#fff' }}>关注</Link></div>
-                    <div className="topBarText"> <Link to="/newTopics" style={{ color: '#fff' }}>新帖</Link></div>
-                    
-                    <Link to="/boardList"><div className="boardListLink" style={{ margin: '0 0 0 10px' }}><div style={{ marginTop: '16px', color: '#fff' }}>版面</div></div></Link>
+                        onMouseOut={(e) => { this.handleMouseEvent(e.type, 'message'); }}
+                        onMouseOver={(e) => { this.handleMouseEvent(e.type, 'message'); }}
+                    >
+                        <Link to="/message" className="messageTopBar">
+                            <div className="topBarBell"> <i className="fa fa-bell-o"></i></div>
+                            <div className="message-counter displaynone" id="unreadCount-totalCount">{totalCount}</div>
+                        </Link>
+                    </div>
+                    <div className="topBarUserImg"
+                        onMouseOut={(e) => { this.handleMouseEvent(e.type, "userName"); }}
+                        onMouseOver={(e) => { this.handleMouseEvent(e.type, "userName"); }}
+                    >
+                        <img src={this.props.userInfo.portraitUrl}></img>
+                    </div>
+                    <div
+                        className="topBarUserName"
+                        onMouseOut={(e) => { this.handleMouseEvent(e.type, "userName"); }}
+                        onMouseOver={(e) => { this.handleMouseEvent(e.type, "userName"); }}
+                    >
+                        {this.props.userInfo.name}
+                    </div>
                 </div>
                 <div
-                    className="dropDownSubBox"
+                    className={userCenterClassName}
                     onMouseOut={(e) => { this.handleMouseEvent(e.type, "userName"); }}
                     onMouseOver={(e) => { this.handleMouseEvent(e.type, "userName"); }}
-                    style={{ ...style, overflow: 'hidden', height: this.state.hoverElement === 'userName' ? '120px' : '0px' }}
+                    style={{ ...style, overflow: 'hidden', height: this.state.hoverElement === 'userName' ? '8rem' : '0' }}
                 >
-                    <ul className="dropDownSub" style={{ display: 'inherit' }}>
+                    <ul style={{ display: 'inherit' }}>
                         <Link to="/usercenter"> <li>个人中心</li></Link>
                         {admin}
                         <Link to="/signin"><li>签到</li></Link>
                         <li onClick={this.logOff.bind(this)}>注销</li>
-
                     </ul>
                 </div>
                 <div
-                    className="dropDownSubBoxMessage"
-                    onMouseOut={(e) => { this.handleMouseEvent(e.type, "topBarText"); }}
-                    onMouseOver={(e) => { this.handleMouseEvent(e.type, "topBarText"); }}
-                    style={{ ...style, overflow: 'hidden', zIndex: 100, position: 'absolute', top: '55px', height: this.state.hoverElement === 'topBarText' ? '120px' : '0px' }}
+                    className={MessageClassName}
+                    onMouseOut={(e) => { this.handleMouseEvent(e.type, "message"); }}
+                    onMouseOver={(e) => { this.handleMouseEvent(e.type, "message"); }}
+                    style={{ ...style, overflow: 'hidden', height: this.state.hoverElement === 'message' ? '8rem' : '0' }}
                 >
-                    <ul className="dropDownSubMessage" style={{ display: 'inherit' }}>
-                        <a href="/message/response"><li>回复我的<div className="message-counterLi displaynone" id="unreadCount-replyCount">{unreadCount.replyCount}</div></li></a>
-                        <a href="/message/attme"><li>@ 我的<div className="message-counterLi displaynone" id="unreadCount-atCount">{unreadCount.atCount}</div></li></a>
-                        <a href="/message/system"><li>系统通知<div className="message-counterLi displaynone" id="unreadCount-systemCount">{unreadCount.systemCount}</div></li></a>
-                        <a href="/message/message"><li>我的私信<div className="message-counterLi displaynone" id="unreadCount-messageCount">{unreadCount.messageCount}</div></li></a>
+                    <ul style={{ display: 'inherit' }}>
+                        <Link to="/message/response"><li>回复我的<div className="message-counterLi displaynone" id="unreadCount-replyCount">({unreadCount.replyCount})</div></li></Link>
+                        <Link to="/message/attme"><li>@ 我的<div className="message-counterLi displaynone" id="unreadCount-atCount">({unreadCount.atCount})</div></li></Link>
+                        <Link to="/message/system"><li>系统通知<div className="message-counterLi displaynone" id="unreadCount-systemCount">({unreadCount.systemCount})</div></li></Link>
+                        <Link to="/message/message"><li>我的私信<div className="message-counterLi displaynone" id="unreadCount-messageCount">({unreadCount.messageCount})</div></li></Link>
                     </ul>
                 </div>
             </div>);
         }
         else {
-            return <div id="dropdown">
-                <div className="box">
-                    <div className="topBarText" style={{ margin: '0 10px 0 10px' }}> <Link to="/" style={{ color: '#fff' }}>首页</Link></div>
-                    <div className="topBarText" style={{ margin: '0 10px 0 10px' }}> <Link to="/logOn" style={{ color: '#fff' }}>登录</Link></div>
-                    <div className="topBarText" style={{ margin: '0 10px 0 10px' }}> <Link to="/newTopics" style={{ color: '#fff' }}>新帖</Link></div>
-                    <Link to="/boardList"><div className="boardListLink" style={{ margin: '0 0 0 10px' }}><div style={{ marginTop: '16px', color: '#fff' }}>版面</div></div></Link>
-                </div>
+            return <div className="topBarUserInfo">
+                <div className="topBarText"> <Link to="/logOn">登录</Link></div>
+                <div className="topBarText"><a href="https://account.cc98.org/">注册</a></div>
             </div>
         }
     }
@@ -216,7 +213,7 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
 
     async componentDidMount() {
         const searchBoxSelect = $('.searchBoxSelect');
-        const downArrow = $('.downArrow');
+        const downArrow = $('.caret-down');
         const searchBoxSub = $('.searchBoxSub');
         const searchIco = $('.searchIco');
         const searchBoxLi = searchBoxSub.find('li');
@@ -347,7 +344,6 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
                     }
                 }
             }
-            $('#searchText').val('');
         });
     }
 
@@ -373,7 +369,7 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
         }
         else if (url3) {
         }
-        else if(url4) {
+        else if (url4) {
             let searchInfo = Utility.getStorage("searchInfo");
             if (searchInfo) {
                 if (searchInfo.boardId != 0) {
@@ -386,9 +382,9 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
             return <div id="search">
                 <div className="box">
                     <div className="searchBoxSelect">主题</div>
-                    <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
-                    <input id="searchText" type="text" placeholder="猜猜能搜到什么..." onKeyPress={this.keypress_submit} />
-                    <div className="searchIco"><img src="/static/images/searchIco.ico" width="15" height="15" /></div>
+                    <div className="caret-down"><i className="fa fa-caret-down"></i></div>
+                    <input id="searchText" type="text" placeholder="请输入搜索内容" onKeyPress={this.keypress_submit} />
+                    <div className="searchIco"><i className="fa fa-search"></i></div>
                 </div>
                 <ul className="searchBoxSub">
                     <li>主题</li>
@@ -402,9 +398,9 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
             return <div id="search">
                 <div className="box">
                     <div className="searchBoxSelect">版内</div>
-                    <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
-                    <input id="searchText" type="text" placeholder="猜猜能搜到什么..." onKeyPress={this.keypress_submit} />
-                    <div className="searchIco"><img src="/static/images/searchIco.ico" width="15" height="15" /></div>
+                    <div className="caret-down"><i className="fa fa-caret-down"></i></div>
+                    <input id="searchText" type="text" placeholder="请输入搜索内容" onKeyPress={this.keypress_submit} />
+                    <div className="searchIco"><i className="fa fa-search"></i></div>
                 </div>
                 <ul className="searchBoxSub">
                     <li>版内</li>
@@ -421,45 +417,41 @@ export const Search = withRouter(SearchBeforeConnent);
 
 export class Header extends React.Component<{}, AppState> {
     render() {
-        return <div className="header">
-            <div className="topBar">
-                <div className="topBarRow">
-                    <div className="row"><div> <Link to="/"><img style={{ marginTop: "0.5rem" }} src="/static/images/98LOGO.ico" /></Link></div><div style={{ margin: '15px 0 0 5px' }}><Link to="/"><img src="/static/images/CC98.ico" /></Link></div></div>
-                    <DropDown />
-                </div>
-            </div>
-            <div className="headerContent">
-                <div className="headerRow">
-                    <div className="linkBar">
-                        <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="/static/images/网盘.ico" width="15" height="15" /></div>
-                            <div><a href="http://share.cc98.org/" className="linkText">网盘</a></div>
+        let pathname = location.pathname;
+        if (pathname === "/") {
+            return <div className="header">
+                <div className="topBar-mainPage">
+                    <div className="topBarRow">
+                        <div className="row" style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                            <div className="topBarLogo"><Link to="/"><img src="/static/images/98LOGO.ico" /></Link></div>
+                            <div className="topBarCC98"><Link to="/">CC98论坛</Link></div>
+                            <div className="topBarText">|</div>
+                            <div className="topBarText"><Link to="/boardList">版面列表</Link></div>
+                            <div className="topBarText"><Link to="/newTopics">新帖</Link></div>
+                            <div className="topBarText"><Link to="/focus">关注</Link></div>
+                            <Route component={Search} />
                         </div>
-                        <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="/static/images/游戏.ico" width="15" height="15" /></div>
-                            <div><a href="http://www.cc98.org/game.asp" className="linkText">游戏</a></div>
-                        </div>
-                        <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="/static/images/勋章.ico" width="15" height="15" /></div>
-                            <div><a href="http://v2.cc98.org/app/medalmanager.aspx" className="linkText">勋章</a></div>
-                        </div>
-                        <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="/static/images/抽卡.ico" width="15" height="15" /></div>
-                            <div><a href="http://card.cc98.org/" className="linkText">抽卡</a></div>
-                        </div>
-                        <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="/static/images/gamble.ico" width="15" height="15" /></div>
-                            <div><a href="http://gaming.cc98.org" className="linkText">竞猜</a></div>
-                        </div>
-                        <div className="row" style={{ margin: '0 10px 0 10px' }}>
-                            <div style={{ margin: '3px 10px 0 0' }}><img src="/static/images/NexusHD.jpg" width="15" height="15" /></div>
-                            <div><a href="http://www.nexushd.org" className="linkText">NexusHD</a></div>
-                        </div>
+                        <DropDown />
                     </div>
-                    <Route component={Search} />
                 </div>
-            </div>
-        </div>;
-
+            </div>;
+        } else {
+            return <div className="headerWithoutImage">
+                <div className="topBar">
+                    <div className="topBarRow">
+                        <div className="row" style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                            <div className="topBarLogo"><Link to="/"><img src="/static/images/98LOGO.ico" /></Link></div>
+                            <div className="topBarCC98"><Link to="/">CC98论坛</Link></div>
+                            <div className="topBarText">|</div>
+                            <div className="topBarText"><Link to="/boardList">版面列表</Link></div>
+                            <div className="topBarText"><Link to="/newTopics">新帖</Link></div>
+                            <div className="topBarText"><Link to="/focus">关注</Link></div>
+                            <Route component={Search} />
+                        </div>
+                        <DropDown />
+                    </div>
+                </div>
+            </div>;
+        }
     }
 }

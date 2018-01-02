@@ -5,7 +5,7 @@
 import * as React from 'react';
 import * as Utility from '../../Utility';
 import { ChangeUserInfo, UserInfo } from '../../States/AppState';
-import { Actions } from '../../Actions/UserCenter';
+import * as Actions from '../../Actions/UserCenter';
 import ConfigAvatar from './ConfigAvatar';
 import ConfigSignature from './ConfigSignature';
 import ConfigOthers from './ConfigOthers';

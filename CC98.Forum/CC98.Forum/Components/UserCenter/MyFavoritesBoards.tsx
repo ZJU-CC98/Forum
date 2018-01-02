@@ -8,7 +8,7 @@ import MyFavoritesBoard from './MyFavoritesBoard';
 import { UserFavoritesBoardInfo } from '../../states/AppState';
 import { getCurrentUserFavoriteBoards } from '../../AsyncActions/UserCenter';
 import { connect } from 'react-redux';
-import { Actions } from '../../Actions/UserCenter';
+import * as Actions from '../../Actions/UserCenter';
 
 interface Props {
     /**

@@ -1,5 +1,5 @@
 ﻿import * as Utility from '../Utility';
-import  { Actions } from '../Actions/UserCenter';
+import * as Actions from '../Actions/UserCenter';
 import * as Appstate from '../States/AppState';
 import { UserInfoStore } from '../Reducers/UserInfo';
 import { Action, ActionCreator, Dispatch } from 'redux';
@@ -16,6 +16,7 @@ export const refreshCurrentUserInfo:ActionCreator<ThunkAction<Promise<Action>, R
             let res = await Utility.cc98Fetch(`/me`, {
                 headers
             });
+            if(res.status !== 200) throw new Error(res.statusText);
             let userInfo: Appstate.UserInfo = await res.json();
             return dispatch(Actions.changeUserInfo(userInfo));
         } catch (e) {
@@ -37,6 +38,7 @@ export const getCurrentUserFavoriteBoards:ActionCreator<ThunkAction<Promise<Acti
             let res = await Utility.cc98Fetch(`/me`, {
                 headers
             });
+            if(res.status !== 200) throw new Error(res.statusText);
             let userInfo: Appstate.UserInfo = await res.json();
             dispatch(Actions.changeUserInfo(userInfo));
             //没有关注版面
@@ -56,6 +58,7 @@ export const getCurrentUserFavoriteBoards:ActionCreator<ThunkAction<Promise<Acti
             const query = userInfo.customBoards.join('&id=');
             const url = `/board/?id=${query}`;
             res = await Utility.cc98Fetch(url, { headers });
+            if(res.status !== 200) throw new Error(res.statusText);
             let boardsInfo : Appstate.UserFavoritesBoardInfo[] = await res.json();
             //更新store中的状态，加载完毕
             dispatch(Actions.changeUserFavoriteBoards(boardsInfo));
@@ -77,8 +80,9 @@ export const getRecentPosts:ActionCreator<ThunkAction<Promise<Action>, RootState
             //请求11条信息
             const url = `/me/recent-topic?from=${(page - 1) * 10}&size=11`;
             let headers = await Utility.formAuthorizeHeader(),
-                res = await Utility.cc98Fetch(url, { headers }),
-                posts: Appstate.UserRecentPost[] = await res.json(),
+                res = await Utility.cc98Fetch(url, { headers });
+            if(res.status !== 200) throw new Error(res.statusText);
+            let posts: Appstate.UserRecentPost[] = await res.json(),
                 store: UserInfoStore = getState().userInfo,
                 prevPosts = store.recentPosts,
                 i = posts.length === 11 ? 10 : posts.length;
@@ -111,8 +115,9 @@ export const getFavoritePosts:ActionCreator<ThunkAction<Promise<Action>, RootSta
             //请求11条信息
             const url = `/topic/me/favorite?from=${(page - 1) * 10}&size=11`;
             let headers = await Utility.formAuthorizeHeader(),
-                res = await Utility.cc98Fetch(url, { headers }),
-                posts: Appstate.UserRecentPost[] = await res.json(),
+                res = await Utility.cc98Fetch(url, { headers });
+                if(res.status !== 200) throw new Error(res.statusText);
+            let posts: Appstate.UserRecentPost[] = await res.json(),
                 store: UserInfoStore = getState().userInfo,
                 prevPosts = store.currentUserFavoritePosts,
                 i = posts.length === 11 ? 10 : posts.length;
@@ -155,6 +160,7 @@ export const getUserFansInfo:ActionCreator<ThunkAction<Promise<Action>, RootStat
             let url = `/me/follower?from=${(page - 1) * 10}&size=10`;
             const headers = await Utility.formAuthorizeHeader();
             let res = await Utility.cc98Fetch(url, { headers });
+            if(res.status !== 200) throw new Error(res.statusText);
             let data: number[] = await res.json();
             //当请求到空数组时，必然是因为用户通过url访问到了越界的长度
             if (data.length === 0) {
@@ -165,6 +171,7 @@ export const getUserFansInfo:ActionCreator<ThunkAction<Promise<Action>, RootStat
             const query = data.join('&id=');
             url = `/user?id=${query}`;
             res = await Utility.cc98Fetch(url, { headers });
+            if(res.status !== 200) throw new Error(res.statusText);
             let fanData: Appstate.UserInfo[] = await res.json();
             let prevFans = store.currentUserFansInfo;
             fanData.forEach((item, index) => prevFans[index + (page - 1) * 10] = item);
@@ -197,6 +204,7 @@ export const getUserFollowingsInfo:ActionCreator<ThunkAction<Promise<Action>, Ro
             let url = `/me/followee?from=${(page - 1) * 10}&size=10`;
             const headers = await Utility.formAuthorizeHeader();
             let res = await Utility.cc98Fetch(url, { headers });
+            if(res.status !== 200) throw new Error(res.statusText);
             let data: number[] = await res.json();
             //当请求到空数组时，必然是因为用户通过url访问到了越界的长度
             if (data.length === 0) {
@@ -207,6 +215,7 @@ export const getUserFollowingsInfo:ActionCreator<ThunkAction<Promise<Action>, Ro
             const query = data.join('&id=');
             url = `/user?id=${query}`;
             res = await Utility.cc98Fetch(url, { headers });
+            if(res.status !== 200) throw new Error(res.statusText);
             let followData: Appstate.UserInfo[] = await res.json();
             let prevFollow = store.currentUserFollowingInfo;
             followData.forEach((item, index) => prevFollow[index + (page - 1) * 10] = item);

@@ -1,6 +1,6 @@
 ﻿import * as React from 'react';
 import * as Utility from '../../../Utility';
-import { Actions } from '../../../Actions/UserCenter';
+import * as Actions from '../../../Actions/UserCenter';
 import { UserInfo } from '../../../States/AppState';
 import { connect } from 'react-redux';
 import Operation from '../Manage/Operation';
