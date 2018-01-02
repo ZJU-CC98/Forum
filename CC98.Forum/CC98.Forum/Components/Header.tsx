@@ -105,15 +105,25 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
                 transitionDuration: '.2s',
                 height: '0px'
             };
-
+            //未读消息数
             let unreadCount = { totalCount: 0, replyCount: 0, atCount: 0, systemCount: 0, messageCount: 0 };
             if (Utility.getStorage("unreadCount")) {
                 unreadCount = Utility.getStorage("unreadCount")
             }
             let totalCount: string = unreadCount.totalCount.toString();
             if (unreadCount.totalCount > 99) totalCount = "99+";
-
+            //全站管理选项
             let admin = this.props.userInfo.privilege === '管理员' ? <Link to="/sitemanage" style={{ color: '#fff' }}><li>全站管理</li></Link> : null;
+            //用户中心下拉列表
+            let userCenterClassName = "topBarUserCenter";
+            if (location.pathname === "/") {
+                userCenterClassName = "topBarUserCenter-mainPage";
+            }
+            //消息中心下拉列表
+            let MessageClassName = "topBarMessageDetails";
+            if (location.pathname === "/") {
+                MessageClassName = "topBarMessageDetails-mainPage";
+            }
 
             return (<div className="topBarRight">
                 <div className="topBarUserInfo">
@@ -143,7 +153,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
                     </div>
                 </div>
                 <div
-                    className="topBarUserCenter"
+                    className={userCenterClassName}
                     onMouseOut={(e) => { this.handleMouseEvent(e.type, "userName"); }}
                     onMouseOver={(e) => { this.handleMouseEvent(e.type, "userName"); }}
                     style={{ ...style, overflow: 'hidden', height: this.state.hoverElement === 'userName' ? '8rem' : '0' }}
@@ -156,12 +166,12 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
                     </ul>
                 </div>
                 <div
-                    className="topBarMessageDetails"
+                    className={MessageClassName}
                     onMouseOut={(e) => { this.handleMouseEvent(e.type, "message"); }}
                     onMouseOver={(e) => { this.handleMouseEvent(e.type, "message"); }}
                     style={{ ...style, overflow: 'hidden', height: this.state.hoverElement === 'message' ? '8rem' : '0' }}
                 >
-                    <ul className="topBarMessageDetailsUl" style={{ display: 'inherit' }}>
+                    <ul style={{ display: 'inherit' }}>
                         <Link to="/message/response"><li>回复我的<div className="message-counterLi displaynone" id="unreadCount-replyCount">({unreadCount.replyCount})</div></li></Link>
                         <Link to="/message/attme"><li>@ 我的<div className="message-counterLi displaynone" id="unreadCount-atCount">({unreadCount.atCount})</div></li></Link>
                         <Link to="/message/system"><li>系统通知<div className="message-counterLi displaynone" id="unreadCount-systemCount">({unreadCount.systemCount})</div></li></Link>
@@ -407,22 +417,41 @@ export const Search = withRouter(SearchBeforeConnent);
 
 export class Header extends React.Component<{}, AppState> {
     render() {
-        return <div className="header">
-            <div className="topBar">
-                <div className="topBarRow">
-                    <div className="row" style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                        <div className="topBarLogo"><Link to="/"><img src="/static/images/98LOGO.ico" /></Link></div>
-                        <div className="topBarCC98"><Link to="/">CC98论坛</Link></div>
-                        <div className="topBarText">|</div>
-                        <div className="topBarText"><Link to="/boardList">版面列表</Link></div>
-                        <div className="topBarText"><Link to="/newTopics">新帖</Link></div>
-                        <div className="topBarText"><Link to="/focus">关注</Link></div>
-                        <Route component={Search} />
+        let pathname = location.pathname;
+        if (pathname === "/") {
+            return <div className="header">
+                <div className="topBar-mainPage">
+                    <div className="topBarRow">
+                        <div className="row" style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                            <div className="topBarLogo"><Link to="/"><img src="/static/images/98LOGO.ico" /></Link></div>
+                            <div className="topBarCC98"><Link to="/">CC98论坛</Link></div>
+                            <div className="topBarText">|</div>
+                            <div className="topBarText"><Link to="/boardList">版面列表</Link></div>
+                            <div className="topBarText"><Link to="/newTopics">新帖</Link></div>
+                            <div className="topBarText"><Link to="/focus">关注</Link></div>
+                            <Route component={Search} />
+                        </div>
+                        <DropDown />
                     </div>
-                    <DropDown />
                 </div>
-            </div>
-        </div>;
-
+            </div>;
+        } else {
+            return <div className="headerWithoutImage">
+                <div className="topBar">
+                    <div className="topBarRow">
+                        <div className="row" style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                            <div className="topBarLogo"><Link to="/"><img src="/static/images/98LOGO.ico" /></Link></div>
+                            <div className="topBarCC98"><Link to="/">CC98论坛</Link></div>
+                            <div className="topBarText">|</div>
+                            <div className="topBarText"><Link to="/boardList">版面列表</Link></div>
+                            <div className="topBarText"><Link to="/newTopics">新帖</Link></div>
+                            <div className="topBarText"><Link to="/focus">关注</Link></div>
+                            <Route component={Search} />
+                        </div>
+                        <DropDown />
+                    </div>
+                </div>
+            </div>;
+        }
     }
 }

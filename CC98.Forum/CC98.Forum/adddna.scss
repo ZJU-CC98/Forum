@@ -511,7 +511,29 @@
     z-index: 2;
 }
 
+.headerWithoutImage {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    min-width: 71.25rem;
+    height: 3rem;
+    margin-bottom: 1.25rem;
+    padding: 0px;
+    z-index: 2;
+    opacity: 1.25;
+}
+
 .topBar {
+    display: flex;
+    flex-direction: row;
+    height: 3rem;
+    width: 100%;
+    justify-content: center;
+    background-color: rgba(121,184,202,1); //仅背景条半透明，内层元素无半透明效果
+}
+
+.topBar-mainPage {
     display: flex;
     flex-direction: row;
     height: 3rem;
@@ -647,6 +669,43 @@
         list-style-type: none;
         margin: 0;
         padding: 0;
+        background-color: rgba(121,184,202,1);
+    }
+
+    li {
+        display: flex;
+        height: 2rem;
+        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+    }
+
+    li:hover {
+        background-color: rgb(251,97,101);
+    }
+}
+
+.topBarUserCenter-mainPage {
+    position: absolute;
+    top: 3rem;
+    margin-left: 6rem;
+    width: 6rem;
+    z-index: 100;
+    font-size: 0.875rem;
+    font-family: 微软雅黑;
+    color: rgb(255,255,255);
+
+    a {
+        font-size: 0.875rem;
+        font-family: 微软雅黑;
+        color: rgb(255,255,255);
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
         background-color: rgba(121,184,202,0.8);
     }
 
@@ -663,8 +722,47 @@
         background-color: rgb(251,97,101);
     }
 }
+
 //鼠标移至消息时弹出的下拉菜单
 .topBarMessageDetails {
+    position: absolute;
+    top: 3rem;
+    width: 8rem;
+    margin-left: -5rem;
+    z-index: 100;
+    font-size: 0.875rem;
+    font-family: 微软雅黑;
+    color: rgb(255,255,255);
+
+    a {
+        font-size: 0.875rem;
+        font-family: 微软雅黑;
+        color: rgb(255,255,255);
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        background-color: rgba(121,184,202,1);
+    }
+
+    li {
+        display: flex;
+        height: 2rem;
+        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+        position: relative;
+    }
+
+    li:hover {
+        background-color: rgb(251,97,101);
+    }
+}
+
+.topBarMessageDetails-mainPage {
     position: absolute;
     top: 3rem;
     width: 8rem;
@@ -701,7 +799,6 @@
         background-color: rgb(251,97,101);
     }
 }
-
 //搜索框
 #search .box {
     display: flex;
