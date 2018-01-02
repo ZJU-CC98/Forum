@@ -135,6 +135,7 @@ class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff, histo
             Utility.removeLocalStorage("password");
             switch (e.message) {
                 case '400': info = '密码错误'; break;
+                case '账号已锁定': info = '账号已锁定'; break;
                 default: info = '未知错误 ' + e.message;
             }
             this.setState({
