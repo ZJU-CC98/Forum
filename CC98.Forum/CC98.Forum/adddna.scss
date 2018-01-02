@@ -495,10 +495,10 @@
     }
 }
 
-//------------ 首页就到此为止啦 ----------------------
+//------------------------- 首页就到此为止啦 ----------------------
 
-//------------------------- 以下是新头部的样式 ----------------------------------------
-.newHeader {
+//------------------------- 以下是新头部的样式 ---------------------
+.header {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -511,7 +511,7 @@
     z-index: 2;
 }
 
-.newTopBar {
+.topBar {
     display: flex;
     flex-direction: row;
     height: 3rem;
@@ -520,7 +520,7 @@
     background-color: rgba(121,184,202,0.8); //仅背景条半透明，内层元素无半透明效果
 }
 
-.newTopBarRow {
+.topBarRow {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -555,7 +555,7 @@
     }
 }
 
-.newTopBarText {
+.topBarText {
     font-size: 1rem;
     font-family: 微软雅黑;
     color: #ffffff;
@@ -702,8 +702,8 @@
     }
 }
 
-//新搜索框
-#newsearch .box {
+//搜索框
+#search .box {
     display: flex;
     flex-direction: row;
     height: 1.5rem;
@@ -715,7 +715,7 @@
     margin-left: 1rem;
 }
 
-#newsearch .searchBoxSelect {
+#search .searchBoxSelect {
     display: flex;
     width: 2rem;
     font-size: 0.75rem;
@@ -726,7 +726,7 @@
     cursor: pointer;
 }
 
-#newsearch .caret-down {
+#search .caret-down {
     display: flex;
     width: 1rem;
     font-size: 0.75rem;
@@ -737,7 +737,7 @@
     cursor: pointer;
 }
 
-#newsearch input {
+#search input {
     display: flex;
     border: 0;
     flex-grow: 1;
@@ -748,7 +748,7 @@
     outline: none;
 }
 
-#newsearch .searchIco {
+#search .searchIco {
     display: flex;
     flex-direction: row;
     font-size: 0.75rem;
@@ -759,13 +759,13 @@
     cursor: pointer;
 }
 
-#newsearch ul {
+#search ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
 
-#newsearch .searchBoxSub {
+#search .searchBoxSub {
     display: none;
     width: 2rem;
     margin-left: 2rem;
@@ -777,7 +777,7 @@
     z-index: 1000;
 }
 
-#newsearch .searchBoxSub li {
+#search .searchBoxSub li {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -786,27 +786,11 @@
     cursor: pointer;
 }
 
-#newsearch .searchBoxSub li:hover {
+#search .searchBoxSub li:hover {
     background-color: rgb(107,113,120);
 }
 
-//似乎是明一gg写的消息的样式
-//稍作了修改
-.message-counterLi, .message-counterNav {
-    position: absolute;
-    min-width: 10px;
-    height: 12px;
-    line-height: 12px;
-    margin-top: -11px;
-    padding: 1px 5px;
-    font-size: 10px;
-    font-weight: normal;
-    color: white;
-    text-align: center;
-    background-color: #fb6165;
-    border-radius: 8px;
-}
-
+//头部中未读数的样式
 .message-counter {
     position: absolute;
     top: 0;
@@ -824,6 +808,18 @@
 }
 
 .message-counterLi {
+    position: absolute;
+    min-width: 10px;
+    height: 12px;
+    line-height: 12px;
+    margin-top: -11px;
+    padding: 1px 5px;
+    font-size: 10px;
+    font-weight: normal;
+    color: white;
+    text-align: center;
+    background-color: #fb6165;
+    border-radius: 8px;
     top: 1.25rem;
     left: 6rem;
 }

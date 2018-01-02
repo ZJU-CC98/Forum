@@ -26,7 +26,6 @@ import { SearchBoard } from './Search/SearchBoard';
 import { Signin } from './Signin';
 import { SiteManage } from './SiteManage/Index';
 import { ShowEdit } from './Edit';
-import { NewHeader } from './newHeader';
 
 import { Constants } from './Constant';
 
@@ -36,7 +35,7 @@ export class App extends React.Component<null, AppState> {
         return (<div style={{ width: "100%" }}>
             <Router>
                 <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px", backgroundColor:"#e6e7ec" }}>
-                    <NewHeader />
+                    <Header />
                     <Switch>
                         <Route exact path="/" component={MainPage}></Route>
                         <Route exact path="/topic/:topicid/:page?" component={ShowTopic} />
