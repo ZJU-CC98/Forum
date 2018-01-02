@@ -791,11 +791,10 @@
 }
 
 //头部中未读数的样式
+
 .message-counter {
-    position: absolute;
-    top: 0;
-    left: 0;
     display: flex;
+    position: absolute;
     height: 1.5rem;
     width: 1.5rem;
     border-radius: 50%;
@@ -805,21 +804,23 @@
     font-size: 0.75rem;
     font-family: 微软雅黑;
     color: #ffffff;
+    top: 0.75rem;
+    left: 0.75rem;
 }
 
 .message-counterLi {
+    display: flex;
     position: absolute;
-    min-width: 10px;
-    height: 12px;
-    line-height: 12px;
-    margin-top: -11px;
-    padding: 1px 5px;
-    font-size: 10px;
-    font-weight: normal;
-    color: white;
-    text-align: center;
+    height: 0.75rem;
+    min-width: 1.25rem;
+    border-radius: 0.5rem;
+    justify-content: center;
+    align-items: center;
     background-color: #fb6165;
-    border-radius: 8px;
-    top: 1.25rem;
+    font-size: 0.625rem;
+    font-family: 微软雅黑;
+    color: #ffffff;
+    line-height: 0.625rem;
+    top: 0.75rem;
     left: 6rem;
 }
