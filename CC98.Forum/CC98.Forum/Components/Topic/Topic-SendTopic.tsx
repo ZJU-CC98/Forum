@@ -380,7 +380,7 @@ ${newProps.content.content}[/quote]
             editor = <div>
                 <UbbEditor update={this.update} value={this.state.content} option={{ height: 20, submit: this.sendUbbTopic }} />
                 <div className="row" style={{ justifyContent: 'center', marginBottom: '1.25rem ' }}>
-                    <button id="post-topic-button" onClick={this.sendUbbTopic} disabled={this.state.buttonDisabled} className="button blue" style={{ marginTop: '1.25rem', width: '6rem', height: '2rem', lineHeight: '2rem', letterSpacing: '0.3125rem' }}>{this.state.buttonInfo}
+                    <button id="post-topic-button" onClick={this.sendUbbTopic} disabled={this.state.buttonDisabled} className="button blue" style={{ marginTop: '1.25rem', width: '6rem', height: '2rem', lineHeight: '2rem' }}>{this.state.buttonInfo}
                     </button>
 				</div></div>;
 		}

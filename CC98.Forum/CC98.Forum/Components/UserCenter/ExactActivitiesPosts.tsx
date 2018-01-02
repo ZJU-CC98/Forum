@@ -6,132 +6,69 @@ import * as React from 'react';
 import Post from './ExactActivitiesPost';
 import { UserRecentPost } from '../../States/AppState';
 import * as Utility from '../../Utility';
+import { connect } from 'react-redux';
+import { getRecentPosts } from '../../AsyncActions/UserCenter';
+import * as Actions from '../../Actions/UserCenter';
+import { RootState } from '../../Store';
+
+interface Props {
+    userRecentPosts: UserRecentPost[];
+    isLoading: boolean;
+    hasTotal: boolean;
+    getInfo: (page: number) => void;
+    clearPosts: () => void;
+}
 
 //用户中心主页帖子动态组件
-export default class extends React.Component<null, UserCenterExactActivitiesPostsState> {
-    constructor(props) {
-        super(props);
-        //临时填充数据
-        this.state = {
-            userRecentPosts: [],
-            isLoading: false
-        };
-        this.scrollHandler = this.scrollHandler.bind(this);
-    }
+class Activities extends React.Component<Props> {
+    /**
+     * 滚动没有分页信息，用自定义页数替代
+     */
+    _page = 1;
+    /**
+     * 每次读取页数时给page加一
+     */
+    get page() { return this._page++; }
 
-    async scrollHandler(e) {
+    scrollHandler = async (e) => {
         let pageYLeft = document.body.scrollHeight - window.pageYOffset;
         
-        if (pageYLeft < 1500 && this.state.isLoading === false) {
-            try {
-                this.setState({ isLoading: true });
-
-                const url = `/me/recent-topic?from=${this.state.userRecentPosts.length}&size=11`
-                const token = await Utility.getToken();
-                const headers = new Headers();
-                headers.append('Authorization', token);
-                let res = await Utility.cc98Fetch(url, {
-                    headers
-                });
-
-                if (res.status === 200) {
-                    let data: itemType[] = await res.json();
-
-                    if (data.length < 11) {
-                        window.removeEventListener('scroll', this.scrollHandler);
-                    }
-
-                    let posts = this.state.userRecentPosts;
-                    let i = data.length === 11 ? 10 : data.length;
-
-                    while (i--) {
-                        let post = await this.item2post(data[i]);
-                        posts.push(post);
-                    }
-                    this.setState({
-                        userRecentPosts: posts,
-                        isLoading: false
-                    });
-                } else {
-                    throw {};
-                }
-            } catch (e) {
-                this.setState({
-                    isLoading: false
-                });
-                console.log('用户中心滚动加载失败');
-            }
+        if (pageYLeft < 1500 && this.props.isLoading === false) {
+            this.props.getInfo(this.page);
         }
     }
 
-    async componentDidMount() {
-        try {
-            const url = `/me/recent-topic?from=0&size=10`
-            const token = Utility.getLocalStorage("accessToken");
-            const headers = new Headers();
-            headers.append('Authorization', token);
-            let res = await Utility.cc98Fetch(url, {
-                headers
-            });
-            
-            if (res.status === 200) {
-                let data = await res.json();
-                let posts: UserRecentPost[] = [],
-                    i = data.length;
-
-                while (i--) {
-                    let post = await this.item2post(data[i]);
-                    posts.unshift(post);
-                }
-
-                this.setState({
-                    userRecentPosts: posts
-                });
-                if (data.length === 10) {
-                    window.addEventListener('scroll', this.scrollHandler);
-                }
-            } else {
-                throw {};
+    componentDidMount() {
+        let shouldLoad = !this.props.hasTotal;
+        for(let i = 0; i < this.props.userRecentPosts.length; i ++){
+            if(!this.props.userRecentPosts[i]){
+                this.props.clearPosts();
+                shouldLoad = true;
+                break;
             }
-        } catch (e) {
-            console.log('用户中心帖子加载失败');
+        }
+        if(shouldLoad) {
+            this.props.getInfo(this.page);
+            window.addEventListener('scroll', this.scrollHandler);
         }
     }
-
     componentWillUnmount() {
         window.removeEventListener('scroll', this.scrollHandler);
     }
 
-    async item2post(item: itemType) {
-        let userRecentPost = new UserRecentPost();
-        userRecentPost.approval = item.likeCount;
-        userRecentPost.board = await Utility.getBoardName(item.boardId);
-        userRecentPost.date = item.time.replace('T', ' ').slice(0,19);
-        userRecentPost.disapproval = item.dislikeCount;
-        userRecentPost.content = item.title;
-        userRecentPost.id = item.id;
-        userRecentPost.boardId = item.boardId;
-        userRecentPost.name = item.userName;
-        userRecentPost.isAnonymous = item.isAnonymous;
-
-        return userRecentPost;
+    componentWillReceiveProps(newProps: Props) {
+        if(newProps.hasTotal) {
+            window.removeEventListener('scroll', this.scrollHandler);
+        } 
     }
 
     render() {
-        if (this.state.userRecentPosts.length === 0) {
-            const style = {
-                marginLeft: '2rem'
-            }
-
-            return (
-                <div className="user-posts" style={style}>
-                    没有主题
-                </div>
-            );
+        if (this.props.userRecentPosts.length === 0 && this.props.hasTotal) {
+            return <div className="user-posts" style={{marginLeft: '2rem'}}>没有主题</div>;
         }
 
         //state转换为JSX
-        const userRecentPosts = this.state.userRecentPosts.map((item) => (<Post userRecentPost={item} />));
+        const userRecentPosts = this.props.userRecentPosts.map((item) => (<Post userRecentPost={item} />));
         //添加分隔线
         for (let i = 1; i < userRecentPosts.length; i += 2) {
             userRecentPosts.splice(i, 0, <hr />);
@@ -139,23 +76,31 @@ export default class extends React.Component<null, UserCenterExactActivitiesPost
         return (
             <div className="user-posts">
                 {userRecentPosts}
+                {this.props.isLoading ? <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div> : null}
             </div>
         );
     }
 }
 
-interface UserCenterExactActivitiesPostsState {
-    userRecentPosts: UserRecentPost[];
-    isLoading: boolean;
+
+function mapState(store: RootState) {
+    return {
+        userRecentPosts: store.userInfo.recentPosts,
+        hasTotal: store.userInfo.hasTotal.myposts,
+        isLoading: store.userInfo.isLoading
+    };
 }
 
-interface itemType {
-    boardId: number;
-    dislikeCount: number;
-    likeCount: number;
-    title: string;
-    id: number;
-    time: string;
-    userName: string;
-    isAnonymous: boolean;
+function mapDispatch(dispatch) {
+    return {
+        getInfo: (page:number) => {
+            dispatch(getRecentPosts(page));
+        },
+        clearPosts: () => {
+            dispatch(Actions.changeUserRecentPosts([]));
+            dispatch(Actions.usercenterPageLoadUnfinish());
+        }
+    };
 }
+
+export default connect(mapState, mapDispatch)(Activities);

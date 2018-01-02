@@ -10,7 +10,7 @@ import {
     Link
 } from 'react-router-dom';
 import * as $ from 'jquery';
-import { changeUserInfo } from './Actions';
+import * as Actions from './Actions/UserCenter';
 
 declare let editormd: any;
 import { Constants } from './Components/Constant';
@@ -726,13 +726,13 @@ export async function getRecentContact(from: number, size: number, router) {
         for (let i in recentContactId) {
             userId[i] = recentContactId[i].userId;
         }
-        //console.log("userid", userId);
+      
         let usersInfo = await getBasicUsersInfo(userId);
         let recentContact = [];
         for (let i in recentContactId) {
             recentContact.push(getThisUserInfo(recentContactId[i].userId, usersInfo));
         };
-        //console.log("获取到基本信息", recentContact);
+        
         for (let i in recentContactId) {
             recentContact[i].message = [];
             recentContact[i].lastContent = recentContactId[i].lastContent;
@@ -1641,7 +1641,7 @@ export async function refreshUserInfo() {
         });
 
         let userInfo = await response.json();
-        store.dispatch(changeUserInfo(userInfo));
+        store.dispatch(Actions.changeUserInfo(userInfo));
         setLocalStorage("userInfo", userInfo);
         setLocalStorage("userName", userInfo.name);
     }
@@ -2359,26 +2359,10 @@ export async function getFavState(topicId) {
 
 //更新未读消息数量
 export async function refreshUnReadCount() {
-    let noticeSetting = getLocalStorage("noticeSetting");
-    if (noticeSetting.response === "否" && noticeSetting.system === "否" && noticeSetting.message === "否" && noticeSetting.attme === "否") {
-        return null;
-    }
     const headers = await formAuthorizeHeader();
     const url = `/me/unread-count`;
     const response = await cc98Fetch(url, { headers });
     let unreadCount = await response.json();
-    if (noticeSetting.response === "否") {
-        unreadCount.replyCount = 0;
-    }
-    if (noticeSetting.system === "否") {
-        unreadCount.systemCount = 0;
-    }
-    if (noticeSetting.message === "否") {
-        unreadCount.messageCount = 0;
-    }
-    if (noticeSetting.attme === "否") {
-        unreadCount.atCount = 0;
-    }
     unreadCount.totalCount = unreadCount.systemCount + unreadCount.atCount + unreadCount.replyCount + unreadCount.messageCount;
     //console.log("未读消息数量", unreadCount);
     if (unreadCount.totalCount > 0) {
@@ -2600,29 +2584,34 @@ export async function getUsersInfobyNames(userNames: any[]) {
             usersInfoNeeded.push(userNames[i]);
         }
     }
-    if (usersInfoNeeded.length === 0) {
+
+    if (usersInfoNeeded.length == 0) {
+     
         return finalUsersInfo;
     }
     else {
+   
         for (let i = 0; i < usersInfoNeeded.length; i++) {
             if (i === 0) {
-                url = encodeURIComponent(`${url}?name=${usersInfoNeeded[i]}`);
+                url = `${url}?name=`+encodeURIComponent(usersInfoNeeded[i]);
             }
             else {
-                url = encodeURIComponent(`${url}&name=${usersInfoNeeded[i]}`);
+                url = `${url}&name=`+encodeURIComponent(usersInfoNeeded[i]);
             }
         }
-        try {
+     
+
+            console.log(url);
             //合并查询和缓存的
             let response = await cc98Fetch(url);
             var data = await response.json();
             for (let i of data) {
                 finalUsersInfo.push(i);
             }
+            console.log("查询后");
+            console.log(finalUsersInfo);
             return finalUsersInfo;
-        } catch (e) {
-            return [];
-        }
+     
     }
 }
 

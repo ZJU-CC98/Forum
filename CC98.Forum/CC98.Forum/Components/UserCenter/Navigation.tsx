@@ -16,36 +16,23 @@ export default class extends React.Component<null, UserCenterNavigationState> {
     constructor(props) {
         super(props);
         this.state = {
-            isScroll: false,
-            buttonClassName: '',
-            navigationClassName: 'user-center-navigation'
+            buttonClassName: ''
         };
         this.handleScroll = this.handleScroll.bind(this);
     }
 
     handleScroll(e) {
-        if (window.pageYOffset > 234 && !this.state.isScroll) {
+        if (window.pageYOffset > 234) {
             this.setState({
-                isScroll: true,
-                buttonClassName: 'btn-show',
-                navigationClassName: 'user-center-navigation'
+                buttonClassName: 'btn-show'
             });
         }
 
-        if (window.pageYOffset < 234 && this.state.isScroll) {
-            this.setState((prevState) => {
-                if (prevState.buttonClassName === '') {
-                    return {
-                        isScroll: false
-                    }
-                } else {
-                    return {
-                        isScroll: false,
-                        buttonClassName: 'btn-disappare',
-                        navigationClassName: 'user-center-navigation'
-                    }
-                }
-            });
+        if (window.pageYOffset < 234) {
+            this.setState(prevState => ({
+                    buttonClassName: prevState.buttonClassName === '' ? '' : 'btn-disappare'
+                })
+            );
         }
     }
 
@@ -62,7 +49,7 @@ export default class extends React.Component<null, UserCenterNavigationState> {
     }
 
     render() {
-        return (<div className={this.state.navigationClassName} id="userCenterNavigation" >
+        return (<div className='user-center-navigation' id="userCenterNavigation" >
             <ul>
                 <li><NavLink to="/usercenter" exact activeClassName="user-center-navigation-active" className="fa-home"><p>主页</p></NavLink></li>
                 <hr />
@@ -84,7 +71,5 @@ export default class extends React.Component<null, UserCenterNavigationState> {
 }
 
 interface UserCenterNavigationState {
-    isScroll: boolean;
     buttonClassName: string;
-    navigationClassName: string;
 }

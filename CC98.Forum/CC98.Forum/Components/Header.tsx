@@ -3,7 +3,7 @@ import * as Utility from '../Utility';
 import { AppState } from '../States/AppState';
 import * as $ from 'jquery';
 import { connect } from 'react-redux';
-import { userLogOff } from '../Actions';
+import * as Actions from '../Actions/UserCenter';
 import { Link, withRouter, Route } from 'react-router-dom';
 import SignalR from '../SignalR';
 
@@ -203,7 +203,7 @@ function mapState(state) {
 function mapDispatch(dispatch) {
     return {
         logOff: () => {
-            dispatch(userLogOff());
+            dispatch(Actions.userLogOff());
         }
     };
 }

@@ -8,102 +8,68 @@ import { UserRecentPost } from '../../States/AppState';
 import * as Utility from '../../Utility';
 import Pager from './Pager';
 import { RouteComponent } from '../RouteComponent';
+import * as Actions from '../../Actions/UserCenter';
+import { connect } from 'react-redux';
+import { RootState } from '../../Store';
+import { Dispatch } from 'redux';
+import { withRouter, match } from 'react-router-dom';
+import { getFavoritePosts } from '../../AsyncActions/UserCenter';
+
+interface Props {
+    userRecentPosts: UserRecentPost[];
+    totalPage: number;
+    hasTotal: boolean;
+    isLoading: boolean;
+    match: match<Match>;
+    getInfo: (page: number) => void;
+    changePage: () => void;
+}
+
+interface Match {
+    page: string;
+}
 
 /**
  * 用户中心我收藏的帖子组件
  */
-export default class extends React.Component<{match}, UserCenterMyFavoritesPostsState> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            userRecentPosts: [],
-            info: '加载中',
-            totalPage: (Number.parseInt(this.props.match.params.page) || 1) + 1,
-            currentPage: this.props.match.params.page,
-            hasTotal: false,
-            isLoading: true
-        };
-    }
+class Posts extends React.Component<Props> {
 
-    componentDidUpdate() {
-        if (this.state.currentPage !== this.props.match.params.page) {
-            this.setState({ currentPage: this.props.match.params.page });
-            this.getInfo(this.props.match.params.page);
+    componentWillReceiveProps(newProps: Props){
+        if(this.props.match.params.page !== newProps.match.params.page) {
+            window.scroll(0, 0);
         }
     }
 
     componentDidMount() {
-        this.getInfo(this.props.match.params.page);
-    }
-
-    getInfo = async (page = 1) => {
-        try {
-            window.scroll(0, 0);
-            this.setState({ isLoading: true });
-            const token = await Utility.getToken();
-            const url = `/topic/me/favorite?from=${(page - 1) * 10}&size=11`;
-
-            let myHeaders = new Headers();
-            myHeaders.append('Authorization', token);
-
-            let res = await Utility.cc98Fetch(url, {
-                headers: myHeaders
-            });
-            if (res.status !== 200) {
-                throw new Error(res.status.toString());
-            }
-            let data = await res.json();
-            if (data.length === 0) {
-                this.setState({
-                    info: '没有主题',
-                    isLoading: false
-                });
-                return;
-            }
-
-            let userRecentPosts: UserRecentPost[] = [],
-                i = data.length,
-                totalPage: number;
-
-            if (i <= 10) {
-                totalPage = Number.parseInt(this.props.match.params.page) || 1;
-                this.setState({hasTotal: true});
-            } else {
-                i = 10;
-                totalPage = Math.max((Number.parseInt(this.props.match.params.page) || 1) + 1, this.state.totalPage);
-            }
-
-            while (i--) {
-                let post = new UserRecentPost();
-                post.board = data[i].boardName;
-                post.boardId = data[i].boardId;
-                post.content = data[i].title;
-                post.date = data[i].time.replace('T', ' ').slice(0, 19);
-                post.id = data[i].id;
-                userRecentPosts.unshift(post);
-            }
-
-            this.setState({
-                userRecentPosts,
-                totalPage,
-                isLoading: false
-            });
-        } catch (e) {
-            console.log('加载收藏失败');
-        }
+        this.props.changePage();
     }
 
     render() {
-        if (this.state.isLoading) {
-            return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
+        if(this.props.isLoading) {
+            return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>;
         }
-        if (!this.state.userRecentPosts || this.state.userRecentPosts.length === 0) {
-            return (<div className="user-posts" style={{ textAlign: 'center' }}>
-                {this.state.info}
-            </div>);
+        const curPage = parseInt(this.props.match.params.page) || 1;
+        const totalPage = this.props.hasTotal ? this.props.totalPage : curPage + 1;
+        //如果未请求完所有帖子并且帖子总数小于请求的页数
+        //换言之，当用户向后翻页，或直接通过url定位页数时
+        let shouldLoad = this.props.userRecentPosts.length < (curPage - 1) * 10 + 1 && !this.props.hasTotal;
+        //当用户向前翻页，且翻页后的部分中存在undefined时
+        //仅当用户通过url定位页数后向前翻页才会出现的情况
+        for(let i = (curPage - 1) * 10; i < Math.min(this.props.userRecentPosts.length, curPage * 10); i++){
+            if(!this.props.userRecentPosts[i]){
+                shouldLoad = true;
+                break;
+            }
+        }
+        
+        if(shouldLoad) {
+            this.props.getInfo(curPage);
+            return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>;
+        } else if(this.props.userRecentPosts.length === 0) {
+            return <div className="user-posts" style={{ textAlign: 'center' }}>没有主题</div>;
         }
         //state转换为JSX
-        const userRecentPosts = this.state.userRecentPosts.map((item) => (<Post userRecentPost={item} />));
+        let userRecentPosts = this.props.userRecentPosts.slice((curPage - 1) * 10, curPage * 10 - 1).map((item) => (<Post userRecentPost={item} />));
         //添加分隔线
         for (let i = 1; i < userRecentPosts.length; i += 2) {
             userRecentPosts.splice(i, 0, <hr />);
@@ -111,18 +77,30 @@ export default class extends React.Component<{match}, UserCenterMyFavoritesPosts
         return (
             <div className="user-posts">
                 {userRecentPosts}
-                <Pager currentPage={parseInt(this.props.match.params.page) || 1} totalPage={this.state.totalPage} href="/usercenter/myfavorites/" hasTotal={this.state.hasTotal}/>
+                <Pager currentPage={curPage} totalPage={totalPage} href="/usercenter/myposts/" hasTotal={this.props.hasTotal}/>
             </div>
-
         );
     }
 }
 
-interface UserCenterMyFavoritesPostsState {
-    userRecentPosts: UserRecentPost[];
-    info: string;
-    totalPage: number;
-    currentPage: number;
-    hasTotal: boolean;
-    isLoading: boolean;
+function mapState(store: RootState) {
+    return {
+        userRecentPosts: store.userInfo.currentUserFavoritePosts,
+        totalPage: store.userInfo.totalPage.myfavoriteposts,
+        hasTotal: store.userInfo.hasTotal.myfavoriteposts,
+        isLoading: store.userInfo.isLoading
+    };
 }
+
+function mapDispatch(dispatch: Dispatch<RootState>) {
+    return {
+        changePage: () => {
+            dispatch(Actions.changeUserCenterPage('myfavoriteposts'));
+        },
+        getInfo: (page: number) => {
+            dispatch(getFavoritePosts(page));
+        }
+    };
+}
+
+export default withRouter(connect(mapState, mapDispatch)(Posts));

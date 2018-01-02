@@ -2,21 +2,50 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk'
+import error, { ErrorStore } from './Reducers/Error';
+import post, { TopicState } from './Reducers/Post';
+import userInfo, { UserInfoStore } from './Reducers/UserInfo';
+import * as UserCenterActions from './Actions/UserCenter';
+import { getReturnOfExpression, getType } from 'react-redux-typescript';
 
-import error from './Reducers/Error';
-import post from './Reducers/Post';
-import userInfo from './Reducers/UserInfo';
+/**
+ * 全局store的类型定义
+ */
+export interface RootState {
+    error: ErrorStore;
+    post: TopicState;
+    userInfo: UserInfoStore;
+}
+
+function values<T>(o: { [s: string]: T }): T[] {
+    return Object.keys(o).map(key => o[key]);
+};
+
+const Actions = { ...UserCenterActions };
+const returnOfActions = values(Actions).map(getReturnOfExpression);
+const returnOgActionsType = values(Actions).map(getType);
+
+/**
+ * 全部actiontype的类型定义
+ */
+export type RootActionType = typeof returnOgActionsType[number];
+
+/**
+ * 全部action的类型定义
+ */
+export type RootAction = typeof returnOfActions[number];
 
 /**
  * 合并reducer
- * 在组件中使用相应的Store时带上这里的前缀
  */
-const reducer = combineReducers({
+const reducer = combineReducers<RootState>({
     error,
     post,
     userInfo
 });
+
 /**
  * 记录Action与Store
  * @param store
@@ -28,4 +57,9 @@ const logger = store => next => action => {
     return result;
 }
 
-export default createStore(reducer, applyMiddleware(logger));
+/**
+ * 连接到redux开发者工具
+ */
+const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+export default createStore(reducer, composeEnhancers(applyMiddleware(thunk, logger)));

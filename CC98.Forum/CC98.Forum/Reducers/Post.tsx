@@ -3,7 +3,7 @@ import * as Utility from '../Utility';
 /**
  * 帖子store
  */
-class TopicState {
+export class TopicState {
     postTopic: PostTopicState;
     post: PostState;
     user: UserState;

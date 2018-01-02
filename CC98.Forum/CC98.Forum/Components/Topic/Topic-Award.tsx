@@ -31,11 +31,11 @@ export class Award extends React.Component<Props, {info,shortInfo,count,showAll 
         }
        if (award.length>0)
         usersInfo = await Utility.getUsersInfobyNames(usersName);
-
+      
         for (let i in award) {
-            console.log("username" + award[i].operatorName);
+          
             let thisUserInfo = Utility.getThisUserInfobyName(award[i].operatorName, usersInfo);
-            console.log(thisUserInfo);
+          
             award[i].portraitUrl = thisUserInfo.portraitUrl;
         }
         if (award.length > 10) {
@@ -59,6 +59,7 @@ export class Award extends React.Component<Props, {info,shortInfo,count,showAll 
             for (let i = 0; i < 10; i++) {
                 let thisUserInfo = Utility.getThisUserInfobyName(award[i].operatorName, usersInfo);
                 award[i].portraitUrl = thisUserInfo.portraitUrl;
+                console.log(award[i]);
                 shortInfo[i] =this.generateAwardInfo(award[i]);
             }
         }

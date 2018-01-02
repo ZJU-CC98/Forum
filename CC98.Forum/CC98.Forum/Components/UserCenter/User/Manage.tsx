@@ -1,6 +1,6 @@
 ﻿import * as React from 'react';
 import * as Utility from '../../../Utility';
-import { changeCurrentVisitingUserPage, userNotFound } from '../../../Actions';
+import * as Actions from '../../../Actions/UserCenter';
 import { UserInfo } from '../../../States/AppState';
 import { connect } from 'react-redux';
 import Operation from '../Manage/Operation';
@@ -60,10 +60,10 @@ function mapState(state) {
 function mapDispatch(dispatch) {
     return {
         changePage: (page, id) => {
-            dispatch(changeCurrentVisitingUserPage(page, id));
+            dispatch(Actions.changeCurrentVisitingUserPage(page, id));
         },
         notFoundUser: () => {
-            dispatch(userNotFound());
+            dispatch(Actions.userNotFound());
         }
     };
 }
