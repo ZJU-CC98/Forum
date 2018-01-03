@@ -2590,7 +2590,7 @@ export async function getUsersInfobyNames(userNames: any[]) {
         return finalUsersInfo;
     }
     else {
-   
+        console.log("查询");
         for (let i = 0; i < usersInfoNeeded.length; i++) {
             if (i === 0) {
                 url = `${url}?name=`+encodeURIComponent(usersInfoNeeded[i]);

@@ -209,7 +209,7 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
                     </div>
                 </div>
                 <div className="boardDescription">
-                    <div>版面简介</div>
+                 
                     <div>{this.props.boardInfo.description}</div>
                 </div>
                 <div className="boardMasters">
@@ -219,7 +219,7 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
             </div>
             <div className="bigPaper" style={{display: 'block'}}>
                 <button className="fa fa-angle-double-up" style={{ float: 'right', backgroundColor: '#fff', cursor: 'pointer', border: 'none' }} type="button" onClick={() => this.setState({ isExtend: false })}>收起</button>
-                <div className="bigPaperTitle">版面公告
+                <div className="bigPaperTitle">
                     {Utility.isMaster(this.props.boardInfo.boardMasters) ? <button type="button" onClick={() => this.setState({isEditing: true})}>编辑</button> : null}
                     {this.state.isEditing ? <button type="button" onClick={() => { this.changeBigPaper(); }}>提交</button> : null}
                     <p>{this.state.info}</p>

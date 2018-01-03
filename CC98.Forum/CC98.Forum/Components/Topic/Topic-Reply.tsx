@@ -54,25 +54,18 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
 
         this.setState({ contents: realContents });
     }
-    async componentWillMount() {
+    async componentDidMount() {
         const page = this.props.page || 1;
         let realContents;
         if (this.props.isHot) {
             realContents = await Utility.getHotReplyContent(this.props.topicId);
-            if (!realContents) this.setState({ inWaiting: false, contents: [] });
-        } else if (this.props.isTrace) {
-            const data = await Utility.getUserInfo(this.props.userId);
-            const userName = data.name;
-            realContents = await Utility.getCurUserTopicContent(this.props.topicId, page, userName, this.props.userId);
-        } else {
-            realContents = await Utility.getTopicContent(this.props.topicId, page);
             if (!realContents) this.setState({ inWaiting: false, contents: [] });
         }
         const masters = this.props.boardInfo.boardMasters;
         this.setState({ inWaiting: false, contents: realContents, masters: masters });
     }
     async componentWillReceiveProps(newProps) {
-        if (newProps.page !== this.props.page || newProps.topicInfo.replyCount !== this.props.topicInfo.replyCount) {
+       // if (newProps.page !== this.props.page || newProps.topicInfo.replyCount !== this.props.topicInfo.replyCount) {
             this.setState({ inWaiting: true });
             const page = newProps.page || 1;
             let realContents;
@@ -89,7 +82,7 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
             }
             const masters = newProps.boardInfo.boardMasters;
             this.setState({inWaiting:false,contents: realContents,masters:masters });
-        }
+    //    }
     }
 
     private generateContents(item) {
@@ -172,7 +165,7 @@ export class FloorSize extends React.Component<{isHot:boolean, floor: number }> 
                 return <div className="reply-floor">{this.props.floor}</div>;
             }
         } else {
-                return <div className="reply-floor">热门</div>;
+            return <div style={{ backgroundColor: "rgv(251,97,101)" }} className="reply-floor"><img style={{ width: "20px", height: "30px", paddingTop:"5px" }} src="/static/images/hot.png" /></div>;
         }
       
     }
