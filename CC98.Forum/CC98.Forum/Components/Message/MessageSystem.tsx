@@ -24,16 +24,17 @@ export class MessageSystem extends React.Component<{}, MessageSystemState> {
 
     async getData(props) {
         //给系统消息添加选中样式
+        const num = 10;
         $('.message-nav > div').removeClass('message-nav-focus');
         $('#system').addClass('message-nav-focus');
         let totalCount = await Utility.getTotalPage(3);
-        let index: any = (totalCount-0.5) / 7;
+        let index: any = (totalCount-0.5) / num;
         let totalPage = parseInt(index)+1;
         let curPage = props.match.params.page - 1;
         if (!curPage || curPage < 0) {
             curPage = 0;
         }
-        let data = await Utility.getMessageSystem(curPage * 7, 7, this.context.router);
+        let data = await Utility.getMessageSystem(curPage * num, num, this.context.router);
         //console.log(data);
         if (data) {
             this.setState({ data: data, from: curPage + 1, totalPage: totalPage });

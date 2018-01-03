@@ -1164,7 +1164,6 @@ a {
     display: flex;
     flex-direction: column;
     width: 1140px;
-    height: 820px;
 }
 
 .message-title {
@@ -1174,11 +1173,9 @@ a {
 
 .message-content {
     display: flex;
-    min-height: 674px;
 
     margin: {
         top: 20px;
-        bottom: 30px;
     }
 }
 
@@ -1238,6 +1235,7 @@ a {
     display: flex;
     flex-grow: 1;
     flex-shrink: 0;
+    min-height: 674px;
 }
 
 .message-message-people {
@@ -1637,6 +1635,7 @@ a {
 
 /******以下为系统消息部分的样式***/
 .message-system {
+    min-height: 952px;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -1687,6 +1686,7 @@ a {
 
 /******以下为我的回复部分的样式***/
 .message-response {
+    min-height: 952px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;

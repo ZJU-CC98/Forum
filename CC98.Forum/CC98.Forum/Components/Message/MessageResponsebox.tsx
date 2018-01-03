@@ -10,7 +10,6 @@ declare let moment: any;
 export class MessageResponsebox extends React.Component<MessageResponseProps> {
     
     render() {
-        let host = window.location.host;
         let boardName = `[url=/list/${this.props.boardId}][color=dodgerblue]${this.props.boardName}[/color][/url]`;
         //有可能出错后返回boardId为0，未知版面
         if (this.props.boardId === 0) {

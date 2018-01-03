@@ -13,7 +13,7 @@ export class MessageSender extends React.Component<MessageSendReceiveProps> {
         let timeClassName: string;
         if (this.props.showTime) { timeClassName = "message-message-wcTime" }
         else { timeClassName = "displaynone" }
-        let content = Utility.autoAddUrl(this.props.content);
+        let content = Utility.dealUrl(this.props.content);
         return (<div className="message-message-wc">
                 <div className={timeClassName}>{moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')}</div>
                 <div className="message-message-wcSender">

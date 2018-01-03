@@ -1653,10 +1653,16 @@ export async function unfollowBoard(boardId) {
     await refreshUserInfo();
     removeStorage("focusBoardList");
 }
-//获取系统通知
+
+/**
+ * 获取系统通知
+ * @param from 获取消息起点
+ * @param size 一次性获取消息数量
+ * @param router 路由器
+ */
 export async function getMessageSystem(from: number, size: number, router) {
+    const myHeaders = await formAuthorizeHeader(); 
     try {
-        const myHeaders = await formAuthorizeHeader();
         let response = await cc98Fetch(`/notification/system?from=${from}&size=${size}`, { headers: myHeaders });
         if (response.status === 401) {
             window.location.href = "/status/UnauthorizedTopic";
@@ -1667,29 +1673,32 @@ export async function getMessageSystem(from: number, size: number, router) {
         if (response.status === 500) {
             window.location.href = "/status/ServerError";
         }
-        let newTopic = await response.json();
-        //把postId统计存到一个数组里，然后批量查询一下，从而得到每个楼层信息和回复者信息
-        let postsId = [];
-        for (let item of newTopic) {
-            if (item.postId) {
-                postsId.push(item.postId);
-            }
-        }
-        let postsInfo = await getBasicPostsInfo(postsId);
-        //补充楼层信息
-        for (let i in newTopic) {
-            if (newTopic[i].postId) {
-                let postInfo = getThisPostInfo(newTopic[i].postId, postsInfo);
-                newTopic[i].floor = postInfo.floor;
-            }
-            else {
-                newTopic[i].floor = 0;
-            }
-        }
-        return newTopic;
-    } catch (e) {
-        //window.location.href = "/status/Disconnected";
+        var newTopic = await response.json(); //先从api得到原始的系统消息数据
+    } catch {
+        return [];
     }
+    
+    //把postId统计存到一个数组里，然后批量查询一下，从而得到每个楼层信息和回复者信息
+    let postsId = [];
+    for (let item of newTopic) {
+        if (item.postId) {
+            postsId.push(item.postId);
+        }
+    }
+    //console.log("获取的postsId", postsId);
+    let postsInfo = await getBasicPostsInfo(postsId);
+    //补充楼层信息
+    for (let i in newTopic) {
+        if (newTopic[i].postId) {
+            let postInfo = getThisPostInfo(newTopic[i].postId, postsInfo);
+            newTopic[i].floor = postInfo.floor;
+        }
+        else {
+            newTopic[i].floor = 0;
+        }
+    }
+    //console.log("返回前数据", newTopic);
+    return newTopic;
 }
 
 //获取回复我的通知
@@ -2131,23 +2140,169 @@ export async function cancelDisableHot(topicId, reason) {
     return 'ok';
 }
 
-//自动识别内容中的链接并添加ubb代码
-export function autoAddUrl(v: string) {
-    let flag = /(http|ftp|https)/g;
-    let arr = v.match(flag);
-    if (arr) {
-        let reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/g;
-        let abb = v.match(reg);
-        let result = v.replace(reg, `[url=${abb}][color=blue]${abb}[/color][/url]`).replace(/\n/g, "<br />");
-        return result;
+/**
+ * 判断数组arr中是否含有元素it
+ * @param it
+ * @param arr
+ */
+export function containThis(it, arr) {
+    for (let item of arr) {
+        if (item === it) {
+            return true;
+        }
     }
-    else {
-        let reg = /[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/g;
-        let abb = v.match(reg);
-        let result = v.replace(reg, `[url="http://${abb}"][color=blue]${abb}[/color][/url]`).replace(/\n/g, "<br />");
-        return result;
-    }
+    return false;
 }
+
+export function dealUrl(str) {
+    console.log("开始处理", str);
+    let reg1 = /[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/g;
+    let abb1 = str.match(reg1);
+    if (!abb1) { abb1 = []; }
+    let reg2 = /(\[img.*?\]|\[upload.*?\]|\[video.*?\]|\[audio.*?\])/g;
+    let abb2 = str.match(reg2);
+    if (!abb2) { abb2 = []; }
+    //说明存在不是文件、图片、音频等的链接
+    if (abb1.length > abb2.length) {
+        console.log("开始检查", abb1);
+        //检查含http|ftp|https头的的链接,是否都添加了url
+        let reg3 = /\[url=.*?\]((http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)\[\/url\]/g;
+        let abb3 = str.match(reg3);
+        console.log("开始检查abb3", abb3);
+        let reg4 = /((http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)/g;
+        let abb4 = str.match(reg4);
+        console.log("开始检查abb4", abb4);
+        if ((abb3 && abb4 && abb4.length !== 2 * abb3.length) || (!abb3 && abb4)) {
+            str = autoDeleteUrl(str);
+            str = autoAddUrl(str);
+            return str;
+        }
+        else {
+            let reg5 = /\[url=.*?\]((http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)\[\/url\]/g;
+            let abb5 = str.match(reg5);
+            console.log("开始检查abb5", abb5);
+            let reg6 = /([\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)/g;
+            let abb6 = str.match(reg6);
+            console.log("开始检查abb6", abb6);
+            if ((abb5 && abb6 && abb6.length !== 2 * abb5.length) || (!abb5 && abb6)) {
+                str = autoDeleteUrl(str);
+                str = autoAddUrl(str);
+                return str;
+            }
+        }
+    }
+    return str;
+}
+
+/**
+ * 自动将文本中含[url=XXX]XXX[/url]形式的文本都替换成XXX，去掉url链接
+ * @param str
+ */
+export function autoDeleteUrl(str) {
+    console.log("自动删除链接", str);
+    //含http|ftp|https头的的链接
+    let reg = /\[url=.*?\]((http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)\[\/url\]/;
+    let abb;
+    do {
+        abb = str.match(reg);
+        if (abb) {
+            str = str.replace(abb[0], abb[1]);
+        }
+    } while (abb);
+
+    //不含http|ftp|https头的的链接
+    let reg1 = /\[url=.*?\]([\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)\[\/url\]/;
+    do {
+        abb = str.match(reg1);
+        if (abb) {
+            str = str.replace(abb[0], abb[1]);
+        }
+    } while (abb);
+
+    return str;
+}
+
+/**
+ * 提取文件、图片、音频等的链接,组成数组
+ */
+export function countFileUrl(str) {
+    let url = [];
+    let abb;
+    do {
+        let reg = /\[img.*?\](.*?)\[\/img\]/;
+        abb = str.match(reg);
+        if (abb) {
+            url.push(abb[1]);
+        }
+    } while (abb);
+
+    do {
+        let reg = /\[upload.*?\](.*?)\[\/upload\]/;
+        abb = str.match(reg);
+        if (abb) {
+            url.push(abb[1]);
+        }
+    } while (abb);
+
+    do {
+        let reg = /\[audio.*?\](.*?)\[\/audio\]/;
+        abb = str.match(reg);
+        if (abb) {
+            url.push(abb[1]);
+        }
+    } while (abb);
+
+    do {
+        let reg = /\[video.*?\](.*?)\[\/video\]/;
+        abb = str.match(reg);
+        if (abb) {
+            url.push(abb[1]);
+        }
+    } while (abb);
+
+    return url;
+}
+/**
+ * 自动识别内容中的链接并添加ubb代码
+ * @param v
+ */
+export function autoAddUrl(v: string) {
+    console.log("自动添加链接", v);
+    //处理含http|ftp|https头的的链接
+    let reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/g;
+    let abb = v.match(reg);
+    console.log("添加链接捕获abb", abb);
+    let done = countFileUrl(v);
+    if (abb) {
+        //这里done和contanThis的作用是保证已经被替换过的字符串不会被重复替换
+        for (let i in abb) {
+            if (!containThis(abb[i], done)) {
+                console.log("添加链接捕获abb[i]", abb[i]);
+                v = v.replace(abb[i], `[url=${abb[i]}][color=blue]${abb[i]}[/color][/url]`);
+                done.push(abb[i]);
+            }
+        }
+    }
+    //处理不含http|ftp|https头的的链接
+    let reg1 = /[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/g;
+    let abb1 = v.match(reg1);
+    console.log("添加链接捕获abb1", abb1);
+    if (abb1) {
+        for (let i in abb1) {
+            console.log("添加链接捕获abb1[i]", abb1[i]);
+            let abbItem1 = `http://${abb1[i]}`;
+            let abbItem2 = `https://${abb1[i]}`;
+            if (!containThis(abbItem1, done) && !containThis(abbItem2, done)) { //看前面有没有处理过
+                console.log(`[url=${abbItem2}][color=blue]${abb1[i]}[/color][/url]`);
+                v = v.replace(abb1[i], `[url=${abbItem2}][color=blue]${abb1[i]}[/color][/url]`);
+                done.push(abbItem1);
+                done.push(abbItem2);
+            }
+        }
+    }
+    return v;
+}
+
 export async function getToken() {
     if (getLocalStorage("userName") && getLocalStorage("password")) {
         if (!getLocalStorage("accessToken")) {
