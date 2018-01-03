@@ -286,12 +286,19 @@ export class ListTagAndPager extends React.Component<{ url: string, boardid: num
 
 export class ListButtonAndAds extends React.Component<{ boardInfo, adsUrl }> {
 
-
+   
     render() {
-        const adsUrl = `/images/ads.jpg`;
+        let sendInfo = null;
+        let isLogon = false;
         const createTopicUrl = `/editor/postTopic/${this.props.boardInfo.id}`;
+        if (Utility.getLocalStorage("userInfo")) isLogon = true;
+        if (isLogon) {
+            sendInfo = <Link className="button bgcolor" onClick={() => { isLogon ? null : alert("请登录！"); }} to={createTopicUrl}>发主题</Link>;
+        } else {
+            sendInfo = <button style={{ border:"none" }} className="button bgcolor" onClick={() => alert('请登录！')}>发主题</button>
+        }
         return <div className="row" style={{ width: "100%", height: "6.25rem", alignItems: "flex-end", justifyContent: "space-between", marginTop: "1rem" }}>
-            <Link className="button bgcolor" to={createTopicUrl}>发主题</Link>
+            {sendInfo}
             <div style={{ height: "6.25rem" }}> <AdsComponent /></div>
         </div>;
     }

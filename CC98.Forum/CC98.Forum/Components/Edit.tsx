@@ -99,29 +99,114 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
         this.setState({ content: value });
     }
     async sendMdTopic() {
-        try {
-            let tag1Id, tag2Id;
-            let url = `/board/${this.match.params.id}/topic`;
-            let c = Constants.testEditor.getMarkdown();
+        if (this.state.title == "") {
+            alert("请输入标题!");
+        } else {
+            try {
+                let tag1Id, tag2Id;
+                let url = `/board/${this.match.params.id}/topic`;
+                let c = Constants.testEditor.getMarkdown();
+                let content;
+                const type = this.state.type;
+                tag1Id = await Utility.getTagIdbyName(this.state.tag1);
+                tag2Id = await Utility.getTagIdbyName(this.state.tag2);
+                if (tag1Id && !tag2Id) {
+
+                    content = {
+                        content: c,
+                        contentType: 1,
+                        title: this.state.title,
+                        tag1: tag1Id,
+                        type: this.state.type
+                    };
+                }
+                else if (tag2Id) {
+
+                    content = {
+                        content: c,
+                        contentType: 1,
+                        title: this.state.title,
+                        tag1: tag1Id,
+                        tag2: tag2Id,
+                        type: this.state.type
+                    };
+                }
+                else {
+                    content = {
+                        content: c,
+                        contentType: 1,
+                        title: this.state.title,
+                        type: this.state.type
+                    };
+                }
+
+                let contentJson = JSON.stringify(content);
+                let token = await Utility.getToken();
+                let myHeaders = new Headers();
+                myHeaders.append("Authorization", token);
+                myHeaders.append("Content-Type", 'application/json');
+                let mes = await Utility.cc98Fetch(url, {
+
+                    method: 'POST',
+
+                    headers: myHeaders,
+
+                    body: contentJson
+
+                }
+                );
+                if (mes.status === 402) {
+                    alert("请输入内容");
+                }
+                //   testEditor.setMarkdown("");
+                const topicId = await mes.text();
+                //根据返回的topicid，发送@信息       
+                const atUsers = Utility.atHanderler(c);
+                //如果存在合法的@，则发送@信息，否则不发送，直接跳转至所发帖子
+                if (atUsers) {
+                    const atUsersJSON = JSON.stringify(atUsers);
+                    const url2 = `/notification/at?topicid=${topicId}`;
+                    let myHeaders2 = new Headers();
+                    myHeaders2.append("Content-Type", 'application/json');
+                    myHeaders2.append("Authorization", token);
+                    let response2 = await Utility.cc98Fetch(url2, {
+                        method: 'POST',
+                        headers: myHeaders2,
+                        body: atUsersJSON
+                    });
+                }
+                this.props.history.push(`/topic/${topicId}`);
+            } catch (e) {
+                //console.log("Error");
+                console.log(e);
+            }
+        }
+        
+    }
+    async sendUbbTopic() {
+        if (this.state.title == "") {
+            alert("请输入标题！");
+        } else {
+            const url = `/board/${this.match.params.id}/topic`;
             let content;
+            let tag1Id, tag2Id;
             const type = this.state.type;
+            //console.log(this.state);
             tag1Id = await Utility.getTagIdbyName(this.state.tag1);
             tag2Id = await Utility.getTagIdbyName(this.state.tag2);
             if (tag1Id && !tag2Id) {
-                
                 content = {
-                    content: c,
-                    contentType: 1,
+                    content: this.state.content,
+                    contentType: 0,
                     title: this.state.title,
                     tag1: tag1Id,
                     type: this.state.type
                 };
             }
             else if (tag2Id) {
-         
                 content = {
-                    content: c,
-                    contentType: 1,
+                    content: this.state.content,
+                    contentType: 0,
                     title: this.state.title,
                     tag1: tag1Id,
                     tag2: tag2Id,
@@ -130,35 +215,27 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
             }
             else {
                 content = {
-                    content: c,
-                    contentType: 1,
+                    content: this.state.content,
+                    contentType: 0,
                     title: this.state.title,
                     type: this.state.type
                 };
             }
-
-            let contentJson = JSON.stringify(content);
-            let token = await Utility.getToken();
+            const contentJson = JSON.stringify(content);
+            const token = await Utility.getToken();
             let myHeaders = new Headers();
             myHeaders.append("Authorization", token);
             myHeaders.append("Content-Type", 'application/json');
-            let mes = await Utility.cc98Fetch(url, {
-
+            let response = await Utility.cc98Fetch(url, {
                 method: 'POST',
-
                 headers: myHeaders,
-
                 body: contentJson
-
             }
             );
-            if (mes.status === 402) {
-                alert("请输入内容");
-            }
-            //   testEditor.setMarkdown("");
-            const topicId = await mes.text();
+            //发帖成功，api返回topicid
+            const topicId = await response.text();
             //根据返回的topicid，发送@信息       
-            const atUsers = Utility.atHanderler(c);
+            const atUsers = Utility.atHanderler(this.state.content);
             //如果存在合法的@，则发送@信息，否则不发送，直接跳转至所发帖子
             if (atUsers) {
                 const atUsersJSON = JSON.stringify(atUsers);
@@ -173,75 +250,8 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                 });
             }
             this.props.history.push(`/topic/${topicId}`);
-        } catch (e) {
-            //console.log("Error");
-            console.log(e);
         }
-    }
-    async sendUbbTopic() {
-        const url = `/board/${this.match.params.id}/topic`;
-        let content;
-        let tag1Id, tag2Id;
-        const type = this.state.type;
-        //console.log(this.state);
-        tag1Id = await Utility.getTagIdbyName(this.state.tag1);
-        tag2Id = await Utility.getTagIdbyName(this.state.tag2);
-        if (tag1Id && !tag2Id) {
-            content = {
-                content: this.state.content,
-                contentType: 0,
-                title: this.state.title,
-                tag1: tag1Id,
-                type: this.state.type
-            };
-        }
-        else if (tag2Id) {     
-            content = {
-                content: this.state.content,
-                contentType: 0,
-                title: this.state.title,
-                tag1: tag1Id,
-                tag2: tag2Id,
-                type: this.state.type
-            };
-        }
-        else {
-            content = {
-                content: this.state.content,
-                contentType: 0,
-                title: this.state.title,
-                type: this.state.type
-            };
-        }
-        const contentJson = JSON.stringify(content);
-        const token = await Utility.getToken();
-        let myHeaders = new Headers();
-        myHeaders.append("Authorization", token);
-        myHeaders.append("Content-Type", 'application/json');
-        let response = await Utility.cc98Fetch(url, {
-            method: 'POST',
-            headers: myHeaders,
-            body: contentJson
-        }
-        );
-        //发帖成功，api返回topicid
-        const topicId = await response.text();
-        //根据返回的topicid，发送@信息       
-        const atUsers = Utility.atHanderler(this.state.content);
-        //如果存在合法的@，则发送@信息，否则不发送，直接跳转至所发帖子
-        if (atUsers) {
-            const atUsersJSON = JSON.stringify(atUsers);
-            const url2 = `/notification/at?topicid=${topicId}`;
-            let myHeaders2 = new Headers();
-            myHeaders2.append("Content-Type", 'application/json');
-            myHeaders2.append("Authorization", token);
-            let response2 = await Utility.cc98Fetch(url2, {
-                method: 'POST',
-                headers: myHeaders2,
-                body: atUsersJSON
-            });
-        }
-        this.props.history.push(`/topic/${topicId}`);
+        
 
     }
 
