@@ -5,7 +5,7 @@
 import * as React from 'react';
 import * as Utility from '../../Utility';
 import MyFavoritesBoard from './MyFavoritesBoard';
-import { UserFavoritesBoardInfo } from '../../states/AppState';
+import { UserFavoritesBoardInfo } from '../../States/AppState';
 import { getCurrentUserFavoriteBoards } from '../../AsyncActions/UserCenter';
 import { connect } from 'react-redux';
 import * as Actions from '../../Actions/UserCenter';

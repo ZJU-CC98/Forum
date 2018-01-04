@@ -3,7 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
-import { ChangeUserInfo } from '../../states/AppState';
+import { ChangeUserInfo } from '../../States/AppState';
 import * as Utility from '../../Utility';
 
 export default class extends React.Component<{ userinfo: UserInfo, handleChange: Function }, State> {
