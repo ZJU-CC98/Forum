@@ -1,12 +1,17 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var webpack = require("webpack");
-var path = require("path");
-var UnminifiedWebpackPlugin = require("unminified-webpack-plugin");
-var CopyWebpackPlugin = require("copy-webpack-plugin");
-var CleanWebpackPlugin = require("clean-webpack-plugin");
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var config = {
+﻿import * as webpack from 'webpack';
+import * as path from 'path';
+
+import * as UnminifiedWebpackPlugin from 'unminified-webpack-plugin';
+import * as CopyWebpackPlugin from 'copy-webpack-plugin';
+import * as CleanWebpackPlugin from 'clean-webpack-plugin';
+import * as ExtractTextPlugin from 'extract-text-webpack-plugin';
+
+
+
+// ReSharper disable once InconsistentNaming
+declare var __dirname;
+
+const config: webpack.Configuration = {
     module: {
         rules: [
             {
@@ -42,10 +47,14 @@ var config = {
         'url-join': 'urljoin'
     },
     plugins: [
-        new webpack.optimize.UglifyJsPlugin(),
-        new UnminifiedWebpackPlugin(),
-        new CleanWebpackPlugin(['wwwroot/static/scripts', 'wwwroot/static/content']),
-        new CopyWebpackPlugin([
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                pure_funcs: ['console.log']
+            }
+        }), // 简化 JS
+        new UnminifiedWebpackPlugin(), // 提供调试用 JS 完整版
+        new CleanWebpackPlugin(['wwwroot/static/scripts', 'wwwroot/static/content']), // 发布之前清理 wwwroot
+        new CopyWebpackPlugin([// 将 node 库复制到发布目录
             { from: 'node_modules/jquery/dist', to: 'static/scripts/lib/jquery/' },
             { from: 'node_modules/react/dist', to: 'static/scripts/lib/react/' },
             { from: 'node_modules/react-dom/dist', to: 'static/scripts/lib/react-dom/' },
@@ -68,5 +77,5 @@ var config = {
         new ExtractTextPlugin('static/content/site.min.css')
     ]
 };
-exports.default = config;
-//# sourceMappingURL=webpack.config.js.map
+
+export default config;
