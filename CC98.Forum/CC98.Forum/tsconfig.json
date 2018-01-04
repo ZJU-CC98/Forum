@@ -6,14 +6,10 @@
 		"sourceMap": true,
 		"target": "es5",
 		"jsx": "react",
-    "lib": [ "dom", "es5", "es6" ],
-    "allowSyntheticDefaultImports": true
+		"lib": [ "dom", "es5", "es6" ]
 	},
 	"exclude": [
 		"node_modules",
 		"wwwroot"
-	],
-	"include": [
-		"webpack.config.ts"
 	]
 }
