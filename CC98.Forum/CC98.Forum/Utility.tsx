@@ -2294,7 +2294,7 @@ export function autoAddUrl(v: string) {
             let abbItem2 = `https://${abb1[i]}`;
             if (!containThis(abbItem1, done) && !containThis(abbItem2, done)) { //看前面有没有处理过
                 console.log(`[url=${abbItem2}][color=blue]${abb1[i]}[/color][/url]`);
-                v = v.replace(abb1[i], `[url=${abbItem2}][color=blue]${abb1[i]}[/color][/url]`);
+                v = v.replace(abb1[i], `[url=${abbItem1}][color=blue]${abb1[i]}[/color][/url]`);
                 done.push(abbItem1);
                 done.push(abbItem2);
             }
