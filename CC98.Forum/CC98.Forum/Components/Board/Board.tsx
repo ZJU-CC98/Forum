@@ -15,7 +15,7 @@ import {
 import TopicTitleAndContentState = State.TopicTitleAndContentState;
 import { Pager } from '../Pager';
 import { NotFoundTopic, UnauthorizedTopic, UnauthorizedBoard, ServerError } from '../Status';
-import { AdsComponent } from '../mainpage';
+import { AdsComponent } from '../MainPage';
 declare let moment: any;
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {

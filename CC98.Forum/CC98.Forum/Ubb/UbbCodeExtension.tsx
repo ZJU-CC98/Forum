@@ -30,7 +30,7 @@ import { TrTagHandler } from './TrTagHandler';
 import { TopicTagHandler } from './TopicTagHandler';
 import { MdTagHandler } from './MdTagHandler';
 import { PmTagHandler } from './PmTagHandler'
-import SandBoxTagHandler from './SandBoxTagHandler';
+import SandBoxTagHandler from './SandboxTagHandler';
 import LineTagHandler from './LineTagHandler';
 import EmTagHandler from './EmTagHandler';
 import AcTagHandler from './AcTagHandler';

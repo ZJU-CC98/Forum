@@ -3,7 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
-import { UserFavoritesBoardInfo } from '../../states/AppState';
+import { UserFavoritesBoardInfo } from '../../States/AppState';
 import * as Utility from '../../Utility';
 import { Link } from 'react-router-dom';
 

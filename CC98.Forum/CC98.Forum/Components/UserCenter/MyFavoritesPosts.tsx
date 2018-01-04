@@ -77,7 +77,7 @@ class Posts extends React.Component<Props> {
         return (
             <div className="user-posts">
                 {userRecentPosts}
-                <Pager currentPage={curPage} totalPage={totalPage} href="/usercenter/myposts/" hasTotal={this.props.hasTotal}/>
+                <Pager currentPage={curPage} totalPage={totalPage} href="/usercenter/myfavorites/" hasTotal={this.props.hasTotal}/>
             </div>
         );
     }
