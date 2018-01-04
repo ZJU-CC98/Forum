@@ -47,9 +47,10 @@ export class ReplyContent extends React.Component<Props, { postId }> {
     }
     render() {
         const divid = `doc-content${this.props.postId}`;
-        const ubbMode = <UbbContainer code={this.props.content} />;
+        const dynContent = Utility.dealUrl(this.props.content);
+        const ubbMode = <UbbContainer code={dynContent} />;
         const mdMode = <div id={divid}>
-            <textarea name="editormd-markdown-doc" style={{ display: 'none' }}>{this.props.content}</textarea>
+            <textarea name="editormd-markdown-doc" style={{ display: 'none' }}>{dynContent}</textarea>
         </div>;
         let content;
         //ubb      
