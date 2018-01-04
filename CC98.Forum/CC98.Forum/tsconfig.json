@@ -13,7 +13,8 @@
 		"node_modules",
 		"wwwroot"
 	],
-	"include": [
-		"webpack.config.ts"
-	]
+  "include": [
+    "webpack.config.debug.ts",
+    "webpack.config.release.ts"
+  ]
 }

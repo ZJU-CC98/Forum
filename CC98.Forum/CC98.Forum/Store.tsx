@@ -50,17 +50,6 @@ const reducer = combineReducers<RootState>({
     router: routerReducer
 });
 
-/**
- * 记录Action与Store
- * @param store
- */
-const logger = store => next => action => {
-    console.log(action.type);
-    let result = next(action);
-    console.log(store.getState());
-    return result;
-}
-
 export const history = createHistory();
 
 /**
@@ -68,4 +57,4 @@ export const history = createHistory();
  */
 const composeEnhancers: typeof compose = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-export default createStore(reducer, applyMiddleware(thunk, routerMiddleware(history), logger));
+export default createStore(reducer, applyMiddleware(thunk, routerMiddleware(history)));
