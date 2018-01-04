@@ -14,12 +14,15 @@ export class HotTopic {
     title: string;
     id: number;
     authorId: number;
-
-    constructor(title, author,id,authorId) {
+    lastPostUserName: string;
+    lastPostTime:string;
+    constructor(title, author,id,authorId,lastPostUserName,lastPostTime) {
         this.title = title;
         this.authorName = author;
         this.id = id;
         this.authorId = authorId;
+        this.lastPostUserName = lastPostUserName;
+        this.lastPostTime = lastPostTime;
     }
 }
 export class ListPagerProps {

@@ -1,65 +1,202 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TypeScriptToolsVersion>2.6</TypeScriptToolsVersion>
+    <AssemblyName>CC98.Forum</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="CC98.Forum.rar" />
+    <Compile Remove="img\**" />
+    <Compile Remove="wwwroot\images\**" />
+    <Content Remove="img\**" />
+    <Content Remove="wwwroot\images\**" />
+    <EmbeddedResource Remove="img\**" />
+    <EmbeddedResource Remove="wwwroot\images\**" />
+    <None Remove="img\**" />
+    <None Remove="wwwroot\images\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\font-awesome-4.7.0\css\font-awesome.css" />
-    <None Include="wwwroot\font-awesome-4.7.0\css\font-awesome.min.css" />
-    <None Include="wwwroot\font-awesome-4.7.0\fonts\fontawesome-webfont.eot" />
-    <None Include="wwwroot\font-awesome-4.7.0\fonts\fontawesome-webfont.svg" />
-    <None Include="wwwroot\font-awesome-4.7.0\fonts\fontawesome-webfont.ttf" />
-    <None Include="wwwroot\font-awesome-4.7.0\fonts\fontawesome-webfont.woff" />
-    <None Include="wwwroot\font-awesome-4.7.0\fonts\fontawesome-webfont.woff2" />
-    <None Include="wwwroot\font-awesome-4.7.0\fonts\FontAwesome.otf" />
-    <None Include="wwwroot\font-awesome-4.7.0\HELP-US-OUT.txt" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\animated.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\bordered-pulled.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\core.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\fixed-width.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\font-awesome.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\icons.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\larger.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\list.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\mixins.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\path.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\rotated-flipped.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\screen-reader.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\stacked.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\less\variables.less" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\font-awesome.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_animated.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_bordered-pulled.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_core.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_fixed-width.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_icons.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_larger.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_list.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_mixins.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_path.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_rotated-flipped.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_screen-reader.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_stacked.scss" />
-    <None Include="wwwroot\font-awesome-4.7.0\scss\_variables.scss" />
-    <None Include="wwwroot\images\authorImg.jpg" />
+    <None Remove="Actions.tsx" />
+    <None Remove="ActionTypes.tsx" />
+    <None Remove="AsyncActions\UserCenter.tsx" />
+    <None Remove="CC98.Forum.rar" />
+    <None Remove="Components\Constant.tsx" />
+    <None Remove="Components\DocumentTitle.tsx" />
+    <None Remove="Components\FindIP.tsx" />
+    <None Remove="Components\FocusBoardTopicArea.tsx" />
+    <None Remove="Components\Footer.tsx" />
+    <None Remove="Components\PageModel.tsx" />
+    <None Remove="Components\Pager.tsx" />
+    <None Remove="Components\RouteComponent.tsx" />
+    <None Remove="Components\SearCH.tsx" />
+    <None Remove="Components\Signin.tsx" />
+    <None Remove="Components\SiteManage.tsx" />
+    <None Remove="Components\SiteManage\Advertisement.tsx" />
+    <None Remove="Components\SiteManage\Announcement.tsx" />
+    <None Remove="Components\Status.tsx" />
+    <None Remove="Components\Topic\Post.tsx" />
+    <None Remove="Components\Topic\Topic-Award.tsx" />
+    <None Remove="Components\Topic\Topic-AwardInfo.tsx" />
+    <None Remove="Components\Topic\Topic-Category.tsx" />
+    <None Remove="Components\Topic\Topic-Judge.tsx" />
+    <None Remove="Components\Topic\Topic-Pager.tsx" />
+    <None Remove="Components\Topic\Topic-Replier.tsx" />
+    <None Remove="Components\Topic\Topic-ReplierSignature.tsx" />
+    <None Remove="Components\Topic\Topic-ReplyContent.tsx" />
+    <None Remove="Components\Topic\Topic-SendTopic.tsx" />
+    <None Remove="Components\Topic\Topic-TopicInfo.tsx" />
+    <None Remove="Components\Topic\Topic.tsx" />
+    <None Remove="Components\UbbContainer.tsx" />
+    <None Remove="Components\UbbEditor.tsx" />
+    <None Remove="Components\UserCenterConfig.tsx" />
+    <None Remove="Components\UserCenterConfigAvatar.tsx" />
+    <None Remove="Components\UserCenterConfigOthers.tsx" />
+    <None Remove="Components\UsercenterConfigPassword.tsx" />
+    <None Remove="Components\UserCenterConfigSignature.tsx" />
+    <None Remove="Components\UserCenterMyFavoritesBoard.tsx" />
+    <None Remove="Components\UserCenterMyFavoritesBoards.tsx" />
+    <None Remove="Components\UserCenterPageCount.tsx" />
+    <None Remove="Components\UserCenter\Manage\DeleteTopicsAndPosts.tsx" />
+    <None Remove="Components\UserCenter\Manage\operation.tsx" />
+    <None Remove="Components\UserCenter\Manage\ShowPost.tsx" />
+    <None Remove="Components\UserCenter\UserManage.tsx" />
+    <None Remove="Components\UserCenter\UserRouterActivities.tsx" />
+    <None Remove="Components\UserExactProfile.tsx" />
+    <None Remove="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <None Remove="Props\FocusBoardProps.tsx" />
+    <None Remove="Props\MessageSendReceiveProps.tsx" />
+    <None Remove="Props\MessageWindowProps.tsx" />
+    <None Remove="Reducers\Error.tsx" />
+    <None Remove="Reducers\Post.tsx" />
+    <None Remove="SignalR.tsx" />
+    <None Remove="States\MessageWindowState.tsx" />
+    <None Remove="States\SearchState.tsx" />
+    <None Remove="UbbCode.tsx" />
+    <None Remove="Ubb\AcTagHandler.tsx" />
+    <None Remove="Ubb\AlignTagHandler.tsx" />
+    <None Remove="Ubb\BTagHandler.tsx" />
+    <None Remove="Ubb\CenterTagHandler.tsx" />
+    <None Remove="Ubb\CodeTagHandler.tsx" />
+    <None Remove="Ubb\ColorTagHandler.tsx" />
+    <None Remove="Ubb\CursorTagHandler.tsx" />
+    <None Remove="Ubb\DelTagHandler.tsx" />
+    <None Remove="Ubb\emTagHandler.tsx" />
+    <None Remove="Ubb\EnglishTagHandler.tsx" />
+    <None Remove="Ubb\FlashTagHandler.tsx" />
+    <None Remove="Ubb\ImageTagHandler.tsx" />
+    <None Remove="Ubb\LeftTagHandler.tsx" />
+    <None Remove="Ubb\LineTagHandler.tsx" />
+    <None Remove="Ubb\mahjongTagHandler.tsx" />
+    <None Remove="Ubb\mdTagHandler.tsx" />
+    <None Remove="Ubb\MP3TagHandler.tsx" />
+    <None Remove="Ubb\NoUbbTagHandler.tsx" />
+    <None Remove="Ubb\PmTagHandler.tsx" />
+    <None Remove="Ubb\RightTagHandler.tsx" />
+    <None Remove="Ubb\SandboxTagHandler.tsx" />
+    <None Remove="Ubb\TableTagHandler.tsx" />
+    <None Remove="Ubb\TdTagHandler.tsx" />
+    <None Remove="Ubb\ThTagHandler.tsx" />
+    <None Remove="Ubb\TrTagHandler.tsx" />
+    <None Remove="Ubb\UploadTagHandler.tsx" />
+    <None Remove="Ubb\URLTagHandler.tsx" />
+    <None Remove="Ubb\UrlTextHandler.tsx" />
+    <None Remove="Ubb\UserTagHandler.tsx" />
+    <None Remove="Ubb\UTagHandler.tsx" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="11.0.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Rewrite" Version="1.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Rewrite" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="img\" />
+    <TypeScriptCompile Include="ActionTypes.tsx" />
+    <TypeScriptCompile Include="AsyncActions\UserCenter.tsx" />
+    <TypeScriptCompile Include="Components\Constant.tsx" />
+    <TypeScriptCompile Include="Components\DocumentTitle.tsx" />
+    <TypeScriptCompile Include="Components\FindIP.tsx" />
+    <TypeScriptCompile Include="Components\Focus\FocusTopicArea.tsx" />
+    <TypeScriptCompile Include="Components\PageModel.tsx" />
+    <TypeScriptCompile Include="Components\Pager.tsx" />
+    <TypeScriptCompile Include="Components\RouteComponent.tsx" />
+    <TypeScriptCompile Include="Components\Signin.tsx" />
+    <TypeScriptCompile Include="Components\SiteManage\Advertisement.tsx" />
+    <TypeScriptCompile Include="Components\SiteManage\Announcement.tsx" />
+    <TypeScriptCompile Include="Components\SiteManage\Index.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-Award.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-Judge.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-New.tsx" />
+    <TypeScriptCompile Include="Components\Focus\FocusUserArea.tsx" />
+    <TypeScriptCompile Include="Components\Footer.tsx" />
+    <TypeScriptCompile Include="Components\LogOn.tsx" />
+    <TypeScriptCompile Include="Components\Search\Search.tsx" />
+    <TypeScriptCompile Include="Components\Status.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-PostManagement.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-AwardInfo.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-Category.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-ReplierSignature.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-Reply.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-Replier.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-ReplyContent.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-SendTopic.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-TopicInfo.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-TopicManagement.tsx" />
+    <TypeScriptCompile Include="Components\UbbContainer.tsx" />
+    <TypeScriptCompile Include="Components\UbbEditor.tsx" />
+    <TypeScriptCompile Include="Components\UserCenter\Manage\DeleteTopicsAndPosts.tsx" />
+    <TypeScriptCompile Include="Components\UserCenter\Manage\Operation.tsx" />
+    <TypeScriptCompile Include="Components\UserCenter\Manage\ShowPost.tsx" />
+    <TypeScriptCompile Include="Props\MessagePersonProps.tsx" />
+    <TypeScriptCompile Include="Props\MessageSendReceiveProps.tsx" />
+    <TypeScriptCompile Include="Props\MessageWindowProps.tsx" />
+    <TypeScriptCompile Include="Reducers\Error.tsx" />
+    <TypeScriptCompile Include="Reducers\Post.tsx" />
+    <TypeScriptCompile Include="Reducers\UserInfo.tsx" />
+    <TypeScriptCompile Include="SignalR.tsx" />
+    <TypeScriptCompile Include="States\MessageWindowState.tsx" />
+    <TypeScriptCompile Include="States\SearchState.tsx" />
+    <TypeScriptCompile Include="Store.tsx" />
+    <TypeScriptCompile Include="Ubb\AcTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\AlignTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\BTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\CenterTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\CodeTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\ColorTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\CursorTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\DelTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\EmTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\EnglishTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\ImageTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\Core.tsx" />
+    <TypeScriptCompile Include="Ubb\LeftTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\LineTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\MahjongTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\MdTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\MP3TagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\NoUbbTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\PmTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\RightTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\SandboxTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\TableTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\TdTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\ThTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\TopicTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\TrTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\UploadTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\UrlTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\UrlTextHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\UserTagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\UTagHandler.tsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

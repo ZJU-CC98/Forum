@@ -1,15 +1,42 @@
-﻿@import url("test.scss");
+﻿@import 'UserCenter.scss';
+@import 'adddna.scss';
+@import 'UbbEditor.scss';
+@import 'spectrum.scss';
 $bgcolor: #E9E9E9;
 $bgcolor2: #F5FAFD;
+$color-body: rgb(245,250,255);
+$color-thinBlack: rgb(120,120,120);
+$color-board: rgb(51,153,255);
+$color-thinBlue: rgb(51,187,255);
+$color-border: rgb(233,233,233);
+$color-focus: rgb(245,245,245);
+$color-gray: rgb(153,153,153);
+$color-post: rgb(252,252,252);
+$color-red: rgb(255,60,60);
+$color-black: rgb(32,32,32);
+$color-bg: #79b8ca;
 
-.root {
+body {
+    margin: 0;
+    padding: 0;
+}
+
+#root {
+    font-size: 16px;
+    width: 100%;
+    font-family: 微软雅黑;
+}
+
+.postRoot {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: #FFFFFF;
-    max-width: 1140px;
     font-family: 微软雅黑;
+    width: 100%;
+    border: #eaeaea solid thin;
+    box-shadow: 0 0 10px 1px rgba(0,0,0,0.2);
 }
 
 .replyRoot {
@@ -17,38 +44,45 @@ $bgcolor2: #F5FAFD;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    background-color: $bgcolor2;
-    max-width: 1140px;
-    margin-top: 15px;
-    border: #EAEAEA solid thin;
+    min-height: 16rem;
     font-family: 微软雅黑;
-    font-size: 14px;
+    background-color: #7ab7c9;
+}
+
+.replyContentRoot {
+    background-color: #fff;
 }
 
 #listRoot {
     display: flex;
+    width: 1140px;
     flex-direction: column;
     font-family: 微软雅黑;
-    font-size: 12px;
     align-items: center;
     justify-content: center;
+    margin-left: 6.25rem;
+    margin-right: 6.25rem;
+    margin-top: 0.5rem;
+    min-width: 71.2px;
+}
+
+#boardTopics {
+    border: #eaeaea thin solid;
 }
 
 .listContent {
     display: flex;
-    width: 1140px;
-    border: #EAEAEA solid thin;
-    border-radius: 5px;
-    background-color: $bgcolor2;
+    margin-bottom: 1rem;
+    border-radius: 0.3125rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    width: 100%;
 }
 
 .notice {
     display: flex;
-    width: 1140px;
-    height: 190px;
+    width: 100%;
     border: #EAEAEA solid thin;
     border-radius: 5px;
     background-color: #FFFFFF;
@@ -57,18 +91,18 @@ $bgcolor2: #F5FAFD;
 }
 
 .essay {
-    display: inline-flex;
-    align-self: flex-start;
-    border: #EAEAEA solid thin;
-    min-height: 100px;
-    min-width: 1140px;
+    height: 6rem;
+    width: 100%;
+    display: flex;
+    border-bottom: #EAEAEA solid thin;
+    box-sizing: border-box;
 }
 
 .row {
     display: flex;
 }
 
-.coloum {
+.column {
     display: flex;
     flex-direction: column;
 }
@@ -76,37 +110,35 @@ $bgcolor2: #F5FAFD;
 
 
 #authormes {
-    min-width: 240px;
     border-right: $bgcolor solid thin;
+    width: 26rem;
 }
 
 
 #authorName {
-    margin: 10px,10px,10px,10px;
-    display: inline-flex;
+    margin-left: 1rem;
     justify-content: flex-start;
+    font-size: 1rem;
+    width: 8rem;
 }
 
 #authorName p {
-    margin-top: 23px;
-    padding-left: 12px;
-    font-size: 13px;
+    margin-top: 1.4375rem;
+    font-size: 1rem;
     font-family: 微软雅黑;
     color: #9ACD32;
 }
 
 #fans {
-    margin-top: 23px;
+    margin-top: 1.4375rem;
     font-family: 微软雅黑;
-    font-size: 13px;
+    font-size: 1rem;
 }
 
-#authorImg {
-    display: inline-flex;
-    margin: 100px,100px,100px,100px;
+.authorImg {
 }
 
-#authorImg img {
+.authorImg img {
     margin-left: 20px;
     border-radius: 50%;
     width: 60px;
@@ -114,96 +146,104 @@ $bgcolor2: #F5FAFD;
     margin-top: 20px;
 }
 
-#watch {
-    margin-top: 2px;
-    min-width: 60px;
-    max-height: 30px;
-    font-size: 12px;
+.watch {
+    width: 4.6rem;
+    font-size: 0.75rem;
     font-family: 微软雅黑;
-    letter-spacing: 3px;
-    padding-left: 12px;
-    margin-left: 8px;
-    border-radius: 5px;
+    letter-spacing: 0.1875rem;
+    border-radius: 0.3125rem;
     background: red;
-    border: 1px solid #EE4000;
+    border: 1px solid #B22222;
     color: #fff;
+    text-align: center;
 }
 
-#email {
-    margin-top: 2px;
-    min-width: 60px;
-    max-height: 30px;
-    font-size: 12px;
+.email {
+    color: #fff;
+    width: 5rem;
+    height: 1.5rem;
+    font-size: 0.75rem;
     font-family: 微软雅黑;
-    letter-spacing: 3px;
-    padding-left: 12px;
-    border-radius: 5px;
+    letter-spacing: 0.2rem;
+    border-radius: 0.3rem;
     background: #67B3FF;
     border: 1px solid #2576A8;
-    color: #fff;
-    margin-left: 20px;
+    cursor: pointer;
+
+    a {
+        color: #fff;
+    }
+
+    text-align: center;
+    margin-left: 1rem;
 }
 
 #title {
-    max-width: 620px;
+    width: 45rem;
     display: flex;
     border-right: $bgcolor solid thin;
 }
 
 #topicTitleProp {
-    width: 520px;
-    height: 100px;
+    width: 44.5rem;
+    height: 6rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    align-items: flex-start;
 }
+
 
 #essay1 {
-    max-width: 520px;
-    flex-grow: 1;
-}
-
-#title1 {
-    flex-grow: 1;
-    margin-top: 15px;
-    margin-left: 20px;
+    margin-left: 1.5rem;
+    margin-top: 0.5rem;
+    align-items: center;
+    height: 4rem;
+    font-size: 1.25rem;
+    padding-right: 1rem;
 }
 
 .titleProp {
     color: #FF8838;
-    font-size: 16px;
+    font-size: 1rem;
 }
 
 #essayTitle {
+    max-width: 30rem;
     color: #000000;
     font-size: 16px;
 }
 
 #essayProp {
+    margin-left: 1.4rem;
     display: flex;
-    font-size: 10px;
-    margin-bottom: 10px;
-    min-width: 620px;
+    font-size: 0.75rem;
+    color: rgb(121,184,201);
 }
 
 #like {
     flex-grow: 0;
-    margin-top: 16px;
+    margin-bottom: 1rem;
     margin-left: auto;
-    margin-right: 10px;
+    margin-right: 1rem;
 }
 
 #like span {
 }
 
+#tags {
+    display: flex;
+    flex-wrap: nowrap;
+    word-break: keep-all;
+    margin-right: 0.6rem;
+}
+
 .tagSize {
-    font-size: 12px;
+    font-size: 0.75rem;
 }
 
 #essayGrow {
     display: flex;
     flex-direction: row;
-    flex-grow: 1;
 }
 
 #onlike {
@@ -211,209 +251,263 @@ $bgcolor2: #F5FAFD;
     background-color: #FFFFFF;
 }
 
-#tags {
-    margin-top: -5px;
-}
 
-.tagProp {
-    margin-left: 25px;
-}
+
+
 
 #time {
-    margin-top: -5px;
     display: flex;
     flex-direction: row;
-    margin-left: 10px;
 }
 
 .timeProp {
-    margin-left: 3px;
-    font-size: 12px;
+    margin-left: 0.1875rem;
+    font-size: 0.75rem;
+    word-break: keep-all;
 }
 
 #time img {
-    width: 10px;
-    height: 10px;
+    width: 0.625rem;
+    height: 0.625rem;
 }
 
 #viewtimes {
-    margin-top: -5px;
     display: flex;
     flex-direction: row;
+    margin-left: 1rem;
 }
 
-.viewProp {
-    margin-left: 10px;
-}
-
-#liked {
-    margin-top: -5px;
-}
 
 #liked img {
-    width: 10px;
-    height: 10px;
+    width: 0.625rem;
+    height: 0.625rem;
 }
 
 #disliked {
-    margin-left: 10px;
-    margin-top: -5px;
-    margin-right: 10px;
+    margin-left: 0.625rem;
+    margin-right: 0.625rem;
 }
 
 #disliked img {
-    width: 10px;
-    height: 10px;
+    width: 0.625rem;
+    height: 0.625rem;
 }
 
 #ads {
-    min-width: 278px;
+    width: 20rem;
     display: inline-flex;
 }
 
 #ads img {
     display: flex;
-    width: 240px;
-    margin-left: 20px;
 }
 
 .content {
     display: flex;
     align-self: flex-start;
     flex-direction: column;
-    border-bottom: #EAEAEA solid thin;
-    border-left: #EAEAEA solid thin;
-    border-right: #EAEAEA solid thin;
-    width: 1140px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.reply-content {
+    width: 100%;
+    display: flex;
+    align-self: flex-start;
+    flex-direction: column;
+    box-sizing: border-box;
 }
 
 .substance {
     display: flex;
-    border-bottom: 1px dashed #EAEAEA;
-    line-height: 200%;
-    flex-grow: 1;
-    margin-right: 20px;
-    margin-left: 20px;
-    font-size: 14px;
-    max-width: 1140px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    word-wrap:break-word;
-    color:rgb(80,80,80);
+    margin-top: 2rem;
+    margin-left: 1.5rem;
+    width: 52rem;
+    word-wrap: break-word;
+    color: rgb(80,80,80);
+    font-family: 微软雅黑;
+}
+
+.replySubstance {
+    border-top: #eaeaea thin solid;
+}
+
+.replierBtn {
+    background-color: #8bc9db;
+    color: #fff;
+    border: #fff solid thin;
+    border-radius: 0.63rem;
+    width: 2.5rem;
+    height: 1rem;
+    cursor: pointer;
+    font-size: 0.6rem;
+}
+
+
+
+.userGender {
+    display: flex;
+    justify-content: flex-end;
+    width: 90%;
+    font-size: 1rem;
+    z-index: 200;
+}
+
+.userPortrait {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    box-shadow: 0 0 5px;
 }
 
 .signature {
     color: rgb(80,80,80);
-    margin-bottom: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-top: 20px;
-    font-size: 14px;
+    margin-left: 1.25rem;
+    margin-bottom: 1.25rem;
+    padding-top: 1rem;
+}
+
+.signature img {
+    max-height: 12.5rem;
+    max-width: 32.5rem;
+}
+
+.upup {
+    cursor: pointer;
+    display: flex;
+}
+
+.downdown {
+    cursor: pointer;
+    display: flex;
+}
+
+.commentProp {
+    margin-left: 0.2rem;
 }
 
 .comment {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    font-size: 12px;
+    font-size: 0.75rem;
     align-items: flex-end;
-    margin-bottom: 10px;
-    margin-right: 10px;
+    margin-left: 2rem;
+    padding-bottom: 1rem;
+    margin-right: 2rem;
+}
+
+.comment1 {
+    display: flex;
+    flex-direction: row;
+    font-size: 0.75rem;
+    align-items: flex-end;
+    padding-bottom: 0.3rem;
+    color: #8bc9db;
+    align-items: center;
+    justify-content: space-between;
 }
 
 #commentlike {
+    display: flex;
+    align-items: flex-end;
 }
 
 #commentliked {
-    margin-left: 15px;
+    margin-left: 1rem;
 }
 
 #commentunliked {
-    margin-left: 20px;
+    margin-left: 1.25rem;
 }
 
 #commentliked img {
-    width: 10px;
-    height: 10px;
+    width: 0.625rem;
+    height: 0.625rem;
 }
 
 #commentunliked img {
-    width: 10px;
-    height: 10px;
+    width: 0.625rem;
+    height: 0.625rem;
 }
 
 .commentbutton {
     border: none;
     background-color: #FFFFFF;
-    margin-left: 10px;
+    margin-left: 0.625rem;
     outline: none;
 }
 
 .good {
-    min-width: 1140px;
+    height: 1.7rem;
+    width: 35rem;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-content: center;
-    padding-top: 20px;
-    font-size: 12px;
-    border-left: #EAEAEA solid thin;
-    border-right: #EAEAEA solid thin;
+    padding-top: 0.2rem;
+    font-size: 0.75rem;
+    border-top: #EAEAEA dashed 2px;
+    box-sizing: border-box;
+    align-items: center;
 }
 
-#userImage img {
-    width: 20px;
-    height: 20px;
+.userImage img {
+    width: 1.25rem;
+    height: 1.25rem;
     border-radius: 50%;
-    margin-left: 20px;
+    margin-left: 1.25rem;
 }
 
-#userName {
-    margin-left: 10px;
+.userName {
+    width: 5rem;
+    margin-left: 0.625rem;
 }
 
-#grades {
-    margin-left: 20px;
+.grades {
+    margin-left: 1.25rem;
+    width: 8rem;
 }
 
-#reward {
-    margin-left: 20px;
+.reward {
+    margin-left: 1.25rem;
 }
 
-#credit {
-    margin-left: 40px;
+.credit {
+    margin-left: 2.5rem;
 }
 
 .vote {
-    min-width: 1140px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     border-left: #EAEAEA solid thin;
     border-bottom: #EAEAEA solid thin;
     border-right: #EAEAEA solid thin;
-    font-size: 14px;
+    font-size: 0.875rem;
+    box-sizing: border-box;
 }
 
 .buttonFont {
-    font-size: 12px;
+    font-size: 0.75rem;
 }
 
 #checkbox {
-    margin-left: 20px;
+    margin-left: 1.25rem;
 }
 
 #option1 {
-    margin: 10px;
+    margin: 0.625rem;
 }
 
 .progress {
-    margin-left: 20px;
+    margin-left: 1.25rem;
     display: flex;
-    width: 600px;
-    height: 10px;
+    width: 40rem;
+    height: 0.625rem;
     background-color: #ECEEEF;
-    border-radius: 5px;
+    border-radius: 0.3125rem;
     box-sizing: border-box;
 }
 
@@ -427,14 +521,93 @@ $bgcolor2: #F5FAFD;
 #replierMes {
     display: flex;
     align-items: flex-end;
+    flex-wrap: nowrap;
 }
 
-#reply:nth-child(2n+1) .rpyClr{
-       color: #2576A8;
+.reply {
+    width: 100%;
+    margin-top: 1rem;
+    border: #8dc9db solid 1.5px;
+    background-color: #fff;
+    flex-direction: row;
+    display: flex;
+    position: relative;
+
+    .reply-floor {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        right: -0.8rem;
+        background-color: $color-bg;
+        text-align: center;
+        line-height: 40px;
+        position: relative;
+        top: 70px;
+        color: #ffffff;
+        font-family: '微软雅黑';
+        font-size: 16px;
+    }
+
+    .reply-floor-small {
+        @extend .reply-floor;
+        font-size: 10px;
+    }
 }
 
-#reply:nth-child(2n) .rpyClr{
-        color: #EE0000;
+.userMessage {
+    align-items: flex-start;
+    background-color: #8dc9db;
+    color: #fff;
+    width: 15.5rem;
+    display: flex;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    font-size: 0.75rem;
+}
+
+.userMessageAnonymous {
+    color: #fff;
+    border: thin solid #fff;
+    margin-top: 1.25rem;
+    border-radius: 1rem;
+    width: 6rem;
+    margin-left: 1rem;
+    text-align: center;
+}
+
+.userMessage-left {
+    padding-top: 1.5rem;
+    width: 8.3rem;
+}
+
+.userMessage-right {
+    width: 7.2rem;
+    padding-right: 0.5rem;
+}
+
+.userMessage-userName {
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: 微软雅黑;
+    margin-left: 1.5rem;
+}
+
+.userMessageOpt {
+    white-space: nowrap;
+    line-height: 1.25rem;
+    font-family: 微软雅黑;
+}
+
+.userMessageBtn {
+    margin-top: 1.5rem;
+}
+
+.rpyClr {
+    font-size: 1.25rem;
+    width: 8rem;
+    word-break: keep-all;
+    font-family: 微软雅黑;
 }
 
 #replierMes {
@@ -448,27 +621,54 @@ $bgcolor2: #F5FAFD;
     height: 10px;
 }
 
-.operation {
-    margin-top: 35px;
-    min-width: 20px;
-    max-height: 20px;
-    font-size: 12px;
+#operation {
+    margin-top: 1rem;
+    height: 3rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.operation1 {
+    word-break: keep-all;
+    font-size: 0.75rem;
     font-family: 微软雅黑;
-    padding-left: 7px;
-    border-radius: 5px;
+    color: #000000;
+    outline: none;
+    cursor: pointer;
+    color: $color-bg;
+    border: $color-bg solid thin;
+    border-radius: 1rem;
+    width: 2.25rem;
+    height: 1.25rem;
+    text-align: center;
+    margin-left: 0.5rem;
+    line-height: 1.25rem;
+}
+
+.operation {
+    word-break: keep-all;
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    font-family: 微软雅黑;
+    padding-left: 0.4375rem;
+    padding-right: 0.4375rem;
+    padding-top: 0.1rem;
+    border-radius: 0.3125rem;
     background: #FFFFFF;
     border: 1px solid #5CADDD;
     color: #000000;
-    margin-left: 5px;
-    margin-right: 10px;
-    margin-bottom: 10px;
+    margin-left: 0.3125rem;
+    margin-right: 0.625rem;
+    margin-bottom: 0.625rem;
     outline: none;
+    cursor: pointer;
 }
 
 #rpymes {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    height: 6rem;
 }
 
 #ListImg img {
@@ -478,9 +678,14 @@ $bgcolor2: #F5FAFD;
 
 #noticeName {
     display: flex;
-    height: 30px;
-    width: 1140px;
     background-color: #3399FE;
+    font-size: 1rem;
+}
+
+#topicsNumber {
+    display: flex;
+    flex-wrap: nowrap;
+    word-break: keep-all;
 }
 
 .postTopic {
@@ -508,39 +713,50 @@ $bgcolor2: #F5FAFD;
     display: flex;
     flex-direction: row;
     align-items: flex-end;
+    font-family: "微软雅黑";
+    margin-left: 1rem;
 }
 
 .chooseTag {
     border: #33C499 solid thin;
-    width: 100px;
-    height: 30px;
-    margin-left: 10px;
+    width: 5rem;
+    height: 2rem;
+    margin-left: 0.625rem;
     background-color: $bgcolor2;
-    border-radius: 5px;
+    border-radius: 0.3125rem;
+    cursor: pointer;
 }
 
 .tagNumber {
     background-color: #9BCCFE;
-    width: 50px;
-    height: 25px;
     color: #FFFFFF;
-    border-radius: 5px;
+    border-radius: 0.3125rem;
 }
+
 .listContentTag {
-    margin-top: 10px;
-    margin-left: 20px;
+    margin-top: 0.625rem;
+    margin-left: 1.25rem;
+    margin-bottom: 0.625rem;
     border: none;
-    background-color: $bgcolor2;
+    cursor: pointer;
+    color: #fff;
+}
+
+.listContentTag a {
+    color: #fff;
 }
 
 .topicInList {
-    height: 60px;
-    text-align: center;
-    width: 1140px;
+    height: 4rem;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-right: 10px;
+    margin-right: 0.625rem;
+}
+
+.topicInList:hover {
+    background-color: #eaeaea;
 }
 
 #commentsAmount img {
@@ -552,9 +768,58 @@ $bgcolor2: #F5FAFD;
     background-color: #FCFCFC;
 }
 
-#lastReply {
-    margin-right: 20px;
-    margin-left: 15px;
+
+
+#changeColor {
+    background-color: #ebf5f8;
+}
+
+.followTopic {
+    width: 3rem;
+    margin-left: 1rem;
+    border: #8dc9db solid thin;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.reputation {
+    font-size: 0.75rem;
+    margin-left: 1rem;
+}
+
+#changeTopColor {
+    background-color: #FFFAF0;
+}
+
+.lastReply {
+    width: 12rem;
+    white-space: nowrap;
+    text-align: left;
+}
+
+.listTitleAndPager {
+    display: flex;
+    margin-left: 0.5rem;
+    align-items: flex-end;
+    width: 40rem;
+    padding-left: 1rem;
+}
+
+.topicIcon {
+    width: 8.5rem;
+}
+
+.listTitleAndIcon {
+    overflow: hidden;
+    align-items: center;
+}
+
+.listTitle {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    align-items: center;
+    overflow: hidden;
 }
 
 a {
@@ -565,9 +830,41 @@ a {
 #tagButton {
     border-radius: 5px;
     border: #33C499 solid thin;
-    width: 70px;
-    height: 30px;
+    width: 4.375rem;
     background-color: #F5FAFD;
+}
+
+.follow {
+    width: 5rem;
+    background-color: #FF6A6A;
+    margin-right: 0.63rem;
+    margin-left: 1rem;
+    height: 1.5rem;
+    cursor: pointer;
+    text-align: center;
+    font-size: 0.75rem;
+    font-family: 微软雅黑;
+    letter-spacing: 0.2rem;
+    border-radius: 0.3rem;
+    background: red;
+    border: 1px solid #B22222;
+    color: #fff;
+}
+
+.followuser {
+    width: 6rem;
+    background-color: #FF6A6A;
+    margin-right: 0.63rem;
+    margin-left: 2.5rem;
+    margin-top: 2.5rem;
+    height: 2.5rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 微软雅黑;
+    letter-spacing: 0.2rem;
+    border-radius: 0.3rem;
+    border: 1px solid #B22222;
+    color: #fff;
 }
 
 .center {
@@ -575,29 +872,34 @@ a {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 71.2rem;
 }
 
 .button {
     display: inline-block;
     outline: none;
     cursor: pointer;
+    width: 7rem;
+    height: 4rem;
     text-align: center;
     text-decoration: none;
-    font: 14px/100% Arial, Helvetica, sans-serif;
-    padding: .5em 2em .55em;
+    font-size: 1.25rem;
+    font-family: 微软雅黑;
     text-shadow: 0 1px 1px rgba(0,0,0,.3);
-    -webkit-border-radius: .5em;
-    -moz-border-radius: .5em;
-    border-radius: .5em;
-    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    border-radius: 1rem;
     box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    line-height: 4rem;
 }
+
+.bgcolor {
+    color: #fff;
+    background-color: $color-bg;
+}
+
 .orange {
     color: #fef4e9;
     border: solid 1px #da7c0c;
     background: #f78d1d;
-    
 }
 
 .orange:hover {
@@ -606,23 +908,39 @@ a {
 
 .orange:active {
     color: #fcd3a5;
-    background-color:#faa51a;
+    background-color: #faa51a;
 }
+
 .green {
     color: #fef4e9;
     border: solid 1px #71c671;
     background-color: #66cd00;
-   
 }
 
 .green:hover {
-    background-color:#71cd61
+    background-color: #71cd61
 }
 
 .green:active {
     color: #fcd3a5;
     background-color: #66cd00;
 }
+
+.blue {
+    color: #fff;
+    border: solid 1px #add8e6;
+    background-color: #b2dfee;
+}
+
+.blue:hover {
+    background-color: #87CEEB;
+}
+
+.blue:active {
+    color: #b0e2ff;
+    background-color: #b0e0e6;
+}
+
 .button:hover {
     text-decoration: none;
 }
@@ -631,344 +949,159 @@ a {
     position: relative;
     top: 1px;
 }
+
+
+/* --- pagination by Hydrogen--- */
 .pagination {
-    display: inline-block;
-    padding-left: 0;
-    margin: 20px 0;
-    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.pagination > li {
-    display: inline;
-}
-
-.pagination > li > a,
-.pagination > li > span {
-    position: relative;
-    float: left;
-    padding: 6px 12px;
-    margin-left: -1px;
-    line-height: 1.42857143;
-    color: #337ab7;
-    text-decoration: none;
-    background-color: #fff;
-    border: 1px solid #ddd;
-}
-
-.pagination > li:first-child > a,
-.pagination > li:first-child > span {
-    margin-left: 0;
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-}
-
-.pagination > li:last-child > a,
-.pagination > li:last-child > span {
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-}
-
-.pagination > li > a:hover,
-.pagination > li > span:hover,
-.pagination > li > a:focus,
-.pagination > li > span:focus {
-    z-index: 2;
-    color: #23527c;
-    background-color: #eee;
-    border-color: #ddd;
-}
-
-.pagination > .active > a,
-.pagination > .active > span,
-.pagination > .active > a:hover,
-.pagination > .active > span:hover,
-.pagination > .active > a:focus,
-.pagination > .active > span:focus {
-    z-index: 3;
-    color: #fff;
-    cursor: default;
-    background-color: #337ab7;
-    border-color: #337ab7;
-}
-
-.pagination > .disabled > span,
-.pagination > .disabled > span:hover,
-.pagination > .disabled > span:focus,
-.pagination > .disabled > a,
-.pagination > .disabled > a:hover,
-.pagination > .disabled > a:focus {
-    color: #777;
-    cursor: not-allowed;
-    background-color: #fff;
-    border-color: #ddd;
-}
-
-.pagination-lg > li > a,
-.pagination-lg > li > span {
-    padding: 10px 16px;
-    font-size: 18px;
-    line-height: 1.3333333;
-}
-
-.pagination-lg > li:first-child > a,
-.pagination-lg > li:first-child > span {
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
-}
-
-.pagination-lg > li:last-child > a,
-.pagination-lg > li:last-child > span {
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
-}
-
-.pagination-sm > li > a,
-.pagination-sm > li > span {
-    padding: 5px 10px;
-    font-size: 12px;
-    line-height: 1.5;
-}
-
-.pagination-sm > li:first-child > a,
-.pagination-sm > li:first-child > span {
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
-}
-
-.pagination-sm > li:last-child > a,
-.pagination-sm > li:last-child > span {
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
-}
-
-.pager {
-    padding-left: 0;
-    margin: 20px 0;
-    text-align: center;
+.page-nav {
     list-style: none;
 }
 
-.pager li {
+.page-item {
     display: inline;
+    list-style: none;
 }
 
-.pager li > a,
-.pager li > span {
+.page-link {
     display: inline-block;
-    padding: 5px 14px;
+    min-width: 34px;
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    color: #79b8ca;
     background-color: #fff;
     border: 1px solid #ddd;
-    border-radius: 15px;
+    font-family: 微软雅黑;
+    margin-left: 0.3rem;
+
+    &:hover {
+        color: #fff;
+        background-color: #79b8ca;
+        border-color: transparent;
+    }
 }
 
-.pager li > a:hover,
-.pager li > a:focus {
-    text-decoration: none;
-    background-color: #eee;
+.page-link.active {
+    color: #fff;
+    background-color: #79b8ca;
+    border-color: transparent;
 }
 
-.pager .next > a,
-.pager .next > span {
-    float: right;
-}
-
-.pager .previous > a,
-.pager .previous > span {
-    float: left;
-}
-
-.pager .disabled > a,
-.pager .disabled > a:hover,
-.pager .disabled > a:focus,
-.pager .disabled > span {
-    color: #777;
-    cursor: not-allowed;
-    background-color: #fff;
-}
-.page-item{
-    box-sizing:inherit;
-}
-.page-link{
-    position:relative;
-    display:block;
-    padding-left:5px;
-    padding-top:5px;
-    color:#0275d8;
-    margin-left:-1px;
-    border:1px solid #ddd;
-    line-height:2px;
-}
-
-
-.headRoot {
-    width: 1140px;
-    height: 252px;
-    border: none;
-    position: absolute;
-    left: 0;
-    top: 0;
-}
-
-#backgroundimg {
-    width: 1920px;
-    position: absolute;
-    left: 0px;
-    top: 0px
-}
-
-.backgroundimg img {
-    width: 1920px;
-    height: 238px;
-    z-index: -2;
-}
-
-.shadow {
-    opacity: 0.16;
-    width: 1920px;
-    height: 4px;
-    border: none;
-    position: absolute;
-    left: 0;
-    top: 238px;
-    background-color: rgb(80,80,80);
-}
-
-.beijingtiao {
-    opacity: 0.5;
-    width: 1920px;
-    height: 51px;
-    border: none;
-    position: absolute;
-    left: 0;
-    top: 0px;
-    background-color: rgb(80,80,80);
-}
-
-.banquantiao {
-    width: 1920px;
-    height: 60px;
-    border: none;
-    position: absolute;
-    left: 0;
-    top: 1020px;
-    background-color: rgb(242,242,242);
-}
-
-#banquanwenzi {
-    width: 1920px;
-    position: absolute;
-    top: 1030px;
-}
-
-#banquanwenzi p {
-    text-align: center;
-    color: rgb(80,80,80);
-    font-family: Microsoft YaHei;
-    font-size: 12px;
-}
-
-#logo {
-    position: absolute;
-    left: 390px;
-    top: 10px;
-    width: 45px;
-    height: 32px;
-}
-
-
-
-#theme {
-    color: rgb(80,80,80);
-    font-family: Microsoft YaHei;
-    font-size: 12px;
-    top: 11px;
-    left: 8px;
-    position: absolute;
-}
-
-#searchbar {
-    width: 300px;
-    height: 33px;
-    border-radius: 0px 6px 6px 0px;
-    border: 2px solid rgb(233,233,233);
-    background-color: rgb(252,252,252);
-}
-
-#searchbutton {
-    position: absolute;
-    left: 306px;
-    top: 2.5px;
-    width: 46px;
-    height: 33px;
-    background-color: rgb(252,252,252);
-    border: none
-}
-
-#BBScolumn {
-    left: 390px;
-    top: 185px;
-    position: absolute;
-    width: 530px;
-    height: 35px;
-    border-radius: 6px 6px 6px 6px;
-    border: 2px solid rgb(233,233,233);
-    background-color: rgb(252,252,252);
+.page-goto {
     display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: center;
+
+    input {
+        width: 55px;
+        height: 24px;
+        margin-left: 5px;
+        margin-right: 3px;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+
+    a {
+        display: inline-block;
+        width: 48px;
+        height: 26px;
+        line-height: 26px;
+        text-align: center;
+        color: #fff;
+        background-color: #79b8ca;
+        border: 1px solid transparent;
+
+        &:hover {
+            background-color: #8dc9db
+        }
+    }
 }
 
-.ziti1 {
-    color: rgb(70,70,70);
-    font-family: Microsoft YaHei;
-    font-size: 12px;
-}
+/* --- pagination end --- */
 
-::-webkit-input-placeholder {
-    color: rgb(160,160,160);
-    font-family: Microsoft YaHei;
-    font-size: 12px;
-}
-
+//以下是版面列表的样式~~---------------------------------------------------------
 .boardList {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-width: 1140px;
+    width: 1140px;
     align-items: center;
+}
+
+.boardGuide {
+    position: fixed;
+    margin-left: 1140px;
+    width: 5rem;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: #eaeaea solid thin;
+    color: #505050;
+    font-size: 0.75rem;
+}
+
+.boardOption {
+    border-bottom: #eaeaea dashed 3px;
+    margin-top: 0.4rem;
+    white-space: nowrap;
+    cursor: pointer;
 }
 
 .anArea {
     display: flex;
     flex-direction: column;
-    width:1140px;
+    width: 1140px;
     box-sizing: border-box;
-    background-color: rgb(252,252,252);
-    margin-bottom: 30px;
+    background-color: #fff;
+    margin-bottom: 2rem;
 }
-.viewBoard{
-    margin-left:30px;
-    border-radius:5px ;
-    background-color:#FFFFFF;
-    border-color:#000000;
-    width:30px;
-    height:20px;
-}
+
 .hideBoard {
-    margin-left: 30px;
+    width: 2rem;
+    height: 1.25rem;
+    margin-left: 2rem;
     border-radius: 5px;
-    background-color: #FFFFFF;
+    border-width: 1px;
+    border-style: solid;
     border-color: #000000;
-    width: 30px;
-    height: 20px;
-}
-.areaName {
-    font-size: 14px;
+    font-size: 0.88rem;
     font-family: 微软雅黑;
     color: rgb(80,80,80);
-    margin-left: 18px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.areaName {
+    display: flex;
+    flex-direction: row;
+    font-size: 1rem;
+    font-family: 微软雅黑;
+    color: #fff;
+    margin-left: 1.1rem;
+
+    a {
+        font-size: 1rem;
+        font-family: 微软雅黑;
+        color: #fff;
+    }
+}
+
+.expendBoardList {
+    width: 2.5rem;
+    margin-top: 0rem;
+    font-size: 0.75rem;
+    color: #fff;
+    border: #fff solid thin;
+    border-radius: 1rem;
+    text-align: center;
+    height: 1.25rem;
+    line-height: 1.25rem;
+    cursor: pointer;
+    margin-right: 2rem;
 }
 
 .areaContent {
@@ -979,54 +1112,1900 @@ a {
 
 .boardContent {
     display: flex;
-    flex-direction: column;
-    margin: 18px 15px 18px 18px;
-    width: 250px;
+    margin: 1.1rem 1rem 1.1rem 1.1rem;
+    width: 15.6rem;
 }
+
 .noImgBoardContent {
     display: flex;
     flex-direction: column;
-    margin: 0px 15px 18px 18px;
-    width: 250px;
+    margin: 0px 1rem 1.1rem 1.1rem;
+    width: 15.6rem;
 }
+
+.boardBlock {
+    margin-left: 0.5rem
+}
+
 .greenBackdrop {
-    height: 88px;
-    width: 250px;
-    background-color: rgb(41,197,133);
+    height: 6rem;
+    width: 6rem;
+    background-image: url(/static/images/sample4.png);
+    background-size: 100%;
+}
+
+.listTitle {
 }
 
 .boardName2 {
-    font-size: 14px;
+    font-size: 0.88rem;
     font-family: 微软雅黑;
     color: rgb(80,80,80);
-    margin-top: 12px;
+    margin-top: 0.75rem;
+    letter-spacing: 2px;
 }
 
 .boardInfo {
-    font-size: 12px;
+    font-size: 0.75rem;
     font-family: 微软雅黑;
     color: rgb(80,80,80);
-    margin-top: 12px;
-}
-
-.areaContent2 {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding-top: 12px;
-}
-
-.boardContent2 {
+    margin-top: 8px;
     display: flex;
     flex-direction: column;
-    margin: 0 0 12px 6px;
-    width: 180px;
-    //text-align:center;
 }
 
-.boardName3 {
+/*****************************************以下为我的消息的样式*********************************/
+.message-root {
+    display: flex;
+    justify-content: center;
+}
+
+.message {
+    display: flex;
+    flex-direction: column;
+    width: 1140px;
+}
+
+.message-title {
+    font-size: 16px;
+    color: $color-thinBlack;
+}
+
+.message-content {
+    display: flex;
+
+    margin: {
+        top: 20px;
+    }
+}
+
+.message-nav {
+    flex-shrink: 0;
+    width: 198px;
+    height: 400px;
+    margin-right: 30px;
+    border: 1px solid $color-border;
+    display: flex;
+    flex-direction: column;
+    background-color: $color-post;
+
+    hr {
+        margin: 0;
+        background-color: #fff;
+        border-top: 1px dashed #e9e9e9;
+        width: 11.125rem;
+        margin-left: 9px;
+    }
+
+    .nav-div {
+        height: 14px;
+        padding: 19px 0px 23px 30px;
+        font-size: 14px;
+        position: relative;
+    }
+
+    a {
+        text-decoration: none;
+
+        &:hover {
+            color: $color-red;
+        }
+    }
+
+    a.active {
+        color: $color-red;
+    }
+}
+
+.message-right {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.message-pager {
+    flex-shrink: 0;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+/******以下为私信部分的样式***/
+.message-message {
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 0;
+    min-height: 674px;
+}
+
+.message-message-people {
+    display: flex;
+    flex-direction: column;
+    width: 198px;
+    border: 1px solid $color-border;
+    font-size: 14px;
+
+    .message-message-pTitle {
+        color: $color-thinBlack;
+        background-color: $color-body;
+        height: 14px;
+        padding: 11px 71px 13px 71px;
+        border-bottom: 1px solid $color-border;
+    }
+
+    .message-message-pList {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        background-color: $color-post;
+        overflow-y: auto;
+
+        a {
+            text-decoration: none;
+            color: $color-black;
+        }
+
+        .message-message-pFocus {
+            background-color: $color-focus;
+        }
+
+        .message-message-plMore {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+
+            img {
+                padding-top: 20px;
+            }
+
+            div {
+                font-size: 12px;
+                color: $color-thinBlack;
+                text-align: center;
+                padding-top: 10px;
+            }
+
+            padding-bottom: 10px;
+        }
+
+        .message-message-person {
+            flex-shrink: 0;
+            display: flex;
+            min-height: 80px;
+            border-bottom: 1px dashed lightgray;
+            cursor: pointer;
+            position: relative;
+
+            &:hover {
+                @extend .message-message-pFocus;
+            }
+
+            .message-message-pPortraitUrl {
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                padding: 20px 10px;
+                border-radius: 50%;
+            }
+
+            .message-message-pInfo {
+                flex-grow: 1;
+                height: 40px;
+                margin: 20px 0px;
+                display: flex;
+                flex-direction: column;
+
+                .message-message-pName {
+                    height: 14px;
+                    font-size: 14px;
+                    color: $color-black;
+                    padding-bottom: 10px;
+                }
+
+                .message-message-pMessage {
+                    height: 10px;
+                    width: 110px;
+                    display: inline-block;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis !important;
+                    font-size: 10px;
+                    color: $color-gray;
+                    padding-bottom: 6px;
+                }
+            }
+
+            .message-counterPerson {
+                position: absolute;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background-color: red;
+                top: 36px;
+                right: 15px;
+            }
+        }
+    }
+}
+
+.message-message-window {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: $color-post;
+
+    .message-message-wHeader {
+        flex-basis: 39px;
+        border-top: 1px solid $color-border;
+        border-right: 1px solid $color-border;
+        display: flex;
+
+        .message-message-wReport {
+            flex-basis: 62px;
+            color: $color-thinBlack;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            button {
+                width: 30px;
+                height: 20px;
+                line-height: 16px;
+                font-size: 12px;
+                text-align: center;
+                border: 0px;
+                border-radius: 2px;
+                background-color: $color-post;
+                padding: 0px;
+
+                &:hover {
+                    border: 0px;
+                    background-color: $color-body;
+                }
+
+                &:active {
+                    border: 0px;
+                    background-color: $color-post;
+                    position: relative;
+                    top: 1px;
+                    left: 1px;
+                }
+
+                &visited {
+                    border: 0px;
+                }
+            }
+        }
+
+        .message-message-wTitle {
+            flex-grow: 1;
+            color: $color-black;
+            font-size: 14px;
+            text-align: center;
+            height: 14px;
+            padding: 11px 0px 13px 0px;
+        }
+    }
+
+    .message-message-wContent {
+        flex-basis: 479px;
+        border-top: 1px solid $color-border;
+        border-right: 1px solid $color-border;
+        display: flex;
+        flex-direction: column-reverse;
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        .message-message-wcLoading {
+            flex-shrink: 0;
+            flex-grow: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+
+            .message-message-wcLoadingText {
+                height: 10px;
+                font-size: 10px;
+                color: $color-thinBlack;
+                text-align: center;
+                padding: 10px 0px 21px 0px;
+            }
+        }
+
+        .message-message-wc {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            margin: 10px 0px 10px 0px;
+
+            .message-message-wcTime {
+                height: 10px;
+                font-size: 10px;
+                color: $color-thinBlack;
+                text-align: center;
+                padding: 5px 0px 8px 0px;
+            }
+
+            .message-message-wcSender {
+                display: flex;
+                flex-direction: row-reverse;
+                position: relative;
+
+                .message-message-wcPortraitUrl {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    padding: 5px 20px;
+                    margin-right: 10px;
+                }
+
+                .message-message-wcContent:before {
+                    content: '';
+                    position: absolute;
+                    width: 0;
+                    height: 0;
+                    right: 85px;
+                    top: 18px;
+                    border: 8px solid;
+                    border-color: transparent transparent transparent $color-border;
+                }
+
+                .message-message-wcContent:after {
+                    content: '';
+                    position: absolute;
+                    width: 0;
+                    height: 0;
+                    right: 89px;
+                    top: 20px;
+                    border: 6px solid;
+                    border-color: transparent transparent transparent $color-body;
+                }
+            }
+
+            .message-message-wcReceiver {
+                display: flex;
+                flex-direction: row;
+                position: relative;
+
+                .message-message-wcPortraitUrl {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    padding: 5px 20px;
+                    margin-left: 10px;
+                }
+
+                .message-message-wcContent:before {
+                    content: '';
+                    position: absolute;
+                    width: 0;
+                    height: 0;
+                    left: 85px;
+                    top: 18px;
+                    border: 8px solid;
+                    border-color: transparent $color-border transparent transparent;
+                }
+
+                .message-message-wcContent:after {
+                    content: '';
+                    position: absolute;
+                    width: 0;
+                    height: 0;
+                    left: 89px;
+                    top: 20px;
+                    border: 6px solid;
+                    border-color: transparent $color-body transparent transparent;
+                }
+            }
+
+            .message-message-wcContent {
+                background-color: $color-body;
+                border: 1px solid $color-border;
+                border-radius: 3px;
+                width: auto;
+                height: auto;
+                max-width: 500px;
+                margin-top: 8px;
+                margin-bottom: 10px;
+
+                .message-message-wcText {
+                    font-size: 14px;
+                    color: $color-thinBlack;
+                    margin: 10px 10px 9px 10px;
+                    line-height: 22px;
+                    clear: both;
+                    word-wrap: break-word;
+                }
+            }
+
+            .message-message-wcRead1 {
+                flex-basis: 50px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+
+                .message-message-wcRead2 {
+                    font-size: 12px;
+                    color: $color-thinBlack;
+                    flex-basis: 12px;
+                    flex-grow: 0;
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+    .message-message-wPost {
+        flex-basis: 160px;
+        border-top: 1px solid $color-border;
+        border-right: 1px solid $color-border;
+        border-bottom: 1px solid $color-border;
+        display: flex;
+        flex-direction: column;
+        background-color: rgb(245, 245, 245);
+        position: relative;
+
+        .message-message-wPostArea {
+            width: 648px;
+            height: 78px;
+            line-height: 22px;
+            font-size: 12px;
+            border: 1px solid $color-border;
+            margin: 19px 29px 10px 29px;
+            background-color: $color-post;
+
+            &:focus {
+                outline: none;
+                border: 1px solid $color-bg;
+            }
+        }
+
+        .message-message-wPostNotice {
+            position: absolute;
+            line-height: 20px;
+            margin-top: 22px;
+            margin-left: 34px;
+            color: #777;
+            font-size: 14px;
+            cursor: inherit;
+        }
+
+        .message-message-wPostError {
+            position: absolute;
+            line-height: 20px;
+            margin-top: 22px;
+            margin-left: 34px;
+            color: red;
+            font-size: 14px;
+            cursor: inherit;
+        }
+
+        .message-message-wPostBtn {
+            width: 100px;
+            height: 30px;
+            background-color: $color-bg;
+            color: $color-post;
+            border: 0px;
+            border-radius: 3px;
+            font-size: 12px;
+            text-align: center;
+            margin: 0px 29px 19px 580px;
+
+            &:hover {
+                filter: brightness(1.1); //亮度
+                -webkit-filter: brightness(1.1);
+            }
+
+            &:focus {
+                outline: none;
+            }
+
+            &:active {
+                background-color: $color-bg;
+                position: relative;
+                top: 1px;
+                left: 1px;
+            }
+        }
+    }
+}
+
+/******以下为系统消息部分的样式***/
+.message-system {
+    min-height: 952px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    font-family: 微软雅黑;
+    border: 1px solid $color-border;
+    flex-shrink: 0;
+    overflow-y: auto;
+    background-color: $color-post;
+
+    .message-system-box { /*一个系统消息的框框*/
+        display: flex;
+        flex-direction: column;
+        border-bottom: 1px dashed lightgray;
+        flex-shrink: 0;
+
+        .message-system-box-bar {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .message-system-box-title { /*一个系统消息标题*/
+            height: 50px;
+            font-size: 15px;
+            line-height: 50px;
+            color: black;
+            margin-left: 30px;
+        }
+
+        .message-system-box-date { /*一个系统消息日期*/
+            height: 50px;
+            font-size: 13px;
+            line-height: 50px;
+            color: lightgray;
+            margin-left: 10px;
+        }
+
+        .message-system-box-content { /*一个系统消息内容*/
+            font-size: 14px;
+            line-height: 24px;
+            margin: 0px 30px 20px 30px;
+
+            a:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+/******以下为我的回复部分的样式***/
+.message-response {
+    min-height: 952px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    border: 1px solid $color-border;
+    overflow-y: hidden;
+    background-color: $color-post;
+
+    .message-response-box { /*一个消息的框框*/
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: row;
+        border-bottom: 1px dashed lightgray;
+        /*.message-response-box-left { 
+            flex-basis: 100px;
+            flex-shrink: 0;
+
+            .message-response-img { 
+                margin: 30px 20px;
+                border-radius: 50%;
+                width: 60px;
+                height: 60px;
+            }
+        }*/
+        .message-response-box-middle { /*消息框的中间-文字*/
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            flex-grow: 1;
+            flex-shrink: 0;
+            margin: 0px 30px 20px 30px;
+
+            .message-response-box-middle1 {
+                display: flex;
+                flex-direction: row;
+
+                .message-response-box-middle-title { /*消息框文字第一行 版面信息*/
+                    height: 50px;
+                    flex-wrap: nowrap;
+                    font-size: 14px;
+                    line-height: 50px;
+                    color: dodgerblue;
+                    flex-shrink: 0;
+                    margin-right: 10px;
+                }
+
+                .message-response-box-middle-date { /*消息框文字第一行日期*/
+                    height: 50px;
+                    flex-basis: 300px;
+                    font-size: 12px;
+                    line-height: 50px;
+                    color: gray;
+                    flex-shrink: 0;
+                    flex-grow: 1;
+                }
+            }
+
+            .message-response-box-middle-content { /*消息框文字第二行-主体内容*/
+                height: 24px;
+                font-size: 14px;
+                line-height: 24px;
+                flex-shrink: 0;
+
+                a:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+        /*.message-response-box-right { 
+            flex-basis: 60px;
+            line-height: 100px;
+            font-size: 14px;
+            margin-left: 10px;
+            flex-shrink: 0;
+        }*/
+    }
+}
+/*****************************************以下为我的关注的样式*********************************/
+.focus-root {
+    display: flex;
+    justify-content: center;
+}
+
+.focus {
+    display: flex;
+    flex-direction: column;
+    width: 1140px;
+    min-height: 780px;
+    margin-bottom: 60px;
+}
+
+.focus-nav {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+
+.focus-title {
+    height: 40px;
+    line-height: 40px;
+    font-size: 20px;
+    color: #6b7178;
+    flex-shrink: 0;
+    margin-right: 20px;
+
+    &:hover {
+        @extend .focus-title-hover;
+    }
+}
+
+.focus-title-hover {
+    color: #fb6165;
+    border-bottom: 2px solid #fb6165;
+}
+
+.focus-board-area {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 30px;
+
+    .focus-board {
+        display: block;
+        color: rgb(121,184,202);
+        background-color: transparent;
+        text-align: center;
+        vertical-align: middle; //设置元素的垂直对齐方式
+        border: 1px solid rgb(121,184,202);
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        border-radius: .25rem;
+        line-height: normal;
+        white-space: nowrap;
+        font-family: 微软雅黑;
+        margin-right: 1rem;
+        margin-top: 1rem;
+        flex-shrink: 0;
+
+        &:hover {
+            background-color: rgb(121,184,202);
+            color: rgb(255,255,255);
+            cursor: pointer;
+        }
+    }
+
+    .focus-hover {
+        background-color: $color-bg;
+        color: #ffffff;
+    }
+}
+
+.focus-topic-area {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.625rem;
+
+    .focus-topic-topicArea {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .focus-topic-getMore {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        cursor: pointer;
+        color: #6b7178;
+        justify-content: center;
+
+        div {
+            margin-top: 10px;
+            text-align: center;
+        }
+    }
+
+    .focus-topic-loading {
+        margin-top: 20px;
+        text-align: center;
+
+        img {
+            width: 200px;
+            height: 18px;
+        }
+    }
+
+    .focus-topic-loaddone {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 16px;
+        color: $color-black;
+    }
+}
+
+.focus-allNewTopic {
+    color: #6b7178;
+    min-height: 20px;
+    font-size: 20px;
+    display: flex;
+    align-items: baseline;
+
+    i {
+        flex-basis: 22px;
+        font-size: 20px;
+    }
+}
+
+.focus-topic {
+    display: flex;
+    flex-direction: row;
+    min-height: 80px;
+    margin-top: 12px;
+    overflow: hidden;
+    background-color: #ffffff;
+    border: solid 1px $color-bg;
+
+    .focus-topic-left {
+        display: flex;
+        flex-direction: row;
+        flex-basis: 180px;
+        background-color: $color-bg;
+        flex-shrink: 0;
+
+        .focus-topic-portraitUrl {
+            width: 60px;
+            height: 60px;
+            margin: 10px;
+            border-radius: 50%;
+        }
+
+        .focus-topic-userName {
+            font-size: 16px;
+            height: 80px;
+            line-height: 80px;
+            color: #ffffff
+        }
+    }
+
+    .focus-topic-middle {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        flex-shrink: 0;
+        background-color: #ffffff;
+        color: #6b7178;
+
+        .focus-topic-title {
+            font-size: 20px;
+            color: #6b7178;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            height: 28px;
+            line-height: 28px;
+            margin: 11px 20px auto 20px;
+            max-width: 800px;
+        }
+
+        .focus-topic-info {
+            display: flex;
+            flex-direction: row;
+            margin: auto 20px 13px 21px;
+            height: 16px;
+            line-height: 16px;
+            font-size: 12px;
+
+            div {
+                flex-shrink: 0;
+                margin-right: 20px;
+                overflow: hidden;
+                position: relative;
+                color: #6b7178;
+
+                a {
+                    color: #6b7178;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+
+                i {
+                    position: relative;
+                    bottom: 2px;
+                    margin-right: 2px;
+                }
+            }
+        }
+    }
+
+    .focus-topic-rightBar {
+        width: 0px;
+        height: 48px;
+        border-left: 1px solid #6b7178;
+        margin-top: 16px;
+    }
+
+    .focus-topic-right {
+        text-align: center;
+        flex-basis: 70px;
+        height: 80px;
+        background-color: #ffffff;
+        padding-left: 15px;
+        padding-right: 15px;
+        color: #6b7178;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .focus-topic-board {
+            line-height: 20px;
+        }
+    }
+}
+/*.focus-topic {
+    display: flex;
+    min-height: 98px;
+    border: 1px solid $color-border;
+    background-color: $color-post;
+    margin-top: 20px;
+    overflow: hidden;
+}
+
+.focus-topic-portraitUrl {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    padding: 19px;
+    border-radius: 50%;
+}
+
+.focus-topic-info1 {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    .focus-topic-authorInfo {
+        display: flex;
+        height: 14px;
+        margin: 24px 0px 0px 2px;
+        font-size: 14px;
+    }
+
+    .focus-topic-title {
+        height: 16px;
+        margin: 14px 0px 30px 2px;
+        font-size: 16px;
+        color: $color-black;
+    }
+}
+
+.focus-topic-info2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 14px;
+    color: $color-thinBlack;
+
+    .focus-topic-board {
+        margin: 24px 18px 0px;
+        word-break: keep-all; 
+        white-space: nowrap; 
+        a {
+            color: $color-thinBlack;
+        }
+    }
+
+    .focus-topic-response {
+        display: flex;
+        margin: 14px 10px 30px;
+        width: 232px;
+
+        div {
+            flex-basis: 58px;
+            display: inline-flex;
+            align-items: baseline;
+            flex-shrink: 0;
+
+            i {
+                font-size: 16px;
+                flex-basis: 18px;
+            }
+        }
+    }
+}
+
+
+.focus-topic-blackText {
+    color: $color-thinBlack;
+    min-height: 14px;
+    flex-basis: 90px;
+}
+
+.focus-topic-fans {
+    color: $color-thinBlack;
+    min-height: 14px;
+    flex-basis: 34px;
+}
+
+.focus-topic-redText {
+    color: $color-red;
+    flex-basis: 26px;
+    min-height: 14px;
+}
+*/
+.displaynone {
+    display: none;
+}
+//-------------------------原头部的样式，现在只剩下消息中心导航器中未读消息数的样式保留 ----------------------------------------
+
+.message-counterNav {
+    position: absolute;
+    min-width: 10px;
+    height: 12px;
+    line-height: 12px;
+    margin-top: -11px;
+    padding: 1px 5px;
+    font-size: 10px;
+    font-weight: normal;
+    color: white;
+    text-align: center;
+    background-color: #fb6165;
+    border-radius: 8px;
+    top: 32px;
+    left: 110px;
+}
+
+//-------------------------以下是底部的样式~~~---------------------------------------------------
+.footer {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-top: 5rem;
+    padding-top: 15px;
+    width: 100%;
+    min-width: 1140px;
+}
+
+.footerRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
     font-size: 12px;
     font-family: 微软雅黑;
     color: rgb(80,80,80);
-    margin-top: 12px;
+    margin-bottom: 15px;
+}
+
+.footerRow a {
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    margin-left: 10px;
+    margin-right: 10px;
+}
+/*
+* UBB用
+*/
+.ubb-code {
+    ol {
+        list-style: none;
+        counter-reset: li
+    }
+
+    li {
+        counter-increment: li
+    }
+
+    li::before {
+        content: counter(li);
+        display: inline-flex;
+        width: 50px;
+        margin: 0 10px;
+        justify-content: center;
+        background-color: #ebebeb;
+    }
+}
+/**
+    弹出用户悬浮窗
+*/
+.popup {
+    width: 30rem;
+    height: 15.625rem; /*高度自由，因为不确定，内容多少。*/
+    border: 1px solid #D5D5D5;
+    background: #fff; /*窗口内容不透明，背景为白色*/
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.25); /*内容窗口带阴影*/
+    border-radius: 0.5rem; /* 所有角都使用半径为8px的圆角，此属性为CSS3标准属性 */
+    -moz-border-radius: 0.5rem; /* Mozilla浏览器的私有属性 */
+    -webkit-border-radius: 0.5rem; /* Webkit浏览器的私有属性 */ /*窗口圆角*/
+    z-index: 9000;
+}
+
+.popup_title {
+    background: url(/images/headerBackground.jpg) no-repeat center;
+    height: 7.8rem;
+    line-height: 1.5rem; /*使垂直居中*/
+    border-bottom: 1px solid #efefef; /*底边框*/
+    border-radius: 0.5rem 0.5rem 0 0; /* 左上角和右上角使用半径为5px的圆角，此属性为CSS3标准属性 */
+    -moz-border-radius: 0.5rem 0.5rem 0 0; /* Mozilla浏览器的私有属性 */
+    -webkit-border-radius: 0.5rem 0.5rem 0 0; /* Webkit浏览器的私有属性 */ /*窗口圆角*/
+    color: #535353;
+    font-size: 1rem; /*字体颜色和字体大小*/
+    -moz-user-select: none; /* Firefox all */
+    -webkit-user-select: none; /* Chrome all / Safari all /opera15+*/
+    -ms-user-select: none; /*IE10*/
+    -khtml-user-select: none; /*早期浏览器*/
+    user-select: none;
+    -o-user-select: none; /* 以上两个属性目前并未支持，写在这里为了减少风险 */
+}
+/*
+    登录页用
+*/
+.login {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 6rem;
+
+    & > div {
+        margin-top: 30px;
+        background-color: white;
+        min-width: 1140px;
+        display: flex;
+        border: 1px solid rgb(204,204,204);
+        height: 567px;
+
+        & > img {
+            margin: 30px;
+        }
+
+        & > div {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin-top: 50px;
+
+            & > img {
+                width: 123px;
+                height: 26px;
+                margin-right: 200px;
+            }
+
+            & > p {
+                margin-right: 200px;
+                font-size: 12px;
+            }
+
+            .LogOffInfo {
+                align-self: center;
+                font-size: 1rem;
+                margin-right: 0;
+            }
+        }
+    }
+
+    .login-form {
+        display: flex;
+        margin-right: 80px;
+        margin-top: 30px;
+        font-size: 12px;
+
+        input {
+            width: 320px;
+            height: 40px;
+            border: 1px solid rgb(204,204,204);
+            border-radius: 5px;
+            margin-left: 25px;
+            padding: 0 10px;
+        }
+    }
+
+    a {
+        color: rgb(40,167,225);
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    button {
+        margin-right: 5rem;
+        height: 2.5rem;
+        width: 20rem;
+        border: 0;
+        background-color: rgb(40,167,225);
+        color: white;
+        border-radius: 0.3125rem;
+
+        &:hover {
+            background-color: rgb(41,174,223);
+        }
+
+        &:active {
+            background-color: rgb(38,154,196);
+        }
+    }
+
+    #loginMessage {
+        color: red;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        width: 340px;
+        margin-right: 80px;
+    }
+}
+
+@keyframes cssShake {
+    from {
+        transform: translateX(-5px);
+    }
+
+    to {
+        transform: translateX(5px);
+    }
+}
+
+.shake {
+    animation-name: cssShake;
+    animation-duration: 50ms;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+//------------------------登录页到此结束----------------------------------
+#sendTopic {
+    border: #CCCCCC solid thin;
+    display: flex;
+    flex-direction: column;
+
+
+
+    #sendTopic-options {
+        background-color: #fff;
+        border-bottom: #CCCCCC solid thin;
+    }
+
+    #sendTopic-input {
+        background-color: #fff;
+        height: 34.5rem;
+        padding: 1rem;
+        border: none;
+        width: 96.5%;
+    }
+}
+
+.editor__menu {
+    float: left;
+    margin: 0 2px;
+    vertical-align: text-top;
+    padding-left: 0.3125rem;
+}
+
+.editor__menu li {
+    list-style: none;
+    float: left;
+    list-style-type: none;
+    margin-right: 2px;
+    margin-left: 2px;
+}
+
+.editor__menu--bold {
+    background-image: url(/images/editOption.png);
+    background-size: 380px 60px;
+    border-bottom-color: rgb(255, 255, 255);
+    display: block;
+    height: 20px;
+    list-style-type: none;
+    width: 20px;
+    border-left-width: 5px;
+    border-right-width: 5px;
+    border-style: solid;
+    border-width: 5px;
+    border-color: rgb(255, 255, 255);
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.wmd-spacer1 {
+    margin: 5px 4px;
+    width: 0px;
+    height: 20px;
+    padding-left: 0px;
+    padding-right: 0px;
+    border-right: 1px solid #ddd;
+    text-indent: 110%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-transform: capitalize;
+}
+
+#sendTopic-send {
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    width: 50px;
+    margin-top: 20px;
+    background-color: rgb(128,187,235);
+    color: #fff;
+    text-decoration: none;
+    font: 14px/100% Arial, Helvetica, sans-serif;
+    padding: .5em 2em .55em;
+    letter-spacing: 5px;
+    -webkit-border-radius: .5em;
+    -moz-border-radius: .5em;
+    border-radius: .5em;
+}
+
+#quoteOverflow {
+    overflow-y: auto;
+}
+
+.userDetails {
+    z-index: 1;
+}
+/**********************************搜索页的样式*********************************/
+.noRusult {
+    font-size: 16px;
+    color: $color-thinBlack;
+    margin-top: 100px;
+    text-align: center;
+}
+
+.topicManagement {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 30rem;
+    margin-top: 20rem;
+    position: absolute;
+    z-index: 1000;
+    width: 30rem;
+    height: 23rem;
+    border: 1px solid #d5d5d5;
+    background: #fff;
+    box-shadow: 0px 0px 3px rgba(0,0,0,0.25);
+    -moz-box-shadow: 0 0 3px rgba(0,0,0,.25);
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,.25);
+    border-radius: .5rem;
+    -moz-border-radius: .5rem;
+    -webkit-border-radius: .5rem;
+    background-color: #FFFACD;
+}
+
+.postManagement {
+    display: flex;
+    bottom: 1rem;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 30rem;
+    position: absolute;
+    z-index: 1000;
+    width: 30rem;
+    height: 23rem;
+    border: 1px solid #d5d5d5;
+    background: #fff;
+    box-shadow: 0px 0px 3px rgba(0,0,0,0.25);
+    -moz-box-shadow: 0 0 3px rgba(0,0,0,.25);
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,.25);
+    border-radius: .5rem;
+    -moz-border-radius: .5rem;
+    -webkit-border-radius: .5rem;
+    background-color: $color-bg;
+}
+
+.judgeManagement {
+    margin-left: 15rem;
+    position: absolute;
+    bottom: 1rem;
+    z-index: 1000;
+    width: 30rem;
+    height: 20rem;
+    border: 1px solid #d5d5d5;
+    background: #fff;
+    box-shadow: 0px 0px 3px rgba(0,0,0,0.25);
+    -moz-box-shadow: 0 0 3px rgba(0,0,0,.25);
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,.25);
+    border-radius: .5rem;
+    -moz-border-radius: .5rem;
+    -webkit-border-radius: .5rem;
+    background-color: $color-bg;
+}
+
+.manageUI {
+    display: flex;
+    flex-direction: row;
+    margin-top: -2rem;
+}
+
+.judgeUI {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.manageOptions {
+    width: 30rem;
+    height: 3rem;
+}
+
+.judgeName {
+    font-size: 1.25rem;
+    color: #fff;
+    border: #fff 2px solid;
+    border-radius: 0.5rem;
+    line-height: 2rem;
+    width: 4rem;
+    height: 2rem;
+    text-align: center;
+    justify-content: center;
+}
+
+.judgeOption {
+    display: flex;
+    align-content: center;
+    color: #fff;
+}
+
+.judgeOptions {
+    width: 100%;
+    justify-content: space-around;
+}
+
+.manageOptions-icon {
+    text-align: center;
+    width: 7.5rem;
+    height: 3rem;
+    line-height: 3rem;
+    border-right: #EAEAEA solid thin;
+    border-bottom: #EAEAEA solid thin;
+    cursor: pointer;
+}
+
+.judgeOptions-icon {
+    text-align: center;
+    width: 15rem;
+    height: 3rem;
+    line-height: 3rem;
+    border-right: #EAEAEA solid thin;
+    border-bottom: #EAEAEA solid thin;
+    cursor: pointer;
+}
+
+.confirmManagement {
+    margin-top: 1rem;
+    width: 5rem;
+    height: 2rem;
+    background-color: #fff;
+    border: gray solid thin;
+    border-radius: 0.3rem;
+    cursor: pointer;
+}
+
+.awardPage {
+    width: 5rem;
+    height: 1.2rem;
+    background-color: $bgcolor2;
+    border: #eaeaea solid thin;
+    border-radius: 0.2rem;
+    cursor: pointer;
+    margin-left: 2rem;
+}
+
+.awardInfo {
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-top: 2rem;
+    width: 35rem;
+}
+
+.awardPager {
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.manageOperation {
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.manageOperation input {
+    border-radius: 1rem;
+}
+
+.manageOperation input[type="radio"], .judgeOption input[type="radio"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid #fff;
+    border-radius: .5rem;
+    box-sizing: border-box;
+    padding: 0.2rem;
+
+    &:focus {
+        outline: none;
+    }
+
+    &:checked {
+        background-color: #fff;
+        background-clip: content-box;
+    }
+}
+
+.manageInfo {
+    height: 15rem;
+    justify-content: space-around;
+    margin-left: 3rem;
+}
+
+.manageObject {
+    display: flex;
+    justify-content: center;
+    color: #fff;
+}
+
+.followBoard {
+    width: 5rem;
+    height: 1.5rem;
+    background-color: #e6e6fa;
+    border: gray solid thin;
+    border-radius: 0.3rem;
+    cursor: pointer;
+}
+
+.followBoard :hover {
+    background-color: #eea9b8;
+}
+
+.errorState {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    align-items: center;
+    font-family: 黑体;
+}
+
+.errorIcon {
+    width: 48rem;
+    height: 27rem;
+    margin-top: -5rem;
+}
+
+.errorText {
+    text-align: center;
+    font-size: 0.88rem;
+    margin-top: 0.6rem;
+}
+
+.errorTitle {
+    width: 18rem;
+    justify-content: center;
+    margin-top: -7.5rem;
+    text-align: center;
+    font-size: 1.5rem;
+    border-bottom: black solid thin;
+    padding-bottom: 0.6rem;
+}
+
+.returnIndexBtn {
+    justify-content: center;
+    font-size: 0.75rem;
+    margin-top: 2.5rem;
+    text-decoration: underline;
+}
+
+.topicInfo-info {
+    display: flex;
+    flex-direction: row;
+    width: 71rem;
+    height: 6.25rem;
+    border: rgb(106,113,119) solid 1.5px;
+    font-family: 微软雅黑;
+}
+
+.topicInfo-boardInfo {
+    width: 10.6rem;
+    height: 6.4rem;
+    display: flex;
+    background-color: rgb(106,113,119);
+    align-items: center;
+}
+
+.topicInfo-boardImage {
+    width: 4rem;
+    height: 4rem;
+    margin-left: 0.5rem;
+}
+
+.topicInfo-boardMessage {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+    color: #6b7178;
+    height: 3rem;
+    align-self: center;
+    border-left: #6b7178 solid 1.5px;
+    width: 7rem;
+    align-items: center;
+}
+
+.topicInfo-title {
+    width: 52.3rem;
+    height: 6.25rem;
+    display: flex;
+    background-color: #fff;
+    color: #6b7178;
+    font-size: 1rem;
+}
+
+.topicInfo-ads {
+    width: 18.65rem;
+    height: 6.25rem;
+}
+
+.boardMessage {
+    width: 15rem;
+    min-height: 6rem;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    background-color: #6b7178;
+    font-family: 微软雅黑;
+}
+
+.boardMessage img {
+    width: 4rem;
+    height: 4rem;
+}
+
+.boardMessageDetails {
+    height: 3rem;
+    width: 8rem;
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+    line-height: 2rem;
+    margin-top: 0.1rem;
+}
+
+.boardFollow {
+    width: 2.5rem;
+    height: 1.5rem;
+    border-radius: 1rem;
+    background-color: #fb6165;
+    font-size: 0.75rem;
+    color: #fff;
+    text-align: center;
+    line-height: 1.25rem;
+    cursor: pointer;
+}
+
+.topicManageBTN {
+    border: none;
+    width: 5rem;
+    height: 2rem;
+    cursor: pointer;
+}
+
+.boardDescription {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+    margin-left: 1rem;
+    font-size: 0.75rem;
+    margin-right: 1rem;
+    line-height: 1.4rem;
+}
+
+.boardMasters {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+    font-size: 0.75rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    line-height: 1.4rem;
+}
+
+.bigPaper {
+    width: 56.25rem;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    border: solid 1px #6b7178;
+    padding: 1.5rem;
+    font-size: 1rem;
+    font-family: 微软雅黑;
+}
+
+.bigPaperTitle {
+    font-size: 1.25rem;
+    color: #fb6165;
+    margin-bottom: 2rem;
+}
+
+.createTopicTitle .box {
+    display: flex;
+    flex-direction: row;
+    height: 36px;
+    width: 340px;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 2px;
+    box-sizing: border-box;
+    align-items: center;
+    opacity: 0.8;
+}
+
+.tagBoxSelect {
+    display: flex;
+    width: 4rem;
+    height: 30px;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    justify-content: center;
+    align-items: center;
+    margin-left: 2px;
+    cursor: pointer;
+}
+
+.downArrow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 32px;
+    border-right: 2px solid rgb(233,233,233);
+    padding-right: 2px;
+    cursor: pointer;
+}
+
+.tagIco {
+    width: 20px;
+    padding: 2px 0 0 3px;
+}
+
+.column ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tagBoxSub {
+    width: 4rem;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 2px;
+    box-sizing: border-box;
+    display: none;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    z-index: 1000;
+}
+
+.tagBoxSub li {
+    height: 25px;
+    cursor: pointer;
+    padding-left: 5px;
+    padding-top: 3px;
+}
+
+.tagBoxSub {
+    background: rgb(233,233,233);
+}
+
+.createTopicTitle .box1 {
+    display: flex;
+    flex-direction: row;
+    height: 36px;
+    width: 340px;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 2px;
+    box-sizing: border-box;
+    align-items: center;
+    opacity: 0.8;
+}
+
+
+.tagBoxSelect1 {
+    display: flex;
+    width: 3rem;
+    height: 30px;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    justify-content: center;
+    align-items: center;
+    margin-left: 2px;
+    cursor: pointer;
+}
+
+
+.downArrow1 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 32px;
+    border-right: 2px solid rgb(233,233,233);
+    padding-right: 2px;
+    cursor: pointer;
+}
+
+
+.tagIco1 {
+    width: 20px;
+    padding: 2px 0 0 3px;
+}
+
+
+
+.column ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+.tagBoxSub1 {
+    width: 4rem;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 2px;
+    box-sizing: border-box;
+    display: none;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    z-index: 1000;
+}
+
+
+
+.tagBoxSub1 li {
+    height: 25px;
+    cursor: pointer;
+    padding-left: 5px;
+    padding-top: 3px;
+}
+
+
+
+.tagBoxSub1 {
+    background: rgb(233,233,233);
+}
+
+.findIP {
+    width: 70rem;
+    max-height: 80rem;
+    display: none;
+    flex-direction: column;
+    z-index: 2000;
+    position: absolute;
+    overflow-y: auto;
+}
+
+.IPContent {
+    max-height: 10rem;
+    width: 65rem;
+    overflow-y: auto;
+}
+
+/***********************消息设置的样式*****************************/
+.message-setting {
+    display: flex;
+    flex-direction: column;
+    background-color: $color-post;
+    border: 1px solid $color-border;
+    height: 400px;
+
+    .message-settingbox {
+        display: flex;
+        flex-direction: row;
+        height: 40px;
+        line-height: 40px;
+        font-size: 16px;
+        font-family: "微软雅黑";
+        color: black;
+        flex-shrink: 0;
+        margin: 1.5rem 0 0 5rem;
+
+        .redioTitle {
+            width: 130px;
+        }
+
+        input {
+            margin: 0.8rem 0.2rem 0 1.5rem;
+        }
+    }
+
+    .message-setting-btn {
+        width: 100px;
+        height: 30px;
+        line-height: 30px;
+        margin: 3rem 0rem 0rem 9rem;
+    }
+}
+
+.boardListHead {
+    height: 3rem;
+    align-items: center;
+    background-color: #8dc9db;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.boardListHead:hover {
+
 }
