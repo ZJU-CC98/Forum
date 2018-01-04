@@ -47,45 +47,45 @@ export function createEngine(): Ubb.UbbCodeEngine {
 	const engine = new Ubb.UbbCodeEngine();
 
 	// 在此处添加引擎所支持的所有标签处理器
-	engine.tagHandlers.register(BTagHandler);
-	engine.tagHandlers.register(ImageTagHandler);
-	engine.tagHandlers.register(ITagHandler);
-	engine.tagHandlers.register(SizeTagHandler);
-	engine.tagHandlers.register(QuoteTagHandler);
-	engine.tagHandlers.register(ColorTagHandler);
-	engine.tagHandlers.register(UrlTagHandler);
-	engine.tagHandlers.register(UTagHandler);
-	engine.tagHandlers.register(DelTagHandler);
-	engine.tagHandlers.register(MP3TagHandler);
-	engine.tagHandlers.register(CursorTagHandler);
-	engine.tagHandlers.register(EnglishTagHandler);
-	engine.tagHandlers.register(UserTagHandler);
-	engine.tagHandlers.register(CodeTagHandler);
-	engine.tagHandlers.register(FontTagHandler);
-	engine.tagHandlers.register(AlignTagHandler);
-	engine.tagHandlers.register(UploadTagHandler);
-	engine.tagHandlers.register(LeftTagHandler);
-	engine.tagHandlers.register(CenterTagHandler);
-	engine.tagHandlers.register(RightTagHandler);
-	engine.tagHandlers.register(TableTagHandler);
-	engine.tagHandlers.register(TdTagHandler);
-	engine.tagHandlers.register(ThTagHandler);
-	engine.tagHandlers.register(TrTagHandler);
-	engine.tagHandlers.register(TopicTagHandler);
-	engine.tagHandlers.register(MdTagHandler);
-	engine.tagHandlers.register(SandBoxTagHandler);
-	engine.tagHandlers.register(LineTagHandler);
-	engine.tagHandlers.register(PmTagHandler);
+	engine.handlers.register(BTagHandler);
+	engine.handlers.register(ImageTagHandler);
+	engine.handlers.register(ITagHandler);
+	engine.handlers.register(SizeTagHandler);
+	engine.handlers.register(QuoteTagHandler);
+	engine.handlers.register(ColorTagHandler);
+	engine.handlers.register(UrlTagHandler);
+	engine.handlers.register(UTagHandler);
+	engine.handlers.register(DelTagHandler);
+	engine.handlers.register(MP3TagHandler);
+	engine.handlers.register(CursorTagHandler);
+	engine.handlers.register(EnglishTagHandler);
+	engine.handlers.register(UserTagHandler);
+	engine.handlers.register(CodeTagHandler);
+	engine.handlers.register(FontTagHandler);
+	engine.handlers.register(AlignTagHandler);
+	engine.handlers.register(UploadTagHandler);
+	engine.handlers.register(LeftTagHandler);
+	engine.handlers.register(CenterTagHandler);
+	engine.handlers.register(RightTagHandler);
+	engine.handlers.register(TableTagHandler);
+	engine.handlers.register(TdTagHandler);
+	engine.handlers.register(ThTagHandler);
+	engine.handlers.register(TrTagHandler);
+	engine.handlers.register(TopicTagHandler);
+	engine.handlers.register(MdTagHandler);
+	engine.handlers.register(SandBoxTagHandler);
+	engine.handlers.register(LineTagHandler);
+	engine.handlers.register(PmTagHandler);
 
 	// 以下是未命名标签处理程序，注意未命名标签处理程序的命中和注册顺序有关
-	engine.tagHandlers.register(EmTagHandler);
-	engine.tagHandlers.register(AcTagHandler);
-	engine.tagHandlers.register(MahjongTagHandler);
-	engine.tagHandlers.register(TbTagHandler);
+	engine.handlers.register(EmTagHandler);
+	engine.handlers.register(AcTagHandler);
+	engine.handlers.register(MahjongTagHandler);
+	engine.handlers.register(TbTagHandler);
 
 
 	// 以下是文字处理程序，注意文字的处理顺序完全取决于处理程序，请注意控制处理程序的顺序
-	engine.tagHandlers.registerText(UrlTextHandler);
+	engine.handlers.registerText(UrlTextHandler);
 
 	return engine;
 }

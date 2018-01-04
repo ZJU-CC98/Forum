@@ -857,6 +857,14 @@ class UbbHandlerList {
 	private _textHandlers: UbbTextHandler[] = [];
 
 	/**
+	 * 获取文字处理程序列表。
+	 * @returns {UbbTextHandler[]} 系统中注册的所有文字处理程序的集合。
+	 */
+	get textHandlers(): UbbTextHandler[] {
+		return this._textHandlers;
+	}
+
+	/**
 	 * 获取给定标签名称的处理程序。
 	 * @param supportedTagNames 标签名称。
 	 * @returns {UbbTagHandler} 标签处理程序。
@@ -966,26 +974,13 @@ export class UbbCodeEngine {
 	/**
 	 * 获取该引擎中注册的处理程序。
 	 */
-	private _tagHandlers = new UbbHandlerList();
-
-	/**
-	 * 获取或设置该引擎中注册的文字处理程序。
-	 */
-	private _textHandlers: UbbTextHandler[] = [];
-
-	/**
-	 * 获取该引擎中注册的文字处理程序。
-	 * @returns {UbbTextHandler[]} 该引擎中注册的文字处理程序。
-	 */
-	get textHandlers(): UbbTextHandler[] {
-		return this._textHandlers;
-	}
+	private _handlers = new UbbHandlerList();
 
 	/**
 	 * 该引擎中注册的处理程序。
 	 */
-	get tagHandlers() {
-		return this._tagHandlers;
+	get handlers() {
+		return this._handlers;
 	}
 
 	/**
@@ -1007,7 +1002,7 @@ export class UbbCodeEngine {
 	 * @returns {UbbTagHandler} 给定标签名称的处理程序。
 	 */
 	getHandler(tagName: string): UbbTagHandler {
-		return this._tagHandlers.getHandler(tagName);
+		return this._handlers.getHandler(tagName);
 	}
 
 	/**
@@ -1092,11 +1087,11 @@ export class UbbCodeEngine {
 					const tagData = UbbTagData.parse(tagString);
 
 					// 获得处理程序
-					const handler = this._tagHandlers.getHandler(tagData.tagName);
+					const handler = this._handlers.getHandler(tagData.tagName);
 
 					// 没有处理程序，输出警告
 					if (!handler) {
-						console.warn('标签字符串 %s 中给定的标签名 %s 没有有效的处理程序，将被视为一般文字', tagString, tagData.tagName);
+						console.warn('UBB: 标签字符串 %s 中给定的标签名 %s 没有有效的处理程序，将被视为一般文字', tagString, tagData.tagName);
 						parent.subSegments.push(new UbbTextSegment(tagData.startTagString, parent));
 						continue;
 					}
@@ -1116,7 +1111,7 @@ export class UbbCodeEngine {
 							const endTagMatch = content.indexOf(tagData.endTagString, tagMatchRegExp.lastIndex);
 							// 没找到结束标签
 							if (endTagMatch === -1) {
-								console.warn('找不到标签字符串 %s 对应的结束标签，该内容将被视为一般文字。', tagData.startTagString);
+								console.warn('UBB: 找不到标签字符串 %s 对应的结束标签，该内容将被视为一般文字。', tagData.startTagString);
 								parent.subSegments.push(new UbbTextSegment(tagData.startTagString, parent));
 							} else {
 								// 直接创建新标签及其子标签，忽略中间内容
@@ -1149,13 +1144,13 @@ export class UbbCodeEngine {
 
 							break;
 						default:
-							throw new Error(`标签 ${tagData.tagName} 的处理程序发生错误`);
+							throw new Error(`UBB: 标签 ${tagData.tagName} 的处理程序发生错误`);
 					}
 
 				} catch (error) {
 
 					// 提取数据失败，则视为没有匹配
-					console.warn('标签字符串 %s 解析失败，将被视为普通文字。', tagString);
+					console.warn('UBB: 标签字符串 %s 解析失败，将被视为普通文字。', tagString);
 					parent.subSegments.push(new UbbTextSegment(`[${tagString}]`, parent));
 				}
 			}
@@ -1190,7 +1185,7 @@ export class UbbCodeEngine {
 	 */
 	private execTextCore(text: string, context: UbbCodeContext): ReactNode {
 
-		for (const textHandler of this.textHandlers) {
+		for (const textHandler of this.handlers.textHandlers) {
 
 			// 尝试匹配内容
 			const matchResult = text.match(textHandler.supportedContent);
@@ -1199,6 +1194,8 @@ export class UbbCodeEngine {
 			if (!matchResult) {
 				continue;
 			}
+
+			console.log(matchResult);
 
 			const before = text.substr(0, matchResult.index);
 			const after = text.substr(matchResult.index + matchResult[0].length);
@@ -1229,7 +1226,7 @@ export class UbbCodeEngine {
 	 * @param context 替换后的结果。
 	 */
 	execText(text: string, context: UbbCodeContext): ReactNode {
-		return this.execCore(text, context);
+		return this.execTextCore(text, context);
 	}
 
 	execSegment(segment: UbbSegment, context: UbbCodeContext): ReactNode {
@@ -1237,7 +1234,7 @@ export class UbbCodeEngine {
 		if (segment.type === UbbSegmentType.Text) {
 
 			const text = (segment as UbbTextSegment).text;
-			return this.execTextCore(text, context);
+			return this.execText(text, context);
 
 		} else {
 			const tag = segment as UbbTagSegment;
