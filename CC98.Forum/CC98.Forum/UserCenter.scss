@@ -853,6 +853,44 @@
         .user-manage-post-date {
             width: 9rem;
         }
+
+        .user-center-transfer-wealth {
+            h2, p {
+                margin: 0;
+            }
+
+            .transfer-wealth-input {
+                display: flex;
+                margin: 1rem 0;
+                align-items: center;
+
+                p {
+                    margin: 0 1rem;
+                    width: 5rem;
+                }
+
+                input {
+                    padding: 0.5rem;
+                }
+            }
+
+            form {
+                display: flex;
+                flex-direction: column;
+                margin-top: 2rem;
+            }
+
+            button {
+                width: 5rem;
+                height: 2rem;
+                align-self: center;
+                margin-top: 2rem;
+            }
+            
+            .transfer-wealth-info {
+                margin: 1rem;
+            }
+        }
     }
 }
 

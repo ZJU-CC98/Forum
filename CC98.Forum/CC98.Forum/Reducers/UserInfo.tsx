@@ -75,6 +75,10 @@ export class UserInfoStore {
      * 当前用户所在的页面
      */
     currentUserCenterPage: 'profile' | 'config' | 'myposts' | 'myfavoriteposts' | 'myfavoriteboards' | 'myfollowings' | 'myfans' = 'profile';
+    /**
+     * 转账成功的用户名数组
+     */
+    transferSuccessUsers: string[] = [];
 }
 
 class hasTotal {
@@ -151,6 +155,10 @@ export default (state = new UserInfoStore(), action: RootAction): UserInfoStore 
             let currentUserFansInfo: Appstate.UserInfo[] = userFansInfo.map(item => item.id === action.id ? { ...item, isFollowing: false} : item);
             return { ...state, currentUserFollowingInfo, currentUserFansInfo };
         }
+        case ActionTypes.USER_CENTER_SOLVE_ERROR: 
+            return { ...state, errorMessage: '', isError: false};
+        case ActionTypes.USER_CENTER_TRANSFER_WEALTH_SUCCESS: 
+            return { ...state, transferSuccessUsers: action.userNames };
         default:
             return state;
     }

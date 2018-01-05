@@ -226,3 +226,44 @@ export const getUserFollowingsInfo:ActionCreator<ThunkAction<Promise<Action>, Ro
         }
     }
 }
+
+/**
+ * 给指定用户转账
+ * @param userNames 要转账的用户名数组
+ * @param wealth 转账数目
+ * @param reason 理由
+ */
+export const sendWealthTo:ActionCreator<ThunkAction<Promise<Action>, RootState, void>> = (userNames: string[], wealth: number, reason: string) => {
+    return async (dispatch, getState) => {
+        try{
+            dispatch(Actions.userCenterLoading());
+            dispatch(Actions.userCenterTransferWealthSuccess([]));
+            const store = getState().userInfo;
+            let headers = await Utility.formAuthorizeHeader();
+            headers.append('Content-Type', 'application/json');
+            const url = '/me/transfer-wealth';
+            let body: Appstate.TransferWealthInfo = {
+                userNames,
+                wealth,
+                reason
+            };
+            let res = await Utility.cc98Fetch(url, {
+                method: 'PUT',
+                headers,
+                body: JSON.stringify(body)
+            });
+            if(!res.ok){
+                throw new Error(res.statusText);
+            }
+            let successNames: string[] = await res.json();
+            let userInfo = getState().userInfo.currentUserInfo;
+            userInfo.wealth -= successNames.length * wealth;
+            dispatch(Actions.changeUserInfo(userInfo));
+            dispatch(Actions.userCenterTransferWealthSuccess(successNames));
+            return dispatch(Actions.userCenterLoaded());
+        } catch(e) {
+            dispatch(Actions.userCenterLoaded());
+            return dispatch(Actions.userCenterError(e.message));
+        }
+    };
+}

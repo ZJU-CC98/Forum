@@ -19,6 +19,8 @@ export const userCenterLoading = createAction(ActionTypes.USER_CENTER_LOADING);
 
 export const userCenterLoaded = createAction(ActionTypes.USER_CENTER_LOADED);
 
+export const userCenterSolveError = createAction(ActionTypes.USER_CENTER_SOLVE_ERROR);
+
 export const changeUserInfo = createAction(ActionTypes.CHANGE_USERINFO, (newInfo: Appstate.UserInfo ) => ({
     type: ActionTypes.CHANGE_USERINFO,
     newInfo
@@ -73,4 +75,9 @@ export const followUser = createAction(ActionTypes.USER_CENTER_FOLLOW_USER, (use
 export const unfollowUser = createAction(ActionTypes.USER_CENTER_UNFOLLOW_USER, (userId: number) => ({
     type: ActionTypes.USER_CENTER_UNFOLLOW_USER,
     id: userId
+}));
+
+export const userCenterTransferWealthSuccess = createAction(ActionTypes.USER_CENTER_TRANSFER_WEALTH_SUCCESS, (userNames: string[]) => ({
+    type: ActionTypes.USER_CENTER_TRANSFER_WEALTH_SUCCESS,
+    userNames
 }));

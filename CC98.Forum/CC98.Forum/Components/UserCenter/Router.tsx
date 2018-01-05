@@ -14,6 +14,7 @@ import MyPostsExact from './MyPostsExact';
 import Config from './Config';
 import MyFavoritesBoards from './MyFavoritesBoards';
 import MyFavoritesPosts from './MyFavoritesPosts';
+import Wealth from './TransferWealth';
 
 
 /**
@@ -29,6 +30,7 @@ export default class extends React.Component {
             <Route path="/usercenter/myfavorites/:page?" component={MyFavoritesPosts} />
             <Route path="/usercenter/config" component={Config} />
             <Route path="/usercenter/mycustomboards" component={MyFavoritesBoards} />
+            <Route path="/usercenter/transferwealth" component={Wealth} />
         </div>);
     }
 }
