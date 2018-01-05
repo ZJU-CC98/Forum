@@ -68,10 +68,10 @@ class Activities extends React.Component<Props> {
         }
 
         //state转换为JSX
-        const userRecentPosts = this.props.userRecentPosts.map((item) => (<Post userRecentPost={item} />));
+        const userRecentPosts = this.props.userRecentPosts.map((item) => (<Post key={item.id} userRecentPost={item} />));
         //添加分隔线
         for (let i = 1; i < userRecentPosts.length; i += 2) {
-            userRecentPosts.splice(i, 0, <hr />);
+            userRecentPosts.splice(i, 0, <hr key={i} />);
         }
         return (
             <div className="user-posts">

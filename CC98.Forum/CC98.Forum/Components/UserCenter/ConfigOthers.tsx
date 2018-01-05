@@ -26,16 +26,16 @@ export default class extends React.Component<{ userinfo: UserInfo, handleChange:
         }
     }
     render() {
-        let array = [], i = 0;
+        let array:number[] = [], i = 0;
 
         //年
         i = 100;
         while (i--) {
             array.unshift(i+1920);
         }
-        let yearsOption = array.map((item) => (<option value={item}>{item}</option>));
-        yearsOption.unshift(<option value={9999}>保密</option>);
-        yearsOption.unshift(<option value={0}>未选择</option>);
+        let yearsOption = array.map(item => (<option key={item} value={item}>{item}</option>));
+        yearsOption.unshift(<option key={9999} value={9999}>保密</option>);
+        yearsOption.unshift(<option key={0} value={0}>未选择</option>);
         array = [];
 
         //月
@@ -43,8 +43,8 @@ export default class extends React.Component<{ userinfo: UserInfo, handleChange:
         while (i--) {
             array.unshift(i+1);
         }
-        let mouthsOption = array.map((item) => (<option value={item}>{item}</option>));
-        mouthsOption.unshift(<option value={0}>未选择</option>);
+        let mouthsOption = array.map(item => (<option key={item} value={item}>{item}</option>));
+        mouthsOption.unshift(<option key={0} value={0}>未选择</option>);
         array = [];
 
         //日
@@ -52,8 +52,8 @@ export default class extends React.Component<{ userinfo: UserInfo, handleChange:
         while (i--) {
             array.unshift(i+1);
         }
-        let daysOption = array.map((item) => (<option value={item}>{item}</option>));
-        daysOption.unshift(<option value={0}>未选择</option>);
+        let daysOption = array.map(item => (<option key={item} value={item}>{item}</option>));
+        daysOption.unshift(<option key={0} value={0}>未选择</option>);
 
         return (<div className="user-center-config-others">
             <h2>其他设置</h2>
@@ -78,7 +78,7 @@ export default class extends React.Component<{ userinfo: UserInfo, handleChange:
                         {this.props.userinfo.userTitleIds.map(item => {
                             let title = this.state.displayTitles.filter(title => title.id === item);
                             if (title.length > 0) {
-                                return <option value={item}>{title[0].name}</option>
+                                return <option key={item} value={item}>{title[0].name}</option>
                             }
                         })}
                     </select>

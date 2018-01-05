@@ -44,9 +44,9 @@ class Boards extends React.Component<Props> {
         if (this.props.boards.length === 0) {
             return (<div style={style}>没有关注</div>);
         }
-        let elements = this.props.boards.map((item) => (<MyFavoritesBoard UserFavoritesBoard={item} />));
+        let elements = this.props.boards.map((item) => (<MyFavoritesBoard key={item.id} UserFavoritesBoard={item} />));
         for (let i = 1; i < elements.length; i += 2) {
-            elements.splice(i, 0, <hr />);
+            elements.splice(i, 0, <hr key={i} />);
         }
         return (<div>{elements}</div>);
     }

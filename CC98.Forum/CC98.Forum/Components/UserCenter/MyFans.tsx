@@ -64,10 +64,10 @@ class Fans extends React.Component<Props> {
             return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>;
         }
         //state转换为JSX
-        const userFans = this.props.userFans.slice((curPage - 1) * 10, curPage * 10 - 1).map((item) => (<MyFollowingsUser userFanInfo={item} />));
+        const userFans = this.props.userFans.slice((curPage - 1) * 10, curPage * 10 - 1).map((item) => (<MyFollowingsUser key={item.id} userFanInfo={item} />));
         //添加分隔线
         for (let i = 1; i < userFans.length; i += 2) {
-            userFans.splice(i, 0, <hr />);
+            userFans.splice(i, 0, <hr key={i}/>);
         }
 
         return (<div className="user-center-myfans">

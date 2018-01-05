@@ -64,10 +64,10 @@ class Following extends React.Component<Props> {
             return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>;
         }
         //state转换为JSX
-        const userFollowings = this.props.userFollowings.slice((curPage - 1) * 10, curPage * 10 - 1).map((item) => (<MyFollowingsUser userFanInfo={item} />));
+        const userFollowings = this.props.userFollowings.slice((curPage - 1) * 10, curPage * 10 - 1).map((item) => (<MyFollowingsUser key={item.id} userFanInfo={item} />));
         //添加分隔线
         for (let i = 1; i < userFollowings.length; i += 2) {
-            userFollowings.splice(i, 0, <hr />);
+            userFollowings.splice(i, 0, <hr key={i} />);
         }
 
         return (<div className="user-center-myfans">

@@ -19,7 +19,7 @@ export default class extends React.Component<UserCenterPageCountProps> {
                 elements.unshift(i + 1);
             }
             elements = elements.map((item, index) => {
-                return <li><Link to={`${this.props.href}${item}`}><button type="button" disabled={item == this.props.currentPage} style={(item == this.props.currentPage) ? currentStyle : {}}>{item}</button></Link></li>
+                return <li key={`${this.props.href}${item}`}><Link to={`${this.props.href}${item}`}><button type="button" disabled={item == this.props.currentPage} style={(item == this.props.currentPage) ? currentStyle : {}}>{item}</button></Link></li>
             });
         } else if (this.props.currentPage - 1 <= 3) {
             i = 7;
@@ -27,22 +27,22 @@ export default class extends React.Component<UserCenterPageCountProps> {
                 elements.unshift(i + 1);
             }
             elements = elements.map((item, index) => (
-                <li><Link to={`${this.props.href}${item}`}><button type="button" disabled={item == this.props.currentPage} style={(item == this.props.currentPage) ? currentStyle : {}}>{item}</button></Link></li>
+                <li key={`${this.props.href}${item}`}><Link to={`${this.props.href}${item}`}><button type="button" disabled={item == this.props.currentPage} style={(item == this.props.currentPage) ? currentStyle : {}}>{item}</button></Link></li>
             ));
 
-            elements.push(<li><button disabled>···</button></li>);
-            elements.push(<li><Link to={`${this.props.href}${this.props.totalPage}`}><button type="button">{this.props.totalPage}</button></Link></li>);
+            elements.push(<li key="after"><button disabled>···</button></li>);
+            elements.push(<li key={`${this.props.href}${this.props.totalPage}`}><Link to={`${this.props.href}${this.props.totalPage}`}><button type="button">{this.props.totalPage}</button></Link></li>);
         } else if (this.props.totalPage - this.props.currentPage <= 3) {
             i = 7;
             while (i--) {
                 elements.unshift(i - 6 + this.props.totalPage);
             }
             elements = elements.map((item, index) => (
-                <li><Link to={`${this.props.href}${item}`}><button type="button" disabled={item == this.props.currentPage} style={(item == this.props.currentPage) ? currentStyle : {}}>{item}</button></Link></li>
+                <li key={`${this.props.href}${item}`}><Link to={`${this.props.href}${item}`}><button type="button" disabled={item == this.props.currentPage} style={(item == this.props.currentPage) ? currentStyle : {}}>{item}</button></Link></li>
             ));
 
-            elements.unshift(<li><button disabled>···</button></li>);
-            elements.unshift(<li><Link to={`${this.props.href}1`}><button type="button">{1}</button></Link></li>);
+            elements.unshift(<li key="before"><button disabled>···</button></li>);
+            elements.unshift(<li key={`${this.props.href}1`}><Link to={`${this.props.href}1`}><button type="button">{1}</button></Link></li>);
         } else {
             i = 7;
             while (i--) {
@@ -50,16 +50,16 @@ export default class extends React.Component<UserCenterPageCountProps> {
             }
 
             elements = elements.map((item, index) => (
-                <li><Link to={`${this.props.href}${item}`}><button type="button" disabled={item == this.props.currentPage} style={(item == this.props.currentPage) ? currentStyle : {}}>{item}</button></Link></li>
+                <li key={`${this.props.href}${item}`}><Link to={`${this.props.href}${item}`}><button type="button" disabled={item == this.props.currentPage} style={(item == this.props.currentPage) ? currentStyle : {}}>{item}</button></Link></li>
             ));
 
-            elements.push(<li><button disabled>···</button></li>);
-            elements.push(<li><Link to={`${this.props.href}${this.props.totalPage}`}><button type="button">{this.props.totalPage}</button></Link></li>);
-            elements.unshift(<li><button disabled>···</button></li>);
-            elements.unshift(<li><Link to={`${this.props.href}1`}><button type="button">{1}</button></Link></li>);
+            elements.push(<li key="after"><button disabled>···</button></li>);
+            elements.push(<li key={`${this.props.href}${this.props.totalPage}`}><Link to={`${this.props.href}${this.props.totalPage}`}><button type="button">{this.props.totalPage}</button></Link></li>);
+            elements.unshift(<li key="before"><button disabled>···</button></li>);
+            elements.unshift(<li key={`${this.props.href}1`}><Link to={`${this.props.href}1`}><button type="button">{1}</button></Link></li>);
         }
         if (!this.props.hasTotal && this.props.currentPage != this.props.totalPage) {
-            elements.push(<li><button disabled>···</button></li>);
+            elements.push(<li key="after"><button disabled>···</button></li>);
         }
         return (<div id="userCenterPageCount"><ul>
             {elements}

@@ -69,10 +69,10 @@ class Posts extends React.Component<Props> {
             return <div className="user-posts" style={{ textAlign: 'center' }}>没有主题</div>;
         }
         //state转换为JSX
-        let userRecentPosts = this.props.userRecentPosts.slice((curPage - 1) * 10, curPage * 10 - 1).map((item) => (<Post userRecentPost={item} />));
+        let userRecentPosts = this.props.userRecentPosts.slice((curPage - 1) * 10, curPage * 10 - 1).map((item) => (<Post key={item.id} userRecentPost={item} />));
         //添加分隔线
         for (let i = 1; i < userRecentPosts.length; i += 2) {
-            userRecentPosts.splice(i, 0, <hr />);
+            userRecentPosts.splice(i, 0, <hr key={i} />);
         }
         return (
             <div className="user-posts">
