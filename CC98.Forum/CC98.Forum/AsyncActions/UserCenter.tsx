@@ -237,8 +237,8 @@ export const sendWealthTo:ActionCreator<ThunkAction<Promise<Action>, RootState, 
     return async (dispatch, getState) => {
         try{
             dispatch(Actions.userCenterLoading());
+            //清理上次转账可能遗留的信息
             dispatch(Actions.userCenterTransferWealthSuccess([]));
-            const store = getState().userInfo;
             let headers = await Utility.formAuthorizeHeader();
             headers.append('Content-Type', 'application/json');
             const url = '/me/transfer-wealth';
@@ -255,7 +255,9 @@ export const sendWealthTo:ActionCreator<ThunkAction<Promise<Action>, RootState, 
             if(!res.ok){
                 throw new Error(res.statusText);
             }
+            //服务器返回转账成功的用户名数组
             let successNames: string[] = await res.json();
+            //更新store中的信息，减掉相应的财富值
             let userInfo = getState().userInfo.currentUserInfo;
             userInfo.wealth -= successNames.length * wealth;
             dispatch(Actions.changeUserInfo(userInfo));

@@ -11,9 +11,14 @@ interface Props {
     isLoading: boolean;
     isError: boolean;
     errorMessage: string;
+    /**
+     * 转账成功时服务器返回的用户名数组
+     */
     successNames: string[];
     sendWealthTo: (userNames: string[], wealth: number, reason: string) => void;
-    changeUserInfo: (newInfo: UserInfo) => void;
+    /**
+     * 清除store中的错误状态
+     */
     solveError: () => void;
 }
 
@@ -21,9 +26,15 @@ interface State {
     userNames: string;
     wealth: string;
     reason: string;
+    /**
+     * 提示信息
+     */
     info: string;
 }
 
+/**
+ * 用户中心转账用组件
+ */
 class Wealth extends React.Component<Props, State> {
     constructor(...args: any[]){
         super(...args);
@@ -37,19 +48,29 @@ class Wealth extends React.Component<Props, State> {
         this.handleWealthChange = this.handleWealthChange.bind(this);
     }
 
+    //提交时调用的函数
     handleSubmit(e) {
+        //阻止form提交时的刷新页面
         e.preventDefault();
+        //如果在转账过程中则无视提交
         if(this.props.isLoading) return;
         try {
+            //清理store中可能存在的上一次的错误
             this.props.solveError();
+            //判断用户输入是否合法
             const wealth = Number.parseFloat(this.state.wealth);
             if(!this.state.userNames) throw new Error('请输入收款人信息');
             if(this.state.wealth.match(/[^\d\.]/) || wealth < 10) throw new Error('请输入合法的金额');
             if(!this.state.reason) throw new Error('请输入理由');
+            //以空白字符打断用户名信息
             let userNames = this.state.userNames.split(/\s+/);
+            //处理掉最后一项的空字符串
             if(userNames[userNames.length -1] === '')  userNames.pop();
+            //去重
             userNames = Array.from(new Set(userNames));
+            //判断余额
             if(this.props.userInfo.wealth < wealth * userNames.length) throw new Error('财富值不足');
+            //转账
             this.setState({ info: '转账中'});
             this.props.sendWealthTo(userNames, wealth, this.state.reason);
         } catch(e) {
@@ -60,16 +81,24 @@ class Wealth extends React.Component<Props, State> {
     }
 
     componentWillReceiveProps(nextProps: Props) {
+        //如果当前在加载中且下一个状态为未加载中则转账成功
         if(!nextProps.isLoading && this.props.isLoading) {
             this.setState({ info: `成功给${nextProps.successNames.join(' ')}转账了总计${Number.parseFloat(this.state.wealth) * nextProps.successNames.length}个财富值` });
         }
+        //同理判断是否出错
         if (nextProps.isError && !this.props.isError) {
             this.setState({ info: nextProps.errorMessage });
         }
     }
 
+    /**
+     * 对用户输入的内容进行处理
+     * @param value 财富值input的内容
+     * @param userNames 用户名input的内容
+     */
     handleWealthChange(value: string, userNames: string) {
         const wealth = Number.parseFloat(value);
+        //如果其中有一栏为空则说明用户输入未完成，不提示信息
         if(userNames === '' || value === '') {
             this.setState({
                 userNames,
@@ -78,6 +107,7 @@ class Wealth extends React.Component<Props, State> {
             });
             return;
         }
+        //value不是数值
         if(value.match(/[^\d\.]/)) {
             this.setState({ wealth: value, info: '请输入数值', userNames});
             return;
@@ -85,16 +115,21 @@ class Wealth extends React.Component<Props, State> {
         if(wealth < 10) {
             this.setState({ wealth: value, info: '请输入大于10的金额', userNames});
         } else {
+            //以空白字符打断用户名信息
             let names = userNames.split(/\s+/);
+            //处理掉最后一项的空字符串
             if(names[names.length -1] === '')  names.pop();
+            //去重
             names = Array.from(new Set(names));
+            //构造提示信息
             let info = `你总共有${this.props.userInfo.wealth}个财富值，`;
             info += `共将扣除${wealth * names.length}个财富值，`;
-            if(names.length > 1) {
+            if(names.length > 1) {//如果只输入了一个用户名
                 info += `${names.join('与')}将各收到`
-            } else {
+            } else {//如果输入了多个用户名
                 info += `${names}将收到`;
             }
+            //扣除手续费
             info += `${wealth - Math.max(Math.floor(wealth * 0.1), 10)}个财富值`
             this.setState({ 
                 wealth: value, 
@@ -141,9 +176,6 @@ function mapState(state: RootState) {
 
 function mapDispatch(dispatch) {
     return {
-        changeUserInfo: (newInfo) => {
-            dispatch(Actions.changeUserInfo(newInfo));
-        },
         sendWealthTo: (...args) => {
             dispatch(sendWealthTo(...args));
         },
