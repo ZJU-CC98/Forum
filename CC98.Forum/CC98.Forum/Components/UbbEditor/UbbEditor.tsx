@@ -357,7 +357,7 @@ export class UbbEditor extends React.Component<Props, State> {
                                 onClick={() => { this.clearAllShown(); }}
                                 value={0}
                             >
-                                {textSize.map((value, index) => (<option value={index} disabled={index === 0}>{value}</option>))}
+                                {textSize.map((value, index) => (<option key={index} value={index} disabled={index === 0}>{value}</option>))}
                             </select>
                             <p className="fa-eyedropper"></p>
                             {/*取色器，由spectrum实现*/}

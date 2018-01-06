@@ -20,11 +20,13 @@ export default class Emoji extends React.Component<EmojiProps> {
         const mohjong = {
             //动物系列只用16个，o(1)......
             animal: ['001', '002', '003', '004', '005', '006', '007', '008', '009', '010', '011', '012', '013', '014', '015', '016'].map((item) => (<LazyImage
+                key={`[a:${item}]`}
                 src={`/static/images/mahjong/animal2017/${item}.png`}
                 onClick={() => { this.props.handleEmojiButtonClick(`[a:${item}]`) }}
             ></LazyImage>)),
             //卡通系列10个，同样o(1)......
             carton: ['003.png', '018.gif', '019.png', '046.png', '049.gif', '059.png', '096.gif', '134.png', '189.png', '217.png'].map((item) => (<LazyImage
+                key={`[c:${item.slice(0, 3)}]`}
                 src={`/static/images/mahjong/carton2017/${item}`}
                 onClick={() => { this.props.handleEmojiButtonClick(`[c:${item.slice(0, 3)}]`) }}
             ></LazyImage>)),
@@ -41,6 +43,7 @@ export default class Emoji extends React.Component<EmojiProps> {
                 if ([4, 9, 56, 61, 62, 87, 115, 120, 137, 168, 169, 175, 206].indexOf(index + 1) !== -1) { return `${item}.gif`; }
                 else { return `${item}.png`; }
             }).map((item) => (<LazyImage
+                key={`[f:${item.slice(0, 3)}]`}
                 src={`/static/images/mahjong/face2017/${item}`}
                 onClick={() => { this.props.handleEmojiButtonClick(`[f:${item.slice(0, 3)}]`) }}
             ></LazyImage>))
@@ -58,6 +61,7 @@ export default class Emoji extends React.Component<EmojiProps> {
                 })
                 .map((item) => (
                     item ? (<LazyImage
+                        key={`[em${item}]`}
                         src={`/static/images/em/em${item}.gif`}
                         onClick={() => { this.props.handleEmojiButtonClick(`[em${item}]`) }}
                     ></LazyImage>) : null
@@ -69,6 +73,7 @@ export default class Emoji extends React.Component<EmojiProps> {
                     else if (index < 94) { return `${index + 947}`; }
                     else { return `${index + 1907}`; }
                 }).map((item) => (<LazyImage
+                    key={`[ac${item}]`}
                     src={`/static/images/ac/${item}.png`}
                     onClick={() => { this.props.handleEmojiButtonClick(`[ac${item}]`) }}
                 ></LazyImage>)),
@@ -78,6 +83,7 @@ export default class Emoji extends React.Component<EmojiProps> {
                     if (index < 9) { return `0${index + 1}`; }
                     else { return `${index + 1}`; }
                 }).map((item) => (<LazyImage
+                    key={`[tb${item}]`}
                     src={`/static/images/tb/tb${item}.png`}
                     onClick={() => { this.props.handleEmojiButtonClick(`[tb${item}]`) }}
                 ></LazyImage>))
