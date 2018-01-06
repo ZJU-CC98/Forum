@@ -50,7 +50,7 @@ export class UserInfoStore {
     /**
      * 当前用户收藏的版面
      */
-    currentUserFavoriteBoards: Appstate.UserFavoritesBoardInfo[] = Utility.getLocalStorage('currentUserFavoriteBoards') || [];
+    currentUserFavoriteBoards: Appstate.UserFavoritesBoardInfo[] = [];
     /** 
      * 分页信息是否全部加载完
      */
@@ -123,15 +123,20 @@ export default (state = new UserInfoStore(), action: RootAction): UserInfoStore 
         case ActionTypes.USER_CENTER_FETCH_ERROR: 
             return { ...state, isError: true, errorMessage: action.message };
         case ActionTypes.CHANGE_USER_FAVORITE_BOARDS: 
-            Utility.setLocalStorage("currentUserFavoriteBoards", action.boardsInfo);
             return { ...state, currentUserFavoriteBoards: action.boardsInfo };
         case ActionTypes.CHANGE_USER_RECENT_POSTS: 
             return { ...state, recentPosts: action.posts };
         case ActionTypes.USER_CENTER_PAGE_LOAD_FINISH: 
             switch (state.currentUserCenterPage) {
-                case 'profile': return { ...state, hasTotal: { ... state.hasTotal, profile: true, myposts: true}, totalPage: { ...state.totalPage, profile: action.totalPage, myposts: action.totalPage} };
-                case 'myposts': return { ...state, hasTotal: { ... state.hasTotal, profile: true, myposts: true}, totalPage: { ...state.totalPage, profile: action.totalPage, myposts: action.totalPage} };
-                default: return { ...state, hasTotal: { ... state.hasTotal, [state.currentUserCenterPage]: true}, totalPage: { ...state.totalPage, [state.currentUserCenterPage]: action.totalPage} };
+                case 'profile': 
+                case 'myposts': return { ...state, hasTotal: { ... state.hasTotal, profile: true, myposts: true }, totalPage: { ...state.totalPage, profile: action.totalPage, myposts: action.totalPage } };
+                default: return { ...state, hasTotal: { ... state.hasTotal, [state.currentUserCenterPage]: true }, totalPage: { ...state.totalPage, [state.currentUserCenterPage]: action.totalPage } };
+            }
+        case ActionTypes.USER_CENTER_PAGE_LOAD_UNFINISH: 
+            switch (state.currentUserCenterPage) {
+                case 'profile': 
+                case 'myposts': return { ...state, hasTotal: { ... state.hasTotal, profile: false, myposts: false } };
+                default: return { ...state, hasTotal: { ... state.hasTotal, [state.currentUserCenterPage]: false } };
             }
         case ActionTypes.CHANGE_USER_FANS_INFO: 
             return { ...state, currentUserFansInfo: action.fansInfo };

@@ -56,8 +56,24 @@ export const getCurrentUserFavoriteBoards:ActionCreator<ThunkAction<Promise<Acti
  * @param page 当前页数
  */
 export const getRecentPosts:ActionCreator<ThunkAction<Promise<Action>, RootState, void>> = (page: number) => async (dispatch, getState) => {
-    try {
+    // try {
         dispatch(Actions.userCenterLoading());
+        const recentPosts = getState().userInfo.recentPosts;
+        const hasTotal = getState().userInfo.hasTotal.myposts;
+        //如果未请求完所有帖子并且帖子总数小于请求的页数
+        //换言之，当用户向后翻页，或直接通过url定位页数时
+        let shouldLoad = recentPosts.length < (page - 1) * 10 + 1 && !hasTotal;
+        //当用户向前翻页，且翻页后的部分中存在undefined时
+        //仅当用户通过url定位页数后向前翻页才会出现的情况
+        for(let i = (page - 1) * 10; i < Math.min(recentPosts.length, page * 10); i++){
+            if(!recentPosts[i]){
+                shouldLoad = true;
+                break;
+            }
+        }
+        if(!shouldLoad) {
+            return dispatch(Actions.userCenterLoaded());
+        }
         //请求11条信息
         const url = `/me/recent-topic?from=${(page - 1) * 10}&size=11`;
         let headers = await Utility.formAuthorizeHeader(),
@@ -78,9 +94,9 @@ export const getRecentPosts:ActionCreator<ThunkAction<Promise<Action>, RootState
         }
         dispatch(Actions.changeUserRecentPosts(prevPosts));
         return dispatch(Actions.userCenterLoaded());
-    } catch(e) {
-        return dispatch(Actions.userCenterError(e.message));
-    }
+    // } catch(e) {
+    //     return dispatch(Actions.userCenterError(e.message));
+    // }
 };
 
 /**
@@ -124,6 +140,21 @@ export const getUserFansInfo:ActionCreator<ThunkAction<Promise<Action>, RootStat
     try {
         dispatch(Actions.userCenterLoading());
         const store = getState().userInfo;
+        //如果未请求完所有帖子并且帖子总数小于请求的页数
+        //换言之，当用户向后翻页，或直接通过url定位页数时
+        let shouldLoad = store.currentUserFansInfo.length < (page - 1) * 10 + 1;
+        //当用户向前翻页，且之前的页数中存在未加载过的项
+        if(!shouldLoad){//需要加载就不用判断了，节省资源
+            for(let i = (page - 1) * 10; i <  Math.min(page * 10, store.currentUserFansInfo.length); i++ ){
+                if(!store.currentUserFansInfo[i]){
+                    shouldLoad = true;
+                    break;
+                }
+            }
+        }
+        if(!shouldLoad) {
+            return dispatch(Actions.userCenterLoaded());
+        }
         if(!store.hasTotal.myfans) {
             let fanCount: number = store.currentUserInfo.fanCount;
             dispatch(Actions.usercenterPageLoadFinish(fanCount % 10 === 0 ? fanCount / 10 : Math.floor((fanCount / 10)) + 1));

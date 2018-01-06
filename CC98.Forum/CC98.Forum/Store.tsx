@@ -57,4 +57,4 @@ export const history = createHistory();
  */
 const composeEnhancers: typeof compose = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-export default createStore(reducer, applyMiddleware(thunk, routerMiddleware(history)));
+export default createStore(reducer, composeEnhancers(applyMiddleware(thunk, routerMiddleware(history))));

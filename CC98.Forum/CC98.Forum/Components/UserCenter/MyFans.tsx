@@ -33,12 +33,16 @@ interface Match {
 class Fans extends React.Component<Props> {
 
     componentWillMount() {
+        const curPage = parseInt(this.props.match.params.page) || 1;
         this.props.changePage();
+        this.props.getInfo(curPage);
     }
 
     componentWillReceiveProps(newProps: Props){
         if(this.props.match.params.page !== newProps.match.params.page) {
             window.scroll(0, 0);
+            const curPage = parseInt(newProps.match.params.page) || 1;
+            this.props.getInfo(curPage);
         }
     }
 
@@ -49,20 +53,6 @@ class Fans extends React.Component<Props> {
             return (<div className="user-center-myfans" style={{textAlign: 'center'}}>没有粉丝</div>);
         }
         const curPage = parseInt(this.props.match.params.page) || 1;
-        //如果未请求完所有帖子并且帖子总数小于请求的页数
-        //换言之，当用户向后翻页，或直接通过url定位页数时
-        let shouldLoad = this.props.userFans.length < (curPage - 1) * 10 + 1;
-        for(let i = (curPage - 1) * 10; i <  Math.min(curPage * 10, this.props.userFans.length); i++ ){
-            if(!this.props.userFans[i]){
-                shouldLoad = true;
-                break;
-            }
-        }
-        
-        if(shouldLoad) {
-            this.props.getInfo(curPage);
-            return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>;
-        }
         //state转换为JSX
         const userFans = this.props.userFans.slice((curPage - 1) * 10, curPage * 10 - 1).map((item) => (<MyFollowingsUser key={item.id} userFanInfo={item} />));
         //添加分隔线

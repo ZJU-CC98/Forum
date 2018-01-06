@@ -38,7 +38,7 @@ class Activities extends React.Component<Props> {
         }
     }
 
-    componentDidMount() {
+    componentWillMount() {
         let shouldLoad = !this.props.hasTotal;
         for(let i = 0; i < this.props.userRecentPosts.length; i ++){
             if(!this.props.userRecentPosts[i]){
