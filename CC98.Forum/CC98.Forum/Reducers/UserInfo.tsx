@@ -110,10 +110,10 @@ export default (state = new UserInfoStore(), action: RootAction): UserInfoStore 
             Utility.removeLocalStorage('currentUserFavoriteBoards');
             return { ...state, isLogOn: false };
         case ActionTypes.CHANGE_USERINFO:
-            Utility.setLocalStorage("userInfo", action.newInfo);
-            return { ...state, currentUserInfo: action.newInfo };
+            Utility.setLocalStorage("userInfo", action.payload.newInfo);
+            return { ...state, currentUserInfo: action.payload.newInfo };
         case ActionTypes.CHANGE_VISITING_USER:
-            return { ...state, currentVisitingUserPage: action.page, currentVisitingUserId: action.id };
+            return { ...state, currentVisitingUserPage: action.payload.page, currentVisitingUserId: action.payload.id };
         case ActionTypes.USER_NOT_FOUND:
             return { ...state, currentVisitingUserIsExisted: false };
         case ActionTypes.USER_CENTER_LOADING: 
@@ -121,16 +121,16 @@ export default (state = new UserInfoStore(), action: RootAction): UserInfoStore 
         case ActionTypes.USER_CENTER_LOADED: 
             return { ...state, isLoading: false };
         case ActionTypes.USER_CENTER_FETCH_ERROR: 
-            return { ...state, isError: true, errorMessage: action.message };
+            return { ...state, isError: true, errorMessage: action.payload.message };
         case ActionTypes.CHANGE_USER_FAVORITE_BOARDS: 
-            return { ...state, currentUserFavoriteBoards: action.boardsInfo };
+            return { ...state, currentUserFavoriteBoards: action.payload.boardsInfo };
         case ActionTypes.CHANGE_USER_RECENT_POSTS: 
-            return { ...state, recentPosts: action.posts };
+            return { ...state, recentPosts: action.payload.posts };
         case ActionTypes.USER_CENTER_PAGE_LOAD_FINISH: 
             switch (state.currentUserCenterPage) {
                 case 'profile': 
-                case 'myposts': return { ...state, hasTotal: { ... state.hasTotal, profile: true, myposts: true }, totalPage: { ...state.totalPage, profile: action.totalPage, myposts: action.totalPage } };
-                default: return { ...state, hasTotal: { ... state.hasTotal, [state.currentUserCenterPage]: true }, totalPage: { ...state.totalPage, [state.currentUserCenterPage]: action.totalPage } };
+                case 'myposts': return { ...state, hasTotal: { ... state.hasTotal, profile: true, myposts: true }, totalPage: { ...state.totalPage, profile: action.payload.totalPage, myposts: action.payload.totalPage } };
+                default: return { ...state, hasTotal: { ... state.hasTotal, [state.currentUserCenterPage]: true }, totalPage: { ...state.totalPage, [state.currentUserCenterPage]: action.payload.totalPage } };
             }
         case ActionTypes.USER_CENTER_PAGE_LOAD_UNFINISH: 
             switch (state.currentUserCenterPage) {
@@ -139,31 +139,31 @@ export default (state = new UserInfoStore(), action: RootAction): UserInfoStore 
                 default: return { ...state, hasTotal: { ... state.hasTotal, [state.currentUserCenterPage]: false } };
             }
         case ActionTypes.CHANGE_USER_FANS_INFO: 
-            return { ...state, currentUserFansInfo: action.fansInfo };
+            return { ...state, currentUserFansInfo: action.payload.fansInfo };
         case ActionTypes.CHANGE_USER_FOLLOWINGS_INFO: 
-            return { ...state, currentUserFollowingInfo: action.followingsInfo };
+            return { ...state, currentUserFollowingInfo: action.payload.followingsInfo };
         case ActionTypes.CHANGE_USER_FAVORITE_POSTS: 
-            return { ...state, currentUserFavoritePosts: action.posts };
+            return { ...state, currentUserFavoritePosts: action.payload.posts };
         case ActionTypes.CHNAGE_USER_CENTER_PAGE: 
-            return { ...state, currentUserCenterPage: action.page };
+            return { ...state, currentUserCenterPage: action.payload.page };
         case ActionTypes.USER_CENTER_FOLLOW_USER: {
             let userFollowingInfo = state.currentUserFollowingInfo;
-            let currentUserFollowingInfo: Appstate.UserInfo[] = userFollowingInfo.map(item => item.id === action.id ? { ...item, isFollowing: true} : item);
+            let currentUserFollowingInfo: Appstate.UserInfo[] = userFollowingInfo.map(item => item.id === action.payload.userId ? { ...item, isFollowing: true} : item);
             let userFansInfo = state.currentUserFansInfo;
-            let currentUserFansInfo: Appstate.UserInfo[] = userFansInfo.map(item => item.id === action.id ? { ...item, isFollowing: true} : item);
+            let currentUserFansInfo: Appstate.UserInfo[] = userFansInfo.map(item => item.id === action.payload.userId ? { ...item, isFollowing: true} : item);
             return { ...state, currentUserFollowingInfo, currentUserFansInfo };
         }
         case ActionTypes.USER_CENTER_UNFOLLOW_USER: {
             let userFollowingInfo = state.currentUserFollowingInfo;
-            let currentUserFollowingInfo: Appstate.UserInfo[] = userFollowingInfo.map(item => item.id === action.id ? { ...item, isFollowing: false} : item);
+            let currentUserFollowingInfo: Appstate.UserInfo[] = userFollowingInfo.map(item => item.id === action.payload.userId ? { ...item, isFollowing: false} : item);
             let userFansInfo = state.currentUserFansInfo;
-            let currentUserFansInfo: Appstate.UserInfo[] = userFansInfo.map(item => item.id === action.id ? { ...item, isFollowing: false} : item);
+            let currentUserFansInfo: Appstate.UserInfo[] = userFansInfo.map(item => item.id === action.payload.userId ? { ...item, isFollowing: false} : item);
             return { ...state, currentUserFollowingInfo, currentUserFansInfo };
         }
         case ActionTypes.USER_CENTER_SOLVE_ERROR: 
             return { ...state, errorMessage: '', isError: false};
         case ActionTypes.USER_CENTER_TRANSFER_WEALTH_SUCCESS: 
-            return { ...state, transferSuccessUsers: action.userNames };
+            return { ...state, transferSuccessUsers: action.payload.userNames };
         default:
             return state;
     }

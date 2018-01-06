@@ -9,23 +9,16 @@ import post, { TopicState } from './Reducers/Post';
 import userInfo, { UserInfoStore } from './Reducers/UserInfo';
 import * as UserCenterActions from './Actions/UserCenter';
 import { getReturnOfExpression, getType } from 'react-redux-typescript';
-import { routerReducer, RouterState, routerActions, routerMiddleware } from 'react-router-redux';
+import { routerReducer as router, RouterState, routerActions, routerMiddleware } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
-
-/**
- * 全局store的类型定义
- */
-export interface RootState {
-    error: ErrorStore;
-    post: TopicState;
-    userInfo: UserInfoStore;
-    router: RouterState
-}
 
 function values<T>(o: { [s: string]: T }): T[] {
     return Object.keys(o).map(key => o[key]);
 };
 
+/**
+ * Action构造函数的集合
+ */
 const Actions = { ...UserCenterActions };
 const returnOfActions = values(Actions).map(getReturnOfExpression);
 const returnOgActionsType = values(Actions).map(getType);
@@ -41,13 +34,23 @@ export type RootActionType = typeof returnOgActionsType[number];
 export type RootAction = typeof returnOfActions[number];
 
 /**
+ * 全局store的类型定义
+ */
+export interface RootState {
+    error: ErrorStore;
+    post: TopicState;
+    userInfo: UserInfoStore;
+    router: RouterState;
+}
+
+/**
  * 合并reducer
  */
 const reducer = combineReducers<RootState>({
     error,
     post,
     userInfo,
-    router: routerReducer
+    router
 });
 
 export const history = createHistory();
