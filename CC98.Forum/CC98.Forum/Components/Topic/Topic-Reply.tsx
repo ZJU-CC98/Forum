@@ -142,7 +142,7 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
         if (this.props.isHot && this.state.inWaiting)
             return null;
         if (!this.state.inWaiting) {
-            if (!this.state.contents.length ) {
+            if (!this.state.contents || !this.state.contents.length ) {
                 return <div></div>;
             }
             return <div className="center" style={{ width: "71rem", marginRight:"1px" }}>
