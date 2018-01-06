@@ -49,7 +49,7 @@ class Fans extends React.Component<Props> {
     render() {
         if (this.props.isLoading) {
             return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
-        } else if (this.props.hasTotal && this.props.totalPage === 0 ) {
+        } else if (this.props.userFans.length === 0 ) {
             return (<div className="user-center-myfans" style={{textAlign: 'center'}}>没有粉丝</div>);
         }
         const curPage = parseInt(this.props.match.params.page) || 1;

@@ -33,36 +33,26 @@ interface Match {
 class Following extends React.Component<Props> {
 
     componentWillMount() {
+        const curPage = parseInt(this.props.match.params.page) || 1;
+        this.props.getInfo(curPage);
         this.props.changePage();
     }
 
     componentWillReceiveProps(newProps: Props){
         if(this.props.match.params.page !== newProps.match.params.page) {
             window.scroll(0, 0);
+            const curPage = parseInt(this.props.match.params.page) || 1;
+            this.props.getInfo(curPage);
         }
     }
 
     render() {
         if (this.props.isLoading) {
             return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>
-        } else if (this.props.hasTotal && this.props.totalPage === 0 ) {
+        } else if (this.props.userFollowings.length === 0 ) {
             return (<div className="user-center-myfans" style={{textAlign: 'center'}}>没有关注</div>);
         }
         const curPage = parseInt(this.props.match.params.page) || 1;
-        //如果未请求完所有帖子并且帖子总数小于请求的页数
-        //换言之，当用户向后翻页，或直接通过url定位页数时
-        let shouldLoad = this.props.userFollowings.length < (curPage - 1) * 10 + 1;
-        for(let i = (curPage - 1) * 10; i <  Math.min(curPage * 10, this.props.userFollowings.length); i++ ){
-            if(!this.props.userFollowings[i]){
-                shouldLoad = true;
-                break;
-            }
-        }
-        
-        if(shouldLoad) {
-            this.props.getInfo(curPage);
-            return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>;
-        }
         //state转换为JSX
         const userFollowings = this.props.userFollowings.slice((curPage - 1) * 10, curPage * 10 - 1).map((item) => (<MyFollowingsUser key={item.id} userFanInfo={item} />));
         //添加分隔线
