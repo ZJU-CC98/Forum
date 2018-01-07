@@ -19,6 +19,7 @@ export class MessageAttmebox extends React.Component<MessageResponseProps> {
         let b = parseInt(a);
         let c = this.props.floor + 10 - b * 10;
         let pageNum = `${b}#${c}`;
+
         if (c === 0) {
             pageNum = `${b-1}#10`;
         }
