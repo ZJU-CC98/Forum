@@ -153,6 +153,10 @@ export const getUserFansInfo:ActionCreator<ThunkAction<Promise<Action>, RootStat
     try {
         dispatch(Actions.userCenterLoading());
         const store = getState().userInfo;
+        //没有粉丝
+        if(store.currentUserInfo.fanCount === 0) {
+            return dispatch(Actions.userCenterLoaded());
+        }
         //如果未请求完所有帖子并且帖子总数小于请求的页数
         //换言之，当用户向后翻页，或直接通过url定位页数时
         let shouldLoad = store.currentUserFansInfo.length < (page - 1) * 10 + 1;
@@ -167,15 +171,6 @@ export const getUserFansInfo:ActionCreator<ThunkAction<Promise<Action>, RootStat
         }
         if(!shouldLoad) {
             return dispatch(Actions.userCenterLoaded());
-        }
-        let fanCount: number = store.currentUserInfo.fanCount;
-        //没有粉丝
-        if(fanCount === 0) {
-            dispatch(Actions.changeUserFansInfo([]));
-            return dispatch(Actions.userCenterLoaded());
-        }
-        if(!store.hasTotal.myfans) {
-            dispatch(Actions.usercenterPageLoadFinish(fanCount % 10 === 0 ? fanCount / 10 : Math.floor((fanCount / 10)) + 1));
         }
         let url = `/me/follower?from=${(page - 1) * 10}&size=10`;
         const headers = await Utility.formAuthorizeHeader();
@@ -210,6 +205,10 @@ export const getUserFollowingsInfo:ActionCreator<ThunkAction<Promise<Action>, Ro
     try {
         dispatch(Actions.userCenterLoading());
         const store = getState().userInfo;
+        //没有关注
+        if(store.currentUserInfo.followCount === 0) {
+            return dispatch(Actions.userCenterLoaded());
+        }
         //如果未请求完所有帖子并且帖子总数小于请求的页数
         //换言之，当用户向后翻页，或直接通过url定位页数时
         let shouldLoad = store.currentUserFollowingInfo.length < (page - 1) * 10 + 1;
@@ -224,15 +223,6 @@ export const getUserFollowingsInfo:ActionCreator<ThunkAction<Promise<Action>, Ro
         }
         if(!shouldLoad) {
             return dispatch(Actions.userCenterLoaded());
-        }
-        let followCount = store.currentUserInfo.followCount;
-        //没有关注
-        if(followCount === 0) {
-            dispatch(Actions.changeUserFollowingsInfo([]));
-            return dispatch(Actions.userCenterLoaded());
-        }
-        if(!store.hasTotal.myfollowings) {
-            dispatch(Actions.usercenterPageLoadFinish(followCount % 10 === 0 ? followCount / 10 : Math.floor((followCount / 10)) + 1));
         }
         let url = `/me/followee?from=${(page - 1) * 10}&size=10`;
         const headers = await Utility.formAuthorizeHeader();

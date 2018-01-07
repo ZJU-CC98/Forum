@@ -21,12 +21,6 @@ function values<T>(o: { [s: string]: T }): T[] {
  */
 const Actions = { ...UserCenterActions };
 const returnOfActions = values(Actions).map(getReturnOfExpression);
-const returnOgActionsType = values(Actions).map(getType);
-
-/**
- * 全部actiontype的类型定义
- */
-export type RootActionType = typeof returnOgActionsType[number];
 
 /**
  * 全部action的类型定义

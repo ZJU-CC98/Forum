@@ -79,22 +79,27 @@ export class UserInfoStore {
      * 转账成功的用户名数组
      */
     transferSuccessUsers: string[] = [];
+
+    constructor() {
+        this.totalPage.myfollowings = Math.ceil(this.currentUserInfo.followCount / 10);
+        this.totalPage.myfans = Math.ceil(this.currentUserInfo.fanCount / 10);
+    }
 }
 
 class hasTotal {
     profile: boolean = false;
     myposts: boolean = false;
     myfavoriteposts: boolean = false;
-    myfollowings: boolean = false;
-    myfans: boolean = false;
+    myfollowings: boolean = true;
+    myfans: boolean = true;
 }
 
 class TotalPage {
     profile: number = 1;
     myposts: number = 1;
     myfavoriteposts: number = 1;
-    myfollowings: number = 1;
-    myfans: number = 0;
+    myfollowings: number;
+    myfans: number;
 }
 
 /**
