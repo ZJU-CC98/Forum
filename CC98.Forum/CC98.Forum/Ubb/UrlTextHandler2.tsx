@@ -7,7 +7,7 @@ export default class UrlTextHandler2 extends Ubb.UbbTextHandler {
 	 * 用来匹配的正则表达式对象。
 	 * TODO：修改为更合适的版本
 	 */
-    private _pattern = /[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]\.(com|org|cn|net|cc|xyz|top|club|shop|xin|wang|vip|ink|link|tv|work|me|info|mobi|online|site|tech|ren|pro|ltd|fun|kim|red|group|store|biz|name|wiki|game|help|co|so|hk|tel|asia|lol|studio|design|live|lawyer|software|band|press|space|website|date|trade|party|win|video|news|pw|photo|pub|click|loan|bid)/i;
+    private _pattern = /[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]\.(com|org|cn|net|cc|xyz|top|club|shop|xin|wang|vip|ink|link|tv|work|me|info|mobi|online|site|tech|ren|pro|ltd|fun|kim|red|group|store|biz|name|wiki|game|help|co|so|hk|tel|asia|lol|studio|design|live|lawyer|software|band|press|space|website|date|trade|party|win|video|news|pw|photo|pub|click|loan|bid|moe)/i;
 
 
     get supportedContent() {
