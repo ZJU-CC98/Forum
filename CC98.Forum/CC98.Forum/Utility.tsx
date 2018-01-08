@@ -2520,7 +2520,7 @@ export async function moveTopic(topicId, boardId, reason) {
     const url = `/topic/${topicId}/moveto/${boardId}`;
     const headers = await formAuthorizeHeader();
     headers.append('Content-Type', 'application/json');
-    const response = await cc98Fetch(url, { method: "PUT", headers, body: JSON.stringify(reason) });
+    const response = await cc98Fetch(url, { method: "PUT", headers, body: JSON.stringify({reason}) });
     if (response.status === 200)
         return 'ok';
     else return 'error';
