@@ -7,12 +7,13 @@ import * as Utility from '../../Utility';
 import * as Actions from '../../Actions/UserCenter';
 import { connect } from 'react-redux';
 import { UserInfo } from '../../States/AppState';
+import { refreshCurrentUserInfo } from '../../AsyncActions/UserCenter';
 
 interface Props {
 	/**
 	 * 更新store中的信息
 	 */
-	changeUserInfo: (userInfo: UserInfo)=>void;
+	refreshUserInfo: ()=>void;
 	/** 
 	 * store中的用户信息
 	 */
@@ -440,14 +441,7 @@ class UserCenterConfigAvatar extends React.Component<Props, States> {
                     choosingDefault: false,
                     avatarURL: ''
 				});
-				let userInfo = Utility.getLocalStorage('userInfo');
-				userInfo.portraitUrl = avatarUrl;
-				//修改store中的info
-				this.props.changeUserInfo(userInfo);
-				//修改缓存中的info
-				Utility.setLocalStorage("userInfo", userInfo);
-				Utility.setLocalStorage(`userId_${userInfo.id}`, userInfo, 3600);
-				Utility.setLocalStorage(`userName_${userInfo.name}`, userInfo, 3600);
+				this.props.refreshUserInfo();
 			} else {
 				throw new Error();
 			}
@@ -515,9 +509,9 @@ function mapState(state) {
 
 function mapDispatch(dispatch) {
 	return {
-		changeUserInfo: (newInfo) => {
-			dispatch(Actions.changeUserInfo(newInfo));
-		}
+		refreshUserInfo: () => {
+			dispatch(refreshCurrentUserInfo());
+        }
 	};
 }
 

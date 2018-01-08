@@ -10,6 +10,7 @@ import ConfigAvatar from './ConfigAvatar';
 import ConfigSignature from './ConfigSignature';
 import ConfigOthers from './ConfigOthers';
 import { connect } from 'react-redux';
+import { refreshCurrentUserInfo } from '../../AsyncActions/UserCenter';
 
 interface Props {
     /**
@@ -19,7 +20,7 @@ interface Props {
     /** 
      * 刷新store中的状态
      */
-    changeUserInfo: (info: UserInfo) => void;
+    refreshUserInfo: () => void;
     changePage: () => void;
 }
 interface States {
@@ -177,12 +178,7 @@ class Config extends React.Component<Props, States> {
 
             if (res.status === 200) {
                 //修改成功后刷新用户信息
-                await Utility.refreshUserInfo();
-                let userInfo = Utility.getLocalStorage('userInfo');
-                this.props.changeUserInfo(userInfo);
-                //替换掉缓存中对应ID与NAME的缓存
-                Utility.setLocalStorage(`userId_${userInfo.id}`, userInfo, 3600);
-                Utility.setLocalStorage(`userName_${userInfo.name}`, userInfo, 3600);
+                this.props.refreshUserInfo();
                 this.setState({
                     info: '修改成功',
                     isLoading: false
@@ -232,8 +228,8 @@ function mapState(state){
 
 function mapDispatch(dispatch) {
 	return {
-		changeUserInfo: (newInfo: UserInfo) => {
-			dispatch(Actions.changeUserInfo(newInfo));
+		refreshUserInfo: () => {
+			dispatch(refreshCurrentUserInfo());
         },
         changePage: () => {
             dispatch(Actions.changeUserCenterPage('config'));

@@ -112,10 +112,11 @@ export default (state = new UserInfoStore(), action: RootAction): UserInfoStore 
             return { ...state, isLogOn: true, ...new UserInfoStore()};
         case ActionTypes.USER_LOG_OFF:
             Utility.removeLocalStorage('userInfo');
-            Utility.removeLocalStorage('currentUserFavoriteBoards');
             return { ...state, isLogOn: false };
         case ActionTypes.CHANGE_USERINFO:
             Utility.setLocalStorage("userInfo", action.payload.newInfo);
+            Utility.setLocalStorage(`userId_${action.payload.newInfo.id}`, action.payload.newInfo, 3600);
+            Utility.setLocalStorage(`userName_${action.payload.newInfo.name}`, action.payload.newInfo, 3600);
             return { ...state, currentUserInfo: action.payload.newInfo };
         case ActionTypes.CHANGE_VISITING_USER:
             return { ...state, currentVisitingUserPage: action.payload.page, currentVisitingUserId: action.payload.id };
