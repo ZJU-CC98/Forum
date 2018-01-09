@@ -90,9 +90,13 @@ export default class Operation extends React.Component<OperationProps, Operation
                     OperationType: isCancle ? 0 : 1
                 })
             });
-            this.setState({
-                info: '操作成功'
-            });
+            if(res.ok){
+                this.setState({
+                    info: '操作成功'
+                });
+            }else {
+                throw new Error(res.statusText);
+            }
         } catch (e) {
             this.setState({
                 info: e.message
@@ -105,7 +109,7 @@ export default class Operation extends React.Component<OperationProps, Operation
             <h2>TP</h2>
             <div className="user-manager">
                 <p>OperationType: </p>
-                <select onChange={(e) => { this.handleForumUserOperationChange('PunishmentType', Number.parseInt(e.target.value)) }}>
+                <select value={this.state.ForumUserOperation.PunishmentType || 0} onChange={(e) => { this.handleForumUserOperationChange('PunishmentType', Number.parseInt(e.target.value)) }}>
                     <option value={0} disabled>未选择</option>
                     <option value={1}>锁定</option>
                     <option value={2}>屏蔽</option>
