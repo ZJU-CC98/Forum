@@ -67,11 +67,11 @@ export class FocusBoardArea extends React.Component<{}, FocusBoardAreaState> {
         let self = this;
         $('.focus-board').click(function () {
             let boardId = this.id.slice(11);
-            let currentFocusBoard = { boardId: boardId, boardName: this.innerHTML };
-            Utility.setStorage("currentFocusBoard", currentFocusBoard);
-            $('.focus-board').removeClass('focus-hover');
-            $(this).addClass('focus-hover');
-            self.setState({ currentBoardId: parseInt(boardId), currentBoardName: this.innerHTML });
+                let currentFocusBoard = { boardId: boardId, boardName: this.innerHTML };
+                Utility.setStorage("currentFocusBoard", currentFocusBoard);
+                $('.focus-board').removeClass('focus-hover');
+                $(this).addClass('focus-hover');
+                self.setState({ currentBoardId: parseInt(boardId), currentBoardName: this.innerHTML });
         });
 
     }
