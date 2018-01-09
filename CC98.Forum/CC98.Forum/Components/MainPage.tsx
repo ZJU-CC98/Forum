@@ -258,7 +258,7 @@ export class Test extends React.Component<{}, { testContent: string }>{
 
             //return isInternalLink;
         } else {
-            console.log("这不是链接！");
+            //console.log("这不是链接！");
         }
     }
 
@@ -577,7 +577,7 @@ export class MainPage extends React.Component<{}, { data }> {
             const response = await Utility.cc98Fetch('/config/index');
             data = await response.json();
             Utility.setLocalStorage("mainPageData", data, 300);
-            console.log(data);
+            //console.log(data);
             return data;
         } else {
             return data

@@ -11,8 +11,8 @@ export class AwardInfo extends React.Component<Props> {
         super(props, content);
     }
     render() {
-        console.log("props");
-        console.log(this.props);
+        //console.log("props");
+        //console.log(this.props);
         return <div className="good tagSize" >
             <div className="userImage"><img src={this.props.portraitUrl}></img> </div>
             <div className="userName">{this.props.userName}</div>

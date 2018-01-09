@@ -40,7 +40,7 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 		$(UIId).css('display', 'none');
 	}
     componentDidMount() {
-        console.log(this.props);
+        //console.log(this.props);
 
 
 		if (this.state.mode === 1) {
@@ -114,7 +114,7 @@ ${this.props.content.content}
 
 	}
     componentWillReceiveProps(newProps) {
-        console.log(newProps);
+        //console.log(newProps);
 		const time = moment(newProps.content.replyTime).format('YYYY-MM-DD HH:mm:ss');
 		if (newProps.content.userName) {
 			if (this.state.mode === 1) {
@@ -195,9 +195,9 @@ ${newProps.content.content}[/quote]
         const url = `/topic/${this.props.topicInfo.id}/post`;
         let bodyInfo;
         if (Utility.quoteJudger(this.state.content)) {
-            console.log("有引用内容，postId是", this.props.content.postId);
+            //console.log("有引用内容，postId是", this.props.content.postId);
             let data = await Utility.getBasicPostsInfo([this.props.content.postId]);
-            console.log("该postId对应的楼层信息",data);
+            //console.log("该postId对应的楼层信息",data);
             bodyInfo = {
                 content: this.state.content,
                 contentType: 0,
@@ -206,7 +206,7 @@ ${newProps.content.content}[/quote]
             };
         }
         else {
-            console.log("没有引用内容");
+            //console.log("没有引用内容");
             bodyInfo = {
                 content: this.state.content,
                 contentType: 0,
@@ -214,7 +214,7 @@ ${newProps.content.content}[/quote]
             };
         }
         const body = JSON.stringify(bodyInfo);
-        console.log("body内容",body);
+        //console.log("body内容",body);
 		const token = await Utility.getToken();
 		const headers = new Headers();
 		headers.append('Authorization', token);

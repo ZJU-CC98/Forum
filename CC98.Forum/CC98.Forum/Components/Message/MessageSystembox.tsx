@@ -12,7 +12,7 @@ export class MessageSystembox extends React.Component<MessageSystemProps> {
         let content;
         if (this.props.topicId) {
             if (this.props.floor) {
-                console.log("楼层", this.props.floor);
+                //console.log("楼层", this.props.floor);
                 let a: any = (this.props.floor / 10) + 1;
                 let b = parseInt(a);
                 let c = this.props.floor + 10 - b * 10;

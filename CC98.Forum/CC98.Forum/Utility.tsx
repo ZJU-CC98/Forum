@@ -2583,7 +2583,6 @@ export async function getUsersInfobyNames(userNames: any[]) {
         return finalUsersInfo;
     }
     else {
-        console.log("查询");
         for (let i = 0; i < usersInfoNeeded.length; i++) {
             if (i === 0) {
                 url = `${url}?name=`+encodeURIComponent(usersInfoNeeded[i]);
@@ -2592,17 +2591,13 @@ export async function getUsersInfobyNames(userNames: any[]) {
                 url = `${url}&name=`+encodeURIComponent(usersInfoNeeded[i]);
             }
         }
-     
-
-            console.log(url);
+            //console.log(url);
             //合并查询和缓存的
             let response = await cc98Fetch(url);
             var data = await response.json();
             for (let i of data) {
                 finalUsersInfo.push(i);
             }
-            console.log("查询后");
-            console.log(finalUsersInfo);
             return finalUsersInfo;
      
     }
@@ -2734,7 +2729,7 @@ export function getThisTopicInfo(topicId, topicIds) {
 *如果存在合法的@，则会返回一个字符串数组，包含至多10个合法的被@用户的昵称，否则返回false
 */
 export function atHanderler(content: string) {
-    const reg1 = new RegExp("/([\s\S]*)\[quotex?\][\s\S]*?\[\/quotex?\]([\s\S]*)/");
+    const reg1 = new RegExp("([\s\S]*)\[quotex?\][\s\S]*?\[\/quotex?\]([\s\S]*)");
     const reg2 = new RegExp("@[^ \n]{1,10}?[ \n]", "gm");
     const reg3 = new RegExp("[^@ ]+");
     //不检测引用内容中的@
@@ -2745,8 +2740,6 @@ export function atHanderler(content: string) {
             content = `${content.match(reg1)[1]}${content.match(reg1)[2]}`;
         }
     } while (str);
-    
-    console.log("内容", content);
     if (content === '') {
         return false
     }
@@ -2773,15 +2766,10 @@ export function atHanderler(content: string) {
  */
 export function quoteJudger(content: string) {
     const reg = new RegExp("\[(quotex?)\].*\[\/(quotex?)\]");
-    if (content.match(reg)) {
-        console.log("引用内容检测结果", content.match(reg)[0]);
-    }
     if (content.match(reg) && (content.match(reg)[1] === content.match(reg)[2])) {
-        console.log("引用内容检测结果: ok");
         return true;
     }
     else {
-        console.log("引用内容检测结果: no");
         return false;
     }
 }

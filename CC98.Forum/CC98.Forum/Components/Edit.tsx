@@ -258,7 +258,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
     async editUBB() {
         const url = `/post/${this.match.params.id}`;
         let tag1Id, tag2Id, content;
-        console.log(this.state);
+        //console.log(this.state);
         tag1Id = await Utility.getTagIdbyName(this.state.tag1);
         tag2Id = await Utility.getTagIdbyName(this.state.tag2);
         if (tag1Id && !tag2Id) {
@@ -347,8 +347,8 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
         this.props.history.push(redirectUrl);
     }
     onTitleChange(title, tag1, tag2) {
-        console.log("handle change");
-        console.log("tag1=" + tag1);
+        //console.log("handle change");
+        //console.log("tag1=" + tag1);
         if(title!="")
             this.setState({ title: title, tag1: tag1, tag2: tag2 });
         else 
@@ -506,8 +506,8 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
     handleTagChange() {
         const tag1 = $(".tagBoxSelect").text();
         const tag2 = $(".tagBoxSelect1").text();
-        console.log("tagtext");
-        console.log($(".tagBoxSelect").text());
+        //console.log("tagtext");
+        //console.log($(".tagBoxSelect").text());
         this.props.onChange("", tag1, tag2);
     }
     

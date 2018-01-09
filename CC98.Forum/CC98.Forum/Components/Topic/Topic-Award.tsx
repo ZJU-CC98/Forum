@@ -35,11 +35,11 @@ export class Award extends React.Component<Props, {info,shortInfo,count,showAll 
         for (let i in award) {
             
             let thisUserInfo = Utility.getThisUserInfobyName(award[i].operatorName, usersInfo);
-            console.log("find");
-            console.log(thisUserInfo);
+            //console.log("find");
+            //console.log(thisUserInfo);
             award[i].portraitUrl = thisUserInfo.portraitUrl;
-            console.log("award0");
-            console.log(award[i]);
+            //console.log("award0");
+           // console.log(award[i]);
         }
         if (award.length > 10) {
             for (let i = 0; i < 10; i++) {
