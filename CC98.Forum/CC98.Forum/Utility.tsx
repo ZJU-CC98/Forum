@@ -2734,13 +2734,19 @@ export function getThisTopicInfo(topicId, topicIds) {
 *如果存在合法的@，则会返回一个字符串数组，包含至多10个合法的被@用户的昵称，否则返回false
 */
 export function atHanderler(content: string) {
-    const reg1 = new RegExp("(.*?)\[quotex?\].*\[\/quotex?\](.*)");
+    const reg1 = new RegExp("/([\s\S]*)\[quotex?\][\s\S]*?\[\/quotex?\]([\s\S]*)/");
     const reg2 = new RegExp("@[^ \n]{1,10}?[ \n]", "gm");
     const reg3 = new RegExp("[^@ ]+");
     //不检测引用内容中的@
-    if (content.match(reg1)) {
-        content = `${content.match(reg1)[1]}${content.match(reg1)[2]}`;
-    }
+    let str;
+    do {
+        str = content.match(reg1);
+        if (str) {
+            content = `${content.match(reg1)[1]}${content.match(reg1)[2]}`;
+        }
+    } while (str);
+    
+    console.log("内容", content);
     if (content === '') {
         return false
     }
