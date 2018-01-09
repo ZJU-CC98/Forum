@@ -67,21 +67,11 @@ export class FocusBoardArea extends React.Component<{}, FocusBoardAreaState> {
         let self = this;
         $('.focus-board').click(function () {
             let boardId = this.id.slice(11);
-            //如果没被点击过，就设为选中，并更新下方帖子列表
-            if (this.className === 'focus-board') {
-                let currentFocusBoard = { boardId: boardId, boardName: this.innerHTML };
-                Utility.setStorage("currentFocusBoard", currentFocusBoard);
-                $('.focus-board').removeClass('focus-hover');
-                $(this).addClass('focus-hover');
-                self.setState({ currentBoardId: parseInt(boardId), currentBoardName: this.innerHTML });
-            }
-            //如果被点击过，就设为取消，并更新下方帖子列表
-            else if (this.className === 'focus-board focus-hover') {
-                Utility.removeStorage('currentFocusBoard');
-                $(this).removeClass('focus-hover');
-                $(`#focusBoard_0`).addClass('focus-hover');
-                self.setState({ currentBoardId: 0, currentBoardName: "全部帖子" });
-            }
+            let currentFocusBoard = { boardId: boardId, boardName: this.innerHTML };
+            Utility.setStorage("currentFocusBoard", currentFocusBoard);
+            $('.focus-board').removeClass('focus-hover');
+            $(this).addClass('focus-hover');
+            self.setState({ currentBoardId: parseInt(boardId), currentBoardName: this.innerHTML });
         });
 
     }
