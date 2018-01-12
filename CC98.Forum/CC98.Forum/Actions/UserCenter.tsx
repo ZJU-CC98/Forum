@@ -1,6 +1,10 @@
-import { createAction } from 'typesafe-actions';
+//import { createAction } from 'typesafe-actions';
 import * as ActionTypes from '../ActionTypes';
 import * as Appstate from '../States/AppState';
+
+function createAction<T extends string>(type: T, creator = (...args: any[]) => ({ type })) {
+    return creator;
+}
 
 export const userLogIn = createAction(ActionTypes.USER_LOG_ON);
 

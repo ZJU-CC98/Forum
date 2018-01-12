@@ -53,9 +53,6 @@
     "unminified-webpack-plugin": "1.2.0",
     "webpack": "3.4.1",
     "whatwg-fetch": "2.0.3",
-    "typescript-fsa": "2.5.0",
-    "react-redux-typescript": "3.0.0-rc.3",
-    "typesafe-actions": "1.1.0",
     "@types/core-js": "0.9.43",
     "@types/react-router-redux": "5.0.11"
   }
