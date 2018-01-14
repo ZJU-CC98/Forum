@@ -25,6 +25,6 @@ export class SearchBoard extends React.Component {
 
 function coverFocusBoard(item: FocusBoard) {
     //点击版面名称会显示相应版面的帖子
-    let boardUrl = `/list/${item.id}/normal/`;
+    let boardUrl = `/list/${item.id}`;
     return <a href={boardUrl} target="_blank"><div className="focus-board">{item.name}</div></a>;
 }
