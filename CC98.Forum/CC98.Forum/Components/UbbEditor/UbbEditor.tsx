@@ -287,7 +287,7 @@ export class UbbEditor extends React.Component<Props, State> {
             //选中替换掉的部分
             this.content.setSelectionRange(this.state.selectionStart, this.state.selectionEnd);
             //滚动条滚动到原来的位置
-            this.content.scroll(0, this.state.scrollTop);
+            this.content.scrollTop = this.state.scrollTop;
             //重置state中的状态
             this.setState({
                 clicked: false
