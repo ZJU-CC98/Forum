@@ -58,16 +58,17 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
         const page = this.props.page || 1;
         let realContents;
         if (this.props.isHot) {
-            console.log(this.props.topicId);
             realContents = await Utility.getHotReplyContent(this.props.topicId);
-            console.log(realContents);
+            if (!realContents) this.setState({ inWaiting: false, contents: [] });
+        } else if (!this.props.isTrace) {
+            realContents = await Utility.getTopicContent(this.props.topicId, page);
             if (!realContents) this.setState({ inWaiting: false, contents: [] });
         }
         const masters = this.props.boardInfo.boardMasters;
         this.setState({ inWaiting: false, contents: realContents, masters: masters });
     }
     async componentWillReceiveProps(newProps) {
-        if (newProps.page !== this.props.page || newProps.topicInfo.replyCount !== this.props.topicInfo.replyCount) {
+        if (newProps.page !== this.props.page || newProps.topicInfo.replyCount !== this.props.topicInfo.replyCount ) {
             this.setState({ inWaiting: true });
             const page = newProps.page || 1;
             let realContents;
