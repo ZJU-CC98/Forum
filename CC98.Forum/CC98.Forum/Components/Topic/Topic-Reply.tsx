@@ -67,7 +67,7 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
         this.setState({ inWaiting: false, contents: realContents, masters: masters });
     }
     async componentWillReceiveProps(newProps) {
-       // if (newProps.page !== this.props.page || newProps.topicInfo.replyCount !== this.props.topicInfo.replyCount) {
+        if (newProps.page !== this.props.page || newProps.topicInfo.replyCount !== this.props.topicInfo.replyCount) {
             this.setState({ inWaiting: true });
             const page = newProps.page || 1;
             let realContents;
@@ -84,7 +84,7 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
             }
             const masters = newProps.boardInfo.boardMasters;
             this.setState({inWaiting:false,contents: realContents,masters:masters });
-    //    }
+        }
     }
 
     private generateContents(item) {
