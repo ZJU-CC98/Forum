@@ -39,13 +39,8 @@ export default class extends React.Component<{id: number}, UserCenterExactActivi
                 if (res.status === 200) {
                     let posts: UserRecentPost[] = await res.json(),
                     i = posts.length === 11 ? 10 : posts.length;
-
-                    while (i--) {
-                        posts[i].board = await Utility.getBoardName(posts[i].boardId);
-                    }
-
                     this.setState((prevState)=>({
-                        userRecentPosts: prevState.userRecentPosts.concat(posts),
+                        userRecentPosts: prevState.userRecentPosts.concat(posts.slice(0, i)),
                         isLoading: false
                     }));
                 } else {
@@ -73,13 +68,8 @@ export default class extends React.Component<{id: number}, UserCenterExactActivi
             if (res.status === 200) {
                 let posts: UserRecentPost[] = await res.json(),
                     i = posts.length === 11 ? 10 : posts.length;
-
-                while (i--) {
-                    posts[i].board = await Utility.getBoardName(posts[i].boardId);
-                }
-
                 this.setState({
-                    userRecentPosts: posts
+                    userRecentPosts: posts.slice(0, i)
                 });
                 if (posts.length === 11) {
                     window.addEventListener('scroll', this.scrollHandler);
