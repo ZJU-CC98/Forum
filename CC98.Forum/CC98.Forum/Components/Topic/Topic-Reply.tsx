@@ -58,7 +58,9 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
         const page = this.props.page || 1;
         let realContents;
         if (this.props.isHot) {
+            console.log(this.props.topicId);
             realContents = await Utility.getHotReplyContent(this.props.topicId);
+            console.log(realContents);
             if (!realContents) this.setState({ inWaiting: false, contents: [] });
         }
         const masters = this.props.boardInfo.boardMasters;

@@ -258,13 +258,17 @@ export async function getHotReplyContent(topicid: number) {
                 }
 
             } else {
-                let purl = '/static/images/_心灵之约.png';
+    
+                let purl = '/static/images/心灵头像.gif';
                 const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
-                const anonymousLastReplierName = `匿名${content[i].lastUpdateAuthor.toUpperCase()}`;
+                let anonymousLastReplierName = null;
+                if(content[i].lastUpdateAuthor)
+                anonymousLastReplierName = `匿名${content[i].lastUpdateAuthor.toUpperCase()}`;
                 const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
                 post[i] = {
                     ...content[i], userInfo: userMesJson, postId: content[i].id
                 }
+    
             }
         }
         return post;

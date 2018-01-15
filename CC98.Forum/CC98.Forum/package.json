@@ -23,7 +23,8 @@
     "redux": "3.7.2",
     "signalr": "2.2.2",
     "ssri": "^4.1.6",
-    "url-join": "2.0.2"
+    "url-join": "2.0.2",
+    "redux-thunk": "2.2.0"
   },
   "devDependencies": {
     "@types/core-js": "0.9.43",
@@ -51,12 +52,11 @@
     "react-redux-typescript": "3.0.0-rc.3",
     "sass-loader": "6.0.6",
     "spectrum": "1.0.1",
+    "typesafe-actions": "1.1.2",
     "typescript": "2.6.1",
     "typescript-fsa": "2.5.0",
     "unminified-webpack-plugin": "1.2.0",
     "webpack": "3.4.1",
-    "whatwg-fetch": "2.0.3",
-    "redux-thunk": "2.2.0",
-    "typesafe-actions": "1.1.2"
+    "whatwg-fetch": "2.0.3"
   }
 }
