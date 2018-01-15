@@ -44,7 +44,8 @@ const config: webpack.Configuration = {
 		'moment': 'moment',
 		'editor.md': 'editormd',
 		'codemirror': 'CodeMirror',
-		'url-join': 'urljoin'
+        'url-join': 'urljoin',
+        "react-thunk": "ReduxThunk",
 	},
 	plugins: [
 		new webpack.optimize.UglifyJsPlugin(), // 简化 JS
@@ -69,6 +70,8 @@ const config: webpack.Configuration = {
 			{ from: 'node_modules/@aspnet/signalr-client/dist/browser', to: 'static/scripts/lib/signalr-client/' },
 			{ from: 'spectrum/', to: 'static/scripts/lib/spectrum/' },
             { from: 'node_modules/url-join/', to: 'static/scripts/lib/url-join/' },
+            { from: 'node_modules/redux-thunk/dist/', to: 'static/scripts/lib/react-thunk/' },
+            { from: 'node_modules/typesafe-actions/', to: 'static/scripts/lib/typesafe-actions/' },
 		]),
 		new ExtractTextPlugin('static/content/site.min.css')
 	]

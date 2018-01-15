@@ -140,7 +140,7 @@ export async function getTopicContent(topicid: number, curPage: number) {
                     ...content[i], userInfo: thisUserInfo, postId: content[i].id
                 }
 
-            } else if (content[i].isAnonymous == true) {
+            } else if (content[i].isAnonymous&&!content[i].isDeleted) {
                 let purl = '/static/images/心灵头像.gif';
                 const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
 

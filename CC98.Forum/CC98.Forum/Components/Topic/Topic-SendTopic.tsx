@@ -23,7 +23,12 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 		this.onChange = this.onChange.bind(this);
 		this.close = this.close.bind(this);
         this.update = this.update.bind(this);
-        this.state = ({ content: '', mode: 0, masters: [], buttonDisabled: false, buttonInfo:"回复" });
+        let initContent = "";
+        if (Utility.getLocalStorage("temporaryContent")) {
+            initContent = Utility.getLocalStorage("temporaryContent");
+            console.log("use cache content");
+        }
+        this.state = ({ content: initContent, mode: 0, masters: [], buttonDisabled: false, buttonInfo: "回复" });
 	}
 	update(value) {
 		this.setState({ content: value });
@@ -38,24 +43,18 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 	close() {
 		const UIId = `#manage${this.props.topicInfo.id}`;
 		$(UIId).css('display', 'none');
-	}
+    }
+    componentWillUnmount() {
+        if (this.state.content) {
+            Utility.setLocalStorage("temporaryContent", this.state.content);
+            console.log("save temp content");
+        }
+    }
     componentDidMount() {
-        //console.log(this.props);
-
+     
 
 		if (this.state.mode === 1) {
-            /*const response1 = await fetch("/config.production.json");
-            let data;
-            if (response1.status !== 404) {
-                const data1 = await response1.json();
-                const response2 = await fetch("/config.json");
-                const data2 = await response2.json();
-                data = { ...data2, ...data1 };
-            } else {
-                const response2 = await fetch("/config.json");
-                data = await response2.json();
-            }
-            const fileUrl = data.imageUploadUrl;*/
+           
 			const fileUrl = `${Utility.getApiUrl}/file`;
 			editormd.emoji.path = '/static/images/emoji/';
 			Constants.testEditor = editormd('test-editormd', {
@@ -140,21 +139,8 @@ ${newProps.content.content}[/quote]
 	}
 
 	async componentDidUpdate() {
-        /*const response1 = await fetch("/config.production.json");
-        let data;
-        if (response1.status !== 404) {
-            const data1 = await response1.json();
-            const response2 = await fetch("/config.json");
-            const data2 = await response2.json();
-            data = { ...data2, ...data1 };
-        } else {
-            const response2 = await fetch("/config.json");
-            data = await response2.json();
-        }
-        const fileUrl = data.imageUploadUrl;*/
-
-		//  editormd.emoji.path = '/static/images/emoji/';
-		if (this.state.mode === 1) {
+        if (this.state.mode === 1) {
+         
 			const fileUrl = `${Utility.getApiUrl}/file`;
 			editormd.emoji.path = '/static/images/emoji/';
 			Constants.testEditor = editormd('test-editormd', {
@@ -186,7 +172,8 @@ ${newProps.content.content}[/quote]
 						$('#upload-files').click();
 					}
 				},
-			});
+            });
+            Constants.testEditor.setMarkdown(this.state.content);
 		}
 	}
 
@@ -248,12 +235,17 @@ ${newProps.content.content}[/quote]
 					headers: myHeaders2,
 					body: atUsersJSON
 				});
-			}
+            }
+            Utility.removeLocalStorage("temporaryContent");
 			this.setState({ content: '',buttonDisabled:false,buttonInfo:"发帖" });
 			this.props.onChange();
 		}
 
-	}
+    }
+    routerWillLeave(nextLocation) {
+
+        return '确认要离开？';
+    }
 	async sendMdTopic() {
         try {
             this.setState({ buttonDisabled: true, buttonInfo: "..." });
@@ -301,21 +293,9 @@ ${newProps.content.content}[/quote]
                         body: atUsersJSON
                     });
                 }
-
+                Utility.removeLocalStorage("temporaryContent");
                 this.props.onChange();
-                /* editormd.emoji.path = '/static/images/emoji/';
-                 const response1 = await fetch("/config.production.json");
-                 let data;
-                 if (response1.status !== 404) {
-                     const data1 = await response1.json();
-                     const response2 = await fetch("/config.json");
-                     const data2 = await response2.json();
-                     data = { ...data2, ...data1 };
-                 } else {
-                     const response2 = await fetch("/config.json");
-                     data = await response2.json();
-                 }
-                 const fileUrl = data.imageUploadUrl;*/
+               
                 const fileUrl = `${Utility.getApiUrl}/file`;
                 editormd.emoji.path = '/static/images/emoji/';
                 Constants.testEditor = editormd('test-editormd', {
@@ -349,6 +329,7 @@ ${newProps.content.content}[/quote]
                         }
                     },
                 });
+
                 this.setState({ content: '', buttonDisabled: false, buttonInfo: "发帖" });
             }
 		} catch (e) {
