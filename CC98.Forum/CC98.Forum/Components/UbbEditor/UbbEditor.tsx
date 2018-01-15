@@ -52,7 +52,8 @@ export class UbbEditor extends React.Component<Props, State> {
             emojiIsShown: false,
             isPreviewing: false,
             value: '',
-            info: ''
+            info: '',
+            scrollTop: 0
         };
         //创建一个默认选项，用props中的选项覆盖之
         this.option = { ...new Option(), ...props.option };
@@ -285,6 +286,8 @@ export class UbbEditor extends React.Component<Props, State> {
             this.content.focus();
             //选中替换掉的部分
             this.content.setSelectionRange(this.state.selectionStart, this.state.selectionEnd);
+            //滚动条滚动到原来的位置
+            this.content.scroll(0, this.state.scrollTop);
             //重置state中的状态
             this.setState({
                 clicked: false
@@ -440,6 +443,10 @@ export class UbbEditor extends React.Component<Props, State> {
                             onDrop={e=>{
                                 e.preventDefault();
                                 this.handleUpload(e.dataTransfer.files);
+                            }}
+                            onScroll={e => {
+                                //记录滚动条位置
+                                this.setState({scrollTop: (e.target as any).scrollTop});
                             }}
                             onKeyDown={(e) => {
                                 if (e.ctrlKey && e.key === 'z') {
