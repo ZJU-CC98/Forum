@@ -42,4 +42,8 @@ export default class {
      * UBB编辑器的提示信息
      */
     info: string;
+    /**
+     * 滚动条位置
+     */
+    scrollTop: number;
 }
