@@ -5,7 +5,7 @@
 import * as ActionTypes from '../ActionTypes';
 import * as Utility from '../Utility';
 import * as Appstate from '../States/AppState';
-import { RootAction } from '../Store'
+//import { RootAction } from '../Store'
 
 /**
  * 用户中心用Store
@@ -106,7 +106,7 @@ class TotalPage {
  * reducer接收到undefined的state时一定要初始化state
  * 这里用ES6方法，在函数定义中初始化state
  */
-export default (state = new UserInfoStore(), action: RootAction): UserInfoStore => {
+export default (state = new UserInfoStore(), action): UserInfoStore => {
     switch (action.type) {
         case ActionTypes.USER_LOG_ON:
             return { ...state, isLogOn: true, ...new UserInfoStore()};

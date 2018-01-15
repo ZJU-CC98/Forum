@@ -87,7 +87,6 @@ export const getRecentPosts:ActionCreator<ThunkAction<Promise<Action>, RootState
         }
         //显示其中10条
         while(i--){
-            posts[i].board = await Utility.getBoardName(posts[i].boardId);
             //store中记录所有的主题
             recentPosts[(page - 1) * 10 + i] = posts[i];
         }
@@ -134,7 +133,6 @@ export const getFavoritePosts:ActionCreator<ThunkAction<Promise<Action>, RootSta
         }
         //显示其中10条
         while(i--){
-            posts[i].board = await Utility.getBoardName(posts[i].boardId);
             //store中记录所有的主题
             recentPosts[(page - 1) * 10 + i] = posts[i];
         }

@@ -387,7 +387,7 @@ export class UserRecentPost {
     /**
     * 帖子版面
     */
-    board: string;
+    boardName: string;
     /**
     * 发帖时间
     */

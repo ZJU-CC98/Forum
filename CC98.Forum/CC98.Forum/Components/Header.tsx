@@ -320,7 +320,7 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
                 }
                 else if (searchBoxSelect.text() === '版面') {
                     let host = window.location.host;
-                    let boardResult = Utility.getBoardId(val);
+                    let boardResult = await Utility.getBoardId(val);
                     if (boardResult) {
                         if (boardResult === []) {
                             Utility.removeStorage('searchInfo');
