@@ -103,10 +103,7 @@ export class UbbEditor extends React.Component<Props, State> {
     //处理上传文件的函数
     async handleUpload(files: FileList) {
         try{
-            let { extendTagName } = this.state;
-            if(extendTagName === '') {
-                extendTagName = 'img';
-            }
+            let { extendTagName = 'img' } = this.state;
             const url = `/file`;
             const myHeaders = await Utility.formAuthorizeHeader();
             let formdata = new FormData();
@@ -127,8 +124,8 @@ export class UbbEditor extends React.Component<Props, State> {
             });
             let data: string[] = await res.json();
             if (res.status === 200) {
-                console.log(files);
-                data.map((item, index)=>this.handleButtonClick(this.getFileType(files[index].type), item));
+                //根据mimetype选择不同的tag
+                data.map((item, index) => this.handleButtonClick(this.getFileType(files[index].type), item));
                 this.uploadInput.value = '';
             }else {
                 throw new Error(`上传文件失败`);
@@ -147,11 +144,15 @@ export class UbbEditor extends React.Component<Props, State> {
 
     //根据mimetype判断文件类型
     getFileType(mimeType: string) {
-        switch(mimeType.match(/\w+/)[0]) {
-            case "image": return 'img';
-            case "video": return 'video';
-            case "audio": return 'audio';
-            default: return 'upload';
+        try{
+            switch(mimeType.match(/\w+/)[0]) {
+                case "image": return 'img';
+                case "video": return 'video';
+                case "audio": return 'audio';
+                default: return 'upload';
+            }
+        }catch(e) {
+            return 'upload';
         }
     }
 

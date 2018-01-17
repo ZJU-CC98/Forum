@@ -26,7 +26,7 @@ export default class {
     /**
      * 选中后不自动选中内容的ubb标签名数组，表情单独处理不在此列
      */
-    shouldNotSelected?: string[] = ['img'];
+    shouldNotSelected?: string[] = ['img', 'video', 'audio', 'upload'];
     /**
      * 上传文件的最大限制(byte)，默认5mb
      */
