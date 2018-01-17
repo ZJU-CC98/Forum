@@ -38,5 +38,5 @@ export default class {
     /**
      * 插入文本后是否换行
      */
-    shouldEnter?: string[] = ['img'];
+    shouldEnter?: string[] = ['img', 'video', 'audio', 'upload'];
 }

@@ -36,7 +36,7 @@ export module Constants {
 			throw new Error('系统无法读取配置文件，网站无法正常运行');
 		}
 
-		config = await configResponse.json() as IConfig;
+		config = await configResponse.json();
 
 		// 加载运行时配置（如果存在）
 		try {

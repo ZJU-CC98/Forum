@@ -101,7 +101,7 @@ export class UbbEditor extends React.Component<Props, State> {
     }
 
     //处理上传文件的函数
-    async handleUpload(files: FileList, index = 0) {
+    async handleUpload(files: FileList) {
         try{
             let { extendTagName } = this.state;
             if(extendTagName === '') {
@@ -112,7 +112,7 @@ export class UbbEditor extends React.Component<Props, State> {
             let formdata = new FormData();
             for(let i = 0; i < files.length; i++){
                 //除图片外判断文件大小，大于默认不上传
-                if(extendTagName === 'upload' && files[i].size > this.option.uploadFileMaxSize){
+                if(extendTagName !== 'img' && files[i].size > this.option.uploadFileMaxSize){
                     throw new Error('文件过大');
                 } else if(extendTagName === 'img' && !files[i].type.match('image')){
                     throw new Error('请选择图片文件');
@@ -127,7 +127,8 @@ export class UbbEditor extends React.Component<Props, State> {
             });
             let data: string[] = await res.json();
             if (res.status === 200) {
-                data.map(item=>this.handleButtonClick(extendTagName, item));
+                console.log(files);
+                data.map((item, index)=>this.handleButtonClick(this.getFileType(files[index].type), item));
                 this.uploadInput.value = '';
             }else {
                 throw new Error(`上传文件失败`);
@@ -141,6 +142,16 @@ export class UbbEditor extends React.Component<Props, State> {
             setTimeout(()=>this.setState({
                 info: ''
             }), 2500);
+        }
+    }
+
+    //根据mimetype判断文件类型
+    getFileType(mimeType: string) {
+        switch(mimeType.match(/\w+/)[0]) {
+            case "image": return 'img';
+            case "video": return 'video';
+            case "audio": return 'audio';
+            default: return 'upload';
         }
     }
 
