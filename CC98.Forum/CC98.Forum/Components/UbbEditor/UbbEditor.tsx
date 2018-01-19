@@ -423,13 +423,11 @@ export class UbbEditor extends React.Component<Props, State> {
                     <input
                         type="file"
                         id="upload"
-                        accept={this.state.extendTagName === 'img' ? "image/*" : ""}
+                        accept={ this.state.extendTagName === 'img' ? "image/*" : "" }
                         style={{ display: 'none' }}
-                        onClick={(e) => { e.stopPropagation(); }}
-                        onChange={async (e) => {
-                            await this.handleUpload(e.target.files);
-                        }}
-                        ref={it=>this.uploadInput = it}
+                        onClick={ e =>  e.stopPropagation() }
+                        onChange={ e =>  this.handleUpload(e.target.files) }
+                        ref={ it=>this.uploadInput = it }
                         multiple
                     />
                 </div>
@@ -437,22 +435,18 @@ export class UbbEditor extends React.Component<Props, State> {
                 <div className="ubb-content">
                     {!this.state.isPreviewing ? ( //非展示状态显示textarea
                         <textarea
-                            value={this.state.value}
-                            onChange={(e) => { 
-                                this.handleTextareaChange(e.target.value);
-                            }}
-                            onInput={(e) => {
-                                this.redoStack = []; //用户输入内容后清空重做堆栈
-                            }}
+                            value={ this.state.value }
+                            onChange={ e => this.handleTextareaChange(e.target.value) }
+                            onInput={ e => this.redoStack = [] /*用户输入内容后清空重做堆栈*/ }
                             onFocus={() => {
                                 this.clearAllShown(); //点击后隐藏扩展与标签
                             }}
-                            onBlur={(e) => {
+                            onBlur={e => {
                                 let target: any = e.target;
                                 //textarea失去焦点时记录用户选中内容
                                 this.handleTextareaBlur(target.selectionStart, target.selectionEnd);
                             }}
-                            onDrop={e=>{
+                            onDrop={e => {
                                 e.preventDefault();
                                 this.handleUpload(e.dataTransfer.files);
                             }}
@@ -460,7 +454,7 @@ export class UbbEditor extends React.Component<Props, State> {
                                 //记录滚动条位置
                                 this.setState({scrollTop: (e.target as any).scrollTop});
                             }}
-                            onKeyDown={(e) => {
+                            onKeyDown={e => {
                                 if (e.ctrlKey && e.key === 'z') {
                                     //Ctrl+Z撤销
                                     e.preventDefault();
@@ -477,7 +471,7 @@ export class UbbEditor extends React.Component<Props, State> {
                                     }
                                 }
                             }}
-                            ref={(textarea) => {
+                            ref={textarea => {
                                 //取得对textarea的引用，方便调用选中与聚焦的方法
                                 this.content = textarea;
                             }}

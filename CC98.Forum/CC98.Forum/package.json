@@ -21,10 +21,11 @@
     "react-router-dom": "4.1.2",
     "react-router-redux": "^5.0.0-alpha.9",
     "redux": "3.7.2",
+    "redux-thunk": "2.2.0",
     "signalr": "2.2.2",
+    "spectrum-colorpicker": "^1.8.0",
     "ssri": "^4.1.6",
-    "url-join": "2.0.2",
-    "redux-thunk": "2.2.0"
+    "url-join": "2.0.2"
   },
   "devDependencies": {
     "@types/core-js": "0.9.43",
