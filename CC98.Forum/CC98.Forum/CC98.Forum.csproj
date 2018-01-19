@@ -76,6 +76,7 @@
     <None Remove="UbbCode.tsx" />
     <None Remove="Ubb\AcTagHandler.tsx" />
     <None Remove="Ubb\AlignTagHandler.tsx" />
+    <None Remove="Ubb\AudioTagHandler.tsx" />
     <None Remove="Ubb\BTagHandler.tsx" />
     <None Remove="Ubb\CenterTagHandler.tsx" />
     <None Remove="Ubb\CodeTagHandler.tsx" />
@@ -90,7 +91,6 @@
     <None Remove="Ubb\LineTagHandler.tsx" />
     <None Remove="Ubb\mahjongTagHandler.tsx" />
     <None Remove="Ubb\mdTagHandler.tsx" />
-    <None Remove="Ubb\MP3TagHandler.tsx" />
     <None Remove="Ubb\NoUbbTagHandler.tsx" />
     <None Remove="Ubb\PmTagHandler.tsx" />
     <None Remove="Ubb\RightTagHandler.tsx" />
@@ -179,7 +179,7 @@
     <TypeScriptCompile Include="Ubb\LineTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\MahjongTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\MdTagHandler.tsx" />
-    <TypeScriptCompile Include="Ubb\MP3TagHandler.tsx" />
+    <TypeScriptCompile Include="Ubb\AudioTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\NoUbbTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\PmTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\RightTagHandler.tsx" />

@@ -73,6 +73,7 @@ const config: webpack.Configuration = {
             { from: 'node_modules/@aspnet/signalr-client/dist/browser', to: 'static/scripts/lib/signalr-client/' },
             { from: 'node_modules/spectrum-colorpicker/spectrum.js', to: 'static/scripts/lib/spectrum/spectrum.js' },
             { from: 'node_modules/url-join/', to: 'static/scripts/lib/url-join/' },
+			{ from: 'node_modules/aplayer/dist/', to: 'static/scripts/lib/aplayer/' }
         ]),
         new ExtractTextPlugin('static/content/site.min.css')
     ]

@@ -12,7 +12,7 @@ import { ColorTagHandler } from './ColorTagHandler';
 import { UrlTagHandler } from './URLTagHandler';
 import { UTagHandler } from './UTagHandler';
 import { DelTagHandler } from './DelTagHandler';
-import { MP3TagHandler } from './MP3TagHandler';
+import { AudioTagHandler } from './AudioTagHandler';
 import { CursorTagHandler } from './CursorTagHandler';
 import { EnglishTagHandler } from './EnglishTagHandler';
 import { UserTagHandler } from './UserTagHandler';
@@ -56,7 +56,7 @@ export function createEngine(): Ubb.UbbCodeEngine {
 	engine.handlers.register(UrlTagHandler);
 	engine.handlers.register(UTagHandler);
 	engine.handlers.register(DelTagHandler);
-	engine.handlers.register(MP3TagHandler);
+	engine.handlers.register(AudioTagHandler);
 	engine.handlers.register(CursorTagHandler);
 	engine.handlers.register(EnglishTagHandler);
 	engine.handlers.register(UserTagHandler);

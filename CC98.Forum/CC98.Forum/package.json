@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@aspnet/signalr-client": "1.0.0-alpha2-final",
+    "aplayer": "^1.6.0",
     "blueimp-canvas-to-blob": "3.14.0",
     "bootstrap": "3.3.7",
     "codemirror": "5.32.0",
@@ -50,12 +51,8 @@
     "extract-text-webpack-plugin": "3.0.0",
     "font-awesome": "4.7.0",
     "node-sass": "^4.7.2",
-    "react-redux-typescript": "3.0.0-rc.3",
     "sass-loader": "6.0.6",
-    "spectrum": "1.0.1",
-    "typesafe-actions": "1.1.2",
     "typescript": "2.6.1",
-    "typescript-fsa": "2.5.0",
     "unminified-webpack-plugin": "1.2.0",
     "webpack": "3.4.1",
     "whatwg-fetch": "2.0.3"
