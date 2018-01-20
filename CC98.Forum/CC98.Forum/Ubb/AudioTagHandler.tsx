@@ -20,13 +20,7 @@ export class AudioTagHandler extends Ubb.TextTagHandler {
             return innerContent;
         } 
 
-        //是否自动播放
-        let autoPlay = false;
-        if ((tagData.value('mp3') === '1' || tagData.value('audio') === '1') && context.options.allowAutoPlay === true) {
-            autoPlay = true;
-        }
-        
-        return <AudioComponent src={innerContent} autoPlay={autoPlay} />;
+        return <AudioComponent src={innerContent} />;
 	}
 }
 
@@ -35,10 +29,6 @@ interface IProps {
      * 音频文件地址
      */
     src: string;
-    /**
-     * 是否自动播放
-     */
-    autoPlay: boolean;
 }
 class AudioComponent extends React.Component<IProps> {
     /**
@@ -52,13 +42,13 @@ class AudioComponent extends React.Component<IProps> {
     componentDidMount() {
         var ap = new APlayer({
             element: this.div,
-            autoplay: this.props.autoPlay,
-            narrow: false,
-            showlrc: 0,
+            autoplay: false,
+            preload: 'metadata',
             music: {
-                url: this.props.src,
-                title: this.props.src,
-                author: ''
+                url: encodeURI(this.props.src),
+                title: encodeURI(this.props.src),
+                author: '',
+                pic: '/static/images/audio_cover.png'
             }
         });
         //去掉文件名后面的横杠
@@ -67,6 +57,6 @@ class AudioComponent extends React.Component<IProps> {
     
     render() {
         //重置继承自article的whiteSpace
-        return <div className="aplayer" style={{ whiteSpace: 'normal' }} ref={it => this.div = it}></div>;
+        return <div className="aplayer" style={{ whiteSpace: 'normal', width: '30rem' }} ref={it => this.div = it}></div>;
     }
 }
