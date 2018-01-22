@@ -88,6 +88,7 @@ export const getRecentPosts:ActionCreator<ThunkAction<Promise<Action>, RootState
         //显示其中10条
         while(i--){
             //store中记录所有的主题
+            posts[i].boardName = await Utility.getBoardName(posts[i].boardId);
             recentPosts[(page - 1) * 10 + i] = posts[i];
         }
         dispatch(Actions.changeUserRecentPosts(recentPosts));
