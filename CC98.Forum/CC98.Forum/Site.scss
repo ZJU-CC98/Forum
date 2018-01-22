@@ -1236,7 +1236,7 @@ a {
     display: flex;
     flex-grow: 1;
     flex-shrink: 0;
-    min-height: 674px;
+    height: 674px;
 }
 
 .message-message-people {
@@ -1298,6 +1298,8 @@ a {
             border-bottom: 1px dashed lightgray;
             cursor: pointer;
             position: relative;
+            overflow-y: auto;
+            overflow-x: hidden; 
 
             &:hover {
                 @extend .message-message-pFocus;
