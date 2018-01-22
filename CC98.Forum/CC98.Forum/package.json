@@ -8,6 +8,7 @@
     "blueimp-canvas-to-blob": "3.14.0",
     "bootstrap": "3.3.7",
     "codemirror": "5.32.0",
+    "dplayer": "^1.21.0",
     "editor.md": "^1.5.0",
     "es6-promise": "4.1.1",
     "history": "4.7.2",

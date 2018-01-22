@@ -13,6 +13,7 @@ import { UrlTagHandler } from './URLTagHandler';
 import { UTagHandler } from './UTagHandler';
 import { DelTagHandler } from './DelTagHandler';
 import { AudioTagHandler } from './AudioTagHandler';
+import { VideoTagHandler } from './VideoTagHandler';
 import { CursorTagHandler } from './CursorTagHandler';
 import { EnglishTagHandler } from './EnglishTagHandler';
 import { UserTagHandler } from './UserTagHandler';
@@ -57,6 +58,7 @@ export function createEngine(): Ubb.UbbCodeEngine {
 	engine.handlers.register(UTagHandler);
 	engine.handlers.register(DelTagHandler);
 	engine.handlers.register(AudioTagHandler);
+	engine.handlers.register(VideoTagHandler);
 	engine.handlers.register(CursorTagHandler);
 	engine.handlers.register(EnglishTagHandler);
 	engine.handlers.register(UserTagHandler);
