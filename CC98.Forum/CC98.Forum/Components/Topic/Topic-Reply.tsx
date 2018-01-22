@@ -168,7 +168,7 @@ export class FloorSize extends React.Component<{isHot:boolean, floor: number }> 
                 return <div className="reply-floor">{this.props.floor}</div>;
             }
         } else {
-            return <div style={{ backgroundColor: "rgv(251,97,101)" }} className="reply-floor"><img style={{ width: "20px", height: "30px", paddingTop:"5px" }} src="/static/images/hot.png" /></div>;
+            return <div style={{ backgroundColor: "red" }} className="reply-floor"><img style={{ width: "20px", height: "30px", paddingTop:"5px" }} src="/static/images/hot.png" /></div>;
         }
       
     }
