@@ -7,6 +7,7 @@ import { MessagePersonInfo } from '../../Props/MessagePersonInfo';
 import { MessagePerson } from './MessagePerson';
 import { MessageWindow } from './MessageWindow';
 import * as Utility from '../../Utility';
+import DocumentTitle from '../DocumentTitle';
 
 /**
  * 我的私信，包括最近联系人列表和聊天窗口两个组件
@@ -137,6 +138,7 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
             //console.log("条件2");
             //创建联系人列表和聊天窗口
             return (<div className="message-message">
+                <DocumentTitle title={`CC98论坛-我的私信`} />
                 <div className="message-message-people">
                     <div className="message-message-pTitle">近期私信</div>
                     <div className="message-message-pList">

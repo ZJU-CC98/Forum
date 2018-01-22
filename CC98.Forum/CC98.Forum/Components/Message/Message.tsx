@@ -6,6 +6,7 @@ import { MessageAttme } from './MessageAttme';
 import { MessageSystem } from './MessageSystem';
 import { MessageSetting } from './MessageSetting';
 import * as Utility from '../../Utility';
+import DocumentTitle from '../DocumentTitle';
 import {
     BrowserRouter as Router,
     Route,
@@ -24,6 +25,7 @@ export class Message extends React.Component<{}, AppState> {
         } 
 
         return (<div className="message-root">
+                    <DocumentTitle title={`CC98论坛-我的消息`} />
                     <div className="message">
                             <div className="message-title">我的消息</div>
                             <Router>

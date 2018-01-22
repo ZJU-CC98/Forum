@@ -7,6 +7,7 @@ import { MessageResponseProps } from '../../Props/MessageResponseProps';
 import { MessageResponsebox } from './MessageResponsebox';
 import * as Utility from '../../Utility';
 import { Pager } from '../Pager';
+import DocumentTitle from '../DocumentTitle';
 
 /**
  * 回复我的消息
@@ -59,6 +60,7 @@ export class MessageResponse extends React.Component<{match}, MessageResponseSta
 
     render() {
         return (<div className="message-right">
+            <DocumentTitle title={`CC98论坛-回复我的`} />
             <div className="message-response">{this.state.data.map(this.coverMessageResponse)}</div>
             <div className="message-pager"><Pager url="/message/response/" page={this.state.from} totalPage={this.state.totalPage} /></div>
                 </div>);

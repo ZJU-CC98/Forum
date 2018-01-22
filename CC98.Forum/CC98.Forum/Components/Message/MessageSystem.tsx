@@ -7,6 +7,7 @@ import { MessageSystemProps } from '../../Props/MessageSystemProps';
 import { MessageSystembox } from './MessageSystembox';
 import * as Utility from '../../Utility';
 import { Pager } from '../Pager';
+import DocumentTitle from '../DocumentTitle';
 
 /**
  * 系统消息
@@ -57,6 +58,7 @@ export class MessageSystem extends React.Component<{}, MessageSystemState> {
 
     render() {
         return (<div className="message-right">
+            <DocumentTitle title={`CC98论坛-系统通知`} />
             <div className="message-system">{this.state.data.map(this.coverMessageSystem)}</div>
             <div className="message-pager"><Pager url="/message/system/" page={this.state.from} totalPage={this.state.totalPage} /></div>
         </div>);

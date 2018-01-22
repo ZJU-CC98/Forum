@@ -3,6 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
 import * as Utility from '../../Utility';
+import DocumentTitle from '../DocumentTitle';
 
 export class MessageSetting extends React.Component {
 
@@ -17,6 +18,7 @@ export class MessageSetting extends React.Component {
 
     render() {
         return <div className="message-right">
+            <DocumentTitle title={`CC98论坛-消息设置`} />
             <div className="message-setting">
                 <div className="message-settingbox">
                     <div className="redioTitle">是否显示回复通知</div>

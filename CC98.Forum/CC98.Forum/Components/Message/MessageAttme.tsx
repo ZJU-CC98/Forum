@@ -7,6 +7,7 @@ import { MessageResponseProps } from '../../Props/MessageResponseProps';
 import { MessageAttmebox } from './MessageAttmebox';
 import * as Utility from '../../Utility';
 import { Pager } from '../Pager';
+import DocumentTitle from '../DocumentTitle';
 
 /**
  * @我的消息
@@ -58,6 +59,7 @@ export class MessageAttme extends React.Component<{match}, MessageResponseState>
 
     render() {
         return (<div className="message-right">
+                    <DocumentTitle title={`CC98论坛-@我的`} />
                     <div className="message-response">{this.state.data.map(this.coverMessageAttme)}</div>
                     <div className="message-pager"><Pager url="/message/attme/" page={this.state.from} totalPage={this.state.totalPage} /></div>
                 </div>);
