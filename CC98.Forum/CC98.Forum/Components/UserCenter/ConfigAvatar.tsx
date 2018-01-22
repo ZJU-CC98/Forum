@@ -469,7 +469,7 @@ class UserCenterConfigAvatar extends React.Component<Props, States> {
 				<div className="user-center-config-avatar">
 					<img src={this.state.avatarNow}></img>
 					<div>
-						<button id="chooseDefaultAvatar" type="button" onClick={() => this.setState({ choosingDefault: true, info: '暂时只有两枚' })}>选择论坛头像</button>
+						<button id="chooseDefaultAvatar" type="button" onClick={() => this.setState({ choosingDefault: true, info: '暂时只有四枚' })}>选择论坛头像</button>
 						<div>
                             <input onChange={e => { this.handleChange(e); e.target.value = ""; }} id="uploadAvatar" type="file" accept="image/*" style={style} />
 							<label htmlFor="uploadAvatar" onClick={() => this.setState({ choosingDefault: false })}><p>选择本地图片</p></label>
@@ -491,9 +491,8 @@ class UserCenterConfigAvatar extends React.Component<Props, States> {
 						<img onLoad={(e) => { this.handleIMGLoad((e as any).target.naturalWidth, (e as any).target.naturalHeight, (e as any).target); }} style={style} src={this.state.avatarURL} />
 					</div>
 					<div style={{ width: '100%', height: `${this.state.divheight}px`, transitionDuration: '.5s' }}></div>
-					<div style={this.state.choosingDefault ? { display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'center' } : { display: 'none' }}>
-						<img style={{ margin: '3rem', cursor: 'pointer' }} onClick={this.setDefaultAvatar} src="/static/images/default_avatar_boy.png" />
-						<img style={{ margin: '3rem', cursor: 'pointer' }} onClick={this.setDefaultAvatar} src="/static/images/default_avatar_girl.png" />
+					<div style={this.state.choosingDefault ? { display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'center', flexWrap: 'wrap' } : { display: 'none' }}>
+						{['default_avatar_boy.png', 'default_avatar_girl.png', 'default_avatar_boy2.jpg', 'default_avatar_girl2.jpg'].map(item => <img style={{ margin: '3rem 5rem', cursor: 'pointer', height: '10rem', width: '10rem' }} onClick={this.setDefaultAvatar} src={`/static/images/${item}`} />)}
 					</div>
 				</div>
 			</div>
