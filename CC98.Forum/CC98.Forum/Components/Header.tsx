@@ -133,7 +133,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
                         onMouseOut={(e) => { this.handleMouseEvent(e.type, 'message'); }}
                         onMouseOver={(e) => { this.handleMouseEvent(e.type, 'message'); }}
                     >
-                        <Link to="/message" className="messageTopBar">
+                        <Link to="/message/response" className="messageTopBar">
                             <div className="topBarBell"> <i className="fa fa-bell-o"></i></div>
                             <div className="message-counter displaynone" id="unreadCount-totalCount">{totalCount}</div>
                         </Link>

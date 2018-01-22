@@ -2780,3 +2780,30 @@ export function quoteJudger(content: string) {
         return false;
     }
 }
+
+/**
+ * 一键已读
+ */
+export async function readAll() {
+    let path = location.pathname;
+    let url = null;
+    const headers = await formAuthorizeHeader();
+    if (path === "/message/response") {
+        url = "/notification/read-all-reply";
+    }
+    else if (path === "/message/attme") {
+        url = "/notification/read-all-at";
+    }
+    else if (path === "/message/system") {
+        url = "/notification/read-all-system";
+    }
+    else if (path === "/message") {
+        url = "/notification/read-all-reply";
+    }
+    else {
+        return null;
+    }
+    const response = await cc98Fetch(url, { method: "PUT", headers, body: '' });
+    refreshUnReadCount();
+    return null;
+}

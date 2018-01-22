@@ -17,7 +17,7 @@ import {
  * 网站的主页面对象。
  */
 export class Message extends React.Component<{}, AppState> {
-    
+
     render() {
         let unreadCount = { totalCount: 0, replyCount: 0, atCount: 0, systemCount: 0, messageCount: 0 };
         if (Utility.getStorage("unreadCount")) {
@@ -26,7 +26,10 @@ export class Message extends React.Component<{}, AppState> {
 
         return (<div className="message-root">
                     <DocumentTitle title={`CC98论坛-我的消息`} />
-                    <div className="message">
+            <div className="message">
+                <div className="readAllMessage">
+                    <button className="message-message-wPostBtn" onClick={Utility.readAll}>全部标为已读</button>
+                </div>
                             <div className="message-title">我的消息</div>
                             <Router>
                                 <div className="message-content">
