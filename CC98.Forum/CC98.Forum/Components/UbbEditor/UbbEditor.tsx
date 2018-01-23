@@ -124,8 +124,19 @@ export class UbbEditor extends React.Component<Props, State> {
             });
             let data: string[] = await res.json();
             if (res.status === 200) {
-                //根据mimetype选择不同的tag
-                data.map((item, index) => this.handleButtonClick(this.getFileType(files[index].type), item));
+                //根据type选择不同的tag
+                data.map((item, index) => {
+                    //图片与音频上传直接使用相应标签
+                    //文件上传先根据扩展名判断，没有结果则根据mimetype判断
+                    let tagName: string;
+                    switch(extendTagName) {
+                        case 'img': 
+                        case 'audio': tagName = extendTagName; break;
+                        default: tagName = this.getTagNameByName(files[index].name.toLocaleLowerCase()) || this.getTagNameByType(files[index].type);
+                    }
+                    this.handleButtonClick(tagName, item);
+                });
+                //清空filelist
                 this.uploadInput.value = '';
             }else {
                 throw new Error(`上传文件失败`);
@@ -142,10 +153,30 @@ export class UbbEditor extends React.Component<Props, State> {
         }
     }
 
-    //根据mimetype判断文件类型
-    getFileType(mimeType: string) {
+    /**
+     * 根据扩展名判断文件类型
+     * @param fileName 文件名
+     */
+    getTagNameByName(fileName: string) {
+        let names = fileName.split('.');
+        //没有扩展名
+        if(names.length === 1) return null;
+        //最后一项为扩展名
+        let extendName = names.pop();
+        //根据不同扩展名返回不同tag
+        if(this.option.videoExtendNames.indexOf(extendName) !== -1) return 'video';
+        if(this.option.audioExtendNames.indexOf(extendName) !== -1) return 'audio';
+        if(this.option.imageExtendNames.indexOf(extendName) !== -1) return 'img';
+        return null;
+    }
+
+    /**
+     * 根据mimetype判断文件类型
+     * @param type 文件的type
+     */
+    getTagNameByType(type: string) {
         try{
-            switch(mimeType.match(/\w+/)[0]) {
+            switch(type.match(/\w+/)[0]) {
                 case "image": return 'img';
                 case "video": return 'video';
                 case "audio": return 'audio';
@@ -347,6 +378,13 @@ export class UbbEditor extends React.Component<Props, State> {
 
     render() {
         const { height, textSize, submit } = this.option;
+
+        let acceptType: string;
+        switch(this.state.extendTagName) {
+            case 'img': acceptType = 'image/*'; break;
+            case 'audio': acceptType = 'audio/*'; break;
+            default: acceptType = '*';
+        }
         
         return (
             <div className="ubb-editor" style={{ maxHeight: `${height + 6.125}rem` }}>
@@ -414,8 +452,8 @@ export class UbbEditor extends React.Component<Props, State> {
                         onClick={(e) => { e.stopPropagation(); }}
                         ref={(it) => { this.input = it; /*取得对input的引用，方便focus*/ }}
                     />
-                    {/*仅针对img标签显示上传本地图片*/}
-                    {this.state.extendTagName === 'img' ? <label onClick={(e) => { e.stopPropagation(); }} className="fa-upload" htmlFor="upload" title="上传本地图片"></label> : null}
+                    {/*仅针对img与audio标签显示上传本地图片*/}
+                    {this.state.extendTagName === 'img' || this.state.extendTagName === 'audio' ? <label onClick={(e) => { e.stopPropagation(); }} className="fa-upload" htmlFor="upload" title="上传本地文件"></label> : null}
                     <button className="fa-check" type="button" onClick={(e) => { e.stopPropagation(); this.handleButtonClick(this.state.extendTagName, this.state.extendValue) }}></button>
                     <button className="fa-remove" type="button" onClick={() => { this.setState({ clicked: true }); }}></button>
                     {this.state.extendTagName === 'img' ? <p style={{ color: 'gray', fontSize: '0.75rem', flexGrow: 1, textAlign: 'center' }}>也可以直接将图片文件拖曳到下面的文本区进行上传</p> : null}
@@ -423,7 +461,7 @@ export class UbbEditor extends React.Component<Props, State> {
                     <input
                         type="file"
                         id="upload"
-                        accept={ this.state.extendTagName === 'img' ? "image/*" : "" }
+                        accept={acceptType}
                         style={{ display: 'none' }}
                         onClick={ e =>  e.stopPropagation() }
                         onChange={ e =>  this.handleUpload(e.target.files) }

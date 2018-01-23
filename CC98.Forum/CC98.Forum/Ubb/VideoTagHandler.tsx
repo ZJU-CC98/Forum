@@ -31,12 +31,16 @@ class VideoComponent extends React.Component<IProps> {
      * 对div的引用
      */
     div: HTMLDivElement;
+    /**
+     * 对播放器的引用
+     */
+    dp: any;
 
     /**
      * 组件加载后初始化播放器
      */
     componentDidMount() {
-        var dp = new DPlayer({
+        this.dp = new DPlayer({
             element: this.div,
             autoplay: false,
             preload: 'metadata',
@@ -44,6 +48,14 @@ class VideoComponent extends React.Component<IProps> {
                 url: encodeURI(this.props.src)
             }
         });
+
+        this.dp.on('abort', e => null);
+
+        this.div.getElementsByClassName('dplayer-menu')[0].innerHTML = '<div class="dplayer-menu-item"><a target="_blank" href="https://github.com/MoePlayer/DPlayer">关于 DPlayer 播放器</a></div>';
+    }
+
+    componentWillUnmount() {
+        this.div.innerHTML = '';
     }
     
     render() {
