@@ -35,12 +35,16 @@ class AudioComponent extends React.Component<IProps> {
      * 对div的引用
      */
     div: HTMLDivElement;
+    /**
+     * 对播放器的引用
+     */
+    ap: any;
 
     /**
      * 组件加载后初始化播放器
      */
     componentDidMount() {
-        var ap = new APlayer({
+        this.ap = new APlayer({
             element: this.div,
             autoplay: false,
             preload: 'metadata',
@@ -53,6 +57,10 @@ class AudioComponent extends React.Component<IProps> {
         });
         //去掉文件名后面的横杠
         this.div.getElementsByClassName('aplayer-author')[0].innerHTML = '';
+    }
+
+    componentWillUnmount() {
+        this.ap.destroy();
     }
     
     render() {

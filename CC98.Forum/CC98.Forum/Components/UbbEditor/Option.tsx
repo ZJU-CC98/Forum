@@ -39,4 +39,16 @@ export default class {
      * 插入文本后是否换行
      */
     shouldEnter?: string[] = ['img', 'video', 'audio', 'upload'];
+    /**
+     * 所处理的视频后缀
+     */
+    videoExtendNames?: string[] = [];
+    /**
+     * 所处理的音频后缀
+     */
+    audioExtendNames?: string[] = ['wav', 'mp3', 'aac', 'ogg'];
+    /**
+     * 所处理的图片后缀
+     */
+    imageExtendNames?: string[] = [];
 }
