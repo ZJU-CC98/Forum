@@ -46,7 +46,7 @@ export default class {
     /**
      * 所处理的音频后缀
      */
-    audioExtendNames?: string[] = ['wav', 'mp3', 'aac', 'ogg'];
+    audioExtendNames?: string[] = ['wav', 'mp3', 'aac', 'ogg', 'm4a'];
     /**
      * 所处理的图片后缀
      */
