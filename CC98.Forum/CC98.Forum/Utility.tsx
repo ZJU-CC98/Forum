@@ -2787,17 +2787,30 @@ export function quoteJudger(content: string) {
 export async function readAll() {
     let path = location.pathname;
     let url = null;
+    let unreadCount = getStorage("unreadCount");
     const headers = await formAuthorizeHeader();
     if (path === "/message/response") {
+        if (unreadCount.replyCount === 0) {
+            return null;
+        }
         url = "/notification/read-all-reply";
     }
     else if (path === "/message/attme") {
+        if (unreadCount.atCount === 0) {
+            return null;
+        }
         url = "/notification/read-all-at";
     }
     else if (path === "/message/system") {
+        if (unreadCount.systemCount === 0) {
+            return null;
+        }
         url = "/notification/read-all-system";
     }
     else if (path === "/message") {
+        if (unreadCount.replyCount === 0) {
+            return null;
+        }
         url = "/notification/read-all-reply";
     }
     else {
