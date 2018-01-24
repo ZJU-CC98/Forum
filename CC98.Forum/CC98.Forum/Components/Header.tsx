@@ -9,7 +9,7 @@ import * as $ from 'jquery';
 import { connect } from 'react-redux';
 import * as Actions from '../Actions/UserCenter';
 import { Link, withRouter, Route } from 'react-router-dom';
-import SignalR from '../SignalR';
+//import SignalR from '../SignalR';
 
 class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { hoverElement: string, unreadCount: { totalCount: number, replyCount: number, atCount: number, systemCount: number, messageCount: number } }> {   //顶部条的下拉菜单组件
     constructor(props) {
@@ -34,11 +34,11 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
          * SignalR的开始与结束全部由header来控制
          * 其他组件只负责添加handler即可
          */
-        SignalR.addListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
-        SignalR.addListener('NotifyNotificationReceive', this.handleNotifyMessageReceive);
-        if (this.props.isLogOn) {
+        //SignalR.addListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
+        //SignalR.addListener('NotifyNotificationReceive', this.handleNotifyMessageReceive);
+        //if (this.props.isLogOn) {
             // SignalR.start();
-        }
+        //}
         /**
          * 第一次加载的时候获取初始状态
          */
@@ -47,8 +47,8 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
     }
 
     componentWillUnmount() {
-        SignalR.removeListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
-        SignalR.removeListener('NotifyNotificationReceive', this.handleNotifyMessageReceive);
+        //SignalR.removeListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
+        //SignalR.removeListener('NotifyNotificationReceive', this.handleNotifyMessageReceive);
     }
 
     async handleNotifyMessageReceive() {
@@ -66,7 +66,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
             //	SignalR.start();
         } else if (!nextProps.isLogOn) {
             //如果用户注销则关闭signalR链接
-            SignalR.stop();
+            //SignalR.stop();
         }
     }
 

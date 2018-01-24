@@ -15,6 +15,10 @@ async function initialize() {
 
 	await Constants.loadConfig();
 
+	//输出一些没用的东西
+	console.info('%c       ', 'font-size: 100px; background: url(http://cdn.nyanit.com/nyan2.gif) no-repeat;');
+	console.info('%cCC98 Durian', 'font-size: 80px; fontFamily: Big');
+
 	// 显示应用程序核心内容
 	ReactDOM.render(
 		<Provider store={store}>

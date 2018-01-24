@@ -60,6 +60,6 @@ class VideoComponent extends React.Component<IProps> {
     
     render() {
         //重置继承自article的whiteSpace
-        return <div className="aplayer" style={{ whiteSpace: 'normal' }} ref={it => this.div = it}></div>;
+        return <div style={{ display: 'flex' }}><div className="aplayer" style={{ whiteSpace: 'normal', height: '28.8984375rem' }} ref={it => this.div = it}></div></div>;
     }
 }
