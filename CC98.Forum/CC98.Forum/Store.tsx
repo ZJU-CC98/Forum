@@ -1,31 +1,16 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+﻿import createHistory from 'history/createBrowserHistory';
+import { routerMiddleware, routerReducer as router, RouterState } from 'react-router-redux';
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import thunk from './node_modules/redux-thunk/es/index';
+
+import * as UserCenterActions from './Actions/UserCenter';
 import error, { ErrorStore } from './Reducers/Error';
 import post, { TopicState } from './Reducers/Post';
 import userInfo, { UserInfoStore } from './Reducers/UserInfo';
-import * as UserCenterActions from './Actions/UserCenter';
-//import { getReturnOfExpression, getType } from 'react-redux-typescript';
-import { routerReducer as router, RouterState, routerActions, routerMiddleware } from 'react-router-redux';
-import createHistory from 'history/createBrowserHistory';
 
 function values<T>(o: { [s: string]: T }): T[] {
-    return Object.keys(o).map(key => o[key]);
-};
-
-///**
-// * Action构造函数的集合
-// */
-//const Actions = { ...UserCenterActions };
-//const returnOfActions = values(Actions).map(getReturnOfExpression);
-
-///**
-// * 全部action的类型定义
-// */
-//export type RootAction = typeof returnOfActions[number];
+    return Object.keys(o).map((key) => o[key]);
+}
 
 /**
  * 全局store的类型定义
@@ -43,8 +28,8 @@ export interface RootState {
 const reducer = combineReducers<RootState>({
     error,
     post,
+    router,
     userInfo,
-    router
 });
 
 export const history = createHistory();
