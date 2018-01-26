@@ -3,7 +3,7 @@ import { routerMiddleware, routerReducer as router, RouterState } from 'react-ro
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import thunk from './node_modules/redux-thunk/es/index';
 
-import * as UserCenterActions from './Actions/UserCenter';
+import * as UserActions from './Actions/UserCenter';
 import error, { ErrorStore } from './Reducers/Error';
 import post, { TopicState } from './Reducers/Post';
 import userInfo, { UserInfoStore } from './Reducers/UserInfo';
@@ -21,6 +21,10 @@ export interface RootState {
     userInfo: UserInfoStore;
     router: RouterState;
 }
+
+function getReturn<T>( creator: (...args: any[]) => T): T { return };
+const actionTypes = values(UserActions).map(getReturn);
+export type RootAction = typeof actionTypes[number]; 
 
 /**
  * 合并reducer
