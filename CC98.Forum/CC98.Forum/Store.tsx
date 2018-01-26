@@ -23,7 +23,13 @@ export interface RootState {
 }
 
 function getReturn<T>( creator: (...args: any[]) => T): T { return };
-const actionTypes = values(UserActions).map(getReturn);
+
+const Actions = { ...UserActions };
+const actionTypes = values(Actions).map(getReturn);
+
+/**
+ * 全部Action的类型定义
+ */
 export type RootAction = typeof actionTypes[number]; 
 
 /**
