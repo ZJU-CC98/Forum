@@ -146,12 +146,11 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
                 <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} />
             </div>
             {topicInfo}
-
             <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} boardInfo={this.state.boardInfo} quote={this.quote} isHot={false} isTrace={false} userId={null} topicId={this.match.params.topicid} />
-       
-            <div style={{ display: "flex", width: "100%", justifyContent: "flex-end", marginTop: "3rem" }}><Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
+            <div className="row" style={{ width: "100%", justifyContent: "space-between", marginTop: "2rem" }}>
+                <Category topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} topicId={this.match.params.topicid} />
+                <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
             {sendTopic}
-
         </div>
             ;
         return topicHtml;
