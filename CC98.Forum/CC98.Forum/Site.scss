@@ -1454,7 +1454,7 @@ a {
         border-top: 1px solid $color-border;
         border-right: 1px solid $color-border;
         display: flex;
-        flex-direction: column-reverse;
+        flex-direction: column;
         overflow-y: auto;
         overflow-x: hidden;
 
@@ -1472,6 +1472,11 @@ a {
                 color: $color-thinBlack;
                 text-align: center;
                 padding: 10px 0px 21px 0px;
+            }
+
+            .message-message-wcLoadingMore{
+                @extend .message-message-wcLoadingText;
+                cursor: pointer;
             }
         }
 

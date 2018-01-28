@@ -771,7 +771,6 @@ export async function getRecentMessage(userId: number, from: number, size: numbe
             //window.location.href = "/status/ServerError";
         }
         let response1 = await response.json();
-
         let recentMessage = sortRecentMessage(response1);
         return recentMessage;
     } catch (e) {
@@ -2365,10 +2364,11 @@ export async function refreshUnReadCount() {
     if (unreadCount.totalCount > 0) {
         $('#unreadCount-totalCount').removeClass('displaynone');
         $('#unreadCount-totalCount').text(unreadCount.totalCount);
-
     }
     else {
         $('#unreadCount-totalCount').addClass('displaynone');
+        setStorage("unreadCount", unreadCount);
+        return unreadCount;
     }
     if (unreadCount.replyCount > 0) {
         $('#unreadCount-replyCount').removeClass('displaynone');
