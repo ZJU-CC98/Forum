@@ -355,6 +355,11 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
  * @param curPage
  */
 export async function getAllNewTopic(from: number, router) {
+    //如果未登录,直接跳转至登录页面
+    if (!isLogOn()) {
+        window.location.href = "/status/LogOut";
+        return null;
+    }
     try {
         /**
          * 一次性可以获取20个主题
@@ -368,18 +373,15 @@ export async function getAllNewTopic(from: number, router) {
          * 通过api获取到主题之后转成json格式
          */
         const response = await cc98Fetch(`/topic/new?from=${from}&size=${size}`, { headers });
-        if (response.status === 401) {
-            window.location.href = "/status/UnauthorizedTopic";
-        }
-
-        if (response.status === 403) {
-            window.location.href = "/status/OperationForbidden";
-        }
-        if (response.status === 404) {
-            window.location.href = "/status/NotFoundTopic";
-        }
-        if (response.status === 500) {
-            window.location.href = "/status/ServerError";
+        switch (response.status) {
+            case 401:
+                 window.location.href = "/status/UnauthorizedTopic";
+            case 403:
+                window.location.href = "/status/OperationForbidden";
+            case 404:
+                window.location.href = "/status/NotFoundTopic";
+            case 500:
+                window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
         //console.log("获取到的数据", newTopic);
@@ -471,6 +473,11 @@ export async function getAllNewTopic(from: number, router) {
  * @param curPage
  */
 export async function getFocusTopic(boardId: number, boardName: string, from: number, router) {
+    //如果未登录,直接跳转至登录页面
+    if (!isLogOn()) {
+        window.location.href = "/status/LogOut";
+        return null;
+    }
     try {
         /**
          * 一次性可以获取20个主题
@@ -493,17 +500,15 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
         else {
             response = await cc98Fetch(`/board/${boardId}/topic?from=${from}&size=${size}`, { headers });
         }
-        if (response.status === 401) {
-            window.location.href = "/status/UnauthorizedTopic";
-        }
-        if (response.status === 403) {
-            window.location.href = "/status/OperationForbidden";
-        }
-        if (response.status === 404) {
-            //window.location.href = "/status/NotFoundTopic";
-        }
-        if (response.status === 500) {
-            window.location.href = "/status/ServerError";
+        switch (response.status) {
+            case 401:
+                window.location.href = "/status/UnauthorizedTopic";
+            case 403:
+                window.location.href = "/status/OperationForbidden";
+            case 404:
+                window.location.href = "/status/NotFoundTopic";
+            case 500:
+                window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
         let aTopic = [];
@@ -699,8 +704,7 @@ export async function getBoardName(boardId: number) {
 */
 
 export function isLogOn(): boolean {
-    const token = getLocalStorage("userName");
-
+    const token = getLocalStorage("userInfo");
     return !!token;
 }
 
@@ -708,6 +712,11 @@ export function isLogOn(): boolean {
 * 获取最近N个联系人的信息
 */
 export async function getRecentContact(from: number, size: number, router) {
+    //如果未登录,直接跳转至登录页面
+    if (!isLogOn()) {
+        window.location.href = "/status/LogOut";
+        return null;
+    }
     try {
         const headers = await formAuthorizeHeader();
         let response = await cc98Fetch(`/message/recent-contact-users?from=${from}&size=${size}`, { headers });
@@ -754,6 +763,11 @@ export async function getRecentContact(from: number, size: number, router) {
 * 获取最近N个联系人的信息
 */
 export async function getRecentMessage(userId: number, from: number, size: number, router) {
+    //如果未登录,直接跳转至登录页面
+    if (!isLogOn()) {
+        window.location.href = "/status/LogOut";
+        return null;
+    }
     try {
         const headers = await formAuthorizeHeader();
         let response = await cc98Fetch(`/message/user/${userId}?from=${from}&size=${size}`, { headers });
@@ -964,18 +978,15 @@ export async function sortContactList(recentContact, router) {
                 let flag = 1;
                 try {
                     response0 = await cc98Fetch(`/user/name/${chatManName}`);
-                    if (response0.status === 401) {
-                        window.location.href = "/status/UnauthorizedTopic";
-                    }
-
-                    if (response0.status === 403) {
-                        window.location.href = "/status/OperationForbidden";
-                    }
-                    if (response0.status === 404) {
-                        window.location.href = "/status/NotFoundTopic";
-                    }
-                    if (response0.status === 500) {
-                        window.location.href = "/status/ServerError";
+                    switch (response0.status) {
+                        case 401:
+                            window.location.href = "/status/Logout";;
+                        case 403:
+                            window.location.href = "/status/OperationForbidden";
+                        case 404:
+                            window.location.href = "/status/NotFoundTopic";
+                        case 500:
+                            window.location.href = "/status/ServerError";
                     }
                     response1 = await response0.json();
                 } catch (e) {
@@ -1013,20 +1024,16 @@ export async function sortContactList(recentContact, router) {
                     let flag = 1;
                     try {
                         response0 = await cc98Fetch(`/user/name/${chatManName}`);
-                        if (response0.status === 401) {
-                            window.location.href = "/status/UnauthorizedTopic";
+                        switch (response0.status) {
+                            case 401:
+                                window.location.href = "/status/UnauthorizedTopic";;
+                            case 403:
+                                window.location.href = "/status/OperationForbidden";
+                            case 404:
+                                window.location.href = "/status/NotFoundTopic";
+                            case 500:
+                                window.location.href = "/status/ServerError";
                         }
-
-                        if (response0.status === 403) {
-                            window.location.href = "/status/OperationForbidden";
-                        }
-                        if (response0.status === 404) {
-                            window.location.href = "/status/NotFoundTopic";
-                        }
-                        if (response0.status === 500) {
-                            window.location.href = "/status/ServerError";
-                        }
-                        response1 = await response0.json();
                     } catch (e) {
                         window.location.href = ("/status/Disconnected");
                         flag = 0;
@@ -1091,21 +1098,18 @@ export async function getLikeState(topicid, router) {
         const topic = await getTopic(topicid);
         const postId = topic.postId;
         const response = await cc98Fetch(`/post/${postId}/like`, { headers });
-        if (response.status === 401) {
-            window.location.href = "/status/UnauthorizedTopic";
+        switch (response.status) {
+            case 401:
+                window.location.href = "/status/UnauthorizedTopic";;
+            case 403:
+                window.location.href = "/status/OperationForbidden";
+            case 404:
+                window.location.href = "/status/NotFoundTopic";
+            case 500:
+                window.location.href = "/status/ServerError";
         }
-        if (response.status === 403) {
-            window.location.href = "/status/OperationForbidden";
-        }
-        if (response.status === 404) {
-            window.location.href = "/status/NotFoundTopic";
-        }
-        if (response.status === 500) {
-            window.location.href = "/status/ServerError";
-        } else {
-            const data = await response.json();
-            return data;
-        }
+        const data = await response.json();
+        return data;
     } catch (e) {
         //window.location.href = "/status/Disconnected";
     }
@@ -1114,17 +1118,15 @@ export async function refreshLikeState(topicId, postId) {
     try {
         const headers = await formAuthorizeHeader();
         const response = await cc98Fetch(`/post/${postId}/like`, { headers });
-        if (response.status === 401) {
-            window.location.href = "/status/UnauthorizedTopic";
-        }
-        if (response.status === 403) {
-            window.location.href = "/status/OperationForbidden";
-        }
-        if (response.status === 404) {
-            window.location.href = "/status/NotFoundTopic";
-        }
-        if (response.status === 500) {
-            window.location.href = "/status/ServerError";
+        switch (response.status) {
+            case 401:
+                window.location.href = "/status/UnauthorizedTopic";
+            case 403:
+                window.location.href = "/status/OperationForbidden";
+            case 404:
+                window.location.href = "/status/NotFoundTopic";
+            case 500:
+                window.location.href = "/status/ServerError";
         }
         const data = await response.json();
         return data;
@@ -1152,20 +1154,17 @@ export async function sendTopic(topicId, router) {
             body: contentJson
         }
         );
-        if (mes.status === 401) {
-            window.location.href = "/status/Logout";
-        }
-        if (mes.status === 402) {
-            window.location.href = "/status/ContentNeeded";
-        }
-        if (mes.status === 403) {
-            window.location.href = "/status/OperationForbidden";
-        }
-        if (mes.status === 404) {
-            window.location.href = "/status/NotFoundTopic";
-        }
-        if (mes.status === 500) {
-            window.location.href = "/status/ServerError";
+        switch (mes.status) {
+            case 401:
+                window.location.href = "/status/Logout";
+            case 402:
+                window.location.href = "/status/ContentNeeded";
+            case 403:
+                window.location.href = "/status/OperationForbidden";
+            case 404:
+                window.location.href = "/status/NotFoundTopic";
+            case 500:
+                window.location.href = "/status/ServerError";
         }
     } catch (e) {
         //window.location.href = "/status/Disconnected";
@@ -1429,7 +1428,11 @@ export async function getSaveTopics(curPage, boardId) {
  * @param rouer
  */
 export async function getSearchTopic(boardId: number, words: string[], from: number, router) {
-
+    //如果未登录,直接跳转至登录页面
+    if (!isLogOn()) {
+        window.location.href = "/status/LogOut";
+        return null;
+    }
     if (words) {
         const headers = await formAuthorizeHeader();
         let keyword = words[0];
@@ -1445,6 +1448,16 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                 const response = await cc98Fetch(`/topic/search?keyword=${encodeURIComponent(keyword)}&size=${size}&from=${from}`, {
                     headers: headers
                 });
+                switch (response.status) {
+                    case 401:
+                        window.location.href = "/status/UnauthorizedTopic";
+                    case 403:
+                        window.location.href = "/status/OperationForbidden";
+                    case 404:
+                        window.location.href = "/status/NotFoundTopic";
+                    case 500:
+                        window.location.href = "/status/ServerError";
+                }
                 newTopic = await response.json();
             }
             catch (e) {
@@ -1456,6 +1469,18 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                 const response = await cc98Fetch(`/topic/search/board/${boardId}?keyword=${encodeURIComponent(keyword)}&size=${size}&from=${from}`, {
                     headers: headers
                 });
+                if (response.status === 401) {
+                    window.location.href = "/status/LogOut";
+                }
+                if (response.status === 403) {
+                    window.location.href = "/status/OperationForbidden";
+                }
+                if (response.status === 404) {
+                    window.location.href = "/status/NotFoundTopic";
+                }
+                if (response.status === 500) {
+                    window.location.href = "/status/ServerError";
+                }
                 newTopic = await response.json();
             } catch (e) {
                 return -1;
@@ -2210,18 +2235,30 @@ export async function getTopicInfo(topicId) {
     const response = await cc98Fetch(url, { headers });
     switch (response.status) {
         case 401:
-            return 'unauthorized';
+            //如果未登录,直接返回未登录
+            if (!isLogOn()) {
+                window.location.href = "/status/LogOut";
+                return null;
+            }
+            else {
+                window.location.href = "/status/UnauthorizedTopic";
+                return null;
+            }
+        case 403:
+            window.location.href = "/status/OperationForbidden";
+            return null;
         case 404:
-            return 'not found';
+            window.location.href = "/status/NotFoundTopic";
+            return null;
         case 500:
-            return 'server error';
+            window.location.href = "/status/ServerError";
+            return null;
     }
 
     const data = await response.json();
     return data;
 }
 export async function getBoardInfo(boardId) {
-
     const headers = await formAuthorizeHeader();
     const url = `/board/${boardId}`;
     const response = await cc98Fetch(url, { headers });
@@ -2248,17 +2285,22 @@ export async function getUserInfo(userId) {
     const headers = await formAuthorizeHeader();
     const url = `/user/${userId}`;
     const response = await cc98Fetch(url, { headers });
-    if (response.status === 401) {
-        window.location.href = "/status/UnauthorizedTopic";
-    }
-    if (response.status === 403) {
-        window.location.href = "/status/OperationForbidden";
-    }
-    if (response.status === 404) {
-        window.location.href = "/status/NotFoundTopic";
-    }
-    if (response.status === 500) {
-        window.location.href = "/status/ServerError";
+    switch (response.status) {
+        case 401:
+            //如果未登录,直接返回未登录
+            if (!isLogOn()) {
+                window.location.href = "/status/LogOut";
+                return null;
+            }
+            else {
+                window.location.href = "/status/UnauthorizedTopic";
+            }
+        case 403:
+            window.location.href = "/status/OperationForbidden";
+        case 404:
+            window.location.href = "/status/NotFoundTopic";
+        case 500:
+            window.location.href = "/status/ServerError";
     }
     const data = await response.json();
     const key1 = `userName_${data.name}`;
@@ -2272,17 +2314,22 @@ export async function getUserInfoByName(userName) {
     const headers = await formAuthorizeHeader();
     const url = `/user/name/${encodeURIComponent(userName)}`;
     const response = await cc98Fetch(url, { headers });
-    if (response.status === 401) {
-        window.location.href = "/status/UnauthorizedTopic";
-    }
-    if (response.status === 403) {
-        window.location.href = "/status/OperationForbidden";
-    }
-    if (response.status === 404) {
-        window.location.href = "/status/NotFoundTopic";
-    }
-    if (response.status === 500) {
-        window.location.href = "/status/ServerError";
+    switch (response.status) {
+        case 401:
+            //如果未登录,直接返回未登录
+            if (!isLogOn()) {
+                window.location.href = "/status/LogOut";
+                return null;
+            }
+            else {
+                window.location.href = "/status/UnauthorizedTopic";
+            }
+        case 403:
+            window.location.href = "/status/OperationForbidden";
+        case 404:
+            window.location.href = "/status/NotFoundTopic";
+        case 500:
+            window.location.href = "/status/ServerError";
     }
     const data = await response.json();
     const key1 = `userId_${data.id}`;
@@ -2360,6 +2407,10 @@ export async function getFavState(topicId) {
 
 //更新未读消息数量
 export async function refreshUnReadCount() {
+    //如果未登录,直接不获取未读消息数目
+    if (!isLogOn()) {
+        return 0;
+    }
     const headers = await formAuthorizeHeader();
     const url = `/me/unread-count`;
     const response = await cc98Fetch(url, { headers });

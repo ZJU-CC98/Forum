@@ -2216,7 +2216,7 @@ a {
         -o-user-select: none; /* 以上两个属性目前并未支持，写在这里为了减少风险 */
     }
     /*
-    登录页用
+    topic页用
 */
     .login {
         display: flex;
@@ -2332,7 +2332,7 @@ a {
         animation-iteration-count: infinite;
         animation-direction: alternate;
     }
-    //------------------------登录页到此结束----------------------------------
+    //------------------------topic页到此结束----------------------------------
     #sendTopic {
         border: #CCCCCC solid thin;
         display: flex;
