@@ -125,6 +125,11 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
                 MessageClassName = "topBarMessageDetails-mainPage";
             }
 
+            //获取签到状态
+            let signinInfo = "签到";
+            if (Utility.getLocalStorage("signin")) {
+                signinInfo = "已签到";
+            }
             return (<div className="topBarRight">
                 <div className="topBarUserInfo">
                     <div
@@ -161,7 +166,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
                     <ul style={{ display: 'inherit' }}>
                         <Link to="/usercenter"> <li>个人中心</li></Link>
                         {admin}
-                        <Link to="/signin"><li>签到</li></Link>
+                        <Link to="/signin"><li>{signinInfo}</li></Link>
                         <li onClick={this.logOff.bind(this)}>注销</li>
                     </ul>
                 </div>
