@@ -2889,6 +2889,71 @@ export function atHanderler(content: string) {
 }
 
 /**
+ * 给ubb模式下的@添加链接指向个人中心
+ * @param content
+ */
+export function atUserUbbUrl(content: string) {
+    const reg = /@[^ \n]{1,10}?[ \n]/g;
+    const reg2 = /[^@ ]+/;
+    if (content === '') {
+        return content;
+    }
+    else if (content.match(reg)) {   //如果match方法返回了非null的值（即数组），则说明内容中存在合法的@
+        let atNum = content.match(reg).length;  //合法的@数
+        if (atNum > 10) atNum = 10;            //至多10个
+        let ats: string[] = new Array();
+        for (let i = 0; i < atNum; i++) {
+            //提取@字符串
+            let anAt = content.match(reg)[i];
+            //提取@的用户名
+            let aUserName = reg2.exec(anAt)[0];
+            ats[i] = aUserName;
+        }
+        for (let i = 0; i < atNum; i++) {
+            //给@用户名加上效果
+            let atText = `@${ats[i]}`;
+            content = content.replace(atText, `[url="/user/name/${ats[i]}"]${atText}[/url]`);
+        }
+        return content;
+    } else {
+        return content;
+    }
+}
+
+/**
+ *  给markdown模式下的@添加链接指向个人中心
+ * @param content
+ */
+export function atUserMdUrl(content: string) {
+    const reg = /@[^ \n]{1,10}?[ \n]/g;
+    const reg2 = /[^@ ]+/;
+    if (content === '') {
+        return content;
+    }
+    else if (content.match(reg)) {   //如果match方法返回了非null的值（即数组），则说明内容中存在合法的@
+        let atNum = content.match(reg).length;  //合法的@数
+        if (atNum > 10) atNum = 10;            //至多10个
+        let ats: string[] = new Array();
+        for (let i = 0; i < atNum; i++) {
+            //提取@字符串
+            let anAt = content.match(reg)[i];
+            //提取@的用户名
+            let aUserName = reg2.exec(anAt)[0];
+            ats[i] = aUserName;
+        }
+        for (let i = 0; i < atNum; i++) {
+            //给@用户名加上效果
+            let atText = `@${ats[i]}`;
+            content = content.replace(atText, `[${atText}](/user/name/${ats[i]} "${atText}")`);
+        }
+        return content;
+    } else {
+        return content;
+    }
+
+}
+
+/**
  * 判断是否存在引用内容
  * @param content
  */
