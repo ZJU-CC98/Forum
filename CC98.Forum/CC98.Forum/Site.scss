@@ -27,6 +27,25 @@ body {
     font-family: 微软雅黑;
 }
 
+.urlStyle {
+    /* 未访问的链接 */
+    &:link {
+        color: blue;
+    }
+    /* 已访问的链接 */
+    &:visited {
+        color: purple;
+    }
+    /* 鼠标移动到链接上 */
+    &:hover {
+        text-decoration: underline
+    }
+    /* 选定的链接 */
+    &:active {
+        color: red;
+    }
+}
+
 .postRoot {
     display: flex;
     flex-direction: column;

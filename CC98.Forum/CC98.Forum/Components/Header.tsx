@@ -421,6 +421,11 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
 export const Search = withRouter(SearchBeforeConnent);
 
 export class Header extends React.Component<{}, AppState> {
+    //更新一下未读消息
+    async refreshUnReadCount() {
+        await Utility.refreshUnReadCount();
+    }
+
     render() {
         let pathname = location.pathname;
         if (pathname === "/") {
@@ -428,8 +433,8 @@ export class Header extends React.Component<{}, AppState> {
                 <div className="topBar-mainPage">
                     <div className="topBarRow">
                         <div className="row" style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                            <div className="topBarLogo"><Link to="/"><img src="/static/images/98LOGO.ico" /></Link></div>
-                            <div className="topBarCC98"><Link to="/">CC98论坛</Link></div>
+                            <div className="topBarLogo" onClick={this.refreshUnReadCount}><Link to="/"><img src="/static/images/98LOGO.ico" /></Link></div>
+                            <div className="topBarCC98" onClick={this.refreshUnReadCount}><Link to="/">CC98论坛</Link></div>
                             <div className="topBarText">|</div>
                             <div className="topBarText"><Link to="/boardList">版面列表</Link></div>
                             <div className="topBarText"><Link to="/newTopics">新帖</Link></div>

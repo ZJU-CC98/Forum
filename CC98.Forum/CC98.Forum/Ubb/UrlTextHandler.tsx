@@ -16,6 +16,6 @@ export default class UrlTextHandler extends Ubb.UbbTextHandler {
 
 	exec(match: RegExpMatchArray, context: Ubb.UbbCodeContext): React.ReactNode {
 		const content = match[0];
-		return context.options.autoDetectUrl ? <a href={content}>{content}</a> : content;
+        return context.options.autoDetectUrl ? <a href={content} target="_blank" className="urlStyle">{content}</a> : content;
 	}
 }
