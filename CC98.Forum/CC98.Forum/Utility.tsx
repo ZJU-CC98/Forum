@@ -838,7 +838,6 @@ export function transerRecentTime(time) {
     let thatTime = thatDate.getTime();
     let thisDate = new Date();
     let thisTime = new Date().getTime();
-    console.log("发帖日期时间戳", thatTime, "现在的时间戳", thisTime, "时间戳差", thisTime - thatTime);
     let delta = (new Date(new Date().toLocaleDateString()).getTime() + 86400000 - thatTime) / 1000;
     let month: any = thatDate.getMonth() + 1;
     if (month < 10) { month = `0${month}`; }
@@ -862,12 +861,12 @@ export function transerRecentTime(time) {
         let strTime = `${hours}:${min}:${sec}`;
         return `昨天 ${strTime}`;
     }
-    else if (thisTime - thatTime > 3600) {
+    else if (thisTime - thatTime > 3600000) {
         let strTime = `${hours}:${min}:${sec}`;
         return `今天 ${strTime}`;
     }
     else if (thisTime - thatTime > 0) {
-        let min0: any = (thisTime - thatTime) / 60;
+        let min0: any = (thisTime - thatTime) / 60000;
         min = parseInt(min0);
         return `${min}分钟前`;
     }
