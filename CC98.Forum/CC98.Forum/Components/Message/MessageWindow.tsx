@@ -270,7 +270,7 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
         let data = this.props.data;
         if (data) {
             return (<div className="message-message-window">
-                <DocumentTitle title={`与 ${data.name} 的私信`} />
+                <DocumentTitle title={`与 ${data.name} 的私信-CC98论坛`} />
                 <div className="message-message-wHeader">
                     <div className="message-message-wReport"></div>
                     <div className="message-message-wTitle">与 {data.name} 的私信</div>

@@ -18,7 +18,7 @@ export class MessageSetting extends React.Component {
 
     render() {
         return <div className="message-right">
-            <DocumentTitle title={`CC98论坛-消息设置`} />
+            <DocumentTitle title={`消息设置-CC98论坛`} />
             <div className="message-setting">
                 <div className="message-settingbox">
                     <div className="redioTitle">是否显示回复通知</div>
