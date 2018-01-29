@@ -325,16 +325,13 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
                 }
                 else if (searchBoxSelect.text() === '版面') {
                     let host = window.location.host;
-                    let boardResult = await Utility.getBoardId(val);
+                    let boardResult = await Utility.getSearchBoard(val, this.context.router);
                     if (boardResult) {
                         if (boardResult === []) {
                             Utility.removeStorage('searchInfo');
                             this.props.history.push('/search');
                         }
-                        else if (boardResult.length === 1) {
-                            this.props.history.push(`/list/${boardResult[0].id}`);
-                        }
-                        else if (boardResult.length > 1) {
+                        else if (boardResult.length > 0) {
                             Utility.setStorage("searchBoardInfo", boardResult);
                             this.props.history.push('/searchBoard');
                         }
