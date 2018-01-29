@@ -1,4 +1,3 @@
-//import { createAction } from 'typesafe-actions';
 import * as ActionTypes from '../ActionTypes';
 import * as Appstate from '../States/AppState';
 import { createAction } from './ActionCreator';
