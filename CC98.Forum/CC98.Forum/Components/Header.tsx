@@ -127,7 +127,8 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
 
             //获取签到状态
             let signinInfo = "签到";
-            if (Utility.getLocalStorage("signin")) {
+            let userInfo = Utility.getLocalStorage("userInfo");
+            if (Utility.getLocalStorage(`signin_${userInfo.id}`)) {
                 signinInfo = "已签到";
             }
             return (<div className="topBarRight">
