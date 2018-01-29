@@ -4,6 +4,7 @@
 import * as React from 'react';
 import { FocusBoard } from '../../Props/FocusBoard';
 import * as Utility from '../../Utility';
+import DocumentTitle from '../DocumentTitle';
 /**
  * 表示我搜索到的版面列表区域
  */
@@ -13,6 +14,7 @@ export class SearchBoard extends React.Component {
     render() {
         let data = Utility.getStorage("searchBoardInfo");
         return (<div className="focus-root">
+            <DocumentTitle title={`搜索结果 - CC98论坛`} />
                     <div className="focus">
                         <div className="focus-title"><i className="fa fa-home" aria-hidden="true"></i>搜索/版面</div>
                         <div className="focus-board-area">

@@ -2,6 +2,7 @@
 import LogOn from './LogOn';
 import { Link } from 'react-router-dom';
 import * as Utility from '../Utility';
+import DocumentTitle from './DocumentTitle';
 export class LogOut extends React.Component<{}, {}>{
     render() {
         //return <div style={{
@@ -11,6 +12,7 @@ export class LogOut extends React.Component<{}, {}>{
         //    <Link to="/logon"><button>登录</button></Link>
         //</div>;
         return <div className="errorState" >
+            <DocumentTitle title={`您未登录 - CC98论坛`} />
             <div>
                 <img className="errorIcon" src="/static/images/401.png"></img>
             </div>
@@ -23,6 +25,7 @@ export class LogOut extends React.Component<{}, {}>{
 export class TopicDeleted extends React.Component<{}, {}>{
     render() {
         return <div className="errorState" >
+            <DocumentTitle title={`帖子被删除了 - CC98论坛`} />
             <div>
                 <img className="errorIcon" src="/static/images/404.png"></img>
             </div>
@@ -35,12 +38,16 @@ export class TopicDeleted extends React.Component<{}, {}>{
 }
 export class Disconnected extends React.Component<{}, {}>{
     render() {
-        return <div>网络连接中断</div>;
+        return <div>
+            <DocumentTitle title={`网络中断 - CC98论坛`} />
+            <div>网络连接中断</div>
+        </div>;
     }
 }
 export class UnauthorizedBoard extends React.Component<{}, {}>{
     render() {
         return <div className="errorState" >
+            <DocumentTitle title={`您没有权限进入这个版面 - CC98论坛`} />
             <div>
                 <img className="errorIcon" src="/static/images/401.png"></img>
             </div>
@@ -54,6 +61,7 @@ export class UnauthorizedBoard extends React.Component<{}, {}>{
 export class UnauthorizedTopic extends React.Component<{}, {}>{
     render() {
         return <div className="errorState" >
+            <DocumentTitle title={`您没有权限进入这个主题 - CC98论坛`} />
             <div>
                 <img className="errorIcon" src="/static/images/401.png"></img>
             </div>
@@ -68,6 +76,7 @@ export class UnauthorizedTopic extends React.Component<{}, {}>{
 export class UnauthorizedOperation extends React.Component<{}, {}>{
     render() {
         return <div className="errorState" >
+            <DocumentTitle title={`您没有权限执行这个操作 - CC98论坛`} />
             <div>
                 <img className="errorIcon" src="/static/images/401.png"></img>
             </div>
@@ -82,6 +91,7 @@ export class NotFoundBoard extends React.Component<{}, {}>{
 
     render() {
         return <div className="errorState" >
+            <DocumentTitle title={`版面不存在 - CC98论坛`} />
             <div>
                 <img className="errorIcon" src="/static/images/404.png"></img>
             </div>
@@ -96,6 +106,7 @@ export class NotFoundTopic extends React.Component<{}, {}>{
 
     render() {
         return <div className="errorState" >
+            <DocumentTitle title={`帖子不存在 - CC98论坛`} />
             <div>
                 <img className="errorIcon" src="/static/images/404.png"></img>
             </div>
@@ -109,6 +120,7 @@ export class NotFoundTopic extends React.Component<{}, {}>{
 export class NotFoundUser extends React.Component<{}, {}>{
     render() {
         return <div className="errorState" >
+            <DocumentTitle title={`用户不存在 - CC98论坛`} />
             <div>
                 <img className="errorIcon" src="/static/images/404.png"></img>
             </div>
@@ -122,6 +134,7 @@ export class NotFoundUser extends React.Component<{}, {}>{
 export class ServerError extends React.Component<{}, {}>{
     render() {
         return <div className="errorState" >
+            <DocumentTitle title={`服务器发送错误 - CC98论坛`} />
             <div>
                 <img className="errorIcon" src="/static/images/500.png"></img>
             </div>
@@ -134,12 +147,16 @@ export class ServerError extends React.Component<{}, {}>{
 }
 export class ContentNeeded extends React.Component<{}, {}>{
     render() {
-        return <div className="errorText">402需要输入内容</div>
+        return <div>
+            <DocumentTitle title={`请输入内容 - CC98论坛`} />
+            <div className="errorText">402需要输入内容</div>
+            </div>
     }
 }
 export class OperationForbidden extends React.Component<{}, {}>{
     render() {
         return <div className="errorState" >
+            <DocumentTitle title={`操作失败或被拒绝 - CC98论坛`} />
             <div>
                 <img className="errorIcon" src="/static/images/403.png"></img>
             </div>
@@ -152,6 +169,7 @@ export class OperationForbidden extends React.Component<{}, {}>{
 }
 export const PageNotFound = () => (
     <div className="errorState" >
+        <DocumentTitle title={`页面不存在 - CC98论坛`} />
         <div>
             <img className="errorIcon" src="/static/images/404.png"></img>
         </div>

@@ -6,6 +6,7 @@ import { SearchTopicSingle } from './SearchTopicSingle';
 import { SearchState } from '../../States/SearchState';
 import * as Utility from '../../Utility';
 import { FocusTopic } from '../../Props/FocusTopic';
+import DocumentTitle from '../DocumentTitle';
 
 /**
  * 表示搜索结果的帖子列表
@@ -110,6 +111,7 @@ export class Search extends React.Component<{}, SearchState> {
     
     render() {
         return (<div className="focus-root">
+            <DocumentTitle title={`搜索结果 - CC98论坛`} />
                     <div className="focus" >
                             <div className="focus-allNewTopic"><i className="fa fa-home" aria-hidden="true"></i>搜索/{this.state.boardName}</div>
                             <div className="focus-topic-area" id="focus-topic-area">
