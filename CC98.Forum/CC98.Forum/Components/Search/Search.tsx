@@ -7,7 +7,13 @@ import { SearchState } from '../../States/SearchState';
 import * as Utility from '../../Utility';
 import { FocusTopic } from '../../Props/FocusTopic';
 import DocumentTitle from '../DocumentTitle';
+import {
+    BrowserRouter as Router,
+    Route,
+    Link,
 
+    withRouter
+} from 'react-router-dom';
 /**
  * 表示搜索结果的帖子列表
  */
@@ -113,7 +119,7 @@ export class Search extends React.Component<{}, SearchState> {
         return (<div className="focus-root">
             <DocumentTitle title={`搜索结果 - CC98论坛`} />
                     <div className="focus" >
-                            <div className="focus-allNewTopic"><i className="fa fa-home" aria-hidden="true"></i>搜索/{this.state.boardName}</div>
+                            <Category />
                             <div className="focus-topic-area" id="focus-topic-area">
                     <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
                     <div className="focus-topic-getMore" onClick={this.getMore} id="focus-topic-getMore">
@@ -134,4 +140,15 @@ export class Search extends React.Component<{}, SearchState> {
 
 function coverFocusPost(item: FocusTopic) {
     return <SearchTopicSingle title={item.title} hitCount={item.hitCount} id={item.id} boardId={item.boardId} boardName={item.boardName} replyCount={item.replyCount} userId={item.userId} userName={item.userName} portraitUrl={item.portraitUrl} time={item.time} likeCount={item.likeCount} dislikeCount={item.dislikeCount} lastPostUser={item.lastPostUser} lastPostTime={item.lastPostTime} tag1={item.tag1} tag2={item.tag2} floorCount={item.floorCount} />;
+}
+
+export class Category extends React.Component {
+
+    render() {
+        return <div className="row" style={{ alignItems: "baseline", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>
+            <Link style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} to={"/"}>首页</Link>
+            <i className="fa fa-chevron-right"></i>
+            <div style={{ color: "grey", fontSize: "1rem", marginLeft: "0.5rem", marginRight: "0.5rem" }}>搜索主题</div>
+        </div>;
+    }
 }
