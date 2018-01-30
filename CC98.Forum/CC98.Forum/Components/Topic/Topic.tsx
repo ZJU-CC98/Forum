@@ -66,7 +66,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         const floor = (topicInfo.replyCount + 1) % 10;
         //检查用户是否设置跳转到最新回复
         let noticeSetting = Utility.getLocalStorage("noticeSetting");
-        if (noticeSetting.postSetting) {
+        if (noticeSetting.post === "是") {
             if (page !== newPage) {
                 page = newPage;
                 const url = `/topic/${topicInfo.id}/${page}#${floor}`;

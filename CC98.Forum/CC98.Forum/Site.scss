@@ -3050,16 +3050,16 @@ a {
         .message-settingbox {
             display: flex;
             flex-direction: row;
-            height: 40px;
-            line-height: 40px;
-            font-size: 16px;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            font-size: 1rem;
             font-family: "微软雅黑";
             color: black;
             flex-shrink: 0;
             margin: 1.5rem 0 0 5rem;
 
-            .redioTitle {
-                width: 130px;
+            .radioTitle {
+                width: 12rem;
             }
 
             input {
@@ -3068,10 +3068,10 @@ a {
         }
 
         .message-setting-btn {
-            width: 100px;
-            height: 30px;
-            line-height: 30px;
-            margin: 3rem 0rem 0rem 9rem;
+            width: 7rem;
+            height: 2rem;
+            line-height: 1.8rem;
+            margin: 2rem 0rem 0rem 9rem;
         }
     }
 
