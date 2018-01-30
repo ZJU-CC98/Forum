@@ -66,13 +66,19 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         const floor = (topicInfo.replyCount + 1) % 10;
         //检查用户是否设置跳转到最新回复
         let noticeSetting = Utility.getLocalStorage("noticeSetting");
-        if (noticeSetting.post === "是") {
-            if (page !== newPage) {
+        if (page !== newPage) {
+            if ((noticeSetting && noticeSetting.post === "是") || ((newPage == page + 1) && (floor == 1))) {
                 page = newPage;
-                const url = `/topic/${topicInfo.id}/${page}#${floor}`;
+                let url = `/topic/${topicInfo.id}/${page}#${floor}`;
                 this.setState({ quote: { userName: "", content: "", replyTime: "" } });
                 this.props.history.push(url);
             }
+        }
+        else {
+            page = newPage;
+            let url = `/topic/${topicInfo.id}/${page}#${floor}`;
+            this.setState({ quote: { userName: "", content: "", replyTime: "" } });
+            this.props.history.push(url);
         }
         const isFav = await Utility.getFavState(this.match.params.topicid);
         this.setState({ topicInfo: topicInfo, quote: {userName:"",content:"",replyTime:""},isFav:isFav});

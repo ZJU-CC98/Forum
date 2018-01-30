@@ -35,6 +35,7 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
     async componentWillReceiveProps(nextProps) {
         this.getData(nextProps);
     }
+
     //回到顶部
     scrollToTop() {
         $('body,html').animate({ scrollTop: 0 }, 500);
