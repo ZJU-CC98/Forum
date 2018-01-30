@@ -2476,10 +2476,28 @@ export async function refreshUnReadCount() {
     if (!isLogOn()) {
         return 0;
     }
+    //查看用户个人消息偏好设置
+    let noticeSetting = getLocalStorage("noticeSetting");
+    if (noticeSetting.response === "否" && noticeSetting.system === "否" && noticeSetting.message === "否" && noticeSetting.attme === "否") {
+        return null;
+    }
     const headers = await formAuthorizeHeader();
     const url = `/me/unread-count`;
     const response = await cc98Fetch(url, { headers });
     let unreadCount = await response.json();
+    //根据消息偏好设置修改未读消息数目
+    if (noticeSetting.response === "否") {
+        unreadCount.replyCount = 0;
+    }
+    if (noticeSetting.system === "否") {
+        unreadCount.systemCount = 0;
+    }
+    if (noticeSetting.message === "否") {
+        unreadCount.messageCount = 0;
+    }
+    if (noticeSetting.attme === "否") {
+        unreadCount.atCount = 0;
+    }
     unreadCount.totalCount = unreadCount.systemCount + unreadCount.atCount + unreadCount.replyCount + unreadCount.messageCount;
     //console.log("未读消息数量", unreadCount);
     if (unreadCount.totalCount > 0) {
