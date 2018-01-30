@@ -8,5 +8,6 @@ import { FocusTopic } from '../Props/FocusTopic';
 export class FocusTopicAreaState {
     data: FocusTopic[];
     from: number;
-    loading: boolean; 
+    loading: boolean;
+    buttonClassName: string;
 }

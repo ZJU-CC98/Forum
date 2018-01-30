@@ -32,7 +32,8 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
         this.state = {
             data: data,
             from: 0,
-            loading: true
+            loading: true,
+            buttonClassName: ''
         };
         this.handleScroll = this.handleScroll.bind(this);
     }
@@ -59,53 +60,71 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
     async componentWillUnmount() {
         document.removeEventListener('scroll', this.handleScroll);
     }
+    //回到顶部
+    scrollToTop() {
+        $('body,html').animate({ scrollTop: 0 }, 500);
+    }
 
     /**
      * 处理滚动的函数
      */
     async handleScroll() {
-            if (Utility.isBottom() && this.state.loading) {
-                /**
-                *查看新帖数目大于100条时不再继续加载
-                */
-                if (this.state.from > 99) {
-                    $('#focus-topic-loading').addClass('displaynone');
-                    $('#focus-topic-loaddone').removeClass('displaynone');
-                    return;
-                }
-                /**
-                *发出第一条fetch请求前将this.state.loading设置为false，防止后面重复发送fetch请求
-                */
-                this.setState({ loading: false });
-                try {
-                    var newData = await Utility.getAllNewTopic(this.state.from, this.context.router);
-                } catch (err) {
-                    /**
-                    *如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
-                    */
-                    this.setState({ loading: true });
-                    return;
-                }
-                /**
-                *如果正确获取到数据，则添加新数据，翻页+1，同时this.state.loading设置为true，后续才可以再次发送fetch请求
-                */
-                //拼接时防止出现重复帖子
-                if (newData && newData.length > 0) {
-                    let data = this.state.data;
-                    for (var i = 0; i < data.length; i++) {
-                        if (data[i].id === newData[0].id) {
-                            break;
-                        }
-                    }
-                    data = data.slice(0, i).concat(newData);
-                    this.setState({ data: data, from: data.length, loading: true });
-                    Utility.setStorage(`AllNewTopic`, data);
-                }
-                else {
-                    this.setState({ loading: true });
-                    return;
-                }
+        //控制回到顶部按钮出现
+        if (window.pageYOffset > 234) {
+            this.setState({
+                buttonClassName: 'btn-show'
+            });
+        }
+        //控制回到顶部按钮消失
+        if (window.pageYOffset < 234) {
+            this.setState(prevState => ({
+                buttonClassName: prevState.buttonClassName === '' ? '' : 'btn-disappare'
+            })
+            );
+        }
+        //控制获取新帖
+        if (Utility.isBottom() && this.state.loading) {
+            /**
+            *查看新帖数目大于100条时不再继续加载
+            */
+            if (this.state.from > 99) {
+                $('#focus-topic-loading').addClass('displaynone');
+                $('#focus-topic-loaddone').removeClass('displaynone');
+                return;
             }
+            /**
+            *发出第一条fetch请求前将this.state.loading设置为false，防止后面重复发送fetch请求
+            */
+            this.setState({ loading: false });
+            try {
+                var newData = await Utility.getAllNewTopic(this.state.from, this.context.router);
+            } catch (err) {
+                /**
+                *如果出错，直接结束这次请求，同时将this.state.loading设置为true，后续才可以再次发送fetch请求
+                */
+                this.setState({ loading: true });
+                return;
+            }
+            /**
+            *如果正确获取到数据，则添加新数据，翻页+1，同时this.state.loading设置为true，后续才可以再次发送fetch请求
+            */
+            //拼接时防止出现重复帖子
+            if (newData && newData.length > 0) {
+                let data = this.state.data;
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].id === newData[0].id) {
+                        break;
+                    }
+                }
+                data = data.slice(0, i).concat(newData);
+                this.setState({ data: data, from: data.length, loading: true });
+                Utility.setStorage(`AllNewTopic`, data);
+            }
+            else {
+                this.setState({ loading: true });
+                return;
+            }
+        }
     }
     /**
      * 将主题排列好
@@ -121,8 +140,9 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
                         <div className="focus-topic-loading" id="focus-topic-loading">
                             <i style={{ marginTop: "1rem" }} className="fa fa-spinner fa-pulse fa-5x fa-fw"></i></div>
                         <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">无法加载更多了，小水怡情，可不要沉迷哦~</div>
-                    </div>
+                    <button type="button" id="scrollToTop" className={this.state.buttonClassName} onClick={this.scrollToTop}>回到顶部</button>
                 </div>
+            </div>
             </div>);
     }
 }

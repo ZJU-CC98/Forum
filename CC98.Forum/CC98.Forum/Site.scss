@@ -1877,47 +1877,87 @@ a {
         }
     }
 
-    .focus-topic-area {
+.focus-topic-area {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.625rem;
+
+    .focus-topic-topicArea {
         display: flex;
         flex-direction: column;
-        margin-top: 0.625rem;
+    }
 
-        .focus-topic-topicArea {
-            display: flex;
-            flex-direction: column;
-        }
+    .focus-topic-getMore {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        cursor: pointer;
+        color: #6b7178;
+        justify-content: center;
 
-        .focus-topic-getMore {
-            display: flex;
-            flex-direction: column;
+        div {
+            margin-top: 10px;
             text-align: center;
-            cursor: pointer;
-            color: #6b7178;
-            justify-content: center;
-
-            div {
-                margin-top: 10px;
-                text-align: center;
-            }
-        }
-
-        .focus-topic-loading {
-            margin-top: 20px;
-            text-align: center;
-
-            img {
-                width: 200px;
-                height: 18px;
-            }
-        }
-
-        .focus-topic-loaddone {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 16px;
-            color: $color-black;
         }
     }
+
+    .focus-topic-loading {
+        margin-top: 20px;
+        text-align: center;
+
+        img {
+            width: 200px;
+            height: 18px;
+        }
+    }
+
+    .focus-topic-loaddone {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 16px;
+        color: $color-black;
+    }
+
+    button {
+        width: 5rem;
+        position: fixed;
+        bottom: 5%;
+        right: 13%;
+        height: 3rem;
+        border-radius: 1rem;
+        opacity: 0.5;
+        display: none;
+        z-index: 2;
+        margin: 0;
+        padding: 0.8rem;
+        border: 0;
+
+        &:hover {
+            opacity: 0.8;
+        }
+
+        &:active {
+            opacity: 1;
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .btn-show {
+        animation-name: fadeIn;
+        animation-duration: 1s;
+        display: inherit;
+    }
+
+    .btn-disappare {
+        display: inherit;
+        animation-name: fadeOut;
+        animation-duration: 500ms;
+        animation-fill-mode: forwards;
+    }
+}
 
     .focus-allNewTopic {
         color: #6b7178;

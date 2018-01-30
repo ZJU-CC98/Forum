@@ -10,4 +10,5 @@ export class SearchState {
     data: FocusTopic[];
     from: number;
     loading: boolean;
+    buttonClassName: string;
 }
