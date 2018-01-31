@@ -379,9 +379,9 @@ export async function getAllNewTopic(from: number, router) {
             case 403:
                 window.location.href = "/status/OperationForbidden";
             case 404:
-                window.location.href = "/status/NotFoundTopic";
+                //window.location.href = "/status/NotFoundTopic";
             case 500:
-                window.location.href = "/status/ServerError";
+                //window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
         //console.log("获取到的数据", newTopic);
@@ -506,9 +506,9 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
             case 403:
                 window.location.href = "/status/OperationForbidden";
             case 404:
-                window.location.href = "/status/NotFoundTopic";
+                //window.location.href = "/status/NotFoundTopic";
             case 500:
-                window.location.href = "/status/ServerError";
+                //window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
         let aTopic = [];
@@ -1453,9 +1453,9 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                     case 403:
                         window.location.href = "/status/OperationForbidden";
                     case 404:
-                        window.location.href = "/status/NotFoundTopic";
+                        //window.location.href = "/status/NotFoundTopic";
                     case 500:
-                        window.location.href = "/status/ServerError";
+                        //window.location.href = "/status/ServerError";
                 }
                 newTopic = await response.json();
             }

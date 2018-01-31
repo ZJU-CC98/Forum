@@ -73,6 +73,11 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
                 this.setState({ quote: { userName: "", content: "", replyTime: "" } });
                 this.props.history.push(url);
             }
+            else {
+                let url = `/topic/${topicInfo.id}/${page}`;
+                this.setState({ quote: { userName: "", content: "", replyTime: "" } });
+                this.props.history.push(url);
+            }
         }
         else {
             page = newPage;
@@ -80,6 +85,11 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
             this.setState({ quote: { userName: "", content: "", replyTime: "" } });
             this.props.history.push(url);
         }
+        $('#replySuccess').removeClass('displaynone');
+        $('#replySuccess').removeClass('replyDisplaynone');
+        setTimeout(function () {
+            $('#replySuccess').addClass('replyDisplaynone');
+        }, 2000);
         const isFav = await Utility.getFavState(this.match.params.topicid);
         this.setState({ topicInfo: topicInfo, quote: {userName:"",content:"",replyTime:""},isFav:isFav});
       
@@ -161,6 +171,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
                 <Category topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} topicId={this.match.params.topicid} />
                 <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
             {sendTopic}
+            <div className="replySuccess displaynone" id="replySuccess">回复成功</div>
         </div>
             ;
         return topicHtml;
