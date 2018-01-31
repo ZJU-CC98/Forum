@@ -25,6 +25,7 @@ import { NotFoundTopic, UnauthorizedTopic, ServerError } from '../Status';
 import { TopicInfo } from './Topic-TopicInfo';
 import { FindIP } from '../FindIP';
 import { Constants } from '../Constant';
+import { NoticeMessage } from '../NoticeMessage';
 import  DocumentTitle  from '../DocumentTitle';
 declare let moment: any;
 declare let editormd: any;
@@ -88,11 +89,8 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
             this.setState({ quote: { userName: "", content: "", replyTime: "" } });
             this.props.history.push(url);
         }
-        $('#replySuccess').removeClass('displaynone');
-        $('#replySuccess').removeClass('replyDisplaynone');
-        setTimeout(function () {
-            $('#replySuccess').addClass('replyDisplaynone');
-        }, 2000);
+        //回复成功提示
+        Utility.noticeMessageShow('replyMessage');
         const isFav = await Utility.getFavState(this.match.params.topicid);
         this.setState({ topicInfo: topicInfo, quote: {userName:"",content:"",replyTime:""},isFav:isFav});
       
@@ -129,15 +127,12 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         let IPData = [];
        // if (Utility.isMaster(boardInfo.boardMasters))
       //   IPData = await Utility.findIP(this.match.params.topicid);
-        this.setState({ isFav, page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo, fetchState: topicInfo,IPData:IPData });
-
-
+        this.setState({ isFav, page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo, fetchState: topicInfo, IPData: IPData });
     }
     getTotalPage(count) {
         return Utility.getTotalPageof10(count);
     }
-
-
+    
     render() {
         
         switch (this.state.fetchState) {
@@ -174,7 +169,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
                 <Category topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} topicId={this.match.params.topicid} />
                 <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
             {sendTopic}
-            <div className="replySuccess displaynone" id="replySuccess">回复成功</div>
+            <NoticeMessage text="回复成功" id="replyMessage" top="22%" left="45%" />
         </div>
             ;
         return topicHtml;

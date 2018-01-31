@@ -46,21 +46,18 @@ body {
     }
 }
 
-.replySuccess {
+.noticeSuccess {
     font-size: 1rem;
     width: 6rem;
     height: 2rem;
     line-height: 2rem;
     text-align: center;
-    position: fixed;
-    top: 22%;
-    left: 45%;
     background-color: darkgrey;
     opacity: 0.6;
     border-radius: 0.8rem;
 }
 
-.replySuccess.replyDisplaynone {
+.noticeSuccess.noticeDisplaynone {
     animation-name: fadeOut;
     animation-duration: 1s;
     animation-fill-mode: forwards;

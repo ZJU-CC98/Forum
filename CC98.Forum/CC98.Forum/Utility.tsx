@@ -3024,3 +3024,14 @@ export async function readAll() {
     refreshUnReadCount();
     return null;
 }
+
+/**
+ * 控制提示消息出现和消失
+ */
+export function noticeMessageShow(id: string) {
+    $(`#${id}`).removeClass('displaynone');
+    $(`#${id}`).removeClass('noticeDisplaynone');
+    setTimeout(function () {
+        $(`#${id}`).addClass('noticeDisplaynone');
+    }, 1500);
+}
