@@ -6,7 +6,14 @@ import { SearchTopicSingle } from './SearchTopicSingle';
 import { SearchState } from '../../States/SearchState';
 import * as Utility from '../../Utility';
 import { FocusTopic } from '../../Props/FocusTopic';
+import DocumentTitle from '../DocumentTitle';
+import {
+    BrowserRouter as Router,
+    Route,
+    Link,
 
+    withRouter
+} from 'react-router-dom';
 /**
  * 表示搜索结果的帖子列表
  */
@@ -20,9 +27,11 @@ export class Search extends React.Component<{}, SearchState> {
             words: [],
             data: [],
             from: 0,
-            loading: true
+            loading: true,
+            buttonClassName: ''
         }
         this.getMore = this.getMore.bind(this);
+        this.handleScroll = this.handleScroll.bind(this);
     }
 
     async getData(searchInfo: any, from: number) {
@@ -76,6 +85,9 @@ export class Search extends React.Component<{}, SearchState> {
             $('#focus-topic-loading').removeClass('displaynone');
             this.getData(searchInfo, 0);
         }
+
+        //滚动条监听
+        document.addEventListener('scroll', this.handleScroll);
     }
 
     async getMore() {
@@ -107,21 +119,43 @@ export class Search extends React.Component<{}, SearchState> {
         $('#focus-topic-area').addClass('displaynone');
         $('#showError').removeClass('displaynone');
     }
+
+    //监听滚动时间控制回到顶部按钮样式
+    handleScroll(e) {
+        if (window.pageYOffset > 234) {
+            this.setState({
+                buttonClassName: 'btn-show'
+            });
+        }
+
+        if (window.pageYOffset < 234) {
+            this.setState(prevState => ({
+                buttonClassName: prevState.buttonClassName === '' ? '' : 'btn-disappare'
+            })
+            );
+        }
+    }
+
+    //回到顶部
+    scrollToTop() {
+        $('body,html').animate({ scrollTop: 0 }, 500);
+    }
     
     render() {
         return (<div className="focus-root">
+            <DocumentTitle title={`搜索结果 - CC98论坛`} />
                     <div className="focus" >
-                            <div className="focus-allNewTopic"><i className="fa fa-home" aria-hidden="true"></i>搜索/{this.state.boardName}</div>
+                            <Category />
                             <div className="focus-topic-area" id="focus-topic-area">
-                    <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
-                    <div className="focus-topic-getMore" onClick={this.getMore} id="focus-topic-getMore">
+                                    <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
+                                    <div className="focus-topic-getMore" onClick={this.getMore} id="focus-topic-getMore">
                                         <div>点击获取更多搜索结果~</div>
                                         <div>······</div>
                                     </div>
-
                                     <div className="focus-topic-loading displaynone" id="focus-topic-loading"><img src="http://file.cc98.org/uploadfile/2017/12/20/6514723843.gif"></img></div>
                                     <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone"> 没有更多帖子啦~</div>
-                            </div>
+                    <button type="button" id="scrollToTop" className={this.state.buttonClassName} onClick={this.scrollToTop}>回到顶部</button>
+                </div>
                             <div id="noResult" className="noResult displaynone">没有符合条件的搜索结果</div>
                             <div id="showError" className="noResult displaynone">查询出错了，请刷新重试</div>
 
@@ -132,4 +166,15 @@ export class Search extends React.Component<{}, SearchState> {
 
 function coverFocusPost(item: FocusTopic) {
     return <SearchTopicSingle title={item.title} hitCount={item.hitCount} id={item.id} boardId={item.boardId} boardName={item.boardName} replyCount={item.replyCount} userId={item.userId} userName={item.userName} portraitUrl={item.portraitUrl} time={item.time} likeCount={item.likeCount} dislikeCount={item.dislikeCount} lastPostUser={item.lastPostUser} lastPostTime={item.lastPostTime} tag1={item.tag1} tag2={item.tag2} floorCount={item.floorCount} />;
+}
+
+export class Category extends React.Component {
+
+    render() {
+        return <div className="row" style={{ alignItems: "baseline", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>
+            <Link style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} to={"/"}>首页</Link>
+            <i className="fa fa-chevron-right"></i>
+            <div style={{ color: "grey", fontSize: "1rem", marginLeft: "0.5rem", marginRight: "0.5rem" }}>搜索主题</div>
+        </div>;
+    }
 }

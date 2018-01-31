@@ -29,10 +29,19 @@ export class Signin extends React.Component<{history}, { signinInfo ,content}>{
         if (floor === 0) floor = 10;
         this.props.history.push(`/topic/${signInTopicId}/${page}#${floor}`);
         this.setState({ content: "" });
+        //设定已签到状态和有效期
+        let userInfo = Utility.getLocalStorage("userInfo");
+        let workTime = (new Date(new Date().toLocaleDateString()).getTime() + 86400000 - new Date().getTime()) / 1000;
+        Utility.setLocalStorage(`signin_${userInfo.id}`, true, workTime);
     }
     render() {
         let info;
         if (this.state.signinInfo.hasSignedInToday) {
+            //设定已签到状态和有效期
+            let userInfo = Utility.getLocalStorage("userInfo");
+            let workTime = (new Date(new Date().toLocaleDateString()).getTime() + 86400000 - new Date().getTime()) / 1000;
+            Utility.setLocalStorage(`signin_${ userInfo.id }`, true, workTime);
+            //设定已签到信息
             info = <div><div className="row" style={{ justifyContent: "center" }}>
                 你上次的签到日期是{moment(this.state.signinInfo.lastSignInTime).format('YYYY-MM-DD HH:mm:ss')}
             </div>
@@ -41,6 +50,9 @@ export class Signin extends React.Component<{history}, { signinInfo ,content}>{
             </div>
              </div>;
         } else {
+            //设定未签到信息
+            let userInfo = Utility.getLocalStorage("userInfo");
+            Utility.removeLocalStorage(`signin_${userInfo.id}`);
             info = <div className="column">
                 <div className="row">你今天还未签到</div>
                 <div style={{ marginTop: "1.5rem" }}>

@@ -26,13 +26,19 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
         this.state = {
             data: data,
             from: 0,
-            loading: true
+            loading: true,
+            buttonClassName: ''
         };
         this.handleScroll = this.handleScroll.bind(this);
     }
 
     async componentWillReceiveProps(nextProps) {
         this.getData(nextProps);
+    }
+
+    //回到顶部
+    scrollToTop() {
+        $('body,html').animate({ scrollTop: 0 }, 500);
     }
 
     /**
@@ -66,6 +72,20 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
      * 处理滚动的函数
      */
     async handleScroll() {
+        //控制回到顶部按钮出现
+        if (window.pageYOffset > 234) {
+            this.setState({
+                buttonClassName: 'btn-show'
+            });
+        }
+        //控制回到顶部按钮消失
+        if (window.pageYOffset < 234) {
+            this.setState(prevState => ({
+                buttonClassName: prevState.buttonClassName === '' ? '' : 'btn-disappare'
+            })
+            );
+        }
+        //控制获取新帖
         if (Utility.isBottom() && this.state.loading) {
             /**
             *查看新帖数目大于100条时不再继续加载
@@ -115,6 +135,7 @@ export class FocusTopicArea extends React.Component<FocusBoard, FocusTopicAreaSt
             <div className="focus-topic-topicArea">{this.state.data.map(coverFocusPost)}</div>
             <div className="focus-topic-loading" id="focus-topic-loading"><i style={{ marginTop: "1rem" }} className="fa fa-spinner fa-pulse fa-5x fa-fw"></i></div>
             <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone">无法加载更多了，小水怡情，可不要沉迷哦~</div>
+            <button type="button" id="scrollToTop" className={this.state.buttonClassName} onClick={this.scrollToTop}>回到顶部</button>
         </div>;
     }
 

@@ -59,7 +59,7 @@ export class MessageAttme extends React.Component<{match}, MessageResponseState>
 
     render() {
         return (<div className="message-right">
-                    <DocumentTitle title={`CC98论坛-@我的`} />
+            <DocumentTitle title={`@我的-CC98论坛`} />
                     <div className="message-response">{this.state.data.map(this.coverMessageAttme)}</div>
                     <div className="message-pager"><Pager url="/message/attme/" page={this.state.from} totalPage={this.state.totalPage} /></div>
                 </div>);

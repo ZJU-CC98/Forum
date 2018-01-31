@@ -58,7 +58,7 @@ export class MessageSystem extends React.Component<{}, MessageSystemState> {
 
     render() {
         return (<div className="message-right">
-            <DocumentTitle title={`CC98论坛-系统通知`} />
+            <DocumentTitle title={`系统通知-CC98论坛`} />
             <div className="message-system">{this.state.data.map(this.coverMessageSystem)}</div>
             <div className="message-pager"><Pager url="/message/system/" page={this.state.from} totalPage={this.state.totalPage} /></div>
         </div>);

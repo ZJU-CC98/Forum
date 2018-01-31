@@ -116,7 +116,11 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
                 {hotReply}
             </div>;
         } else {
-            return <div className="reply" id={id.toString()} >
+            let replyId = id.toString();
+            if (this.props.isHot) {
+                replyId = `hot_${id}`;
+            }
+            return <div className="reply" id={replyId} >
                 <Replier key={item.postId} topicInfo={this.props.topicInfo} userInfo={item.userInfo}   traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
                 <div className="column" style={{ justifyContent: "space-between", width: "55.5rem", position: "relative" }}>
                     <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
@@ -132,13 +136,22 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
     }
 
     componentDidUpdate() {
-
         if (window.location.hash && window.location.hash !== '#') {
             const hash = window.location.hash;
             const eleId = hash.split("#");
-            const Id = eleId[1];
-            if (document.getElementById(Id))
-            document.getElementById(Id).scrollIntoView();
+            let Id = eleId[1];
+            //第10楼的id是0，什么奇葩设计
+            if (Id === '10') {
+                Id = '0';
+            }
+            //使当前楼层正好定位在浏览器窗口中间
+            if (document.getElementById(Id)) {
+                let top = document.getElementById(Id).offsetTop;
+                let height = document.getElementById(Id).clientHeight;
+                let bigHeight = window.innerHeight;
+                let delta = (bigHeight - height)/2;
+                $(document).scrollTop(top-delta);
+            }
         }
     }
     render() {
@@ -159,6 +172,7 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
     }
 }
 
+//楼层显示的控件
 export class FloorSize extends React.Component<{isHot:boolean, floor: number }> {
     render() {
         if (!this.props.isHot) {

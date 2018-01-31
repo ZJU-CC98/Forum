@@ -125,6 +125,12 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
                 MessageClassName = "topBarMessageDetails-mainPage";
             }
 
+            //获取签到状态
+            let signinInfo = "签到";
+            let userInfo = Utility.getLocalStorage("userInfo");
+            if (Utility.getLocalStorage(`signin_${userInfo.id}`)) {
+                signinInfo = "已签到";
+            }
             return (<div className="topBarRight">
                 <div className="topBarUserInfo">
                     <div
@@ -161,7 +167,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
                     <ul style={{ display: 'inherit' }}>
                         <Link to="/usercenter"> <li>个人中心</li></Link>
                         {admin}
-                        <Link to="/signin"><li>签到</li></Link>
+                        <Link to="/signin"><li>{signinInfo}</li></Link>
                         <li onClick={this.logOff.bind(this)}>注销</li>
                     </ul>
                 </div>
@@ -320,16 +326,13 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
                 }
                 else if (searchBoxSelect.text() === '版面') {
                     let host = window.location.host;
-                    let boardResult = await Utility.getBoardId(val);
+                    let boardResult = await Utility.getSearchBoard(val, this.context.router);
                     if (boardResult) {
                         if (boardResult === []) {
                             Utility.removeStorage('searchInfo');
                             this.props.history.push('/search');
                         }
-                        else if (boardResult.length === 1) {
-                            this.props.history.push(`/list/${boardResult[0].id}`);
-                        }
-                        else if (boardResult.length > 1) {
+                        else if (boardResult.length > 0) {
                             Utility.setStorage("searchBoardInfo", boardResult);
                             this.props.history.push('/searchBoard');
                         }
@@ -416,6 +419,11 @@ export class SearchBeforeConnent extends React.Component<{ history }, AppState> 
 export const Search = withRouter(SearchBeforeConnent);
 
 export class Header extends React.Component<{}, AppState> {
+    //更新一下未读消息
+    async refreshUnReadCount() {
+        await Utility.refreshUnReadCount();
+    }
+
     render() {
         let pathname = location.pathname;
         if (pathname === "/") {
@@ -423,8 +431,8 @@ export class Header extends React.Component<{}, AppState> {
                 <div className="topBar-mainPage">
                     <div className="topBarRow">
                         <div className="row" style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                            <div className="topBarLogo"><Link to="/"><img src="/static/images/98LOGO.ico" /></Link></div>
-                            <div className="topBarCC98"><Link to="/">CC98论坛</Link></div>
+                            <div className="topBarLogo" onClick={this.refreshUnReadCount}><Link to="/"><img src="/static/images/98LOGO.ico" /></Link></div>
+                            <div className="topBarCC98" onClick={this.refreshUnReadCount}><Link to="/">CC98论坛</Link></div>
                             <div className="topBarText">|</div>
                             <div className="topBarText"><Link to="/boardList">版面列表</Link></div>
                             <div className="topBarText"><Link to="/newTopics">新帖</Link></div>

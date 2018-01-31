@@ -41,7 +41,7 @@ class Following extends React.Component<Props> {
     componentWillReceiveProps(newProps: Props){
         if(this.props.match.params.page !== newProps.match.params.page) {
             window.scroll(0, 0);
-            const curPage = parseInt(this.props.match.params.page) || 1;
+            const curPage = parseInt(newProps.match.params.page) || 1;
             this.props.getInfo(curPage);
         }
     }

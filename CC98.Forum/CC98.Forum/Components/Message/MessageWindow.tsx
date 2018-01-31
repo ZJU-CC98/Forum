@@ -15,9 +15,9 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
     constructor(props) {
         super(props);
         this.state = { data: [] };
-        this.handleScroll = this.handleScroll.bind(this);
         this.getNewMessage = this.getNewMessage.bind(this);
         this.postMessage = this.postMessage.bind(this);
+        this.getMoreMessage = this.getMoreMessage.bind(this);
     }
 
     async componentDidMount() {
@@ -27,9 +27,13 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
     async getData(props) {
         //console.log("windows里的propsdata",props.data);
         if (props.data) {
-            //console.log("存在props。data");
+            //console.log("存在props.data");
             let data = await Utility.getRecentMessage(props.data.id, 0, 10, this.context.router);
-            await Utility.refreshUnReadCount();
+            //如果此时有未读私信,看有没有清除掉未读私信
+            let unreadCount = Utility.getStorage("unreadCount");
+            if (unreadCount != 0 && unreadCount.messageCount != 0) {
+                await Utility.refreshUnReadCount();
+            }
             if (data && data.length > 0) {
                 let oldData = props.data.message;
                 if (oldData && oldData.length > 0) {
@@ -52,10 +56,22 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
                     }
                     Utility.setStorage("recentContact", recentContact);
                 }
-                this.setState({ data: data });
+                this.setState({ data: data.reverse() });
+                if (data.length === 10) {
+                    $('#wcGetMore').removeClass("displaynone");
+                    $('#wcLoadingImg').addClass("displaynone");
+                    $('#wcLoadingText').addClass("displaynone");
+                }
+                else {
+                    $('#wcGetMore').addClass("displaynone");
+                    $('#wcLoadingImg').addClass("displaynone");
+                    $('#wcLoadingText').removeClass("displaynone");
+                }
             }
-            document.getElementById('messageContent').addEventListener('scroll', this.handleScroll);
         }
+        //把聊天窗口滚动栏拉到最底部
+        let scrollDiv = document.getElementById("messageContent");
+        scrollDiv.scrollTop = scrollDiv.scrollHeight;
     }
 
     /**
@@ -63,56 +79,63 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
      * @param nextProps
      */
     async componentWillReceiveProps(nextProps) {
-        //把聊天窗口滚动栏拉到最底部
-        let scrollDiv = document.getElementById("messageContent");
-        scrollDiv.scrollTop = scrollDiv.scrollHeight;
         this.getData(nextProps);
     }
 
     /*
     *处理聊天窗口滚动栏的函数，滚到顶部继续加载私信内容
     */
-    async handleScroll() {
-        let scrollTop = $('#messageContent')[0].scrollTop; //滚动到的当前位置
-        if (scrollTop == 0) {
-            //console.log("到顶啦");
-            $('#wcLoadingImg').removeClass("displaynone");
-            let oldData = this.state.data;
-            //到顶了就继续获取10条私信
-            let newData = await Utility.getRecentMessage(this.props.data.id, oldData.length, 10, this.context.router);
+    async getMoreMessage() {
+        $('#wcGetMore').addClass("displaynone");
+        $('#wcLoadingImg').removeClass("displaynone");
+        let oldData = this.state.data.reverse();
+        let scrollDiv = document.getElementById("messageContent");
+        let oldHeight = scrollDiv.scrollHeight;
+        //到顶了就继续获取10条私信
+        let newData = await Utility.getRecentMessage(this.props.data.id, oldData.length, 10, this.context.router);
+        //如果此时有未读私信,看有没有清除掉未读私信
+        let unreadCount = Utility.getStorage("unreadCount");
+        if (unreadCount != 0 && unreadCount.messageCount != 0) {
             await Utility.refreshUnReadCount();
-            //跟之前的拼接一下
-            if (newData && newData.length > 0) {
-                let data = oldData.concat(newData);
-                data = Utility.sortRecentMessage(data);
-                this.setState({ data: data });
-                //取出联系人缓存，更新对应的联系人的数据并缓存
-                let recentContact = Utility.getStorage("recentContact");
-                if (recentContact) {
-                    for (let i in recentContact) {
-                        if (recentContact[i].id == this.props.data.id) {
-                            recentContact[i].message = data;
-                            break;
-                        }
+        }
+        //跟之前的拼接一下
+        if (newData && newData.length > 0) {
+            let data = oldData.concat(newData);
+            data = Utility.sortRecentMessage(data);
+            this.setState({ data: data.reverse() });
+            //取出联系人缓存，更新对应的联系人的数据并缓存
+            let recentContact = Utility.getStorage("recentContact");
+            if (recentContact) {
+                for (let i in recentContact) {
+                    if (recentContact[i].id == this.props.data.id) {
+                        recentContact[i].message = data;
+                        break;
                     }
-                    Utility.setStorage("recentContact", recentContact);
                 }
+                Utility.setStorage("recentContact", recentContact);
+            }
+            if (newData.length === 10) {
+                $('#wcGetMore').removeClass("displaynone");
+                $('#wcLoadingImg').addClass("displaynone");
             }
             else {
                 $('#wcLoadingImg').addClass("displaynone");
                 $('#wcLoadingText').removeClass("displaynone");
             }
         }
+        else {
+            $('#wcLoadingImg').addClass("displaynone");
+            $('#wcLoadingText').removeClass("displaynone");
+        }
+        //保持滚动条在原来的位置
+        let newHeight = scrollDiv.scrollHeight;
+        scrollDiv.scrollTop = newHeight - oldHeight - 25;
     }
 
     /**
     *点击发送私信后，获取私信内容并刷新聊天界面
     */
     async getNewMessage() {
-        //把聊天窗口滚动栏拉到最底部
-        let scrollDiv = document.getElementById("messageContent");
-        scrollDiv.scrollTop = scrollDiv.scrollHeight;
-
         //获取新私信信息
         let data = await Utility.getRecentMessage(this.props.data.id, 0, 10, this.context.router);
 
@@ -153,7 +176,7 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
             else if (i == 0) {
                 //刷新状态
                 Utility.setStorage("recentContact", recentContact);
-                this.setState({ data: data });
+                this.setState({ data: data.reverse() });
                 this.props.onChange();
             }
             else {
@@ -167,6 +190,10 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
                 this.props.onChange();
             }
         }
+
+        //把聊天窗口滚动栏拉到最底部
+        let scrollDiv = document.getElementById("messageContent");
+        scrollDiv.scrollTop = scrollDiv.scrollHeight;
     }
 
 
@@ -243,18 +270,19 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
         let data = this.props.data;
         if (data) {
             return (<div className="message-message-window">
-                <DocumentTitle title={`与 ${data.name} 的私信`} />
+                <DocumentTitle title={`与 ${data.name} 的私信-CC98论坛`} />
                 <div className="message-message-wHeader">
                     <div className="message-message-wReport"></div>
                     <div className="message-message-wTitle">与 {data.name} 的私信</div>
                     <div className="message-message-wReport displaynone"><button onClick={this.report}>举报</button></div>
                 </div>
                 <div className="message-message-wContent" id="messageContent">
-                    {this.state.data.map(this.coverMessageProps)}
                     <div className="message-message-wcLoading">
+                        <div id="wcGetMore" className="message-message-wcLoadingMore" onClick={this.getMoreMessage}>点击加载更多...</div>
                         <img src="http://file.cc98.org/uploadfile/2017/11/19/2348481046.gif" id="wcLoadingImg" className="displaynone"></img>
                         <div id="wcLoadingText" className="message-message-wcLoadingText displaynone">没有更多消息了~</div>
                     </div>
+                    {this.state.data.map(this.coverMessageProps)}
                 </div>
                 <div className="message-message-wPost">
                     <textarea className="message-message-wPostArea" id="postContent" onFocus={this.handleFocus} onBlur={this.handleBlur}></textarea>

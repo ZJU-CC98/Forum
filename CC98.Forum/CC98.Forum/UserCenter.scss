@@ -88,7 +88,7 @@
         border: 1px solid #e9e9e9;
 
         button {
-            width: 5rem;
+            width: 6rem;
             position: fixed;
             bottom: 5%;
             right: 13%;
@@ -97,6 +97,10 @@
             opacity: 0.5;
             display: none;
             z-index: 2;
+            margin: 0;
+            padding: 0.7rem;
+            border: 0;
+            font-size: 1.1rem;
 
             &:hover {
                 opacity: 0.8;
@@ -886,7 +890,7 @@
                 align-self: center;
                 margin-top: 2rem;
             }
-            
+
             .transfer-wealth-info {
                 margin: 1rem;
             }

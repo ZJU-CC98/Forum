@@ -121,7 +121,7 @@ export class HotTopicComponent extends React.Component<{ data }, { mainPageTopic
 
     convertMainPageTopic(item: HotTopicState) {
         const boardUrl = `/list/${item.boardId}`;
-        const topicUrl = `/topic/${item.id}`;
+        const topicUrl = `/topic/${item.id}/1`;
         return <div className="mainPageListRow">
             <div className="mainPageListBoardName"> <a href={boardUrl} target="_blank">[{item.boardName}]</a></div>
             <div className="mainPageListTitle"><a href={topicUrl} target="_blank">{item.title}</a></div>
@@ -182,7 +182,7 @@ export class MainPageTopicMoreProps {
 export class MainPageTopicComponent extends React.Component<{ data, name: string, fetchUrl: string, style: string, mores: MainPageTopicMoreProps[] }, {}>{
 
     convertMainPageTopic(item: MainPageTopicState) {
-        const topicUrl = `/topic/${item.id}`;
+        const topicUrl = `/topic/${item.id}/1`;
         return <div className="mainPageListRow">
             <div className="mainPageListTitle"><a href={topicUrl} target="_blank">{item.title}</a></div>
         </div>

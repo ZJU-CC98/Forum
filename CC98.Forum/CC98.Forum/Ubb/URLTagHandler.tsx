@@ -29,6 +29,6 @@ export class UrlTagHandler extends Ubb.RecursiveTagHandler {
             }
         }
 
-        return <a href={url} target="_blank">{innerContent}</a>;
+        return <a href={url} target="_blank" className="urlStyle">{innerContent}</a>;
     }
 }

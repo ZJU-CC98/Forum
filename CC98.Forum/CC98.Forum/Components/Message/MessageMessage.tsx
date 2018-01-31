@@ -138,7 +138,7 @@ export class MessageMessage extends React.Component<{}, MessageMessageState> {
             //console.log("条件2");
             //创建联系人列表和聊天窗口
             return (<div className="message-message">
-                <DocumentTitle title={`CC98论坛-我的私信`} />
+                <DocumentTitle title={`我的私信-CC98论坛`} />
                 <div className="message-message-people">
                     <div className="message-message-pTitle">近期私信</div>
                     <div className="message-message-pList">

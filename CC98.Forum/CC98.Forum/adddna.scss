@@ -121,6 +121,10 @@
     min-width: 71.25rem;
     margin-bottom: 2.5rem;
     z-index: 0;
+
+    a:hover {
+        text-decoration: underline;
+    }
 }
 
 .leftPart {
