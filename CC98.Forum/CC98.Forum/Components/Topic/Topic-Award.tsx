@@ -23,7 +23,8 @@ export class Award extends React.Component<Props, {info,shortInfo,count,showAll 
     }
     async componentDidMount() {
         let shortInfo = [];
-        const award = this.props.awardInfo;
+        let award = this.props.awardInfo;
+        if (!award) { award = []; }
         const usersName = [];
         let usersInfo = [];
         for (let i in award) {
@@ -51,7 +52,8 @@ export class Award extends React.Component<Props, {info,shortInfo,count,showAll 
     }
     async componentWillReceiveProps(newProps) {
         let shortInfo = [];
-        const award = newProps.awardInfo;
+        let award = newProps.awardInfo;
+        if (!award) { award = []; }
         const usersName = [];
         let usersInfo = [];
         for (let i in award) {
@@ -78,7 +80,7 @@ export class Award extends React.Component<Props, {info,shortInfo,count,showAll 
         const awardInfoJQID = `#awardInfo${this.props.postId}`;
         const awardInfoID = `awardInfo${this.props.postId}`;
         $(awardInfoJQID).css("display", "");
-        if (this.state.info.length !== 0) {
+        if (this.state.info && this.state.info.length !== 0) {
             if (this.state.info.length < 10) {
                 $(awardInfoJQID).css("display", "");
         } 

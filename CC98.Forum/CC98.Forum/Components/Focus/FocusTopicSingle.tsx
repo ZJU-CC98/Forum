@@ -19,7 +19,7 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
     }
 
     render() {
-        let topicUrl = `/topic/${this.props.id}`;
+        let topicUrl = `/topic/${this.props.id}/1`;
         let userUrl = `/user/id/${this.props.userId}`;
         let boardUrl = `/list/${this.props.boardId}`;
         let a: any = (this.props.floorCount / 10) + 1;
@@ -29,8 +29,7 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
         if (c === 0) {
             pageNum = `${b - 1}#10`;
         }
-
-        let lastPostUrl = `${topicUrl}/${pageNum}`;
+        let lastPostUrl = `/topic/${this.props.id}/${pageNum}`;
         let lastPostUserUrl = `/user/name/${encodeURI(this.props.lastPostUser)}`;
         let tagInfo = '';
         if (this.props.tag1) {

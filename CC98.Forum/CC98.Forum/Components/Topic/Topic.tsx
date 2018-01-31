@@ -58,7 +58,9 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         let page: number;
         if (!this.match.params.page) {
             page = 1;
-        } else { page = parseInt(this.match.params.page); }
+        } else {
+            page = parseInt(this.match.params.page);
+        }
         const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
         const newPage = (topicInfo.replyCount+1) % 10 === 0 ? (topicInfo.replyCount+1) / 10 : ((topicInfo.replyCount+1) - (topicInfo.replyCount+1) % 10) / 10 + 1;  
         const totalPage = await this.getTotalPage(topicInfo.replyCount);
@@ -66,7 +68,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         const floor = (topicInfo.replyCount + 1) % 10;
         //检查用户是否设置跳转到最新回复
         let noticeSetting = Utility.getLocalStorage("noticeSetting");
-        if (page !== newPage) {
+        if (page != newPage) {
             if ((noticeSetting && noticeSetting.post === "是") || ((newPage == page + 1) && (floor == 1))) {
                 page = newPage;
                 let url = `/topic/${topicInfo.id}/${page}#${floor}`;
@@ -78,6 +80,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
                 this.setState({ quote: { userName: "", content: "", replyTime: "" } });
                 this.props.history.push(url);
             }
+            $('.footerRow')[0].scrollIntoView(true);
         }
         else {
             page = newPage;
