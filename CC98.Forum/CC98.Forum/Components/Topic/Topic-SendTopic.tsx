@@ -5,6 +5,7 @@ import { UbbContainer } from '.././UbbContainer';
 import { Constants } from '../Constant';
 import { UbbEditor } from '../UbbEditor';
 import { TopicManagement } from './Topic-TopicManagement';
+import { NoticeMessage } from '../NoticeMessage';
 declare let moment: any;
 declare let editormd: any;
 interface Props {
@@ -213,11 +214,11 @@ ${newProps.content.content}[/quote]
 			}
         );
         if (mes.status === 402) {
-            alert('请输入内容');
+            Utility.noticeMessageShow('postNone');
             this.setState({ buttonDisabled: false, buttonInfo: "发帖" });
         }
-		if (mes.status === 403) {
-            alert('你太快啦 请慢一点~');
+		else if (mes.status === 403) {
+            Utility.noticeMessageShow('postFast');
             this.setState({buttonDisabled: false, buttonInfo: "发帖" });
         } else if (mes.status === 200) {
             const atUsers = Utility.atHanderler(this.state.content);
@@ -268,12 +269,12 @@ ${newProps.content.content}[/quote]
 					body: contentJson
 				}
 			);
-			if (mes.status === 403) {
-                alert('你太快啦 请慢一点~');
-                this.setState({  buttonDisabled: false, buttonInfo: "发帖" });
-			}
             if (mes.status === 402) {
-                alert('请输入内容');
+                Utility.noticeMessageShow('postNone');
+                this.setState({ buttonDisabled: false, buttonInfo: "发帖" });
+            }
+            else if (mes.status === 403) {
+                Utility.noticeMessageShow('postFast');
                 this.setState({ buttonDisabled: false, buttonInfo: "发帖" });
             }
             else if (mes.status === 200) {
@@ -401,6 +402,8 @@ ${newProps.content.content}[/quote]
             {editor}
             {manageBTN}
             <TopicManagement update={this.onChange} boardId={this.props.boardInfo.id} updateTime={Date.now()} topicInfo={this.props.topicInfo} />
-		</div>;
+            <NoticeMessage text="回复失败, 10s之内仅可进行一次回帖，请稍作休息" id="postFast" top="26%" left="38%" />
+            <NoticeMessage text="回复失败, 请输入内容" id="postNone" top="26%" left="44%" />
+        </div>;
 	}
 }

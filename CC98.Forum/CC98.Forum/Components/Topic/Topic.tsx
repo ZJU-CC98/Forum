@@ -169,7 +169,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
                 <Category topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} topicId={this.match.params.topicid} />
                 <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
             {sendTopic}
-            <NoticeMessage text="回复成功" id="replyMessage" top="22%" left="45%" />
+            <NoticeMessage text="回复成功" id="replyMessage" top="24%" left="46%" />
         </div>
             ;
         return topicHtml;

@@ -4,6 +4,7 @@
 import * as React from 'react';
 import * as Utility from '../../Utility';
 import DocumentTitle from '../DocumentTitle';
+import { NoticeMessage } from '../NoticeMessage';
 
 export class MessageSetting extends React.Component {
 
@@ -65,7 +66,7 @@ export class MessageSetting extends React.Component {
         let postSetting = $('input:radio[name="postSetting"]:checked').val();
         let noticeSetting = { response: responseSetting, attme: attmeSetting, system: systemSetting, message: messageSetting, post: postSetting };
         Utility.setLocalStorage("noticeSetting", noticeSetting);
-        alert("保存成功");
+        Utility.noticeMessageShow('saveSuccess');
     }
 
     render() {
@@ -108,6 +109,7 @@ export class MessageSetting extends React.Component {
                     <div>否</div>
                 </div>
                 <button className="message-setting-btn" onClick={this.setMessageSetting}>保存消息设置</button>
+                <NoticeMessage text="保存成功" id="saveSuccess" top="31%" left="43%"/>
             </div>
         </div>;
     }
