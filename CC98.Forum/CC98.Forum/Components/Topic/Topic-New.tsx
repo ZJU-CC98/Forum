@@ -42,6 +42,9 @@ export class AllNewTopic extends React.Component<{}, FocusTopicAreaState> {
      * 进入立即获取20条新帖的数据，同时为滚动条添加监听事件
      */
     async componentDidMount() {
+        //更新未读消息数目
+        await Utility.refreshUnReadCount();
+
         let data = await Utility.getAllNewTopic(0, this.context.router);
 
         if (data) {
