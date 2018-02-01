@@ -73,26 +73,30 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
             if ((noticeSetting && noticeSetting.post === "是") || ((newPage == page + 1) && (floor == 1))) {
                 page = newPage;
                 let url = `/topic/${topicInfo.id}/${page}#${floor}`;
-                this.setState({ quote: { userName: "", content: "", replyTime: "" } });
+                this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } });
                 this.props.history.push(url);
             }
             else {
-                let url = `/topic/${topicInfo.id}/${page}`;
-                this.setState({ quote: { userName: "", content: "", replyTime: "" } });
+                let url = `/topic/${topicInfo.id}/${page}`; 
+                //如果是引用了某一层楼，发帖后应该跳转回这层楼
+                if (this.state.quote && this.state.quote.floor) {
+                    let quoteFloor = this.state.quote.floor % 10;
+                    url = `/topic/${topicInfo.id}/${page}#${quoteFloor}`;
+                }
+                this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } });
                 this.props.history.push(url);
             }
-            $('.footerRow')[0].scrollIntoView(true);
         }
         else {
             page = newPage;
             let url = `/topic/${topicInfo.id}/${page}#${floor}`;
-            this.setState({ quote: { userName: "", content: "", replyTime: "" } });
+            this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } });
             this.props.history.push(url);
         }
         //回复成功提示
         Utility.noticeMessageShow('replyMessage');
         const isFav = await Utility.getFavState(this.match.params.topicid);
-        this.setState({ topicInfo: topicInfo, quote: {userName:"",content:"",replyTime:""},isFav:isFav});
+        this.setState({ topicInfo: topicInfo, quote: { userName: "", content: "", replyTime: "", floor: "" },isFav:isFav});
       
     }
     async componentWillReceiveProps(newProps) {
