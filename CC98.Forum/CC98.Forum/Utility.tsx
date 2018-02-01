@@ -1788,21 +1788,21 @@ export async function getMessageResponse(from: number, size: number, router) {
                 //如果未登录,直接返回未登录
                 if (!isLogOn()) {
                     window.location.href = "/status/LogOut";
-                    return null;
+                    return [];
                 }
                 else {
                     window.location.href = "/status/UnauthorizedTopic";
-                    return null;
+                    return [];
                 }
             case 403:
                 window.location.href = "/status/OperationForbidden";
-                return null;
+                return [];
             case 404:
-                //window.location.href = "/status/NotFoundTopic";
-                return null;
+                window.location.href = "/status/NotFoundTopic";
+                return [];
             case 500:
-                //window.location.href = "/status/ServerError";
-                return null;
+                window.location.href = "/status/ServerError";
+                return [];
         }
         let newTopic = await response.json();
         //把postId、topicId分别统计存到一个数组里，然后批量查询一下
@@ -1834,6 +1834,11 @@ export async function getMessageResponse(from: number, size: number, router) {
                    newTopic[i].userId = postInfo.userId;
                    newTopic[i].userName = postInfo.userName;
                 }
+                else {
+                    newTopic[i].floor = 1;
+                    newTopic[i].userId = -1;
+                    newTopic[i].userName = "有人";
+                }
                 result.push(newTopic[i]);
             }
         }
@@ -1856,21 +1861,21 @@ export async function getMessageAttme(from: number, size: number, router) {
                 //如果未登录,直接返回未登录
                 if (!isLogOn()) {
                     window.location.href = "/status/LogOut";
-                    return null;
+                    return [];
                 }
                 else {
                     window.location.href = "/status/UnauthorizedTopic";
-                    return null;
+                    return [];
                 }
             case 403:
                 window.location.href = "/status/OperationForbidden";
-                return null;
+                return [];
             case 404:
-                //window.location.href = "/status/NotFoundTopic";
-                return null;
+                window.location.href = "/status/NotFoundTopic";
+                return [];
             case 500:
-                //window.location.href = "/status/ServerError";
-                return null;
+                window.location.href = "/status/ServerError";
+                return [];
         }
         let newTopic = await response.json();
         //console.log("获取到的新@数据", newTopic);
@@ -1905,9 +1910,8 @@ export async function getMessageAttme(from: number, size: number, router) {
                 }
                 else {
                    newTopic[i].floor = 1;
-                   let topicInfo = await getTopicInfo(newTopic[i].topicId);
-                   newTopic[i].userId = topicInfo.userId;
-                   newTopic[i].userName = topicInfo.userName;
+                   newTopic[i].userId = -1;
+                   newTopic[i].userName = "有人";
                 }
                 result.push(newTopic[i]);
             }
