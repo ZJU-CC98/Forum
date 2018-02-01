@@ -108,6 +108,10 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         const boardId = topicInfo.boardId;
         const boardInfo = await Utility.getBoardInfo(boardId);
         const totalPage = this.getTotalPage(topicInfo.replyCount);
+        //如果page超过最大页码，就跳转到最大页码
+        if (page > totalPage) { page = totalPage; }
+        const url = `/topic/${topicInfo.id}/${page}`;
+        this.props.history.push(url);
         const isFav = await Utility.getFavState(newProps.match.params.topicid);  
         this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo, isFav: isFav });
     }
@@ -123,6 +127,10 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         const boardId = topicInfo.boardId;
         const boardInfo = await Utility.getBoardInfo(boardId);
         const totalPage = this.getTotalPage(topicInfo.replyCount);
+        //如果page超过最大页码，就跳转到最大页码
+        if (page > totalPage) { page = totalPage; }
+        const url = `/topic/${topicInfo.id}/${page}`;
+        this.props.history.push(url);
         const isFav = await Utility.getFavState(this.match.params.topicid);
         let IPData = [];
        // if (Utility.isMaster(boardInfo.boardMasters))
@@ -150,7 +158,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         let topicInfo = null;
         topicInfo = <TopicInfo topicInfo={this.state.topicInfo} tag1={this.state.topicInfo.tag1} tag2={this.state.topicInfo.tag2} boardInfo={this.state.boardInfo}  isFav={this.state.isFav} />;
         if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
-            hotReply = <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} boardInfo={this.state.boardInfo} quote={this.quote} isTrace={false} isHot={true} userId={null} topicId={this.match.params.topicid} />
+            hotReply = <Reply topicInfo={this.state.topicInfo} page={1} boardInfo={this.state.boardInfo} quote={this.quote} isTrace={false} isHot={true} userId={null} topicId={this.match.params.topicid} />
         }
         const pagerUrl = `/topic/${this.state.topicid}/`;
         let sendTopic = null;
@@ -164,7 +172,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
                 <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} />
             </div>
             {topicInfo}
-            <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} boardInfo={this.state.boardInfo} quote={this.quote} isHot={false} isTrace={false} userId={null} topicId={this.match.params.topicid} />
+            <Reply topicInfo={this.state.topicInfo} page={this.state.page} boardInfo={this.state.boardInfo} quote={this.quote} isHot={false} isTrace={false} userId={null} topicId={this.match.params.topicid} />
             <div className="row" style={{ width: "100%", justifyContent: "space-between", marginTop: "2rem" }}>
                 <Category topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} topicId={this.match.params.topicid} />
                 <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
