@@ -22,8 +22,7 @@ export class Message extends React.Component<{}, AppState> {
         let unreadCount = { totalCount: 0, replyCount: 0, atCount: 0, systemCount: 0, messageCount: 0 };
         if (Utility.getStorage("unreadCount")) {
             unreadCount = Utility.getStorage("unreadCount")
-        } 
-
+        }
         return (<div className="message-root">
                     <DocumentTitle title={`CC98论坛-我的消息`} />
             <div className="message">

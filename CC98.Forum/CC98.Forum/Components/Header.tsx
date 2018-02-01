@@ -100,6 +100,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
                 this.setState({
                     hoverElement: className
                 });
+                Utility.refreshHoverUnReadCount();
                 break;
             }
             case 'mouseout': {
@@ -124,8 +125,6 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
             if (Utility.getStorage("unreadCount")) {
                 unreadCount = Utility.getStorage("unreadCount")
             }
-            let totalCount: string = unreadCount.totalCount.toString();
-            if (unreadCount.totalCount > 99) totalCount = "99+";
             //全站管理选项
             let admin = this.props.userInfo.privilege === '管理员' ? <Link to="/sitemanage" style={{ color: '#fff' }}><li>全站管理</li></Link> : null;
             //用户中心下拉列表
@@ -155,7 +154,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
                     >
                         <Link to="/message/response" className="messageTopBar">
                             <div className="topBarBell"> <i className="fa fa-bell-o"></i></div>
-                            <div className="message-counter displaynone" id="unreadCount-totalCount">{totalCount}</div>
+                            <div className="message-counter displaynone" id="unreadCount-totalCount">{unreadCount.totalCount}</div>
                         </Link>
                     </div>
                     <div className="topBarUserImg"
