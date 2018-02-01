@@ -14,18 +14,15 @@ export class QuoteTagHandler extends Ubb.RecursiveTagHandler {
 
     execCore(innerContent: React.ReactNode, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
  
-		const style = {
-
+		const style: React.CSSProperties = {
 			padding: '13px 19px 13px 17px',
 			backgroundColor: '#F5FAFF',
-			border: '1px solid rgb(204,204,204)',
-            marginLeft: '30px',
-            marginRight: '30px',
-            marginTop: '30px',
+            border: '1px solid rgb(204,204,204)',
+            marginTop: '10px',
             maxHeight: '800px',
-            overflowY:'auto' as 'auto'
-            };
-
-		return <div  style={style}>{innerContent}</div>;
+            overflowY: 'auto'
+        };
+        
+		return <div style={style}>{innerContent}</div>;
 	}
 }
