@@ -2,24 +2,25 @@
 <html lang="zh-CN">
 <head>
 	<meta charset="utf-8" />
+    <meta name="renderer" content="webkit" />
 	<title>CC98论坛</title>
 
-	<script>
-		function loadFallbackScript(condition, url) {
-			condition || document.write('<' + 'script src="' + url + '"></' + 'script>');
-		}
+    <script>
+        function loadFallbackScript(condition, url) {
+            condition || document.write('<' + 'script src="' + url + '"></' + 'script>');
+        }
 
-		function loadFallbackCss(id, property, value, url) {
-			var testElement = document.getElementById(id);
-			var style = document.defaultView && document.defaultView.getComputedStyle
-				? document.defaultView.getComputedStyle(testElement)
-				: testElement.currentStyle;
+        function loadFallbackCss(id, property, value, url) {
+            var testElement = document.getElementById(id);
+            var style = document.defaultView && document.defaultView.getComputedStyle
+                ? document.defaultView.getComputedStyle(testElement)
+                : testElement.currentStyle;
 
-			if (style[property] !== value) {
-				document.write('<link rel="stylesheet" href="' + url + '" />');
-			}
-		}
-
+            if (style[property] !== value) {
+                document.write('<link rel="stylesheet" href="' + url + '" />');
+            }
+        }
+    </script>
 	</script>
 
 	<link rel="stylesheet"
