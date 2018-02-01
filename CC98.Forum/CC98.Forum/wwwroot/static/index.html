@@ -115,6 +115,14 @@
 	<script src="/static/scripts/lib/spectrum/spectrum.js"></script>
 	<script src="/static/scripts/lib/url-join/lib/url-join.js"></script>
 	<script src="/static/scripts/main.min.js"></script>
-
+    <script>
+        //兼容性检查
+        if (!('flex' in document.documentElement.style) && location.pathname !== '/status/unSupport') {
+            location.href = '/status/unSupport';
+        }
+        else if (location.pathname === '/status/unSupport') {
+            document.getElementById('root').innerHTML = "<div style='width: 100%; text-align: center; font-size: 40px; position: fixed; top: 30%;'><div> 你正在使用的浏览器无法正常浏览CC98</div><div>请更新你的浏览器版本或者使用“极速模式”浏览CC98</div></div >";
+        }
+    </Script >
 </body>
 </html>

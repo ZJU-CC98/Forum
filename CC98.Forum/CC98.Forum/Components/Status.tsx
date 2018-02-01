@@ -178,13 +178,3 @@ export const PageNotFound = () => (
         <div className="row returnIndexBtn" ><Link to="/" >返回首页</Link></div>
     </div>
 )
-
-
-export class UnSupport extends React.Component {
-    render() {
-        return <div style={{ width: '100%', fontSize: '40px', textAlign: 'center', position: 'fixed', top: '30%' }}>
-            <div>你正在使用的浏览器无法正常浏览CC98</div>
-            <div>请更新你的浏览器版本或者使用“极速模式”浏览CC98</div>
-        </div>
-    }
-}

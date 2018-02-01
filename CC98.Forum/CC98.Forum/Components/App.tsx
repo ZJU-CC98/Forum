@@ -33,15 +33,7 @@ import { Constants } from './Constant';
 export class App extends React.Component {
 
     render() {
-        //兼容性检查
-        if (!('flex' in document.documentElement.style) && location.pathname !== '/status/unSupport') {
-            location.href = '/status/unSupport';
-            return <div></div>;
-        }
-        else if (location.pathname === '/status/unSupport') {
-            return <Status.UnSupport />;
-        }
-        else {
+        if ('flex' in document.documentElement.style ) {
             return (<div style={{ width: "100%" }}>
                 <ConnectedRouter history={history}>
                     <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px", backgroundColor: "#e6e7ec" }}>
