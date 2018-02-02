@@ -27,6 +27,15 @@ body {
     font-family: 微软雅黑;
 }
 
+//UBB模式下的默认样式
+article {
+    text-align: left;
+    font-size: 16px;
+    line-height: 1.6;
+    width: 100%;
+    background-color: #fff;
+}
+
 .urlStyle {
     /* 未访问的链接 */
     &:link {
