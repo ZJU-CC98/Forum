@@ -126,6 +126,8 @@ class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff, histo
                 } else {
                     this.props.history.go(-1);
                 }
+                //登陆后刷新未读信息
+                Utility.refreshUnReadCount();
             }, 100);
         } catch (e) {
             let info: string;

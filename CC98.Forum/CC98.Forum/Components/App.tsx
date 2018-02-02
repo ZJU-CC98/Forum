@@ -33,43 +33,45 @@ import { Constants } from './Constant';
 export class App extends React.Component {
 
     render() {
-        return (<div style={{ width: "100%" }}>
-            <ConnectedRouter history={history}>
-                <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px", backgroundColor:"#e6e7ec" }}>
-                    <Header />
-                    <Switch>
-                        <Route exact path="/" component={MainPage}></Route>
-                        <Route exact path="/topic/:topicid/:page?" component={ShowTopic} />
-                        <Route exact path="/topic/:topicid/user/:userId/:page?" component={CurUserPost} />
-                        <Route path="/list/:boardId/:type?/:page?" component={List} />
-                        <Route exact path="/boardlist" component={BoardList} />
-                        <Route path="/usercenter" component={UserCenter} />
-                        <Route path="/message" component={Message} />
-                        <Route path="/focus" component={Focus} />
-                        <Route path="/newtopics" component={AllNewTopic} />
-                        <Route path="/user/:method/:id" component={User} />
-                        <Route path="/logon" exact component={LogOn} />
-                        <Route path="/search" component={Search} />
-                        <Route path="/searchBoard" component={SearchBoard} />
-                        <Route path="/signin" component={Signin} />
-                        <Route path="/sitemanage" component={SiteManage} />
-                        <Route path="/editor/:mode/:id?" component={ShowEdit} />
-                        <Route path="/status/notfoundtopic" component={Status.NotFoundTopic} />
-                        <Route path="/status/notfoundboard" component={Status.NotFoundBoard} />
-                        <Route path="/status/logout" component={Status.LogOut} />
-                        <Route path="/status/topicdeleted" component={Status.TopicDeleted} />
-                        <Route path="/status/unauthorizedtopic" component={Status.UnauthorizedTopic} />
-                        <Route path="/status/unauthorizedboard" component={Status.UnauthorizedBoard} />
-                        <Route path="/status/unauthorizedoperation" component={Status.UnauthorizedOperation} />
-                        <Route path="/status/notfounduser" component={Status.NotFoundUser} />
-                        <Route path="/status/servererror" component={Status.ServerError} />
-                        <Route path="/status/contentneeded" component={Status.ContentNeeded} />
-                        <Route path="/status/operationforbidden" component={Status.OperationForbidden} />
-                        <Route component={Status.PageNotFound} />
-                    </Switch>
-                    <Footer />
-                </div>
-            </ConnectedRouter>
-        </div>);
+        if ('flex' in document.documentElement.style ) {
+            return (<div style={{ width: "100%" }}>
+                <ConnectedRouter history={history}>
+                    <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px", backgroundColor: "#e6e7ec" }}>
+                        <Header />
+                        <Switch>
+                            <Route exact path="/" component={MainPage}></Route>
+                            <Route exact path="/topic/:topicid/:page?" component={ShowTopic} />
+                            <Route exact path="/topic/:topicid/user/:userId/:page?" component={CurUserPost} />
+                            <Route path="/list/:boardId/:type?/:page?" component={List} />
+                            <Route exact path="/boardlist" component={BoardList} />
+                            <Route path="/usercenter" component={UserCenter} />
+                            <Route path="/message" component={Message} />
+                            <Route path="/focus" component={Focus} />
+                            <Route path="/newtopics" component={AllNewTopic} />
+                            <Route path="/user/:method/:id" component={User} />
+                            <Route path="/logon" exact component={LogOn} />
+                            <Route path="/search" component={Search} />
+                            <Route path="/searchBoard" component={SearchBoard} />
+                            <Route path="/signin" component={Signin} />
+                            <Route path="/sitemanage" component={SiteManage} />
+                            <Route path="/editor/:mode/:id?" component={ShowEdit} />
+                            <Route path="/status/notfoundtopic" component={Status.NotFoundTopic} />
+                            <Route path="/status/notfoundboard" component={Status.NotFoundBoard} />
+                            <Route path="/status/logout" component={Status.LogOut} />
+                            <Route path="/status/topicdeleted" component={Status.TopicDeleted} />
+                            <Route path="/status/unauthorizedtopic" component={Status.UnauthorizedTopic} />
+                            <Route path="/status/unauthorizedboard" component={Status.UnauthorizedBoard} />
+                            <Route path="/status/unauthorizedoperation" component={Status.UnauthorizedOperation} />
+                            <Route path="/status/notfounduser" component={Status.NotFoundUser} />
+                            <Route path="/status/servererror" component={Status.ServerError} />
+                            <Route path="/status/contentneeded" component={Status.ContentNeeded} />
+                            <Route path="/status/operationforbidden" component={Status.OperationForbidden} />
+                            <Route component={Status.PageNotFound} />
+                        </Switch>
+                        <Footer />
+                    </div>
+                </ConnectedRouter>
+            </div>);
+        }
     }
 }

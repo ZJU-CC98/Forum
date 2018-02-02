@@ -1701,72 +1701,86 @@ a {
 }
 
     /******以下为系统消息部分的样式***/
-    .message-system {
-        min-height: 952px;
+.message-system {
+    min-height: 952px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    font-family: 微软雅黑;
+    border: 1px solid $color-border;
+    flex-shrink: 0;
+    overflow-y: auto;
+    background-color: $color-post;
+
+    .message-system-box { /*一个系统消息的框框*/
         display: flex;
         flex-direction: column;
-        flex-grow: 1;
-        font-family: 微软雅黑;
-        border: 1px solid $color-border;
+        border-bottom: 1px dashed lightgray;
         flex-shrink: 0;
-        overflow-y: auto;
-        background-color: $color-post;
 
-        .message-system-box { /*一个系统消息的框框*/
+        .message-system-box-bar {
             display: flex;
-            flex-direction: column;
-            border-bottom: 1px dashed lightgray;
-            flex-shrink: 0;
+            flex-direction: row;
+        }
 
-            .message-system-box-bar {
-                display: flex;
-                flex-direction: row;
-            }
+        .message-system-box-title { /*一个系统消息标题*/
+            height: 50px;
+            font-size: 15px;
+            line-height: 50px;
+            color: black;
+            margin-left: 30px;
+        }
 
-            .message-system-box-title { /*一个系统消息标题*/
-                height: 50px;
-                font-size: 15px;
-                line-height: 50px;
-                color: black;
-                margin-left: 30px;
-            }
+        .message-system-box-date { /*一个系统消息日期*/
+            height: 50px;
+            font-size: 13px;
+            line-height: 50px;
+            color: lightgray;
+            margin-left: 10px;
+        }
 
-            .message-system-box-date { /*一个系统消息日期*/
-                height: 50px;
-                font-size: 13px;
-                line-height: 50px;
-                color: lightgray;
-                margin-left: 10px;
-            }
+        .message-system-box-content { /*一个系统消息内容*/
+            font-size: 14px;
+            line-height: 24px;
+            margin: 0px 30px 20px 30px;
 
-            .message-system-box-content { /*一个系统消息内容*/
-                font-size: 14px;
-                line-height: 24px;
-                margin: 0px 30px 20px 30px;
-
-                a:hover {
-                    text-decoration: underline;
+            a {
+                &:link {
+                    color: grey;
+                }
+                /* 已访问的链接 */
+                &:visited {
+                    color: grey;
+                }
+                /* 鼠标移动到链接上 */
+                &:hover {
+                    text-decoration: underline
+                }
+                /* 选定的链接 */
+                &:active {
+                    color: grey;
                 }
             }
         }
     }
+}
     /******以下为我的回复部分的样式***/
-    .message-response {
-        min-height: 952px;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        flex-shrink: 0;
-        border: 1px solid $color-border;
-        overflow-y: hidden;
-        background-color: $color-post;
+.message-response {
+    min-height: 952px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    border: 1px solid $color-border;
+    overflow-y: hidden;
+    background-color: $color-post;
 
-        .message-response-box { /*一个消息的框框*/
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: row;
-            border-bottom: 1px dashed lightgray;
-            /*.message-response-box-left { 
+    .message-response-box { /*一个消息的框框*/
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: row;
+        border-bottom: 1px dashed lightgray;
+        /*.message-response-box-left { 
             flex-basis: 100px;
             flex-shrink: 0;
 
@@ -1777,59 +1791,91 @@ a {
                 height: 60px;
             }
         }*/
-            .message-response-box-middle { /*消息框的中间-文字*/
+        .message-response-box-middle { /*消息框的中间-文字*/
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            flex-grow: 1;
+            flex-shrink: 0;
+            margin: 0px 30px 20px 30px;
+
+            .message-response-box-middle1 {
                 display: flex;
-                flex-direction: column;
-                flex-wrap: wrap;
-                flex-grow: 1;
-                flex-shrink: 0;
-                margin: 0px 30px 20px 30px;
+                flex-direction: row;
 
-                .message-response-box-middle1 {
-                    display: flex;
-                    flex-direction: row;
+                .message-response-box-middle-title { /*消息框文字第一行 版面信息*/
+                    height: 50px;
+                    flex-wrap: nowrap;
+                    font-size: 14px;
+                    line-height: 50px;
+                    color: dodgerblue;
+                    flex-shrink: 0;
+                    margin-right: 10px;
 
-                    .message-response-box-middle-title { /*消息框文字第一行 版面信息*/
-                        height: 50px;
-                        flex-wrap: nowrap;
-                        font-size: 14px;
-                        line-height: 50px;
-                        color: dodgerblue;
-                        flex-shrink: 0;
-                        margin-right: 10px;
-                    }
-
-                    .message-response-box-middle-date { /*消息框文字第一行日期*/
-                        height: 50px;
-                        flex-basis: 300px;
-                        font-size: 12px;
-                        line-height: 50px;
-                        color: gray;
-                        flex-shrink: 0;
-                        flex-grow: 1;
+                    a {
+                        &:link {
+                            color: dodgerblue;
+                        }
+                        /* 已访问的链接 */
+                        &:visited {
+                            color: dodgerblue;
+                        }
+                        /* 鼠标移动到链接上 */
+                        &:hover {
+                            text-decoration: underline
+                        }
+                        /* 选定的链接 */
+                        &:active {
+                            color: dodgerblue;
+                        }
                     }
                 }
 
-                .message-response-box-middle-content { /*消息框文字第二行-主体内容*/
-                    height: 24px;
-                    font-size: 14px;
-                    line-height: 24px;
+                .message-response-box-middle-date { /*消息框文字第一行日期*/
+                    height: 50px;
+                    flex-basis: 300px;
+                    font-size: 12px;
+                    line-height: 50px;
+                    color: gray;
                     flex-shrink: 0;
+                    flex-grow: 1;
+                }
+            }
 
-                    a:hover {
-                        text-decoration: underline;
+            .message-response-box-middle-content { /*消息框文字第二行-主体内容*/
+                height: 24px;
+                font-size: 14px;
+                line-height: 24px;
+                flex-shrink: 0;
+
+                a {
+                    &:link {
+                        color: blue;
+                    }
+                    /* 已访问的链接 */
+                    &:visited {
+                        color: blue;
+                    }
+                    /* 鼠标移动到链接上 */
+                    &:hover {
+                        text-decoration: underline
+                    }
+                    /* 选定的链接 */
+                    &:active {
+                        color: blue;
                     }
                 }
             }
-            /*.message-response-box-right { 
+        }
+        /*.message-response-box-right { 
             flex-basis: 60px;
             line-height: 100px;
             font-size: 14px;
             margin-left: 10px;
             flex-shrink: 0;
         }*/
-        }
     }
+}
     /*****************************************以下为我的关注的样式*********************************/
     .focus-root {
         display: flex;
@@ -2845,17 +2891,17 @@ a {
         margin-top: 0.1rem;
     }
 
-    .boardFollow {
-        width: 2.5rem;
-        height: 1.5rem;
-        border-radius: 1rem;
-        background-color: #fb6165;
-        font-size: 0.75rem;
-        color: #fff;
-        text-align: center;
-        line-height: 1.25rem;
-        cursor: pointer;
-    }
+.boardFollow {
+    width: 3rem;
+    height: 1.4rem;
+    border-radius: 1rem;
+    background-color: #fb6165;
+    font-size: .9rem;
+    color: #fff;
+    text-align: center;
+    line-height: 1.4rem;
+    cursor: pointer;
+}
 
     .topicManageBTN {
         border: none;

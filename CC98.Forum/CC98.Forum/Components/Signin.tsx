@@ -40,7 +40,7 @@ export class Signin extends React.Component<{history}, { signinInfo ,content}>{
             //设定已签到状态和有效期
             let userInfo = Utility.getLocalStorage("userInfo");
             let workTime = (new Date(new Date().toLocaleDateString()).getTime() + 86400000 - new Date().getTime()) / 1000;
-            Utility.setLocalStorage(`signin_${ userInfo.id }`, true, workTime);
+            Utility.setLocalStorage(`signin_${userInfo.id}`, true, workTime);
             //设定已签到信息
             info = <div><div className="row" style={{ justifyContent: "center" }}>
                 你上次的签到日期是{moment(this.state.signinInfo.lastSignInTime).format('YYYY-MM-DD HH:mm:ss')}

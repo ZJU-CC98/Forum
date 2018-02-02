@@ -11,7 +11,7 @@ import * as Actions from '../Actions/UserCenter';
 import { Link, withRouter, Route } from 'react-router-dom';
 //import SignalR from '../SignalR';
 
-class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { hoverElement: string, unreadCount: { totalCount: number, replyCount: number, atCount: number, systemCount: number, messageCount: number } }> {   //顶部条的下拉菜单组件
+class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLogOn }, { hoverElement: string, unreadCount: { totalCount: number, replyCount: number, atCount: number, systemCount: number, messageCount: number } }> {   //顶部条的下拉菜单组件
     constructor(props) {
         super(props);
         this.state = ({
@@ -43,6 +43,20 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
          * 第一次加载的时候获取初始状态
          */
         this.handleNotifyMessageReceive();
+
+        /**
+         * 同步不同窗口的登陆信息
+         */
+        window.addEventListener('storage', (e) => {
+            if(e.key === 'userInfo') {
+                if(e.newValue){ //如果用户在其他页面重新登陆
+                    this.props.reLogOn();
+                    Utility.refreshUnReadCount();
+                }else { //如果用户在其他页面注销
+                    this.props.logOff();
+                }
+            }
+        });
 
     }
 
@@ -86,6 +100,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
                 this.setState({
                     hoverElement: className
                 });
+                Utility.refreshHoverUnReadCount();
                 break;
             }
             case 'mouseout': {
@@ -110,8 +125,6 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
             if (Utility.getStorage("unreadCount")) {
                 unreadCount = Utility.getStorage("unreadCount")
             }
-            let totalCount: string = unreadCount.totalCount.toString();
-            if (unreadCount.totalCount > 99) totalCount = "99+";
             //全站管理选项
             let admin = this.props.userInfo.privilege === '管理员' ? <Link to="/sitemanage" style={{ color: '#fff' }}><li>全站管理</li></Link> : null;
             //用户中心下拉列表
@@ -141,7 +154,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff }, { h
                     >
                         <Link to="/message/response" className="messageTopBar">
                             <div className="topBarBell"> <i className="fa fa-bell-o"></i></div>
-                            <div className="message-counter displaynone" id="unreadCount-totalCount">{totalCount}</div>
+                            <div className="message-counter displaynone" id="unreadCount-totalCount">{unreadCount.totalCount}</div>
                         </Link>
                     </div>
                     <div className="topBarUserImg"
@@ -207,6 +220,10 @@ function mapDispatch(dispatch) {
     return {
         logOff: () => {
             dispatch(Actions.userLogOff());
+        },
+        reLogOn: () => {
+            dispatch(Actions.changeUserInfo(Utility.getLocalStorage('userInfo')));
+            dispatch(Actions.userLogIn())
         }
     };
 }

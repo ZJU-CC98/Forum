@@ -40,6 +40,9 @@ export class FocusBoardArea extends React.Component<{history}, FocusBoardAreaSta
      * 将我关注的版面排列好
      */
     async componentDidMount() {
+        //更新未读消息数目
+        await Utility.refreshUnReadCount();
+
         //给关注版面添加选中效果
         $('#myFocusUser').removeClass('focus-title-hover');
         $('#myFocusBoard').addClass('focus-title-hover');

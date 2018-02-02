@@ -55,7 +55,6 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         this.setState({});
     }
     async handleChange() {
-       
         let page: number;
         if (!this.match.params.page) {
             page = 1;
@@ -73,30 +72,37 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
             if ((noticeSetting && noticeSetting.post === "是") || ((newPage == page + 1) && (floor == 1))) {
                 page = newPage;
                 let url = `/topic/${topicInfo.id}/${page}#${floor}`;
-                this.setState({ quote: { userName: "", content: "", replyTime: "" } });
+                this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } });
                 this.props.history.push(url);
             }
             else {
-                let url = `/topic/${topicInfo.id}/${page}`;
-                this.setState({ quote: { userName: "", content: "", replyTime: "" } });
+                let url = `/topic/${topicInfo.id}/${page}`; 
+                //如果是引用了某一层楼，发帖后应该跳转回这层楼
+                if (this.state.quote && this.state.quote.floor) {
+                    let quoteFloor = this.state.quote.floor % 10;
+                    url = `/topic/${topicInfo.id}/${page}#${quoteFloor}`;
+                }
+                else {
+                    $('.footerRow')[0].scrollIntoView(true);
+                }
+                this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } });
                 this.props.history.push(url);
             }
-            $('.footerRow')[0].scrollIntoView(true);
         }
         else {
             page = newPage;
             let url = `/topic/${topicInfo.id}/${page}#${floor}`;
-            this.setState({ quote: { userName: "", content: "", replyTime: "" } });
+            this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } });
             this.props.history.push(url);
         }
         //回复成功提示
         Utility.noticeMessageShow('replyMessage');
         const isFav = await Utility.getFavState(this.match.params.topicid);
-        this.setState({ topicInfo: topicInfo, quote: {userName:"",content:"",replyTime:""},isFav:isFav});
-      
+        this.setState({ topicInfo: topicInfo, quote: { userName: "", content: "", replyTime: "", floor: "" },isFav:isFav}); 
+        //更新一下未读消息数目
+        Utility.refreshHoverUnReadCount();
     }
     async componentWillReceiveProps(newProps) {
-      
         //page 是否变了
         let page: number;
         if (!newProps.match.params.page) {
@@ -108,11 +114,19 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         const boardId = topicInfo.boardId;
         const boardInfo = await Utility.getBoardInfo(boardId);
         const totalPage = this.getTotalPage(topicInfo.replyCount);
+        const floor = (topicInfo.replyCount + 1) % 10;
+        //如果page超过最大页码，就跳转到最大页码
+        if (page > totalPage) {
+            page = totalPage;
+            const url = `/topic/${topicInfo.id}/${page}#${floor}`;
+            this.props.history.push(url);
+        }
         const isFav = await Utility.getFavState(newProps.match.params.topicid);  
         this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo, isFav: isFav });
+        //更新一下未读消息数目
+        Utility.refreshHoverUnReadCount();
     }
     async componentDidMount() {
-   
         let page: number;
         if (!this.match.params.page) {
             page = 1;
@@ -123,11 +137,20 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         const boardId = topicInfo.boardId;
         const boardInfo = await Utility.getBoardInfo(boardId);
         const totalPage = this.getTotalPage(topicInfo.replyCount);
+        const floor = (topicInfo.replyCount + 1) % 10;
+        //如果page超过最大页码，就跳转到最大页码
+        if (page > totalPage) {
+            page = totalPage;
+            const url = `/topic/${topicInfo.id}/${page}#${floor}`;
+            this.props.history.push(url);
+        }
         const isFav = await Utility.getFavState(this.match.params.topicid);
         let IPData = [];
        // if (Utility.isMaster(boardInfo.boardMasters))
       //   IPData = await Utility.findIP(this.match.params.topicid);
         this.setState({ isFav, page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo, fetchState: topicInfo, IPData: IPData });
+        //更新一下未读消息数目
+        Utility.refreshHoverUnReadCount();
     }
     getTotalPage(count) {
         return Utility.getTotalPageof10(count);
@@ -164,7 +187,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
                 <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} />
             </div>
             {topicInfo}
-            <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} boardInfo={this.state.boardInfo} quote={this.quote} isHot={false} isTrace={false} userId={null} topicId={this.match.params.topicid} />
+            <Reply topicInfo={this.state.topicInfo} page={this.state.page} boardInfo={this.state.boardInfo} quote={this.quote} isHot={false} isTrace={false} userId={null} topicId={this.match.params.topicid} />
             <div className="row" style={{ width: "100%", justifyContent: "space-between", marginTop: "2rem" }}>
                 <Category topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} topicId={this.match.params.topicid} />
                 <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>

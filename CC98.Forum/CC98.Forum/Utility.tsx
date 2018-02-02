@@ -1788,21 +1788,21 @@ export async function getMessageResponse(from: number, size: number, router) {
                 //如果未登录,直接返回未登录
                 if (!isLogOn()) {
                     window.location.href = "/status/LogOut";
-                    return null;
+                    return [];
                 }
                 else {
                     window.location.href = "/status/UnauthorizedTopic";
-                    return null;
+                    return [];
                 }
             case 403:
                 window.location.href = "/status/OperationForbidden";
-                return null;
+                return [];
             case 404:
                 window.location.href = "/status/NotFoundTopic";
-                return null;
+                return [];
             case 500:
                 window.location.href = "/status/ServerError";
-                return null;
+                return [];
         }
         let newTopic = await response.json();
         //把postId、topicId分别统计存到一个数组里，然后批量查询一下
@@ -1834,6 +1834,11 @@ export async function getMessageResponse(from: number, size: number, router) {
                    newTopic[i].userId = postInfo.userId;
                    newTopic[i].userName = postInfo.userName;
                 }
+                else {
+                    newTopic[i].floor = 1;
+                    newTopic[i].userId = -1;
+                    newTopic[i].userName = "有人";
+                }
                 result.push(newTopic[i]);
             }
         }
@@ -1856,21 +1861,21 @@ export async function getMessageAttme(from: number, size: number, router) {
                 //如果未登录,直接返回未登录
                 if (!isLogOn()) {
                     window.location.href = "/status/LogOut";
-                    return null;
+                    return [];
                 }
                 else {
                     window.location.href = "/status/UnauthorizedTopic";
-                    return null;
+                    return [];
                 }
             case 403:
                 window.location.href = "/status/OperationForbidden";
-                return null;
+                return [];
             case 404:
                 window.location.href = "/status/NotFoundTopic";
-                return null;
+                return [];
             case 500:
                 window.location.href = "/status/ServerError";
-                return null;
+                return [];
         }
         let newTopic = await response.json();
         //console.log("获取到的新@数据", newTopic);
@@ -1905,9 +1910,8 @@ export async function getMessageAttme(from: number, size: number, router) {
                 }
                 else {
                    newTopic[i].floor = 1;
-                   let topicInfo = await getTopicInfo(newTopic[i].topicId);
-                   newTopic[i].userId = topicInfo.userId;
-                   newTopic[i].userName = topicInfo.userName;
+                   newTopic[i].userId = -1;
+                   newTopic[i].userName = "有人";
                 }
                 result.push(newTopic[i]);
             }
@@ -2472,31 +2476,40 @@ export async function getFavState(topicId) {
 
 //更新未读消息数量
 export async function refreshUnReadCount() {
+    let unreadCount = { totalCount: 0, replyCount: 0, atCount: 0, systemCount: 0, messageCount: 0 };
+
     //如果未登录,直接不获取未读消息数目
     if (!isLogOn()) {
-        return 0;
+        setStorage("unreadCount", unreadCount);
+        return unreadCount;
     }
+
     //查看用户个人消息偏好设置
     let noticeSetting = getLocalStorage("noticeSetting");
     if (noticeSetting && noticeSetting.response === "否" && noticeSetting.system === "否" && noticeSetting.message === "否" && noticeSetting.attme === "否") {
-        return null;
+        setStorage("unreadCount", unreadCount);
+        return unreadCount;
     }
     const headers = await formAuthorizeHeader();
     const url = `/me/unread-count`;
-    const response = await cc98Fetch(url, { headers });
-    let unreadCount = await response.json();
+    let response = await cc98Fetch(url, { headers });
+    if (response.status === 200) {
+        unreadCount = await response.json();
+    } 
     //根据消息偏好设置修改未读消息数目
-    if (noticeSetting && noticeSetting.response === "否") {
-        unreadCount.replyCount = 0;
-    }
-    if (noticeSetting && noticeSetting.system === "否") {
-        unreadCount.systemCount = 0;
-    }
-    if (noticeSetting && noticeSetting.message === "否") {
-        unreadCount.messageCount = 0;
-    }
-    if (noticeSetting && noticeSetting.attme === "否") {
-        unreadCount.atCount = 0;
+    if (noticeSetting) {
+        if (noticeSetting.response === "否") {
+            unreadCount.replyCount = 0;
+        }
+        if (noticeSetting.system === "否") {
+            unreadCount.systemCount = 0;
+        }
+        if (noticeSetting.message === "否") {
+            unreadCount.messageCount = 0;
+        }
+        if (noticeSetting.attme === "否") {
+            unreadCount.atCount = 0;
+        }
     }
     unreadCount.totalCount = unreadCount.systemCount + unreadCount.atCount + unreadCount.replyCount + unreadCount.messageCount;
     //console.log("未读消息数量", unreadCount);
@@ -2506,6 +2519,14 @@ export async function refreshUnReadCount() {
     }
     else {
         $('#unreadCount-totalCount').addClass('displaynone');
+        $('#unreadCount-replyCount').addClass('displaynone');
+        $('#unreadCount-replyCount1').addClass('displaynone');
+        $('#unreadCount-atCount').addClass('displaynone');
+        $('#unreadCount-atCount1').addClass('displaynone');
+        $('#unreadCount-systemCount').addClass('displaynone');
+        $('#unreadCount-systemCount1').addClass('displaynone');
+        $('#unreadCount-messageCount').addClass('displaynone');
+        $('#unreadCount-messageCount1').addClass('displaynone');
         setStorage("unreadCount", unreadCount);
         return unreadCount;
     }
@@ -2544,7 +2565,6 @@ export async function refreshUnReadCount() {
         $('#unreadCount-messageCount').text(unreadCount.messageCount);
         $('#unreadCount-messageCount1').removeClass('displaynone');
         $('#unreadCount-messageCount1').text(unreadCount.messageCount);
-
     }
     else {
         $('#unreadCount-messageCount').addClass('displaynone');
@@ -2553,6 +2573,98 @@ export async function refreshUnReadCount() {
     setStorage("unreadCount", unreadCount);
     return unreadCount;
 }
+
+//更新悬浮下拉未读消息数目
+export function refreshHoverUnReadCount() {
+    let unreadCount = { totalCount: 0, replyCount: 0, atCount: 0, systemCount: 0, messageCount: 0 };
+    //查看用户个人消息偏好设置
+    let noticeSetting = getLocalStorage("noticeSetting");
+    if (noticeSetting && noticeSetting.response === "否" && noticeSetting.system === "否" && noticeSetting.message === "否" && noticeSetting.attme === "否") {
+        setStorage("unreadCount", unreadCount);
+        return unreadCount;
+    }
+    //取缓存
+    if (getStorage("unreadCount")) {
+        unreadCount = getStorage("unreadCount");
+    }
+    //根据消息偏好设置修改未读消息数目
+    if (noticeSetting) {
+        if (noticeSetting.response === "否") {
+            unreadCount.replyCount = 0;
+        }
+        if (noticeSetting.system === "否") {
+            unreadCount.systemCount = 0;
+        }
+        if (noticeSetting.message === "否") {
+            unreadCount.messageCount = 0;
+        }
+        if (noticeSetting.attme === "否") {
+            unreadCount.atCount = 0;
+        }
+    }
+    unreadCount.totalCount = unreadCount.systemCount + unreadCount.atCount + unreadCount.replyCount + unreadCount.messageCount;
+    //console.log("未读消息数量", unreadCount);
+    if (unreadCount.totalCount > 0) {
+        $('#unreadCount-totalCount').removeClass('displaynone');
+        $('#unreadCount-totalCount').text(unreadCount.totalCount);
+    }
+    else {
+        $('#unreadCount-totalCount').addClass('displaynone');
+        $('#unreadCount-replyCount').addClass('displaynone');
+        $('#unreadCount-replyCount1').addClass('displaynone');
+        $('#unreadCount-atCount').addClass('displaynone');
+        $('#unreadCount-atCount1').addClass('displaynone');
+        $('#unreadCount-systemCount').addClass('displaynone');
+        $('#unreadCount-systemCount1').addClass('displaynone');
+        $('#unreadCount-messageCount').addClass('displaynone');
+        $('#unreadCount-messageCount1').addClass('displaynone');
+        setStorage("unreadCount", unreadCount);
+        return unreadCount;
+    }
+    if (unreadCount.replyCount > 0) {
+        $('#unreadCount-replyCount').removeClass('displaynone');
+        $('#unreadCount-replyCount').text(unreadCount.replyCount);
+        $('#unreadCount-replyCount1').removeClass('displaynone');
+        $('#unreadCount-replyCount1').text(unreadCount.replyCount);
+    }
+    else {
+        $('#unreadCount-replyCount').addClass('displaynone');
+        $('#unreadCount-replyCount1').addClass('displaynone');
+    }
+    if (unreadCount.atCount > 0) {
+        $('#unreadCount-atCount').removeClass('displaynone');
+        $('#unreadCount-atCount').text(unreadCount.atCount);
+        $('#unreadCount-atCount1').removeClass('displaynone');
+        $('#unreadCount-atCount1').text(unreadCount.atCount);
+    }
+    else {
+        $('#unreadCount-atCount').addClass('displaynone');
+        $('#unreadCount-atCount1').addClass('displaynone');
+    }
+    if (unreadCount.systemCount > 0) {
+        $('#unreadCount-systemCount').removeClass('displaynone');
+        $('#unreadCount-systemCount').text(unreadCount.systemCount);
+        $('#unreadCount-systemCount1').removeClass('displaynone');
+        $('#unreadCount-systemCount1').text(unreadCount.systemCount);
+    }
+    else {
+        $('#unreadCount-systemCount').addClass('displaynone');
+        $('#unreadCount-systemCount1').addClass('displaynone');
+    }
+    if (unreadCount.messageCount > 0) {
+        $('#unreadCount-messageCount').removeClass('displaynone');
+        $('#unreadCount-messageCount').text(unreadCount.messageCount);
+        $('#unreadCount-messageCount1').removeClass('displaynone');
+        $('#unreadCount-messageCount1').text(unreadCount.messageCount);
+    }
+    else {
+        $('#unreadCount-messageCount').addClass('displaynone');
+        $('#unreadCount-messageCount1').addClass('displaynone');
+    }
+    setStorage("unreadCount", unreadCount);
+    return unreadCount;
+}
+
 export async function editPost(postId, contentType, title, content) {
     const headers = await formAuthorizeHeader();
     const url = `/post/${postId}`;
@@ -2874,10 +2986,10 @@ export function getThisTopicInfo(topicId, topicIds) {
 */
 export function atHanderler(content: string) {
     const reg1 = /([\s\S]*)\[quotex?\][\s\S]*?\[\/quotex?\]([\s\S]*)/;
-    const reg2 = /@[^ \n]{1,10}?[ \n]/g;
+    const reg2 = /@[^ \n]{1,10}?[ ]+/g;
     const reg3 = /[^@ ]+/;
     //不检测引用内容中的@
-    console.log("处理前内容", content);
+    //console.log("处理前内容", content);
     let str;
     do {
         str = content.match(reg1);
@@ -2911,7 +3023,7 @@ export function atHanderler(content: string) {
  * @param content
  */
 export function atUserUbbUrl(content: string) {
-    const reg = /@[^ \n]{1,10}?[ \n]/g;
+    const reg = /@[^ \n]{1,10}?[ ]+/g;
     const reg2 = /[^@ ]+/;
     if (content === '') {
         return content;
@@ -2929,8 +3041,8 @@ export function atUserUbbUrl(content: string) {
         }
         for (let i = 0; i < atNum; i++) {
             //给@用户名加上效果
-            let atText = `@${ats[i]}`;
-            content = content.replace(atText, `[url="/user/name/${ats[i]}"]${atText}[/url]`);
+            let atText = new RegExp(`@${ats[i]}[ ]`, "g");
+            content = content.replace(atText, `[url="/user/name/${ats[i]}"]@${ats[i]} [/url]`);
         }
         return content;
     } else {
@@ -2943,7 +3055,7 @@ export function atUserUbbUrl(content: string) {
  * @param content
  */
 export function atUserMdUrl(content: string) {
-    const reg = /@[^ \n]{1,10}?[ \n]/g;
+    const reg = /@[^ \n]{1,10}?[ ]+/g;
     const reg2 = /[^@ ]+/;
     if (content === '') {
         return content;
@@ -2961,8 +3073,8 @@ export function atUserMdUrl(content: string) {
         }
         for (let i = 0; i < atNum; i++) {
             //给@用户名加上效果
-            let atText = `@${ats[i]}`;
-            content = content.replace(atText, `[${atText}](/user/name/${ats[i]} "${atText}")`);
+            let atText = new RegExp(`@${ats[i]} `, "g");
+            content = content.replace(atText, `[@${ats[i]} ](/user/name/${ats[i]})`);
         }
         return content;
     } else {

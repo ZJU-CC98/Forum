@@ -5,7 +5,6 @@ import * as Utility from '../Utility';
 import { UbbContainer } from './UbbContainer';
 import { Link } from 'react-router-dom';
 import DocumentTitle from './DocumentTitle';
-
 /**
  * 全站公告组件
  * 为同时兼容新旧版98 临时调整了显示的内容
@@ -572,6 +571,9 @@ export class MainPage extends React.Component<{}, { data }> {
     }
 
     async getData() {
+        //更新一下未读消息数目
+        Utility.refreshHoverUnReadCount();
+
         let data = Utility.getLocalStorage("mainPageData");
         if (!data) {
             const response = await Utility.cc98Fetch('/config/index');
