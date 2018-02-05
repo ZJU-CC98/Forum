@@ -1174,22 +1174,46 @@ export async function sendTopic(topicId, router) {
 export function getListTotalPage(totalTopicCount) {
     return (totalTopicCount - totalTopicCount % 20) / 20 + 1;
 }
-export async function getCurUserTotalReplyPage(topicId, userId, router) {
+export async function getCurUserTotalReplyPage(topicId, userId) {
     try {
         const headers = await formAuthorizeHeader();
         const replyCountResponse = await cc98Fetch(`/post/topic/user?topicid=${topicId}&userid=${userId}&from=0&size=1`, { headers });
         const replyCountJson = await replyCountResponse.json();
         const replyCount = replyCountJson[0].count;
-        if (replyCount > 10) {
-            return (replyCount - replyCount % 10) / 10 + 1;
-        } else {
-            return 1;
-        }
+        return replyCount % 10 === 0 ? replyCount / 10 :
+            (replyCount - replyCount % 10)/10+1;
     } catch (e) {
         //window.location.href = "/status/Disconnected";
     }
 }
-
+export async function getAnonymousTraceTopicsCount(topicId, postId) {
+    try {
+        const headers = await formAuthorizeHeader();
+        const response = await cc98Fetch(`/post/topic/anonymous/user?topicid=${topicId}&postid=${postId}&from=0&size=1`, { headers });
+        const data = await response.json();
+        return data[0].count % 10 === 0 ? data[0].count / 10 : (data[0].count - data[0].count %10)/10+1;
+       
+    } catch (e) {
+        //window.location.href = "/status/Disconnected";
+    }
+}
+export async function getAnonymousTraceTopics(topicId,postId,page) {
+    try {
+        const start = (page - 1)*10;
+        const headers = await formAuthorizeHeader();
+        const response = await cc98Fetch(`/post/topic/anonymous/user?topicid=${topicId}&postid=${postId}&from=${start}&size=10`, { headers });
+        const data = await response.json();
+        let purl = '/static/images/心灵头像.gif';
+        const anonymousUserName = `匿名${data[0].userName.toUpperCase()}`;
+        const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 ,fanCount:0};
+        for (let i in data) {
+            data[i].userInfo = userMesJson;
+        }
+        return data;
+    } catch (e) {
+        //window.location.href = "/status/Disconnected";
+    }
+}
 /**
  * 发送私信的函数
  * @param bodyContent
@@ -2343,6 +2367,24 @@ export async function getBoardInfo(boardId) {
         return 'unauthorized';
     }
     return data;
+}
+export async function getPostInfo(postId) {
+    const headers = await formAuthorizeHeader();
+    const url = `/post/basic?id=${postId}`;
+    const response = await cc98Fetch(url, { headers });
+    switch (response.status) {
+        case 404:
+            return 'not found';
+        case 500:
+            return 'server error';
+    }
+
+    const data = await response.json();
+    if (data.canEntry === false) {
+
+        return 'unauthorized';
+    }
+    return data[0];
 }
 export function getTotalPageof10(replyCount) {
     const totalFloor = replyCount + 1;

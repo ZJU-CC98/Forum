@@ -12,7 +12,6 @@ interface Props {
     boardInfo;
     onChange;
     content;
-    userId;
     topicInfo;
 }
 export class SendTopic extends React.Component<Props, { content: string, mode: number, masters: string[],buttonInfo,buttonDisabled }>{

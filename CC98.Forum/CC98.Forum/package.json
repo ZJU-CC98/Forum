@@ -27,7 +27,9 @@
     "signalr": "2.2.2",
     "spectrum-colorpicker": "^1.8.0",
     "ssri": "^4.1.6",
-    "url-join": "2.0.2"
+    "url-join": "2.0.2",
+    "node-sass": "4.7.2",
+    "sass-loader": "6.0.6"
   },
   "devDependencies": {
     "@types/core-js": "0.9.43",
@@ -51,8 +53,6 @@
     "css-loader": "^0.28.7",
     "extract-text-webpack-plugin": "3.0.0",
     "font-awesome": "4.7.0",
-    "node-sass": "^4.7.2",
-    "sass-loader": "6.0.6",
     "typescript": "2.6.1",
     "unminified-webpack-plugin": "1.2.0",
     "webpack": "3.4.1",

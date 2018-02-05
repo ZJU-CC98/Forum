@@ -40,8 +40,8 @@ export class App extends React.Component {
                         <Header />
                         <Switch>
                             <Route exact path="/" component={MainPage}></Route>
-                            <Route exact path="/topic/:topicid/:page?" component={ShowTopic} />
-                            <Route exact path="/topic/:topicid/user/:userId/:page?" component={CurUserPost} />
+                            <Route exact path="/topic/:topicid/:page?" component={ShowTopic} />                
+                            <Route exact path="/topic/:topicId/postid/:postId/:page?" component={CurUserPost} />
                             <Route path="/list/:boardId/:type?/:page?" component={List} />
                             <Route exact path="/boardlist" component={BoardList} />
                             <Route path="/usercenter" component={UserCenter} />

@@ -173,12 +173,12 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         let topicInfo = null;
         topicInfo = <TopicInfo topicInfo={this.state.topicInfo} tag1={this.state.topicInfo.tag1} tag2={this.state.topicInfo.tag2} boardInfo={this.state.boardInfo}  isFav={this.state.isFav} />;
         if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
-            hotReply = <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} boardInfo={this.state.boardInfo} quote={this.quote} isTrace={false} isHot={true} userId={null} topicId={this.match.params.topicid} />
+            hotReply = <Reply topicInfo={this.state.topicInfo} page={this.match.params.page} boardInfo={this.state.boardInfo} quote={this.quote} isTrace={false} isHot={true} postId={null} topicId={this.match.params.topicid} />
         }
         const pagerUrl = `/topic/${this.state.topicid}/`;
         let sendTopic = null;
         if (Utility.getLocalStorage("userInfo"))
-            sendTopic = <SendTopic onChange={this.handleChange}   boardInfo={this.state.boardInfo} content={this.state.quote} userId={this.state.topicInfo.userId} topicInfo={this.state.topicInfo} />;
+            sendTopic = <SendTopic onChange={this.handleChange}   boardInfo={this.state.boardInfo} content={this.state.quote}  topicInfo={this.state.topicInfo} />;
         let topicHtml = <div className="center" >
             <DocumentTitle title={`${this.state.topicInfo.title||"帖子"} - CC98论坛`} />
             <FindIP data={this.state.IPData}/>
@@ -187,7 +187,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
                 <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} />
             </div>
             {topicInfo}
-            <Reply topicInfo={this.state.topicInfo} page={this.state.page} boardInfo={this.state.boardInfo} quote={this.quote} isHot={false} isTrace={false} userId={null} topicId={this.match.params.topicid} />
+            <Reply topicInfo={this.state.topicInfo} page={this.state.page} boardInfo={this.state.boardInfo} quote={this.quote} isHot={false} isTrace={false} postId={null} topicId={this.match.params.topicid} />
             <div className="row" style={{ width: "100%", justifyContent: "space-between", marginTop: "2rem" }}>
                 <Category topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} topicId={this.match.params.topicid} />
                 <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
