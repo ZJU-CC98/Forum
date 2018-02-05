@@ -27,7 +27,6 @@
             }
         }
     </script>
-	</script>
 
 	<link rel="stylesheet"
 		  href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -120,13 +119,10 @@
 	<script src="/static/scripts/lib/editor.md/editormd.min.js"></script>
 	<script src="/static/scripts/lib/spectrum/spectrum.js"></script>
 	<script src="/static/scripts/lib/url-join/lib/url-join.js"></script>
-	<script src="/static/scripts/main.js"></script>
+	
     <script>
         //兼容性检查
-        if (!('flex' in document.documentElement.style) && location.pathname !== '/status/unSupport') {
-            location.href = '/status/unSupport';
-        }
-        else if (location.pathname === '/status/unSupport') {
+        if (!('flex' in document.documentElement.style)) {
             document.getElementById('root').innerHTML = "\
             <div style='width: 100%; text-align: left; font-size: 30px; position: fixed; top: 10%; left:10%;'>\
                 <div style='font-size: 40px;'>抱歉，CC98在您的浏览器上无法正常显示</div>\
@@ -160,7 +156,9 @@
                 <br/>\
                 <div> 如果仍未解决，请联系 contact@cc98.org</div>\
             </div > ";
-        }
+        }else {
+			document.write('<script src="/static/scripts/main.js"><\/script>')
+		}
     </Script >
 </body>
 </html>
