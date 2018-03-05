@@ -1959,6 +1959,9 @@ export async function plus1(topicId, postId, reason) {
         case 401:
             return 'not allowed';
         case 403:
+            if (await response.text() === 'you_cannot_rate')
+                return 'not allowed';
+            else
             return 'already';
         case 500:
             return 'server error';

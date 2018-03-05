@@ -66,6 +66,7 @@ export class App extends React.Component {
                             <Route path="/status/servererror" component={Status.ServerError} />
                             <Route path="/status/contentneeded" component={Status.ContentNeeded} />
                             <Route path="/status/operationforbidden" component={Status.OperationForbidden} />
+                            <Route path="/status/cannotpost" component={Status.CannotPost} />
                             <Route component={Status.PageNotFound} />
                         </Switch>
                         <Footer />

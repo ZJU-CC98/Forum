@@ -234,22 +234,27 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
             );
             //发帖成功，api返回topicid
             const topicId = await response.text();
-            //根据返回的topicid，发送@信息       
-            const atUsers = Utility.atHanderler(this.state.content);
-            //如果存在合法的@，则发送@信息，否则不发送，直接跳转至所发帖子
-            if (atUsers) {
-                const atUsersJSON = JSON.stringify(atUsers);
-                const url2 = `/notification/at?topicid=${topicId}`;
-                let myHeaders2 = new Headers();
-                myHeaders2.append("Content-Type", 'application/json');
-                myHeaders2.append("Authorization", token);
-                let response2 = await Utility.cc98Fetch(url2, {
-                    method: 'POST',
-                    headers: myHeaders2,
-                    body: atUsersJSON
-                });
+            console.log("topicid=" + topicId);
+            if (topicId === 'cannot_post_in_this_board')
+                this.props.history.push(`/status/cannotpost`);
+            else {
+                //根据返回的topicid，发送@信息       
+                const atUsers = Utility.atHanderler(this.state.content);
+                //如果存在合法的@，则发送@信息，否则不发送，直接跳转至所发帖子
+                if (atUsers) {
+                    const atUsersJSON = JSON.stringify(atUsers);
+                    const url2 = `/notification/at?topicid=${topicId}`;
+                    let myHeaders2 = new Headers();
+                    myHeaders2.append("Content-Type", 'application/json');
+                    myHeaders2.append("Authorization", token);
+                    let response2 = await Utility.cc98Fetch(url2, {
+                        method: 'POST',
+                        headers: myHeaders2,
+                        body: atUsersJSON
+                    });
+                }
+                this.props.history.push(`/topic/${topicId}`);
             }
-            this.props.history.push(`/topic/${topicId}`);
         }
         
 
