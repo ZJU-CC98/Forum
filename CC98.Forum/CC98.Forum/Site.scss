@@ -27,6 +27,12 @@ body {
     font-family: 微软雅黑;
 }
 
+.unSupportA {
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+}
+
 .urlStyle {
     /* 未访问的链接 */
     &:link {
