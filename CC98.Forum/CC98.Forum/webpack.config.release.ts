@@ -34,20 +34,16 @@ const config: webpack.Configuration = {
         filename: 'static/scripts/main.min.js'
     },
     externals: {
-        'react': 'React',
-        'react-dom': 'ReactDOM',
-        'react-router': 'ReactRouter',
-        'react-router-dom': 'ReactRouterDOM',
-        'redux': 'Redux',
-        'react-redux': 'ReactRedux',
         'jquery': '$',
         'moment': 'moment',
         'editor.md': 'editormd',
-        'codemirror': 'CodeMirror',
-        'url-join': 'urljoin'
+        'codemirror': 'CodeMirror'
     },
     plugins: [
-        new webpack.optimize.UglifyJsPlugin({
+		new webpack.DefinePlugin({ //发布版本环境
+			'process.env.NODE_ENV': JSON.stringify('production')
+		  }),
+        new webpack.optimize.UglifyJsPlugin({ //去除所有console.log
             compress: {
                 pure_funcs: ['console.log']
             }
@@ -55,13 +51,7 @@ const config: webpack.Configuration = {
         new UnminifiedWebpackPlugin(), // 提供调试用 JS 完整版
         new CleanWebpackPlugin(['wwwroot/static/scripts', 'wwwroot/static/content']), // 发布之前清理 wwwroot
         new CopyWebpackPlugin([// 将 node 库复制到发布目录
-            { from: 'node_modules/jquery/dist', to: 'static/scripts/lib/jquery/' },
-            { from: 'node_modules/react/dist', to: 'static/scripts/lib/react/' },
-            { from: 'node_modules/react-dom/dist', to: 'static/scripts/lib/react-dom/' },
-            { from: 'node_modules/react-router/umd', to: 'static/scripts/lib/react-router/' },
-            { from: 'node_modules/react-router-dom/umd', to: 'static/scripts/lib/react-router-dom/' },
-            { from: 'node_modules/redux/dist', to: 'static/scripts/lib/redux/' },
-            { from: 'node_modules/react-redux/dist', to: 'static/scripts/lib/react-redux/' },
+			{ from: 'node_modules/jquery/dist', to: 'static/scripts/lib/jquery/' },
             { from: 'node_modules/moment', to: 'static/scripts/lib/moment/' },
             { from: 'node_modules/bootstrap/dist', to: 'static/scripts/lib/bootstrap/' },
             { from: 'node_modules/es6-promise/dist', to: 'static/scripts/lib/es6-promise/' },

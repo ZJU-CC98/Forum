@@ -21,12 +21,6 @@
     <div id="root"></div>
     <script src="/static/scripts/lib/es6-promise/es6-promise.auto.min.js"></script>
     <script src="/static/scripts/lib/jquery/jquery.min.js"></script>
-    <script src="/static/scripts/lib/react/react.min.js"></script>
-    <script src="/static/scripts/lib/react-dom/react-dom.min.js"></script>
-    <script src="/static/scripts/lib/react-router/react-router.min.js"></script>
-    <script src="/static/scripts/lib/react-router-dom/react-router-dom.min.js"></script>
-    <script src="/static/scripts/lib/redux/redux.min.js"></script>
-    <script src="/static/scripts/lib/react-redux/react-redux.min.js"></script>
     <script src="/static/scripts/lib/blueimp-canvas-to-blob/canvas-to-blob.min.js"></script>
     <script src="/static/scripts/lib/aplayer/APlayer.min.js"></script>
     <script src="/static/scripts/lib/dplayer/DPlayer.min.js"></script>
@@ -40,7 +34,6 @@
     <script src="/static/scripts/lib/editor.md/lib/jquery.flowchart.min.js"></script>
     <script src="/static/scripts/lib/editor.md/editormd.min.js"></script>
     <script src="/static/scripts/lib/spectrum/spectrum.js"></script>
-    <script src="/static/scripts/lib/url-join/lib/url-join.js"></script>
     <script>
         //兼容性检查
         if (!('flex' in document.documentElement.style)) {
@@ -78,7 +71,7 @@
                     <div> 如果仍未解决，请联系 contact@cc98.org</div>\
                 </div > ";
         } else {
-            document.write('<script src="/static/scripts/main.js' + '"></' + 'script>');
+            document.write('<script src="/static/scripts/main.min.js' + '"></' + 'script>');
         }
     </script>
 </body>
