@@ -122,7 +122,7 @@ export class CannotPost extends React.Component<{}, {}>{
         return <div className="errorState" >
             <DocumentTitle title={`您还不能发帖 - CC98论坛`} />
             <div>
-                <img className="errorIcon" src="/static/images/404.png"></img>
+                <img className="errorIcon" src="/static/images/403.png"></img>
             </div>
             <div className="errorTitle">糟糕！好像出错了</div>
             <div className="errorText">你无法在本版发帖，可能的原因有：权限不足、未达到发帖门槛、版面已锁定、账号受到处罚等。</div>
