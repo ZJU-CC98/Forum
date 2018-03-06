@@ -40,7 +40,7 @@ export class UbbEditor extends React.Component<Props, State> {
      * 对上传文件input的引用
      */
     uploadInput: HTMLInputElement;
-    constructor(props) {
+    constructor(props: Props) {
         super(props);
         this.state = {
             selectionEnd: 0,
@@ -51,7 +51,7 @@ export class UbbEditor extends React.Component<Props, State> {
             emojiType: 'ac',
             emojiIsShown: false,
             isPreviewing: false,
-            value: '',
+            value: props.value || '',
             info: '',
             scrollTop: 0
         };
