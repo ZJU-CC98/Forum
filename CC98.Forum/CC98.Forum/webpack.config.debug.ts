@@ -6,8 +6,6 @@ import * as CopyWebpackPlugin from 'copy-webpack-plugin';
 import * as CleanWebpackPlugin from 'clean-webpack-plugin';
 import * as ExtractTextPlugin from 'extract-text-webpack-plugin';
 
-
-
 // ReSharper disable once InconsistentNaming
 declare var __dirname;
 
@@ -45,7 +43,6 @@ const config: webpack.Configuration = {
 		new CopyWebpackPlugin([// 将 node 库复制到发布目录
 			{ from: 'node_modules/jquery/dist', to: 'static/scripts/lib/jquery/' },
 			{ from: 'node_modules/moment', to: 'static/scripts/lib/moment/' },
-			{ from: 'node_modules/bootstrap/dist', to: 'static/scripts/lib/bootstrap/' },
 			{ from: 'node_modules/font-awesome', to: 'static/content/font-awesome/' },
 			{ from: 'node_modules/moment', to: 'static/scripts/lib/moment/' },
 			{ from: 'node_modules/editor.md', to: 'static/scripts/lib/editor.md/' },
