@@ -41,7 +41,10 @@ const config: webpack.Configuration = {
     plugins: [
 		new HTMLWebpackPlugin({ // 生成index.html
 			template: 'Template.html', //index.html改用绝对路径
-			filename: 'static/index.html'
+			filename: 'static/index.html',
+			minify: {
+				collapseWhitespace: true
+			}
 		}),
 		new HTMLWebpackPluginRemove(/\.\./g),
 		new webpack.DefinePlugin({ //发布版本环境
