@@ -5,6 +5,8 @@ import * as UnminifiedWebpackPlugin from 'unminified-webpack-plugin';
 import * as CopyWebpackPlugin from 'copy-webpack-plugin';
 import * as CleanWebpackPlugin from 'clean-webpack-plugin';
 import * as ExtractTextPlugin from 'extract-text-webpack-plugin';
+import * as HTMLWebpackPlugin from 'html-webpack-plugin';
+import * as HTMLWebpackPluginRemove from 'html-webpack-plugin-remove';
 
 // ReSharper disable once InconsistentNaming
 declare var __dirname;
@@ -29,7 +31,7 @@ const config: webpack.Configuration = {
     devtool: 'source-map',
     output: {
         path: path.resolve(__dirname, 'wwwroot'),
-        filename: 'static/scripts/main.min.js'
+        filename: 'static/scripts/[hash].js'
     },
     externals: {
         'moment': 'moment',
@@ -37,6 +39,11 @@ const config: webpack.Configuration = {
         'codemirror': 'CodeMirror'
     },
     plugins: [
+		new HTMLWebpackPlugin({ // 生成index.html
+			template: 'Template.html', //index.html改用绝对路径
+			filename: 'static/index.html'
+		}),
+		new HTMLWebpackPluginRemove(/\.\./g),
 		new webpack.DefinePlugin({ //发布版本环境
 			'process.env.NODE_ENV': JSON.stringify('production')
 		  }),

@@ -12,10 +12,13 @@
     "editor.md": "^1.5.0",
     "es6-promise": "4.1.1",
     "history": "4.7.2",
+    "html-webpack-plugin": "^3.0.6",
+    "html-webpack-plugin-remove": "0.0.3",
     "install": "^0.10.1",
     "jquery": "3.2.1",
     "moment": "2.18.1",
     "msgpack5": "3.6.0",
+    "node-sass": "4.7.2",
     "react": "15.6.1",
     "react-dom": "15.6.1",
     "react-redux": "5.0.5",
@@ -24,12 +27,11 @@
     "react-router-redux": "^5.0.0-alpha.9",
     "redux": "3.7.2",
     "redux-thunk": "2.2.0",
+    "sass-loader": "6.0.6",
     "signalr": "2.2.2",
     "spectrum-colorpicker": "^1.8.0",
     "ssri": "^4.1.6",
-    "url-join": "2.0.2",
-    "node-sass": "4.7.2",
-    "sass-loader": "6.0.6"
+    "url-join": "2.0.2"
   },
   "devDependencies": {
     "@types/core-js": "0.9.43",
