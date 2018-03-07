@@ -55,7 +55,6 @@ const config: webpack.Configuration = {
                 pure_funcs: ['console.log']
             }
         }), // 简化 JS
-        new UnminifiedWebpackPlugin(), // 提供调试用 JS 完整版
         new CleanWebpackPlugin(['wwwroot/static/scripts', 'wwwroot/static/content']), // 发布之前清理 wwwroot
         new CopyWebpackPlugin([// 将 node 库复制到发布目录
 			{ from: 'node_modules/jquery/dist', to: 'static/scripts/lib/jquery/' },
@@ -67,7 +66,10 @@ const config: webpack.Configuration = {
             { from: 'node_modules/spectrum-colorpicker/spectrum.js', to: 'static/scripts/lib/spectrum/spectrum.js' },
 			{ from: 'node_modules/dplayer/dist/DPlayer.min.css', to: 'static/content/DPlayer.min.css' }
         ]),
-        new ExtractTextPlugin('static/content/site.min.css')
+        new ExtractTextPlugin({
+            filename:'static/content/site.min.css',
+            disable: false
+        })
     ]
 };
 
