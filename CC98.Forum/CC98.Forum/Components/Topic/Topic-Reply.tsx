@@ -119,7 +119,7 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
         //判断加不加热评
         let hotReply = null;
         let awards = <Award postId={item.postId} updateTime={Date.now()} awardInfo={item.awards} />;
-        if (item.awards.length === 0) awards = null;
+        if (!item.awards||item.awards.length === 0) awards = null;
         if (item.floor === 1 && !this.props.isTrace) {
             hotReply = <Reply topicInfo={this.props.topicInfo} page={this.props.page} boardInfo={this.props.boardInfo} quote={this.quote} isTrace={false} isHot={true} postId={null} topicId={this.props.topicId} />;
             return <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
