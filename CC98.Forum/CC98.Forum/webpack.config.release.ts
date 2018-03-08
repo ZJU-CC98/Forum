@@ -55,7 +55,7 @@ const config: webpack.Configuration = {
                 pure_funcs: ['console.log']
             }
         }), // 简化 JS
-        new CleanWebpackPlugin(['wwwroot/static/scripts', 'wwwroot/static/content']), // 发布之前清理 wwwroot
+        new CleanWebpackPlugin(['wwwroot/static/scripts', 'wwwroot/static/content', 'wwwroot/static/index.html']), // 发布之前清理 wwwroot
         new CopyWebpackPlugin([// 将 node 库复制到发布目录
 			{ from: 'node_modules/jquery/dist', to: 'static/scripts/lib/jquery/' },
             { from: 'node_modules/moment', to: 'static/scripts/lib/moment/' },
