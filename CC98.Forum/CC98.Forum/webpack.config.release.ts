@@ -5,6 +5,8 @@ import * as UnminifiedWebpackPlugin from 'unminified-webpack-plugin';
 import * as CopyWebpackPlugin from 'copy-webpack-plugin';
 import * as CleanWebpackPlugin from 'clean-webpack-plugin';
 import * as ExtractTextPlugin from 'extract-text-webpack-plugin';
+import * as HTMLWebpackPlugin from 'html-webpack-plugin';
+import * as HTMLWebpackPluginRemove from 'html-webpack-plugin-remove';
 
 // ReSharper disable once InconsistentNaming
 declare var __dirname;
@@ -29,7 +31,7 @@ const config: webpack.Configuration = {
     devtool: 'source-map',
     output: {
         path: path.resolve(__dirname, 'wwwroot'),
-        filename: 'static/scripts/main.min.js'
+        filename: 'static/scripts/[hash].js'
     },
     externals: {
         'moment': 'moment',
@@ -37,6 +39,14 @@ const config: webpack.Configuration = {
         'codemirror': 'CodeMirror'
     },
     plugins: [
+		new HTMLWebpackPlugin({ // 生成index.html
+			template: 'Template.html', //index.html改用绝对路径
+			filename: 'static/index.html',
+			minify: {
+				collapseWhitespace: true
+			}
+		}),
+		new HTMLWebpackPluginRemove(/\.\./g),
 		new webpack.DefinePlugin({ //发布版本环境
 			'process.env.NODE_ENV': JSON.stringify('production')
 		  }),
@@ -45,7 +55,6 @@ const config: webpack.Configuration = {
                 pure_funcs: ['console.log']
             }
         }), // 简化 JS
-        new UnminifiedWebpackPlugin(), // 提供调试用 JS 完整版
         new CleanWebpackPlugin(['wwwroot/static/scripts', 'wwwroot/static/content']), // 发布之前清理 wwwroot
         new CopyWebpackPlugin([// 将 node 库复制到发布目录
 			{ from: 'node_modules/jquery/dist', to: 'static/scripts/lib/jquery/' },
@@ -57,7 +66,10 @@ const config: webpack.Configuration = {
             { from: 'node_modules/spectrum-colorpicker/spectrum.js', to: 'static/scripts/lib/spectrum/spectrum.js' },
 			{ from: 'node_modules/dplayer/dist/DPlayer.min.css', to: 'static/content/DPlayer.min.css' }
         ]),
-        new ExtractTextPlugin('static/content/site.min.css')
+        new ExtractTextPlugin({
+            filename:'static/content/site.min.css',
+            disable: false
+        })
     ]
 };
 
