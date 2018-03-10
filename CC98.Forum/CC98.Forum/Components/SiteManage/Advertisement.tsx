@@ -157,8 +157,9 @@ export default class extends React.Component<null, State > {
             newData.enable = true;
             newData.isNew = true;
             newData.type = prevState.type;
+            newData.id = prevState.data[0].id + 1;
             return {
-                data: [...prevState.data, newData]
+                data: [newData, ...prevState.data]
             };
         });
     }
@@ -174,33 +175,35 @@ export default class extends React.Component<null, State > {
                 {this.state.type > 0 ? <button type="button" onClick={() => this.add()} >添加</button> : null}
                 {this.state.data.length > 0 ?
                     <table>
-                        <tr>
-                            <th>id</th>
-                            <th>type</th>
-                            <th>title</th>
-                            {this.state.type === 1 ? <th>content</th> : null}
-                            <th>url</th>
-                            {this.state.type !== 3 ? <th>imageUrl</th> : null}
-                            {this.state.type === 1 || this.state.type === 2 ? <th>orderWeight</th> : null}
-                            <th>enable</th>
-                            {this.state.type === 4 ? <th>days</th> : null}
-                            {this.state.type === 4 ? <th>expiredTime</th> : null}
-                            <th>save</th></tr>
-                        {this.state.data.map((item, index) => (
+                        <tbody>
                             <tr>
-                                <td>{item.id}</td>
-                                <td>{PostForumIndexColumnInfoType[item.type - 1]}</td>
-                                <td><input type="text" onChange={e => this.handleTdChange('title', e.target.value, index)} value={item.title} /></td>
-                                {this.state.type === 1 ? <td><input type="text" onChange={e => this.handleTdChange('content', e.target.value, index)} value={item.content} /></td> : null}
-                                <td><input type="text" onChange={e => this.handleTdChange('url', e.target.value, index)} value={item.url} /></td>
-                                {this.state.type !== 3 ? <td><input type="text" onChange={e => this.handleTdChange('imageUrl', e.target.value, index)} value={item.imageUrl} /></td> : null}
-                                {this.state.type === 1 || this.state.type === 2 ? <td><input type="number" onChange={e => this.handleTdChange('orderWeight', Number.parseInt(e.target.value), index)} value={item.orderWeight} /></td> : null}
-                                <td><input onClick={e => this.handleTdChange('enable', (e.target as HTMLInputElement).checked, index)} type="checkbox" checked={item.enable} /></td>
-                                {this.state.type === 4 ? <td><input type="number" onChange={e => this.handleTdChange('days', Number.parseInt(e.target.value), index)} value={item.days} /></td> : null}
-                                {this.state.type === 4 && item.expiredTime ? <td>{item.expiredTime.slice(0,19).replace('T', ' ')}</td> : null}
-                                <td><button type="button" onClick={e => this.putCurData(index)}>保存</button></td>
-                            </tr>
-                        ))}
+                                <th>id</th>
+                                <th>type</th>
+                                <th>title</th>
+                                {this.state.type === 1 ? <th>content</th> : null}
+                                <th>url</th>
+                                {this.state.type !== 3 ? <th>imageUrl</th> : null}
+                                {this.state.type === 1 || this.state.type === 2 ? <th>orderWeight</th> : null}
+                                <th>enable</th>
+                                {this.state.type === 4 ? <th>days</th> : null}
+                                {this.state.type === 4 ? <th>expiredTime</th> : null}
+                                <th>save</th></tr>
+                            {this.state.data.map((item, index) => (
+                                <tr key={item.id}>
+                                    <td>{item.id}</td>
+                                    <td>{PostForumIndexColumnInfoType[item.type - 1]}</td>
+                                    <td><input type="text" onChange={e => this.handleTdChange('title', e.target.value, index)} value={item.title} /></td>
+                                    {this.state.type === 1 ? <td><input type="text" onChange={e => this.handleTdChange('content', e.target.value, index)} value={item.content} /></td> : null}
+                                    <td><input type="text" onChange={e => this.handleTdChange('url', e.target.value, index)} value={item.url} /></td>
+                                    {this.state.type !== 3 ? <td><input type="text" onChange={e => this.handleTdChange('imageUrl', e.target.value, index)} value={item.imageUrl} /></td> : null}
+                                    {this.state.type === 1 || this.state.type === 2 ? <td><input type="number" onChange={e => this.handleTdChange('orderWeight', Number.parseInt(e.target.value), index)} value={item.orderWeight} /></td> : null}
+                                    <td><input onChange={e => this.handleTdChange('enable', (e.target as HTMLInputElement).checked, index)} type="checkbox" checked={item.enable} /></td>
+                                    {this.state.type === 4 ? <td><input type="number" onChange={e => this.handleTdChange('days', Number.parseInt(e.target.value), index)} value={item.days} /></td> : null}
+                                    {this.state.type === 4 && item.expiredTime ? <td>{item.expiredTime.slice(0,19).replace('T', ' ')}</td> : null}
+                                    <td><button type="button" onClick={e => this.putCurData(index)}>保存</button></td>
+                                </tr>
+                            ))}
+                        </tbody>
                     </table> : null}
                 <p>{this.state.info}</p>
             </div>

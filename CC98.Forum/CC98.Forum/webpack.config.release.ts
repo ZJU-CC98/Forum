@@ -40,13 +40,13 @@ const config: webpack.Configuration = {
     },
     plugins: [
 		new HTMLWebpackPlugin({ // 生成index.html
-			template: 'Template.html', //index.html改用绝对路径
+			template: 'Template.html',
 			filename: 'static/index.html',
 			minify: {
 				collapseWhitespace: true
 			}
 		}),
-		new HTMLWebpackPluginRemove(/\.\./g),
+		new HTMLWebpackPluginRemove(/\.\./g), //index.html改用绝对路径
 		new webpack.DefinePlugin({ //发布版本环境
 			'process.env.NODE_ENV': JSON.stringify('production')
 		  }),

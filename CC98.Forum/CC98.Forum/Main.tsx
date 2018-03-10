@@ -13,7 +13,7 @@ import { App } from './Components/App';
  * 清除提示信息
  */
 declare var tip: any;
-clearTimeout(tip)
+clearTimeout(tip);
 
 /**
  * 项目初始化代码
