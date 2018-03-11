@@ -465,7 +465,7 @@ export class UbbEditor extends React.Component<Props, State> {
                                 type="checkbox"
                                 checked={!this.state.shouldCompassImage}
                                 onChange={e => { e.stopPropagation(); this.setState((prevState: State) => ({ shouldCompassImage: !prevState.shouldCompassImage })); }}
-                            />无损上传
+                            />图片不压缩上传
                         </p> : null}
                     {/*上传文件用，默认隐藏，img标签仅接受图片文件，上传完后value设为""可清空filelist*/}
                     <input
