@@ -403,6 +403,7 @@ ${newProps.content.content}[/quote]
             <TopicManagement update={this.onChange} boardId={this.props.boardInfo.id} updateTime={Date.now()} topicInfo={this.props.topicInfo} />
             <NoticeMessage text="回复失败, 10s之内仅可进行一次回帖，请稍作休息" id="postFast" top="26%" left="38%" />
             <NoticeMessage text="回复失败, 请输入内容" id="postNone" top="26%" left="44%" />
+            <NoticeMessage text="操作成功" id="operationSuccess" top="26%" left="44%" />
         </div>;
 	}
 }

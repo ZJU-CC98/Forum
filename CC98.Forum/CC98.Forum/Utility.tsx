@@ -2184,6 +2184,24 @@ export async function lockTopic(topicId, boardId, reason, days) {
     }
     return 'ok';
 }
+
+export async function upTopic(topicId, boardId, reason, days) {
+    const headers = await formAuthorizeHeader();
+    headers.append("Content-Type", "application/json");
+    const url = `/topic/${topicId}/up`;
+    const bodyInfo = { 'reason': reason, 'value': days };
+    const body = JSON.stringify(bodyInfo);
+    const response = await cc98Fetch(url, { method: "PUT", headers, body });
+    switch (response.status) {
+        case 401:
+            return 'unauthorized';
+        case 404:
+            return 'not found';
+        case 500:
+            return 'server error';
+    }
+    return 'ok';
+}
 export async function unLockTopic(topicId, boardId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");

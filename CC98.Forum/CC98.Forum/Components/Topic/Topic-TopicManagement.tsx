@@ -120,6 +120,10 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
                            status =  await Utility.lockTopic(this.props.topicInfo.id, this.props.boardId, this.state.reason, this.state.days);
                             this.setState({ fetchState: status });
                             break;
+                        case '提升':
+                            status = await Utility.upTopic(this.props.topicInfo.id, this.props.boardId, this.state.reason, this.state.days);
+                            this.setState({ fetchState: status });
+                            break;
                     }           
                 } else {
                     this.setState({ tips: "请输入原因！" });
@@ -139,6 +143,7 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
                 }
         }
         if (status === 'ok') {
+            Utility.noticeMessageShow('operationSuccess');
             this.setState({ tips: "操作成功" });
             const UIId = `#manage${this.props.topicInfo.id}`;
             $(UIId).css("display", "none");
@@ -268,6 +273,8 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
                         <input type="radio" name="option" value={this.props.topicInfo.disableHot ? "允许热门" : "禁止热门"} onClick={this.showNormal} />
                         <div>{this.props.topicInfo.disableHot ? "允许热门" : "禁止热门"}</div>
                     </div>
+
+
                 </div>
                 <div className="row" style={{ marginTop: "1rem" }}>
                     <div className="row">
@@ -280,6 +287,11 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
                     <div className="row">
                         <input type="radio" name="option" value="移动" onClick={this.showBoard} />
                         <div>移动</div>
+                    </div>
+
+                    <div className="row">
+                        <input type="radio" name="option" value="提升" onClick={this.showDays} />
+                        <div>提升</div>
                     </div>
                 </div>
 
@@ -303,6 +315,8 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
                         <input type="radio" name="option" value="高亮" onClick={this.showHighlight} />
                         <div>高亮</div>
                     </div>
+
+                 
                 </div>
             </div>
             {info}
