@@ -27,16 +27,36 @@ const config: webpack.Configuration = {
 	resolve: {
 		extensions: ['.js', '.jsx', '.ts', '.tsx']
 	},
-	entry: ['core-js/shim', './Main.tsx', './Site.scss'],
-	devtool: 'source-map',
-	output: {
-		path: path.resolve(__dirname, 'wwwroot'),
-		filename: 'static/scripts/[hash:8]-min.js'
+	entry: {
+		main: './Main.tsx',
+		css: './Site.scss',
+		vendors: [
+			'react', 
+			'core-js/shim', 
+			'redux', 
+			'react-dom', 
+			'react-router', 
+			'react-router-dom', 
+			'react-redux', 
+			'url-join', 
+			'redux-thunk', 
+			'blueimp-canvas-to-blob',
+			'history',
+			'whatwg-fetch',
+			'aplayer',
+			'dplayer',
+		]
 	},
+	devtool: 'source-map',
 	externals: {
+		'jquery': '$',
 		'moment': 'moment',
 		'editor.md': 'editormd',
 		'codemirror': 'CodeMirror',
+	},
+	output: {
+		path: path.resolve(__dirname, 'wwwroot'),
+		filename: 'static/scripts/[name]-[hash:8]-min.js'
 	},
 	plugins: [
 		new HTMLWebpackPlugin({ // 生成index.html
@@ -45,6 +65,7 @@ const config: webpack.Configuration = {
 		}),
 		new HTMLWebpackPluginRemove(/\.\./g), //index.html改用绝对路径
 		new HTMLWebpackPluginRemove(/-min/),  //debug环境使用完整版js
+		new HTMLWebpackPluginRemove(/<script\stype="text\/javascript"\ssrc="\/static\/scripts\/css-\S{8}-min\.js"><\/script>/), //去除多余的内容
 		new webpack.optimize.UglifyJsPlugin(), // 简化 JS
 		new UnminifiedWebpackPlugin(), // 提供调试用 JS 完整版
 		new CleanWebpackPlugin(['wwwroot/static/scripts', 'wwwroot/static/content', 'wwwroot/static/index.html']), // 发布之前清理 wwwroot
@@ -58,7 +79,8 @@ const config: webpack.Configuration = {
 			{ from: 'node_modules/spectrum-colorpicker/spectrum.js', to: 'static/scripts/lib/spectrum/spectrum.js' },
 			{ from: 'node_modules/dplayer/dist/DPlayer.min.css', to: 'static/content/DPlayer.min.css' }
 		]),
-		new ExtractTextPlugin('static/content/site.min.css')
+		new ExtractTextPlugin('static/content/site.min.css'),
+		new webpack.optimize.CommonsChunkPlugin({ name: 'vendors', filename: 'static/scripts/vendors-[hash:8]-min.js' }),
 	]
 };
 

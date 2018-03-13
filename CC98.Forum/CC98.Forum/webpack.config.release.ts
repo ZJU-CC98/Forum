@@ -27,17 +27,37 @@ const config: webpack.Configuration = {
     resolve: {
         extensions: ['.js', '.jsx', '.ts', '.tsx']
     },
-    entry: ['core-js/shim', './Main.tsx', './Site.scss'],
+    entry: {
+		main: './Main.tsx',
+		css: './Site.scss',
+		vendors: [
+			'react', 
+			'core-js/shim', 
+			'redux', 
+			'react-dom', 
+			'react-router', 
+			'react-router-dom', 
+			'react-redux', 
+			'url-join', 
+			'redux-thunk', 
+			'blueimp-canvas-to-blob',
+			'history',
+			'whatwg-fetch',
+			'aplayer',
+			'dplayer',
+		]
+	},
     devtool: 'source-map',
     output: {
-        path: path.resolve(__dirname, 'wwwroot'),
-        filename: 'static/scripts/[hash].js'
-    },
+		path: path.resolve(__dirname, 'wwwroot'),
+		filename: 'static/scripts/[name]-[hash:8]-min.js'
+	},
     externals: {
-        'moment': 'moment',
-        'editor.md': 'editormd',
-        'codemirror': 'CodeMirror'
-    },
+		'jquery': '$',
+		'moment': 'moment',
+		'editor.md': 'editormd',
+		'codemirror': 'CodeMirror',
+	},
     plugins: [
 		new HTMLWebpackPlugin({ // 生成index.html
 			template: 'Template.html',
@@ -47,12 +67,13 @@ const config: webpack.Configuration = {
 			}
 		}),
 		new HTMLWebpackPluginRemove(/\.\./g), //index.html改用绝对路径
+		new HTMLWebpackPluginRemove(/<script\stype="text\/javascript"\ssrc="\/static\/scripts\/css-\S{8}-min\.js"><\/script>/), //去除多余的内容
 		new webpack.DefinePlugin({ //发布版本环境
 			'process.env.NODE_ENV': JSON.stringify('production')
 		  }),
-        new webpack.optimize.UglifyJsPlugin({ //去除所有console.log
+        new webpack.optimize.UglifyJsPlugin({
             compress: {
-                pure_funcs: ['console.log']
+                pure_funcs: ['console.log'], //去除所有console.log
             }
         }), // 简化 JS
         new CleanWebpackPlugin(['wwwroot/static/scripts', 'wwwroot/static/content', 'wwwroot/static/index.html']), // 发布之前清理 wwwroot
@@ -69,7 +90,8 @@ const config: webpack.Configuration = {
         new ExtractTextPlugin({
             filename:'static/content/site.min.css',
             disable: false
-        })
+        }),
+		new webpack.optimize.CommonsChunkPlugin({ name: 'vendors', filename: 'static/scripts/vendors-[hash:8]-min.js' }),
     ]
 };
 
