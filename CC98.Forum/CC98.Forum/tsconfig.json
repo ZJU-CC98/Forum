@@ -3,7 +3,7 @@
 		"noImplicitAny": false,
 		"noEmitOnError": true,
 		"removeComments": false,
-		"sourceMap": true,
+		"sourceMap": false,
 		"target": "es5",
 		"jsx": "react",
     "lib": [ "dom", "es5", "es6" ],

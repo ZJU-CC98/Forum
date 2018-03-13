@@ -23,7 +23,7 @@ export class ReplyContent extends React.Component<Props, { postId }> {
     componentDidUpdate() {
         const divid = `doc-content${this.props.postId}`;
         editormd.markdownToHTML(divid, {
-            htmlDecode: "style,script,iframe",
+            htmlDecode: false,
             emoji: true,
             taskList: true,
             tex: true,
@@ -35,7 +35,7 @@ export class ReplyContent extends React.Component<Props, { postId }> {
     async componentDidMount() {
         const divid = `doc-content${this.props.postId}`;
         editormd.markdownToHTML(divid, {
-            htmlDecode: "style,script,iframe",
+            htmlDecode: false,
             emoji: true,
             taskList: true,
             tex: true,

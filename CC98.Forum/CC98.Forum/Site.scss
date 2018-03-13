@@ -27,13 +27,10 @@ body {
     font-family: 微软雅黑;
 }
 
-//UBB模式下的默认样式
-article {
-    text-align: left;
-    font-size: 16px;
-    line-height: 1.6;
-    width: 100%;
-    background-color: #fff;
+.unSupportA {
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
 }
 
 .urlStyle {
@@ -2620,7 +2617,7 @@ a {
         bottom: 1rem;
         z-index: 1000;
         width: 30rem;
-        height: 20rem;
+        height: 23rem;
         border: 1px solid #d5d5d5;
         background: #fff;
         box-shadow: 0px 0px 3px rgba(0,0,0,0.25);

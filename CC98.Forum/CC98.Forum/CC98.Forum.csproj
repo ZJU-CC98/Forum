@@ -84,13 +84,13 @@
     <None Remove="Ubb\ColorTagHandler.tsx" />
     <None Remove="Ubb\CursorTagHandler.tsx" />
     <None Remove="Ubb\DelTagHandler.tsx" />
-    <None Remove="Ubb\emTagHandler.tsx" />
+    <None Remove="Ubb\EmTagHandler.tsx" />
     <None Remove="Ubb\EnglishTagHandler.tsx" />
     <None Remove="Ubb\FlashTagHandler.tsx" />
     <None Remove="Ubb\ImageTagHandler.tsx" />
     <None Remove="Ubb\LeftTagHandler.tsx" />
     <None Remove="Ubb\LineTagHandler.tsx" />
-    <None Remove="Ubb\mahjongTagHandler.tsx" />
+    <None Remove="Ubb\MahjongTagHandler.tsx" />
     <None Remove="Ubb\mdTagHandler.tsx" />
     <None Remove="Ubb\NoUbbTagHandler.tsx" />
     <None Remove="Ubb\PmTagHandler.tsx" />

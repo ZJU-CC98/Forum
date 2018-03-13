@@ -4,7 +4,8 @@
 
 import * as React from 'react';
 import * as Ubb from './Core';
-declare var APlayer: any;
+declare var require: any;
+var APlayer = require('aplayer');
 
 /**
  * 处理 [mp3] 标签的处理器。

@@ -54,7 +54,7 @@ class Fans extends React.Component<Props> {
         }
         const curPage = parseInt(this.props.match.params.page) || 1;
         //state转换为JSX
-        const userFans = this.props.userFans.slice((curPage - 1) * 10, curPage * 10 - 1).map((item) => (<MyFollowingsUser key={item.id} userFanInfo={item} />));
+        const userFans = this.props.userFans.slice((curPage - 1) * 10, curPage * 10).map((item) => (<MyFollowingsUser key={item.id} userFanInfo={item} />));
         //添加分隔线
         for (let i = 1; i < userFans.length; i += 2) {
             userFans.splice(i, 0, <hr key={i}/>);

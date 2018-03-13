@@ -123,9 +123,9 @@ export class Judge extends React.Component<Props, { reason,tips,UI }>{
                     <div className="judgeOption" style={{ marginRight: '2rem' }}>
                         <input type="radio" name="reason" value="自定义" /><div>自定义</div>
                         </div>
-                    <input type="text" style={{ borderRadius: "1rem", backgroundColor: '#8bc9db', border: 'solid 1.6px #ffffff', color: 'white', paddingLeft: '0.5rem' }} value={this.state.reason} onChange={this.reasonInput} /><div style={{ color: "#fff", fontSize: "0.75rem" }}>{this.state.tips}</div>
+                    <input type="text" style={{ borderRadius: "1rem", backgroundColor: '#8bc9db', border: 'solid 1.6px #ffffff', color: 'white', paddingLeft: '0.5rem' }} value={this.state.reason} onChange={this.reasonInput} />
                 </div>
-              
+                <div style={{ color: "#fff", fontSize: "0.75rem", textAlign: "center", marginTop:"0.1rem" }}>{this.state.tips}</div>
 
             </div>
 
@@ -159,9 +159,9 @@ export class Judge extends React.Component<Props, { reason,tips,UI }>{
                     <div className="judgeOption" style={{marginRight: '2rem'}}>
                         <input type="radio" name="reason" value="自定义" /><div>自定义</div>
                     </div>
-                    <input type="text" style={{ borderRadius: "1rem", backgroundColor: '#8bc9db', border: 'solid 1.6px #ffffff', color: 'white', paddingLeft: '0.5rem' }} value={this.state.reason} onChange={this.reasonInput} /><div style={{ color: "#fff", fontSize:"0.75rem" }}>{this.state.tips}</div>
+                    <input type="text" style={{ borderRadius: "1rem", backgroundColor: '#8bc9db', border: 'solid 1.6px #ffffff', color: 'white', paddingLeft: '0.5rem' }} value={this.state.reason} onChange={this.reasonInput} />
                 </div>
-        
+                <div style={{ color: "#fff", fontSize: "0.75rem", textAlign: "center", marginTop: "0.1rem"}}>{this.state.tips}</div>
 
             </div>
 

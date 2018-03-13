@@ -138,12 +138,10 @@ export class ReplierSignature extends React.Component<Props, {likeNumber,dislike
             const str = `该帖最后由 ${name} 在 ${time} 编辑`;
             lastUpdate = str;
         }
-        const traceUrl = `/topic/${this.props.topicInfo.id}/user/${this.props.userInfo.id}`;
         const returnUrl = `/topic/${this.props.topicInfo.id}`;
-        let traceIcon = null;
-        if (this.props.boardInfo.id != 182) {
-            traceIcon = <div className="operation1"><Link style={{ color: "#79b8ca" }} to={this.props.traceMode ?returnUrl:traceUrl}>{this.props.traceMode ? "返回" : "追踪"}</Link></div>;
-        }
+        const traceUrl = `/topic/${this.props.topicInfo.id}/postid/${this.props.postInfo.id}`;
+        let traceIcon = <div className="operation1"><Link style={{ color: "#79b8ca" }} to={this.props.traceMode ? returnUrl : traceUrl}>{this.props.traceMode ? "返回" : "追踪"}</Link></div>;
+        
         let manageBtn = null;
 
         if (Utility.isMaster(this.props.boardInfo.boardMasters) == true || (this.props.boardInfo.id === 144 && Utility.getLocalStorage("userInfo").name === this.props.topicInfo.userName)) {

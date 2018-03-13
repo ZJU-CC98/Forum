@@ -40,7 +40,7 @@ export class UbbEditor extends React.Component<Props, State> {
      * 对上传文件input的引用
      */
     uploadInput: HTMLInputElement;
-    constructor(props) {
+    constructor(props: Props) {
         super(props);
         this.state = {
             selectionEnd: 0,
@@ -51,9 +51,10 @@ export class UbbEditor extends React.Component<Props, State> {
             emojiType: 'ac',
             emojiIsShown: false,
             isPreviewing: false,
-            value: '',
+            value: props.value || '',
             info: '',
-            scrollTop: 0
+            scrollTop: 0,
+            shouldCompassImage: true
         };
         //创建一个默认选项，用props中的选项覆盖之
         this.option = { ...new Option(), ...props.option };
@@ -104,7 +105,7 @@ export class UbbEditor extends React.Component<Props, State> {
     async handleUpload(files: FileList) {
         try{
             let { extendTagName = 'img' } = this.state;
-            const url = `/file`;
+            const url = !this.state.shouldCompassImage ? '/file?compressImage=false' : '/file';
             const myHeaders = await Utility.formAuthorizeHeader();
             let formdata = new FormData();
             for(let i = 0; i < files.length; i++){
@@ -457,6 +458,15 @@ export class UbbEditor extends React.Component<Props, State> {
                     <button className="fa-check" type="button" onClick={(e) => { e.stopPropagation(); this.handleButtonClick(this.state.extendTagName, this.state.extendValue) }}></button>
                     <button className="fa-remove" type="button" onClick={() => { this.setState({ clicked: true }); }}></button>
                     {this.state.extendTagName === 'img' ? <p style={{ color: 'gray', fontSize: '0.75rem', flexGrow: 1, textAlign: 'center' }}>也可以直接将图片文件拖曳到下面的文本区进行上传</p> : null}
+                    {this.state.extendTagName === 'img' ?
+                        <p style={{ color: 'gray', fontSize: '0.75rem', flexGrow: 1, textAlign: 'center', display: 'flex', alignItems: 'center' }}>
+                            <input
+                                style={{ width: 'auto', height: 'auto', margin: 0 }}
+                                type="checkbox"
+                                checked={!this.state.shouldCompassImage}
+                                onChange={e => { e.stopPropagation(); this.setState((prevState: State) => ({ shouldCompassImage: !prevState.shouldCompassImage })); }}
+                            />图片不压缩上传
+                        </p> : null}
                     {/*上传文件用，默认隐藏，img标签仅接受图片文件，上传完后value设为""可清空filelist*/}
                     <input
                         type="file"

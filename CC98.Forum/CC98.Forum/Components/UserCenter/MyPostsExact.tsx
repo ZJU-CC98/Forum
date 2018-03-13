@@ -55,7 +55,7 @@ class MyPosts extends React.Component<Props> {
         const curPage = parseInt(this.props.match.params.page) || 1;
         const totalPage = this.props.hasTotal ? this.props.totalPage : curPage + 1;
         //state转换为JSX
-        let userRecentPosts = this.props.userRecentPosts.slice((curPage - 1) * 10, curPage * 10 - 1).map((item) => (<Post key={item.id} userRecentPost={item} />));
+        let userRecentPosts = this.props.userRecentPosts.slice((curPage - 1) * 10, curPage * 10).map((item) => (<Post key={item.id} userRecentPost={item} />));
         //添加分隔线
         for (let i = 1; i < userRecentPosts.length; i += 2) {
             userRecentPosts.splice(i, 0, <hr key={i} />);

@@ -54,7 +54,7 @@ class Following extends React.Component<Props> {
         }
         const curPage = parseInt(this.props.match.params.page) || 1;
         //state转换为JSX
-        const userFollowings = this.props.userFollowings.slice((curPage - 1) * 10, curPage * 10 - 1).map((item) => (<MyFollowingsUser key={item.id} userFanInfo={item} />));
+        const userFollowings = this.props.userFollowings.slice((curPage - 1) * 10, curPage * 10).map((item) => (<MyFollowingsUser key={item.id} userFanInfo={item} />));
         //添加分隔线
         for (let i = 1; i < userFollowings.length; i += 2) {
             userFollowings.splice(i, 0, <hr key={i} />);

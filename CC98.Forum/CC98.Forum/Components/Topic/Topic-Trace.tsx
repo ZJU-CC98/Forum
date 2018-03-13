@@ -21,29 +21,29 @@ import { Reply } from './Topic-Reply';
 import { TopicInfo } from './Topic-TopicInfo';
 import { Category } from './Topic-Category';
 declare let moment: any;
-export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, userId, topicInfo, boardInfo, content, shouldRender,isFav }, { topicid, page, userId }> {
+export class CurUserPost extends RouteComponent<{}, { topicId, page, totalPage,  topicInfo, boardInfo, content, shouldRender,isFav,postId }, { topicId, page,postId }> {
     constructor(props, context) {
         super(props, context);
         this.quote = this.quote.bind(this);
         this.shouldRender = this.shouldRender.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.state = {
-            page: 1, topicid: this.match.params.topicid, totalPage: 1, userId: this.match.params.userId, topicInfo: { replyCount: 0 }, boardInfo: { masters: [], id: 7 }, content: "", shouldRender: false, isFav: false
+            page: 1, topicId: this.match.params.topicId, totalPage: 1, postId: this.match.params.postId, topicInfo: { replyCount: 0 }, boardInfo: { masters: [], id: 7 }, content: "", shouldRender: false, isFav: false
         };
     }
     quote(content) {
         this.setState({ content: content });
     }
     async handleChange() {
-
-        const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
+        const postInfo = await Utility.getPostInfo(this.match.params.postId);
+        const topicInfo = await Utility.getTopicInfo(this.match.params.topicId);
         let page: number;
         if (!this.match.params.page) {
             page = 1;
         }
         else { page = parseInt(this.match.params.page); }
-        const totalPage = await this.getTotalPage(this.state.topicInfo.replyCount);
-        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, topicInfo: topicInfo });
+        const totalPage = await this.getTotalPage(this.state.topicInfo.replyCount,postInfo);
+        this.setState({ page: page, topicId: this.match.params.topicId, totalPage: totalPage, topicInfo: topicInfo });
     }
     async componentWillReceiveProps(newProps) {
         let page: number;
@@ -52,12 +52,13 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
         }
         else { page = parseInt(newProps.match.params.page); }
         const userId = newProps.match.params.userId;
-        const totalPage = await this.getTotalPage.bind(this)(this.match.params.topicid);
-        const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
+        const postInfo = await Utility.getPostInfo(this.match.params.postId);
+        const topicInfo = await Utility.getTopicInfo(this.match.params.topicId);
         const boardId = topicInfo.boardId;
         const boardInfo = await Utility.getBoardInfo(boardId);
-        const isFav = await Utility.getFavState(newProps.match.params.topicid);  
-        this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userId: newProps.match.params.userId, topicInfo: topicInfo, boardInfo: boardInfo ,isFav:isFav});
+        const isFav = await Utility.getFavState(newProps.match.params.topicId);
+        const totalPage = await this.getTotalPage.bind(this)(this.match.params.topicId,postInfo);
+        this.setState({ page: page, topicId: newProps.match.params.topicId, totalPage: totalPage, postId: newProps.match.params.postId, topicInfo: topicInfo, boardInfo: boardInfo ,isFav:isFav});
     }
     shouldRender(fetchState) {
         if (fetchState) {
@@ -68,96 +69,54 @@ export class CurUserPost extends RouteComponent<{}, { topicid, page, totalPage, 
         }
     }
     async componentDidMount() {
+        const postInfo = await Utility.getPostInfo(this.match.params.postId);
         let page: number;
         if (!this.match.params.page) {
             page = 1;
         }
         else { page = parseInt(this.match.params.page); }
-        const totalPage = await this.getTotalPage.bind(this)(this.match.params.topicid);
-        const userId = this.match.params.userId;
-    
-        const topicInfo = await Utility.getTopicInfo(this.match.params.topicid);
+        const topicInfo = await Utility.getTopicInfo(this.match.params.topicId);
         const boardId = topicInfo.boardId;
         const boardInfo = await Utility.getBoardInfo(boardId);
-        this.setState({ page: page, topicid: this.match.params.topicid, totalPage: totalPage, userId: userId, topicInfo: topicInfo, boardInfo: boardInfo });
+        const totalPage = await this.getTotalPage.bind(this)(this.match.params.topicId, postInfo);
+        console.log("totalpage=" + totalPage);
+        this.setState({ page: page, topicId: this.match.params.topicId, totalPage: totalPage, topicInfo: topicInfo, boardInfo: boardInfo });
     }
-    async getTotalPage(topicId) {
-        return await Utility.getCurUserTotalReplyPage(topicId, this.match.params.userId, this.context.router);
+    async getTotalPage(topicId, postInfo) {
+        const topicInfo = await Utility.getTopicInfo(topicId);
+        const isAnonymous = topicInfo.isAnonymous;
+        if (isAnonymous) {
+            return await Utility.getAnonymousTraceTopicsCount(topicId, postInfo.id);
+        } else {
+            return await Utility.getCurUserTotalReplyPage(topicId, postInfo.userId);
+        }
+       
+
     }
 
     render() {
-        const url = `/topic/${this.match.params.topicid}/user/${this.match.params.userId}/`;
-        const pagerUrl = `/topic/${this.state.topicid}/`;
+        const url = `/topic/${this.match.params.topicId}/postId/${this.match.params.postId}/`;
+        const pagerUrl = `/topic/${this.state.topicId}/`;
             return <div className="center" style={{ width: "1140px" }} >
                 <div className="row" style={{ width: "100%", justifyContent: 'space-between', alignItems: "center" }}>
-                    <Category topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} topicId={this.match.params.topicid} />
+                    <Category topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} topicId={this.match.params.topicId} />
                     <Pager page={this.state.page} url={url} totalPage={this.state.totalPage} />
                 </div>
                 <TopicInfo topicInfo={this.state.topicInfo} tag1={this.state.topicInfo.tag1} tag2={this.state.topicInfo.tag2} boardInfo={this.state.boardInfo} isFav={this.state.isFav} />
-                <Reply topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} page={this.state.page} userId={this.state.userId} quote={this.quote} isTrace={true} isHot={false} topicId={this.match.params.topicid} />
+                <Reply topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} page={this.state.page} postId={this.state.postId} quote={this.quote} isTrace={true} isHot={false} topicId={this.match.params.topicId} />
                 <div className="row" style={{ width: "100%", justifyContent: 'space-between', alignItems: "center", marginTop: "1rem" }}>
-                    <Category topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} topicId={this.match.params.topicid} />
+                    <Category topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} topicId={this.match.params.topicId} />
                     <Pager page={this.state.page} url={url} totalPage={this.state.totalPage} />
                 </div>
-                <SendTopic onChange={this.handleChange} boardInfo={this.state.boardInfo} content={this.state.content} userId={this.state.userId} topicInfo={this.state.topicInfo} />
+                <SendTopic onChange={this.handleChange} boardInfo={this.state.boardInfo} content={this.state.content} topicInfo={this.state.topicInfo} />
             </div>
                 ;
 
     }
 
 }
-/*export class Reply extends React.Component<{ topicId, page, topicInfo, boardInfo,userId,quote }, { masters,contents }>{
-    constructor(props, content) {
-        super(props, content);
-        this.update = this.update.bind(this);
-        this.quote = this.quote.bind(this);
-        this.state = {
-            contents: [],
-            masters:[]
-        };
 
-    }
-    quote() {
-        this.props.quote(this.state.contents);
-    }
-    async update() {
-        const page = this.props.page || 1;
-        const storageId = `TopicContent_${this.props.topicId}_${page}`;
-        let realContents;
-        const data = await Utility.getUserInfo(this.props.userId);
-        const userName = data.name;
-        realContents = await Utility.getCurUserTopicContent(this.props.topicId, page, userName, this.props.userId);
-        const masters = this.props.boardInfo.masters;
-        this.setState({ contents: realContents, masters: masters });
-    }
-    async componentWillReceiveProps(newProps) {
-        const page = newProps.page || 1;
-        const storageId = `TopicContent_${newProps.topicId}_${page}`;
-        let realContents;         
-        const data = await Utility.getUserInfo(this.props.userId);
-        const userName = data.name;
-        realContents = await Utility.getCurUserTopicContent(newProps.topicId, page, userName, newProps.userId);
-        const masters = this.props.boardInfo.masters;
-        this.setState({ contents: realContents, masters: masters });
-            }
-    private generateContents(item: ContentState) {
-        return <div className="reply" ><div style={{ marginTop: "1rem", marginBotton: "0.3125rem", border: "#EAEAEA solid thin", backgroundColor: "#fff" }}>
-            <Replier key={item.postId} isAnonymous={item.isAnonymous} userId={item.userId} topicid={item.topicId} userName={item.userName} replyTime={item.time} floor={item.floor} userImgUrl={item.userImgUrl} sendTopicNumber={item.sendTopicNumber} privilege={item.privilege} isDeleted={item.isDeleted} quote={this.quote} content={item.content} traceMode={true} isHot={false} popularity={item.popularity} />
-            <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
-            <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={item.privilege} />
-            <ReplyContent key={item.content}content={item.content}  postid={item.postId} contentType={item.contentType} />
-            <Award postId={item.postId} updateTime={Date.now()} />
-            <ReplierSignature signature={item.signature} topicid={item.topicId} userId={item.userId} masters={this.state.masters} postid={item.postId} />
-        </div>
-        </div>;
-    }
-    render() {
-        return <div className="center" style={{ width: "100%" }}>
-            {this.state.contents.map(this.generateContents.bind(this))}
-        </div>
-            ;
-    }
-}*/
+
 
 /**
  * 文章内容

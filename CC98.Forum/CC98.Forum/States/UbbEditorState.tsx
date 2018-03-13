@@ -46,4 +46,8 @@ export default class {
      * 滚动条位置
      */
     scrollTop: number;
+    /**
+     * 是否压缩图片
+     */
+    shouldCompassImage: boolean;
 }

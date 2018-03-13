@@ -106,8 +106,16 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
 
         const url = `/user/id/${this.props.userInfo.id}`;
         const realUrl = encodeURI(url);//头像所用的url，链接到用户中心
+        if (this.props.topicInfo.isAnonymous == true) {
+            return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
+                <div style={{ zIndex: 100 }}>
 
-        if (displayTitleId) {
+                    <img className="userPortrait" src={this.props.userInfo.portraitUrl}></img>
+
+                </div>
+            </div>;
+        }
+        else if (displayTitleId) {
             let response = await fetch('/static/portrait.json');//获取头像框样式的配置
             let data = await response.json();
 
@@ -151,14 +159,6 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
                 <div className="photoFrame"><img src={imageUrl} style={style} /></div>
             </div>
 
-        } else if (this.props.topicInfo.isAnonymous == true) {
-            return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
-                <div style={{ zIndex: 100 }}>
-
-                    <img className="userPortrait" src={this.props.userInfo.portraitUrl}></img>
-
-                </div>
-            </div>;
         } else {
             return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
                 <div style={{ zIndex: 100 }}>
@@ -172,41 +172,45 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
     }
 
     render() {
-        const url = `/user/id/${this.props.userInfo.id}`;
-        const realUrl = encodeURI(url);
-        const email = `/message/message?id=${this.props.userInfo.id}`;
-        //用户头像
-        let urlHtml = <a href={realUrl} style={{ display: "block", maxHeight: "7.5rem" }}><img className="userPortrait" src={this.props.userInfo.portraitUrl}></img></a>;
+        let urlHtml;
+        if (!this.props.topicInfo.isAnonymous) {
+            const url = `/user/id/${this.props.userInfo.id}`;
+            const realUrl = encodeURI(url);      
+            //用户头像
+            urlHtml = <a href={realUrl} style={{ display: "block", maxHeight: "7.5rem" }}><img className="userPortrait" src={this.props.userInfo.portraitUrl}></img></a>;
+        }
+
 
         if (this.props.topicInfo.isAnonymous == true) {
             urlHtml = <div style={{ display: "block", maxHeight: "7.5rem" }}><img className="userPortrait" src={this.props.userInfo.portraitUrl}></img></div>;
         }
-        const curUserPostUrl = `/topic/${this.props.topicInfo.id}/user/id/${this.props.userInfo.id}`;
-        const normalUrl = `/topic/${this.props.topicInfo.id}`;
         let topicNumber = '帖数';
         if (!this.props.userInfo.id) {
             topicNumber = '';
         }
 
-        let userName = <Link style={{ color: "#fff" }} className="userMessage-userName" to={url}>{this.props.userInfo.name}</Link>;
+        let userName = <div style={{ color: "#fff" }} className="userMessage-userName">{this.props.userInfo.name}</div>;
+        if (!this.props.topicInfo.isAnonymous) {
+            const url = `/user/id/${this.props.userInfo.id}`;
+            const realUrl = encodeURI(url);
+            userName = <Link style={{ color: "#fff" }} className="userMessage-userName" to={realUrl}>{this.props.userInfo.name}</Link>;
+        }
+           
 
         if (this.props.userInfo.privilege == "匿名" || this.props.userInfo.privilege === "匿名用户") {
             userName = <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
                 <div style={{ color: "white", fontSize: "1rem", fontWeight: "bold", marginLeft: "1rem", marginTop: "-0.8rem" }} >{this.props.userInfo.name}</div>
                 <div className="userMessageAnonymous">别问我是谁</div>
             </div>;
-        }
-        let emailButton;
-        if (this.props.topicInfo.isAnonymous) emailButton = null;
-        else emailButton = <button className="operation" ><Link to={email}>私信</Link></button>;
+        }    
         let traceButton;
-        if (this.props.topicInfo.isAnonymous) traceButton = null;
-        else traceButton = <Link className="operation" to={this.state.traceMode === true ? normalUrl : curUserPostUrl} onClick={this.changeTraceMode}>{this.state.traceMode === true ? "返回" : "只看此用户"}</Link>;
+
         const hotInfo = <div style={{ color: "red", marginLeft: "1rem" }}><span>最热回复</span><span>(第</span><span>{this.props.topicInfo.floor}</span><span>楼)</span></div>;
         const normalInfo = <div style={{ marginLeft: "0.625rem" }}><span>第</span><span style={{ color: "red" }}>{this.props.topicInfo.floor}</span><span>楼</span></div>;
         let btn = null;
         if (Utility.getLocalStorage("userInfo")) {
             if (Utility.getLocalStorage("userInfo").name !== this.props.userInfo.name && !this.props.topicInfo.isAnonymous) {
+                const email = `/message/message?id=${this.props.userInfo.id}`;
                 btn = <div className="row userMessageBtn" >
                     <div style={{ marginLeft: "0.85rem" }}><button className="replierBtn" id={this.state.isFollowing ? '' : 'follow'} onClick={this.state.isFollowing ? this.unfollow : this.follow} disabled={this.state.buttonIsDisabled} style={{ marginBottom: "0.6rem" }}>{this.state.buttonInfo}</button></div>
                     <div style={{ marginLeft: "0.5rem" }}> <Link to={email}><button className="replierBtn">私信</button></Link></div>

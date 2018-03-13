@@ -22,7 +22,7 @@ interface Props{
     quote;
     isTrace;
     isHot;
-    userId;
+    postId;
 }
 export class Reply extends React.Component<Props, { inWaiting, contents, masters }>{
     constructor(props, content) {
@@ -45,9 +45,9 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
             realContents = await Utility.getHotReplyContent(this.props.topicId);
 
         } else if (this.props.isTrace) {
-            const data = await Utility.getUserInfo(this.props.userId);
+            const data = await Utility.getUserInfo(this.props.postId);
             const userName = data.name;
-            realContents = await Utility.getCurUserTopicContent(this.props.topicId, page, userName, this.props.userId);
+            realContents = await Utility.getCurUserTopicContent(this.props.topicId, page, userName, this.props.postId);
         } else {
             realContents = await Utility.getTopicContent(this.props.topicId, page);
         }
@@ -63,6 +63,19 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
         } else if (!this.props.isTrace) {
             realContents = await Utility.getTopicContent(this.props.topicId, page);
             if (!realContents) this.setState({ inWaiting: false, contents: [] });
+        } else {
+            const postInfo = await Utility.getPostInfo(this.props.postId);
+            const userId = postInfo.userId;
+            //心灵追踪if
+            if (userId>0) {
+     
+                const userInfo = await Utility.getUserInfo(userId);
+                const userName = userInfo.name;
+                realContents = await Utility.getCurUserTopicContent(this.props.topicId, page, userName, userId);
+            } else {
+      
+                realContents = await Utility.getAnonymousTraceTopics(this.props.topicId, this.props.postId, page);
+            }
         }
         const masters = this.props.boardInfo.boardMasters;
         this.setState({ inWaiting: false, contents: realContents, masters: masters });
@@ -76,9 +89,17 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
                 realContents = await Utility.getHotReplyContent(newProps.topicId);
                 if (!realContents) this.setState({ inWaiting: false, contents: [] });
             } else if (newProps.isTrace) {
-                const data = await Utility.getUserInfo(newProps.userId);
-                const userName = data.name;
-                realContents = await Utility.getCurUserTopicContent(newProps.topicId, page, userName, newProps.userId);
+                const postInfo = await Utility.getPostInfo(newProps.postId);
+                const userId = postInfo.userId;
+                //心灵追踪if
+                if (userId>0) {
+                    const userInfo = await Utility.getUserInfo(userId);
+                    const userName = userInfo.name;
+                    realContents = await Utility.getCurUserTopicContent(newProps.topicId, page, userName, userId);
+                } else {
+                    realContents = await Utility.getAnonymousTraceTopics(newProps.topicId, newProps.postId, page);
+                }
+              
             } else {
                 realContents = await Utility.getTopicContent(newProps.topicId, page);
                 if (!realContents) this.setState({ inWaiting: false, contents: [] });
@@ -98,9 +119,9 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
         //判断加不加热评
         let hotReply = null;
         let awards = <Award postId={item.postId} updateTime={Date.now()} awardInfo={item.awards} />;
-        if (item.awards === []) awards = null;
+        if (!item.awards||item.awards.length === 0) awards = null;
         if (item.floor === 1 && !this.props.isTrace) {
-            hotReply = <Reply topicInfo={this.props.topicInfo} page={this.props.page} boardInfo={this.props.boardInfo} quote={this.quote} isTrace={false} isHot={true} userId={null} topicId={this.props.topicId} />;
+            hotReply = <Reply topicInfo={this.props.topicInfo} page={this.props.page} boardInfo={this.props.boardInfo} quote={this.quote} isTrace={false} isHot={true} postId={null} topicId={this.props.topicId} />;
             return <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
                 <div className="reply" id={id.toString()} >
                     <Replier key={item.postId} topicInfo={this.props.topicInfo} userInfo={item.userInfo} traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />

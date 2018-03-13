@@ -31,7 +31,9 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
             tags: [], boardName: "", ready: false, mode: 0, content: "", title: "", postInfo: { floor: 0, title: "", content: "", contentType: 0 }, tag1:"" , tag2: "", fetchState: 'ok', boardId: 1, type: 0, topicInfo: {}
         });
     }
-
+    componentDidMount() {
+        
+    }
     async componentWillMount() {
         const mode = this.match.params.mode;
         const id = this.match.params.id;
@@ -63,12 +65,20 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                 if (!tag2Name) tag2Name = "";
                 const type = topicInfo.type;
                 tags = await Utility.getBoardTag(data.boardId);
+
+                console.log("state mode = " + data.contentType);
+                console.log("state content = " + data.content);
+                Utility.setLocalStorage("contentCache", data.content);
+                const cache = Utility.getLocalStorage("contentCache");
+                console.log("cache after saving = " + cache);
+            
+
                 //console.log(tags);
                 const boardName1 = await Utility.getBoardName(data.boardId);
                 if (data.contentType === 0) {
-                    this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name });
+                    this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name ,mode:0});
                 } else
-                    this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name });
+                    this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name ,mode:1});
                 break;
         }
 
@@ -90,8 +100,10 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
     }
     changeEditor() {
         if (this.state.mode === 0) {
+            console.log("change mode to 1");
             this.setState({ mode: 1 });
         } else {
+            console.log("change mode to 2");
             this.setState({ mode: 0 });
         }
     }
@@ -175,6 +187,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                         body: atUsersJSON
                     });
                 }
+                Utility.removeLocalStorage("contentCache");
                 this.props.history.push(`/topic/${topicId}`);
             } catch (e) {
                 //console.log("Error");
@@ -234,22 +247,28 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
             );
             //发帖成功，api返回topicid
             const topicId = await response.text();
-            //根据返回的topicid，发送@信息       
-            const atUsers = Utility.atHanderler(this.state.content);
-            //如果存在合法的@，则发送@信息，否则不发送，直接跳转至所发帖子
-            if (atUsers) {
-                const atUsersJSON = JSON.stringify(atUsers);
-                const url2 = `/notification/at?topicid=${topicId}`;
-                let myHeaders2 = new Headers();
-                myHeaders2.append("Content-Type", 'application/json');
-                myHeaders2.append("Authorization", token);
-                let response2 = await Utility.cc98Fetch(url2, {
-                    method: 'POST',
-                    headers: myHeaders2,
-                    body: atUsersJSON
-                });
+            console.log("topicid=" + topicId);
+            if (topicId === 'cannot_post_in_this_board')
+                this.props.history.push(`/status/cannotpost`);
+            else {
+                //根据返回的topicid，发送@信息       
+                const atUsers = Utility.atHanderler(this.state.content);
+                //如果存在合法的@，则发送@信息，否则不发送，直接跳转至所发帖子
+                if (atUsers) {
+                    const atUsersJSON = JSON.stringify(atUsers);
+                    const url2 = `/notification/at?topicid=${topicId}`;
+                    let myHeaders2 = new Headers();
+                    myHeaders2.append("Content-Type", 'application/json');
+                    myHeaders2.append("Authorization", token);
+                    let response2 = await Utility.cc98Fetch(url2, {
+                        method: 'POST',
+                        headers: myHeaders2,
+                        body: atUsersJSON
+                    });
+                }
+                Utility.removeLocalStorage("contentCache");
+                this.props.history.push(`/topic/${topicId}`);
             }
-            this.props.history.push(`/topic/${topicId}`);
         }
         
 
@@ -296,6 +315,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
         const floor = this.state.postInfo.floor;
         const pageFloor = floor % 10 === 0 ? 10 : floor % 10;
         const page = floor % 10 === 0 ? floor / 10 : (floor - floor % 10) / 10 + 1;
+        Utility.removeLocalStorage("contentCache");
         const redirectUrl = `/topic/${this.state.postInfo.topicId}/${page}#${pageFloor}`;
         this.props.history.push(redirectUrl);
     }
@@ -344,6 +364,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
         const pageFloor = floor % 10 === 0 ? 10 : floor % 10;
         const page = floor % 10 === 0 ? floor / 10 : (floor - floor % 10) / 10 + 1;
         const redirectUrl = `/topic/${this.state.postInfo.topicId}/${page}#${pageFloor}`;
+        Utility.removeLocalStorage("contentCache");
         this.props.history.push(redirectUrl);
     }
     onTitleChange(title, tag1, tag2) {
@@ -358,6 +379,11 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
         this.setState({ content: content });
     }
     render() {
+        const contentCache = Utility.getLocalStorage("contentCache");
+        console.log("in render");
+        console.log("mode = " + this.state.mode);
+        console.log("content = " + this.state.content);
+        console.log("cache = " + contentCache);
         const mode = this.match.params.mode;
         const id = this.match.params.id;
         const url = `/list/${this.state.boardId}`;
@@ -381,10 +407,11 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                     <div className="createTopicListName">主题内容</div>
                     <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom:"0.5rem" }}>切换到UBB编辑器</div>
                 </div>
-                    <InputMdContent postInfo={this.state.postInfo} onChange={this.sendMdTopic.bind(this)} ready={this.state.ready} mode={this.match.params.mode} /></div>;
+                    <InputMdContent postInfo={this.state.postInfo} content={contentCache} onChange={this.sendMdTopic.bind(this)} ready={this.state.ready} mode={this.match.params.mode} /></div>;
             }
         } else if (mode === "edit") {
-            if (this.state.postInfo.contentType === 0) {
+            if (this.state.mode === 0) {
+                console.log("content from md to ubb = " + contentCache);
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
                     <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom:"0.5rem" }}>切换到Markdown编辑器</div>
@@ -394,12 +421,12 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                         <div id="post-topic-button" onClick={this.editUBB} className="button blue" style={{ marginTop: "1.25rem", marginBottom: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>编辑</div>
                     </div></div>
                     ;
-            } else {
+            } else if (this.state.mode === 1) {
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
                     <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom:"0.5rem" }}>切换到UBB编辑器</div>
                 </div>
-                    <InputMdContent postInfo={this.state.postInfo} onChange={this.editMd.bind(this)} ready={this.state.ready} mode={this.match.params.mode} /></div>;
+                    <InputMdContent postInfo={this.state.postInfo} content={contentCache} onChange={this.editMd.bind(this)} ready={this.state.ready} mode={this.match.params.mode} /></div>;
             }
             if (this.state.postInfo.floor === 1) {
                 titleInput = <InputTitle boardId={id} tags={this.state.tags} onChange={this.onTitleChange.bind(this)} title={this.state.postInfo.title} tag1={this.state.topicInfo.tag1} tag2={this.state.topicInfo.tag2} />;
@@ -713,7 +740,7 @@ export class Options extends React.Component<{}, {}>{
 }
 
 
-export class InputMdContent extends React.Component<{ mode, postInfo, ready, onChange }, { content }>{
+export class InputMdContent extends React.Component<{ mode,content, postInfo, ready, onChange }, { content }>{
     constructor(props) {
         super(props);
         this.state = ({ content: "" });
@@ -722,7 +749,7 @@ export class InputMdContent extends React.Component<{ mode, postInfo, ready, onC
     componentDidMount() {
         let content = '';
         if (this.props.postInfo.content) {
-            content = this.props.postInfo.content;
+            content = this.props.content;
         }
         editormd.emoji.path = '/static/images/emoji/';
         Constants.testEditor = editormd("testEditor", {

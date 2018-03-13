@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as Ubb from './Core';
-declare var DPlayer: any;
+declare var require: any;
+var DPlayer = require('dplayer');
 
 /**
  * 处理 [video] 标签的处理器。
