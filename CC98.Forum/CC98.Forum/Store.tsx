@@ -12,6 +12,12 @@ function values<T>(o: { [s: string]: T }): T[] {
     return Object.keys(o).map((key) => o[key]);
 }
 
+declare module "redux" {
+    export interface Dispatch<S> {
+        <R, E>(asyncAction: ThunkAction<R, S, E>): R;
+    }
+}
+
 /**
  * thunk-action的类型定义
  */
