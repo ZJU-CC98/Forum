@@ -32,6 +32,10 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
         let lastPostUrl = `/topic/${this.props.id}/${pageNum}`;
         let lastPostUserUrl = `/user/name/${encodeURI(this.props.lastPostUser)}`;
         let tagInfo = '';
+        let userName:any = this.props.userName;
+       /* if (this.props.userName.length > 9) {
+            userName = <div style={{ fontSize: "14px" }}>{this.props.userName}</div>;
+        }*/
         if (this.props.tag1) {
             if (this.props.tag2) {
                 tagInfo = `标签：${this.props.tag1} / ${this.props.tag2}`;
@@ -42,7 +46,7 @@ export class FocusTopicSingle extends React.Component<FocusTopic> {
             return (<div className="focus-topic">
                 <a className="focus-topic-left" href={userUrl} target="_blank" id={`user_${this.props.id}`}>
                     <img className="focus-topic-portraitUrl" src={this.props.portraitUrl}></img>
-                    <div className="focus-topic-userName">{this.props.userName}</div>
+                    <div className="focus-topic-userName">{userName}</div>
                 </a>
                 <div className="focus-topic-middle">
                     <a className="focus-topic-title" href={topicUrl} target="_blank">{this.props.title}</a>
