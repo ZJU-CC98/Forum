@@ -20,7 +20,7 @@ interface Props {
     /**
      * 刷新用户信息
      */
-    changeUserInfo: () => void;
+    refreshCurrentUserInfo: () => void;
     changePage: () => void;
 }
 /**
@@ -31,7 +31,7 @@ class UserCenterExact extends React.Component<Props> {
     //组件加载时更新store与缓存中的状态
     componentDidMount() {
         this.props.changePage();
-        this.props.changeUserInfo();
+        this.props.refreshCurrentUserInfo();
     }
 
     render() {        
@@ -51,7 +51,7 @@ function mapState(state) {
 
 function mapDispatch(dispatch) {
     return {
-        changeUserInfo: (newInfo) => {
+        refreshCurrentUserInfo: () => {
             dispatch(refreshCurrentUserInfo());
         },
         changePage: () => {

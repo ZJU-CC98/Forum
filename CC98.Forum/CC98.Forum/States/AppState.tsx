@@ -378,6 +378,10 @@ export class UserInfo {
      * 用户关注数
      */
     followCount: number;
+    /**
+     * 用户选择的主题
+     */
+    theme: number;
 }
 
 /**
