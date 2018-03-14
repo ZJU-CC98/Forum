@@ -1929,11 +1929,11 @@ a {
 
     .focus-board {
         display: block;
-        color: rgb(121,184,202);
+        color: var(--color-main);
         background-color: transparent;
         text-align: center;
         vertical-align: middle; //设置元素的垂直对齐方式
-        border: 1px solid rgb(121,184,202);
+        border: 1px solid var(--color-main);
         padding: .375rem .75rem;
         font-size: 1rem;
         border-radius: .25rem;
@@ -1978,7 +1978,7 @@ a {
         flex-direction: column;
         text-align: center;
         cursor: pointer;
-        color: #6b7178;
+        color: var(--color-main);
         justify-content: center;
 
         div {
@@ -2060,114 +2060,114 @@ a {
         }
     }
 
-    .focus-topic {
+.focus-topic {
+    display: flex;
+    flex-direction: row;
+    min-height: 80px;
+    margin-top: 12px;
+    overflow: hidden;
+    background-color: #ffffff;
+    border: solid 1px var(--color-main);
+
+    .focus-topic-left {
         display: flex;
         flex-direction: row;
-        min-height: 80px;
-        margin-top: 12px;
-        overflow: hidden;
-        background-color: #ffffff;
-        border: solid 1px $color-bg;
+        flex-basis: 180px;
+        background-color: var(--color-main);
+        flex-shrink: 0;
 
-        .focus-topic-left {
-            display: flex;
-            flex-direction: row;
-            flex-basis: 180px;
-            background-color: var(--color-main);
-            flex-shrink: 0;
-
-            .focus-topic-portraitUrl {
-                width: 60px;
-                height: 60px;
-                margin: 10px;
-                border-radius: 50%;
-            }
-
-            .focus-topic-userName {
-                font-size: 16px;
-                height: 80px;
-                line-height: 80px;
-                color: #ffffff
-            }
+        .focus-topic-portraitUrl {
+            width: 60px;
+            height: 60px;
+            margin: 10px;
+            border-radius: 50%;
         }
 
-        .focus-topic-middle {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            flex-shrink: 0;
-            background-color: #ffffff;
+        .focus-topic-userName {
+            font-size: 16px;
+            height: 80px;
+            line-height: 80px;
+            color: #ffffff
+        }
+    }
+
+    .focus-topic-middle {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        flex-shrink: 0;
+        background-color: #ffffff;
+        color: #6b7178;
+
+        .focus-topic-title {
+            font-size: 20px;
             color: #6b7178;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            height: 28px;
+            line-height: 28px;
+            margin: 11px 20px auto 20px;
+            max-width: 800px;
+        }
 
-            .focus-topic-title {
-                font-size: 20px;
-                color: #6b7178;
+        .focus-topic-info {
+            display: flex;
+            flex-direction: row;
+            margin: auto 20px 13px 21px;
+            height: 16px;
+            line-height: 16px;
+            font-size: 12px;
+
+            div {
+                flex-shrink: 0;
+                margin-right: 20px;
                 overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                height: 28px;
-                line-height: 28px;
-                margin: 11px 20px auto 20px;
-                max-width: 800px;
-            }
+                position: relative;
+                color: #6b7178;
 
-            .focus-topic-info {
-                display: flex;
-                flex-direction: row;
-                margin: auto 20px 13px 21px;
-                height: 16px;
-                line-height: 16px;
-                font-size: 12px;
-
-                div {
-                    flex-shrink: 0;
-                    margin-right: 20px;
-                    overflow: hidden;
-                    position: relative;
+                a {
                     color: #6b7178;
 
-                    a {
-                        color: #6b7178;
-
-                        &:hover {
-                            text-decoration: underline;
-                        }
+                    &:hover {
+                        text-decoration: underline;
                     }
+                }
 
-                    i {
-                        position: relative;
-                        bottom: 2px;
-                        margin-right: 2px;
-                    }
+                i {
+                    position: relative;
+                    bottom: 2px;
+                    margin-right: 2px;
                 }
             }
         }
+    }
 
-        .focus-topic-rightBar {
-            width: 0px;
-            height: 48px;
-            border-left: 1px solid #6b7178;
-            margin-top: 16px;
-        }
+    .focus-topic-rightBar {
+        width: 0px;
+        height: 48px;
+        border-left: 1px solid #6b7178;
+        margin-top: 16px;
+    }
 
-        .focus-topic-right {
-            text-align: center;
-            flex-basis: 70px;
-            height: 80px;
-            background-color: #ffffff;
-            padding-left: 15px;
-            padding-right: 15px;
-            color: #6b7178;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+    .focus-topic-right {
+        text-align: center;
+        flex-basis: 70px;
+        height: 80px;
+        background-color: #ffffff;
+        padding-left: 15px;
+        padding-right: 15px;
+        color: #6b7178;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
 
-            .focus-topic-board {
-                line-height: 20px;
-            }
+        .focus-topic-board {
+            line-height: 20px;
         }
     }
+}
     /*.focus-topic {
     display: flex;
     min-height: 98px;
