@@ -67,12 +67,12 @@
 //类似bootstrap4的"btn btn-outline-primary"
 .hiddenImage {
     display: block;
-    color: rgb(121,184,202);
+    color: var(--color-main);
     width: 7rem;
     background-color: transparent;
     text-align: center;
     vertical-align: middle; //设置元素的垂直对齐方式
-    border: 1px solid rgb(121,184,202);
+    border: 1px solid var(--color-main);
     padding: .375rem .75rem;
     font-size: 1rem;
     border-radius: .25rem;
@@ -83,7 +83,7 @@
 }
 
 .hiddenImage:hover {
-    background-color: rgb(121,184,202);
+    background-color: var(--color-main);
     color: rgb(255,255,255);
     cursor: pointer;
 }
@@ -149,12 +149,12 @@
     font-size: 1.25rem;
     font-family: 微软雅黑;
     padding-left: 0.75rem;
-    color: rgb(121,184,202);
+    color: var(--color-main);
 
     a {
         font-size: 1rem;
         font-family: 微软雅黑;
-        color: rgb(121,184,202);
+        color: var(--color-main);
     }
 }
 
@@ -165,12 +165,12 @@
     font-size: 1.25rem;
     font-family: 微软雅黑;
     padding-left: 0.75rem;
-    color: rgb(107,113,120);
+    color: var(--color-sec);
 
     a {
         font-size: 1rem;
         font-family: 微软雅黑;
-        color: rgb(102,102,102);
+        color: var(--color-sec);
     }
 }
 
@@ -200,7 +200,7 @@
     padding: 1rem 1.25rem;
     border-width: 8px 1px 1px 1px;
     border-style: solid;
-    border-color: rgb(121,184,202);
+    border-color: var(--color-main);
     box-sizing: border-box;
     background-color: rgb(252,252,252);
 }
@@ -221,7 +221,7 @@
     padding: 1.25rem;
     border-width: 8px 1px 1px 1px;
     border-style: solid;
-    border-color: rgb(107,113,120);
+    border-color: var(--color-sec);
     box-sizing: border-box;
     background-color: rgb(252,252,252);
 }
@@ -309,9 +309,9 @@
     padding: 1rem 1.25rem;
     border-width: 8px 1px 1px 1px;
     border-style: solid;
-    border-color: rgb(121,184,202);
+    border-color: var(--color-main);
     box-sizing: border-box;
-    background-color: rgb(252,252,252);
+    background-color: #fff;
 }
 
 .mainPageListContent2 {
@@ -322,7 +322,7 @@
     padding: 1rem 1.25rem;
     border-width: 8px 1px 1px 1px;
     border-style: solid;
-    border-color: rgb(107,113,120);
+    border-color: var(--color-sec);
     box-sizing: border-box;
     background-color: rgb(252,252,252);
 }
@@ -380,7 +380,7 @@
     margin-top: 1rem;
     padding: 1rem 1.25rem;
     box-sizing: border-box;
-    background-color: rgb(121,184,202);
+    background-color: var(--color-main);
 }
 
 .recommendedFunctionRow {
@@ -430,7 +430,7 @@
     margin-top: 1rem;
     padding: 1.5rem 1.25rem 1rem 1.25rem;
     box-sizing: border-box;
-    background-color: rgb(107,113,120);
+    background-color:var(--color-sec);
 }
 
 .schoolNewsRow {
@@ -476,7 +476,7 @@
     margin-top: 1rem;
     padding: 1.5rem 1.25rem 1rem 1.25rem;
     box-sizing: border-box;
-    background-color: rgb(107,113,120);
+    background-color: var(--color-sec);
 }
 
 .mainPageCountRow {
@@ -495,7 +495,7 @@
     a {
         font-size: 0.75rem;
         font-family: 微软雅黑;
-        color: rgb(251,97,101);
+        color: #444444;
     }
 }
 
@@ -511,7 +511,7 @@
     height: 12rem;
     margin-bottom: 1.25rem;
     padding: 0px;
-    background: url(/static/images/冬192.jpg) no-repeat center;
+    background: var(--background-image) no-repeat center;
     z-index: 2;
 }
 
@@ -534,7 +534,7 @@
     height: 3rem;
     width: 100%;
     justify-content: center;
-    background-color: rgba(121,184,202,1); //仅背景条半透明，内层元素无半透明效果
+    background-color: var(--color-main); //仅背景条半透明，内层元素无半透明效果
 }
 
 .topBar-mainPage {
@@ -543,7 +543,7 @@
     height: 3rem;
     width: 100%;
     justify-content: center;
-    background-color: rgba(121,184,202,0.8); //仅背景条半透明，内层元素无半透明效果
+    background-color: var(--topBar-o); //仅背景条半透明，内层元素无半透明效果
 }
 
 .topBarRow {
@@ -673,7 +673,7 @@
         list-style-type: none;
         margin: 0;
         padding: 0;
-        background-color: rgba(121,184,202,1);
+        background-color: var(--color-main);
     }
 
     li {
@@ -710,7 +710,7 @@
         list-style-type: none;
         margin: 0;
         padding: 0;
-        background-color: rgba(121,184,202,0.8);
+        background-color: var(--topBar-o);
     }
 
     li {
@@ -786,7 +786,7 @@
         list-style-type: none;
         margin: 0;
         padding: 0;
-        background-color: rgba(121,184,202,0.8);
+        background-color: var(--topBar-o);
     }
 
     li {
@@ -821,7 +821,7 @@
     width: 2rem;
     font-size: 0.75rem;
     font-family: 微软雅黑;
-    color: #79b8ca;
+    color: #b1d396;
     justify-content: center;
     align-items: center;
     cursor: pointer;
@@ -832,7 +832,7 @@
     width: 1rem;
     font-size: 0.75rem;
     font-family: 微软雅黑;
-    color: #79b8ca;
+    color: #b1d396;
     justify-content: center;
     align-items: center;
     cursor: pointer;
@@ -844,7 +844,7 @@
     flex-grow: 1;
     font-size: 0.75rem;
     font-family: 微软雅黑;
-    color: #79b8ca;
+    color: #b1d396;
     background-color: #d7eaf0;
     outline: none;
 }
@@ -854,7 +854,7 @@
     flex-direction: row;
     font-size: 0.75rem;
     font-family: 微软雅黑;
-    color: #79b8ca;
+    color: #b1d396;
     justify-content: center;
     align-items: center;
     cursor: pointer;
@@ -872,7 +872,7 @@
     margin-left: 2rem;
     font-size: 0.75rem;
     font-family: 微软雅黑;
-    color: #79b8ca;
+    color: #b1d396;
     background-color: #d7eaf0;
     position: absolute;
     z-index: 1000;

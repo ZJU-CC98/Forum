@@ -361,7 +361,7 @@ ${newProps.content.content}[/quote]
             editor = <div>
                 <UbbEditor update={this.update} value={this.state.content} option={{ height: 20, submit: this.sendUbbTopic }} />
                 <div className="row" style={{ justifyContent: 'center', marginBottom: '1.25rem ' }}>
-                    <button id="post-topic-button" onClick={this.sendUbbTopic} disabled={this.state.buttonDisabled} className="button blue" style={{ marginTop: '1.25rem', width: '6rem', height: '2rem', lineHeight: '2rem' }}>{this.state.buttonInfo}
+                    <button id="post-topic-button" onClick={this.sendUbbTopic} disabled={this.state.buttonDisabled} className="button blue" style={{ marginTop: '1.25rem', width: '6rem', height: '2rem', lineHeight: '0.8rem' }}>{this.state.buttonInfo}
                     </button>
 				</div></div>;
 		}
@@ -375,7 +375,7 @@ ${newProps.content.content}[/quote]
 					</div>
 				</form>
                 <div className="row" style={{ justifyContent: 'center', marginBottom: '1.25rem ' }}>
-                    <button id="post-topic-button" disabled={this.state.buttonDisabled} onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: '1.25rem', width: '4.5rem', height: "2rem", lineHeight: "2rem" }}>{this.state.buttonInfo}</button>
+                    <button id="post-topic-button" disabled={this.state.buttonDisabled} onClick={this.sendMdTopic.bind(this)} className="button blue" style={{ marginTop: '1.25rem', width: '4.5rem', height: "2rem", lineHeight: "0.8rem" }}>{this.state.buttonInfo}</button>
 
 
 				</div>
@@ -391,7 +391,7 @@ ${newProps.content.content}[/quote]
         let manageBTN = null;
         if (Utility.isMaster(this.props.boardInfo.boardMasters))
             manageBTN = <div><button className="topicManageBTN" id="topicManagementBTN" style={{ width: '5rem' }} onClick={this.showManagement}>管理</button>
-                <button id="showIPBTN" className="topicManageBTN" style={{ width: '5rem' }} onClick={this.showIP}>查看IP</button></div>;
+               </div>;
         
 		return <div id="sendTopicInfo" style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
 			<div className="row" style={{ justifyContent:'flex-end' }}>

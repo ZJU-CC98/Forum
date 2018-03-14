@@ -3210,3 +3210,47 @@ export function noticeMessageShow(id: string) {
         $(`#${id}`).addClass('noticeDisplaynone');
     }, 1500);
 }
+
+/**
+ * 切换主题
+ */
+export function changeTheme(theme: number) {
+    const wuteng_blue = {
+        color_main: "#79b8ca",
+        color_sec: "#6b7178",
+        topBar_o: "rgba(121, 184, 202, 0.8)",
+        background_image: "url(/static/images/winter.jpg)"
+    };
+    const forgive_green = {
+        color_main: "#b1d396",
+        color_sec: "#f595a9",
+        topBar_o: "rgba(177, 211, 150, 0.8)",
+        background_image: "url(/static/images/spring.png)"
+    };
+    const deep_dark_green = {
+        color_main: "#95b675",
+        color_sec: "#c490bf",
+        topBar_o: "rgba(149,182,117,0.8)",
+        background_image: "url(/static/images/spring.png)"
+    }
+    switch (theme) {
+        case 0:
+            document.body.style.setProperty("--color-main", wuteng_blue.color_main);
+            document.body.style.setProperty("--color-sec", wuteng_blue.color_sec);
+            document.body.style.setProperty("--topBar-o", wuteng_blue.topBar_o);
+            document.body.style.setProperty("--background-image", wuteng_blue.background_image);
+            break;
+        case 1:
+            document.body.style.setProperty("--color-main", forgive_green.color_main);
+            document.body.style.setProperty("--color-sec", forgive_green.color_sec);
+            document.body.style.setProperty("--topBar-o", forgive_green.topBar_o);
+            document.body.style.setProperty("--background-image", forgive_green.background_image);
+            break;
+        case 2:
+            document.body.style.setProperty("--color-main", deep_dark_green.color_main);
+            document.body.style.setProperty("--color-sec", deep_dark_green.color_sec);
+            document.body.style.setProperty("--topBar-o", deep_dark_green.topBar_o);
+            document.body.style.setProperty("--background-image", deep_dark_green.background_image);
+            break;
+    }
+}
