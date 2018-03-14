@@ -120,7 +120,7 @@ export class ReplierSignature extends React.Component<Props, {likeNumber,dislike
         const manageIcon = `icon${this.props.postInfo.id}`;
         const idLike = `like${this.props.postInfo.id}`;
         const idDislike = `dislike${this.props.postInfo.id}`;
-        let signature = <div className="signature" style={{ borderTop: "#8dc9db solid thin", width: "100%" }}><UbbContainer code={this.props.userInfo.signatureCode} /></div>;
+        let signature = <div className="signature" style={{ borderTop: "var(--color-main) solid thin", width: "100%" }}><UbbContainer code={this.props.userInfo.signatureCode} /></div>;
         if (!this.props.userInfo.signatureCode) {
             signature = null;
         }
@@ -140,7 +140,7 @@ export class ReplierSignature extends React.Component<Props, {likeNumber,dislike
         }
         const returnUrl = `/topic/${this.props.topicInfo.id}`;
         const traceUrl = `/topic/${this.props.topicInfo.id}/postid/${this.props.postInfo.id}`;
-        let traceIcon = <div className="operation1"><Link style={{ color: "#79b8ca" }} to={this.props.traceMode ? returnUrl : traceUrl}>{this.props.traceMode ? "返回" : "追踪"}</Link></div>;
+        let traceIcon = <div className="operation1"><Link to={this.props.traceMode ? returnUrl : traceUrl}>{this.props.traceMode ? "返回" : "追踪"}</Link></div>;
         
         let manageBtn = null;
 

@@ -84,6 +84,10 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
                             status =   await Utility.cancelDisableHot(this.props.topicInfo.id, this.state.reason);
                             this.setState({ fetchState: status });
                             break;
+                        case '提升':
+                            status = await Utility.upTopic(this.props.topicInfo.id, this.props.boardId, this.state.reason);
+                            this.setState({ fetchState: status });
+                            break;
                     }
                 } else {
                     this.setState({ tips: "请输入原因！" });
@@ -120,10 +124,7 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
                            status =  await Utility.lockTopic(this.props.topicInfo.id, this.props.boardId, this.state.reason, this.state.days);
                             this.setState({ fetchState: status });
                             break;
-                        case '提升':
-                            status = await Utility.upTopic(this.props.topicInfo.id, this.props.boardId, this.state.reason, this.state.days);
-                            this.setState({ fetchState: status });
-                            break;
+                       
                     }           
                 } else {
                     this.setState({ tips: "请输入原因！" });
@@ -290,7 +291,7 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
                     </div>
 
                     <div className="row">
-                        <input type="radio" name="option" value="提升" onClick={this.showDays} />
+                        <input type="radio" name="option" value="提升" onClick={this.showNormal} />
                         <div>提升</div>
                     </div>
                 </div>

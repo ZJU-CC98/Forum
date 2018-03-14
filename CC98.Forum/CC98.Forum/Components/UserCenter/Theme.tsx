@@ -5,31 +5,18 @@ import { UserInfo } from '../../States/AppState';
 import { connect } from 'react-redux';
 import { RootState } from '../../Store';
 
-const themeList = ['蓝', '绿', '红'];
+const themeList = ['系统默认', '蓝', '绿', '比绿更绿'];
 
 interface Props {
     userInfo: UserInfo;
     changeUserInfo: (userInfo: UserInfo) => void;
 }
 
-interface State {
-    theme: Number;
-    info: string;
-}
-
-class Theme extends React.Component<Props, State> {
-    state = {
-        theme: this.props.userInfo.theme || 1,
-        info: ''
-    };
-
-    handleSubmit = async () => {
+class Theme extends React.Component<Props> {
+    handleSubmit = async (theme: number) => {
         try{
-            if(this.props.userInfo.theme === this.state.theme) {
-                this.setState({ info: '修改成功' });
-            }
             let headers = await Utility.formAuthorizeHeader();
-            const url = `/me/theme?id=${this.state.theme}`;
+            const url = `/me/theme?id=${theme}`;
             let res = await Utility.cc98Fetch(url, {
                 headers,
                 method: 'PUT'
@@ -37,27 +24,22 @@ class Theme extends React.Component<Props, State> {
             if(!res.ok) {
                 throw new Error(res.statusText);
             } else {
-                this.props.changeUserInfo({ ...this.props.userInfo, theme: this.state.theme });
-                this.setState({ info: '修改成功' });
+                this.props.changeUserInfo({ ...this.props.userInfo, theme: theme });
+                Utility.changeTheme(theme);
             }
         } catch(e) {
-            this.setState({ info: `修改失败 ${e.message}` });
         }
     }
 
     render() {
         return (
         <div className="user-theme">
+            <h2>切换主题</h2>
             <div className="user-theme-config">
-                <select value={this.state.theme} onChange={e => this.setState({ theme: Number.parseInt(e.target.value) })}>
-                    <option value={0} disabled>未选择</option>
-                    {themeList.map((item, index) => <option key={item} value={index + 1}>{item}</option>)}
-                </select>
+                {themeList.map((item, index) => <button key={index} onClick={() => this.handleSubmit(index)} disabled={this.props.userInfo.theme === index}>{item}</button>)}
             </div>
-            <div className="user-theme-preview"></div>
-            <div className="user-theme-submit">
-                <button type="button" onClick={this.handleSubmit}>保存</button>
-                <p>{this.state.info}</p>
+            <div className="user-theme-preview">
+            
             </div>
         </div>
         );

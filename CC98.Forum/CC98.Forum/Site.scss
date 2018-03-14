@@ -259,7 +259,7 @@ body {
     margin-left: 1.4rem;
     display: flex;
     font-size: 0.75rem;
-    color: rgb(121,184,201);
+    color: var(--color-main);
 }
 
 #like {
@@ -375,7 +375,7 @@ body {
 }
 
 .replierBtn {
-    background-color: #8bc9db;
+    background-color: var(--color-main);
     color: #fff;
     border: #fff solid thin;
     border-radius: 0.63rem;
@@ -447,7 +447,7 @@ body {
     font-size: 0.75rem;
     align-items: flex-end;
     padding-bottom: 0.3rem;
-    color: #8bc9db;
+    color: var(--color-main);
     align-items: center;
     justify-content: space-between;
 }
@@ -571,7 +571,7 @@ body {
 .reply {
     width: 100%;
     margin-top: 1rem;
-    border: #8dc9db solid 1.5px;
+    border: var(--color-main) solid 1.5px;
     background-color: #fff;
     flex-direction: row;
     display: flex;
@@ -583,7 +583,7 @@ body {
         height: 40px;
         border-radius: 50%;
         right: -0.8rem;
-        background-color: $color-bg;
+        background-color: var(--color-main);
         text-align: center;
         line-height: 40px;
         position: relative;
@@ -601,7 +601,7 @@ body {
 
 .userMessage {
     align-items: flex-start;
-    background-color: #8dc9db;
+    background-color: var(--color-main);
     color: #fff;
     width: 15.5rem;
     display: flex;
@@ -679,14 +679,18 @@ body {
     color: #000000;
     outline: none;
     cursor: pointer;
-    color: $color-bg;
-    border: $color-bg solid thin;
+    color: var(--color-main);
+    border: var(--color-main) solid thin;
     border-radius: 1rem;
     width: 2.25rem;
     height: 1.25rem;
     text-align: center;
     margin-left: 0.5rem;
     line-height: 1.25rem;
+
+    a {
+        color: var(--color-main);
+    }
 }
 
 .operation {
@@ -821,7 +825,7 @@ body {
 .followTopic {
     width: 3rem;
     margin-left: 1rem;
-    border: #8dc9db solid thin;
+    border: var(--color-main) solid thin;
     border-radius: 10px;
     text-align: center;
     cursor: pointer;
@@ -935,9 +939,15 @@ a {
     line-height: 4rem;
 }
 
+#board-topBar {
+    justify-content: space-between;
+    background-color: var(--color-main);
+    color: #fff;
+
+}
 .bgcolor {
     color: #fff;
-    background-color: $color-bg;
+    background-color: var(--color-main);
 }
 
 .orange {
@@ -1017,7 +1027,7 @@ a {
     height: 26px;
     line-height: 26px;
     text-align: center;
-    color: #79b8ca;
+    color: var(--color-main);
     background-color: #fff;
     border: 1px solid #ddd;
     font-family: 微软雅黑;
@@ -1025,14 +1035,14 @@ a {
 
     &:hover {
         color: #fff;
-        background-color: #79b8ca;
+        background-color: var(--color-main);
         border-color: transparent;
     }
 }
 
 .page-link.active {
     color: #fff;
-    background-color: #79b8ca;
+    background-color: var(--color-main);
     border-color: transparent;
 }
 
@@ -1055,11 +1065,11 @@ a {
         line-height: 26px;
         text-align: center;
         color: #fff;
-        background-color: #79b8ca;
+        background-color: var(--color-main);
         border: 1px solid transparent;
 
         &:hover {
-            background-color: #8dc9db
+            background-color: var(--color-main)
         }
     }
 }
@@ -1408,7 +1418,7 @@ a {
 .message-message-wPostBtn {
     width: 100px;
     height: 30px;
-    background-color: $color-bg;
+    background-color: var(--color-main);
     color: $color-post;
     border: 0px;
     border-radius: 3px;
@@ -2062,7 +2072,7 @@ a {
             display: flex;
             flex-direction: row;
             flex-basis: 180px;
-            background-color: $color-bg;
+            background-color: var(--color-main);
             flex-shrink: 0;
 
             .focus-topic-portraitUrl {
@@ -3155,10 +3165,28 @@ a {
     .boardListHead {
         height: 3rem;
         align-items: center;
-        background-color: #8dc9db;
+        background-color: var(--color-main);
         justify-content: space-between;
         cursor: pointer;
     }
 
     .boardListHead:hover {
     }
+
+
+    //配色方案
+variable {
+    --wuteng-blue: #79b8ca;
+    --wuteng-blue-o: rgba(121, 184, 202, 0.8);
+    --naocan-pink: #f595a9;
+    --naocan-pink-o: rgba(245, 149, 169, 0.8);
+    --gay-purple: #c490bf;
+    --gay-purple-: rgba(196, 144, 191, 0.8);
+    --forgive-green: #b1d396;
+    --forgive-green-o: rgba(177, 211, 150, 0.8);
+    --deep-dark-green: #95b675;
+    --deep-dark-green-o: rgba(149,182,117,0.8);
+    --deeo-dark-grey: #6b7178;
+    --yima-red: red;
+    --oldman-black: black;
+}
