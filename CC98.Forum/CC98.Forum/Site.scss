@@ -1945,14 +1945,14 @@ a {
         flex-shrink: 0;
 
         &:hover {
-            background-color: rgb(121,184,202);
+            background-color: var(--color-main);
             color: rgb(255,255,255);
             cursor: pointer;
         }
     }
 
     .focus-hover {
-        background-color: $color-bg;
+        background-color: var(--color-main);
         color: #ffffff;
     }
 
