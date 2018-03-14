@@ -748,7 +748,7 @@
         list-style-type: none;
         margin: 0;
         padding: 0;
-        background-color: rgba(121,184,202,1);
+        background-color: var(--color-main);
     }
 
     li {
@@ -811,7 +811,7 @@
     width: 33rem;
     border-radius: 0.625rem;
     align-items: center;
-    background-color: #d7eaf0;
+    background-color: #fff;
     padding: 0 1rem;
     margin-left: 1rem;
 }
@@ -821,7 +821,7 @@
     width: 2rem;
     font-size: 0.75rem;
     font-family: 微软雅黑;
-    color: #b1d396;
+    color: var(--color-main);
     justify-content: center;
     align-items: center;
     cursor: pointer;
@@ -832,7 +832,7 @@
     width: 1rem;
     font-size: 0.75rem;
     font-family: 微软雅黑;
-    color: #b1d396;
+    color: var(--color-main);
     justify-content: center;
     align-items: center;
     cursor: pointer;
@@ -844,8 +844,8 @@
     flex-grow: 1;
     font-size: 0.75rem;
     font-family: 微软雅黑;
-    color: #b1d396;
-    background-color: #d7eaf0;
+    color: var(--color-main);
+    background-color: #fff;
     outline: none;
 }
 
@@ -854,7 +854,7 @@
     flex-direction: row;
     font-size: 0.75rem;
     font-family: 微软雅黑;
-    color: #b1d396;
+    color: var(--color-main);
     justify-content: center;
     align-items: center;
     cursor: pointer;
@@ -872,8 +872,8 @@
     margin-left: 2rem;
     font-size: 0.75rem;
     font-family: 微软雅黑;
-    color: #b1d396;
-    background-color: #d7eaf0;
+    color: #fff;
+    background-color: var(--color-main);
     position: absolute;
     z-index: 1000;
 }

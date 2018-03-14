@@ -687,6 +687,10 @@ body {
     text-align: center;
     margin-left: 0.5rem;
     line-height: 1.25rem;
+
+    a {
+        color: var(--color-main);
+    }
 }
 
 .operation {
@@ -1414,7 +1418,7 @@ a {
 .message-message-wPostBtn {
     width: 100px;
     height: 30px;
-    background-color: $color-bg;
+    background-color: var(--color-main);
     color: $color-post;
     border: 0px;
     border-radius: 3px;

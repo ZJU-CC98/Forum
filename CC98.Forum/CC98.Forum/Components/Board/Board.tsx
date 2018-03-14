@@ -432,7 +432,7 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
         return <div className="listContent ">
             <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} tag={this.state.tags} />
-            <div className="column" style={{ width: "100%", border: "#79b8ca solid thin" }}>
+            <div className="column" style={{ width: "100%", border: "var(--color-main) solid thin" }}>
                 <div className="row" id="board-topBar" >
                     <div className="row" style={{ alignItems: 'center' }} >
 
