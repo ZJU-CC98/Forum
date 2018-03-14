@@ -3048,36 +3048,40 @@ export function getThisTopicInfo(topicId, topicIds) {
 *如果存在合法的@，则会返回一个字符串数组，包含至多10个合法的被@用户的昵称，否则返回false
 */
 export function atHanderler(content: string) {
-    const reg1 = /([\s\S]*)\[quotex?\][\s\S]*?\[\/quotex?\]([\s\S]*)/;
-    const reg2 = /@[^ \n]{1,10}?[ ]+/g;
-    const reg3 = /[^@ ]+/;
-    //不检测引用内容中的@
-    //console.log("处理前内容", content);
-    let str;
-    do {
-        str = content.match(reg1);
-        if (str) {
-            content = `${content.match(reg1)[1]}${content.match(reg1)[2]}`;
+    try {
+        const reg1 = /([\s\S]*)\[quotex?\][\s\S]*?\[\/quotex?\]([\s\S]*)/;
+        const reg2 = /@[^ \n]{1,10}?[ ]+/g;
+        const reg3 = /[^@ ]+/;
+        //不检测引用内容中的@
+        //console.log("处理前内容", content);
+        let str;
+        do {
+            str = content.match(reg1);
+            if (str) {
+                content = `${content.match(reg1)[1]}${content.match(reg1)[2]}`;
+            }
+        } while (str);
+        console.log("非引用内容", content);
+        if (content === '') {
+            return false
         }
-    } while (str);
-    console.log("非引用内容", content);
-    if (content === '') {
-        return false
-    }
-    else if (content.match(reg2)) {   //如果match方法返回了非null的值（即数组），则说明内容中存在合法的@
-        let atNum = content.match(reg2).length;  //合法的@数
-        if (atNum > 10) atNum = 10;            //至多10个
-        let ats: string[] = new Array();
-        for (let i = 0; i < atNum; i++) {
-            let anAt = content.match(reg2)[i];
+        else if (content.match(reg2)) {   //如果match方法返回了非null的值（即数组），则说明内容中存在合法的@
+            let atNum = content.match(reg2).length;  //合法的@数
+            if (atNum > 10) atNum = 10;            //至多10个
+            let ats: string[] = new Array();
+            for (let i = 0; i < atNum; i++) {
+                let anAt = content.match(reg2)[i];
 
-            let aUserName = reg3.exec(anAt)[0];
+                let aUserName = reg3.exec(anAt)[0];
 
-            ats[i] = aUserName;
+                ats[i] = aUserName;
+            }
+            return ats;
+        } else {
+            return false;
         }
-        return ats;
-    } else {
-        return false;
+    } catch(e) {
+        return content;
     }
 }
 
@@ -3086,29 +3090,33 @@ export function atHanderler(content: string) {
  * @param content
  */
 export function atUserUbbUrl(content: string) {
-    const reg = /@[^ \n]{1,10}?[ ]+/g;
-    const reg2 = /[^@ ]+/;
-    if (content === '') {
-        return content;
-    }
-    else if (content.match(reg)) {   //如果match方法返回了非null的值（即数组），则说明内容中存在合法的@
-        let atNum = content.match(reg).length;  //合法的@数
-        if (atNum > 10) atNum = 10;            //至多10个
-        let ats: string[] = new Array();
-        for (let i = 0; i < atNum; i++) {
-            //提取@字符串
-            let anAt = content.match(reg)[i];
-            //提取@的用户名
-            let aUserName = reg2.exec(anAt)[0];
-            ats[i] = aUserName;
+    try{
+        const reg = /@[^ \n]{1,10}?[ ]+/g;
+        const reg2 = /[^@ ]+/;
+        if (content === '') {
+            return content;
         }
-        for (let i = 0; i < atNum; i++) {
-            //给@用户名加上效果
-            let atText = new RegExp(`@${ats[i]}[ ]`, "g");
-            content = content.replace(atText, `[url="/user/name/${ats[i]}"]@${ats[i]} [/url]`);
+        else if (content.match(reg)) {   //如果match方法返回了非null的值（即数组），则说明内容中存在合法的@
+            let atNum = content.match(reg).length;  //合法的@数
+            if (atNum > 10) atNum = 10;            //至多10个
+            let ats: string[] = new Array();
+            for (let i = 0; i < atNum; i++) {
+                //提取@字符串
+                let anAt = content.match(reg)[i];
+                //提取@的用户名
+                let aUserName = reg2.exec(anAt)[0];
+                ats[i] = aUserName;
+            }
+            for (let i = 0; i < atNum; i++) {
+                //给@用户名加上效果
+                let atText = new RegExp(`@${ats[i]}[ ]`, "g");
+                content = content.replace(atText, `[url="/user/name/${ats[i]}"]@${ats[i]} [/url]`);
+            }
+            return content;
+        } else {
+            return content;
         }
-        return content;
-    } else {
+    } catch(e) {
         return content;
     }
 }
@@ -3118,32 +3126,35 @@ export function atUserUbbUrl(content: string) {
  * @param content
  */
 export function atUserMdUrl(content: string) {
-    const reg = /@[^ \n]{1,10}?[ ]+/g;
-    const reg2 = /[^@ ]+/;
-    if (content === '') {
+    try{
+        const reg = /@[^ \n]{1,10}?[ ]+/g;
+        const reg2 = /[^@ ]+/;
+        if (content === '') {
+            return content;
+        }
+        else if (content.match(reg)) {   //如果match方法返回了非null的值（即数组），则说明内容中存在合法的@
+            let atNum = content.match(reg).length;  //合法的@数
+            if (atNum > 10) atNum = 10;            //至多10个
+            let ats: string[] = new Array();
+            for (let i = 0; i < atNum; i++) {
+                //提取@字符串
+                let anAt = content.match(reg)[i];
+                //提取@的用户名
+                let aUserName = reg2.exec(anAt)[0];
+                ats[i] = aUserName;
+            }
+            for (let i = 0; i < atNum; i++) {
+                //给@用户名加上效果
+                let atText = new RegExp(`@${ats[i]} `, "g");
+                content = content.replace(atText, `[@${ats[i]} ](/user/name/${ats[i]})`);
+            }
+            return content;
+        } else {
+            return content;
+        }
+    } catch(e) {
         return content;
     }
-    else if (content.match(reg)) {   //如果match方法返回了非null的值（即数组），则说明内容中存在合法的@
-        let atNum = content.match(reg).length;  //合法的@数
-        if (atNum > 10) atNum = 10;            //至多10个
-        let ats: string[] = new Array();
-        for (let i = 0; i < atNum; i++) {
-            //提取@字符串
-            let anAt = content.match(reg)[i];
-            //提取@的用户名
-            let aUserName = reg2.exec(anAt)[0];
-            ats[i] = aUserName;
-        }
-        for (let i = 0; i < atNum; i++) {
-            //给@用户名加上效果
-            let atText = new RegExp(`@${ats[i]} `, "g");
-            content = content.replace(atText, `[@${ats[i]} ](/user/name/${ats[i]})`);
-        }
-        return content;
-    } else {
-        return content;
-    }
-
 }
 
 /**
