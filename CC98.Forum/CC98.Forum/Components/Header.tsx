@@ -9,9 +9,10 @@ import * as $ from 'jquery';
 import { connect } from 'react-redux';
 import * as Actions from '../Actions/UserCenter';
 import { Link, withRouter, Route } from 'react-router-dom';
+import { refreshCurrentUserInfo } from '../AsyncActions/UserCenter';
 //import SignalR from '../SignalR';
 
-class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLogOn }, { hoverElement: string, unreadCount: { totalCount: number, replyCount: number, atCount: number, systemCount: number, messageCount: number } }> {   //顶部条的下拉菜单组件
+class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLogOn, refreshUserInfo }, { hoverElement: string, unreadCount: { totalCount: number, replyCount: number, atCount: number, systemCount: number, messageCount: number } }> {   //顶部条的下拉菜单组件
     constructor(props) {
         super(props);
         this.state = ({
@@ -58,6 +59,11 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
             }
         });
 
+        //每天刷新一次用户信息
+        if(!Utility.getLocalStorage('shouldNotRefreshUserInfo')) {
+            this.props.refreshUserInfo();
+            Utility.setLocalStorage('shouldNotRefreshUserInfo', true, 86400);
+        }
     }
 
     componentWillUnmount() {
@@ -223,7 +229,10 @@ function mapDispatch(dispatch) {
         },
         reLogOn: () => {
             dispatch(Actions.changeUserInfo(Utility.getLocalStorage('userInfo')));
-            dispatch(Actions.userLogIn())
+            dispatch(Actions.userLogIn());
+        },
+        refreshUserInfo: () => {
+            dispatch(refreshCurrentUserInfo());
         }
     };
 }
