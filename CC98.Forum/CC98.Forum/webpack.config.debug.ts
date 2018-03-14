@@ -64,7 +64,7 @@ const config: webpack.Configuration = {
 			filename: 'static/index.html'
 		}),
 		new HTMLWebpackPluginRemove(/\.\./g), //index.html改用绝对路径
-		new HTMLWebpackPluginRemove(/-min/),  //debug环境使用完整版js
+		new HTMLWebpackPluginRemove(/-min/g),  //debug环境使用完整版js
 		new HTMLWebpackPluginRemove(/<script\stype="text\/javascript"\ssrc="\/static\/scripts\/css-\S{8}-min\.js"><\/script>/), //去除多余的内容
 		new webpack.optimize.UglifyJsPlugin(), // 简化 JS
 		new UnminifiedWebpackPlugin(), // 提供调试用 JS 完整版

@@ -838,7 +838,7 @@ export function transerRecentTime(time) {
     let thatTime = thatDate.getTime();
     let thisDate = new Date();
     let thisTime = new Date().getTime();
-    let delta = (new Date(new Date().toLocaleDateString()).getTime() + 86400000 - thatTime) / 1000;
+    let delta = (new Date(new Date().setHours(0, 0, 0, 0)).getTime() + 86400000 - thatTime) / 1000;
     let month: any = thatDate.getMonth() + 1;
     if (month < 10) { month = `0${month}`; }
     let date: any = thatDate.getDate();
