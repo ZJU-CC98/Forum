@@ -2185,11 +2185,11 @@ export async function lockTopic(topicId, boardId, reason, days) {
     return 'ok';
 }
 
-export async function upTopic(topicId, boardId, reason, days) {
+export async function upTopic(topicId, boardId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
     const url = `/topic/${topicId}/up`;
-    const bodyInfo = { 'reason': reason, 'value': days };
+    const bodyInfo = { 'reason': reason };
     const body = JSON.stringify(bodyInfo);
     const response = await cc98Fetch(url, { method: "PUT", headers, body });
     switch (response.status) {
@@ -3246,22 +3246,29 @@ export function changeTheme(theme: number) {
     }
     switch (theme) {
         case 0:
-            document.body.style.setProperty("--color-main", wuteng_blue.color_main);
-            document.body.style.setProperty("--color-sec", wuteng_blue.color_sec);
-            document.body.style.setProperty("--topBar-o", wuteng_blue.topBar_o);
-            document.body.style.setProperty("--background-image", wuteng_blue.background_image);
-            break;
-        case 1:
             document.body.style.setProperty("--color-main", forgive_green.color_main);
             document.body.style.setProperty("--color-sec", forgive_green.color_sec);
             document.body.style.setProperty("--topBar-o", forgive_green.topBar_o);
             document.body.style.setProperty("--background-image", forgive_green.background_image);
             break;
+        case 1:
+            document.body.style.setProperty("--color-main", wuteng_blue.color_main);
+            document.body.style.setProperty("--color-sec", wuteng_blue.color_sec);
+            document.body.style.setProperty("--topBar-o", wuteng_blue.topBar_o);
+            document.body.style.setProperty("--background-image", wuteng_blue.background_image);
+            break;
+       
         case 2:
             document.body.style.setProperty("--color-main", deep_dark_green.color_main);
             document.body.style.setProperty("--color-sec", deep_dark_green.color_sec);
             document.body.style.setProperty("--topBar-o", deep_dark_green.topBar_o);
             document.body.style.setProperty("--background-image", deep_dark_green.background_image);
+            break;
+        default:
+            document.body.style.setProperty("--color-main", forgive_green.color_main);
+            document.body.style.setProperty("--color-sec", forgive_green.color_sec);
+            document.body.style.setProperty("--topBar-o", forgive_green.topBar_o);
+            document.body.style.setProperty("--background-image", forgive_green.background_image);
             break;
     }
 }
