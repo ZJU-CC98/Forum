@@ -1,6 +1,6 @@
 ﻿import createHistory from 'history/createBrowserHistory';
 import { routerMiddleware, routerReducer as router, RouterState } from 'react-router-redux';
-import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
+import { applyMiddleware, combineReducers, compose, createStore, Dispatch } from 'redux';
 import thunk from './node_modules/redux-thunk/es/index';
 
 import * as UserActions from './Actions/UserCenter';
@@ -11,6 +11,17 @@ import userInfo, { UserInfoStore } from './Reducers/UserInfo';
 function values<T>(o: { [s: string]: T }): T[] {
     return Object.keys(o).map((key) => o[key]);
 }
+
+declare module "redux" {
+    export interface Dispatch<S> {
+        <R, E>(asyncAction: ThunkAction<R, S, E>): R;
+    }
+}
+
+/**
+ * thunk-action的类型定义
+ */
+export type ThunkAction<R, S, E> = (dispatch: Dispatch<S>, getState: () => S, extraArgument: E) => R;
 
 /**
  * 全局store的类型定义

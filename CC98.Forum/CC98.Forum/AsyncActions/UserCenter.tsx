@@ -1,5 +1,5 @@
 ﻿import { Action, ActionCreator, Dispatch } from 'redux';
-import { ThunkAction } from 'redux-thunk';
+import { ThunkAction } from '../Store';
 import * as Actions from '../Actions/UserCenter';
 import { UserInfoStore } from '../Reducers/UserInfo';
 import * as Appstate from '../States/AppState';
