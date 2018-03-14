@@ -45,6 +45,7 @@ const config: webpack.Configuration = {
 			'whatwg-fetch',
 			'aplayer',
 			'dplayer',
+			'es6-promise',
 		]
 	},
 	devtool: 'source-map',
@@ -79,7 +80,7 @@ const config: webpack.Configuration = {
 			{ from: 'node_modules/spectrum-colorpicker/spectrum.js', to: 'static/scripts/lib/spectrum/spectrum.js' },
 			{ from: 'node_modules/dplayer/dist/DPlayer.min.css', to: 'static/content/DPlayer.min.css' }
 		]),
-		new ExtractTextPlugin('static/content/site.min.css'),
+		new ExtractTextPlugin('static/content/[hash:8].min.css'),
 		new webpack.optimize.CommonsChunkPlugin({ name: 'vendors', filename: 'static/scripts/vendors-[hash:8]-min.js' }),
 	]
 };

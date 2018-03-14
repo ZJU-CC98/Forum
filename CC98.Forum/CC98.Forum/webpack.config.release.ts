@@ -88,7 +88,7 @@ const config: webpack.Configuration = {
 			{ from: 'node_modules/dplayer/dist/DPlayer.min.css', to: 'static/content/DPlayer.min.css' }
         ]),
         new ExtractTextPlugin({
-            filename:'static/content/site.min.css',
+            filename:'static/content/site-[hash:8].min.css',
             disable: false
         }),
 		new webpack.optimize.CommonsChunkPlugin({ name: 'vendors', filename: 'static/scripts/vendors-[hash:8]-min.js' }),
