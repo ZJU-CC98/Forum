@@ -3225,13 +3225,13 @@ export function changeTheme(theme: number) {
         color_main: "#b1d396",
         color_sec: "#f595a9",
         topBar_o: "rgba(177, 211, 150, 0.8)",
-        background_image: "url(/static/images/spring.png)"
+        background_image: "url(/static/images/spring.jpg)"
     };
     const deep_dark_green = {
         color_main: "#95b675",
         color_sec: "#c490bf",
         topBar_o: "rgba(149,182,117,0.8)",
-        background_image: "url(/static/images/spring.png)"
+        background_image: "url(/static/images/spring.jpg)"
     }
     switch (theme) {
         case 0:
