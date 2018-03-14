@@ -498,7 +498,7 @@ export class MainPageCountComponent extends React.Component<{ data }, {}> {
                 </div>
                 <div className="mainPageCountRow">
                     <div className="mainPageCountTitle">欢迎新用户</div>
-                    <div className="mainPageCountTitle"><Link to={`/user/name/${data.lastUserName}`}>{data.lastUserName}</Link></div>
+                    <div className="mainPageCountTitle"><Link to={`/user/name/${encodeURIComponent(data.lastUserName)}`}>{data.lastUserName}</Link></div>
                 </div>
             </div>
         </div>
