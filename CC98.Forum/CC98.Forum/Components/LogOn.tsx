@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import * as Actions from '../Actions/UserCenter';
 import { withRouter } from 'react-router-dom';
 import DocumentTitle from './DocumentTitle';
+import { UserInfo } from '../States/AppState';
 
 class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff, history, changeUserInfo}, LogOnState> {
     constructor(props) {
@@ -111,13 +112,14 @@ class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff, histo
             Utility.setLocalStorage("password", this.state.loginPassword);
             Utility.setLocalStorage("userName", this.state.loginName);
             await Utility.refreshUserInfo();
-            let userInfo = Utility.getLocalStorage('userInfo');
+            let userInfo: UserInfo = Utility.getLocalStorage('userInfo');
             if (userInfo.lockState === 1 || userInfo.lockState === 2) {
                 throw new Error('账号已锁定');
             }
             this.setState({
                 loginMessage: '登录成功 正在返回'
             });
+            Utility.changeTheme(userInfo.theme);
             this.props.logOn();
             //跳转
             setTimeout(() => {

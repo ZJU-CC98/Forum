@@ -960,5 +960,21 @@
         width: 7rem;
         height: 2rem;
         border-radius: 3px;
+
+        &:hover {
+            opacity: 0.8;
+        }
+
+        &:active {
+            opacity: 0.6;
+        }
+    }
+
+    button[disabled] {
+        cursor: default;
+
+        &:hover {
+            opacity: 1;
+        }
     }
 }

@@ -492,7 +492,14 @@ class UserCenterConfigAvatar extends React.Component<Props, States> {
 					</div>
 					<div style={{ width: '100%', height: `${this.state.divheight}px`, transitionDuration: '.5s' }}></div>
 					<div style={this.state.choosingDefault ? { display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'center', flexWrap: 'wrap' } : { display: 'none' }}>
-						{['default_avatar_boy.png', 'default_avatar_girl.png', 'default_avatar_boy2.jpg', 'default_avatar_girl2.jpg'].map(item => <img key={item} style={{ margin: '3rem 5rem', cursor: 'pointer', height: '10rem', width: '10rem' }} onClick={this.setDefaultAvatar} src={`/static/images/${item}`} />)}
+						{[
+							'default_avatar_boy.png', 
+							'default_avatar_girl.png', 
+							'default_avatar_boy2.jpg', 
+							'default_avatar_girl2.jpg',
+							'default_avatar_boy3.jpg',
+							'default_avatar_girl3.jpg'
+						].map(item => <img key={item} style={{ margin: '3rem 5rem', cursor: 'pointer', height: '10rem', width: '10rem' }} onClick={this.setDefaultAvatar} src={`/static/images/${item}`} />)}
 					</div>
 				</div>
 			</div>
