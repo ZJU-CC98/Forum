@@ -90,7 +90,7 @@ export default class extends React.Component<UserCenterMyFavoritesBoardProps, Us
     render() {
         return (
             <div className='user-center-myfavorite-board'>
-                <Link to={`/list/${this.props.UserFavoritesBoard.id}`} title={this.props.UserFavoritesBoard.name} style={{ background: `url('/static/images/_${this.props.UserFavoritesBoard.name}.png') repeat-x center center`, width: '7rem', height: '7rem', borderRadium: "50%", backgroundColor:"var(--color-main)", backgroundSize: '100%' }}></Link>
+                <Link to={`/list/${this.props.UserFavoritesBoard.id}`} title={this.props.UserFavoritesBoard.name} style={{ background: `url('/static/images/_${this.props.UserFavoritesBoard.name}.png') repeat-x center center`, width: '7rem', height: '7rem', borderRadium: "50%", backgroundColor:"var(--color-main)", backgroundSize: '100%', borderRadius: '7rem' }}></Link>
                 <div className='user-center-myfavorite-board-info'>
                     <Link to={`/list/${this.props.UserFavoritesBoard.id}`} title={this.props.UserFavoritesBoard.name}><h2>{this.props.UserFavoritesBoard.name}</h2></Link>
                     <p>版主：{this.props.UserFavoritesBoard.boardMasters.join(' ')} 今日主题 {this.props.UserFavoritesBoard.todayCount} / 总主题 {this.props.UserFavoritesBoard.topicCount}</p>
