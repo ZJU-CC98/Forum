@@ -158,6 +158,14 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
         const boardUrl = `/list/${this.props.boardId}`;
         const id = `boardImg_${this.props.boardId}`;
         const url = `/static/images/_${this.props.boardInfo.name}.png`;
+        let boardNameDiv = <div className="row" style={{ width: "100%" }}>
+            {this.props.boardInfo.name}
+        </div>;
+        if (this.props.boardInfo.name.length > 8) {
+            boardNameDiv = <div className="row" style={{ width: "100%", fontSize:"14px" }}>
+                {this.props.boardInfo.name}
+            </div>;
+        }
         Utility.isMaster(this.props.boardInfo.boardMasters);
         if (!this.props.boardInfo.bigPaper || !this.state.isExtend) {
             return (
@@ -166,9 +174,7 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
                         <div className="row" style={{ height: "4rem", marginTop: "1.25rem" }}>
                             <img style={{ marginLeft: "1.25rem" }} onError={this.onError} src={url}></img>
                             <div className="boardMessageDetails">
-                                <div className="row" style={{ width: "100%" }}>
-                                    {this.props.boardInfo.name}
-                                </div>
+                                {boardNameDiv}
                                 <div className="row" style={{ width: "100%", alignItems: "center" }}>
                                     <div style={{ fontSize: "0.75rem", width: "4.5rem" }}>
                                         {this.props.boardInfo.todayCount}/{this.props.boardInfo.topicCount}

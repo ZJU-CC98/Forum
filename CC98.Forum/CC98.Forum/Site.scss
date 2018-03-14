@@ -1184,8 +1184,9 @@ a {
 .greenBackdrop {
     height: 6rem;
     width: 6rem;
-    background-image: url(/static/images/sample4.png);
     background-size: 100%;
+    border-radius:50%;
+    background-color:var(--color-main);
 }
 
 .listTitle {
@@ -2886,6 +2887,8 @@ a {
     .boardMessage img {
         width: 4rem;
         height: 4rem;
+        border-radius:50%;
+        background-color:var(--color-main);
     }
 
     .boardMessageDetails {
@@ -2906,7 +2909,7 @@ a {
     font-size: .9rem;
     color: #fff;
     text-align: center;
-    line-height: 1.4rem;
+    line-height: 1.3rem;
     cursor: pointer;
 }
 
