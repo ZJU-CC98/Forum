@@ -982,17 +982,19 @@ a {
 
 .blue {
     color: #fff;
-    border: solid 1px #add8e6;
-    background-color: #b2dfee;
+    border: solid 1px var(--color-main);
+    background-color: var(--color-main);
+    opacity:0.8;
 }
 
 .blue:hover {
-    background-color: #87CEEB;
+    background-color: var(--color-main);
+    opacity:0.9;
 }
 
 .blue:active {
-    color: #b0e2ff;
-    background-color: #b0e0e6;
+  
+    background-color: var(--color-main);
 }
 
 .button:hover {
