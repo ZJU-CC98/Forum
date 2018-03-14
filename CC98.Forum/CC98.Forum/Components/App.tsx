@@ -43,11 +43,11 @@ export class App extends React.Component {
         }
         else if (Utility.getLocalStorage("userInfo")) {
             console.log("未更新");
-            Utility.changeTheme(1);
+            Utility.changeTheme(0);
         }
         else {
             console.log("没有用户信息")
-            Utility.changeTheme(1);
+            Utility.changeTheme(0);
         }
     }
     render() {
