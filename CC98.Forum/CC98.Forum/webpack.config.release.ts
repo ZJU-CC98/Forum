@@ -53,7 +53,7 @@ const config: webpack.Configuration = {
     devtool: 'source-map',
     output: {
 		path: path.resolve(__dirname, 'wwwroot'),
-		filename: 'static/scripts/[name]-[hash:8]-min.js'
+		filename: 'static/scripts/[name]-[chunkhash:8]-min.js'
 	},
     externals: {
 		'jquery': '$',
@@ -94,7 +94,7 @@ const config: webpack.Configuration = {
             filename:'static/content/[name].min.css',
             disable: false
         }),
-		new webpack.optimize.CommonsChunkPlugin({ name: 'vendors', filename: 'static/scripts/vendors-20180315-min.js' }),
+		new webpack.optimize.CommonsChunkPlugin({ name: 'vendors', filename: 'static/scripts/vendors-[chunkhash:8]-min.js' }),
     ]
 };
 

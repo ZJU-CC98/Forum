@@ -59,7 +59,7 @@ const config: webpack.Configuration = {
 	},
 	output: {
 		path: path.resolve(__dirname, 'wwwroot'),
-		filename: 'static/scripts/[name]-[hash:8]-min.js'
+		filename: 'static/scripts/[name]-[chunkhash:8]-min.js'
 	},
 	plugins: [
 		new HTMLWebpackPlugin({ // 生成index.html
@@ -83,7 +83,7 @@ const config: webpack.Configuration = {
 			{ from: 'node_modules/dplayer/dist/DPlayer.min.css', to: 'static/content/DPlayer.min.css' }
 		]),
 		new ExtractTextPlugin('static/content/[name].min.css'),
-		new webpack.optimize.CommonsChunkPlugin({ name: 'vendors', filename: 'static/scripts/vendors-20180315-min.js' }),
+		new webpack.optimize.CommonsChunkPlugin({ name: 'vendors', filename: 'static/scripts/vendors-[chunkhash:8]-min.js' }),
 	]
 };
 
