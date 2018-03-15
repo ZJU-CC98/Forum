@@ -3226,7 +3226,7 @@ export function noticeMessageShow(id: string) {
  * 切换主题
  */
 export function changeTheme(theme: number) {
-    $('mainStylesheet').remove();
+    $('#mainStylesheet').remove();
     switch (theme) {
         case 1:
             document.getElementsByTagName('head')[0].innerHTML += '<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/css_blue.min.css">';

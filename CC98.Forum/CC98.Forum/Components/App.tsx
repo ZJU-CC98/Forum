@@ -32,26 +32,15 @@ import { ShowEdit } from './Edit';
 import { Constants } from './Constant';
 import * as Utility from '../Utility';
 export class App extends React.Component {
+
     componentWillMount() {
-      
-        if (Utility.getLocalStorage("userInfo") && Utility.getLocalStorage("userInfo").theme) {
-            console.log("读取到用户个人信息");
-            console.log(Utility.getLocalStorage("userInfo"));
-                const theme = Utility.getLocalStorage("userInfo").theme;
-            //var theme = 2;
+        const theme = Utility.getLocalStorage("userInfo") && Utility.getLocalStorage("userInfo").theme;
+        if(theme){ //当theme存在且不为0时
             Utility.changeTheme(theme);
         }
-        else if (Utility.getLocalStorage("userInfo")) {
-            console.log("未更新");
-            Utility.changeTheme(0);
-        }
-        else {
-            console.log("没有用户信息")
-            Utility.changeTheme(0);
-        }
     }
+
     render() {
-        console.log("app render");
         if ('flex' in document.documentElement.style ) {
             return (<div style={{ width: "100%" }}>
                 <ConnectedRouter history={history}>

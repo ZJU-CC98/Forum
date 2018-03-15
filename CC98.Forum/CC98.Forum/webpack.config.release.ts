@@ -94,7 +94,7 @@ const config: webpack.Configuration = {
             filename:'static/content/[name].min.css',
             disable: false
         }),
-		new webpack.optimize.CommonsChunkPlugin({ name: 'vendors', filename: 'static/scripts/vendors-[hash:8]-min.js' }),
+		new webpack.optimize.CommonsChunkPlugin({ name: 'vendors', filename: 'static/scripts/vendors-20180315-min.js' }),
     ]
 };
 
