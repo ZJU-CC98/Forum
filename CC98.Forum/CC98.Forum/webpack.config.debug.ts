@@ -34,7 +34,6 @@ const config: webpack.Configuration = {
 		css_more_green: './Themes/deep_dark_green.scss',
 		vendors: [
 			'react', 
-			'core-js/shim', 
 			'redux', 
 			'react-dom', 
 			'react-router', 
@@ -48,6 +47,7 @@ const config: webpack.Configuration = {
 			'aplayer',
 			'dplayer',
 			'es6-promise',
+			'core-js/shim', 
 		]
 	},
 	devtool: 'source-map',
