@@ -97,6 +97,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
         Utility.removeLocalStorage("password");
         Utility.removeLocalStorage("userInfo");
         Utility.removeStorage("all");
+        Utility.changeTheme(0);
         this.props.logOff();            //更新redux中的状态
     }
 

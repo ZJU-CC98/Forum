@@ -67,7 +67,7 @@ export default class extends React.Component<null, UserCenterNavigationState> {
                 <hr />
                 <li><NavLink to="/usercenter/transferwealth" activeClassName="user-center-navigation-active" className="fa-credit-card"><p>转账系统</p></NavLink></li>
                 <hr />
-                <li><NavLink to="/usercenter/theme" activeClassName="user-center-navigation-active" className="fa-magic"><p>切换主题</p></NavLink></li> 
+                <li><NavLink to="/usercenter/theme" activeClassName="user-center-navigation-active" className="fa-magic"><p>切换皮肤</p></NavLink></li> 
             </ul>
             <button type="button" id="scrollToTop" className={this.state.buttonClassName} onClick={this.scrollToTop}>回到顶部</button>
         </div>);

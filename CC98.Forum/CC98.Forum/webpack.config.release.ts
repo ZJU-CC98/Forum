@@ -29,7 +29,9 @@ const config: webpack.Configuration = {
     },
     entry: {
 		main: './Main.tsx',
-		css: './Site.scss',
+		css_green: './Themes/forgive_green.scss',
+		css_blue: './Themes/wuteng_blue.scss',
+		css_more_green: './Themes/deep_dark_green.scss',
 		vendors: [
 			'react', 
 			'core-js/shim', 
@@ -45,6 +47,7 @@ const config: webpack.Configuration = {
 			'whatwg-fetch',
 			'aplayer',
 			'dplayer',
+			'es6-promise',
 		]
 	},
     devtool: 'source-map',
@@ -62,12 +65,12 @@ const config: webpack.Configuration = {
 		new HTMLWebpackPlugin({ // 生成index.html
 			template: 'Template.html',
 			filename: 'static/index.html',
+			chunks: ['main', 'vendors'],
 			minify: {
 				collapseWhitespace: true
 			}
 		}),
 		new HTMLWebpackPluginRemove(/\.\./g), //index.html改用绝对路径
-		new HTMLWebpackPluginRemove(/<script\stype="text\/javascript"\ssrc="\/static\/scripts\/css-\S{8}-min\.js"><\/script>/), //去除多余的内容
 		new webpack.DefinePlugin({ //发布版本环境
 			'process.env.NODE_ENV': JSON.stringify('production')
 		  }),
@@ -88,7 +91,7 @@ const config: webpack.Configuration = {
 			{ from: 'node_modules/dplayer/dist/DPlayer.min.css', to: 'static/content/DPlayer.min.css' }
         ]),
         new ExtractTextPlugin({
-            filename:'static/content/site-[hash:8].min.css',
+            filename:'static/content/[name].min.css',
             disable: false
         }),
 		new webpack.optimize.CommonsChunkPlugin({ name: 'vendors', filename: 'static/scripts/vendors-[hash:8]-min.js' }),
