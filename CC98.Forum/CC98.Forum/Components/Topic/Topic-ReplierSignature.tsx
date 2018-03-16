@@ -164,7 +164,7 @@ export class ReplierSignature extends React.Component<Props, {likeNumber,dislike
                     </div>
                     </div>
             </div>
-            <div className="row" style={{ width: "100%" }}>  {signature}
+            <div className="row" style={{ width: "100%", justifyContent:"center" }}>  {signature}
             </div>
 
         </div>;
