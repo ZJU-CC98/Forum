@@ -907,6 +907,13 @@
         height: 7rem;
     }
 
+    & > a {
+        background-color: $color_main;
+        width: 7rem;
+        height: 7rem;
+        border-radius: 50%;
+    }
+
     .user-center-myfavorite-board-info {
         flex-grow: 1;
         margin-left: 3rem;
