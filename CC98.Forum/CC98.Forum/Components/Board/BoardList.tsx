@@ -111,7 +111,7 @@ export class RootBoard extends React.Component<{ data: RootBoardState }, { isExp
 
     convertMasters(name: string, index: number, masters: string[]) {
         let length = masters.length;
-        let masterUrl = `/user/name/${name}`;
+        let masterUrl = `/user/name/${encodeURIComponent(name)}`;
         if (index === length - 1) {
             return <Link to={masterUrl}>{name}</Link>
         }

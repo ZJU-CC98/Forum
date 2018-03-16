@@ -50,6 +50,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
          */
         window.addEventListener('storage', (e) => {
             if(e.key === 'userInfo') {
+                if(e.oldValue === e.newValue) return;
                 if(e.newValue){ //如果用户在其他页面重新登陆
                     this.props.reLogOn();
                     Utility.refreshUnReadCount();
@@ -97,6 +98,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
         Utility.removeLocalStorage("password");
         Utility.removeLocalStorage("userInfo");
         Utility.removeStorage("all");
+        Utility.changeTheme(0);
         this.props.logOff();            //更新redux中的状态
     }
 

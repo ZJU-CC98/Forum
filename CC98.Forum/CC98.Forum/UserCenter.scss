@@ -214,7 +214,7 @@
 
                 button {
                     transition-duration: .4s;
-                    background-color: var(--color-main);
+                    background-color: $color_main;
                     color: #fff;
                     width: 5rem;
                     height: 2rem;
@@ -413,7 +413,7 @@
                 }
 
                 .user-follow, .user-message {
-                    background-color: var(--color-main);
+                    background-color: $color_main;
                     color: #fff;
 
                     &:hover {
@@ -499,7 +499,7 @@
             -ms-user-select: none;
 
             .config-submit-button {
-                background-color: var(--color-main);
+                background-color: $color_main;
                 color: #fff;
 
                 &:hover {
@@ -647,7 +647,7 @@
             }
 
             .config-submit-button {
-                background-color: var(--color-main);
+                background-color: $color_main;
                 color: #fff;
 
                 &:hover {
@@ -907,6 +907,13 @@
         height: 7rem;
     }
 
+    & > a {
+        background-color: $color_main;
+        width: 7rem;
+        height: 7rem;
+        border-radius: 50%;
+    }
+
     .user-center-myfavorite-board-info {
         flex-grow: 1;
         margin-left: 3rem;
@@ -933,7 +940,7 @@
     }
 
     .user-follow-board {
-        background-color: var(--color-main);
+        background-color: $color_main;
         color: #FFFFFF;
 
         &:hover {
@@ -960,5 +967,21 @@
         width: 7rem;
         height: 2rem;
         border-radius: 3px;
+
+        &:hover {
+            opacity: 0.8;
+        }
+
+        &:active {
+            opacity: 0.6;
+        }
+    }
+
+    button[disabled] {
+        cursor: default;
+
+        &:hover {
+            opacity: 1;
+        }
     }
 }

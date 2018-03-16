@@ -29,10 +29,11 @@ const config: webpack.Configuration = {
 	},
 	entry: {
 		main: './Main.tsx',
-		css: './Site.scss',
+		css_green: './Themes/forgive_green.scss',
+		css_blue: './Themes/wuteng_blue.scss',
+		css_more_green: './Themes/deep_dark_green.scss',
 		vendors: [
 			'react', 
-			'core-js/shim', 
 			'redux', 
 			'react-dom', 
 			'react-router', 
@@ -45,6 +46,8 @@ const config: webpack.Configuration = {
 			'whatwg-fetch',
 			'aplayer',
 			'dplayer',
+			'es6-promise',
+			'core-js/shim', 
 		]
 	},
 	devtool: 'source-map',
@@ -56,16 +59,16 @@ const config: webpack.Configuration = {
 	},
 	output: {
 		path: path.resolve(__dirname, 'wwwroot'),
-		filename: 'static/scripts/[name]-[hash:8]-min.js'
+		filename: 'static/scripts/[name]-[chunkhash:8]-min.js'
 	},
 	plugins: [
 		new HTMLWebpackPlugin({ // 生成index.html
 			template: 'Template.html',
-			filename: 'static/index.html'
+			filename: 'static/index.html',
+			chunks: ['main', 'vendors']
 		}),
 		new HTMLWebpackPluginRemove(/\.\./g), //index.html改用绝对路径
 		new HTMLWebpackPluginRemove(/-min/g),  //debug环境使用完整版js
-		new HTMLWebpackPluginRemove(/<script\stype="text\/javascript"\ssrc="\/static\/scripts\/css-\S{8}-min\.js"><\/script>/), //去除多余的内容
 		new webpack.optimize.UglifyJsPlugin(), // 简化 JS
 		new UnminifiedWebpackPlugin(), // 提供调试用 JS 完整版
 		new CleanWebpackPlugin(['wwwroot/static/scripts', 'wwwroot/static/content', 'wwwroot/static/index.html']), // 发布之前清理 wwwroot
@@ -79,8 +82,8 @@ const config: webpack.Configuration = {
 			{ from: 'node_modules/spectrum-colorpicker/spectrum.js', to: 'static/scripts/lib/spectrum/spectrum.js' },
 			{ from: 'node_modules/dplayer/dist/DPlayer.min.css', to: 'static/content/DPlayer.min.css' }
 		]),
-		new ExtractTextPlugin('static/content/site.min.css'),
-		new webpack.optimize.CommonsChunkPlugin({ name: 'vendors', filename: 'static/scripts/vendors-[hash:8]-min.js' }),
+		new ExtractTextPlugin('static/content/[name].min.css'),
+		new webpack.optimize.CommonsChunkPlugin({ name: 'vendors', filename: 'static/scripts/vendors-[chunkhash:8]-min.js' }),
 	]
 };
 

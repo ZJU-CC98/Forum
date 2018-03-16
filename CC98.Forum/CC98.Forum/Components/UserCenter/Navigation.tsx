@@ -51,9 +51,9 @@ export default class extends React.Component<null, UserCenterNavigationState> {
     render() {
         return (<div className='user-center-navigation' id="userCenterNavigation" >
             <ul>
-                <li><NavLink to="/usercenter" exact activeClassName="user-center-navigation-active" className="fa-home"><p>主页</p></NavLink></li>
+                <li><NavLink to="/usercenter" exact activeClassName="user-center-navigation-active" className="fa-home"><p>个人主页</p></NavLink></li>
                 <hr />
-                <li><NavLink to="/usercenter/config" activeClassName="user-center-navigation-active" className="fa-cog"><p>修改个人资料</p></NavLink></li>
+                <li><NavLink to="/usercenter/config" activeClassName="user-center-navigation-active" className="fa-cog"><p>修改资料</p></NavLink></li>
                 <hr />
                 <li><NavLink to="/usercenter/myposts" activeClassName="user-center-navigation-active" className="fa-pencil-square-o"><p>我的主题</p></NavLink></li>
                 <hr />
@@ -65,9 +65,9 @@ export default class extends React.Component<null, UserCenterNavigationState> {
                 <hr />
                 <li><NavLink to="/usercenter/myfans" activeClassName="user-center-navigation-active" className="fa-users"><p>我的粉丝</p></NavLink></li>
                 <hr />
-                <li><NavLink to="/usercenter/transferwealth" activeClassName="user-center-navigation-active" className="fa-credit-card"><p>转账</p></NavLink></li>
+                <li><NavLink to="/usercenter/transferwealth" activeClassName="user-center-navigation-active" className="fa-credit-card"><p>转账系统</p></NavLink></li>
                 <hr />
-                <li><NavLink to="/usercenter/theme" activeClassName="user-center-navigation-active" className="fa-magic"><p>切换主题</p></NavLink></li> 
+                <li><NavLink to="/usercenter/theme" activeClassName="user-center-navigation-active" className="fa-magic"><p>切换皮肤</p></NavLink></li> 
             </ul>
             <button type="button" id="scrollToTop" className={this.state.buttonClassName} onClick={this.scrollToTop}>回到顶部</button>
         </div>);

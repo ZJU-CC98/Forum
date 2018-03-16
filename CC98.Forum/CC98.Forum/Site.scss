@@ -259,7 +259,7 @@ body {
     margin-left: 1.4rem;
     display: flex;
     font-size: 0.75rem;
-    color: var(--color-main);
+    color: $color_main;
 }
 
 #like {
@@ -375,7 +375,7 @@ body {
 }
 
 .replierBtn {
-    background-color: var(--color-main);
+    background-color: $color_main;
     color: #fff;
     border: #fff solid thin;
     border-radius: 0.63rem;
@@ -409,8 +409,15 @@ body {
     margin-bottom: 1.25rem;
     padding-top: 1rem;
     word-break: break-all;
+    border-top: $color_main solid thin;
+    width: 100%;
+    padding-left:2rem;
+    padding-right:2rem;
 }
-
+#tagColumn {
+    width: 100%;
+    border: $color_main solid thin;
+}
 .signature img {
     max-height: 12.5rem;
     max-width: 32.5rem;
@@ -447,7 +454,7 @@ body {
     font-size: 0.75rem;
     align-items: flex-end;
     padding-bottom: 0.3rem;
-    color: var(--color-main);
+    color: $color_main;
     align-items: center;
     justify-content: space-between;
 }
@@ -571,7 +578,7 @@ body {
 .reply {
     width: 100%;
     margin-top: 1rem;
-    border: var(--color-main) solid 1.5px;
+    border: $color_main solid 1.5px;
     background-color: #fff;
     flex-direction: row;
     display: flex;
@@ -583,7 +590,7 @@ body {
         height: 40px;
         border-radius: 50%;
         right: -0.8rem;
-        background-color: var(--color-main);
+        background-color: $color_main;
         text-align: center;
         line-height: 40px;
         position: relative;
@@ -601,7 +608,7 @@ body {
 
 .userMessage {
     align-items: flex-start;
-    background-color: var(--color-main);
+    background-color: $color_main;
     color: #fff;
     width: 15.5rem;
     display: flex;
@@ -679,8 +686,8 @@ body {
     color: #000000;
     outline: none;
     cursor: pointer;
-    color: var(--color-main);
-    border: var(--color-main) solid thin;
+    color: $color_main;
+    border: $color_main solid thin;
     border-radius: 1rem;
     width: 2.25rem;
     height: 1.25rem;
@@ -689,7 +696,7 @@ body {
     line-height: 1.25rem;
 
     a {
-        color: var(--color-main);
+        color: $color_main;
     }
 }
 
@@ -825,7 +832,7 @@ body {
 .followTopic {
     width: 3rem;
     margin-left: 1rem;
-    border: var(--color-main) solid thin;
+    border: $color_main solid thin;
     border-radius: 10px;
     text-align: center;
     cursor: pointer;
@@ -941,13 +948,13 @@ a {
 
 #board-topBar {
     justify-content: space-between;
-    background-color: var(--color-main);
+    background-color: $color_main;
     color: #fff;
 
 }
 .bgcolor {
     color: #fff;
-    background-color: var(--color-main);
+    background-color: $color_main;
 }
 
 .orange {
@@ -982,17 +989,19 @@ a {
 
 .blue {
     color: #fff;
-    border: solid 1px #add8e6;
-    background-color: #b2dfee;
+    border: solid 1px $color_main;
+    background-color: $color_main;
+    opacity:0.8;
 }
 
 .blue:hover {
-    background-color: #87CEEB;
+    background-color: $color_main;
+    opacity:0.9;
 }
 
 .blue:active {
-    color: #b0e2ff;
-    background-color: #b0e0e6;
+  
+    background-color: $color_main;
 }
 
 .button:hover {
@@ -1027,7 +1036,7 @@ a {
     height: 26px;
     line-height: 26px;
     text-align: center;
-    color: var(--color-main);
+    color: $color_main;
     background-color: #fff;
     border: 1px solid #ddd;
     font-family: 微软雅黑;
@@ -1035,14 +1044,14 @@ a {
 
     &:hover {
         color: #fff;
-        background-color: var(--color-main);
+        background-color: $color_main;
         border-color: transparent;
     }
 }
 
 .page-link.active {
     color: #fff;
-    background-color: var(--color-main);
+    background-color: $color_main;
     border-color: transparent;
 }
 
@@ -1065,11 +1074,11 @@ a {
         line-height: 26px;
         text-align: center;
         color: #fff;
-        background-color: var(--color-main);
+        background-color: $color_main;
         border: 1px solid transparent;
 
         &:hover {
-            background-color: var(--color-main)
+            background-color: $color_main
         }
     }
 }
@@ -1184,8 +1193,9 @@ a {
 .greenBackdrop {
     height: 6rem;
     width: 6rem;
-    background-image: url(/static/images/sample4.png);
     background-size: 100%;
+    border-radius:50%;
+    background-color:$color_main;
 }
 
 .listTitle {
@@ -1418,7 +1428,7 @@ a {
 .message-message-wPostBtn {
     width: 100px;
     height: 30px;
-    background-color: var(--color-main);
+    background-color: $color_main;
     color: $color-post;
     border: 0px;
     border-radius: 3px;
@@ -1928,11 +1938,11 @@ a {
 
     .focus-board {
         display: block;
-        color: rgb(121,184,202);
+        color: $color_main;
         background-color: transparent;
         text-align: center;
         vertical-align: middle; //设置元素的垂直对齐方式
-        border: 1px solid rgb(121,184,202);
+        border: 1px solid $color_main;
         padding: .375rem .75rem;
         font-size: 1rem;
         border-radius: .25rem;
@@ -1944,14 +1954,14 @@ a {
         flex-shrink: 0;
 
         &:hover {
-            background-color: rgb(121,184,202);
+            background-color: $color_main;
             color: rgb(255,255,255);
             cursor: pointer;
         }
     }
 
     .focus-hover {
-        background-color: $color-bg;
+        background-color: $color_main;
         color: #ffffff;
     }
 
@@ -1977,7 +1987,7 @@ a {
         flex-direction: column;
         text-align: center;
         cursor: pointer;
-        color: #6b7178;
+        color: $color_main;
         justify-content: center;
 
         div {
@@ -2059,114 +2069,114 @@ a {
         }
     }
 
-    .focus-topic {
+.focus-topic {
+    display: flex;
+    flex-direction: row;
+    min-height: 80px;
+    margin-top: 12px;
+    overflow: hidden;
+    background-color: #ffffff;
+    border: solid 1px $color_main;
+
+    .focus-topic-left {
         display: flex;
         flex-direction: row;
-        min-height: 80px;
-        margin-top: 12px;
-        overflow: hidden;
-        background-color: #ffffff;
-        border: solid 1px $color-bg;
+        flex-basis: 180px;
+        background-color: $color_main;
+        flex-shrink: 0;
 
-        .focus-topic-left {
-            display: flex;
-            flex-direction: row;
-            flex-basis: 180px;
-            background-color: var(--color-main);
-            flex-shrink: 0;
-
-            .focus-topic-portraitUrl {
-                width: 60px;
-                height: 60px;
-                margin: 10px;
-                border-radius: 50%;
-            }
-
-            .focus-topic-userName {
-                font-size: 16px;
-                height: 80px;
-                line-height: 80px;
-                color: #ffffff
-            }
+        .focus-topic-portraitUrl {
+            width: 60px;
+            height: 60px;
+            margin: 10px;
+            border-radius: 50%;
         }
 
-        .focus-topic-middle {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            flex-shrink: 0;
-            background-color: #ffffff;
+        .focus-topic-userName {
+            font-size: 16px;
+            height: 80px;
+            line-height: 80px;
+            color: #ffffff
+        }
+    }
+
+    .focus-topic-middle {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        flex-shrink: 0;
+        background-color: #ffffff;
+        color: #6b7178;
+
+        .focus-topic-title {
+            font-size: 20px;
             color: #6b7178;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            height: 28px;
+            line-height: 28px;
+            margin: 11px 20px auto 20px;
+            max-width: 800px;
+        }
 
-            .focus-topic-title {
-                font-size: 20px;
-                color: #6b7178;
+        .focus-topic-info {
+            display: flex;
+            flex-direction: row;
+            margin: auto 20px 13px 21px;
+            height: 16px;
+            line-height: 16px;
+            font-size: 12px;
+
+            div {
+                flex-shrink: 0;
+                margin-right: 20px;
                 overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                height: 28px;
-                line-height: 28px;
-                margin: 11px 20px auto 20px;
-                max-width: 800px;
-            }
+                position: relative;
+                color: #6b7178;
 
-            .focus-topic-info {
-                display: flex;
-                flex-direction: row;
-                margin: auto 20px 13px 21px;
-                height: 16px;
-                line-height: 16px;
-                font-size: 12px;
-
-                div {
-                    flex-shrink: 0;
-                    margin-right: 20px;
-                    overflow: hidden;
-                    position: relative;
+                a {
                     color: #6b7178;
 
-                    a {
-                        color: #6b7178;
-
-                        &:hover {
-                            text-decoration: underline;
-                        }
+                    &:hover {
+                        text-decoration: underline;
                     }
+                }
 
-                    i {
-                        position: relative;
-                        bottom: 2px;
-                        margin-right: 2px;
-                    }
+                i {
+                    position: relative;
+                    bottom: 2px;
+                    margin-right: 2px;
                 }
             }
         }
+    }
 
-        .focus-topic-rightBar {
-            width: 0px;
-            height: 48px;
-            border-left: 1px solid #6b7178;
-            margin-top: 16px;
-        }
+    .focus-topic-rightBar {
+        width: 0px;
+        height: 48px;
+        border-left: 1px solid #6b7178;
+        margin-top: 16px;
+    }
 
-        .focus-topic-right {
-            text-align: center;
-            flex-basis: 70px;
-            height: 80px;
-            background-color: #ffffff;
-            padding-left: 15px;
-            padding-right: 15px;
-            color: #6b7178;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+    .focus-topic-right {
+        text-align: center;
+        flex-basis: 70px;
+        height: 80px;
+        background-color: #ffffff;
+        padding-left: 15px;
+        padding-right: 15px;
+        color: #6b7178;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
 
-            .focus-topic-board {
-                line-height: 20px;
-            }
+        .focus-topic-board {
+            line-height: 20px;
         }
     }
+}
     /*.focus-topic {
     display: flex;
     min-height: 98px;
@@ -2886,6 +2896,8 @@ a {
     .boardMessage img {
         width: 4rem;
         height: 4rem;
+        border-radius:50%;
+        background-color:$color_main;
     }
 
     .boardMessageDetails {
@@ -2906,7 +2918,7 @@ a {
     font-size: .9rem;
     color: #fff;
     text-align: center;
-    line-height: 1.4rem;
+    line-height: 1.3rem;
     cursor: pointer;
 }
 
@@ -3165,7 +3177,7 @@ a {
     .boardListHead {
         height: 3rem;
         align-items: center;
-        background-color: var(--color-main);
+        background-color: $color_main;
         justify-content: space-between;
         cursor: pointer;
     }
