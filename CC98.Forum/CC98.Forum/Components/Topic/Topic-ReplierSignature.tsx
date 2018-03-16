@@ -120,7 +120,7 @@ export class ReplierSignature extends React.Component<Props, {likeNumber,dislike
         const manageIcon = `icon${this.props.postInfo.id}`;
         const idLike = `like${this.props.postInfo.id}`;
         const idDislike = `dislike${this.props.postInfo.id}`;
-        let signature = <div className="signature" style={{ borderTop: "var(--color-main) solid thin", width: "100%" }}><UbbContainer code={this.props.userInfo.signatureCode} /></div>;
+        let signature = <div className="signature" ><UbbContainer code={this.props.userInfo.signatureCode} /></div>;
         if (!this.props.userInfo.signatureCode) {
             signature = null;
         }

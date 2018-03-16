@@ -17,7 +17,7 @@ export class Footer extends React.Component<{}, AppState> {   //底部
                     <a href="https://www.zdgd.zju.edu.cn/">浙江大学广播电视网</a>|
                     <a href="http://zy.zju.edu.cn/">浙大搜索</a></div>
                 <div className="footerRow">
-                    Copyright © 2003-2017 CC98 Durian v3.2.0 | <a href="mailto:contact@cc98.org">Email: contact@cc98.org</a>
+                    Copyright © 2003-2018 CC98 Durian v3.2.0 | <a href="mailto:contact@cc98.org">Email: contact@cc98.org</a>
                 </div>
             </div>
         </div>

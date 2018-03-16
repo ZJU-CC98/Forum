@@ -409,8 +409,13 @@ body {
     margin-bottom: 1.25rem;
     padding-top: 1rem;
     word-break: break-all;
+    border-top: $color_main solid thin;
+    width: 100%
 }
-
+#tagColumn {
+    width: 100%;
+    border: $color_main solid thin;
+}
 .signature img {
     max-height: 12.5rem;
     max-width: 32.5rem;
