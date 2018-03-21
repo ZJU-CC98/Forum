@@ -1702,11 +1702,13 @@ export async function getBoardId(boardName: string) {
 export function isFollowThisBoard(boardId) {
     if (!getLocalStorage("userInfo")) return false;
     const customBoards = getLocalStorage("userInfo").customBoards;
-    for (let item of customBoards) {
-        if (item == boardId) {
-            return true;
+    if (customBoards) {
+        for (let item of customBoards) {
+            if (item == boardId) {
+                return true;
+            }
         }
-    }
+    }   
     return false;
 }
 
