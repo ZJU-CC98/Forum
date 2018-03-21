@@ -16,6 +16,7 @@ import TopicTitleAndContentState = State.TopicTitleAndContentState;
 import { Pager } from '../Pager';
 import { NotFoundTopic, UnauthorizedTopic, UnauthorizedBoard, ServerError } from '../Status';
 import { AdsComponent } from '../MainPage';
+import { isLogOn } from '../../Utility';
 declare let moment: any;
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
@@ -161,7 +162,7 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
         let boardNameDiv = <div className="row" style={{ width: "100%" }}>
             {this.props.boardInfo.name}
         </div>;
-        if (this.props.boardInfo.name.length > 8) {
+        if (this.props.boardInfo&&this.props.boardInfo.name.length > 8) {
             boardNameDiv = <div className="row" style={{ width: "100%", fontSize:"14px" }}>
                 {this.props.boardInfo.name}
             </div>;
@@ -260,7 +261,7 @@ export class ListTagAndPager extends React.Component<{ url: string, boardid: num
         let tag1Btn = null;
         let tag2Btn = null;
         const url = `/list/${this.props.boardid}`;
-        if (this.props.tag.length >= 1) {
+        if (this.props.tag&&this.props.tag.length >= 1) {
             tag1Btn = <div style={{ maxWidth: "35rem", lineHeight: "3rem", display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginBottom: "0.5rem" }}>
                 <div className="row" style={{ display: "flex", flexWrap: "wrap", maxWidth: "35rem" }}>
                     <div><button className="chooseTag"><Link to={url}>全部</Link></button></div>
@@ -268,7 +269,7 @@ export class ListTagAndPager extends React.Component<{ url: string, boardid: num
                 </div>
             </div >;
         }
-        if (this.props.tag.length === 2) {
+        if (this.props.tag&&this.props.tag.length === 2) {
             tag2Btn = <div style={{ maxWidth: "35rem", lineHeight: "3rem", display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginBottom: "0.5rem" }}>
                 <div className="row" style={{ display: "flex", flexWrap: "wrap", maxWidth: "35rem" }}>
                     <div><button className="chooseTag"><Link to={url}>全部</Link></button></div>
@@ -292,17 +293,41 @@ export class ListTagAndPager extends React.Component<{ url: string, boardid: num
 
 export class ListButtonAndAds extends React.Component<{ boardInfo, adsUrl }> {
 
-   
+    clickListener() {
+        let isLogon = false;
+        let isVerified = true;
+        let isLocked = false;
+        if (Utility.getLocalStorage("userInfo")) isLogon = true;
+        if (Utility.getLocalStorage("userInfo") && !Utility.getLocalStorage("userInfo").isVerified) isVerified = false;
+        if (Utility.getLocalStorage("userInfo") && Utility.getLocalStorage("userInfo").lockState !== 0) isLocked = true;
+        if (!isLogon) alert("请登陆！");
+        else if (!isVerified) alert("您的帐号未认证，无法发言，请先前往https://account.cc98.org 认证激活。");
+        else if (isLocked) alert("您的账号被全站禁言！");
+    }
     render() {
         let sendInfo = null;
         let isLogon = false;
-        const createTopicUrl = `/editor/postTopic/${this.props.boardInfo.id}`;
-        if (Utility.getLocalStorage("userInfo")) isLogon = true;
-        if (isLogon) {
-            sendInfo = <Link className="button bgcolor" onClick={() => { isLogon ? null : alert("请登录！"); }} to={createTopicUrl}>发主题</Link>;
-        } else {
-            sendInfo = <button style={{ border:"none" }} className="button bgcolor" onClick={() => alert('请登录！')}>发主题</button>
+        let isVerified = false;
+        let isLocked = true;
+        let tip = null;
+        if (Utility.getLocalStorage("userInfo")) {
+            isLogon = true;
+            if (!Utility.getLocalStorage("userInfo").isVerified) { isVerified = false; tip = <div style={{ marginLeft: "1rem",color:"red" }}>您的帐号未认证，无法发言，请先前往 <a href="https://account.cc98.org">https://account.cc98.org</a> 认证激活。</div>; }
+            else isVerified = true;
+            if (Utility.getLocalStorage("userInfo").lockState !== 0) { isLocked = true; tip = <div style={{ marginLeft: "1rem", color: "red" }}>您被全站禁言。</div> }
+            else isLocked = false;
         }
+        else {
+
+            tip = <div style={{ marginLeft: "1rem", color: "red"  }}>您还未登录，不能发帖，请先登录</div>;
+        }
+        
+        
+        const createTopicUrl = `/editor/postTopic/${this.props.boardInfo.id}`;
+        if (isLocked || !isLogOn ||! isVerified)
+            sendInfo = <div style={{display:"flex", alignItems:"center"}}><button style={{border:"none"}} className="button bgcolor" onClick={this.clickListener}>发主题</button>{tip}</div>;
+        else           
+            sendInfo = <Link className="button bgcolor" to={createTopicUrl}>发主题</Link>;
         return <div className="row" style={{ width: "100%", height: "6.25rem", alignItems: "flex-end", justifyContent: "space-between", marginTop: "1rem" }}>
             {sendInfo}
             <div style={{ height: "6.25rem" }}> <AdsComponent /></div>
