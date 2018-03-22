@@ -2157,7 +2157,7 @@ export async function deleteTopic(topicId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
     const url = `/topic/${topicId}`;
-    const bodyInfo = { 'reason': reason };
+    const bodyInfo =  reason ;
     const body = JSON.stringify(bodyInfo);
     const response = await cc98Fetch(url, { method: "DELETE", headers, body }); switch (response.status) {
         case 401:
