@@ -4,7 +4,7 @@
 
 import * as React from 'react';
 import * as Utility from '../Utility';
-import { AppState } from '../States/AppState';
+import { AppState, UserInfo } from '../States/AppState';
 import * as $ from 'jquery';
 import { connect } from 'react-redux';
 import * as Actions from '../Actions/UserCenter';
@@ -52,7 +52,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
             if(e.key === 'userInfo') {
                 if(e.oldValue === e.newValue) return;
                 if(e.newValue){ //如果用户在其他页面重新登陆
-                    this.props.reLogOn();
+                    this.props.reLogOn(JSON.parse(e.newValue.slice(4)));
                     Utility.refreshUnReadCount();
                 }else { //如果用户在其他页面注销
                     this.props.logOff();
@@ -229,8 +229,8 @@ function mapDispatch(dispatch) {
         logOff: () => {
             dispatch(Actions.userLogOff());
         },
-        reLogOn: () => {
-            dispatch(Actions.changeUserInfo(Utility.getLocalStorage('userInfo')));
+        reLogOn: (newInfo: UserInfo) => {
+            dispatch(Actions.changeUserInfo(newInfo));
             dispatch(Actions.userLogIn());
         },
         refreshUserInfo: () => {
