@@ -70,7 +70,7 @@ const config: webpack.Configuration = {
 		new HTMLWebpackPluginRemove(/\.\./g), //index.html改用绝对路径
 		new HTMLWebpackPluginRemove(/-min/g),  //debug环境使用完整版js
 		new webpack.optimize.UglifyJsPlugin(), // 简化 JS
-		new UnminifiedWebpackPlugin(), // 提供调试用 JS 完整版
+        new UnminifiedWebpackPlugin(), // 提供调试用 JS 完整版
 		new CleanWebpackPlugin(['wwwroot/static/scripts', 'wwwroot/static/content', 'wwwroot/static/index.html']), // 发布之前清理 wwwroot
 		new CopyWebpackPlugin([// 将 node 库复制到发布目录
 			{ from: 'node_modules/jquery/dist', to: 'static/scripts/lib/jquery/' },

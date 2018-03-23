@@ -1702,11 +1702,13 @@ export async function getBoardId(boardName: string) {
 export function isFollowThisBoard(boardId) {
     if (!getLocalStorage("userInfo")) return false;
     const customBoards = getLocalStorage("userInfo").customBoards;
-    for (let item of customBoards) {
-        if (item == boardId) {
-            return true;
+    if (customBoards) {
+        for (let item of customBoards) {
+            if (item == boardId) {
+                return true;
+            }
         }
-    }
+    }   
     return false;
 }
 
@@ -2155,7 +2157,7 @@ export async function deleteTopic(topicId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
     const url = `/topic/${topicId}`;
-    const bodyInfo = { 'reason': reason };
+    const bodyInfo =  reason ;
     const body = JSON.stringify(bodyInfo);
     const response = await cc98Fetch(url, { method: "DELETE", headers, body }); switch (response.status) {
         case 401:

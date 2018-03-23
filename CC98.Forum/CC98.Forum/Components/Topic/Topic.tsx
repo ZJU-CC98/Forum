@@ -178,20 +178,33 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         const pagerUrl = `/topic/${this.state.topicid}/`;
         let sendTopic = null;
         if (Utility.getLocalStorage("userInfo"))
-            sendTopic = <SendTopic onChange={this.handleChange}   boardInfo={this.state.boardInfo} content={this.state.quote}  topicInfo={this.state.topicInfo} />;
+            sendTopic = <SendTopic onChange={this.handleChange} boardInfo={this.state.boardInfo} content={this.state.quote} topicInfo={this.state.topicInfo} />;
+        else
+            sendTopic = <div>您还未登录，无法发言，请先登录。</div>;
+        if (Utility.getLocalStorage("userInfo")&&!Utility.getLocalStorage("userInfo").isVerified)
+            sendTopic = <div>您的帐号未认证，无法发言，请先前往 <a href="https://account.cc98.org">https://account.cc98.org</a> 认证激活。</div>;
+        if (Utility.getLocalStorage("userInfo")&&Utility.getLocalStorage("userInfo").lockState !== 0)
+            sendTopic = <div>您的帐号被全站禁言。</div>;
+        let tip = null;
+        if (this.state.topicInfo && this.state.topicInfo.state === 1)
+            tip = <div style={{color:"red", margin:"0.5rem"}}>该帖已被锁定</div>;
         let topicHtml = <div className="center" >
-            <DocumentTitle title={`${this.state.topicInfo.title||"帖子"} - CC98论坛`} />
-            <FindIP data={this.state.IPData}/>
-            <div className="row" style={{ width: "100%", justifyContent: 'space-between', alignItems: "center" }}>
+            <DocumentTitle title={`${this.state.topicInfo.title || "帖子"} - CC98论坛`} />
+            <div className="column" style={{width:"100%"}}>
+                <div className="row" style={{ width: "100%", justifyContent: 'space-between', alignItems: "center" }}>
                 <Category topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} topicId={this.match.params.topicid} />
                 <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} />
-            </div>
+                </div>
+                {tip}
+                </div>
             {topicInfo}
             <Reply topicInfo={this.state.topicInfo} page={this.state.page} boardInfo={this.state.boardInfo} quote={this.quote} isHot={false} isTrace={false} postId={null} topicId={this.match.params.topicid} />
+            <div className="column" style={{width:"100%"}}>
             <div className="row" style={{ width: "100%", justifyContent: "space-between", marginTop: "2rem" }}>
                 <Category topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} topicId={this.match.params.topicid} />
                 <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
-            {sendTopic}
+            </div>
+                {sendTopic}
             <NoticeMessage text="回复成功" id="replyMessage" top="24%" left="46%" />
         </div>
             ;
