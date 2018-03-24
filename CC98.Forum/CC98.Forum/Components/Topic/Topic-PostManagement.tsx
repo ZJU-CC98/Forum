@@ -2,6 +2,7 @@
 import * as Utility from '../../Utility';
 import * as $ from 'jquery';
 import { match } from "react-router";
+import { BoardState } from '../../States/AppState';
 interface Props {
     userId;
     postId;
@@ -10,8 +11,11 @@ interface Props {
     privilege;
     boardId;
     floor;
+    d_wealth;
+    m_wealth;
+    boardName;
 }
-export class PostManagement extends React.Component<Props, { wealth: number, prestige: number, reason: string, tpdays: number, UI, tips: string, fetchState }>{
+export class PostManagement extends React.Component<Props, {wealth: number, prestige: number, reason: string, tpdays: number, UI, tips: string, fetchState }>{
 
     constructor(props) {
 
@@ -37,7 +41,7 @@ export class PostManagement extends React.Component<Props, { wealth: number, pre
 
         this.close = this.close.bind(this);
 
-        this.state = { wealth: 1000, prestige: 0, reason: "", tpdays: 0, UI: "Award", tips: "", fetchState: 'ok' }
+        this.state = {wealth: 1000, prestige: 0, reason: "", tpdays: 0, UI: "Award", tips: "", fetchState: 'ok' }
 
     }
 
@@ -93,6 +97,7 @@ export class PostManagement extends React.Component<Props, { wealth: number, pre
                         this.setState({ tips: "操作成功" });
                         const UIId = `#manage${this.props.postId}`;
                         $(UIId).css("display", "none");
+
                         this.props.update();
                     }
                   
@@ -102,6 +107,8 @@ export class PostManagement extends React.Component<Props, { wealth: number, pre
                                 this.setState({ tips: "输入错误" });
                             case 'unauthorized':
                                 this.setState({ tips: "你没有权限进行此操作" });
+                            case 'limited':
+                                this.setState({ tips: "今天发米已经超过限制" });
                         }
                         switch (status1) {
                             case 'wrong input':
@@ -149,6 +156,7 @@ export class PostManagement extends React.Component<Props, { wealth: number, pre
                         this.setState({ tips: "操作成功" });
                         const UIId = `#manage${this.props.postId}`;
                         $(UIId).css("display", "none");
+                        
                         this.props.update();
                     }
 
@@ -228,7 +236,7 @@ export class PostManagement extends React.Component<Props, { wealth: number, pre
         const UIId = `#manage${this.props.postId}`;
         $(UIId).css("display", "none");
     }
-    componentDidMount() {
+    async componentWillMount() {
         const awardOptionId = `manageOptions-award${this.props.postId}`;
         const awardOptionJQId = `#manageOptions-award${this.props.postId}`;
         const punishOptionId = `manageOptions-punish${this.props.postId}`;
@@ -265,6 +273,7 @@ export class PostManagement extends React.Component<Props, { wealth: number, pre
         } else {
             $(".managePrestige").css("display", "");
         }
+        
     }
     componentDidUpdate() {
         if (this.props.privilege !== '管理员') {
@@ -276,7 +285,8 @@ export class PostManagement extends React.Component<Props, { wealth: number, pre
     render() {
 
         let UI;
-
+        let m_wealth:any = 0;
+        if (!this.props.m_wealth) m_wealth = '不限';
         const awardUI = <div className="column manageInfo" id="award">
 
             <div className="row manageOperation">
@@ -286,6 +296,7 @@ export class PostManagement extends React.Component<Props, { wealth: number, pre
                 <input type="text" value={this.state.wealth} onChange={this.wealthInput} />
 
             </div>
+            <div className="row" style={{color:"white"}}>您今天在{this.props.boardName}已经发了{this.props.d_wealth}财富值，最多可发{m_wealth}</div>
 
             <div className="row manageOperation managePrestige" >
 
