@@ -4,7 +4,7 @@
 
 import * as React from 'react';
 import * as Utility from '../Utility';
-import { AppState } from '../States/AppState';
+import { AppState, UserInfo } from '../States/AppState';
 import * as $ from 'jquery';
 import { connect } from 'react-redux';
 import * as Actions from '../Actions/UserCenter';
@@ -52,7 +52,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
             if(e.key === 'userInfo') {
                 if(e.oldValue === e.newValue) return;
                 if(e.newValue){ //如果用户在其他页面重新登陆
-                    this.props.reLogOn();
+                    this.props.reLogOn(JSON.parse(e.newValue.slice(4)));
                     Utility.refreshUnReadCount();
                 }else { //如果用户在其他页面注销
                     this.props.logOff();
@@ -98,7 +98,6 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
         Utility.removeLocalStorage("password");
         Utility.removeLocalStorage("userInfo");
         Utility.removeStorage("all");
-        Utility.changeTheme(0);
         this.props.logOff();            //更新redux中的状态
     }
 
@@ -227,10 +226,12 @@ function mapState(state) {
 function mapDispatch(dispatch) {
     return {
         logOff: () => {
+            Utility.changeTheme(0);
             dispatch(Actions.userLogOff());
         },
-        reLogOn: () => {
-            dispatch(Actions.changeUserInfo(Utility.getLocalStorage('userInfo')));
+        reLogOn: (newInfo: UserInfo) => {
+            Utility.changeTheme(newInfo.theme);
+            dispatch(Actions.changeUserInfo(newInfo));
             dispatch(Actions.userLogIn());
         },
         refreshUserInfo: () => {
