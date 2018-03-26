@@ -157,7 +157,7 @@ export class Search extends React.Component<{}, SearchState> {
                     <button type="button" id="scrollToTop" className={this.state.buttonClassName} onClick={this.scrollToTop}>回到顶部</button>
                 </div>
                             <img src='/images/searchNone.png' id="noResult" className="noResult displaynone"></img>
-                            <div id="showError" className="noResult displaynone">查询出错了，请刷新重试</div>
+                            <div id="showError" className="resultErr displaynone">查询出错了，请刷新重试</div>
 
                         </div>
                 </div>)

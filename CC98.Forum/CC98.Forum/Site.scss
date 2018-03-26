@@ -2582,11 +2582,16 @@ a {
         z-index: 1;
     }
     /**********************************搜索页的样式*********************************/
-    .noRusult {
+    .rusultErr {
         font-size: 16px;
         color: $color-thinBlack;
         margin-top: 100px;
         text-align: center;
+    }
+
+    .noResult {
+        width: 100px;
+        height: 100px;
     }
 
     .topicManagement {
