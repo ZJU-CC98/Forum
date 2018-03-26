@@ -71,7 +71,6 @@ const config: webpack.Configuration = {
 			},
 			inject: false
 		}),
-		new HTMLWebpackPluginRemove(/\.\./g), //index.html改用绝对路径
 		new webpack.DefinePlugin({ //发布版本环境
 			'process.env.NODE_ENV': JSON.stringify('production')
 		  }),

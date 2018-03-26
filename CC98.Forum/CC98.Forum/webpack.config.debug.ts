@@ -68,7 +68,6 @@ const config: webpack.Configuration = {
 			chunks: ['main', 'vendors'],
 			inject: false
 		}),
-		new HTMLWebpackPluginRemove(/\.\./g), //index.html改用绝对路径
 		new HTMLWebpackPluginRemove(/-min/g),  //debug环境使用完整版js
 		new webpack.optimize.UglifyJsPlugin(), // 简化 JS
         new UnminifiedWebpackPlugin(), // 提供调试用 JS 完整版
