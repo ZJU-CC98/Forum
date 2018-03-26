@@ -24,7 +24,7 @@ interface Props{
     isHot;
     postId;
 }
-export class Reply extends React.Component<Props, { inWaiting, contents, masters }>{
+export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealth:number,inWaiting, contents, masters }>{
     constructor(props, content) {
         super(props, content);
         this.update = this.update.bind(this);
@@ -33,6 +33,7 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
             inWaiting: true,
             contents: [],
             masters: [],
+            boardName: "", m_wealth: 20000, d_wealth: 0,
         };
     }
     quote(content, userName, replyTime, floor, postId) {
@@ -51,8 +52,8 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
         } else {
             realContents = await Utility.getTopicContent(this.props.topicId, page);
         }
-
-        this.setState({ contents: realContents });
+        const data = await Utility.queryWealth(this.props.boardInfo.id);
+        this.setState({ m_wealth: data.rewardMaxValue, d_wealth: data.rewardTotalValue, boardName: data.boardName, contents: realContents });
     }
     async componentDidMount() {
         const page = this.props.page || 1;
@@ -78,7 +79,8 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
             }
         }
         const masters = this.props.boardInfo.boardMasters;
-        this.setState({ inWaiting: false, contents: realContents, masters: masters });
+        const data = await Utility.queryWealth(this.props.boardInfo.id);
+        this.setState({ m_wealth: data.rewardMaxValue, d_wealth: data.rewardTotalValue, boardName: data.boardName, inWaiting: false, contents: realContents, masters: masters });
     }
     async componentWillReceiveProps(newProps) {
         if (newProps.page !== this.props.page || newProps.topicInfo.replyCount !== this.props.topicInfo.replyCount ) {
@@ -105,7 +107,8 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
                 if (!realContents) this.setState({ inWaiting: false, contents: [] });
             }
             const masters = newProps.boardInfo.boardMasters;
-            this.setState({inWaiting:false,contents: realContents,masters:masters });
+            const data = await Utility.queryWealth(newProps.boardInfo.id);
+            this.setState({ m_wealth: data.rewardMaxValue, d_wealth: data.rewardTotalValue, inWaiting: false, contents: realContents, masters: masters });
         }
     }
 
@@ -127,7 +130,7 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
                     <Replier key={item.postId} topicInfo={this.props.topicInfo} userInfo={item.userInfo} traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
                     <div className="column" style={{ justifyContent: "space-between", width: "55.5rem", position: "relative" }}>
                         <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
-                        <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} floor={item.floor} />
+                        <PostManagement m_wealth= {this.state.m_wealth} d_wealth={this.state.d_wealth} boardName={this.state.boardName}topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} floor={item.floor} />
                         <ReplyContent key={item.content} postId={item.postId} content={item.content} contentType={item.contentType} />
                         {awards}
                         <ReplierSignature userInfo={item.userInfo} quote={this.quote} boardInfo={this.props.boardInfo} postInfo={item} likeInfo={likeInfo} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo} />
@@ -145,7 +148,7 @@ export class Reply extends React.Component<Props, { inWaiting, contents, masters
                 <Replier key={item.postId} topicInfo={this.props.topicInfo} userInfo={item.userInfo}   traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
                 <div className="column" style={{ justifyContent: "space-between", width: "55.5rem", position: "relative" }}>
                     <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
-                    <PostManagement topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} floor={item.floor} />
+                    <PostManagement m_wealth= {this.state.m_wealth} d_wealth={this.state.d_wealth} boardName={this.state.boardName} topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} floor={item.floor} />
                     <ReplyContent key={item.content} postId={item.postId} content={item.content} contentType={item.contentType} />
                     {awards}
                     <ReplierSignature userInfo={item.userInfo} quote={this.quote} boardInfo={this.props.boardInfo} postInfo={item} likeInfo={likeInfo} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo} />

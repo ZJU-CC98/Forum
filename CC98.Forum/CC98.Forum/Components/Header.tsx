@@ -98,7 +98,6 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
         Utility.removeLocalStorage("password");
         Utility.removeLocalStorage("userInfo");
         Utility.removeStorage("all");
-        Utility.changeTheme(0);
         this.props.logOff();            //更新redux中的状态
     }
 
@@ -227,9 +226,11 @@ function mapState(state) {
 function mapDispatch(dispatch) {
     return {
         logOff: () => {
+            Utility.changeTheme(0);
             dispatch(Actions.userLogOff());
         },
         reLogOn: (newInfo: UserInfo) => {
+            Utility.changeTheme(newInfo.theme);
             dispatch(Actions.changeUserInfo(newInfo));
             dispatch(Actions.userLogIn());
         },

@@ -1638,6 +1638,8 @@ export async function awardWealth(reason, value, postId) {
         const response = await cc98Fetch(url, { method: "POST", headers, body: str });
         switch (response.status) {
             case 400:
+                if (await response.text() === 'reward_wealth_limited')
+                    return 'limited';
                 return 'wrong input';
             case 401:
                 return 'unauthorized';
@@ -3241,4 +3243,11 @@ export function changeTheme(theme: number) {
             document.getElementsByTagName('head')[0].innerHTML += '<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/css_more_green.min.css">';
             break;
     }
+}
+export async function queryWealth(boardId) {
+    const headers = await formAuthorizeHeader();
+    const url = `/manage/reward-daily-record?boardId=${boardId}`;
+    const response = await cc98Fetch(url, { headers });
+    const json = await response.json();
+    return json;
 }
