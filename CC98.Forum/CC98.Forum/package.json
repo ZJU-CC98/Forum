@@ -3,7 +3,6 @@
   "name": "cc98-forum",
   "private": true,
   "dependencies": {
-    "@aspnet/signalr-client": "1.0.0-alpha2-final",
     "aplayer": "^1.6.0",
     "blueimp-canvas-to-blob": "3.14.0",
     "bootstrap": "3.3.7",
@@ -12,8 +11,6 @@
     "editor.md": "^1.5.0",
     "es6-promise": "4.1.1",
     "history": "4.7.2",
-    "html-webpack-plugin": "^3.0.6",
-    "html-webpack-plugin-remove": "0.0.3",
     "install": "^0.10.1",
     "jquery": "3.2.1",
     "moment": "2.18.1",
@@ -27,11 +24,12 @@
     "react-router-redux": "^5.0.0-alpha.9",
     "redux": "3.7.2",
     "redux-thunk": "2.2.0",
-    "sass-loader": "6.0.6",
-    "signalr": "2.2.2",
     "spectrum-colorpicker": "^1.8.0",
     "ssri": "^4.1.6",
-    "url-join": "2.0.2"
+    "url-join": "2.0.2",
+    "font-awesome": "4.7.0",
+    "core-js": "2.5.1",
+    "whatwg-fetch": "2.0.3"
   },
   "devDependencies": {
     "@types/core-js": "0.9.43",
@@ -51,13 +49,13 @@
     "awesome-typescript-loader": "^3.3.0",
     "clean-webpack-plugin": "0.1.16",
     "copy-webpack-plugin": "4.0.1",
-    "core-js": "2.5.1",
     "css-loader": "^0.28.7",
     "extract-text-webpack-plugin": "3.0.0",
-    "font-awesome": "4.7.0",
     "typescript": "2.6.1",
     "unminified-webpack-plugin": "1.2.0",
     "webpack": "3.4.1",
-    "whatwg-fetch": "2.0.3"
+    "sass-loader": "6.0.6",
+    "html-webpack-plugin": "^3.0.6",
+    "html-webpack-plugin-remove": "0.0.3"
   }
 }
