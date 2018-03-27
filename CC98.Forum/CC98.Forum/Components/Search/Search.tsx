@@ -156,7 +156,7 @@ export class Search extends React.Component<{}, SearchState> {
                                     <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone"> 没有更多帖子啦~</div>
                     <button type="button" id="scrollToTop" className={this.state.buttonClassName} onClick={this.scrollToTop}>回到顶部</button>
                 </div>
-                            <img src='/images/searchNone.png' id="noResult" className="noResult displaynone"></img>
+                <img src="/static/images/searchNone.png" id="noResult" className="noResult displaynone"></img>
                             <div id="showError" className="resultErr displaynone">查询出错了，请刷新重试</div>
 
                         </div>
