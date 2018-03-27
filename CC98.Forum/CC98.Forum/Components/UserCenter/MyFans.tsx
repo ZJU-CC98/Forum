@@ -11,23 +11,24 @@ import * as Actions from '../../Actions/UserCenter';
 import { connect } from 'react-redux';
 import { RootState } from '../../Store';
 import { Dispatch } from 'redux';
-import { withRouter, match } from 'react-router-dom';
+import { withRouter, match, RouteComponentProps } from 'react-router-dom';
 import { getUserFansInfo } from '../../AsyncActions/UserCenter';
 
 
-interface Props {
+type ownProps = {
     changePage: () => void;
     getInfo: (page: number) => void;
-    match: match<Match>;
     userFans: UserInfo[];
     totalPage: number;
     isLoading: boolean;
     hasTotal: boolean;
 }
 
-interface Match {
+type ownMatch = {
     page: string;
 }
+
+type Props = RouteComponentProps<ownMatch> & ownProps;
 
 //用户中心我的粉丝组件
 class Fans extends React.Component<Props> {
@@ -89,4 +90,4 @@ function mapDispatch(dispatch: Dispatch<RootState>) {
     };
 }
 
-export default withRouter(connect(mapState, mapDispatch)(Fans));
+export default connect(mapState, mapDispatch)(withRouter(Fans));

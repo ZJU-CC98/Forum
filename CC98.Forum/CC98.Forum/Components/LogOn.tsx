@@ -7,11 +7,22 @@ import * as $ from 'jquery';
 import * as Utility from '../Utility';
 import { connect } from 'react-redux';
 import * as Actions from '../Actions/UserCenter';
-import { withRouter } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import DocumentTitle from './DocumentTitle';
 import { UserInfo } from '../States/AppState';
+import { History } from 'history';
 
-class LogOnExact extends React.Component<{isLogOn: boolean, logOn, logOff, history, changeUserInfo}, LogOnState> {
+type ownProps = {
+    isLogOn: boolean;
+    logOn: () => void;
+    logOff: () => void;
+    history: History;
+    changeUserInfo: (newInfo: UserInfo ) => void;
+}
+
+type Props = RouteComponentProps<null> & ownProps;
+
+class LogOnExact extends React.Component<Props, LogOnState> {
     constructor(props) {
         super(props);
         this.state = {
@@ -219,4 +230,4 @@ function mapDispatch(disPatch) {
     };
 }
 
-export default connect(mapState, mapDispatch)(withRouter(LogOnExact));
+export default connect(mapState, mapDispatch)((LogOnExact));
