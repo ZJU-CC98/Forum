@@ -42,10 +42,11 @@
   version "8.0.19"
   resolved "http://registry.npm.taobao.org/@types/node/download/@types/node-8.0.19.tgz#e46e2b0243de7d03f15b26b45c59ebb84f657a4e"
 
-"@types/react-dom@15.5.1":
-  version "15.5.1"
-  resolved "http://registry.npm.taobao.org/@types/react-dom/download/@types/react-dom-15.5.1.tgz#f3c3e14c682785923c7d64583537df319442dec1"
+"@types/react-dom@16.0.4":
+  version "16.0.4"
+  resolved "http://registry.npm.taobao.org/@types/react-dom/download/@types/react-dom-16.0.4.tgz#2e8fd45f5443780ed49bf2cdd9809e6091177a7d"
   dependencies:
+    "@types/node" "*"
     "@types/react" "*"
 
 "@types/react-redux@4.4.47":
@@ -78,7 +79,7 @@
     "@types/history" "*"
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.0.41":
+"@types/react@*", "@types/react@16.0.41":
   version "16.0.41"
   resolved "http://registry.npm.taobao.org/@types/react/download/@types/react-16.0.41.tgz#72146737f4d439dc95a53315de4bfb43ac8542ca"
 
@@ -1751,7 +1752,7 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-create-react-class@^15.5.3, create-react-class@^15.6.0:
+create-react-class@^15.5.3:
   version "15.6.3"
   resolved "http://registry.npm.taobao.org/create-react-class/download/create-react-class-15.6.3.tgz#2d73237fb3f970ae6ebe011a9e66f46dbca80036"
   dependencies:
@@ -5389,14 +5390,14 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-dom@15.6.1:
-  version "15.6.1"
-  resolved "http://registry.npm.taobao.org/react-dom/download/react-dom-15.6.1.tgz#2cb0ed4191038e53c209eb3a79a23e2a4cf99470"
+react-dom@16.2.0:
+  version "16.2.0"
+  resolved "http://registry.npm.taobao.org/react-dom/download/react-dom-16.2.0.tgz#69003178601c0ca19b709b33a83369fe6124c044"
   dependencies:
-    fbjs "^0.8.9"
+    fbjs "^0.8.16"
     loose-envify "^1.1.0"
-    object-assign "^4.1.0"
-    prop-types "^15.5.10"
+    object-assign "^4.1.1"
+    prop-types "^15.6.0"
 
 react-redux@5.0.5:
   version "5.0.5"
@@ -5439,15 +5440,14 @@ react-router@^4.1.1, react-router@^4.2.0:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
-react@15.6.1:
-  version "15.6.1"
-  resolved "http://registry.npm.taobao.org/react/download/react-15.6.1.tgz#baa8434ec6780bde997cdc380b79cd33b96393df"
+react@16.2.0:
+  version "16.2.0"
+  resolved "http://registry.npm.taobao.org/react/download/react-16.2.0.tgz#a31bd2dab89bff65d42134fa187f24d054c273ba"
   dependencies:
-    create-react-class "^15.6.0"
-    fbjs "^0.8.9"
+    fbjs "^0.8.16"
     loose-envify "^1.1.0"
-    object-assign "^4.1.0"
-    prop-types "^15.5.10"
+    object-assign "^4.1.1"
+    prop-types "^15.6.0"
 
 read-chunk@^2.1.0:
   version "2.1.0"
