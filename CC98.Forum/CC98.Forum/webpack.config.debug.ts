@@ -3,7 +3,7 @@ import * as path from "path";
 import * as HTMLWebpackPlugin from "html-webpack-plugin";
 import * as CopyWebpackPlugin from "copy-webpack-plugin";
 import * as CleanWebpackPlugin from 'clean-webpack-plugin';
-// const ExtractTextPlugin = require("extract-text-webpack-plugin")
+import * as  ExtractTextPlugin from "extract-text-webpack-plugin";
 
 const config: Webpack.Configuration = {
 
@@ -18,7 +18,10 @@ const config: Webpack.Configuration = {
             },
             {
                 test: /\.scss$/,
-                use: ['style-loader', 'css-loader', 'sass-loader'] 
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: ['css-loader', 'sass-loader']
+                  })
             }
         ]
     },
@@ -53,7 +56,7 @@ const config: Webpack.Configuration = {
         path: path.resolve(__dirname, 'wwwroot/'),
         // should use absolute path
         publicPath: '/',
-        filename: 'static/scripts/[name]-[hash:8].js'
+        filename: 'static/scripts/[name]-[chunkhash:8]-min.js'
     },
     
     devtool: 'source-map',
@@ -66,11 +69,13 @@ const config: Webpack.Configuration = {
     },
 
     plugins: [
+        // 生成index.html
         new HTMLWebpackPlugin({
-            template: 'Template.html',
-            filename: 'static/index.html',
-            chunks: ['main', 'vendors']
-        }),
+			template: 'Template.ejs',
+			filename: 'static/index.html',
+			chunks: ['main', 'vendors'],
+			inject: false
+		}),
         
         // clean wwwroot
         new CleanWebpackPlugin([
@@ -91,7 +96,7 @@ const config: Webpack.Configuration = {
             { from: 'node_modules/dplayer/dist/DPlayer.min.css', to: 'static/content/DPlayer.min.css' }
         ]),
 
-        // new ExtractTextPlugin('static/content/[name].min.css'),
+        new ExtractTextPlugin('static/content/[name].min.css')
     ],
 
     devServer: {

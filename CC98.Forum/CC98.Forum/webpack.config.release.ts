@@ -1,4 +1,4 @@
-import Webpack from 'webpack';
+﻿import Webpack from 'webpack';
 import path from "path";
 import HTMLWebpackPlugin from "html-webpack-plugin";
 import CopyWebpackPlugin from "copy-webpack-plugin";
@@ -18,7 +18,10 @@ const config: Webpack.Configuration = {
             },
             {
                 test: /\.scss$/,
-                use: ['style-loader', 'css-loader', 'sass-loader'] 
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: ['css-loader', 'sass-loader']
+                })
             }
         ]
     },
@@ -34,7 +37,7 @@ const config: Webpack.Configuration = {
         vendors: [
             'react',
             'react-dom',
-            // 'react-router',
+            'react-router',
             'react-router-dom',
             'redux',
             'react-redux',
