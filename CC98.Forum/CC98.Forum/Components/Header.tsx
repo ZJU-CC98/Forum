@@ -243,7 +243,7 @@ let DropDown = connect(mapState, mapDispatch)(DropDownConnect);
 
 //到此结束
 
-export class SearchBeforeConnent extends React.Component<{ history }, AppState> {     //搜索框组件
+export class SearchBeforeConnent extends React.Component<any, AppState> {     //搜索框组件
 
     async componentDidMount() {
         const searchBoxSelect = $('.searchBoxSelect');

@@ -7,27 +7,27 @@ import Post from './ExactActivitiesPost';
 import { UserRecentPost } from '../../States/AppState';
 import * as Utility from '../../Utility';
 import Pager from './Pager';
-import { RouteComponent } from '../RouteComponent';
 import * as Actions from '../../Actions/UserCenter';
 import { connect } from 'react-redux';
 import { RootState } from '../../Store';
 import { Dispatch } from 'redux';
-import { withRouter, match } from 'react-router-dom';
+import { withRouter, match, RouteComponentProps } from 'react-router-dom';
 import { getFavoritePosts } from '../../AsyncActions/UserCenter';
 
-interface Props {
+type ownProps = {
     userRecentPosts: UserRecentPost[];
     totalPage: number;
     hasTotal: boolean;
     isLoading: boolean;
-    match: match<Match>;
     getInfo: (page: number) => void;
     changePage: () => void;
 }
 
-interface Match {
+type ownMatch = {
     page: string;
 }
+
+type Props = RouteComponentProps<ownMatch> & ownProps;
 
 /**
  * 用户中心我收藏的帖子组件
@@ -103,4 +103,4 @@ function mapDispatch(dispatch: Dispatch<RootState>) {
     };
 }
 
-export default withRouter(connect(mapState, mapDispatch)(Posts));
+export default connect(mapState, mapDispatch)(withRouter(Posts));
