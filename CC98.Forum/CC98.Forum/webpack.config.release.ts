@@ -43,7 +43,6 @@ const config: Webpack.Configuration = {
         vendors: [
             'react',
             'react-dom',
-            'react-router',
             'react-router-dom',
             'redux',
             'react-redux',
@@ -60,9 +59,8 @@ const config: Webpack.Configuration = {
     },
     output: {
         path: path.resolve(__dirname, 'wwwroot/'),
-        // should use absolute path
         publicPath: '/',
-        filename: 'static/scripts/[name]-[chunkhash:8].js'
+        filename: 'static/scripts/[name]-[hash:8].js'
     },
     
     devtool: 'source-map',
@@ -92,7 +90,6 @@ const config: Webpack.Configuration = {
         ]),
         
         new CopyWebpackPlugin([
-            // copy config files
             { from: 'node_modules/jquery/dist', to: 'static/scripts/lib/jquery/' },
             { from: 'node_modules/moment', to: 'static/scripts/lib/moment/' },
             { from: 'node_modules/font-awesome', to: 'static/content/font-awesome/' },
@@ -111,7 +108,7 @@ const config: Webpack.Configuration = {
             new UglifyJsPlugin({
                 uglifyOptions: {
                     compress: {
-                        pure_funcs: ['console.log'], //去除所有console.log
+                        pure_funcs: ['console.log'], //remove all console.log
                     }
                 }
             })

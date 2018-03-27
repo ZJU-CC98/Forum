@@ -20,13 +20,11 @@ const config: Webpack.Configuration = {
                 test: /\.scss$/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-                    use: [{
-                        loader: 'css-loader',
-                        options: {
-                            minimize: true
-                        }
-                    }, 'sass-loader']
-                  })
+                    use: [
+                        'css-loader',
+                        'sass-loader'
+                    ]
+                })
             }
         ]
     },
@@ -42,7 +40,6 @@ const config: Webpack.Configuration = {
         vendors: [
             'react',
             'react-dom',
-            'react-router',
             'react-router-dom',
             'redux',
             'react-redux',
@@ -61,7 +58,7 @@ const config: Webpack.Configuration = {
         path: path.resolve(__dirname, 'wwwroot/'),
         // should use absolute path
         publicPath: '/',
-        filename: 'static/scripts/[name]-[chunkhash:8].js'
+        filename: 'static/scripts/[name]-[hash:8].js'
     },
     
     devtool: 'source-map',
@@ -74,7 +71,7 @@ const config: Webpack.Configuration = {
     },
 
     plugins: [
-        // 生成index.html
+        // generate index.html
         new HTMLWebpackPlugin({
 			template: 'Template.ejs',
 			filename: 'static/index.html',
@@ -90,7 +87,6 @@ const config: Webpack.Configuration = {
         ]),
 
         new CopyWebpackPlugin([
-            // copy config files
             { from: 'node_modules/jquery/dist', to: 'static/scripts/lib/jquery/' },
             { from: 'node_modules/moment', to: 'static/scripts/lib/moment/' },
             { from: 'node_modules/font-awesome', to: 'static/content/font-awesome/' },
@@ -103,24 +99,6 @@ const config: Webpack.Configuration = {
 
         new ExtractTextPlugin('static/content/[name].min.css')
     ],
-
-    devServer: {
-        // contentBase: path.resolve(__dirname, "wwwroot/static"),
-        // publicPath: "/static/",
-        historyApiFallback: true,
-        hot: true,
-        inline: true,
-        open: true,
-    },
 }
 
 export default config;
-
-/** note:
-  cnpm i webpack-dev-server@2 style-loader
-
-  delete _@types_webpack@3.0.5 in node_modules
-
-  .\node_modules\.bin\webpack-dev-server --config .\webpack.config.h2.js
-  
-**/
