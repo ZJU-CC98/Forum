@@ -1,9 +1,10 @@
-﻿import Webpack from 'webpack';
-import path from "path";
-import HTMLWebpackPlugin from "html-webpack-plugin";
-import CopyWebpackPlugin from "copy-webpack-plugin";
-import ExtractTextPlugin from "extract-text-webpack-plugin";
-import CleanWebpackPlugin from 'clean-webpack-plugin';
+﻿import * as Webpack from 'webpack';
+import * as path from "path";
+import * as HTMLWebpackPlugin from "html-webpack-plugin";
+import * as CopyWebpackPlugin from "copy-webpack-plugin";
+import * as CleanWebpackPlugin from 'clean-webpack-plugin';
+import * as ExtractTextPlugin from "extract-text-webpack-plugin";
+import * as UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 
 const config: Webpack.Configuration = {
 
@@ -20,8 +21,13 @@ const config: Webpack.Configuration = {
                 test: /\.scss$/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-                    use: ['css-loader', 'sass-loader']
-                })
+                    use: [{
+                        loader: 'css-loader',
+                        options: {
+                            minimize: true
+                        }
+                    }, 'sass-loader']
+                  })
             }
         ]
     },
@@ -56,7 +62,7 @@ const config: Webpack.Configuration = {
         path: path.resolve(__dirname, 'wwwroot/'),
         // should use absolute path
         publicPath: '/',
-        filename: 'static/scripts/[name]-[hash:8].js'
+        filename: 'static/scripts/[name]-[chunkhash:8].js'
     },
     
     devtool: 'source-map',
@@ -70,8 +76,8 @@ const config: Webpack.Configuration = {
 
     plugins: [
         new HTMLWebpackPlugin({
-            template: 'Template.html',
-            filename: 'index.html',
+            template: 'Template.ejs',
+            filename: 'static/index.html',
             chunks: ['main', 'vendors'],
             minify: {
 				collapseWhitespace: true
@@ -99,4 +105,18 @@ const config: Webpack.Configuration = {
 
         new ExtractTextPlugin('static/content/[name].min.css'),
     ],
+
+    optimization: {
+        minimizer: [
+            new UglifyJsPlugin({
+                uglifyOptions: {
+                    compress: {
+                        pure_funcs: ['console.log'], //去除所有console.log
+                    }
+                }
+            })
+        ]
+    }
 }
+
+export default config;
