@@ -33,10 +33,10 @@ export class MessageResponsebox extends React.Component<MessageResponseProps> {
                 userName = `[color=gray]${this.props.userName}[/color]`;
             }
             if (this.props.boardId) {
-                title = `[url=/topic/${this.props.topicId}/${pageNum}][color=blue]${this.props.topicTitle}[/color][/url]`;
+                title = `[url=/topic/${this.props.topicId}/${pageNum}][color=#0b5394]${this.props.topicTitle}[/color][/url]`;
             }
             else {
-                title = `[color=blue]${this.props.topicTitle}[/color]`;
+                title = `[color=#0b5394]${this.props.topicTitle}[/color]`;
             }
             content = ` ${userName} [color=gray]在《${title}》中回复了你。[/color]`;
         }
@@ -50,10 +50,10 @@ export class MessageResponsebox extends React.Component<MessageResponseProps> {
                 userName = `[color=gray][b]${this.props.userName}[/b][/color]`;
             }
             if (this.props.boardId) {
-                title = `[url=/topic/${this.props.topicId}/${pageNum}][color=blue]${this.props.topicTitle}[/color][/url]`;
+                title = `[url=/topic/${this.props.topicId}/${pageNum}][color=#0b5394]${this.props.topicTitle}[/color][/url]`;
             }
             else {
-                title = `[color=blue]${this.props.topicTitle}[/color]`;
+                title = `[color=#0b5394]${this.props.topicTitle}[/color]`;
             }
             content = ` ${userName} [color=gray][b]在《${title}》中回复了你。[/b][/color]`;
         }

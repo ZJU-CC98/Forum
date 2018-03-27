@@ -15,6 +15,8 @@ $color-post: rgb(252,252,252);
 $color-red: rgb(255,60,60);
 $color-black: rgb(32,32,32);
 $color-bg: #79b8ca;
+$color-url: #0b5394;
+$color-urlVisited: #741b47;
 
 body {
     margin: 0;
@@ -36,11 +38,11 @@ body {
 .urlStyle {
     /* 未访问的链接 */
     &:link {
-        color: blue;
+        color: $color-url;
     }
     /* 已访问的链接 */
     &:visited {
-        color: purple;
+        color: $color-urlVisited;
     }
     /* 鼠标移动到链接上 */
     &:hover {
@@ -1867,11 +1869,11 @@ a {
 
                 a {
                     &:link {
-                        color: blue;
+                        color: $color-url;
                     }
                     /* 已访问的链接 */
                     &:visited {
-                        color: blue;
+                        color: $color-url;
                     }
                     /* 鼠标移动到链接上 */
                     &:hover {
@@ -1879,7 +1881,7 @@ a {
                     }
                     /* 选定的链接 */
                     &:active {
-                        color: blue;
+                        color: $color-url;
                     }
                 }
             }
