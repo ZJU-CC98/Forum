@@ -31,7 +31,7 @@ export class Signin extends React.Component<{history}, { signinInfo ,content}>{
         this.setState({ content: "" });
         //设定已签到状态和有效期
         let userInfo = Utility.getLocalStorage("userInfo");
-        let workTime = (new Date(new Date().toLocaleDateString()).getTime() + 86400000 - new Date().getTime()) / 1000;
+        let workTime = (new Date(new Date().setHours(0, 0, 0, 0)).getTime() + 86400000 - new Date().getTime()) / 1000;
         Utility.setLocalStorage(`signin_${userInfo.id}`, true, workTime);
     }
     render() {
@@ -39,7 +39,7 @@ export class Signin extends React.Component<{history}, { signinInfo ,content}>{
         if (this.state.signinInfo.hasSignedInToday) {
             //设定已签到状态和有效期
             let userInfo = Utility.getLocalStorage("userInfo");
-            let workTime = (new Date(new Date().toLocaleDateString()).getTime() + 86400000 - new Date().getTime()) / 1000;
+            let workTime = (new Date(new Date().setHours(0, 0, 0, 0)).getTime() + 86400000 - new Date().getTime()) / 1000;
             Utility.setLocalStorage(`signin_${userInfo.id}`, true, workTime);
             //设定已签到信息
             info = <div><div className="row" style={{ justifyContent: "center" }}>
