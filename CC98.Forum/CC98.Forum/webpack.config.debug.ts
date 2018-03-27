@@ -20,7 +20,12 @@ const config: Webpack.Configuration = {
                 test: /\.scss$/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-                    use: ['css-loader', 'sass-loader']
+                    use: [{
+                        loader: 'css-loader',
+                        options: {
+                            minimize: true
+                        }
+                    }, 'sass-loader']
                   })
             }
         ]
@@ -56,7 +61,7 @@ const config: Webpack.Configuration = {
         path: path.resolve(__dirname, 'wwwroot/'),
         // should use absolute path
         publicPath: '/',
-        filename: 'static/scripts/[name]-[chunkhash:8]-min.js'
+        filename: 'static/scripts/[name]-[chunkhash:8].js'
     },
     
     devtool: 'source-map',

@@ -10,14 +10,6 @@ import 'es6-promise/auto';
 import { Constants } from './Components/Constant';
 import { App } from './Components/App';
 
-import './Themes/forgive_green.scss'
-
-/**
- * 清除提示信息
- */
-declare var tip: any;
-clearTimeout(tip);
-
 /**
  * 项目初始化代码
  */
