@@ -1,16 +1,14 @@
-"use strict"
+import * as Webpack from 'webpack';
+import * as path from "path";
+import * as HTMLWebpackPlugin from "html-webpack-plugin";
+import * as CopyWebpackPlugin from "copy-webpack-plugin";
+import * as CleanWebpackPlugin from 'clean-webpack-plugin';
+// const ExtractTextPlugin = require("extract-text-webpack-plugin")
 
-const webpack = require("webpack")
-const path = require("path")
-const HTMLWebpackPlugin = require("html-webpack-plugin")
-const CopyWebpackPlugin = require("copy-webpack-plugin")
-const CleanWebpackPlugin = require("clean-webpack-plugin")
-const ExtractTextPlugin = require("extract-text-webpack-plugin")
-
-module.exports = {
+const config: Webpack.Configuration = {
 
     // webpack 4 only
-    mode: "production",
+    mode: "development",
 
     module: {
         rules: [
@@ -36,7 +34,7 @@ module.exports = {
         vendors: [
             'react',
             'react-dom',
-            // 'react-router',
+            'react-router',
             'react-router-dom',
             'redux',
             'react-redux',
@@ -70,21 +68,19 @@ module.exports = {
     plugins: [
         new HTMLWebpackPlugin({
             template: 'Template.html',
-            filename: 'index.html',
-            chunks: ['main', 'vendors'],
-            minify: {
-				collapseWhitespace: true
-			}
+            filename: 'static/index.html',
+            chunks: ['main', 'vendors']
         }),
-
+        
         // clean wwwroot
         new CleanWebpackPlugin([
             'wwwroot/static/scripts', 
             'wwwroot/static/content', 
             'wwwroot/static/index.html'
         ]),
-        
+
         new CopyWebpackPlugin([
+            // copy config files
             { from: 'node_modules/jquery/dist', to: 'static/scripts/lib/jquery/' },
             { from: 'node_modules/moment', to: 'static/scripts/lib/moment/' },
             { from: 'node_modules/font-awesome', to: 'static/content/font-awesome/' },
@@ -95,6 +91,26 @@ module.exports = {
             { from: 'node_modules/dplayer/dist/DPlayer.min.css', to: 'static/content/DPlayer.min.css' }
         ]),
 
-        new ExtractTextPlugin('static/content/[name].min.css'),
+        // new ExtractTextPlugin('static/content/[name].min.css'),
     ],
+
+    devServer: {
+        // contentBase: path.resolve(__dirname, "wwwroot/static"),
+        // publicPath: "/static/",
+        historyApiFallback: true,
+        hot: true,
+        inline: true,
+        open: true,
+    },
 }
+
+export default config;
+
+/** note:
+  cnpm i webpack-dev-server@2 style-loader
+
+  delete _@types_webpack@3.0.5 in node_modules
+
+  .\node_modules\.bin\webpack-dev-server --config .\webpack.config.h2.js
+  
+**/

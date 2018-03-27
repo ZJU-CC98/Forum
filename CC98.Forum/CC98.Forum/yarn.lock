@@ -92,9 +92,28 @@
   dependencies:
     "@types/jquery" "*"
 
+"@types/tapable@*":
+  version "1.0.0"
+  resolved "http://registry.npm.taobao.org/@types/tapable/download/@types/tapable-1.0.0.tgz#b76254453021be05681f6213416766bac9afb99c"
+
+"@types/uglify-js@*":
+  version "3.0.0"
+  resolved "http://registry.npm.taobao.org/@types/uglify-js/download/@types/uglify-js-3.0.0.tgz#b765cf23abdc6ab2a67f2b72a9e94a1d43c6432e"
+  dependencies:
+    source-map "^0.6.1"
+
 "@types/url-join@0.8.2":
   version "0.8.2"
   resolved "http://registry.npm.taobao.org/@types/url-join/download/@types/url-join-0.8.2.tgz#1181ecbe1d97b7034e0ea1e35e62e86cc26b422d"
+
+"@types/webpack@^4.1.2":
+  version "4.1.2"
+  resolved "http://registry.npm.taobao.org/@types/webpack/download/@types/webpack-4.1.2.tgz#96b45333201dd1526b85fbe18f1972f828f7e996"
+  dependencies:
+    "@types/node" "*"
+    "@types/tapable" "*"
+    "@types/uglify-js" "*"
+    source-map "^0.6.0"
 
 abbrev@1:
   version "1.1.1"
@@ -3330,10 +3349,6 @@ inquirer@^5.1.0:
     string-width "^2.1.0"
     strip-ansi "^4.0.0"
     through "^2.3.6"
-
-install@^0.10.1:
-  version "0.10.4"
-  resolved "http://registry.npm.taobao.org/install/download/install-0.10.4.tgz#9cb09115768b93a582d1450a6ba3f275975b49aa"
 
 internal-ip@1.2.0:
   version "1.2.0"
