@@ -13,8 +13,7 @@
 		],
 		"allowSyntheticDefaultImports": true
 	},
-	"exclude": [
-		"node_modules",
-		"wwwroot"
+	"include": [
+		
 	]
 }
