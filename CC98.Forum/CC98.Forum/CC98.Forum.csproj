@@ -105,6 +105,7 @@
     <None Remove="Ubb\UrlTextHandler.tsx" />
     <None Remove="Ubb\UserTagHandler.tsx" />
     <None Remove="Ubb\UTagHandler.tsx" />
+    <None Remove="webpack.config.release.js" />
     <None Remove="webpack.config.release.ts" />
   </ItemGroup>
 
@@ -197,7 +198,6 @@
     <TypeScriptCompile Include="Ubb\UrlTextHandler.tsx" />
     <TypeScriptCompile Include="Ubb\UserTagHandler.tsx" />
     <TypeScriptCompile Include="Ubb\UTagHandler.tsx" />
-    <TypeScriptCompile Include="webpack.config.release.ts" />
   </ItemGroup>
 
   <ItemGroup>
