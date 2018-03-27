@@ -63,11 +63,11 @@ const config: webpack.Configuration = {
 	},
 	plugins: [
 		new HTMLWebpackPlugin({ // 生成index.html
-			template: 'Template.html',
+			template: 'Template.ejs',
 			filename: 'static/index.html',
-			chunks: ['main', 'vendors']
+			chunks: ['main', 'vendors'],
+			inject: false
 		}),
-		new HTMLWebpackPluginRemove(/\.\./g), //index.html改用绝对路径
 		new HTMLWebpackPluginRemove(/-min/g),  //debug环境使用完整版js
 		new webpack.optimize.UglifyJsPlugin(), // 简化 JS
         new UnminifiedWebpackPlugin(), // 提供调试用 JS 完整版
