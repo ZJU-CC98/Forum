@@ -143,7 +143,7 @@ export class Search extends React.Component<{}, SearchState> {
     
     render() {
         return (<div className="focus-root">
-            <DocumentTitle title={`搜索结果 - CC98论坛`} />
+                    <DocumentTitle title={`搜索结果 - CC98论坛`} />
                     <div className="focus" >
                             <Category />
                             <div className="focus-topic-area" id="focus-topic-area">
@@ -154,11 +154,13 @@ export class Search extends React.Component<{}, SearchState> {
                                     </div>
                                     <div className="focus-topic-loading displaynone" id="focus-topic-loading"><img src="http://file.cc98.org/uploadfile/2017/12/20/6514723843.gif"></img></div>
                                     <div className="focus-topic-loaddone displaynone" id="focus-topic-loaddone"> 没有更多帖子啦~</div>
-                    <button type="button" id="scrollToTop" className={this.state.buttonClassName} onClick={this.scrollToTop}>回到顶部</button>
-                </div>
-                <img src="/static/images/searchNone.png" id="noResult" className="noResult displaynone"></img>
+                                    <button type="button" id="scrollToTop" className={this.state.buttonClassName} onClick={this.scrollToTop}>回到顶部</button>
+                            </div>
+                            <div id="noResult" className="noResult displaynone">
+                                <img src="/static/images/searchNone.png" className="noResultPic"></img>
+                                <div className="noResultText">-----------------------抱歉呢前辈，没有找到你想要的帖子哦~----------------------</div>
+                            </div>
                             <div id="showError" className="resultErr displaynone">查询出错了，请刷新重试</div>
-
                         </div>
                 </div>)
     }

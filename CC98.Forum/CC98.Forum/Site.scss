@@ -2589,11 +2589,22 @@ a {
         text-align: center;
     }
 
-    .noResult {
-        width: 70%;
+.noResult {
+    display: flex;
+    flex-direction: column;
+
+    .noResultPic {
+        width: 50%;
         align-self: center;
     }
 
+    .noResultText {
+        font-size: 16px;
+        color: $color-thinBlack;
+        margin-top: 20px;
+        align-self: center;
+    }
+}
     .topicManagement {
         display: flex;
         flex-direction: column;
