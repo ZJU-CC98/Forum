@@ -55,7 +55,7 @@ export class UploadTagHandler extends Ubb.TextTagHandler {
                     }
                 }
             default:
-                return <a href={uploadUri}>点击浏览该文件</a>
+                return <a className="hiddenImage" href={uploadUri}>点击下载文件</a>
         }
 
     }
