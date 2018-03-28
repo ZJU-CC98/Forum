@@ -24,8 +24,8 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 		this.close = this.close.bind(this);
         this.update = this.update.bind(this);
         let initContent = "";
-        if (Utility.getLocalStorage("temporaryContent")) {
-            initContent = Utility.getLocalStorage("temporaryContent");
+        if (Utility.getLocalStorage("temporaryContent-" + this.props.topicInfo.id)) {
+            initContent = Utility.getLocalStorage("temporaryContent" + this.props.topicInfo.id);
             console.log("use cache content");
         }
         this.state = ({ content: initContent, mode: 0, masters: [], buttonDisabled: false, buttonInfo: "回复" });
@@ -46,7 +46,7 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
     }
     componentWillUnmount() {
         if (this.state.content) {
-            Utility.setLocalStorage("temporaryContent", this.state.content);
+            Utility.setLocalStorage("temporaryContent"+ this.props.topicInfo.id, this.state.content);
             console.log("save temp content");
         }
     }
