@@ -97,8 +97,21 @@ const config: Webpack.Configuration = {
             { from: 'node_modules/dplayer/dist/DPlayer.min.css', to: 'static/content/DPlayer.min.css' }
         ]),
 
-        new ExtractTextPlugin('static/content/[name].min.css')
+        new ExtractTextPlugin('static/content/[name].min.css'),
+
     ],
+
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all'
+                }
+            }
+        }
+    },
 }
 
 export default config;

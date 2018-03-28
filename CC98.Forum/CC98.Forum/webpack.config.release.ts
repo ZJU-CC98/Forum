@@ -112,7 +112,16 @@ const config: Webpack.Configuration = {
                     }
                 }
             })
-        ]
+        ],
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all'
+                }
+            }
+        }
     }
 }
 
