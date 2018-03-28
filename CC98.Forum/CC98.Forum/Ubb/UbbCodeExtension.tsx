@@ -3,6 +3,7 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as Ubb from './Core';
+import { NoUbbTagHandler } from './NoUbbTagHandler';
 import { BTagHandler } from './BTagHandler';
 import { ImageTagHandler } from './ImageTagHandler';
 import { ITagHandler } from './ITagHandler';
@@ -78,6 +79,7 @@ export function createEngine(): Ubb.UbbCodeEngine {
 	engine.handlers.register(SandBoxTagHandler);
 	engine.handlers.register(LineTagHandler);
 	engine.handlers.register(PmTagHandler);
+	engine.handlers.register(NoUbbTagHandler);
 
 	// 以下是未命名标签处理程序，注意未命名标签处理程序的命中和注册顺序有关
 	engine.handlers.register(EmTagHandler);
