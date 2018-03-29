@@ -37,23 +37,6 @@ const config: Webpack.Configuration = {
         css_blue: './Themes/wuteng_blue.scss',
         css_green: './Themes/forgive_green.scss',
         css_more_green: './Themes/deep_dark_green.scss',
-        vendors: [
-            'react',
-            'react-dom',
-            'react-router-dom',
-            'redux',
-            'react-redux',
-            'redux-thunk',
-            'url-join',
-            'blueimp-canvas-to-blob',
-            'history',
-            'whatwg-fetch',
-            'aplayer',
-            'dplayer',
-            'es6-promise',
-            'core-js/shim',
-            "tslib",
-        ]
     },
     output: {
         path: path.resolve(__dirname, 'wwwroot/'),
