@@ -58,7 +58,7 @@ const config: Webpack.Configuration = {
         path: path.resolve(__dirname, 'wwwroot/'),
         // should use absolute path
         publicPath: '/',
-        filename: 'static/scripts/[name]-[hash:8].js'
+        filename: 'static/scripts/[name]-[chunkhash:8].js'
     },
     
     devtool: 'source-map',
