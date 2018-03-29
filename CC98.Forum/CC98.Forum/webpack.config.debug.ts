@@ -52,6 +52,7 @@ const config: Webpack.Configuration = {
             'dplayer',
             'es6-promise',
             'core-js/shim',
+            "tslib",
         ]
     },
     output: {
