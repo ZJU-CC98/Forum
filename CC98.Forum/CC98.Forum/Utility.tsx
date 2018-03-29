@@ -3226,23 +3226,13 @@ export function noticeMessageShow(id: string) {
     }, 1500);
 }
 
+declare let themeNames: string[];
 /**
  * 切换主题
  */
 export function changeTheme(theme: number) {
     $('#mainStylesheet').remove();
-    switch (theme) {
-        case 1:
-            document.getElementsByTagName('head')[0].innerHTML += '<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/css_blue.min.css">';
-            break;
-        case 2:
-        default:
-            document.getElementsByTagName('head')[0].innerHTML += '<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/css_green.min.css">';
-            break;
-        case 3:
-            document.getElementsByTagName('head')[0].innerHTML += '<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/css_more_green.min.css">';
-            break;
-    }
+    document.getElementsByTagName('head')[0].innerHTML += '<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/' + themeNames[theme] + '">';
 }
 export async function queryWealth(boardId) {
     const headers = await formAuthorizeHeader();
