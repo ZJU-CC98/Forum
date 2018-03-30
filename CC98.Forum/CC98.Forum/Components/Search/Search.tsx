@@ -48,7 +48,7 @@ export class Search extends React.Component<{}, SearchState> {
             }
             else {
                 this.setState({ loading: true });
-                $('#focus-topic-getMore').css('display','flex');
+                $('#focus-topic-getMore').css('display', 'flex');
                 $('#focus-topic-loading').addClass('displaynone');
                 return;
             }
@@ -72,22 +72,79 @@ export class Search extends React.Component<{}, SearchState> {
         }
     }
 
-    async componentDidMount() {
-        let searchInfo = Utility.getStorage("searchInfo");
-        //没有搜索条件
-        if (!searchInfo) {
+    async getNewData(searchInfo: any, from: number) {
+        let newTopic = await Utility.getSearchTopic(searchInfo.boardId, searchInfo.words, from, this.context.router);
+        //搜索结果为0
+        if (!newTopic || newTopic.length === 0) {
+            this.showNoResult();
+            this.setState({ loading: false });
+        }
+        else if (newTopic == -1) {
+            if (from === 0) {
+                this.showError();
+                this.setState({ loading: false });
+            }
+            else {
+                this.setState({ loading: true });
+                $('#focus-topic-getMore').css('display', 'flex');
+                $('#focus-topic-loading').addClass('displaynone');
+                return;
+            }
+        }
+        else {
+            //搜索结果小于20条，无法再获取新的了,添加新数据，this.state.loading设置为false，后续不可以再次发送fetch请求
+            if (newTopic.length < 20) {
+                $('#focus-topic-getMore').css('display', 'none');
+                $('#focus-topic-loading').addClass('displaynone');
+                $('#focus-topic-loaddone').removeClass('displaynone');
+                this.setState({ boardName: searchInfo.boardName, data: newTopic, from: newTopic.length, loading: false });
+            }
+            //搜索结果多于20条，还可以通过滚动条继续获取,this.state.loading设置为true，后续可以再次发送fetch请求
+            else {
+                this.setState({ boardName: searchInfo.boardName, data: newTopic, from: newTopic.length, loading: true });
+                $('#focus-topic-getMore').css('display', 'flex');
+                $('#focus-topic-loading').addClass('displaynone');
+            }
+        }
+    }
+
+    async keyWordSearch() {
+        let keyword = location.href.match(/\/search\?boardId=(\d+)&keyword=(.*)/);
+        //console.log("匹配结果", keyword);
+        let searchInfo = { boardId: 0, boardName: '全站', words: null };
+        if (!keyword) {
+            //没有搜索条件
             this.showNoResult();
             this.setState({ loading: false });
         }
         else {
-            this.setState({ boardId: searchInfo.boardId, boardName: searchInfo.boardname, words: searchInfo.words });
-            $('#focus-topic-getMore').css('display', 'none');
-            $('#focus-topic-loading').removeClass('displaynone');
-            this.getData(searchInfo, 0);
+            searchInfo.boardId = parseInt(keyword[1]);
+            searchInfo.boardName = await Utility.getBoardName(parseInt(keyword[1]));
+            let keyword2 = decodeURI(decodeURI(keyword[2]));
+            console.log(keyword2);
+            let words = keyword2.split(' ');
+            //只取前5个关键词
+            if (words.length > 5) {
+                words = words.splice(5);
+            }
+            searchInfo.words = words;
         }
-
+        Utility.setStorage("searchInfo", searchInfo);
+        this.setState({ boardId: searchInfo.boardId, boardName: searchInfo.boardName, words: searchInfo.words});
+        //显示“正在加载”的效果
+        $('#focus-topic-getMore').css('display', 'none');
+        $('#focus-topic-loading').removeClass('displaynone');
+        this.getNewData(searchInfo, 0);
         //滚动条监听
         document.addEventListener('scroll', this.handleScroll);
+    }
+
+    async componentDidMount() {
+        this.keyWordSearch();
+    }
+
+    async componentWillReceiveProps(nextProps) {
+        this.keyWordSearch();
     }
 
     async getMore() {
@@ -103,12 +160,13 @@ export class Search extends React.Component<{}, SearchState> {
         }
     }
 
-    async componentDidUpdate() {
+    /*async componentDidUpdate() {
         let searchInfo = Utility.getStorage("searchInfo");
-        if (JSON.stringify(searchInfo.words) != JSON.stringify(this.state.words)) {
-            window.location.href = "/search";
+        if (searchInfo && JSON.stringify(searchInfo.words) != JSON.stringify(this.state.words)) {
+            let keyword = searchInfo.words.join(' ');
+            window.location.href = `/search?boardId=${searchInfo.boardId}&keword=${keyword}`;
         }
-    }
+    }*/
 
     showNoResult() {
         $('#focus-topic-area').addClass('displaynone');
