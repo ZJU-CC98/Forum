@@ -155,7 +155,7 @@ export class ChildBoard extends React.Component<{ id: number, boards: ChildBoard
 
     onError(e) {
         e.preventDefault();
-        e.target.src = `/static/images/_CC98协会.png`;
+        e.target.src = `/static/images/_CC98.png`;
 
     }
 

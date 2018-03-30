@@ -12,7 +12,10 @@ export class CodeTagHandler extends Ubb.TextTagHandler {
 	get supportedTagNames(): string { return 'code' };
 
 	execCore(content: string, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
-        let element = content.split('\n').map((item, index) => {
+        let codes = content.split('\n');
+        while(!codes[0] && codes.length > 0) codes.shift();
+        while(!codes[codes.length - 1] && codes.length > 0) codes.pop();
+        let element = codes.map((item, index) => {
             return <li>{item}</li>
         });
         return (<div className='ubb-code'>

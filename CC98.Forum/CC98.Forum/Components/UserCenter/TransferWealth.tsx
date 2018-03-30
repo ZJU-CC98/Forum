@@ -36,8 +36,8 @@ interface State {
  * 用户中心转账用组件
  */
 class Wealth extends React.Component<Props, State> {
-    constructor(...args: any[]){
-        super(...args);
+    constructor(props){
+        super(props);
         this.state = {
             userNames: '',
             wealth: '',

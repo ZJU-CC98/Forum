@@ -126,7 +126,7 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
     }
     onError(e) {
         e.preventDefault();
-        e.target.src = `/static/images/_CC98协会.png`;
+        e.target.src = `/static/images/_CC98.png`;
     }
 
     changeBigPaper = async () => {

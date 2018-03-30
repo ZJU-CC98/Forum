@@ -8,24 +8,25 @@ import Post from './ExactActivitiesPost';
 import { UserRecentPost } from '../../States/AppState';
 import Pager from './Pager';
 import { connect } from 'react-redux';
-import { withRouter, match } from 'react-router-dom';
+import { withRouter, match, RouteComponentProps } from 'react-router-dom';
 import { getRecentPosts } from '../../AsyncActions/UserCenter';
 import * as Actions from '../../Actions/UserCenter';
 import { RootState } from '../../Store';
 
-interface Props {
+type ownProps = {
     userRecentPosts: UserRecentPost[];
     totalPage: number;
     hasTotal: boolean;
     isLoading: boolean;
-    match: match<Match>;
     getInfo: (page: number) => void;
     changePage: () => void;
 }
 
-interface Match {
+type ownMatch = {
     page: string;
 }
+
+type Props = RouteComponentProps<ownMatch> & ownProps;
 
 /**
  * 用户中心我的主题组件
@@ -90,4 +91,4 @@ function mapDispatch(dispatch) {
     };
 }
 
-export default withRouter(connect(mapState, mapDispatch)(MyPosts));
+export default connect(mapState, mapDispatch)(withRouter(MyPosts));

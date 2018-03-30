@@ -179,10 +179,10 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
             color: "#f00"
         });
     }
-    async componentWillReceiveProps(newProps) {
+    /*async componentWillReceiveProps(newProps) {
         const data = await Utility.getTopicInfo(newProps.topicInfo.id);
         this.setState({ topicInfo: data });
-    }
+    }*/
     render() {
       
         //console.log(this.props.topicInfo);

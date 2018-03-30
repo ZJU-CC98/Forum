@@ -2324,7 +2324,11 @@ a {
     .ubb-code {
         ol {
             list-style: none;
-            counter-reset: li
+            counter-reset: li;
+            padding: 0;
+            font-family: Consolas, Monaco;
+            overflow-x: auto;
+            white-space: pre;
         }
 
         li {

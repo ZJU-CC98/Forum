@@ -5,7 +5,8 @@
 import * as React from 'react';
 import {
     Route,
-    withRouter
+    withRouter, 
+    RouteComponentProps
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { UserInfo } from '../../../States/AppState';
@@ -41,10 +42,22 @@ interface States {
     userAvatarImgURL: string;
 }
 
+type ownMatch = {
+    id: string,
+    page: string
+}
+
+type ownProps = { 
+    changePage: (page, id) => void,
+    notFoundUser: () => void
+}
+
+type Props = RouteComponentProps<ownMatch> & ownProps;
+
 /**
  * 用户详情主页
  */
-class UserExact extends React.Component<{ match, history, changePage, notFoundUser}, States> {
+class UserExact extends React.Component<Props, States> {
     //组件加载时获取当前访问的用户信息
     async componentDidMount() {
         this.getInfo(this.props);
@@ -115,4 +128,4 @@ function mapDispatch(dispatch) {
     };
 }
 
-const UserExactWithRouter = withRouter(connect(null, mapDispatch)(UserExact));
+const UserExactWithRouter = connect(null, mapDispatch)(withRouter(UserExact));
