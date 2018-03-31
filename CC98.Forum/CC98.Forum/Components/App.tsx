@@ -32,14 +32,6 @@ import { ShowEdit } from './Edit';
 import { Constants } from './Constant';
 import * as Utility from '../Utility';
 export class App extends React.Component {
-
-    componentWillMount() {
-        const theme = Utility.getLocalStorage("userInfo") && Utility.getLocalStorage("userInfo").theme;
-        if(theme){ //当theme存在且不为0时
-            Utility.changeTheme(theme);
-        }
-    }
-
     render() {
         return (<div style={{ width: "100%" }}>
             <ConnectedRouter history={history}>
