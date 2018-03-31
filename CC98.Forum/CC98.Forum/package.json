@@ -3,7 +3,7 @@
   "name": "cc98-forum",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --progress --hot --inline --config .vscode/webpack.config.vscode.js"
+    "dev": "webpack-dev-server --progress --hot --inline --config vscodeConfig/webpack.config.vscode.js"
   },
   "dependencies": {
     "aplayer": "^1.6.0",

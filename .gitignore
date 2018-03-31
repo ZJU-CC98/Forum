@@ -290,10 +290,7 @@ __pycache__/
 /CC98.Forum/CC98.Forum/wwwroot/static/scripts
 /CC98.Forum/CC98.Forum/wwwroot/static/content
 /CC98.Forum/CC98.Forum/wwwroot/static/index.html
-
-# vscode dev config
-# /CC98.Forum/CC98.Forum/.vscode/
-
+/CC98.Forum/CC98.Forum/.vscode/
 /CC98.Forum/CC98.Forum/webpack.config.release.js.map
 /CC98.Forum/CC98.Forum/webpack.config.release.js
 /CC98.Forum/CC98.Forum/webpack.config.debug.js.map
