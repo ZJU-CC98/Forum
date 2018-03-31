@@ -17,9 +17,9 @@
         themeNames[0] = themeNames[2];
         try {
             (function() {
-                var theme = JSON.stringify(localStorage.getItem('userInfo').slice(4)).theme;
+                var theme = JSON.parse(localStorage.getItem('userInfo').slice(4)).theme;
                 if(!theme) throw new Error('用户未选择主题');
-                document.write('<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/' + themeNames[i] + '">');
+                document.write('<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/' + themeNames[theme] + '">');
             })();
         } catch(e) {
             document.write('<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/' + themeNames[0] + '">')
