@@ -33,41 +33,28 @@ type Props = RouteComponentProps<ownMatch> & ownProps;
  * 用户中心我收藏的帖子组件
  */
 class Posts extends React.Component<Props> {
-
     componentWillReceiveProps(newProps: Props){
         if(this.props.match.params.page !== newProps.match.params.page) {
+            const curPage = parseInt(newProps.match.params.page) || 1;
+            this.props.getInfo(curPage);
             window.scroll(0, 0);
         }
     }
 
     componentDidMount() {
+        const curPage = parseInt(this.props.match.params.page) || 1;
+        this.props.getInfo(curPage);
         this.props.changePage();
     }
 
     render() {
         if(this.props.isLoading) {
             return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>;
-        }
-        const curPage = parseInt(this.props.match.params.page) || 1;
-        const totalPage = this.props.hasTotal ? this.props.totalPage : curPage + 1;
-        //如果未请求完所有帖子并且帖子总数小于请求的页数
-        //换言之，当用户向后翻页，或直接通过url定位页数时
-        let shouldLoad = this.props.userRecentPosts.length < (curPage - 1) * 10 + 1 && !this.props.hasTotal;
-        //当用户向前翻页，且翻页后的部分中存在undefined时
-        //仅当用户通过url定位页数后向前翻页才会出现的情况
-        for(let i = (curPage - 1) * 10; i < Math.min(this.props.userRecentPosts.length, curPage * 10); i++){
-            if(!this.props.userRecentPosts[i]){
-                shouldLoad = true;
-                break;
-            }
-        }
-        
-        if(shouldLoad) {
-            this.props.getInfo(curPage);
-            return <div className="user-center-loading"><p className="fa fa-spinner fa-pulse fa-2x fa-fw"></p></div>;
         } else if(this.props.userRecentPosts.length === 0) {
             return <div className="user-posts" style={{ textAlign: 'center' }}>没有主题</div>;
         }
+        const curPage = parseInt(this.props.match.params.page) || 1;
+        const totalPage = this.props.hasTotal ? this.props.totalPage : curPage + 1;
         //state转换为JSX
         let userRecentPosts = this.props.userRecentPosts.slice((curPage - 1) * 10, curPage * 10).map((item) => (<Post key={item.id} userRecentPost={item} />));
         //添加分隔线
