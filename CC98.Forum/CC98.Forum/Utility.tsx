@@ -3247,3 +3247,19 @@ export async function queryWealth(boardId) {
     const json = await response.json();
     return json;
 }
+
+
+/**
+ * @mingyigg
+ * @param boardId
+ * @param from
+ * @param size
+ */
+export async function getBoardRecord(boardId: number, from: number, size: number) {
+    const headers = await formAuthorizeHeader();
+    const url = `/board/${boardId}/events?from=${from}&size=${size}`;
+    const response = await cc98Fetch(url, { headers });
+    const json = await response.json();
+    console.log("版面事件记录", json);
+    return json;
+}

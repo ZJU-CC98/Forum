@@ -13,6 +13,7 @@ import {
     Switch
 } from 'react-router-dom';
 import TopicTitleAndContentState = State.TopicTitleAndContentState;
+import { BoardEvent } from '../../States/BoardEvent'; 
 import { Pager } from '../Pager';
 import { NotFoundTopic, UnauthorizedTopic, UnauthorizedBoard, ServerError } from '../Status';
 import { AdsComponent } from '../MainPage';
@@ -76,13 +77,14 @@ export class List extends RouteComponent<{}, { page: number, boardId: number, bo
                 <Route exact path="/list/:boardId/tag/tag2/:tagId/:page?" component={ListTagContent} />
                 <Route exact path="/list/:boardId/best/:page?" component={ListBestContent} />
                 <Route exact path="/list/:boardId/save/:page?" component={ListSaveContent} />
+                <Route exact path="/list/:boardId/record/:page?" component={BoardRecord} />
                 <Route exact path="/list/:boardId/:page?" component={ListContent} />
             </Switch>
         </div>;
     }
 }
 /**
- 
+ 版面头部，包括版面图标、版面介绍、版主信息等
  */
 
 export class Category extends React.Component<{ boardId, boardInfo }, {}>{
@@ -364,6 +366,7 @@ export class ListTopContent extends React.Component<{ boardId }, { data }>{
         return <div>{this.state.data.map(this.convertTopicToElement)}</div>;
     }
 }
+
 export class BestTopics extends React.Component<{ boardId, curPage }, { data }>{
     constructor(props) {
         super(props);
@@ -670,6 +673,83 @@ export class ListTagsContent extends RouteComponent<{}, { items, totalPage: numb
 
     }
 }
+
+export class BoardRecord extends RouteComponent<{}, { boardId: number, totalPage: number, curPage: number, tags, data: BoardEvent[] }, { page, boardId: number }>{
+    constructor(props) {
+        super(props);
+        this.state = ({
+            boardId: 135,
+            totalPage: 1,
+            curPage: 1,
+            tags: null,
+            data: []
+        });
+    }
+
+    async componentWillReceiveProps(newProps) {
+        let page: number;
+        const p = newProps.match.params.page;
+        // 未提供页码，防止出错不进行后续处理
+        if (!p) {
+            page = 1;
+        }
+
+        // 转换类型
+        else { page = parseInt(p); }
+        let boardId = this.match.params.boardId;
+        let curPage = this.match.params.page;
+        let data = await Utility.getBoardRecord(boardId, (curPage - 1) * 20, 20);
+        let totalPage = parseInt((data.count / 20 + 1).toString());
+        let items = data.boardEvents;
+        let tags = await Utility.getBoardTag(this.match.params.boardId);
+        this.setState({ boardId: boardId, totalPage, curPage: curPage, tags: tags, data: items });
+    }
+
+    async componentDidMount() {
+        let boardId = this.match.params.boardId;
+        let curPage = this.match.params.page;
+        if (!curPage) curPage = 1;
+        let data = await Utility.getBoardRecord(boardId, (curPage - 1) * 20, 20);
+        let totalPage = parseInt((data.count / 20 + 1).toString());
+        let items = data.boardEvents;
+        let tags = await Utility.getBoardTag(this.match.params.boardId);
+        this.setState({ boardId: boardId, totalPage, curPage: curPage, tags: tags, data: items });
+    }
+
+    private convertRecordToElement(item: BoardEvent) {
+        return <BoardRecordContent id={item.id}
+            topicId={item.topicId}
+            boardId={item.boardId}
+            targetUserName={item.targetUserName}
+            operatorUserName={item.operatorUserName}
+            content={item.content}
+            time={item.time}
+            ip={item.ip}
+            isDeleted={item.isDeleted}
+        />;
+    }
+    render() {
+        const curPage = this.state.curPage ? this.state.curPage : 1;
+        const topics = this.state.data.map(this.convertRecordToElement);
+        const boardRecordUrl = `/list/${this.match.params.boardId}/record/`;
+        return <div className="listContent ">
+            <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={boardRecordUrl} tag={this.state.tags} />
+            <div className="column" style={{ width: "100%", border: "#79b8ca solid thin" }}>
+                <div className="row" style={{ justifyContent: 'space-between', backgroundColor: "#79b8ca", color: "#fff" }}>
+                    <div className="row" style={{ alignItems: 'center' }}>
+                        <div><span>对象</span></div>
+                        <div><span>内容</span></div>
+                        <div><span>时间</span></div>
+                        <div><span>操作人</span></div>
+                    </div>
+                </div>
+                <div>{topics}</div>
+            </div>
+            <Pager page={curPage} totalPage={this.state.totalPage} url={boardRecordUrl} />
+        </div>;
+    }
+}
+
 export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndContentState[], totalPage: number, tags }, { page, boardId: number }> {
     constructor(props, context) {
         super(props, context);
@@ -958,7 +1038,21 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
                 </div>
             </Link>
         </div>;
+    }
+}
 
+export class BoardRecordContent extends React.Component<BoardEvent> {
+
+    constructor(props, context) {
+        super(props, context);
     }
 
+    render() {
+        return <div className="boardRecord">
+            <div className="boardRecord-1">{this.props.targetUserName}</div>
+            <div className="boardRecord-2">{this.props.content}</div>
+            <div className="boardRecord-3">{this.props.time}</div>
+            <div className="boardRecord-4">{this.props.operatorUserName}</div>
+               </div>;
+    }
 }

@@ -3229,3 +3229,41 @@ variable {
     --yima-red: red;
     --oldman-black: black;
 }
+
+//版面事件
+.boardRecord {
+    display: flex;
+    flex-direction: row;
+    height: 4rem;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 0.625rem;
+
+    div {
+        display: flex;
+        flex-shrink: 0;
+        font-size: 1rem;
+    }
+}
+
+.boardRecord-1 {
+    width: 7.5rem;
+    text-align: left;
+}
+
+.boardRecord-2 {
+    width: 40rem;
+    text-align: left;
+    flex-grow: 1;
+}
+
+.boardRecord-3 {
+    width: 7.5rem;
+    text-align: left;
+}
+
+.boardRecord-4 {
+    width: 12rem;
+    text-align: right;
+}

@@ -72,6 +72,7 @@
     <None Remove="Reducers\Error.tsx" />
     <None Remove="Reducers\Post.tsx" />
     <None Remove="SignalR.tsx" />
+    <None Remove="States\BoardEvent.tsx" />
     <None Remove="States\MessageWindowState.tsx" />
     <None Remove="States\SearchState.tsx" />
     <None Remove="UbbCode.tsx" />
@@ -161,6 +162,7 @@
     <TypeScriptCompile Include="Reducers\Post.tsx" />
     <TypeScriptCompile Include="Reducers\UserInfo.tsx" />
     <TypeScriptCompile Include="SignalR.tsx" />
+    <TypeScriptCompile Include="States\BoardEvent.tsx" />
     <TypeScriptCompile Include="States\MessageWindowState.tsx" />
     <TypeScriptCompile Include="States\SearchState.tsx" />
     <TypeScriptCompile Include="Store.tsx" />
