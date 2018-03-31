@@ -687,19 +687,14 @@ export class BoardRecord extends RouteComponent<{}, { boardId: number, totalPage
     }
 
     async componentWillReceiveProps(newProps) {
-        let page: number;
-        const p = newProps.match.params.page;
+        let curPage = newProps.match.params.page;
         // 未提供页码，防止出错不进行后续处理
-        if (!p) {
-            page = 1;
+        if (!curPage) {
+            curPage = 1;
         }
-
-        // 转换类型
-        else { page = parseInt(p); }
         let boardId = this.match.params.boardId;
-        let curPage = this.match.params.page;
         let data = await Utility.getBoardRecord(boardId, (curPage - 1) * 20, 20);
-        let totalPage = parseInt((data.count / 20 + 1).toString());
+        let totalPage = parseInt(((data.count-0.5) / 20 + 1).toString());
         let items = data.boardEvents;
         let tags = await Utility.getBoardTag(this.match.params.boardId);
         this.setState({ boardId: boardId, totalPage, curPage: curPage, tags: tags, data: items });
@@ -710,7 +705,7 @@ export class BoardRecord extends RouteComponent<{}, { boardId: number, totalPage
         let curPage = this.match.params.page;
         if (!curPage) curPage = 1;
         let data = await Utility.getBoardRecord(boardId, (curPage - 1) * 20, 20);
-        let totalPage = parseInt((data.count / 20 + 1).toString());
+        let totalPage = parseInt(((data.count-0.5) / 20 + 1).toString());
         let items = data.boardEvents;
         let tags = await Utility.getBoardTag(this.match.params.boardId);
         this.setState({ boardId: boardId, totalPage, curPage: curPage, tags: tags, data: items });
@@ -729,11 +724,12 @@ export class BoardRecord extends RouteComponent<{}, { boardId: number, totalPage
         />;
     }
     render() {
-        const curPage = this.state.curPage ? this.state.curPage : 1;
-        const topics = this.state.data.map(this.convertRecordToElement);
-        const boardRecordUrl = `/list/${this.match.params.boardId}/record/`;
+        const curPage = this.match.params.page ? parseInt(this.match.params.page) : 1;
+        console.log("现在的页码是", curPage);
+        let topics = this.state.data.map(this.convertRecordToElement);
+        let boardRecordUrl = `/list/${this.match.params.boardId}/record/`;
         return <div className="listContent ">
-            <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={boardRecordUrl} tag={this.state.tags} />
+            <Pager page={curPage} totalPage={this.state.totalPage} url={boardRecordUrl} />
             <div className="column" style={{ width: "100%", border: "#79b8ca solid thin" }}>
                 <div className="row" style={{ justifyContent: 'space-between', backgroundColor: "#79b8ca", color: "#fff" }}>
                     <div className="row" style={{ alignItems: 'center' }}>
