@@ -52,7 +52,9 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
         } else {
             realContents = await Utility.getTopicContent(this.props.topicId, page);
         }
-        const data = await Utility.queryWealth(this.props.boardInfo.id);
+        let data = { rewardMaxValue: 0, rewardTotalValue: 0, boardName: this.props.boardInfo.name };
+        if (Utility.isMaster(this.props.boardInfo.boardMasters))
+            data = await Utility.queryWealth(this.props.boardInfo.id);
         this.setState({ m_wealth: data.rewardMaxValue, d_wealth: data.rewardTotalValue, boardName: data.boardName, contents: realContents });
     }
     async componentDidMount() {
@@ -79,7 +81,9 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
             }
         }
         const masters = this.props.boardInfo.boardMasters;
-        const data = await Utility.queryWealth(this.props.boardInfo.id);
+        let data = { rewardMaxValue: 0, rewardTotalValue: 0, boardName: this.props.boardInfo.name };
+        if (Utility.isMaster(this.props.boardInfo.boardMasters)) 
+        data = await Utility.queryWealth(this.props.boardInfo.id);
         this.setState({ m_wealth: data.rewardMaxValue, d_wealth: data.rewardTotalValue, boardName: data.boardName, inWaiting: false, contents: realContents, masters: masters });
     }
     async componentWillReceiveProps(newProps) {
@@ -107,7 +111,9 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
                 if (!realContents) this.setState({ inWaiting: false, contents: [] });
             }
             const masters = newProps.boardInfo.boardMasters;
-            const data = await Utility.queryWealth(newProps.boardInfo.id);
+            let data = { rewardMaxValue: 0, rewardTotalValue: 0, boardName: this.props.boardInfo.name };
+            if (Utility.isMaster(masters))
+                data = await Utility.queryWealth(this.props.boardInfo.id);
             this.setState({ m_wealth: data.rewardMaxValue, d_wealth: data.rewardTotalValue, inWaiting: false, contents: realContents, masters: masters });
         }
     }
