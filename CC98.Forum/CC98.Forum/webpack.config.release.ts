@@ -62,7 +62,8 @@ const config: Webpack.Configuration = {
 			filename: 'static/index.html',
 			minify: {
 				collapseWhitespace: true
-			}
+            },
+            inject: false
 		}),
 
 		// clean wwwroot
