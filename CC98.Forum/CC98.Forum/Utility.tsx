@@ -882,7 +882,7 @@ export function transerRecentTime(time) {
  */
 export async function sortContactList(recentContact, router) {
     //看url中是否携带id信息，如果有的话就作为第一个联系人
-    let urlId = location.href.match(/id=(\S+)/);
+    let urlId = location.href.match(/id=(\d+)/);
     if (urlId) {
         let chatManId = parseInt(urlId[1]);
         //如果联系人为空，则查找该联系人信息并作为联系人数组的元素
@@ -969,9 +969,11 @@ export async function sortContactList(recentContact, router) {
     else { //看url中是否携带name信息，如果有的话就作为第一个联系人
         let urlName = location.href.match(/name=(\S+)/);
         if (urlName) {
+            console.log("联系人姓名", urlName[1]);
             let chatManName = urlName[1];
             //如果联系人为空，则查找该联系人信息并作为联系人数组的元素
             if (!recentContact || recentContact.length === 0) {
+                console.log("如果联系人为空，则查找该联系人信息并作为联系人数组的元素");
                 let response0;
                 let response1;
                 let flag = 1;
@@ -1003,6 +1005,7 @@ export async function sortContactList(recentContact, router) {
             }
             else {
                 //先看一下该聊天对象在不在联系人列表里
+                console.log("先看一下该聊天对象在不在联系人列表里");
                 for (var i = 0; i < recentContact.length; i++) {
                     if (recentContact[i].name == chatManName) {
                         break;
@@ -1012,12 +1015,14 @@ export async function sortContactList(recentContact, router) {
                 if (i == 0) { }
                 //如果在列表里但不是第一个，就把他提到第一个
                 else if (i < recentContact.length) {
+                    console.log("如果在列表里但不是第一个，就把他提到第一个");
                     let indexData = recentContact[i];
                     recentContact.splice(i, 1);
                     recentContact.unshift(indexData);
                 }
                 //如果不在联系人列表里，那就查找该人信息并作为列表第一个
                 else {
+                    console.log("如果不在联系人列表里，那就查找该人信息并作为列表第一个");
                     let response0;
                     let response1;
                     let flag = 1;
@@ -1033,6 +1038,7 @@ export async function sortContactList(recentContact, router) {
                             case 500:
                                 window.location.href = "/status/ServerError";
                         }
+                        response1 = await response0.json();
                     } catch (e) {
                         window.location.href = ("/status/Disconnected");
                         flag = 0;
