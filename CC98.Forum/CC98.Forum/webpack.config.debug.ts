@@ -59,7 +59,6 @@ const config: Webpack.Configuration = {
         new HTMLWebpackPlugin({
 			template: 'Template.ejs',
 			filename: 'static/index.html',
-			chunks: ['main', 'vendors'],
 			inject: false
 		}),
         
