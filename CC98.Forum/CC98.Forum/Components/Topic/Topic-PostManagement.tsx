@@ -236,7 +236,7 @@ export class PostManagement extends React.Component<Props, {wealth: number, pres
         const UIId = `#manage${this.props.postId}`;
         $(UIId).css("display", "none");
     }
-    async componentWillMount() {
+    async componentDidMount() {
         const awardOptionId = `manageOptions-award${this.props.postId}`;
         const awardOptionJQId = `#manageOptions-award${this.props.postId}`;
         const punishOptionId = `manageOptions-punish${this.props.postId}`;
@@ -287,6 +287,7 @@ export class PostManagement extends React.Component<Props, {wealth: number, pres
         let UI;
         let m_wealth:any = 0;
         if (!this.props.m_wealth) m_wealth = '不限';
+        else m_wealth = this.props.m_wealth;
         const awardUI = <div className="column manageInfo" id="award">
 
             <div className="row manageOperation">
