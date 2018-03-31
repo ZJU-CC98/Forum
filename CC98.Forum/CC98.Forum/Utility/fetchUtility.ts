@@ -33,7 +33,7 @@ export async function getToken() {
         method: "POST",
         headers,
         // body: $.param(requestBody)
-        body: Object.keys(requestBody).map((k, v) => `${k}=${v}`).join('&')
+        body: Object.keys(requestBody).map(key =>`${key}=${requestBody[key]}`).join('&')
     });
     const data = await response.json();
     
