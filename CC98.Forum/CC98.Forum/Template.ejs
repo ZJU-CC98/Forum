@@ -8,7 +8,23 @@
     <link type="text/css" rel="stylesheet" href="/static/content/DPlayer.min.css" />
     <link type="text/css" rel="stylesheet" href="/static/content/APlayer.min.css" />
     <link type="text/css" rel="stylesheet" href="/static/scripts/lib/editor.md/css/editormd.css" />
-    <link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/css_green.min.css">
+    <script>
+        var themeNames = [''];
+        <% for (var cssFile in htmlWebpackPlugin.files.css) { %>
+        themeNames.push("<%= htmlWebpackPlugin.files.css[cssFile].split('/').pop() %>");
+        <% } %>
+        // themeNames[0]为当前的默认主题
+        themeNames[0] = themeNames[2];
+        try {
+            (function() {
+                var theme = JSON.stringify(localStorage.getItem('userInfo').slice(4)).theme;
+                if(!theme) throw new Error('用户未选择主题');
+                document.write('<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/' + themeNames[i] + '">');
+            })();
+        } catch(e) {
+            document.write('<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/' + themeNames[0] + '">')
+        }
+    </script>
 </head>
 <body style="display:flex;justify-content:center;">
     <div id="root"></div>

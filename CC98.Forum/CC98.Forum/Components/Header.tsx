@@ -291,57 +291,26 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {     //
             let val: any = $('#searchText').val();
             if (val && val != '') {
                 if (searchBoxSelect.text() === '主题' || searchBoxSelect.text() === '全站') {
-                    let words = val.split(' ');
-                    if (words) {
-                        if (words.length > 5) {
-                            alert("关键词过多，请不要超过5个！");
-                        }
-                        else {
-                            let searchInfo = { boardId: 0, boardName: '全站', words: words };
-                            Utility.setStorage('searchInfo', searchInfo);
-                            this.props.history.push('/search');
-                        }
-                    }
+                    this.props.history.push(`/search?boardId=0&keyword=${encodeURI(val)}`);
                 }
                 else if (searchBoxSelect.text() === '版内') {
                     //查看当前是全站还是某版，如果是某版就查询到某版id
                     let url1 = location.href.match(/\/topic\/(\d+)/);
                     let url2 = location.href.match(/\/list\/(\d+)/);
-                    let url3 = location.href.match(/\/(searchBoard)/);
-                    let url4 = location.href.match(/\/(search)/);
+                    let url3 = location.href.match(/\/search?boardId=(\d+)&/);
                     let boardId = 0;
-                    let boardName = '全站';
                     if (url1) {
                         let topicId = url1[1];
                         let response = await Utility.getTopicInfo(topicId);
                         boardId = response.boardId;
-                        boardName = await Utility.getBoardName(boardId);
                     }
                     else if (url2) {
                         boardId = parseInt(url2[1]);
-                        boardName = await Utility.getBoardName(boardId);
                     }
                     else if (url3) {
+                        boardId = parseInt(url3[1]);
                     }
-                    else if (url4) {
-                        let searchInfo = Utility.getStorage("searchInfo");
-                        if (searchInfo) {
-                            boardId = searchInfo.boardId;
-                            boardName = searchInfo.boardName;
-                        }
-                    }
-
-                    let words = val.split(' ');
-                    if (words) {
-                        if (words.length > 5) {
-                            alert("关键词过多，请不要超过5个！");
-                        }
-                        else {
-                            let searchInfo = { boardId: boardId, boardName: boardName, words: words };
-                            Utility.setStorage('searchInfo', searchInfo);
-                            this.props.history.push('/search');
-                        }
-                    }
+                    this.props.history.push(`/search?boardId=${boardId}&keyword=${encodeURI(val)}`);
                 }
                 else if (searchBoxSelect.text() === '用户') {
                     let data = await Utility.getUserInfoByName(val);
@@ -349,39 +318,24 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {     //
                         this.props.history.push(`/user/id/${data.id}`);
                     }
                     else {
-                        Utility.removeStorage('searchInfo');
                         this.props.history.push('/search');
                     }
                 }
                 else if (searchBoxSelect.text() === '版面') {
-                    let host = window.location.host;
-                    let boardResult = await Utility.getSearchBoard(val, this.context.router);
-                    if (boardResult) {
-                        if (boardResult === []) {
-                            Utility.removeStorage('searchInfo');
-                            this.props.history.push('/search');
-                        }
-                        else if (boardResult.length > 0) {
-                            Utility.setStorage("searchBoardInfo", boardResult);
-                            this.props.history.push('/searchBoard');
-                        }
-                        else {
-                            Utility.removeStorage('searchInfo');
-                            this.props.history.push('/search');
-                        }
-                    }
-                    else {
-                        Utility.removeStorage('searchInfo');
-                        this.props.history.push('/search');
-                    }
+                    this.props.history.push(`/searchBoard?keyword=${encodeURI(val)}`);
                 }
             }
         });
     }
 
+    //回车搜索
     keypress_submit(e) {
-        var evt = window.event || e;
-        if (evt.keyCode === 13) {
+        var evt = e || window.event;
+        var code = evt.which || evt.keyCode || evt.charCode; //提高浏览器兼容性
+        if (code === 13) {
+            $('.searchIco').click();
+        }
+        else if (evt.key === 'Enter') { //提高浏览器兼容性
             $('.searchIco').click();
         }
     }
@@ -391,7 +345,7 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {     //
         let url1 = location.href.match(/\/topic\/(\d+)/);
         let url2 = location.href.match(/\/list\/(\d+)/);
         let url3 = location.href.match(/\/(searchBoard)/);
-        let url4 = location.href.match(/\/(search)/);
+        let url4 = location.href.match(/\/search\?boardId=(\d+)/);
         let flag = 1;
         if (url1) {
             flag = 0;
@@ -401,13 +355,8 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {     //
         }
         else if (url3) {
         }
-        else if (url4) {
-            let searchInfo = Utility.getStorage("searchInfo");
-            if (searchInfo) {
-                if (searchInfo.boardId != 0) {
-                    flag = 0;
-                }
-            }
+        else if (url4 && parseInt(url4[1]) !== 0) {
+            flag = 0;
         }
 
         if (flag) {

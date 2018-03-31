@@ -11,7 +11,8 @@
 			"es5",
 			"es6"
 		],
-		"allowSyntheticDefaultImports": true
+		"allowSyntheticDefaultImports": true,
+		"importHelpers": true
 	},
 	"include": [
 		"webpack.config.debug.ts",

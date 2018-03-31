@@ -37,30 +37,14 @@ const config: Webpack.Configuration = {
 
     entry: {
         main: './Main.tsx',
-        css_green: './Themes/forgive_green.scss',
         css_blue: './Themes/wuteng_blue.scss',
+        css_green: './Themes/forgive_green.scss',
         css_more_green: './Themes/deep_dark_green.scss',
-        vendors: [
-            'react',
-            'react-dom',
-            'react-router-dom',
-            'redux',
-            'react-redux',
-            'redux-thunk',
-            'url-join',
-            'blueimp-canvas-to-blob',
-            'history',
-            'whatwg-fetch',
-            'aplayer',
-            'dplayer',
-            'es6-promise',
-            'core-js/shim',
-        ]
     },
     output: {
         path: path.resolve(__dirname, 'wwwroot/'),
         publicPath: '/',
-        filename: 'static/scripts/[name]-[hash:8].js'
+        filename: 'static/scripts/[name]-[chunkhash:8].js'
     },
     
     devtool: 'source-map',
@@ -76,7 +60,6 @@ const config: Webpack.Configuration = {
         new HTMLWebpackPlugin({
             template: 'Template.ejs',
             filename: 'static/index.html',
-            chunks: ['main', 'vendors'],
             minify: {
 				collapseWhitespace: true
 			}
@@ -101,7 +84,7 @@ const config: Webpack.Configuration = {
             { from: 'node_modules/aplayer/dist/APlayer.min.css', to: 'static/content/APlayer.min.css' }
         ]),
 
-        new ExtractTextPlugin('static/content/[name].min.css'),
+        new ExtractTextPlugin('static/content/[name]-[chunkhash:8].css'),
     ],
 
     optimization: {

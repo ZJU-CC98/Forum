@@ -105,8 +105,6 @@
     <None Remove="Ubb\UrlTextHandler.tsx" />
     <None Remove="Ubb\UserTagHandler.tsx" />
     <None Remove="Ubb\UTagHandler.tsx" />
-    <None Remove="webpack.config.release.js" />
-    <None Remove="webpack.config.release.ts" />
   </ItemGroup>
 
   <ItemGroup>
