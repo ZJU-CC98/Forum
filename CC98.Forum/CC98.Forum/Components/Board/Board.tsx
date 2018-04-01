@@ -724,7 +724,7 @@ export class BoardRecord extends RouteComponent<{}, { boardId: number, totalPage
         />;
     }
     render() {
-        const curPage = this.match.params.page ? parseInt(this.match.params.page) : 1;
+        const curPage = this.match.params.page ? parseInt(this.match.params.page) : 1; 
         console.log("现在的页码是", curPage);
         let topics = this.state.data.map(this.convertRecordToElement);
         let boardRecordUrl = `/list/${this.match.params.boardId}/record/`;
@@ -733,10 +733,10 @@ export class BoardRecord extends RouteComponent<{}, { boardId: number, totalPage
             <div className="column" style={{ width: "100%", border: "#79b8ca solid thin" }}>
                 <div className="row" style={{ justifyContent: 'space-between', backgroundColor: "#79b8ca", color: "#fff" }}>
                     <div className="row" style={{ alignItems: 'center' }}>
-                        <div><span>对象</span></div>
-                        <div><span>内容</span></div>
-                        <div><span>时间</span></div>
-                        <div><span>操作人</span></div>
+                        <div className="listContentTag" style={{ alignItems: 'center', width: "7.5rem" }}><span>对象</span></div>
+                        <div className="listContentTag" style={{ alignItems: 'center', width:"40rem" }}><span>内容</span></div>
+                        <div className="listContentTag" style={{ alignItems: 'center', width: "12rem" }}><span>时间</span></div>
+                        <div className="listContentTag" style={{ alignItems: 'center', width: "7.5rem" }}><span>操作人</span></div>
                     </div>
                 </div>
                 <div>{topics}</div>
