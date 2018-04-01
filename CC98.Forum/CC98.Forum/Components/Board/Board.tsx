@@ -915,8 +915,11 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         let totalPage = count % 10 === 0 ? count / 10 : (count - count % 10) / 10 + 1;
         
         const pager = []
-        if (totalPage <= 7) {
-            for (let i = 1; i < totalPage; i++)
+        if (totalPage === 1) {
+            // pager to be []
+        }
+        else if (totalPage <= 7) {
+            for (let i = 1; i <= totalPage; i++)
                 pager.push(i)
         } else {
             pager.push(1, 2, 3, 4, -1, totalPage - 2, totalPage - 1, totalPage)
