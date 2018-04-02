@@ -1052,15 +1052,37 @@ export class BoardRecordContent extends React.Component<BoardEvent> {
 
     constructor(props, context) {
         super(props, context);
+        this.ipOver = this.ipOver.bind(this);
+        this.ipOut = this.ipOut.bind(this);
+    }
+
+    ipOver() {
+        console.log("进入悬浮");
+        if (this.props.ip !== '*') {
+            console.log(this.props.ip);
+            $(`#ip_${this.props.id}`).removeClass('displaynone');
+        }
+    }
+
+    ipOut() {
+        console.log("退出悬浮");
+        $(`#ip_${this.props.id}`).addClass('displaynone');
     }
 
     render() {
-
+        let targetUserName;
+        if (this.props.targetUserName) {
+            targetUserName = <a href={`/user/name/${this.props.targetUserName}`} target="_blank">{this.props.targetUserName}</a>;
+        }
+        else {
+            targetUserName = "匿名用户";
+        }
         return <div className="boardRecord" id="changeColor">
-            <div className="boardRecord-1"><a href={`/user/name/${this.props.targetUserName}`} target="_blank">{this.props.targetUserName}</a></div>
+            <div className="boardRecord-1">{targetUserName}</div>
             <div className="boardRecord-2"><a href={`/topic/${this.props.topicId}`} target="_blank">{this.props.content}</a></div>
             <div className="boardRecord-3">{moment(this.props.time).format('YY-MM-DD HH:mm')}</div>
-            <div className="boardRecord-4"><a href={`/user/name/${this.props.operatorUserName}`} target="_blank">{this.props.operatorUserName}</a></div>
-               </div>;
+            <div className="boardRecord-4" onMouseOver={this.ipOver} onMouseOut={this.ipOut}><a href={`/user/name/${this.props.operatorUserName}`} target="_blank">{this.props.operatorUserName}</a></div>
+            <div className="boardRecord-ip displaynone" id={`ip_${this.props.id}`}>{this.props.ip}</div>
+        </div>;
     }
 }

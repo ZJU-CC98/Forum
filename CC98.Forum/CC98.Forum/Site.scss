@@ -3239,9 +3239,9 @@ variable {
     justify-content: space-between;
     align-items: center;
     margin-right: 0.625rem;
+    position: relative;
 
     div {
-        display: flex;
         flex-shrink: 0;
         font-size: 1rem;
 
@@ -3252,24 +3252,34 @@ variable {
 }
 
 .boardRecord-1 {
+    display: flex;
     width: 7.5rem;
-    justify-content:center;
+    justify-content: center;
 }
 
 .boardRecord-2 {
+    display: flex;
     width: 40rem;
     flex-grow: 1;
     justify-content: flex-start;
 }
 
 .boardRecord-3 {
+    display: flex;
     width: 12rem;
     text-align: left;
     justify-content: center;
 }
 
 .boardRecord-4 {
+    display: flex;
     width: 7.5rem;
     text-align: right;
     justify-content: center;
+}
+
+.boardRecord-ip {
+    position: absolute;
+    right: 3rem;
+    top: -0.5rem;
 }
