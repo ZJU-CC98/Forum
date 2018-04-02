@@ -416,7 +416,7 @@ body {
     padding-left:2rem;
     padding-right:2rem;
 }
-#tagColumn {
+.tagColumn {
     width: 100%;
     border: $color_main solid thin;
 }
@@ -948,11 +948,10 @@ a {
     line-height: 4rem;
 }
 
-#board-topBar {
+.board-topBar {
     justify-content: space-between;
     background-color: $color_main;
     color: #fff;
-
 }
 .bgcolor {
     color: #fff;
@@ -3282,4 +3281,24 @@ variable {
     position: absolute;
     right: 3rem;
     top: -0.5rem;
+}
+
+.listContentBottom {
+    display:flex;
+    justify-content: center;
+    position: relative;
+}
+
+.boardRecordBtn {
+    position: absolute;
+    right: -0.1rem;
+    top: 1rem;
+    height: 1.8rem;
+    width: 8rem;
+    line-height: 1.8rem;
+    text-align: center;
+    border: 1px solid transparent;
+    font-size: 1rem;
+    background-color: $color-main;
+    color: #fff
 }

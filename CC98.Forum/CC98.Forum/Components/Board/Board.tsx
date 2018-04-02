@@ -464,13 +464,13 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
         const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
+        const recordTopicsUrl = `/list/${this.match.params.boardId}/record/`;
         return <div className="listContent ">
             <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} tag={this.state.tags} />
-            <div className="column" id="tagColumn">
-                <div className="row" id="board-topBar" >
+            <div className="column tagColumn">
+                <div className="row board-topBar">
                     <div className="row" style={{ alignItems: 'center' }} >
-
-                        <div className="listContentTag">全部</div>
+                        <div className="listContentTag"><Link to={normalTopicsUrl}>全部</Link></div>
                         <div className="listContentTag"><Link to={bestTopicsUrl}>精华</Link></div>
                         <div className="listContentTag"><Link to={saveTopicsUrl}>保存</Link></div>
                     </div>
@@ -482,7 +482,7 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
                 {topTopics}
                 <div>{topics}</div>
             </div>
-            <Pager page={curPage} totalPage={this.state.totalPage} url={normalTopicsUrl} />
+            <div className="listContentBottom"><Pager page={curPage} totalPage={this.state.totalPage} url={normalTopicsUrl} /><Link to={recordTopicsUrl}><div className="boardRecordBtn">查看版面事件</div></Link></div>
         </div>;
 
     }
@@ -559,24 +559,24 @@ export class ListTagContent extends RouteComponent<{}, { items, totalPage: numbe
         const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
         const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
+        const recordTopicsUrl = `/list/${this.match.params.boardId}/record/`;
         return <div className="listContent ">
             <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={tagUrl} tag={this.state.tags} />
-            <div className="column" style={{ width: "100%", border: "#79b8ca solid thin" }}>
-                <div className="row" style={{ justifyContent: 'space-between', backgroundColor: "#79b8ca", color: "#fff" }}>
+            <div className="column tagColumn">
+                <div className="row board-topBar">
                     <div className="row" style={{ alignItems: 'center' }} >
-
                         <div className="listContentTag"><Link to={normalTopicsUrl}> 全部</Link></div>
                         <div className="listContentTag"><Link to={bestTopicsUrl}>精华</Link></div>
                         <div className="listContentTag"><Link to={saveTopicsUrl}>保存</Link></div>
                     </div>
                     <div className="row" style={{ alignItems: 'center' }}>
-                        <div style={{ marginRight: '19.3rem' }}><span>作者</span></div>
-                        <div style={{ marginRight: '7.6875rem' }}><span>最后回复</span></div>
+                        <div style={{ marginRight: '14rem' }}><span>作者</span></div>
+                        <div style={{ marginRight: '8rem' }}><span>最后回复</span></div>
                     </div>
                 </div>
                 <div>{topics}</div>
             </div>
-            <Pager page={curPage} totalPage={this.state.totalPage} url={tagUrl} />
+            <div className="listContentBottom"><Pager page={curPage} totalPage={this.state.totalPage} url={tagUrl} /><Link to={recordTopicsUrl}><div className="boardRecordBtn">查看版面事件</div></Link></div>
         </div>;
 
     }
@@ -651,10 +651,11 @@ export class ListTagsContent extends RouteComponent<{}, { items, totalPage: numb
         const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
         const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
+        const recordTopicsUrl = `/list/${this.match.params.boardId}/record/`;
         return <div className="listContent ">
             <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={tagUrl} tag={this.state.tags} />
-            <div className="column" style={{ width: "100%", border: "#79b8ca solid thin" }}>
-                <div className="row" style={{ justifyContent: 'space-between', backgroundColor: "#79b8ca", color: "#fff" }}>
+            <div className="column tagColumn">
+                <div className="row board-topBar">
                     <div className="row" style={{ alignItems: 'center' }} >
 
                         <div className="listContentTag"><Link to={normalTopicsUrl}> 全部</Link></div>
@@ -662,13 +663,13 @@ export class ListTagsContent extends RouteComponent<{}, { items, totalPage: numb
                         <div className="listContentTag"><Link to={saveTopicsUrl}>保存</Link></div>
                     </div>
                     <div className="row" style={{ alignItems: 'center' }}>
-                        <div style={{ marginRight: '19.3rem' }}><span>作者</span></div>
-                        <div style={{ marginRight: '7.6875rem' }}><span>最后回复</span></div>
+                        <div style={{ marginRight: '14rem' }}><span>作者</span></div>
+                        <div style={{ marginRight: '8rem' }}><span>最后回复</span></div>
                     </div>
                 </div>
                 <div>{topics}</div>
             </div>
-            <Pager page={curPage} totalPage={this.state.totalPage} url={tagUrl} />
+            <div className="listContentBottom"><Pager page={curPage} totalPage={this.state.totalPage} url={tagUrl} /><Link to={recordTopicsUrl}><div className="boardRecordBtn">查看版面事件</div></Link></div>
         </div>;
 
     }
@@ -730,8 +731,8 @@ export class BoardRecord extends RouteComponent<{}, { boardId: number, totalPage
         let boardRecordUrl = `/list/${this.match.params.boardId}/record/`;
         return <div className="listContent ">
             <div style={{ display: "flex", justifyContent: "flex-end" }}><Pager page={curPage} totalPage={this.state.totalPage} url={boardRecordUrl} /></div>
-            <div className="column" style={{ width: "100%", border: "#79b8ca solid thin" }}>
-                <div className="row" style={{ justifyContent: 'space-between', backgroundColor: "#79b8ca", color: "#fff" }}>
+            <div className="column tagColumn">
+                <div className="row board-topBar">
                     <div className="row" style={{ alignItems: 'center' }}>
                         <div className="listContentTag" style={{ alignItems: 'center', width: "5rem", textAlign:"center" }}><span>对象</span></div>
                         <div className="listContentTag" style={{ alignItems: 'center', width: "46rem", textAlign: "center" }}><span>内容</span></div>
@@ -804,25 +805,26 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
         const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
         const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
+        const recordTopicsUrl = `/list/${this.match.params.boardId}/record/`;
         return <div className="listContent ">
             <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={bestTopicsUrl} tag={this.state.tags} />
-            <div className="column" style={{ width: "100%", border: "#79b8ca solid thin" }}>
-                <div className="row" style={{ justifyContent: 'space-between', backgroundColor: "#79b8ca", color: "#fff" }}>
+            <div className="column tagColumn">
+                <div className="row board-topBar">
                     <div className="row" style={{ alignItems: 'center' }} >
 
                         <div className="listContentTag"><Link to={normalTopicsUrl} >全部</Link></div>
-                        <div className="listContentTag">精华</div>
+                        <div className="listContentTag"><Link to={bestTopicsUrl}>精华</Link></div>
                         <div className="listContentTag"><Link to={saveTopicsUrl}>保存</Link></div>
                     </div>
                     <div className="row" style={{ alignItems: 'center' }}>
-                        <div style={{ marginRight: '19.3rem' }}><span>作者</span></div>
-                        <div style={{ marginRight: '7.6875rem' }}><span>最后回复</span></div>
+                        <div style={{ marginRight: '14rem' }}><span>作者</span></div>
+                        <div style={{ marginRight: '8rem' }}><span>最后回复</span></div>
                     </div>
                 </div>
                 {topTopics}
                 <div>{topics}</div>
             </div>
-            <Pager page={curPage} totalPage={this.state.totalPage} url={bestTopicsUrl} />
+            <div className="listContentBottom"><Pager page={curPage} totalPage={this.state.totalPage} url={bestTopicsUrl} /><Link to={recordTopicsUrl}><div className="boardRecordBtn">查看版面事件</div></Link></div>
         </div>;
 
     }
@@ -880,25 +882,26 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
         const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
         const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
+        const recordTopicsUrl = `/list/${this.match.params.boardId}/record/`;
         return <div className="listContent ">
             <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={saveTopicsUrl} tag={this.state.tags} />
-            <div className="column" style={{ width: "100%", border: "#79b8ca solid thin" }}>
-                <div className="row" style={{ justifyContent: 'space-between', backgroundColor: "#79b8ca", color: "#fff" }}>
+            <div className="column tagColumn">
+                <div className="row board-topBar">
                     <div className="row" style={{ alignItems: 'center' }} >
 
                         <div className="listContentTag"><Link to={normalTopicsUrl} >全部</Link></div>
-                        <div className="listContentTag">精华</div>
+                        <div className="listContentTag"><Link to={bestTopicsUrl}>精华</Link></div>
                         <div className="listContentTag"><Link to={saveTopicsUrl}>保存</Link></div>
                     </div>
                     <div className="row" style={{ alignItems: 'center' }}>
-                        <div style={{ marginRight: '19.3rem' }}><span>作者</span></div>
-                        <div style={{ marginRight: '7.6875rem' }}><span>最后回复</span></div>
+                        <div style={{ marginRight: '14rem' }}><span>作者</span></div>
+                        <div style={{ marginRight: '8rem' }}><span>最后回复</span></div>
                     </div>
                 </div>
                 {topTopics}
                 <div>{topics}</div>
             </div>
-            <Pager page={curPage} totalPage={this.state.totalPage} url={saveTopicsUrl} />
+            <div className="listContentBottom"><Pager page={curPage} totalPage={this.state.totalPage} url={saveTopicsUrl} /><Link to={recordTopicsUrl}><div className="boardRecordBtn">查看版面事件</div></Link></div>
         </div>;
 
     }
