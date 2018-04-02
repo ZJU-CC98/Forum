@@ -271,8 +271,7 @@ body {
     margin-right: 1rem;
 }
 
-#like span {
-}
+
 
 #tags {
     display: flex;
@@ -3034,12 +3033,6 @@ a {
         padding: 2px 0 0 3px;
     }
 
-    .column ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-    }
-
     .tagBoxSub {
         width: 4rem;
         border-radius: 5px;
@@ -3111,15 +3104,6 @@ a {
     }
 
 
-
-    .column ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-    }
-
-
-
     .tagBoxSub1 {
         width: 4rem;
         border-radius: 5px;
@@ -3131,9 +3115,9 @@ a {
         font-size: 12px;
         font-family: 微软雅黑;
         color: rgb(80,80,80);
+        background: rgb(233,233,233);
         z-index: 1000;
     }
-
 
 
     .tagBoxSub1 li {
@@ -3141,12 +3125,6 @@ a {
         cursor: pointer;
         padding-left: 5px;
         padding-top: 3px;
-    }
-
-
-
-    .tagBoxSub1 {
-        background: rgb(233,233,233);
     }
 
     .findIP {
