@@ -3234,7 +3234,7 @@ variable {
 .boardRecord {
     display: flex;
     flex-direction: row;
-    height: 4rem;
+    height: 3.6rem;
     width: 100%;
     justify-content: space-between;
     align-items: center;
@@ -3244,26 +3244,32 @@ variable {
         display: flex;
         flex-shrink: 0;
         font-size: 1rem;
+
+        a:hover {
+            text-decoration: underline;
+        }
     }
 }
 
 .boardRecord-1 {
     width: 7.5rem;
-    text-align: left;
+    justify-content:center;
 }
 
 .boardRecord-2 {
     width: 40rem;
-    text-align: left;
     flex-grow: 1;
+    justify-content: flex-start;
 }
 
 .boardRecord-3 {
-    width: 7.5rem;
+    width: 12rem;
     text-align: left;
+    justify-content: center;
 }
 
 .boardRecord-4 {
-    width: 12rem;
+    width: 7.5rem;
     text-align: right;
+    justify-content: center;
 }

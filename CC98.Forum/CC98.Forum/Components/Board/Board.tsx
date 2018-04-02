@@ -729,14 +729,14 @@ export class BoardRecord extends RouteComponent<{}, { boardId: number, totalPage
         let topics = this.state.data.map(this.convertRecordToElement);
         let boardRecordUrl = `/list/${this.match.params.boardId}/record/`;
         return <div className="listContent ">
-            <Pager page={curPage} totalPage={this.state.totalPage} url={boardRecordUrl} />
+            <div style={{ display: "flex", justifyContent: "flex-end" }}><Pager page={curPage} totalPage={this.state.totalPage} url={boardRecordUrl} /></div>
             <div className="column" style={{ width: "100%", border: "#79b8ca solid thin" }}>
                 <div className="row" style={{ justifyContent: 'space-between', backgroundColor: "#79b8ca", color: "#fff" }}>
                     <div className="row" style={{ alignItems: 'center' }}>
-                        <div className="listContentTag" style={{ alignItems: 'center', width: "7.5rem" }}><span>对象</span></div>
-                        <div className="listContentTag" style={{ alignItems: 'center', width:"40rem" }}><span>内容</span></div>
-                        <div className="listContentTag" style={{ alignItems: 'center', width: "12rem" }}><span>时间</span></div>
-                        <div className="listContentTag" style={{ alignItems: 'center', width: "7.5rem" }}><span>操作人</span></div>
+                        <div className="listContentTag" style={{ alignItems: 'center', width: "5rem", textAlign:"center" }}><span>对象</span></div>
+                        <div className="listContentTag" style={{ alignItems: 'center', width: "46rem", textAlign: "center" }}><span>内容</span></div>
+                        <div className="listContentTag" style={{ alignItems: 'center', width: "6rem", textAlign: "center" }}><span>时间</span></div>
+                        <div className="listContentTag" style={{ alignItems: 'center', width: "11rem", textAlign: "center" }}><span>操作人</span></div>
                     </div>
                 </div>
                 <div>{topics}</div>
@@ -1055,11 +1055,12 @@ export class BoardRecordContent extends React.Component<BoardEvent> {
     }
 
     render() {
-        return <div className="boardRecord">
-            <div className="boardRecord-1">{this.props.targetUserName}</div>
-            <div className="boardRecord-2">{this.props.content}</div>
-            <div className="boardRecord-3">{this.props.time}</div>
-            <div className="boardRecord-4">{this.props.operatorUserName}</div>
+
+        return <div className="boardRecord" id="changeColor">
+            <div className="boardRecord-1"><a href={`/user/name/${this.props.targetUserName}`} target="_blank">{this.props.targetUserName}</a></div>
+            <div className="boardRecord-2"><a href={`/topic/${this.props.topicId}`} target="_blank">{this.props.content}</a></div>
+            <div className="boardRecord-3">{moment(this.props.time).format('YY-MM-DD HH:mm')}</div>
+            <div className="boardRecord-4"><a href={`/user/name/${this.props.operatorUserName}`} target="_blank">{this.props.operatorUserName}</a></div>
                </div>;
     }
 }
