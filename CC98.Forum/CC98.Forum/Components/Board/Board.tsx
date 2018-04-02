@@ -89,7 +89,7 @@ export class List extends RouteComponent<{}, { page: number, boardId: number, bo
 
 export class Category extends React.Component<{ boardId, boardInfo }, {}>{
     render() {
-        const listUrl = `/list/${this.props.boardId}/1#1`;
+        const listUrl = `/list/${this.props.boardId}`;
         return <div className="row" style={{ alignItems: "baseline", width: "100% ", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>
             <Link style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} to={"/"}>首页</Link>
             <i className="fa fa-chevron-right"></i>
