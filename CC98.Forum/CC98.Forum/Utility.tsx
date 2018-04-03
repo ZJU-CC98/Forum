@@ -637,7 +637,7 @@ export async function getBoardName(boardId: number) {
 */
 
 export function isLogOn(): boolean {
-    const token = getLocalStorage("userInfo");
+    const token = getLocalStorage("refresh_token");
     return !!token;
 }
 
@@ -1664,7 +1664,7 @@ export async function followBoard(boardId) {
  * 刷新当前用户信息
  */
 export async function refreshUserInfo() {
-    if (getLocalStorage('userName')) {
+    if (getLocalStorage('refresh_token')) {
         let headers = await formAuthorizeHeader();
         let response = await cc98Fetch(`/me`, {
             headers
@@ -1672,8 +1672,7 @@ export async function refreshUserInfo() {
 
         let userInfo = await response.json();
         store.dispatch(Actions.changeUserInfo(userInfo));
-        setLocalStorage("userInfo", userInfo);
-        setLocalStorage("userName", userInfo.name);
+        setLocalStorage("userInfo", userInfo, 2592000);
     }
 }
 export async function unfollowBoard(boardId) {

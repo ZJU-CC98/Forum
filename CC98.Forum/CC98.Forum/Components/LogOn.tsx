@@ -22,6 +22,13 @@ type ownProps = {
 
 type Props = RouteComponentProps<null> & ownProps;
 
+type tokenResType = {
+    access_token: string;
+    expires_in: number;
+    refresh_token: string;
+    token_type: string;
+}
+
 class LogOnExact extends React.Component<Props, LogOnState> {
     constructor(props) {
         super(props);
@@ -99,7 +106,7 @@ class LogOnExact extends React.Component<Props, LogOnState> {
                 'grant_type': 'password',
                 'username': this.state.loginName,
                 'password': this.state.loginPassword,
-                'scope': "cc98-api openid"
+                'scope': "cc98-api openid offline_access"
             }
             const headers = new Headers();
             headers.append('Content-Type', 'application/x-www-form-urlencoded');
@@ -115,13 +122,12 @@ class LogOnExact extends React.Component<Props, LogOnState> {
                 throw new Error(response.status.toString());
             }
 
-            let data = await response.json();
-            const token = "Bearer " + encodeURIComponent(data.access_token);
+            let data: tokenResType = await response.json();
+            const token = data.token_type + ' ' + data.access_token;
 
             //缓存数据
             Utility.setLocalStorage("accessToken", token, data.expires_in);
-            Utility.setLocalStorage("password", this.state.loginPassword);
-            Utility.setLocalStorage("userName", this.state.loginName);
+            Utility.setLocalStorage('refresh_token', data.refresh_token, 2592000); // refresh_token有效期一个月
             await Utility.refreshUserInfo();
             let userInfo: UserInfo = Utility.getLocalStorage('userInfo');
             if (userInfo.lockState === 1 || userInfo.lockState === 2) {
@@ -144,10 +150,9 @@ class LogOnExact extends React.Component<Props, LogOnState> {
             }, 100);
         } catch (e) {
             let info: string;
-            Utility.removeLocalStorage('userName');
             Utility.removeLocalStorage('userInfo');
             Utility.removeLocalStorage("accessToken");
-            Utility.removeLocalStorage("password");
+            Utility.removeLocalStorage("refresh_token");
             switch (e.message) {
                 case '400': info = '密码错误'; break;
                 case '账号已锁定': info = '账号已锁定'; break;
