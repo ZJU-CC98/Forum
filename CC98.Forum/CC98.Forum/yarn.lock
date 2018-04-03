@@ -49,6 +49,12 @@
     "@types/node" "*"
     "@types/react" "*"
 
+"@types/react-lazyload@^2.2.5":
+  version "2.2.5"
+  resolved "http://registry.npm.taobao.org/@types/react-lazyload/download/@types/react-lazyload-2.2.5.tgz#feb453b2f1ce592dd2891aecd9928be6daf65c1a"
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-redux@4.4.47":
   version "4.4.47"
   resolved "http://registry.npm.taobao.org/@types/react-redux/download/@types/react-redux-4.4.47.tgz#12af1677116e08d413fe2620d0a85560c8a0536e"
@@ -5399,6 +5405,10 @@ react-dom@16.2.0:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
+react-lazyload@^2.3.0:
+  version "2.3.0"
+  resolved "http://registry.npm.taobao.org/react-lazyload/download/react-lazyload-2.3.0.tgz#ccb134223012447074a96543954f44b055dc6185"
+
 react-redux@5.0.5:
   version "5.0.5"
   resolved "http://registry.npm.taobao.org/react-redux/download/react-redux-5.0.5.tgz#f8e8c7b239422576e52d6b7db06439469be9846a"
@@ -6651,7 +6661,7 @@ uglify-js@3.3.x:
     commander "~2.15.0"
     source-map "~0.6.1"
 
-uglifyjs-webpack-plugin@^1.2.4:
+uglifyjs-webpack-plugin@1.2.4, uglifyjs-webpack-plugin@^1.2.4:
   version "1.2.4"
   resolved "http://registry.npm.taobao.org/uglifyjs-webpack-plugin/download/uglifyjs-webpack-plugin-1.2.4.tgz#5eec941b2e9b8538be0a20fc6eda25b14c7c1043"
   dependencies:

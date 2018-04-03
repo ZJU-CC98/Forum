@@ -4,6 +4,7 @@
 
 import * as React from 'react';
 import * as Ubb from './Core';
+import LazyLoad, { LazyLoadProps } from 'react-lazyload';
 
 export class ImageTagHandler extends Ubb.TextTagHandler {
     innerHTML: JSX.Element;
@@ -64,8 +65,14 @@ export class Image extends React.Component<{ imageUri, title, isShowed: boolean 
     }
 
     render() {
+        let props: LazyLoadProps = {
+            height: 300,
+            once: true,
+            offset: 100,
+        };
+
         if (this.state.isShowed) {
-            return <img style={{maxWidth:'100%'}}src={this.props.imageUri} alt={this.props.title} />
+            return <LazyLoad {...props} ><img style={{maxWidth:'100%'}}src={this.props.imageUri} alt={this.props.title} /></LazyLoad>
         } else {
             return <div className="hiddenImage" onClick={this.toggleIsShowed}>点击查看图片</div>
         }
