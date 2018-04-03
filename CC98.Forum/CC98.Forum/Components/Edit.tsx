@@ -31,10 +31,8 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
             tags: [], boardName: "", ready: false, mode: 0, content: "", title: "", postInfo: { floor: 0, title: "", content: "", contentType: 0 }, tag1:"" , tag2: "", fetchState: 'ok', boardId: 1, type: 0, topicInfo: {}
         });
     }
-    componentDidMount() {
-        
-    }
-    async componentWillMount() {
+
+    async componentDidMount() {
         const mode = this.match.params.mode;
         const id = this.match.params.id;
         const token = await Utility.getToken();
@@ -66,8 +64,6 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                 const type = topicInfo.type;
                 tags = await Utility.getBoardTag(data.boardId);
 
-                console.log("state mode = " + data.contentType);
-                console.log("state content = " + data.content);
                 Utility.setLocalStorage("contentCache", data.content);
                 const cache = Utility.getLocalStorage("contentCache");
                 console.log("cache after saving = " + cache);
@@ -432,11 +428,12 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                 titleInput = <InputTitle boardId={id} tags={this.state.tags} onChange={this.onTitleChange.bind(this)} title={this.state.postInfo.title} tag1={this.state.topicInfo.tag1} tag2={this.state.topicInfo.tag2} />;
             }
         }
+        console.log("默认type:" + this.state.type);
         const topicType = <div className="createTopicType">
             <div className="createTopicListName">发帖类型</div>
-            <input type="radio" name="type" value="普通" onClick={this.changeNormalType} defaultChecked={this.state.type === 0 ? true : false} /> 普通
-            <input type="radio" name="type" value="学术信息" onClick={this.changeAcademicType} defaultChecked={this.state.type === 2 ? true : false} /> 学术信息
-            <input type="radio" name="type" value="校园活动" onClick={this.changeActivityType} defaultChecked={this.state.type === 1 ? true : false}/> 校园活动
+            <input type="radio" name="type" value="普通" onClick={this.changeNormalType} checked={this.state.type === 0 ? true : false} /> 普通
+            <input type="radio" name="type" value="学术信息" onClick={this.changeAcademicType} checked={this.state.type === 2 ? true : false} /> 学术信息
+            <input type="radio" name="type" value="校园活动" onClick={this.changeActivityType} checked={this.state.type === 1 ? true : false}/> 校园活动
             <div style={{ color: 'rgb(255,0,0)' }}>（活动帖和学术贴请选择正确的发帖类型)</div>
         </div>;
 
