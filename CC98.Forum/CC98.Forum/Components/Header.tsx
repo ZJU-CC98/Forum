@@ -94,8 +94,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
     logOff() {
         this.handleMouseEvent('mouseout', "userName");
         Utility.removeLocalStorage("accessToken");
-        Utility.removeLocalStorage("userName");
-        Utility.removeLocalStorage("password");
+        Utility.removeLocalStorage("refresh_token");
         Utility.removeLocalStorage("userInfo");
         Utility.removeStorage("all");
         this.props.logOff();            //更新redux中的状态
