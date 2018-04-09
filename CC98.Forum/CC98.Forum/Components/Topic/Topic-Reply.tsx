@@ -81,7 +81,7 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
             }
         }
         const masters = this.props.boardInfo.boardMasters;
-        let data = { rewardMaxValue: 0, rewardTotalValue: 0, boardName: this.props.boardInfo.name };
+        let data = { rewardMaxValue: 20000, rewardTotalValue: 0, boardName: this.props.boardInfo.name };
         //if (Utility.isMaster(this.props.boardInfo.boardMasters)) 
         //data = await Utility.queryWealth(this.props.boardInfo.id);
         this.setState({ m_wealth: data.rewardMaxValue, d_wealth: data.rewardTotalValue, boardName: data.boardName, inWaiting: false, contents: realContents, masters: masters });
