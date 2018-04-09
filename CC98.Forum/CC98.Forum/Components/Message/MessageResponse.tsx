@@ -41,13 +41,25 @@ export class MessageResponse extends React.Component<{match}, MessageResponseSta
         if (data) {
             this.setState({ data: data, from: curPage+1, totalPage: totalPage });
         }
-
+        //如果是第一页数据的话就存一下缓存
+        if (curPage == 0) {
+            let responseState = { data: data, from: curPage + 1, totalPage: totalPage };
+            Utility.setStorage("responseState", responseState);
+        }
         //更新消息数量
         await Utility.refreshUnReadCount();
     }
 
     async componentDidMount() {
-        this.getData(this.props);
+        //如果没有新消息而且第一页有缓存就用缓存数据
+        let unreadCount = Utility.getStorage("unreadCount");
+        let responseState = Utility.getStorage("responseState");
+        if (unreadCount.replyCount === 0 && responseState) {
+            this.setState(responseState);
+        }
+        else {
+            this.getData(this.props);
+        }
     }
 
     async componentWillReceiveProps(nextProps) {

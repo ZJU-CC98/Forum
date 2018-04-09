@@ -40,12 +40,25 @@ export class MessageSystem extends React.Component<{}, MessageSystemState> {
         if (data) {
             this.setState({ data: data, from: curPage + 1, totalPage: totalPage });
         }
+        //如果是第一页数据的话就存一下缓存
+        if (curPage == 0) {
+            let systemState = { data: data, from: curPage + 1, totalPage: totalPage };
+            Utility.setStorage("systemState", systemState);
+        }
         //更新消息数量
         await Utility.refreshUnReadCount();
     }
 
     async componentDidMount() {
-        this.getData(this.props);
+        //如果没有新消息而且第一页有缓存就用缓存数据
+        let unreadCount = Utility.getStorage("unreadCount");
+        let systemState = Utility.getStorage("systemState");
+        if (unreadCount.systemCount === 0 && systemState) {
+            this.setState(systemState);
+        }
+        else {
+            this.getData(this.props);
+        }
     }
 
     async componentWillReceiveProps(nextProps) {
