@@ -1,11 +1,12 @@
-﻿import * as React from 'react';
+﻿import 'es6-promise/auto';
+import 'core-js/shim';
+import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as $ from 'jquery';
 import store from './Store';
 import { Provider } from 'react-redux';
 import 'whatwg-fetch';
 import 'blueimp-canvas-to-blob';
-import 'es6-promise/auto';
 
 import { Constants } from './Components/Constant';
 import { App } from './Components/App';
