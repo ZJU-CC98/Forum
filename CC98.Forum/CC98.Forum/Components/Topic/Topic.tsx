@@ -69,7 +69,10 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         //检查用户是否设置跳转到最新回复
         let noticeSetting = Utility.getLocalStorage("noticeSetting");
         if (page != newPage) {
+            console.log("当前页不是最新一页");
+            //如果设置了跳转到最新回复或者刚好翻页，则跳转
             if ((noticeSetting && noticeSetting.post === "是") || ((newPage == page + 1) && (floor == 1))) {
+                console.log("要跳转");
                 page = newPage;
                 let url = `/topic/${topicInfo.id}/${page}#${floor}`;
                 this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } });
@@ -81,12 +84,10 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
                 if (this.state.quote && this.state.quote.floor) {
                     let quoteFloor = this.state.quote.floor % 10;
                     url = `/topic/${topicInfo.id}/${page}#${quoteFloor}`;
+                    this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } });
+                    this.props.history.push(url);
                 }
-                else {
-                    $('.footerRow')[0].scrollIntoView(true);
-                }
-                this.setState({ quote: { userName: "", content: "", replyTime: "", floor: "" } });
-                this.props.history.push(url);
+                //如果没有引用则不需要跳转，直接还是在输入框那个位置
             }
         }
         else {
@@ -97,8 +98,8 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         }
         //回复成功提示
         Utility.noticeMessageShow('replyMessage');
-        const isFav = await Utility.getFavState(this.match.params.topicid);
-        this.setState({ topicInfo: topicInfo, quote: { userName: "", content: "", replyTime: "", floor: "" },isFav:isFav}); 
+        //const isFav = await Utility.getFavState(this.match.params.topicid);
+        //this.setState({ topicInfo: topicInfo, quote: { userName: "", content: "", replyTime: "", floor: "" },isFav:isFav}); 
         //更新一下未读消息数目
         Utility.refreshHoverUnReadCount();
     }
