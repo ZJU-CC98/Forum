@@ -281,7 +281,7 @@ export async function getHotReplyContent(topicid: number) {
 
             if (content[i].isAnonymous != true) {
 
-                const userMesResponse = await cc98Fetch(`/user/name/${content[i].userName}`);
+                const userMesResponse = await cc98Fetch(`/user/name/${encodeURIComponent(content[i].userName)}`);
                 const userMesJson = await userMesResponse.json();
                 post[i] = {
                     ...content[i], userInfo: userMesJson, postId: content[i].id
@@ -317,7 +317,7 @@ export async function getCurUserTopic(topicid: number, userId: number) {
         const headers = await formAuthorizeHeader();
         const response = await cc98Fetch(`/post/topic/user?topicid=${topicid}&userid=${userId}&from=0&size=1`, { headers });
         const data = await response.json();
-        const userMesResponse = await cc98Fetch(`/user/name/${data[0].userName}`);
+        const userMesResponse = await cc98Fetch(`/user/name/${encodeURIComponent(data[0].userName)}`);
         const userMesJson = await userMesResponse.json();
         data[0].userInfo = userMesJson;
         return data[0];
@@ -911,7 +911,7 @@ export async function sortContactList(recentContact, router) {
                 let response1;
                 let flag = 1;
                 try {
-                    response0 = await cc98Fetch(`/user/name/${chatManName}`);
+                    response0 = await cc98Fetch(`/user/name/${encodeURIComponent(chatManName)}`);
                     switch (response0.status) {
                         case 401:
                             window.location.href = "/status/Logout";;
@@ -960,7 +960,7 @@ export async function sortContactList(recentContact, router) {
                     let response1;
                     let flag = 1;
                     try {
-                        response0 = await cc98Fetch(`/user/name/${chatManName}`);
+                        response0 = await cc98Fetch(`/user/name/${encodeURIComponent(chatManName)}`);
                         switch (response0.status) {
                             case 401:
                                 window.location.href = "/status/UnauthorizedTopic";;
@@ -1623,7 +1623,7 @@ export async function getAwardInfo(postId) {
     return data;
 }
 export async function getPortraitUrl(userName) {
-    const url = `/user/name/${userName}`;
+    const url = `/user/name/${encodeURIComponent(userName)}`;
     const response = await cc98Fetch(url);
     const data = await response.json();
     return data.portraitUrl;

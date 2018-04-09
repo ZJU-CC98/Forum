@@ -290,7 +290,7 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {     //
             let val: any = $('#searchText').val();
             if (val && val != '') {
                 if (searchBoxSelect.text() === '主题' || searchBoxSelect.text() === '全站') {
-                    this.props.history.push(`/search?boardId=0&keyword=${encodeURI(val)}`);
+                    this.props.history.push(`/search?boardId=0&keyword=${encodeURI(encodeURI(val))}`);
                 }
                 else if (searchBoxSelect.text() === '版内') {
                     //查看当前是全站还是某版，如果是某版就查询到某版id
@@ -309,7 +309,7 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {     //
                     else if (url3) {
                         boardId = parseInt(url3[1]);
                     }
-                    this.props.history.push(`/search?boardId=${boardId}&keyword=${encodeURI(val)}`);
+                    this.props.history.push(`/search?boardId=${boardId}&keyword=${encodeURI(encodeURI(val))}`);
                 }
                 else if (searchBoxSelect.text() === '用户') {
                     let data = await Utility.getUserInfoByName(val);
@@ -321,7 +321,7 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {     //
                     }
                 }
                 else if (searchBoxSelect.text() === '版面') {
-                    this.props.history.push(`/searchBoard?keyword=${encodeURI(val)}`);
+                    this.props.history.push(`/searchBoard?keyword=${encodeURI(encodeURI(val))}`);
                 }
             }
         });
