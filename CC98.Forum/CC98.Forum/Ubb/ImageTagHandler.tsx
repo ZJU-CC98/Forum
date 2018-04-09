@@ -4,7 +4,7 @@
 
 import * as React from 'react';
 import * as Ubb from './Core';
-import LazyLoad, { LazyLoadProps } from 'react-lazyload';
+import LazyLoad from 'react-lazyload';
 
 export class ImageTagHandler extends Ubb.TextTagHandler {
     innerHTML: JSX.Element;
@@ -65,7 +65,7 @@ export class Image extends React.Component<{ imageUri, title, isShowed: boolean 
     }
 
     render() {
-        let props: LazyLoadProps = {
+        let props = {
             height: 300,
             once: true,
             offset: 100,

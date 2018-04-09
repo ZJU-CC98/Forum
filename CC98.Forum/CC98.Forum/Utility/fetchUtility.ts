@@ -9,7 +9,8 @@ import {
 
 
 export async function getToken() {
-    if (!(getLocalStorage("userName") && getLocalStorage("password"))) {
+    const refreshToken = getLocalStorage("refresh_token");
+    if (!refreshToken) {
         return null;
     }
 
@@ -20,12 +21,10 @@ export async function getToken() {
 
     const url = 'https://openid.cc98.org/connect/token';
     const requestBody = {
-        'client_id': '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
-        'client_secret': '8b53f727-08e2-4509-8857-e34bf92b27f2',
-        'grant_type': 'password',
-        'username': getLocalStorage("userName"),
-        'password': getLocalStorage("password"),
-        'scope': "cc98-api openid"
+        client_id: '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
+        client_secret: '8b53f727-08e2-4509-8857-e34bf92b27f2',
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken,
     }
     const headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded');
