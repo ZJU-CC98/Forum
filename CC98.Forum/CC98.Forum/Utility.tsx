@@ -2841,7 +2841,7 @@ export async function getUsersInfo(userIds: any[]) {
                 let key = `userId_${i.id}`;
                 let key1 = `userName_${i.name}`;
                 setLocalStorage(key, i, 3600);
-                setLocalStorage(key1, i.id);
+                setLocalStorage(key1, i.id,3600);
                 finalUsersInfo.push(i);
             }
             return finalUsersInfo;
