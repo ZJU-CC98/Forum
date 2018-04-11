@@ -12,14 +12,6 @@ import { Constants } from './Components/Constant';
 import { App } from './Components/App';
 import { autoClearLocalStorage } from './Utility';
 
-// 控制用户缓存
-// 需要清理缓存时更新 version
-const version = '3.2.0';
-if(localStorage.getItem('version') !== version) {
-	localStorage.clear();
-	localStorage.setItem('version', version);
-}
-
 /**
  * 项目初始化代码
  */

@@ -9,6 +9,15 @@
     <link type="text/css" rel="stylesheet" href="/static/content/APlayer.min.css" />
     <link type="text/css" rel="stylesheet" href="/static/scripts/lib/editor.md/css/editormd.css" />
     <script>
+        // 控制用户缓存
+        // 需要清理缓存时更新 version
+        var version = '3.2.0';
+        if(localStorage.getItem('version') !== version) {
+            localStorage.clear();
+            localStorage.setItem('version', version);
+        }
+    </script>
+    <script>
         var themeNames = [''];
         <% for (var cssFile in htmlWebpackPlugin.files.css) { %>
         themeNames.push("<%= htmlWebpackPlugin.files.css[cssFile].split('/').pop() %>");
