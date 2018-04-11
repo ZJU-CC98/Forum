@@ -7,16 +7,6 @@ import {
     Constants // used in cc98Fetch
 } from '../Components/Constant';
 
-import { 
-    UserInfo // type definition for userInfo
-} from '../States/AppState';
-
-import {
-    getUserInfo as getIndexedDBUserInfo,
-    addUserInfo
-} from '../IndexedDB/UserStorage';
-
-
 export async function getToken() {
     const refreshToken = getLocalStorage("refresh_token");
     if (!refreshToken) {
@@ -81,40 +71,4 @@ export async function cc98Fetch(url, init?: RequestInit) {
         response = await fetch(fetchUrl);
     }
     return response;
-}
-
-async function getUserInfo(userId: number): Promise<UserInfo>;
-async function getUserInfo(userName: string): Promise<UserInfo>;
-async function getUserInfo(key: number | string): Promise<UserInfo> {
-    let userInfo: UserInfo;
-    try {
-        // 在缓存中查询
-        if(window.indexedDB) {
-            userInfo = await getIndexedDBUserInfo(key);
-            if(userInfo) return userInfo;
-        } else {
-            userInfo = getLocalStorage(typeof key === 'number' ? `userId_${key}`: `userName_${key}`);
-            if(userInfo) return userInfo;
-        }
-
-        // api请求
-        const url = typeof key === 'number' ? `/user/${key}` : `/user/name/${encodeURIComponent(key)}`;
-        let headers = await formAuthorizeHeader();
-        let res = await cc98Fetch(url, { headers });
-        userInfo = await res.json();
-
-        //缓存
-        if(window.indexedDB) {
-            addUserInfo(userInfo)
-            return userInfo;
-        } else {
-            setLocalStorage(`userId_${userInfo.id}`, userInfo, 3600);
-            setLocalStorage(`userName_${userInfo.name}`, userInfo, 3600)
-            if(userInfo) return userInfo;
-        }
-
-        return userInfo;
-    } catch(e) {
-
-    }
 }
