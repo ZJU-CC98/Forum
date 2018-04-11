@@ -39,11 +39,19 @@ import {
     cc98Fetch
 } from './Utility/fetchUtility'
 
+
+// 获取用户信息相关的代码均已重构
+import { getUserInfo } from './Utility/Fetch/getUserInfo';
+import { getUserInfo as getUserInfoByName } from './Utility/Fetch/getUserInfo';
+import { getUsersInfo } from './Utility/Fetch/getUsersInfo';
+export { getUserInfo } from './Utility/Fetch/getUserInfo';
+export { getUserInfo as getUserInfoByName } from './Utility/Fetch/getUserInfo';
+export { getUsersInfo } from './Utility/Fetch/getUsersInfo';
+export { getUsersInfo as getUsersInfobyNames } from './Utility/Fetch/getUsersInfo';
+
 // re export
 export * from './Utility/storageUtility'
 export * from './Utility/fetchUtility'
-
-
 
 
 export async function getBoardTopicAsync(curPage, boardId, totalTopicCount) {
@@ -2319,65 +2327,7 @@ export function getTotalPageof10(replyCount) {
     const totalFloor = replyCount + 1;
     return totalFloor % 10 === 0 ? totalFloor / 10 : (totalFloor - totalFloor % 10) / 10 + 1;
 }
-export async function getUserInfo(userId) {
-    const key = `userId_${userId}`;
-    if (getLocalStorage(key)) return getLocalStorage(key);
-    const headers = await formAuthorizeHeader();
-    const url = `/user/${userId}`;
-    const response = await cc98Fetch(url, { headers });
-    switch (response.status) {
-        case 401:
-            //如果未登录,直接返回未登录
-            if (!isLogOn()) {
-                window.location.href = "/status/LogOut";
-                return null;
-            }
-            else {
-                window.location.href = "/status/UnauthorizedTopic";
-            }
-        case 403:
-            window.location.href = "/status/OperationForbidden";
-        case 404:
-            window.location.href = "/status/NotFoundTopic";
-        case 500:
-            window.location.href = "/status/ServerError";
-    }
-    const data = await response.json();
-    const key1 = `userName_${data.name}`;
-    setLocalStorage(key, data, 3600);
-    setLocalStorage(key1, data, 3600);
-    return data;
-}
-export async function getUserInfoByName(userName) {
-    const key = `userName_${userName}`;
-    let info = getLocalStorage(`userId_${getLocalStorage(key)}`)
-    if (info) return info;
-    const headers = await formAuthorizeHeader();
-    const url = `/user/name/${encodeURIComponent(userName)}`;
-    const response = await cc98Fetch(url, { headers });
-    switch (response.status) {
-        case 401:
-            //如果未登录,直接返回未登录
-            if (!isLogOn()) {
-                window.location.href = "/status/LogOut";
-                return null;
-            }
-            else {
-                window.location.href = "/status/UnauthorizedTopic";
-            }
-        case 403:
-            window.location.href = "/status/OperationForbidden";
-        case 404:
-            window.location.href = "/status/NotFoundTopic";
-        case 500:
-            window.location.href = "/status/ServerError";
-    }
-    const data = await response.json();
-    const key1 = `userId_${data.id}`;
-    setLocalStorage(key, data.id);
-    setLocalStorage(key1, data, 3600);
-    return data;
-}
+
 export function isMaster(masters) {
     if (getLocalStorage("userInfo")) {
         const privilege = getLocalStorage("userInfo").privilege;
@@ -2759,89 +2709,6 @@ export async function getBasicUsersInfo(userIds: number[]) {
             let response = await cc98Fetch(url);
             var data = await response.json();
             for (let i of data) {
-                finalUsersInfo.push(i);
-            }
-            return finalUsersInfo;
-        } catch (e) {
-            return [];
-        }
-    }
-}
-export async function getUsersInfobyNames(userNames: any[]) {
-    let url = "/user/basic/name";
-    let usersInfoNeeded = [];
-    let finalUsersInfo = [];
-    //检查本地是否有缓存
-    for (let i in userNames) {
-        let thisUserInfo = getLocalStorage('userId_' + getLocalStorage(`userName_${userNames[i]}`));
-        if (thisUserInfo) {
-            finalUsersInfo.push(thisUserInfo);
-        } else {
-            usersInfoNeeded.push(userNames[i]);
-        }
-    }
-
-    if (usersInfoNeeded.length == 0) {
-     
-        return finalUsersInfo;
-    }
-    else {
-        for (let i = 0; i < usersInfoNeeded.length; i++) {
-            if (i === 0) {
-                url = `${url}?name=`+encodeURIComponent(usersInfoNeeded[i]);
-            }
-            else {
-                url = `${url}&name=`+encodeURIComponent(usersInfoNeeded[i]);
-            }
-        }
-            //console.log(url);
-            //合并查询和缓存的
-            let response = await cc98Fetch(url);
-            var data = await response.json();
-            for (let i of data) {
-                finalUsersInfo.push(i);
-            }
-            return finalUsersInfo;
-     
-    }
-}
-
-export async function getUsersInfo(userIds: any[]) {
-    let usersInfoNeeded = [];
-    let finalUsersInfo = [];
-    //检查本地是否有缓存
-    for (let i = 0; i < userIds.length; i++) {
-        let thisUserInfo = getLocalStorage(`userId_${userIds[i]}`);
-        if (thisUserInfo) {
-            finalUsersInfo.push(thisUserInfo);
-        } else {
-            usersInfoNeeded.push(userIds[i]);
-        }
-    }
-    if (usersInfoNeeded.length === 0) {
-        return finalUsersInfo;
-    }
-    else {
-        let url = "/user";
-        for (let i = 0; i < usersInfoNeeded.length; i++) {
-            if (i === 0) {
-                url = `${url}?id=${usersInfoNeeded[i]}`;
-            }
-            else {
-                url = `${url}&id=${usersInfoNeeded[i]}`;
-            }
-        }
-        try {
-            //合并查询和缓存的
-
-            let response = await cc98Fetch(url);
-            var data = await response.json();
-
-            for (let i of data) {
-                let key = `userId_${i.id}`;
-                let key1 = `userName_${i.name}`;
-                setLocalStorage(key, i, 3600);
-                setLocalStorage(key1, i.id,3600);
                 finalUsersInfo.push(i);
             }
             return finalUsersInfo;

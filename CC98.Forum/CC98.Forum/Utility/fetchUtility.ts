@@ -7,7 +7,6 @@ import {
     Constants // used in cc98Fetch
 } from '../Components/Constant';
 
-
 export async function getToken() {
     const refreshToken = getLocalStorage("refresh_token");
     if (!refreshToken) {
