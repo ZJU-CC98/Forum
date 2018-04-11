@@ -2350,7 +2350,8 @@ export async function getUserInfo(userId) {
 }
 export async function getUserInfoByName(userName) {
     const key = `userName_${userName}`;
-    if (getLocalStorage(key)) return getLocalStorage(key);
+    let info = getLocalStorage(`userId_${getLocalStorage(key)}`)
+    if (info) return info;
     const headers = await formAuthorizeHeader();
     const url = `/user/name/${encodeURIComponent(userName)}`;
     const response = await cc98Fetch(url, { headers });
@@ -2373,7 +2374,7 @@ export async function getUserInfoByName(userName) {
     }
     const data = await response.json();
     const key1 = `userId_${data.id}`;
-    setLocalStorage(key, data, 3600);
+    setLocalStorage(key, data.id);
     setLocalStorage(key1, data, 3600);
     return data;
 }
@@ -2772,7 +2773,7 @@ export async function getUsersInfobyNames(userNames: any[]) {
     let finalUsersInfo = [];
     //检查本地是否有缓存
     for (let i in userNames) {
-        let thisUserInfo = getLocalStorage(`userName_${userNames[i]}`);
+        let thisUserInfo = getLocalStorage('userId_' + getLocalStorage(`userName_${userNames[i]}`));
         if (thisUserInfo) {
             finalUsersInfo.push(thisUserInfo);
         } else {
@@ -2840,7 +2841,7 @@ export async function getUsersInfo(userIds: any[]) {
                 let key = `userId_${i.id}`;
                 let key1 = `userName_${i.name}`;
                 setLocalStorage(key, i, 3600);
-                setLocalStorage(key1, i, 3600);
+                setLocalStorage(key1, i.id);
                 finalUsersInfo.push(i);
             }
             return finalUsersInfo;

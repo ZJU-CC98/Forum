@@ -35,21 +35,26 @@ export function removeStorage(key) {
 }
 
 export function setLocalStorage(key, value, expireIn = 0) {
-    let v = value;
-    if (typeof v == 'object') {
-        v = JSON.stringify(v);
-        v = `obj-${v}`;
-    } else {
-        v = `str-${v}`;
-    }
-    localStorage.setItem(key, v);
+    try {
+        let v = value;
+        if (typeof v == 'object') {
+            v = JSON.stringify(v);
+            v = `obj-${v}`;
+        } else {
+            v = `str-${v}`;
+        }
+        localStorage.setItem(key, v);
 
-    if (expireIn !== 0) {
-        const now = new Date().getTime();
-        let expirationTime = now + expireIn * 1000;
-        localStorage.setItem(`${key}_expirationTime`, expirationTime.toString().slice(0, expirationTime.toString().length - 3));
-    } else {
-        localStorage.removeItem(`${key}_expirationTime`);
+        if (expireIn !== 0) {
+            const now = new Date().getTime();
+            let expirationTime = now + expireIn * 1000;
+            localStorage.setItem(`${key}_expirationTime`, expirationTime.toString().slice(0, expirationTime.toString().length - 3));
+        } else {
+            localStorage.removeItem(`${key}_expirationTime`);
+        }
+    } catch(e) {
+        autoClearLocalStorage();
+        setLocalStorage(key, value, expireIn);
     }
 }
 
@@ -87,3 +92,24 @@ export function removeLocalStorage(key) {
     return;
 }
 
+export function autoClearLocalStorage() {
+        // 只保留必要的缓存
+        let refresh_token = getLocalStorage('refresh_token');
+        let refresh_token_expirationTime = localStorage.getItem('refresh_token_expirationTime');
+        let temporaryContent = getLocalStorage('temporaryContent');
+        let noticeSetting = getLocalStorage('noticeSetting');
+        let userInfo = localStorage.getItem('userInfo');
+        let version = localStorage.getItem('version');
+        
+        localStorage.clear();
+        console.info('localStorage cleared');
+        
+        localStorage.setItem('version', version);
+        if(refresh_token) {
+            setLocalStorage('refresh_token', refresh_token);
+            localStorage.setItem('refresh_token_expirationTime', refresh_token_expirationTime);
+            localStorage.setItem('userInfo', userInfo);
+        }
+        if(temporaryContent) setLocalStorage('temporaryContent', temporaryContent);
+        if(noticeSetting) setLocalStorage('noticeSetting', noticeSetting);
+}

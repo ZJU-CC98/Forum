@@ -61,7 +61,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
         });
 
         //每天刷新一次用户信息
-        if(!Utility.getLocalStorage('shouldNotRefreshUserInfo')) {
+        if(Utility.isLogOn() && !Utility.getLocalStorage('shouldNotRefreshUserInfo')) {
             this.props.refreshUserInfo();
             Utility.setLocalStorage('shouldNotRefreshUserInfo', true, 86400);
         }
