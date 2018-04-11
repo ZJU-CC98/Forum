@@ -10,7 +10,10 @@ import { IndexedDB } from './IndexedDB';
 export async function addUserInfo(userInfo: UserInfo) {
     let t = IndexedDB.db.transaction('userInfo', 'readwrite');
     let store = t.objectStore('userInfo');
-    let req = store.put(userInfo);
+    let req = store.put({
+        userInfo,
+        addTime: Date.now(),
+    });
     return new Promise((resolve, reject) => {
         req.onsuccess = e => resolve();
         req.onerror = e => reject();
@@ -35,7 +38,13 @@ export async function getUserInfo(key: number | string) {
         req = store.index("name").get(key);
     }
     return new Promise((resolve, reject) => {
-        req.onsuccess = e => resolve(req.result);
+        req.onsuccess = e => {
+            if(req.result && req.result.addTime + 3600000 > Date.now()){ // 默认3600s过期
+                resolve(req.result.userInfo);
+            } else {
+                resolve(undefined);
+            }
+        } 
         req.onerror = e => reject();
     }) as Promise<UserInfo>;
 }

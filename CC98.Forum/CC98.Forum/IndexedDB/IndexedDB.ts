@@ -23,9 +23,9 @@ export namespace IndexedDB {
         req.onupgradeneeded = e => {
             if(!req.result.objectStoreNames.contains("userInfo")) {
                 // 初始化
-                let store: IDBObjectStore = req.result.createObjectStore("userInfo", { keyPath: 'id' });
+                let store: IDBObjectStore = req.result.createObjectStore("userInfo", { keyPath: 'userInfo.id' });
                 // 为name添加索引
-                store.createIndex('name','name', { unique: true });
+                store.createIndex('name','userInfo.name', { unique: true });
             }
         }
         if(db) return ;

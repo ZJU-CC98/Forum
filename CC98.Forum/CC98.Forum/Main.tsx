@@ -18,7 +18,7 @@ import { App } from './Components/App';
 async function initialize() {
 
 	await Constants.loadConfig();
-	// await IndexedDB.start();
+	// if(window.indexedDB) await IndexedDB.start();
 
 	// 输出一些没用的东西
 	console.info('%c       ', 'font-size: 100px; background: url(http://cdn.nyanit.com/nyan2.gif) no-repeat;');
