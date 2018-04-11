@@ -10,7 +10,7 @@ import 'blueimp-canvas-to-blob';
 
 import { Constants } from './Components/Constant';
 import { App } from './Components/App';
-// import { IndexedDB } from './IndexedDB/IndexedDB';
+import { IndexedDB } from './IndexedDB/IndexedDB';
 
 /**
  * 项目初始化代码
@@ -18,7 +18,7 @@ import { App } from './Components/App';
 async function initialize() {
 
 	await Constants.loadConfig();
-	// if(window.indexedDB) await IndexedDB.start();
+	if(window.indexedDB) await IndexedDB.start();
 
 	// 输出一些没用的东西
 	console.info('%c       ', 'font-size: 100px; background: url(http://cdn.nyanit.com/nyan2.gif) no-repeat;');

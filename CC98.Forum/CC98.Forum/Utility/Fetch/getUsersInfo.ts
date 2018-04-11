@@ -42,7 +42,7 @@ export async function getUsersInfo(keys: (number | string)[]): Promise<UserInfo[
 
         // 批量查询未命中的项
         let querys = infos.filter(item => (typeof item === 'number' || typeof item === 'string'));
-        const url = typeof keys[0] === 'number' ? `/user?id=${keys.join('&id=')}` : `/user/name?name=${keys.map(encodeURIComponent).join('&name=')}`;
+        const url = typeof keys[0] === 'number' ? `/user?id=${keys.join('&id=')}` : `/user/basic/name?name=${keys.map(encodeURIComponent).join('&name=')}`;
         let headers = await formAuthorizeHeader();
         let res = await cc98Fetch(url, { headers });
         let queryInfo: UserInfo[] = await res.json();
@@ -65,7 +65,8 @@ export async function getUsersInfo(keys: (number | string)[]): Promise<UserInfo[
         })
 
         return userInfos;
+
     } catch(e) {
-        
+        console.log(e)
     }
 }

@@ -382,6 +382,10 @@ export class UserInfo {
      * 用户选择的主题
      */
     theme: number;
+    /**
+     * 等级（已经废弃
+     */
+    levelTitle: string;
 }
 
 /**
