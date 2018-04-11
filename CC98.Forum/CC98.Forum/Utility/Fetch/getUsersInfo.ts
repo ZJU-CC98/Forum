@@ -33,7 +33,8 @@ export async function getUsersInfo(keys: (number | string)[]): Promise<UserInfo[
     try {
         // 缓存未命中的项，其值为对应的key，以便进一步通过api查询
         let infos: (UserInfo | number | string)[];
-
+        console.log("keys");
+        console.log(keys);
         if(window.indexedDB) {
             infos = (await getIndexedDBUsersInfo(keys)).map((item, index) => (item || keys[index]));
         } else {
@@ -42,6 +43,8 @@ export async function getUsersInfo(keys: (number | string)[]): Promise<UserInfo[
 
         // 批量查询未命中的项
         let querys = infos.filter(item => (typeof item === 'number' || typeof item === 'string'));
+        console.log("未命中的");
+        console.log(querys);
         const url = typeof keys[0] === 'number' ? `/user?id=${keys.join('&id=')}` : `/user/basic/name?name=${keys.map(encodeURIComponent).join('&name=')}`;
         let headers = await formAuthorizeHeader();
         let res = await cc98Fetch(url, { headers });
