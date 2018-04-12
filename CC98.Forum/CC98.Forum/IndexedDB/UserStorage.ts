@@ -68,7 +68,10 @@ export async function getUsersInfo(keys: (number | string)[]) {
             req = store.index("name").get(item);
         }
         return new Promise((resolve, reject) => {
-            req.onsuccess = e => resolve(req.result);
+            req.onsuccess = e => {
+                if(req.result) resolve(req.result.userInfo);
+                resolve(undefined);
+            };
             req.onerror = e => reject();
         }) as Promise<UserInfo>;
     }));
