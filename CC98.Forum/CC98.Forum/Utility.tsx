@@ -167,16 +167,11 @@ export async function getTopicContent(topicid: number, curPage: number) {
             for (let i in content) {
                 usersId[i] = content[i].userId;
             }
-            console.log("usersid");
-            console.log(usersId);
             usersInfo = await getUsersInfo(usersId);
         }
-        console.log("2018412");
-        console.log(usersInfo);
         for (let i = 0; i < topicNumberInPage; i++) {
 
             if (content[i].isAnonymous != true && content[i].isDeleted != true) {
-                console.log("get this user id=" + content[i].userId);
                 let thisUserInfo = getThisUserInfo(content[i].userId, usersInfo);
                 post[i] = {
                     ...content[i], userInfo: thisUserInfo, postId: content[i].id
