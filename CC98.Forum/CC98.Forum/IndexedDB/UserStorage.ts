@@ -69,8 +69,11 @@ export async function getUsersInfo(keys: (number | string)[]) {
         }
         return new Promise((resolve, reject) => {
             req.onsuccess = e => {
-                if(req.result) resolve(req.result.userInfo);
-                resolve(undefined);
+                if(req.result && req.result.addTime + 3600000 > Date.now()){ // 默认3600s过期
+                    resolve(req.result.userInfo);
+                } else {
+                    resolve(undefined);
+                }
             };
             req.onerror = e => reject();
         }) as Promise<UserInfo>;
