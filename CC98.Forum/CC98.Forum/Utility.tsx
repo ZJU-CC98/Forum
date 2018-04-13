@@ -125,22 +125,9 @@ export async function getTopic(topicid: number) {
     }
 }
 export function getThisUserInfo(userId, usersInfo) {
-    console.log(usersInfo);
     for (let i in usersInfo) {
-        if (usersInfo[i].userInfo) {
-            console.log("有userinfo");
-            if (usersInfo[i].userInfo.id === userId) {
-                console.log("return");
-                console.log(usersInfo[i]);
-                return usersInfo[i].userInfo;
-            }
-        } else {
-            console.log("没有userinfo");
-            if (usersInfo[i].id === userId) {
-                console.log("return");
-                console.log(usersInfo[i]);
-                return usersInfo[i];
-            }
+        if (usersInfo[i].id === userId) {
+            return usersInfo[i];
         }
     }
     //查询失败
@@ -180,16 +167,11 @@ export async function getTopicContent(topicid: number, curPage: number) {
             for (let i in content) {
                 usersId[i] = content[i].userId;
             }
-            console.log("usersid");
-            console.log(usersId);
             usersInfo = await getUsersInfo(usersId);
         }
-        console.log("2018412");
-        console.log(usersInfo);
         for (let i = 0; i < topicNumberInPage; i++) {
 
             if (content[i].isAnonymous != true && content[i].isDeleted != true) {
-                console.log("get this user id=" + content[i].userId);
                 let thisUserInfo = getThisUserInfo(content[i].userId, usersInfo);
                 post[i] = {
                     ...content[i], userInfo: thisUserInfo, postId: content[i].id

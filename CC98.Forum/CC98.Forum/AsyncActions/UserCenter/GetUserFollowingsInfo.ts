@@ -4,6 +4,7 @@ import * as Actions from '../../Actions/UserCenter';
 import * as Appstate from '../../States/AppState';
 import { RootState } from '../../Store';
 import * as Utility from '../../Utility';
+import { getUsersInfo } from '../../Utility/Fetch/getUsersInfo';
 
 /**
  * 获取用户的关注信息
@@ -44,11 +45,7 @@ export const getUserFollowingsInfo: ActionCreator<ThunkAction<Promise<Action>, R
             dispatch(Actions.usercenterPageLoadFinish(0));
             return dispatch(Actions.userCenterLoaded());
         }
-        const query = data.join('&id=');
-        url = `/user?id=${query}`;
-        res = await Utility.cc98Fetch(url, { headers });
-        if (res.status !== 200) { throw new Error(res.statusText); }
-        const followData: Appstate.UserInfo[] = await res.json();
+        const followData: Appstate.UserInfo[] = await getUsersInfo(data);
         const prevFollow = store.currentUserFollowingInfo;
         followData.forEach((item, index) => prevFollow[index + (page - 1) * 10] = item);
         dispatch(Actions.changeUserFollowingsInfo(prevFollow));

@@ -33,9 +33,13 @@ export async function getUserInfo(key: number | string) {
     if(typeof key === 'number'){ 
         // search by userId
         req = store.get(key);
-    } else { 
+    } else if(typeof key === 'string') { 
         // serach by name
         req = store.index("name").get(key);
+    } else { // id === null
+        return {
+            id: null
+        } as UserInfo;
     }
     return new Promise((resolve, reject) => {
         req.onsuccess = e => {
@@ -63,12 +67,22 @@ export async function getUsersInfo(keys: (number | string)[]) {
         if(typeof item === 'number'){ 
             // search by userId
             req = store.get(item);
-        } else { 
+        } else if(typeof item === 'string') { 
             // serach by name
             req = store.index("name").get(item);
+        } else { // id === null
+            return {
+                id: null
+            } as UserInfo;
         }
         return new Promise((resolve, reject) => {
-            req.onsuccess = e => resolve(req.result);
+            req.onsuccess = e => {
+                if(req.result && req.result.addTime + 3600000 > Date.now()){ // 默认3600s过期
+                    resolve(req.result.userInfo);
+                } else {
+                    resolve(undefined);
+                }
+            };
             req.onerror = e => reject();
         }) as Promise<UserInfo>;
     }));
