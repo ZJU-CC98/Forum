@@ -21,7 +21,7 @@ export class Category extends React.Component {
         return <div className="row" style={{ alignItems: "baseline", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>
             <Link style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} to={"/"}>首页</Link>
             <i className="fa fa-chevron-right"></i>
-            <div style={{ color: "grey", fontSize: "1rem", marginLeft: "0.5rem", marginRight: "0.5rem" }}>本周热门话题</div>
+            <div style={{ color: "grey", fontSize: "1rem", marginLeft: "0.5rem", marginRight: "0.5rem" }}>7日热门话题</div>
         </div>;
     }
 }
@@ -61,7 +61,7 @@ export class WeeklyHotTopic extends React.Component<{}, FocusTopicAreaState> {
 
     render() {
         return (<div className="focus-root">
-            <DocumentTitle title={`本周热门话题 - CC98论坛`} />
+            <DocumentTitle title={`7日热门话题 - CC98论坛`} />
             <div className="focus" >
                 <Category />
                 <div className="focus-topic-area">
