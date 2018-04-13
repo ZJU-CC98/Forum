@@ -27,6 +27,14 @@ interface IProps {
      */
     src: string;
 }
+
+interface IState {
+    /**
+     * 播放器高度
+     */
+    height: string;
+}
+
 class VideoComponent extends React.Component<IProps> {
     /**
      * 对div的引用
@@ -36,6 +44,10 @@ class VideoComponent extends React.Component<IProps> {
      * 对播放器的引用
      */
     dp: any;
+
+    state: IState = {
+        height: '28.8984375rem'
+    };
 
     /**
      * 组件加载后初始化播放器
@@ -52,15 +64,20 @@ class VideoComponent extends React.Component<IProps> {
 
         this.dp.on('abort', e => null);
 
+        // 对全屏下高度的调整
+        this.dp.on('fullscreen', e => this.setState({ height: 'auto' }));
+        this.dp.on('fullscreen_cancel', e => this.setState({ height: '28.8984375rem' }));
+
         this.div.getElementsByClassName('dplayer-menu')[0].innerHTML = '<div class="dplayer-menu-item"><a target="_blank" href="https://github.com/MoePlayer/DPlayer">关于 DPlayer 播放器</a></div>';
     }
 
     componentWillUnmount() {
+        this.dp.destroy();
         this.div.innerHTML = '';
     }
     
     render() {
         //重置继承自article的whiteSpace
-        return <div style={{ display: 'flex' }}><div className="aplayer" style={{ whiteSpace: 'normal', height: '28.8984375rem' }} ref={it => this.div = it}></div></div>;
+        return <div style={{ display: 'flex' }}><div className="aplayer" style={{ whiteSpace: 'normal', height: this.state.height }} ref={it => this.div = it}></div></div>;
     }
 }
