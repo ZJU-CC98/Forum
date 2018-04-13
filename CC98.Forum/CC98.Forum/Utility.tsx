@@ -30,7 +30,7 @@ import {
     removeStorage,
     setLocalStorage,
     getLocalStorage,
-    removeLocalStorage, 
+    removeLocalStorage,
 } from './Utility/storageUtility'
 
 import {
@@ -141,7 +141,7 @@ export function getThisUserInfo(userId, usersInfo) {
                 console.log(usersInfo[i]);
                 return usersInfo[i];
             }
-        }      
+        }
     }
     //查询失败
     let indexData = {
@@ -195,7 +195,7 @@ export async function getTopicContent(topicid: number, curPage: number) {
                     ...content[i], userInfo: thisUserInfo, postId: content[i].id
                 }
 
-            } else if (content[i].isAnonymous&&!content[i].isDeleted) {
+            } else if (content[i].isAnonymous && !content[i].isDeleted) {
                 let purl = '/static/images/心灵头像.gif';
                 const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
 
@@ -313,17 +313,17 @@ export async function getHotReplyContent(topicid: number) {
                 }
 
             } else {
-    
+
                 let purl = '/static/images/心灵头像.gif';
                 const anonymousUserName = `匿名${content[i].userName.toUpperCase()}`;
                 let anonymousLastReplierName = null;
-                if(content[i].lastUpdateAuthor)
-                anonymousLastReplierName = `匿名${content[i].lastUpdateAuthor.toUpperCase()}`;
+                if (content[i].lastUpdateAuthor)
+                    anonymousLastReplierName = `匿名${content[i].lastUpdateAuthor.toUpperCase()}`;
                 const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 };
                 post[i] = {
                     ...content[i], userInfo: userMesJson, postId: content[i].id
                 }
-    
+
             }
         }
         return post;
@@ -413,13 +413,13 @@ export async function getAllNewTopic(from: number, router) {
         const response = await cc98Fetch(`/topic/new?from=${from}&size=${size}`, { headers });
         switch (response.status) {
             case 401:
-                 window.location.href = "/status/UnauthorizedTopic";
+                window.location.href = "/status/UnauthorizedTopic";
             case 403:
                 window.location.href = "/status/OperationForbidden";
             case 404:
-                //window.location.href = "/status/NotFoundTopic";
+            //window.location.href = "/status/NotFoundTopic";
             case 500:
-                //window.location.href = "/status/ServerError";
+            //window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
         //console.log("获取到的数据", newTopic);
@@ -544,9 +544,9 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
             case 403:
                 window.location.href = "/status/OperationForbidden";
             case 404:
-                //window.location.href = "/status/NotFoundTopic";
+            //window.location.href = "/status/NotFoundTopic";
             case 500:
-                //window.location.href = "/status/ServerError";
+            //window.location.href = "/status/ServerError";
         }
         let newTopic = await response.json();
         let aTopic = [];
@@ -698,13 +698,13 @@ export async function getRecentContact(from: number, size: number, router) {
         for (let i in recentContactId) {
             userId[i] = recentContactId[i].userId;
         }
-      
+
         let usersInfo = await getBasicUsersInfo(userId);
         let recentContact = [];
         for (let i in recentContactId) {
             recentContact.push(getThisUserInfo(recentContactId[i].userId, usersInfo));
         };
-        
+
         for (let i in recentContactId) {
             recentContact[i].message = [];
             recentContact[i].lastContent = recentContactId[i].lastContent;
@@ -1146,7 +1146,7 @@ export async function getCurUserTotalReplyPage(topicId, userId) {
         const replyCountJson = await replyCountResponse.json();
         const replyCount = replyCountJson[0].count;
         return replyCount % 10 === 0 ? replyCount / 10 :
-            (replyCount - replyCount % 10)/10+1;
+            (replyCount - replyCount % 10) / 10 + 1;
     } catch (e) {
         //window.location.href = "/status/Disconnected";
     }
@@ -1156,21 +1156,21 @@ export async function getAnonymousTraceTopicsCount(topicId, postId) {
         const headers = await formAuthorizeHeader();
         const response = await cc98Fetch(`/post/topic/anonymous/user?topicid=${topicId}&postid=${postId}&from=0&size=1`, { headers });
         const data = await response.json();
-        return data[0].count % 10 === 0 ? data[0].count / 10 : (data[0].count - data[0].count %10)/10+1;
-       
+        return data[0].count % 10 === 0 ? data[0].count / 10 : (data[0].count - data[0].count % 10) / 10 + 1;
+
     } catch (e) {
         //window.location.href = "/status/Disconnected";
     }
 }
-export async function getAnonymousTraceTopics(topicId,postId,page) {
+export async function getAnonymousTraceTopics(topicId, postId, page) {
     try {
-        const start = (page - 1)*10;
+        const start = (page - 1) * 10;
         const headers = await formAuthorizeHeader();
         const response = await cc98Fetch(`/post/topic/anonymous/user?topicid=${topicId}&postid=${postId}&from=${start}&size=10`, { headers });
         const data = await response.json();
         let purl = '/static/images/心灵头像.gif';
         const anonymousUserName = `匿名${data[0].userName.toUpperCase()}`;
-        const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0 ,fanCount:0};
+        const userMesJson = { name: anonymousUserName, portraitUrl: purl, id: null, privilege: '匿名用户', popularity: 0, signatureCode: null, postCount: 0, fanCount: 0 };
         for (let i in data) {
             data[i].userInfo = userMesJson;
         }
@@ -1442,9 +1442,9 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                     case 403:
                         window.location.href = "/status/OperationForbidden";
                     case 404:
-                        //window.location.href = "/status/NotFoundTopic";
+                    //window.location.href = "/status/NotFoundTopic";
                     case 500:
-                        //window.location.href = "/status/ServerError";
+                    //window.location.href = "/status/ServerError";
                 }
                 newTopic = await response.json();
             }
@@ -1675,7 +1675,7 @@ export function isFollowThisBoard(boardId) {
                 return true;
             }
         }
-    }   
+    }
     return false;
 }
 
@@ -1716,7 +1716,7 @@ export async function unfollowBoard(boardId) {
  * @param router 路由器
  */
 export async function getMessageSystem(from: number, size: number, router) {
-    const myHeaders = await formAuthorizeHeader(); 
+    const myHeaders = await formAuthorizeHeader();
     try {
         let response = await cc98Fetch(`/notification/system?from=${from}&size=${size}`, { headers: myHeaders });
         switch (response.status) {
@@ -1744,7 +1744,7 @@ export async function getMessageSystem(from: number, size: number, router) {
     } catch {
         return [];
     }
-    
+
     //把postId统计存到一个数组里，然后批量查询一下，从而得到每个楼层信息和回复者信息
     let postsId = [];
     for (let item of newTopic) {
@@ -1821,10 +1821,10 @@ export async function getMessageResponse(from: number, size: number, router) {
                 }
                 //获取楼层信息和回复者信息
                 if (newTopic[i].postId) {
-                   let postInfo = getThisPostInfo(newTopic[i].postId, postsInfo);
-                   newTopic[i].floor = postInfo.floor;
-                   newTopic[i].userId = postInfo.userId;
-                   newTopic[i].userName = postInfo.userName;
+                    let postInfo = getThisPostInfo(newTopic[i].postId, postsInfo);
+                    newTopic[i].floor = postInfo.floor;
+                    newTopic[i].userId = postInfo.userId;
+                    newTopic[i].userName = postInfo.userName;
                 }
                 else {
                     newTopic[i].floor = 1;
@@ -1901,9 +1901,9 @@ export async function getMessageAttme(from: number, size: number, router) {
                     newTopic[i].userName = postInfo.userName;
                 }
                 else {
-                   newTopic[i].floor = 1;
-                   newTopic[i].userId = -1;
-                   newTopic[i].userName = "有人";
+                    newTopic[i].floor = 1;
+                    newTopic[i].userId = -1;
+                    newTopic[i].userName = "有人";
                 }
                 result.push(newTopic[i]);
             }
@@ -1930,7 +1930,7 @@ export async function plus1(topicId, postId, reason) {
             if (await response.text() === 'you_cannot_rate')
                 return 'not allowed';
             else
-            return 'already';
+                return 'already';
         case 500:
             return 'server error';
     }
@@ -2123,7 +2123,7 @@ export async function deleteTopic(topicId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
     const url = `/topic/${topicId}`;
-    const bodyInfo =  reason ;
+    const bodyInfo = reason;
     const body = JSON.stringify(bodyInfo);
     const response = await cc98Fetch(url, { method: "DELETE", headers, body }); switch (response.status) {
         case 401:
@@ -2435,7 +2435,7 @@ export async function refreshUnReadCount() {
     let response = await cc98Fetch(url, { headers });
     if (response.status === 200) {
         unreadCount = await response.json();
-    } 
+    }
     //根据消息偏好设置修改未读消息数目
     if (noticeSetting) {
         if (noticeSetting.response === "否") {
@@ -2691,7 +2691,7 @@ export async function moveTopic(topicId, boardId, reason) {
     const url = `/topic/${topicId}/moveto/${boardId}`;
     const headers = await formAuthorizeHeader();
     headers.append('Content-Type', 'application/json');
-    const response = await cc98Fetch(url, { method: "PUT", headers, body: JSON.stringify({reason}) });
+    const response = await cc98Fetch(url, { method: "PUT", headers, body: JSON.stringify({ reason }) });
     if (response.status === 200)
         return 'ok';
     else return 'error';
@@ -2849,7 +2849,7 @@ export function atHanderler(content: string) {
         } else {
             return false;
         }
-    } catch(e) {
+    } catch (e) {
         return content;
     }
 }
@@ -2859,7 +2859,7 @@ export function atHanderler(content: string) {
  * @param content
  */
 export function atUserUbbUrl(content: string) {
-    try{
+    try {
         const reg = /@[^ \n]{1,10}?[ ]+/g;
         const reg2 = /[^@ ]+/;
         if (content === '') {
@@ -2885,7 +2885,7 @@ export function atUserUbbUrl(content: string) {
         } else {
             return content;
         }
-    } catch(e) {
+    } catch (e) {
         return content;
     }
 }
@@ -2895,7 +2895,7 @@ export function atUserUbbUrl(content: string) {
  * @param content
  */
 export function atUserMdUrl(content: string) {
-    try{
+    try {
         const reg = /@[^ \n]{1,10}?[ ]+/g;
         const reg2 = /[^@ ]+/;
         if (content === '') {
@@ -2921,7 +2921,7 @@ export function atUserMdUrl(content: string) {
         } else {
             return content;
         }
-    } catch(e) {
+    } catch (e) {
         return content;
     }
 }
@@ -3021,4 +3021,102 @@ export async function getBoardRecord(boardId: number, from: number, size: number
     const json = await response.json();
     console.log("版面事件记录", json);
     return json;
+}
+/**
+ * 获取本周/月热门话题
+ * @returns {data} 处理好的热门话题数据
+ * @author adddna //基于明一gg的获取新帖
+ */
+export async function getMonthlyHotTopic(type: string) {
+    const headers = await formAuthorizeHeader();
+    const response = await cc98Fetch(`/topic/hot-${type}`);
+
+    switch (response.status) {
+        case 401:
+            window.location.href = "/status/UnauthorizedTopic";
+        case 403:
+            window.location.href = "/status/OperationForbidden";
+        case 404:
+        //window.location.href = "/status/NotFoundTopic";
+        case 500:
+        //window.location.href = "/status/ServerError";
+    }
+
+    let data = await response.json();
+
+    let aTopic = [];
+    let aTopicId = [];
+    let bTopic = [];
+    for (let item of data) {
+        //时间转换
+        item.time = transerRecentTime(item.time);
+        item.lastPostTime = transerRecentTime(item.lastPostTime);
+
+        //阅读数转换
+        if (item.hitCount > 10000) {
+            if (item.hitCount > 100000) {
+                let index = parseInt(`${item.hitCount / 10000}`);
+                item.hitCount = `${index}万`;
+            }
+            else {
+                let index = parseInt(`${item.hitCount / 1000}`) / 10;
+                item.hitCount = `${index}万`;
+            }
+        }
+        //计算总楼层
+        item.floorCount = item.replyCount + 1;
+        //回复数转换
+        if (item.replyCount > 10000) {
+            if (item.replyCount > 100000) {
+                let index = parseInt(`${item.replyCount / 10000}`);
+                item.replyCount = `${index}万`;
+            }
+            else {
+                let index = parseInt(`${item.replyCount / 1000}`) / 10;
+                item.replyCount = `${index}万`;
+            }
+        }
+        //标签转换
+        if (item.tag1) {
+            item.tag1 = await getTagNamebyId(item.tag1);
+            if (item.tag2) {
+                item.tag2 = await getTagNamebyId(item.tag2);
+            }
+        }
+        //处理匿名与非匿名主题，非匿名主题用户批量获取信息
+        if (item.userId) {
+            //获取所在版面名称
+            item.boardName = await getBoardName(item.boardId);
+            aTopic.push(item);
+            aTopicId.push(item.userId);
+        }
+        else {
+            item.portraitUrl = '/static/images/_心灵之约.png';
+            item.userName = "匿名用户";
+            item.boardName = "心灵之约";
+            bTopic.push(item);
+        }
+    }
+    //对于非匿名数据批量获取头像地址
+    let usersInfo = await getBasicUsersInfo(aTopicId);
+    for (let i in aTopic) {
+        let thisUserInfo = getThisUserInfo(aTopic[i].userId, usersInfo);
+        aTopic[i].portraitUrl = thisUserInfo.portraitUrl;
+    };
+    for (let i = 0, j = 0, k = 0; i < data.length; i++) {
+        if (j === aTopic.length) {
+            data[i] = bTopic[k];
+            k++;
+        }
+        else if (data[i].id === aTopic[j].id) {
+            data[i] = aTopic[j];
+            j++;
+        }
+        else {
+
+            data[i] = bTopic[k];
+            k++;
+        }
+    }
+    return data;
 }

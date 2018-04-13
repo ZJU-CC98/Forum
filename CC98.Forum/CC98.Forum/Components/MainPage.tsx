@@ -134,6 +134,10 @@ export class HotTopicComponent extends React.Component<{ data }, { mainPageTopic
                     <i className="fa fa-volume-up"></i>
                     <div className="mainPageTitleText">热门话题</div>
                 </div>
+                <div className="mainPageTitleRow">
+                    <div className="mainPageTitleText"><a href="/topic/hot-weekly" target="_blank">本周</a></div>
+                    <div className="mainPageTitleText"><a href="/topic/hot-monthly" target="_blank">本月</a></div>
+                </div>
             </div>
             <div className="mainPageListContent1">
                 {this.props.data.map(this.convertMainPageTopic)}
@@ -639,5 +643,3 @@ export class MainPage extends React.Component<{}, { data }> {
     }
 
 }
-
-//2017.12.16 20:06 如果前辈看到这行注释 说明你成功拉取了这个时间的更新
