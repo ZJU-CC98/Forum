@@ -43,7 +43,7 @@ export async function getUsersInfo(keys: (number | string)[]): Promise<UserInfo[
         let querys = infos.filter(item => (typeof item === 'number' || typeof item === 'string'));
         let queryInfo: UserInfo[] = [];
         if(querys.length !== 0){
-            const url = typeof keys[0] === 'number' ? `/user?id=${querys.join('&id=')}` : `/user/basic/name?name=${querys.map(encodeURIComponent).join('&name=')}`;
+            const url = typeof keys[0] === 'number' ? `/user?id=${querys.join('&id=')}` : `/user/name?name=${querys.map(encodeURIComponent).join('&name=')}`;
             let headers = await formAuthorizeHeader();
             let res = await cc98Fetch(url, { headers });
             queryInfo = await res.json();
