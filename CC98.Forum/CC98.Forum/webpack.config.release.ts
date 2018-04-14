@@ -5,6 +5,7 @@ import * as CopyWebpackPlugin from 'copy-webpack-plugin';
 import * as CleanWebpackPlugin from 'clean-webpack-plugin';
 import * as ExtractTextPlugin from 'extract-text-webpack-plugin';
 import * as UglifyJsPlugin from 'uglifyjs-webpack-plugin';
+import * as  WebpackChunkHash from 'webpack-chunk-hash';
 
 const config: Webpack.Configuration = {
 
@@ -86,6 +87,8 @@ const config: Webpack.Configuration = {
 		]),
 
 		new ExtractTextPlugin('static/content/[name]-[chunkhash:8].css'),
+
+		new WebpackChunkHash({algorithm: 'md5'}),
 	],
 
 	optimization: {
