@@ -111,6 +111,7 @@ export default (state = new UserInfoStore(), action: RootAction): UserInfoStore 
         case ActionTypes.USER_LOG_ON:
             return { ...state, isLogOn: true, ...new UserInfoStore()};
         case ActionTypes.USER_LOG_OFF:
+            Utility.changeTheme(0);
             Utility.removeLocalStorage('userInfo');
             return { ...state, isLogOn: false };
         case ActionTypes.CHANGE_USERINFO:

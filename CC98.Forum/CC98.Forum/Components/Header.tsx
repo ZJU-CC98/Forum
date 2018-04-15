@@ -225,7 +225,6 @@ function mapState(state) {
 function mapDispatch(dispatch) {
     return {
         logOff: () => {
-            Utility.changeTheme(0);
             dispatch(Actions.userLogOff());
         },
         reLogOn: (newInfo: UserInfo) => {
