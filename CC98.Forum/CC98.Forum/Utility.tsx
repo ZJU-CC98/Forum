@@ -1,7 +1,8 @@
 ﻿import * as Prop from './Props/AppProps'
 import * as State from './States/AppState'
 import store from './Store';
-import * as Actions from './Actions/UserCenter';
+import * as UserCenterActions from './Actions/UserCenter';
+import * as ErrorActions from './Actions/Error';
 
 import { TopicTitleAndContent } from './Components/Board/Board'
 import { Constants } from './Components/Constant';
@@ -93,7 +94,7 @@ export async function getBoardTopicAsync(curPage, boardId, totalTopicCount) {
 
     } catch (e) {
         console.error(e);
-        //window.location.href = "/status/Disconnected";
+        //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
 
@@ -121,7 +122,7 @@ export async function getTopic(topicid: number) {
 
 
     } catch (e) {
-        //window.location.href = "/status/Disconnected";
+        //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
 export function getThisUserInfo(userId, usersInfo) {
@@ -198,7 +199,7 @@ export async function getTopicContent(topicid: number, curPage: number) {
 
     } catch (e) {
         console.error(e);
-        //window.location.href = "/status/Disconnected";
+        //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
 export async function like(topicid, postid, router) {
@@ -208,22 +209,22 @@ export async function like(topicid, postid, router) {
         const content = "1";
         const response = await cc98Fetch(`/post/${postid}/like`, { method: "PUT", headers, body: content });
         if (response.status === 401) {
-            window.location.href = "/status/UnauthorizedTopic";
+            store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
         }
         if (response.status === 403) {
-            window.location.href = "/status/OperationForbidden";
+            store.dispatch(ErrorActions.throwError('OperationForbidden'));
         }
         if (response.status === 404) {
-            window.location.href = "/status/NotFoundTopic";
+            store.dispatch(ErrorActions.throwError('NotFoundTopic'));
         }
         if (response.status === 500) {
-            window.location.href = "/status/ServerError";
+            store.dispatch(ErrorActions.throwError('ServerError'));
         }
         const data = await response.json();
         return data;
 
     } catch (e) {
-        //window.location.href = "/status/Disconnected";
+        //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
 export async function dislike(topicid, postid, router) {
@@ -233,23 +234,23 @@ export async function dislike(topicid, postid, router) {
         const content: string = "2";
         const response = await cc98Fetch(`/post/${postid}/like`, { method: "PUT", headers, body: content });
         if (response.status === 401) {
-            window.location.href = "/status/UnauthorizedTopic";
+            store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
         }
 
         if (response.status === 403) {
-            window.location.href = "/status/OperationForbidden";
+            store.dispatch(ErrorActions.throwError('OperationForbidden'));
         }
         if (response.status === 404) {
-            window.location.href = "/status/NotFoundTopic";
+            store.dispatch(ErrorActions.throwError('NotFoundTopic'));
         }
         if (response.status === 500) {
-            window.location.href = "/status/ServerError";
+            store.dispatch(ErrorActions.throwError('ServerError'));
         }
         const data = await response.json();
         return data;
 
     } catch (e) {
-        //window.location.href = "/status/Disconnected";
+        //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
 export async function getLikeStateAndCount(topicid, postid, router) {
@@ -258,23 +259,23 @@ export async function getLikeStateAndCount(topicid, postid, router) {
 
         const response = await cc98Fetch(`/post/${postid}/like`, { headers });
         if (response.status === 401) {
-            window.location.href = "/status/UnauthorizedTopic";
+            store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
         }
 
         if (response.status === 403) {
-            window.location.href = "/status/OperationForbidden";
+            store.dispatch(ErrorActions.throwError('OperationForbidden'));
         }
         if (response.status === 404) {
-            window.location.href = "/status/NotFoundTopic";
+            store.dispatch(ErrorActions.throwError('NotFoundTopic'));
         }
         if (response.status === 500) {
-            window.location.href = "/status/ServerError";
+            store.dispatch(ErrorActions.throwError('ServerError'));
         }
         const data = await response.json();
         return data;
 
     } catch (e) {
-        //window.location.href = "/status/Disconnected";
+        //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
 export async function getHotReplyContent(topicid: number) {
@@ -310,7 +311,7 @@ export async function getHotReplyContent(topicid: number) {
         }
         return post;
     } catch (e) {
-        //window.location.href = "/status/Disconnected";
+        //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
 
@@ -329,7 +330,7 @@ export async function getCurUserTopic(topicid: number, userId: number) {
         data[0].userInfo = userMesJson;
         return data[0];
     } catch (e) {
-        //window.location.href = "/status/Disconnected";
+        //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
 export async function getCurUserTopicContent(topicid: number, curPage: number, userName: string, userId: number) {
@@ -366,7 +367,7 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
         }
         return post;
     } catch (e) {
-        //window.location.href = "/status/Disconnected";
+        //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
 
@@ -377,7 +378,7 @@ export async function getCurUserTopicContent(topicid: number, curPage: number, u
 export async function getAllNewTopic(from: number, router) {
     //如果未登录,直接跳转至登录页面
     if (!isLogOn()) {
-        window.location.href = "/status/LogOut";
+        store.dispatch(ErrorActions.throwError('LogOut'));
         return null;
     }
     try {
@@ -395,13 +396,13 @@ export async function getAllNewTopic(from: number, router) {
         const response = await cc98Fetch(`/topic/new?from=${from}&size=${size}`, { headers });
         switch (response.status) {
             case 401:
-                window.location.href = "/status/UnauthorizedTopic";
+                store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
             case 403:
-                window.location.href = "/status/OperationForbidden";
+                store.dispatch(ErrorActions.throwError('OperationForbidden'));
             case 404:
-            //window.location.href = "/status/NotFoundTopic";
+            //store.dispatch(ErrorActions.throwError('NotFoundTopic'));
             case 500:
-            //window.location.href = "/status/ServerError";
+            //store.dispatch(ErrorActions.throwError('ServerError'));
         }
         let newTopic = await response.json();
         //console.log("获取到的数据", newTopic);
@@ -484,7 +485,7 @@ export async function getAllNewTopic(from: number, router) {
         //console.log("这里会执行吗");
         return newTopic;
     } catch (e) {
-        //window.location.href = "/status/Disconnected";
+        //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
 
@@ -495,7 +496,7 @@ export async function getAllNewTopic(from: number, router) {
 export async function getFocusTopic(boardId: number, boardName: string, from: number, router) {
     //如果未登录,直接跳转至登录页面
     if (!isLogOn()) {
-        window.location.href = "/status/LogOut";
+        store.dispatch(ErrorActions.throwError('LogOut'));
         return null;
     }
     try {
@@ -522,13 +523,13 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
         }
         switch (response.status) {
             case 401:
-                window.location.href = "/status/UnauthorizedTopic";
+                store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
             case 403:
-                window.location.href = "/status/OperationForbidden";
+                store.dispatch(ErrorActions.throwError('OperationForbidden'));
             case 404:
-            //window.location.href = "/status/NotFoundTopic";
+            //store.dispatch(ErrorActions.throwError('NotFoundTopic'));
             case 500:
-            //window.location.href = "/status/ServerError";
+            //store.dispatch(ErrorActions.throwError('ServerError'));
         }
         let newTopic = await response.json();
         let aTopic = [];
@@ -606,7 +607,7 @@ export async function getFocusTopic(boardId: number, boardName: string, from: nu
         }
         return newTopic;
     } catch (e) {
-        //window.location.href = "/status/Disconnected";
+        //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
 
@@ -655,24 +656,24 @@ export function isLogOn(): boolean {
 export async function getRecentContact(from: number, size: number, router) {
     //如果未登录,直接跳转至登录页面
     if (!isLogOn()) {
-        window.location.href = "/status/LogOut";
+        store.dispatch(ErrorActions.throwError('LogOut'));
         return null;
     }
     try {
         const headers = await formAuthorizeHeader();
         let response = await cc98Fetch(`/message/recent-contact-users?from=${from}&size=${size}`, { headers });
         if (response.status === 401) {
-            window.location.href = "/status/UnauthorizedTopic";
+            store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
         }
 
         if (response.status === 403) {
-            window.location.href = "/status/OperationForbidden";
+            store.dispatch(ErrorActions.throwError('OperationForbidden'));
         }
         if (response.status === 404) {
-            window.location.href = "/status/NotFoundTopic";
+            store.dispatch(ErrorActions.throwError('NotFoundTopic'));
         }
         if (response.status === 500) {
-            window.location.href = "/status/ServerError";
+            store.dispatch(ErrorActions.throwError('ServerError'));
         }
         let recentContactId = await response.json();
         //console.log("最近联系人列表id", recentContactId);
@@ -696,7 +697,7 @@ export async function getRecentContact(from: number, size: number, router) {
 
         return recentContact;
     } catch (e) {
-        //window.location.href = ("/status/Disconnected");
+        //store.dispatch(ErrorActions.throwError(('Disconnected')));
     }
 }
 
@@ -706,30 +707,30 @@ export async function getRecentContact(from: number, size: number, router) {
 export async function getRecentMessage(userId: number, from: number, size: number, router) {
     //如果未登录,直接跳转至登录页面
     if (!isLogOn()) {
-        window.location.href = "/status/LogOut";
+        store.dispatch(ErrorActions.throwError('LogOut'));
         return null;
     }
     try {
         const headers = await formAuthorizeHeader();
         let response = await cc98Fetch(`/message/user/${userId}?from=${from}&size=${size}`, { headers });
         if (response.status === 401) {
-            window.location.href = "/status/UnauthorizedTopic";
+            store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
         }
 
         if (response.status === 403) {
-            window.location.href = "/status/OperationForbidden";
+            store.dispatch(ErrorActions.throwError('OperationForbidden'));
         }
         if (response.status === 404) {
-            window.location.href = "/status/NotFoundTopic";
+            store.dispatch(ErrorActions.throwError('NotFoundTopic'));
         }
         if (response.status === 500) {
-            //window.location.href = "/status/ServerError";
+            //store.dispatch(ErrorActions.throwError('ServerError'));
         }
         let response1 = await response.json();
         let recentMessage = sortRecentMessage(response1);
         return recentMessage;
     } catch (e) {
-        //window.location.href = ("/status/Disconnected");
+        //store.dispatch(ErrorActions.throwError(('Disconnected')));
     }
 }
 
@@ -834,15 +835,15 @@ export async function sortContactList(recentContact, router) {
             try {
                 response = await cc98Fetch(`/user/basic/${chatManId}`);
                 if (response.status === 404) {
-                    window.location.href = ("/status/NotFoundUser");
+                    store.dispatch(ErrorActions.throwError(('NotFoundUser')));
                 }
                 if (response.status === 500) {
-                    window.location.href = ("/status/ServerError");
+                    store.dispatch(ErrorActions.throwError(('ServerError')));
                 }
                 chatMan = await response.json();
             }
             catch (e) {
-                window.location.href = ("/status/Disconnected");
+                store.dispatch(ErrorActions.throwError(('Disconnected')));
                 flag = 0;
             }
             if (flag === 1) {
@@ -878,21 +879,21 @@ export async function sortContactList(recentContact, router) {
                 try {
                     response = await cc98Fetch(`/user/basic/${chatManId}`);
                     if (response.status === 401) {
-                        window.location.href = "/status/UnauthorizedTopic";
+                        store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
                     }
                     if (response.status === 403) {
-                        window.location.href = "/status/OperationForbidden";
+                        store.dispatch(ErrorActions.throwError('OperationForbidden'));
                     }
                     if (response.status === 404) {
-                        window.location.href = "/status/NotFoundTopic";
+                        store.dispatch(ErrorActions.throwError('NotFoundTopic'));
                     }
                     if (response.status === 500) {
-                        window.location.href = "/status/ServerError";
+                        store.dispatch(ErrorActions.throwError('ServerError'));
                     }
                     chatMan = await response.json();
                 }
                 catch (e) {
-                    window.location.href = ("/status/Disconnected");
+                    store.dispatch(ErrorActions.throwError(('Disconnected')));
                     flag = 0;
                 }
                 if (flag === 1) {
@@ -922,17 +923,17 @@ export async function sortContactList(recentContact, router) {
                     response0 = await cc98Fetch(`/user/name/${encodeURIComponent(chatManName)}`);
                     switch (response0.status) {
                         case 401:
-                            window.location.href = "/status/Logout";;
+                            store.dispatch(ErrorActions.throwError('LogOut'));;
                         case 403:
-                            window.location.href = "/status/OperationForbidden";
+                            store.dispatch(ErrorActions.throwError('OperationForbidden'));
                         case 404:
-                            window.location.href = "/status/NotFoundTopic";
+                            store.dispatch(ErrorActions.throwError('NotFoundTopic'));
                         case 500:
-                            window.location.href = "/status/ServerError";
+                            store.dispatch(ErrorActions.throwError('ServerError'));
                     }
                     response1 = await response0.json();
                 } catch (e) {
-                    window.location.href = ("/status/Disconnected");
+                    store.dispatch(ErrorActions.throwError(('Disconnected')));
                     flag = 0;
                 }
                 if (flag == 1) {
@@ -971,17 +972,17 @@ export async function sortContactList(recentContact, router) {
                         response0 = await cc98Fetch(`/user/name/${encodeURIComponent(chatManName)}`);
                         switch (response0.status) {
                             case 401:
-                                window.location.href = "/status/UnauthorizedTopic";;
+                                store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));;
                             case 403:
-                                window.location.href = "/status/OperationForbidden";
+                                store.dispatch(ErrorActions.throwError('OperationForbidden'));
                             case 404:
-                                window.location.href = "/status/NotFoundTopic";
+                                store.dispatch(ErrorActions.throwError('NotFoundTopic'));
                             case 500:
-                                window.location.href = "/status/ServerError";
+                                store.dispatch(ErrorActions.throwError('ServerError'));
                         }
                         response1 = await response0.json();
                     } catch (e) {
-                        window.location.href = ("/status/Disconnected");
+                        store.dispatch(ErrorActions.throwError(('Disconnected')));
                         flag = 0;
                     }
                     if (flag == 1) {
@@ -1008,13 +1009,13 @@ export async function sortContactList(recentContact, router) {
         headers.append('Authorization', token);
         const replyCountResponse = await cc98Fetch(`/Topic/${topicid}`, { headers });
         if (replyCountResponse.status === 401) {
-            window.location.href = "/status/UnauthorizedTopic";
+            store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
         }
         if (replyCountResponse.status === 404) {
-            window.location.href = "/status/NotFoundTopic";
+            store.dispatch(ErrorActions.throwError('NotFoundTopic'));
         }
         if (replyCountResponse.status === 500) {
-            window.location.href = "/status/ServerError";
+            store.dispatch(ErrorActions.throwError('ServerError'));
         }
         const replyCountJson = await replyCountResponse.json();
         const replyCount = replyCountJson.replyCount;
@@ -1024,7 +1025,7 @@ export async function sortContactList(recentContact, router) {
             return 1;
         }
     } catch (e) {
-        //window.location.href = "/status/Disconnected";
+        //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
 */
@@ -1035,7 +1036,7 @@ export async function getUserDetails(userId) {
         const body = { portraitUrl: data.portraitUrl, userName: data.name, fanCount: data.fanCount, displayTitle: data.displayTitle, birthday: data.birthday, prestige: data.prestige, gender: data.gender, levelTitle: data.levelTitle, isFollowing: data.isFollowing }
         return body;
     } catch (e) {
-        //window.location.href = "/status/Disconnected";
+        //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
 export async function getLikeState(topicid, router) {
@@ -1046,18 +1047,18 @@ export async function getLikeState(topicid, router) {
         const response = await cc98Fetch(`/post/${postId}/like`, { headers });
         switch (response.status) {
             case 401:
-                window.location.href = "/status/UnauthorizedTopic";;
+                store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));;
             case 403:
-                window.location.href = "/status/OperationForbidden";
+                store.dispatch(ErrorActions.throwError('OperationForbidden'));
             case 404:
-                window.location.href = "/status/NotFoundTopic";
+                store.dispatch(ErrorActions.throwError('NotFoundTopic'));
             case 500:
-                window.location.href = "/status/ServerError";
+                store.dispatch(ErrorActions.throwError('ServerError'));
         }
         const data = await response.json();
         return data;
     } catch (e) {
-        //window.location.href = "/status/Disconnected";
+        //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
 export async function refreshLikeState(topicId, postId) {
@@ -1066,18 +1067,18 @@ export async function refreshLikeState(topicId, postId) {
         const response = await cc98Fetch(`/post/${postId}/like`, { headers });
         switch (response.status) {
             case 401:
-                window.location.href = "/status/UnauthorizedTopic";
+                store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
             case 403:
-                window.location.href = "/status/OperationForbidden";
+                store.dispatch(ErrorActions.throwError('OperationForbidden'));
             case 404:
-                window.location.href = "/status/NotFoundTopic";
+                store.dispatch(ErrorActions.throwError('NotFoundTopic'));
             case 500:
-                window.location.href = "/status/ServerError";
+                store.dispatch(ErrorActions.throwError('ServerError'));
         }
         const data = await response.json();
         return data;
     } catch (e) {
-        //window.location.href = "/status/Disconnected";
+        //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
 export async function sendTopic(topicId, router) {
@@ -1102,18 +1103,18 @@ export async function sendTopic(topicId, router) {
         );
         switch (mes.status) {
             case 401:
-                window.location.href = "/status/Logout";
+                store.dispatch(ErrorActions.throwError('LogOut'));
             case 402:
-                window.location.href = "/status/ContentNeeded";
+                store.dispatch(ErrorActions.throwError('ContentNeeded'));
             case 403:
-                window.location.href = "/status/OperationForbidden";
+                store.dispatch(ErrorActions.throwError('OperationForbidden'));
             case 404:
-                window.location.href = "/status/NotFoundTopic";
+                store.dispatch(ErrorActions.throwError('NotFoundTopic'));
             case 500:
-                window.location.href = "/status/ServerError";
+                store.dispatch(ErrorActions.throwError('ServerError'));
         }
     } catch (e) {
-        //window.location.href = "/status/Disconnected";
+        //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
 
@@ -1130,7 +1131,7 @@ export async function getCurUserTotalReplyPage(topicId, userId) {
         return replyCount % 10 === 0 ? replyCount / 10 :
             (replyCount - replyCount % 10) / 10 + 1;
     } catch (e) {
-        //window.location.href = "/status/Disconnected";
+        //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
 export async function getAnonymousTraceTopicsCount(topicId, postId) {
@@ -1141,7 +1142,7 @@ export async function getAnonymousTraceTopicsCount(topicId, postId) {
         return data[0].count % 10 === 0 ? data[0].count / 10 : (data[0].count - data[0].count % 10) / 10 + 1;
 
     } catch (e) {
-        //window.location.href = "/status/Disconnected";
+        //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
 export async function getAnonymousTraceTopics(topicId, postId, page) {
@@ -1158,7 +1159,7 @@ export async function getAnonymousTraceTopics(topicId, postId, page) {
         }
         return data;
     } catch (e) {
-        //window.location.href = "/status/Disconnected";
+        //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
 /**
@@ -1174,10 +1175,10 @@ export async function sendMessage(bodyContent: string, router) {
         body: bodyContent
     });
     if (response.status === 401) {
-        window.location.href = "/status/Loggout";
+        store.dispatch(ErrorActions.throwError('LogOut'));
     }
     if (response.status === 500) {
-        window.location.href = "/status/ServerError";
+        store.dispatch(ErrorActions.throwError('ServerError'));
     }
     return response;
 }
@@ -1400,7 +1401,7 @@ export async function getSaveTopics(curPage, boardId) {
 export async function getSearchTopic(boardId: number, words: string[], from: number, router) {
     //如果未登录,直接跳转至登录页面
     if (!isLogOn()) {
-        window.location.href = "/status/LogOut";
+        store.dispatch(ErrorActions.throwError('LogOut'));
         return null;
     }
     if (words) {
@@ -1420,13 +1421,13 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                 });
                 switch (response.status) {
                     case 401:
-                        window.location.href = "/status/UnauthorizedTopic";
+                        store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
                     case 403:
-                        window.location.href = "/status/OperationForbidden";
+                        store.dispatch(ErrorActions.throwError('OperationForbidden'));
                     case 404:
-                    //window.location.href = "/status/NotFoundTopic";
+                    //store.dispatch(ErrorActions.throwError('NotFoundTopic'));
                     case 500:
-                    //window.location.href = "/status/ServerError";
+                    //store.dispatch(ErrorActions.throwError('ServerError'));
                 }
                 newTopic = await response.json();
             }
@@ -1440,16 +1441,16 @@ export async function getSearchTopic(boardId: number, words: string[], from: num
                     headers: headers
                 });
                 if (response.status === 401) {
-                    window.location.href = "/status/LogOut";
+                    store.dispatch(ErrorActions.throwError('LogOut'));
                 }
                 if (response.status === 403) {
-                    window.location.href = "/status/OperationForbidden";
+                    store.dispatch(ErrorActions.throwError('OperationForbidden'));
                 }
                 if (response.status === 404) {
-                    window.location.href = "/status/NotFoundTopic";
+                    store.dispatch(ErrorActions.throwError('NotFoundTopic'));
                 }
                 if (response.status === 500) {
-                    window.location.href = "/status/ServerError";
+                    store.dispatch(ErrorActions.throwError('ServerError'));
                 }
                 newTopic = await response.json();
             } catch (e) {
@@ -1554,16 +1555,16 @@ export async function getSearchBoard(word: string, router) {
         const response = await cc98Fetch(url);
         /*switch (response.status) {
             case 401:
-                window.location.href = "/status/UnauthorizedBoard";
+                store.dispatch(ErrorActions.throwError('UnauthorizedBoard');
                 return null;
             case 403:
-                window.location.href = "/status/OperationForbidden";
+                store.dispatch(ErrorActions.throwError('OperationForbidden'));
                 return null;
             case 404:
-                window.location.href = "/status/NotFoundBoard";
+                store.dispatch(ErrorActions.throwError('NotFoundBoard');
                 return null;
             case 500:
-                window.location.href = "/status/ServerError";
+                store.dispatch(ErrorActions.throwError('ServerError'));
                 return null;
         }*/
         const data = await response.json();
@@ -1679,7 +1680,7 @@ export async function refreshUserInfo() {
         });
 
         let userInfo = await response.json();
-        store.dispatch(Actions.changeUserInfo(userInfo));
+        store.dispatch(UserCenterActions.changeUserInfo(userInfo));
         setLocalStorage("userInfo", userInfo, 2592000);
     }
 }
@@ -1705,21 +1706,21 @@ export async function getMessageSystem(from: number, size: number, router) {
             case 401:
                 //如果未登录,直接返回未登录
                 if (!isLogOn()) {
-                    window.location.href = "/status/LogOut";
+                    store.dispatch(ErrorActions.throwError('LogOut'));
                     return null;
                 }
                 else {
-                    window.location.href = "/status/UnauthorizedTopic";
+                    store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
                     return null;
                 }
             case 403:
-                window.location.href = "/status/OperationForbidden";
+                store.dispatch(ErrorActions.throwError('OperationForbidden'));
                 return null;
             case 404:
-                window.location.href = "/status/NotFoundTopic";
+                store.dispatch(ErrorActions.throwError('NotFoundTopic'));
                 return null;
             case 500:
-                window.location.href = "/status/ServerError";
+                store.dispatch(ErrorActions.throwError('ServerError'));
                 return null;
         }
         var newTopic = await response.json(); //先从api得到原始的系统消息数据
@@ -1761,21 +1762,21 @@ export async function getMessageResponse(from: number, size: number, router) {
             case 401:
                 //如果未登录,直接返回未登录
                 if (!isLogOn()) {
-                    window.location.href = "/status/LogOut";
+                    store.dispatch(ErrorActions.throwError('LogOut'));
                     return [];
                 }
                 else {
-                    window.location.href = "/status/UnauthorizedTopic";
+                    store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
                     return [];
                 }
             case 403:
-                window.location.href = "/status/OperationForbidden";
+                store.dispatch(ErrorActions.throwError('OperationForbidden'));
                 return [];
             case 404:
-                window.location.href = "/status/NotFoundTopic";
+                store.dispatch(ErrorActions.throwError('NotFoundTopic'));
                 return [];
             case 500:
-                window.location.href = "/status/ServerError";
+                store.dispatch(ErrorActions.throwError('ServerError'));
                 return [];
         }
         let newTopic = await response.json();
@@ -1818,7 +1819,7 @@ export async function getMessageResponse(from: number, size: number, router) {
         }
         return result;
     } catch (e) {
-        //window.location.href = "/status/Disconnected";
+        //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
 
@@ -1834,21 +1835,21 @@ export async function getMessageAttme(from: number, size: number, router) {
             case 401:
                 //如果未登录,直接返回未登录
                 if (!isLogOn()) {
-                    window.location.href = "/status/LogOut";
+                    store.dispatch(ErrorActions.throwError('LogOut'));
                     return [];
                 }
                 else {
-                    window.location.href = "/status/UnauthorizedTopic";
+                    store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
                     return [];
                 }
             case 403:
-                window.location.href = "/status/OperationForbidden";
+                store.dispatch(ErrorActions.throwError('OperationForbidden'));
                 return [];
             case 404:
-                window.location.href = "/status/NotFoundTopic";
+                store.dispatch(ErrorActions.throwError('NotFoundTopic'));
                 return [];
             case 500:
-                window.location.href = "/status/ServerError";
+                store.dispatch(ErrorActions.throwError('ServerError'));
                 return [];
         }
         let newTopic = await response.json();
@@ -1892,7 +1893,7 @@ export async function getMessageAttme(from: number, size: number, router) {
         }
         return result;
     } catch (e) {
-        //window.location.href = "/status/Disconnected";
+        //store.dispatch(ErrorActions.throwError('Disconnected'));
     }
 }
 export async function plus1(topicId, postId, reason) {
@@ -2267,21 +2268,21 @@ export async function getTopicInfo(topicId) {
         case 401:
             //如果未登录,直接返回未登录
             if (!isLogOn()) {
-                window.location.href = "/status/LogOut";
+                store.dispatch(ErrorActions.throwError('LogOut'));
                 return null;
             }
             else {
-                window.location.href = "/status/UnauthorizedTopic";
+                store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
                 return null;
             }
         case 403:
-            window.location.href = "/status/OperationForbidden";
+            store.dispatch(ErrorActions.throwError('OperationForbidden'));
             return null;
         case 404:
-            window.location.href = "/status/NotFoundTopic";
+            store.dispatch(ErrorActions.throwError('NotFoundTopic'));
             return null;
         case 500:
-            window.location.href = "/status/ServerError";
+            store.dispatch(ErrorActions.throwError('ServerError'));
             return null;
     }
 
@@ -2979,6 +2980,7 @@ declare let themeNames: string[];
  */
 export function changeTheme(theme: number) {
     $('#mainStylesheet').remove();
+    console.log('theme changed')
     document.getElementsByTagName('head')[0].innerHTML += '<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/' + themeNames[theme] + '">';
 }
 export async function queryWealth(boardId) {
@@ -3015,13 +3017,13 @@ export async function getMonthlyHotTopic(type: string) {
 
     switch (response.status) {
         case 401:
-            window.location.href = "/status/UnauthorizedTopic";
+            store.dispatch(ErrorActions.throwError('UnauthorizedTopic'));
         case 403:
-            window.location.href = "/status/OperationForbidden";
+            store.dispatch(ErrorActions.throwError('OperationForbidden'));
         case 404:
-        //window.location.href = "/status/NotFoundTopic";
+        //store.dispatch(ErrorActions.throwError('NotFoundTopic'));
         case 500:
-        //window.location.href = "/status/ServerError";
+        //store.dispatch(ErrorActions.throwError('ServerError'));
     }
 
     let data = await response.json();

@@ -13,6 +13,8 @@ import { match } from "react-router";
 import { RouteComponent } from './RouteComponent';
 import { UbbEditor } from './UbbEditor';
 import { Constants } from './Constant';
+import store from '../Store';
+import * as ErrorActions from '../Actions/Error';
 declare let editormd: any;
 declare let testEditor: any;
 
@@ -245,7 +247,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
             const topicId = await response.text();
             console.log("topicid=" + topicId);
             if (topicId === 'cannot_post_in_this_board')
-                this.props.history.push(`/status/cannotpost`);
+                store.dispatch(ErrorActions.throwError(('CannotPost')));
             else {
                 //根据返回的topicid，发送@信息       
                 const atUsers = Utility.atHanderler(this.state.content);

@@ -9,7 +9,7 @@ import 'whatwg-fetch';
 import 'blueimp-canvas-to-blob';
 
 import { Constants } from './Components/Constant';
-import { App } from './Components/App';
+import App from './Components/App';
 import { IndexedDB } from './IndexedDB/IndexedDB';
 
 /**

@@ -5,7 +5,7 @@
 import * as ActionTypes from '../ActionTypes';
 import * as Utility from '../Utility';
 import * as Appstate from '../States/AppState';
-import { RootAction } from '../Store'
+import { RootAction } from '../Store';
 
 /**
  * 用户中心用Store
