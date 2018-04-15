@@ -2980,7 +2980,6 @@ declare let themeNames: string[];
  */
 export function changeTheme(theme: number) {
     $('#mainStylesheet').remove();
-    console.log('theme changed')
     document.getElementsByTagName('head')[0].innerHTML += '<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/' + themeNames[theme] + '">';
 }
 export async function queryWealth(boardId) {

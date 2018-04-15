@@ -93,6 +93,7 @@ class LogOnExact extends React.Component<Props, LogOnState> {
             loginMessage: '登录中',
             isLoging: true
         });
+        console.log('logging...')
         this.props.logOff();
         try {            
             let url = 'https://openid.cc98.org/connect/token';
