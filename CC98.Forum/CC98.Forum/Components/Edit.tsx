@@ -18,7 +18,7 @@ import * as ErrorActions from '../Actions/Error';
 declare let editormd: any;
 declare let testEditor: any;
 
-export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tags, ready, mode, content, title, postInfo, tag1, tag2,fetchState,boardId,type }, { mode: string, id: number }> {
+export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tags, ready, mode, content, title, postInfo, tag1, tag2,fetchState,boardId,type, masters: string[] }, { mode: string, id: number }> {
     constructor(props) {
         super(props);
         this.update = this.update.bind(this);
@@ -30,7 +30,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
         this.changeActivityType = this.changeActivityType.bind(this);
         this.changeNormalType = this.changeNormalType.bind(this);
         this.state = ({
-            tags: [], boardName: "", ready: false, mode: 0, content: "", title: "", postInfo: { floor: 0, title: "", content: "", contentType: 0 }, tag1:"" , tag2: "", fetchState: 'ok', boardId: 1, type: 0, topicInfo: {}
+            masters: [], tags: [], boardName: "", ready: false, mode: 0, content: "", title: "", postInfo: { floor: 0, title: "", content: "", contentType: 0 }, tag1:"" , tag2: "", fetchState: 'ok', boardId: 1, type: 0, topicInfo: {}
         });
     }
 
@@ -49,7 +49,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                 const boardName = data.name;
                 //获取标签
                  tags = await Utility.getBoardTag(id);
-                this.setState({ boardName: boardName, tags: tags ,boardId:id});
+                this.setState({ boardName: boardName, tags: tags ,boardId:id, masters: data.boardMasters});
                 break;
             case 'edit':
                 url = `/post/${id}/original`;
@@ -63,7 +63,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                 if (!tag1Name) tag1Name = "";
                 let tag2Name = await Utility.getTagNamebyId(topicInfo.tag2);
                 if (!tag2Name) tag2Name = "";
-                const type = topicInfo.type;
+                let type = topicInfo.type;
                 tags = await Utility.getBoardTag(data.boardId);
 
                 Utility.setLocalStorage("contentCache", data.content);
@@ -72,11 +72,18 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
             
 
                 //console.log(tags);
+
+                url = `/Board/${data.boardId}`;
+                response = await Utility.cc98Fetch(url, { headers });
+                let masters = (await response.json()).boardMasters;
+                if(!(Utility.isMaster(masters) || (Utility.getLocalStorage('userInfo').userTitleIds || []).indexOf(91) !== -1) && type === 1) {
+                    type = 0;
+                }
                 const boardName1 = await Utility.getBoardName(data.boardId);
                 if (data.contentType === 0) {
-                    this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name ,mode:0});
+                    this.setState({ masters, postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name ,mode:0});
                 } else
-                    this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name ,mode:1});
+                    this.setState({ masters, postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name ,mode:1});
                 break;
         }
 
@@ -431,13 +438,25 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
             }
         }
         console.log("默认type:" + this.state.type);
-        const topicType = <div className="createTopicType">
+        let topicType = <div className="createTopicType">
             <div className="createTopicListName">发帖类型</div>
             <input type="radio" name="type" value="普通" onClick={this.changeNormalType} checked={this.state.type === 0 ? true : false} /> 普通
             <input type="radio" name="type" value="学术信息" onClick={this.changeAcademicType} checked={this.state.type === 2 ? true : false} /> 学术信息
-            <input type="radio" name="type" value="校园活动" onClick={this.changeActivityType} checked={this.state.type === 1 ? true : false}/> 校园活动
             <div style={{ color: 'rgb(255,0,0)' }}>（活动帖和学术贴请选择正确的发帖类型)</div>
         </div>;
+
+        console.log(Utility.isMaster(this.state.masters))
+
+        // issue #38 普通用户不显示校园活动
+        if(Utility.isMaster(this.state.masters) || (Utility.getLocalStorage('userInfo').userTitleIds || []).indexOf(91) !== -1) {
+            topicType = <div className="createTopicType">
+                <div className="createTopicListName">发帖类型</div>
+                <input type="radio" name="type" value="普通" onClick={this.changeNormalType} checked={this.state.type === 0 ? true : false} /> 普通
+                <input type="radio" name="type" value="学术信息" onClick={this.changeAcademicType} checked={this.state.type === 2 ? true : false} /> 学术信息
+                <input type="radio" name="type" value="校园活动" onClick={this.changeActivityType} checked={this.state.type === 1 ? true : false} /> 校园活动
+                <div style={{ color: 'rgb(255,0,0)' }}>（活动帖和学术贴请选择正确的发帖类型)</div>
+            </div>;
+        }
 
         return <div className="createTopic">
             <Category url={url} boardName={this.state.boardName} />
