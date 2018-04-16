@@ -89,7 +89,11 @@ export class UbbCodeOptions {
 	/**
 	 * 是否允许自动播放多媒体资源。
 	 */
-	allowAutoPlay = true;
+    allowAutoPlay = true;
+    /**
+	 * 是否允许解析表情。
+	 */
+    allowEmotion = true;
 	/**
 	 * UBB 处理中的兼容性控制选项。
 	 */

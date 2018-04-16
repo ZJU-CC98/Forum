@@ -20,8 +20,6 @@ export default class EmTagHandler extends Ubb.RecursiveTagHandler {
         const emoticonId = tagName.match(/\d{2}/).toString();
         const url = `/static/images/em/em${emoticonId}.gif`;
 
-        return <div style={{ display: "inline" }}>
-            <img src={url} alt="" />{innerContent}
-        </div>;
+        return context.options.allowEmotion ? <div style={{ display: "inline" }}><img src={url} alt="" />{innerContent}</div> : <div style={{ display: "inline" }}>{innerContent}</div>;
     }
 }
