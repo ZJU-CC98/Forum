@@ -63,7 +63,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                 if (!tag1Name) tag1Name = "";
                 let tag2Name = await Utility.getTagNamebyId(topicInfo.tag2);
                 if (!tag2Name) tag2Name = "";
-                const type = topicInfo.type;
+                let type = topicInfo.type;
                 tags = await Utility.getBoardTag(data.boardId);
 
                 Utility.setLocalStorage("contentCache", data.content);
@@ -72,11 +72,18 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
             
 
                 //console.log(tags);
+
+                url = `/Board/${data.boardId}`;
+                response = await Utility.cc98Fetch(url, { headers });
+                let masters = (await response.json()).boardMasters;
+                if(!(Utility.isMaster(masters) || (Utility.getLocalStorage('userInfo').userTitleIds || []).indexOf(91) !== -1) && type === 1) {
+                    type = 0;
+                }
                 const boardName1 = await Utility.getBoardName(data.boardId);
                 if (data.contentType === 0) {
-                    this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name ,mode:0});
+                    this.setState({ masters, postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name ,mode:0});
                 } else
-                    this.setState({ postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name ,mode:1});
+                    this.setState({ masters, postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name ,mode:1});
                 break;
         }
 
