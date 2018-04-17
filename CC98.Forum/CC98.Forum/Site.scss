@@ -3106,29 +3106,33 @@ a {
         padding: 2px 0 0 3px;
     }
 
+       
+.tagBoxSub1 {
+    border-radius: 5px;
+    border-style: solid;
+    border-color: rgb(233,233,233);
+    border-width: 2px;
+    box-sizing: border-box;
+    display: none;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    color: rgb(80,80,80);
+    z-index: 1000;
+    list-style-type: none;
+    margin-top: 2.1rem;
+    background-color: #e9e9e9;
+    margin-left: -0.4rem;
+}
 
-    .tagBoxSub1 {
-        width: 4rem;
-        border-radius: 5px;
-        border-style: solid;
-        border-color: rgb(233,233,233);
-        border-width: 2px;
-        box-sizing: border-box;
-        display: none;
-        font-size: 12px;
-        font-family: 微软雅黑;
-        color: rgb(80,80,80);
-        background: rgb(233,233,233);
-        z-index: 1000;
-    }
 
-
-    .tagBoxSub1 li {
-        height: 25px;
-        cursor: pointer;
-        padding-left: 5px;
-        padding-top: 3px;
-    }
+.tagBoxSub1 li {
+    height: 25px;
+    line-height: 25px;
+    cursor: pointer;
+    padding-top: 3px;
+    position: relative;
+    left: -1.2rem;
+}
 
     .findIP {
         width: 70rem;
