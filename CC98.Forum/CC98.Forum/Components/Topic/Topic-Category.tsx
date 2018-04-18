@@ -11,8 +11,7 @@ export class Category extends React.Component<Props, { boardId, topicId, boardNa
     constructor(props) {
         super(props);
         this.state = ({
-            boardId: "",
-            topicId: "", boardName: "", title: ""
+            boardId: "",topicId: "", boardName: "", title: ""
         });
     }
     componentDidMount() {

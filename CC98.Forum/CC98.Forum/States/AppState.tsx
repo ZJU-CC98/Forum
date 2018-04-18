@@ -158,6 +158,7 @@ export class TopicTitleAndContentState {
     topState: number;
     state: number;
     hitCount: number;
+    bestState: number;
 }
 
 /**
