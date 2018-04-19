@@ -114,6 +114,7 @@ export class Search extends React.Component<{}, SearchState> {
         let searchInfo = { boardId: 0, boardName: '全站', words: null };
         if (!keyword) {
             //没有搜索条件
+            console.log("没有搜索关键词？")
             this.showNoResult();
             this.setState({ loading: false });
         }
@@ -121,7 +122,7 @@ export class Search extends React.Component<{}, SearchState> {
             searchInfo.boardId = parseInt(keyword[1]);
             searchInfo.boardName = await Utility.getBoardName(parseInt(keyword[1]));
             let keyword2 = decodeURI(decodeURI(keyword[2]));
-            console.log(keyword2);
+            console.log("有搜索关键词", keyword2);
             let words = keyword2.split(' ');
             //只取前5个关键词
             if (words.length > 5) {
@@ -144,6 +145,10 @@ export class Search extends React.Component<{}, SearchState> {
     }
 
     async componentWillReceiveProps(nextProps) {
+        console.log("进入componentWillReceiveProps");
+        $('#focus-topic-area').removeClass('displaynone');
+        $('#noResult').addClass('displaynone');
+        $('#showError').addClass('displaynone');
         this.keyWordSearch();
     }
 
