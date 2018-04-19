@@ -127,8 +127,10 @@ export async function getTopic(topicid: number) {
 }
 export function getThisUserInfo(userId, usersInfo) {
     for (let i in usersInfo) {
-        if (usersInfo[i].id === userId) {
-            return usersInfo[i];
+        if (usersInfo[i]) {
+            if (usersInfo[i].id === userId) {
+                return usersInfo[i];
+            }
         }
     }
     //查询失败
