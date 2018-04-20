@@ -97,6 +97,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
         Utility.removeLocalStorage("refresh_token");
         Utility.removeLocalStorage("userInfo");
         Utility.removeStorage("all");
+        Utility.changeTheme(0);
         this.props.logOff();            //更新redux中的状态
     }
 
@@ -225,7 +226,6 @@ function mapState(state) {
 function mapDispatch(dispatch) {
     return {
         logOff: () => {
-            Utility.changeTheme(0);
             dispatch(Actions.userLogOff());
         },
         reLogOn: (newInfo: UserInfo) => {
@@ -296,18 +296,23 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {     //
                     //查看当前是全站还是某版，如果是某版就查询到某版id
                     let url1 = location.href.match(/\/topic\/(\d+)/);
                     let url2 = location.href.match(/\/list\/(\d+)/);
-                    let url3 = location.href.match(/\/search?boardId=(\d+)&/);
+                    let url3 = location.href.match(/\/search\?boardId=(\d+)&/);
                     let boardId = 0;
                     if (url1) {
+                        console.log("版内1");
                         let topicId = url1[1];
                         let response = await Utility.getTopicInfo(topicId);
                         boardId = response.boardId;
                     }
                     else if (url2) {
+                        console.log("版内2");
                         boardId = parseInt(url2[1]);
                     }
                     else if (url3) {
                         boardId = parseInt(url3[1]);
+                        console.log(url3);
+                        console.log(url3[1]);
+                        console.log("目前是在版内啊");
                     }
                     this.props.history.push(`/search?boardId=${boardId}&keyword=${encodeURI(encodeURI(val))}`);
                 }

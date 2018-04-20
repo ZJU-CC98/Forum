@@ -32,7 +32,8 @@ export const USER_CENTER_TRANSFER_WEALTH_SUCCESS = 'USER_CENTER_TRANSFER_WEALTH_
 /**
  * 抛出错误
  */
-export const ERROR = 'ERROR';
+export const THROW_ERROR = 'THROW_ERROR';
+export const SOLVE_ERROR = 'SOLVE_ERROR';
 /**
  * 帖子
  */

@@ -28,9 +28,9 @@ export default class {
      */
     shouldNotSelected?: string[] = ['img', 'video', 'audio', 'upload'];
     /**
-     * 上传文件的最大限制(byte)，默认5mb
+     * 上传文件的最大限制(byte)，默认10mb
      */
-    uploadFileMaxSize?: number = 5242880;
+    uploadFileMaxSize?: number = 10485760;
     /**
      * 支持的字号，确保第一项为0
      */

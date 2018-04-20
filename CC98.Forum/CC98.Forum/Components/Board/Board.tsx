@@ -356,6 +356,7 @@ export class ListTopContent extends React.Component<{ boardId }, { data }>{
             topState={item.topState}
             state={item.state}
             hitCount={item.hitCount}
+            bestState={item.bestState}
         />;
     }
     async componentDidMount() {
@@ -392,6 +393,7 @@ export class BestTopics extends React.Component<{ boardId, curPage }, { data }>{
             topState={item.topState}
             state={item.state}
             hitCount={item.hitCount}
+            bestState={item.bestState}
         />;
     }
     render() {
@@ -430,6 +432,7 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
             topState={item.topState}
             state={item.state}
             hitCount={item.hitCount}
+            bestState={item.bestState}
         />;
     }
     async componentWillReceiveProps(newProps) {
@@ -521,6 +524,7 @@ export class ListTagContent extends RouteComponent<{}, { items, totalPage: numbe
             topState={item.topState}
             state={item.state}
             hitCount={item.hitCount}
+            bestState={item.bestState}
         />;
     }
     async componentWillReceiveProps(newProps) {
@@ -614,6 +618,7 @@ export class ListTagsContent extends RouteComponent<{}, { items, totalPage: numb
             topState={item.topState}
             state={item.state}
             hitCount={item.hitCount}
+            bestState={item.bestState}
         />;
     }
     async componentWillReceiveProps(newProps) {
@@ -778,6 +783,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
             topState={item.topState}
             state={item.state}
             hitCount={item.hitCount}
+            bestState={item.bestState}
         />;
     }
     async componentWillReceiveProps(newProps) {
@@ -857,6 +863,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
             topState={item.topState}
             state={item.state}
             hitCount={item.hitCount}
+            bestState={item.bestState}
         />;
     }
     async componentWillReceiveProps(newProps) {
@@ -964,27 +971,30 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         let url = `/topic/${this.props.id}`;
         const titleId = `title${this.props.id}`;
         let icon;
-        if (this.props.topState === 0) {
-            icon = <div style={{
-                width: "1rem", justifyContent: "flex-start"
-            }}><i style={{ color: "#B0B0B0" }} className="fa fa-envelope fa-lg"></i></div>
-        }
-        //热
-        if (this.props.replyCount > 100 && this.props.topState === 0) {
-            icon = <div style={{
-                width: "1rem", justifyContent: "flex-start"
-            }}><i style={{ color: "red" }} className="fa fa-envelope-open fa-lg"></i></div>
-        }
+       
         //自己
         let curName;
         if (Utility.getLocalStorage("userInfo"))
             curName = Utility.getLocalStorage("userInfo").name;
         else
             curName = "";
+       //普通
+        if (this.props.topState === 0) {
+            icon = <div style={{
+                width: "1rem", justifyContent: "flex-start"
+            }}><i style={{ color: "#B0B0B0" }} className="fa fa-envelope fa-lg"></i></div>
+        }
+        //自己发的
         if (curName === this.props.userName) {
             icon = <div style={{
                 width: "1rem", justifyContent: "flex-start"
             }}><i style={{ color: "#FFC90E" }} className="fa fa-envelope fa-lg"></i></div>
+        }
+        //热
+        if (this.props.replyCount > 100 && this.props.topState === 0) {
+            icon = <div style={{
+                width: "1rem", justifyContent: "flex-start"
+            }}><i style={{ color: "red" }} className="fa fa-envelope-open fa-lg"></i></div>
         }
         //锁
         //1是锁贴
@@ -999,8 +1009,15 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         } else if (this.props.hitCount > 10000) {
             hitCount = (this.props.hitCount / 10000).toFixed(1).toString() + '万';
         }
+        //精华
+        if (this.props.bestState === 1) {
+            icon = <div style={{
+                width: "1rem", justifyContent: "flex-start"
+            }}><i style={{ color: "#FF1493" }} className="fa fa-star fa-lg"></i></div>
+        }
+     
         //置顶
-         if (this.props.topState === 2) {
+        if (this.props.topState === 2) {
             icon = <div style={{
                 width: "1rem", justifyContent: "flex-start"
             }}><i style={{ color: "orange" }} className="fa fa-chevron-circle-up fa-lg"></i></div>
@@ -1009,7 +1026,6 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
                 width: "1rem", justifyContent: "flex-start"
             }}><i style={{ color: "red" }} className="fa fa-arrow-circle-up fa-lg"></i></div>
         }
-       
         let c: any = '#000';
         let b: any= 'normal';
         let i :any= 'normal';

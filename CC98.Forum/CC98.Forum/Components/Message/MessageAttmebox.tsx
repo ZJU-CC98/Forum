@@ -5,6 +5,7 @@ import * as React from 'react';
 import { MessageResponseProps } from '../../Props/MessageResponseProps';
 import * as Utility from '../../Utility';
 import { UbbContainer } from '../UbbContainer';
+import { UbbCompatiblityMode } from '../../Ubb/UbbCodeExtension';
 declare let moment: any;
 
 export class MessageAttmebox extends React.Component<MessageResponseProps> {
@@ -62,14 +63,14 @@ export class MessageAttmebox extends React.Component<MessageResponseProps> {
             <div className="message-response-box-middle">
                 <div className="message-response-box-middle1">
                     <div className="message-response-box-middle-title">
-                        <UbbContainer code={boardName} />
+                        <UbbContainer code={boardName}/>
                     </div>
                     <div className="message-response-box-middle-date" >
                         {moment(this.props.time).format('YYYY-MM-DD HH:mm:ss')}
                     </div>
                 </div>
                 <div className="message-response-box-middle-content">
-                    <UbbContainer code={content} />
+                    <UbbContainer code={content} options={{ allowAutoPlay: false, autoDetectUrl: true, allowExternalUrl: true, allowImage: false, allowMediaContent: false, compatibility: UbbCompatiblityMode.Recommended, allowEmotion: false }} />
                 </div>
             </div>
         </div>

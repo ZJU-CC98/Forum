@@ -469,7 +469,7 @@ class UserCenterConfigAvatar extends React.Component<Props, States> {
 				<div className="user-center-config-avatar">
 					<img src={this.state.avatarNow}></img>
 					<div>
-						<button id="chooseDefaultAvatar" type="button" onClick={() => this.setState({ choosingDefault: true, info: '暂时只有四枚' })}>选择论坛头像</button>
+						<button id="chooseDefaultAvatar" type="button" onClick={() => this.setState({ choosingDefault: true, info: '暂时只有六枚' })}>选择论坛头像</button>
 						<div>
                             <input onChange={e => { this.handleChange(e); e.target.value = ""; }} id="uploadAvatar" type="file" accept="image/*" style={style} />
 							<label htmlFor="uploadAvatar" onClick={() => this.setState({ choosingDefault: false })}><p>选择本地图片</p></label>

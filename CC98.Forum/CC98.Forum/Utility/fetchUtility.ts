@@ -1,11 +1,15 @@
 import {
     getLocalStorage,
-    setLocalStorage
+    setLocalStorage,
+    removeLocalStorage
 } from './storageUtility'
 
 import { 
     Constants // used in cc98Fetch
 } from '../Components/Constant';
+
+import store, { history } from '../Store';
+import * as Actions from '../Actions/UserCenter';
 
 export async function getToken() {
     const refreshToken = getLocalStorage("refresh_token");
@@ -35,10 +39,18 @@ export async function getToken() {
     });
     const data = await response.json();
     
-    token = "Bearer " + encodeURIComponent(data.access_token);
-    setLocalStorage("accessToken", token, data.expires_in);
+    if(data.access_token) {
+        token = "Bearer " + encodeURIComponent(data.access_token);
+        setLocalStorage("accessToken", token, data.expires_in);
+        return token;
+    } else {
+        removeLocalStorage('userInfo');
+        removeLocalStorage("accessToken");
+        removeLocalStorage("refresh_token");
+        store.dispatch(Actions.userLogOff());
+        history.push('/logon');
+    }
 
-    return token;
 }
 
 export async function formAuthorizeHeader() {

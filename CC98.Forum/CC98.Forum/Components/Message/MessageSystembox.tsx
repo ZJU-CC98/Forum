@@ -3,7 +3,8 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
 import { MessageSystemProps } from '../../Props/MessageSystemProps';
-import { UbbContainer } from '../UbbContainer'
+import { UbbContainer } from '../UbbContainer';
+import { UbbCompatiblityMode } from '../../Ubb/UbbCodeExtension';
 declare let moment: any;
 
 export class MessageSystembox extends React.Component<MessageSystemProps> {
@@ -54,7 +55,7 @@ export class MessageSystembox extends React.Component<MessageSystemProps> {
                         </div>
                     </div>
                     <div className="message-system-box-content">
-                        <UbbContainer code={content} />
+                <UbbContainer code={content} options={{ allowAutoPlay: false, autoDetectUrl: true, allowExternalUrl: true, allowImage: false, allowMediaContent: false, compatibility: UbbCompatiblityMode.Recommended, allowEmotion: false }}/>
                     </div>
                 </div>);
     }

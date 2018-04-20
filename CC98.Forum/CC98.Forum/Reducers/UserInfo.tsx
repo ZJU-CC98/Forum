@@ -5,7 +5,7 @@
 import * as ActionTypes from '../ActionTypes';
 import * as Utility from '../Utility';
 import * as Appstate from '../States/AppState';
-import { RootAction } from '../Store'
+import { RootAction } from '../Store';
 
 /**
  * 用户中心用Store
@@ -111,7 +111,6 @@ export default (state = new UserInfoStore(), action: RootAction): UserInfoStore 
         case ActionTypes.USER_LOG_ON:
             return { ...state, isLogOn: true, ...new UserInfoStore()};
         case ActionTypes.USER_LOG_OFF:
-            Utility.removeLocalStorage('userInfo');
             return { ...state, isLogOn: false };
         case ActionTypes.CHANGE_USERINFO:
             Utility.setLocalStorage("userInfo", action.payload.newInfo, 2592000);

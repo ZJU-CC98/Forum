@@ -4,6 +4,7 @@ import { applyMiddleware, combineReducers, compose, createStore, Dispatch } from
 import thunk from './node_modules/redux-thunk/es/index';
 
 import * as UserActions from './Actions/UserCenter';
+import * as ErrorActions from './Actions/Error';
 import error, { ErrorStore } from './Reducers/Error';
 import post, { TopicState } from './Reducers/Post';
 import userInfo, { UserInfoStore } from './Reducers/UserInfo';
@@ -35,7 +36,7 @@ export interface RootState {
 
 function getReturn<T>( creator: (...args: any[]) => T): T { return };
 
-const Actions = { ...UserActions };
+const Actions = { ...UserActions, ...ErrorActions };
 const actionTypes = values(Actions).map(getReturn);
 
 /**
