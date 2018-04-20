@@ -30,6 +30,7 @@ import { SiteManage } from './SiteManage/Index';
 import { ShowEdit } from './Edit';
 import { MonthlyHotTopic } from './Topic/Topic-Hot-Monthly';
 import { WeeklyHotTopic } from './Topic/Topic-Hot-Weekly';
+import { HistoryHotTopic } from './Topic/Topic-Hot-History';
 
 import { Constants } from './Constant';
 import * as Utility from '../Utility';
@@ -43,6 +44,7 @@ export class App extends React.Component {
                         <Route exact path="/" component={MainPage}></Route>
                         <Route exact path="/topic/hot-monthly" component={MonthlyHotTopic} />
                         <Route exact path="/topic/hot-weekly" component={WeeklyHotTopic} />
+                        <Route exact path="/topic/hot-history" component={HistoryHotTopic} />
                         <Route exact path="/topic/:topicid/:page?" component={ShowTopic} />                
                         <Route exact path="/topic/:topicId/postid/:postId/:page?" component={CurUserPost} />
                         <Route path="/list/:boardId/:type?/:page?" component={List} />

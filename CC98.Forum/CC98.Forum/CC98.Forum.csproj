@@ -41,6 +41,7 @@
     <None Remove="Components\Topic\Topic-Award.tsx" />
     <None Remove="Components\Topic\Topic-AwardInfo.tsx" />
     <None Remove="Components\Topic\Topic-Category.tsx" />
+    <None Remove="Components\Topic\Topic-Hot-History.tsx" />
     <None Remove="Components\Topic\Topic-Hot-Monthly.tsx" />
     <None Remove="Components\Topic\Topic-Hot-Weekly.tsx" />
     <None Remove="Components\Topic\Topic-Judge.tsx" />
@@ -134,6 +135,7 @@
     <TypeScriptCompile Include="Components\SiteManage\Announcement.tsx" />
     <TypeScriptCompile Include="Components\SiteManage\Index.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Award.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-Hot-History.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Hot-Monthly.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Hot-Weekly.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Judge.tsx" />

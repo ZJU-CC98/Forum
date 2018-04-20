@@ -137,6 +137,7 @@ export class HotTopicComponent extends React.Component<{ data }, { mainPageTopic
                 <div className="mainPageTitleRow">
                     <div className="mainPageTitleText"><a href="/topic/hot-weekly" target="_blank">本周</a></div>
                     <div className="mainPageTitleText"><a href="/topic/hot-monthly" target="_blank">本月</a></div>
+                    <div className="mainPageTitleText"><a href="/topic/hot-history" target="_blank">历史上的今天</a></div>
                 </div>
             </div>
             <div className="mainPageListContent1">
