@@ -1,6 +1,9 @@
 # Forum
 基于React的浙江大学CC98 论坛网站前端项目
 
+CC98 Durian开发组
+
+*Auser, Madridista, 董松松松, 明一gg, adddna, Dearkano, SummerD, Deturium*
 ## File Intro
 
 ### ./wwwroot
