@@ -3,7 +3,7 @@
 
 CC98 Durian开发组
 
-*Auser, Madridista, 董松松松, 明一gg, adddna, Dearkano, SummerD, Deturium*
+*[Auser](https://github.com/sgjsakura), [Madridista](https://github.com/Tsukiko15), [董松松松](https://github.com/AsukaSong), [明一gg](https://github.com/mingyigg), [adddna](https://github.com/adddna), [Dearkano](https://github.com/Dearkano), SummerD, [Deturium](https://github.com/Deturium)*
 ## File Intro
 
 ### ./wwwroot
