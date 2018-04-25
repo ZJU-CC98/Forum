@@ -18,7 +18,7 @@ import * as ErrorActions from '../Actions/Error';
 declare let editormd: any;
 declare let testEditor: any;
 
-export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tags, ready, mode, content, title, postInfo, tag1, tag2,fetchState,boardId,type, masters: string[] }, { mode: string, id: number }> {
+export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, tags, ready, mode, content, title, postInfo, tag1, tag2, fetchState, boardId, type, masters: string[] }, { mode: string, id: number }> {
     constructor(props) {
         super(props);
         this.update = this.update.bind(this);
@@ -30,7 +30,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
         this.changeActivityType = this.changeActivityType.bind(this);
         this.changeNormalType = this.changeNormalType.bind(this);
         this.state = ({
-            masters: [], tags: [], boardName: "", ready: false, mode: 0, content: "", title: "", postInfo: { floor: 0, title: "", content: "", contentType: 0 }, tag1:"" , tag2: "", fetchState: 'ok', boardId: 1, type: 0, topicInfo: {}
+            masters: [], tags: [], boardName: "", ready: false, mode: 0, content: "", title: "", postInfo: { floor: 0, title: "", content: "", contentType: 0 }, tag1: "", tag2: "", fetchState: 'ok', boardId: 1, type: 0, topicInfo: {}
         });
     }
 
@@ -40,7 +40,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
         const token = await Utility.getToken();
         const headers = new Headers();
         headers.append("Authorization", token);
-        let url, response, data,tags;
+        let url, response, data, tags;
         switch (mode) {
             case 'postTopic':
                 url = `/Board/${id}`;
@@ -48,8 +48,8 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                 data = await response.json();
                 const boardName = data.name;
                 //获取标签
-                 tags = await Utility.getBoardTag(id);
-                this.setState({ boardName: boardName, tags: tags ,boardId:id, masters: data.boardMasters});
+                tags = await Utility.getBoardTag(id);
+                this.setState({ boardName: boardName, tags: tags, boardId: id, masters: data.boardMasters });
                 break;
             case 'edit':
                 url = `/post/${id}/original`;
@@ -69,21 +69,21 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                 Utility.setLocalStorage("contentCache", data.content);
                 const cache = Utility.getLocalStorage("contentCache");
                 console.log("cache after saving = " + cache);
-            
+
 
                 //console.log(tags);
 
                 url = `/Board/${data.boardId}`;
                 response = await Utility.cc98Fetch(url, { headers });
                 let masters = (await response.json()).boardMasters;
-                if(!(Utility.isMaster(masters) || (Utility.getLocalStorage('userInfo').userTitleIds || []).indexOf(91) !== -1) && type === 1) {
+                if (!(Utility.isMaster(masters) || (Utility.getLocalStorage('userInfo').userTitleIds || []).indexOf(91) !== -1) && type === 1) {
                     type = 0;
                 }
                 const boardName1 = await Utility.getBoardName(data.boardId);
                 if (data.contentType === 0) {
-                    this.setState({ masters, postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name ,mode:0});
+                    this.setState({ masters, postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name, mode: 0 });
                 } else
-                    this.setState({ masters, postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name ,mode:1});
+                    this.setState({ masters, postInfo: data, content: data.content, title: data.title, boardName: boardName1, boardId: data.boardId, type: type, tags: tags, topicInfo: topicInfo, tag1: tag1Name, tag2: tag2Name, mode: 1 });
                 break;
         }
 
@@ -199,7 +199,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                 console.log(e);
             }
         }
-        
+
     }
     async sendUbbTopic() {
         if (this.state.title == "") {
@@ -275,7 +275,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                 this.props.history.push(`/topic/${topicId}`);
             }
         }
-        
+
 
     }
 
@@ -342,7 +342,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
             };
         }
         else if (tag2Id) {
-    
+
             content = {
                 content: c,
                 contentType: 1,
@@ -375,9 +375,9 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
     onTitleChange(title, tag1, tag2) {
         //console.log("handle change");
         //console.log("tag1=" + tag1);
-        if(title!="")
+        if (title != "")
             this.setState({ title: title, tag1: tag1, tag2: tag2 });
-        else 
+        else
             this.setState({ tag1: tag1, tag2: tag2 });
     }
     onUbbChange(content) {
@@ -402,15 +402,15 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                     <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom: "0.5rem" }}>
                         切换到Markdown编辑器</div>
                 </div>
-                    <UbbEditor update={this.update} value={this.state.content} option={{ height: 20, submit: this.sendUbbTopic.bind(this)  }}/>
+                    <UbbEditor update={this.update} value={this.state.content} option={{ height: 20, submit: this.sendUbbTopic.bind(this) }} />
                     <div className="row" style={{ justifyContent: "center" }}>
-                        <div id="post-topic-button" onClick={ this.sendUbbTopic.bind(this) } className="button blue" style={{ marginTop: "1.25rem", marginBottom: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>发帖</div>
+                        <div id="post-topic-button" onClick={this.sendUbbTopic.bind(this)} className="button blue" style={{ marginTop: "1.25rem", marginBottom: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem", alignSelf: "center" }}>发帖</div>
                     </div></div>
                     ;
             } else {
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom:"0.5rem" }}>切换到UBB编辑器</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom: "0.5rem" }}>切换到UBB编辑器</div>
                 </div>
                     <InputMdContent postInfo={this.state.postInfo} content={contentCache} onChange={this.sendMdTopic.bind(this)} ready={this.state.ready} mode={this.match.params.mode} /></div>;
             }
@@ -419,7 +419,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
                 console.log("content from md to ubb = " + contentCache);
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom:"0.5rem" }}>切换到Markdown编辑器</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom: "0.5rem" }}>切换到Markdown编辑器</div>
                 </div>
                     <UbbEditor update={this.update} value={this.state.content} option={{ submit: this.editUBB.bind(this) }} />
                     <div className="row" style={{ justifyContent: "center" }}>
@@ -429,7 +429,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
             } else if (this.state.mode === 1) {
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
-                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom:"0.5rem" }}>切换到UBB编辑器</div>
+                    <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom: "0.5rem" }}>切换到UBB编辑器</div>
                 </div>
                     <InputMdContent postInfo={this.state.postInfo} content={contentCache} onChange={this.editMd.bind(this)} ready={this.state.ready} mode={this.match.params.mode} /></div>;
             }
@@ -448,7 +448,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
         console.log(Utility.isMaster(this.state.masters))
 
         // issue #38 普通用户不显示校园活动
-        if(Utility.isMaster(this.state.masters) || (Utility.getLocalStorage('userInfo').userTitleIds || []).indexOf(91) !== -1) {
+        if (Utility.isMaster(this.state.masters) || (Utility.getLocalStorage('userInfo').userTitleIds || []).indexOf(91) !== -1) {
             topicType = <div className="createTopicType">
                 <div className="createTopicListName">发帖类型</div>
                 <input type="radio" name="type" value="普通" onClick={this.changeNormalType} checked={this.state.type === 0 ? true : false} /> 普通
@@ -459,7 +459,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
         }
 
         return <div className="createTopic">
-            <Category url={url} boardName={this.state.boardName} />
+            <Category url={url} boardName={this.state.boardName} mode={this.state.mode} />
             {titleInput}
             {topicType}
             <Options />
@@ -473,28 +473,33 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
 /**
  * 编辑界面的导航器组件
  */
-export class Category extends React.Component<{ url: string, boardName: string }, { url: string, boardName: string }>{
+export class Category extends React.Component<{ url: string, boardName: string, mode: string }, { url: string, boardName: string, mode: string }>{
     constructor(props) {
         super(props);
         this.state = ({
             url: "",
-            boardName: ""
+            boardName: "",
+            mode:""
         });
     }
     //在子组件中，this.props的值不会自动更新，每当父组件的传值发生变化时，需要在子组件的的componentWillReceiveProps中去手动更新
     componentWillReceiveProps(nextProps) {
         this.setState({
             url: nextProps.url,
-            boardName: nextProps.boardName
+            boardName: nextProps.boardName,
+            mode: nextProps.mode
         });
     }
     render() {
+        let categoryText: string;
+        if (this.state.mode === "postTopic") categoryText = "发表主题";
+        else if (this.state.mode === "edit") categoryText = "编辑主题";
         return <div className="row" style={{ alignItems: "baseline", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>
             <Link style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} to={"/"}>首页</Link>
             <i className="fa fa-chevron-right"></i>
             <Link style={{ color: "grey", fontSize: "1rem", marginLeft: "0.5rem", marginRight: "0.5rem" }} to={this.state.url} >{this.state.boardName}</Link>
             <i className="fa fa-chevron-right"></i>
-            <div style={{ color: "grey", fontSize: "1rem", marginLeft: "0.5rem", marginRight: "0.5rem" }}>发表主题</div>
+            <div style={{ color: "grey", fontSize: "1rem", marginLeft: "0.5rem", marginRight: "0.5rem" }}>{categoryText}</div>
         </div>;
     }
 }
@@ -521,13 +526,13 @@ export class Tags extends React.Component<{}, {}>{
  * 用于发主题/编辑主题
  * TODO:尚未完成
  */
-export class InputTitle extends React.Component<{ boardId, onChange, tags, title,tag1,tag2  }, { title: string, tags,tag1,tag2, hasEvent: boolean}>{
+export class InputTitle extends React.Component<{ boardId, onChange, tags, title, tag1, tag2 }, { title: string, tags, tag1, tag2, hasEvent: boolean }>{
     constructor(props) {
         super(props);
         this.handleTagChange = this.handleTagChange.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.generateTagOption = this.generateTagOption.bind(this);
-        this.state = ({ title: this.props.title, tags: this.props.tags,tag1:"",tag2:"", hasEvent: false });
+        this.state = ({ title: this.props.title, tags: this.props.tags, tag1: "", tag2: "", hasEvent: false });
     }
 
     handleTitleChange(event) {
@@ -555,7 +560,7 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
         //console.log($(".tagBoxSelect").text());
         this.props.onChange("", tag1, tag2);
     }
-    
+
 
     componentWillReceiveProps(newProps) {
 
@@ -672,16 +677,16 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
             tag2 = await Utility.getTagNamebyId(this.props.tag2);
         }
         if (this.props.title && !this.state.title)
-            this.setState({ title: this.props.title, tags: this.props.tags, tag1: tag1, tag2: tag2});
+            this.setState({ title: this.props.title, tags: this.props.tags, tag1: tag1, tag2: tag2 });
         else
-            this.setState({ tags: this.props.tags, tag1: tag1, tag2: tag2});
+            this.setState({ tags: this.props.tags, tag1: tag1, tag2: tag2 });
     }
 
     generateTagOption(item) {
         return <li onClick={this.handleTagChange}>{item.name}</li>;
     }
     render() {
-    
+
         let drop1 = null;
         let drop2 = null;
         if (this.state.tags.length > 0) drop1 = <ul className="tagBoxSub">
@@ -689,8 +694,8 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
         </ul>;
         if (this.state.tags.length === 2)
             drop2 = <ul className="tagBoxSub1">
-            {this.state.tags[1].tags.map(this.generateTagOption)}
-        </ul>;
+                {this.state.tags[1].tags.map(this.generateTagOption)}
+            </ul>;
         let tagInfo = null;
         if (this.state.tags.length === 2) {
             let defaultTag1 = this.state.tags[0].tags[0].name;
@@ -758,7 +763,7 @@ export class Options extends React.Component<{}, {}>{
 }
 
 
-export class InputMdContent extends React.Component<{ mode,content, postInfo, ready, onChange }, { content }>{
+export class InputMdContent extends React.Component<{ mode, content, postInfo, ready, onChange }, { content }>{
     constructor(props) {
         super(props);
         this.state = ({ content: "" });
@@ -778,14 +783,14 @@ export class InputMdContent extends React.Component<{ mode,content, postInfo, re
             emoji: true,
             appendMarkdown: content,
             toc: true,
-            tocm:true,
+            tocm: true,
             toolbarIcons: function () {
                 return [
                     "undo", "redo", "|", "emoji",
                     "bold", "del", "italic", "quote", "|",
                     "h1", "h2", "h3", "h4", "|",
                     "list-ul", "list-ol", "hr", "|",
-                    "link", "testIcon","image", "code", "table", "html-entities",
+                    "link", "testIcon", "image", "code", "table", "html-entities",
                 ]
             },
             toolbarIconsClass: {
