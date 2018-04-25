@@ -459,7 +459,7 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
         }
 
         return <div className="createTopic">
-            <Category url={url} boardName={this.state.boardName} mode={this.state.mode} />
+            <Category url={url} boardName={this.state.boardName} mode={mode} />
             {titleInput}
             {topicType}
             <Options />
@@ -473,13 +473,12 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
 /**
  * 编辑界面的导航器组件
  */
-export class Category extends React.Component<{ url: string, boardName: string, mode: string }, { url: string, boardName: string, mode: string }>{
+export class Category extends React.Component<{ url: string, boardName: string, mode: string }, { url: string, boardName: string, }>{
     constructor(props) {
         super(props);
         this.state = ({
             url: "",
-            boardName: "",
-            mode:""
+            boardName: "",       
         });
     }
     //在子组件中，this.props的值不会自动更新，每当父组件的传值发生变化时，需要在子组件的的componentWillReceiveProps中去手动更新
@@ -487,13 +486,13 @@ export class Category extends React.Component<{ url: string, boardName: string, 
         this.setState({
             url: nextProps.url,
             boardName: nextProps.boardName,
-            mode: nextProps.mode
+   
         });
     }
     render() {
         let categoryText: string;
-        if (this.state.mode === "postTopic") categoryText = "发表主题";
-        else if (this.state.mode === "edit") categoryText = "编辑主题";
+        if (this.props.mode === "postTopic") categoryText = "发表主题";
+        else if (this.props.mode === "edit") categoryText = "编辑主题";
         return <div className="row" style={{ alignItems: "baseline", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>
             <Link style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} to={"/"}>首页</Link>
             <i className="fa fa-chevron-right"></i>
