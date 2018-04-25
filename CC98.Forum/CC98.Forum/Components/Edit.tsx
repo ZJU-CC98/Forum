@@ -416,7 +416,6 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
             }
         } else if (mode === "edit") {
             if (this.state.mode === 0) {
-                console.log("content from md to ubb = " + contentCache);
                 editor = <div><div className="createTopicContent">
                     <div className="createTopicListName">主题内容</div>
                     <div id="post-topic-changeMode" onClick={this.changeEditor} className="hiddenImage" style={{ width: "12rem", marginBottom: "0.5rem" }}>切换到Markdown编辑器</div>
@@ -457,12 +456,14 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
                 <div style={{ color: 'rgb(255,0,0)' }}>（活动帖和学术贴请选择正确的发帖类型)</div>
             </div>;
         }
-
+        if (this.state.postInfo.floor !== 1) {
+            topicType = null;
+        }
         return <div className="createTopic">
             <Category url={url} boardName={this.state.boardName} mode={mode} />
             {titleInput}
             {topicType}
-            <Options />
+    
             {editor}
         </div>;
     }

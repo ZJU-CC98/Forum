@@ -921,34 +921,38 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         this.state = ({ pager: [] });
     }
     componentWillMount() {
-        const count = this.props.replyCount + 1;
-        let totalPage = count % 10 === 0 ? count / 10 : (count - count % 10) / 10 + 1;
-        
-        const pager = []
-        if (totalPage === 1) {
-            // pager to be []
-        }
-        else if (totalPage <= 7) {
-            for (let i = 1; i <= totalPage; i++)
-                pager.push(i)
-        } else {
-            pager.push(1, 2, 3, 4, -1, totalPage - 2, totalPage - 1, totalPage)
-        }
+        if (this.props.replyCount) {
+            const count = this.props.replyCount + 1;
+            let totalPage = count % 10 === 0 ? count / 10 : (count - count % 10) / 10 + 1;
 
-        const titleId = `#title${this.props.id}`;
-        this.setState({ pager: pager });
+            const pager = []
+            if (totalPage === 1) {
+                // pager to be []
+            }
+            else if (totalPage <= 7) {
+                for (let i = 1; i <= totalPage; i++)
+                    pager.push(i)
+            } else {
+                pager.push(1, 2, 3, 4, -1, totalPage - 2, totalPage - 1, totalPage)
+            }
+
+            const titleId = `#title${this.props.id}`;
+            this.setState({ pager: pager });
+        }
     }
     componentDidMount() {
-        const titleId = `#title${this.props.id}`;
-        if (this.props.highlightInfo != null) {
-            if (this.props.highlightInfo.isBold == true) {
-                $(titleId).css("font-weight", "bold");
-            }
-            if (this.props.highlightInfo.isItalic == true) {
-                $(titleId).css("font-style", "italic");
-            }
-            if (this.props.highlightInfo.color != null) {
-                $(titleId).css("color", this.props.highlightInfo.color);
+        if (this.props.replyCount) {
+            const titleId = `#title${this.props.id}`;
+            if (this.props.highlightInfo != null) {
+                if (this.props.highlightInfo.isBold == true) {
+                    $(titleId).css("font-weight", "bold");
+                }
+                if (this.props.highlightInfo.isItalic == true) {
+                    $(titleId).css("font-style", "italic");
+                }
+                if (this.props.highlightInfo.color != null) {
+                    $(titleId).css("color", this.props.highlightInfo.color);
+                }
             }
         }
     }
@@ -961,109 +965,113 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         }
     }
     render() {
-        let colorId;
-        if (this.props.topState === 0) {
-            colorId = "changeColor";
+        if (this.props.replyCount) {
+            let colorId;
+            if (this.props.topState === 0) {
+                colorId = "changeColor";
+            } else {
+                colorId = "changeTopColor";
+            }
+            const topicId = `topic${this.props.id}`;
+            let url = `/topic/${this.props.id}`;
+            const titleId = `title${this.props.id}`;
+            let icon;
+
+            //自己
+            let curName;
+            if (Utility.getLocalStorage("userInfo"))
+                curName = Utility.getLocalStorage("userInfo").name;
+            else
+                curName = "";
+            //普通
+            if (this.props.topState === 0) {
+                icon = <div style={{
+                    width: "1rem", justifyContent: "flex-start"
+                }}><i style={{ color: "#B0B0B0" }} className="fa fa-envelope fa-lg"></i></div>
+            }
+            //自己发的
+            if (curName === this.props.userName) {
+                icon = <div style={{
+                    width: "1rem", justifyContent: "flex-start"
+                }}><i style={{ color: "#FFC90E" }} className="fa fa-envelope fa-lg"></i></div>
+            }
+            //热
+            if (this.props.replyCount > 100 && this.props.topState === 0) {
+                icon = <div style={{
+                    width: "1rem", justifyContent: "flex-start"
+                }}><i style={{ color: "red" }} className="fa fa-envelope-open fa-lg"></i></div>
+            }
+            //锁
+            //1是锁贴
+            if (this.props.state === 1) {
+                icon = <div style={{
+                    width: "1rem", justifyContent: "flex-start"
+                }}><i style={{ color: "#B0B0B0" }} className="fa fa-lock fa-lg"></i></div>
+            }
+            let hitCount: any = this.props.hitCount;
+            if (this.props.hitCount > 100000) {
+                hitCount = ((this.props.hitCount - this.props.hitCount % 10000) / 10000).toString() + '万';
+            } else if (this.props.hitCount > 10000) {
+                hitCount = (this.props.hitCount / 10000).toFixed(1).toString() + '万';
+            }
+            //精华
+            if (this.props.bestState === 1) {
+                icon = <div style={{
+                    width: "1rem", justifyContent: "flex-start"
+                }}><i style={{ color: "#FF1493" }} className="fa fa-star fa-lg"></i></div>
+            }
+
+            //置顶
+            if (this.props.topState === 2) {
+                icon = <div style={{
+                    width: "1rem", justifyContent: "flex-start"
+                }}><i style={{ color: "orange" }} className="fa fa-chevron-circle-up fa-lg"></i></div>
+            } else if (this.props.topState === 4) {
+                icon = <div style={{
+                    width: "1rem", justifyContent: "flex-start"
+                }}><i style={{ color: "red" }} className="fa fa-arrow-circle-up fa-lg"></i></div>
+            }
+            let c: any = '#000';
+            let b: any = 'normal';
+            let i: any = 'normal';
+            if (this.props.highlightInfo) {
+                if (this.props.highlightInfo.isBold) b = 'bold';
+                if (this.props.highlightInfo.isItalic) i = 'italic';
+                if (this.props.highlightInfo.color) c = this.props.highlightInfo.color;
+            }
+            return <div id={colorId}>
+                <Link to={url}>
+                    <div className="rofw topicInList" id={topicId}>
+                        <div className="listTitleAndPager">
+                            <div className="row listTitleAndIcon" >
+                                {icon}
+                                <div className="listTitle" id={titleId} style={{ marginLeft: '1rem', color: c, fontWeight: b, fontStyle: i }}> {this.props.title}</div>
+                            </div>
+                            <div style={{ display: "flex", fontSize: "0.75rem", marginLeft: "1rem", width: "auto" }}>
+                                {this.state.pager.map(this.generateListPager.bind(this))}</div>
+                        </div>
+                        <div className="row" style={{ width: "28rem", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between", fontSize: "0.75rem", marginBottom: "-4px" }}>
+
+                            <div style={{ width: "7.5rem", textAlign: "left" }}> <span >{this.props.userName || '匿名'}</span></div>
+
+                            <div className="row topicIcon" >
+                                <div id="disliked" style={{ display: "flex", width: "4.5rem" }}><i className="fa fa-eye fa-lg"></i><span className="timeProp tagSize">{hitCount}</span></div>
+
+                                <div id="commentsAmount" style={{ display: "flex", width: "3.5rem" }}><i className="fa fa-commenting-o fa-lg"></i><span className="timeProp tagSize">{this.props.replyCount}</span></div>
+
+                            </div>
+
+                            <div className="lastReply" >
+                                <span>{this.props.lastPostUser}/{moment(this.props.lastPostTime).format('YY-MM-DD HH:mm')}</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </Link>
+            </div>;
         } else {
-            colorId = "changeTopColor";
+            return null;
         }
-        const topicId = `topic${this.props.id}`;
-        let url = `/topic/${this.props.id}`;
-        const titleId = `title${this.props.id}`;
-        let icon;
-       
-        //自己
-        let curName;
-        if (Utility.getLocalStorage("userInfo"))
-            curName = Utility.getLocalStorage("userInfo").name;
-        else
-            curName = "";
-       //普通
-        if (this.props.topState === 0) {
-            icon = <div style={{
-                width: "1rem", justifyContent: "flex-start"
-            }}><i style={{ color: "#B0B0B0" }} className="fa fa-envelope fa-lg"></i></div>
-        }
-        //自己发的
-        if (curName === this.props.userName) {
-            icon = <div style={{
-                width: "1rem", justifyContent: "flex-start"
-            }}><i style={{ color: "#FFC90E" }} className="fa fa-envelope fa-lg"></i></div>
-        }
-        //热
-        if (this.props.replyCount > 100 && this.props.topState === 0) {
-            icon = <div style={{
-                width: "1rem", justifyContent: "flex-start"
-            }}><i style={{ color: "red" }} className="fa fa-envelope-open fa-lg"></i></div>
-        }
-        //锁
-        //1是锁贴
-        if (this.props.state === 1) {
-            icon = <div style={{
-                width: "1rem", justifyContent: "flex-start"
-            }}><i style={{ color: "#B0B0B0" }} className="fa fa-lock fa-lg"></i></div>
-        }
-        let hitCount: any = this.props.hitCount;
-        if (this.props.hitCount > 100000) {
-            hitCount = ((this.props.hitCount - this.props.hitCount % 10000) / 10000).toString() + '万';
-        } else if (this.props.hitCount > 10000) {
-            hitCount = (this.props.hitCount / 10000).toFixed(1).toString() + '万';
-        }
-        //精华
-        if (this.props.bestState === 1) {
-            icon = <div style={{
-                width: "1rem", justifyContent: "flex-start"
-            }}><i style={{ color: "#FF1493" }} className="fa fa-star fa-lg"></i></div>
-        }
-     
-        //置顶
-        if (this.props.topState === 2) {
-            icon = <div style={{
-                width: "1rem", justifyContent: "flex-start"
-            }}><i style={{ color: "orange" }} className="fa fa-chevron-circle-up fa-lg"></i></div>
-        } else if (this.props.topState === 4) {
-            icon = <div style={{
-                width: "1rem", justifyContent: "flex-start"
-            }}><i style={{ color: "red" }} className="fa fa-arrow-circle-up fa-lg"></i></div>
-        }
-        let c: any = '#000';
-        let b: any= 'normal';
-        let i :any= 'normal';
-        if (this.props.highlightInfo) {
-            if (this.props.highlightInfo.isBold) b = 'bold';
-            if (this.props.highlightInfo.isItalic) i = 'italic';
-            if (this.props.highlightInfo.color) c = this.props.highlightInfo.color;
-        }
-        return <div id={colorId}>
-            <Link to={url}>
-                <div className="rofw topicInList" id={topicId}>
-                    <div className="listTitleAndPager">
-                        <div className="row listTitleAndIcon" >
-                            {icon}
-                            <div className="listTitle" id={titleId} style={{ marginLeft: '1rem', color: c, fontWeight: b, fontStyle:i }}> {this.props.title}</div>
-                        </div>
-                        <div style={{ display: "flex", fontSize: "0.75rem", marginLeft: "1rem", width: "auto" }}>
-                            {this.state.pager.map(this.generateListPager.bind(this))}</div>
-                    </div>
-                    <div className="row" style={{ width: "28rem", flexDirection: 'row', alignItems: 'flex-end', justifyContent: "space-between", fontSize: "0.75rem", marginBottom: "-4px" }}>
-
-                        <div style={{ width: "7.5rem", textAlign: "left" }}> <span >{this.props.userName || '匿名'}</span></div>
-
-                        <div className="row topicIcon" >
-                            <div id="disliked" style={{ display: "flex", width: "4.5rem" }}><i className="fa fa-eye fa-lg"></i><span className="timeProp tagSize">{hitCount}</span></div>
-
-                            <div id="commentsAmount" style={{ display: "flex", width: "3.5rem" }}><i className="fa fa-commenting-o fa-lg"></i><span className="timeProp tagSize">{this.props.replyCount}</span></div>
-
-                        </div>
-
-                        <div className="lastReply" >
-                            <span>{this.props.lastPostUser}/{moment(this.props.lastPostTime).format('YY-MM-DD HH:mm')}</span>
-                        </div>
-                    </div>
-
-                </div>
-            </Link>
-        </div>;
     }
 }
 
