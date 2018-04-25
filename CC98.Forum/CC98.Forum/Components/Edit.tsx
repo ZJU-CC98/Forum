@@ -463,7 +463,7 @@ export class Edit extends RouteComponent<{ history }, {topicInfo, boardName, tag
             <Category url={url} boardName={this.state.boardName} />
             {titleInput}
             {topicType}
-            <Options />
+    
             {editor}
         </div>;
     }
