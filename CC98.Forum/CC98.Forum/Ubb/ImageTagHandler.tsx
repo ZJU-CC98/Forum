@@ -16,7 +16,6 @@ export class ImageTagHandler extends Ubb.TextTagHandler {
         const imageUri = content;
         const title = tagData.value('title');
         let isShowedValue = parseInt(tagData.value('img'));
-        if (context.options.showImage) isShowedValue = 0;
 
         // 不允许显示图像
         if (!context.options.allowImage) {

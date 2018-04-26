@@ -82,10 +82,6 @@ export class UbbCodeOptions {
 	 * 是否允许显示图像。
 	 */
     allowImage = true;
-    /**
-     * 是否默认显示所有图像。
-     */
-    showImage = false;
 	/**
 	 * 是否允许多媒体资源，如视频，音频，Flash 等。
 	 */
