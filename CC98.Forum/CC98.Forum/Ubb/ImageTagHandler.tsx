@@ -15,11 +15,11 @@ export class ImageTagHandler extends Ubb.TextTagHandler {
 
         const imageUri = content;
         const title = tagData.value('title');
-        const isShowedValue = parseInt(tagData.value('img'));
+        let isShowedValue = parseInt(tagData.value('img'));
 
         // 不允许显示图像
         if (!context.options.allowImage) {
-            return <Image imageUri={imageUri} title={title} isShowed={false} />
+            return <a href={imageUri}>{imageUri}</a>
         }
 
         //[img=1]默认不显示图片，[img]或[img=0]默认显示图片
@@ -72,7 +72,7 @@ export class Image extends React.Component<{ imageUri, title, isShowed: boolean 
         };
 
         if (this.state.isShowed) {
-            return <LazyLoad {...props} ><img style={{maxWidth:'100%'}}src={this.props.imageUri} alt={this.props.title} /></LazyLoad>
+            return <LazyLoad {...props} ><img style={{ maxWidth: '100%' }} src={this.props.imageUri} alt={this.props.title} /></LazyLoad>
         } else {
             return <div className="hiddenImage" onClick={this.toggleIsShowed}>点击查看图片</div>
         }
