@@ -17,6 +17,13 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
         this.unFollow = this.unFollow.bind(this);
         this.state = { tag1Name: "", tag2Name: "", isFollow: this.props.isFav }
     }
+    showAllImg() {
+        let btns = document.getElementsByClassName("hiddenImage");
+        for (let btnId in btns) {
+            let btn:any = btns[btnId];
+            btn.click();
+        }
+    }
     async follow() {
         await Utility.setFavoriteTopic(this.props.topicInfo.id);
         this.setState({ isFollow: true });
@@ -67,6 +74,9 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
                         <div id="viewtimes"><div className="viewProp"><i className="fa fa-eye fa-lg fa-fw"></i>  </div> <div className="timeProp tagSize">{this.props.topicInfo.hitCount}</div></div>
                         <div className="followTopic" onClick={this.state.isFollow ? this.unFollow : this.follow}>
                             {this.state.isFollow ? "已收藏" : "收藏"}
+                        </div>
+                        <div className="followTopic" style={{width:"5rem"}} onClick={this.showAllImg}>
+                           显示所有图片
                         </div>
                     </div>
                 </div>

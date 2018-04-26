@@ -396,7 +396,7 @@ ${newProps.content.content}[/quote]
 		return <div id="sendTopicInfo" style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
 			<div className="row" style={{ justifyContent:'flex-end' }}>
 
-                <div id="post-topic-changeMode" className="hiddenImage" onClick={this.changeEditor.bind(this)} style={{ width: '12rem', marginBottom:"0.5rem" }}>{this.state.mode === 1 ? '切换到Ubb编辑器' : '切换到Markdown编辑器'}
+                <div id="post-topic-changeMode" className="changeEditor" onClick={this.changeEditor.bind(this)} style={{ width: '12rem', marginBottom:"0.5rem" }}>{this.state.mode === 1 ? '切换到Ubb编辑器' : '切换到Markdown编辑器'}
 				</div></div>
             {editor}
             {manageBTN}
