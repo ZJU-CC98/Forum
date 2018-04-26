@@ -199,7 +199,7 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
         const noReasonInfo = null;
         const daysInfo = <div className="column">
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
-                <div >天数</div>
+                <div >(下沉)天数</div>
                 <input type="text" value={this.state.days} onChange={this.daysInput} />
             </div>
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>

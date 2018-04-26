@@ -350,7 +350,7 @@ export class PostManagement extends React.Component<Props, {wealth: number, pres
                 <input type="text" value={this.state.wealth} onChange={this.wealthInput} />
 
             </div>
-            <div className="row manageOperation">
+            <div className="row manageOperation managePrestige">
 
                 <div className="manageObject">扣威望</div>
 
@@ -358,7 +358,7 @@ export class PostManagement extends React.Component<Props, {wealth: number, pres
 
             </div>
 
-            <div className="row manageOperation">
+            <div className="row manageOperation" style={{ display:"" }}>
 
                 <div className="manageObject">禁止发言(天)</div>
 
