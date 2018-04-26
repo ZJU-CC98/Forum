@@ -166,13 +166,16 @@ export default class extends React.Component<null, State > {
 
     render() {
         return (
-            <div>
-                <p>自定义栏目</p>
-                <button type="button" disabled={this.state.type === 1} onClick={() => this.getInfo(urls[0])} >推荐阅读</button>
-                <button type="button" disabled={this.state.type === 2} onClick={() => this.getInfo(urls[1])} >推荐功能</button>
-                <button type="button" disabled={this.state.type === 3} onClick={() => this.getInfo(urls[2])} >校园新闻</button>
-                <button type="button" disabled={this.state.type === 4} onClick={() => this.getInfo(urls[3])} >广告</button>
-                {this.state.type > 0 ? <button type="button" onClick={() => this.add()} >添加</button> : null}
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", width: "100%", marginBottom:"1rem" }}>
+                <div style={{ marginTop:"10px" }}>自定义栏目</div>
+                <div><button type="button" className="hiddenImage" disabled={this.state.type === 1} onClick={() => this.getInfo(urls[0])} >推荐阅读</button></div> 
+                    <div><button type="button" className="hiddenImage" disabled={this.state.type === 2} onClick={() => this.getInfo(urls[1])} >推荐功能</button></div> 
+                        <div><button type="button" className="hiddenImage" disabled={this.state.type === 3} onClick={() => this.getInfo(urls[2])} >校园新闻</button></div> 
+                            <div><button type="button" className="hiddenImage" disabled={this.state.type === 4} onClick={() => this.getInfo(urls[3])} >广告</button></div> 
+                    {this.state.type > 0 ? <div><button className="hiddenImage" type="button" onClick={() => this.add()} >添加</button></div> : null}
+                </div>
+                <div>
                 {this.state.data.length > 0 ?
                     <table>
                         <tbody>
@@ -206,7 +209,8 @@ export default class extends React.Component<null, State > {
                         </tbody>
                     </table> : null}
                 <p>{this.state.info}</p>
-            </div>
+               </div>
+                </div>
         );
     }
 }

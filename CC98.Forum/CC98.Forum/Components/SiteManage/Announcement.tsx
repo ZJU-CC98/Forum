@@ -83,11 +83,11 @@ export default class Announcement extends React.Component<null, AnnouncementStat
         return (
             <div>
                 <p style={{ height: '2rem' }}>{this.state.info}</p>
-                <div>
-                    <p>全站公告
-                        <button type="button" onClick={this.changeSiteAnnouncement}>提交修改</button>
-                        <button type="button" onClick={this.clearMainPageCache}>清除首页缓存</button>
-                    </p>
+                <div >
+                    <div style={{ display: "flex", fontSize: "20px", alignItems: "center" }}><div style={{ marginTop: "10px", marginLeft: "15px", marginRight:"15px" }}>全站公告</div>
+                         <div> <button type="button" className="hiddenImage" onClick={this.changeSiteAnnouncement}>提交修改</button> </div>
+                        <div> <button type="button" className="hiddenImage" onClick={this.clearMainPageCache}>清除首页缓存</button> </div>
+                    </div>
                     <textarea
                         style={{ width: '1140px', height: '20rem', resize: 'none' ,boxSizing: 'border-box'}}
                         onChange={(e) => { this.setState({ announcement: e.target.value }); }}

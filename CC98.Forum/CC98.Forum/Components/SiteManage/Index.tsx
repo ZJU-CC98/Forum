@@ -8,8 +8,8 @@ import Ad from './Advertisement';
 
 export class SiteManage extends React.Component {    
     render() {
-        return (<div style={{backgroundColor: 'white'}}>
-            <p>全站管理</p>
+        return (<div style={{ backgroundColor: 'white' }}>
+            <div style={{ display: "flex", justifyContent:"center",fontSize:"24px" }}>全站管理</div>
             <Announcement />
             <Ad />
         </div>);
