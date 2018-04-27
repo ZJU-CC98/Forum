@@ -921,7 +921,7 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         this.state = ({ pager: [] });
     }
     componentWillMount() {
-        if (this.props.replyCount) {
+        if (typeof this.props.replyCount === "number") {
             const count = this.props.replyCount + 1;
             let totalPage = count % 10 === 0 ? count / 10 : (count - count % 10) / 10 + 1;
 
@@ -941,7 +941,7 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         }
     }
     componentDidMount() {
-        if (this.props.replyCount) {
+        if (typeof this.props.replyCount === "number") {
             const titleId = `#title${this.props.id}`;
             if (this.props.highlightInfo != null) {
                 if (this.props.highlightInfo.isBold == true) {
@@ -965,7 +965,7 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         }
     }
     render() {
-        if (this.props.replyCount) {
+        if (typeof this.props.replyCount === "number" ) {
             let colorId;
             if (this.props.topState === 0) {
                 colorId = "changeColor";
@@ -1070,6 +1070,8 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
                 </Link>
             </div>;
         } else {
+            console.log("does not exist");
+            console.log(this.props);
             return null;
         }
     }
