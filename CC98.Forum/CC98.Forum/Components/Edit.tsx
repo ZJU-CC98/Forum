@@ -456,14 +456,13 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
                 <div style={{ color: 'rgb(255,0,0)' }}>（活动帖和学术贴请选择正确的发帖类型)</div>
             </div>;
         }
-        if (this.state.postInfo.floor !== 1) {
+        if (this.state.postInfo.floor !== 1 && mode === 'edit') {
             topicType = null;
         }
         return <div className="createTopic">
             <Category url={url} boardName={this.state.boardName} mode={mode} />
             {titleInput}
             {topicType}
-    
             {editor}
         </div>;
     }
