@@ -11,7 +11,14 @@ export { ReactNode } from 'react';
  * 提供 UBB 处理上下文所需要的相关数据。
  */
 export class UbbCodeContextData {
-
+    /**
+     * 总引用深度
+     */
+    quoteDepth: number = 0;
+    /**
+     * 当前handler位于的深度
+     */
+    curQuoteDepth: number = 0;
 }
 
 /**
@@ -119,8 +126,8 @@ export enum UbbCompatiblityMode {
 }
 
 /**
-		 * 定义符号的类型。
-		 */
+ * 定义符号的类型。
+ */
 enum TokenType {
 	/**
 	 * 一串文本。
