@@ -12,13 +12,9 @@ export { ReactNode } from 'react';
  */
 export class UbbCodeContextData {
     /**
-     * 总引用深度
+     * 引用深度，0表示最外层
      */
     quoteDepth: number = 0;
-    /**
-     * 当前handler位于的深度
-     */
-    curQuoteDepth: number = 0;
 }
 
 /**
