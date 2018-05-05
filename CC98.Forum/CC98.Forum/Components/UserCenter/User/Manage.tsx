@@ -1,4 +1,8 @@
 ﻿import * as React from 'react';
+import {
+    withRouter, 
+    RouteComponentProps
+} from 'react-router-dom';
 import * as Utility from '../../../Utility';
 import * as Actions from '../../../Actions/UserCenter';
 import { UserInfo } from '../../../States/AppState';
@@ -6,28 +10,36 @@ import { connect } from 'react-redux';
 import Operation from '../Manage/Operation';
 import Delete from '../Manage/DeleteTopicsAndPosts';
 import Post from '../Manage/ShowPost';
+import { getUserInfo } from '../../../Utility/Fetch/getUserInfo';
+import { NotFoundUser } from '../../Status';
 
-class UserManageState {
+interface UserManageState {
     /**
      * 当前访问用户的用户信息
      */
     userInfo: UserInfo;
 }
 
-class UserManage extends React.Component<{ id, changePage, match, notFoundUser }, UserManageState> {
+type ownProps = {
+    id: number,
+    changePage: (page: string, id: number) => void,
+    notFoundUser: () => void
+}
+
+type match = {
+    id: string
+}
+
+type Props = ownProps & RouteComponentProps<match>;
+
+class UserManage extends React.Component<Props, UserManageState> {
     async componentDidMount() {
-        const id = this.props.id === 0 ? this.props.match.params.id : this.props.id;
+        const id = this.props.id === 0 ? Number.parseInt(this.props.match.params.id) : this.props.id;
         this.props.changePage('manage', id);
         try {
-            const url = `/User/${id}`;
-            let myHeaders = new Headers();
-            myHeaders.append('Authorization', await Utility.getToken());
-            let response = await Utility.cc98Fetch(url, {
-                headers: myHeaders
-            });
-            const data: UserInfo = await response.json();
+            let userInfo = await getUserInfo(id);
             this.setState({
-                userInfo: data
+                userInfo
             });
         } catch (e) {
             this.props.notFoundUser();
@@ -68,4 +80,4 @@ function mapDispatch(dispatch) {
     };
 }
 
-export default connect(mapState, mapDispatch)((UserManage));
+export default connect(mapState, mapDispatch)(withRouter(UserManage));

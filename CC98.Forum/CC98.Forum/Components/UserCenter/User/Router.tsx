@@ -17,6 +17,7 @@ import Avatar from '../ExactAvatar';
 import * as Actions from '../../../Actions/UserCenter';
 import * as Utility from '../../../Utility';
 import DocumentTitle from '../../DocumentTitle';
+import { getUserInfo } from '../../../Utility/Fetch/getUserInfo';
 
 /**
  * 用户详情页用的Route
@@ -36,15 +37,12 @@ interface States {
     * 用户信息
     */
     userInfo: UserInfo;
-    /**
-    * 用户头像链接地址
-    */
-    userAvatarImgURL: string;
 }
 
 type ownMatch = {
     id: string,
-    page: string
+    page: string,
+    method: string;
 }
 
 type ownProps = { 
@@ -70,33 +68,30 @@ class UserExact extends React.Component<Props, States> {
         }
     }
 
-    async getInfo(props){
+    async getInfo(props: Props){
         try {
             let url: string,
                 { id, method } = props.match.params,
                 myHeaders = new Headers();
+            let key;
             //判断是通过name还是id来到用户详情页
             //不同的方法对应不同url
             if (!id) {
                 throw new Error();
             } else if (method === 'name') {
-                url = `/User/Name/${encodeURIComponent(id)}`;
+                key = id;
             }
             else if (method === 'id') {
-                url = `/User/${id}`;
+                key = Number.parseInt(id);
             }
             myHeaders.append('Authorization', await Utility.getToken());
-            let response = await Utility.cc98Fetch(url ,{
-                headers: myHeaders
-            });
-            const data = await response.json();
+            let userInfo = await getUserInfo(key);
             //默认导航到以id表示的用户详情页
-            this.props.history.replace(`/user/id/${data.id}`);
+            this.props.history.replace(`/user/id/${userInfo.id}`);
             //改变store中当前访问位置与当前访问用户id
-            this.props.changePage('exact', data.id);
+            this.props.changePage('exact', userInfo.id);
             this.setState({
-                userInfo: data,
-                userAvatarImgURL: data.portraitUrl
+                userInfo
             });
         } catch (e) {
             //未找到用户的处理
