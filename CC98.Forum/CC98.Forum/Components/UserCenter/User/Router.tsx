@@ -108,7 +108,7 @@ class UserExact extends React.Component<Props, States> {
         return this.state ? 
         <div className="user-center-exact">
             <DocumentTitle title={`${this.state.userInfo.name} - 用户详情 - CC98论坛`} />
-            <Avatar userAvatarImgURL={this.state.userAvatarImgURL} />
+            <Avatar userInfo={this.state.userInfo} />
             <Profile userInfo={this.state.userInfo} />
             <Activities id={this.state.userInfo.id} />
         </div> : 

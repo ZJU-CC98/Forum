@@ -36,7 +36,7 @@ class UserCenterExact extends React.Component<Props> {
 
     render() {        
         return (<div className="user-center-exact">
-            <ExactAvatar userAvatarImgURL={this.props.userInfo.portraitUrl} />
+            <ExactAvatar userInfo={this.props.userInfo} />
             <ExactProfile userInfo={this.props.userInfo} />
             <ExactActivities />
         </div>);

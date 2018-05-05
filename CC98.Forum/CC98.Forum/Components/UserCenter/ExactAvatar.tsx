@@ -3,14 +3,27 @@
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
 import * as React from 'react';
+import  { UserInfo } from '../../States/AppState';
+import { Link } from 'react-router-dom';
 
 //用户中心主页用户头像与徽章组件
 export default class extends React.Component<UserCenterExactAvatarProps> {
     render() {
         return (
             <div className="user-avatar">
-                <img className="user-avatar-img" src={this.props.userAvatarImgURL} />
-                <div className="user-badge"></div>
+                <img className="user-avatar-img" src={this.props.userInfo.portraitUrl} />
+                <div className="user-badge">
+                    {this.props.userInfo.boardMasterTitles.map(item => item.boardMasterLevel === 10 ?
+                        <p key={item.boardId}> {/* 站务主管*/}
+                            <Link to={`/boardList#${item.boardName}`}>{item.boardName}</Link>
+                            <span style={{ color: 'red'}}>{item.title}</span>
+                        </p> : 
+                        <p key={item.boardId}> {/* 站务主管*/}
+                            <Link to={`/list/${item.boardId}`}>{item.boardName}</Link>
+                            <span>{item.title}</span>
+                        </p>
+                    )}
+                </div>
             </div>    
         );
     }
@@ -18,7 +31,7 @@ export default class extends React.Component<UserCenterExactAvatarProps> {
 
 interface UserCenterExactAvatarProps {
     /**
-    * 用户头像地址
+    * 用户信息
     */
-    userAvatarImgURL: string;
+    userInfo: UserInfo;
 }

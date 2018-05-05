@@ -387,6 +387,14 @@ export class UserInfo {
      * 等级（已经废弃
      */
     levelTitle: string;
+    /**
+     * 用户版主头衔信息
+     */
+    boardMasterTitles: BoardMasterTitle[];
+    /**
+     * 被删除的数量
+     */
+    deleteCountnumber;
 }
 
 /**
@@ -510,4 +518,31 @@ export class TransferWealthInfo {
      * 理由
      */
     reason: string;
+}
+
+export class BoardMasterTitle {
+    /**
+     * 用户id
+     */
+    userId: number;
+    /**
+     * 用户名
+     */
+    userName: string;
+    /**
+     * 版面id
+     */
+    boardId: number;
+    /**
+     * 版面名
+     */
+    boardName: string;
+    /**
+     * 头衔名
+     */
+    title: string;
+    /**
+     * 不知道有什么用
+     */
+    boardMasterLevel: number;
 }

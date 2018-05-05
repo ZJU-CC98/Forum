@@ -186,6 +186,29 @@
                     height: 10rem;
                     border-radius: 5rem;
                 }
+
+                .user-badge {
+                    margin-top: 2rem;
+                    width: 100%;
+                    padding-left: 1rem;
+
+                    p {
+                        display: inline-flex;
+                        width: 100%;
+                        margin-bottom: 0;
+                    }
+
+                    a {
+                        color: rgb(53, 167, 255);
+                        width: 50%;
+                        text-align: center;
+                    }
+
+                    span {
+                        width: 50%;
+                        text-align: center;
+                    }
+                }
             }
 
             .user-profile {
