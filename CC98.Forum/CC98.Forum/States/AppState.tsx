@@ -394,7 +394,7 @@ export class UserInfo {
     /**
      * 被删除的数量
      */
-    deleteCountnumber;
+    deleteCount: number;
 }
 
 /**

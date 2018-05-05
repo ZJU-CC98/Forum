@@ -121,6 +121,7 @@ export default class extends React.Component<Props, States> {
                 isBirthDay = true;
             }
         }
+
         return (
             <div className="user-profile">
                 <div id="userId">
@@ -161,6 +162,7 @@ export default class extends React.Component<Props, States> {
                     {this.props.userInfo.displayTitle ? <p><span className="user-profile-info">用户组</span>{this.props.userInfo.displayTitle}</p> : null}
                     {this.props.userInfo.emailAddress ? <p><span className="user-profile-info">邮箱</span>{this.props.userInfo.emailAddress}</p> : null}
                     {this.props.userInfo.qq ? <p><span className="user-profile-info">QQ</span>{this.props.userInfo.qq}</p> : null}
+                    <p><span className="user-profile-info">被删帖数</span>{-this.props.userInfo.deleteCount}</p>
                 </div>
                 {this.props.userInfo.signatureCode ?
                     <div className="user-description">
