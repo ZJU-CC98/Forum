@@ -125,13 +125,14 @@ export default class ShowTopic extends React.Component<Props, State> {
             </div>
             <div className="user-manage-return"><p>{this.state.info}</p></div>
             {(!this.state.isLoading) ? (<div>
-                {this.state.posts.map((item) => (<div className="user-manage-post">
+                {this.state.posts.map((item) => (<div className="user-manage-post" key={item.topicId}>
                     <p className="user-manage-post-date">{item.time.slice(0,19).replace('T', ' ')}</p>
                     {item.floor === -1 ?
-                        <p className="user-manage-post-content">{item.content}</p> :
+                        <p className="user-manage-post-content" title={item.content}>{item.content}</p> :
                         <Link
                             className="user-manage-post-content"
                             to={`/topic/${item.topicId}/${Math.floor((item.floor - 1) / 10) + 1}#${item.floor % 10 === 0 ? 10 : item.floor % 10}`}
+                            title={item.content}
                             target="_blank"
                         >{item.content}</Link>}
                     <Link className="user-manage-post-board" to={`/list/${item.boardId}`} target="_blank">{item.boardName}</Link>

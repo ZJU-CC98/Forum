@@ -59,7 +59,7 @@ class PostForumIndexColumnInfo {
     expiredTime: string;
 }
 
-class State {
+interface State {
     /**
      * 反馈信息
      */
