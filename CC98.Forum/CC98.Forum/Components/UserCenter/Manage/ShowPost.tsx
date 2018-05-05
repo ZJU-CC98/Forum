@@ -128,11 +128,11 @@ export default class ShowTopic extends React.Component<Props, State> {
                 {this.state.posts.map((item) => (<div className="user-manage-post" key={item.topicId}>
                     <p className="user-manage-post-date">{item.time.slice(0,19).replace('T', ' ')}</p>
                     {item.floor === -1 ?
-                        <p className="user-manage-post-content" title={item.content}>{item.content}</p> :
+                        <p className="user-manage-post-content" title={item.content.slice(0, 1000)}>{item.content}</p> :
                         <Link
                             className="user-manage-post-content"
                             to={`/topic/${item.topicId}/${Math.floor((item.floor - 1) / 10) + 1}#${item.floor % 10 === 0 ? 10 : item.floor % 10}`}
-                            title={item.content}
+                            title={item.content.slice(0, 1000)}
                             target="_blank"
                         >{item.content}</Link>}
                     <Link className="user-manage-post-board" to={`/list/${item.boardId}`} target="_blank">{item.boardName}</Link>
