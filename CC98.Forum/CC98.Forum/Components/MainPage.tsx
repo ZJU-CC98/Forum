@@ -128,6 +128,12 @@ export class HotTopicComponent extends React.Component<{ data }, { mainPageTopic
     }
 
     render() {
+        // 数据库计算新的十大需要一定时间，这时API去查询更新，就会查到空的十大信息。
+        // 因此这里检查获得的十大信息是否为空，如果为空，则使用上一次获取时缓存的十大信息。
+        let data = this.props.data;
+        if (data) Utility.setLocalStorage("mainPageHotTopic", data);
+        else data = Utility.getLocalStorage("mainPageHotTopic");
+
         return <div className="mainPageList">
             <div className="mainPageTitle1">
                 <div className="mainPageTitleRow">
@@ -141,7 +147,7 @@ export class HotTopicComponent extends React.Component<{ data }, { mainPageTopic
                 </div>
             </div>
             <div className="mainPageListContent1">
-                {this.props.data.map(this.convertMainPageTopic)}
+                {data.map(this.convertMainPageTopic)}
             </div>
         </div>
     }
