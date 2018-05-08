@@ -38,7 +38,9 @@ export class QuoteTagHandler extends Ubb.RecursiveTagHandler {
             display: 'flex',
             flexDirection: 'column',
             order: -1,
-            overflowY: 'hidden'
+            overflowY: 'hidden',
+            alignItems: 'baseline',
+            width: '100%'
         };
 
         // 对最外层引用的处理
