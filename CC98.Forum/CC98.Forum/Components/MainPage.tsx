@@ -129,7 +129,7 @@ export class HotTopicComponent extends React.Component<{ data }, { mainPageTopic
 
     render() {
         // 数据库计算新的十大需要一定时间，这时API去查询更新，就会查到空的十大信息。
-        // 因此这里检查获得的十大信息是否为空，如果为空，则使用上一次获取时缓存的十大信息。
+        // 因此这里检查获得的十大信息是否为空，如果为空，则显示上一次获取非空数据时缓存的十大信息。
         let data = this.props.data;
         if (data) Utility.setLocalStorage("mainPageHotTopic", data);
         else data = Utility.getLocalStorage("mainPageHotTopic");
@@ -589,8 +589,11 @@ export class MainPage extends React.Component<{}, { data }> {
         if (!data) {
             const response = await Utility.cc98Fetch('/config/index');
             data = await response.json();
-            Utility.setLocalStorage("mainPageData", data, 300);
-            //console.log(data);
+            let hotTopicData = data.hotTopic;
+            //若获取到的首页数据中的十大数据为空，则不缓存首页数据，这样用户立即刷新页面就可以获取最新的十大数据
+            //当然，该次获取的十大数据为空，这则由十大组件处理（显示之前缓存的十大数据）
+            //若获取了正常的首页数据（十大不为空），则缓存60s，这样可以避免用户短时间内频繁访问首页产生大量请求
+            if (hotTopicData) Utility.setLocalStorage("mainPageData", data, 60);           
             return data;
         } else {
             return data
