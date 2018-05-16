@@ -455,13 +455,14 @@ export class UbbTagData {
 
 				/**
 				 * 从当前位置开始扫描字符串，直到找到对应的结束字符。
+				 * @param quoteType 单引号或者双引号
 				 * @returns {string} 从当前位置开始到相同字符结束的字符串。
 				 */
-                function scanQuoted() {
+                function scanQuoted(quoteType: string) {
 
                     // 开始字符串。
                     const quoteMark = tokenString[index];
-                    let endMarkLocation = tokenString.indexOf('"', index + 1);
+                    let endMarkLocation = tokenString.indexOf(quoteType, index + 1);
 
                     // 找不到结束符号
                     if (endMarkLocation < 0) {
@@ -494,7 +495,7 @@ export class UbbTagData {
                         index++;
                         return Token.nameValueSeperator;
                     } else if (c === '"' || c === '\'') { // 引号开始，找到结束为止
-                        return Token.stringValue(scanQuoted());
+                        return Token.stringValue(scanQuoted(c));
                     } else {
 
                         const start = index;
@@ -809,7 +810,7 @@ export abstract class TextTagHandler extends UbbTagHandler {
 	/**
 	 * 递归处理的核心方法。
 	 * @param innerContent 已经处理完毕的内部内容。
-	 * @param RecursiveTagHandler 标签相关的数据。
+	 * @param tagData 标签相关的数据。
 	 * @param context 处理上下文对象。
 	 */
     protected abstract execCore(innerContent: string, tagData: UbbTagData, context: UbbCodeContext): ReactNode;
@@ -835,7 +836,7 @@ export abstract class RecursiveTagHandler extends UbbTagHandler {
 	/**
 	 * 递归处理的核心方法。
 	 * @param innerContent 已经处理完毕的内部内容。
-	 * @param RecursiveTagHandler 标签相关的数据。
+	 * @param tagData 标签相关的数据。
 	 * @param context 处理上下文对象。
 	 */
     protected abstract execCore(innerContent: ReactNode, tagData: UbbTagData, context: UbbCodeContext): ReactNode;
@@ -1001,7 +1002,7 @@ export class UbbCodeEngine {
 	 */
     get data(): UbbCodeContextData {
         return this._data;
-    };
+    }
 
 	/**
 	 * 获取给定标签名称的处理程序。
