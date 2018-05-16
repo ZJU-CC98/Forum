@@ -392,7 +392,7 @@ export class UbbEditor extends React.Component<Props, State> {
             case 'img': placeHolder = '在此输入图片文件地址'; break;
             case 'video': placeHolder = '在此输入视频文件地址'; break;
             case 'audio': placeHolder = '在此输入音频文件地址'; break;
-            case 'bili': placeHolder = '在此输入b站视频av号'; break;
+            case 'bili': placeHolder = '在此输入bilibili网站视频AV号（数字）'; break;
             default: ;
         }
         
