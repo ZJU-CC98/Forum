@@ -24,7 +24,7 @@
         themeNames.push("<%= htmlWebpackPlugin.files.css[cssFile].split('/').pop() %>");
         <% } %>
         // themeNames[0]为当前的默认主题
-        themeNames[0] = themeNames[2];
+        themeNames[0] = themeNames[4];
         try {
             (function() {
                 var theme = JSON.parse(localStorage.getItem('userInfo').slice(4)).theme;
