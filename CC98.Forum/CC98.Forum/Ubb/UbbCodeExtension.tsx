@@ -32,6 +32,7 @@ import { TrTagHandler } from './TrTagHandler';
 import { TopicTagHandler } from './TopicTagHandler';
 import { MdTagHandler } from './MdTagHandler';
 import { PmTagHandler } from './PmTagHandler'
+import { BiliTagHandler } from './BiliTagHandler'
 import SandBoxTagHandler from './SandboxTagHandler';
 import LineTagHandler from './LineTagHandler';
 import EmTagHandler from './EmTagHandler';
@@ -80,6 +81,7 @@ export function createEngine(): Ubb.UbbCodeEngine {
 	engine.handlers.register(LineTagHandler);
 	engine.handlers.register(PmTagHandler);
 	engine.handlers.register(NoUbbTagHandler);
+	engine.handlers.register(BiliTagHandler);
 
 	// 以下是未命名标签处理程序，注意未命名标签处理程序的命中和注册顺序有关
 	engine.handlers.register(EmTagHandler);
