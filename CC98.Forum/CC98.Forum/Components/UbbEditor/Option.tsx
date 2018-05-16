@@ -18,7 +18,7 @@ export default class {
     /**
      * 替换掉选中部分的ubb标签名数组
      */
-    shouldReplaceSelection?: string[] = ['video', 'audio', 'img', 'upload'];
+    shouldReplaceSelection?: string[] = ['video', 'audio', 'img', 'upload', 'bili'];
     /**
      * 选中部分为空时在tag中自动插入内容的ubb标签名数组
      */
@@ -26,7 +26,7 @@ export default class {
     /**
      * 选中后不自动选中内容的ubb标签名数组，表情单独处理不在此列
      */
-    shouldNotSelected?: string[] = ['img', 'video', 'audio', 'upload'];
+    shouldNotSelected?: string[] = ['img', 'video', 'audio', 'upload', 'bili'];
     /**
      * 上传文件的最大限制(byte)，默认10mb
      */
@@ -38,7 +38,7 @@ export default class {
     /**
      * 插入文本后是否换行
      */
-    shouldEnter?: string[] = ['img', 'video', 'audio', 'upload'];
+    shouldEnter?: string[] = ['img', 'video', 'audio', 'upload', 'bili'];
     /**
      * 所处理的视频后缀
      */

@@ -386,6 +386,15 @@ export class UbbEditor extends React.Component<Props, State> {
             case 'audio': acceptType = 'audio/*'; break;
             default: acceptType = '*';
         }
+
+        let placeHolder: string;
+        switch(this.state.extendTagName) {
+            case 'img': placeHolder = '在此输入图片文件地址'; break;
+            case 'video': placeHolder = '在此输入视频文件地址'; break;
+            case 'audio': placeHolder = '在此输入音频文件地址'; break;
+            case 'bili': placeHolder = '在此输入视频av号'; break;
+            default: ;
+        }
         
         return (
             <div className="ubb-editor" style={{ maxHeight: `${height + 6.125}rem` }}>
@@ -434,6 +443,7 @@ export class UbbEditor extends React.Component<Props, State> {
                             <button className="fa-link" type="button" title="插入url" onClick={(e) => { e.stopPropagation(); this.handleExtendButtonClick('url'); }}></button>
                             <button className="fa-picture-o" type="button" title="插入图片" onClick={(e) => { e.stopPropagation(); this.handleExtendButtonClick('img'); }}></button>
                             <button className="fa-film" type="button" title="插入视频" onClick={(e) => { e.stopPropagation(); this.handleExtendButtonClick('video'); }}></button>
+                            <button className="ubb-editor-bili-button" type="button" title="插入Bilibili视频" onClick={(e) => { e.stopPropagation(); this.handleExtendButtonClick('bili'); }}>Bili</button>
                             <button className="fa-music" type="button" title="插入音频" onClick={(e) => { e.stopPropagation(); this.handleExtendButtonClick('audio'); }}></button>
                             <label className="fa-file" htmlFor="upload" title="上传文件" onClick={(e) => { e.stopPropagation(); this.handleExtendButtonClick('upload'); return false }} ></label>
                         </div>
@@ -447,7 +457,7 @@ export class UbbEditor extends React.Component<Props, State> {
                 <div className="ubb-extend" style={{ height: this.state.extendTagName && this.state.extendTagName !== 'upload' ? '2rem' : '0rem' }}>
                     <input
                         type="text"
-                        placeholder="在此输入地址"
+                        placeholder={placeHolder}
                         value={this.state.extendValue}
                         onChange={(e) => { this.handleExtendValueChange(e.target.value); }}
                         onClick={(e) => { e.stopPropagation(); }}
@@ -455,6 +465,7 @@ export class UbbEditor extends React.Component<Props, State> {
                     />
                     {/*仅针对img与audio标签显示上传本地图片*/}
                     {this.state.extendTagName === 'img' || this.state.extendTagName === 'audio' ? <label onClick={(e) => { e.stopPropagation(); }} className="fa-upload" htmlFor="upload" title="上传本地文件"></label> : null}
+                    {/*仅针对bili标签显示分p输入*/}
                     <button className="fa-check" type="button" onClick={(e) => { e.stopPropagation(); this.handleButtonClick(this.state.extendTagName, this.state.extendValue) }}></button>
                     <button className="fa-remove" type="button" onClick={() => { this.setState({ clicked: true }); }}></button>
                     {this.state.extendTagName === 'img' ? <p style={{ color: 'gray', fontSize: '0.75rem', flexGrow: 1, textAlign: 'center' }}>也可以直接将图片文件拖曳到下面的文本区进行上传</p> : null}
