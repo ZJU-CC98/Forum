@@ -40,7 +40,7 @@ class Theme extends React.Component<Props> {
                 <button style={{ backgroundColor: '#79b8ca'}} key={1} onClick={() => this.handleSubmit(1)} disabled={this.props.userInfo.theme === 1}>冬季</button>
                 <button style={{ backgroundColor: '#b1d396'}} key={2} onClick={() => this.handleSubmit(2)} disabled={this.props.userInfo.theme === 2}>春季（浅色）</button>
                 <button style={{ backgroundColor: '#95b675'}} key={3} onClick={() => this.handleSubmit(3)} disabled={this.props.userInfo.theme === 3}>春季（深色）</button>
-                <button style={{ backgroundColor: '#5198d8'}} key={3} onClick={() => this.handleSubmit(3)} disabled={this.props.userInfo.theme === 4}>夏季</button>
+                <button style={{ backgroundColor: '#5198d8'}} key={4} onClick={() => this.handleSubmit(4)} disabled={this.props.userInfo.theme === 4}>夏季</button>
             </div>
         </div>
         );
