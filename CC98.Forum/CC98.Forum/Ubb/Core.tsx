@@ -183,7 +183,7 @@ class Token {
 /**
  * 定义 UBB 片段的类型。
  */
-enum UbbSegmentType {
+export enum UbbSegmentType {
 	/**
 	 * 纯文字片段。
 	 */
@@ -197,7 +197,7 @@ enum UbbSegmentType {
 /**
  * 表示 UBB 内容的一个片段。
  */
-abstract class UbbSegment {
+export abstract class UbbSegment {
 	/**
 	 * 获取该 UBB 片段的类型。
 	 * @returns {UbbSegmentType} 该 UBB 片段的类型。
@@ -233,7 +233,7 @@ abstract class UbbSegment {
 /**
  * 表示 UBB 的文字片段。
  */
-class UbbTextSegment extends UbbSegment {
+export class UbbTextSegment extends UbbSegment {
     get type(): UbbSegmentType { return UbbSegmentType.Text };
 
 	/**
@@ -264,7 +264,7 @@ class UbbTextSegment extends UbbSegment {
 /**
  * 表示 UBB 的标签片段。
  */
-class UbbTagSegment extends UbbSegment {
+export class UbbTagSegment extends UbbSegment {
 
     get type(): UbbSegmentType { return UbbSegmentType.Tag; }
 
@@ -1203,7 +1203,7 @@ export class UbbCodeEngine {
                 continue;
             }
 
-            console.log(matchResult);
+            // console.log(matchResult);
 
             const before = text.substr(0, matchResult.index);
             const after = text.substr(matchResult.index + matchResult[0].length);

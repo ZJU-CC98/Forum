@@ -48,7 +48,7 @@
 		"@types/signalr": "2.2.34",
 		"@types/url-join": "0.8.2",
 		"@types/webpack": "4.1.3",
-		"awesome-typescript-loader": "^4.0.1",
+		"awesome-typescript-loader": "^5.0.0",
 		"clean-webpack-plugin": "^0.1.19",
 		"copy-webpack-plugin": "^4.5.1",
 		"css-loader": "^0.28.11",
