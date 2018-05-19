@@ -51,7 +51,13 @@ export class QuoteTagHandler extends Ubb.RecursiveTagHandler {
             }
         } while(hasNest)
 
-        const quoteItems = queue.reverse().map( segment => context.engine.execSegment(segment, context) )
+        if (queue.length > 1) {
+            queue.reverse()
+            // 给原本最内层的 [quote] 补上一个空行
+            queue[0].subSegments.splice(1, 0, new Ubb.UbbTextSegment('\n', queue[0]))
+        }
+
+        const quoteItems = queue.map( segment => context.engine.execSegment(segment, context) )
         context.data.quoteDepth--
 
         return <Quote quoteItems={quoteItems}/>
