@@ -57,7 +57,14 @@ export class QuoteTagHandler extends Ubb.RecursiveTagHandler {
             queue[0].subSegments.splice(1, 0, new Ubb.UbbTextSegment('\n', queue[0]))
         }
 
-        const quoteItems = queue.map( segment => context.engine.execSegment(segment, context) )
+        const quoteItems = queue.map((segment, index) => {
+            if(index === queue.length - 1) {
+                context.data.islastQuote = true;
+            } else {
+                context.data.islastQuote = false;
+            }
+            return context.engine.execSegment(segment, context)
+        })
         context.data.quoteDepth--
 
         return <Quote quoteItems={quoteItems}/>
@@ -72,6 +79,9 @@ export class QuoteTagHandler extends Ubb.RecursiveTagHandler {
             borderBottom: '1px solid rgb(204,204,204)',
             overflowY: 'hidden',
         }
+
+        // 最后一层引用不现实下边框
+        if(context.data.islastQuote) style.borderBottom = null;
         
 		return <div style={style}>{innerContent}</div>
 	}

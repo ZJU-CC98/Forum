@@ -15,6 +15,12 @@ export class UbbCodeContextData {
      * 引用深度，0表示最外层
      */
     quoteDepth: number = 0;
+
+    /**
+     * 是否是一列引用中最后一行引用
+     * 用来定制样式
+     */
+    islastQuote: boolean = false;
 }
 
 /**
