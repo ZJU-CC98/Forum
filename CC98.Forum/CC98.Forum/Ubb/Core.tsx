@@ -14,7 +14,7 @@ export class UbbCodeContextData {
     /**
      * 引用深度，0表示最外层
      */
-    quoteDepth: number = 0;
+    isInQuote: boolean = false;
 
     /**
      * 是否是一列引用中最后一行引用

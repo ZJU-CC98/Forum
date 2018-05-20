@@ -16,12 +16,12 @@ export class QuoteTagHandler extends Ubb.RecursiveTagHandler {
     exec(tagSegment: Ubb.UbbTagSegment, context: Ubb.UbbCodeContext) {
 
         // 处理已经 flatQuote 之后的 [quote] 标签
-        if (context.data.quoteDepth) {
+        if (context.data.isInQuote) {
             return super.exec(tagSegment, context);
         }
 
         // 进入了一个 [quote] 标签
-        context.data.quoteDepth++
+        context.data.isInQuote = true;
 
         const isQuoteTag = (segment: Ubb.UbbSegment): boolean => {
             if (segment.type === Ubb.UbbSegmentType.Tag) {
@@ -65,7 +65,7 @@ export class QuoteTagHandler extends Ubb.RecursiveTagHandler {
             }
             return context.engine.execSegment(segment, context)
         })
-        context.data.quoteDepth--
+        context.data.isInQuote = false;
 
         return <Quote quoteItems={quoteItems}/>
     }

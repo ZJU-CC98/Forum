@@ -161,6 +161,7 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
         const boardUrl = `/list/${this.props.boardId}`;
         const id = `boardImg_${this.props.boardId}`;
         const url = `/static/images/_${this.props.boardInfo.name}.png`;
+        const isMaster = Utility.isMaster(this.props.boardInfo.boardMasters)
         let boardNameDiv = <div className="row" style={{ width: "100%" }}>
             {this.props.boardInfo.name}
         </div>;
@@ -169,8 +170,8 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
                 {this.props.boardInfo.name}
             </div>;
         }
-        Utility.isMaster(this.props.boardInfo.boardMasters);
-        if (!this.props.boardInfo.bigPaper || !this.state.isExtend) {
+        
+        if (!this.state.isExtend) {
             return (
                 <div className="row" style={{ width: "100%", overflow: 'hidden', maxHeight: '6rem', transition: 'max-height 1s'}}>
                     <Link to={boardUrl}><div className="boardMessage">
@@ -189,7 +190,7 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
                     </div>
                     </Link>
                     <div className="bigPaper" style={{display: 'block'}}>
-                        {this.props.boardInfo.bigPaper ? <button className="fa fa-angle-double-down" style={{ float: 'right', backgroundColor: '#fff', cursor: 'pointer', border: 'none' }} type="button" onClick={() => this.setState({ isExtend: true })}>展开</button> : null}
+                        {this.props.boardInfo.bigPaper ? <button className="fa fa-angle-double-down" style={{ float: 'right', backgroundColor: '#fff', cursor: 'pointer', border: 'none' }} type="button" onClick={() => this.setState({ isExtend: true })}>展开</button> : isMaster ? <button style={{float: 'right'}} type="button" onClick={() => this.setState({ isEditing: true, isExtend: true })}>编辑</button> : null }
                         <div>
                             <div>版面简介：{this.props.boardInfo.description}</div>
                         </div>
@@ -204,7 +205,7 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
         return <div className="row" style={{ width: "100%", overflow: 'hidden', maxHeight: '50rem', transition: 'max-height 1.5s' }}>
             <div className="boardMessage">
                 <div className="row" style={{ height: "4rem", marginTop: "1.25rem" }}>
-                    <img style={{ marginLeft: "1.25rem" }} src={url}></img>
+                    <img style={{ marginLeft: "1.25rem" }}  onError={this.onError} src={url}></img>
                     <div className="boardMessageDetails">
                         <div className="row" style={{ width: "100%" }}>
                             {this.props.boardInfo.name}
