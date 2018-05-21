@@ -31,6 +31,18 @@ export class QuoteTagHandler extends Ubb.RecursiveTagHandler {
             return false
         }
 
+        const isPureQuote = (segments: Ubb.UbbSegment[]): boolean => {
+            return (
+                segments[0].type === Ubb.UbbSegmentType.Tag &&
+                (segments[0] as Ubb.UbbTagSegment).subSegments[0] &&
+                (segments[0] as Ubb.UbbTagSegment).subSegments[0].type === Ubb.UbbSegmentType.Text &&
+                ((segments[0] as Ubb.UbbTagSegment).subSegments[0] as Ubb.UbbTextSegment).text.indexOf('以下是引用') === 0 &&
+                segments.slice(1, segments.length).every(item => item.type === Ubb.UbbSegmentType.Text &&
+                    !(item as Ubb.UbbTextSegment).text.match(/\S/)
+                )
+            )
+        }
+
         // flatQuote, 把嵌套的 [quote] 抹平
         const queue: Ubb.UbbTagSegment[] = [tagSegment]
         let hasNest: boolean
@@ -55,6 +67,16 @@ export class QuoteTagHandler extends Ubb.RecursiveTagHandler {
             queue.reverse()
             // 给原本最内层的 [quote] 补上一个空行
             queue[0].subSegments.splice(1, 0, new Ubb.UbbTextSegment('\n', queue[0]))
+            // 处理纯引用
+            for(let i = 1; i < queue.length; i++ ) {
+                if(isPureQuote(queue[i].subSegments)) {
+                    let info = (queue[i].subSegments.shift() as Ubb.UbbTagSegment).clone(queue[i - 1])
+                    queue[i - 1].subSegments.unshift(info)
+                    queue[i - 1].subSegments.splice(1, 0, new Ubb.UbbTextSegment('\n', queue[i - 1]))
+                    queue.splice(i, 1)
+                    i --
+                }
+            }
         }
 
         const quoteItems = queue.map((segment, index) => {
