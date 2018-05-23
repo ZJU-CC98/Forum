@@ -2,6 +2,7 @@
 import * as Utility from '../../Utility';
 import { UbbContainer } from '../UbbContainer';
 import { Link } from 'react-router-dom';
+import { UbbCodeOptions } from '../../Ubb/UbbCodeExtension';
 declare let moment: any;
 interface Props{
     postInfo;
@@ -120,7 +121,7 @@ export class ReplierSignature extends React.Component<Props, {likeNumber,dislike
         const manageIcon = `icon${this.props.postInfo.id}`;
         const idLike = `like${this.props.postInfo.id}`;
         const idDislike = `dislike${this.props.postInfo.id}`;
-        let signature = <div className="signature" ><UbbContainer code={this.props.userInfo.signatureCode} /></div>;
+        let signature = <div className="signature" ><UbbContainer code={this.props.userInfo.signatureCode} options={{ ...new UbbCodeOptions(), allowExternalImage: false }} /></div>;
         if (!this.props.userInfo.signatureCode) {
             signature = null;
         }

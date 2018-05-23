@@ -34,15 +34,14 @@ export interface RootState {
     router: RouterState;
 }
 
-function getReturn<T>( creator: (...args: any[]) => T): T { return };
 
 const Actions = { ...UserActions, ...ErrorActions };
-const actionTypes = values(Actions).map(getReturn);
+const actionTypes = values(Actions);
 
 /**
  * 全部Action的类型定义
  */
-export type RootAction = typeof actionTypes[number]; 
+export type RootAction = ReturnType<typeof actionTypes[number]>; 
 
 /**
  * 合并reducer

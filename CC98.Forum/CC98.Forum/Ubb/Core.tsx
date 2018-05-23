@@ -91,6 +91,10 @@ export class UbbCodeOptions {
 	 * 是否允许显示图像。
 	 */
     allowImage = true;
+    /**
+     * 是否允许显示外部图像
+     */
+    allowExternalImage = true;
 	/**
 	 * 是否允许多媒体资源，如视频，音频，Flash 等。
 	 */

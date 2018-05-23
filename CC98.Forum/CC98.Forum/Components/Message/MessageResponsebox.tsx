@@ -69,7 +69,7 @@ export class MessageResponsebox extends React.Component<MessageResponseProps> {
                             </div>
                         </div>
                         <div className="message-response-box-middle-content">
-                    <UbbContainer code={content} options={{ allowAutoPlay: false, autoDetectUrl: true, allowExternalUrl: true, allowImage: false, allowMediaContent: false, compatibility: UbbCompatiblityMode.Recommended, allowEmotion: false }} />
+                    <UbbContainer code={content} options={{ allowAutoPlay: false, autoDetectUrl: true, allowExternalUrl: true, allowImage: false, allowMediaContent: false, compatibility: UbbCompatiblityMode.Recommended, allowEmotion: false, allowExternalImage: false }} />
                         </div>
                     </div>
                 </div>

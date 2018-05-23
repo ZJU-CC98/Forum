@@ -113,6 +113,16 @@
   version "0.8.2"
   resolved "http://registry.npm.taobao.org/@types/url-join/download/@types/url-join-0.8.2.tgz#1181ecbe1d97b7034e0ea1e35e62e86cc26b422d"
 
+"@types/url-parse@^1.1.0":
+  version "1.1.0"
+  resolved "http://registry.npm.taobao.org/@types/url-parse/download/@types/url-parse-1.1.0.tgz#61f8e1b52024d07fceb73fd7f8292e5ddd2b60a1"
+  dependencies:
+    "@types/url-search-params" "*"
+
+"@types/url-search-params@*":
+  version "0.10.1"
+  resolved "http://registry.npm.taobao.org/@types/url-search-params/download/@types/url-search-params-0.10.1.tgz#a5b1f30bf4adad70b103e22c3e1a478869b51be7"
+
 "@types/webpack@4.1.3", "@types/webpack@^3.0.0 || ^4.0.0":
   version "4.1.3"
   resolved "http://registry.npm.taobao.org/@types/webpack/download/@types/webpack-4.1.3.tgz#1cbb3fceb275590b63addf7cfb1534fda7e645a1"
@@ -5341,6 +5351,10 @@ querystringify@0.0.x:
   version "0.0.4"
   resolved "http://registry.npm.taobao.org/querystringify/download/querystringify-0.0.4.tgz#0cf7f84f9463ff0ae51c4c4b142d95be37724d9c"
 
+querystringify@^2.0.0:
+  version "2.0.0"
+  resolved "http://registry.npm.taobao.org/querystringify/download/querystringify-2.0.0.tgz#fa3ed6e68eb15159457c89b37bc6472833195755"
+
 querystringify@~1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/querystringify/download/querystringify-1.0.0.tgz#6286242112c5b712fa654e526652bf6a13ff05cb"
@@ -5775,7 +5789,7 @@ require-main-filename@^1.0.1:
   version "1.0.1"
   resolved "http://registry.npm.taobao.org/require-main-filename/download/require-main-filename-1.0.1.tgz#97f717b69d48784f5f526a6c5aa8ffdda055a4d1"
 
-requires-port@1.0.x, requires-port@1.x.x, requires-port@~1.0.0:
+requires-port@1.0.x, requires-port@1.x.x, requires-port@^1.0.0, requires-port@~1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/requires-port/download/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
 
@@ -6626,9 +6640,9 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "http://registry.npm.taobao.org/typedarray/download/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript@^2.7.2:
-  version "2.7.2"
-  resolved "http://registry.npm.taobao.org/typescript/download/typescript-2.7.2.tgz#2d615a1ef4aee4f574425cdff7026edf81919836"
+typescript@2.8.3:
+  version "2.8.3"
+  resolved "http://registry.npm.taobao.org/typescript/download/typescript-2.8.3.tgz#5d817f9b6f31bb871835f4edf0089f21abe6c170"
 
 ua-parser-js@^0.7.9:
   version "0.7.17"
@@ -6770,6 +6784,13 @@ url-parse@^1.1.8:
   dependencies:
     querystringify "~1.0.0"
     requires-port "~1.0.0"
+
+url-parse@^1.4.0:
+  version "1.4.0"
+  resolved "http://registry.npm.taobao.org/url-parse/download/url-parse-1.4.0.tgz#6bfdaad60098c7fe06f623e42b22de62de0d3d75"
+  dependencies:
+    querystringify "^2.0.0"
+    requires-port "^1.0.0"
 
 url-to-options@^1.0.1:
   version "1.0.1"
