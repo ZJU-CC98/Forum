@@ -62,6 +62,7 @@ export class CountDown extends React.PureComponent<Props, State> {
                 </p>
             );
         } else {
+            clearInterval(this.timer)
             return null;
         }
     }
