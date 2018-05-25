@@ -5,6 +5,7 @@ import * as Utility from '../Utility';
 import { UbbContainer } from './UbbContainer';
 import { Link } from 'react-router-dom';
 import DocumentTitle from './DocumentTitle';
+import {CountDown} from './CountDown'
 /**
  * 全站公告组件
  * 为同时兼容新旧版98 临时调整了显示的内容
@@ -13,9 +14,10 @@ export class AnnouncementComponent extends React.Component<{ data }, {}> {
     render() {
         return <div className="announcement">
             <div className="mainPageTitle1">
-                <div className="mainPageTitleRow">
+                <div className="mainPageTitleRow" style={{ width: '100%' }}>
                     <i className="fa fa-volume-up"></i>
-                    <div className="mainPageTitleText">全站公告</div>
+                    <div style={{ flexGrow: 1 }} className="mainPageTitleText">全站公告</div>
+                    <CountDown endDate={new Date('05/26/2018 05:00 PM')} />
                 </div>
             </div>
             <div className="announcementContent"><UbbContainer code={this.props.data} /></div>
