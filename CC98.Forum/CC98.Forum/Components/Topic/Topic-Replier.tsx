@@ -172,10 +172,19 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
 
     }
 
+    //setstate无效的坑:setState调用后并不是立即执行，需要走完react的生命周期，到到render的时候，state的值才改变。
+    //解决方法:setState的第二个参数是回调函数，把state改变后的需要执行的代码放在回调函数中，这样就可以保证setState生效后才执行。
+
     async handleImageErrored() {
-        this.setState({
-            portraitUrl: "/static/images / default_avatar_boy.png"
-        })
+        this.setState({ portraitUrl: "/static/images/default_avatar_boy.png" },//将头像url替换为默认头像
+            async () => {
+                //重新获取一次state更新后的用户头像
+                const displayTitleId = this.props.userInfo.displayTitleId;
+                let phototframe = await this.getPhotoFrame(displayTitleId);
+                this.setState({
+                    photoframe: phototframe
+                })
+            });
     }
 
     render() {
