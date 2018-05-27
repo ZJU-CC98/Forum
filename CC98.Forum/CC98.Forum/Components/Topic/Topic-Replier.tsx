@@ -9,7 +9,7 @@ interface Props {
     traceMode;
     isHot;
 }
-export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled, buttonInfo, isFollowing, fanCount, photoframe }, { topicid }>{
+export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled, buttonInfo, isFollowing, fanCount, photoframe, portraitUrl }, { topicid }>{
     constructor(props, content) {
         super(props, content);
         this.follow = this.follow.bind(this);
@@ -19,7 +19,8 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
             traceMode: this.props.traceMode, buttonInfo: '关注',
             buttonIsDisabled: false,
             isFollowing: false, fanCount: this.props.userInfo.fanCount,
-            photoframe: null
+            photoframe: null,
+            portraitUrl: this.props.userInfo.portraitUrl
         };
     }
 
@@ -146,14 +147,14 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
                 default: imageUrl = data.普通.imageUrl;
             }
 
-            let shadow = {};
+            let shadow = {};    //头像框底部的阴影
             if (displayTitleId === 82)
-                shadow = { boxShadow: "0 0 0" };
+                shadow = { boxShadow: "0 0 0" };    //吉祥物无阴影
 
             return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
                 <div style={{ zIndex: 100 }}>
                     <a href={realUrl} style={{ display: "block", maxHeight: "5rem" }}>
-                        <img className="userPortrait" src={this.props.userInfo.portraitUrl} style={shadow}></img>
+                        <img className="userPortrait" src={this.state.portraitUrl} style={shadow} onError={this.handleImageErrored.bind(this)}></img>
                     </a>
                 </div>
                 <div className="photoFrame"><img src={imageUrl} style={style} /></div>
@@ -163,7 +164,7 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
             return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
                 <div style={{ zIndex: 100 }}>
                     <a href={realUrl} style={{ display: "block", maxHeight: "7.5rem" }}>
-                        <img className="userPortrait" src={this.props.userInfo.portraitUrl}></img>
+                        <img className="userPortrait" src={this.state.portraitUrl} onError={this.handleImageErrored.bind(this)}></img>
                     </a>
                 </div>
             </div>
@@ -171,13 +172,19 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
 
     }
 
+    async handleImageErrored() {
+        this.setState({
+            portraitUrl: "/static/images / default_avatar_boy.png"
+        })
+    }
+
     render() {
         let urlHtml;
         if (!this.props.topicInfo.isAnonymous) {
             const url = `/user/id/${this.props.userInfo.id}`;
-            const realUrl = encodeURI(url);      
+            const realUrl = encodeURI(url);
             //用户头像
-            urlHtml = <a href={realUrl} style={{ display: "block", maxHeight: "7.5rem" }}><img className="userPortrait" src={this.props.userInfo.portraitUrl}></img></a>;
+            urlHtml = <a href={realUrl} style={{ display: "block", maxHeight: "7.5rem" }}><img className="userPortrait" src={this.props.userInfo.portraitUrl} ></img></a>;
         }
 
 
@@ -195,14 +202,14 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
             const realUrl = encodeURI(url);
             userName = <Link style={{ color: "#fff" }} className="userMessage-userName" to={realUrl}>{this.props.userInfo.name}</Link>;
         }
-           
+
 
         if (this.props.userInfo.privilege == "匿名" || this.props.userInfo.privilege === "匿名用户") {
             userName = <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
                 <div style={{ color: "white", fontSize: "1rem", fontWeight: "bold", marginLeft: "1rem", marginTop: "-0.8rem" }} >{this.props.userInfo.name}</div>
                 <div className="userMessageAnonymous">别问我是谁</div>
             </div>;
-        }    
+        }
         let traceButton;
 
         const hotInfo = <div style={{ color: "red", marginLeft: "1rem" }}><span>最热回复</span><span>(第</span><span>{this.props.topicInfo.floor}</span><span>楼)</span></div>;
