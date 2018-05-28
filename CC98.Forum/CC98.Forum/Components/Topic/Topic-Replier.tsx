@@ -9,7 +9,7 @@ interface Props {
     traceMode;
     isHot;
 }
-export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled, buttonInfo, isFollowing, fanCount, photoframe, portraitUrl }, { topicid }>{
+export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled, buttonInfo, isFollowing, fanCount, photoframe }, { topicid }>{
     constructor(props, content) {
         super(props, content);
         this.follow = this.follow.bind(this);
@@ -19,8 +19,7 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
             traceMode: this.props.traceMode, buttonInfo: '关注',
             buttonIsDisabled: false,
             isFollowing: false, fanCount: this.props.userInfo.fanCount,
-            photoframe: null,
-            portraitUrl: this.props.userInfo.portraitUrl
+            photoframe: null,            
         };
     }
 
@@ -154,7 +153,7 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
             return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
                 <div style={{ zIndex: 100 }}>
                     <a href={realUrl} style={{ display: "block", maxHeight: "5rem" }}>
-                        <img className="userPortrait" src={this.state.portraitUrl} style={shadow} onError={this.handleImageErrored.bind(this)}></img>
+                        <img className="userPortrait" src={this.props.userInfo.portraitUrl} style={shadow} onError={this.handleImageErrored.bind(this)}></img>
                     </a>
                 </div>
                 <div className="photoFrame"><img src={imageUrl} style={style} /></div>
@@ -164,7 +163,7 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
             return <div style={{ width: "100%", justifyContent: "center", display: "flex", position: "relative" }}>
                 <div style={{ zIndex: 100 }}>
                     <a href={realUrl} style={{ display: "block", maxHeight: "7.5rem" }}>
-                        <img className="userPortrait" src={this.state.portraitUrl} onError={this.handleImageErrored.bind(this)}></img>
+                        <img className="userPortrait" src={this.props.userInfo.portraitUrl} onError={this.handleImageErrored.bind(this)}></img>
                     </a>
                 </div>
             </div>
@@ -172,19 +171,12 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
 
     }
 
-    //setstate无效的坑:setState调用后并不是立即执行，需要走完react的生命周期，到到render的时候，state的值才改变。
-    //解决方法:setState的第二个参数是回调函数，把state改变后的需要执行的代码放在回调函数中，这样就可以保证setState生效后才执行。
-
-    async handleImageErrored() {
-        this.setState({ portraitUrl: "/static/images/default_avatar_boy.png" },//将头像url替换为默认头像
-            async () => {
-                //重新获取一次state更新后的用户头像
-                const displayTitleId = this.props.userInfo.displayTitleId;
-                let phototframe = await this.getPhotoFrame(displayTitleId);
-                this.setState({
-                    photoframe: phototframe
-                })
-            });
+    /*
+     * 处理显示错误的头像
+     */
+    async handleImageErrored(e) {
+        e.preventDefault();
+        e.target.src = "/static/images/default_avatar_boy.png"//将错误的头像url替换为默认头像url
     }
 
     render() {
