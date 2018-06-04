@@ -189,7 +189,7 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
                     </div>
                     </Link>
                     <div className="bigPaper" style={{display: 'block'}}>
-                        {this.props.boardInfo.bigPaper ? <button className="fa fa-angle-double-down" style={{ float: 'right', backgroundColor: '#fff', cursor: 'pointer', border: 'none' }} type="button" onClick={() => this.setState({ isExtend: true })}>展开</button> : null}
+                        {this.props.boardInfo.bigPaper ? <button className="fa fa-angle-double-down" style={{ float: 'right', backgroundColor: '#fff', cursor: 'pointer', border: 'none' }} type="button" onClick={() => this.setState({ isExtend: true })}>展开</button> :  Utility.isMaster(this.props.boardInfo.boardMasters) ? <button type="button" onClick={() => this.setState({ isEditing: true })}>编辑</button> : null }
                         <div>
                             <div>版面简介：{this.props.boardInfo.description}</div>
                         </div>
@@ -229,7 +229,7 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
             <div className="bigPaper" style={{display: 'block'}}>
                 <button className="fa fa-angle-double-up" style={{ float: 'right', backgroundColor: '#fff', cursor: 'pointer', border: 'none' }} type="button" onClick={() => this.setState({ isExtend: false })}>收起</button>
                 <div className="bigPaperTitle">
-                    {Utility.isMaster(this.props.boardInfo.boardMasters) ? <button type="button" onClick={() => this.setState({isEditing: true})}>编辑</button> : null}
+                    {this.props.boardInfo.bigPaper?Utility.isMaster(this.props.boardInfo.boardMasters) ? <button type="button" onClick={() => this.setState({ isEditing: true })}>编辑</button> : null:null}
                     {this.state.isEditing ? <button type="button" onClick={() => { this.changeBigPaper(); }}>提交</button> : null}
                     <p>{this.state.info}</p>
                 </div>
