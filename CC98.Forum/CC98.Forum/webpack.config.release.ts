@@ -41,6 +41,7 @@ const config: Webpack.Configuration = {
 		css_blue: './Themes/wuteng_blue.scss',
 		css_green: './Themes/forgive_green.scss',
 		css_more_green: './Themes/deep_dark_green.scss',
+		css_summer: './Themes/summer.scss'
 	},
 	output: {
 		path: path.resolve(__dirname, 'wwwroot/'),

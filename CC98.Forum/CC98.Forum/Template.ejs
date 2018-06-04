@@ -24,9 +24,12 @@
         themeNames.push("<%= htmlWebpackPlugin.files.css[cssFile].split('/').pop() %>");
         <% } %>
         // themeNames[0]为当前的默认主题
-        themeNames[0] = themeNames[2];
+        themeNames[0] = themeNames[4];
         try {
             (function() {
+                var time = localStorage.getItem('refresh_token_expirationTime');
+                var isLogOn = item && (parseInt(time) > Date.now());
+                if(!isLogOn) throw new Error('用户未登录');
                 var theme = JSON.parse(localStorage.getItem('userInfo').slice(4)).theme;
                 if(!theme) throw new Error('用户未选择主题');
                 document.write('<link id="mainStylesheet" type="text/css" rel="stylesheet" href="/static/content/' + themeNames[theme] + '">');

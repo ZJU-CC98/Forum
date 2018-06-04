@@ -5,10 +5,9 @@
 import * as React from 'react';
 import * as Ubb from './Core';
 import LazyLoad from 'react-lazyload';
+import * as parse from 'url-parse';
 
 export class ImageTagHandler extends Ubb.TextTagHandler {
-    innerHTML: JSX.Element;
-
     get supportedTagNames(): string { return 'img' };
 
     execCore(content: string, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
@@ -17,8 +16,13 @@ export class ImageTagHandler extends Ubb.TextTagHandler {
         const title = tagData.value('title');
         let isShowedValue = parseInt(tagData.value('img'));
 
+        let { allowImage, allowExternalImage } = context.options;
+        if(!allowExternalImage && !parse(imageUri).hostname.includes('cc98.org')) {
+            allowImage = false;
+        }
+
         // 不允许显示图像
-        if (!context.options.allowImage) {
+        if (!allowImage) {
             return <a href={imageUri}>{imageUri}</a>
         }
 

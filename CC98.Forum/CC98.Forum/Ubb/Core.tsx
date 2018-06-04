@@ -14,7 +14,13 @@ export class UbbCodeContextData {
     /**
      * 引用深度，0表示最外层
      */
-    quoteDepth: number = 0;
+    isInQuote: boolean = false;
+
+    /**
+     * 是否是一列引用中最后一行引用
+     * 用来定制样式
+     */
+    islastQuote: boolean = false;
 }
 
 /**
@@ -85,6 +91,10 @@ export class UbbCodeOptions {
 	 * 是否允许显示图像。
 	 */
     allowImage = true;
+    /**
+     * 是否允许显示外部图像
+     */
+    allowExternalImage = true;
 	/**
 	 * 是否允许多媒体资源，如视频，音频，Flash 等。
 	 */
@@ -183,7 +193,7 @@ class Token {
 /**
  * 定义 UBB 片段的类型。
  */
-enum UbbSegmentType {
+export enum UbbSegmentType {
 	/**
 	 * 纯文字片段。
 	 */
@@ -197,7 +207,7 @@ enum UbbSegmentType {
 /**
  * 表示 UBB 内容的一个片段。
  */
-abstract class UbbSegment {
+export abstract class UbbSegment {
 	/**
 	 * 获取该 UBB 片段的类型。
 	 * @returns {UbbSegmentType} 该 UBB 片段的类型。
@@ -233,7 +243,7 @@ abstract class UbbSegment {
 /**
  * 表示 UBB 的文字片段。
  */
-class UbbTextSegment extends UbbSegment {
+export class UbbTextSegment extends UbbSegment {
     get type(): UbbSegmentType { return UbbSegmentType.Text };
 
 	/**
@@ -264,7 +274,7 @@ class UbbTextSegment extends UbbSegment {
 /**
  * 表示 UBB 的标签片段。
  */
-class UbbTagSegment extends UbbSegment {
+export class UbbTagSegment extends UbbSegment {
 
     get type(): UbbSegmentType { return UbbSegmentType.Tag; }
 
@@ -455,13 +465,14 @@ export class UbbTagData {
 
 				/**
 				 * 从当前位置开始扫描字符串，直到找到对应的结束字符。
+				 * @param quoteType 单引号或者双引号
 				 * @returns {string} 从当前位置开始到相同字符结束的字符串。
 				 */
-                function scanQuoted() {
+                function scanQuoted(quoteType: string) {
 
                     // 开始字符串。
                     const quoteMark = tokenString[index];
-                    let endMarkLocation = tokenString.indexOf('"', index + 1);
+                    let endMarkLocation = tokenString.indexOf(quoteType, index + 1);
 
                     // 找不到结束符号
                     if (endMarkLocation < 0) {
@@ -494,7 +505,7 @@ export class UbbTagData {
                         index++;
                         return Token.nameValueSeperator;
                     } else if (c === '"' || c === '\'') { // 引号开始，找到结束为止
-                        return Token.stringValue(scanQuoted());
+                        return Token.stringValue(scanQuoted(c));
                     } else {
 
                         const start = index;
@@ -809,7 +820,7 @@ export abstract class TextTagHandler extends UbbTagHandler {
 	/**
 	 * 递归处理的核心方法。
 	 * @param innerContent 已经处理完毕的内部内容。
-	 * @param RecursiveTagHandler 标签相关的数据。
+	 * @param tagData 标签相关的数据。
 	 * @param context 处理上下文对象。
 	 */
     protected abstract execCore(innerContent: string, tagData: UbbTagData, context: UbbCodeContext): ReactNode;
@@ -835,7 +846,7 @@ export abstract class RecursiveTagHandler extends UbbTagHandler {
 	/**
 	 * 递归处理的核心方法。
 	 * @param innerContent 已经处理完毕的内部内容。
-	 * @param RecursiveTagHandler 标签相关的数据。
+	 * @param tagData 标签相关的数据。
 	 * @param context 处理上下文对象。
 	 */
     protected abstract execCore(innerContent: ReactNode, tagData: UbbTagData, context: UbbCodeContext): ReactNode;
@@ -1001,7 +1012,7 @@ export class UbbCodeEngine {
 	 */
     get data(): UbbCodeContextData {
         return this._data;
-    };
+    }
 
 	/**
 	 * 获取给定标签名称的处理程序。
@@ -1202,7 +1213,7 @@ export class UbbCodeEngine {
                 continue;
             }
 
-            console.log(matchResult);
+            // console.log(matchResult);
 
             const before = text.substr(0, matchResult.index);
             const after = text.substr(matchResult.index + matchResult[0].length);

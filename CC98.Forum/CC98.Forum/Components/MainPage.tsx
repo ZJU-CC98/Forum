@@ -5,6 +5,7 @@ import * as Utility from '../Utility';
 import { UbbContainer } from './UbbContainer';
 import { Link } from 'react-router-dom';
 import DocumentTitle from './DocumentTitle';
+import {CountDown} from './CountDown'
 /**
  * 全站公告组件
  * 为同时兼容新旧版98 临时调整了显示的内容
@@ -13,9 +14,10 @@ export class AnnouncementComponent extends React.Component<{ data }, {}> {
     render() {
         return <div className="announcement">
             <div className="mainPageTitle1">
-                <div className="mainPageTitleRow">
+                <div className="mainPageTitleRow" style={{ width: '100%' }}>
                     <i className="fa fa-volume-up"></i>
-                    <div className="mainPageTitleText">全站公告</div>
+                    <div style={{ flexGrow: 1 }} className="mainPageTitleText">全站公告</div>
+                    <CountDown endDate={new Date('05/26/2018 05:30 PM')} />
                 </div>
             </div>
             <div className="announcementContent"><UbbContainer code={this.props.data} /></div>
@@ -30,8 +32,9 @@ export class RecommendedReadingComponent extends React.Component<{ data }, { ind
 
     constructor(props) {
         super(props);
+        const length = this.props.data.length;
         this.state = {
-            index: Math.floor(Math.random() * 5)    //0-4的随机数
+            index: Math.floor(Math.random() * length)    //0-length的随机数
         };
         this.handleMouseEnter = this.handleMouseEnter.bind(this);
         this.convertButton = this.convertButton.bind(this);
@@ -43,20 +46,20 @@ export class RecommendedReadingComponent extends React.Component<{ data }, { ind
         })
     }
 
-    //使用箭头函数传参 记得用到this的函数要先bind
     convertButton(value: number, index: number, array: number[]) {
         let className: string = value ? "recommendedReadingButtonSelected" : "recommendedReadingButton";
         return <div className={className} onMouseEnter={() => { this.handleMouseEnter(index) }}></div>
 
     }
 
-    //在componentWillMount前似乎会render一次 这时this.state还是初值  所以需要先判断一次
     render() {
         let recommendedReading = this.props.data;
+        let length = recommendedReading.length;     //推荐阅读的长度
 
         let index = this.state.index;
-        let styles = new Array(0, 0, 0, 0, 0);
-        styles[index] = 1;
+        let styles = new Array(length);
+        styles.fill(0);     //将数组元素全部填充为0
+        styles[index] = 1;      //选中下标的内容对应的数组元素值为1
         let buttons = styles.map(this.convertButton);
         let imageUrl = "";
         let url = "";

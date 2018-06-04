@@ -1,4 +1,4 @@
-﻿import * as Prop from './Props/AppProps'
+import * as Prop from './Props/AppProps'
 import * as State from './States/AppState'
 import store from './Store';
 import * as UserCenterActions from './Actions/UserCenter';
@@ -83,7 +83,7 @@ export async function getBoardTopicAsync(curPage, boardId, totalTopicCount) {
                 return 'not found';
         }
         const data: State.TopicTitleAndContentState[] = await response.json();
-        for (let i = 0; i < topicNumberInPage; i++) {
+        for (let i = 0; i < data.length; i++) {
             boardtopics[i] = {
                 ...data[i], replyCount: data[i].replyCount || 0
             }
