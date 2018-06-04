@@ -98,8 +98,10 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
                 if (this.state.reason !== "") {
                 
                    
-                    const bold = $("input[name='bold']:checked") ? true : false;
-                    const italic = $("input[name='italic']:checked") ? true : false;
+                    const bold = $("#hlbold").prop("checked") ? true : false;
+                    const italic = $("#hlitalic").prop("checked") ? true : false;
+                    console.log("bold=" + bold);
+                    console.log("itlic=" + italic);
                     await Utility.setHighlight(this.props.topicInfo.id, bold, italic, color, this.state.days, this.state.reason);
                 } else {
                     this.setState({ tips: "请输入原因！" });
@@ -163,7 +165,7 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
 
     }
     daysInput(e) {
-
+        
         this.setState({ days: e.target.value });
 
     }
@@ -173,11 +175,19 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
 
     }
 
-   async componentDidUpdate() {
-        
-        $("#custom").spectrum({
-            color: "#f00"
-        });
+    async componentDidUpdate() {
+        try {
+            let color = $("#custom").spectrum("get").toHexString($("#custom").spectrum("get"));
+            console.log(color);
+            $("#custom").spectrum({
+                color: color
+            });
+        } catch (e) {
+            $("#custom").spectrum({
+                color: "#f00"
+            });
+        }
+       
     }
     /*async componentWillReceiveProps(newProps) {
         const data = await Utility.getTopicInfo(newProps.topicInfo.id);
@@ -194,7 +204,7 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
                 <input type="text" value={this.state.reason} onChange={this.reasonInput} />
 
             </div>
-            <div>{this.state.tips}</div>
+            <div style={{marginTop:"2rem"}}>{this.state.tips}</div>
         </div>;
         const noReasonInfo = null;
         const daysInfo = <div className="column">
@@ -207,10 +217,10 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
                 <input type="text" value={this.state.reason} onChange={this.reasonInput} />
 
             </div>
-            <div>{this.state.tips}</div>
+            <div style={{ marginTop: "2rem" }}>{this.state.tips}</div>
         </div>;
         const boardInfo = <div className="column">
-            <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
+            <div  className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                 <div >版面</div>
                 <input type="text" value={this.state.board} onChange={this.boardInput} />
             </div>
@@ -219,16 +229,16 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
                 <input type="text" value={this.state.reason} onChange={this.reasonInput} />
 
             </div>
-            <div>{this.state.tips}</div>
+            <div style={{ marginTop: "2rem" }}>{this.state.tips}</div>
         </div>;
         const highlightInfo = <div className="column">
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                 <div >加粗</div>
-                <input type="radio" value='加粗' name='bold' />
+                <input type="checkbox" value='加粗' id='hlbold' />
             </div>
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                 <div >斜体</div>
-                <input type="radio" value='斜体' name='italic' />
+                <input type="checkbox" value='斜体' id='hlitalic' />
             </div>
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                 <div >颜色</div>
@@ -243,7 +253,7 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
                 <input type="text" value={this.state.reason} onChange={this.reasonInput} />
 
             </div>
-            <div>{this.state.tips}</div>
+            <div style={{ marginTop: "2rem" }}>{this.state.tips}</div>
         </div>;
         switch (this.state.state) {
             case 'normal':
@@ -327,7 +337,7 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
         const highlightOptionId = `manage${this.props.topicInfo.id}`;
         return <div style={{ display: "none" }} id={UIId} className="topicManagement" >
             {UI}
-            < div className="row" style={{ justifyContent: "space-around", marginTop:"1rem" }}>
+            < div className="row" style={{ justifyContent: "space-around", marginTop:"4rem" }}>
                 <button onClick={this.confirm} className="confirmManagement">确认</button>
                 <button onClick={this.close} className="confirmManagement">关闭</button>
             </div >
