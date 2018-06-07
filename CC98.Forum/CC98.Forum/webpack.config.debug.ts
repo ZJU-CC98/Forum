@@ -79,7 +79,8 @@ const config: Webpack.Configuration = {
             { from: 'node_modules/codemirror', to: 'static/scripts/lib/editor.md/lib/codemirror/' },
             { from: 'node_modules/spectrum-colorpicker/spectrum.js', to: 'static/scripts/lib/spectrum/spectrum.js' },
             { from: 'node_modules/dplayer/dist/DPlayer.min.css', to: 'static/content/DPlayer.min.css' },
-            { from: 'node_modules/aplayer/dist/APlayer.min.css', to: 'static/content/APlayer.min.css' }
+            { from: 'node_modules/aplayer/dist/APlayer.min.css', to: 'static/content/APlayer.min.css' },
+            { from: 'node_modules/bootstrap/dist', to: 'static/content/bootstrap '}
         ]),
 
         new ExtractTextPlugin('static/content/[name].css'),

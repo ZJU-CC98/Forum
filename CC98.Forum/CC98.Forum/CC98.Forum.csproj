@@ -8,13 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="img\**" />
-    <Compile Remove="wwwroot\images\**" />
+    <Compile Remove="wwwroot\**" />
     <Content Remove="img\**" />
-    <Content Remove="wwwroot\images\**" />
+    <Content Remove="wwwroot\**" />
     <EmbeddedResource Remove="img\**" />
-    <EmbeddedResource Remove="wwwroot\images\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
     <None Remove="img\**" />
-    <None Remove="wwwroot\images\**" />
+    <None Remove="wwwroot\**" />
   </ItemGroup>
 
   <ItemGroup>

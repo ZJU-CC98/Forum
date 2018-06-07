@@ -1,9 +1,12 @@
 ﻿import * as React from 'react';
 import { HotTopic } from '../../Props/AppProps'
 import * as State from '../../States/AppState'
-import * as Utility from '../../Utility'
+import * as Utility from '../../Utility';
+import { Button, FormControl, ControlLabel, FormGroup } from 'react-bootstrap';
+import * as $ from 'jquery'
 import { UbbContainer } from '.././UbbContainer';
 import { match } from 'react-router';
+
 import DocumentTitle from '../DocumentTitle';
 import {
     BrowserRouter as Router,
@@ -469,6 +472,26 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
         const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
         const recordTopicsUrl = `/list/${this.match.params.boardId}/record/`;
+        let manageUI = <div>
+            <FormGroup>
+            <ControlLabel>处理理由</ControlLabel>
+            <FormControl componentClass="select" placeholder="select">
+                <option value="select">重复发帖</option>
+                <option value="other">管理要求</option>
+                <option value="other">已解决</option>
+                <option value="other">内容不符</option>
+                <option value="other">违反版规</option>
+                <option value="other">自定义</option>
+            </FormControl>
+            <ControlLabel>下沉天数</ControlLabel>
+            <FormControl componentClass="select" placeholder="select">
+                <option value="select">7</option>
+                <option value="other">30</option>
+                <option value="other">98</option>
+                <option value="other">1000</option>
+                </FormControl>
+            </FormGroup>
+        </div>;
         return <div className="listContent ">
             <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} tag={this.state.tags} />
             <div className="column tagColumn">
@@ -486,7 +509,11 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
                 {topTopics}
                 <div>{topics}</div>
             </div>
-            <div className="listContentBottom"><Pager page={curPage} totalPage={this.state.totalPage} url={normalTopicsUrl} /><Link to={recordTopicsUrl}><div className="boardRecordBtn">查看版面事件</div></Link></div>
+            <div className="listContentBottom"><Pager page={curPage} totalPage={this.state.totalPage} url={normalTopicsUrl} /><div className="boardRecordBtn">版面管理</div>
+                <Link to={recordTopicsUrl}><div className="boardRecordBtn">查看版面事件</div></Link>
+            </div>
+            {manageUI}
+            <Button  bsStyle="success">success</Button>
         </div>;
 
     }
@@ -1040,11 +1067,18 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
                 if (this.props.highlightInfo.isItalic) i = 'italic';
                 if (this.props.highlightInfo.color) c = this.props.highlightInfo.color;
             }
-            return <div id={colorId}>
+            let checkbox = null;
+            if (this.props.topState === 0) {
+                let tid = `topic_${this.props.id}`;
+                checkbox = <div id={tid} style={{ display: "flex", alignContent: "center" }}><input type="checkbox" /></div>
+            }
+            return <div style={{ display: "flex" }} id={colorId}>
+                {checkbox}
                 <Link to={url}>
                     <div className="rofw topicInList" id={topicId}>
                         <div className="listTitleAndPager">
                             <div className="row listTitleAndIcon" >
+                               
                                 {icon}
                                 <div className="listTitle" id={titleId} style={{ marginLeft: '1rem', color: c, fontWeight: b, fontStyle: i }}> {this.props.title}</div>
                             </div>
