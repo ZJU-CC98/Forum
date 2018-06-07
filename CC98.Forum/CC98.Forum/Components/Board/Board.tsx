@@ -16,7 +16,7 @@ import {
     Switch
 } from 'react-router-dom';
 import TopicTitleAndContentState = State.TopicTitleAndContentState;
-import { BoardEvent } from '../../States/BoardEvent'; 
+import { BoardEvent } from '../../States/BoardEvent';
 import { Pager } from '../Pager';
 import { NotFoundTopic, UnauthorizedTopic, UnauthorizedBoard, ServerError } from '../Status';
 import { AdsComponent } from '../MainPage';
@@ -103,7 +103,7 @@ export class Category extends React.Component<{ boardId, boardInfo }, {}>{
         </div>;
     }
 }
-export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow , isExtend: boolean, isEditing: boolean, curDesc: string, info: string}, { boardId }> {
+export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow, isExtend: boolean, isEditing: boolean, curDesc: string, info: string }, { boardId }> {
     constructor(props, content) {
         super(props, content);
         this.state = { isFollow: Utility.isFollowThisBoard(this.props.boardId), isExtend: false, isEditing: false, curDesc: props.boardInfo.bigPaper, info: '' };
@@ -168,18 +168,18 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
         let boardNameDiv = <div className="row" style={{ width: "100%" }}>
             {this.props.boardInfo.name}
         </div>;
-        if (this.props.boardInfo&&this.props.boardInfo.name.length > 8) {
-            boardNameDiv = <div className="row" style={{ width: "100%", fontSize:"14px" }}>
+        if (this.props.boardInfo && this.props.boardInfo.name.length > 8) {
+            boardNameDiv = <div className="row" style={{ width: "100%", fontSize: "14px" }}>
                 {this.props.boardInfo.name}
             </div>;
         }
-        
+
         if (!this.state.isExtend) {
             return (
-                <div className="row" style={{ width: "100%", overflow: 'hidden', maxHeight: '6rem', transition: 'max-height 1s'}}>
+                <div className="row" style={{ width: "100%", overflow: 'hidden', maxHeight: '6rem', transition: 'max-height 1s' }}>
                     <Link to={boardUrl}><div className="boardMessage">
                         <div className="row" style={{ height: "4rem", marginTop: "1.25rem" }}>
-                            <img style={{ marginLeft: "1.25rem" }} onError={this.onError} src={url}></img>
+                            <img style={{ marginLeft: "1.25rem" }} onError={this.onError}  src={url}></img>
                             <div className="boardMessageDetails">
                                 {boardNameDiv}
                                 <div className="row" style={{ width: "100%", alignItems: "center" }}>
@@ -189,26 +189,26 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
                                     <div className="boardFollow" onClick={this.state.isFollow ? this.unfollow : this.follow} >{this.state.isFollow ? "取关" : "关注"} </div>
                                 </div>
                             </div>
-                        </div>                     
+                        </div>
                     </div>
                     </Link>
-                    <div className="bigPaper" style={{display: 'block'}}>
-                        {this.props.boardInfo.bigPaper ? <button className="fa fa-angle-double-down" style={{ float: 'right', backgroundColor: '#fff', cursor: 'pointer', border: 'none' }} type="button" onClick={() => this.setState({ isExtend: true })}>展开</button> : isMaster ? <button style={{float: 'right'}} type="button" onClick={() => this.setState({ isEditing: true, isExtend: true })}>编辑</button> : null }
+                    <div className="bigPaper" style={{ display: 'block' }}>
+                        {this.props.boardInfo.bigPaper ? <button className="fa fa-angle-double-down" style={{ float: 'right', backgroundColor: '#fff', cursor: 'pointer', border: 'none' }} type="button" onClick={() => this.setState({ isExtend: true })}>展开</button> : isMaster ? <button style={{ float: 'right' }} type="button" onClick={() => this.setState({ isEditing: true, isExtend: true })}>编辑</button> : null}
                         <div>
                             <div>版面简介：{this.props.boardInfo.description}</div>
                         </div>
                         <div>
-                            <div style={{display: 'flex', marginTop: '.5rem', fontSize:'0.75rem'}}>版主：{this.props.boardInfo.boardMasters.map(this.generateMasters)}</div>
+                            <div style={{ display: 'flex', marginTop: '.5rem', fontSize: '0.75rem' }}>版主：{this.props.boardInfo.boardMasters.map(this.generateMasters)}</div>
                         </div>
                     </div>
                 </div>
-                );
+            );
         }
-        
+
         return <div className="row" style={{ width: "100%", overflow: 'hidden', maxHeight: '50rem', transition: 'max-height 1.5s' }}>
             <div className="boardMessage">
                 <div className="row" style={{ height: "4rem", marginTop: "1.25rem" }}>
-                    <img style={{ marginLeft: "1.25rem" }}  onError={this.onError} src={url}></img>
+                    <img style={{ marginLeft: "1.25rem" }} onError={this.onError} src={url}></img>
                     <div className="boardMessageDetails">
                         <div className="row" style={{ width: "100%" }}>
                             {this.props.boardInfo.name}
@@ -222,7 +222,7 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
                     </div>
                 </div>
                 <div className="boardDescription">
-                 
+
                     <div>{this.props.boardInfo.description}</div>
                 </div>
                 <div className="boardMasters">
@@ -230,15 +230,15 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
                     <div>{this.props.boardInfo.boardMasters.map(this.generateMasters)}</div>
                 </div>
             </div>
-            <div className="bigPaper" style={{display: 'block'}}>
+            <div className="bigPaper" style={{ display: 'block' }}>
                 <button className="fa fa-angle-double-up" style={{ float: 'right', backgroundColor: '#fff', cursor: 'pointer', border: 'none' }} type="button" onClick={() => this.setState({ isExtend: false })}>收起</button>
                 <div className="bigPaperTitle">
-                    {Utility.isMaster(this.props.boardInfo.boardMasters) ? <button type="button" onClick={() => this.setState({isEditing: true})}>编辑</button> : null}
+                    {Utility.isMaster(this.props.boardInfo.boardMasters) ? <button type="button" onClick={() => this.setState({ isEditing: true })}>编辑</button> : null}
                     {this.state.isEditing ? <button type="button" onClick={() => { this.changeBigPaper(); }}>提交</button> : null}
                     <p>{this.state.info}</p>
                 </div>
-                {this.state.isEditing ? <div><textarea style={{width: '50rem', height: '15rem', resize: 'none'}} onChange={e => this.setState({ curDesc: e.target.value })}>{this.state.curDesc}</textarea></div>
-                    : <div style={{maxWidth: '53.25rem'}}><UbbContainer code={this.props.boardInfo.bigPaper} /></div>}
+                {this.state.isEditing ? <div><textarea style={{ width: '50rem', height: '15rem', resize: 'none' }} onChange={e => this.setState({ curDesc: e.target.value })}>{this.state.curDesc}</textarea></div>
+                    : <div style={{ maxWidth: '53.25rem' }}><UbbContainer code={this.props.boardInfo.bigPaper} /></div>}
             </div>
         </div>;
 
@@ -249,12 +249,12 @@ export class ListHead extends RouteComponent<{ boardId, boardInfo }, { isFollow 
 /**
  * 提供显示连续页码的交互效果。
  */
-export class ListTagAndPager extends React.Component<{ url: string, boardid: number, page: number, totalPage: number, tag }, {  }> {
+export class ListTagAndPager extends React.Component<{ url: string, boardid: number, page: number, totalPage: number, tag }, {}> {
     constructor(props, content) {
         super(props, content);
     }
 
-  
+
     generateTagButton(item) {
         const url = `/list/${this.props.boardid}/tag/tag1/${item.id}`;
         return <div><Link to={url}><button className="chooseTag">{item.name}<span className="tagNumber"></span></button></Link></div>;
@@ -267,7 +267,7 @@ export class ListTagAndPager extends React.Component<{ url: string, boardid: num
         let tag1Btn = null;
         let tag2Btn = null;
         const url = `/list/${this.props.boardid}`;
-        if (this.props.tag&&this.props.tag.length >= 1) {
+        if (this.props.tag && this.props.tag.length >= 1) {
             tag1Btn = <div style={{ maxWidth: "35rem", lineHeight: "3rem", display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginBottom: "0.5rem" }}>
                 <div className="row" style={{ display: "flex", flexWrap: "wrap", maxWidth: "35rem" }}>
                     <div><button className="chooseTag"><Link to={url}>全部</Link></button></div>
@@ -275,7 +275,7 @@ export class ListTagAndPager extends React.Component<{ url: string, boardid: num
                 </div>
             </div >;
         }
-        if (this.props.tag&&this.props.tag.length === 2) {
+        if (this.props.tag && this.props.tag.length === 2) {
             tag2Btn = <div style={{ maxWidth: "35rem", lineHeight: "3rem", display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", borderTop: 'dashed #EAEAEA thin', marginBottom: "0.5rem" }}>
                 <div className="row" style={{ display: "flex", flexWrap: "wrap", maxWidth: "35rem" }}>
                     <div><button className="chooseTag"><Link to={url}>全部</Link></button></div>
@@ -283,7 +283,7 @@ export class ListTagAndPager extends React.Component<{ url: string, boardid: num
                 </div>
             </div >;
         }
-   
+
         return <div className="row" style={{ width: '100%', marginLeft: "0.3125rem", marginRight: "0.3125rem", marginTop: '0.9375rem', justifyContent: 'space-between', alignItems: 'flex-end' }}>
             <div >
 
@@ -318,21 +318,21 @@ export class ListButtonAndAds extends React.Component<{ boardInfo, adsUrl }> {
         let tip = null;
         if (Utility.getLocalStorage("userInfo")) {
             isLogon = true;
-            if (!Utility.getLocalStorage("userInfo").isVerified) { isVerified = false; tip = <div style={{ marginLeft: "1rem",color:"red" }}>您的帐号未认证，无法发言，请先前往 <a href="https://account.cc98.org">https://account.cc98.org</a> 认证激活。</div>; }
+            if (!Utility.getLocalStorage("userInfo").isVerified) { isVerified = false; tip = <div style={{ marginLeft: "1rem", color: "red" }}>您的帐号未认证，无法发言，请先前往 <a href="https://account.cc98.org">https://account.cc98.org</a> 认证激活。</div>; }
             else isVerified = true;
             if (Utility.getLocalStorage("userInfo").lockState !== 0) { isLocked = true; tip = <div style={{ marginLeft: "1rem", color: "red" }}>您被全站禁言。</div> }
             else isLocked = false;
         }
         else {
 
-            tip = <div style={{ marginLeft: "1rem", color: "red"  }}>您还未登录，不能发帖，请先登录</div>;
+            tip = <div style={{ marginLeft: "1rem", color: "red" }}>您还未登录，不能发帖，请先登录</div>;
         }
-        
-        
+
+
         const createTopicUrl = `/editor/postTopic/${this.props.boardInfo.id}`;
-        if (isLocked || !isLogOn ||! isVerified)
-            sendInfo = <div style={{display:"flex", alignItems:"center"}}><button style={{border:"none"}} className="button bgcolor" onClick={this.clickListener}>发主题</button>{tip}</div>;
-        else           
+        if (isLocked || !isLogOn || !isVerified)
+            sendInfo = <div style={{ display: "flex", alignItems: "center" }}><button style={{ border: "none" }} className="button bgcolor" onClick={this.clickListener}>发主题</button>{tip}</div>;
+        else
             sendInfo = <Link className="button bgcolor" to={createTopicUrl}>发主题</Link>;
         return <div className="row" style={{ width: "100%", height: "6.25rem", alignItems: "flex-end", justifyContent: "space-between", marginTop: "1rem" }}>
             {sendInfo}
@@ -459,6 +459,64 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         const page = Utility.getListTotalPage(count);
         return page;
     }
+   
+    getCheckValue() {
+       function getCaption(obj) {
+            var index = obj.lastIndexOf("_");
+            obj = obj.substring(index + 1, obj.length);
+            return obj;
+        }
+        let targets = [];
+        $(".opTitleCheckboxValue").each(function () {
+            if ($(this).is(":checked")) {
+                targets.push("id="+getCaption( $(this).attr('id')));
+            }
+        });
+        let str = targets.join("&");
+        console.log(str);
+        return str;
+    }
+   
+    lockUI() {
+        $("#deleteUI").css("display", "none");
+        $("#lockUI").css("display", "");
+        $(".opTitleCheckbox").css("display", "flex");
+    }
+    deleteUI() {
+        $("#lockUI").css("display", "none");
+        $("#deleteUI").css("display", "");
+        $(".opTitleCheckbox").css("display", "flex");
+    }
+    manageUI() {
+        $("#manageUI").css("display", "");
+    }
+    async lock() {
+        let days = $("#opDays").val();
+        let reason = $("#opReason").val();
+        if (reason == "自定义") {
+            reason = $("#hideReason").val();
+        }
+        let target = this.getCheckValue();
+        console.log("day=" + days);
+        console.log("reason=" + reason);
+        console.log("target = " + target);
+        await Utility.mutliLock(days, reason, target);
+    }
+    async delete() {
+        let reason = $("#opReason").val();
+        if (reason == "自定义") {
+            reason = $("#hideReason").val();
+        }
+        console.log("reason=" + reason);
+    }
+    changeReason() {
+        let value = $("#opReason").val();
+        if (value == "自定义") {
+            $("#hideReason").css("display", "");
+        } else {
+            $("#hideReason").css("display", "none");
+        }
+    }
     render() {
 
         const curPage = this.match.params.page ? parseInt(this.match.params.page) : 1;
@@ -472,26 +530,43 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
         const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
         const recordTopicsUrl = `/list/${this.match.params.boardId}/record/`;
-        let manageUI = <div>
-            <FormGroup>
-            <ControlLabel>处理理由</ControlLabel>
-            <FormControl componentClass="select" placeholder="select">
-                <option value="select">重复发帖</option>
-                <option value="other">管理要求</option>
-                <option value="other">已解决</option>
-                <option value="other">内容不符</option>
-                <option value="other">违反版规</option>
-                <option value="other">自定义</option>
-            </FormControl>
-            <ControlLabel>下沉天数</ControlLabel>
-            <FormControl componentClass="select" placeholder="select">
-                <option value="select">7</option>
-                <option value="other">30</option>
-                <option value="other">98</option>
-                <option value="other">1000</option>
-                </FormControl>
-            </FormGroup>
+        let reasonUI = <div ><ControlLabel>处理理由</ControlLabel>
+            <select id="opReason" onChange={this.changeReason.bind(this)} className="react-bootstrap-select" >
+
+                <option className="react-bootstrap-option" value="重复发帖">重复发帖</option>
+                <option className="react-bootstrap-option" value="管理要求">管理要求</option>
+                <option className="react-bootstrap-option" value="已解决">已解决</option>
+                <option className="react-bootstrap-option" value="内容不符">内容不符</option>
+                <option className="react-bootstrap-option" value="违反版规">违反版规</option>
+                <option className="react-bootstrap-option" value="自定义">自定义</option>
+            </select>
+            <input id="hideReason" className="react-bootstrap-text" style={{ display: "none" }} /></div>;
+        let dayUI = <div > <ControlLabel>下沉天数</ControlLabel>
+            <select id="opDays" className="react-bootstrap-select" >
+                <option value="7">7</option>
+                <option value="30">30</option>
+                <option value="98">98</option>
+                <option value="1000">1000</option>
+            </select></div>;
+        let lockUI = <div id="lockUI" style={{ display: "none" }}>
+            {reasonUI}
+            {dayUI}
+            <button type="button" id="mutlilock-btn" onClick={this.lock.bind(this)} className="react-bootstrap-button">确认</button>
+            <div id="mutlioptip"></div>
         </div>;
+        let deleteUI = <div id="deleteUI" style={{ display: "none" }}>
+            {reasonUI}
+            <button type="button" id="mutlidelete-btn" onClick={this.delete.bind(this)} className="react-bootstrap-button">确认</button>
+            <div id="mutlioptip"></div>
+        </div>
+        let manageUI = <div id="manageUI" style={{ display: "none" }}>
+            <div onClick={this.lockUI.bind(this)} className="react-bootstrap-button">批量锁沉</div>
+            <div onClick={this.deleteUI.bind(this)} className="react-bootstrap-button">批量删除</div>
+            {lockUI}
+            {deleteUI}
+
+        </div>;
+
         return <div className="listContent ">
             <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} tag={this.state.tags} />
             <div className="column tagColumn">
@@ -509,32 +584,33 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
                 {topTopics}
                 <div>{topics}</div>
             </div>
-            <div className="listContentBottom"><Pager page={curPage} totalPage={this.state.totalPage} url={normalTopicsUrl} /><div className="boardRecordBtn">版面管理</div>
+            <div className="listContentBottom"><Pager page={curPage} totalPage={this.state.totalPage} url={normalTopicsUrl} />
                 <Link to={recordTopicsUrl}><div className="boardRecordBtn">查看版面事件</div></Link>
             </div>
+            <div onClick={this.manageUI.bind(this)} className="react-bootstrap-button">版面管理</div>
             {manageUI}
-            <Button  bsStyle="success">success</Button>
+
         </div>;
 
     }
 }
-export class ListTagContent extends RouteComponent<{}, { items, totalPage: number, boardInfo, tags, fetchState ,layer}, { tagId: number, page, boardId: number }> {
+export class ListTagContent extends RouteComponent<{}, { items, totalPage: number, boardInfo, tags, fetchState, layer }, { tagId: number, page, boardId: number }> {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            items: [], totalPage: 0, boardInfo: { masters: [], topicCount: 1 }, fetchState: "ok", tags: [],layer:1
+            items: [], totalPage: 0, boardInfo: { masters: [], topicCount: 1 }, fetchState: "ok", tags: [], layer: 1
         };
     }
     async componentDidMount() {
         let page = this.match.params.page;
         if (!page) page = 1;
         const boardInfo = await Utility.getBoardInfo(this.match.params.boardId);
-        const tags = await Utility.getBoardTag(this.match.params.boardId);      
+        const tags = await Utility.getBoardTag(this.match.params.boardId);
         const layer = Utility.getTagLayer(this.match.params.tagId, tags);
-        const data = await Utility.getTopicByOneTag(this.match.params.tagId, this.match.params.boardId, layer,page);
+        const data = await Utility.getTopicByOneTag(this.match.params.tagId, this.match.params.boardId, layer, page);
         const totalPage = this.getTotalListPage(data.count);
 
-        this.setState({ items: data.topics, totalPage: totalPage, boardInfo: boardInfo, fetchState: data, tags: tags,layer:layer });
+        this.setState({ items: data.topics, totalPage: totalPage, boardInfo: boardInfo, fetchState: data, tags: tags, layer: layer });
     }
     private convertTopicToElement(item) {
 
@@ -571,7 +647,7 @@ export class ListTagContent extends RouteComponent<{}, { items, totalPage: numbe
         const data = await Utility.getTopicByOneTag(newProps.match.params.tagId, newProps.match.params.boardId, layer, page);
         const totalPage = this.getTotalListPage(data.count);
 
-        this.setState({ items: data.topics, totalPage: totalPage, boardInfo: boardInfo, fetchState: data, tags: tags ,layer:layer});
+        this.setState({ items: data.topics, totalPage: totalPage, boardInfo: boardInfo, fetchState: data, tags: tags, layer: layer });
     }
 
     getTotalListPage(count) {
@@ -613,7 +689,7 @@ export class ListTagContent extends RouteComponent<{}, { items, totalPage: numbe
 
     }
 }
-export class ListTagsContent extends RouteComponent<{}, { items, totalPage: number, boardInfo, tags, fetchState }, { tag1Id: number,tag2Id:number, page, boardId: number }> {
+export class ListTagsContent extends RouteComponent<{}, { items, totalPage: number, boardInfo, tags, fetchState }, { tag1Id: number, tag2Id: number, page, boardId: number }> {
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -661,7 +737,7 @@ export class ListTagsContent extends RouteComponent<{}, { items, totalPage: numb
         else { page = parseInt(p); }
         const boardInfo = await Utility.getBoardInfo(newProps.match.params.boardId);
         const tags = await Utility.getBoardTag(newProps.match.params.boardId);
-        const data = await Utility.getTopicByTwoTags(newProps.match.params.tag1Id, newProps.match.params.tag2Id, newProps.match.params.boardId,page);
+        const data = await Utility.getTopicByTwoTags(newProps.match.params.tag1Id, newProps.match.params.tag2Id, newProps.match.params.boardId, page);
         const totalPage = this.getTotalListPage(data.count);
 
         this.setState({ items: data.topics, totalPage: totalPage, boardInfo: boardInfo, fetchState: data, tags: tags });
@@ -728,7 +804,7 @@ export class BoardRecord extends RouteComponent<{}, { boardId: number, totalPage
         }
         let boardId = this.match.params.boardId;
         let data = await Utility.getBoardRecord(boardId, (curPage - 1) * 20, 20);
-        let totalPage = parseInt(((data.count-0.5) / 20 + 1).toString());
+        let totalPage = parseInt(((data.count - 0.5) / 20 + 1).toString());
         let items = data.boardEvents;
         let tags = await Utility.getBoardTag(this.match.params.boardId);
         this.setState({ boardId: boardId, totalPage, curPage: curPage, tags: tags, data: items });
@@ -739,7 +815,7 @@ export class BoardRecord extends RouteComponent<{}, { boardId: number, totalPage
         let curPage = this.match.params.page;
         if (!curPage) curPage = 1;
         let data = await Utility.getBoardRecord(boardId, (curPage - 1) * 20, 20);
-        let totalPage = parseInt(((data.count-0.5) / 20 + 1).toString());
+        let totalPage = parseInt(((data.count - 0.5) / 20 + 1).toString());
         let items = data.boardEvents;
         let tags = await Utility.getBoardTag(this.match.params.boardId);
         this.setState({ boardId: boardId, totalPage, curPage: curPage, tags: tags, data: items });
@@ -758,7 +834,7 @@ export class BoardRecord extends RouteComponent<{}, { boardId: number, totalPage
         />;
     }
     render() {
-        const curPage = this.match.params.page ? parseInt(this.match.params.page) : 1; 
+        const curPage = this.match.params.page ? parseInt(this.match.params.page) : 1;
         console.log("现在的页码是", curPage);
         let topics = this.state.data.map(this.convertRecordToElement);
         let boardRecordUrl = `/list/${this.match.params.boardId}/record/`;
@@ -767,7 +843,7 @@ export class BoardRecord extends RouteComponent<{}, { boardId: number, totalPage
             <div className="column tagColumn">
                 <div className="row board-topBar">
                     <div className="row" style={{ alignItems: 'center' }}>
-                        <div className="listContentTag" style={{ alignItems: 'center', width: "5rem", textAlign:"center" }}><span>对象</span></div>
+                        <div className="listContentTag" style={{ alignItems: 'center', width: "5rem", textAlign: "center" }}><span>对象</span></div>
                         <div className="listContentTag" style={{ alignItems: 'center', width: "46rem", textAlign: "center" }}><span>内容</span></div>
                         <div className="listContentTag" style={{ alignItems: 'center', width: "6rem", textAlign: "center" }}><span>时间</span></div>
                         <div className="listContentTag" style={{ alignItems: 'center', width: "11rem", textAlign: "center" }}><span>操作人</span></div>
@@ -912,7 +988,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
         if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
             topTopics = <div><ListTopContent boardId={this.match.params.boardId} /></div>;
         }
-  
+
         const topics = this.state.items.map(this.convertTopicToElement);
         const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
@@ -993,7 +1069,7 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
         }
     }
     render() {
-        if (typeof this.props.replyCount === "number" ) {
+        if (typeof this.props.replyCount === "number") {
             let colorId;
             if (this.props.topState === 0) {
                 colorId = "changeColor";
@@ -1070,7 +1146,9 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
             let checkbox = null;
             if (this.props.topState === 0) {
                 let tid = `topic_${this.props.id}`;
-                checkbox = <div id={tid} style={{ display: "flex", alignContent: "center" }}><input type="checkbox" /></div>
+                checkbox = <div className="opTitleCheckbox" style={{
+                    alignContent: "center", display: "none"
+                }}><input id={tid} className="opTitleCheckboxValue" type="checkbox" /></div>
             }
             return <div style={{ display: "flex" }} id={colorId}>
                 {checkbox}
@@ -1078,7 +1156,7 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
                     <div className="rofw topicInList" id={topicId}>
                         <div className="listTitleAndPager">
                             <div className="row listTitleAndIcon" >
-                               
+
                                 {icon}
                                 <div className="listTitle" id={titleId} style={{ marginLeft: '1rem', color: c, fontWeight: b, fontStyle: i }}> {this.props.title}</div>
                             </div>

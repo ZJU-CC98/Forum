@@ -294,7 +294,7 @@ export class PostManagement extends React.Component<Props, {wealth: number, pres
 
                 <div className="manageObject">财富值</div>
 
-                <input type="text" value={this.state.wealth} onChange={this.wealthInput} />
+                <input className="react-bootstrap-smalltext" type="text" value={this.state.wealth} onChange={this.wealthInput} />
 
             </div>
             <div className="row" style={{color:"white"}}>您今天在{this.props.boardName}已经发了{this.props.d_wealth}财富值，最多可发{m_wealth}</div>
@@ -303,7 +303,7 @@ export class PostManagement extends React.Component<Props, {wealth: number, pres
 
                 <div className="manageObject">威望</div>
 
-                <input type="text" value={this.state.prestige} onChange={this.prestigeInput} />
+                <input type="text" className="react-bootstrap-smalltext" value={this.state.prestige} onChange={this.prestigeInput} />
 
             </div>
 
@@ -334,7 +334,7 @@ export class PostManagement extends React.Component<Props, {wealth: number, pres
                     <div className="row">
                         <input type="radio" name="reason" value="自定义" /><div>自定义</div>
                     </div>
-                    <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+                    <input type="text" className="react-bootstrap-smalltext" value={this.state.reason} onChange={this.reasonInput} />
                 </div>
                 <div>{this.state.tips}</div>
 
@@ -347,14 +347,14 @@ export class PostManagement extends React.Component<Props, {wealth: number, pres
 
                 <div className="manageObject">扣财富值</div>
 
-                <input type="text" value={this.state.wealth} onChange={this.wealthInput} />
+                <input type="text" className="react-bootstrap-smalltext" value={this.state.wealth} onChange={this.wealthInput} />
 
             </div>
             <div className="row manageOperation managePrestige">
 
                 <div className="manageObject">扣威望</div>
 
-                <input type="text" value={this.state.prestige} onChange={this.prestigeInput} />
+                <input type="text" className="react-bootstrap-smalltext" value={this.state.prestige} onChange={this.prestigeInput} />
 
             </div>
 
@@ -362,7 +362,7 @@ export class PostManagement extends React.Component<Props, {wealth: number, pres
 
                 <div className="manageObject">禁止发言(天)</div>
 
-                <input type="text" value={this.state.tpdays} onChange={this.tpdaysInput} />
+                <input type="text" className="react-bootstrap-smalltext" value={this.state.tpdays} onChange={this.tpdaysInput} />
 
             </div>
 
@@ -394,7 +394,7 @@ export class PostManagement extends React.Component<Props, {wealth: number, pres
                     <div className="row">
                         <input type="radio" name="reason" value="自定义" /><div>自定义</div>
                     </div>
-                    <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+                    <input type="text" className="react-bootstrap-smalltext" value={this.state.reason} onChange={this.reasonInput} />
                 </div>
                 <div>{this.state.tips}</div>
 
@@ -405,7 +405,7 @@ export class PostManagement extends React.Component<Props, {wealth: number, pres
 
             <div className="manageObject">删除原因</div>
 
-            <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+            <input type="text" className="react-bootstrap-smalltext" value={this.state.reason} onChange={this.reasonInput} />
 
         </div>;
         if (this.props.floor === 1) deleteAllow = <div>删除主题帖请在底部进行操作</div>;

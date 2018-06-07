@@ -3,7 +3,6 @@ import * as State from './States/AppState'
 import store from './Store';
 import * as UserCenterActions from './Actions/UserCenter';
 import * as ErrorActions from './Actions/Error';
-
 import { TopicTitleAndContent } from './Components/Board/Board'
 import { Constants } from './Components/Constant';
 
@@ -3104,4 +3103,25 @@ export async function getMonthlyHotTopic(type: string) {
         }
     }
     return data;
+}
+
+export async function mutliLock(day, reason, target) {
+    const url = `/topic/multi-lock?${target}`;
+    const headers = await formAuthorizeHeader();
+    headers.append("Content-Type","application/json");
+    const body = JSON.stringify(
+        {
+            reason: reason,
+            value:day
+        }
+    )
+    $("#mutlilock-btn").attr("disabled", "disabled");
+    const response = await cc98Fetch(url, { method: "PUT", headers, body });
+    if (response.status == 200) {
+        $("#mutlilock-btn").removeAttr("disabled");
+        $("#mutlioptip").text("操作成功");
+    } else {
+        $("#mutlilock-btn").removeAttr("disabled");
+        $("#mutlioptip").text("操作失败");
+    }
 }

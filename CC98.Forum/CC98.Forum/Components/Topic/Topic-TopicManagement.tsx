@@ -201,7 +201,7 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
         const normalInfo = <div className="column">
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                 <div >原因</div>
-                <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+                <input className="react-bootstrap-smalltext" type="text" value={this.state.reason} onChange={this.reasonInput} />
 
             </div>
             <div style={{marginTop:"2rem"}}>{this.state.tips}</div>
@@ -210,11 +210,11 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
         const daysInfo = <div className="column">
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                 <div >(下沉)天数</div>
-                <input type="text" value={this.state.days} onChange={this.daysInput} />
+                <input className="react-bootstrap-smalltext" type="text" value={this.state.days} onChange={this.daysInput} />
             </div>
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                 <div >原因</div>
-                <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+                <input className="react-bootstrap-smalltext" type="text" value={this.state.reason} onChange={this.reasonInput} />
 
             </div>
             <div style={{ marginTop: "2rem" }}>{this.state.tips}</div>
@@ -222,11 +222,11 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
         const boardInfo = <div className="column">
             <div  className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                 <div >版面</div>
-                <input type="text" value={this.state.board} onChange={this.boardInput} />
+                <input className="react-bootstrap-smalltext" type="text" value={this.state.board} onChange={this.boardInput} />
             </div>
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                 <div >原因</div>
-                <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+                <input className="react-bootstrap-smalltext" type="text" value={this.state.reason} onChange={this.reasonInput} />
 
             </div>
             <div style={{ marginTop: "2rem" }}>{this.state.tips}</div>
@@ -246,11 +246,11 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
             </div>
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
             <div >天数</div>
-                <input type="text" value={this.state.days} onChange={this.daysInput} />
+                <input className="react-bootstrap-smalltext" type="text" value={this.state.days} onChange={this.daysInput} />
             </div>
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
                 <div >原因</div>
-                <input type="text" value={this.state.reason} onChange={this.reasonInput} />
+                <input className="react-bootstrap-smalltext" type="text" value={this.state.reason} onChange={this.reasonInput} />
 
             </div>
             <div style={{ marginTop: "2rem" }}>{this.state.tips}</div>
