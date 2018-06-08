@@ -500,22 +500,31 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         console.log("day=" + days);
         console.log("reason=" + reason);
         console.log("target = " + target);
-        await Utility.mutliLock(days, reason, target);
+        var status = await Utility.mutliLock(days, reason, target);
+        if(status==200)
+        document.location.href = `/list/${this.match.params.boardId}`;
     }
     async delete() {
         let reason = $("#opReason").val();
         if (reason == "自定义") {
-            reason = $("#hideReason").val();
+            reason = $("#hideReason1").val();
         }
         console.log("reason=" + reason);
+        let target = this.getCheckValue();
+        var status = await Utility.mutliDelete(reason, target);
+        if(status==200)
+        document.location.href = `/list/${this.match.params.boardId}`;
     }
     changeReason() {
         let value = $("#opReason").val();
         if (value == "自定义") {
             $("#hideReason").css("display", "");
+            $("#hideReason1").css("display", "");
         } else {
             $("#hideReason").css("display", "none");
+            $("#hideReason1").css("display", "");
         }
+
     }
     render() {
 
@@ -541,6 +550,17 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
                 <option className="react-bootstrap-option" value="自定义">自定义</option>
             </select>
             <input id="hideReason" className="react-bootstrap-text" style={{ display: "none" }} /></div>;
+        let deleteReasonUI = <div ><ControlLabel>处理理由</ControlLabel>
+            <select id="opReason" onChange={this.changeReason.bind(this)} className="react-bootstrap-select" >
+
+                <option className="react-bootstrap-option" value="重复发帖">重复发帖</option>
+                <option className="react-bootstrap-option" value="管理要求">管理要求</option>
+                <option className="react-bootstrap-option" value="已解决">已解决</option>
+                <option className="react-bootstrap-option" value="内容不符">内容不符</option>
+                <option className="react-bootstrap-option" value="违反版规">违反版规</option>
+                <option className="react-bootstrap-option" value="自定义">自定义</option>
+            </select>
+            <input id="hideReason1" className="react-bootstrap-text" style={{ display: "none" }} /></div>;
         let dayUI = <div > <ControlLabel>下沉天数</ControlLabel>
             <select id="opDays" className="react-bootstrap-select" >
                 <option value="7">7</option>
@@ -555,9 +575,9 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
             <div id="mutlioptip"></div>
         </div>;
         let deleteUI = <div id="deleteUI" style={{ display: "none" }}>
-            {reasonUI}
+            {deleteReasonUI}
             <button type="button" id="mutlidelete-btn" onClick={this.delete.bind(this)} className="react-bootstrap-button">确认</button>
-            <div id="mutlioptip"></div>
+            <div id="mutliopdtip"></div>
         </div>
         let manageUI = <div id="manageUI" style={{ display: "none" }}>
             <div onClick={this.lockUI.bind(this)} className="react-bootstrap-button">批量锁沉</div>
@@ -566,7 +586,10 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
             {deleteUI}
 
         </div>;
-
+        let manageBtn = null;
+        if (Utility.isMaster(this.state.boardInfo.masters)) {
+            manageBtn = <div onClick={this.manageUI.bind(this)} className="react-bootstrap-button" style={{ height: "1.8rem", lineHeight: "1.8rem", padding:0 }}>版面管理</div>;
+        }
         return <div className="listContent ">
             <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} tag={this.state.tags} />
             <div className="column tagColumn">
@@ -584,10 +607,12 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
                 {topTopics}
                 <div>{topics}</div>
             </div>
-            <div className="listContentBottom"><Pager page={curPage} totalPage={this.state.totalPage} url={normalTopicsUrl} />
+            <div className="row">
+                <div className="listContentBottom" style={{ flexGrow:1 }}><Pager page={curPage} totalPage={this.state.totalPage} url={normalTopicsUrl} />
                 <Link to={recordTopicsUrl}><div className="boardRecordBtn">查看版面事件</div></Link>
             </div>
-            <div onClick={this.manageUI.bind(this)} className="react-bootstrap-button">版面管理</div>
+                {manageBtn}
+                </div>
             {manageUI}
 
         </div>;
@@ -1215,6 +1240,8 @@ export class BoardRecordContent extends React.Component<BoardEvent> {
         let targetUserName;
         if (this.props.targetUserName) {
             targetUserName = <a href={`/user/name/${this.props.targetUserName}`} target="_blank">{this.props.targetUserName}</a>;
+        } else if (!this.props.targetUserName && this.props.boardId!=182) {
+            targetUserName = "不适用";
         }
         else {
             targetUserName = "匿名用户";

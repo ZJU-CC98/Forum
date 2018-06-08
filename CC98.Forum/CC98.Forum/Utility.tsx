@@ -3124,4 +3124,26 @@ export async function mutliLock(day, reason, target) {
         $("#mutlilock-btn").removeAttr("disabled");
         $("#mutlioptip").text("操作失败");
     }
+    return response.status;
+}
+
+export async function mutliDelete(reason, target) {
+    const url = `/topic/multi-delete?${target}`;
+    const headers = await formAuthorizeHeader();
+    headers.append("Content-Type", "application/json");
+    const body = JSON.stringify(
+        {
+            reason: reason,
+        }
+    )
+    $("#mutlidelete-btn").attr("disabled", "disabled");
+    const response = await cc98Fetch(url, { method: "PUT", headers, body });
+    if (response.status == 200) {
+        $("#mutlidelete-btn").removeAttr("disabled");
+        $("#mutliopdtip").text("操作成功");
+    } else {
+        $("#mutlidelete-btn").removeAttr("disabled");
+        $("#mutliopdtip").text("操作失败");
+    }
+    return response.status;
 }
