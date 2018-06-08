@@ -2,7 +2,6 @@
 import { HotTopic } from '../../Props/AppProps'
 import * as State from '../../States/AppState'
 import * as Utility from '../../Utility';
-import { Button, FormControl, ControlLabel, FormGroup } from 'react-bootstrap';
 import * as $ from 'jquery'
 import { UbbContainer } from '.././UbbContainer';
 import { match } from 'react-router';
@@ -519,10 +518,21 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         let value = $("#opReason").val();
         if (value == "自定义") {
             $("#hideReason").css("display", "");
-            $("#hideReason1").css("display", "");
+
         } else {
             $("#hideReason").css("display", "none");
+
+        }
+
+    }
+    changeDeleteReason() {
+        let value = $("#opReason").val();
+        if (value == "自定义") {
+     
             $("#hideReason1").css("display", "");
+        } else {
+  
+            $("#hideReason1").css("display", "none");
         }
 
     }
@@ -551,7 +561,7 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
             </select>
             <input id="hideReason" className="react-bootstrap-text" style={{ display: "none" }} /></div>;
         let deleteReasonUI = <div ><ControlLabel>处理理由</ControlLabel>
-            <select id="opReason" onChange={this.changeReason.bind(this)} className="react-bootstrap-select" >
+            <select id="opReason" onChange={this.changeDeleteReason.bind(this)} className="react-bootstrap-select" >
 
                 <option className="react-bootstrap-option" value="重复发帖">重复发帖</option>
                 <option className="react-bootstrap-option" value="管理要求">管理要求</option>
@@ -588,7 +598,7 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         </div>;
         let manageBtn = null;
         if (Utility.isMaster(this.state.boardInfo.masters)) {
-            manageBtn = <div onClick={this.manageUI.bind(this)} className="react-bootstrap-button" style={{ height: "1.8rem", lineHeight: "1.8rem", padding:0 }}>版面管理</div>;
+            manageBtn = <div onClick={this.manageUI.bind(this)} className="react-bootstrap-button" style={{ height: "1.8rem", lineHeight: "1.8rem", padding: 0, borderRadius: 0, marginLeft: "3rem", color: "#fff", backgroundColor:"#5198d8" }}>批量管理</div>;
         }
         return <div className="listContent ">
             <ListTagAndPager page={curPage} totalPage={this.state.totalPage} boardid={this.match.params.boardId} url={normalTopicsUrl} tag={this.state.tags} />
