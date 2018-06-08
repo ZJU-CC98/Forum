@@ -965,4 +965,6 @@
     <Exec Command="node &quot;$(ProjectDir)node_modules\webpack\bin\webpack.js&quot; --config &quot;$(ProjectDir)webpack.config.$(ConfigurationName).js&quot;" />
   </Target>
 
+  <ProjectExtensions><VisualStudio><UserProperties package_1json__JSONSchema="http://json.schemastore.org/project-1.0.0-beta3" /></VisualStudio></ProjectExtensions>
+
 </Project>
