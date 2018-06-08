@@ -1,1 +1,1 @@
-export * from './UbbEditor/UbbEditor';
+export * from './UbbEditorOld/UbbEditor';

@@ -32,6 +32,7 @@ import { MonthlyHotTopic } from './Topic/Topic-Hot-Monthly';
 import { WeeklyHotTopic } from './Topic/Topic-Hot-Weekly';
 import { HistoryHotTopic } from './Topic/Topic-Hot-History';
 import ErrorControl from './ErrorControl';
+import { NewUbbEditor } from './UbbEditor/index'
 
 import { Constants } from './Constant';
 import * as Utility from '../Utility';

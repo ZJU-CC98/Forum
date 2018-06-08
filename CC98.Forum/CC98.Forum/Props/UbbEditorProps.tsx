@@ -1,4 +1,4 @@
-import Option from '../Components/UbbEditor/Option';
+import Option from '../Components/UbbEditorOld/Option';
 
 /**
  * UBB编辑器组件属性

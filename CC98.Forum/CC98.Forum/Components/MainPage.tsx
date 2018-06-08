@@ -17,7 +17,7 @@ export class AnnouncementComponent extends React.Component<{ data }, {}> {
                 <div className="mainPageTitleRow" style={{ width: '100%' }}>
                     <i className="fa fa-volume-up"></i>
                     <div style={{ flexGrow: 1 }} className="mainPageTitleText">全站公告</div>
-                    <CountDown endDate={new Date('05/26/2018 05:30 PM')} />
+                    {/*<CountDown endDate={new Date('05/26/2018 05:30 PM')} />*/}
                 </div>
             </div>
             <div className="announcementContent"><UbbContainer code={this.props.data} /></div>
