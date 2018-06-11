@@ -598,7 +598,10 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
 
         </div>;
         let manageBtn = null;
-        if (Utility.isMaster(this.state.boardInfo.masters)) {
+        console.log("masters");
+        console.log(this.state.boardInfo);
+        console.log(this.state.boardInfo.boardMasters);
+        if (Utility.isMaster(this.state.boardInfo.boardMasters)) {
             manageBtn = <div onClick={this.manageUI.bind(this)} className="react-bootstrap-button" style={{ height: "1.8rem", lineHeight: "1.8rem", padding: 0, borderRadius: 0, marginLeft: "3rem", color: "#fff", backgroundColor:"#5198d8" }}>批量管理</div>;
         }
         return <div className="listContent ">
