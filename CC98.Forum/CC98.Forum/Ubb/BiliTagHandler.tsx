@@ -16,17 +16,17 @@ export class BiliTagHandler extends Ubb.TextTagHandler {
 
 		const style: React.CSSProperties = {
 			border: 'none'
-        };
-        
-        const props = {
-            border: "0",
-            frameborder: "no",
-            framespacing: "0",
-            allowfullscreen: "true"
-        } as any
+		};
+
+		const props = {
+			border: "0",
+			frameborder: "no",
+			framespacing: "0",
+			allowfullscreen: "true"
+		} as any;
 
 		return <div>
-			<iframe {...props} src={`https://player.bilibili.com/player.html?aid=${innerContent}&page=${partNumber}`} style={style} width="640" height="480" scrolling="no">
+			<iframe {...props} src={`https://player.bilibili.com/player.html?aid=${innerContent}&page=${partNumber}`} allowfullscreen="allowfullscreen" style={style} width="640" height="480" scrolling="no">
 			</iframe>
 		</div >;
 	}
