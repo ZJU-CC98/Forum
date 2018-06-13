@@ -53,6 +53,8 @@ export class Buttons extends React.PureComponent<Props> {
                         >{tagDescription}</button>
                     }
                 })}
+                <button className="fa-undo" type="button" title="撤销" onClick={this.props.undo}></button>
+                <button className="fa-repeat" type="button" title="重做" onClick={this.props.redo}></button>
             </div>
         )
     }

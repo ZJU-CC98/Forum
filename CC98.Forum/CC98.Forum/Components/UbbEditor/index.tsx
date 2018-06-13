@@ -14,6 +14,7 @@ interface State {
     selectionStart: number
     selectionEnd: number
     extendTagName: string
+    message: string
 }
 
 export class NewUbbEditor extends React.PureComponent<null, State> {
@@ -23,12 +24,14 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
             value: '',
             selectionStart: 0,
             selectionEnd: 0,
-            extendTagName: ''
+            extendTagName: '',
+            message: ''
         }
 
         this.onChange = this.onChange.bind(this)
         this.changeValue = this.changeValue.bind(this)
         this.changeExtend = this.changeExtend.bind(this)
+        this.message = this.message.bind(this)
     }
 
     private customTextArea: Components.CustomTextArea
@@ -54,6 +57,16 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
     private selectTextArea() {
         this.customTextArea.textarea.focus()
         this.customTextArea.textarea.setSelectionRange(this.state.selectionStart, this.state.selectionEnd)
+    }
+
+    message(message: string) {
+        this.setState({
+            message
+        }, function () {
+            setTimeout(() => {
+                this.setState({ message: '' })
+            }, 2000)
+        })
     }
 
     componentDidMount() {
@@ -85,6 +98,7 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
                         this.setState({ selectionStart, selectionEnd })
                     }}
                 />
+                <Components.Message message="" />
             </div>
         )
     }

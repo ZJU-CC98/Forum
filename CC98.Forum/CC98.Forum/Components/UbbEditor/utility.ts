@@ -1,4 +1,5 @@
 import * as type from './typedefinition'
+import * as Utility from '../../Utility'
 export const config = require('./config.json') as (
     type.IUbbTextSegmentConfig | 
     type.IUbbExtendSegmentConfig |
@@ -70,4 +71,22 @@ export function createColorPicker(handler: (color) => void) {
         //点击后隐藏
         hideAfterPaletteSelect: true
     })
+}
+
+export async function uploadFiles(files: FileList, shouldCompassImage?: boolean) {
+    const url = !shouldCompassImage ? '/file?compressImage=false' : '/file';
+    const myHeaders = await Utility.formAuthorizeHeader()
+    let formdata = new FormData()
+    formdata.append('contentType', "multipart/form-data")
+    let res = await Utility.cc98Fetch(url, {
+        method: 'POST',
+        headers: myHeaders,
+        body: formdata
+    })
+    let data: string[] = await res.json();
+    if (res.ok) {
+        return data
+    } else {
+        throw new Error('上传失败')
+    }
 }
