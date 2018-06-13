@@ -254,7 +254,10 @@ export class ListTagAndPager extends React.Component<{ url: string, boardid: num
         super(props, content);
     }
 
-
+    componentWillReceiveProps(newProps) {
+        console.log("new");
+        console.log(newProps.totalPage);
+    }
     generateTagButton(item) {
         const url = `/list/${this.props.boardid}/tag/tag1/${item.id}`;
         return <div><Link to={url}><button className="chooseTag">{item.name}<span className="tagNumber"></span></button></Link></div>;
@@ -264,6 +267,8 @@ export class ListTagAndPager extends React.Component<{ url: string, boardid: num
         return <div><Link to={url}><button className="chooseTag">{item.name}<span className="tagNumber"></span></button></Link></div>;
     }
     render() {
+        console.log("totalpage");
+        console.log(this.props.totalPage);
         let tag1Btn = null;
         let tag2Btn = null;
         const url = `/list/${this.props.boardid}`;
@@ -417,6 +422,9 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         const boardInfo = await Utility.getBoardInfo(this.match.params.boardId);
         const data = await Utility.getBoardTopicAsync(page, this.match.params.boardId, boardInfo.topicCount);
         const totalPage = this.getTotalListPage(boardInfo.topicCount);
+        console.log("-------");
+        console.log(boardInfo);
+        console.log(totalPage);
         const tags = await Utility.getBoardTag(this.match.params.boardId);
         this.setState({ items: data, totalPage: totalPage, boardInfo: boardInfo, fetchState: data, tags: tags });
     }
@@ -450,8 +458,10 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         // 转换类型
         else { page = parseInt(p); }
         const boardInfo = await Utility.getBoardInfo(this.match.params.boardId);
-        const totalPage = this.getTotalListPage(this.state.boardInfo.topicCount);
+        const totalPage = this.getTotalListPage(boardInfo.topicCount);
         const data = await Utility.getBoardTopicAsync(page, newProps.match.params.boardId, boardInfo.topicCount);
+        console.log("willrecieve");
+        console.log(totalPage);
         this.setState({ items: data, totalPage: totalPage });
     }
 
@@ -538,7 +548,8 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
 
     }
     render() {
-
+        console.log("state");
+        console.log(this.state.totalPage);
         const curPage = this.match.params.page ? parseInt(this.match.params.page) : 1;
         let topTopics = null;
         if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
