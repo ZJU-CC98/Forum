@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@aspnet/signalr@^1.0.0":
+  version "1.0.0"
+  resolved "http://registry.npm.taobao.org/@aspnet/signalr/download/@aspnet/signalr-1.0.0.tgz#26b10a32014a65c540cc5053cffa883c320788ce"
+
 "@sindresorhus/is@^0.7.0":
   version "0.7.0"
   resolved "http://registry.npm.taobao.org/@sindresorhus/is/download/@sindresorhus/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
