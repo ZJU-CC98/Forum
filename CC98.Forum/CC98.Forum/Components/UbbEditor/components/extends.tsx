@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as utility from '../utility'
-import * as type from '../IUbbSegmentConfig'
+import * as type from '../IConfig'
 
 // polyfill for formdata
 require('formdata-polyfill')
@@ -61,11 +61,12 @@ export class Extends extends React.PureComponent<Props> {
                         this.changeValue(new FormData(e.target as HTMLFormElement))
                     }} >
                         <input type="text" defaultValue="" name="content" placeholder={this.extendConfig.contentValueInfo} />
-                        {this.extendConfig.propertiesInfos ? this.extendConfig.propertiesInfos.map(item => <input 
+                        {this.extendConfig.propertiesInfos ? this.extendConfig.propertiesInfos.map((item, index) => <input 
                             type="text" 
                             defaultValue=""
                             name={item.key || 'mainValue'}
                             placeholder={item.title}
+                            key={item.key + index}
                         />) : null }
                         <button className="fa fa-check" type="submit" />
                         <button className="fa fa-remove" type="reset" />

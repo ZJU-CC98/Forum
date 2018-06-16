@@ -1,10 +1,11 @@
-import * as ConfigType from './IUbbSegmentConfig'
+import * as ConfigType from './IConfig'
 import * as Utility from '../../Utility'
 export const config = require('./config.json') as (
     ConfigType.IUbbTextSegmentConfig | 
     ConfigType.IUbbExtendSegmentConfig |
     ConfigType.IUbbTextSizeSegmentConfig |
-    ConfigType.IUbbColorSegmentConfig 
+    ConfigType.IUbbColorSegmentConfig |
+    ConfigType.IUbbUploadSegmentConfig
 )[]
 
 interface UbbEditorStateInfo {
@@ -88,5 +89,25 @@ export async function uploadFiles(files: FileList, shouldCompassImage?: boolean)
         return data
     } else {
         throw new Error('上传失败')
+    }
+}
+
+export function getTagName(file: File) {
+    try {
+        switch(true) {
+            case file.type.indexOf('image') !== -1: return 'img'
+            case file.type.indexOf('video') !== -1: return 'video'
+            case file.type.indexOf('video') !== -1: return 'audio'
+            default: return 'upload' // break
+        }
+
+        // TODO
+        const fileExtendName = file.name.match(/\.(\w+)$/)[1]
+
+        switch(true) {
+            default: throw new Error
+        }
+    } catch(e) {
+        return 'upload'
     }
 }

@@ -67,3 +67,7 @@ export interface IUbbTextSizeSegmentConfig extends IUbbSegmentConfig {
 export interface IUbbColorSegmentConfig extends IUbbSegmentConfig {
     type: 'color'
 }
+
+export interface IUbbUploadSegmentConfig extends IUbbSegmentConfig {
+    type: 'upload'
+}

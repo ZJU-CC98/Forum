@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { config } from '../utility'
-import * as ConfigType from '../IUbbSegmentConfig'
+import * as ConfigType from '../IConfig'
 import * as utility from '../utility'
 
 interface Props {
@@ -23,11 +23,12 @@ export class Buttons extends React.PureComponent<Props> {
         return (
             <div>
                 {config.map(item => {
-                    const { type, tagName, tagIcon, tagDescription } = item
+                    const { type, tagName, tagIcon, tagDescription, title } = item
                     switch(item.type) {
                         case 'text': return <button 
                             type="button" 
                             className={`fa ${tagIcon}`} 
+                            title={title}
                             key={tagName + tagIcon} 
                             onClick={() => this.props.changeValue({ type, tagName, mainProperty: item.mainValue })}
                         >{tagDescription}</button>
@@ -46,15 +47,21 @@ export class Buttons extends React.PureComponent<Props> {
                             <input id="color" />
                         </div>
                         case 'extend': return <button
-                                type="button"
-                                key={tagName + tagIcon} 
-                                className={`fa ${tagIcon}`} 
-                                onClick={() => this.props.changeExtendName(tagName)}
+                            type="button"
+                            title={title}
+                            key={tagName + tagIcon} 
+                            className={`fa ${tagIcon}`} 
+                            onClick={() => this.props.changeExtendName(tagName)}
                         >{tagDescription}</button>
+                        case 'upload': return <label
+                            htmlFor="ubbFileUpload"
+                            title={title}
+                            className={`fa ${tagIcon}`} 
+                        ></label>
                     }
                 })}
-                <button className="fa-undo" type="button" title="撤销" onClick={this.props.undo}></button>
-                <button className="fa-repeat" type="button" title="重做" onClick={this.props.redo}></button>
+                <button className="fa fa-undo" type="button" title="撤销" onClick={this.props.undo}></button>
+                <button className="fa fa-repeat" type="button" title="重做" onClick={this.props.redo}></button>
             </div>
         )
     }

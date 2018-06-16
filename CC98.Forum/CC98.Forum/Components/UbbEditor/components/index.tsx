@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as utility from '../utility'
-import * as ConfigType from '../IUbbSegmentConfig'
+import * as ConfigType from '../IConfig'
 
 // components
 import { CustomTextArea } from './customtextarea'
@@ -36,6 +36,7 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
         this.changeValue = this.changeValue.bind(this)
         this.changeExtend = this.changeExtend.bind(this)
         this.message = this.message.bind(this)
+        this.handleUpload = this.handleUpload.bind(this)
     }
 
     private customTextArea: CustomTextArea
@@ -63,6 +64,28 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
         this.customTextArea.textarea.setSelectionRange(this.state.selectionStart, this.state.selectionEnd)
     }
 
+    private async handleUpload(a: FileList, shouldCompassImage?: boolean) {
+        let files = Array.from(a)
+        try {
+            if(this.state.extendTagName !== 'img' && 
+                files.some(item => (
+                    item.type.indexOf('image') === -1) &&   // 不是图片文件
+                    item.size > 10485760                    // 并且大小超过限制
+                )) {
+                throw new Error('文件过大')
+            }
+
+            let results = await utility.uploadFiles(a, shouldCompassImage)
+            results.map((item, index) => this.changeValue({
+                type: 'extend',
+                tagName: utility.getTagName(files[index]),
+                content: item
+            }))
+        } catch(e) {
+            this.message(e.message)
+        }
+    }
+
     message(message: string) {
         this.setState({
             message
@@ -71,11 +94,6 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
                 this.setState({ message: '' })
             }, 2000)
         })
-    }
-
-    componentDidMount() {
-        // bind undo and redo for buttons
-        this.forceUpdate()
     }
 
     render() {
@@ -101,8 +119,13 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
                         const { selectionStart, selectionEnd } = e.target
                         this.setState({ selectionStart, selectionEnd })
                     }}
+                    onDrop={e => {
+                        let files = e.dataTransfer.files
+                        if(files) this.handleUpload(files)
+                    }}
                 />
-                <Message message="" />
+                <Message message={this.state.message} />
+                <input style={{ display: 'none' }} type="file" id="ubbFileUpload" multiple />
             </div>
         )
     }

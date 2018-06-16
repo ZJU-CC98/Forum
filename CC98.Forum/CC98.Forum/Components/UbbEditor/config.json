@@ -115,6 +115,7 @@
     {
         "tagName": "upload",
         "tagIcon": "fa-file",
-        "type": "upload"
+        "type": "upload",
+        "title": "上传文件"
     }
 ]
