@@ -1,10 +1,10 @@
 import * as React from 'react'
 import { config } from '../utility'
-import * as type from '../typedefinition'
+import * as ConfigType from '../IUbbSegmentConfig'
 import * as utility from '../utility'
 
 interface Props {
-    changeValue: (ubbSegment: type.IUbbSegment) => void
+    changeValue: (ubbSegment: ConfigType.IUbbSegment) => void
     changeExtendName: (extendName: string) => void
     undo?: () => void
     redo?: () => void

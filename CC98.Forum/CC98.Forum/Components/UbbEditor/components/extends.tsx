@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as utility from '../utility'
-import * as type from '../typedefinition'
+import * as type from '../IUbbSegmentConfig'
 
 // polyfill for formdata
 require('formdata-polyfill')

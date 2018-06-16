@@ -1,10 +1,10 @@
-import * as type from './typedefinition'
+import * as ConfigType from './IUbbSegmentConfig'
 import * as Utility from '../../Utility'
 export const config = require('./config.json') as (
-    type.IUbbTextSegmentConfig | 
-    type.IUbbExtendSegmentConfig |
-    type.IUbbTextSizeSegmentConfig |
-    type.IUbbColorSegmentConfig 
+    ConfigType.IUbbTextSegmentConfig | 
+    ConfigType.IUbbExtendSegmentConfig |
+    ConfigType.IUbbTextSizeSegmentConfig |
+    ConfigType.IUbbColorSegmentConfig 
 )[]
 
 interface UbbEditorStateInfo {
@@ -13,7 +13,7 @@ interface UbbEditorStateInfo {
     selectionEnd: number
 }
 
-export function getNewState(state: UbbEditorStateInfo, ubbSegment: type.IUbbSegment): UbbEditorStateInfo {
+export function getNewState(state: UbbEditorStateInfo, ubbSegment: ConfigType.IUbbSegment): UbbEditorStateInfo {
     const { value, selectionStart, selectionEnd } = state
     const { tagName, mainProperty, subProperties, content } = ubbSegment
     let newValue = value.slice(0, selectionStart)
