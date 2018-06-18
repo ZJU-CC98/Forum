@@ -64,8 +64,8 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
         this.customTextArea.textarea.setSelectionRange(this.state.selectionStart, this.state.selectionEnd)
     }
 
-    private async handleUpload(a: FileList, shouldCompassImage?: boolean) {
-        let files = Array.from(a)
+    private async handleUpload(filelist: FileList, shouldCompassImage?: boolean) {
+        let files = Array.from(filelist)
         try {
             if(this.state.extendTagName !== 'img' && 
                 files.some(item => (
@@ -75,7 +75,7 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
                 throw new Error('文件过大')
             }
 
-            let results = await utility.uploadFiles(a, shouldCompassImage)
+            let results = await utility.uploadFiles(filelist, shouldCompassImage)
             results.map((item, index) => this.changeValue({
                 type: 'extend',
                 tagName: utility.getTagName(files[index]),
@@ -99,18 +99,6 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
     render() {
         return (
             <div>
-                <Buttons 
-                    changeValue={this.changeValue} 
-                    changeExtendName={this.changeExtend} 
-                    undo={this.customTextArea && this.customTextArea.undo}
-                    redo={this.customTextArea && this.customTextArea.redo}
-                />
-                {this.state.extendTagName ? (
-                    <Extends
-                        extendTagName={this.state.extendTagName}
-                        changeValue={this.changeValue}
-                    />
-                ) : null}
                 <CustomTextArea 
                     value={this.state.value}
                     onChange={this.onChange}
@@ -124,8 +112,32 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
                         if(files) this.handleUpload(files)
                     }}
                 />
-                <Message message={this.state.message} />
-                <input style={{ display: 'none' }} type="file" id="ubbFileUpload" multiple />
+                <Buttons 
+                    changeValue={this.changeValue} 
+                    changeExtendName={this.changeExtend} 
+                    undo={this.customTextArea.undo}
+                    redo={this.customTextArea.redo}
+                />
+                {this.state.extendTagName ? (
+                    <Extends
+                        extendTagName={this.state.extendTagName}
+                        changeValue={this.changeValue}
+                    />
+                ) : null}
+                <Message 
+                    message={this.state.message} 
+                />
+                <input 
+                    style={{ display: 'none' }} 
+                    type="file" 
+                    id="ubbFileUpload" 
+                    multiple 
+                    onChange={e => {
+                        let filelist = e.target.files
+                        this.handleUpload(filelist)
+                        e.target.value = ''
+                    }}
+                />
             </div>
         )
     }
