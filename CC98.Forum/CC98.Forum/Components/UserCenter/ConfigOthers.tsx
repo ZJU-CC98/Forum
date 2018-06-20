@@ -110,11 +110,11 @@ class UserInfo extends ChangeUserInfo {
     userTitleIds: number[];
 }
 
-class State {
+interface State {
     displayTitles: DispalyTitle[]
 }
 
-class DispalyTitle {
+interface DispalyTitle {
     id: number;
     name: string;
 }

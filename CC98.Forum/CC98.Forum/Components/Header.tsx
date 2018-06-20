@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import * as Actions from '../Actions/UserCenter';
 import { Link, withRouter, Route } from 'react-router-dom';
 import { refreshCurrentUserInfo } from '../AsyncActions/UserCenter';
-//import SignalR from '../SignalR';
+import { CC98SignalR } from '../SignalR';
 
 class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLogOn, refreshUserInfo }, { hoverElement: string, unreadCount: { totalCount: number, replyCount: number, atCount: number, systemCount: number, messageCount: number } }> {   //顶部条的下拉菜单组件
     constructor(props) {
@@ -31,15 +31,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
      * 这里是signalR的部分
      */
     async componentDidMount() {
-        /**
-         * SignalR的开始与结束全部由header来控制
-         * 其他组件只负责添加handler即可
-         */
-        //SignalR.addListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
-        //SignalR.addListener('NotifyNotificationReceive', this.handleNotifyMessageReceive);
-        //if (this.props.isLogOn) {
-            // SignalR.start();
-        //}
+        // CC98SignalR.start();
         /**
          * 第一次加载的时候获取初始状态
          */
