@@ -10,22 +10,6 @@ import * as parse from 'url-parse';
 type URL = ReturnType<typeof parse>;
 
 /**
- * 检测一个url是否存在xss问题
- * @param url 要检测的url
- * @return {boolean} 是否是安全的
- * @author AsukaSong
- */
-function isSafe(url: URL): boolean {
-    const dangerousProtocols = ['javascript:', 'data:'];
-
-    if(dangerousProtocols.indexOf(url.protocol) !== -1) {
-        return false;
-    } else {
-        return true;
-    }
-}
-
-/**
  * 处理 [url] 标签的处理器。
  * TODO:对于外链的判断
  */
@@ -34,12 +18,32 @@ export class UrlTagHandler extends Ubb.RecursiveTagHandler {
         return 'url';
     }
 
-    execCore(innerContent: string, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
+    /**
+     * 检测一个url是否存在xss问题
+     * @param url 要检测的url
+     * @return {boolean} 是否是安全的
+     * @author AsukaSong
+     */
+    isSafe(url: URL): boolean {
 
-        const url = parse(tagData.value('url') || innerContent);
+        // ' ' for ' javascript:'
+        // based on https://medium.com/javascript-security/avoiding-xss-in-react-is-still-hard-d2b5c7ad9412
+        const dangerousProtocols = [' ', 'javascript:', 'data:'];
+
+        if(dangerousProtocols.indexOf(url.protocol) !== -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    execCore(innerContent: string, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
+        
+
+        const url = parse(tagData.value('url') || innerContent, {});
 
         // 是否存在xss问题
-        if(!isSafe(url)) {
+        if(!this.isSafe(url)) {
             return innerContent;
         }
 
