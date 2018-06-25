@@ -16,7 +16,9 @@ type URL = ReturnType<typeof parse>;
  * @author AsukaSong
  */
 function isSafe(url: URL): boolean {
-    if(url.protocol === 'javascript:') {
+    const dangerousProtocols = ['javascript:', 'data:'];
+
+    if(dangerousProtocols.indexOf(url.protocol) !== -1) {
         return false;
     } else {
         return true;
@@ -34,9 +36,9 @@ export class UrlTagHandler extends Ubb.RecursiveTagHandler {
 
     execCore(innerContent: string, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
 
-        let url = parse(tagData.value('url') || innerContent);
+        const url = parse(tagData.value('url') || innerContent);
 
-        // 解决protocol为javascript:的xss问题
+        // 是否存在xss问题
         if(!isSafe(url)) {
             return innerContent;
         }
