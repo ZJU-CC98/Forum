@@ -4,6 +4,24 @@
 
 import * as React from 'react';
 import * as Ubb from './Core';
+import * as parse from 'url-parse';
+
+// 默认URL类型和导入的有微妙的差别
+type URL = ReturnType<typeof parse>;
+
+/**
+ * 检测一个url是否存在xss问题
+ * @param url 要检测的url
+ * @return {boolean} 是否是安全的
+ * @author AsukaSong
+ */
+function isSafe(url: URL): boolean {
+    if(url.protocol === 'javascript:') {
+        return false;
+    } else {
+        return true;
+    }
+}
 
 /**
  * 处理 [url] 标签的处理器。
@@ -16,19 +34,21 @@ export class UrlTagHandler extends Ubb.RecursiveTagHandler {
 
     execCore(innerContent: string, tagData: Ubb.UbbTagData, context: Ubb.UbbCodeContext): React.ReactNode {
 
-        let url = tagData.value('url');
-        if (!url) {
-            url = innerContent;
+        let url = parse(tagData.value('url') || innerContent);
+
+        // 解决protocol为javascript:的xss问题
+        if(!isSafe(url)) {
+            return innerContent;
         }
 
         //不允许显示外部链接
         if (context.options.allowExternalUrl === false) {
             //判断是否为外部链接
-            if (url.indexOf('http') === 0 && url.split('/').length > 1 && url.split('/')[2] !== 'www.cc98.org') {
+            if (url.host !== 'www.cc98.org') {
                 return innerContent;
             }
         }
 
-        return <a href={url} target="_blank" className="urlStyle">{innerContent}</a>;
+        return <a href={url.href} target="_blank" className="urlStyle">{innerContent}</a>;
     }
 }
