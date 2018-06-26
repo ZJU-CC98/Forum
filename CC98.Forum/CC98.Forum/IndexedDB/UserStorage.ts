@@ -87,3 +87,19 @@ export async function getUsersInfo(keys: (number | string)[]) {
         }) as Promise<UserInfo>;
     }));
 }
+
+/**
+ * 根据用户id删除indexdb中储存的用户信息
+ * @param id 用户id
+ * @returns {Promise<void>} 返回的用户信息
+ * @author AsukaSong
+ */
+export async function removeUserInfo(id: number): Promise<void> {
+    let t = IndexedDB.db.transaction('userInfo', 'readwrite');
+    let store = t.objectStore('userInfo');
+    let req = store.delete(id);
+    return new Promise((resolve, reject) => {
+        req.onsuccess = () => resolve();
+        req.onerror = () => reject();
+    }) as Promise<void>;
+}

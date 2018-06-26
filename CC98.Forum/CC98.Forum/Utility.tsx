@@ -5,16 +5,12 @@ import * as UserCenterActions from './Actions/UserCenter';
 import * as ErrorActions from './Actions/Error';
 import { TopicTitleAndContent } from './Components/Board/Board'
 import { Constants } from './Components/Constant';
+import { removeUserInfo as removeUserInfoInIndexDB } from './IndexedDB/UserStorage';
 
 
 // lib
 
 import * as React from 'react';
-import {
-    BrowserRouter as Router,
-    Route,
-    Link
-} from 'react-router-dom';
 import * as $ from 'jquery';
 
 declare let editormd: any;
@@ -2646,13 +2642,12 @@ export async function getTopicByTwoTags(tag1Id, tag2Id, boardId, page) {
     const response = await cc98Fetch(url, { headers });
     return await response.json();
 }
-export async function updateUserInfo(id) {
+export async function updateUserInfo(id,name) {
     const key = `userId_${id}`;
-    const userInfo = await getUserInfo(id);
-    const name = userInfo.name;
     const key1 = `userName_${name}`;
     removeLocalStorage(key);
     removeLocalStorage(key1);
+    await removeUserInfoInIndexDB(id);
     await getUserInfo(id);
 }
 export function getTagLayer(tagId: number, tags) {

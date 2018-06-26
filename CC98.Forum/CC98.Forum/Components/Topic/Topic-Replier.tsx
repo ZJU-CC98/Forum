@@ -11,14 +11,16 @@ interface Props {
 }
 export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled, buttonInfo, isFollowing, fanCount, photoframe }, { topicid }>{
     constructor(props, content) {
+     
         super(props, content);
+        console.log(this.props.userInfo);
         this.follow = this.follow.bind(this);
         this.unfollow = this.unfollow.bind(this);
         this.changeTraceMode = this.changeTraceMode.bind(this);
         this.state = {
-            traceMode: this.props.traceMode, buttonInfo: '关注',
+            traceMode: this.props.traceMode, buttonInfo: this.props.userInfo.isFollowing?'取关': '关注',
             buttonIsDisabled: false,
-            isFollowing: false, fanCount: this.props.userInfo.fanCount,
+            isFollowing: this.props.userInfo.isFollowing, fanCount: this.props.userInfo.fanCount,
             photoframe: null,            
         };
     }
@@ -42,7 +44,7 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
                 headers
             });
             if (res.status === 200) {
-                await Utility.updateUserInfo(this.props.userInfo.id);
+                await Utility.updateUserInfo(this.props.userInfo.id, this.props.userInfo.name);
                 this.setState({
                     buttonIsDisabled: false,
                     buttonInfo: '关注',
@@ -74,7 +76,7 @@ export class Replier extends RouteComponent<Props, { traceMode, buttonIsDisabled
                 headers
             });
             if (res.status === 200) {
-                await Utility.updateUserInfo(this.props.userInfo.id);
+                await Utility.updateUserInfo(this.props.userInfo.id, this.props.userInfo.name);
                 this.setState({
                     buttonIsDisabled: false,
                     buttonInfo: '取关',
