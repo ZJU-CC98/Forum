@@ -158,8 +158,8 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
     }
 
     render() {
-        $(".signature").children("article").children("img").css("display", "none");
-        $(".signature").children("article").children("img:first").css("display", "");
+        //$(".signature").children("article").children("img").css("display", "none");
+       // $(".signature").children("article").children("img:first").css("display", "");
         switch (this.state.fetchState) {
             case 'ok':
                 return <div></div>;
