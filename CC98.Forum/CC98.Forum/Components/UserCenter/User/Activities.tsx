@@ -86,6 +86,17 @@ export default class extends React.Component<{id: number}, UserCenterExactActivi
         window.removeEventListener('scroll', this.scrollHandler);
     }
 
+    componentWillReceiveProps(newProps) {
+        if(newProps.id !== this.props.id) {
+            this.setState({
+                userRecentPosts: [],
+                isLoading: false
+            });
+            window.removeEventListener('scroll', this.scrollHandler);
+            window.addEventListener('scroll', this.scrollHandler);
+        }
+    }
+
     render() {
         if (this.state.userRecentPosts.length === 0) {
             const style = {
