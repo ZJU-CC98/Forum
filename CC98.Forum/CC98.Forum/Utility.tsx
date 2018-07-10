@@ -2050,7 +2050,7 @@ export async function addBoardTopTopic(topicId, boardId, topState, days, reason)
 export async function removeBoardTopTopic(topicId, boardId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const content = reason;
+    const content = { "reason":reason };
     const response = await cc98Fetch(
 
         `/topic/${topicId}/top`,
