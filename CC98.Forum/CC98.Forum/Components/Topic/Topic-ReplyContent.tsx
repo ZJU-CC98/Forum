@@ -22,6 +22,7 @@ export class ReplyContent extends React.Component<Props, { postId }> {
 
     componentDidUpdate() {
         const divid = `doc-content${this.props.postId}`;
+
         editormd.markdownToHTML(divid, {
             htmlDecode: false,
             emoji: true,
@@ -46,6 +47,7 @@ export class ReplyContent extends React.Component<Props, { postId }> {
         this.setState({});
     }
     render() {
+    
         const divid = `doc-content${this.props.postId}`;
         let ubbUrlContent = Utility.atUserUbbUrl(this.props.content);
         const ubbMode = <UbbContainer code={ubbUrlContent} />;

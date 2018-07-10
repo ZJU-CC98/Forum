@@ -166,6 +166,7 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
     }
 
     componentDidUpdate() {
+   
         if (window.location.hash && window.location.hash !== '#') {
             const hash = window.location.hash;
             const eleId = hash.split("#");

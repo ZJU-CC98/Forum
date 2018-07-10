@@ -156,9 +156,10 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
     getTotalPage(count) {
         return Utility.getTotalPageof10(count);
     }
-    
+
     render() {
-        
+        $(".signature").children("article").children("img").css("display", "none");
+        $(".signature").children("article").children("img:first").css("display", "");
         switch (this.state.fetchState) {
             case 'ok':
                 return <div></div>;
@@ -205,7 +206,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
                 <Category topicInfo={this.state.topicInfo} boardInfo={this.state.boardInfo} topicId={this.match.params.topicid} />
                 <Pager page={this.state.page} url={pagerUrl} totalPage={this.state.totalPage} /></div>
             </div>
-                {sendTopic}
+            {sendTopic}
             <NoticeMessage text="回复成功" id="replyMessage" top="24%" left="46%" />
         </div>
             ;

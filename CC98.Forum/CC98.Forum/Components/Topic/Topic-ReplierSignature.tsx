@@ -101,6 +101,7 @@ export class ReplierSignature extends React.Component<Props, {likeNumber,dislike
         this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
     async componentDidMount() {
+  
         const idLike = `#like${this.props.postInfo.id}`;
         const idDislike = `#dislike${this.props.postInfo.id}`;
         //const data = await Utility.refreshLikeState(this.props.topicid, this.props.postid, this.context.router);
@@ -113,11 +114,14 @@ export class ReplierSignature extends React.Component<Props, {likeNumber,dislike
         const manageIcon = `icon${this.props.postInfo.id}`;
         const manageId = `#icon${this.props.postInfo.id}`;
         if (Utility.isMaster(this.props.boardInfo.boardMasters) || (this.props.boardInfo.id == 144 && this.props.postInfo.isLZ))
-        $(manageId).css("display", "");
+            $(manageId).css("display", "");
+
+       // console.log("img = "+$("img").);
       //  this.setState({ likeNumber: data.likeCount, dislikeNumber: data.dislikeCount, likeState: data.likeState });
     }
  
     render() {
+
         const manageIcon = `icon${this.props.postInfo.id}`;
         const idLike = `like${this.props.postInfo.id}`;
         const idDislike = `dislike${this.props.postInfo.id}`;

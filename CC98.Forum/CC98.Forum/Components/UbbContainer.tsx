@@ -4,7 +4,7 @@
 
 import * as React from 'react';
 import * as Ubb from '../Ubb/UbbCodeExtension';
-
+import * as $ from 'jquery';
 /**
  * 定义 UBBContainer 组件需要使用的属性。
  */
