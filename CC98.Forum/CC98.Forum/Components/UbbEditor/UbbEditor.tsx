@@ -65,6 +65,7 @@ export class UbbEditor extends React.Component<Props, State> {
         this.handleButtonClick = this.handleButtonClick.bind(this);
         this.handleEmojiButtonClick = this.handleEmojiButtonClick.bind(this);
         this.changeEmojiType = this.changeEmojiType.bind(this);
+        this.upload = this.upload.bind(this);
     }
 
     //处理需要额外信息的按钮点击后的函数
@@ -101,8 +102,7 @@ export class UbbEditor extends React.Component<Props, State> {
         });
     }
 
-    //处理上传文件的函数
-    async handleUpload(files: FileList) {
+    async upload(files: FileList) {
         try{
             let { extendTagName = 'img' } = this.state;
             const url = !this.state.shouldCompassImage ? '/file?compressImage=false' : '/file';
@@ -126,7 +126,7 @@ export class UbbEditor extends React.Component<Props, State> {
             let data: string[] = await res.json();
             if (res.status === 200) {
                 //根据type选择不同的tag
-                data.map((item, index) => {
+                let result = data.map((item, index) => {
                     //图片与音频上传直接使用相应标签
                     //文件上传先根据扩展名判断，没有结果则根据mimetype判断
                     let tagName: string;
@@ -135,10 +135,12 @@ export class UbbEditor extends React.Component<Props, State> {
                         case 'audio': tagName = extendTagName; break;
                         default: tagName = this.getTagNameByName(files[index].name.toLocaleLowerCase()) || this.getTagNameByType(files[index].type);
                     }
-                    this.handleButtonClick(tagName, item);
+                    return {
+                        name: tagName,
+                        value: item
+                    }
                 });
-                //清空filelist
-                this.uploadInput.value = '';
+                return result;
             }else {
                 throw new Error(`上传文件失败`);
             }
@@ -152,6 +154,14 @@ export class UbbEditor extends React.Component<Props, State> {
                 info: ''
             }), 2500);
         }
+    }
+
+    //处理上传文件的函数
+    async handleUpload(files: FileList) {
+        let result = await this.upload(files);
+        result.map(item => this.handleButtonClick(item.name, item.value));
+        //清空filelist
+        this.uploadInput.value = '';
     }
 
     /**
@@ -515,19 +525,27 @@ export class UbbEditor extends React.Component<Props, State> {
                             }}
                             onKeyDown={e => {
                                 if (e.ctrlKey && e.key === 'z') {
-                                    //Ctrl+Z撤销
+                                    // Ctrl+Z撤销
                                     e.preventDefault();
                                     this.handleUndo();
                                 } else if (e.ctrlKey && e.key === 'y') {
-                                    //Ctrl+Y重做
+                                    // Ctrl+Y重做
                                     e.preventDefault();
                                     this.handleRedo();
                                 } else if (e.ctrlKey && e.key === 'Enter') {
-                                    //Crtl+Enter提交内容（如果option里有submit的话
+                                    // Crtl+Enter提交内容（如果option里有submit的话
                                     e.preventDefault();
                                     if (submit) {
                                         submit();
                                     }
+                                }
+                            }}
+                            onPaste={e => {
+                                const kinds = Array.from(e.clipboardData.items).map(item => item.kind);
+                                const files = e.clipboardData.files;
+                                if(kinds.some(kind => kind === 'file')) {
+                                    e.preventDefault();
+                                    this.handleUpload(files);
                                 }
                             }}
                             ref={textarea => {
