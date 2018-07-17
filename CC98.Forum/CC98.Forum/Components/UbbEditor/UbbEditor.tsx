@@ -545,6 +545,7 @@ export class UbbEditor extends React.Component<Props, State> {
                                 const files = e.clipboardData.files;
                                 if(kinds.some(kind => kind === 'file')) {
                                     e.preventDefault();
+                                    this.handleTextareaBlur(this.content.selectionStart, this.content.selectionEnd);
                                     this.handleUpload(files);
                                 }
                             }}
