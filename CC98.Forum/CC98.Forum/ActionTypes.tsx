@@ -38,3 +38,5 @@ export const SOLVE_ERROR = 'SOLVE_ERROR';
  * 帖子
  */
 export const ADD_AWARD = 'ADD_AWARD';
+
+export const CHANGE_MESSAGE_COUNT = 'CHANGE_MESSAGE_COUNT';

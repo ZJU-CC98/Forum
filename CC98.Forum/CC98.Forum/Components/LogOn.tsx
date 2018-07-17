@@ -146,8 +146,6 @@ class LogOnExact extends React.Component<Props, LogOnState> {
                 } else {
                     this.props.history.go(-1);
                 }
-                //登陆后刷新未读信息
-                Utility.refreshUnReadCount();
             }, 100);
         } catch (e) {
             let info: string;

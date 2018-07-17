@@ -7,23 +7,32 @@ import * as Utility from '../Utility';
 import { AppState, UserInfo } from '../States/AppState';
 import * as $ from 'jquery';
 import { connect } from 'react-redux';
-import * as Actions from '../Actions/UserCenter';
+import { Actions, RootState } from '../Store';
 import { Link, withRouter, Route } from 'react-router-dom';
 import { refreshCurrentUserInfo } from '../AsyncActions/UserCenter';
 import { CC98SignalR } from '../SignalR';
+import { MessageInfo } from '../Reducers/Message';
+import { refreshCurrentMessageCount } from '../AsyncActions/Message'
 
-class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLogOn, refreshUserInfo }, { hoverElement: string, unreadCount: { totalCount: number, replyCount: number, atCount: number, systemCount: number, messageCount: number } }> {   //顶部条的下拉菜单组件
+type props = {
+    isLogOn: boolean, 
+    userInfo: UserInfo, 
+    logOff: () => void, 
+    reLogOn: (userInfo: UserInfo) => void,
+    refreshUserInfo: () => void,
+    messageCount: MessageInfo,
+    refreshCurrentMessageCount: () => void
+}
+
+type state = {
+    hoverElement: string
+}
+
+class DropDownConnect extends React.Component<props, state> {   //顶部条的下拉菜单组件
     constructor(props) {
         super(props);
         this.state = ({
-            hoverElement: null,
-            unreadCount: {
-                totalCount: 0,
-                atCount: 0,
-                messageCount: 0,
-                replyCount: 0,
-                systemCount: 0
-            }
+            hoverElement: null
         });
         this.handleNotifyMessageReceive = this.handleNotifyMessageReceive.bind(this);
     }
@@ -31,11 +40,16 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
      * 这里是signalR的部分
      */
     async componentDidMount() {
-        // CC98SignalR.start();
         /**
-         * 第一次加载的时候获取初始状态
+         * 第一次加载的时候刷新未读消息
          */
-        this.handleNotifyMessageReceive();
+        if(this.props.isLogOn) {
+            this.handleNotifyMessageReceive();
+            await CC98SignalR.start();
+            Utility.setLocalStorage('signalr', Date.now());
+            CC98SignalR.connection.on('NotifyMessageReceive', this.handleNotifyMessageReceive);
+            CC98SignalR.connection.on('NotifyNotificationReceive', this.handleNotifyMessageReceive);
+        }
 
         /**
          * 同步不同窗口的登陆信息
@@ -45,12 +59,28 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
                 if(e.oldValue === e.newValue) return;
                 if(e.newValue){ //如果用户在其他页面重新登陆
                     this.props.reLogOn(JSON.parse(e.newValue.slice(4)));
-                    Utility.refreshUnReadCount();
                 }else { //如果用户在其他页面注销
                     this.props.logOff();
                 }
+            } else if(e.key === 'signalr') {
+                if(e.oldValue === e.newValue) return;
+                if(e.newValue) {
+                    CC98SignalR.connection.off('NotifyMessageReceive');
+                    CC98SignalR.connection.off('NotifyNotificationReceive');
+                    CC98SignalR.stop();
+                }
             }
         });
+
+        window.addEventListener('focus', async e => {
+            if(this.props.isLogOn && !CC98SignalR.isConnecting) {
+                Utility.setLocalStorage('signalr', Date.now());
+                this.props.refreshCurrentMessageCount();
+                await CC98SignalR.start();
+                CC98SignalR.connection.on('NotifyMessageReceive', this.handleNotifyMessageReceive);
+                CC98SignalR.connection.on('NotifyNotificationReceive', this.handleNotifyMessageReceive);
+            }
+        })
 
         //每天刷新一次用户信息
         if(Utility.isLogOn() && !Utility.getLocalStorage('shouldNotRefreshUserInfo')) {
@@ -59,27 +89,22 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
         }
     }
 
-    componentWillUnmount() {
-        //SignalR.removeListener('NotifyMessageReceive', this.handleNotifyMessageReceive);
-        //SignalR.removeListener('NotifyNotificationReceive', this.handleNotifyMessageReceive);
-    }
-
-    async handleNotifyMessageReceive() {
-
-        //更新消息数量
-        await Utility.refreshUnReadCount();
-        this.setState({
-            unreadCount: Utility.getStorage("unreadCount")
-        });
+    handleNotifyMessageReceive() {
+        this.props.refreshCurrentMessageCount();
     }
 
     async componentWillReceiveProps(nextProps) {
         if (!this.props.isLogOn && nextProps.isLogOn) {
             //如果用户重新登录则开始signalR链接
-            //	SignalR.start();
+            this.handleNotifyMessageReceive();
+            await CC98SignalR.start();
+            CC98SignalR.connection.on('NotifyMessageReceive', this.handleNotifyMessageReceive);
+            CC98SignalR.connection.on('NotifyNotificationReceive', this.handleNotifyMessageReceive);
         } else if (!nextProps.isLogOn) {
             //如果用户注销则关闭signalR链接
-            //SignalR.stop();
+            CC98SignalR.connection.off('NotifyMessageReceive');
+            CC98SignalR.connection.off('NotifyNotificationReceive');
+            CC98SignalR.stop();
         }
     }
 
@@ -99,7 +124,6 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
                 this.setState({
                     hoverElement: className
                 });
-                Utility.refreshHoverUnReadCount();
                 break;
             }
             case 'mouseout': {
@@ -113,17 +137,16 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
 
     render() {
         if (this.props.isLogOn) {
+            const totalCount = this.props.messageCount.atCount +
+                this.props.messageCount.messageCount +
+                this.props.messageCount.replyCount + 
+                this.props.messageCount.systemCount;
 
             const style = {
                 display: 'block',
                 transitionDuration: '.2s',
                 height: '0px'
             };
-            //未读消息数
-            let unreadCount = { totalCount: 0, replyCount: 0, atCount: 0, systemCount: 0, messageCount: 0 };
-            if (Utility.getStorage("unreadCount")) {
-                unreadCount = Utility.getStorage("unreadCount")
-            }
             //全站管理选项
             let admin = this.props.userInfo.privilege === '管理员' ? <Link to="/sitemanage" style={{ color: '#fff' }}><li>全站管理</li></Link> : null;
             //用户中心下拉列表
@@ -153,7 +176,7 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
                     >
                         <Link to="/message/response" className="messageTopBar">
                             <div className="topBarBell"> <i className="fa fa-bell-o"></i></div>
-                            <div className="message-counter displaynone" id="unreadCount-totalCount">{unreadCount.totalCount}</div>
+                            {totalCount ? <div className="message-counter" id="unreadCount-totalCount">{totalCount}</div> : null}
                         </Link>
                     </div>
                     <div className="topBarUserImg"
@@ -190,10 +213,10 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
                     style={{ ...style, overflow: 'hidden', height: this.state.hoverElement === 'message' ? '8rem' : '0' }}
                 >
                     <ul style={{ display: 'inherit' }}>
-                        <Link to="/message/response"><li>回复我的<div className="message-counterLi displaynone" id="unreadCount-replyCount">({unreadCount.replyCount})</div></li></Link>
-                        <Link to="/message/attme"><li>@ 我的<div className="message-counterLi displaynone" id="unreadCount-atCount">({unreadCount.atCount})</div></li></Link>
-                        <Link to="/message/system"><li>系统通知<div className="message-counterLi displaynone" id="unreadCount-systemCount">({unreadCount.systemCount})</div></li></Link>
-                        <Link to="/message/message"><li>我的私信<div className="message-counterLi displaynone" id="unreadCount-messageCount">({unreadCount.messageCount})</div></li></Link>
+                        <Link to="/message/response"><li>回复我的{this.props.messageCount.replyCount ? <div className="message-counterLi">({this.props.messageCount.replyCount})</div> : null}</li></Link>
+                        <Link to="/message/attme"><li>@ 我的{this.props.messageCount.atCount ? <div className="message-counterLi">({this.props.messageCount.atCount})</div> : null}</li></Link>
+                        <Link to="/message/system"><li>系统通知{this.props.messageCount.systemCount ? <div className="message-counterLi">({this.props.messageCount.systemCount})</div> : null}</li></Link>
+                        <Link to="/message/message"><li>我的私信{this.props.messageCount.messageCount ? <div className="message-counterLi">({this.props.messageCount.messageCount})</div> : null}</li></Link>
                     </ul>
                 </div>
             </div>);
@@ -208,10 +231,11 @@ class DropDownConnect extends React.Component<{ isLogOn, userInfo, logOff, reLog
 }
 
 // 这里是董松松的修改，加了redux
-function mapState(state) {
+function mapState(state: RootState) {
     return {
         userInfo: state.userInfo.currentUserInfo,
-        isLogOn: state.userInfo.isLogOn
+        isLogOn: state.userInfo.isLogOn,
+        messageCount: state.message
     }
 }
 
@@ -227,6 +251,9 @@ function mapDispatch(dispatch) {
         },
         refreshUserInfo: () => {
             dispatch(refreshCurrentUserInfo());
+        },
+        refreshCurrentMessageCount: () => {
+            dispatch(refreshCurrentMessageCount());
         }
     };
 }
@@ -393,10 +420,6 @@ export class SearchBeforeConnent extends React.Component<any, AppState> {     //
 export const Search = withRouter(SearchBeforeConnent);
 
 export class Header extends React.Component<{}, AppState> {
-    //更新一下未读消息
-    async refreshUnReadCount() {
-        await Utility.refreshUnReadCount();
-    }
 
     render() {
         let pathname = location.pathname;
@@ -405,8 +428,8 @@ export class Header extends React.Component<{}, AppState> {
                 <div className="topBar-mainPage">
                     <div className="topBarRow">
                         <div className="row" style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                            <div className="topBarLogo" onClick={this.refreshUnReadCount}><Link to="/"><img src="/static/images/98LOGO.ico" /></Link></div>
-                            <div className="topBarCC98" onClick={this.refreshUnReadCount}><Link to="/">CC98论坛</Link></div>
+                            <div className="topBarLogo"><Link to="/"><img src="/static/images/98LOGO.ico" /></Link></div>
+                            <div className="topBarCC98"><Link to="/">CC98论坛</Link></div>
                             <div className="topBarText">|</div>
                             <div className="topBarText"><Link to="/boardList">版面列表</Link></div>
                             <div className="topBarText"><Link to="/newTopics">新帖</Link></div>

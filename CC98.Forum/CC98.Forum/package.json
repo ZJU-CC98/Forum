@@ -6,7 +6,7 @@
 		"dev": "webpack-dev-server --progress --hot --inline --config vscodeConfig/webpack.config.vscode.js"
 	},
 	"dependencies": {
-		"@aspnet/signalr": "^1.0.0",
+		"@aspnet/signalr": "^1.0.2",
 		"aplayer": "^1.6.0",
 		"blueimp-canvas-to-blob": "3.14.0",
 		"bootstrap": "3.3.7",

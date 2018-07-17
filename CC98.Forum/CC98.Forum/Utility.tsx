@@ -1,6 +1,6 @@
 import * as Prop from './Props/AppProps'
 import * as State from './States/AppState'
-import store from './Store';
+import store, { Actions } from './Store';
 import * as UserCenterActions from './Actions/UserCenter';
 import * as ErrorActions from './Actions/Error';
 import { TopicTitleAndContent } from './Components/Board/Board'
@@ -2394,197 +2394,6 @@ export async function getFavState(topicId) {
     return data;
 }
 
-//更新未读消息数量
-export async function refreshUnReadCount() {
-    let unreadCount = { totalCount: 0, replyCount: 0, atCount: 0, systemCount: 0, messageCount: 0 };
-
-    //如果未登录,直接不获取未读消息数目
-    if (!isLogOn()) {
-        setStorage("unreadCount", unreadCount);
-        return unreadCount;
-    }
-
-    //查看用户个人消息偏好设置
-    let noticeSetting = getLocalStorage("noticeSetting");
-    if (noticeSetting && noticeSetting.response === "否" && noticeSetting.system === "否" && noticeSetting.message === "否" && noticeSetting.attme === "否") {
-        setStorage("unreadCount", unreadCount);
-        return unreadCount;
-    }
-    const headers = await formAuthorizeHeader();
-    const url = `/me/unread-count`;
-    let response = await cc98Fetch(url, { headers });
-    if (response.status === 200) {
-        unreadCount = await response.json();
-    }
-    //根据消息偏好设置修改未读消息数目
-    if (noticeSetting) {
-        if (noticeSetting.response === "否") {
-            unreadCount.replyCount = 0;
-        }
-        if (noticeSetting.system === "否") {
-            unreadCount.systemCount = 0;
-        }
-        if (noticeSetting.message === "否") {
-            unreadCount.messageCount = 0;
-        }
-        if (noticeSetting.attme === "否") {
-            unreadCount.atCount = 0;
-        }
-    }
-    unreadCount.totalCount = unreadCount.systemCount + unreadCount.atCount + unreadCount.replyCount + unreadCount.messageCount;
-    //console.log("未读消息数量", unreadCount);
-    if (unreadCount.totalCount > 0) {
-        $('#unreadCount-totalCount').removeClass('displaynone');
-        $('#unreadCount-totalCount').text(unreadCount.totalCount);
-    }
-    else {
-        $('#unreadCount-totalCount').addClass('displaynone');
-        $('#unreadCount-replyCount').addClass('displaynone');
-        $('#unreadCount-replyCount1').addClass('displaynone');
-        $('#unreadCount-atCount').addClass('displaynone');
-        $('#unreadCount-atCount1').addClass('displaynone');
-        $('#unreadCount-systemCount').addClass('displaynone');
-        $('#unreadCount-systemCount1').addClass('displaynone');
-        $('#unreadCount-messageCount').addClass('displaynone');
-        $('#unreadCount-messageCount1').addClass('displaynone');
-        setStorage("unreadCount", unreadCount);
-        return unreadCount;
-    }
-    if (unreadCount.replyCount > 0) {
-        $('#unreadCount-replyCount').removeClass('displaynone');
-        $('#unreadCount-replyCount').text(unreadCount.replyCount);
-        $('#unreadCount-replyCount1').removeClass('displaynone');
-        $('#unreadCount-replyCount1').text(unreadCount.replyCount);
-    }
-    else {
-        $('#unreadCount-replyCount').addClass('displaynone');
-        $('#unreadCount-replyCount1').addClass('displaynone');
-    }
-    if (unreadCount.atCount > 0) {
-        $('#unreadCount-atCount').removeClass('displaynone');
-        $('#unreadCount-atCount').text(unreadCount.atCount);
-        $('#unreadCount-atCount1').removeClass('displaynone');
-        $('#unreadCount-atCount1').text(unreadCount.atCount);
-    }
-    else {
-        $('#unreadCount-atCount').addClass('displaynone');
-        $('#unreadCount-atCount1').addClass('displaynone');
-    }
-    if (unreadCount.systemCount > 0) {
-        $('#unreadCount-systemCount').removeClass('displaynone');
-        $('#unreadCount-systemCount').text(unreadCount.systemCount);
-        $('#unreadCount-systemCount1').removeClass('displaynone');
-        $('#unreadCount-systemCount1').text(unreadCount.systemCount);
-    }
-    else {
-        $('#unreadCount-systemCount').addClass('displaynone');
-        $('#unreadCount-systemCount1').addClass('displaynone');
-    }
-    if (unreadCount.messageCount > 0) {
-        $('#unreadCount-messageCount').removeClass('displaynone');
-        $('#unreadCount-messageCount').text(unreadCount.messageCount);
-        $('#unreadCount-messageCount1').removeClass('displaynone');
-        $('#unreadCount-messageCount1').text(unreadCount.messageCount);
-    }
-    else {
-        $('#unreadCount-messageCount').addClass('displaynone');
-        $('#unreadCount-messageCount1').addClass('displaynone');
-    }
-    setStorage("unreadCount", unreadCount);
-    return unreadCount;
-}
-
-//更新悬浮下拉未读消息数目
-export function refreshHoverUnReadCount() {
-    let unreadCount = { totalCount: 0, replyCount: 0, atCount: 0, systemCount: 0, messageCount: 0 };
-    //查看用户个人消息偏好设置
-    let noticeSetting = getLocalStorage("noticeSetting");
-    if (noticeSetting && noticeSetting.response === "否" && noticeSetting.system === "否" && noticeSetting.message === "否" && noticeSetting.attme === "否") {
-        setStorage("unreadCount", unreadCount);
-        return unreadCount;
-    }
-    //取缓存
-    if (getStorage("unreadCount")) {
-        unreadCount = getStorage("unreadCount");
-    }
-    //根据消息偏好设置修改未读消息数目
-    if (noticeSetting) {
-        if (noticeSetting.response === "否") {
-            unreadCount.replyCount = 0;
-        }
-        if (noticeSetting.system === "否") {
-            unreadCount.systemCount = 0;
-        }
-        if (noticeSetting.message === "否") {
-            unreadCount.messageCount = 0;
-        }
-        if (noticeSetting.attme === "否") {
-            unreadCount.atCount = 0;
-        }
-    }
-    unreadCount.totalCount = unreadCount.systemCount + unreadCount.atCount + unreadCount.replyCount + unreadCount.messageCount;
-    //console.log("未读消息数量", unreadCount);
-    if (unreadCount.totalCount > 0) {
-        $('#unreadCount-totalCount').removeClass('displaynone');
-        $('#unreadCount-totalCount').text(unreadCount.totalCount);
-    }
-    else {
-        $('#unreadCount-totalCount').addClass('displaynone');
-        $('#unreadCount-replyCount').addClass('displaynone');
-        $('#unreadCount-replyCount1').addClass('displaynone');
-        $('#unreadCount-atCount').addClass('displaynone');
-        $('#unreadCount-atCount1').addClass('displaynone');
-        $('#unreadCount-systemCount').addClass('displaynone');
-        $('#unreadCount-systemCount1').addClass('displaynone');
-        $('#unreadCount-messageCount').addClass('displaynone');
-        $('#unreadCount-messageCount1').addClass('displaynone');
-        setStorage("unreadCount", unreadCount);
-        return unreadCount;
-    }
-    if (unreadCount.replyCount > 0) {
-        $('#unreadCount-replyCount').removeClass('displaynone');
-        $('#unreadCount-replyCount').text(unreadCount.replyCount);
-        $('#unreadCount-replyCount1').removeClass('displaynone');
-        $('#unreadCount-replyCount1').text(unreadCount.replyCount);
-    }
-    else {
-        $('#unreadCount-replyCount').addClass('displaynone');
-        $('#unreadCount-replyCount1').addClass('displaynone');
-    }
-    if (unreadCount.atCount > 0) {
-        $('#unreadCount-atCount').removeClass('displaynone');
-        $('#unreadCount-atCount').text(unreadCount.atCount);
-        $('#unreadCount-atCount1').removeClass('displaynone');
-        $('#unreadCount-atCount1').text(unreadCount.atCount);
-    }
-    else {
-        $('#unreadCount-atCount').addClass('displaynone');
-        $('#unreadCount-atCount1').addClass('displaynone');
-    }
-    if (unreadCount.systemCount > 0) {
-        $('#unreadCount-systemCount').removeClass('displaynone');
-        $('#unreadCount-systemCount').text(unreadCount.systemCount);
-        $('#unreadCount-systemCount1').removeClass('displaynone');
-        $('#unreadCount-systemCount1').text(unreadCount.systemCount);
-    }
-    else {
-        $('#unreadCount-systemCount').addClass('displaynone');
-        $('#unreadCount-systemCount1').addClass('displaynone');
-    }
-    if (unreadCount.messageCount > 0) {
-        $('#unreadCount-messageCount').removeClass('displaynone');
-        $('#unreadCount-messageCount').text(unreadCount.messageCount);
-        $('#unreadCount-messageCount1').removeClass('displaynone');
-        $('#unreadCount-messageCount1').text(unreadCount.messageCount);
-    }
-    else {
-        $('#unreadCount-messageCount').addClass('displaynone');
-        $('#unreadCount-messageCount1').addClass('displaynone');
-    }
-    setStorage("unreadCount", unreadCount);
-    return unreadCount;
-}
-
 export async function editPost(postId, contentType, title, content) {
     const headers = await formAuthorizeHeader();
     const url = `/post/${postId}`;
@@ -2925,7 +2734,7 @@ export function quoteJudger(content: string) {
 export async function readAll() {
     let path = location.pathname;
     let url = null;
-    let unreadCount = getStorage("unreadCount");
+    let unreadCount = store.getState().message;
     const headers = await formAuthorizeHeader();
     if (path === "/message/response") {
         if (unreadCount.replyCount === 0) {
@@ -2955,7 +2764,12 @@ export async function readAll() {
         return null;
     }
     const response = await cc98Fetch(url, { method: "PUT", headers, body: '' });
-    refreshUnReadCount();
+    store.dispatch(Actions.changeMessageCount({
+        messageCount: 0,
+        systemCount: 0,
+        atCount: 0,
+        replyCount: 0
+    }))
     return null;
 }
 

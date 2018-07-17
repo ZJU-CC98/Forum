@@ -100,8 +100,6 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         Utility.noticeMessageShow('replyMessage');
         //const isFav = await Utility.getFavState(this.match.params.topicid);
         //this.setState({ topicInfo: topicInfo, quote: { userName: "", content: "", replyTime: "", floor: "" },isFav:isFav}); 
-        //更新一下未读消息数目
-        Utility.refreshHoverUnReadCount();
     }
     async componentWillReceiveProps(newProps) {
         //page 是否变了
@@ -124,8 +122,6 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         }
         const isFav = await Utility.getFavState(newProps.match.params.topicid);  
         this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo, isFav: isFav });
-        //更新一下未读消息数目
-        Utility.refreshHoverUnReadCount();
     }
     async componentDidMount() {
         let page: number;
@@ -150,8 +146,6 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
        // if (Utility.isMaster(boardInfo.boardMasters))
       //   IPData = await Utility.findIP(this.match.params.topicid);
         this.setState({ isFav, page: page, topicid: this.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo, fetchState: topicInfo, IPData: IPData });
-        //更新一下未读消息数目
-        Utility.refreshHoverUnReadCount();
     }
     getTotalPage(count) {
         return Utility.getTotalPageof10(count);

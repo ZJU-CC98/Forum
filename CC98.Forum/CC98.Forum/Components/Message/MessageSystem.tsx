@@ -8,6 +8,7 @@ import { MessageSystembox } from './MessageSystembox';
 import * as Utility from '../../Utility';
 import { Pager } from '../Pager';
 import DocumentTitle from '../DocumentTitle';
+import Store from '../../Store';
 
 /**
  * 系统消息
@@ -45,13 +46,11 @@ export class MessageSystem extends React.Component<{}, MessageSystemState> {
             let systemState = { data: data, from: curPage + 1, totalPage: totalPage };
             Utility.setStorage("systemState", systemState);
         }
-        //更新消息数量
-        await Utility.refreshUnReadCount();
     }
 
     async componentDidMount() {
         //如果没有新消息而且第一页有缓存就用缓存数据
-        let unreadCount = Utility.getStorage("unreadCount");
+        let unreadCount = Store.getState().message
         let systemState = Utility.getStorage("systemState");
         if (unreadCount.systemCount === 0 && systemState) {
             this.setState(systemState);

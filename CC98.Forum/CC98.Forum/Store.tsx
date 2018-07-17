@@ -5,14 +5,11 @@ import thunk from './node_modules/redux-thunk/es/index';
 
 import * as UserActions from './Actions/UserCenter';
 import * as ErrorActions from './Actions/Error';
+import * as MessageActions from './Actions/Message';
 import error, { ErrorStore } from './Reducers/Error';
 import post, { TopicState } from './Reducers/Post';
 import userInfo, { UserInfoStore } from './Reducers/UserInfo';
-
-function values<T>(o: { [s: string]: T }): T[] {
-    return Object.keys(o).map((key) => o[key]);
-}
-
+import message, { MessageInfo } from './Reducers/Message';
 declare module "redux" {
     export interface Dispatch<S> {
         <R, E>(asyncAction: ThunkAction<R, S, E>): R;
@@ -31,17 +28,18 @@ export interface RootState {
     error: ErrorStore;
     post: TopicState;
     userInfo: UserInfoStore;
+    message: MessageInfo;
     router: RouterState;
 }
 
 
-const Actions = { ...UserActions, ...ErrorActions };
-const actionTypes = values(Actions);
+export const Actions = { ...UserActions, ...ErrorActions, ...MessageActions };
+type actionTypes = keyof typeof Actions
 
 /**
  * 全部Action的类型定义
  */
-export type RootAction = ReturnType<typeof actionTypes[number]>; 
+export type RootAction = ReturnType<typeof Actions[actionTypes]>; 
 
 /**
  * 合并reducer
@@ -51,6 +49,7 @@ const reducer = combineReducers<RootState>({
     post,
     router,
     userInfo,
+    message,
 });
 
 export const history = createHistory();

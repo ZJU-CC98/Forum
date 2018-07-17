@@ -585,9 +585,6 @@ export class MainPage extends React.Component<{}, { data }> {
     }
 
     async getData() {
-        //更新一下未读消息数目
-        Utility.refreshHoverUnReadCount();
-
         let data = Utility.getLocalStorage("mainPageData");
         if (!data) {
             const response = await Utility.cc98Fetch('/config/index');
