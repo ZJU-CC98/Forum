@@ -91,7 +91,7 @@ export default class Emoji extends React.Component<EmojiProps> {
 
         //表情栏上的info
         const info = {
-            'ac': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="//www.acfun.cn">AcFun弹幕视频网</a> 提供</p>,
+            'ac': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="http://www.acfun.cn">AcFun弹幕视频网</a> 提供</p>,
             'mj': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="//bbs.saraba1st.com/2b/forum.php">stage1st论坛</a> 提供</p>,
             'tb': <p className="ubb-emoji-info">该组表情由 <a target="_blank" href="//tieba.baidu.com ">百度贴吧</a> 提供</p>,
             'em': null
