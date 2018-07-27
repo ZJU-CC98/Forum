@@ -46,7 +46,7 @@ class DropDownConnect extends React.Component<props, state> {   //顶部条的�
          * 第一次加载的时候刷新未读消息
          */
         if(this.props.isLogOn) {
-            this.handleNotifyMessageReceive();
+            this.props.refreshCurrentMessageCount();
             await CC98SignalR.start();
             Utility.setLocalStorage('signalr', Date.now());
             CC98SignalR.connection.on('NotifyMessageReceive', this.handleNotifyMessageReceive);
@@ -64,7 +64,7 @@ class DropDownConnect extends React.Component<props, state> {   //顶部条的�
                 }else { //如果用户在其他页面注销
                     this.props.logOff();
                 }
-            } else if(e.key === 'signalr') {
+            } else if(e.key === 'signalr') { // 其他页面开始SignalR时，关闭当前页面的连接
                 if(e.oldValue === e.newValue) return;
                 if(e.newValue) {
                     CC98SignalR.connection.off('NotifyMessageReceive');
@@ -79,6 +79,7 @@ class DropDownConnect extends React.Component<props, state> {   //顶部条的�
             }
         });
 
+        // 用户聚焦时开始SignalR连接
         window.addEventListener('focus', async e => {
             if(this.props.isLogOn && !CC98SignalR.isConnecting) {
                 Utility.setLocalStorage('signalr', Date.now());
@@ -86,7 +87,12 @@ class DropDownConnect extends React.Component<props, state> {   //顶部条的�
                 CC98SignalR.connection.on('NotifyMessageReceive', this.handleNotifyMessageReceive);
                 CC98SignalR.connection.on('NotifyNotificationReceive', this.handleNotifyMessageReceive);
             }
-        })
+        });
+
+        // 请求允许显示通知
+        if(Notification){
+            Notification.requestPermission();
+        }
 
         //每天刷新一次用户信息
         if(Utility.isLogOn() && !Utility.getLocalStorage('shouldNotRefreshUserInfo')) {
@@ -96,7 +102,13 @@ class DropDownConnect extends React.Component<props, state> {   //顶部条的�
     }
 
     handleNotifyMessageReceive() {
+        // 刷新未读数量
         this.props.refreshCurrentMessageCount();
+        // 浏览器通知
+        // @ts-ignore for Notification.permission 
+        if(Notification && Notification.permission === 'granted') {
+            new Notification('您有一条新的消息');
+        }
     }
 
     async componentWillReceiveProps(nextProps) {
