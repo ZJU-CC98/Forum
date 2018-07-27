@@ -10,11 +10,7 @@ import { connect } from 'react-redux';
 import { Actions, RootState } from '../Store';
 import { Link, withRouter, Route } from 'react-router-dom';
 import { refreshCurrentUserInfo } from '../AsyncActions/UserCenter';
-import { CC98SignalR } from '../SignalR';
 import { MessageInfo } from '../Reducers/Message';
-import { refreshCurrentMessageCount } from '../AsyncActions/Message';
-import { changeMessageCount } from '../Actions/Message';
-import { BlinkTitle } from '../Utility/blinkTitle'
 
 type props = {
     isLogOn: boolean, 
@@ -22,9 +18,7 @@ type props = {
     logOff: () => void, 
     reLogOn: (userInfo: UserInfo) => void,
     refreshUserInfo: () => void,
-    messageCount: MessageInfo,
-    refreshCurrentMessageCount: () => void,
-    changeMessageCount: (data: MessageInfo) => void
+    messageCount: MessageInfo
 }
 
 type state = {
@@ -37,23 +31,9 @@ class DropDownConnect extends React.Component<props, state> {   //顶部条的�
         this.state = ({
             hoverElement: null
         });
-        this.handleNotifyMessageReceive = this.handleNotifyMessageReceive.bind(this);
     }
-    /**
-     * 这里是signalR的部分
-     */
-    async componentDidMount() {
-        /**
-         * 第一次加载的时候刷新未读消息
-         */
-        if(this.props.isLogOn) {
-            this.props.refreshCurrentMessageCount();
-            await CC98SignalR.start();
-            Utility.setLocalStorage('signalr', Date.now());
-            CC98SignalR.connection.on('NotifyMessageReceive', this.handleNotifyMessageReceive);
-            CC98SignalR.connection.on('NotifyNotificationReceive', this.handleNotifyMessageReceive);
-        }
 
+    componentDidMount() {
         /**
          * 同步不同窗口的登陆信息
          */
@@ -65,72 +45,13 @@ class DropDownConnect extends React.Component<props, state> {   //顶部条的�
                 }else { //如果用户在其他页面注销
                     this.props.logOff();
                 }
-            } else if(e.key === 'signalr') { // 其他页面开始SignalR时，关闭当前页面的连接
-                if(e.oldValue === e.newValue) return;
-                if(e.newValue) {
-                    CC98SignalR.connection.off('NotifyMessageReceive');
-                    CC98SignalR.connection.off('NotifyNotificationReceive');
-                    CC98SignalR.stop();
-                }
-            } else if(e.key === 'messageCount') {
-                if(e.oldValue === e.newValue) return;
-                if(e.newValue){
-                    this.props.changeMessageCount(JSON.parse(e.newValue.slice(4)));
-                }
-            }
+            } 
         });
-
-        // 用户聚焦时开始SignalR连接
-        window.addEventListener('focus', async e => {
-            if(this.props.isLogOn && !CC98SignalR.isConnecting) {
-                Utility.setLocalStorage('signalr', Date.now());
-                await CC98SignalR.start();
-                CC98SignalR.connection.on('NotifyMessageReceive', this.handleNotifyMessageReceive);
-                CC98SignalR.connection.on('NotifyNotificationReceive', this.handleNotifyMessageReceive);
-            }
-        });
-
-        // 请求允许显示通知
-        if(Notification){
-            Notification.requestPermission();
-        }
 
         //每天刷新一次用户信息
         if(Utility.isLogOn() && !Utility.getLocalStorage('shouldNotRefreshUserInfo')) {
             this.props.refreshUserInfo();
             Utility.setLocalStorage('shouldNotRefreshUserInfo', true, 86400);
-        }
-    }
-
-    handleNotifyMessageReceive() {
-        // 刷新未读数量
-        this.props.refreshCurrentMessageCount();
-        // 浏览器通知
-        // @ts-ignore for Notification.permission 
-        if(Notification && Notification.permission === 'granted') {
-            new Notification('您有一条新的消息', {
-                icon: '/static/98icon.ico'
-            });
-        }
-    }
-
-    async componentWillReceiveProps(nextProps: props) {
-        if (!this.props.isLogOn && nextProps.isLogOn) {
-            //如果用户重新登录则开始signalR链接
-            this.handleNotifyMessageReceive();
-            await CC98SignalR.start();
-            CC98SignalR.connection.on('NotifyMessageReceive', this.handleNotifyMessageReceive);
-            CC98SignalR.connection.on('NotifyNotificationReceive', this.handleNotifyMessageReceive);
-        } else if (!nextProps.isLogOn) {
-            //如果用户注销则关闭signalR链接
-            CC98SignalR.connection.off('NotifyMessageReceive');
-            CC98SignalR.connection.off('NotifyNotificationReceive');
-            CC98SignalR.stop();
-        }
-
-        // 如果有未读消息
-        if(BlinkTitle.haveUnreadCount(nextProps.messageCount)) {
-            BlinkTitle.start();
         }
     }
 
@@ -277,12 +198,6 @@ function mapDispatch(dispatch) {
         },
         refreshUserInfo: () => {
             dispatch(refreshCurrentUserInfo());
-        },
-        refreshCurrentMessageCount: () => {
-            dispatch(refreshCurrentMessageCount());
-        },
-        changeMessageCount: (data: MessageInfo) => {
-            dispatch(Actions.changeMessageCount(data))
         }
     };
 }

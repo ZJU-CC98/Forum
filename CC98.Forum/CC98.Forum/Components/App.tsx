@@ -32,6 +32,7 @@ import { MonthlyHotTopic } from './Topic/Topic-Hot-Monthly';
 import { WeeklyHotTopic } from './Topic/Topic-Hot-Weekly';
 import { HistoryHotTopic } from './Topic/Topic-Hot-History';
 import ErrorControl from './ErrorControl';
+import NotificationController from './NotificationController';
 
 import { Constants } from './Constant';
 import * as Utility from '../Utility';
@@ -78,6 +79,7 @@ class App extends React.Component<Props> {
                     <Route component={ErrorControl} />
                     {!this.props.isError ? router : <Route component={Status[this.props.errorMessage]} />}
                     <Footer />
+                    <NotificationController />
                 </div>
             </ConnectedRouter>
         </div>);

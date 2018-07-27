@@ -4,7 +4,7 @@ import * as State from '../../States/AppState'
 import * as Utility from '../../Utility';
 import { Button, FormControl, ControlLabel, FormGroup } from 'react-bootstrap';
 import * as $ from 'jquery'
-import { UbbContainer } from '.././UbbContainer';
+import { UbbContainer } from '../UbbContainer';
 import { match } from 'react-router';
 
 import DocumentTitle from '../DocumentTitle';
