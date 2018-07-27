@@ -6,6 +6,7 @@ import { Constants } from '../Constant';
 import { UbbEditor } from '../UbbEditor';
 import { TopicManagement } from './Topic-TopicManagement';
 import { NoticeMessage } from '../NoticeMessage';
+import { Prompt } from 'react-router-dom';
 declare let moment: any;
 declare let editormd: any;
 interface Props {
@@ -45,16 +46,23 @@ export class SendTopic extends React.Component<Props, { content: string, mode: n
 		$(UIId).css('display', 'none');
     }
     componentWillUnmount() {
-      
-        console.log("unmounting");
-        if (this.state.content) {
-            confirm("是否要退出");
-            Utility.setLocalStorage("temporaryContent-"+ this.props.topicInfo.id, this.state.content);
-            console.log("save temp content");
-        }
+		if(this.state.content) {
+			Utility.setLocalStorage("temporaryContent-"+ this.props.topicInfo.id, this.state.content);
+		} else {
+			Utility.removeLocalStorage("temporaryContent-"+ this.props.topicInfo.id);
+		}
+		
+		// remove the event listener
+		window.onbeforeunload = null;
     }
     componentDidMount() {
-     
+		// confirm before user close the window
+		// when there's content in the editor
+		// should be removed before the component unmounts
+		window.onbeforeunload = () => {
+			if(this.state.content) return '确定要离开吗？';
+			return null;
+		}
 
 		if (this.state.mode === 1) {
            
@@ -245,10 +253,7 @@ ${newProps.content.content}[/quote]
 		}
 
     }
-    routerWillLeave(nextLocation) {
-
-        return '确认要离开？';
-    }
+    
 	async sendMdTopic() {
         try {
             this.setState({ buttonDisabled: true, buttonInfo: "..." });
@@ -407,6 +412,7 @@ ${newProps.content.content}[/quote]
             <NoticeMessage text="回复失败, 10s之内仅可进行一次回帖，请稍作休息" id="postFast" top="26%" left="38%" />
             <NoticeMessage text="回复失败, 请输入内容" id="postNone" top="26%" left="44%" />
             <NoticeMessage text="操作成功" id="operationSuccess" top="26%" left="44%" />
+			<Prompt message={location => (this.state.content && location.pathname.indexOf(this.props.topicInfo.id)) === -1 ? "确定要离开吗？" : true} />
         </div>;
 	}
 }
