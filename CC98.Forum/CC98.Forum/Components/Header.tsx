@@ -13,6 +13,7 @@ import { refreshCurrentUserInfo } from '../AsyncActions/UserCenter';
 import { CC98SignalR } from '../SignalR';
 import { MessageInfo } from '../Reducers/Message';
 import { refreshCurrentMessageCount } from '../AsyncActions/Message'
+import { changeMessageCount } from '../Actions/Message';
 
 type props = {
     isLogOn: boolean, 
@@ -21,7 +22,8 @@ type props = {
     reLogOn: (userInfo: UserInfo) => void,
     refreshUserInfo: () => void,
     messageCount: MessageInfo,
-    refreshCurrentMessageCount: () => void
+    refreshCurrentMessageCount: () => void,
+    changeMessageCount: (data: MessageInfo) => void
 }
 
 type state = {
@@ -69,13 +71,17 @@ class DropDownConnect extends React.Component<props, state> {   //顶部条的�
                     CC98SignalR.connection.off('NotifyNotificationReceive');
                     CC98SignalR.stop();
                 }
+            } else if(e.key === 'messageCount') {
+                if(e.oldValue === e.newValue) return;
+                if(e.newValue){
+                    this.props.changeMessageCount(JSON.parse(e.newValue.slice(4)));
+                }
             }
         });
 
         window.addEventListener('focus', async e => {
             if(this.props.isLogOn && !CC98SignalR.isConnecting) {
                 Utility.setLocalStorage('signalr', Date.now());
-                this.props.refreshCurrentMessageCount();
                 await CC98SignalR.start();
                 CC98SignalR.connection.on('NotifyMessageReceive', this.handleNotifyMessageReceive);
                 CC98SignalR.connection.on('NotifyNotificationReceive', this.handleNotifyMessageReceive);
@@ -254,6 +260,9 @@ function mapDispatch(dispatch) {
         },
         refreshCurrentMessageCount: () => {
             dispatch(refreshCurrentMessageCount());
+        },
+        changeMessageCount: (data: MessageInfo) => {
+            dispatch(Actions.changeMessageCount(data))
         }
     };
 }

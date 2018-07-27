@@ -12,6 +12,7 @@ export const refreshCurrentMessageCount: ActionCreator<ThunkAction<Promise<Actio
             headers
         });
         let data = await res.json() as MessageInfo;
+        Utility.setLocalStorage('messageCount', data);
         return dispatch(Actions.changeMessageCount(data));
     } catch(e) {
         console.error(e.message)
