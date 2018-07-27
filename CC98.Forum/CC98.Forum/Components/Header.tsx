@@ -213,10 +213,10 @@ class DropDownConnect extends React.Component<props, state> {   //顶部条的�
                     style={{ ...style, overflow: 'hidden', height: this.state.hoverElement === 'message' ? '8rem' : '0' }}
                 >
                     <ul style={{ display: 'inherit' }}>
-                        <Link to="/message/response"><li>回复我的{this.props.messageCount.replyCount ? <div className="message-counterLi">({this.props.messageCount.replyCount})</div> : null}</li></Link>
-                        <Link to="/message/attme"><li>@ 我的{this.props.messageCount.atCount ? <div className="message-counterLi">({this.props.messageCount.atCount})</div> : null}</li></Link>
-                        <Link to="/message/system"><li>系统通知{this.props.messageCount.systemCount ? <div className="message-counterLi">({this.props.messageCount.systemCount})</div> : null}</li></Link>
-                        <Link to="/message/message"><li>我的私信{this.props.messageCount.messageCount ? <div className="message-counterLi">({this.props.messageCount.messageCount})</div> : null}</li></Link>
+                        <Link to="/message/response"><li>回复我的{this.props.messageCount.replyCount ? <div className="message-counterLi">{this.props.messageCount.replyCount}</div> : null}</li></Link>
+                        <Link to="/message/attme"><li>@ 我的{this.props.messageCount.atCount ? <div className="message-counterLi">{this.props.messageCount.atCount}</div> : null}</li></Link>
+                        <Link to="/message/system"><li>系统通知{this.props.messageCount.systemCount ? <div className="message-counterLi">{this.props.messageCount.systemCount}</div> : null}</li></Link>
+                        <Link to="/message/message"><li>我的私信{this.props.messageCount.messageCount ? <div className="message-counterLi">{this.props.messageCount.messageCount}</div> : null}</li></Link>
                     </ul>
                 </div>
             </div>);
