@@ -12,8 +12,9 @@ import { Link, withRouter, Route } from 'react-router-dom';
 import { refreshCurrentUserInfo } from '../AsyncActions/UserCenter';
 import { CC98SignalR } from '../SignalR';
 import { MessageInfo } from '../Reducers/Message';
-import { refreshCurrentMessageCount } from '../AsyncActions/Message'
+import { refreshCurrentMessageCount } from '../AsyncActions/Message';
 import { changeMessageCount } from '../Actions/Message';
+import { BlinkTitle } from '../Utility/blinkTitle'
 
 type props = {
     isLogOn: boolean, 
@@ -107,11 +108,13 @@ class DropDownConnect extends React.Component<props, state> {   //顶部条的�
         // 浏览器通知
         // @ts-ignore for Notification.permission 
         if(Notification && Notification.permission === 'granted') {
-            new Notification('您有一条新的消息');
+            new Notification('您有一条新的消息', {
+                icon: '/static/98icon.ico'
+            });
         }
     }
 
-    async componentWillReceiveProps(nextProps) {
+    async componentWillReceiveProps(nextProps: props) {
         if (!this.props.isLogOn && nextProps.isLogOn) {
             //如果用户重新登录则开始signalR链接
             this.handleNotifyMessageReceive();
@@ -123,6 +126,11 @@ class DropDownConnect extends React.Component<props, state> {   //顶部条的�
             CC98SignalR.connection.off('NotifyMessageReceive');
             CC98SignalR.connection.off('NotifyNotificationReceive');
             CC98SignalR.stop();
+        }
+
+        // 如果有未读消息
+        if(BlinkTitle.haveUnreadCount(nextProps.messageCount)) {
+            BlinkTitle.start();
         }
     }
 
