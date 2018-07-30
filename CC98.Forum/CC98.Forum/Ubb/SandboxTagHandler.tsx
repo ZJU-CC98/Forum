@@ -4,6 +4,8 @@
 
 import * as React from 'react';
 import * as Ubb from './Core';
+import { UrlTagHandler } from './URLTagHandler';
+import * as parse from 'url-parse';
 
 export default class SandBoxTagHandler extends Ubb.RecursiveTagHandler {
 	get supportedTagNames(): string {
@@ -25,10 +27,15 @@ export default class SandBoxTagHandler extends Ubb.RecursiveTagHandler {
 			return innerContent;
 		}
 
-		const url = tagData.value('url');
+		const url = parse(tagData.value('url'));
+
+		if(!UrlTagHandler.isSafe(url)) {
+			return innerContent;
+		}
+
 		const width = tagData.value('width');
 		const height = tagData.value('height');
 
-		return <iframe sandbox="allow-scripts allow-forms allow-same-origin" src={url} style={{ border: 'none', width: width, height: height, }}>{innerContent}</iframe>;
+		return <iframe sandbox="allow-scripts allow-forms allow-same-origin" src={url.href} style={{ border: 'none', width: width, height: height, }}>{innerContent}</iframe>;
 	}
 }

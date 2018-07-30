@@ -24,7 +24,7 @@ export class UrlTagHandler extends Ubb.RecursiveTagHandler {
      * @return {boolean} 是否是安全的
      * @author AsukaSong
      */
-    isSafe(url: URL): boolean {
+    static isSafe(url: URL): boolean {
 
         // ' ' for ' javascript:'
         // based on https://medium.com/javascript-security/avoiding-xss-in-react-is-still-hard-d2b5c7ad9412
@@ -43,7 +43,7 @@ export class UrlTagHandler extends Ubb.RecursiveTagHandler {
         const url = parse(tagData.value('url') || innerContent, {});
 
         // 是否存在xss问题
-        if(!this.isSafe(url)) {
+        if(!UrlTagHandler.isSafe(url)) {
             return innerContent;
         }
 
