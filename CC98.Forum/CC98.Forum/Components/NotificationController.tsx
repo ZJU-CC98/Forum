@@ -7,6 +7,7 @@ import { MessageInfo } from '../Reducers/Message';
 import { refreshCurrentMessageCount } from '../AsyncActions/Message';
 import { changeMessageCount } from '../Actions/Message';
 import { BlinkTitle } from '../Utility/blinkTItle';
+import { history } from '../Store';
 
 type props = {
     isLogOn: boolean, 
@@ -78,8 +79,12 @@ class NotificationController extends React.PureComponent<props> {
         // @ts-ignore for Notification.permission 
         if(Notification && Notification.permission === 'granted') {
             new Notification('您有一条新的消息', {
-                icon: '/static/98icon.ico'
-            });
+                icon: '/static/98icon.ico',
+                onClick: () => {
+                    window.focus();
+                    history.push('/message/response');
+                }
+            } as any);
         }
     }
 

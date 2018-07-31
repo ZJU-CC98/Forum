@@ -1,8 +1,4 @@
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router';
-import { Link } from 'react-router-dom';
-import * as Utility from '../Utility';
-import { Breadcrumb, router } from './Breadcrumb';
 
 export type props = {
     voteInfo: {
@@ -25,8 +21,8 @@ export class Vote extends React.PureComponent<props> {
     }
 
     static isFormIllegal(voteInfo: props['voteInfo']) {
-        if(voteInfo.expiredDays > 1000 || voteInfo.expiredDays < 0) return '请输入合法的过期天数';
-        if(voteInfo.maxVoteCount > voteInfo.voteItems.length || voteInfo.maxVoteCount < 0) return '请输入合法的最大投票数';
+        if(voteInfo.expiredDays > 1000 || voteInfo.expiredDays < 1) return '请输入合法的过期天数';
+        if(voteInfo.maxVoteCount > voteInfo.voteItems.length || voteInfo.maxVoteCount < 1) return '请输入合法的最大投票数';
         for(let i = 0; i < voteInfo.voteItems.length; i++) {
             if(!voteInfo.voteItems[i]) return '投票选项不能为空';
         }

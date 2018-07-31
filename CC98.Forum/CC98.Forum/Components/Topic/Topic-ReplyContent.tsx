@@ -4,18 +4,22 @@ import { AwardInfo } from './Topic-AwardInfo';
 import { RouteComponent } from '../RouteComponent';
 import { PostManagement } from './Topic-PostManagement';
 import { UbbContainer } from '../UbbContainer';
+import { VoteContent, voteInfo } from './VoteInfo';
 declare let editormd: any;
 interface Props {
     postId;
     content;
     contentType;
+    topicInfo;
+    floor: number;
 }
-export class ReplyContent extends React.Component<Props, { postId }> {
+export class ReplyContent extends React.Component<Props, { postId, vote: voteInfo }> {
     constructor(props, content) {
         super(props, content);
 
         this.state = {
-            postId: this.props.postId
+            postId: this.props.postId,
+            vote: null
         }
     }
   
@@ -32,6 +36,7 @@ export class ReplyContent extends React.Component<Props, { postId }> {
             sequenceDiagram: true,
             codeFold: true,
         });
+        this.getVote();
     }
     async componentDidMount() {
         const divid = `doc-content${this.props.postId}`;
@@ -45,7 +50,25 @@ export class ReplyContent extends React.Component<Props, { postId }> {
             codeFold: true,
         });
         this.setState({});
+        this.getVote();
     }
+
+    async getVote() {
+        if(this.props.floor !== 1 || !this.props.topicInfo.isVote) return null;
+        try {
+            let headers = await Utility.formAuthorizeHeader();
+            let res = await Utility.cc98Fetch(`/topic/${this.props.topicInfo.id}/vote`, {
+                headers
+            });
+            let vote: voteInfo = await res.json();
+            this.setState({
+                vote
+            });
+        } catch(e) {
+
+        }
+    }
+
     render() {
     
         const divid = `doc-content${this.props.postId}`;
@@ -64,6 +87,7 @@ export class ReplyContent extends React.Component<Props, { postId }> {
         }
       
         return  <div className="reply-content">
+                {this.state.vote ? <VoteContent voteInfo={this.state.vote} /> : null}
                 <div className="substance">{content}</div>        
             </div>;
     }
