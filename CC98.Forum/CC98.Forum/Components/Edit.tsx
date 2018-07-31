@@ -15,10 +15,15 @@ import { UbbEditor } from './UbbEditor';
 import { Constants } from './Constant';
 import store from '../Store';
 import * as ErrorActions from '../Actions/Error';
+import { Vote, props as VoteProps } from './EditVoteIput';
 declare let editormd: any;
 declare let testEditor: any;
 
-export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, tags, ready, mode, content, title, postInfo, tag1, tag2, fetchState, boardId, type, masters: string[] }, { mode: string, id: number }> {
+export class Edit extends RouteComponent<
+    { history }, 
+    { topicInfo, boardName, tags, ready, mode, content, title, postInfo, tag1, tag2, fetchState, boardId, type, masters: string[], voteInfo: VoteProps['voteInfo'] }, 
+    { mode: string, id: number }
+> {
     constructor(props) {
         super(props);
         this.update = this.update.bind(this);
@@ -29,8 +34,28 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
         this.changeAcademicType = this.changeAcademicType.bind(this);
         this.changeActivityType = this.changeActivityType.bind(this);
         this.changeNormalType = this.changeNormalType.bind(this);
+        this.onVoteInfoChange = this.onVoteInfoChange.bind(this);
         this.state = ({
-            masters: [], tags: [], boardName: "", ready: false, mode: 0, content: "", title: "", postInfo: { floor: 0, title: "", content: "", contentType: 0 }, tag1: "", tag2: "", fetchState: 'ok', boardId: 1, type: 0, topicInfo: {}
+            masters: [], 
+            tags: [], 
+            boardName: "", 
+            ready: false, 
+            mode: 0, 
+            content: "", 
+            title: "", 
+            postInfo: { floor: 0, title: "", content: "", contentType: 0 }, 
+            tag1: "", 
+            tag2: "", 
+            fetchState: 'ok', 
+            boardId: 1, 
+            type: 0, 
+            topicInfo: {},
+            voteInfo: {
+                voteItems: ['', ''],
+                expiredDays: 0,
+                maxVoteCount: 0,
+                needVote: false
+            }
         });
     }
 
@@ -43,6 +68,7 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
         let url, response, data, tags;
         switch (mode) {
             case 'postTopic':
+            case 'postVoteTopic':
                 url = `/Board/${id}`;
                 response = await Utility.cc98Fetch(url, { headers });
                 data = await response.json();
@@ -116,6 +142,13 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
         this.setState({ content: value });
     }
     async sendMdTopic() {
+        if(this.match.params.mode === 'postVoteTopic') { // 投票内容发布前检查合法性
+            const info = Vote.isFormIllegal(this.state.voteInfo);
+            if(info) {
+                alert(info);
+                return null;
+            }
+        }
         if (this.state.title == "") {
             alert("请输入标题!");
         } else {
@@ -156,7 +189,13 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
                         type: this.state.type
                     };
                 }
-
+                if(this.match.params.mode === 'postVoteTopic') { // 投票内容
+                    content = {
+                        ...content,
+                        isVote: true,
+                        voteInfo: this.state.voteInfo
+                    }
+                }
                 let contentJson = JSON.stringify(content);
                 let token = await Utility.getToken();
                 let myHeaders = new Headers();
@@ -202,6 +241,13 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
 
     }
     async sendUbbTopic() {
+        if(this.match.params.mode === 'postVoteTopic') { // 投票内容发布前检查合法性
+            const info = Vote.isFormIllegal(this.state.voteInfo);
+            if(info) {
+                alert(info);
+                return null;
+            }
+        }
         if (this.state.title == "") {
             alert("请输入标题！");
         } else {
@@ -238,6 +284,13 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
                     title: this.state.title,
                     type: this.state.type
                 };
+            }
+            if(this.match.params.mode === 'postVoteTopic') { // 投票内容
+                content = {
+                    ...content,
+                    isVote: true,
+                    voteInfo: this.state.voteInfo
+                }
             }
             const contentJson = JSON.stringify(content);
             const token = await Utility.getToken();
@@ -383,6 +436,9 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
     onUbbChange(content) {
         this.setState({ content: content });
     }
+    onVoteInfoChange(voteInfo: VoteProps['voteInfo']) {
+        this.setState({ voteInfo });
+    }
     render() {
         const contentCache = Utility.getLocalStorage("contentCache");
         console.log("in render");
@@ -394,7 +450,7 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
         const url = `/list/${this.state.boardId}`;
         let editor;
         let titleInput = null;
-        if (mode === "postTopic") {
+        if (mode === "postTopic" || mode === 'postVoteTopic') {
             titleInput = <InputTitle boardId={id} tags={this.state.tags} onChange={this.onTitleChange.bind(this)} title={this.state.postInfo.title} tag1={0} tag2={0} />;
             if (this.state.mode === 0) {
                 editor = <div><div className="createTopicContent">
@@ -463,6 +519,7 @@ export class Edit extends RouteComponent<{ history }, { topicInfo, boardName, ta
             <Category url={url} boardName={this.state.boardName} mode={mode} />
             {titleInput}
             {topicType}
+            {mode === 'postVoteTopic' ? <Vote voteInfo={this.state.voteInfo} onVoteInfoChange={this.onVoteInfoChange} /> : null}
             {editor}
         </div>;
     }
@@ -493,6 +550,7 @@ export class Category extends React.Component<{ url: string, boardName: string, 
         let categoryText: string;
         if (this.props.mode === "postTopic") categoryText = "发表主题";
         else if (this.props.mode === "edit") categoryText = "编辑主题";
+        else if (this.props.mode === 'postVoteTopic') categoryText = "发表投票主题";
         return <div className="row" style={{ alignItems: "baseline", justifyContent: "flex-start", color: "grey", fontSize: "0.75rem", marginBottom: "1rem" }}>
             <Link style={{ color: "grey", fontSize: "1rem", marginRight: "0.5rem" }} to={"/"}>首页</Link>
             <i className="fa fa-chevron-right"></i>
@@ -819,7 +877,7 @@ export class InputMdContent extends React.Component<{ mode, content, postInfo, r
                 </div>
             </form>
             <div className="row" style={{ justifyContent: "center", marginBottom: "1.25rem " }}>
-                <div id="post-topic-button" className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }} onClick={this.send.bind(this)}>{this.props.mode === 'postTopic' ? "发帖" : "编辑"}</div>
+                <div id="post-topic-button" className="button blue" style={{ marginTop: "1.25rem", width: "4.5rem", letterSpacing: "0.3125rem" }} onClick={this.send.bind(this)}>{this.props.mode === 'postTopic'|| this.props.mode === 'postVoteTopic' ? "发帖" : "编辑"}</div>
             </div>
         </div>
         </div>;

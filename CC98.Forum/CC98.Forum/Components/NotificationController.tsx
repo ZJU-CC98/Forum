@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as Utility from '../Utility';
 import { connect } from 'react-redux';
 import { RootState } from '../Store';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { CC98SignalR } from '../SignalR';
 import { MessageInfo } from '../Reducers/Message';
 import { refreshCurrentMessageCount } from '../AsyncActions/Message';
@@ -40,9 +39,6 @@ class NotificationController extends React.PureComponent<props> {
             CC98SignalR.connection.on('NotifyNotificationReceive', this.handleNotifyMessageReceive);
         }
 
-        /**
-         * 同步不同窗口的登陆信息
-         */
         window.addEventListener('storage', (e) => {
             if(e.key === 'signalr') { // 其他页面开始SignalR时，关闭当前页面的连接
                 if(e.oldValue === e.newValue) return;
@@ -50,8 +46,8 @@ class NotificationController extends React.PureComponent<props> {
                     CC98SignalR.connection.off('NotifyMessageReceive');
                     CC98SignalR.connection.off('NotifyNotificationReceive');
                     CC98SignalR.stop();
-                }
-            } else if(e.key === 'messageCount') {
+                } 
+            } else if(e.key === 'messageCount') { // 同步不同窗口的未读信息
                 if(e.oldValue === e.newValue) return;
                 if(e.newValue){
                     this.props.changeMessageCount(JSON.parse(e.newValue.slice(4)));
