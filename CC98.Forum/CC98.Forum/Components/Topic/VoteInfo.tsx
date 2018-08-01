@@ -167,7 +167,7 @@ export class VoteContent extends React.PureComponent<props, state> {
                                     className="vote-current" 
                                     style={{
                                         backgroundColor: VoteContent.colors[index % 5],
-                                        width: `${20 * item.count / this.props.voteInfo.voteUserCount}rem`
+                                        width: `${20 * item.count / (this.props.voteInfo.voteUserCount || 1)}rem`
                                     }}
                                 ></span>
                             </span>
