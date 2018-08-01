@@ -91,7 +91,7 @@ class NotificationController extends React.PureComponent<props> {
     async componentWillReceiveProps(nextProps: props) {
         if (!this.props.isLogOn && nextProps.isLogOn) {
             //如果用户重新登录则开始signalR链接
-            this.handleNotifyMessageReceive();
+            this.props.refreshCurrentMessageCount();
             await CC98SignalR.start();
             CC98SignalR.connection.on('NotifyMessageReceive', this.handleNotifyMessageReceive);
             CC98SignalR.connection.on('NotifyNotificationReceive', this.handleNotifyMessageReceive);
