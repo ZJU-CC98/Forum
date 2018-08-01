@@ -339,6 +339,12 @@ export class ListButtonAndAds extends React.Component<{ boardInfo, adsUrl }> {
             sendInfo = <div style={{ display: "flex", alignItems: "center" }}><button style={{ border: "none" }} className="button bgcolor" onClick={this.clickListener}>发主题</button>{tip}</div>;
         else
             sendInfo = <Link className="button bgcolor" to={createTopicUrl}>发主题</Link>;
+            if(this.props.boardInfo.canVote) {
+                sendInfo = <div>
+                    <Link className="button bgcolor" to={createTopicUrl}>发主题</Link>
+                    <Link style={{ marginLeft: '2rem' }} className="button bgcolor" to={`/editor/postVoteTopic/${this.props.boardInfo.id}`}>发投票</Link>
+                </div>
+            }
         return <div className="row" style={{ width: "100%", height: "6.25rem", alignItems: "flex-end", justifyContent: "space-between", marginTop: "1rem" }}>
             {sendInfo}
             <div style={{ height: "6.25rem" }}> <AdsComponent /></div>

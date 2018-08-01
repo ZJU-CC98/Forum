@@ -1,5 +1,6 @@
 import * as Utility from '../../Utility';
 import * as React from 'react';
+import store from '../../Store';
 import { Link } from 'react-router-dom';
 declare var moment: any;
 
@@ -32,6 +33,7 @@ export type voteInfo = {
 
 type props = {
     voteInfo: voteInfo;
+    topicInfo: any;
     getInfo: () => void;
 }
 
@@ -139,6 +141,8 @@ export class VoteContent extends React.PureComponent<props, state> {
     }
 
     render() {
+        let shouldNotShowInfo = this.props.voteInfo.needVote && !this.props.voteInfo.myRecord && this.props.voteInfo.isAvailable;
+        if(store.getState().userInfo.currentUserInfo.id === this.props.topicInfo.userId) shouldNotShowInfo = false;
         return (
             <div className="vote-content" >
                 <div className="vote-message" style={{ opacity: this.state.messageOpacity }}>{this.state.message}</div>
@@ -167,7 +171,7 @@ export class VoteContent extends React.PureComponent<props, state> {
                                     }}
                                 ></span>
                             </span>
-                            {this.props.voteInfo.needVote && !this.props.voteInfo.myRecord && this.props.voteInfo.isAvailable ? null : <span className="vote-item-info" >{item.count}人/{(100 * item.count/(this.props.voteInfo.voteUserCount || 1)).toFixed(2)}%</span>}
+                            {shouldNotShowInfo ? null : <span className="vote-item-info" >{item.count}人/{(100 * item.count/(this.props.voteInfo.voteUserCount || 1)).toFixed(2)}%</span>}
                         </p>
                     </div>
                 ))}

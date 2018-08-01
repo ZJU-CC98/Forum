@@ -88,7 +88,7 @@ export class ReplyContent extends React.Component<Props, { postId, vote: voteInf
         }
       
         return  <div className="reply-content">
-                {this.state.vote ? <VoteContent getInfo={this.getVote} voteInfo={this.state.vote} /> : null}
+                {this.state.vote ? <VoteContent topicInfo={this.props.topicInfo} getInfo={this.getVote} voteInfo={this.state.vote} /> : null}
                 <div className="substance">{content}</div>        
             </div>;
     }
