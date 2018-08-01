@@ -1,0 +1,80 @@
+.vote-content {
+    padding: 1.5rem;
+    position: relative;
+    counter-reset: vote-item;
+}
+
+.vote-message {
+    position: absolute;
+    left: 50%;
+    padding: 1rem;
+    background-color: #5198d8;
+    color: white;
+    border-radius: 0.5rem;
+    pointer-events: none;
+    transition: opacity .2s;
+    opacity: 0;
+}
+
+.vote-description {
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+    margin: .4rem 0;
+
+    input {
+        margin-right: 1rem;
+    }
+}
+
+.vote-bar {
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+}
+
+.vote-total {
+    display: inline-flex;
+    position: relative;
+    width: 20rem;
+    background-color: gray;
+    border-radius: 1rem;
+    height: .8rem;
+    margin-left: .3rem;
+    margin-right: 2rem;
+}
+
+.vote-current {
+    position: absolute;
+    width: 10rem;
+    height: .8rem;
+    border-radius: 1rem;
+}
+
+.vote-info {
+    margin: 1.5rem 0;
+    font-size: 0.8rem;
+
+    p {
+        margin-top: 0;
+        margin-bottom: .5rem;
+    }
+}
+
+.vote-items {
+
+    label:before {
+        counter-increment: vote-item;
+        content: counter(vote-item) ". ";
+    }
+}
+
+.vote-buttons button {
+    width: 5rem;
+    height: 2.5rem;
+    padding: 0;
+    line-height: 1;
+    font-size: 1rem;
+    border-radius: 0.3rem;
+    margin-right: 1rem;
+}

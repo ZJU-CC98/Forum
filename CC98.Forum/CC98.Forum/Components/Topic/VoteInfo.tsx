@@ -32,12 +32,14 @@ export type voteInfo = {
 
 type props = {
     voteInfo: voteInfo;
+    getInfo: () => void;
 }
 
 type state = {
     items: number[];
     message: string;
     messageOpacity: 0 | 1;
+    isVoting: boolean;
 }
 
 export class VoteContent extends React.PureComponent<props, state> {
@@ -47,18 +49,34 @@ export class VoteContent extends React.PureComponent<props, state> {
             this.state = {
                 items: props.voteInfo.myRecord.items,
                 message: '',
-                messageOpacity: 0
+                messageOpacity: 0,
+                isVoting: false
             };
         } else {
             this.state = {
                 items: [],
                 message: '',
-                messageOpacity: 0
+                messageOpacity: 0,
+                isVoting: false
             };
         }
         this.handleInputChange = this.handleInputChange.bind(this);
         this.submit = this.submit.bind(this);
         this.getMessage = this.getMessage.bind(this);
+    }
+
+    static colors: string[] = ['#ff0000', '#ff8000', '#22b14c', '#00a2e8', '#3f48cc'];
+
+    componentWillReceiveProps(newProps: props) {
+        if(newProps.voteInfo.myRecord) {
+            this.setState({
+                items: newProps.voteInfo.myRecord.items
+            });
+        } else {
+            this.setState({
+                items: []
+            });
+        }
     }
 
     handleInputChange(id: number) {
@@ -80,6 +98,7 @@ export class VoteContent extends React.PureComponent<props, state> {
 
     async submit() {
         try {
+            this.setState({ isVoting: true });
             let headers = await Utility.formAuthorizeHeader();
             headers.append('Content-Type', 'application/json');
             let res = await Utility.cc98Fetch(`/topic/${this.props.voteInfo.topicId}/vote`, {
@@ -89,11 +108,13 @@ export class VoteContent extends React.PureComponent<props, state> {
                     items: this.state.items
                 })
             });
+            this.props.getInfo();
             if(res.ok) throw new Error('投票成功');
         } catch(e) {
             this.setState({
                 message: e.message,
-                messageOpacity: 1
+                messageOpacity: 1,
+                isVoting: false
             });
             setTimeout(() => {
                 this.setState({
@@ -120,10 +141,10 @@ export class VoteContent extends React.PureComponent<props, state> {
     render() {
         return (
             <div className="vote-content" >
-                <div className="vote-message">{this.state.message}</div>
-                {this.props.voteInfo.voteItems.map(item => (
+                <div className="vote-message" style={{ opacity: this.state.messageOpacity }}>{this.state.message}</div>
+                {this.props.voteInfo.voteItems.map((item, index) => (
                     <div className="vote-items" key={item.id}>
-                        <p>
+                        <p className="vote-description" >
                             <input 
                                 disabled={
                                     !this.props.voteInfo.canVote || // 不能投票    
@@ -136,8 +157,17 @@ export class VoteContent extends React.PureComponent<props, state> {
                             />
                             <label htmlFor={`vote${item.id}`}>{item.description}</label>
                         </p>
-                        <p>
-                            <span></span>
+                        <p className="vote-bar" >
+                            <span className="vote-total" >
+                                <span 
+                                    className="vote-current" 
+                                    style={{
+                                        backgroundColor: VoteContent.colors[index % 5],
+                                        width: `${20 * item.count / this.props.voteInfo.voteUserCount}rem`
+                                    }}
+                                ></span>
+                            </span>
+                            {this.props.voteInfo.needVote && !this.props.voteInfo.myRecord && this.props.voteInfo.isAvailable ? null : <span className="vote-item-info" >{item.count}人/{(100 * item.count/(this.props.voteInfo.voteUserCount || 1)).toFixed(2)}%</span>}
                         </p>
                     </div>
                 ))}
@@ -147,8 +177,8 @@ export class VoteContent extends React.PureComponent<props, state> {
                     {this.getMessage()}
                 </div>
                 {!this.props.voteInfo.canVote ? null : <div className="vote-buttons" >
-                    <button type="button" onClick={this.submit} disabled={!this.state.items.length}>投票</button>
-                    <button type="button" onClick={() => this.setState({ items: [] })}>重置</button>
+                    <button className="button blue" type="button" onClick={this.submit} disabled={!this.state.items.length || this.state.isVoting}>投票</button>
+                    <button className="button blue" type="button" onClick={() => this.setState({ items: [] })}>重置</button>
                 </div>}
             </div>
         );

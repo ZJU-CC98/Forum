@@ -21,10 +21,12 @@ export class ReplyContent extends React.Component<Props, { postId, vote: voteInf
             postId: this.props.postId,
             vote: null
         }
+
+        this.getVote = this.getVote.bind(this);
     }
   
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
         const divid = `doc-content${this.props.postId}`;
 
         editormd.markdownToHTML(divid, {
@@ -36,7 +38,7 @@ export class ReplyContent extends React.Component<Props, { postId, vote: voteInf
             sequenceDiagram: true,
             codeFold: true,
         });
-        this.getVote();
+        if(this.props.floor === 1 && this.props.topicInfo.isVote && !this.state.vote && prevProps.postId !== this.props.postId) this.getVote();
     }
     async componentDidMount() {
         const divid = `doc-content${this.props.postId}`;
@@ -50,11 +52,10 @@ export class ReplyContent extends React.Component<Props, { postId, vote: voteInf
             codeFold: true,
         });
         this.setState({});
-        this.getVote();
+        if(this.props.floor === 1 && this.props.topicInfo.isVote && !this.state.vote) this.getVote();
     }
 
     async getVote() {
-        if(this.props.floor !== 1 || !this.props.topicInfo.isVote) return null;
         try {
             let headers = await Utility.formAuthorizeHeader();
             let res = await Utility.cc98Fetch(`/topic/${this.props.topicInfo.id}/vote`, {
@@ -87,7 +88,7 @@ export class ReplyContent extends React.Component<Props, { postId, vote: voteInf
         }
       
         return  <div className="reply-content">
-                {this.state.vote ? <VoteContent voteInfo={this.state.vote} /> : null}
+                {this.state.vote ? <VoteContent getInfo={this.getVote} voteInfo={this.state.vote} /> : null}
                 <div className="substance">{content}</div>        
             </div>;
     }
