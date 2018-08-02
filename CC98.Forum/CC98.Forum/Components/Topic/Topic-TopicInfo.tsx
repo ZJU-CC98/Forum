@@ -54,6 +54,10 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
         e.target.src = `/static/images/_CC98协会.png`;
     }
     render() {
+        const title = this.props.topicInfo.title;
+        /* 过长字符串截断，65 是纯中文情况下的经验值 */
+        const overflowLen = 65;
+
         const url = `/static/images/_${this.props.boardInfo.name}.png`;
         const boardUrl = `/list/${this.props.boardInfo.id}`;
         let tags = null;
@@ -64,9 +68,10 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
         return <div className="topicInfo-info">
             <div className="topicInfo-title">
                 <div className="column" id="topicTitleProp" >
-                    <div id="essay1" className="row">
-                        {this.props.topicInfo.title}
-
+                    <div id="essay1" className="row" title={title.length > overflowLen ? title : undefined}>
+                        {
+                            title.length <= overflowLen ? title : title.slice(0, overflowLen) + ' ...'
+                        }
                     </div>
                     <div className="row" id="essayProp">
                         {tags}
