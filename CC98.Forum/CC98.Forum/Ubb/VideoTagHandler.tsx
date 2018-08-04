@@ -1,7 +1,11 @@
 import * as React from 'react';
 import * as Ubb from './Core';
-declare var require: any;
-var DPlayer = require('dplayer');
+
+const DPlayer = require('dplayer');
+import flvjs from 'flv.js';
+
+const parse = require('url-parse');
+
 
 /**
  * 处理 [video] 标签的处理器。
@@ -35,7 +39,7 @@ interface IState {
     height: string;
 }
 
-class VideoComponent extends React.Component<IProps> {
+class VideoComponent extends React.Component<IProps, IState> {
     /**
      * 对div的引用
      */
@@ -43,7 +47,7 @@ class VideoComponent extends React.Component<IProps> {
     /**
      * 对播放器的引用
      */
-    dp: any;
+    dp: any = null;
 
     state: IState = {
         height: '28.8984375rem'
@@ -53,14 +57,40 @@ class VideoComponent extends React.Component<IProps> {
      * 组件加载后初始化播放器
      */
     componentDidMount() {
-        this.dp = new DPlayer({
-            element: this.div,
-            autoplay: false,
-            preload: 'metadata',
-            video: {
-                url: encodeURI(this.props.src)
+
+        const isFlv = parse(this.props.src).pathname.slice(-4) === '.flv'
+
+        const video = !isFlv ? {
+                url: encodeURI(this.props.src),
+            } : {
+                url: encodeURI(this.props.src),
+                type: 'customFlv',
+                customType: {
+                    'customFlv': function (video) {
+                        const flvPlayer = flvjs.createPlayer({
+                            type: 'flv',
+                            url: video.src
+                        });
+                        flvPlayer.attachMediaElement(video);
+                        flvPlayer.load();
+                    }
+                }
             }
-        });
+
+        try {
+            this.dp = new DPlayer({
+                element: this.div,
+                autoplay: false,
+                preload: 'metadata',
+                video,
+            });
+        } catch {
+            console.log('new Dplayer Error.')
+        }
+
+        if(!this.dp) {
+            return
+        }
 
         this.dp.on('abort', e => null);
 
@@ -72,6 +102,10 @@ class VideoComponent extends React.Component<IProps> {
     }
 
     componentWillUnmount() {
+        if(!this.dp) {
+            return
+        }
+
         this.dp.destroy();
         this.div.innerHTML = '';
     }

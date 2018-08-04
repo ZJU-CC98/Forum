@@ -89,5 +89,12 @@ module.exports = {
         // contentBase: path.resolve(__dirname, "wwwroot"),
         historyApiFallback: true,
         open: true,
+
+        // proxy: {
+        //     '/1262843-1.flv': {
+        //         target: 'http://file409.niconi.cc',
+        //         changeOrigin: true,
+        //     }
+        // }
     },
 }
