@@ -159,6 +159,7 @@ export class TopicTitleAndContentState {
     state: number;
     hitCount: number;
     bestState: number;
+    isVote: boolean;
 }
 
 /**

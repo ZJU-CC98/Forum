@@ -358,20 +358,7 @@ export class ListTopContent extends React.Component<{ boardId }, { data }>{
     }
     private convertTopicToElement(item: TopicTitleAndContentState) {
         return <TopicTitleAndContent key={item.id}
-            title={item.title}
-            userName={item.userName}
-            id={item.id}
-            userId={item.userId}
-            lastPostTime={item.lastPostTime}
-            lastPostUser={item.lastPostUser}
-            likeCount={item.likeCount}
-            dislikeCount={item.dislikeCount}
-            replyCount={item.replyCount}
-            highlightInfo={item.highlightInfo}
-            topState={item.topState}
-            state={item.state}
-            hitCount={item.hitCount}
-            bestState={item.bestState}
+        {...item}
         />;
     }
     async componentDidMount() {
@@ -395,20 +382,7 @@ export class BestTopics extends React.Component<{ boardId, curPage }, { data }>{
     private convertTopicToElement(item: TopicTitleAndContentState) {
 
         return <TopicTitleAndContent key={item.id}
-            title={item.title}
-            userName={item.userName}
-            id={item.id}
-            userId={item.userId}
-            lastPostTime={item.lastPostTime}
-            lastPostUser={item.lastPostUser}
-            likeCount={item.likeCount}
-            dislikeCount={item.dislikeCount}
-            replyCount={item.replyCount}
-            highlightInfo={item.highlightInfo}
-            topState={item.topState}
-            state={item.state}
-            hitCount={item.hitCount}
-            bestState={item.bestState}
+        {...item}
         />;
     }
     render() {
@@ -437,20 +411,7 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
     private convertTopicToElement(item) {
 
         return <TopicTitleAndContent key={item.id}
-            title={item.title}
-            userName={item.userName}
-            id={item.id}
-            userId={item.userId}
-            lastPostTime={item.lastPostTime}
-            lastPostUser={item.lastPostUser}
-            likeCount={item.likeCount}
-            dislikeCount={item.dislikeCount}
-            replyCount={item.replyCount}
-            highlightInfo={item.highlightInfo}
-            topState={item.topState}
-            state={item.state}
-            hitCount={item.hitCount}
-            bestState={item.bestState}
+        {...item}
         />;
     }
     async componentWillReceiveProps(newProps) {
@@ -671,20 +632,7 @@ export class ListTagContent extends RouteComponent<{}, { items, totalPage: numbe
     private convertTopicToElement(item) {
 
         return <TopicTitleAndContent key={item.id}
-            title={item.title}
-            userName={item.userName}
-            id={item.id}
-            userId={item.userId}
-            lastPostTime={item.lastPostTime}
-            lastPostUser={item.lastPostUser}
-            likeCount={item.likeCount}
-            dislikeCount={item.dislikeCount}
-            replyCount={item.replyCount}
-            highlightInfo={item.highlightInfo}
-            topState={item.topState}
-            state={item.state}
-            hitCount={item.hitCount}
-            bestState={item.bestState}
+        {...item}
         />;
     }
     async componentWillReceiveProps(newProps) {
@@ -765,20 +713,7 @@ export class ListTagsContent extends RouteComponent<{}, { items, totalPage: numb
     private convertTopicToElement(item) {
 
         return <TopicTitleAndContent key={item.id}
-            title={item.title}
-            userName={item.userName}
-            id={item.id}
-            userId={item.userId}
-            lastPostTime={item.lastPostTime}
-            lastPostUser={item.lastPostUser}
-            likeCount={item.likeCount}
-            dislikeCount={item.dislikeCount}
-            replyCount={item.replyCount}
-            highlightInfo={item.highlightInfo}
-            topState={item.topState}
-            state={item.state}
-            hitCount={item.hitCount}
-            bestState={item.bestState}
+        {...item}
         />;
     }
     async componentWillReceiveProps(newProps) {
@@ -930,20 +865,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
     private convertTopicToElement(item: TopicTitleAndContentState) {
 
         return <TopicTitleAndContent key={item.id}
-            title={item.title}
-            userName={item.userName}
-            id={item.id}
-            userId={item.userId}
-            lastPostTime={item.lastPostTime}
-            lastPostUser={item.lastPostUser}
-            likeCount={item.likeCount}
-            dislikeCount={item.dislikeCount}
-            replyCount={item.replyCount}
-            highlightInfo={item.highlightInfo}
-            topState={item.topState}
-            state={item.state}
-            hitCount={item.hitCount}
-            bestState={item.bestState}
+            {...item}
         />;
     }
     async componentWillReceiveProps(newProps) {
@@ -1010,20 +932,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
     private convertTopicToElement(item: TopicTitleAndContentState) {
 
         return <TopicTitleAndContent key={item.id}
-            title={item.title}
-            userName={item.userName}
-            id={item.id}
-            userId={item.userId}
-            lastPostTime={item.lastPostTime}
-            lastPostUser={item.lastPostUser}
-            likeCount={item.likeCount}
-            dislikeCount={item.dislikeCount}
-            replyCount={item.replyCount}
-            highlightInfo={item.highlightInfo}
-            topState={item.topState}
-            state={item.state}
-            hitCount={item.hitCount}
-            bestState={item.bestState}
+            {...item}
         />;
     }
     async componentWillReceiveProps(newProps) {
@@ -1190,6 +1099,13 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
                 icon = <div style={{
                     width: "1rem", justifyContent: "flex-start"
                 }}><i style={{ color: "red" }} className="fa fa-arrow-circle-up fa-lg"></i></div>
+            }
+
+            // 投票贴 
+            if(this.props.isVote) {
+                icon = <div style={{
+                    width: "1rem", justifyContent: "flex-start"
+                }}><i style={{ color: "#B0B0B0" }} className="fa fa-pie-chart fa-lg"></i></div>
             }
             let c: any = '#000';
             let b: any = 'normal';

@@ -16,7 +16,7 @@ type voteRecord = {
     items: number[];
     ip: string;
     time: string;
-};
+}
 
 export type voteInfo = {
     topicId: number;
