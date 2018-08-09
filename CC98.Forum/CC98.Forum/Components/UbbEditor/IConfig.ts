@@ -85,3 +85,8 @@ export interface IConfig {
         image: string[]
     }
 }
+
+export interface IConfigInProps {
+    height?: number;
+    submit?: () => void;
+}

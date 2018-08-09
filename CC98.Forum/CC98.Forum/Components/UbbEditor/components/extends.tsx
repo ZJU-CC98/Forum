@@ -14,19 +14,27 @@ interface Props {
     extendTagName: string
     changeValue: (ubbSegment: type.IUbbSegment) => void
     clearShown: () => void
+    extendIsShown: boolean;
 }
 
-export class Extends extends React.PureComponent<Props> {
-    private extendConfig: type.IUbbExtendSegmentConfig
+interface State {
+    extendConfig: type.IUbbExtendSegmentConfig
+}
+
+export class Extends extends React.PureComponent<Props, State> {
     private form: HTMLFormElement
 
     constructor(props: Props) {
         super(props)
-        this.initConfig(props)
+        this.state = {
+            extendConfig: utility.buttonConfig.filter(item => item.tagName === props.extendTagName)[0] as type.IUbbExtendSegmentConfig
+        }
     }
 
     componentWillReceiveProps(newProps) {
-        this.initConfig(newProps)
+        if(newProps.extendTagName) this.setState({
+            extendConfig: utility.buttonConfig.filter(item => item.tagName === newProps.extendTagName)[0] as type.IUbbExtendSegmentConfig
+        })
     }
 
     private changeValue(formData: FormData) {
@@ -45,35 +53,25 @@ export class Extends extends React.PureComponent<Props> {
         this.form.reset()
     }
 
-    private initConfig(props: Props) {
-        try {
-            this.extendConfig = utility.buttonConfig.filter(item => item.tagName === props.extendTagName)[0] as type.IUbbExtendSegmentConfig
-        } catch(e) {
-
-        }
-    }
-
     render() {
-        if(this.extendConfig) {
-            return (
-                <div>
-                    <form ref={it => this.form = it} onSubmit={e => {
-                        e.preventDefault()
-                        this.changeValue(new FormData(e.target as HTMLFormElement))
-                    }} >
-                        <input type="text" defaultValue="" name="content" placeholder={this.extendConfig.contentValueInfo} />
-                        {this.extendConfig.propertiesInfos ? this.extendConfig.propertiesInfos.map((item, index) => <input 
-                            type="text" 
-                            defaultValue=""
-                            name={item.key || 'mainValue'}
-                            placeholder={item.title}
-                            key={item.key + index}
-                        />) : null }
-                        <button className="fa fa-check" type="submit" />
-                        <button className="fa fa-remove" type="reset" onClick={this.props.clearShown} />
-                    </form>
-                </div>
-            )
-        }
+        return (
+            <div className="ubb-extend" onClick={e => e.stopPropagation()} style={{ height: this.props.extendIsShown ? '2rem' : '0rem' }} >
+                {this.state.extendConfig ? <form ref={it => this.form = it} onSubmit={e => {
+                    e.preventDefault()
+                    this.changeValue(new FormData(e.target as HTMLFormElement))
+                }} >
+                    <input type="text" defaultValue="" name="content" placeholder={this.state.extendConfig.contentValueInfo} />
+                    {this.state.extendConfig.propertiesInfos ? this.state.extendConfig.propertiesInfos.map((item, index) => <input 
+                        type="text" 
+                        defaultValue=""
+                        name={item.key || 'mainValue'}
+                        placeholder={item.title}
+                        key={item.key + index}
+                    />) : null }
+                    <button className="fa fa-check" type="submit" />
+                    <button className="fa fa-remove" type="reset" onClick={this.props.clearShown} />
+                </form> : null}
+            </div>
+        )
     }
 }

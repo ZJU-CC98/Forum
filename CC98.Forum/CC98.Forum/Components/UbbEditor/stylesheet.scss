@@ -1,0 +1,166 @@
+.ubb-editor {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 20rem;
+    position: relative;
+    background-color: white;
+    border: 1px solid rgb(204,204,204);
+
+    textarea {
+        transition-duration: .5s;
+        flex-grow: 1;
+        border: none;
+        width: 100%;
+        padding: 0;
+        resize: none;
+        font-size: 1rem;
+    }
+
+    button, label, textarea {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        border: 0;
+
+        &::-ms-expand {
+            display: none;
+        }
+
+        &:focus {
+            outline: 0;
+        }
+
+        &:active {
+            border: 0;
+        }
+    }
+}
+
+.ubb-buttons {
+    display: flex;
+}
+
+.ubb-button {
+    width: 2rem;
+    height: 2rem;
+    margin: 0 .5rem 0 0;
+    cursor: pointer;
+}
+
+.ubb-button-icon {
+    width: 2rem;
+    height: 2rem;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.ubb-button-color, .ubb-button-fontSize {
+    position: relative;
+
+    .ubb-color-picker, select {
+        width: 2rem;
+        height: 2rem;
+        box-sizing: border-box;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+    }
+}
+
+.ubb-emoji {
+    position: absolute;
+    top: 2rem;
+    width: 50%;
+    transition-duration: .4s;
+    left: 22rem;
+    background-color: white;
+    border: 0px solid #ccc;
+    overflow: hidden;
+}
+
+.ubb-emoji-content {
+    border-top: 1px solid #ccc;
+    overflow-y: scroll;
+    max-height: 20rem;
+
+    img {
+        margin: 0.5rem;
+        cursor: pointer;
+    }
+}
+
+.ubb-emoji-buttons {
+    display: flex;
+    flex-direction: row;
+    height: 2rem;
+}
+
+.ubb-emoji-button {
+    flex-grow: 1;
+    margin: 0;
+    height: 2rem;
+    transition-duration: .5s;
+}
+
+.ubb-emoji-button-active {
+    flex-grow: 2;
+    margin: 0;
+    background-color: #ccc;
+    transition-duration: .5s;
+}
+
+.ubb-emoji-content-ac img {
+    width: 4.6875rem;
+    height: 4.0625rem;
+}
+
+.ubb-emoji-content-mj img {
+    height: 2rem;
+    width: 2rem;
+}
+
+.ubb-emoji-content-tb {
+    height: 20rem;
+
+    img {
+        margin: 0.6rem;
+    }
+}
+
+.ubb-emoji-info {
+    color: grey; 
+    font-size: 0.75rem; 
+    text-align: center;
+
+    a {
+        color: blue;
+        text-decoration: underline;
+    }
+}
+
+.ubb-editor-info {
+    display: flex;
+    position: absolute;
+    background: #8dc9db;
+    z-index: 2;
+    transition-duration: .5s;
+    pointer-events: none;
+    left: 25%;
+    margin-top: 2rem;
+    border-radius: .5rem;
+    align-items: center;
+    height: 2.5rem;
+    color: white;
+
+    p {
+        margin: 0 2rem;
+    }
+}
+
+.ubb-extend {
+    transition-duration: .5s;
+    overflow: hidden;
+}

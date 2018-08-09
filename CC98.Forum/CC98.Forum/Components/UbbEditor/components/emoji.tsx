@@ -117,6 +117,7 @@ export default class Emoji extends React.Component<EmojiProps> {
             <div
                 className="ubb-emoji"
                 style={emojiIsShown ? { height: '22rem', borderWidth: '1px'} : { height: '0rem'}}
+                onClick={e => e.stopPropagation()}
             >
                 <div className="ubb-emoji-buttons">
                     <button 

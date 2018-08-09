@@ -12,6 +12,7 @@ import Emoji from './emoji';
 interface Props {
     value: string
     onChange: (newValue: string) => void
+    option?: ConfigType.IConfigInProps
 }
 
 interface State {
@@ -123,6 +124,8 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
     componentDidMount() {
         // bind redo and undo for Buttons
         this.forceUpdate()
+
+        window.addEventListener('click', this.clearExtendAndEmoji)
     }
 
     // componentWillReceiveProps(newProps: Props) {
@@ -133,12 +136,18 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
 
     render() {
         return (
-            <div>
+            <div className="ubb-editor" >
                 <Buttons 
                     changeValue={this.changeValue} 
                     changeExtendName={this.changeExtend} 
                     undo={this.customTextArea && this.customTextArea.undo}
                     redo={this.customTextArea && this.customTextArea.redo}
+                />
+                <Extends
+                    extendTagName={this.state.extendTagName}
+                    changeValue={this.changeValue}
+                    clearShown={this.clearExtendAndEmoji}
+                    extendIsShown={this.state.extendTagName && this.state.extendTagName !== 'emoji'}
                 />
                 <CustomTextArea 
                     value={this.state.value}
@@ -153,13 +162,6 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
                         if(files) this.handleUpload(files)
                     }}
                 />
-                {this.state.extendTagName ? (
-                    <Extends
-                        extendTagName={this.state.extendTagName}
-                        changeValue={this.changeValue}
-                        clearShown={this.clearExtendAndEmoji}
-                    />
-                ) : null}
                 <Message 
                     message={this.state.message} 
                 />
