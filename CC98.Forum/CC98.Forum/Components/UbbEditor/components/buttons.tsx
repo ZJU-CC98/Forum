@@ -8,6 +8,7 @@ interface Props {
     changeExtendName: (extendName: string) => void
     undo?: () => void
     redo?: () => void
+    triggerIsPreviewing: () => void
 }
 
 export class Buttons extends React.PureComponent<Props> {
@@ -21,7 +22,7 @@ export class Buttons extends React.PureComponent<Props> {
 
     render() {
         return (
-            <div className="ubb-buttons" onClick={e => e.stopPropagation()}>
+            <div className="ubb-buttons" onClick={e => e.stopPropagation()} >
                 {buttonConfig.map(item => {
                     const { type, tagName, tagIcon, tagDescription, title } = item
                     switch(item.type) {
@@ -58,6 +59,7 @@ export class Buttons extends React.PureComponent<Props> {
                             htmlFor="ubbFileUpload"
                             title={title}
                             className={`fa ${tagIcon} ubb-button ubb-button-icon`} 
+                            style={{ pointerEvents: 'all' }}
                         ></label>
                         case 'emoji': return <button
                             type="button"
@@ -68,8 +70,10 @@ export class Buttons extends React.PureComponent<Props> {
                         ></button>
                     }
                 })}
+                <div style={{ flexGrow: 1 }} ></div>
                 <button className="fa fa-undo ubb-button" type="button" title="撤销" onClick={this.props.undo}></button>
                 <button className="fa fa-repeat ubb-button" type="button" title="重做" onClick={this.props.redo}></button>
+                <button className="fa fa-window-maximize ubb-button" type="button" title="切换预览" onClick={this.props.triggerIsPreviewing} ></button>
             </div>
         )
     }

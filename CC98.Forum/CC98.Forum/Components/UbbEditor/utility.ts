@@ -18,9 +18,10 @@ interface UbbEditorStateInfo {
 }
 
 export function getNewState(state: UbbEditorStateInfo, ubbSegment: ConfigType.IUbbSegment): UbbEditorStateInfo {
-    const { value, selectionStart, selectionEnd } = state
+    let { value, selectionStart, selectionEnd } = state
     const { tagName, mainProperty, subProperties, content } = ubbSegment
     let newValue = value.slice(0, selectionStart)
+    const valueLeft = value.slice(selectionEnd, value.length)
     const select = value.slice(selectionStart, selectionEnd)
 
     // 生成插入的内容
@@ -37,13 +38,21 @@ export function getNewState(state: UbbEditorStateInfo, ubbSegment: ConfigType.IU
         }
     }
 
+    if(config.shouldNotSelect.indexOf(tagName) !== -1) {
+        insertCode += '\n'
+        selectionStart = selectionStart + insertCode.length
+        selectionEnd = selectionStart
+    } else {
+        selectionEnd = selectionStart + insertCode.length
+    }
+
     newValue += insertCode
-    newValue += value.slice(selectionEnd, value.length)
+    newValue += valueLeft
 
     return {
         value: newValue,
         selectionStart,
-        selectionEnd: selectionStart + insertCode.length
+        selectionEnd
     }
 }
 
@@ -77,11 +86,13 @@ export function createColorPicker(handler: (color) => void) {
     })
 }
 
-export async function uploadFiles(files: FileList, shouldCompassImage?: boolean) {
+export async function uploadFiles(files: File[], shouldCompassImage?: boolean) {
+    if(!files.length) throw new Error('未找到文件，请尝试点击按钮上传')
     const url = !shouldCompassImage ? '/file?compressImage=false' : '/file';
     const myHeaders = await Utility.formAuthorizeHeader()
     let formdata = new FormData()
     formdata.append('contentType', "multipart/form-data")
+    files.map(item => formdata.append('files', item, item.name))
     let res = await Utility.cc98Fetch(url, {
         method: 'POST',
         headers: myHeaders,

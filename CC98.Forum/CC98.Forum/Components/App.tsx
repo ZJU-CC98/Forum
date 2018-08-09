@@ -32,7 +32,6 @@ import { MonthlyHotTopic } from './Topic/Topic-Hot-Monthly';
 import { WeeklyHotTopic } from './Topic/Topic-Hot-Weekly';
 import { HistoryHotTopic } from './Topic/Topic-Hot-History';
 import ErrorControl from './ErrorControl';
-import { NewUbbEditor } from './UbbEditor/index'
 
 import { Constants } from './Constant';
 import * as Utility from '../Utility';
@@ -76,7 +75,6 @@ class App extends React.Component<Props> {
             <ConnectedRouter history={history}>
                 <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px", backgroundColor: "#e6e7ec" }}>
                     <Header />
-                    <NewUbbEditor />
                     <Route component={ErrorControl} />
                     {!this.props.isError ? router : <Route component={Status[this.props.errorMessage]} />}
                     <Footer />

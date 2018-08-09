@@ -14,7 +14,8 @@ interface Props {
     extendTagName: string
     changeValue: (ubbSegment: type.IUbbSegment) => void
     clearShown: () => void
-    extendIsShown: boolean;
+    extendIsShown: boolean
+    upload: (files: FileList) => void
 }
 
 interface State {
@@ -68,6 +69,7 @@ export class Extends extends React.PureComponent<Props, State> {
                         placeholder={item.title}
                         key={item.key + index}
                     />) : null }
+                    {this.state.extendConfig.allowUpload ? <label style={{ pointerEvents: 'all' }} className="fa fa-upload ubb-button-icon" htmlFor="ubbFileUpload" /> : null}
                     <button className="fa fa-check" type="submit" />
                     <button className="fa fa-remove" type="reset" onClick={this.props.clearShown} />
                 </form> : null}

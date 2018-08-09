@@ -12,6 +12,7 @@ interface EmojiProps {
     emojiType: string;
     emojiIsShown: boolean;
     changeEmojiType: (em: emojiType) => void;
+    height?: number
 }
 
 export default class Emoji extends React.Component<EmojiProps> {
@@ -116,7 +117,7 @@ export default class Emoji extends React.Component<EmojiProps> {
         return (
             <div
                 className="ubb-emoji"
-                style={emojiIsShown ? { height: '22rem', borderWidth: '1px'} : { height: '0rem'}}
+                style={emojiIsShown ? { height: `${this.props.height || 18}rem`, borderWidth: '1px'} : { height: '0rem'}}
                 onClick={e => e.stopPropagation()}
             >
                 <div className="ubb-emoji-buttons">
@@ -141,7 +142,7 @@ export default class Emoji extends React.Component<EmojiProps> {
                         onClick={(e) => { e.stopPropagation(); this.props.changeEmojiType('em'); }}
                     >经典</button>
                 </div>
-                <div className={`ubb-emoji-content ubb-emoji-content-${emojiType}`}>
+                <div className={`ubb-emoji-content ubb-emoji-content-${emojiType}`} style={{ height: `${this.props.height || 16}rem`}} >
                     {info[emojiType]}
                     {emoji[emojiType]}
                 </div>

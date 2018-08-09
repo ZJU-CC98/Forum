@@ -7,11 +7,12 @@ import { CustomTextArea } from './customtextarea'
 import { Buttons } from './buttons'
 import { Extends } from './extends'
 import { Message } from './message'
-import Emoji from './emoji';
+import Emoji from './emoji'
+import { UbbContainer } from '../../UbbContainer'
 
 interface Props {
     value: string
-    onChange: (newValue: string) => void
+    update: (value: string) => void
     option?: ConfigType.IConfigInProps
 }
 
@@ -22,9 +23,10 @@ interface State {
     extendTagName: string
     message: string
     emojiType: ConfigType.emojiType
+    isPreviewing: boolean
 }
 
-export class NewUbbEditor extends React.PureComponent<null, State> {
+export class UbbEditor extends React.PureComponent<Props, State> {
     constructor(props) {
         super(props)
         this.state = { 
@@ -33,7 +35,8 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
             selectionEnd: 0,
             extendTagName: '',
             message: '',
-            emojiType: 'hide'
+            emojiType: 'hide',
+            isPreviewing: false
         }
 
         this.onChange = this.onChange.bind(this)
@@ -43,6 +46,7 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
         this.handleUpload = this.handleUpload.bind(this)
         this.changeEmojiType = this.changeEmojiType.bind(this)
         this.clearExtendAndEmoji = this.clearExtendAndEmoji.bind(this)
+        this.triggerIsPreviewing = this.triggerIsPreviewing.bind(this)
     }
 
     private customTextArea: CustomTextArea
@@ -69,13 +73,20 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
     private changeValue(ubbSegment: ConfigType.IUbbSegment): void {
         const newState = utility.getNewState(this.state, ubbSegment)
         this.setState(newState, this.selectTextArea)
+        this.props.update(newState.value)
         this.clearExtendAndEmoji()
+    }
+
+    triggerIsPreviewing() {
+        this.setState(prevState => ({ isPreviewing: !prevState.isPreviewing }))
     }
 
     private selectTextArea() {
         this.customTextArea.textarea.focus()
         this.customTextArea.textarea.setSelectionRange(this.state.selectionStart, this.state.selectionEnd)
     }
+
+    
 
     private async handleUpload(filelist: FileList, shouldCompassImage?: boolean) {
         let files = Array.from(filelist)
@@ -88,7 +99,7 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
                 throw new Error('文件过大')
             }
 
-            let results = await utility.uploadFiles(filelist, shouldCompassImage)
+            let results = await utility.uploadFiles(files, shouldCompassImage)
             results.map((item, index) => this.changeValue({
                 type: 'extend',
                 tagName: utility.getTagName(files[index]),
@@ -128,11 +139,15 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
         window.addEventListener('click', this.clearExtendAndEmoji)
     }
 
-    // componentWillReceiveProps(newProps: Props) {
-    //     this.setState({
-    //         value: newProps.value
-    //     })
-    // }
+    componentWillUnmount() {
+        window.removeEventListener('click', this.clearExtendAndEmoji)
+    }
+
+    componentWillReceiveProps(newProps: Props) {
+        if(this.state.value !== newProps.value) this.setState({
+            value: newProps.value
+        })
+    }
 
     render() {
         return (
@@ -142,14 +157,16 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
                     changeExtendName={this.changeExtend} 
                     undo={this.customTextArea && this.customTextArea.undo}
                     redo={this.customTextArea && this.customTextArea.redo}
+                    triggerIsPreviewing={this.triggerIsPreviewing}
                 />
                 <Extends
                     extendTagName={this.state.extendTagName}
                     changeValue={this.changeValue}
                     clearShown={this.clearExtendAndEmoji}
                     extendIsShown={this.state.extendTagName && this.state.extendTagName !== 'emoji'}
+                    upload={this.handleUpload}
                 />
-                <CustomTextArea 
+                {this.state.isPreviewing ? <UbbContainer code={this.state.value} /> : <CustomTextArea 
                     value={this.state.value}
                     onChange={this.onChange}
                     ref={it => this.customTextArea = it} 
@@ -161,7 +178,15 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
                         let files = e.dataTransfer.files
                         if(files) this.handleUpload(files)
                     }}
-                />
+                    onPaste={e => {
+                        const kinds = Array.from(e.clipboardData.items).map(item => item.kind);
+                        const files = e.clipboardData.files;
+                        if(kinds.some(kind => kind === 'file')) {
+                            e.preventDefault();
+                            this.handleUpload(files);
+                        }
+                    }}
+                />}
                 <Message 
                     message={this.state.message} 
                 />
@@ -170,9 +195,9 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
                     type="file" 
                     id="ubbFileUpload" 
                     multiple 
-                    onChange={e => {
+                    onChange={async e => {
                         let filelist = e.target.files
-                        this.handleUpload(filelist)
+                        await this.handleUpload(filelist)
                         e.target.value = ''
                     }}
                 />
@@ -181,6 +206,7 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
                     emojiType={this.state.emojiType} 
                     changeEmojiType={this.changeEmojiType}
                     emojiIsShown={this.state.extendTagName === 'emoji'}
+                    height={this.props.option && this.props.option.height && this.props.option.height - 2}
                 />
             </div>
         )

@@ -12,12 +12,13 @@
         flex-grow: 1;
         border: none;
         width: 100%;
-        padding: 0;
         resize: none;
         font-size: 1rem;
+        padding: .5rem;
+        box-sizing: border-box;
     }
 
-    button, label, textarea {
+    button, label, textarea, input {
         -webkit-appearance: none;
         -moz-appearance: none;
         border: 0;
@@ -38,6 +39,7 @@
 
 .ubb-buttons {
     display: flex;
+    border-bottom: 1px solid rgb(204,204,204);
 }
 
 .ubb-button {
@@ -84,7 +86,7 @@
 .ubb-emoji-content {
     border-top: 1px solid #ccc;
     overflow-y: scroll;
-    max-height: 20rem;
+    max-height: 16rem;
 
     img {
         margin: 0.5rem;
@@ -163,4 +165,14 @@
 .ubb-extend {
     transition-duration: .5s;
     overflow: hidden;
+    border-bottom: 1px solid rgb(204,204,204);
+
+    form {
+        height: 2rem;
+        display: flex;
+    }
+
+    input {
+        
+    }
 }

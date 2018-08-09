@@ -1,1 +1,1 @@
-export * from './UbbEditorOld/UbbEditor';
+export { UbbEditor } from './UbbEditor/index'

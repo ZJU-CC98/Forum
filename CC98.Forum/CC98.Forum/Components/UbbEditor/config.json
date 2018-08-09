@@ -9,5 +9,6 @@
         "image": [
             
         ]
-    }
+    },
+    "shouldNotSelect": ["img", "video", "audio", "upload", "bili"]
 }

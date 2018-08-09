@@ -58,6 +58,7 @@ export interface IUbbExtendSegmentConfig extends IUbbSegmentConfig {
      */
     contentValueInfo: string
     allowUpload: boolean
+    hasCompassOption: boolean
 }
 
 export interface IUbbTextSizeSegmentConfig extends IUbbSegmentConfig {
@@ -84,9 +85,10 @@ export interface IConfig {
         audio: string[]
         image: string[]
     }
+    shouldNotSelect: string[]
 }
 
 export interface IConfigInProps {
     height?: number;
-    submit?: () => void;
+    submit?: () => any;
 }

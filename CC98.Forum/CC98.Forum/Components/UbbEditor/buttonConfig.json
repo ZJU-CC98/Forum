@@ -82,7 +82,8 @@
         "title": "插入图片",
         "type": "extend",
         "contentValueInfo": "在此输入图片文件地址",
-        "allowUpload": true
+        "allowUpload": true,
+        "hasCompassOption": true
     },
     {
         "tagName": "video",
