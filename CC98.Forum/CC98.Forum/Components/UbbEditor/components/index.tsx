@@ -7,6 +7,7 @@ import { CustomTextArea } from './customtextarea'
 import { Buttons } from './buttons'
 import { Extends } from './extends'
 import { Message } from './message'
+import Emoji from './emoji';
 
 interface Props {
     value: string
@@ -19,6 +20,7 @@ interface State {
     selectionEnd: number
     extendTagName: string
     message: string
+    emojiType: ConfigType.emojiType
 }
 
 export class NewUbbEditor extends React.PureComponent<null, State> {
@@ -29,7 +31,8 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
             selectionStart: 0,
             selectionEnd: 0,
             extendTagName: '',
-            message: ''
+            message: '',
+            emojiType: 'hide'
         }
 
         this.onChange = this.onChange.bind(this)
@@ -37,6 +40,8 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
         this.changeExtend = this.changeExtend.bind(this)
         this.message = this.message.bind(this)
         this.handleUpload = this.handleUpload.bind(this)
+        this.changeEmojiType = this.changeEmojiType.bind(this)
+        this.clearExtendAndEmoji = this.clearExtendAndEmoji.bind(this)
     }
 
     private customTextArea: CustomTextArea
@@ -46,6 +51,12 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
     }
 
     private changeExtend(extendTagName: string) {
+        // 首次点击表情按钮
+        if(extendTagName === 'emoji' && this.state.emojiType === 'hide') {
+            this.setState({
+                emojiType: 'ac'
+            })
+        }
         // 点击相同按钮时隐藏
         this.setState((prevState: State) => extendTagName === prevState.extendTagName ? {
             extendTagName: ''
@@ -57,6 +68,7 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
     private changeValue(ubbSegment: ConfigType.IUbbSegment): void {
         const newState = utility.getNewState(this.state, ubbSegment)
         this.setState(newState, this.selectTextArea)
+        this.clearExtendAndEmoji()
     }
 
     private selectTextArea() {
@@ -86,6 +98,12 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
         }
     }
 
+    private changeEmojiType(em: ConfigType.emojiType) {
+        this.setState({
+            emojiType: em
+        })
+    }
+
     message(message: string) {
         this.setState({
             message
@@ -96,9 +114,32 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
         })
     }
 
+    clearExtendAndEmoji() {
+        this.setState({
+            extendTagName: ''
+        })
+    }
+
+    componentDidMount() {
+        // bind redo and undo for Buttons
+        this.forceUpdate()
+    }
+
+    // componentWillReceiveProps(newProps: Props) {
+    //     this.setState({
+    //         value: newProps.value
+    //     })
+    // }
+
     render() {
         return (
             <div>
+                <Buttons 
+                    changeValue={this.changeValue} 
+                    changeExtendName={this.changeExtend} 
+                    undo={this.customTextArea && this.customTextArea.undo}
+                    redo={this.customTextArea && this.customTextArea.redo}
+                />
                 <CustomTextArea 
                     value={this.state.value}
                     onChange={this.onChange}
@@ -112,16 +153,11 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
                         if(files) this.handleUpload(files)
                     }}
                 />
-                <Buttons 
-                    changeValue={this.changeValue} 
-                    changeExtendName={this.changeExtend} 
-                    undo={this.customTextArea.undo}
-                    redo={this.customTextArea.redo}
-                />
                 {this.state.extendTagName ? (
                     <Extends
                         extendTagName={this.state.extendTagName}
                         changeValue={this.changeValue}
+                        clearShown={this.clearExtendAndEmoji}
                     />
                 ) : null}
                 <Message 
@@ -137,6 +173,12 @@ export class NewUbbEditor extends React.PureComponent<null, State> {
                         this.handleUpload(filelist)
                         e.target.value = ''
                     }}
+                />
+                <Emoji 
+                    changeValue={this.changeValue}
+                    emojiType={this.state.emojiType} 
+                    changeEmojiType={this.changeEmojiType}
+                    emojiIsShown={this.state.extendTagName === 'emoji'}
                 />
             </div>
         )

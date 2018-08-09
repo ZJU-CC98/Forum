@@ -1,4 +1,5 @@
 export type UbbSegmentType = 'text' | 'extend' | 'fontSize' | 'color' | 'emoji' | 'upload'
+export type emojiType = 'em' | 'ac' | 'mj' | 'tb' | 'hide'
 
 export interface IUbbProperty {
     key: string
@@ -70,4 +71,17 @@ export interface IUbbColorSegmentConfig extends IUbbSegmentConfig {
 
 export interface IUbbUploadSegmentConfig extends IUbbSegmentConfig {
     type: 'upload'
+}
+
+export interface IUbbEmojiSegmentConfig extends IUbbSegmentConfig {
+    type: 'emoji'
+
+}
+
+export interface IConfig {
+    fileExtendedNames: {
+        video: string[]
+        audio: string[]
+        image: string[]
+    }
 }

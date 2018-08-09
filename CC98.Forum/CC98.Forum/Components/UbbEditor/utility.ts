@@ -1,12 +1,15 @@
 import * as ConfigType from './IConfig'
 import * as Utility from '../../Utility'
-export const config = require('./config.json') as (
+export const buttonConfig = require('./buttonConfig.json') as (
     ConfigType.IUbbTextSegmentConfig | 
     ConfigType.IUbbExtendSegmentConfig |
     ConfigType.IUbbTextSizeSegmentConfig |
     ConfigType.IUbbColorSegmentConfig |
-    ConfigType.IUbbUploadSegmentConfig
+    ConfigType.IUbbUploadSegmentConfig |
+    ConfigType.IUbbEmojiSegmentConfig
 )[]
+
+export const config = require('./config.json') as ConfigType.IConfig
 
 interface UbbEditorStateInfo {
     value: string
@@ -98,13 +101,14 @@ export function getTagName(file: File) {
             case file.type.indexOf('image') !== -1: return 'img'
             case file.type.indexOf('video') !== -1: return 'video'
             case file.type.indexOf('video') !== -1: return 'audio'
-            default: return 'upload' // break
         }
 
-        // TODO
         const fileExtendName = file.name.match(/\.(\w+)$/)[1]
 
         switch(true) {
+            case config.fileExtendedNames.audio.indexOf(fileExtendName) !== -1: return 'audio'
+            case config.fileExtendedNames.video.indexOf(fileExtendName) !== -1: return 'video'
+            case config.fileExtendedNames.image.indexOf(fileExtendName) !== -1: return 'img'
             default: throw new Error
         }
     } catch(e) {

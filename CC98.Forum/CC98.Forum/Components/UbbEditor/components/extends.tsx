@@ -13,6 +13,7 @@ interface FormData {
 interface Props {
     extendTagName: string
     changeValue: (ubbSegment: type.IUbbSegment) => void
+    clearShown: () => void
 }
 
 export class Extends extends React.PureComponent<Props> {
@@ -46,7 +47,7 @@ export class Extends extends React.PureComponent<Props> {
 
     private initConfig(props: Props) {
         try {
-            this.extendConfig = utility.config.filter(item => item.tagName === props.extendTagName)[0] as type.IUbbExtendSegmentConfig
+            this.extendConfig = utility.buttonConfig.filter(item => item.tagName === props.extendTagName)[0] as type.IUbbExtendSegmentConfig
         } catch(e) {
 
         }
@@ -69,7 +70,7 @@ export class Extends extends React.PureComponent<Props> {
                             key={item.key + index}
                         />) : null }
                         <button className="fa fa-check" type="submit" />
-                        <button className="fa fa-remove" type="reset" />
+                        <button className="fa fa-remove" type="reset" onClick={this.props.clearShown} />
                     </form>
                 </div>
             )

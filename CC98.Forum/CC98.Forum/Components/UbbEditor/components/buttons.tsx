@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { config } from '../utility'
+import { buttonConfig } from '../utility'
 import * as ConfigType from '../IConfig'
 import * as utility from '../utility'
 
@@ -22,7 +22,7 @@ export class Buttons extends React.PureComponent<Props> {
     render() {
         return (
             <div>
-                {config.map(item => {
+                {buttonConfig.map(item => {
                     const { type, tagName, tagIcon, tagDescription, title } = item
                     switch(item.type) {
                         case 'text': return <button 
@@ -58,6 +58,13 @@ export class Buttons extends React.PureComponent<Props> {
                             title={title}
                             className={`fa ${tagIcon}`} 
                         ></label>
+                        case 'emoji': return <button
+                            type="button"
+                            title={title}
+                            key={tagName + tagIcon} 
+                            className={`fa ${tagIcon}`} 
+                            onClick={() => this.props.changeExtendName(tagName)}
+                        ></button>
                     }
                 })}
                 <button className="fa fa-undo" type="button" title="撤销" onClick={this.props.undo}></button>
