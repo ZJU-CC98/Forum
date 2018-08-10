@@ -1,1 +1,0 @@
-export { UbbEditor } from './UbbEditor/index'
