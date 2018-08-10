@@ -15,7 +15,6 @@ interface Props {
     changeValue: (ubbSegment: type.IUbbSegment) => void
     clearShown: () => void
     extendIsShown: boolean
-    upload: (files: FileList) => void
 }
 
 interface State {
@@ -61,14 +60,15 @@ export class Extends extends React.PureComponent<Props, State> {
                     e.preventDefault()
                     this.changeValue(new FormData(e.target as HTMLFormElement))
                 }} >
-                    <input type="text" defaultValue="" name="content" placeholder={this.state.extendConfig.contentValueInfo} />
-                    {this.state.extendConfig.propertiesInfos ? this.state.extendConfig.propertiesInfos.map((item, index) => <input 
+                    <input className="ubb-extend-main" type="text" defaultValue="" name="content" placeholder={this.state.extendConfig.contentValueInfo} />
+                    {this.state.extendConfig.propertiesInfos ? this.state.extendConfig.propertiesInfos.map((item, index) => <><span>|</span><input 
                         type="text" 
                         defaultValue=""
                         name={item.key || 'mainValue'}
                         placeholder={item.title}
                         key={item.key + index}
-                    />) : null }
+                        className="ubb-extend-sub"
+                    /></>) : null }
                     {this.state.extendConfig.allowUpload ? <label style={{ pointerEvents: 'all' }} className="fa fa-upload ubb-button-icon" htmlFor="ubbFileUpload" /> : null}
                     <button className="fa fa-check" type="submit" />
                     <button className="fa fa-remove" type="reset" onClick={this.props.clearShown} />

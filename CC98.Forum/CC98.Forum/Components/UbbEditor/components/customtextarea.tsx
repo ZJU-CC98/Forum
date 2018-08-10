@@ -56,6 +56,7 @@ export class CustomTextArea extends React.PureComponent<Props> {
                 {...this.props}
                 onChange={e => this.changeValue(e.target.value)}
                 onScroll={e => this.scrollTop = this.textarea.scrollTop}
+                onFocus={e => this.textarea.scrollTop = this.scrollTop}
                 onInput={() => this.redoStack = []}
                 onKeyDown={e => {
                     if(this.props.onKeyDown) this.props.onKeyDown(e)

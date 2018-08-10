@@ -86,8 +86,6 @@ export class UbbEditor extends React.PureComponent<Props, State> {
         this.customTextArea.textarea.setSelectionRange(this.state.selectionStart, this.state.selectionEnd)
     }
 
-    
-
     private async handleUpload(filelist: FileList, shouldCompassImage?: boolean) {
         let files = Array.from(filelist)
         try {
@@ -151,22 +149,22 @@ export class UbbEditor extends React.PureComponent<Props, State> {
 
     render() {
         return (
-            <div className="ubb-editor" >
+            <div className="ubb-editor" style={{ height: `${this.props.option.height || 20}rem` }} >
                 <Buttons 
                     changeValue={this.changeValue} 
                     changeExtendName={this.changeExtend} 
                     undo={this.customTextArea && this.customTextArea.undo}
                     redo={this.customTextArea && this.customTextArea.redo}
                     triggerIsPreviewing={this.triggerIsPreviewing}
+                    isPreviewing={this.state.isPreviewing}
                 />
                 <Extends
                     extendTagName={this.state.extendTagName}
                     changeValue={this.changeValue}
                     clearShown={this.clearExtendAndEmoji}
                     extendIsShown={this.state.extendTagName && this.state.extendTagName !== 'emoji'}
-                    upload={this.handleUpload}
                 />
-                {this.state.isPreviewing ? <UbbContainer code={this.state.value} /> : <CustomTextArea 
+                {this.state.isPreviewing ? <div className="ubb-preview"><UbbContainer code={this.state.value} /></div> : <CustomTextArea 
                     value={this.state.value}
                     onChange={this.onChange}
                     ref={it => this.customTextArea = it} 
@@ -184,6 +182,11 @@ export class UbbEditor extends React.PureComponent<Props, State> {
                         if(kinds.some(kind => kind === 'file')) {
                             e.preventDefault();
                             this.handleUpload(files);
+                        }
+                    }}
+                    onKeyDown={e => {
+                        if(e.ctrlKey && e.key === 'Enter' && this.props.option && this.props.option.submit) {
+                            this.props.option.submit()
                         }
                     }}
                 />}
