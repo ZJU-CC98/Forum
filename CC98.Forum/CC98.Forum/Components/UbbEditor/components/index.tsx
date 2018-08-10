@@ -53,6 +53,7 @@ export class UbbEditor extends React.PureComponent<Props, State> {
 
     onChange = (value: string) => {
         this.setState({ value })
+        this.props.update(value)
     }
 
     private changeExtend(extendTagName: string) {
