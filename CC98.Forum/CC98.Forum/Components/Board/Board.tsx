@@ -1102,11 +1102,11 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
             }
 
             // 投票贴 
-            if(this.props.isVote) {
-                icon = <div style={{
-                    width: "1rem", justifyContent: "flex-start"
-                }}><i style={{ color: "#B0B0B0" }} className="fa fa-pie-chart fa-lg"></i></div>
-            }
+            // if(this.props.isVote) {
+            //     icon = <div style={{
+            //         width: "1rem", justifyContent: "flex-start"
+            //     }}><i style={{ color: "#B0B0B0" }} className="fa fa-pie-chart fa-lg"></i></div>
+            // }
             let c: any = '#000';
             let b: any = 'normal';
             let i: any = 'normal';
