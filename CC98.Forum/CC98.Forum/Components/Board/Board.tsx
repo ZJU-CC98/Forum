@@ -983,11 +983,11 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
     }
 }
 
-export class TopicTitleAndContent extends React.Component<State.TopicTitleAndContentState, { pager }> {
+export class TopicTitleAndContent extends React.Component<State.TopicTitleAndContentState, { pager, tag1, tag2 }> {
 
     constructor(props, context) {
         super(props, context);
-        this.state = ({ pager: [] });
+        this.state = ({ pager: [], tag1: '', tag2: '' });
     }
     componentWillMount() {
         if (typeof this.props.replyCount === "number") {
@@ -1009,7 +1009,7 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
             this.setState({ pager: pager });
         }
     }
-    componentDidMount() {
+    async componentDidMount() {
         if (typeof this.props.replyCount === "number") {
             const titleId = `#title${this.props.id}`;
             if (this.props.highlightInfo != null) {
@@ -1024,7 +1024,19 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
                 }
             }
         }
+
+        let tag1 = await Utility.getTagNamebyId(this.props.tag1);
+        let tag2 = await Utility.getTagNamebyId(this.props.tag2);
+
+        let newState = {
+            tag1: tag1 ? tag1 : '',
+            tag2: tag2 ? tag2 : ''
+        }
+
+        this.setState(newState)
+
     }
+
     generateListPager(item: number) {
         const url = `/topic/${this.props.id}/${item}`;
         if (item != -1) {
@@ -1122,6 +1134,13 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
                     alignContent: "center", display: "none"
                 }}><input id={tid} className="opTitleCheckboxValue" type="checkbox" /></div>
             }
+
+            let title = '';
+
+            if(this.state.tag2 && !this.props.topState) title = `[${this.state.tag2}]${title}`;
+            if(this.state.tag1 && !this.props.topState) title = `[${this.state.tag1}]${title}`;
+            if(this.props.isVote) title = `[投票]${title}`;
+
             return <div style={{ display: "flex" }} id={colorId}>
                 {checkbox}
                 <Link to={url}>
@@ -1130,7 +1149,9 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
                             <div className="row listTitleAndIcon" >
 
                                 {icon}
-                                <div className="listTitle" id={titleId} style={{ marginLeft: '1rem', color: c, fontWeight: b, fontStyle: i }}> {this.props.title}</div>
+                                <div className="listTitle" id={titleId} style={{ marginLeft: '1rem', color: c, fontWeight: b, fontStyle: i }}>
+                                    <span className="listTitleTag" style={{}} >{title}</span>
+                                     {this.props.title}</div>
                             </div>
                             <div style={{ display: "flex", fontSize: "0.75rem", marginLeft: "1rem", width: "auto" }}>
                                 {this.state.pager.map(this.generateListPager.bind(this))}</div>

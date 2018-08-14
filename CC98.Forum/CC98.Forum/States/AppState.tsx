@@ -115,15 +115,6 @@ export class ListTagState {
     tags: Object;
 }
 
-/**
- * 内容列表页面的状态。
- */
-export class ListContentState {
-	/**
-	 * 当前要显示的页面。
-	 */
-    items: TopicTitleAndContentState[];
-}
 export class TopicTitleAndContentState {
 	/*  constructor(title, authorName, lastReply) {
 		  this.authorName = authorName;
@@ -160,6 +151,8 @@ export class TopicTitleAndContentState {
     hitCount: number;
     bestState: number;
     isVote: boolean;
+    tag1: number;
+    tag2: number;
 }
 
 /**
