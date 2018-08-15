@@ -17,7 +17,7 @@
     "es6-promise": "4.1.1",
     "flv.js": "^1.4.2",
     "font-awesome": "4.7.0",
-		"formdata-polyfill": "^3.0.10",
+    "formdata-polyfill": "^3.0.10",
     "history": "4.7.2",
     "jquery": "3.2.1",
     "moment": "2.18.1",
@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@types/core-js": "^0.9.46",
-    "@types/jquery": "3.2.16",
+    "@types/jquery": "3.3.5",
     "@types/msgpack5": "^3.4.0",
     "@types/node": "8.0.19",
     "@types/react": "16.0.41",
