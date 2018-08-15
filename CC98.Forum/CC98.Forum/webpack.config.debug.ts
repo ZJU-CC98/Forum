@@ -50,7 +50,6 @@ const config: Webpack.Configuration = {
     
     externals: {
         'jquery': '$',
-        'moment': 'moment',
         'editor.md': 'editormd',
         'codemirror': 'CodeMirror',
     },

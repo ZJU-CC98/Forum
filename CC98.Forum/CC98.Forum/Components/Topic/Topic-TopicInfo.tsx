@@ -2,7 +2,7 @@
 import * as Utility from '../../Utility';
 import { Link } from 'react-router-dom';
 import { AdsComponent } from '../MainPage';
-declare let moment: any;
+import * as moment from 'moment';
 interface Props {
     topicInfo;
     boardInfo;

@@ -5,7 +5,7 @@ import * as React from 'react';
 import { MessageSystemProps } from '../../Props/MessageSystemProps';
 import { UbbContainer } from '../UbbContainer';
 import { UbbCompatiblityMode } from '../../Ubb/UbbCodeExtension';
-declare let moment: any;
+import * as moment from 'moment';
 
 export class MessageSystembox extends React.Component<MessageSystemProps> {
 

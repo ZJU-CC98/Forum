@@ -9,10 +9,8 @@ import { match } from 'react-router';
 
 import DocumentTitle from '../DocumentTitle';
 import {
-    BrowserRouter as Router,
     Route,
     Link,
-
     Switch
 } from 'react-router-dom';
 import TopicTitleAndContentState = State.TopicTitleAndContentState;
@@ -21,7 +19,7 @@ import { Pager } from '../Pager';
 import { NotFoundTopic, UnauthorizedTopic, UnauthorizedBoard, ServerError } from '../Status';
 import { AdsComponent } from '../MainPage';
 import { isLogOn } from '../../Utility';
-declare let moment: any;
+import * as moment from 'moment';
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
 

@@ -13,9 +13,7 @@ import { removeUserInfo as removeUserInfoInIndexDB } from './IndexedDB/UserStora
 import * as React from 'react';
 import * as $ from 'jquery';
 
-declare let editormd: any;
-declare let moment: any;
-declare let urljoin: any;
+import * as moment from 'moment';
 
 
 // -------- TBC --------

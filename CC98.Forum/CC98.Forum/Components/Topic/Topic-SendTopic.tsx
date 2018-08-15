@@ -7,7 +7,7 @@ import { UbbEditor } from '../UbbEditor';
 import { TopicManagement } from './Topic-TopicManagement';
 import { NoticeMessage } from '../NoticeMessage';
 import { Prompt } from 'react-router-dom';
-declare let moment: any;
+import * as moment from 'moment';
 declare let editormd: any;
 interface Props {
     boardInfo;

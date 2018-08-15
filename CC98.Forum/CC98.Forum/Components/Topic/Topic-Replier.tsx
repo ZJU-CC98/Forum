@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom';
 import { RouteComponent } from '../RouteComponent';
 import * as Utility from '../../Utility';
-declare let moment: any;
+import * as moment from 'moment';
 interface Props {
     userInfo;
     topicInfo;

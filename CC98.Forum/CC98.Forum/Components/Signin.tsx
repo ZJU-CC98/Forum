@@ -2,7 +2,7 @@
 import * as Utility from '../Utility';
 import { UbbEditor } from './UbbEditor';
 import { withRouter } from 'react-router-dom';
-declare let moment: any;
+import * as moment from 'moment';
 export class Signin extends React.Component<{history}, { signinInfo ,content}>{
     constructor(props) {
         super(props);
