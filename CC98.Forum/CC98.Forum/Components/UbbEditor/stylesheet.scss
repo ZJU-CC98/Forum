@@ -21,6 +21,7 @@
     button, label, textarea, input {
         -webkit-appearance: none;
         -moz-appearance: none;
+        background-color: white;
         border: 0;
 
         &::-ms-expand {
