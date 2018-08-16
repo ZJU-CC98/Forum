@@ -759,14 +759,14 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
             let defaultTag2 = this.state.tags[1].tags[0].name;
             if (this.state.tag1) defaultTag1 = this.state.tag1;
             if (this.state.tag2) defaultTag2 = this.state.tag2;
-            tagInfo = <div className="row"><div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
+            tagInfo = <div className="row"><div className="column" style={{ marginTop: "6.1rem", height: "8rem", zIndex: 1000, marginLeft: "0.5rem" }}>
                 <div style={{ display: "flex" }}>
                     <div className="tagBoxSelect">{defaultTag1}</div>
                     <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
                 </div>
                 {drop1}
             </div>
-                <div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
+                <div className="column" style={{ marginTop: "6.1rem", height: "8rem", zIndex: 1000, marginLeft: "0.5rem" }}>
                     <div style={{ display: "flex" }}>
                         <div className="tagBoxSelect1">{defaultTag2}</div>
                         <div className="downArrow1"><img src="/static/images/downArrow.png" width="12" height="12" /></div>
@@ -776,7 +776,7 @@ export class InputTitle extends React.Component<{ boardId, onChange, tags, title
         } else if (this.state.tags.length == 1) {
             let defaultTag1 = this.state.tags[0].tags[0].name;
             if (this.state.tag1) defaultTag1 = this.state.tag1;
-            tagInfo = <div className="column" style={{ marginTop: "6.1rem", height: "8rem", zindex: "1000", marginLeft: "0.5rem" }}>
+            tagInfo = <div className="column" style={{ marginTop: "6.1rem", height: "8rem", zIndex: 1000, marginLeft: "0.5rem" }}>
                 <div style={{ display: "flex" }}>
                     <div className="tagBoxSelect">{defaultTag1}</div>
                     <div className="downArrow"><img src="/static/images/downArrow.png" width="12" height="12" /></div>

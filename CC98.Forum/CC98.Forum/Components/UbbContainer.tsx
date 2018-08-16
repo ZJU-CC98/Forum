@@ -47,7 +47,7 @@ export class UbbContainer extends React.Component<UbbContainerProps, {}> {
 		const style = {
 			whiteSpace: 'pre-wrap',
             width: "100%"
-		};
+		} as React.CSSProperties;
 
 		// 注意兼容性设置， HTML4 不支持 article 标签
 		if (options.compatibility === Ubb.UbbCompatiblityMode.Transitional) {

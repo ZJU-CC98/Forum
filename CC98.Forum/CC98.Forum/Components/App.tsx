@@ -74,7 +74,7 @@ class App extends React.Component<Props> {
 
         return (<div style={{ width: "100%" }}>
             <ConnectedRouter history={history}>
-                <div style={{ backGroundColor: '#F5FAFD', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px", backgroundColor: "#e6e7ec" }}>
+                <div style={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: "center", width: "100%", minWidth: "1140px", backgroundColor: "#e6e7ec" }}>
                     <Header />
                     <Route component={ErrorControl} />
                     {!this.props.isError ? router : <Route component={Status[this.props.errorMessage]} />}

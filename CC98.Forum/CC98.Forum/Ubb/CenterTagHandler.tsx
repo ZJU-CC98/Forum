@@ -16,7 +16,7 @@ export class CenterTagHandler extends Ubb.RecursiveTagHandler {
 
         const style = {
             textAlign: 'center'
-        };
+        } as React.CSSProperties;
 
         return <span style={style}><div>{innerContent}</div></span>;
     }
