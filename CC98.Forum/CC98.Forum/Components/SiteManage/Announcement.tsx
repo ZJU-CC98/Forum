@@ -2,7 +2,7 @@
 import * as Utility from '../../Utility';
 import { UbbContainer } from '../UbbContainer';
 
-class AnnouncementState {
+interface AnnouncementState {
     /**
      * 全站公告内容
      */
@@ -13,7 +13,11 @@ class AnnouncementState {
     info: string;
 }
 
-export default class Announcement extends React.Component<null, AnnouncementState> {
+type props = {
+
+}
+
+export default class Announcement extends React.Component<props, AnnouncementState> {
     constructor(props) {
         super(props);
         this.state = {
