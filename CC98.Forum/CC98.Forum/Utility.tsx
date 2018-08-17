@@ -2436,14 +2436,14 @@ export async function getTagNamebyId(id) {
     return false;
 }
 export async function getTopicByOneTag(tagId, boardId, layer, page) {
-    const start = (page - 1) * 10;
+    const start = (page - 1) * 20;
     const url = `/topic/search/board/${boardId}/tag?tag${layer}=${tagId}&from=${start}&size=20`;
     const headers = await formAuthorizeHeader();
     const response = await cc98Fetch(url, { headers });
     return await response.json();
 }
 export async function getTopicByTwoTags(tag1Id, tag2Id, boardId, page) {
-    const start = (page - 1) * 10;
+    const start = (page - 1) * 20;
     const url = `/topic/search/board/${boardId}/tag?tag1=${tag1Id}&tag2=${tag2Id}&from=${start}&size=20`;
     const headers = await formAuthorizeHeader();
     const response = await cc98Fetch(url, { headers });
