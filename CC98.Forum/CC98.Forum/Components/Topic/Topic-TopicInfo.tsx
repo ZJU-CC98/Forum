@@ -54,7 +54,7 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
         e.target.src = `/static/images/_CC98协会.png`;
     }
     render() {
-        const title = this.props.topicInfo.title;
+        const title = this.props.topicInfo.title || '';
         /* 过长字符串截断，65 是纯中文情况下的经验值 */
         const overflowLen = 65;
 
