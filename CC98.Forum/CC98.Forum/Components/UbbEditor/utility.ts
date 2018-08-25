@@ -42,6 +42,9 @@ export function getNewState(state: UbbEditorStateInfo, ubbSegment: ConfigType.IU
         insertCode += '\n'
         selectionStart = selectionStart + insertCode.length
         selectionEnd = selectionStart
+    } else if (ubbSegment.type === 'emoji') {
+        selectionStart = selectionStart + insertCode.length
+        selectionEnd = selectionStart
     } else {
         selectionEnd = selectionStart + insertCode.length
     }

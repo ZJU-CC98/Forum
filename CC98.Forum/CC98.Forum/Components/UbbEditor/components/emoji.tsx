@@ -37,13 +37,13 @@ export default class Emoji extends React.Component<EmojiProps> {
             animal: ['001', '002', '003', '004', '005', '006', '007', '008', '009', '010', '011', '012', '013', '014', '015', '016'].map((item) => (<LazyImage
                 key={`[a:${item}]`}
                 src={`/static/images/mahjong/animal2017/${item}.png`}
-                onClick={() => { this.insertEmoji('a', item) }}
+                onClick={() => { this.insertEmoji('a:', item) }}
             ></LazyImage>)),
             //卡通系列10个，同样o(1)......
             carton: ['003.png', '018.gif', '019.png', '046.png', '049.gif', '059.png', '096.gif', '134.png', '189.png', '217.png'].map((item) => (<LazyImage
                 key={`[c:${item.slice(0, 3)}]`}
                 src={`/static/images/mahjong/carton2017/${item}`}
-                onClick={() => { this.insertEmoji('c', item.slice(0, 3)) }}
+                onClick={() => { this.insertEmoji('c:', item.slice(0, 3)) }}
             ></LazyImage>)),
             //其他表情三位数，从1算起，index+1
             face: new Array(208).fill(0).map((item, index) => {
@@ -60,7 +60,7 @@ export default class Emoji extends React.Component<EmojiProps> {
             }).map((item) => (<LazyImage
                 key={`[f:${item.slice(0, 3)}]`}
                 src={`/static/images/mahjong/face2017/${item}`}
-                onClick={() => { this.insertEmoji('f', item.slice(0, 3)) }}
+                onClick={() => { this.insertEmoji('f:', item.slice(0, 3)) }}
             ></LazyImage>))
         };
 
