@@ -35,7 +35,7 @@
 	},
 	"devDependencies": {
 		"@types/core-js": "^0.9.46",
-		"@types/jquery": "3.2.16",
+		"@types/jquery": "3.3.6",
 		"@types/msgpack5": "^3.4.0",
 		"@types/node": "8.0.19",
 		"@types/react": "16.0.41",
@@ -54,7 +54,7 @@
 		"css-loader": "^0.28.11",
 		"extract-text-webpack-plugin": "^4.0.0-beta.0",
 		"html-webpack-plugin": "^3.1.0",
-		"node-sass": "^4.8.3",
+		"node-sass": "^4.9.3",
 		"sass-loader": "^6.0.7",
 		"style-loader": "^0.20.3",
 		"typescript": "^2.7.2",
