@@ -63,8 +63,8 @@ const config: Webpack.Configuration = {
 			filename: 'static/index.html',
 			minify: {
 				collapseWhitespace: true
-            },
-            inject: false
+			},
+			inject: false
 		}),
 
 		// clean wwwroot
@@ -96,7 +96,8 @@ const config: Webpack.Configuration = {
 				uglifyOptions: {
 					compress: {
 						pure_funcs: ['console.log'], //remove all console.log
-					}
+					},
+					safari10: true,
 				}
 			})
 		],
