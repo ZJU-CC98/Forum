@@ -1,18 +1,7 @@
 import * as React from 'react';
 
-interface LazyImageProps {
-    /**
-     * 鼠标点击事件
-     */
-    onClick: ()=>void;
-    /**
-     * 图片地址
-     */
-    src: string;
-    /**
-     * CSS类名
-     */
-    className?: string;
+interface LazyImageProps extends React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> {
+    
 }
 
 interface LazyImageState {

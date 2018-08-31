@@ -1,19 +1,34 @@
 import * as React from 'react';
 import LazyImage from './LazyImage';
+import { emojiType } from '../IConfig';
+import * as ConfigType from '../IConfig';
 
 /**
  * 均从父组件中传递
  * 功能参考父组件的state与方法
  */
 interface EmojiProps {
-    handleEmojiButtonClick: (emoji: string) => void;
-    height: number;
-    emojiIsShown: boolean;
+    changeValue: (ubbSegment: ConfigType.IUbbSegment) => void
     emojiType: string;
-    changeEmojiType: (em: 'em' | 'ac' | 'mj' | 'tb') => void;
+    emojiIsShown: boolean;
+    changeEmojiType: (em: emojiType) => void;
+    height?: number
 }
 
 export default class Emoji extends React.Component<EmojiProps> {
+    constructor(props) {
+        super(props)
+        this.insertEmoji = this.insertEmoji.bind(this)
+    }
+
+    private insertEmoji(tagName: string, mainProperty: string) {
+        this.props.changeValue({
+            tagName,
+            mainProperty,
+            type: 'emoji'
+        })
+    }
+
     render() {
         //新建数组通过map生成<img>
         //麻将脸系列
@@ -22,13 +37,13 @@ export default class Emoji extends React.Component<EmojiProps> {
             animal: ['001', '002', '003', '004', '005', '006', '007', '008', '009', '010', '011', '012', '013', '014', '015', '016'].map((item) => (<LazyImage
                 key={`[a:${item}]`}
                 src={`/static/images/mahjong/animal2017/${item}.png`}
-                onClick={() => { this.props.handleEmojiButtonClick(`[a:${item}]`) }}
+                onClick={() => { this.insertEmoji('a:', item) }}
             ></LazyImage>)),
             //卡通系列10个，同样o(1)......
             carton: ['003.png', '018.gif', '019.png', '046.png', '049.gif', '059.png', '096.gif', '134.png', '189.png', '217.png'].map((item) => (<LazyImage
                 key={`[c:${item.slice(0, 3)}]`}
                 src={`/static/images/mahjong/carton2017/${item}`}
-                onClick={() => { this.props.handleEmojiButtonClick(`[c:${item.slice(0, 3)}]`) }}
+                onClick={() => { this.insertEmoji('c:', item.slice(0, 3)) }}
             ></LazyImage>)),
             //其他表情三位数，从1算起，index+1
             face: new Array(208).fill(0).map((item, index) => {
@@ -45,7 +60,7 @@ export default class Emoji extends React.Component<EmojiProps> {
             }).map((item) => (<LazyImage
                 key={`[f:${item.slice(0, 3)}]`}
                 src={`/static/images/mahjong/face2017/${item}`}
-                onClick={() => { this.props.handleEmojiButtonClick(`[f:${item.slice(0, 3)}]`) }}
+                onClick={() => { this.insertEmoji('f:', item.slice(0, 3)) }}
             ></LazyImage>))
         };
 
@@ -63,7 +78,7 @@ export default class Emoji extends React.Component<EmojiProps> {
                     item ? (<LazyImage
                         key={`[em${item}]`}
                         src={`/static/images/em/em${item}.gif`}
-                        onClick={() => { this.props.handleEmojiButtonClick(`[em${item}]`) }}
+                        onClick={() => { this.insertEmoji('em', item) }}
                     ></LazyImage>) : null
                 )),
             'ac': new Array(149).fill(0)
@@ -75,7 +90,7 @@ export default class Emoji extends React.Component<EmojiProps> {
                 }).map((item) => (<LazyImage
                     key={`[ac${item}]`}
                     src={`/static/images/ac/${item}.png`}
-                    onClick={() => { this.props.handleEmojiButtonClick(`[ac${item}]`) }}
+                    onClick={() => { this.insertEmoji('ac', item) }}
                 ></LazyImage>)),
             'mj': [...mohjong.animal, ...mohjong.carton, ...mohjong.face],
             'tb': new Array(33).fill(0)
@@ -85,7 +100,7 @@ export default class Emoji extends React.Component<EmojiProps> {
                 }).map((item) => (<LazyImage
                     key={`[tb${item}]`}
                     src={`/static/images/tb/tb${item}.png`}
-                    onClick={() => { this.props.handleEmojiButtonClick(`[tb${item}]`) }}
+                    onClick={() => { this.insertEmoji('tb', item) }}
                 ></LazyImage>))
         };
 
@@ -97,12 +112,13 @@ export default class Emoji extends React.Component<EmojiProps> {
             'em': null
         };
 
-        const { height, emojiType, emojiIsShown } = this.props;
+        const { emojiType, emojiIsShown } = this.props;
 
         return (
             <div
                 className="ubb-emoji"
-                style={emojiIsShown ? { height: '22rem', borderWidth: '1px'} : { height: '0rem'}}
+                style={emojiIsShown ? { height: `${this.props.height || 18}rem`, borderWidth: '1px'} : { height: '0rem'}}
+                onClick={e => e.stopPropagation()}
             >
                 <div className="ubb-emoji-buttons">
                     <button 
@@ -126,7 +142,7 @@ export default class Emoji extends React.Component<EmojiProps> {
                         onClick={(e) => { e.stopPropagation(); this.props.changeEmojiType('em'); }}
                     >经典</button>
                 </div>
-                <div className={`ubb-emoji-content ubb-emoji-content-${emojiType}`}>
+                <div className={`ubb-emoji-content ubb-emoji-content-${emojiType}`} style={{ height: `${this.props.height || 16}rem`}} >
                     {info[emojiType]}
                     {emoji[emojiType]}
                 </div>

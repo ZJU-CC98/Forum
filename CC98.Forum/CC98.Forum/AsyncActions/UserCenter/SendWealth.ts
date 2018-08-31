@@ -1,8 +1,8 @@
 import { Action, ActionCreator, Dispatch } from 'redux';
-import { ThunkAction } from '../../Store';
+import { ThunkAction } from 'redux-thunk';
 import * as Actions from '../../Actions/UserCenter';
 import * as Appstate from '../../States/AppState';
-import { RootState } from '../../Store';
+import { RootState, RootAction } from '../../Store';
 import * as Utility from '../../Utility';
 
 /**
@@ -12,7 +12,7 @@ import * as Utility from '../../Utility';
  * @param reason 理由
  * @author AsukaSong
  */
-export const sendWealth: ActionCreator<ThunkAction<Promise<Action>, RootState, void>> = (userNames: string[], wealth: number, reason: string) => async (dispatch, getState) => {
+export const sendWealth: ActionCreator<ThunkAction<Promise<Action>, RootState, void, RootAction>> = (userNames: string[], wealth: number, reason: string) => async (dispatch, getState) => {
     try {
         dispatch(Actions.userCenterLoading());
         // 清理上次转账可能遗留的信息

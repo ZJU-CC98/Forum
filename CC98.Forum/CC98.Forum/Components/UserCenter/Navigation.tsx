@@ -4,15 +4,18 @@
 
 import * as React from 'react';
 import {
-    NavLink,
-    Route
+    NavLink
 } from 'react-router-dom';
 import * as $ from 'jquery';
+
+type props = {
+
+}
 
 /**
  * 用户中心侧边栏导航组件
  */
-export default class extends React.Component<null, UserCenterNavigationState> {
+export default class extends React.Component<props, UserCenterNavigationState> {
     constructor(props) {
         super(props);
         this.state = {

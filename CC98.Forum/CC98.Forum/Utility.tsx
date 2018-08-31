@@ -13,9 +13,7 @@ import { removeUserInfo as removeUserInfoInIndexDB } from './IndexedDB/UserStora
 import * as React from 'react';
 import * as $ from 'jquery';
 
-declare let editormd: any;
-declare let moment: any;
-declare let urljoin: any;
+import * as moment from 'moment';
 
 
 // -------- TBC --------
@@ -314,7 +312,7 @@ export async function getHotReplyContent(topicid: number) {
 
 
 export function convertHotTopic(item: State.TopicTitleAndContentState) {
-    return <TopicTitleAndContent key={item.id} title={item.title} userName={item.userName} id={item.id} userId={item.userId} lastPostTime={item.lastPostTime} lastPostUser={item.lastPostUser} likeCount={item.likeCount} dislikeCount={item.dislikeCount} replyCount={item.replyCount} highlightInfo={item.highlightInfo} topState={item.topState} state={item.state} hitCount={item.hitCount} bestState={item.bestState} />
+    return <TopicTitleAndContent key={item.id} {...item} />
         ;
 }
 export async function getCurUserTopic(topicid: number, userId: number) {
@@ -2439,14 +2437,14 @@ export async function getTagNamebyId(id) {
     return false;
 }
 export async function getTopicByOneTag(tagId, boardId, layer, page) {
-    const start = (page - 1) * 10;
+    const start = (page - 1) * 20;
     const url = `/topic/search/board/${boardId}/tag?tag${layer}=${tagId}&from=${start}&size=20`;
     const headers = await formAuthorizeHeader();
     const response = await cc98Fetch(url, { headers });
     return await response.json();
 }
 export async function getTopicByTwoTags(tag1Id, tag2Id, boardId, page) {
-    const start = (page - 1) * 10;
+    const start = (page - 1) * 20;
     const url = `/topic/search/board/${boardId}/tag?tag1=${tag1Id}&tag2=${tag2Id}&from=${start}&size=20`;
     const headers = await formAuthorizeHeader();
     const response = await cc98Fetch(url, { headers });

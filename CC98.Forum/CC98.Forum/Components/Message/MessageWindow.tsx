@@ -34,7 +34,7 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
             //如果此时有未读私信,看有没有清除掉未读私信
             let unreadCount = Store.getState().message;
             if (unreadCount != 0 && unreadCount.messageCount != 0) {
-                Store.dispatch(refreshCurrentMessageCount());
+                Store.dispatch(refreshCurrentMessageCount() as any);
             }
             if (data && data.length > 0) {
                 let oldData = props.data.message;
@@ -98,7 +98,7 @@ export class MessageWindow extends React.Component<MessageWindowProps, MessageWi
         //如果此时有未读私信,看有没有清除掉未读私信
         let unreadCount = Store.getState().message;
         if (unreadCount != 0 && unreadCount.messageCount != 0) {
-            Store.dispatch(refreshCurrentMessageCount());
+            Store.dispatch(refreshCurrentMessageCount() as any);
         }
         //跟之前的拼接一下
         if (newData && newData.length > 0) {

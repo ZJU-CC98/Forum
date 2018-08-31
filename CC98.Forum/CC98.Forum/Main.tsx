@@ -10,6 +10,7 @@ import 'blueimp-canvas-to-blob';
 
 import { Constants } from './Components/Constant';
 import App from './Components/App';
+import ErrorBoundary from './Components/ErrorBoundary';
 import { IndexedDB } from './IndexedDB/IndexedDB';
 
 /**
@@ -26,9 +27,11 @@ async function initialize() {
 
 	// 显示应用程序核心内容
 	ReactDOM.render(
-		<Provider store={store}>
-			<App />
-		</Provider>,
+		<ErrorBoundary>
+			<Provider store={store}>
+				<App />
+			</Provider>
+		</ErrorBoundary>,
 		document.getElementById('root')
 
 	);

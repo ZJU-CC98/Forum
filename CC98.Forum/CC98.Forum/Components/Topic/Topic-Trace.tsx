@@ -20,7 +20,7 @@ import { SendTopic } from './Topic-SendTopic';
 import { Reply } from './Topic-Reply';
 import { TopicInfo } from './Topic-TopicInfo';
 import { Category } from './Topic-Category';
-declare let moment: any;
+import * as moment from 'moment';
 export class CurUserPost extends RouteComponent<{}, { topicId, page, totalPage,  topicInfo, boardInfo, content, shouldRender,isFav,postId }, { topicId, page,postId }> {
     constructor(props, context) {
         super(props, context);

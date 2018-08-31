@@ -74,8 +74,12 @@ interface State {
     type: number;
 }
 
+type props = {
 
-export default class extends React.Component<null, State > {
+}
+
+
+export default class extends React.Component<props, State > {
     constructor(props) {
         super(props);
         this.state = {

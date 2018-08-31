@@ -9,10 +9,8 @@ import { match } from 'react-router';
 
 import DocumentTitle from '../DocumentTitle';
 import {
-    BrowserRouter as Router,
     Route,
     Link,
-
     Switch
 } from 'react-router-dom';
 import TopicTitleAndContentState = State.TopicTitleAndContentState;
@@ -21,7 +19,7 @@ import { Pager } from '../Pager';
 import { NotFoundTopic, UnauthorizedTopic, UnauthorizedBoard, ServerError } from '../Status';
 import { AdsComponent } from '../MainPage';
 import { isLogOn } from '../../Utility';
-declare let moment: any;
+import * as moment from 'moment';
 
 export class RouteComponent<TProps, TState, TMatch> extends React.Component<TProps, TState> {
 
@@ -358,20 +356,7 @@ export class ListTopContent extends React.Component<{ boardId }, { data }>{
     }
     private convertTopicToElement(item: TopicTitleAndContentState) {
         return <TopicTitleAndContent key={item.id}
-            title={item.title}
-            userName={item.userName}
-            id={item.id}
-            userId={item.userId}
-            lastPostTime={item.lastPostTime}
-            lastPostUser={item.lastPostUser}
-            likeCount={item.likeCount}
-            dislikeCount={item.dislikeCount}
-            replyCount={item.replyCount}
-            highlightInfo={item.highlightInfo}
-            topState={item.topState}
-            state={item.state}
-            hitCount={item.hitCount}
-            bestState={item.bestState}
+        {...item}
         />;
     }
     async componentDidMount() {
@@ -395,20 +380,7 @@ export class BestTopics extends React.Component<{ boardId, curPage }, { data }>{
     private convertTopicToElement(item: TopicTitleAndContentState) {
 
         return <TopicTitleAndContent key={item.id}
-            title={item.title}
-            userName={item.userName}
-            id={item.id}
-            userId={item.userId}
-            lastPostTime={item.lastPostTime}
-            lastPostUser={item.lastPostUser}
-            likeCount={item.likeCount}
-            dislikeCount={item.dislikeCount}
-            replyCount={item.replyCount}
-            highlightInfo={item.highlightInfo}
-            topState={item.topState}
-            state={item.state}
-            hitCount={item.hitCount}
-            bestState={item.bestState}
+        {...item}
         />;
     }
     render() {
@@ -437,20 +409,7 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
     private convertTopicToElement(item) {
 
         return <TopicTitleAndContent key={item.id}
-            title={item.title}
-            userName={item.userName}
-            id={item.id}
-            userId={item.userId}
-            lastPostTime={item.lastPostTime}
-            lastPostUser={item.lastPostUser}
-            likeCount={item.likeCount}
-            dislikeCount={item.dislikeCount}
-            replyCount={item.replyCount}
-            highlightInfo={item.highlightInfo}
-            topState={item.topState}
-            state={item.state}
-            hitCount={item.hitCount}
-            bestState={item.bestState}
+        {...item}
         />;
     }
     async componentWillReceiveProps(newProps) {
@@ -671,20 +630,7 @@ export class ListTagContent extends RouteComponent<{}, { items, totalPage: numbe
     private convertTopicToElement(item) {
 
         return <TopicTitleAndContent key={item.id}
-            title={item.title}
-            userName={item.userName}
-            id={item.id}
-            userId={item.userId}
-            lastPostTime={item.lastPostTime}
-            lastPostUser={item.lastPostUser}
-            likeCount={item.likeCount}
-            dislikeCount={item.dislikeCount}
-            replyCount={item.replyCount}
-            highlightInfo={item.highlightInfo}
-            topState={item.topState}
-            state={item.state}
-            hitCount={item.hitCount}
-            bestState={item.bestState}
+        {...item}
         />;
     }
     async componentWillReceiveProps(newProps) {
@@ -765,20 +711,7 @@ export class ListTagsContent extends RouteComponent<{}, { items, totalPage: numb
     private convertTopicToElement(item) {
 
         return <TopicTitleAndContent key={item.id}
-            title={item.title}
-            userName={item.userName}
-            id={item.id}
-            userId={item.userId}
-            lastPostTime={item.lastPostTime}
-            lastPostUser={item.lastPostUser}
-            likeCount={item.likeCount}
-            dislikeCount={item.dislikeCount}
-            replyCount={item.replyCount}
-            highlightInfo={item.highlightInfo}
-            topState={item.topState}
-            state={item.state}
-            hitCount={item.hitCount}
-            bestState={item.bestState}
+        {...item}
         />;
     }
     async componentWillReceiveProps(newProps) {
@@ -930,20 +863,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
     private convertTopicToElement(item: TopicTitleAndContentState) {
 
         return <TopicTitleAndContent key={item.id}
-            title={item.title}
-            userName={item.userName}
-            id={item.id}
-            userId={item.userId}
-            lastPostTime={item.lastPostTime}
-            lastPostUser={item.lastPostUser}
-            likeCount={item.likeCount}
-            dislikeCount={item.dislikeCount}
-            replyCount={item.replyCount}
-            highlightInfo={item.highlightInfo}
-            topState={item.topState}
-            state={item.state}
-            hitCount={item.hitCount}
-            bestState={item.bestState}
+            {...item}
         />;
     }
     async componentWillReceiveProps(newProps) {
@@ -1010,20 +930,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
     private convertTopicToElement(item: TopicTitleAndContentState) {
 
         return <TopicTitleAndContent key={item.id}
-            title={item.title}
-            userName={item.userName}
-            id={item.id}
-            userId={item.userId}
-            lastPostTime={item.lastPostTime}
-            lastPostUser={item.lastPostUser}
-            likeCount={item.likeCount}
-            dislikeCount={item.dislikeCount}
-            replyCount={item.replyCount}
-            highlightInfo={item.highlightInfo}
-            topState={item.topState}
-            state={item.state}
-            hitCount={item.hitCount}
-            bestState={item.bestState}
+            {...item}
         />;
     }
     async componentWillReceiveProps(newProps) {
@@ -1074,11 +981,11 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
     }
 }
 
-export class TopicTitleAndContent extends React.Component<State.TopicTitleAndContentState, { pager }> {
+export class TopicTitleAndContent extends React.Component<State.TopicTitleAndContentState, { pager, tag1, tag2 }> {
 
     constructor(props, context) {
         super(props, context);
-        this.state = ({ pager: [] });
+        this.state = ({ pager: [], tag1: '', tag2: '' });
     }
     componentWillMount() {
         if (typeof this.props.replyCount === "number") {
@@ -1100,7 +1007,7 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
             this.setState({ pager: pager });
         }
     }
-    componentDidMount() {
+    async componentDidMount() {
         if (typeof this.props.replyCount === "number") {
             const titleId = `#title${this.props.id}`;
             if (this.props.highlightInfo != null) {
@@ -1115,7 +1022,19 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
                 }
             }
         }
+
+        let tag1 = await Utility.getTagNamebyId(this.props.tag1);
+        let tag2 = await Utility.getTagNamebyId(this.props.tag2);
+
+        let newState = {
+            tag1: tag1 ? tag1 : '',
+            tag2: tag2 ? tag2 : ''
+        }
+
+        this.setState(newState)
+
     }
+
     generateListPager(item: number) {
         const url = `/topic/${this.props.id}/${item}`;
         if (item != -1) {
@@ -1191,6 +1110,13 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
                     width: "1rem", justifyContent: "flex-start"
                 }}><i style={{ color: "red" }} className="fa fa-arrow-circle-up fa-lg"></i></div>
             }
+
+            // 投票贴 
+            // if(this.props.isVote) {
+            //     icon = <div style={{
+            //         width: "1rem", justifyContent: "flex-start"
+            //     }}><i style={{ color: "#B0B0B0" }} className="fa fa-pie-chart fa-lg"></i></div>
+            // }
             let c: any = '#000';
             let b: any = 'normal';
             let i: any = 'normal';
@@ -1206,6 +1132,13 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
                     alignContent: "center", display: "none"
                 }}><input id={tid} className="opTitleCheckboxValue" type="checkbox" /></div>
             }
+
+            let title = '';
+
+            if(this.state.tag2 && !this.props.topState) title = `[${this.state.tag2}]${title}`;
+            if(this.state.tag1 && !this.props.topState) title = `[${this.state.tag1}]${title}`;
+            if(this.props.isVote) title = `[投票]${title}`;
+
             return <div style={{ display: "flex" }} id={colorId}>
                 {checkbox}
                 <Link to={url}>
@@ -1214,7 +1147,9 @@ export class TopicTitleAndContent extends React.Component<State.TopicTitleAndCon
                             <div className="row listTitleAndIcon" >
 
                                 {icon}
-                                <div className="listTitle" id={titleId} style={{ marginLeft: '1rem', color: c, fontWeight: b, fontStyle: i }}> {this.props.title}</div>
+                                <div className="listTitle" id={titleId} style={{ marginLeft: '1rem', color: c, fontWeight: b, fontStyle: i }}>
+                                    <span className="listTitleTag" style={{}} >{title}</span>
+                                     {this.props.title}</div>
                             </div>
                             <div style={{ display: "flex", fontSize: "0.75rem", marginLeft: "1rem", width: "auto" }}>
                                 {this.state.pager.map(this.generateListPager.bind(this))}</div>

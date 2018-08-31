@@ -13,7 +13,7 @@ import { Award } from './Topic-Award';
 import { PostManagement } from './Topic-PostManagement';
 import { Judge } from './Topic-Judge';
 import { ReplierSignature } from './Topic-ReplierSignature';
-declare let moment: any;
+import * as moment from 'moment';
 interface Props{
     topicId;
     page;

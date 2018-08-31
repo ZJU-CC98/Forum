@@ -1,5 +1,4 @@
 ﻿import * as React from 'react';
-import * as State from '../../States/AppState';
 import * as Utility from '../../Utility';
 import * as $ from 'jquery';
 import {
@@ -9,26 +8,15 @@ import {
 
     withRouter
 } from 'react-router-dom';
-import * as Redux from 'redux';
-import { UbbEditor } from '../UbbEditor';
 import { RouteComponent } from '../RouteComponent';
-import { UbbContainer } from '.././UbbContainer';
-import { Replier } from './Topic-Replier';
-import { ReplyContent } from './Topic-ReplyContent';
-import { Provider } from 'react-redux';
-import { AwardInfo } from './Topic-AwardInfo';
 import { SendTopic } from './Topic-SendTopic';
 import { Category } from './Topic-Category';
 import { Pager } from '../Pager';
 import { Reply } from './Topic-Reply';
 import { NotFoundTopic, UnauthorizedTopic, ServerError } from '../Status';
 import { TopicInfo } from './Topic-TopicInfo';
-import { FindIP } from '../FindIP';
-import { Constants } from '../Constant';
 import { NoticeMessage } from '../NoticeMessage';
 import  DocumentTitle  from '../DocumentTitle';
-declare let moment: any;
-declare let editormd: any;
 
 
 export class Post extends RouteComponent<{history}, { topicid, page, totalPage, userName, boardId, topicInfo, boardInfo, fetchState, quote, shouldRender,isFav ,IPData}, { topicid, page, userName }> {

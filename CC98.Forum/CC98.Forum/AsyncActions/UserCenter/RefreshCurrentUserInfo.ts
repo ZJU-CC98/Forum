@@ -1,15 +1,15 @@
 import { Action, ActionCreator, Dispatch } from 'redux';
-import { ThunkAction } from '../../Store';
+import { ThunkAction } from 'redux-thunk';
 import * as Actions from '../../Actions/UserCenter';
 import * as Appstate from '../../States/AppState';
-import { RootState } from '../../Store';
+import { RootState, RootAction } from '../../Store';
 import * as Utility from '../../Utility';
 
 /**
  * 刷新当前用户的个人信息
  * @author AsukaSong
  */
-export const refreshCurrentUserInfo: ActionCreator<ThunkAction<Promise<Action>, RootState, void>> = () => async (dispatch) => {
+export const refreshCurrentUserInfo: ActionCreator<ThunkAction<Promise<Action>, RootState, void, RootAction>> = () => async (dispatch) => {
     try {
         const headers = await Utility.formAuthorizeHeader();
         const res = await Utility.cc98Fetch(`/me`, {

@@ -4,7 +4,7 @@
 import * as React from 'react';
 import { MessageSendReceiveProps } from '../../Props/MessageSendReceiveProps';
 import { UbbContainer } from '../UbbContainer'
-declare let moment: any;
+import * as moment from 'moment';
 import * as Utility from '../../Utility';
 
 export class MessageSender extends React.Component<MessageSendReceiveProps> {

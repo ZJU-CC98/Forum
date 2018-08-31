@@ -91,7 +91,7 @@ export async function getUsersInfo(keys: (number | string)[]) {
 /**
  * 根据用户id删除indexdb中储存的用户信息
  * @param id 用户id
- * @returns {Promise<void>} 返回的用户信息
+ * @returns {Promise<void>} 
  * @author AsukaSong
  */
 export async function removeUserInfo(id: number): Promise<void> {

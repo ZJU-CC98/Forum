@@ -3,7 +3,7 @@ import * as Utility from '../../Utility';
 import { UbbContainer } from '../UbbContainer';
 import { Link } from 'react-router-dom';
 import { UbbCodeOptions } from '../../Ubb/UbbCodeExtension';
-declare let moment: any;
+import * as moment from 'moment';
 interface Props{
     postInfo;
     topicInfo;
