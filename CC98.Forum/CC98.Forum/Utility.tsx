@@ -2105,7 +2105,8 @@ export async function deleteTopic(topicId, reason) {
     const url = `/topic/${topicId}`;
     const bodyInfo = {"reason":reason};
     const body = JSON.stringify(bodyInfo);
-    const response = await cc98Fetch(url, { method: "DELETE", headers, body }); switch (response.status) {
+    const response = await cc98Fetch(url, { method: "DELETE", headers, body });
+    switch (response.status) {
         case 401:
             return 'unauthorized';
         case 404:
