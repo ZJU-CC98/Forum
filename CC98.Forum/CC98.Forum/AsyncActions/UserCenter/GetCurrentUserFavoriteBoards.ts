@@ -1,15 +1,15 @@
 import { Action, ActionCreator, Dispatch } from 'redux';
-import { ThunkAction } from '../../Store';
+import { ThunkAction } from 'redux-thunk';
 import * as Actions from '../../Actions/UserCenter';
 import * as Appstate from '../../States/AppState';
-import { RootState } from '../../Store';
+import { RootState, RootAction } from '../../Store';
 import * as Utility from '../../Utility';
 
 /**
  * 获取当前用户收藏的版面信息
  * @author AsukaSong
  */
-export const getCurrentUserFavoriteBoards: ActionCreator<ThunkAction<Promise<Action>, RootState, void>> = () => async (dispatch, getState) => {
+export const getCurrentUserFavoriteBoards: ActionCreator<ThunkAction<Promise<Action>, RootState, null, RootAction>> = () => async (dispatch, getState) => {
     try {
         dispatch(Actions.userCenterLoading());
         const currentBoardIds = getState().userInfo.currentUserInfo.customBoards;

@@ -1,11 +1,11 @@
 import { Action, ActionCreator, Dispatch } from 'redux';
-import { ThunkAction } from '../Store';
+import { ThunkAction } from 'redux-thunk';
 import * as Actions from '../Actions/Message';
-import { RootState } from '../Store';
+import { RootState, RootAction } from '../Store';
 import * as Utility from '../Utility';
 import { MessageInfo } from '../Reducers/Message';
 
-export const refreshCurrentMessageCount: ActionCreator<ThunkAction<Promise<Action>, RootState, void>> = (message: MessageInfo) => async (dispatch, getState) => {
+export const refreshCurrentMessageCount: ActionCreator<ThunkAction<Promise<Action>, RootState, void, RootAction>> = (message: MessageInfo) => async (dispatch, getState) => {
     try {
         let headers = await Utility.formAuthorizeHeader();
         let res = await Utility.cc98Fetch('/me/unread-count', {
