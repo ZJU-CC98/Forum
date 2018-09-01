@@ -107,19 +107,19 @@
     display: flex;
     flex-direction: row;
     height: 2rem;
+
+    .ubb-emoji-button-active {
+        flex-grow: 2;
+        margin: 0;
+        background-color: #ccc;
+        transition-duration: .5s;
+    }
 }
 
 .ubb-emoji-button {
     flex-grow: 1;
     margin: 0;
     height: 2rem;
-    transition-duration: .5s;
-}
-
-.ubb-emoji-button-active {
-    flex-grow: 2;
-    margin: 0;
-    background-color: #ccc;
     transition-duration: .5s;
 }
 
