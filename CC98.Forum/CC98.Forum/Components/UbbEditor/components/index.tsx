@@ -24,6 +24,7 @@ interface State {
     message: string
     emojiType: ConfigType.emojiType
     isPreviewing: boolean
+    shouldCompassImage: boolean
 }
 
 export class UbbEditor extends React.PureComponent<Props, State> {
@@ -36,7 +37,8 @@ export class UbbEditor extends React.PureComponent<Props, State> {
             extendTagName: '',
             message: '',
             emojiType: 'hide',
-            isPreviewing: false
+            isPreviewing: false,
+            shouldCompassImage: true,
         }
 
         this.onChange = this.onChange.bind(this)
@@ -47,6 +49,7 @@ export class UbbEditor extends React.PureComponent<Props, State> {
         this.changeEmojiType = this.changeEmojiType.bind(this)
         this.clearExtendAndEmoji = this.clearExtendAndEmoji.bind(this)
         this.triggerIsPreviewing = this.triggerIsPreviewing.bind(this)
+        this.changeShouldCompassImage = this.changeShouldCompassImage.bind(this)
     }
 
     private customTextArea: CustomTextArea
@@ -115,6 +118,12 @@ export class UbbEditor extends React.PureComponent<Props, State> {
         })
     }
 
+    private changeShouldCompassImage(shouldCompassImage: boolean) {
+        this.setState({
+            shouldCompassImage
+        })
+    }
+
     message(message: string) {
         this.setState({
             message
@@ -164,6 +173,8 @@ export class UbbEditor extends React.PureComponent<Props, State> {
                     changeValue={this.changeValue}
                     clearShown={this.clearExtendAndEmoji}
                     extendIsShown={this.state.extendTagName && this.state.extendTagName !== 'emoji'}
+                    shouldCompassImage={this.state.shouldCompassImage}
+                    changeShouldCompassImage={this.changeShouldCompassImage}
                 />
                 {this.state.isPreviewing ? <div className="ubb-preview"><UbbContainer code={this.state.value} /></div> : <CustomTextArea 
                     value={this.state.value}
@@ -182,7 +193,7 @@ export class UbbEditor extends React.PureComponent<Props, State> {
                         const files = e.clipboardData.files;
                         if(kinds.some(kind => kind === 'file')) {
                             e.preventDefault();
-                            this.handleUpload(files);
+                            this.handleUpload(files, this.state.shouldCompassImage);
                         }
                     }}
                     onKeyDown={e => {
@@ -201,7 +212,7 @@ export class UbbEditor extends React.PureComponent<Props, State> {
                     multiple 
                     onChange={async e => {
                         let filelist = e.target.files
-                        await this.handleUpload(filelist)
+                        await this.handleUpload(filelist, this.state.shouldCompassImage)
                         e.target.value = ''
                     }}
                 />

@@ -36,6 +36,12 @@
             border: 0;
         }
     }
+
+    input[type="checkbox"] {
+        margin: 0;
+        -webkit-appearance: checkbox;
+        -moz-appearance: checkbox;
+    }
 }
 
 .ubb-buttons {
@@ -177,6 +183,7 @@
     form {
         height: 2rem;
         display: flex;
+        align-items: center;
     }
 
     input {
