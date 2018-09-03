@@ -11,6 +11,7 @@ export class CustomTextArea extends React.PureComponent<Props> {
         super(props)
         this.undo = this.undo.bind(this)
         this.redo = this.redo.bind(this)
+        this.blur = this.blur.bind(this)
         this.changeValue = this.changeValue.bind(this)
     }
     private scrollTop: number
@@ -34,6 +35,10 @@ export class CustomTextArea extends React.PureComponent<Props> {
             this.valueStack.push(prevValue)
             this.props.onChange(prevValue)
         }
+    }
+
+    blur() {
+        this.textarea.blur()
     }
 
     changeValue(value: string) {

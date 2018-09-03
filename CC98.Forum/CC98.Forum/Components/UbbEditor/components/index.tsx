@@ -189,11 +189,12 @@ export class UbbEditor extends React.PureComponent<Props, State> {
                         if(files) this.handleUpload(files)
                     }}
                     onPaste={e => {
-                        const kinds = Array.from(e.clipboardData.items).map(item => item.kind);
+                        const kinds = Array.from(e.clipboardData.items).map(item => item.kind)
                         const files = e.clipboardData.files;
                         if(kinds.some(kind => kind === 'file')) {
-                            e.preventDefault();
-                            this.handleUpload(files, this.state.shouldCompassImage);
+                            e.preventDefault()
+                            this.customTextArea.blur()
+                            this.handleUpload(files, this.state.shouldCompassImage)
                         }
                     }}
                     onKeyDown={e => {
