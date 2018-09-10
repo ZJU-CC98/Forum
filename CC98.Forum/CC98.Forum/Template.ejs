@@ -9,8 +9,18 @@
     <link type="text/css" rel="stylesheet" href="/static/content/DPlayer.min.css" />
     <link type="text/css" rel="stylesheet" href="/static/content/APlayer.min.css" />
     <link type="text/css" rel="stylesheet" href="/static/scripts/lib/editor.md/css/editormd.css" />
-	 <link type="text/css" rel="stylesheet" href="/static/scripts/lib/editor.md/css/editormd.css" />
-
+    <link type="text/css" rel="stylesheet" href="/static/scripts/lib/editor.md/css/editormd.css" />
+    <script>
+        window.onerror = function(a, b, c) {
+            if(b.indexOf('vendors') !== -1) {
+                var root = document.getElementById('root');
+                root.innerHTML="<b>An error was thrown and caught.</b><br />"; 
+                root.innerHTML+="Error: " + a + "<br />"; 
+                root.innerHTML+="Line: " + c + "<br />"; 
+                root.innerHTML+="URL: " + b + "<br />"; 
+            }
+        }
+    </script>
     <script>
         // 控制用户缓存
         // 需要清理缓存时更新 version
