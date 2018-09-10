@@ -153,7 +153,9 @@ export class UbbEditor extends React.PureComponent<Props, State> {
 
     componentWillReceiveProps(newProps: Props) {
         if(this.state.value !== newProps.value) this.setState({
-            value: newProps.value
+            value: newProps.value,
+            selectionStart: newProps.value.length,
+            selectionEnd: newProps.value.length,
         })
     }
 
