@@ -30,14 +30,15 @@
     "react-redux": "5.0.7",
     "react-router-dom": "4.3.1",
     "react-router-redux": "^5.0.0-alpha.9",
-    "redux": "4.0.0",
-    "redux-thunk": "2.3.0",
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.3.0",
     "spectrum-colorpicker": "^1.8.0",
     "ssri": "^6.0.1",
     "tslib": "^1.9.3",
     "url-join": "4.0.0",
     "url-parse": "^1.4.3",
-    "whatwg-fetch": "2.0.4"
+    "whatwg-fetch": "2.0.4",
+    "why-did-you-update": "0.1.1"
   },
   "devDependencies": {
     "@types/core-js": "^2.5.0",

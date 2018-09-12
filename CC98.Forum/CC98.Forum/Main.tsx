@@ -12,7 +12,7 @@ import { Constants } from './Components/Constant';
 import App from './Components/App';
 import ErrorBoundary from './Components/ErrorBoundary';
 import { IndexedDB } from './IndexedDB/IndexedDB';
-
+const { WhyDidYouUpdate } = require("why-did-you-update");
 /**
  * 项目初始化代码
  */
@@ -34,7 +34,8 @@ async function initialize() {
 		</ErrorBoundary>,
 		document.getElementById('root')
 
-	);
+    );
+    WhyDidYouUpdate(React);
 }
 
 initialize();
