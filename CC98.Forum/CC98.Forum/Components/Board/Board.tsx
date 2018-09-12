@@ -520,7 +520,7 @@ export class ListContent extends RouteComponent<{}, { items, totalPage: number, 
         if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
             topTopics = <div><ListTopContent boardId={this.match.params.boardId} /></div>;
         }
-        const topics = this.state.items.map(this.convertTopicToElement);
+        const topics = (this.state.items || []).map(this.convertTopicToElement);
 
         const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
@@ -663,7 +663,7 @@ export class ListTagContent extends RouteComponent<{}, { items, totalPage: numbe
         if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
             topTopics = <div><ListTopContent boardId={this.match.params.boardId} /></div>;
         }
-        const topics = this.state.items.map(this.convertTopicToElement);
+        const topics = (this.state.items || []).map(this.convertTopicToElement);
 
         const tagUrl = `/list/${this.match.params.boardId}/tag/tag${this.state.layer}/${this.match.params.tagId}/`;
         const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
@@ -743,7 +743,7 @@ export class ListTagsContent extends RouteComponent<{}, { items, totalPage: numb
         if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
             topTopics = <div><ListTopContent boardId={this.match.params.boardId} /></div>;
         }
-        const topics = this.state.items.map(this.convertTopicToElement);
+        const topics = (this.state.items || []).map(this.convertTopicToElement);
 
         const tagUrl = `/list/${this.match.params.boardId}/tags/tag1/${this.match.params.tag1Id}/tag2/${this.match.params.tag2Id}/`;
         const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
@@ -887,7 +887,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
         if (parseInt(this.match.params.page) === 1 || !this.match.params.page) {
             topTopics = <div><ListTopContent boardId={this.match.params.boardId} /></div>;
         }
-        const topics = this.state.items.map(this.convertTopicToElement);
+        const topics = (this.state.items || []).map(this.convertTopicToElement);
         const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
         const normalTopicsUrl = `/list/${this.match.params.boardId}/`;
@@ -952,7 +952,7 @@ export class ListBestContent extends RouteComponent<{}, { items: TopicTitleAndCo
             topTopics = <div><ListTopContent boardId={this.match.params.boardId} /></div>;
         }
 
-        const topics = this.state.items.map(this.convertTopicToElement);
+        const topics = (this.state.items || []).map(this.convertTopicToElement);
         const bestTopicsUrl = `/list/${this.match.params.boardId}/best/`;
         const saveTopicsUrl = `/list/${this.match.params.boardId}/save/`;
         const normalTopicsUrl = `/list/${this.match.params.boardId}/`;

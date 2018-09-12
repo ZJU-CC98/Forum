@@ -15,6 +15,8 @@ interface Props {
     changeValue: (ubbSegment: type.IUbbSegment) => void
     clearShown: () => void
     extendIsShown: boolean
+    shouldCompassImage: boolean
+    changeShouldCompassImage: (checked: boolean) => void
 }
 
 interface State {
@@ -57,6 +59,7 @@ export class Extends extends React.PureComponent<Props, State> {
         return (
             <div className="ubb-extend" onClick={e => e.stopPropagation()} style={{ height: this.props.extendIsShown ? '2rem' : '0rem' }} >
                 {this.state.extendConfig ? <form ref={it => this.form = it} onSubmit={e => {
+                    console.log('submit')
                     e.preventDefault()
                     this.changeValue(new FormData(e.target as HTMLFormElement))
                 }} >
@@ -69,7 +72,13 @@ export class Extends extends React.PureComponent<Props, State> {
                         key={item.key + index}
                         className="ubb-extend-sub"
                     /></>) : null }
-                    {this.state.extendConfig.allowUpload ? <label style={{ pointerEvents: 'all' }} className="fa fa-upload ubb-button-icon" htmlFor="ubbFileUpload" /> : null}
+                    {this.state.extendConfig.hasCompassOption && 
+                        <>
+                            <input id="shouldCompassImage" onChange={e => this.props.changeShouldCompassImage(!e.target.checked)} type="checkbox" checked={!this.props.shouldCompassImage} />
+                            <label htmlFor="shouldCompassImage" style={{ fontSize: 14, userSelect: 'none' }}>无损上传</label>
+                        </>
+                    }
+                    {this.state.extendConfig.allowUpload && <label style={{ pointerEvents: 'all' }} className="fa fa-upload ubb-button-icon" htmlFor="ubbFileUpload" />}
                     <button className="fa fa-check" type="submit" />
                     <button className="fa fa-remove" type="reset" onClick={this.props.clearShown} />
                 </form> : null}
