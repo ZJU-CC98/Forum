@@ -28,10 +28,7 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
             state: "normal", reason: "", tips: "", days: 0, board: null, topicInfo: this.props.topicInfo, fetchState: 'ok', color: "#fff",topBoardName:"",childBoards:data[0].boards
         };
     }
-    async componentDidMount() {
-        await Utility.getBoards();
-
-    }
+  
     showNormal() {
         this.setState({ state: 'normal' });
     }

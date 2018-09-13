@@ -112,6 +112,7 @@ export class Post extends RouteComponent<{history}, { topicid, page, totalPage, 
         this.setState({ page: page, topicid: newProps.match.params.topicid, totalPage: totalPage, userName: userName, boardId: boardId, topicInfo: topicInfo, boardInfo: boardInfo, isFav: isFav });
     }
     async componentDidMount() {
+        await Utility.getBoards();
         let page: number;
         if (!this.match.params.page) {
             page = 1;
