@@ -1632,6 +1632,14 @@ export async function getPortraitUrl(userName) {
     const data = await response.json();
     return data.portraitUrl;
 }
+export async function getBoards() {
+    if (!localStorage.getItem("boardsInfo")) {
+        const url = '/board/all';
+        const response = await cc98Fetch(url);
+        const data = await response.json();
+        localStorage.setItem("boardsInfo", JSON.stringify(data));
+    } 
+}
 export async function getBoardId(boardName: string) {
     let boardInfo = getStorage('boardInfo') || await fetch('/static/boardinfo.json').then(res => res.json());
     setStorage('boardInfo', boardInfo);

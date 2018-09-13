@@ -9,7 +9,7 @@ interface Props {
     updateTime;
     topicInfo;
 }
-export class TopicManagement extends React.Component<Props, { state, reason, tips, days, board, topicInfo,fetchState ,color}>{
+export class TopicManagement extends React.Component<Props, { state, reason, tips, days, board, topicInfo,fetchState ,color,topBoardName,childBoards}>{
     constructor(props) {
         super(props);
         this.confirm = this.confirm.bind(this);
@@ -22,12 +22,15 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
         this.reasonInput = this.reasonInput.bind(this);
         this.daysInput = this.daysInput.bind(this);
         this.boardInput = this.boardInput.bind(this);
+        const data = JSON.parse(localStorage.getItem("boardsInfo"));
+
         this.state = {
-            state: "normal", reason: "", tips: "", days: 0, board: null, topicInfo: this.props.topicInfo, fetchState: 'ok', color: "#fff"
+            state: "normal", reason: "", tips: "", days: 0, board: null, topicInfo: this.props.topicInfo, fetchState: 'ok', color: "#fff",topBoardName:"",childBoards:data[0].boards
         };
     }
-    showIP() {
-        
+    async componentDidMount() {
+        await Utility.getBoards();
+
     }
     showNormal() {
         this.setState({ state: 'normal' });
@@ -193,10 +196,35 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
         const data = await Utility.getTopicInfo(newProps.topicInfo.id);
         this.setState({ topicInfo: data });
     }*/
+    returnBoardOption(board) {
+        if (board.id === 182) return null;
+        return <option value={board.id}>{board.name}</option>;
+  
+    }
+    handleTopBoardSelect(e) {
+        const boardId = e.target.value;
+        console.log("target="+boardId)
+        const boardsInfo = JSON.parse(localStorage.getItem("boardsInfo"));
+        for (let board of boardsInfo) {
+            
+            if (board.id == boardId) {
+                console.log("choose");
+                console.log(board.boards);
+                this.setState({ childBoards: board.boards});
+                break;
+            }
+        }
+    }
     render() {
       
         //console.log(this.props.topicInfo);
         let info;
+        let boardsInfo = JSON.parse(localStorage.getItem("boardsInfo")) || [];
+        let selectBoard = <select style={{marginRight:"1.5rem"}} onChange={this.handleTopBoardSelect.bind(this)}>
+            {boardsInfo.map(this.returnBoardOption)}
+        </select>;
+        console.log("state=" + this.state.childBoards);
+        let selectChildBoard = <select  onChange={(e) => { console.log(e.target.value); this.setState({board:e.target.value}) }}>{this.state.childBoards.map(this.returnBoardOption)}</select>;
 
         const normalInfo = <div className="column">
             <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
@@ -220,12 +248,13 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
             <div style={{ marginTop: "2rem" }}>{this.state.tips}</div>
         </div>;
         const boardInfo = <div className="column">
-            <div  className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
-                <div >版面</div>
-                <input className="react-bootstrap-smalltext" type="text" value={this.state.board} onChange={this.boardInput} />
+            <div  className="row manageOperation" style={{ justifyContent: "flex-start", marginTop: "1rem" }}>
+                <div style={{marginRight:"1.5rem",marginLeft:"3rem"}}>版面</div>
+                {selectBoard}
+                {selectChildBoard}
             </div>
-            <div className="row manageOperation" style={{ justifyContent: "space-around", marginTop: "1rem" }}>
-                <div >原因</div>
+            <div className="row manageOperation" style={{ justifyContent: "flex-start", marginTop: "1rem" }}>
+                <div style={{marginRight:"1.5rem",marginLeft:"3rem"}}>原因</div>
                 <input className="react-bootstrap-smalltext" type="text" value={this.state.reason} onChange={this.reasonInput} />
 
             </div>
@@ -295,10 +324,10 @@ export class TopicManagement extends React.Component<Props, { state, reason, tip
 
 
 
-                    <div className="row">
+                    {this.props.boardId===182?null:<div className="row">
                         <input type="radio" name="option" value="移动" onClick={this.showBoard} />
                         <div>移动</div>
-                    </div>
+                    </div>}
 
                     <div className="row">
                         <input type="radio" name="option" value="提升" onClick={this.showNormal} />
