@@ -86,13 +86,13 @@ export class VoteContent extends React.PureComponent<props, state> {
             const index = prevState.items.indexOf(id);
             if(index === -1) {
                 return {
-                    items: prevState.items.concat([id])
+                    items: [].concat(prevState.items, id)
                 };
             } else {
                 const { items } = prevState;
                 items.splice(index, 1);
                 return {
-                    items
+                    items: [ ...items ],
                 };
             }
         })
