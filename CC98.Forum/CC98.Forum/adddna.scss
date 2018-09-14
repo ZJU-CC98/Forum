@@ -479,6 +479,36 @@
     width: 100%;
 }
 
+.adButtons {
+    display: flex;
+    width:16rem;
+    height: 0.625rem;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.adButton {
+    width: 0.625rem;
+    height: 0.625rem;
+    margin: 0 0.25rem;
+    border-style: solid;
+    border-color: rgba(255,255,255,0.5);
+    border-width: 1px;
+    border-radius: 50%;
+    box-sizing: border-box;
+}
+
+.adButtonSelected {
+    width: 0.625rem;
+    height: 0.625rem;
+    margin: 0 0.25rem;
+    border-style: solid;
+    border-color: rgba(255,255,255,0.5);
+    border-width: 1px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    background-color: rgba(255,255,255,0.5);
+}
 //论坛统计
 .mainPageCount {
     display: flex;

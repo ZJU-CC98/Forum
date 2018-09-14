@@ -8,7 +8,6 @@ import DocumentTitle from './DocumentTitle';
 import {CountDown} from './CountDown'
 /**
  * 全站公告组件
- * 为同时兼容新旧版98 临时调整了显示的内容
  **/
 export class AnnouncementComponent extends React.Component<{ data }, {}> {
     render() {
@@ -49,7 +48,6 @@ export class RecommendedReadingComponent extends React.Component<{ data }, { ind
     convertButton(value: number, index: number, array: number[]) {
         let className: string = value ? "recommendedReadingButtonSelected" : "recommendedReadingButton";
         return <div className={className} onMouseEnter={() => { this.handleMouseEnter(index) }}></div>
-
     }
 
     render() {
@@ -405,7 +403,7 @@ export class SchoolNewsComponent extends React.Component<{ data }, {}>{
 
 /**
  * 首页广告组件
- * 每30s切换一条
+ * 每20s切换一条
  */
 export class AdsComponent extends React.Component<{}, { ads: MainPageColumn[], index: number }>{
 
@@ -420,6 +418,8 @@ export class AdsComponent extends React.Component<{}, { ads: MainPageColumn[], i
             index: 0,
         };
         this.changeIndex = this.changeIndex.bind(this);
+        this.handleMouseEnter = this.handleMouseEnter.bind(this);
+        this.convertButton = this.convertButton.bind(this);
     }
 
     async getAds() {
@@ -446,9 +446,9 @@ export class AdsComponent extends React.Component<{}, { ads: MainPageColumn[], i
         });
     }
 
-    //设定定时器 每30s调用一次changeIndex()
+    //设定定时器 每20s调用一次changeIndex()
     componentDidMount() {
-        this.timer = setInterval(() => { this.changeIndex(this.state.index) }, 30000);
+        this.timer = setInterval(() => { this.changeIndex(this.state.index) }, 20000);
     }
 
     //当组件从页面上移除时移除定时器
@@ -466,15 +466,34 @@ export class AdsComponent extends React.Component<{}, { ads: MainPageColumn[], i
         })
     }
 
+    //绑定鼠标进入事件
+    handleMouseEnter(index) {
+        this.setState({
+            index: index,
+        })
+    }
+
+    convertButton(value: number, index: number, array: number[]) {
+        let className: string = value ? "adButtonSelected" : "adButton";
+        return <div className={className} onMouseEnter={() => { this.handleMouseEnter(index) }}></div>
+    }
+
     render() {
         let ads = this.state.ads;
         let index = this.state.index;
 
+        let length = ads.length;
+        let styles = new Array(length);
+        styles.fill(0);     //将数组元素全部填充为0
+        styles[index] = 1;      //选中下标的内容对应的数组元素值为1
+        let buttons = styles.map(this.convertButton);
+
         let url = ads.length ? ads[index].url : "";
         let imageUrl = ads.length ? ads[index].imageUrl : "";
 
-        return <div>
-            <a href={url} target="_blank"><img src={imageUrl} style={{ width: "18.75rem", height: "6.25rem" }} /></a>
+        return <div style={{ position:'relative',width: '18.75rem', height: '6.25rem' }}>
+            <div><a href={url} target="_blank"><img src={imageUrl} style={{ width: '18.75rem', height: '6.25rem' }} /></a></div>
+            <div className="adButtons" style={{ position: 'absolute',left:'50%',marginLeft:'-8rem',bottom:'0.25rem' }}>{buttons}</div>
         </div>;
     }
 }
