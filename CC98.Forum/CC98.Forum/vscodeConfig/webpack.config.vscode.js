@@ -1,13 +1,10 @@
-const Webpack = require('webpack')
+const webpack = require('webpack')
 const path = require('path')
 const HTMLWebpackPlugin = require("html-webpack-plugin")
 const CopyWebpackPlugin = require("copy-webpack-plugin")
-const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ExtractTextPlugin = require("extract-text-webpack-plugin")
 
 module.exports = {
-
-    // webpack 4 only
     mode: "development",
 
     module: {
@@ -78,6 +75,9 @@ module.exports = {
         ]),
 
         new ExtractTextPlugin('static/content/[name].css'),
+
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+
     ],
 
     // webpack-dev-server config

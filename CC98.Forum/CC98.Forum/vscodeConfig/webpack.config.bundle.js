@@ -1,14 +1,12 @@
-import * as Webpack from 'webpack';
-import * as path from "path";
-import * as HTMLWebpackPlugin from "html-webpack-plugin";
-import * as CopyWebpackPlugin from "copy-webpack-plugin";
-import * as CleanWebpackPlugin from 'clean-webpack-plugin';
-import * as  ExtractTextPlugin from "extract-text-webpack-plugin";
+const webpack = require('webpack')
+const path = require('path')
+const HTMLWebpackPlugin = require("html-webpack-plugin")
+const CopyWebpackPlugin = require("copy-webpack-plugin")
+const ExtractTextPlugin = require("extract-text-webpack-plugin")
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
-const config: Webpack.Configuration = {
-
-    // webpack 4 only
-    mode: "development",
+module.exports = {
+    mode: "production",
 
     module: {
         rules: [
@@ -37,7 +35,7 @@ const config: Webpack.Configuration = {
         css_blue: './Themes/wuteng_blue.scss',
         css_green: './Themes/forgive_green.scss',
         css_more_green: './Themes/deep_dark_green.scss',
-        css_summer: './Themes/summer.scss'
+        summer: './Themes/summer.scss'
     },
     output: {
         path: path.resolve(__dirname, 'wwwroot/'),
@@ -58,20 +56,17 @@ const config: Webpack.Configuration = {
         // generate index.html
         new HTMLWebpackPlugin({
 			template: 'Template.ejs',
-			filename: 'static/index.html',
+            // place index.html at '/'
+            filename: 'index.html',
 			inject: false
 		}),
         
-        // clean wwwroot
-        new CleanWebpackPlugin([
-            'wwwroot/static/scripts', 
-            'wwwroot/static/content', 
-            'wwwroot/static/index.html'
-        ]),
 
         new CopyWebpackPlugin([
+            // copy static/config file
+            { from: 'wwwroot/static', to: 'static' },
+
             { from: 'node_modules/jquery/dist', to: 'static/scripts/lib/jquery/' },
-            { from: 'node_modules/moment', to: 'static/scripts/lib/moment/' },
             { from: 'node_modules/font-awesome', to: 'static/content/font-awesome/' },
             { from: 'node_modules/editor.md', to: 'static/scripts/lib/editor.md/' },
             { from: 'node_modules/codemirror', to: 'static/scripts/lib/editor.md/lib/codemirror/' },
@@ -82,20 +77,8 @@ const config: Webpack.Configuration = {
 
         new ExtractTextPlugin('static/content/[name].css'),
 
-        new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+
+        new BundleAnalyzerPlugin(),
     ],
-
-    optimization: {
-        splitChunks: {
-            cacheGroups: {
-                commons: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: 'vendors',
-                    chunks: 'all'
-                }
-            }
-        }
-    },
 }
-
-export default config;

@@ -88,6 +88,8 @@ const config: Webpack.Configuration = {
 		new ExtractTextPlugin('static/content/[name]-[chunkhash:8].css'),
 
 		new WebpackChunkHash({algorithm: 'md5'}),
+
+		new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
 	],
 
 	optimization: {

@@ -2,10 +2,6 @@ import * as React from 'react';
 import * as Ubb from './Core';
 
 const DPlayer = require('dplayer');
-import flvjs from 'flv.js';
-
-const parse = require('url-parse');
-
 
 /**
  * 处理 [video] 标签的处理器。
@@ -57,32 +53,14 @@ class VideoComponent extends React.Component<IProps, IState> {
      * 组件加载后初始化播放器
      */
     componentDidMount() {
-
-        const isFlv = parse(this.props.src).pathname.slice(-4) === '.flv'
-
-        const video = !isFlv ? {
-                url: encodeURI(this.props.src),
-            } : {
-                url: encodeURI(this.props.src),
-                type: 'customFlv',
-                customType: {
-                    'customFlv': function (video) {
-                        const flvPlayer = flvjs.createPlayer({
-                            type: 'flv',
-                            url: video.src
-                        });
-                        flvPlayer.attachMediaElement(video);
-                        flvPlayer.load();
-                    }
-                }
-            }
-
         try {
             this.dp = new DPlayer({
                 element: this.div,
                 autoplay: false,
                 preload: 'metadata',
-                video,
+                vedio: {
+                    url: encodeURI(this.props.src)
+                },
             });
         } catch {
             console.log('new Dplayer Error.')
