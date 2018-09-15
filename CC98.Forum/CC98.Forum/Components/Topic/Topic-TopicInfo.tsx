@@ -20,8 +20,10 @@ export class TopicInfo extends React.Component<Props, { tag1Name, tag2Name, isFo
     showAllImg() {
         let btns = document.getElementsByClassName("hiddenImage");
         for (let btnId in btns) {
-            let btn:any = btns[btnId];
-            btn.click();
+            if (btns.hasOwnProperty(btnId)) {
+                let btn:any = btns[btnId];
+                btn.click();
+            }
         }
     }
     async follow() {
