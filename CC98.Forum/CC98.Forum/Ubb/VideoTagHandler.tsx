@@ -58,7 +58,7 @@ class VideoComponent extends React.Component<IProps, IState> {
                 element: this.div,
                 autoplay: false,
                 preload: 'metadata',
-                vedio: {
+                video: {
                     url: encodeURI(this.props.src)
                 },
             });
