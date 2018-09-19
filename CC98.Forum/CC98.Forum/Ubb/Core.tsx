@@ -1068,7 +1068,22 @@ export class UbbCodeEngine {
 	 */
     private buildSegmentsCore(content: string, parent: UbbTagSegment) {
 
-        const tagMatchRegExp = /([\s\S]*?)\[(.+?)]/gi;
+        // const tagMatchRegExp = /([\s\S]*?)\[(.+?)]/gi;
+        const tagMatchRegExp = {
+            lastIndex: 0,
+            exec(content: string) {
+                const i1 = this.lastIndex
+                const i2 = content.indexOf('[', i1)
+                if (i2 === -1) 
+                    return null
+                
+                const i3 = content.indexOf(']', i2)
+                if (i3 === -1) 
+                    return null
+                this.lastIndex = i3 + 1
+                return [content.slice(i1, i2), content.slice(i2 + 1, i3)]
+            }
+        }
 
         while (true) {
 
@@ -1086,7 +1101,7 @@ export class UbbCodeEngine {
                 }
                 return;
             }
-            const [, beforeText, tagString] = tagMatch;
+            const [beforeText, tagString] = tagMatch;
 
             // 添加前面的文字。
             if (beforeText) {
