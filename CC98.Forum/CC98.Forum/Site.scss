@@ -15,7 +15,7 @@ $color-gray: rgb(153,153,153);
 $color-post: rgb(252,252,252);
 $color-red: rgb(255,60,60);
 $color-black: rgb(32,32,32);
-$color-bg: #79b8ca;
+// $color-bg: #79b8ca;
 $color-url: #0b5394;
 $color-urlVisited: #741b47;
 
@@ -1438,7 +1438,6 @@ a {
 
     &:hover {
         filter: brightness(1.1); //亮度
-        -webkit-filter: brightness(1.1);
     }
 
     &:focus {
@@ -1446,7 +1445,7 @@ a {
     }
 
     &:active {
-        background-color: $color-bg;
+        filter: brightness(1.2);
         position: relative;
         top: 1px;
         left: 1px;
@@ -1688,7 +1687,7 @@ a {
 
             &:focus {
                 outline: none;
-                border: 1px solid $color-bg;
+                border: 1px solid $color_main;
             }
         }
 
@@ -2654,7 +2653,7 @@ a {
         border-radius: .5rem;
         -moz-border-radius: .5rem;
         -webkit-border-radius: .5rem;
-        background-color: $color-bg;
+        background-color: $color_main;
     }
 
     .judgeManagement {
@@ -2672,7 +2671,7 @@ a {
         border-radius: .5rem;
         -moz-border-radius: .5rem;
         -webkit-border-radius: .5rem;
-        background-color: $color-bg;
+        background-color: $color_main;
     }
 
     .manageUI {
