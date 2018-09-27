@@ -5,7 +5,7 @@ import * as Utility from '../Utility';
 import { UbbContainer } from './UbbContainer';
 import { Link } from 'react-router-dom';
 import DocumentTitle from './DocumentTitle';
-import {CountDown} from './CountDown'
+import { CountDown } from './CountDown'
 /**
  * 全站公告组件
  **/
@@ -31,12 +31,18 @@ export class RecommendedReadingComponent extends React.Component<{ data }, { ind
 
     constructor(props) {
         super(props);
-        const length = this.props.data.length;
         this.state = {
-            index: Math.floor(Math.random() * length)    //0-length的随机数
+            index: 0,
         };
         this.handleMouseEnter = this.handleMouseEnter.bind(this);
         this.convertButton = this.convertButton.bind(this);
+    }
+
+    async componentWillReceiveProps(nextProps) {
+        const length: number = nextProps.data.length;        
+        this.setState({
+            index: Math.floor(Math.random()*length),
+        })       
     }
 
     handleMouseEnter(index) {
@@ -46,30 +52,24 @@ export class RecommendedReadingComponent extends React.Component<{ data }, { ind
     }
 
     convertButton(value: number, index: number, array: number[]) {
-        let className: string = value ? "recommendedReadingButtonSelected" : "recommendedReadingButton";
+        const className: string = value ? "recommendedReadingButtonSelected" : "recommendedReadingButton";
         return <div className={className} onMouseEnter={() => { this.handleMouseEnter(index) }}></div>
     }
 
     render() {
-        let recommendedReading = this.props.data;
-        let length = recommendedReading.length;     //推荐阅读的长度
+        const recommendedReading = this.props.data;
+        const length = recommendedReading.length;     //推荐阅读的长度
 
-        let index = this.state.index;
+        const index = this.state.index;
         let styles = new Array(length);
         styles.fill(0);     //将数组元素全部填充为0
         styles[index] = 1;      //选中下标的内容对应的数组元素值为1
-        let buttons = styles.map(this.convertButton);
-        let imageUrl = "";
-        let url = "";
-        let title = "";
-        let content = "";
-        if (recommendedReading) {
-            imageUrl = recommendedReading.length ? recommendedReading[index].imageUrl : "";
+        const buttons = styles.map(this.convertButton);
 
-            title = recommendedReading.length ? recommendedReading[index].title : "";
-            url = recommendedReading.length ? recommendedReading[index].url : "";
-            content = recommendedReading.length ? recommendedReading[index].content : "";
-        }
+        const imageUrl = length ? recommendedReading[index].imageUrl : "";
+        const url = length ? recommendedReading[index].url : "";
+        const title = length ? recommendedReading[index].title : "";
+        const content = length ? recommendedReading[index].content : "";
 
         return <div className="recommendedReading">
             <div className="mainPageTitle2">
@@ -491,9 +491,9 @@ export class AdsComponent extends React.Component<{}, { ads: MainPageColumn[], i
         let url = ads.length ? ads[index].url : "";
         let imageUrl = ads.length ? ads[index].imageUrl : "";
 
-        return <div style={{ position:'relative',width: '18.75rem', height: '6.25rem' }}>
+        return <div style={{ position: 'relative', width: '18.75rem', height: '6.25rem' }}>
             <div><a href={url} target="_blank"><img src={imageUrl} style={{ width: '18.75rem', height: '6.25rem' }} /></a></div>
-            <div className="adButtons" style={{ position: 'absolute',left:'50%',marginLeft:'-8rem',bottom:'0.25rem' }}>{buttons}</div>
+            <div className="adButtons" style={{ position: 'absolute', left: '50%', marginLeft: '-8rem', bottom: '0.25rem' }}>{buttons}</div>
         </div>;
     }
 }
@@ -544,8 +544,8 @@ export class MainPageCountComponent extends React.Component<{ data }, {}> {
  */
 export class RecommendedBoardComponent extends React.Component<{}, {}>{
     render() {
-    return <div></div>
-}
+        return <div></div>
+    }
 }
 
 /**
@@ -612,7 +612,7 @@ export class MainPage extends React.Component<{}, { data }> {
             //若获取到的首页数据中的十大数据为空，则不缓存首页数据，这样用户立即刷新页面就可以获取最新的十大数据
             //当然，该次获取的十大数据为空，这则由十大组件处理（显示之前缓存的十大数据）
             //若获取了正常的首页数据（十大不为空），则缓存60s，这样可以避免用户短时间内频繁访问首页产生大量请求
-            if (hotTopicData) Utility.setLocalStorage("mainPageData", data, 60);           
+            if (hotTopicData) Utility.setLocalStorage("mainPageData", data, 60);
             return data;
         } else {
             return data

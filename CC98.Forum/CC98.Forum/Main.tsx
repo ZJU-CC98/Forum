@@ -12,7 +12,6 @@ import { Constants } from './Components/Constant';
 import App from './Components/App';
 import ErrorBoundary from './Components/ErrorBoundary';
 import { IndexedDB } from './IndexedDB/IndexedDB';
-const { WhyDidYouUpdate } = require("why-did-you-update");
 /**
  * 项目初始化代码
  */
@@ -22,7 +21,7 @@ async function initialize() {
 	if(window.indexedDB) await IndexedDB.start();
 
 	// 输出一些没用的东西
-	console.info('%c       ', 'font-size: 100px; background: url(http://cdn.nyanit.com/nyan2.gif) no-repeat;');
+	// console.info('%c       ', 'font-size: 100px; background: url(http://cdn.nyanit.com/nyan2.gif) no-repeat;');
 	console.info('%cCC98 Durian', 'font-size: 80px; fontFamily: Big');
 
 	// 显示应用程序核心内容
@@ -34,8 +33,12 @@ async function initialize() {
 		</ErrorBoundary>,
 		document.getElementById('root')
 
-    );
-    WhyDidYouUpdate(React);
+	);
+	
+	if (process.env.NODE_ENV === 'development') {
+		const {whyDidYouUpdate} = require('why-did-you-update');
+		whyDidYouUpdate(React);
+	}
 }
 
 initialize();
