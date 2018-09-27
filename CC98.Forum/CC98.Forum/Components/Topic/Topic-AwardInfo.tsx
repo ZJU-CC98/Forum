@@ -12,7 +12,7 @@ export class AwardInfo extends React.Component<Props> {
     }
     render() {
         //console.log("props");
-        //console.log(this.props);
+        console.log(this.props);
         return <div className="good tagSize" >
             <div className="userImage"><img src={this.props.portraitUrl}></img> </div>
             <div className="userName">{this.props.userName}</div>

@@ -11,7 +11,7 @@ import { Replier } from './Topic-Replier';
 import { ReplyContent } from './Topic-ReplyContent';
 import { Award } from './Topic-Award';
 import  PostManagement  from './Topic-PostManagement-v2';
-import { Judge }  from './Topic-Judge';
+import Judge   from './Topic-Judge-v2';
 import { ReplierSignature } from './Topic-ReplierSignature';
 import * as moment from 'moment';
 interface Props{
@@ -24,7 +24,7 @@ interface Props{
     isHot;
     postId;
 }
-export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealth:number,inWaiting, contents, masters ,pmVisible,item}>{
+export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealth:number,inWaiting, contents, masters ,pmVisible,item,judgeVisible}>{
     constructor(props, content) {
         super(props, content);
         this.update = this.update.bind(this);
@@ -33,7 +33,7 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
             inWaiting: true,
             contents: [],
             masters: [],
-            boardName: "", m_wealth: 20000, d_wealth: 0,pmVisible:false,item:{}
+            boardName: "", m_wealth: 20000, d_wealth: 0,pmVisible:false,item:{},judgeVisible:false
         };
     }
     
@@ -121,11 +121,15 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
     showPm=(v,item)=>{
         this.setState({pmVisible:v,item:item});
     }
-
+    showJudge=(v,item)=>{
+        this.setState({judgeVisible:v,item:item});
+    }
     handleCancel = () => {
         this.setState({ pmVisible: false });
     }
-
+    handleJudgeCancel=()=>{
+        this.setState({ judgeVisible: false });
+    }
     handleCreate = () => {
         // const form = this.formRef.props.form;
         // form.validateFields(async (err, values) => {
@@ -149,12 +153,11 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
                 <div className="reply" key={id.toString()} id={id.toString()} >
                     <Replier key={item.postId} topicInfo={this.props.topicInfo} userInfo={item.userInfo} traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
                     <div className="column" style={{ justifyContent: "space-between", width: "55.5rem", position: "relative" }}>
-                        <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
-                       
+                  
                         <ReplyContent floor={item.floor} topicInfo={this.props.topicInfo} key={item.content} postId={item.postId} content={item.content} contentType={item.contentType} />
                         {awards}
                         <ReplierSignature userInfo={item.userInfo} quote={this.quote} boardInfo={this.props.boardInfo} postInfo={item} likeInfo={likeInfo} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo} 
-                        changePmVisible={this.showPm}/>
+                        changePmVisible={this.showPm} changeJudgeVisible={this.showJudge} />
                     </div>
                     <FloorSize isHot={this.props.isHot} floor={item.floor} />
                 </div>
@@ -168,10 +171,9 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
             return <div className="reply" key={replyId} id={replyId} >
                 <Replier key={item.postId} topicInfo={this.props.topicInfo} userInfo={item.userInfo}   traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
                 <div className="column" style={{ justifyContent: "space-between", width: "55.5rem", position: "relative" }}>
-                    <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
                     <ReplyContent floor={item.floor} topicInfo={this.props.topicInfo} key={item.content} postId={item.postId} content={item.content} contentType={item.contentType} />
                     {awards}
-                    <ReplierSignature userInfo={item.userInfo} quote={this.quote} boardInfo={this.props.boardInfo} postInfo={item} likeInfo={likeInfo} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo} changePmVisible={this.showPm}/>
+                    <ReplierSignature userInfo={item.userInfo} quote={this.quote} boardInfo={this.props.boardInfo} postInfo={item} likeInfo={likeInfo} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo} changePmVisible={this.showPm} changeJudgeVisible={this.showJudge} />
                 </div>
                 <FloorSize isHot={this.props.isHot} floor={item.floor} />
             </div>;
@@ -199,6 +201,7 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
             }
         }
     }
+ 
     render() {
         let privilege = null;
         if (Utility.getLocalStorage("userInfo"))
@@ -212,6 +215,7 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
             return <div className="center" style={{ width: "71rem", marginRight:"1px" }}>
                 {this.state.contents.map(this.generateContents.bind(this))}
                 <PostManagement  m_wealth={this.state.m_wealth} d_wealth={this.state.d_wealth} boardName={this.state.boardName}  update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} item={this.state.item} visible={this.state.pmVisible} onCreate={this.handleCreate} onCancel={this.handleCancel} />
+                <Judge item={this.state.item} update={this.update} onCancel={this.handleJudgeCancel} visible={this.state.judgeVisible} />                     
             </div>
                 ;
         }

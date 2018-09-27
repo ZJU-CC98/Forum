@@ -1638,7 +1638,7 @@ export async function getBoards() {
         const response = await cc98Fetch(url);
         const data = await response.json();
         localStorage.setItem("boardsInfo", JSON.stringify(data));
-    } 
+    }
 }
 export async function getBoardId(boardName: string) {
     let boardInfo = getStorage('boardInfo') || await fetch('/static/boardinfo.json').then(res => res.json());
@@ -1935,7 +1935,10 @@ export async function minus1(topicId, postId, reason) {
         case 401:
             return 'not allowed';
         case 403:
-            return 'already';
+            if (await response.text() === 'you_cannot_rate')
+                return 'not allowed';
+            else
+                return 'already';
         case 500:
             return 'server error';
     }
@@ -2056,7 +2059,7 @@ export async function addBoardTopTopic(topicId, boardId, topState, days, reason)
 export async function removeBoardTopTopic(topicId, boardId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
-    const content = { "reason":reason };
+    const content = { "reason": reason };
     const response = await cc98Fetch(
 
         `/topic/${topicId}/top`,
@@ -2109,7 +2112,7 @@ export async function deleteTopic(topicId, reason) {
     const headers = await formAuthorizeHeader();
     headers.append("Content-Type", "application/json");
     const url = `/topic/${topicId}`;
-    const bodyInfo = {"reason":reason};
+    const bodyInfo = { "reason": reason };
     const body = JSON.stringify(bodyInfo);
     const response = await cc98Fetch(url, { method: "DELETE", headers, body });
     switch (response.status) {
@@ -2458,7 +2461,7 @@ export async function getTopicByTwoTags(tag1Id, tag2Id, boardId, page) {
     const response = await cc98Fetch(url, { headers });
     return await response.json();
 }
-export async function updateUserInfo(id,name) {
+export async function updateUserInfo(id, name) {
     const key = `userId_${id}`;
     const key1 = `userName_${name}`;
     removeLocalStorage(key);
@@ -2924,11 +2927,11 @@ export async function getMonthlyHotTopic(type: string) {
 export async function mutliLock(day, reason, target) {
     const url = `/topic/multi-lock?${target}`;
     const headers = await formAuthorizeHeader();
-    headers.append("Content-Type","application/json");
+    headers.append("Content-Type", "application/json");
     const body = JSON.stringify(
         {
             reason: reason,
-            value:day
+            value: day
         }
     )
     $("#mutlilock-btn").attr("disabled", "disabled");

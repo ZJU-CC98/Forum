@@ -111,9 +111,10 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
 
                     <FormItem label="理由">
                         {getFieldDecorator('reason', {
-                            rules: [{ required: true, message: '请输入理由' }]
+                            rules: [{ required: true, message: '请输入理由' }],
+                            initialValue:"好文章"
                         })(
-                            <Select mode={"tags"} defaultValue="好文章" style={{ width: 120 }} onChange={this.handleChange}>
+                            <Select mode={"tags"}  style={{ width: 120 }} onChange={this.handleChange}>
                                 <Option value="好文章">好文章</Option>
                                 <Option value="有用资源">有用资源</Option>
                                 <Option value="热心回复">热心回复</Option>
@@ -136,9 +137,10 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
                     </FormItem>
                     <FormItem label="理由">
                         {getFieldDecorator('reason', {
-                            rules: [{ required: true, message: '请输入理由' }]
+                            rules: [{ required: true, message: '请输入理由' }],
+                            initialValue:"好文章"
                         })(
-                            <Select mode={"tags"} defaultValue="好文章" style={{ width: 120 }} onChange={this.handleChange}>
+                            <Select mode={"tags"} style={{ width: 120 }} onChange={this.handleChange}>
                                 <Option value="好文章">好文章</Option>
                                 <Option value="有用资源">有用资源</Option>
                                 <Option value="热心回复">热心回复</Option>
@@ -164,9 +166,10 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
 
                     <FormItem label="理由">
                         {getFieldDecorator('reason', {
-                            rules: [{ required: true, message: '请输入理由' }]
+                            rules: [{ required: true, message: '请输入理由' }],
+                            initialValue:"人身攻击"
                         })(
-                            <Select mode={"tags"} defaultValue="人身攻击" style={{ width: 120 }} onChange={this.handleChange}>
+                            <Select mode={"tags"}  style={{ width: 120 }} onChange={this.handleChange}>
                                 <Option value="人身攻击">人身攻击</Option>
                                 <Option value="违反版规">违反版规</Option>
                                 <Option value="恶意灌水">恶意灌水</Option>
@@ -191,7 +194,8 @@ export default Form.create<Props>()(class extends React.Component<Props & FormCo
                     </FormItem>
                     <FormItem label="理由">
                         {getFieldDecorator('reason', {
-                            rules: [{ required: true, message: '请输入理由' }]
+                            rules: [{ required: true, message: '请输入理由' }],
+                            initialValue:"人身攻击"
                         })(
                             <Select mode={"tags"} defaultValue="人身攻击" style={{ width: 120 }} onChange={this.handleChange}>
                                 <Option value="人身攻击">人身攻击</Option>
