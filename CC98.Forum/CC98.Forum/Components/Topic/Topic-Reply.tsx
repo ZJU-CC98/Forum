@@ -24,7 +24,7 @@ interface Props{
     isHot;
     postId;
 }
-export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealth:number,inWaiting, contents, masters }>{
+export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealth:number,inWaiting, contents, masters ,pmVisible,item}>{
     constructor(props, content) {
         super(props, content);
         this.update = this.update.bind(this);
@@ -33,9 +33,10 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
             inWaiting: true,
             contents: [],
             masters: [],
-            boardName: "", m_wealth: 20000, d_wealth: 0,
+            boardName: "", m_wealth: 20000, d_wealth: 0,pmVisible:false,item:{}
         };
     }
+    
     quote(content, userName, replyTime, floor, postId) {
         this.props.quote(content, userName, replyTime, floor, postId);
     }
@@ -117,12 +118,25 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
             this.setState({ m_wealth: data.rewardMaxValue, d_wealth: data.rewardTotalValue, inWaiting: false, contents: realContents, masters: masters });
         }
     }
+    showPm=(v,item)=>{
+        this.setState({pmVisible:v,item:item});
+    }
 
+    handleCancel = () => {
+        this.setState({ pmVisible: false });
+    }
+
+    handleCreate = () => {
+        // const form = this.formRef.props.form;
+        // form.validateFields(async (err, values) => {
+        //     if (err) {
+        //         return;
+        //     }
+        // }
+    }
     private generateContents(item) {
       
-        let privilege = null;
-        if (Utility.getLocalStorage("userInfo"))
-            privilege = Utility.getLocalStorage("userInfo").privilege;
+      
         const id = item.floor % 10;
         let likeInfo = { likeCount: item.likeCount, dislikeCount: item.dislikeCount, likeState: item.likeState };
         //判断加不加热评
@@ -132,14 +146,15 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
         if (item.floor === 1 && !this.props.isTrace) {
             hotReply = <Reply topicInfo={this.props.topicInfo} page={this.props.page} boardInfo={this.props.boardInfo} quote={this.quote} isTrace={false} isHot={true} postId={null} topicId={this.props.topicId} />;
             return <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
-                <div className="reply" id={id.toString()} >
+                <div className="reply" key={id.toString()} id={id.toString()} >
                     <Replier key={item.postId} topicInfo={this.props.topicInfo} userInfo={item.userInfo} traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
                     <div className="column" style={{ justifyContent: "space-between", width: "55.5rem", position: "relative" }}>
                         <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
-                        <PostManagement m_wealth={this.state.m_wealth} d_wealth={this.state.d_wealth} boardName={this.state.boardName} topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} floor={item.floor} />
+                       
                         <ReplyContent floor={item.floor} topicInfo={this.props.topicInfo} key={item.content} postId={item.postId} content={item.content} contentType={item.contentType} />
                         {awards}
-                        <ReplierSignature userInfo={item.userInfo} quote={this.quote} boardInfo={this.props.boardInfo} postInfo={item} likeInfo={likeInfo} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo} />
+                        <ReplierSignature userInfo={item.userInfo} quote={this.quote} boardInfo={this.props.boardInfo} postInfo={item} likeInfo={likeInfo} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo} 
+                        changePmVisible={this.showPm}/>
                     </div>
                     <FloorSize isHot={this.props.isHot} floor={item.floor} />
                 </div>
@@ -150,14 +165,13 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
             if (this.props.isHot) {
                 replyId = `hot_${id}`;
             }
-            return <div className="reply" id={replyId} >
+            return <div className="reply" key={replyId} id={replyId} >
                 <Replier key={item.postId} topicInfo={this.props.topicInfo} userInfo={item.userInfo}   traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
                 <div className="column" style={{ justifyContent: "space-between", width: "55.5rem", position: "relative" }}>
                     <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
-                    <PostManagement m_wealth= {this.state.m_wealth} d_wealth={this.state.d_wealth} boardName={this.state.boardName}topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} floor={item.floor}/>
                     <ReplyContent floor={item.floor} topicInfo={this.props.topicInfo} key={item.content} postId={item.postId} content={item.content} contentType={item.contentType} />
                     {awards}
-                    <ReplierSignature userInfo={item.userInfo} quote={this.quote} boardInfo={this.props.boardInfo} postInfo={item} likeInfo={likeInfo} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo} />
+                    <ReplierSignature userInfo={item.userInfo} quote={this.quote} boardInfo={this.props.boardInfo} postInfo={item} likeInfo={likeInfo} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo} changePmVisible={this.showPm}/>
                 </div>
                 <FloorSize isHot={this.props.isHot} floor={item.floor} />
             </div>;
@@ -186,6 +200,9 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
         }
     }
     render() {
+        let privilege = null;
+        if (Utility.getLocalStorage("userInfo"))
+            privilege = Utility.getLocalStorage("userInfo").privilege;
         if (this.props.isHot && this.state.inWaiting)
             return null;
         if (!this.state.inWaiting) {
@@ -194,6 +211,7 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
             }
             return <div className="center" style={{ width: "71rem", marginRight:"1px" }}>
                 {this.state.contents.map(this.generateContents.bind(this))}
+                <PostManagement  m_wealth={this.state.m_wealth} d_wealth={this.state.d_wealth} boardName={this.state.boardName}  update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} item={this.state.item} visible={this.state.pmVisible} onCreate={this.handleCreate} onCancel={this.handleCancel} />
             </div>
                 ;
         }

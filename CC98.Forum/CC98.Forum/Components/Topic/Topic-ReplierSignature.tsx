@@ -12,6 +12,7 @@ interface Props{
     quote;
     userInfo;
     traceMode;
+    changePmVisible;
 }
 export class ReplierSignature extends React.Component<Props, {likeNumber,dislikeNumber,likeState}>{
     constructor(props, content) {
@@ -30,8 +31,9 @@ export class ReplierSignature extends React.Component<Props, {likeNumber,dislike
         this.props.quote(this.props.postInfo.content, this.props.userInfo.name, this.props.postInfo.time, this.props.postInfo.floor, this.props.postInfo.id);
     }
     showManageUI() {
-        const UIId = `#manage${this.props.postInfo.id}`;
-        $(UIId).css("display", "");
+        //const UIId = `#manage${this.props.postInfo.id}`;
+        //$(UIId).css("display", "");
+        this.props.changePmVisible(true,this.props.postInfo);
     }
     showJudgeUI() {
         const UIId = `#judge${this.props.postInfo.id}`;    
