@@ -10,8 +10,8 @@ import { RouteComponent } from '../RouteComponent';
 import { Replier } from './Topic-Replier';
 import { ReplyContent } from './Topic-ReplyContent';
 import { Award } from './Topic-Award';
-import { PostManagement } from './Topic-PostManagement';
-import { Judge } from './Topic-Judge';
+import  PostManagement  from './Topic-PostManagement-v2';
+import { Judge }  from './Topic-Judge';
 import { ReplierSignature } from './Topic-ReplierSignature';
 import * as moment from 'moment';
 interface Props{
@@ -136,7 +136,7 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
                     <Replier key={item.postId} topicInfo={this.props.topicInfo} userInfo={item.userInfo} traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
                     <div className="column" style={{ justifyContent: "space-between", width: "55.5rem", position: "relative" }}>
                         <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
-                        <PostManagement m_wealth= {this.state.m_wealth} d_wealth={this.state.d_wealth} boardName={this.state.boardName}topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} floor={item.floor} />
+                        <PostManagement m_wealth={this.state.m_wealth} d_wealth={this.state.d_wealth} boardName={this.state.boardName} topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} floor={item.floor} />
                         <ReplyContent floor={item.floor} topicInfo={this.props.topicInfo} key={item.content} postId={item.postId} content={item.content} contentType={item.contentType} />
                         {awards}
                         <ReplierSignature userInfo={item.userInfo} quote={this.quote} boardInfo={this.props.boardInfo} postInfo={item} likeInfo={likeInfo} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo} />
@@ -154,7 +154,7 @@ export class Reply extends React.Component<Props, { boardName, m_wealth, d_wealt
                 <Replier key={item.postId} topicInfo={this.props.topicInfo} userInfo={item.userInfo}   traceMode={this.props.isTrace ? true : false} isHot={this.props.isHot ? true : false} />
                 <div className="column" style={{ justifyContent: "space-between", width: "55.5rem", position: "relative" }}>
                     <Judge userId={item.userId} postId={item.postId} update={this.update} topicId={item.topicId} />
-                    <PostManagement m_wealth= {this.state.m_wealth} d_wealth={this.state.d_wealth} boardName={this.state.boardName} topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} floor={item.floor} />
+                    <PostManagement m_wealth= {this.state.m_wealth} d_wealth={this.state.d_wealth} boardName={this.state.boardName}topicId={item.topicId} postId={item.postId} userId={item.userId} update={this.update} privilege={privilege} boardId={this.props.boardInfo.id} floor={item.floor}/>
                     <ReplyContent floor={item.floor} topicInfo={this.props.topicInfo} key={item.content} postId={item.postId} content={item.content} contentType={item.contentType} />
                     {awards}
                     <ReplierSignature userInfo={item.userInfo} quote={this.quote} boardInfo={this.props.boardInfo} postInfo={item} likeInfo={likeInfo} traceMode={this.props.isTrace ? true : false} topicInfo={this.props.topicInfo} />

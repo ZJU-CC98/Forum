@@ -42,6 +42,7 @@
     <None Remove="Components\Topic\Topic-Hot-Weekly.tsx" />
     <None Remove="Components\Topic\Topic-Judge.tsx" />
     <None Remove="Components\Topic\Topic-Pager.tsx" />
+    <None Remove="Components\Topic\Topic-PostManagement-v2.tsx" />
     <None Remove="Components\Topic\Topic-Replier.tsx" />
     <None Remove="Components\Topic\Topic-ReplierSignature.tsx" />
     <None Remove="Components\Topic\Topic-ReplyContent.tsx" />
@@ -141,6 +142,7 @@
     <TypeScriptCompile Include="Components\LogOn.tsx" />
     <TypeScriptCompile Include="Components\Search\Search.tsx" />
     <TypeScriptCompile Include="Components\Status.tsx" />
+    <TypeScriptCompile Include="Components\Topic\Topic-PostManagement-v2.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-PostManagement.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-AwardInfo.tsx" />
     <TypeScriptCompile Include="Components\Topic\Topic-Category.tsx" />
